@@ -1,0 +1,122 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="AUTOSAR" type="AR-PACKAGE">
+        <a:a name="UUID" value="ECUC:AUTOSAR"/>
+        <d:lst type="TOP-LEVEL-PACKAGES">
+          <d:ctr name="EcucDefs" type="AR-PACKAGE">
+            <a:a name="UUID" value="ECUC:ECUCDEFS"/>
+            <d:lst type="ELEMENTS">
+              <d:chc name="Dem" type="AR-ELEMENT" value="MODULE-DEF">
+                <v:ctr type="MODULE-DEF">
+                  <a:a name="ADMIN-DATA" type="ADMIN-DATA">
+                    <ad:ADMIN-DATA>
+                      <ad:DOC-REVISIONS>
+                        <ad:DOC-REVISION>
+                          <ad:REVISION-LABEL>4.3.1</ad:REVISION-LABEL>
+                          <ad:ISSUED-BY>AUTOSAR</ad:ISSUED-BY>
+                        </ad:DOC-REVISION>
+                      </ad:DOC-REVISIONS>
+                    </ad:ADMIN-DATA>
+                  </a:a>
+                  <a:a name="DESC" 
+                       value="EN: Configuration of the Dem (Diagnostic Event Manager) module."/>
+                  <a:a name="LOWER-MULTIPLICITY" value="0"/>
+                  <a:a name="POSTBUILDVARIANTSUPPORT" value="true"/>
+                  <a:a name="RELEASE" value="asc:4.3.1"/>
+                  <a:a name="UPPER-MULTIPLICITY" value="1"/>
+                  <a:a name="UUID" 
+                       value="ECUC:a72ca44c-5093-4cd1-b6f1-e197d31fdd75"/>
+                  <v:var name="IMPLEMENTATION_CONFIG_VARIANT" 
+                         type="ENUMERATION">
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                         type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="LABEL" value="Config Variant"/>
+                    <a:da name="DEFAULT" value="VariantPreCompile"/>
+                    <a:da name="RANGE">
+                      <a:v>VariantPreCompile</a:v>
+                    </a:da>
+                  </v:var>
+                  <v:ctr name="DemConfigSet" type="IDENTIFIABLE">
+                    <a:a name="DESC" 
+                         value="EN: This container contains the configuration parameters and sub containers of the Dem module supporting multiple configuration sets."/>
+                    <a:a name="UUID" 
+                         value="ECUC:e85440ff-d0a6-4001-bcfc-aa36b340c94a"/>
+                    <v:lst name="DemEventParameter" type="MAP">
+                      <a:da name="MAX" value="65535"/>
+                      <a:da name="MIN" value="1"/>
+                      <v:ctr name="DemEventParameter" type="IDENTIFIABLE">
+                        <a:a name="DESC" 
+                             value="EN: This container contains the configuration (parameters) for events."/>
+                        <a:a name="UUID" 
+                             value="ECUC:17edd206-934c-420b-a50a-75aef6269ac7"/>
+                        <v:var name="DemEventId" type="INTEGER">
+                          <a:a name="DESC" 
+                               value="EN: Unique identifier of a diagnostic event."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                               type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                          <a:a name="SCOPE" value="ECU"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="true"/>
+                          <a:a name="UUID" 
+                               value="ECUC:a42e4864-6ec3-4459-ae25-2a314d4a0e42"/>
+                          <a:a name="INVALID" type="Multi">
+                            <mt:range>
+                              <mt:tst expr="&lt;=255"/>
+                              <mt:tst expr="&gt;=0"/>
+                            </mt:range>
+                            <!-- XPath expression -->
+                            <mt:xpath expr="text:uniq(../.././/*[@name='DemEventId'], node:value(.))" false="DemEventId should be unique"/>
+                          </a:a>
+                        </v:var>
+                        <v:var name="DemEventKind" type="ENUMERATION">
+                          <a:a name="DESC" 
+                               value="EN: This parameter is used to distinguish between SW-C and BSW events."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                               type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" 
+                               value="ECUC:44e8a61c-a95b-487d-908b-0ca87be434d4"/>
+                          <a:da name="RANGE">
+                            <a:v>DEM_EVENT_KIND_BSW</a:v>
+                            <!-- <a:v>DEM_EVENT_KIND_SWC</a:v> -->
+                          </a:da>
+                          <a:da name="EDITABLE" value="false"/>
+                          <a:da name="DEFAULT" value="DEM_EVENT_KIND_BSW"/>
+                        </v:var>
+                      </v:ctr>
+                    </v:lst>
+                  </v:ctr>
+                </v:ctr>
+              </d:chc>
+            </d:lst>
+          </d:ctr>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

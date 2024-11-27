@@ -1,0 +1,9 @@
+MMWBOOT_TEST_PATH = ""
+C29_SBL_LOAD_ADDR = 0x10000000
+MMWBOOT_SOC = "f29h85x"
+C29_RBL_SOC = "f29h85x"
+TOOL_EXT = "exe"
+BINARY_EXT = "out"
+GPKEY = "keys/gpkey.pem"
+SMPK_KEY = "keys/smpk.pem"
+BMPK_KEY = "keys/bmpk.pem"

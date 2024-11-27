@@ -1,0 +1,1400 @@
+## GPT Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|RTE|Runtime Environment|
+|GPT|General Purpose Timer|
+|BSW|Basic Software|
+|GPIO|General Purpose Input Output|
+|MCAL|Micro Controller Abstraction Layer|
+|API|Application Programming Interface|
+|DET|Default Error Tracer|
+|HW |Hardware|
+|SW |Software|
+|I/O|Input/Output|
+
+### Introduction
+
+GPT driver is part of the Micro controller Drivers which is again part of the Basic Software. It initializes and controls the internal General Purpose Timer(s) (GPT) of the micro controller.Following sections highlight key aspects of this implementation which would be of interest to an integrator.
+
+```{figure} Assets/images/Gpt_Autosar_MCAL.png
+:alt: GPT MCAL AUTOSAR
+:align: center
+
+GPT MCAL AUTOSAR.
+```
+
+This document details AUTOSAR BSW Gpt module implementation
+
+|Supported AUTOSAR Release|**4.3.1**|
+|------|-------------|
+| **Supported Configuration Variants** | **Pre-Compile & Post Build**|
+| **Vendor ID**                      |   **GPT_VENDOR_ID (44)**|
+| **Module ID**                      |   **GPT_MODULE_ID (100)**|
+
+### Functional Overview
+
+The GPT driver is part of the Micro controller abstraction layer (MCAL). It initializes and controls the internal General Purpose Timer(s) (GPT) of the micro controller.
+
+The GPT driver provides services and configuration parameters for
+
+* Starting and stopping hardware timers
+* Getting timer values
+* Controlling time triggered interrupt notifications
+* Controlling time triggered wake up interrupts
+
+#### Timer Modes
+
+A timer channel can be configured in "one-shot mode" or "continuous mode".
+
+##### Continuous Mode
+
+If the timer has reached the value zero starting from target time, the timer shall continue running with the value "target time" at next timer tick and start decrementing again.
+
+##### One Shot Mode
+
+If the timer has reached the zero, starting from the target time, the timer shall stop automatically and maintain its timer value unchanged.
+
+```{NOTE}
+The tick duration of a timer channel depends on channel specific settings (part of GPT driver) as well as on system clock and settings of the clock tree controlled by the MCU module.
+```
+
+### Hardware Features
+
+#### HW Features supported
+
+CPU-Timer2 is reserved for real-time operating system uses (for example, TI-RTOS), but if CPU-Timer2 is not used by real-time operating systems then, CPU-Timer2 can also be used for other applications. The CPU-Timer0 and CPU-Timer1 run off of SYSCLK. The CPU-Timer2 normally runs off of SYSCLK, but can also use INTOSC1, INTOSC2 or XTAL. The CPU-Timer interrupt signals (TINT0, TINT1, TINT2) are connected to PIPE Module.
+
+```{figure} Assets/images/Gpt_CPU_Timers.png
+:alt: GPT CPU Timers 
+:align: center
+
+GPT CPU Timers
+```
+
+The general operation of the CPU-Timer is as follows:
+
+* The 32-bit counter register, TIMH:TIM, is loaded with the value in the period register PRDH:PRD.
+* The counter decrements once every (TPR[TDDRH:TDDR]+1) SYSCLKOUT cycles, where TDDRH:TDDR is
+the timer divider.
+* When the counter reaches 0, a timer interrupt output signal generates an interrupt pulse.
+
+#### Not supported Features
+
+None
+
+#### Non compliance
+
+Below AUTOSAR design requirement are not supported for GPT Driver :
+
+[**SWS_Gpt_00382** ,**SWS_Gpt_00383**, **SWS_Gpt_00384**, **SWS_Gpt_00385**, **SWS_Gpt_00386**, **SWS_Gpt_00390**, **SWS_Gpt_00391**, **SWS_Gpt_00395**, **SWS_Gpt_00396**, **SWS_Gpt_00397**, **SWS_Gpt_00402**, **SWS_Gpt_00398**, **SWS_Gpt_00399**, **SWS_Gpt_00400**, **SWS_Gpt_00401**, **SWS_Gpt_00403**, **ECUC_Gpt_00335**, **ECUC_Gpt_00335**]
+
+>>Rejection Reason : Since this device has less number of timer instances available; this functionality is not supported as it would require blocking of additional timers and would leave no instances available for regular use.
+
+[**SWS_Gpt_00127**, **SWS_Gpt_00258**, **SWS_Gpt_00339**, **SWS_Gpt_00151**, **SWS_Gpt_00255**, **SWS_Gpt_00152**, **SWS_Gpt_00153**, **SWS_Gpt_00164**, **SWS_Gpt_00165**, **SWS_Gpt_00341**, **SWS_Gpt_00231**, **SWS_Gpt_00201**, **SWS_Gpt_00392**, **SWS_Gpt_00393**, **SWS_Gpt_00159**, **SWS_Gpt_00157**, **SWS_Gpt_00155**, **SWS_Gpt_00202**, **SWS_Gpt_00215**, **SWS_Gpt_00229**, **SWS_Gpt_00160**, **SWS_Gpt_00158**, **SWS_Gpt_00156**, **SWS_Gpt_00203**, **SWS_Gpt_00230**, **SWS_Gpt_00216**, **SWS_Gpt_00321**, **SWS_Gpt_00322**, **SWS_Gpt_00323**, **SWS_Gpt_00324**, **SWS_Gpt_00325**, **ECUC_Gpt_00311**, **ECUC_Gpt_00235**, **ECUC_Gpt_00313**, **ECUC_Gpt_00320**]
+
+>>Rejection Reason : Even though the underlying hardware provides wakeup capability the timers are connected to same clock sources as the CPU; once we enter Low Power Mode these clocks are gated. So timers will also stop working in low power mode. Hence, this functionality is not enabled in Gpt.
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂**Gpt**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Gpt.h** : *Contains the API declarations of the Gpt driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┗ 📜**Gpt_Priv.h** : *contains the private functions declarations*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Gpt.c** : *contains the implementation of the API’s for GPT driver.*\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Irq.c** : *contains the implementation for GPT interrupts handlers.*\
+ ┃ ┃ ┃ ┗ 📜**Gpt_Priv.c** : *contains the implementation for GPT private functions which will directly interact with hardware registers.*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┗ 📂Port\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Gpt_Header_File_Structure.png
+:alt: GPT MCAL AUTOSAR
+:align: center
+
+Gpt Header File Structure.
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+None
+
+#### Error handling
+
+##### Development Error Reporting
+
+Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+##### Development Errors
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|API service called without module initialization|GPT_E_UINIT|0x0A|
+|API service for initialization called when already initialized|GPT_E_ALREADY_INITIALIZED|0x0D|  
+|API error return code: Init function failed |GPT_E_INIT_FAILED|0x0E|
+|API parameter checking: invalid channel|GPT_E_PARAM_CHANNEL|0x14|
+|API parameter checking: invalid value|GPT_E_PARAM_VALUE|0x15|
+|API parameter checking: invalid pointer|GPT_E_PARAM_POINTER|0x16|
+|API parameter checking: invalid Predef Time|GPT_E_PARAM_PREDEF_TIMER|0x17|
+|API parameter checking: invalid mode|GPT_E_PARAM_MODE|0x1F|
+
+##### Runtime Errors
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|API service called when timer channel is still busy (running)|GPT_E_BUSY|0x0B|
+|API service called when driver is in wrong mode|GPT_E_MODE|0x0C|  
+
+### Used resources
+
+#### Interrupt Handling
+
+The Driver doesn’t register any interrupts handler (ISR), it’s expected that consumer of this driver registers the required interrupt handler.
+
+For every Gpt channel with notification enabled, an ISR requires to be registered. The Interrupt number associated with instance of the Timer is detailed in TRM (also, please refer the Example application).
+
+|GptChannelId|Timer Instance|Associated ISR (if notification is enabled)|
+|----|-----|-------|
+|0 | Timer 0 | Gpt_Ch0Isr|
+|1 | Timer 1 | Gpt_Ch1Isr|
+|2 | Timer 2 | Gpt_Ch2Isr|
+
+```{NOTE}
+Same interrupt category should be configured in Os module
+```
+
+#### Instance support
+
+|CPU instances|supported|
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+The table below describes the CPU Timer registers used by GPT module and the base address for the corresponding registers
+Below image shows Gpt driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29 Reference Manual.
+
+```{figure} Assets/images/Gpt_HW_SW_Mapping.png
+:alt: GPT HW/SW MAPPING
+:align: center
+
+Gpt HW/SW Mapping.
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This implementation depends on the DET in order to report development errors The detection of development errors is configurable (ON / OFF), The switch GPT_CFG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+
+##### SchM
+
+If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that GPT module calls at begin and end of critical sections.
+This implementation requires 1 level of exclusive access to guard critical sections.
+
+The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be
+applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter **RteExclusiveAreaImplMechanism**. This parameter is an input for RTE generator. \
+For GPT Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
+
+| Exclusive Area Functions used | Port Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
+|-------|-------|-------|-------|
+|PORT_EXCLUSIVE_AREA_0 | Gpt_StartTimer<br>Gpt_StopTimer<br>Gpt_EnableNotification<br>Gpt_DisableNotification| To protect against multiple access for shared resources, *i.e.  Timer Registers*, which can lead to race condition | **OS_RESOURCE** : If the Gpt APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If Gpt APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+
+##### MCU
+
+MCU Module is required to initialize all the clock to be used by different peripherals
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Gpt Driver implementation supports multiple configuration variants, namely Gpt Post-Build config and Pre-Compile config. The driver expects generated **Gpt_cfg.h** to be present as input file.
+The associated Gpt driver configuration generated source files are **Gpt_Cfg.c** or
+**Gpt_PBcfg.c**
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+```{Note}
+If CPU Timer2 is used in OS, parameter 'GptUseTimer2InOS' should be checked in GPT configurator.
+```
+
+#### GptDriverConfiguration
+
+##### GPTDevErrorDetect
+
+|SWS Item|ECUC_GPT_00321|
+|--------|--------------|
+|**Name**|GPTDevErrorDetect|
+|**Parent Container**|GPTDriverConfiguration|
+|**Description**|Switches the development error detection and notification on or off.<br>&bull; **TRUE**: detection and notification is enabled.<br>&bull; **FALSE**: detection and notification is disabled.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time |--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### GptChannelConfiguration
+
+##### GptChannelId
+
+|SWS Item|ECUC_Gpt_00308|
+|--------|--------------|
+|**Name**|GptChannelId|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Channel Id of the GPT channel. This value will be assigned to the symbolic name derived of the GptChannelConfiguration container short name.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef (Symbolic Name generated for this parameter)|
+|**Range**|0 .. 4294967295|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: ECU|
+
+##### GptChannelMode
+
+|SWS Item|ECUC_Gpt_00309|
+|--------|--------------|
+|**Name**|GptChannelMode|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Specifies the behavior of the timer channel after the target time is reached.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**||
+|GPT_CH_MODE_CONTINUOUS|After reaching the target time, the timer continues running with the value "zero" again.|
+|GPT_CH_MODE_ONESHOT|After reaching the target time, the timer stops automatically (timer expired).|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: ECU|
+
+##### GptChannelPrescaleValue
+
+|SWS Item||
+|--------|--------------|
+|**Name**|GptChannelPrescaleValue|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|The input GPT clock will be divided by this value|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**|0 .. 65535|
+|**Default**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: ECU|
+
+##### GptChannelTickFrequency
+
+|SWS Item|ECUC_Gpt_00331|
+|-------|---------------|
+|**Name**|GptChannelTickFrequency|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Specifies the tick frequency of the timer channel in Hz.|
+|**Multiplicity**|1|
+|**Type**|EcucFloatParamDef|
+|**Range**|[0 .. INF]|
+|**Default value**|--|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: ECU|
+
+##### GptChannelTickValueMax
+
+|SWS Item|ECUC_Gpt_00332|
+|--------|--------------|
+|**Name**|GptChannelTickValueMax|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Maximum value in ticks, the timer channel is able to count. With the next tick, the timer rolls over to zero.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 18446744073709551615|
+|**Default value**|--|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: ECU|
+
+##### GptNotification
+
+|SWS Item|ECUC_Gpt_00312|
+|--------|--------------|
+|**Name**|GptNotification|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Function pointer to callback function (for non-wake up notification)|
+|**Multiplicity**|0..1|
+|**Type**|EcucFunctionNameDef|
+|**Default value**|--|
+|**maxLength**|--|
+|**minLength**|--|
+|**regularExpression**|--|
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### GptChannelClkSrcRef
+
+|SWS Item|ECUC_Gpt_00333|
+|--------|----------------|
+|**Name**|GptChannelClkSrcRef|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Reference to the GptClockReferencePoint from which the channel clock is derived.|
+|**Multiplicity**|1|
+|**Type**|Reference to [ GptClockReferencePoint ]|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+#### GptConfigurationOfOptApiServices
+
+##### GptDeinitAp
+
+|SWS Item|ECUC_Gpt_00314|
+|--------|--------------|
+|**Name**|GptDeinitAp|
+|**Parent Container**|GptConfigurationOfOptApiServices|
+|**Description**|Adds / removes the service Gpt_DeInit() from the code.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope :local|
+
+##### GptEnableDisableNotificationApi
+
+|SWS Item|ECUC_Gpt_00315|
+|--------|----------------|
+|**Name**|GptEnableDisableNotificationApi|
+|**Parent Container**|GptConfigurationOfOptApiServices|
+|**Description**|Adds / removes the services Gpt_EnableNotification() and Gpt_DisableNotification from the code.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope :local|
+
+##### GptTimeElapsedApi
+
+|SWS Item|ECUC_Gpt_00317|
+|--------|----------------|
+|**Name**|GptTimeElapsedApi|
+|**Parent Container**|GptConfigurationOfOptApiServices|
+|**Description**|Adds / removes the service Gpt_GetTimeElapsed() from the code|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### GptTimeRemainingApi
+
+|SWS Item|ECUC_Gpt_00318|
+|--------|----------------|
+|**Name**|GptTimeRemainingApi|
+|**Parent Container**|GptConfigurationOfOptApiServices|
+|**Description**|Adds / removes the service Gpt_GetTimeRemaining() from the code.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### GptVersionInfoApi
+
+|SWS Item|ECUC_Gpt_00319|
+|--------|----------------|
+|**Name**|GptVersionInfoApi|
+|**Parent Container**|GptConfigurationOfOptApiServices|
+|**Description**|Adds / removes the service Gpt_GetVersionInfo() from the code.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### GptChannelConfigSet
+
+##### GptUseTimer2InOS
+
+|SWS Item||
+|--------|----------------|
+|**Name**|GptUseTimer2InOS|
+|**Parent Container**||
+|**Description**|Enable/Disable of CPU timer2 usage in OS|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### GptSimulationStatus
+
+|SWS Item||
+|--------|----------------|
+|**Name**|GptSimulationStatus|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Specifies the simulation state(Enable/Disable) of the timer.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**||
+|GPT_SIM_DISABLE||
+|GPT_SIM_ENABLE||
+|**Default value**|GPT_SIM_DISABLE|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: ECU|
+
+##### GptTypeofInterrupt
+
+|SWS Item||
+|--------|----------------|
+|**Name**|GptTypeofInterrupt|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Specifies the behavior of the timer in simulation mode(Stop timer at next counter decrement or Stop timer at next elapsed time).|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**||
+|GPT_ISR_CAT1_RTINT||
+|GPT_ISR_CAT1_INT||
+|GPT_ISR_CAT2||
+|**Default value**|GPT_ISR_CAT1_RTINT|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**||
+
+##### GPTPredefTimer100us32bitEnable
+
+|SWS Item|ECUC_GPT_00335|
+|--------|--------------|
+|**Name**|GPTPredefTimer100us32bitEnable|
+|**Parent Container**|GPTDriverConfiguration|
+|**Description**|Enables/disables the GPT Predef Timer 100µs32bit.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time |--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: ECU|
+
+##### GptPredefTimer1usEnablingGrade
+
+|SWS Item|ECUC_GPT_00334|
+|--------|--------------|
+|**Name**|GptPredefTimer1usEnablingGrade|
+|**Parent Container**| GptDriverConfiguration|
+|**Description**|Specifies the grade of enabling the GPT Predef Timers with 1µs tick duration.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**||
+|GPT_PREDEF_TIMER_1US_16BIT_ENABLED|16bit timer enabled|
+|GPT_PREDEF_TIMER_1US_16_24BIT_ENABLED|16 and 24bit timers enabled|
+|GPT_PREDEF_TIMER_1US_16_24_32BIT_ENABLED|16, 24 and 32bit timers enabled|
+|GPT_PREDEF_TIMER_1US_DISABLED|disabled|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: ECU|
+
+##### GptReportWakeupSource
+
+|SWS Item|ECUC_Gpt_00322|
+|--------|--------------|
+|**Name**|GptReportWakeupSource|
+|**Parent Container**|GptDriverConfiguration|
+|**Description**|Enables/Disables wake up source reporting.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### GptClockReferencePoint
+
+##### GptClockReference
+
+|SWS Item|ECUC_Gpt_00330|
+|--------|--------------|
+|**Name**|GptClockReference|
+|**Parent Container**|GptClockReferencePoint|
+|**Description**|Reference to a container of the type McuClockReferencePoint, to select an input clock.The configuration editor for the GPT module can support the integrator by only allowing a selection of those clock reference points that can be connected physically to the GPT hardware peripheral.The desired frequency (desired by GPT) has to be the same as the selected and provided frequency of the MCU configuration. This has to be checked automatically|
+|**Multiplicity**|1|
+|**Type**|Reference to [ McuClockReferencePoint ]|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### GptEnableWakeup
+
+|SWS Item|ECUC_Gpt_00311|
+|--------|--------------|
+|**Name**|GptEnableWakeup|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Enables wake up capability of MCU for a channel.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+#### GptWakeupConfiguration
+
+##### GptWakeupSourceRef
+
+|SWS Item|ECUC_Gpt_00313|
+|--------|----------------|
+|**Name**|GptWakeupSourceRef|
+|**Parent Container**|GptWakeupConfiguration|
+|**Description**|In case the wake up-capability is true this value is transmitted to the Ecu State Manager.Implementation Type: reference to EcuM_WakeupSourceType|
+|**Multiplicity**|1|
+|**Type**|Symbolic name reference to [ EcuMWakeupSource ]|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### GptWakeupFunctionalityApi
+
+|SWS Item|ECUC_Gpt_00320|
+|--------|----------------|
+|**Name**|GptWakeupFunctionalityApi|
+|**Parent Container**|GptConfigurationOfOptApiServices|
+|**Description**|Adds / removes the services Gpt_SetMode(), Gpt_EnableWakeup(),Gpt_DisableWakeup() and Gpt_CheckWakeup() from the code.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### GptSimulationMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|GptSimulationMode|
+|**Parent Container**|GptChannelConfiguration|
+|**Description**|Specifies the behavior of the timer in simulation mode(Stop timer at next counter decrement or Stop timer at next elapsed time).|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**||
+|GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC||
+|GPT_SIM_STOP_TIMER_AT_NEXT_TIMER_ELAPSE||
+|**Default value**|GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: ECU|
+
+Refer [AUTOSAR_SWS_GPTDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_GPTDriver.pdf) for configuration parameters details
+
+#### Steps To Configure Gpt Module
+
+1. Open EB Tresos configurator tool, load Gpt. Select the Config Variant ( Precompile/Post-Build)
+2. Go to GptChannelConfiguration Container tab and create a new container.
+3. Configure the channels parameters for all channels.
+4. Save the configuration and generate the configuration.
+
+### Examples
+
+The example applications demonstrates use of Gpt module, the list below identifies key steps performed in the example.
+
+Support both Post Build and Pre Compile Configuration Variants
+
+#### Gpt_Example_Timers
+
+##### Overview Of Gpt_Example_Timers
+
+* Gpt_Example_Timers
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+    * Initializes Gpt driver using Gpt_Init()
+  * Gpt_GetVersionInfo will get the software version info details
+  * Gpt_DeInit()
+    * DeInitializes Gpt driver using Gpt_DeInit()
+  * Gpt_Init()
+    * Initialize Gpt Driver
+  * Enable notification for all channels using Gpt_EnableNotification()
+  * Start timer for all channels using Gpt_StartTimer()
+  * Wait for 1.1 seconds for timers notified by one time
+  * Stop all timers using Gpt_StopTimer
+  * DeInitializes Gpt driver
+
+##### Setup required to run Gpt_Example_Timers example
+
+* Install Code Composer Studio Theia latest version
+* Install C29 compiler
+
+##### How to  run Gpt_Example_Timers example
+
+* Open CCS Theia and import Gpt_Example_Timers Example
+* Build project and start debug project
+
+##### Sample Log For Gpt_Example_Timers
+
+```{EXAMPLE LOGS}
+
+Sample Application - STARTS !!!
+Gpt MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 100
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+
+Test 1: Initialize Gpt Driver
+Initializing Gpt Driver...
+API Gpt_Init executed successfully
+---------------------------------------------------------------
+
+Test 2: Enable notifications for all Channels
+Notifications enabled for all channels
+API Gpt_EnableNotification executed successfully for all channels
+---------------------------------------------------------------
+
+Test 3:  Start timer for all Channels
+Timer started for all channels
+API Gpt_StartTimer executed successfully for all channels
+---------------------------------------------------------------
+
+Test 4:Wait until all the timers get notified at least 1 time.
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-1:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 362 Time_remaining = 199999502)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-2:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 5306230 Time_remaining = 194693634)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
+---------------------------------------------------------------
+
+Test 5: Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+---------------------------------------------------------------
+Test 6: De-initialize Gpt Driver
+DeInitializing Gpt Driver...
+API Gpt_DeInit executed successfully
+
+------------------------------------------
+Gpt_Example_Timers: Sample Application - Completes successfully !!!
+Result - PASS!!
+```
+
+#### Gpt_Example_OneShotMode
+
+##### Overview Of Gpt_Example_OneShotMode
+
+* Gpt_Example_OneShotMode
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+    * Initializes Gpt driver using Gpt_Init()
+  * Gpt_DeInit()
+    * DeInitializes Gpt driver using Gpt_DeInit()
+  * Gpt_Init()
+    * Initialize Gpt Driver
+  * Enable notification for all channels using Gpt_EnableNotification()
+  * Start timer for all channels using Gpt_StartTimer() for 10ms timeout
+  * Wait for 11 milliseconds for timers notified by one time
+  * Stop all timers using Gpt_StopTimer
+  * Start timer for all channels using Gpt_StartTimer() for 100ms timeout
+  * Wait for 101 milliseconds for timers notified by one time
+  * Stop all timers using Gpt_StopTimer
+  * Start timer for all channels using Gpt_StartTimer() for 1s timeout
+  * Wait for 11 seconds for timers notified by one time
+  * Stop all timers using Gpt_StopTimer
+  * Start timer for all channels using Gpt_StartTimer() for max tick timeout
+  * Wait for max tick time for timers notified by one time
+  * Stop all timers using Gpt_StopTimer
+  * DeInitializes Gpt driver
+
+##### Setup required to run Gpt_Example_OneShotMode example
+
+* Install Code Composer Studio Theia latest version
+* Install C29 compiler
+
+##### How to  run Gpt_Example_OneShotMode example
+
+* Open CCS Theia and import Gpt_Example_OneShotMode Example
+* Build project and start debug project
+
+##### Sample Log For Gpt_Example_OneShotMode
+
+```{EXAMPLE LOGS}
+
+Initialize Gpt Driver
+Initializing Gpt Driver...
+API Gpt_Init executed successfully
+
+---------------------------------------------------------------
+
+Enable notifications for all Channels
+Notifications enabled for all channels
+API Gpt_EnableNotification executed successfully for all channels
+
+---------------------------------------------------------------
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In one shot mode for 10ms Timeout - Started !!!
+---------------------------------------------------------------------------------------
+
+Start timer for all Channels with 10ms Timeout
+Timer started for all channels with 10ms Timeout
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified at least 1 time.
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In one shot mode for 10ms Timeout - Passed !!!
+---------------------------------------------------------------------------------------
+
+Reset all counters.
+Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In one shot mode for 100msTimeout - Started !!!
+---------------------------------------------------------------------------------------
+
+Start timer for all Channels with 100ms Timeout
+Timer started for all channels with 100ms Timeout
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified at least 1 time.
+
+---------------------------------------------------------------------------------------
+ Simultaneous Timers Test In one shot mode for 100ms Timeout - Passed !!!
+---------------------------------------------------------------------------------------
+
+Reset all counters.
+Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In one shot mode for 1s Timeout - Started !!!
+---------------------------------------------------------------------------------------
+
+Start timer for all Channels with 1s Timeout
+Timer started for all channels with 1s Timeout
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified at least 1 time.
+
+---------------------------------------------------------------------------------------
+ Simultaneous Timers Test In one shot mode for 1s Timeout - Passed !!!
+---------------------------------------------------------------------------------------
+
+Reset all counters.
+Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In one shot mode for Max Tick Timeout - Started !!!
+---------------------------------------------------------------------------------------
+
+Start timer for all Channels with Max Tick Timeout
+Timer started for all channels with Max Tick Timeout
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified at least 1 time.
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In one shot mode for Max tick Timeout - Passed !!!
+---------------------------------------------------------------------------------------
+
+Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+De-initialize Gpt Driver
+DeInitializing Gpt Driver...
+API Gpt_DeInit executed successfully
+
+------------------------------------------
+Result - PASS!!
+```
+
+#### Gpt_Example_MixedMode
+
+##### Overview Of Gpt_Example_MixedMode
+
+* Gpt_Example_MixedMode
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+    * Initializes Gpt driver using Gpt_Init()
+  * Gpt_DeInit()
+    * DeInitializes Gpt driver using Gpt_DeInit()
+  * Gpt_Init()
+    * Initialize Gpt Driver
+  * Enable notification for all channels using Gpt_EnableNotification()
+  * Start timer for channel 1&2 channels using Gpt_StartTimer()
+  * Wait for 1.1 seconds for timers notified by one time
+  * Stop channel 1&2 timers using Gpt_StopTimer
+  * DeInitializes Gpt driver
+
+##### Setup required to run Gpt_Example_MixedMode example
+
+* Install Code Composer Studio Theia latest version
+* Install C29 compiler
+
+##### How to  run Gpt_Example_MixedMode example
+
+* Open CCS Theia and import Gpt_Example_MixedMode Example
+* Build project and start debug project
+
+##### Sample Log For Gpt_Example_MixedMode
+
+```{EXAMPLE LOGS}
+
+Initialize Gpt Driver
+Initializing Gpt Driver...
+API Gpt_Init executed successfully
+
+---------------------------------------------------------------
+
+Enable notifications for all Channels
+Notifications enabled for all channels
+API Gpt_EnableNotification executed successfully for all channels
+
+---------------------------------------------------------------
+
+---------------------------------------------------------------------------------------
+Mixed modes and Simultaneous Timers Test1for 1s timeout - Started !!!
+---------------------------------------------------------------------------------------
+
+ Start timer for all Channels with 1s Timeout
+Timer started for all channels with 1s Timeout
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified at least 1 time.
+
+CHANNEL-1:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 289 Time_remaining = 19999572)
+CHANNEL-2:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 197 Time_remaining = 19999664)
+Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+---------------------------------------------------------------------------------------
+De-initialize Gpt Driver
+DeInitializing Gpt Driver...
+API Gpt_DeInit executed successfully
+---------------------------------------------------------------------------------------
+
+Mixed modes and Simultaneous Timers Test1for 1s timeout - Passed !!!
+---------------------------------------------------------------------------------------
+Result - PASS!!
+```
+
+#### Gpt_Example_InterruptTimeout
+
+##### Overview Of Gpt_Example_InterruptTimeout
+
+* Gpt_Example_InterruptTimeout
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+    * Initializes Gpt driver using Gpt_Init()
+  * Gpt_DeInit()
+    * DeInitializes Gpt driver using Gpt_DeInit()
+  * Gpt_Init()
+    * Initialize Gpt Driver
+  * Enable notification for all channels using Gpt_EnableNotification()
+  * Set DioChannel_0 to STD_HIGH
+  * Start timer for channel 1&2 channels using Gpt_StartTimer()
+  * Wait for 1.1 seconds for timers notified by one time
+  * Set DioChannel_0 to STD_LOW
+  * Check interrupt time is 1s or not manually.
+  * Stop channel 1&2 timers using Gpt_StopTimer
+  * DeInitializes Gpt driver
+
+##### Setup required to run Gpt_Example_InterruptTimeout example
+
+* Install Code Composer Studio Theia latest version
+* Install C29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+##### How to  run Gpt_Example_InterruptTimeout example
+
+* Open CCS Theia and Import Gpt_Example_InterruptTimeout example
+* Build project and start debug project
+
+##### Sample Log For Gpt_Example_InterruptTimeout
+
+```{EXAMPLE LOGS}
+
+Initialize Gpt Driver
+Initializing Gpt Driver...
+API Gpt_Init executed successfully
+
+---------------------------------------------------------------
+
+Enable notifications for  Channel 0
+Notifications enabled for all channels
+API Gpt_EnableNotification executed successfully for all channels
+
+---------------------------------------------------------------
+
+---------------------------------------------------------------------------------------
+Positive test case to validate interrupt delay - Started !!!
+---------------------------------------------------------------------------------------
+
+Start timer for two  Channels
+API Gpt_StartTimer executed successfully for all channels
+
+---------------------------------------------------------------
+
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified 1 time.
+
+CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 199 Time_remaining = 19999662)
+CHANNEL-1:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 274314 Time_remaining = 19725547)
+---------------------------------------------------------------
+
+Stop timer for Channel 0 and 1
+Timer stopped for channel 0
+API Gpt_StopTimer executed successfully for all channels
+
+---------------------------------------------------------------
+
+De-initialize Gpt Driver
+DeInitializing Gpt Driver...
+API Gpt_DeInit executed successfully
+---------------------------------------------------------------------------------------
+Positive test case to validate interrupt delay - Passed !!!
+---------------------------------------------------------------------------------------
+Result - PASS!!
+```
+
+#### Gpt_Example_ContinuousMode
+
+##### Overview Of Gpt_Example_ContinuousMode
+
+* Gpt_Example_ContinuousMode
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+    * Initializes Gpt driver using Gpt_Init()
+  * Gpt_DeInit()
+    * DeInitializes Gpt driver using Gpt_DeInit()
+  * Gpt_Init()
+    * Initialize Gpt Driver
+  * Enable notification for all channels using Gpt_EnableNotification()
+  * Start timer for all channels using Gpt_StartTimer() for 10ms timeout
+  * Wait for 11 milliseconds for timers notified by one time
+  * Stop all timers using Gpt_StopTimer
+  * Start timer for all channels using Gpt_StartTimer() for 100ms timeout
+  * Wait for 101 milliseconds for timers notified by one time
+  * Stop all timers using Gpt_StopTimer
+  * Start timer for all channels using Gpt_StartTimer() for 1s timeout
+  * Wait for 11 seconds for timers notified by one time
+  * Stop all timers using Gpt_StopTimer
+  * Start timer for all channels using Gpt_StartTimer() for max tick timeout
+  * Wait for max tick time for timers notified by one time
+  * Stop all timers using Gpt_StopTimer
+  * DeInitializes Gpt driver
+
+##### Setup required to run Gpt_Example_ContinuousMode example
+
+* Install Code Composer Studio Theia latest version
+* Install C29 compiler
+
+##### How to  run Gpt_Example_ContinuousMode example
+
+* Open CCS Theia and import Gpt_Example_ContinuousMode Example
+* Build project and start debug project
+
+##### Sample Log For Gpt_Example_ContinuousMode
+
+```{EXAMPLE LOGS}
+
+Initialize Gpt Driver
+Initializing Gpt Driver...
+API Gpt_Init executed successfully
+
+---------------------------------------------------------------
+
+Enable notifications for all Channels
+Notifications enabled for all channels
+API Gpt_EnableNotification executed successfully for all channels
+
+---------------------------------------------------------------
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In Continuous mode for 10ms Timeout - Started !!!
+---------------------------------------------------------------------------------------
+
+Start timer for all Channels with 10ms Timeout
+Timer started for all channels with 10ms Timeout
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified at least 1 time.
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In Continuous mode for 10ms Timeout - Passed !!!
+---------------------------------------------------------------------------------------
+
+Reset all counters.
+Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In Continuous mode for 100ms Timeout - Started !!!
+---------------------------------------------------------------------------------------
+
+Start timer for all Channels with 100ms Timeout
+Timer started for all channels with 100ms Timeout
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified at least 1 time.
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In Continuous mode for 100ms Timeout - Passed !!!
+---------------------------------------------------------------------------------------
+
+Reset all counters.
+Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In Continuous mode for 1s Timeout - Started !!!
+---------------------------------------------------------------------------------------
+
+Start timer for all Channels with 1s Timeout
+Timer started for all channels with 1s Timeout
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified at least 1 time.
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In Continuous mode for 1s Timeout - Passed !!!
+---------------------------------------------------------------------------------------
+
+Reset all counters.
+Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In Continuous mode for Max Tick Timeout - Started !!!
+---------------------------------------------------------------------------------------
+
+Start timer for all Channels with Max Tick Timeout
+Timer started for all channels with Max Tick Timeout
+API Gpt_StartTimer executed successfully for all channels
+
+Wait until all the timers get notified at least 1 time.
+
+---------------------------------------------------------------------------------------
+Simultaneous Timers Test In Continuous mode for Max tick Timeout - Passed !!!
+---------------------------------------------------------------------------------------
+
+Stop timer for all Channels
+Timer stopped for all channels
+API Gpt_StopTimer executed successfully for all channels
+
+De-initialize Gpt Driver
+DeInitializing Gpt Driver...
+API Gpt_DeInit executed successfully
+
+------------------------------------------
+Result - PASS!!
+```
+
+#### File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┃ ┣ 📂**Gpt_Example_ContinuousMode**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜Gpt_Example_ContinuousMode.projectspec\
+ ┃ ┃ ┃ ┣ 📂Gpt_Timers_ContinuousMode_config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the prebuild configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_ContinuousMode.c**\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_ContinuousMode.h**\
+ ┃ ┃ ┣ 📂Gpt_Example_InterruptTimeout\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜Gpt_Example_InterruptTimeout.projectspec\
+ ┃ ┃ ┃ ┣ 📂Gpt_Interrupt_Timeout_config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dio.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dio_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** :*Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dio_LCfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the prebuild configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_InterruptTimeout.c**\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_InterruptTimeout.h**\
+ ┃ ┃ ┣ 📂Gpt_Example_MixedMode\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜Gpt_Example_MixedMode.projectspec\
+ ┃ ┃ ┃ ┣ 📂Gpt_Timers_MixedMode_config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the prebuild configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_MixedMode.c**\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_MixedMode.h**\
+ ┃ ┃ ┣ 📂Gpt_Example_OneShotMode\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜Gpt_Example_OneShotMode.projectspec\
+ ┃ ┃ ┃ ┣ 📂Gpt_Timers_OneShotMode_config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** :*Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the prebuild configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_OneShotMode.c**\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_OneShotMode.h**\
+ ┃ ┃ ┗ 📂Gpt_Example_Timers\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜Gpt_Example_Timers.projectspec\
+ ┃ ┃ ┃ ┣ 📂Gpt_Example_Timers_config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the prebuild configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBCfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_Timers.c**\
+ ┃ ┃ ┃ ┣ 📜**Gpt_Example_Timers.h**\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{Note}:
+ Either Gpt_PBcfg.c OR Gpt_Cfg.c will be present based on selected config variant by user
+ ```

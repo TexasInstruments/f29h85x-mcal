@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.2. PORT &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.3. DIO" href="group___d_i_o.html" />
+    <link rel="prev" title="5.1. MCU" href="group___m_c_u.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.00.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting_started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="group___m_c_u.html">5.1. MCU</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. PORT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">5.2.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-port-pindirectiontype">5.2.1.1. enum Port_PinDirectionType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-port-pinlevelvaluetype">5.2.1.2. enum Port_PinLevelValueType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-port-pinpadconfigtype">5.2.1.3. enum Port_PinPadConfigType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-port-pinqualificationmode">5.2.1.4. enum Port_PinQualificationMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-port-pincoreselect">5.2.1.5. enum Port_PinCoreSelect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-port-analogmodetype">5.2.1.6. enum Port_AnalogModeType</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">5.2.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">5.2.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">5.2.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-init">5.2.4.1. function Port_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-setpindirection">5.2.4.2. function Port_SetPinDirection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-refreshportdirection">5.2.4.3. function Port_RefreshPortDirection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-getversioninfo">5.2.4.4. function Port_GetVersionInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-setpinmode">5.2.4.5. function Port_SetPinMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-setcntspconfig">5.2.4.6. function Port_SetCntSpConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-setpinlevel">5.2.4.7. function Port_SetPinLevel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-enablelpmwakeuppin">5.2.4.8. function Port_EnableLPMWakeUpPin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-setpinmodeconfig">5.2.4.9. function Port_SetPinModeConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-setdirectionmode">5.2.4.10. function Port_SetDirectionMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-ispinnumbervalid">5.2.4.11. function Port_IsPinNumberValid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-port-validatesetpinmode">5.2.4.12. function Port_ValidateSetPinMode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group___d_i_o.html">5.3. DIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___g_p_t.html">5.4. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_a_n.html">5.5. CAN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api_guide.html"><span class="section-number">5. </span>API guide</a> &raquo;</li>
+      <li><span class="section-number">5.2. </span>PORT</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="port">
+<h1><span class="section-number">5.2. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h1>
+<section id="types">
+<h2><span class="section-number">5.2.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Base type</p></th>
+<th class="head"><p>Type Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-port-pindirectiontype"><span class="std std-ref">Port_PinDirectionType</span></a></strong></p></td>
+<td><p>Enum of Port Direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-port-pinlevelvaluetype"><span class="std std-ref">Port_PinLevelValueType</span></a></strong></p></td>
+<td><p>Enum of Port Pin Level.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-port-pinpadconfigtype"><span class="std std-ref">Port_PinPadConfigType</span></a></strong></p></td>
+<td><p>Enum of Port Pin Pad, Up/Down Type selection.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-port-pinqualificationmode"><span class="std std-ref">Port_PinQualificationMode</span></a></strong></p></td>
+<td><p>Values that can be passed to set qualification parameter to initialize MCU module.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-port-pincoreselect"><span class="std std-ref">Port_PinCoreSelect</span></a></strong></p></td>
+<td><p>Values that can be passed to select master core for MCU module.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-port-analogmodetype"><span class="std std-ref">Port_AnalogModeType</span></a></strong></p></td>
+<td><p>Values that can be passed to set the mode in which Pin should operate.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint32</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-port-pintype"><span class="std std-ref">Port_PinType</span></a></strong></p></td>
+<td><p>Type for symbolic name of Port pins.</p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef uint32</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-port-pinmodetype"><span class="std std-ref">Port_PinModeType</span></a></strong></p></td>
+<td><p>Pin Mode type structure.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint8</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-port-pinconfigflagtype"><span class="std std-ref">Port_PinConfigFlagType</span></a></strong></p></td>
+<td><p>Type for Pin Config Flag. Pin config flags Bit 0 - Is Pin configurable? Bit 1 - Does Pin support Analog Mode? Bit 2 - Does Pin operate in AGPIO mode? Bit 3 - Does Pin operate in AIO mode? Bit 4 - Does Pin operate in GPIO mode?</p></td>
+</tr>
+</tbody>
+</table>
+<section id="enum-port-pindirectiontype">
+<h3><span class="section-number">5.2.1.1. </span>enum Port_PinDirectionType<a class="headerlink" href="#enum-port-pindirectiontype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PORT_PIN_IN</p></td>
+<td><p></p></td>
+<td><p>Direction IN.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_PIN_OUT</p></td>
+<td><p></p></td>
+<td><p>Direction OUT.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_PIN_NA</p></td>
+<td><p></p></td>
+<td><p>NA Direction.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enum of Port Direction.</p>
+</section>
+<section id="enum-port-pinlevelvaluetype">
+<h3><span class="section-number">5.2.1.2. </span>enum Port_PinLevelValueType<a class="headerlink" href="#enum-port-pinlevelvaluetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PORT_PIN_LEVEL_HIGH</p></td>
+<td><p></p></td>
+<td><p>Pin Level HIGH.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_PIN_LEVEL_LOW</p></td>
+<td><p></p></td>
+<td><p>Pin Level LOW.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_PIN_LEVEL_NA</p></td>
+<td><p></p></td>
+<td><p>Pin Level NA.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enum of Port Pin Level.</p>
+</section>
+<section id="enum-port-pinpadconfigtype">
+<h3><span class="section-number">5.2.1.3. </span>enum Port_PinPadConfigType<a class="headerlink" href="#enum-port-pinpadconfigtype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PORT_PIN_TYPE_STD</p></td>
+<td><p>1U</p></td>
+<td><p>Standard pad configuration with pull up disable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_PIN_TYPE_PULLUP</p></td>
+<td><p>2U</p></td>
+<td><p>Enable pull up for the pin.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_PIN_TYPE_STD_PULLUP</p></td>
+<td><p>3U</p></td>
+<td><p>Standard pad configuration with pull up enable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_PIN_TYPE_OPEN_DRAIN</p></td>
+<td><p>4U</p></td>
+<td><p>Open Drain pad configuration with pull up disable.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_PIN_TYPE_OPEN_DRAIN_PULLUP</p></td>
+<td><p>6U</p></td>
+<td><p>Open Drain pad configuration with pull up enable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_PIN_TYPE_NA</p></td>
+<td><p>255U</p></td>
+<td><p>No pad configuration.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enum of Port Pin Pad, Up/Down Type selection.</p>
+</section>
+<section id="enum-port-pinqualificationmode">
+<h3><span class="section-number">5.2.1.4. </span>enum Port_PinQualificationMode<a class="headerlink" href="#enum-port-pinqualificationmode" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PORT_QUAL_SYNC</p></td>
+<td><p></p></td>
+<td><p>Synchronization to SYSCLKOUT.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_QUAL_3SAMPLE</p></td>
+<td><p></p></td>
+<td><p>Qualified with 3 samples.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_QUAL_6SAMPLE</p></td>
+<td><p></p></td>
+<td><p>Qualified with 6 samples.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_QUAL_ASYNC</p></td>
+<td><p></p></td>
+<td><p>No synchronization.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_QUAL_NA</p></td>
+<td><p></p></td>
+<td><p>Invalid synchronization.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Values that can be passed to set qualification parameter to initialize MCU module.</p>
+</section>
+<section id="enum-port-pincoreselect">
+<h3><span class="section-number">5.2.1.5. </span>enum Port_PinCoreSelect<a class="headerlink" href="#enum-port-pincoreselect" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PORT_CORE_CPU1</p></td>
+<td><p></p></td>
+<td><p>CPU1 selected as master core.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_CORE_CPU2</p></td>
+<td><p></p></td>
+<td><p>CPU2 selected as master core.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_CORE_CPU3</p></td>
+<td><p></p></td>
+<td><p>CPU3 selected as master core.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Values that can be passed to select master core for MCU module.</p>
+</section>
+<section id="enum-port-analogmodetype">
+<h3><span class="section-number">5.2.1.6. </span>enum Port_AnalogModeType<a class="headerlink" href="#enum-port-analogmodetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PORT_ANALOG_DISABLED</p></td>
+<td><p></p></td>
+<td><p>Pin is in digital mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_ANALOG_ENABLED</p></td>
+<td><p></p></td>
+<td><p>Pin is in analog mode.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Values that can be passed to set the mode in which Pin should operate.</p>
+</section>
+</section>
+<section id="structures">
+<h2><span class="section-number">5.2.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_port___pin_mode_config_type.html"><span class="std std-doc">Port_PinModeConfigType</span></a></strong></p></td>
+<td><p>Pin Mux Mode Config type structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_port___pin_config_type.html"><span class="std std-doc">Port_PinConfigType</span></a></strong></p></td>
+<td><p>Pin Configuration structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_port___config_type.html"><span class="std std-doc">Port_ConfigType</span></a></strong></p></td>
+<td><p>PORT Module ROOT configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_port___controller_specific_type.html"><span class="std std-doc">Port_ControllerSpecificType</span></a></strong></p></td>
+<td><p>Controller Specific structure.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="defines">
+<h2><span class="section-number">5.2.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>PORT_SW_MAJOR_VERSION</p></td>
+<td><p>Driver Implementation Major Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_SW_MINOR_VERSION</p></td>
+<td><p>Driver Implementation Minor Version.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_SW_PATCH_VERSION</p></td>
+<td><p>Driver Implementation Patch Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_AR_RELEASE_MAJOR_VERSION</p></td>
+<td><p>AUTOSAR Major version specification implemented by PORT Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_AR_RELEASE_MINOR_VERSION</p></td>
+<td><p>AUTOSAR Minor version specification implemented by PORT Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_AR_RELEASE_REVISION_VERSION</p></td>
+<td><p>AUTOSAR Patch version specification implemented by PORT Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_VENDOR_ID</p></td>
+<td><p>Texas Instruments Vendor ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_MODULE_ID</p></td>
+<td><p>PORT Driver Module ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_INSTANCE_ID</p></td>
+<td><p>PORT Driver Instance ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_E_PARAM_PIN</p></td>
+<td><p>Invalid Port Pin ID requested.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_E_DIRECTION_UNCHANGEABLE</p></td>
+<td><p>Port Pin not configured as changeable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_E_INIT_FAILED</p></td>
+<td><p>API Port_Init service called with wrong parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_E_PARAM_INVALID_MODE</p></td>
+<td><p>API Port_SetPinMode service called when mode is unchangeable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_E_MODE_UNCHANGEABLE</p></td>
+<td><p>API Port_SetPinMode service called when mode is unchangeable.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_E_UNINIT</p></td>
+<td><p>API service called without module initialization.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_E_PARAM_POINTER</p></td>
+<td><p>APIs called with a Null pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_SID_INIT</p></td>
+<td><p>Service ID - Port_Init().</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_SID_SET_PIN_DIR</p></td>
+<td><p>Service ID - Port_SetPinDirection().</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_SID_REFRESH_PORT_DIR</p></td>
+<td><p>Service ID - Port_RefreshPortDirection()</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_SID_GET_VERSION_INFO</p></td>
+<td><p>Service ID - Port_GetVersionInfo().</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_SID_SET_PIN_MODE</p></td>
+<td><p>Service ID - Port_SetPinMode().</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_IS_PIN_CONFIGURABLE (x)</p></td>
+<td><p>Pin configuration check.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_IS_ANALOG_MODE_SUPPORTED (x)</p></td>
+<td><p>Pin Analog Support check.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_IS_PIN_AGPIO (x)</p></td>
+<td><p>AGPIO Pin check.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_IS_PIN_AIO (x)</p></td>
+<td><p>AIO Pin check.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_IS_PIN_GPIO (x)</p></td>
+<td><p>GPIO Pin check.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_WIDTH</p></td>
+<td><p>Port Width : 32.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_WIDTH_HALF</p></td>
+<td><p>Half of Port Width.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_WIDTH_QUARTER</p></td>
+<td><p>Quater of Port Width.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ONE_BIT_MASK</p></td>
+<td><p>One bit mask value.</p></td>
+</tr>
+<tr class="row-even"><td><p>TWO_BIT_MASK</p></td>
+<td><p>Two bit mask value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_CTRL_REGS_STEP</p></td>
+<td><p>Port Control register step size.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_DATA_REGS_STEP</p></td>
+<td><p>Port Data register step size.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_DATA_READ_REGS_STEP</p></td>
+<td><p>Port Data read register step size.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_CTRL_REGS_INDEX</p></td>
+<td><p>Port Control register Index value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_QSEL_REGS_INDEX</p></td>
+<td><p>Port Q-Select register Index value.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_MUX_REGS_INDEX</p></td>
+<td><p>Port MUX register Index value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_PUD_REGS_INDEX</p></td>
+<td><p>Port Pull up disable register Index value.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_INV_REGS_INDEX</p></td>
+<td><p>Port Invert polarity register Index value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_ODR_REGS_INDEX</p></td>
+<td><p>Port Open drain register Index value.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_AMSEL_REGS_INDEX</p></td>
+<td><p>Port AM Select register Index value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_GMUX_REGS_INDEX</p></td>
+<td><p>Port GMUX register Index value.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_CSEL_REGS_INDEX</p></td>
+<td><p>Port Core Select register Index value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_LOCK_REGS_INDEX</p></td>
+<td><p>Port Lock configuration register Index value.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_CR_REGS_INDEX</p></td>
+<td><p>Port lock commit register Index value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_DAT_REGS_INDEX</p></td>
+<td><p>Port Data register Index value.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_SET_REGS_INDEX</p></td>
+<td><p>Port Data Set register Index value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_CLEAR_REGS_INDEX</p></td>
+<td><p>Port Data Clear register Index value.</p></td>
+</tr>
+<tr class="row-even"><td><p>PORT_TOGGLE_REGS_INDEX</p></td>
+<td><p>Port Data Toggle register Index value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_DIR_REGS_INDEX</p></td>
+<td><p>Port Data Direction Set register Index value.</p></td>
+</tr>
+<tr class="row-even"><td><p>GPIO_DAT_R_REGS_INDEX</p></td>
+<td><p>Port Data read register Index value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>PORT_MUX_TO_GMUX</p></td>
+<td><p>Port MUX to GMUX difference value.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2><span class="section-number">5.2.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Return type</p></th>
+<th class="head"><p>Function Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-init"><span class="std std-ref">Port_Init</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___config_type.md"><span class="xref myst">Port_ConfigType</span></a> * CfgPtr)</p></td>
+<td><p>Initializes the Port Driver module.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setpindirection"><span class="std std-ref">Port_SetPinDirection</span></a></strong>(<a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pintype"><span class="xref myst">Port_PinType</span></a> Pin, <a class="reference internal" href="#Modules/group___p_o_r_t.md#enum-port-pindirectiontype"><span class="xref myst">Port_PinDirectionType</span></a> Direction)</p></td>
+<td><p>Sets the port pin direction.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-refreshportdirection"><span class="std std-ref">Port_RefreshPortDirection</span></a></strong>(void )</p></td>
+<td><p>Refreshes port direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-getversioninfo"><span class="std std-ref">Port_GetVersionInfo</span></a></strong>(Std_VersionInfoType * versioninfo)</p></td>
+<td><p>Service to get the version information of the module.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setpinmode"><span class="std std-ref">Port_SetPinMode</span></a></strong>(<a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pintype"><span class="xref myst">Port_PinType</span></a> Pin, <a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pinmodetype"><span class="xref myst">Port_PinModeType</span></a> Mode)</p></td>
+<td><p>Sets the port pin mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setcntspconfig"><span class="std std-ref">Port_SetCntSpConfig</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * PinConfigPtr)</p></td>
+<td><p>Sets the pad/pull configuration for the specified pin.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setpinlevel"><span class="std std-ref">Port_SetPinLevel</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * PinConfigPtr, <a class="reference internal" href="#Modules/group___p_o_r_t.md#enum-port-pinlevelvaluetype"><span class="xref myst">Port_PinLevelValueType</span></a> PinLevel)</p></td>
+<td><p>Writes the level value to the specified pin.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-enablelpmwakeuppin"><span class="std std-ref">Port_EnableLPMWakeUpPin</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * PinConfig)</p></td>
+<td><p>Set pins as Low Power wakeup modes GPIO pins.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setpinmodeconfig"><span class="std std-ref">Port_SetPinModeConfig</span></a></strong>(uint32 PinMode)</p></td>
+<td><p>Configures the Pin Mode function of a PORT pin.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setdirectionmode"><span class="std std-ref">Port_SetDirectionMode</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * PinConfigPtr, <a class="reference internal" href="#Modules/group___p_o_r_t.md#enum-port-pindirectiontype"><span class="xref myst">Port_PinDirectionType</span></a> PinDirection)</p></td>
+<td><p>Sets the direction of the specified pin.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-ispinnumbervalid"><span class="std std-ref">Port_IsPinNumberValid</span></a></strong>(<a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pintype"><span class="xref myst">Port_PinType</span></a> PinNumber)</p></td>
+<td><p>Checks if the provided pin number is Valid or Not.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-validatesetpinmode"><span class="std std-ref">Port_ValidateSetPinMode</span></a></strong>(<a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pinmodetype"><span class="xref myst">Port_PinModeType</span></a> Mode, const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * pinConfig, uint8 * errorIdPtr)</p></td>
+<td><p>Validates the pin Mode provided.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="function-port-init">
+<h3><span class="section-number">5.2.4.1. </span>function Port_Init<a class="headerlink" href="#function-port-init" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Port_Init</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Port_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">CfgPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Initializes the Port Driver module.</p>
+<p>This function is called by user to initialize the Port pins of the microcontroller</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>CfgPtr</strong> is the configuration pointer for Port module.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-setpindirection">
+<h3><span class="section-number">5.2.4.2. </span>function Port_SetPinDirection<a class="headerlink" href="#function-port-setpindirection" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Port_SetPinDirection</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Port_PinType</span><span class="w"> </span><span class="n">Pin</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Port_PinDirectionType</span><span class="w"> </span><span class="n">Direction</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Sets the port pin direction.</p>
+<p>This function is used to change the direction of the pin during runtime.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Pin</strong> is the symbolic name of the pin.</p></li>
+<li><p><strong>Direction</strong> is the direction to which pin is to be set.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: Port_Init should be called before calling this function</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-refreshportdirection">
+<h3><span class="section-number">5.2.4.3. </span>function Port_RefreshPortDirection<a class="headerlink" href="#function-port-refreshportdirection" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Port_RefreshPortDirection</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Refreshes port direction.</p>
+<p>This function refreshes the Port pins to their initial direction. Pins whose direction can be changed during runtime are excluded from this action.</p>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: Port_Init should be called before calling this function</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-getversioninfo">
+<h3><span class="section-number">5.2.4.4. </span>function Port_GetVersionInfo<a class="headerlink" href="#function-port-getversioninfo" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Port_GetVersionInfo</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Std_VersionInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">versioninfo</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to get the version information of the module.</p>
+<p>This service writes the version information of this module into the data structure referenced by the parameter. If this parameter references NULL_PTR, a development error is reported to Det. This service is only available if the pre-compile configuration parameter PORT_CFG_GET_VERSION_INFO_API is enabled.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Versioninfo</strong> structure that contains the version information parameters.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-setpinmode">
+<h3><span class="section-number">5.2.4.5. </span>function Port_SetPinMode<a class="headerlink" href="#function-port-setpinmode" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Port_SetPinMode</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Port_PinType</span><span class="w"> </span><span class="n">Pin</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Port_PinModeType</span><span class="w"> </span><span class="n">Mode</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Sets the port pin mode.</p>
+<p>This function is used to change the Mode of the pin during runtime.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Pin</strong> is the symbolic name of the pin.</p></li>
+<li><p><strong>Mode</strong> is desired functionality of the Pin e.g. PORT_PIN_MODE_ADC, PORT_PIN_MODE_DIO etc.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: Port_Init should be called before calling this function</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-setcntspconfig">
+<h3><span class="section-number">5.2.4.6. </span>function Port_SetCntSpConfig<a class="headerlink" href="#function-port-setcntspconfig" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Port_SetCntSpConfig</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Port_PinConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PinConfigPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Sets the pad/pull configuration for the specified pin.</p>
+<p>This function sets the controller specific parameters for the specified pin. The pin is specified by its numerical value. For example, GPIO34 is specified by passing 34 as <em>PinNumber</em>.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>PinConfigPtr</strong> is the pointer to the pin config structure.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-setpinlevel">
+<h3><span class="section-number">5.2.4.7. </span>function Port_SetPinLevel<a class="headerlink" href="#function-port-setpinlevel" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Port_SetPinLevel</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Port_PinConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PinConfigPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Port_PinLevelValueType</span><span class="w"> </span><span class="n">PinLevel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Writes the level value to the specified pin.</p>
+<p>Writes the corresponding bit values to the output pin specified by <em>PinNumber</em>. Writing to a pin configured as an input pin has no effect.</p>
+<p>The pin is specified by its numerical value. For example, GPIO34 is specified by passing 34 as <em>PinNumber</em>.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>PinConfigPtr</strong> is the pointer to the pin config structure.</p></li>
+<li><p><strong>PinLevel</strong> is the value to write to the pin.</p></li>
+<li><p><strong>returnvalue</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> if Level Set success
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> if Level Set Fails
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-enablelpmwakeuppin">
+<h3><span class="section-number">5.2.4.8. </span>function Port_EnableLPMWakeUpPin<a class="headerlink" href="#function-port-enablelpmwakeuppin" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Port_EnableLPMWakeUpPin</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Port_PinConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PinConfig</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Set pins as Low Power wakeup modes GPIO pins.</p>
+<p>This function Writes the corresponding bit values to the LPM registers.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>controllerSpecificPtr</strong> is the structure containing LPM details.</p></li>
+<li><p><strong>returnvalue</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> if Wakeup Enable is success
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> if Wakeup Enable is failure
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-setpinmodeconfig">
+<h3><span class="section-number">5.2.4.9. </span>function Port_SetPinModeConfig<a class="headerlink" href="#function-port-setpinmodeconfig" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Port_SetPinModeConfig</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">PinMode</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Configures the Pin Mode function of a PORT pin.</p>
+<p>This function configures the pin mux that selects the peripheral function associated with a particular PORT pin. Only one peripheral function at a time can be associated with a PORT pin, and each peripheral function should only be associated with a single PORT pin at a time (despite the fact that many of them can be associated with more than one PORT pin).</p>
+<p>The available mappings are supplied in Port_Pin_Map.h</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>PinMode</strong> is the pin configuration value for pin</p></li>
+<li><p><strong>returnvalue</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-setdirectionmode">
+<h3><span class="section-number">5.2.4.10. </span>function Port_SetDirectionMode<a class="headerlink" href="#function-port-setdirectionmode" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Port_SetDirectionMode</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Port_PinConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PinConfigPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Port_PinDirectionType</span><span class="w"> </span><span class="n">PinDirection</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Sets the direction of the specified pin.</p>
+<p>This function configures the specified pin on the selected GPIO port as either input or output.</p>
+<p>The parameter <em>PinDirection</em> is an enumerated data type that can be one of the following values:</p>
+<ul class="simple">
+<li><p><strong>PORT_PIN_IN</strong></p></li>
+<li><p><strong>PORT_PIN_OUT</strong></p></li>
+</ul>
+<p>where <strong>PORT_PIN_IN</strong> specifies that the pin is programmed as an input and <strong>PORT_PIN_OUT</strong> specifies that the pin is programmed as an output.</p>
+<p>The pin is specified by its numerical value. For example, GPIO34 is specified by passing 34 as <em>pin</em>.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>PinConfigPtr</strong> is the pointer to the pin config structure.</p></li>
+<li><p><strong>PinDirection</strong> is the pin direction mode.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> if pin direction is set successfully.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> if pin direction is Not set successfully.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-ispinnumbervalid">
+<h3><span class="section-number">5.2.4.11. </span>function Port_IsPinNumberValid<a class="headerlink" href="#function-port-ispinnumbervalid" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Port_IsPinNumberValid</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Port_PinType</span><span class="w"> </span><span class="n">PinNumber</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Checks if the provided pin number is Valid or Not.</p>
+<p>This function Checks if the pin number provided in the configuration is valid or not.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>PinNumber</strong> is the pin num value provided in the pin configuration</p></li>
+<li><p><strong>returnvalue</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> if pin number is valid.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> if pin number is not valid.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-port-validatesetpinmode">
+<h3><span class="section-number">5.2.4.12. </span>function Port_ValidateSetPinMode<a class="headerlink" href="#function-port-validatesetpinmode" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Port_ValidateSetPinMode</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Port_PinModeType</span><span class="w"> </span><span class="n">Mode</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Port_PinConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pinConfig</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">errorIdPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Validates the pin Mode provided.</p>
+<p>This function checks with the Pin mode provided for the particular pin config is valid mode or not</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Mode</strong> is the Mode passed to Pin</p></li>
+<li><p><strong>pinConfig</strong> is the Pointer having pin config</p></li>
+<li><p><strong>errorIdPtr</strong> is the error pointer</p></li>
+<li><p><strong>retVal</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> if valid mode is provided
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> if mode provided is not valid
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: retVal</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="group___m_c_u.html" class="btn btn-neutral float-left" title="5.1. MCU" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group___d_i_o.html" class="btn btn-neutral float-right" title="5.3. DIO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Oct 22, 2024.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

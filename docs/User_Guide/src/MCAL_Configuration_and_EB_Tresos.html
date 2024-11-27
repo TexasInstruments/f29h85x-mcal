@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. MCAL Configurator And EB Tresos User Guide &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Getting Started With F29x MCAL" href="Getting_started.html" />
+    <link rel="prev" title="1. Overview of MCAL" href="Overview_of_MCAL.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.00.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. MCAL Configurator And EB Tresos User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">2.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#software-dependencies">2.2. Software Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#access-to-eb-tresos-tool-and-license">2.2.1. Access to EB Tresos Tool and License</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tool-installation-and-activation">2.3. Tool Installation and Activation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#client-license-administrator-installation">2.3.1. Client License Administrator Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eb-tresos-tool-installation">2.3.2. EB Tresos Tool Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#elektrobit-tresos-license-troubleshooting">2.3.3. Elektrobit Tresos License Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started-with-eb-tresos">2.4. Getting started with EB Tresos</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-an-eb-project">2.4.1. Create an EB project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-plugins">2.4.2. Load plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-plugins">2.4.3. Generate plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-bswmd">2.4.4. Generate BSWMD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-plugin-directory-structure">2.4.5. Module Plugin Directory Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reference-eb-documentation">2.5. Reference EB Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-export">2.6. Run Export</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">2. </span>MCAL Configurator And EB Tresos User Guide</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mcal-configurator-and-eb-tresos-user-guide">
+<h1><span class="section-number">2. </span>MCAL Configurator And EB Tresos User Guide<a class="headerlink" href="#mcal-configurator-and-eb-tresos-user-guide" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2><span class="section-number">2.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The purpose of this User Guide is to provide detailed information regarding the usage of MCAL configurator/generator package. Each MCAL driver has a driver implementation portion and a configurator/generator portion. The configurator portion is described in this user guide.</p>
+<p>The TI MCAL uses <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> for configuration of MCAL modules.<br />
+MCAL module’s ECU parameter definition is captured in Elektrobit xdm format. MCAL modules are delivered in the form of EB Tresos plugins.
+The configuration of the MCAL modules can be done using the Elektrobit Tresos Configuration Editor. Once the configuration is complete, code can be generated for supported variants of the drivers.</p>
+</section>
+<section id="software-dependencies">
+<h2><span class="section-number">2.2. </span>Software Dependencies<a class="headerlink" href="#software-dependencies" title="Link to this heading"></a></h2>
+<section id="access-to-eb-tresos-tool-and-license">
+<h3><span class="section-number">2.2.1. </span>Access to EB Tresos Tool and License<a class="headerlink" href="#access-to-eb-tresos-tool-and-license" title="Link to this heading"></a></h3>
+<p>All required configurator installer are packaged with the configurator package.
+These installers are present at <a class="reference external" href="https://www.ti.com/drr/opn/PROCESSOR-SDK-MCAL-EB-TRESOS">MCAL Configuration Install Directory</a></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Document</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>EB_Tresos_ACG8.5.0_Installer.zip</p></td>
+<td><p>EB Tresos Studio 24.x Installer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>EB_Tresos_ACG8.8.10_Installer.zip</p></td>
+<td><p>EB Tresos Studio 29.x Installer.</p></td>
+</tr>
+<tr class="row-even"><td><p>EB_Client_License_Administrator_1_5_1_Setup.exe</p></td>
+<td><p>EB Tresos License Administrator.</p></td>
+</tr>
+<tr class="row-odd"><td><p>EB_Tresos_Activation_Customer_License_TexasInstruments.pdf</p></td>
+<td><p><strong>Activation Key</strong> for License Administrator Setup</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Refer Release Notes or Getting Started section for more details on EB Tresos version related information.</p>
+</div>
+</section>
+</section>
+<section id="tool-installation-and-activation">
+<h2><span class="section-number">2.3. </span>Tool Installation and Activation<a class="headerlink" href="#tool-installation-and-activation" title="Link to this heading"></a></h2>
+<p>EB Tresos Installation can be segregated into three major steps:</p>
+<ul class="simple">
+<li><p>Installation of Client License Administrator as it requires an activation key for machine where EB would be installed.</p></li>
+<li><p>Installation of EB Tresos installer</p></li>
+<li><p>Elektrobit Tresos License Troubleshooting ( <em>Optional step in case of any license related issues</em> )</p></li>
+</ul>
+<section id="client-license-administrator-installation">
+<h3><span class="section-number">2.3.1. </span>Client License Administrator Installation<a class="headerlink" href="#client-license-administrator-installation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>EB_Client_License_Administrator_1_5_1_Setup.exe</strong></p>
+<ol class="arabic simple">
+<li><p>Install the executable as an administrator. On successful installation you should see icon “EB Client License Administrator X.Y.Z” on your desktop.</p></li>
+<li><p>Launch EB Client License Administrator</p></li>
+<li><p>Enter the activation key provided.</p></li>
+<li><p>Click “Activate” button</p></li>
+<li><p>Check the status of the license activation sequence. If successful your license is ready to use.</p></li>
+</ol>
+</li>
+</ul>
+<figure class="align-center" id="id1">
+<img alt="EB Tresos License Activation" src="../_images/EBTresos_License_Activation.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.1 </span><span class="caption-text">EB Tresos License Activation</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For details refer LicensingUsersGuide.pdf Chapter 5 ({Installation Drive}/EB/EB_Client_License_Administrator/Doc/LicensingUsersGuide.pdf)</p>
+</div>
+</section>
+<section id="eb-tresos-tool-installation">
+<h3><span class="section-number">2.3.2. </span>EB Tresos Tool Installation<a class="headerlink" href="#eb-tresos-tool-installation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>EB_Tresos_ACGX.X.X_Installer.zip</strong></p>
+<ul>
+<li><p>Contains an self installing exe</p></li>
+<li><p>Ensure to install as an administrator</p></li>
+<li><p>On successful installation, an icon “Tresos Studio XX” would be created.</p></li>
+</ul>
+</li>
+</ul>
+<figure class="align-center" id="id2">
+<img alt="EB Tresos Tool Installation" src="../_images/EB_Tresos_Tool_Installation.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.2 </span><span class="caption-text">EB Tresos Tool Installation</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Post installation, launch “Tresos Studio XX.X” and confirm no license errors are seen.</p>
+</div>
+</section>
+<section id="elektrobit-tresos-license-troubleshooting">
+<h3><span class="section-number">2.3.3. </span>Elektrobit Tresos License Troubleshooting<a class="headerlink" href="#elektrobit-tresos-license-troubleshooting" title="Link to this heading"></a></h3>
+<p>In cases where License Error are seen (post successful installation of Client License Administrator Client License Administrator), please try following steps</p>
+<ol class="arabic simple">
+<li><p>Check if “Flexnet Licensing Service” service is started in the Windows Service Manager Panel (Control Panel -&gt; Administrative Tools -&gt; Services). If it is not started, please start it manually.</p></li>
+<li><p>Disable any “Anti Virus” software on the machine</p></li>
+<li><p>In cases where “Anti Virus” software cannot be disabled, please add user defined exceptions in “Anti Virus” software to the following folders (<em>With the assumption that EB is installed in C Drive</em>):</p>
+<ul class="simple">
+<li><p>C:\ProgramData\Flexnet\</p></li>
+<li><p>C:\EB\</p></li>
+</ul>
+</li>
+<li><p>If license issues are still not resolved, contact EB support via Help-&gt;EB tresos support in EB tresos tool.</p></li>
+</ol>
+</section>
+</section>
+<section id="getting-started-with-eb-tresos">
+<h2><span class="section-number">2.4. </span>Getting started with EB Tresos<a class="headerlink" href="#getting-started-with-eb-tresos" title="Link to this heading"></a></h2>
+<section id="create-an-eb-project">
+<h3><span class="section-number">2.4.1. </span>Create an EB project<a class="headerlink" href="#create-an-eb-project" title="Link to this heading"></a></h3>
+<p>Follow the below steps to Create EB Tresos project</p>
+<ul class="simple">
+<li><p>Launch the EB Tresos tool. On the Welcome Screen, Click on Start Icon</p></li>
+</ul>
+<figure class="align-center" id="id3">
+<img alt="EB Tresos Launch" src="../_images/EB_Tresos_Launch.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.3 </span><span class="caption-text">EB Tresos Launch - Welcome Screen</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Now Click on File-&gt;New-&gt;Configuration Project to create a new project in the workspace</p></li>
+</ul>
+<figure class="align-center" id="id4">
+<img alt="New Configuration Project" src="../_images/EB_New_Configuration_Project.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.4 </span><span class="caption-text">New Configuration Project</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Enter the Project name and select the location. Then Click on <strong>Next &gt;</strong> Button</p></li>
+</ul>
+<blockquote>
+<div><blockquote>
+<div><p><em><strong>Use Default Location</strong> checkbox can be unchecked and custom location for the project can be provided</em></p>
+</div></blockquote>
+</div></blockquote>
+<figure class="align-center" id="id5">
+<img alt="Project Wizard Window" src="../_images/EB_Project_Name.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.5 </span><span class="caption-text">Project Wizard Window</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>In the Configuration Project Data Window, Enter the appropriate name for the ECU instance for the configuration.</p></li>
+<li><p>Select the Target from the list as F29H85x and then Click on <strong>Next &gt;</strong> Button</p></li>
+</ul>
+<figure class="align-center" id="id6">
+<img alt="EB Project Configuration Data" src="../_images/EB_Project_Config_Data.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.6 </span><span class="caption-text">EB Project Configuration Data</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="load-plugins">
+<h3><span class="section-number">2.4.2. </span>Load plugins<a class="headerlink" href="#load-plugins" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>In the Module Configuration Window, Select all the required plugins listed and add to module configuration.</p></li>
+</ul>
+<figure class="align-center" id="id7">
+<img alt="EB Module Configuration" src="../_images/EB_Module_Add.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.7 </span><span class="caption-text">EB Module Configuration</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If any Default configuration is present for the selected module, Ensure that Default Recommended Configuration is selected in Recommended Configuration section</p>
+</div>
+<ul class="simple">
+<li><p>Once All the required modules are added, click on next and then click on  <strong>Finish</strong> Button to create the project.</p></li>
+<li><p>Created project and Modules can be seen in Project Explorer tab once the project created is completed</p></li>
+</ul>
+<figure class="align-center" id="id8">
+<img alt="EB Project Created" src="../_images/EB_Project_Created.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.8 </span><span class="caption-text">EB Project Created</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="generate-plugins">
+<h3><span class="section-number">2.4.3. </span>Generate plugins<a class="headerlink" href="#generate-plugins" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Load the Modules and configure according to the requirement and save the project.</p></li>
+<li><p>Click on Settings button down arrow button -&gt;  Unattended wizard configurations.</p></li>
+</ul>
+<figure class="align-center" id="id9">
+<img alt="EB Unattended Wizard Configuration" src="../_images/EB_Unattended_Wizard_Configuration.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.9 </span><span class="caption-text">EB Unattended Wizard Configuration</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Check AutoCalc (Calculate Derivable Values) checkbox and select default values and calculated values checkbox and click on Run to auto-calculate derivable values.</p></li>
+</ul>
+<figure class="align-center" id="id10">
+<img alt="EB Unattended Wizard Config Dialog" src="../_images/EB_Unattended_Wizard_Config_Dialog.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.10 </span><span class="caption-text">EB Unattended Wizard Config Dialog</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unattended wizard configurations settings needs to be configured once during configuration of project where AutoCalc (Calculate Derivable Values) checkbox needs to be set. Post settings are done just clicking on the settings icon-&gt;AutoCalc will auto calculate all the values and any other configuration updates in the project.</p>
+</div>
+<ul class="simple">
+<li><p>Right Click on the project in the Project explorer and choose <em>Verify Project</em> to see any errors or warnings in the configuration.</p></li>
+</ul>
+<figure class="align-center" id="id11">
+<img alt="EB Generate Configuration" src="../_images/EB_Generate_Configuration.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.11 </span><span class="caption-text">EB Generate Configuration</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Next Right Click on the project in the Project explorer and choose <em>Generate Project</em> to generate the Output Files.</p></li>
+<li><p>Generated Files will be present in output folder.</p></li>
+</ul>
+<p><em>For more details on how to configure AUTOSAR modules using EB tresos studio, Refer 2.1_Studio_documentation_users_guide.</em></p>
+</section>
+<section id="generate-bswmd">
+<h3><span class="section-number">2.4.4. </span>Generate BSWMD<a class="headerlink" href="#generate-bswmd" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>To generate BSWMD file, right click on on the Project created/ or the module for which you want to generate the file, and click on Build Project-&gt;Generate_SWC-T</p></li>
+</ul>
+<figure class="align-center" id="id12">
+<img alt="Generate BSWMD File" src="../_images/EB_BSWMD_Generate.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.12 </span><span class="caption-text">Generate BSWMD File</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Make sure the pop-up appears indicating 0 errors and 0 warnings.</p></li>
+<li><p>The generated BSWMD.arxml file will be present in the output folder in swcd folder.</p></li>
+</ul>
+<figure class="align-center" id="id13">
+<img alt="Output Files" src="../_images/Generated_BSWMD.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.13 </span><span class="caption-text">Output Files</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="module-plugin-directory-structure">
+<h3><span class="section-number">2.4.5. </span>Module Plugin Directory Structure<a class="headerlink" href="#module-plugin-directory-structure" title="Link to this heading"></a></h3>
+<p>A typical module plugin would contain following files:</p>
+<p>📦ModuleName_TI_DeviceName<br />
+┣ 📂config<br />
+┃ ┣ 📜ModuleName.arxml : <em>Vendor Specific Module Description : ECU Configuration and ECU Parameter definitions for the MCAL module</em><br />
+┃ ┗ 📜ModuleName.xdm : <em>ECU Parameter definition for the MCAL module.</em><br />
+┣ 📂config_ext<br />
+┃ ┣ 📜ModuleName_PreConfiguration.xdm : <em>Pre-Configured values of ECU Configuration Description for the MCAL module.</em><br />
+┃ ┗ 📜ModuleName_Rec.xdm : <em>Recommended values of ECU Configuration Description for the MCAL module.</em><br />
+┣ 📂generate<br />
+┃ ┣ 📂include<br />
+┃ ┃ ┗ 📜ModuleName_Cfg.h : <em>Provides template to generate header file</em><br />
+┃ ┗ 📂src<br />
+┃ ┃ ┣ 📜ModuleName_Cfg.c : <em>Provides template to generate Compile Time module configurations</em><br />
+┃ ┃ ┣ 📜Module_Lcfg.c : <em>Provides template to generate Link Time module configurations</em><br />
+┃ ┃ ┗ 📜ModuleName_PBcfg.c : <em>Provides template to generate Post Build module configurations</em><br />
+┣ 📂generate_swcd<br />
+┃ ┗ 📂swcd<br />
+┃ ┃ ┗ 📜ModuleName_BSWMD.arxml : <em>Base Software Module Description : Contains details such exclusive area, Module Entries, Interrupts, MemMap etc…</em><br />
+┣ 📂META-INF<br />
+┃ ┣ 📜MANIFEST.MF : <em>Licensing and module include information</em><br />
+┃ ┣ 📜CRYPTOMANIFEST.MF : <em>Contains Signature for the files in Plugin</em><br />
+┃ ┗ 📜CRYPTOMANIFESTSIG.MF : <em>Contains Signature for complete Plugin</em><br />
+┗ 📜plugin.xml : <em>XML file used to register resources with EB Tresos Studio</em></p>
+</section>
+</section>
+<section id="reference-eb-documentation">
+<h2><span class="section-number">2.5. </span>Reference EB Documentation<a class="headerlink" href="#reference-eb-documentation" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Document</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Link</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2.1_Studio_documentation_users_guide.pdf</p></td>
+<td><p>EB Tresos user guide. This document can be used to understand how to use EB tresos for configuration and code generation.</p></td>
+<td><p>{Installation Drive}/EB/tresos/doc/2.0_EB_tresos_Studio/2.1_Studio_documentation_users_guide.pdf</p></td>
+</tr>
+<tr class="row-odd"><td><p>LicensingUsersGuide.pdf</p></td>
+<td><p>Details activation of EB license and use of EB Client License Administrator tool</p></td>
+<td><p>{Installation Drive}/EB/EB_Client_License_Administrator/Doc/LicensingUsersGuide.pdf</p></td>
+</tr>
+<tr class="row-even"><td><p>fnp_LicAdmin.pdf</p></td>
+<td><p>Document from Flexnet explaining usage of Flexnet licensing tools</p></td>
+<td><p>{Installation Drive}/EB/EB_Client_License_Administrator/Doc/fnp_LicAdmin.pdf</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="run-export">
+<h2><span class="section-number">2.6. </span>Run Export<a class="headerlink" href="#run-export" title="Link to this heading"></a></h2>
+<p>The Configurations generated in EB Tresos can be exported to other configuration tools like DaVinci Configurator, ETAS ISOLAR-AB etc.</p>
+<p>To export the configuration from EB to AUTOSAR XML (ARXML) format, following steps can be followed :</p>
+<ul class="simple">
+<li><p>Right-Click the EB Project from the workspace which needs to be exported</p></li>
+<li><p>Click on <strong>Im- and Exporters…</strong></p></li>
+</ul>
+<figure class="align-center" id="id14">
+<img alt="Export configurations" src="../_images/EB_Export_1.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.14 </span><span class="caption-text">Export configurations</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Click on Create new Im- or Exporter button (<strong>+</strong> Symbol)</p></li>
+</ul>
+<figure class="align-center" id="id15">
+<img alt="Create New Exporter" src="../_images/EB_Create_New_Exporter.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.15 </span><span class="caption-text">Create New Exporter</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Fill the Name and select Mode as Export Only and Click on Next Button.</p></li>
+</ul>
+<figure class="align-center" id="id16">
+<img alt="Exporter Name" src="../_images/EB_Exporter_Name.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.16 </span><span class="caption-text">Exporter Name</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>In the next window, click on browse and select the file</p></li>
+</ul>
+<figure class="align-center" id="id17">
+<img alt="Exporter Select File" src="../_images/EB_Export_Select_File.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.17 </span><span class="caption-text">Exporter Select File</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Select Autosar version as 4.3.1, and Click Finish.</p></li>
+</ul>
+<figure class="align-center" id="id18">
+<img alt="AS Version Select" src="../_images/EB_Export_AS_Version_Select.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.18 </span><span class="caption-text">AS Version Select</span><a class="headerlink" href="#id18" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Select the exporter and click on Run Exporter button.</p></li>
+</ul>
+<figure class="align-center" id="id19">
+<img alt="EB Run Exporter" src="../_images/EB_Run_Exporter_Select.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2.19 </span><span class="caption-text">EB Run Exporter</span><a class="headerlink" href="#id19" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once the Exporter run is successful, the generated arxml file can be used as the input file to the other configurator tools.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Overview_of_MCAL.html" class="btn btn-neutral float-left" title="1. Overview of MCAL" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Getting_started.html" class="btn btn-neutral float-right" title="3. Getting Started With F29x MCAL" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Oct 22, 2024.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

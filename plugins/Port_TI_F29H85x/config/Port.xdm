@@ -1,0 +1,665 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
+      <a:a name="UUID"  value="560c5244-3b90-4d01-a653-786ae20128ad"/>
+        <d:lst type="ELEMENTS">
+          <d:chc name="Port" type="AR-ELEMENT" value="MODULE-DEF">
+            <v:ctr type="MODULE-DEF">
+              <a:a name="ADMIN-DATA" type="ADMIN-DATA">
+                <ad:ADMIN-DATA>
+                  <ad:DOC-REVISIONS>
+                    <ad:DOC-REVISION>
+                      <ad:REVISION-LABEL>4.3.1</ad:REVISION-LABEL>
+                      <ad:ISSUED-BY>AUTOSAR</ad:ISSUED-BY>
+                    </ad:DOC-REVISION>
+                  </ad:DOC-REVISIONS>
+                </ad:ADMIN-DATA>
+              </a:a>
+              <a:a name="DESC" value="EN: Configuration of the Port module."/>
+              <a:a name="LOWER-MULTIPLICITY" value="1"/>
+              <a:a name="POSTBUILDVARIANTSUPPORT" value="true"/>
+              <a:a name="RELEASE" value="asc:4.3.1"/>
+              <a:a name="UPPER-MULTIPLICITY" value="1"/>
+              <a:a name="UUID" value="f69a46c0-6016-49bf-9f5c-0eaa39dc25bd"/>
+              <v:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION">
+                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                     type="IMPLEMENTATIONCONFIGCLASS">
+                  <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                </a:a>
+                <a:a name="LABEL" value="Config Variant"/>
+                <a:a name="UUID" value="a48cd3d3-4b02-4ac5-a5cf-c37983468d72"/>
+                <a:da name="DEFAULT" value="VariantPostBuild"/>
+                <a:da name="RANGE">
+                  <a:v>VariantPostBuild</a:v>
+                  <a:v>VariantPreCompile</a:v>
+                </a:da>
+              </v:var>
+              <v:ctr name="PortConfigSet" type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: This container contains the configuration parameters and sub containers of the AUTOSAR Port module."/>
+                <a:a name="UUID" value="4de58872-fa90-47b6-b507-0a156c1b73fc"/>
+                <v:lst name="PortContainer" type="MAP">
+                  <a:da name="MIN" value="1"/>
+                  <v:ctr name="PortContainer" type="IDENTIFIABLE">
+                    <a:a name="DESC" 
+                         value="EN: Container collecting the PortPins."/>
+                    <a:a name="UUID" 
+                         value="8cfd4b53-2a5b-4ecd-aee3-a32234141c92"/>
+                    <v:var name="PortNumberOfPortPins" type="INTEGER">
+                      <a:a name="DESC" 
+                           value="EN: The number of specified PortPins in this PortContainer."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="baf42744-ebe2-47e8-8852-be93b118c53d"/>
+                      <a:da name="INVALID" type="Range">
+                      <a:tst expr="&lt;=ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),'.numberOfPins'))"/>
+                        <a:tst expr="&gt;=1"/>
+                      </a:da>
+                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(num:i(count(../PortPin/*)),0)"/>
+                      <a:da name="READONLY" value="false"/>
+                    </v:var>
+					
+                    <v:lst name="PortPin" type="MAP">
+						 <a:da name="MIN" value="1"/>
+						 <v:ctr name="PortPin" type="IDENTIFIABLE">
+							<a:a name="DESC" 
+								 value="EN: Configuration of the individual port pins."/>
+							<a:a name="UUID" 
+									 value="3a529fe1-9df9-4dbd-87f2-e660063c6640"/>
+			   
+							<v:var name="PortPinPeripheral" type="ENUMERATION">
+								<a:a name="DESC"
+								value="EN: Available Peripherals for the pin package"/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS"
+										type="IMPLEMENTATIONCONFIGCLASS">
+									<icc:v class="PostBuild">VariantPostBuild</icc:v>
+									<icc:v class="PreCompile">VariantPreCompile</icc:v>										
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),'.AllMuxModes'))"/>
+							</v:var>
+			
+							<v:var name="PortPinPeripheralInstance" type="ENUMERATION">
+								<a:a name="DESC"
+								value="EN: Available instances for the Peripheral selected"/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS"
+										type="IMPLEMENTATIONCONFIGCLASS">
+									<icc:v class="PostBuild">VariantPostBuild</icc:v>
+									<icc:v class="PreCompile">VariantPreCompile</icc:v>										
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_',node:value(../PortPinPeripheral)),'.MuxModeSignal')))"/>
+							</v:var>					
+
+							<v:var name="PortPinPeripheralSignal" type="ENUMERATION">
+								<a:a name="DESC"
+								value="EN: Select specific type of peripheral signal pin of interest"/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS"
+										type="IMPLEMENTATIONCONFIGCLASS">
+									<icc:v class="PostBuild">VariantPostBuild</icc:v>
+									<icc:v class="PreCompile">VariantPreCompile</icc:v>										
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_',node:value(../PortPinPeripheralInstance)),'.MuxModeSignalType')))"/>
+							</v:var>
+										
+							<v:var name="PortPhysicalPinId" type="ENUMERATION">
+								<a:a name="DESC" 
+									   value="EN: Identifying The physical Pin Number on the selected Pin Package."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									   type="IMPLEMENTATIONCONFIGCLASS">
+									<icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+									<icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" 
+									   value="as:uuid()"/>
+									
+								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_',node:value(../PortPinPeripheralSignal)),'.PhysicalPinNumber')))"/>
+								<a:da name="INVALID" type="XPath" expr="text:uniq((../../../..//*[@name='PortPhysicalPinId']),node:value(.))" false="Port Pin selection has to be unique across all PortConfig containers"/>
+							</v:var>
+										
+							<v:var name="PortPinName" type="ENUMERATION">
+								<a:a name="DESC" 
+									value="EN: Device Pin Name for reference."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									type="IMPLEMENTATIONCONFIGCLASS">
+								  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+								  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="RANGE" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinName')))" />
+								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinName')))" />
+								
+							</v:var>
+							
+							<v:var name="PortPinId" type="INTEGER">
+								<a:a name="DESC" 
+									value="EN: Pin Id of the port pin. This value will be assigned to the symbolic name derived from the port pin container short name."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									type="IMPLEMENTATIONCONFIGCLASS">
+								  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+								  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+								<!--<a:a name="POSTBUILDVARIANTVALUE" value="true"/>-->
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="true"/>
+								<a:a name="UUID" value="0d2b90af-1985-459b-9230-9934d447670f"/>
+								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinNumber')))" />
+								<a:a name="VISIBLE" value="true"/>
+								
+							</v:var>
+							
+							<v:var name="PortIsPinConfigurable" type="BOOLEAN">
+								<a:a name="DESC" 
+									value="EN: Whether configuration is supported for this pin."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									type="IMPLEMENTATIONCONFIGCLASS">
+								  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+								  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isConfigurable')))" />
+								<a:a name="VISIBLE" value="false"/>
+								<a:da name="READONLY" value="true"/>
+							</v:var>
+							
+							<v:var name="PortIsAnalogModeSupported" type="BOOLEAN">
+								<a:a name="DESC" 
+									value="EN: Whether analog mode is supported for this pin."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									type="IMPLEMENTATIONCONFIGCLASS">
+								  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+								  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAnalogModeSupported')))" />
+								<a:a name="VISIBLE" value="false"/>
+								<a:da name="READONLY" value="true"/>
+							</v:var>
+									  
+							<v:var name="PortIsAGPIO" type="BOOLEAN">
+								<a:a name="DESC" 
+									value="EN: Whether this pin is AGPIO."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									type="IMPLEMENTATIONCONFIGCLASS">
+								  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+								  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAGPIO')))" />
+								<a:a name="VISIBLE" value="false"/>
+								<a:da name="READONLY" value="true"/>
+							</v:var>
+									  
+							<v:var name="PortIsAIO" type="BOOLEAN">
+								<a:a name="DESC" 
+									value="EN: Whether this pin is AIO."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									type="IMPLEMENTATIONCONFIGCLASS">
+								  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+								  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAIO')))" />
+								<a:a name="VISIBLE" value="false"/>
+								<a:da name="READONLY" value="true"/>
+							</v:var>
+									  
+							<v:var name="PortIsGPIO" type="BOOLEAN">
+								<a:a name="DESC" 
+									value="EN: Whether this pin is GPIO."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									type="IMPLEMENTATIONCONFIGCLASS">
+								  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+								  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isGPIO')))" />
+								<a:a name="VISIBLE" value="false"/>
+								<a:da name="READONLY" value="true"/>
+							</v:var>
+									  
+							<v:var name="PortAnalogMode" type="ENUMERATION">
+								<a:a name="DESC" 
+									value="EN: Select whether the pin operates in Analog Mode."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									type="IMPLEMENTATIONCONFIGCLASS">
+								  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+								  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="Texas Instruments"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" value="as:uuid()"/>
+								<a:da name="RANGE">
+								  <a:v>PORT_ANALOG_DISABLED</a:v>
+								  <a:v>PORT_ANALOG_ENABLED</a:v>
+								</a:da>
+								<a:da name="DEFAULT" type="XPath" expr="(../PortIsAnalogModeSupported) and (../PortPinPeripheral = 'ANALOG')" true="PORT_ANALOG_ENABLED" false="PORT_ANALOG_DISABLED" />
+								<a:da name="EDITABLE" type="XPath" expr="(../PortIsAnalogModeSupported) and (../PortPinPeripheral = 'ANALOG')" />
+							</v:var>
+							
+							<v:var name="PortPinInitialMode" type="ENUMERATION">
+                <a:a name="DESC" 
+                    value="EN: Port pin mode from mode list for use with Port_Init() function."/>
+                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                    type="IMPLEMENTATIONCONFIGCLASS">
+                  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                </a:a>
+                <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                <a:a name="SCOPE" value="LOCAL"/>
+                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                <a:a name="UUID" 
+									   value="d31ccffe-6df7-47f0-82f9-f8e43cfb691c"/>
+                <a:da name="RANGE" type="XPath" expr="node:fallback(ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.muxMode'))),'PORT_MUXMODE_NA')" />
+                <a:da name="EDITABLE" type="XPath" expr="(../PortIsPinConfigurable='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED')" />
+								<a:da name="DEFAULT" type="XPath" expr="node:fallback('PORT_MUXMODE_NA','PORT_MUXMODE_NA')"/>
+              </v:var>
+										
+							<v:var name="PortPinDirection" type="ENUMERATION">
+								<a:a name="DESC" 
+									   value="EN: The initial direction of the pin (IN or OUT). If the direction is not changeable, the value configured here is fixed."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									   type="IMPLEMENTATIONCONFIGCLASS">
+									<icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+									<icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" 
+									   value="0d7a1769-4d06-4e74-908f-4c1413257af2"/>
+								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.supportedDirection')))" />
+								<a:da name="DEFAULT" type="XPath" expr="((../PortIsPinConfigurable='true') and ((contains(node:value(../PortPinInitialMode), 'GPIO')) or (contains(node:value(../PortPinInitialMode), 'AIO'))) and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))" true="PORT_PIN_IN" false="PORT_PIN_NA" />
+								<a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and ((contains(node:value(../PortPinInitialMode), 'GPIO')) or (contains(node:value(../PortPinInitialMode), 'AIO')) or (../PortPinModeChangeable='true')) and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
+							</v:var>
+						
+							<v:var name="PortPinDirectionChangeable" type="BOOLEAN">
+								<a:a name="DESC" 
+									   value="EN: Parameter to indicate if the direction is changeable on a port pin during runtime."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+									   type="IMPLEMENTATIONCONFIGCLASS">
+									<icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+									<icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" 
+									   value="57269840-87bb-47f7-a4a5-6ef1d538169b"/>
+									<a:da name="DEFAULT" value="False"/>
+									   <a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and ((contains(node:value(../PortPinInitialMode), 'GPIO')) or (contains(node:value(../PortPinInitialMode), 'AIO')) or (../PortPinModeChangeable='true')) and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
+							</v:var>
+							
+							<v:var name="PortPinPadConfig" type="ENUMERATION">
+                                <a:a name="DESC" 
+                                    value="EN: Enable Push-Pull or Open Drain functionality."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                    type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="as:uuid()"/>
+                                <a:da name="RANGE">
+                                  <a:v>PORT_PIN_TYPE_STD</a:v>
+                                  <a:v>PORT_PIN_TYPE_OPEN_DRAIN</a:v>
+                                  <a:v>PORT_PIN_TYPE_NA</a:v>
+                                </a:da>
+                                <a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
+                                <a:da name="DEFAULT" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))" true= "PORT_PIN_TYPE_STD" false="PORT_PIN_TYPE_NA"/>
+                            </v:var>
+							
+                            <v:var name="PortPinPullUpConfig" type="BOOLEAN">
+                                <a:a name="DESC" 
+                                    value="EN: Enable Pull Up."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                    type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="as:uuid()"/>
+                                <a:da name="EDITABLE" type="XPath" expr="(../PortPinPadConfig!='PORT_PIN_TYPE_NA')"/>
+                                <a:da name="DEFAULT" value="false"/>
+                            </v:var>
+							
+                            <v:var name="PortPinQualificationMode" type="ENUMERATION">
+                                <a:a name="DESC" 
+                                    value="EN: Synchronization mode of the peripheral signals."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                    type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="as:uuid()"/>
+                                <a:da name="RANGE">
+                                  <a:v>PORT_QUAL_SYNC</a:v>
+                                  <a:v>PORT_QUAL_3SAMPLE</a:v>
+                                  <a:v>PORT_QUAL_6SAMPLE</a:v>
+                                  <a:v>PORT_QUAL_ASYNC</a:v>
+                                  <a:v>PORT_QUAL_NA</a:v>
+                                </a:da>
+                                <a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
+                                <a:da name="DEFAULT" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))" true= "PORT_QUAL_SYNC" false="PORT_QUAL_NA"/>
+                                <a:da name="WARNING" type="Multi">
+									                <mt:xpath expr="((../PortPinDirection='PORT_PIN_IN') and (node:value(.)='PORT_QUAL_NA'))" true = "Port Pin Direction IN and Qualification NA is not advisable to keep. Make sure to use proper input Pin Qualification."/>
+									                <mt:xpath expr="((../PortPinDirection='PORT_PIN_OUT') and (../PortPinDirectionChangeable='true') and (node:value(.)='PORT_QUAL_NA'))" true = "Port Pin Direction OUT and Qualification as NA where direction can be changed afterwards ( DirectionChangeable = True ) might result in unexpected behaviour. Make sure to use proper input Pin Qualification."/>
+								                </a:da>
+                            </v:var>							  
+							  
+							<v:var name="PortPinQualificationPeriod" type="INTEGER">					
+                                <a:a name="DESC" 
+                                    value="EN: Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs
+									For Instance:
+									Qualification sampling period for GPIO0 to GPIO7: 
+									0x00,QUALPRDx = PLLSYSCLK 
+									0x01,QUALPRDx = PLLSYSCLK/2
+									0x02,QUALPRDx = PLLSYSCLK/4
+									....
+									0xFF,QUALPRDx = PLLSYSCLK/510
+									Reset type: SYSRSn"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                    type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="as:uuid()"/>
+									
+								<a:da name="DEFAULT" value="1"/>  
+
+								<a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(node:value(.)=1) or (node:value(.) mod 2 = 0 and node:value(.) &lt;= 510 and node:value(.) &gt; 1)" false="Value must be &gt;=1 and &lt;=510"/>
+                                </a:da>										
+                                <a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
+                                
+                            </v:var>
+                        
+							<v:var name="PortPinLevelValue" type="ENUMERATION">
+								<a:a name="DESC" 
+								   value="EN: Port Pin Level value from Port pin list."/>
+								<a:a name="IMPLEMENTATIONCONFIGCLASS" 
+								   type="IMPLEMENTATIONCONFIGCLASS">
+									<icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+									<icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+								</a:a>
+								<a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+								<a:a name="SCOPE" value="LOCAL"/>
+								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
+								<a:a name="UUID" 
+								   value="dafb264d-8c84-443e-87b0-4c6cb32a456f"/>
+								<a:da name="RANGE">
+									  <a:v>PORT_PIN_LEVEL_HIGH</a:v>
+									  <a:v>PORT_PIN_LEVEL_LOW</a:v>
+									  <a:v>PORT_PIN_LEVEL_NA</a:v>
+								</a:da>
+								<a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and (contains(node:value(../PortPinInitialMode), 'GPIO') or (../PortPinModeChangeable='true')) and (../PortPinDirection='PORT_PIN_OUT') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
+								<a:da name="DEFAULT" type="XPath" expr="((../PortIsPinConfigurable='true') and (contains(node:value(../PortPinInitialMode), 'GPIO')) and (../PortPinDirection='PORT_PIN_OUT') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))" true="PORT_PIN_LEVEL_LOW" false="PORT_PIN_LEVEL_NA"/>
+							</v:var>
+							
+						    <v:var name="PortPinCoreSelect" type="ENUMERATION">
+                                <a:a name="DESC" 
+                                    value="EN: Selection of core to which pin is to be mapped."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                    type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="as:uuid()"/>
+                                <a:da name="RANGE">
+                                  <a:v>PORT_CORE_CPU1</a:v>
+                                  <a:v>PORT_CORE_CPU2</a:v>
+								  <a:v>PORT_CORE_CPU3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="PORT_CORE_CPU1"/>
+                                <a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and ((contains(node:value(../PortPinInitialMode), 'GPIO')) or (contains(node:value(../PortPinInitialMode), 'AIO')) or (../PortPinModeChangeable='true')) and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
+                            </v:var>
+							  
+							<v:var name="PortEnableWakeUpPinLPM" type="BOOLEAN">
+                                   <a:a name="DESC" value="EN: Use/Don't use the GPIO Pin as a wakeup source for the low power modes - standby/halt."/>
+                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                   <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                   </a:a>
+                                   <a:a name="ORIGIN" value="Texas Instruments"/>
+                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                   <a:a name="UUID" value="as:uuid()"/>
+								   <a:da name="EDITABLE" type="XPath" expr="(((../PortPinId)&gt;=0 and (../PortPinId)&lt;=63) and (text:contains(node:value(../PortPinPeripheral),'GPIO')))"/>
+                                   <a:da name="DEFAULT" value="false"/>
+                            </v:var>
+						
+                        <v:lst name="PortPinMode">
+                            <a:da name="MIN" value="1"/>
+						    <a:da name="MAX" type="XPath" expr="count(ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.muxMode'))))"/>
+                            <v:var name="PortPinMode" type="ENUMERATION">
+                            <a:a name="DESC" 
+                                 value="EN: Port pin mode from mode list."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                 type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="POSTBUILDVARIANTMULTIPLICITY" 
+                                 value="true"/>
+                            <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="as:uuid()"/>
+                            <a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../../PortPhysicalPinId)),'.muxMode')))" />
+							<a:da name="DEFAULT" type="XPath" expr="../../PortPinInitialMode" />
+                            <a:da name="EDITABLE" type="XPath" expr="(../../PortIsPinConfigurable='true') and (../../PortAnalogMode='PORT_ANALOG_DISABLED')" />
+
+                        </v:var>
+						
+                        </v:lst>
+                        <v:var name="PortPinModeChangeable" type="BOOLEAN">
+                          <a:a name="DESC" 
+                               value="EN: Parameter to indicate if the mode is changeable on a port pin during runtime. True: Port Pin mode changeable allowed. False: Port Pin mode changeable not permitted."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                               type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                          <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" 
+                               value="1a065d60-79aa-4e14-bc6a-1bff6ab8d55f"/>
+						  <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                      </v:ctr>
+                    </v:lst>
+                  </v:ctr>
+                </v:lst>
+              </v:ctr>
+              <v:ctr name="PortGeneral" type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: Module wide configuration parameters of the PORT driver."/>
+                <a:a name="UUID" value="8ceebdd2-b63d-43e5-a10a-64bc546c75b3"/>
+                <v:var name="PortDevErrorDetect" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Switches the development error detection and notification on or off."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="1aed1fcb-682d-4559-81c9-d441b91aeb61"/>
+                  <a:da name="DEFAULT" value="false"/>
+                </v:var>
+                <v:var name="PortSetPinDirectionApi" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Pre-processor switch to enable / disable the use of the function Port_SetPinDirection()."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+				  <a:da name="DEFAULT" value="true"/>
+                  <a:a name="UUID" value="e252ae79-3ec7-47b3-aec4-b3ade947386a"/>
+                </v:var>
+                <v:var name="PortSetPinModeApi" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Pre-processor switch to enable / disable the use of the function Port_SetPinMode()."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+				  <a:da name="DEFAULT" value="true"/>
+                  <a:a name="UUID" value="4cf46ff3-2793-43cc-b2e7-ab539b82d676"/>
+                </v:var>
+                <v:var name="PortVersionInfoApi" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Pre-processor switch to enable / disable the API to read out the modules version information."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="91dfe1b2-9c3c-493f-9fd9-a9bcd9b067bc"/>
+                  <a:da name="DEFAULT" value="false"/>
+                </v:var>
+				
+				<v:var name="PortDeviceVariant" type="ENUMERATION">
+                      <a:a name="DESC" 
+                           value="EN: Select package variant for F29H85x."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" value="as:uuid()"/>
+                      <!--
+                      The following expression ecu:parameters('subderivate') collects the
+                      values of each parameter with name "subderivate" that is assigned 
+                      to a resource properties file (extension point
+                      "dreisoft.tresos.autosar2.api.plugin.ecuresource").
+                      -->
+                      <a:da name="RANGE" type="XPath" expr="node:fallback(ecu:parameters('subderivate'),'F29H85x_256ZEX')"/>
+                      <a:da name="DEFAULT" type="XPath" expr="node:fallback('F29H85x_256ZEX','F29H85x_256ZEX')"/>
+                    </v:var>
+				
+              </v:ctr>
+              <d:ref type="REFINED_MODULE_DEF" 
+                     value="ASPath:/AUTOSAR/EcucDefs/Port"/>
+            </v:ctr>
+          </d:chc>
+          <d:chc name="myEcuParameterDefinition" type="AR-ELEMENT" 
+                 value="ECU_PARAMETER_DEFINITION">
+            <d:ctr type="AR-ELEMENT">
+              <a:a name="DEF" 
+                   value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
+              <d:lst name="MODULE_REF">
+                <d:ref type="MODULE_REF" value="ASPath:/TI_F29H85x/Port"/>
+              </d:lst>
+            </d:ctr>
+          </d:chc>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

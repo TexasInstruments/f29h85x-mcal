@@ -1,0 +1,1643 @@
+/*********************************************************************************************************************
+ *  COPYRIGHT
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  \verbatim
+ *
+ *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *
+ *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
+ *                 is strictly prohibited.  This product  is  protected  under  copyright  law
+ *                 and  trade  secret law as an  unpublished work.
+ *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *
+ *  \endverbatim
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  FILE DESCRIPTION
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  File:       Port_Pin_Map.h
+ *  Generator:  None
+ *
+ *  Description:  File defines the GPIO MUX values.                                                           
+ *********************************************************************************************************************/
+#ifndef PORT_PIN_MAP_H
+#define PORT_PIN_MAP_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*********************************************************************************************************************
+ * Header Files
+ *********************************************************************************************************************/
+ 
+/*********************************************************************************************************************
+ * Version Check (if required)
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Exported Preprocessor #define Constants
+ *********************************************************************************************************************/
+/* 
+ *Design: MCAL-23522
+ */
+
+#define PORT_PIN_0_GPIO0                          0x000C0000U
+#define PORT_PIN_0_EPWM1_A                        0x000C0001U
+#define PORT_PIN_0_EMIF1_A13                      0x000C0002U
+#define PORT_PIN_0_EMIF1_D0                       0x000C0003U
+#define PORT_PIN_0_MCAND_TX                       0x000C0005U
+#define PORT_PIN_0_I2CA_SDA                       0x000C0006U
+#define PORT_PIN_0_UARTE_TX                       0x000C0007U
+#define PORT_PIN_0_OUTPUTXBAR9                    0x000C0009U
+#define PORT_PIN_0_ESC_TX0_DATA0                  0x000C000AU
+#define PORT_PIN_0_ESC_GPI0                       0x000C000BU
+#define PORT_PIN_0_FSITXA_D0                      0x000C000DU
+
+#define PORT_PIN_1_GPIO1                          0x000C0200U
+#define PORT_PIN_1_EPWM1_B                        0x000C0201U
+#define PORT_PIN_1_EMIF1_A14                      0x000C0202U
+#define PORT_PIN_1_EMIF1_D3                       0x000C0203U
+#define PORT_PIN_1_MCAND_RX                       0x000C0205U
+#define PORT_PIN_1_I2CA_SCL                       0x000C0206U
+#define PORT_PIN_1_UARTE_RX                       0x000C0207U
+#define PORT_PIN_1_OUTPUTXBAR10                   0x000C0209U
+#define PORT_PIN_1_ESC_TX1_DATA0                  0x000C020AU
+#define PORT_PIN_1_ESC_GPI1                       0x000C020BU
+#define PORT_PIN_1_FSITXA_D1                      0x000C020DU
+
+#define PORT_PIN_2_GPIO2                          0x000C0400U
+#define PORT_PIN_2_EPWM2_A                        0x000C0401U
+#define PORT_PIN_2_EMIF1_A15                      0x000C0402U
+#define PORT_PIN_2_EMIF1_D4                       0x000C0403U
+#define PORT_PIN_2_UARTA_TX                       0x000C0405U
+#define PORT_PIN_2_I2CB_SDA                       0x000C0406U
+#define PORT_PIN_2_MCANF_TX                       0x000C0407U
+#define PORT_PIN_2_OUTPUTXBAR1                    0x000C0409U
+#define PORT_PIN_2_ESC_RX1_ERR                    0x000C040AU
+#define PORT_PIN_2_ESC_GPI2                       0x000C040BU
+#define PORT_PIN_2_FSITXA_CLK                     0x000C040DU
+
+#define PORT_PIN_3_GPIO3                          0x000C0600U
+#define PORT_PIN_3_EPWM2_B                        0x000C0601U
+#define PORT_PIN_3_EMIF1_A16                      0x000C0602U
+#define PORT_PIN_3_EMIF1_D5                       0x000C0603U
+#define PORT_PIN_3_UARTA_RX                       0x000C0605U
+#define PORT_PIN_3_I2CB_SCL                       0x000C0606U
+#define PORT_PIN_3_MCANF_RX                       0x000C0607U
+#define PORT_PIN_3_OUTPUTXBAR2                    0x000C0609U
+#define PORT_PIN_3_ESC_GPI3                       0x000C060BU
+#define PORT_PIN_3_FSIRXA_D0                      0x000C060DU
+
+#define PORT_PIN_4_GPIO4                          0x000C0800U
+#define PORT_PIN_4_EPWM3_A                        0x000C0801U
+#define PORT_PIN_4_EMIF1_A17                      0x000C0802U
+#define PORT_PIN_4_EMIF1_D9                       0x000C0803U
+#define PORT_PIN_4_MCANC_TX                       0x000C0805U
+#define PORT_PIN_4_UARTF_TX                       0x000C0807U
+#define PORT_PIN_4_OUTPUTXBAR3                    0x000C0809U
+#define PORT_PIN_4_ESC_GPI4                       0x000C080BU
+#define PORT_PIN_4_FSIRXA_D1                      0x000C080DU
+#define PORT_PIN_4_ERRORSTS                       0x000C080FU
+
+#define PORT_PIN_5_GPIO5                          0x000C0A00U
+#define PORT_PIN_5_EPWM3_B                        0x000C0A01U
+#define PORT_PIN_5_EMIF1_A18                      0x000C0A02U
+#define PORT_PIN_5_EMIF1_D10                      0x000C0A03U
+#define PORT_PIN_5_MCANC_RX                       0x000C0A05U
+#define PORT_PIN_5_UARTF_RX                       0x000C0A07U
+#define PORT_PIN_5_OUTPUTXBAR11                   0x000C0A09U
+#define PORT_PIN_5_OUTPUTXBAR3                    0x000C0A0AU
+#define PORT_PIN_5_ESC_GPI5                       0x000C0A0BU
+#define PORT_PIN_5_FSIRXA_CLK                     0x000C0A0DU
+
+#define PORT_PIN_6_GPIO6                          0x000C0C00U
+#define PORT_PIN_6_EPWM4_A                        0x000C0C01U
+#define PORT_PIN_6_EMIF1_DQM0                     0x000C0C02U
+#define PORT_PIN_6_EMIF1_CLK                      0x000C0C03U
+#define PORT_PIN_6_MCANB_TX                       0x000C0C05U
+#define PORT_PIN_6_LINA_TX                        0x000C0C06U
+#define PORT_PIN_6_OUTPUTXBAR4                    0x000C0C09U
+#define PORT_PIN_6_SYNCOUT                        0x000C0C0AU
+#define PORT_PIN_6_ESC_GPI6                       0x000C0C0BU
+#define PORT_PIN_6_FSITXB_D0                      0x000C0C0DU
+
+#define PORT_PIN_7_GPIO7                          0x000C0E00U
+#define PORT_PIN_7_EPWM4_B                        0x000C0E01U
+#define PORT_PIN_7_EMIF1_DQM1                     0x000C0E02U
+#define PORT_PIN_7_EMIF1_CAS                      0x000C0E03U
+#define PORT_PIN_7_MCANB_RX                       0x000C0E05U
+#define PORT_PIN_7_LINA_RX                        0x000C0E06U
+#define PORT_PIN_7_OUTPUTXBAR5                    0x000C0E09U
+#define PORT_PIN_7_ESC_GPI7                       0x000C0E0BU
+#define PORT_PIN_7_FSITXB_D1                      0x000C0E0DU
+
+#define PORT_PIN_8_GPIO8                          0x000C1000U
+#define PORT_PIN_8_EPWM5_A                        0x000C1001U
+#define PORT_PIN_8_EMIF1_RAS                      0x000C1002U
+#define PORT_PIN_8_EPWM4_B                        0x000C1003U
+#define PORT_PIN_8_MCANC_TX                       0x000C1005U
+#define PORT_PIN_8_SPIE_PICO                      0x000C1006U
+#define PORT_PIN_8_UARTD_TX                       0x000C1007U
+#define PORT_PIN_8_OUTPUTXBAR12                   0x000C1009U
+#define PORT_PIN_8_ADCSOCAO                       0x000C100AU
+#define PORT_PIN_8_ESC_GPO0                       0x000C100BU
+#define PORT_PIN_8_FSITXB_CLK                     0x000C100DU
+#define PORT_PIN_8_FSITXA_D1                      0x000C100EU
+#define PORT_PIN_8_FSIRXA_D0                      0x000C100FU
+
+#define PORT_PIN_9_GPIO9                          0x000C1200U
+#define PORT_PIN_9_EPWM5_B                        0x000C1201U
+#define PORT_PIN_9_EMIF1_D11                      0x000C1202U
+#define PORT_PIN_9_SPIE_POCI                      0x000C1206U
+#define PORT_PIN_9_UARTD_RX                       0x000C1207U
+#define PORT_PIN_9_OUTPUTXBAR6                    0x000C1209U
+#define PORT_PIN_9_ESC_TX0_CLK                    0x000C120AU
+#define PORT_PIN_9_ESC_GPO1                       0x000C120BU
+#define PORT_PIN_9_FSIRXB_D0                      0x000C120DU
+#define PORT_PIN_9_FSITXA_D0                      0x000C120EU
+#define PORT_PIN_9_FSIRXA_CLK                     0x000C120FU
+
+#define PORT_PIN_10_GPIO10                        0x000C1400U
+#define PORT_PIN_10_EPWM8_A                       0x000C1401U
+#define PORT_PIN_10_PMBUSA_SCL                    0x000C1402U
+#define PORT_PIN_10_ADCSOCBO                      0x000C1403U
+#define PORT_PIN_10_MCANC_RX                      0x000C1405U
+#define PORT_PIN_10_UARTC_TX                      0x000C1406U
+#define PORT_PIN_10_I2CA_SCL                      0x000C1407U
+#define PORT_PIN_10_SENT2                         0x000C1409U
+#define PORT_PIN_10_ESC_GPI19                     0x000C140DU
+#define PORT_PIN_10_ADCA_EXTMUXSEL2               0x000C140EU
+#define PORT_PIN_10_OUTPUTXBAR13                  0x000C140FU
+
+#define PORT_PIN_11_GPIO11                        0x000C1600U
+#define PORT_PIN_11_EPWM6_B                       0x000C1601U
+#define PORT_PIN_11_EMIF1_D15                     0x000C1602U
+#define PORT_PIN_11_EPWM7_B                       0x000C1603U
+#define PORT_PIN_11_SPIE_PTE                      0x000C1606U
+#define PORT_PIN_11_SD4_D1                        0x000C1607U
+#define PORT_PIN_11_PMBUSA_ALERT                  0x000C1609U
+#define PORT_PIN_11_ESC_TX0_DATA1                 0x000C160AU
+#define PORT_PIN_11_ESC_GPO3                      0x000C160BU
+#define PORT_PIN_11_FSIRXB_CLK                    0x000C160DU
+#define PORT_PIN_11_FSIRXA_D1                     0x000C160EU
+#define PORT_PIN_11_OUTPUTXBAR7                   0x000C160FU
+
+#define PORT_PIN_12_GPIO12                        0x000C1800U
+#define PORT_PIN_12_EPWM7_A                       0x000C1801U
+#define PORT_PIN_12_EMIF1_A1                      0x000C1802U
+#define PORT_PIN_12_ADCSOCAO                      0x000C1803U
+#define PORT_PIN_12_SPIE_CLK                      0x000C1806U
+#define PORT_PIN_12_SD4_C2                        0x000C1807U
+#define PORT_PIN_12_PMBUSA_CTL                    0x000C1809U
+#define PORT_PIN_12_ESC_TX0_DATA2                 0x000C180AU
+#define PORT_PIN_12_ESC_GPO4                      0x000C180BU
+#define PORT_PIN_12_FSIRXC_D0                     0x000C180DU
+#define PORT_PIN_12_FSIRXA_D0                     0x000C180EU
+#define PORT_PIN_12_OUTPUTXBAR14                  0x000C180FU
+
+#define PORT_PIN_13_GPIO13                        0x000C1A00U
+#define PORT_PIN_13_EPWM7_B                       0x000C1A01U
+#define PORT_PIN_13_EMIF1_CS0N                    0x000C1A02U
+#define PORT_PIN_13_EMIF1_D9                      0x000C1A03U
+#define PORT_PIN_13_UARTC_RX                      0x000C1A06U
+#define PORT_PIN_13_SD4_D2                        0x000C1A07U
+#define PORT_PIN_13_PMBUSA_SDA                    0x000C1A09U
+#define PORT_PIN_13_ESC_TX0_DATA3                 0x000C1A0AU
+#define PORT_PIN_13_ESC_GPO5                      0x000C1A0BU
+#define PORT_PIN_13_FSIRXC_D1                     0x000C1A0DU
+#define PORT_PIN_13_FSIRXA_CLK                    0x000C1A0EU
+#define PORT_PIN_13_OUTPUTXBAR15                  0x000C1A0FU
+
+#define PORT_PIN_14_GPIO14                        0x000C1C00U
+#define PORT_PIN_14_EPWM6_A                       0x000C1C01U
+#define PORT_PIN_14_EMIF1_D17                     0x000C1C02U
+#define PORT_PIN_14_EPWM18_A                      0x000C1C03U
+#define PORT_PIN_14_EMIF1_D13                     0x000C1C05U
+#define PORT_PIN_14_LINA_TX                       0x000C1C06U
+#define PORT_PIN_14_OUTPUTXBAR3                   0x000C1C07U
+#define PORT_PIN_14_PMBUSA_SCL                    0x000C1C09U
+#define PORT_PIN_14_ESC_PHY1_LINKSTATUS           0x000C1C0AU
+#define PORT_PIN_14_ESC_GPO6                      0x000C1C0BU
+#define PORT_PIN_14_FSIRXC_CLK                    0x000C1C0DU
+#define PORT_PIN_14_SD4_C1                        0x000C1C0EU
+#define PORT_PIN_14_OUTPUTXBAR8                   0x000C1C0FU
+
+#define PORT_PIN_15_GPIO15                        0x000C1E00U
+#define PORT_PIN_15_EPWM8_B                       0x000C1E01U
+#define PORT_PIN_15_PMBUSA_CTL                    0x000C1E03U
+#define PORT_PIN_15_I2CA_SDA                      0x000C1E05U
+#define PORT_PIN_15_LINA_RX                       0x000C1E06U
+#define PORT_PIN_15_OUTPUTXBAR4                   0x000C1E07U
+#define PORT_PIN_15_SENT1                         0x000C1E09U
+#define PORT_PIN_15_ESC_GPO7                      0x000C1E0AU
+#define PORT_PIN_15_ESC_GPI20                     0x000C1E0DU
+#define PORT_PIN_15_ADCA_EXTMUXSEL3               0x000C1E0EU
+#define PORT_PIN_15_OUTPUTXBAR16                  0x000C1E0FU
+
+#define PORT_PIN_16_GPIO16                        0x00100000U
+#define PORT_PIN_16_EPWM9_A                       0x00100001U
+#define PORT_PIN_16_EMIF1_D29                     0x00100002U
+#define PORT_PIN_16_EMIF1_BA0                     0x00100003U
+#define PORT_PIN_16_SPIA_PICO                     0x00100005U
+#define PORT_PIN_16_MCAND_TX                      0x00100007U
+#define PORT_PIN_16_ESC_RX1_CLK                   0x0010000AU
+#define PORT_PIN_16_SD1_D1                        0x0010000BU
+#define PORT_PIN_16_FSIRXD_D1                     0x0010000DU
+#define PORT_PIN_16_FSIRXC_CLK                    0x0010000EU
+#define PORT_PIN_16_OUTPUTXBAR7                   0x0010000FU
+
+#define PORT_PIN_17_GPIO17                        0x00100200U
+#define PORT_PIN_17_EPWM9_B                       0x00100201U
+#define PORT_PIN_17_EMIF1_DQM3                    0x00100202U
+#define PORT_PIN_17_EMIF1_BA1                     0x00100203U
+#define PORT_PIN_17_SPIA_POCI                     0x00100205U
+#define PORT_PIN_17_MCAND_RX                      0x00100207U
+#define PORT_PIN_17_ESC_RX1_DV                    0x0010020AU
+#define PORT_PIN_17_SD1_C1                        0x0010020BU
+#define PORT_PIN_17_FSIRXD_CLK                    0x0010020DU
+#define PORT_PIN_17_UARTC_TX                      0x0010020EU
+#define PORT_PIN_17_OUTPUTXBAR8                   0x0010020FU
+
+#define PORT_PIN_18_GPIO18                        0x00100400U
+#define PORT_PIN_18_EPWM15_A                      0x00100401U
+#define PORT_PIN_18_PMBUSA_ALERT                  0x00100403U
+#define PORT_PIN_18_I2CA_SCL                      0x00100405U
+#define PORT_PIN_18_UARTC_RX                      0x00100406U
+#define PORT_PIN_18_SENT4                         0x00100409U
+#define PORT_PIN_18_ESC_GPI21                     0x0010040DU
+#define PORT_PIN_18_ADCB_EXTMUXSEL0               0x0010040EU
+
+#define PORT_PIN_19_GPIO19                        0x00100600U
+#define PORT_PIN_19_EPWM10_B                      0x00100601U
+#define PORT_PIN_19_EMIF1_CS3N                    0x00100602U
+#define PORT_PIN_19_ADCSOCBO                      0x00100603U
+#define PORT_PIN_19_SPIA_PTE                      0x00100605U
+#define PORT_PIN_19_UARTE_RX                      0x00100606U
+#define PORT_PIN_19_MCANC_TX                      0x00100607U
+#define PORT_PIN_19_PMBUSA_ALERT                  0x00100609U
+#define PORT_PIN_19_ESC_TX1_DATA3                 0x0010060AU
+#define PORT_PIN_19_SD1_C2                        0x0010060BU
+
+#define PORT_PIN_20_GPIO20                        0x00100800U
+#define PORT_PIN_20_EPWM11_A                      0x00100801U
+#define PORT_PIN_20_EMIF1_BA0                     0x00100802U
+#define PORT_PIN_20_EMIF1_DQM2                    0x00100803U
+#define PORT_PIN_20_SPIC_PICO                     0x00100806U
+#define PORT_PIN_20_MCANB_RX                      0x00100807U
+#define PORT_PIN_20_ESC_TX1_DATA2                 0x0010080AU
+#define PORT_PIN_20_SD1_D3                        0x0010080BU
+
+#define PORT_PIN_21_GPIO21                        0x00100A00U
+#define PORT_PIN_21_EPWM11_B                      0x00100A01U
+#define PORT_PIN_21_EMIF1_BA1                     0x00100A02U
+#define PORT_PIN_21_SPIC_POCI                     0x00100A06U
+#define PORT_PIN_21_MCANB_TX                      0x00100A07U
+#define PORT_PIN_21_ESC_TX1_DATA1                 0x00100A0AU
+#define PORT_PIN_21_SD1_C3                        0x00100A0BU
+
+#define PORT_PIN_22_GPIO22                        0x00100C00U
+#define PORT_PIN_22_EPWM12_A                      0x00100C01U
+#define PORT_PIN_22_PMBUSA_SDA                    0x00100C03U
+#define PORT_PIN_22_I2CB_SDA                      0x00100C05U
+#define PORT_PIN_22_UARTB_TX                      0x00100C06U
+#define PORT_PIN_22_MCANC_TX                      0x00100C07U
+#define PORT_PIN_22_SENT5                         0x00100C09U
+#define PORT_PIN_22_ESC_GPO2                      0x00100C0AU
+#define PORT_PIN_22_ESC_GPI22                     0x00100C0DU
+#define PORT_PIN_22_ADCB_EXTMUXSEL1               0x00100C0EU
+
+#define PORT_PIN_23_GPIO23                        0x00100E00U
+#define PORT_PIN_23_EPWM12_B                      0x00100E01U
+#define PORT_PIN_23_PMBUSA_SCL                    0x00100E03U
+#define PORT_PIN_23_I2CB_SCL                      0x00100E05U
+#define PORT_PIN_23_UARTB_RX                      0x00100E06U
+#define PORT_PIN_23_MCANC_RX                      0x00100E07U
+#define PORT_PIN_23_SENT6                         0x00100E09U
+#define PORT_PIN_23_ESC_PHY_RESETN                0x00100E0AU
+#define PORT_PIN_23_ESC_GPI23                     0x00100E0DU
+#define PORT_PIN_23_ADCC_EXTMUXSEL0               0x00100E0EU
+
+#define PORT_PIN_24_GPIO24                        0x00101000U
+#define PORT_PIN_24_EPWM13_A                      0x00101001U
+#define PORT_PIN_24_EMIF1_DQM0                    0x00101002U
+#define PORT_PIN_24_SPIB_PICO                     0x00101005U
+#define PORT_PIN_24_LINB_TX                       0x00101006U
+#define PORT_PIN_24_MCANE_TX                      0x00101007U
+#define PORT_PIN_24_ESC_RX0_CLK                   0x0010100AU
+#define PORT_PIN_24_SD2_D1                        0x0010100BU
+#define PORT_PIN_24_ESC_GPI24                     0x0010100DU
+#define PORT_PIN_24_EPWM2_A                       0x0010100EU
+#define PORT_PIN_24_OUTPUTXBAR1                   0x0010100FU
+
+#define PORT_PIN_25_GPIO25                        0x00101200U
+#define PORT_PIN_25_EPWM13_B                      0x00101201U
+#define PORT_PIN_25_EMIF1_DQM1                    0x00101202U
+#define PORT_PIN_25_SPIB_POCI                     0x00101205U
+#define PORT_PIN_25_LINB_RX                       0x00101206U
+#define PORT_PIN_25_MCANE_RX                      0x00101207U
+#define PORT_PIN_25_PMBUSA_SDA                    0x00101209U
+#define PORT_PIN_25_ESC_RX0_DV                    0x0010120AU
+#define PORT_PIN_25_SD2_C1                        0x0010120BU
+#define PORT_PIN_25_FSITXA_D1                     0x0010120DU
+#define PORT_PIN_25_EPWM2_B                       0x0010120EU
+#define PORT_PIN_25_OUTPUTXBAR2                   0x0010120FU
+
+#define PORT_PIN_26_GPIO26                        0x00101400U
+#define PORT_PIN_26_EPWM14_A                      0x00101401U
+#define PORT_PIN_26_EMIF1_DQM2                    0x00101402U
+#define PORT_PIN_26_SPIB_CLK                      0x00101405U
+#define PORT_PIN_26_UARTE_TX                      0x00101406U
+#define PORT_PIN_26_MCANE_TX                      0x00101407U
+#define PORT_PIN_26_PMBUSA_CTL                    0x00101409U
+#define PORT_PIN_26_ESC_RX0_ERR                   0x0010140AU
+#define PORT_PIN_26_SD2_D2                        0x0010140BU
+#define PORT_PIN_26_FSITXA_D0                     0x0010140DU
+#define PORT_PIN_26_ESC_MDIO_CLK                  0x0010140EU
+#define PORT_PIN_26_OUTPUTXBAR3                   0x0010140FU
+
+#define PORT_PIN_27_GPIO27                        0x00101600U
+#define PORT_PIN_27_EPWM14_B                      0x00101601U
+#define PORT_PIN_27_EMIF1_DQM3                    0x00101602U
+#define PORT_PIN_27_SPIB_PTE                      0x00101605U
+#define PORT_PIN_27_UARTA_TX                      0x00101606U
+#define PORT_PIN_27_EPWM4_A                       0x00101609U
+#define PORT_PIN_27_ESC_RX0_DATA0                 0x0010160AU
+#define PORT_PIN_27_SD2_C2                        0x0010160BU
+#define PORT_PIN_27_FSITXA_CLK                    0x0010160DU
+#define PORT_PIN_27_ESC_MDIO_DATA                 0x0010160EU
+#define PORT_PIN_27_OUTPUTXBAR4                   0x0010160FU
+
+#define PORT_PIN_28_GPIO28                        0x00101800U
+#define PORT_PIN_28_EPWM15_A                      0x00101801U
+#define PORT_PIN_28_EMIF1_CS4N                    0x00101802U
+#define PORT_PIN_28_EMIF1_CS2N                    0x00101803U
+#define PORT_PIN_28_UARTA_RX                      0x00101806U
+#define PORT_PIN_28_EPWM4_B                       0x00101809U
+#define PORT_PIN_28_ESC_RX0_DATA1                 0x0010180AU
+#define PORT_PIN_28_SD2_D3                        0x0010180BU
+#define PORT_PIN_28_OUTPUTXBAR5                   0x0010180FU
+
+#define PORT_PIN_29_GPIO29                        0x00101A00U
+#define PORT_PIN_29_EPWM15_B                      0x00101A01U
+#define PORT_PIN_29_PMBUSA_SDA                    0x00101A02U
+#define PORT_PIN_29_UARTE_RX                      0x00101A06U
+#define PORT_PIN_29_I2CA_SDA                      0x00101A07U
+#define PORT_PIN_29_SENT3                         0x00101A09U
+#define PORT_PIN_29_ESC_LATCH0                    0x00101A0AU
+#define PORT_PIN_29_ESC_I2C_SDA                   0x00101A0DU
+#define PORT_PIN_29_ADCC_EXTMUXSEL1               0x00101A0EU
+#define PORT_PIN_29_OUTPUTXBAR6                   0x00101A0FU
+
+#define PORT_PIN_30_GPIO30                        0x00101C00U
+#define PORT_PIN_30_EPWM16_A                      0x00101C01U
+#define PORT_PIN_30_EMIF1_CLK                     0x00101C02U
+#define PORT_PIN_30_EMIF1_CS4N                    0x00101C03U
+#define PORT_PIN_30_MCANC_RX                      0x00101C05U
+#define PORT_PIN_30_SPID_PICO                     0x00101C06U
+#define PORT_PIN_30_EMIF1_A12                     0x00101C07U
+#define PORT_PIN_30_ESC_LATCH1                    0x00101C0AU
+#define PORT_PIN_30_SD2_D4                        0x00101C0BU
+#define PORT_PIN_30_ESC_I2C_SCL                   0x00101C0DU
+#define PORT_PIN_30_ESC_SYNC1                     0x00101C0EU
+#define PORT_PIN_30_OUTPUTXBAR7                   0x00101C0FU
+
+#define PORT_PIN_31_GPIO31                        0x00101E00U
+#define PORT_PIN_31_EPWM16_B                      0x00101E01U
+#define PORT_PIN_31_EMIF1_WEN                     0x00101E02U
+#define PORT_PIN_31_EMIF1_RNW                     0x00101E03U
+#define PORT_PIN_31_MCANC_TX                      0x00101E05U
+#define PORT_PIN_31_SPID_POCI                     0x00101E06U
+#define PORT_PIN_31_I2CA_SDA                      0x00101E07U
+#define PORT_PIN_31_ESC_RX1_DATA0                 0x00101E0AU
+#define PORT_PIN_31_SD2_C4                        0x00101E0BU
+#define PORT_PIN_31_FSITXD_D0                     0x00101E0DU
+#define PORT_PIN_31_OUTPUTXBAR8                   0x00101E0FU
+
+#define PORT_PIN_32_GPIO32                        0x008C0000U
+#define PORT_PIN_32_EMIF1_CS0N                    0x008C0002U
+#define PORT_PIN_32_EMIF1_OEN                     0x008C0003U
+#define PORT_PIN_32_SPIA_PICO                     0x008C0005U
+#define PORT_PIN_32_SPID_CLK                      0x008C0006U
+#define PORT_PIN_32_I2CA_SDA                      0x008C0007U
+#define PORT_PIN_32_OUTPUTXBAR9                   0x008C0009U
+#define PORT_PIN_32_ESC_RX0_DATA0                 0x008C000AU
+
+#define PORT_PIN_33_GPIO33                        0x008C0200U
+#define PORT_PIN_33_EMIF1_RNW                     0x008C0202U
+#define PORT_PIN_33_EMIF1_BA0                     0x008C0203U
+#define PORT_PIN_33_SPIA_POCI                     0x008C0205U
+#define PORT_PIN_33_SPID_PTE                      0x008C0206U
+#define PORT_PIN_33_I2CA_SCL                      0x008C0207U
+#define PORT_PIN_33_OUTPUTXBAR10                  0x008C0209U
+#define PORT_PIN_33_ESC_LED_ERR                   0x008C020AU
+
+#define PORT_PIN_34_GPIO34                        0x008C0400U
+#define PORT_PIN_34_EPWM18_A                      0x008C0401U
+#define PORT_PIN_34_EMIF1_CS2N                    0x008C0402U
+#define PORT_PIN_34_EMIF1_BA1                     0x008C0403U
+#define PORT_PIN_34_SPIA_CLK                      0x008C0405U
+#define PORT_PIN_34_UARTF_TX                      0x008C0406U
+#define PORT_PIN_34_I2CB_SDA                      0x008C0407U
+#define PORT_PIN_34_OUTPUTXBAR11                  0x008C0409U
+#define PORT_PIN_34_ESC_LATCH0                    0x008C040AU
+#define PORT_PIN_34_EPWM3_B                       0x008C040DU
+#define PORT_PIN_34_ESC_SYNC0                     0x008C040EU
+#define PORT_PIN_34_OUTPUTXBAR1                   0x008C040FU
+
+#define PORT_PIN_35_GPIO35                        0x008C0600U
+#define PORT_PIN_35_EPWM18_B                      0x008C0601U
+#define PORT_PIN_35_EMIF1_CS3N                    0x008C0602U
+#define PORT_PIN_35_EMIF1_A0                      0x008C0603U
+#define PORT_PIN_35_SPIA_PTE                      0x008C0605U
+#define PORT_PIN_35_UARTF_RX                      0x008C0606U
+#define PORT_PIN_35_I2CB_SCL                      0x008C0607U
+#define PORT_PIN_35_OUTPUTXBAR12                  0x008C0609U
+#define PORT_PIN_35_ESC_LATCH1                    0x008C060AU
+#define PORT_PIN_35_ESC_SYNC1                     0x008C060EU
+
+#define PORT_PIN_36_GPIO36                        0x008C0800U
+#define PORT_PIN_36_EMIF1_WAIT                    0x008C0802U
+#define PORT_PIN_36_EMIF1_A1                      0x008C0803U
+#define PORT_PIN_36_UARTC_TX                      0x008C0805U
+#define PORT_PIN_36_MCANC_RX                      0x008C0806U
+#define PORT_PIN_36_OUTPUTXBAR13                  0x008C0809U
+#define PORT_PIN_36_SD1_D1                        0x008C080BU
+#define PORT_PIN_36_EMIF1_WEN                     0x008C080EU
+
+#define PORT_PIN_37_GPIO37                        0x008C0A00U
+#define PORT_PIN_37_EPWM18_A                      0x008C0A01U
+#define PORT_PIN_37_EMIF1_OEN                     0x008C0A02U
+#define PORT_PIN_37_EMIF1_A2                      0x008C0A03U
+#define PORT_PIN_37_UARTC_RX                      0x008C0A05U
+#define PORT_PIN_37_MCANC_TX                      0x008C0A06U
+#define PORT_PIN_37_OUTPUTXBAR14                  0x008C0A09U
+#define PORT_PIN_37_ESC_RX1_DATA1                 0x008C0A0AU
+#define PORT_PIN_37_SD1_D2                        0x008C0A0BU
+#define PORT_PIN_37_EMIF1_D24                     0x008C0A0EU
+#define PORT_PIN_37_OUTPUTXBAR2                   0x008C0A0FU
+
+#define PORT_PIN_38_GPIO38                        0x008C0C00U
+#define PORT_PIN_38_EPWM18_B                      0x008C0C01U
+#define PORT_PIN_38_EMIF1_A0                      0x008C0C02U
+#define PORT_PIN_38_EMIF1_A3                      0x008C0C03U
+#define PORT_PIN_38_UARTA_TX                      0x008C0C05U
+#define PORT_PIN_38_SPIE_PICO                     0x008C0C06U
+#define PORT_PIN_38_OUTPUTXBAR15                  0x008C0C09U
+#define PORT_PIN_38_ESC_RX0_DATA1                 0x008C0C0AU
+#define PORT_PIN_38_SD1_D3                        0x008C0C0BU
+#define PORT_PIN_38_FSITXD_D1                     0x008C0C0DU
+#define PORT_PIN_38_EMIF1_CS2N                    0x008C0C0EU
+
+#define PORT_PIN_39_GPIO39                        0x008C0E00U
+#define PORT_PIN_39_EMIF1_A1                      0x008C0E02U
+#define PORT_PIN_39_EMIF1_A4                      0x008C0E03U
+#define PORT_PIN_39_UARTA_RX                      0x008C0E05U
+#define PORT_PIN_39_OUTPUTXBAR16                  0x008C0E09U
+#define PORT_PIN_39_ESC_MDIO_DATA                 0x008C0E0AU
+#define PORT_PIN_39_SD1_D4                        0x008C0E0BU
+#define PORT_PIN_39_FSIRXD_CLK                    0x008C0E0DU
+#define PORT_PIN_39_ESC_LED_RUN                   0x008C0E0FU
+
+#define PORT_PIN_40_GPIO40                        0x008C1000U
+#define PORT_PIN_40_EPWM13_A                      0x008C1001U
+#define PORT_PIN_40_EMIF1_A2                      0x008C1002U
+#define PORT_PIN_40_MCANB_RX                      0x008C1005U
+#define PORT_PIN_40_I2CB_SDA                      0x008C1006U
+#define PORT_PIN_40_OUTPUTXBAR9                   0x008C1009U
+#define PORT_PIN_40_ESC_GPO2                      0x008C100AU
+#define PORT_PIN_40_SD4_C3                        0x008C100BU
+#define PORT_PIN_40_EPWM1_A                       0x008C100EU
+#define PORT_PIN_40_SD2_C1                        0x008C100FU
+
+#define PORT_PIN_41_GPIO41                        0x008C1200U
+#define PORT_PIN_41_EPWM13_B                      0x008C1201U
+#define PORT_PIN_41_EMIF1_A3                      0x008C1202U
+#define PORT_PIN_41_EPWM18_A                      0x008C1203U
+#define PORT_PIN_41_MCANB_TX                      0x008C1205U
+#define PORT_PIN_41_SPIE_POCI                     0x008C1206U
+#define PORT_PIN_41_I2CB_SCL                      0x008C1207U
+#define PORT_PIN_41_OUTPUTXBAR10                  0x008C1209U
+#define PORT_PIN_41_ESC_RX0_DATA2                 0x008C120AU
+#define PORT_PIN_41_SD4_D3                        0x008C120BU
+#define PORT_PIN_41_FSIRXD_CLK                    0x008C120DU
+#define PORT_PIN_41_EPWM1_B                       0x008C120EU
+#define PORT_PIN_41_SD2_D1                        0x008C120FU
+
+#define PORT_PIN_42_GPIO42                        0x008C1400U
+#define PORT_PIN_42_EPWM14_A                      0x008C1401U
+#define PORT_PIN_42_EMIF1_A2                      0x008C1402U
+#define PORT_PIN_42_EMIF1_A13                     0x008C1403U
+#define PORT_PIN_42_UARTA_TX                      0x008C1405U
+#define PORT_PIN_42_SPIE_CLK                      0x008C1406U
+#define PORT_PIN_42_I2CA_SDA                      0x008C1407U
+#define PORT_PIN_42_OUTPUTXBAR13                  0x008C1409U
+#define PORT_PIN_42_SD4_C3                        0x008C140AU
+#define PORT_PIN_42_SD4_C4                        0x008C140BU
+#define PORT_PIN_42_FSIRXD_D0                     0x008C140DU
+#define PORT_PIN_42_ADCE_EXTMUXSEL2               0x008C140EU
+
+#define PORT_PIN_43_GPIO43                        0x008C1600U
+#define PORT_PIN_43_EPWM14_B                      0x008C1601U
+#define PORT_PIN_43_EMIF1_A4                      0x008C1602U
+#define PORT_PIN_43_EMIF1_D13                     0x008C1603U
+#define PORT_PIN_43_UARTA_RX                      0x008C1605U
+#define PORT_PIN_43_SPIE_PTE                      0x008C1606U
+#define PORT_PIN_43_I2CA_SCL                      0x008C1607U
+#define PORT_PIN_43_OUTPUTXBAR14                  0x008C1609U
+#define PORT_PIN_43_SD4_D4                        0x008C160BU
+#define PORT_PIN_43_FSIRXD_D1                     0x008C160DU
+#define PORT_PIN_43_ADCE_EXTMUXSEL3               0x008C160EU
+
+#define PORT_PIN_44_GPIO44                        0x008C1800U
+#define PORT_PIN_44_EMIF1_A4                      0x008C1802U
+#define PORT_PIN_44_SPID_POCI                     0x008C1805U
+#define PORT_PIN_44_MCANB_RX                      0x008C1806U
+#define PORT_PIN_44_UARTB_TX                      0x008C1807U
+#define PORT_PIN_44_OUTPUTXBAR14                  0x008C1809U
+#define PORT_PIN_44_ESC_TX1_CLK                   0x008C180AU
+#define PORT_PIN_44_SD3_C4                        0x008C180BU
+#define PORT_PIN_44_FSIRXD_CLK                    0x008C180DU
+
+#define PORT_PIN_45_GPIO45                        0x008C1A00U
+#define PORT_PIN_45_EMIF1_A5                      0x008C1A02U
+#define PORT_PIN_45_SPID_PTE                      0x008C1A05U
+#define PORT_PIN_45_MCANB_TX                      0x008C1A06U
+#define PORT_PIN_45_UARTB_RX                      0x008C1A07U
+#define PORT_PIN_45_OUTPUTXBAR15                  0x008C1A09U
+#define PORT_PIN_45_ESC_TX1_ENA                   0x008C1A0AU
+#define PORT_PIN_45_SD3_D4                        0x008C1A0BU
+#define PORT_PIN_45_FSIRXD_D0                     0x008C1A0DU
+
+#define PORT_PIN_46_GPIO46                        0x008C1C00U
+#define PORT_PIN_46_EPWM4_A                       0x008C1C01U
+#define PORT_PIN_46_EMIF1_A6                      0x008C1C02U
+#define PORT_PIN_46_EPWM14_A                      0x008C1C03U
+#define PORT_PIN_46_UARTC_TX                      0x008C1C05U
+#define PORT_PIN_46_MCANE_TX                      0x008C1C07U
+#define PORT_PIN_46_ESC_MDIO_CLK                  0x008C1C0AU
+#define PORT_PIN_46_SD3_C4                        0x008C1C0BU
+
+#define PORT_PIN_47_GPIO47                        0x008C1E00U
+#define PORT_PIN_47_EPWM4_B                       0x008C1E01U
+#define PORT_PIN_47_EMIF1_A7                      0x008C1E02U
+#define PORT_PIN_47_EPWM14_B                      0x008C1E03U
+#define PORT_PIN_47_UARTC_RX                      0x008C1E05U
+#define PORT_PIN_47_MCANE_RX                      0x008C1E07U
+#define PORT_PIN_47_ESC_MDIO_DATA                 0x008C1E0AU
+#define PORT_PIN_47_SD4_C3                        0x008C1E0BU
+
+#define PORT_PIN_48_GPIO48                        0x00900000U
+#define PORT_PIN_48_EMIF1_A8                      0x00900002U
+#define PORT_PIN_48_UARTD_TX                      0x00900005U
+#define PORT_PIN_48_OUTPUTXBAR3                   0x00900009U
+#define PORT_PIN_48_ESC_PHY_CLK                   0x0090000AU
+#define PORT_PIN_48_SD1_D1                        0x0090000BU
+#define PORT_PIN_48_EPWM3_A                       0x0090000DU
+#define PORT_PIN_48_SD2_C2                        0x0090000FU
+
+#define PORT_PIN_49_GPIO49                        0x00900200U
+#define PORT_PIN_49_EMIF1_A9                      0x00900202U
+#define PORT_PIN_49_EMIF1_A5                      0x00900203U
+#define PORT_PIN_49_UARTD_RX                      0x00900205U
+#define PORT_PIN_49_OUTPUTXBAR4                   0x00900209U
+#define PORT_PIN_49_ESC_TX1_DATA2                 0x0090020AU
+#define PORT_PIN_49_SD1_C1                        0x0090020BU
+#define PORT_PIN_49_FSITXA_D0                     0x0090020DU
+#define PORT_PIN_49_SD2_D1                        0x0090020FU
+
+#define PORT_PIN_50_GPIO50                        0x00900400U
+#define PORT_PIN_50_EPWM15_A                      0x00900401U
+#define PORT_PIN_50_EMIF1_A10                     0x00900402U
+#define PORT_PIN_50_EMIF1_A6                      0x00900403U
+#define PORT_PIN_50_SPIC_PICO                     0x00900406U
+#define PORT_PIN_50_MCANF_TX                      0x00900407U
+#define PORT_PIN_50_ESC_TX1_DATA1                 0x0090040AU
+#define PORT_PIN_50_SD1_D2                        0x0090040BU
+#define PORT_PIN_50_FSITXA_D1                     0x0090040DU
+#define PORT_PIN_50_ESC_GPI25                     0x0090040EU
+#define PORT_PIN_50_SD2_D2                        0x0090040FU
+
+#define PORT_PIN_51_GPIO51                        0x00900600U
+#define PORT_PIN_51_EPWM15_B                      0x00900601U
+#define PORT_PIN_51_EMIF1_A11                     0x00900602U
+#define PORT_PIN_51_EMIF1_A7                      0x00900603U
+#define PORT_PIN_51_SPIC_POCI                     0x00900606U
+#define PORT_PIN_51_MCANF_RX                      0x00900607U
+#define PORT_PIN_51_ESC_TX1_CLK                   0x0090060AU
+#define PORT_PIN_51_SD1_C2                        0x0090060BU
+#define PORT_PIN_51_FSITXA_CLK                    0x0090060DU
+#define PORT_PIN_51_ESC_GPI26                     0x0090060EU
+#define PORT_PIN_51_SD2_D3                        0x0090060FU
+
+#define PORT_PIN_52_GPIO52                        0x00900800U
+#define PORT_PIN_52_EPWM16_A                      0x00900801U
+#define PORT_PIN_52_EMIF1_A12                     0x00900802U
+#define PORT_PIN_52_EMIF1_A8                      0x00900803U
+#define PORT_PIN_52_UARTD_TX                      0x00900805U
+#define PORT_PIN_52_SPIC_CLK                      0x00900806U
+#define PORT_PIN_52_ESC_TX1_ENA                   0x0090080AU
+#define PORT_PIN_52_SD1_D3                        0x0090080BU
+#define PORT_PIN_52_FSIRXA_D0                     0x0090080DU
+#define PORT_PIN_52_SD2_D4                        0x0090080FU
+
+#define PORT_PIN_53_GPIO53                        0x00900A00U
+#define PORT_PIN_53_EPWM16_B                      0x00900A01U
+#define PORT_PIN_53_EMIF1_D31                     0x00900A02U
+#define PORT_PIN_53_EMIF1_A9                      0x00900A03U
+#define PORT_PIN_53_UARTD_RX                      0x00900A05U
+#define PORT_PIN_53_SPIC_PTE                      0x00900A06U
+#define PORT_PIN_53_ESC_PHY0_LINKSTATUS           0x00900A0AU
+#define PORT_PIN_53_SD1_C3                        0x00900A0BU
+#define PORT_PIN_53_FSIRXA_D1                     0x00900A0DU
+#define PORT_PIN_53_ESC_GPI28                     0x00900A0EU
+#define PORT_PIN_53_SD1_C1                        0x00900A0FU
+
+#define PORT_PIN_54_GPIO54                        0x00900C00U
+#define PORT_PIN_54_EMIF1_D30                     0x00900C02U
+#define PORT_PIN_54_EMIF1_A10                     0x00900C03U
+#define PORT_PIN_54_SPIA_PICO                     0x00900C05U
+#define PORT_PIN_54_ESC_PHY_CLK                   0x00900C0AU
+#define PORT_PIN_54_SD1_D4                        0x00900C0BU
+#define PORT_PIN_54_FSIRXA_CLK                    0x00900C0DU
+#define PORT_PIN_54_ESC_GPI29                     0x00900C0EU
+#define PORT_PIN_54_SD1_C2                        0x00900C0FU
+
+#define PORT_PIN_55_GPIO55                        0x00900E00U
+#define PORT_PIN_55_EPWM16_B                      0x00900E01U
+#define PORT_PIN_55_EMIF1_D29                     0x00900E02U
+#define PORT_PIN_55_EMIF1_D0                      0x00900E03U
+#define PORT_PIN_55_SPIA_POCI                     0x00900E05U
+#define PORT_PIN_55_EMIF1_WAIT                    0x00900E06U
+#define PORT_PIN_55_ESC_PHY0_LINKSTATUS           0x00900E0AU
+#define PORT_PIN_55_SD1_C4                        0x00900E0BU
+#define PORT_PIN_55_FSITXB_D0                     0x00900E0DU
+#define PORT_PIN_55_SD1_C3                        0x00900E0FU
+
+#define PORT_PIN_56_GPIO56                        0x00901000U
+#define PORT_PIN_56_EPWM17_A                      0x00901001U
+#define PORT_PIN_56_EMIF1_D28                     0x00901002U
+#define PORT_PIN_56_EMIF1_D1                      0x00901003U
+#define PORT_PIN_56_SPIA_CLK                      0x00901005U
+#define PORT_PIN_56_MCAND_TX                      0x00901006U
+#define PORT_PIN_56_I2CA_SDA                      0x00901007U
+#define PORT_PIN_56_ESC_PDI_UC_IRQ                0x0090100AU
+#define PORT_PIN_56_SD2_D1                        0x0090100BU
+#define PORT_PIN_56_FSITXB_CLK                    0x0090100DU
+#define PORT_PIN_56_ESC_GPI30                     0x0090100EU
+#define PORT_PIN_56_SD1_C4                        0x0090100FU
+
+#define PORT_PIN_57_GPIO57                        0x00901200U
+#define PORT_PIN_57_EPWM17_B                      0x00901201U
+#define PORT_PIN_57_EMIF1_D27                     0x00901202U
+#define PORT_PIN_57_EMIF1_D2                      0x00901203U
+#define PORT_PIN_57_SPIA_PTE                      0x00901205U
+#define PORT_PIN_57_MCAND_RX                      0x00901206U
+#define PORT_PIN_57_I2CA_SCL                      0x00901207U
+#define PORT_PIN_57_ESC_MDIO_DATA                 0x0090120AU
+#define PORT_PIN_57_SD2_C1                        0x0090120BU
+#define PORT_PIN_57_FSITXB_D1                     0x0090120DU
+#define PORT_PIN_57_ESC_GPI31                     0x0090120EU
+#define PORT_PIN_57_SD3_D3                        0x0090120FU
+
+#define PORT_PIN_58_GPIO58                        0x00901400U
+#define PORT_PIN_58_EPWM13_A                      0x00901401U
+#define PORT_PIN_58_EMIF1_D26                     0x00901402U
+#define PORT_PIN_58_EPWM8_A                       0x00901403U
+#define PORT_PIN_58_SPIA_PICO                     0x00901405U
+#define PORT_PIN_58_MCANC_RX                      0x00901407U
+#define PORT_PIN_58_SENT1                         0x00901409U
+#define PORT_PIN_58_ESC_LED_LINK0_ACTIVE          0x0090140AU
+#define PORT_PIN_58_SD2_D2                        0x0090140BU
+#define PORT_PIN_58_FSIRXB_D0                     0x0090140DU
+#define PORT_PIN_58_ESC_TX0_DATA3                 0x0090140EU
+#define PORT_PIN_58_SD2_C2                        0x0090140FU
+
+#define PORT_PIN_59_GPIO59                        0x00901600U
+#define PORT_PIN_59_EPWM5_A                       0x00901601U
+#define PORT_PIN_59_EMIF1_D25                     0x00901602U
+#define PORT_PIN_59_EPWM8_B                       0x00901603U
+#define PORT_PIN_59_SPIA_POCI                     0x00901605U
+#define PORT_PIN_59_MCANC_TX                      0x00901607U
+#define PORT_PIN_59_SENT2                         0x00901609U
+#define PORT_PIN_59_ESC_LED_LINK1_ACTIVE          0x0090160AU
+#define PORT_PIN_59_SD2_C2                        0x0090160BU
+#define PORT_PIN_59_FSIRXB_D1                     0x0090160DU
+#define PORT_PIN_59_ESC_TX0_ENA                   0x0090160EU
+#define PORT_PIN_59_SD2_C3                        0x0090160FU
+
+#define PORT_PIN_60_GPIO60                        0x00901800U
+#define PORT_PIN_60_EPWM3_B                       0x00901801U
+#define PORT_PIN_60_EMIF1_D24                     0x00901802U
+#define PORT_PIN_60_EMIF1_D0                      0x00901803U
+#define PORT_PIN_60_SPIA_CLK                      0x00901805U
+#define PORT_PIN_60_OUTPUTXBAR3                   0x00901806U
+#define PORT_PIN_60_SENT3                         0x00901809U
+#define PORT_PIN_60_ESC_LED_ERR                   0x0090180AU
+#define PORT_PIN_60_ESC_LATCH0                    0x0090180BU
+#define PORT_PIN_60_FSIRXB_CLK                    0x0090180DU
+#define PORT_PIN_60_SD2_C4                        0x0090180FU
+
+#define PORT_PIN_61_GPIO61                        0x00901A00U
+#define PORT_PIN_61_EPWM17_B                      0x00901A01U
+#define PORT_PIN_61_EMIF1_D23                     0x00901A02U
+#define PORT_PIN_61_EMIF1_D6                      0x00901A03U
+#define PORT_PIN_61_SPIA_PTE                      0x00901A05U
+#define PORT_PIN_61_MCANC_RX                      0x00901A07U
+#define PORT_PIN_61_OUTPUTXBAR4                   0x00901A09U
+#define PORT_PIN_61_ESC_LED_RUN                   0x00901A0AU
+#define PORT_PIN_61_SD2_C3                        0x00901A0BU
+#define PORT_PIN_61_FSITXD_CLK                    0x00901A0DU
+#define PORT_PIN_61_ESC_LATCH1                    0x00901A0EU
+
+#define PORT_PIN_62_GPIO62                        0x00901C00U
+#define PORT_PIN_62_EPWM17_A                      0x00901C01U
+#define PORT_PIN_62_EMIF1_D22                     0x00901C02U
+#define PORT_PIN_62_EMIF1_D7                      0x00901C03U
+#define PORT_PIN_62_MCANC_RX                      0x00901C06U
+#define PORT_PIN_62_MCANC_TX                      0x00901C07U
+#define PORT_PIN_62_SENT4                         0x00901C09U
+#define PORT_PIN_62_ESC_LED_STATE_RUN             0x00901C0AU
+#define PORT_PIN_62_SD2_D4                        0x00901C0BU
+#define PORT_PIN_62_FSITXD_D0                     0x00901C0DU
+#define PORT_PIN_62_ESC_MDIO_CLK                  0x00901C0EU
+
+#define PORT_PIN_63_GPIO63                        0x00901E00U
+#define PORT_PIN_63_EPWM9_A                       0x00901E01U
+#define PORT_PIN_63_EMIF1_D21                     0x00901E02U
+#define PORT_PIN_63_EMIF1_RNW                     0x00901E03U
+#define PORT_PIN_63_SPIB_PICO                     0x00901E05U
+#define PORT_PIN_63_MCANC_TX                      0x00901E06U
+#define PORT_PIN_63_SENT5                         0x00901E09U
+#define PORT_PIN_63_ESC_RX1_DATA0                 0x00901E0AU
+#define PORT_PIN_63_SD1_D1                        0x00901E0BU
+#define PORT_PIN_63_FSITXD_D1                     0x00901E0DU
+#define PORT_PIN_63_ADCD_EXTMUXSEL0               0x00901E0EU
+#define PORT_PIN_63_SD2_C4                        0x00901E0FU
+
+#define PORT_PIN_64_GPIO64                        0x010C0000U
+#define PORT_PIN_64_EPWM9_B                       0x010C0001U
+#define PORT_PIN_64_EMIF1_D20                     0x010C0002U
+#define PORT_PIN_64_EMIF1_WAIT                    0x010C0003U
+#define PORT_PIN_64_SPIB_POCI                     0x010C0005U
+#define PORT_PIN_64_MCANA_TX                      0x010C0006U
+#define PORT_PIN_64_UARTF_TX                      0x010C0007U
+#define PORT_PIN_64_SENT6                         0x010C0009U
+#define PORT_PIN_64_ESC_RX1_DATA1                 0x010C000AU
+#define PORT_PIN_64_SD1_C1                        0x010C000BU
+#define PORT_PIN_64_FSITXD_CLK                    0x010C000DU
+#define PORT_PIN_64_ADCD_EXTMUXSEL1               0x010C000EU
+
+#define PORT_PIN_65_GPIO65                        0x010C0200U
+#define PORT_PIN_65_EPWM10_A                      0x010C0201U
+#define PORT_PIN_65_EMIF1_D19                     0x010C0202U
+#define PORT_PIN_65_EMIF1_WEN                     0x010C0203U
+#define PORT_PIN_65_SPIB_CLK                      0x010C0205U
+#define PORT_PIN_65_MCANA_RX                      0x010C0206U
+#define PORT_PIN_65_UARTF_RX                      0x010C0207U
+#define PORT_PIN_65_ESC_RX1_DATA2                 0x010C020AU
+#define PORT_PIN_65_SD1_D2                        0x010C020BU
+#define PORT_PIN_65_FSITXB_CLK                    0x010C020DU
+#define PORT_PIN_65_ADCD_EXTMUXSEL2               0x010C020EU
+#define PORT_PIN_65_ESC_GPI13                     0x010C020FU
+
+#define PORT_PIN_66_GPIO66                        0x010C0400U
+#define PORT_PIN_66_EPWM10_B                      0x010C0401U
+#define PORT_PIN_66_EMIF1_D18                     0x010C0402U
+#define PORT_PIN_66_EMIF1_OEN                     0x010C0403U
+#define PORT_PIN_66_SPIB_PTE                      0x010C0405U
+#define PORT_PIN_66_I2CB_SDA                      0x010C0406U
+#define PORT_PIN_66_ESC_RX1_DATA3                 0x010C040AU
+#define PORT_PIN_66_SD1_C2                        0x010C040BU
+#define PORT_PIN_66_FSITXB_D1                     0x010C040DU
+#define PORT_PIN_66_ADCD_EXTMUXSEL3               0x010C040EU
+#define PORT_PIN_66_ESC_GPI14                     0x010C040FU
+
+#define PORT_PIN_67_GPIO67                        0x010C0600U
+#define PORT_PIN_67_EPWM17_A                      0x010C0601U
+#define PORT_PIN_67_EMIF1_D17                     0x010C0602U
+#define PORT_PIN_67_LINB_TX                       0x010C0605U
+#define PORT_PIN_67_MCAND_TX                      0x010C0606U
+#define PORT_PIN_67_SD1_D3                        0x010C060BU
+#define PORT_PIN_67_FSITXB_CLK                    0x010C060DU
+
+#define PORT_PIN_68_GPIO68                        0x010C0800U
+#define PORT_PIN_68_EPWM17_B                      0x010C0801U
+#define PORT_PIN_68_EMIF1_D16                     0x010C0802U
+#define PORT_PIN_68_EMIF1_D4                      0x010C0803U
+#define PORT_PIN_68_LINB_RX                       0x010C0805U
+#define PORT_PIN_68_MCAND_RX                      0x010C0806U
+#define PORT_PIN_68_EMIF1_D13                     0x010C0807U
+#define PORT_PIN_68_ESC_PHY1_LINKSTATUS           0x010C080AU
+#define PORT_PIN_68_SD1_C3                        0x010C080BU
+#define PORT_PIN_68_FSIRXB_D1                     0x010C080DU
+#define PORT_PIN_68_ESC_GPI15                     0x010C080FU
+
+#define PORT_PIN_69_GPIO69                        0x010C0A00U
+#define PORT_PIN_69_EPWM11_A                      0x010C0A01U
+#define PORT_PIN_69_EMIF1_D15                     0x010C0A02U
+#define PORT_PIN_69_SPIC_PICO                     0x010C0A05U
+#define PORT_PIN_69_I2CB_SCL                      0x010C0A06U
+#define PORT_PIN_69_ESC_RX1_CLK                   0x010C0A0AU
+#define PORT_PIN_69_SD1_D4                        0x010C0A0BU
+#define PORT_PIN_69_FSITXB_D0                     0x010C0A0DU
+
+#define PORT_PIN_70_GPIO70                        0x010C0C00U
+#define PORT_PIN_70_EPWM11_B                      0x010C0C01U
+#define PORT_PIN_70_EMIF1_D14                     0x010C0C02U
+#define PORT_PIN_70_SPIC_POCI                     0x010C0C05U
+#define PORT_PIN_70_MCANC_RX                      0x010C0C06U
+#define PORT_PIN_70_UARTB_TX                      0x010C0C07U
+#define PORT_PIN_70_ESC_RX1_DV                    0x010C0C0AU
+#define PORT_PIN_70_SD1_C4                        0x010C0C0BU
+#define PORT_PIN_70_FSIRXB_D0                     0x010C0C0DU
+#define PORT_PIN_70_ESC_GPI16                     0x010C0C0FU
+
+#define PORT_PIN_71_GPIO71                        0x010C0E00U
+#define PORT_PIN_71_EPWM12_A                      0x010C0E01U
+#define PORT_PIN_71_EPWM11_A                      0x010C0E02U
+#define PORT_PIN_71_EMIF1_D5                      0x010C0E03U
+#define PORT_PIN_71_SPIC_CLK                      0x010C0E05U
+#define PORT_PIN_71_MCANC_TX                      0x010C0E06U
+#define PORT_PIN_71_UARTB_RX                      0x010C0E07U
+#define PORT_PIN_71_EMIF1_D13                     0x010C0E09U
+#define PORT_PIN_71_ESC_RX1_ERR                   0x010C0E0AU
+#define PORT_PIN_71_SD3_D1                        0x010C0E0BU
+#define PORT_PIN_71_FSITXC_CLK                    0x010C0E0DU
+#define PORT_PIN_71_FSITXB_D0                     0x010C0E0EU
+
+#define PORT_PIN_72_GPIO72                        0x010C1000U
+#define PORT_PIN_72_EPWM12_B                      0x010C1001U
+#define PORT_PIN_72_EMIF1_D12                     0x010C1002U
+#define PORT_PIN_72_SPIC_PTE                      0x010C1005U
+#define PORT_PIN_72_MCANB_RX                      0x010C1006U
+#define PORT_PIN_72_UARTA_TX                      0x010C1007U
+#define PORT_PIN_72_OUTPUTXBAR8                   0x010C1009U
+#define PORT_PIN_72_ESC_TX1_DATA3                 0x010C100AU
+#define PORT_PIN_72_SD3_D2                        0x010C100BU
+#define PORT_PIN_72_FSITXC_D0                     0x010C100DU
+#define PORT_PIN_72_SD3_C1                        0x010C100EU
+
+#define PORT_PIN_73_GPIO73                        0x010C1200U
+#define PORT_PIN_73_EPWM5_B                       0x010C1201U
+#define PORT_PIN_73_EMIF1_D11                     0x010C1202U
+#define PORT_PIN_73_XCLKOUT                       0x010C1203U
+#define PORT_PIN_73_MCANB_TX                      0x010C1206U
+#define PORT_PIN_73_UARTA_RX                      0x010C1207U
+#define PORT_PIN_73_OUTPUTXBAR6                   0x010C1209U
+#define PORT_PIN_73_ESC_TX1_DATA2                 0x010C120AU
+#define PORT_PIN_73_SD4_D4                        0x010C120BU
+#define PORT_PIN_73_FSITXC_CLK                    0x010C120DU
+#define PORT_PIN_73_SD2_D2                        0x010C120EU
+
+#define PORT_PIN_74_GPIO74                        0x010C1400U
+#define PORT_PIN_74_EPWM8_A                       0x010C1401U
+#define PORT_PIN_74_EMIF1_D10                     0x010C1402U
+#define PORT_PIN_74_MCANC_TX                      0x010C1406U
+#define PORT_PIN_74_ESC_TX1_DATA1                 0x010C140AU
+#define PORT_PIN_74_SD1_D4                        0x010C140BU
+#define PORT_PIN_74_FSITXA_D0                     0x010C140DU
+#define PORT_PIN_74_SD2_C2                        0x010C140EU
+
+#define PORT_PIN_75_GPIO75                        0x010C1600U
+#define PORT_PIN_75_EPWM8_B                       0x010C1601U
+#define PORT_PIN_75_EMIF1_D9                      0x010C1602U
+#define PORT_PIN_75_SPID_CLK                      0x010C1605U
+#define PORT_PIN_75_MCANC_RX                      0x010C1606U
+#define PORT_PIN_75_OUTPUTXBAR16                  0x010C1609U
+#define PORT_PIN_75_ESC_TX1_DATA0                 0x010C160AU
+#define PORT_PIN_75_SD2_D3                        0x010C160EU
+
+#define PORT_PIN_76_GPIO76                        0x010C1800U
+#define PORT_PIN_76_EPWM9_A                       0x010C1801U
+#define PORT_PIN_76_EMIF1_D8                      0x010C1802U
+#define PORT_PIN_76_UARTD_TX                      0x010C1805U
+#define PORT_PIN_76_MCANE_TX                      0x010C1807U
+#define PORT_PIN_76_SD4_D4                        0x010C1809U
+#define PORT_PIN_76_ESC_PHY_RESETN                0x010C180AU
+#define PORT_PIN_76_SD3_C1                        0x010C180BU
+#define PORT_PIN_76_FSIRXC_D0                     0x010C180DU
+#define PORT_PIN_76_SD2_C3                        0x010C180EU
+#define PORT_PIN_76_ESC_GPI17                     0x010C180FU
+
+#define PORT_PIN_77_GPIO77                        0x010C1A00U
+#define PORT_PIN_77_EPWM9_B                       0x010C1A01U
+#define PORT_PIN_77_EMIF1_D7                      0x010C1A02U
+#define PORT_PIN_77_UARTD_RX                      0x010C1A05U
+#define PORT_PIN_77_MCANE_RX                      0x010C1A07U
+#define PORT_PIN_77_SD1_D4                        0x010C1A09U
+#define PORT_PIN_77_ESC_RX0_CLK                   0x010C1A0AU
+#define PORT_PIN_77_SD3_D1                        0x010C1A0BU
+#define PORT_PIN_77_FSITXB_D0                     0x010C1A0DU
+#define PORT_PIN_77_SD2_D4                        0x010C1A0EU
+
+#define PORT_PIN_78_GPIO78                        0x010C1C00U
+#define PORT_PIN_78_EPWM10_A                      0x010C1C01U
+#define PORT_PIN_78_EMIF1_D6                      0x010C1C02U
+#define PORT_PIN_78_EPWM11_A                      0x010C1C03U
+#define PORT_PIN_78_MCANF_TX                      0x010C1C07U
+#define PORT_PIN_78_SD4_D4                        0x010C1C09U
+#define PORT_PIN_78_ESC_RX0_DV                    0x010C1C0AU
+#define PORT_PIN_78_SD3_C2                        0x010C1C0BU
+#define PORT_PIN_78_FSITXC_D1                     0x010C1C0DU
+#define PORT_PIN_78_SD2_C4                        0x010C1C0EU
+#define PORT_PIN_78_ESC_GPI18                     0x010C1C0FU
+
+#define PORT_PIN_79_GPIO79                        0x010C1E00U
+#define PORT_PIN_79_EPWM10_B                      0x010C1E01U
+#define PORT_PIN_79_EMIF1_D5                      0x010C1E02U
+#define PORT_PIN_79_ERRORSTS                      0x010C1E05U
+#define PORT_PIN_79_ESC_RX0_ERR                   0x010C1E0AU
+#define PORT_PIN_79_SD3_D2                        0x010C1E0BU
+#define PORT_PIN_79_FSITXC_D0                     0x010C1E0DU
+#define PORT_PIN_79_SD2_D1                        0x010C1E0EU
+
+#define PORT_PIN_80_GPIO80                        0x01100000U
+#define PORT_PIN_80_EPWM11_A                      0x01100001U
+#define PORT_PIN_80_EMIF1_D4                      0x01100002U
+#define PORT_PIN_80_ERRORSTS                      0x01100005U
+#define PORT_PIN_80_SD1_D4                        0x01100009U
+#define PORT_PIN_80_ESC_RX0_DATA0                 0x0110000AU
+#define PORT_PIN_80_SD3_C3                        0x0110000BU
+#define PORT_PIN_80_SD2_C1                        0x0110000EU
+
+#define PORT_PIN_81_GPIO81                        0x01100200U
+#define PORT_PIN_81_EPWM11_B                      0x01100201U
+#define PORT_PIN_81_EMIF1_D3                      0x01100202U
+#define PORT_PIN_81_ESC_RX0_DATA1                 0x0110020AU
+#define PORT_PIN_81_SD3_D3                        0x0110020BU
+
+#define PORT_PIN_82_GPIO82                        0x01100400U
+#define PORT_PIN_82_EPWM12_A                      0x01100401U
+#define PORT_PIN_82_EMIF1_D2                      0x01100402U
+#define PORT_PIN_82_ESC_RX0_DATA2                 0x0110040AU
+#define PORT_PIN_82_SD3_C2                        0x0110040BU
+
+#define PORT_PIN_83_GPIO83                        0x01100600U
+#define PORT_PIN_83_EPWM12_B                      0x01100601U
+#define PORT_PIN_83_EMIF1_D1                      0x01100602U
+#define PORT_PIN_83_ESC_RX0_DATA3                 0x0110060AU
+#define PORT_PIN_83_SD3_D2                        0x0110060BU
+
+#define PORT_PIN_84_GPIO84                        0x01100800U
+#define PORT_PIN_84_EPWM12_B                      0x01100801U
+#define PORT_PIN_84_EMIF1_D1                      0x01100802U
+#define PORT_PIN_84_EMIF1_CS4N                    0x01100803U
+#define PORT_PIN_84_SPIC_PICO                     0x01100805U
+#define PORT_PIN_84_UARTA_TX                      0x01100806U
+#define PORT_PIN_84_MCANF_RX                      0x01100807U
+#define PORT_PIN_84_ESC_TX0_ENA                   0x0110080AU
+#define PORT_PIN_84_SD3_C2                        0x0110080BU
+#define PORT_PIN_84_FSITXC_D1                     0x0110080DU
+#define PORT_PIN_84_ESC_RX0_DATA3                 0x0110080EU
+#define PORT_PIN_84_ESC_GPO24                     0x0110080FU
+
+#define PORT_PIN_85_GPIO85                        0x01100A00U
+#define PORT_PIN_85_EPWM13_A                      0x01100A01U
+#define PORT_PIN_85_EMIF1_D0                      0x01100A02U
+#define PORT_PIN_85_UARTA_RX                      0x01100A06U
+#define PORT_PIN_85_EMIF1_DQM2                    0x01100A09U
+#define PORT_PIN_85_ESC_TX0_CLK                   0x01100A0AU
+#define PORT_PIN_85_SD3_D3                        0x01100A0BU
+
+#define PORT_PIN_86_GPIO86                        0x01100C00U
+#define PORT_PIN_86_EPWM13_B                      0x01100C01U
+#define PORT_PIN_86_EMIF1_A13                     0x01100C02U
+#define PORT_PIN_86_EMIF1_CAS                     0x01100C03U
+#define PORT_PIN_86_UARTD_TX                      0x01100C06U
+#define PORT_PIN_86_ESC_PHY0_LINKSTATUS           0x01100C0AU
+#define PORT_PIN_86_SD3_C3                        0x01100C0BU
+
+#define PORT_PIN_87_GPIO87                        0x01100E00U
+#define PORT_PIN_87_EPWM14_A                      0x01100E01U
+#define PORT_PIN_87_EMIF1_A14                     0x01100E02U
+#define PORT_PIN_87_EMIF1_RAS                     0x01100E03U
+#define PORT_PIN_87_UARTD_RX                      0x01100E06U
+#define PORT_PIN_87_EMIF1_DQM3                    0x01100E09U
+#define PORT_PIN_87_ESC_TX0_DATA0                 0x01100E0AU
+#define PORT_PIN_87_SD3_D4                        0x01100E0BU
+
+#define PORT_PIN_88_GPIO88                        0x01101000U
+#define PORT_PIN_88_EPWM14_B                      0x01101001U
+#define PORT_PIN_88_EMIF1_A15                     0x01101002U
+#define PORT_PIN_88_EMIF1_DQM0                    0x01101003U
+#define PORT_PIN_88_EMIF1_DQM1                    0x01101009U
+#define PORT_PIN_88_ESC_TX0_DATA1                 0x0110100AU
+#define PORT_PIN_88_SD3_C4                        0x0110100BU
+
+#define PORT_PIN_89_GPIO89                        0x01101200U
+#define PORT_PIN_89_EPWM15_A                      0x01101201U
+#define PORT_PIN_89_EMIF1_A16                     0x01101202U
+#define PORT_PIN_89_EMIF1_DQM1                    0x01101203U
+#define PORT_PIN_89_SPID_PTE                      0x01101205U
+#define PORT_PIN_89_EMIF1_CAS                     0x01101209U
+#define PORT_PIN_89_ESC_TX0_DATA2                 0x0110120AU
+#define PORT_PIN_89_SD1_D3                        0x0110120BU
+#define PORT_PIN_89_SD4_D1                        0x0110120EU
+
+#define PORT_PIN_90_GPIO90                        0x01101400U
+#define PORT_PIN_90_EPWM15_B                      0x01101401U
+#define PORT_PIN_90_EMIF1_A17                     0x01101402U
+#define PORT_PIN_90_EMIF1_DQM2                    0x01101403U
+#define PORT_PIN_90_SPID_CLK                      0x01101405U
+#define PORT_PIN_90_EMIF1_RAS                     0x01101409U
+#define PORT_PIN_90_ESC_TX0_DATA3                 0x0110140AU
+#define PORT_PIN_90_SD1_C3                        0x0110140BU
+#define PORT_PIN_90_SD4_C1                        0x0110140EU
+
+#define PORT_PIN_91_GPIO91                        0x01101600U
+#define PORT_PIN_91_EPWM16_A                      0x01101601U
+#define PORT_PIN_91_EMIF1_A18                     0x01101602U
+#define PORT_PIN_91_EMIF1_DQM3                    0x01101603U
+#define PORT_PIN_91_SPID_PICO                     0x01101605U
+#define PORT_PIN_91_I2CA_SDA                      0x01101606U
+#define PORT_PIN_91_MCAND_TX                      0x01101607U
+#define PORT_PIN_91_EMIF1_DQM2                    0x01101609U
+#define PORT_PIN_91_SD4_D2                        0x0110160BU
+#define PORT_PIN_91_OUTPUTXBAR9                   0x0110160EU
+
+#define PORT_PIN_92_GPIO92                        0x01101800U
+#define PORT_PIN_92_EPWM16_B                      0x01101801U
+#define PORT_PIN_92_EMIF1_A19                     0x01101802U
+#define PORT_PIN_92_EMIF1_BA1                     0x01101803U
+#define PORT_PIN_92_SPID_POCI                     0x01101805U
+#define PORT_PIN_92_I2CA_SCL                      0x01101806U
+#define PORT_PIN_92_MCAND_RX                      0x01101807U
+#define PORT_PIN_92_EMIF1_DQM0                    0x01101809U
+#define PORT_PIN_92_FSIRXD_CLK                    0x0110180AU
+#define PORT_PIN_92_SD4_C2                        0x0110180BU
+#define PORT_PIN_92_OUTPUTXBAR10                  0x0110180EU
+
+#define PORT_PIN_93_GPIO93                        0x01101A00U
+#define PORT_PIN_93_EPWM17_A                      0x01101A01U
+#define PORT_PIN_93_EMIF1_A20                     0x01101A02U
+#define PORT_PIN_93_EMIF1_BA0                     0x01101A03U
+#define PORT_PIN_93_SPID_CLK                      0x01101A05U
+#define PORT_PIN_93_ESC_TX1_CLK                   0x01101A0AU
+#define PORT_PIN_93_SD4_D3                        0x01101A0BU
+#define PORT_PIN_93_OUTPUTXBAR11                  0x01101A0EU
+
+#define PORT_PIN_94_GPIO94                        0x01101C00U
+#define PORT_PIN_94_EPWM17_B                      0x01101C01U
+#define PORT_PIN_94_EMIF1_A21                     0x01101C02U
+#define PORT_PIN_94_SPID_PTE                      0x01101C05U
+#define PORT_PIN_94_EMIF1_BA1                     0x01101C09U
+#define PORT_PIN_94_ESC_TX1_ENA                   0x01101C0AU
+#define PORT_PIN_94_SD4_C3                        0x01101C0BU
+#define PORT_PIN_94_OUTPUTXBAR12                  0x01101C0EU
+
+#define PORT_PIN_95_GPIO95                        0x01101E00U
+#define PORT_PIN_95_EPWM18_A                      0x01101E01U
+#define PORT_PIN_95_ESC_GPO10                     0x01101E0AU
+#define PORT_PIN_95_SD1_D1                        0x01101E0BU
+#define PORT_PIN_95_OUTPUTXBAR13                  0x01101E0EU
+
+#define PORT_PIN_96_GPIO96                        0x018C0000U
+#define PORT_PIN_96_EPWM18_B                      0x018C0001U
+#define PORT_PIN_96_ESC_GPO11                     0x018C000AU
+#define PORT_PIN_96_SD1_C1                        0x018C000BU
+#define PORT_PIN_96_OUTPUTXBAR14                  0x018C000EU
+
+#define PORT_PIN_97_GPIO97                        0x018C0200U
+#define PORT_PIN_97_ESC_GPI17                     0x018C020AU
+#define PORT_PIN_97_SD1_D2                        0x018C020BU
+#define PORT_PIN_97_OUTPUTXBAR15                  0x018C020EU
+
+#define PORT_PIN_98_GPIO98                        0x018C0400U
+#define PORT_PIN_98_ESC_GPI18                     0x018C040AU
+#define PORT_PIN_98_SD1_C2                        0x018C040BU
+#define PORT_PIN_98_OUTPUTXBAR16                  0x018C040EU
+
+#define PORT_PIN_99_GPIO99                        0x018C0600U
+#define PORT_PIN_99_EPWM8_A                       0x018C0601U
+#define PORT_PIN_99_EMIF1_DQM3                    0x018C0602U
+#define PORT_PIN_99_EMIF1_D17                     0x018C0603U
+#define PORT_PIN_99_ESC_GPI21                     0x018C060AU
+#define PORT_PIN_99_SD4_D4                        0x018C060BU
+
+#define PORT_PIN_100_GPIO100                      0x018C0800U
+#define PORT_PIN_100_EPWM9_A                      0x018C0801U
+#define PORT_PIN_100_EMIF1_BA1                    0x018C0802U
+#define PORT_PIN_100_EMIF1_D24                    0x018C0803U
+#define PORT_PIN_100_SPIC_PICO                    0x018C0805U
+#define PORT_PIN_100_SPIA_PICO                    0x018C0806U
+#define PORT_PIN_100_SD1_D1                       0x018C0809U
+#define PORT_PIN_100_ESC_GPI0                     0x018C080AU
+#define PORT_PIN_100_SD4_C4                       0x018C080BU
+#define PORT_PIN_100_FSITXA_D0                    0x018C080DU
+#define PORT_PIN_100_FSIRXD_D1                    0x018C080EU
+
+#define PORT_PIN_101_GPIO101                      0x018C0A00U
+#define PORT_PIN_101_EPWM18_A                     0x018C0A01U
+#define PORT_PIN_101_EMIF1_A5                     0x018C0A02U
+#define PORT_PIN_101_SPIC_POCI                    0x018C0A05U
+#define PORT_PIN_101_ESC_GPI1                     0x018C0A0AU
+#define PORT_PIN_101_FSITXA_D1                    0x018C0A0DU
+
+#define PORT_PIN_103_GPIO103                      0x018C0E00U
+#define PORT_PIN_103_EPWM8_B                      0x018C0E01U
+#define PORT_PIN_103_EMIF1_BA0                    0x018C0E02U
+#define PORT_PIN_103_EMIF1_D3                     0x018C0E03U
+#define PORT_PIN_103_SPIC_PTE                     0x018C0E05U
+#define PORT_PIN_103_ESC_GPI3                     0x018C0E0AU
+#define PORT_PIN_103_SD4_C4                       0x018C0E0BU
+#define PORT_PIN_103_FSIRXA_D0                    0x018C0E0DU
+#define PORT_PIN_103_ESC_GPO25                    0x018C0E0FU
+
+#define PORT_PIN_105_GPIO105                      0x018C1200U
+#define PORT_PIN_105_EPWM18_B                     0x018C1201U
+#define PORT_PIN_105_I2CA_SCL                     0x018C1205U
+#define PORT_PIN_105_ESC_GPI5                     0x018C120AU
+#define PORT_PIN_105_SD3_C1                       0x018C120BU
+#define PORT_PIN_105_FSIRXA_CLK                   0x018C120DU
+
+#define PORT_PIN_127_GPIO127                      0x01901E00U
+#define PORT_PIN_127_EPWM18_A                     0x01901E01U
+#define PORT_PIN_127_EMIF1_D18                    0x01901E02U
+#define PORT_PIN_127_EMIF1_A11                    0x01901E03U
+#define PORT_PIN_127_SPID_POCI                    0x01901E05U
+#define PORT_PIN_127_ESC_GPI27                    0x01901E0AU
+#define PORT_PIN_127_SD1_C3                       0x01901E0BU
+#define PORT_PIN_127_FSIRXC_D1                    0x01901E0DU
+#define PORT_PIN_127_ESC_SYNC0                    0x01901E0EU
+#define PORT_PIN_127_ESC_GPO26                    0x01901E0FU
+
+#define PORT_PIN_219_GPIO219                      0x03101600U
+#define PORT_PIN_219_ERRORSTS                     0x03101601U
+#define PORT_PIN_219_EMIF1_A19                    0x03101602U
+#define PORT_PIN_219_EPWM18_B                     0x03101603U
+#define PORT_PIN_219_OUTPUTXBAR1                  0x03101609U
+#define PORT_PIN_219_XCLKOUT                      0x0310160AU
+#define PORT_PIN_219_SD2_C1                       0x0310160BU
+#define PORT_PIN_219_ESC_GPI8                     0x0310160DU
+#define PORT_PIN_219_ESC_TX0_ENA                  0x0310160EU
+#define PORT_PIN_219_ESC_GPO27                    0x0310160FU
+
+#define PORT_PIN_220_GPIO220                      0x03101800U
+#define PORT_PIN_220_EPWM6_A                      0x03101801U
+#define PORT_PIN_220_EMIF1_A20                    0x03101802U
+#define PORT_PIN_220_SPID_POCI                    0x03101805U
+#define PORT_PIN_220_MCANC_TX                     0x03101806U
+#define PORT_PIN_220_OUTPUTXBAR2                  0x03101809U
+#define PORT_PIN_220_SD3_D3                       0x0310180BU
+#define PORT_PIN_220_ESC_GPI9                     0x0310180DU
+#define PORT_PIN_220_ESC_GPO28                    0x0310180FU
+
+#define PORT_PIN_221_GPIO221                      0x03101A00U
+#define PORT_PIN_221_EPWM6_B                      0x03101A01U
+#define PORT_PIN_221_EMIF1_A21                    0x03101A02U
+#define PORT_PIN_221_EMIF1_CAS                    0x03101A03U
+#define PORT_PIN_221_SPID_PTE                     0x03101A05U
+#define PORT_PIN_221_MCANC_RX                     0x03101A06U
+#define PORT_PIN_221_OUTPUTXBAR3                  0x03101A09U
+#define PORT_PIN_221_SD3_C3                       0x03101A0BU
+#define PORT_PIN_221_ESC_GPI10                    0x03101A0DU
+#define PORT_PIN_221_ESC_GPO29                    0x03101A0FU
+
+#define PORT_PIN_222_GPIO222                      0x03101C00U
+#define PORT_PIN_222_TDI                          0x03101C01U
+#define PORT_PIN_222_EPWM7_A                      0x03101C02U
+#define PORT_PIN_222_SPID_PICO                    0x03101C05U
+#define PORT_PIN_222_UARTB_TX                     0x03101C06U
+#define PORT_PIN_222_I2CB_SCL                     0x03101C07U
+#define PORT_PIN_222_OUTPUTXBAR4                  0x03101C09U
+#define PORT_PIN_222_SPIC_CLK                     0x03101C0AU
+#define PORT_PIN_222_SD3_D4                       0x03101C0BU
+#define PORT_PIN_222_ESC_GPI11                    0x03101C0DU
+#define PORT_PIN_222_ESC_GPO30                    0x03101C0FU
+
+#define PORT_PIN_223_GPIO223                      0x03101E00U
+#define PORT_PIN_223_TDO                          0x03101E01U
+#define PORT_PIN_223_EPWM7_B                      0x03101E02U
+#define PORT_PIN_223_SPID_CLK                     0x03101E05U
+#define PORT_PIN_223_UARTB_RX                     0x03101E06U
+#define PORT_PIN_223_I2CB_SDA                     0x03101E07U
+#define PORT_PIN_223_OUTPUTXBAR5                  0x03101E09U
+#define PORT_PIN_223_SPIC_PTE                     0x03101E0AU
+#define PORT_PIN_223_SD3_C4                       0x03101E0BU
+#define PORT_PIN_223_ESC_GPI12                    0x03101E0DU
+#define PORT_PIN_223_ESC_GPO31                    0x03101E0FU
+
+#define PORT_PIN_160_AIO160                       0x028C0000U
+#define PORT_PIN_160_SD3_C2                       0x028C000BU
+
+#define PORT_PIN_161_AIO161                       0x028C0200U
+#define PORT_PIN_161_SD3_D2                       0x028C020BU
+
+#define PORT_PIN_162_AIO162                       0x028C0400U
+#define PORT_PIN_162_SD2_C2                       0x028C040BU
+
+#define PORT_PIN_163_AIO163                       0x028C0600U
+#define PORT_PIN_163_SD2_D2                       0x028C060BU
+
+#define PORT_PIN_164_AIO164                       0x028C0800U
+#define PORT_PIN_164_SD2_C3                       0x028C080BU
+
+#define PORT_PIN_165_AIO165                       0x028C0A00U
+#define PORT_PIN_165_SD2_D3                       0x028C0A0BU
+
+#define PORT_PIN_224_GPIO224                      0x038C0000U
+#define PORT_PIN_224_EPWM12_A                     0x038C0001U
+#define PORT_PIN_224_EPWM12_B                     0x038C0002U
+#define PORT_PIN_224_SPIB_POCI                    0x038C0005U
+#define PORT_PIN_224_MCAND_RX                     0x038C0006U
+#define PORT_PIN_224_OUTPUTXBAR5                  0x038C0009U
+#define PORT_PIN_224_SD4_D2                       0x038C000BU
+#define PORT_PIN_224_ADCA_EXTMUXSEL0              0x038C000EU
+#define PORT_PIN_224_ESC_GPO8                     0x038C000FU
+
+#define PORT_PIN_225_GPIO225                      0x038C0200U
+#define PORT_PIN_225_EPWM11_B                     0x038C0201U
+#define PORT_PIN_225_SPIB_PICO                    0x038C0205U
+#define PORT_PIN_225_I2CB_SDA                     0x038C0206U
+#define PORT_PIN_225_UARTF_TX                     0x038C0207U
+#define PORT_PIN_225_OUTPUTXBAR4                  0x038C0209U
+#define PORT_PIN_225_SD4_C1                       0x038C020BU
+#define PORT_PIN_225_ADCA_EXTMUXSEL1              0x038C020EU
+#define PORT_PIN_225_ESC_GPO9                     0x038C020FU
+
+#define PORT_PIN_226_GPIO226                      0x038C0400U
+#define PORT_PIN_226_EPWM10_A                     0x038C0401U
+#define PORT_PIN_226_SPIA_PTE                     0x038C0405U
+#define PORT_PIN_226_MCAND_TX                     0x038C0406U
+#define PORT_PIN_226_UARTF_RX                     0x038C0407U
+#define PORT_PIN_226_OUTPUTXBAR1                  0x038C0409U
+#define PORT_PIN_226_SD1_C3                       0x038C040AU
+#define PORT_PIN_226_SD1_D3                       0x038C040BU
+#define PORT_PIN_226_ADCA_EXTMUXSEL2              0x038C040EU
+#define PORT_PIN_226_ESC_GPO10                    0x038C040FU
+
+#define PORT_PIN_227_GPIO227                      0x038C0600U
+#define PORT_PIN_227_EPWM14_B                     0x038C0601U
+#define PORT_PIN_227_SPIA_CLK                     0x038C0605U
+#define PORT_PIN_227_OUTPUTXBAR4                  0x038C0609U
+#define PORT_PIN_227_SD2_C2                       0x038C060BU
+#define PORT_PIN_227_ADCA_EXTMUXSEL3              0x038C060EU
+
+#define PORT_PIN_228_GPIO228                      0x038C0800U
+#define PORT_PIN_228_EPWM18_A                     0x038C0801U
+#define PORT_PIN_228_EPWM13_A                     0x038C0802U
+#define PORT_PIN_228_SPIB_POCI                    0x038C0805U
+#define PORT_PIN_228_LINB_TX                      0x038C0806U
+#define PORT_PIN_228_OUTPUTXBAR1                  0x038C0809U
+#define PORT_PIN_228_SENT4                        0x038C080AU
+#define PORT_PIN_228_SD2_D1                       0x038C080BU
+
+#define PORT_PIN_229_GPIO229                      0x038C0A00U
+#define PORT_PIN_229_EPWM17_B                     0x038C0A01U
+#define PORT_PIN_229_EPWM12_B                     0x038C0A02U
+#define PORT_PIN_229_SPIB_PICO                    0x038C0A05U
+#define PORT_PIN_229_MCANA_RX                     0x038C0A06U
+#define PORT_PIN_229_SENT3                        0x038C0A0AU
+#define PORT_PIN_229_SD1_C4                       0x038C0A0BU
+
+#define PORT_PIN_166_AIO166                       0x028C0C00U
+#define PORT_PIN_166_SD4_C1                       0x028C0C0BU
+
+#define PORT_PIN_167_AIO167                       0x028C0E00U
+#define PORT_PIN_167_SD4_D1                       0x028C0E0BU
+
+#define PORT_PIN_168_AIO168                       0x028C1000U
+#define PORT_PIN_168_SD3_C3                       0x028C100BU
+
+#define PORT_PIN_169_AIO169                       0x028C1200U
+#define PORT_PIN_169_SD3_D3                       0x028C120BU
+
+#define PORT_PIN_170_AIO170                       0x028C1400U
+#define PORT_PIN_170_SD3_C4                       0x028C140BU
+
+#define PORT_PIN_171_AIO171                       0x028C1600U
+#define PORT_PIN_171_SD3_D4                       0x028C160BU
+
+#define PORT_PIN_172_AIO172                       0x028C1800U
+#define PORT_PIN_172_SD1_C1                       0x028C180BU
+
+#define PORT_PIN_173_AIO173                       0x028C1A00U
+#define PORT_PIN_173_SD1_D1                       0x028C1A0BU
+
+#define PORT_PIN_174_AIO174                       0x028C1C00U
+#define PORT_PIN_174_SD2_C4                       0x028C1C0BU
+
+#define PORT_PIN_175_AIO175                       0x028C1E00U
+#define PORT_PIN_175_SD2_D4                       0x028C1E0BU
+
+#define PORT_PIN_230_GPIO230                      0x038C0C00U
+#define PORT_PIN_230_EPWM11_A                     0x038C0C01U
+#define PORT_PIN_230_SYNCOUT                      0x038C0C03U
+#define PORT_PIN_230_I2CB_SCL                     0x038C0C06U
+#define PORT_PIN_230_OUTPUTXBAR3                  0x038C0C09U
+#define PORT_PIN_230_SD4_D1                       0x038C0C0BU
+#define PORT_PIN_230_ADCB_EXTMUXSEL0              0x038C0C0EU
+
+#define PORT_PIN_231_GPIO231                      0x038C0E00U
+#define PORT_PIN_231_EPWM10_B                     0x038C0E01U
+#define PORT_PIN_231_SPIA_PICO                    0x038C0E05U
+#define PORT_PIN_231_MCAND_RX                     0x038C0E06U
+#define PORT_PIN_231_OUTPUTXBAR2                  0x038C0E09U
+#define PORT_PIN_231_SD1_C3                       0x038C0E0BU
+#define PORT_PIN_231_ADCB_EXTMUXSEL1              0x038C0E0EU
+
+#define PORT_PIN_232_GPIO232                      0x038C1000U
+#define PORT_PIN_232_EPWM14_A                     0x038C1001U
+#define PORT_PIN_232_EPWM8_B                      0x038C1002U
+#define PORT_PIN_232_SPIA_POCI                    0x038C1005U
+#define PORT_PIN_232_OUTPUTXBAR3                  0x038C1009U
+#define PORT_PIN_232_SENT6                        0x038C100AU
+#define PORT_PIN_232_SD3_D1                       0x038C100BU
+#define PORT_PIN_232_ESC_PHY0_LINKSTATUS          0x038C100DU
+#define PORT_PIN_232_ADCB_EXTMUXSEL2              0x038C100EU
+#define PORT_PIN_232_ESC_GPO11                    0x038C100FU
+
+#define PORT_PIN_233_GPIO233                      0x038C1200U
+#define PORT_PIN_233_EPWM18_B                     0x038C1201U
+#define PORT_PIN_233_EPWM13_B                     0x038C1202U
+#define PORT_PIN_233_LINB_RX                      0x038C1206U
+#define PORT_PIN_233_OUTPUTXBAR2                  0x038C1209U
+#define PORT_PIN_233_SENT5                        0x038C120AU
+#define PORT_PIN_233_SD2_C1                       0x038C120BU
+#define PORT_PIN_233_ESC_PHY1_LINKSTATUS          0x038C120DU
+#define PORT_PIN_233_ADCB_EXTMUXSEL3              0x038C120EU
+#define PORT_PIN_233_ESC_GPO12                    0x038C120FU
+
+#define PORT_PIN_234_GPIO234                      0x038C1400U
+#define PORT_PIN_234_EPWM17_A                     0x038C1401U
+#define PORT_PIN_234_EPWM12_A                     0x038C1402U
+#define PORT_PIN_234_SPIB_PTE                     0x038C1405U
+#define PORT_PIN_234_MCANA_TX                     0x038C1406U
+#define PORT_PIN_234_SENT2                        0x038C140AU
+#define PORT_PIN_234_SD1_D4                       0x038C140BU
+#define PORT_PIN_234_ESC_GPO13                    0x038C140FU
+
+#define PORT_PIN_235_GPIO235                      0x038C1600U
+#define PORT_PIN_235_EPWM9_B                      0x038C1601U
+#define PORT_PIN_235_SPIB_CLK                     0x038C1605U
+#define PORT_PIN_235_MCANA_RX                     0x038C1606U
+#define PORT_PIN_235_SENT1                        0x038C160AU
+#define PORT_PIN_235_SD1_C1                       0x038C160BU
+#define PORT_PIN_235_ESC_GPO14                    0x038C160FU
+
+#define PORT_PIN_176_AIO176                       0x02900000U
+#define PORT_PIN_176_SD4_C2                       0x0290000BU
+
+#define PORT_PIN_177_AIO177                       0x02900200U
+#define PORT_PIN_177_SD4_D2                       0x0290020BU
+
+#define PORT_PIN_178_AIO178                       0x02900400U
+#define PORT_PIN_178_SD4_C3                       0x0290040BU
+
+#define PORT_PIN_179_AIO179                       0x02900600U
+#define PORT_PIN_179_SD4_D3                       0x0290060BU
+
+#define PORT_PIN_180_AIO180                       0x02900800U
+#define PORT_PIN_180_SD1_C2                       0x0290080BU
+
+#define PORT_PIN_181_AIO181                       0x02900A00U
+#define PORT_PIN_181_SD1_D2                       0x02900A0BU
+
+#define PORT_PIN_182_AIO182                       0x02900C00U
+#define PORT_PIN_182_SD3_C1                       0x02900C0BU
+
+#define PORT_PIN_183_AIO183                       0x02900E00U
+#define PORT_PIN_183_SD3_D1                       0x02900E0BU
+
+#define PORT_PIN_184_AIO184                       0x02901000U
+#define PORT_PIN_184_SD3_C2                       0x0290100BU
+
+#define PORT_PIN_185_AIO185                       0x02901200U
+#define PORT_PIN_185_SD3_D2                       0x0290120BU
+
+#define PORT_PIN_236_GPIO236                      0x038C1800U
+#define PORT_PIN_236_EPWM12_B                     0x038C1801U
+#define PORT_PIN_236_EPWM8_A                      0x038C1802U
+#define PORT_PIN_236_LINA_RX                      0x038C1806U
+#define PORT_PIN_236_OUTPUTXBAR6                  0x038C1809U
+#define PORT_PIN_236_SD4_C2                       0x038C180BU
+#define PORT_PIN_236_ESC_I2C_SDA                  0x038C180DU
+#define PORT_PIN_236_ADCC_EXTMUXSEL0              0x038C180EU
+
+#define PORT_PIN_237_GPIO237                      0x038C1A00U
+#define PORT_PIN_237_EPWM14_A                     0x038C1A01U
+#define PORT_PIN_237_EPWM8_B                      0x038C1A02U
+#define PORT_PIN_237_EPWM17_B                     0x038C1A03U
+#define PORT_PIN_237_LINA_TX                      0x038C1A06U
+#define PORT_PIN_237_I2CA_SDA                     0x038C1A07U
+#define PORT_PIN_237_OUTPUTXBAR7                  0x038C1A09U
+#define PORT_PIN_237_SD4_D3                       0x038C1A0BU
+#define PORT_PIN_237_ESC_I2C_SCL                  0x038C1A0DU
+#define PORT_PIN_237_ADCC_EXTMUXSEL1              0x038C1A0EU
+
+#define PORT_PIN_238_GPIO238                      0x038C1C00U
+#define PORT_PIN_238_EPWM15_B                     0x038C1C01U
+#define PORT_PIN_238_OUTPUTXBAR6                  0x038C1C09U
+#define PORT_PIN_238_SD1_D3                       0x038C1C0AU
+#define PORT_PIN_238_SD2_C3                       0x038C1C0BU
+#define PORT_PIN_238_ESC_SYNC0                    0x038C1C0DU
+#define PORT_PIN_238_ADCC_EXTMUXSEL2              0x038C1C0EU
+#define PORT_PIN_238_ESC_GPO15                    0x038C1C0FU
+
+#define PORT_PIN_239_GPIO239                      0x038C1E00U
+#define PORT_PIN_239_EPWM16_B                     0x038C1E01U
+#define PORT_PIN_239_LINB_TX                      0x038C1E06U
+#define PORT_PIN_239_I2CA_SCL                     0x038C1E07U
+#define PORT_PIN_239_OUTPUTXBAR8                  0x038C1E09U
+#define PORT_PIN_239_SD2_C4                       0x038C1E0BU
+#define PORT_PIN_239_ESC_SYNC1                    0x038C1E0DU
+#define PORT_PIN_239_ADCC_EXTMUXSEL3              0x038C1E0EU
+#define PORT_PIN_239_ESC_GPO16                    0x038C1E0FU
+
+#define PORT_PIN_186_AIO186                       0x02901400U
+#define PORT_PIN_186_SD1_C1                       0x0290140BU
+
+#define PORT_PIN_187_AIO187                       0x02901600U
+#define PORT_PIN_187_SD1_D1                       0x0290160BU
+
+#define PORT_PIN_188_AIO188                       0x02901800U
+#define PORT_PIN_188_SD1_C2                       0x0290180BU
+
+#define PORT_PIN_189_AIO189                       0x02901A00U
+#define PORT_PIN_189_SD1_D2                       0x02901A0BU
+
+#define PORT_PIN_190_AIO190                       0x02901C00U
+#define PORT_PIN_190_SD1_C3                       0x02901C0BU
+
+#define PORT_PIN_191_AIO191                       0x02901E00U
+#define PORT_PIN_191_SD1_D3                       0x02901E0BU
+
+#define PORT_PIN_192_AIO192                       0x030C0000U
+#define PORT_PIN_192_SD1_C3                       0x030C000BU
+
+#define PORT_PIN_193_AIO193                       0x030C0200U
+#define PORT_PIN_193_SD1_D3                       0x030C020BU
+
+#define PORT_PIN_194_AIO194                       0x030C0400U
+#define PORT_PIN_194_SD1_C4                       0x030C040BU
+
+#define PORT_PIN_195_AIO195                       0x030C0600U
+#define PORT_PIN_195_SD1_D4                       0x030C060BU
+
+#define PORT_PIN_240_GPIO240                      0x03900000U
+#define PORT_PIN_240_EPWM14_B                     0x03900001U
+#define PORT_PIN_240_SPID_PICO                    0x03900005U
+#define PORT_PIN_240_SD4_C3                       0x0390000BU
+#define PORT_PIN_240_ESC_LED_RUN                  0x0390000DU
+#define PORT_PIN_240_ADCD_EXTMUXSEL0              0x0390000EU
+
+#define PORT_PIN_241_GPIO241                      0x03900200U
+#define PORT_PIN_241_EPWM8_A                      0x03900201U
+#define PORT_PIN_241_SPID_CLK                     0x03900205U
+#define PORT_PIN_241_SD4_D4                       0x0390020BU
+#define PORT_PIN_241_ESC_LED_ERR                  0x0390020DU
+#define PORT_PIN_241_ADCD_EXTMUXSEL1              0x0390020EU
+#define PORT_PIN_241_ESC_GPO17                    0x0390020FU
+
+#define PORT_PIN_242_GPIO242                      0x03900400U
+#define PORT_PIN_242_SD1_D4                       0x03900406U
+#define PORT_PIN_242_I2CA_SDA                     0x03900407U
+#define PORT_PIN_242_OUTPUTXBAR9                  0x03900409U
+#define PORT_PIN_242_SENT1                        0x0390040AU
+#define PORT_PIN_242_SD2_D2                       0x0390040BU
+#define PORT_PIN_242_ESC_LED_STATE_RUN            0x0390040DU
+#define PORT_PIN_242_ADCD_EXTMUXSEL2              0x0390040EU
+#define PORT_PIN_242_ESC_GPO18                    0x0390040FU
+
+#define PORT_PIN_243_GPIO243                      0x03900600U
+#define PORT_PIN_243_EPWM8_B                      0x03900601U
+#define PORT_PIN_243_SENT2                        0x0390060AU
+#define PORT_PIN_243_SD2_D4                       0x0390060BU
+#define PORT_PIN_243_ESC_LED_LINK0_ACTIVE         0x0390060DU
+#define PORT_PIN_243_ADCD_EXTMUXSEL3              0x0390060EU
+#define PORT_PIN_243_ESC_GPO19                    0x0390060FU
+
+#define PORT_PIN_244_GPIO244                      0x03900800U
+#define PORT_PIN_244_SPIC_PTE                     0x03900805U
+#define PORT_PIN_244_SENT5                        0x0390080AU
+#define PORT_PIN_244_SD4_C4                       0x0390080BU
+#define PORT_PIN_244_ESC_LED_LINK1_ACTIVE         0x0390080DU
+
+#define PORT_PIN_245_GPIO245                      0x03900A00U
+#define PORT_PIN_245_SPIC_POCI                    0x03900A05U
+#define PORT_PIN_245_SENT6                        0x03900A0AU
+#define PORT_PIN_245_SD3_C1                       0x03900A0BU
+#define PORT_PIN_245_ESC_PHY_RESETN               0x03900A0DU
+
+#define PORT_PIN_196_AIO196                       0x030C0800U
+#define PORT_PIN_196_SD4_C4                       0x030C080BU
+
+#define PORT_PIN_197_AIO197                       0x030C0A00U
+#define PORT_PIN_197_SD4_D4                       0x030C0A0BU
+
+#define PORT_PIN_198_AIO198                       0x030C0C00U
+#define PORT_PIN_198_SD1_C4                       0x030C0C0BU
+
+#define PORT_PIN_199_AIO199                       0x030C0E00U
+#define PORT_PIN_199_SD1_D4                       0x030C0E0BU
+
+#define PORT_PIN_200_AIO200                       0x030C1000U
+#define PORT_PIN_200_SD2_C1                       0x030C100BU
+
+#define PORT_PIN_201_AIO201                       0x030C1200U
+#define PORT_PIN_201_SD2_D1                       0x030C120BU
+
+#define PORT_PIN_202_AIO202                       0x030C1400U
+#define PORT_PIN_202_SD2_C1                       0x030C140BU
+
+#define PORT_PIN_203_AIO203                       0x030C1600U
+#define PORT_PIN_203_SD2_D1                       0x030C160BU
+
+#define PORT_PIN_204_AIO204                       0x030C1800U
+#define PORT_PIN_204_SD3_C3                       0x030C180BU
+
+#define PORT_PIN_205_AIO205                       0x030C1A00U
+#define PORT_PIN_205_SD3_D3                       0x030C1A0BU
+
+#define PORT_PIN_246_GPIO246                      0x03900C00U
+#define PORT_PIN_246_EPWM16_A                     0x03900C01U
+#define PORT_PIN_246_SPID_PTE                     0x03900C05U
+#define PORT_PIN_246_MCANC_RX                     0x03900C06U
+#define PORT_PIN_246_OUTPUTXBAR7                  0x03900C09U
+#define PORT_PIN_246_SD1_D1                       0x03900C0BU
+#define PORT_PIN_246_ADCE_EXTMUXSEL0              0x03900C0EU
+#define PORT_PIN_246_ESC_GPO20                    0x03900C0FU
+
+#define PORT_PIN_247_GPIO247                      0x03900E00U
+#define PORT_PIN_247_EPWM15_A                     0x03900E01U
+#define PORT_PIN_247_ERRORSTS                     0x03900E02U
+#define PORT_PIN_247_SPID_POCI                    0x03900E05U
+#define PORT_PIN_247_MCANC_RX                     0x03900E06U
+#define PORT_PIN_247_LINA_TX                      0x03900E07U
+#define PORT_PIN_247_OUTPUTXBAR5                  0x03900E09U
+#define PORT_PIN_247_SD2_D3                       0x03900E0BU
+#define PORT_PIN_247_ADCE_EXTMUXSEL1              0x03900E0EU
+#define PORT_PIN_247_ESC_GPO21                    0x03900E0FU
+
+#define PORT_PIN_248_GPIO248                      0x03901000U
+#define PORT_PIN_248_EMIF1_SDCKE                  0x03901002U
+#define PORT_PIN_248_SPIC_PICO                    0x03901005U
+#define PORT_PIN_248_SENT3                        0x0390100AU
+#define PORT_PIN_248_SD1_C2                       0x0390100BU
+#define PORT_PIN_248_ESC_LED_RUN                  0x0390100DU
+#define PORT_PIN_248_ADCE_EXTMUXSEL2              0x0390100EU
+#define PORT_PIN_248_ESC_GPO22                    0x0390100FU
+
+#define PORT_PIN_249_GPIO249                      0x03901200U
+#define PORT_PIN_249_SPIC_CLK                     0x03901205U
+#define PORT_PIN_249_SENT4                        0x0390120AU
+#define PORT_PIN_249_SD1_D2                       0x0390120BU
+#define PORT_PIN_249_ESC_PHY0_LINKSTATUS          0x0390120DU
+#define PORT_PIN_249_ADCE_EXTMUXSEL3              0x0390120EU
+#define PORT_PIN_249_ESC_GPO23                    0x0390120FU
+
+#define PORT_PIN_206_AIO206                       0x030C1C00U
+#define PORT_PIN_206_SD3_C4                       0x030C1C0BU
+
+#define PORT_PIN_207_AIO207                       0x030C1E00U
+#define PORT_PIN_207_SD3_D4                       0x030C1E0BU
+
+#define PORT_PIN_208_AIO208                       0x03100000U
+#define PORT_PIN_208_SD2_C2                       0x0310000BU
+
+#define PORT_PIN_209_AIO209                       0x03100200U
+#define PORT_PIN_209_SD2_D2                       0x0310020BU
+
+#define PORT_PIN_210_AIO210                       0x03100400U
+#define PORT_PIN_210_SD2_C3                       0x0310040BU
+
+#define PORT_PIN_211_AIO211                       0x03100600U
+#define PORT_PIN_211_SD2_D3                       0x0310060BU
+
+#define PORT_PIN_212_AIO212                       0x03100800U
+#define PORT_PIN_212_SD2_C4                       0x0310080BU
+
+#define PORT_PIN_213_AIO213                       0x03100A00U
+#define PORT_PIN_213_SD2_D4                       0x03100A0BU
+
+#define PORT_PIN_MUXMODE_NA                       0xFFFFFFFFU
+
+/*********************************************************************************************************************
+ * Exported Preprocessor #define Macros
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Exported Type Declarations
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Exported Object Declarations
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Exported Function Prototypes
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Exported Inline Function Definitions and Function-Like Macros
+ *********************************************************************************************************************/
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* PORT_PIN_MAP_H */
+/*********************************************************************************************************************
+ *  End of File: Port_Pin_Map.h
+ *********************************************************************************************************************/
+

@@ -1,0 +1,1834 @@
+---
+title: Can API GUIDE Header file
+
+---
+
+# CAN
+
+
+
+## Types
+
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|enum| **[Can_ProcessingType](../Modules/group___c_a_n.md#enum-can-processingtype)** | Can Tx/Rx Processing.  | 
+|enum| **[Can_ReturnType](../Modules/group___c_a_n.md#enum-can-returntype)** | Values that can be returned by CAN Driver APIs.  | 
+|enum| **[Can_HandleType](../Modules/group___c_a_n.md#enum-can-handletype)** | Can Handle Type FULL/BASIC.  | 
+|enum| **[Can_ControllerInstance](../Modules/group___c_a_n.md#enum-can-controllerinstance)** | Can Controller Instance ID.  | 
+|enum| **[Can_MailboxDirectionType](../Modules/group___c_a_n.md#enum-can-mailboxdirectiontype)** | Can Mailbox direction enum.  | 
+|enum| **[Can_Icom_signal_operation_type](../Modules/group___c_a_n.md#enum-can-icom-signal-operation-type)** | Icom signal operation type.  | 
+|enum| **[Can_DrvState](../Modules/group___c_a_n.md#enum-can-drvstate)** | Can Driver state.  | 
+|enum| **[Can_ControllerOperationMode](../Modules/group___c_a_n.md#enum-can-controlleroperationmode)** | Enum to represent the MCAN mode of operation.  | 
+|enum| **[Can_ClockStopAckMode](../Modules/group___c_a_n.md#enum-can-clockstopackmode)** | Enum to represent the MCAN mode of operation.  | 
+|enum| **[Can_MailboxElemSizeType](../Modules/group___c_a_n.md#enum-can-mailboxelemsizetype)** | Enum to represent FIFO/Buffer element Size.  | 
+|enum| **[Can_MemType](../Modules/group___c_a_n.md#enum-can-memtype)** | Enum to represent the CAN Message RAM type.  | 
+|enum| **[Can_RxFifoNumType](../Modules/group___c_a_n.md#enum-can-rxfifonumtype)** | Enum to represent the MCAN Rx FIFO number.  | 
+
+
+
+### enum Can_ProcessingType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| INTERRUPT | 0x0U| Interrupt.   |
+| MIXED | 0x1U| Mixed   |
+| POLLING | 0x2U| Polling.   |
+
+
+
+
+**Brief**: 
+Can Tx/Rx Processing. 
+
+
+
+### enum Can_ReturnType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_BUSY | 2U| Transmit request could not be processed because no transmit object was available.   |
+
+
+
+
+**Brief**: 
+Values that can be returned by CAN Driver APIs. 
+
+
+
+### enum Can_HandleType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| FULL | 0x0U| Full   |
+| BASIC | | Basic   |
+
+
+
+
+**Brief**: 
+Can Handle Type FULL/BASIC. 
+
+
+
+### enum Can_ControllerInstance
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_CONTROLLER_INSTANCE_MCAN1 | 0x0U| MCANA Controller Instance.   |
+| CAN_CONTROLLER_INSTANCE_MCAN2 | 0x1U| MCANB Controller Instance.   |
+| CAN_CONTROLLER_INSTANCE_MCAN3 | 0x2U| MCANC Controller Instance.   |
+| CAN_CONTROLLER_INSTANCE_MCAN4 | 0x3U| MCAND Controller Instance.   |
+| CAN_CONTROLLER_INSTANCE_MCAN5 | 0x4U| MCANE Controller Instance.   |
+| CAN_CONTROLLER_INSTANCE_MCAN6 | 0x5U| MCANF Controller Instance.   |
+
+
+
+
+**Brief**: 
+Can Controller Instance ID. 
+
+
+
+### enum Can_MailboxDirectionType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| RECEIVE | 0x0U| Mailbox is for receive.   |
+| TRANSMIT | | Mailbox is for transmit.   |
+
+
+
+
+**Brief**: 
+Can Mailbox direction enum. 
+
+
+
+### enum Can_Icom_signal_operation_type
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| AND | 0U| AND.   |
+| EQUAL | 1U| EQUAL.   |
+| GREATER | 2U| GREATER.   |
+| SMALLER | 3U| SMALLER.   |
+| XOR | 4U| XOR.   |
+
+
+
+
+**Brief**: 
+Icom signal operation type. 
+
+
+
+### enum Can_DrvState
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_UNINIT | 0U| Can module state when reset/power-up.   |
+| CAN_READY | 1U| Can module state after initialization.   |
+
+
+
+
+**Brief**: 
+Can Driver state. 
+
+
+
+### enum Can_ControllerOperationMode
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_CONTROLLER_OPERATION_MODE_NORMAL | 0U| CAN normal mode.   |
+| CAN_CONTROLLER_OPERATION_MODE_SW_INIT | 1U| CAN SW initialization mode.   |
+
+
+
+
+**Brief**: 
+Enum to represent the MCAN mode of operation. 
+
+
+
+### enum Can_ClockStopAckMode
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_CLOCK_STOP_NO_ACK | 0U| No clock stop acknowledged.   |
+| CAN_CLOCK_STOP_ACK | 1U| MCAN may be set in power down   |
+
+
+
+
+**Brief**: 
+Enum to represent the MCAN mode of operation. 
+
+
+
+### enum Can_MailboxElemSizeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_ELEM_SIZE_8BYTES | 0U| 8 byte data field   |
+| CAN_ELEM_SIZE_12BYTES | 1U| 12 byte data field   |
+| CAN_ELEM_SIZE_16BYTES | 2U| 16 byte data field   |
+| CAN_ELEM_SIZE_20BYTES | 3U| 20 byte data field   |
+| CAN_ELEM_SIZE_24BYTES | 4U| 24 byte data field   |
+| CAN_ELEM_SIZE_32BYTES | 5U| 32 byte data field   |
+| CAN_ELEM_SIZE_48BYTES | 6U| 48 byte data field   |
+| CAN_ELEM_SIZE_64BYTES | 7U| 64 byte data field   |
+
+
+
+
+**Brief**: 
+Enum to represent FIFO/Buffer element Size. 
+
+
+
+### enum Can_MemType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_MEM_TYPE_BUF | 0U| MCAN Msg RAM buffersss.   |
+| CAN_MEM_TYPE_FIFO | 1U| MCAN Msg RAM FIFO/Queue.   |
+
+
+
+
+**Brief**: 
+Enum to represent the CAN Message RAM type. 
+
+
+
+### enum Can_RxFifoNumType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_RX_FIFO_NUM_0 | 0U| MCAN Rx FIFO 0.   |
+| CAN_RX_FIFO_NUM_1 | 1U| MCAN Rx FIFO 1.   |
+
+
+
+
+**Brief**: 
+Enum to represent the MCAN Rx FIFO number. 
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Can_MainFunctionRWPeriodRefType](../Classes/struct_can___main_function_r_w_period_ref_type.md)** | Can Main Function RW Period Ref Type Identifier.  |
+| **[Can_MaskType](../Classes/struct_can___mask_type.md)** | Structure defining the filter mask to be used.  |
+| **[Can_CanConfigType](../Classes/struct_can___can_config_type.md)** | MCan Controller Specific Configuration.  |
+| **[Can_FdBaudConfigType](../Classes/struct_can___fd_baud_config_type.md)** | Structure defining the CAN FD data phase baud rate configuration.  |
+| **[Can_BaudConfigType](../Classes/struct_can___baud_config_type.md)** | Can Controller Baud Rate Configuration definition.  |
+| **[Can_ControllerType](../Classes/struct_can___controller_type.md)** | Can Controller Configuration definition.  |
+| **[Can_MailboxType](../Classes/struct_can___mailbox_type.md)** | Can mailbox configuration definition.  |
+| **[Can_IcomSignalConfigType](../Classes/struct_can___icom_signal_config_type.md)** | Icom signal config data structure.  |
+| **[Can_IcomRxMessageType](../Classes/struct_can___icom_rx_message_type.md)** | Icom Rx message data structure.  |
+| **[Can_IcomConfigType](../Classes/struct_can___icom_config_type.md)** | Icom data structure containing the overall ICOM configuration data.  |
+| **[Can_ConfigType](../Classes/struct_can___config_type.md)** | External data structure containing the overall initialization data for the CAN driver and SFR settings affecting all controllers.  |
+| **[Can_CanIfIndicationType](../Classes/struct_can___can_if_indication_type.md)** | Can State Transition indication done to CanIf module.  |
+| **[Can_MsgRAMConfigParams](../Classes/struct_can___msg_r_a_m_config_params.md)** | Structure for MCAN Message RAM Configuration Parameters Message RAM can contain following sections: Standard ID filters, Extended ID filters, TX FIFO(or TX Q), TX Buffers, TX EventFIFO, RX FIFO0, RX FIFO1, RX Buffer. Note: If particular section in the RAM is not used then it's size should be initialized to '0' (Number of buffers in case of Tx/Rx buffer).  |
+| **[Can_StdMsgIDFilterElement](../Classes/struct_can___std_msg_i_d_filter_element.md)** | Structure for MCAN Standard Message ID Filter Element.  |
+| **[Can_ExtMsgIDFilterElement](../Classes/struct_can___ext_msg_i_d_filter_element.md)** | Structure for MCAN Extended Message ID Filter Element.  |
+| **[Can_FdMsgRAMConfigObjType](../Classes/struct_can___fd_msg_r_a_m_config_obj_type.md)** | Can FD controller Message RAM Configuration object structure.  |
+| **[Can_ControllerObjType](../Classes/struct_can___controller_obj_type.md)** | Can controller object structure.  |
+| **[Can_MailboxObjType](../Classes/struct_can___mailbox_obj_type.md)** | Can Mailbox type strucuture.  |
+| **[Can_DriverObjType](../Classes/struct_can___driver_obj_type.md)** | Can Driver object type structure.  |
+| **[Can_TxBufElementType](../Classes/struct_can___tx_buf_element_type.md)** | Structure for CAN Tx Buffer element.  |
+| **[Can_RxBufElementType](../Classes/struct_can___rx_buf_element_type.md)** | Structure for CAN Rx Buffer element.  |
+| **[Can_RxFIFOStatusType](../Classes/struct_can___rx_f_i_f_o_status_type.md)** | Structure for CAN Rx FIFO Status.  |
+| **[Can_RxNewDataStatusType](../Classes/struct_can___rx_new_data_status_type.md)** | Structure for Can new data flag for Rx buffer.  |
+
+
+
+
+## Defines
+
+| Name           |  Brief     |
+| -------------- | ---------- |
+| CAN_SW_MAJOR_VERSION   | Defines for CAN Driver version used for compatibility checks.  |
+| CAN_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| CAN_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| CAN_AR_RELEASE_MAJOR_VERSION   | Defines for CAN Driver AUTOSAR version used for compatibility checks.  |
+| CAN_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by CAN Driver.  |
+| CAN_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by CAN Driver.  |
+| CAN_VENDOR_ID   | CAN Driver ID Info.  |
+| CAN_MODULE_ID   | CAN Driver Module ID.  |
+| CAN_INSTANCE_ID   | CAN Instance ID.  |
+| CAN_SID_INIT   | The Service Id is one of the argument to Det_ReportError function and is used to identify the source of the error.  |
+| CAN_SID_MAINFUNC_WRITE   | Service ID - Can_MainFunction_Write().  |
+| CAN_SID_SETCTR   | Service ID - Can_SetControllerMode().  |
+| CAN_SID_DIINT   | Service ID - Can_DisableControllerInterrupts().  |
+| CAN_SID_ENINT   | Service ID - Can_EnableControllerInterrupts().  |
+| CAN_SID_WRITE   | Service ID - Can_Write().  |
+| CAN_SID_GET_VERSION_INFO   | Service ID - Can_GetVersionInfo().  |
+| CAN_SID_MAINFUNC_READ   | Service ID - Can_MainFunction_Read().  |
+| CAN_SID_MAINFUNC_BO   | Service ID - Can_MainFunction_BusOff().  |
+| CAN_SID_MAINFUNC_WU   | Service ID - Can_MainFunction_Wakeup().  |
+| CAN_SID_CKWAKEUP   | Service ID - Can_CheckWakeup().  |
+| CAN_SID_MAINFUNC_MODE   | Service ID - Can_MainFunction_Mode().  |
+| CAN_SID_CHNGBAUDRATE   | Service ID - Can_ChangeBaudrate().  |
+| CAN_SID_CHKBAUDRATE   | Service ID - Can_CheckBaudrate().  |
+| CAN_SID_SETBAUDRATE   | Service ID - Can_SetBaudRate().  |
+| CAN_SID_DEINIT   | Service ID - Can_DeInit().  |
+| CAN_SID_GETCNTRERRSTATE   | Service ID - Can_GetControllerErrorState().  |
+| CAN_SID_GETCNTRMODE   | Service ID - Can_GetControllerMode().  |
+| CAN_SID_PROCESSISR   | Service ID - Can_ProcessISR().  |
+| CAN_SID_ICOMCONFIG   | Service ID - Can_SetIcomConfiguration().  |
+| CAN_E_PARAM_POINTER   | Error codes returned by Can functions - Development Errors.  |
+| CAN_E_PARAM_HANDLE   | Invalid Controller Handle.  |
+| CAN_E_PARAM_DATA_LENGTH   | Invalid length of msg.  |
+| CAN_E_PARAM_CONTROLLER   | Invalid controller id.  |
+| CAN_E_UNINIT   | Error due to API invoked without performing Can_Init().  |
+| CAN_E_TRANSITION   | Error during Controller state transition.  |
+| CAN_E_PARAM_BAUDRATE   | Invalid Baudrate configuration.  |
+| CAN_E_ICOM_CONFIG_INVALID   | Invalid ICOM configuration Id.  |
+| CAN_E_DATALOST   | Error codes returned by Can functions - Run Time Errors.  |
+| ICOM_CONFIG_DISABLE   | Icom config disable.  |
+| EXTENDED_ID   | Extended id.  |
+| STANDARD_ID   | Standard id.  |
+| MIXED_ID   | Mixed id.  |
+| CAN_CLASSIC_PAYLOAD_MAX_BYTES   | Can classic payload max bytes.  |
+| CAN_FD_PAYLOAD_MAX_BYTES   | Can FD payload max bytes.  |
+| CAN_MAX_CONTROLLER_SUPPORTED   | Can max controller supported.  |
+| CAN_TDCR_TDCF_MAX   | Can TDCR and TDCF max  |
+| CAN_TDCR_TDCO_MAX   | Can TDCR and TDCO max  |
+| CAN_ID_STD   | Can id STD  |
+| CAN_ID_XTD   | Can id XTD  |
+| CAN_ID_MIXED   | Can id MIXED  |
+| CAN_XTD_MSGID_MASK   | Can XID MSGID mask  |
+| CAN_STD_MSGID_MASK   | Can STD MSGID mask  |
+| CAN_STD_MSGID_SHIFT   | Can STD MSGID shift  |
+| CAN_ID_CAN_CONTROLLER_TYPE_MASK   | Can id can controller type mask  |
+| CAN_MSG_TYPE_MASK   | Can msg type mask  |
+| CAN_MSG_ID_TYPE_EXT   | Can msg type mask  |
+| CAN_MSG_TYPE_CLASSIC_CAN   | Can msg type classic can  |
+| CAN_MSG_TYPE_CAN_FD   | Can msg type can id  |
+| MCAN_MSG_RAM_STD_ELEM_SIZE   | Standard ID Filter Element Size.  |
+| MCAN_MSG_RAM_EXT_ELEM_SIZE   | Extended ID Filter Element Size.  |
+| MCAN_MSG_RAM_TX_RX_ELEM_SIZE   | Tx/Rx Mailbox Size.  |
+| MCAN_TX_BUFFER_MAX_NUM   | MCAN IP TX buffer max number.  |
+| MCAN_RX_BUFFER_MAX_NUM   | MCAN IP RX buffer max number.  |
+| MCAN_RX_FIFO_0_MAX_NUM   | MCAN rx FIFO_0 max number.  |
+| MCAN_RX_FIFO_1_MAX_NUM   | MCAN rx FIFO_1 max number.  |
+| MCAN_TX_MB_MAX_NUM   | MCAN TX_MB max number.  |
+| MCAN_RX_MB_MAX_NUM   | MCAN RX_MB max number.  |
+| CAN_INTR_MASK_ALL   | Macro defines mask for all the interrupts status for MCAN.  |
+| MCAN_INT_LINE_0   | MCAN Interrupt line 0.  |
+| MCAN_INT_LINE_1   | MCAN Interrupt line 0.  |
+| CAN_REG_MF_READ32 (regAddr, REG_FIELD)  | This macro calls read field API for 32 bit register. It also frames the mask and shift from register field macro.  |
+| CAN_REG_MF_WRITE32 (regAddr, REG_FIELD, fieldVal)  | This macro calls read-modify-write API for 32 bit register. It also frames the mask and shift from register field macro.  |
+| CAN_REG_READ32 (regAddr)  | This macro reads a 32-bit value from a hardware register and returns the value.  |
+| CAN_REG_WRITE32 (regAddr, value)  | This macro writes a 32-bit value to a hardware register.  |
+| CAN_FIELD_SET32 (regVal, REG_FIELD, fieldVal)  | Macro to write a specific field value. This macro first clears the specified field value and then performs "OR" of the field value which is shifted and masked. This will set the field value at its desired position.  |
+| CAN_FIELD_GET (regVal, REG_FIELD)  | Macro to extract a field value. This macro extracts the field value from a 32-bit variable (which contains the register value). This macro does not read from actual register address, and only extracts the field from a variable.  |
+
+## Functions
+
+| Return type    | Function Name           |      Brief        |
+| -------------- | ----------------------- | ----------------- |
+| void | **[Can_GetVersionInfo](../Modules/group___c_a_n.md#function-can-getversioninfo)**(Std_VersionInfoType * versioninfo)| Function returns the version information of this module.  |
+| void | **[Can_Init](../Modules/group___c_a_n.md#function-can-init)**(const [Can_ConfigType](Classes/struct_can___config_type.md) * ConfigPtr)| This function initializes the configuration.  |
+| void | **[Can_DeInit](../Modules/group___c_a_n.md#function-can-deinit)**(void )| This function deinitializes the module.  |
+| Std_ReturnType | **[Can_SetBaudrate](../Modules/group___c_a_n.md#function-can-setbaudrate)**(uint8 Controller, const uint16 BaudRateConfigID)| This service shall set the baud rate configuration of the CAN Controller.  |
+| Std_ReturnType | **[Can_SetControllerMode](../Modules/group___c_a_n.md#function-can-setcontrollermode)**(uint8 Controller, Can_ControllerStateType Transition)| This service performs software triggered state transitions of the CAN controller State machine.  |
+| void | **[Can_DisableControllerInterrupts](../Modules/group___c_a_n.md#function-can-disablecontrollerinterrupts)**(uint8 Controller)| This service disables all interrupts.  |
+| void | **[Can_EnableControllerInterrupts](../Modules/group___c_a_n.md#function-can-enablecontrollerinterrupts)**(uint8 Controller)| This service enables all allowed interrupts.  |
+| Std_ReturnType | **[Can_CheckWakeup](../Modules/group___c_a_n.md#function-can-checkwakeup)**(uint8 Controller)| This service checks if a wakeup has occurred for the given controller.  |
+| Std_ReturnType | **[Can_GetControllerErrorState](../Modules/group___c_a_n.md#function-can-getcontrollererrorstate)**(uint8 Controller, Can_ErrorStateType * ErrorStatePtr)| This service obtains the error state of the CAN controller.  |
+| Std_ReturnType | **[Can_GetControllerMode](../Modules/group___c_a_n.md#function-can-getcontrollermode)**(uint8 Controller, Can_ControllerStateType * ControllerModePtr)| This service reports about the current status of the requested CAN controller.  |
+| Std_ReturnType | **[Can_Write](../Modules/group___c_a_n.md#function-can-write)**(uint8 Hth, const Can_PduType * PduInfo)| This service is called by CanIf to pass a CAN message to CanDrv for transmission.  |
+| void | **[Can_MainFunction_Write](../Modules/group___c_a_n.md#function-can-mainfunction-write)**(uint16 RWFuncID)| This service performs the polling of TX confirmation when CAN_TX_PROCESSING is set to POLLING.  |
+| void | **[Can_MainFunction_Read](../Modules/group___c_a_n.md#function-can-mainfunction-read)**(uint16 RWFuncID)| This service performs the polling of RX indications when CAN_RX_PROCESSING is set to POLLING.  |
+| void | **[Can_MainFunction_BusOff](../Modules/group___c_a_n.md#function-can-mainfunction-busoff)**(void )| This service performs the polling of bus-off events that are configured statically as 'to be polled'.  |
+| void | **[Can_MainFunction_Wakeup](../Modules/group___c_a_n.md#function-can-mainfunction-wakeup)**(void )| This function performs the polling of wake-up events that are configured statically as 'to be polled'.  |
+| void | **[Can_MainFunction_Mode](../Modules/group___c_a_n.md#function-can-mainfunction-mode)**(void )| This function performs the polling of CAN controller mode transitions.  |
+| Std_ReturnType | **[Can_SetIcomConfiguration](../Modules/group___c_a_n.md#function-can-seticomconfiguration)**(uint8 Controller, IcomConfigIdType ConfigurationId)| This service shall change the Icom Configuration of a CAN controller to the requested one.  |
+| void | **[Can_ResetDrvObjPriv](../Modules/group___c_a_n.md#function-can-resetdrvobjpriv)**([Can_DriverObjType](Classes/struct_can___driver_obj_type.md) * drvObj)| This function will reset default Config structure.  |
+| void | **[Can_InitDrvObjPriv](../Modules/group___c_a_n.md#function-can-initdrvobjpriv)**([Can_DriverObjType](Classes/struct_can___driver_obj_type.md) * drvObj, const [Can_ConfigType](Classes/struct_can___config_type.md) * ConfigPtr)| This function will initialize Driver Config structure.  |
+| void | **[Can_HwUnitConfigPriv](../Modules/group___c_a_n.md#function-can-hwunitconfigpriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * canController, const [Can_MailboxObjType](Classes/struct_can___mailbox_obj_type.md) * canMailbox, uint8 maxMbCnt, uint8 * canHtrhMbMap)| This function will initialize Can HW Unit.  |
+| Std_ReturnType | **[Can_HWSetBaudRatePriv](../Modules/group___c_a_n.md#function-can-hwsetbaudratepriv)**(uint32 baseAddr, const [Can_BaudConfigType](Classes/struct_can___baud_config_type.md) * baudConfig)| This API will configure a bit timings for MCAN module.  |
+| void | **[Can_DisableInterruptsPriv](../Modules/group___c_a_n.md#function-can-disableinterruptspriv)**(const [Can_ControllerType](Classes/struct_can___controller_type.md) * configParam)| This function will disable MCAN interrupts as per config.  |
+| void | **[Can_EnableInterruptsPriv](../Modules/group___c_a_n.md#function-can-enableinterruptspriv)**(const [Can_ControllerType](Classes/struct_can___controller_type.md) * configParam)| This function will enable MCAN interrupts as per config.  |
+| void | **[Can_HwDeInitPriv](../Modules/group___c_a_n.md#function-can-hwdeinitpriv)**(const [Can_ControllerType](Classes/struct_can___controller_type.md) * configParam)| This function will de-initialize Can HW Unit.  |
+| Can_ErrorStateType | **[Can_GetProtocolStatusPriv](../Modules/group___c_a_n.md#function-can-getprotocolstatuspriv)**(const [Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * canController)| This function will fetch Protocol Errors detected by CAN HW Unit.  |
+| Std_ReturnType | **[Can_HWCheckWakeupPriv](../Modules/group___c_a_n.md#function-can-hwcheckwakeuppriv)**(const [Can_ControllerType](Classes/struct_can___controller_type.md) * configParam)| This function will fetch Wakeup Status for CAN HW Unit.  |
+| Std_ReturnType | **[Can_HwUnitStartPriv](../Modules/group___c_a_n.md#function-can-hwunitstartpriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj, [Can_CanIfIndicationType](Classes/struct_can___can_if_indication_type.md) * canIfIndication)| This function will start Can HW Unit.  |
+| void | **[Can_HwUnitStopPriv](../Modules/group___c_a_n.md#function-can-hwunitstoppriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj, [Can_CanIfIndicationType](Classes/struct_can___can_if_indication_type.md) * canIfIndication)| This function will stop Can HW Unit.  |
+| Std_ReturnType | **[Can_HwUnitSleepPriv](../Modules/group___c_a_n.md#function-can-hwunitsleeppriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj, [Can_CanIfIndicationType](Classes/struct_can___can_if_indication_type.md) * canIfIndication)| This function will sleep Can HW Unit.  |
+| Std_ReturnType | **[Can_HwUnitWakeupPriv](../Modules/group___c_a_n.md#function-can-hwunitwakeuppriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj, [Can_CanIfIndicationType](Classes/struct_can___can_if_indication_type.md) * canIfIndication)| This function will wakeup Can HW Unit.  |
+| Std_ReturnType | **[Can_GetFreeTxMsgObjPriv](../Modules/group___c_a_n.md#function-can-getfreetxmsgobjpriv)**(const [Can_MailboxType](Classes/struct_can___mailbox_type.md) * mailboxCfg, const [Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * canController, Can_HwHandleType * msgObj, uint8 htrh)| This function will check if desired Tx mailbox is free.  |
+| void | **[Can_WriteTxMailboxPriv](../Modules/group___c_a_n.md#function-can-writetxmailboxpriv)**(const [Can_MailboxType](Classes/struct_can___mailbox_type.md) * mailboxCfg, [Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj, uint8 hth, uint32 messageBox, const Can_PduType * pduInfo)| This function will write into the Transmit Mailbox.  |
+| void | **[Can_HwUnitTxDonePollingPriv](../Modules/group___c_a_n.md#function-can-hwunittxdonepollingpriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * canController, const [Can_MailboxObjType](Classes/struct_can___mailbox_obj_type.md) * canMailbox, uint8 htrh)| This function will poll for Tx confirmation.  |
+| void | **[Can_ReadRxMailboxPriv](../Modules/group___c_a_n.md#function-can-readrxmailboxpriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj, const [Can_MailboxObjType](Classes/struct_can___mailbox_obj_type.md) * canMailbox, uint8 maxMbCnt)| This function will read Rx messages from Mailbox.  |
+| void | **[Can_BusOffProcessPriv](../Modules/group___c_a_n.md#function-can-busoffprocesspriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj)| This function will inform CanIf if bus off is detected.  |
+| void | **[Can_WakeupProcessPriv](../Modules/group___c_a_n.md#function-can-wakeupprocesspriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj)| This function will inform EcuM if Wakeup is detected.  |
+| void | **[Can_ModeProcessPriv](../Modules/group___c_a_n.md#function-can-modeprocesspriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj, [Can_CanIfIndicationType](Classes/struct_can___can_if_indication_type.md) * indication)| This function will inform CanIf if any mode changes are detected.  |
+| void | **[Can_ProcessISR](../Modules/group___c_a_n.md#function-can-processisr)**([Can_ControllerInstance](Modules/group___c_a_n.md#enum-can-controllerinstance) canInstance, uint32 lineSelect)|  |
+| uint32 | **[Can_RegMFReadRaw32](../Modules/group___c_a_n.md#function-can-regmfreadraw32)**(uint32 addr, uint32 mask, uint32 shift)| This function reads a 32 bit register, masks specific set of bits and the left shifted value.  |
+| void | **[Can_RegMFWriteRaw32](../Modules/group___c_a_n.md#function-can-regmfwriteraw32)**(uint32 addr, uint32 mask, uint32 shift, uint32 value)| This function writes a 32 bit register masking specific set of bits and the left shifted value.  |
+| uint32 | **[Can_RegReadRaw32](../Modules/group___c_a_n.md#function-can-regreadraw32)**(uint32 addr)| This function reads a 32 bit register.  |
+| void | **[Can_RegWriteRaw32](../Modules/group___c_a_n.md#function-can-regwriteraw32)**(uint32 addr, uint32 value)| This function writes a 32 bit register.  |
+
+
+
+### function Can_GetVersionInfo
+
+```
+void Can_GetVersionInfo(
+    Std_VersionInfoType * versioninfo
+)
+```
+
+
+**Brief**: 
+Function returns the version information of this module. 
+
+This service writes the version information of this module into the data structure referenced by the parameter. If this parameter references NULL_PTR, a development error is reported.
+
+
+**Parameters**: 
+
+  
+* **versioninfo** Pointer to where to store the version information of this module. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_Init
+
+```
+void Can_Init(
+    const Can_ConfigType * ConfigPtr
+)
+```
+
+
+**Brief**: 
+This function initializes the configuration. 
+
+This function initializes the message RAM, which also clears all the message objects, and places the CAN controller in an init state. Write access to the configuration registers is available as a result, allowing the bit timing and message objects to be setup.
+
+
+**Parameters**: 
+
+  
+* **ConfigPtr** Pointer to post-build configuration data. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_DeInit
+
+```
+void Can_DeInit(
+    void 
+)
+```
+
+
+**Brief**: 
+This function deinitializes the module. 
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_SetBaudrate
+
+```
+Std_ReturnType Can_SetBaudrate(
+    uint8 Controller,
+    const uint16 BaudRateConfigID
+)
+```
+
+
+**Brief**: 
+This service shall set the baud rate configuration of the CAN Controller. 
+
+This function sets the baud rate configuration of the CAN controller. Depending on necessary baud rate modifications the controller might have to reset.
+
+
+**Parameters**: 
+
+  
+* **Controller** CAN controller, whose baud rate shall be set. 
+  
+* **BaudRateConfigID** references a baud rate configuration by ID. 
+
+
+**Returns**: 
+
+  
+* **E_OK** - Service request accepted, setting of (new) baud rate started. 
+<br> 
+  
+* **E_NOT_OK** - Service request not accepted. 
+<br> 
+
+
+**Return**: Setting the Baudrate successful or failure. 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_SetControllerMode
+
+```
+Std_ReturnType Can_SetControllerMode(
+    uint8 Controller,
+    Can_ControllerStateType Transition
+)
+```
+
+
+**Brief**: 
+This service performs software triggered state transitions of the CAN controller State machine. 
+
+The function perfroms the transition of the CAN controller state machine which is software triggered.
+
+
+**Parameters**: 
+
+  
+* **Controller** CAN controller for which the status shall be changed. 
+  
+* **Transition** Transition value to request new CAN controller state. 
+
+
+**Returns**: 
+
+  
+* **E_OK** Request accepted. 
+<br> 
+  
+* **E_NOT_OK** Request not accepted i.e. an error occured while requesting an incorrect from one state to other or an incorrect transition. 
+<br> 
+
+
+**Return**: Setting the controller mode successful/failure. 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_DisableControllerInterrupts
+
+```
+void Can_DisableControllerInterrupts(
+    uint8 Controller
+)
+```
+
+
+**Brief**: 
+This service disables all interrupts. 
+
+This function checks if there is a DET Error and then disables all the interrupts for the controller.
+
+
+**Parameters**: 
+
+  
+* **Controller** CAN controller for which interrupts shall be re-enabled. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_EnableControllerInterrupts
+
+```
+void Can_EnableControllerInterrupts(
+    uint8 Controller
+)
+```
+
+
+**Brief**: 
+This service enables all allowed interrupts. 
+
+This function checks the total number of interrupts and enables all the interrupts allowed for the controller.
+
+
+**Parameters**: 
+
+  
+* **Controller** CAN controller for which interrupts shall be re-enabled. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_CheckWakeup
+
+```
+Std_ReturnType Can_CheckWakeup(
+    uint8 Controller
+)
+```
+
+
+**Brief**: 
+This service checks if a wakeup has occurred for the given controller. 
+
+This function checks if the Init is done and checks if wakeup has occured and returns value accordingly for the given controller.
+
+
+**Parameters**: 
+
+  
+* **Controller** to be checked for a wakeup. 
+
+
+**Returns**: 
+
+  
+* **E_OK** API call has been accepted. 
+<br> 
+  
+* **E_NOT_OK** API call has not been accepted. 
+<br> 
+
+
+**Return**: Wakeup occurred or not for a controller 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_GetControllerErrorState
+
+```
+Std_ReturnType Can_GetControllerErrorState(
+    uint8 Controller,
+    Can_ErrorStateType * ErrorStatePtr
+)
+```
+
+
+**Brief**: 
+This service obtains the error state of the CAN controller. 
+
+This function gets the error state of the CAN controller.
+
+
+**Parameters**: 
+
+  
+* **Controller** CAN controller, which is requested for ErrorState. 
+  
+* **ErrorStatePtr** Pointer to a memory location, where the error state of the CAN controller will be stored. 
+
+
+**Returns**: 
+
+  
+* **E_OK** - Error state request has been accepted. 
+<br> 
+  
+* **E_NOT_OK** - Error state request has not been accepted.. 
+<br> 
+
+
+**Return**: Error state obtained successfully/failed to obtain error state. 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_GetControllerMode
+
+```
+Std_ReturnType Can_GetControllerMode(
+    uint8 Controller,
+    Can_ControllerStateType * ControllerModePtr
+)
+```
+
+
+**Brief**: 
+This service reports about the current status of the requested CAN controller. 
+
+This function gets the current status of the CAN controller.
+
+
+**Parameters**: 
+
+  
+* **Controller** CAN controller, which is requested for ErrorState. 
+  
+* **ControllerModePtr** Pointer to a memory location, where the current mode of the CAN controller will be stored. 
+
+
+**Returns**: 
+
+  
+* **E_OK** - Controller mode request has been accepted. 
+<br> 
+  
+* **E_NOT_OK** - Controller mode request has not been accepted. 
+<br> 
+
+
+**Return**: Able/unable to fetch current status of the controller. 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_Write
+
+```
+Std_ReturnType Can_Write(
+    uint8 Hth,
+    const Can_PduType * PduInfo
+)
+```
+
+
+**Brief**: 
+This service is called by CanIf to pass a CAN message to CanDrv for transmission. 
+
+The function Can_Write first checks if the hardware transmit object is identified and is free. It passes the CAN message to CanDrv for transmission.
+
+
+**Parameters**: 
+
+  
+* **Hth** information which HW-transmit handle shall be used for transmit. Implicitly this is also the information about the controller to use because the Hth numbers are unique inside one hardware unit. 
+  
+* **PduInfo** Pointer to SDU user memory, DLC and Identifier. 
+
+
+**Returns**: 
+
+  
+* **E_OK** Write command has been accepted. 
+<br> 
+  
+* **E_NOT_OK** Development error occurred. 
+<br> 
+  
+* **CAN_BUSY** No TX hardware buffer available or pre-emptive call of Can_Write that can't be implemented re-entrant 
+<br> 
+
+
+**Return**: Can write command is accepted (or) resulted in an error (or) Controller is busy 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_MainFunction_Write
+
+```
+void Can_MainFunction_Write(
+    uint16 RWFuncID
+)
+```
+
+
+**Brief**: 
+This service performs the polling of TX confirmation when CAN_TX_PROCESSING is set to POLLING. 
+
+This function checks if Can Initialisation is done to check for error if DET error detect is enabled. For a TX Mailbox if the controller is active polling of TX confirmation is done.
+
+
+**Parameters**: 
+
+  
+* **RWFuncID** Read/Write period ID 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_MainFunction_Read
+
+```
+void Can_MainFunction_Read(
+    uint16 RWFuncID
+)
+```
+
+
+**Brief**: 
+This service performs the polling of RX indications when CAN_RX_PROCESSING is set to POLLING. 
+
+This function checks if Can Initialisation is done to check for error if DET error detect is enabled. For a Rx Mailbox if the controller is active polling of Rx indications is done.
+
+
+**Parameters**: 
+
+  
+* **RWFuncID** Read/Write period ID 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_MainFunction_BusOff
+
+```
+void Can_MainFunction_BusOff(
+    void 
+)
+```
+
+
+**Brief**: 
+This service performs the polling of bus-off events that are configured statically as 'to be polled'. 
+
+This function checks if Can Initialisation is done to check for error if DET error detect is enabled. If the controller is active the polling of bus-off events that are configured statically as 'to be polled'.
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_MainFunction_Wakeup
+
+```
+void Can_MainFunction_Wakeup(
+    void 
+)
+```
+
+
+**Brief**: 
+This function performs the polling of wake-up events that are configured statically as 'to be polled'. 
+
+This function checks if Can Initialisation is done to check for error if DET error detect is enabled. The polling of wake-up events is done.
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_MainFunction_Mode
+
+```
+void Can_MainFunction_Mode(
+    void 
+)
+```
+
+
+**Brief**: 
+This function performs the polling of CAN controller mode transitions. 
+
+This function checks if Can Initialisation is done to check for error if DET error detect is enabled. The polling of CAN controller mode transitions is done.
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_SetIcomConfiguration
+
+```
+Std_ReturnType Can_SetIcomConfiguration(
+    uint8 Controller,
+    IcomConfigIdType ConfigurationId
+)
+```
+
+
+**Brief**: 
+This service shall change the Icom Configuration of a CAN controller to the requested one. 
+
+**Parameters**: 
+
+  
+* **Controller** CAN controller for which the status shall be changed 
+  
+* **ConfigurationId** Requested Configuration 
+
+
+**Returns**: 
+
+  
+* **E_OK** CAN driver succeeded in setting a configuration with a valid Configuration id. 
+<br> 
+  
+* **E_NOT_OK** CAN driver failed to set a configuration with a valid Configuration id. 
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_ResetDrvObjPriv
+
+```
+void Can_ResetDrvObjPriv(
+    Can_DriverObjType * drvObj
+)
+```
+
+
+**Brief**: 
+This function will reset default Config structure. 
+
+**Parameters**: 
+
+  
+* **drvObj** Pointer to post-build configuration data. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_InitDrvObjPriv
+
+```
+void Can_InitDrvObjPriv(
+    Can_DriverObjType * drvObj,
+    const Can_ConfigType * ConfigPtr
+)
+```
+
+
+**Brief**: 
+This function will initialize Driver Config structure. 
+
+**Parameters**: 
+
+  
+* **drvObj** Pointer to post-build configuration data. 
+  
+* **ConfigPtr** Pointer to Can controllers Config structure. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_HwUnitConfigPriv
+
+```
+void Can_HwUnitConfigPriv(
+    Can_ControllerObjType * canController,
+    const Can_MailboxObjType * canMailbox,
+    uint8 maxMbCnt,
+    uint8 * canHtrhMbMap
+)
+```
+
+
+**Brief**: 
+This function will initialize Can HW Unit. 
+
+**Parameters**: 
+
+  
+* **canController** Pointer to Can controller Config structure. 
+  
+* **canMailbox** Pointer to Mailbox structure. 
+  
+* **maxMbCnt** Maximum number of mailbox configured. 
+  
+* **canHtrhMbMap** Pointer to Htrh to mailbox mapping. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_HWSetBaudRatePriv
+
+```
+Std_ReturnType Can_HWSetBaudRatePriv(
+    uint32 baseAddr,
+    const Can_BaudConfigType * baudConfig
+)
+```
+
+
+**Brief**: 
+This API will configure a bit timings for MCAN module. 
+
+**Parameters**: 
+
+  
+* **baseAddr** Base Address of the MCAN Registers. 
+  
+* **baudConfig** Configuration parameters for MCAN bit timing. 
+
+
+**Returns**: 
+
+  
+* **E_OK** - If baud rate config is successful. 
+<br> 
+  
+* **E_NOT_OK** - If baud rate config is unsuccessful. 
+<br> 
+
+
+**Return**: The status of whether the Baud Rate configuration is successful 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_DisableInterruptsPriv
+
+```
+void Can_DisableInterruptsPriv(
+    const Can_ControllerType * configParam
+)
+```
+
+
+**Brief**: 
+This function will disable MCAN interrupts as per config. 
+
+**Parameters**: 
+
+  
+* **configParam** Pointer to CAN Controller config parameters. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_EnableInterruptsPriv
+
+```
+void Can_EnableInterruptsPriv(
+    const Can_ControllerType * configParam
+)
+```
+
+
+**Brief**: 
+This function will enable MCAN interrupts as per config. 
+
+**Parameters**: 
+
+  
+* **configParam** Pointer to CAN Controller config parameters. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_HwDeInitPriv
+
+```
+void Can_HwDeInitPriv(
+    const Can_ControllerType * configParam
+)
+```
+
+
+**Brief**: 
+This function will de-initialize Can HW Unit. 
+
+**Parameters**: 
+
+  
+* **configParam** Pointer to CAN Controller config parameters. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_GetProtocolStatusPriv
+
+```
+Can_ErrorStateType Can_GetProtocolStatusPriv(
+    const Can_ControllerObjType * canController
+)
+```
+
+
+**Brief**: 
+This function will fetch Protocol Errors detected by CAN HW Unit. 
+
+**Parameters**: 
+
+  
+* **canController** Pointer to Can controller Config structure. 
+
+
+**Returns**: 
+
+  
+* **CAN_ERRORSTATE_ACTIVE** - If no protocol errors are present. 
+<br> 
+  
+* **CAN_ERRORSTATE_PASSIVE** - If CAN controller is in passive state due to protocol errors. 
+<br> 
+  
+* **CAN_ERRORSTATE_BUSOFF** - If bus off error is detected. 
+<br> 
+
+
+**Return**: The Can error state when controller is ACTIVE/PASSIVE/BUS-OFF 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_HWCheckWakeupPriv
+
+```
+Std_ReturnType Can_HWCheckWakeupPriv(
+    const Can_ControllerType * configParam
+)
+```
+
+
+**Brief**: 
+This function will fetch Wakeup Status for CAN HW Unit. 
+
+**Parameters**: 
+
+  
+* **configParam** Pointer to CAN Controller config parameters. 
+
+
+**Returns**: 
+
+  
+* **TRUE** - If CAN HW Unit is in Wakeup. 
+<br> 
+  
+* **FALSE** - If CAN HW Unit is still sleeping. 
+<br> 
+
+
+**Return**: The status of whether CAN HW Unit is Wakeup/Sleeping 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_HwUnitStartPriv
+
+```
+Std_ReturnType Can_HwUnitStartPriv(
+    Can_ControllerObjType * controllerObj,
+    Can_CanIfIndicationType * canIfIndication
+)
+```
+
+
+**Brief**: 
+This function will start Can HW Unit. 
+
+**Parameters**: 
+
+  
+* **controllerObj** Pointer to Can controller Config structure. 
+  
+* **canIfIndication** Pointer to a struct containing Start/Stop/Sleep/Wakeup controller status to update, CanIf module indication done information 
+  
+* **canIfIndication** Updates, Start successful status to the pointer 
+
+
+**Returns**: 
+
+  
+* **E_OK** - If startup is successful. 
+<br> 
+  
+* **E_NOT_OK** - If startup is unsuccessful. 
+<br> 
+
+
+**Return**: The status of whether starting of Can HW Unit is successful 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_HwUnitStopPriv
+
+```
+void Can_HwUnitStopPriv(
+    Can_ControllerObjType * controllerObj,
+    Can_CanIfIndicationType * canIfIndication
+)
+```
+
+
+**Brief**: 
+This function will stop Can HW Unit. 
+
+**Parameters**: 
+
+  
+* **controllerObj** Pointer to Can controller Config structure. 
+  
+* **canIfIndication** Pointer to a struct containing Start/Stop/Sleep/Wakeup controller status to update, CanIf module indication done information 
+  
+* **canIfIndication** Updates, Stop successful status to the pointer 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: The status of whether stopping of Can HW Unit is successful 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_HwUnitSleepPriv
+
+```
+Std_ReturnType Can_HwUnitSleepPriv(
+    Can_ControllerObjType * controllerObj,
+    Can_CanIfIndicationType * canIfIndication
+)
+```
+
+
+**Brief**: 
+This function will sleep Can HW Unit. 
+
+**Parameters**: 
+
+  
+* **controllerObj** Pointer to Can controller Config structure. 
+  
+* **canIfIndication** Pointer to a struct containing Start/Stop/Sleep/Wakeup controller status to update, CanIf module indication done information 
+  
+* **canIfIndication** Updates, Sleep successful status to the pointer 
+
+
+**Returns**: 
+
+  
+* **E_OK** - If sleep is successful. 
+<br> 
+  
+* **E_NOT_OK** - If sleep is unsuccessful. 
+<br> 
+
+
+**Return**: The status of whether sleep of Can HW Unit is successful 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_HwUnitWakeupPriv
+
+```
+Std_ReturnType Can_HwUnitWakeupPriv(
+    Can_ControllerObjType * controllerObj,
+    Can_CanIfIndicationType * canIfIndication
+)
+```
+
+
+**Brief**: 
+This function will wakeup Can HW Unit. 
+
+**Parameters**: 
+
+  
+* **controllerObj** Pointer to Can controller Config structure. 
+  
+* **canIfIndication** Pointer to a struct containing Start/Stop/Sleep/Wakeup controller status to update, CanIf module indication done information 
+  
+* **canIfIndication** Updates, Wakeup successful status to the pointer 
+
+
+**Returns**: 
+
+  
+* **E_OK** - If wakeup is successful. 
+<br> 
+  
+* **E_NOT_OK** - If wakeup is unsuccessful. 
+<br> 
+
+
+**Return**: The status of whether wakeup of Can HW Unit is successful 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_GetFreeTxMsgObjPriv
+
+```
+Std_ReturnType Can_GetFreeTxMsgObjPriv(
+    const Can_MailboxType * mailboxCfg,
+    const Can_ControllerObjType * canController,
+    Can_HwHandleType * msgObj,
+    uint8 htrh
+)
+```
+
+
+**Brief**: 
+This function will check if desired Tx mailbox is free. 
+
+**Parameters**: 
+
+  
+* **mailboxCfg** Pointer to Mailbox structure. 
+  
+* **canController** Pointer to Can controller Config structure. 
+  
+* **msgObj** HW object in the controller. 
+  
+* **htrh** HW object in the configuration. 
+
+
+**Returns**: 
+
+  
+* **E_OK** - If free message object is found. 
+<br> 
+  
+* **E_NOT_OK** - If free message object is not found. 
+<br> 
+  
+* **CAN_BUSY** - If message is already pending. 
+<br> 
+
+
+**Return**: The status of Tx mailbox free/busy/not-found 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_WriteTxMailboxPriv
+
+```
+void Can_WriteTxMailboxPriv(
+    const Can_MailboxType * mailboxCfg,
+    Can_ControllerObjType * controllerObj,
+    uint8 hth,
+    uint32 messageBox,
+    const Can_PduType * pduInfo
+)
+```
+
+
+**Brief**: 
+This function will write into the Transmit Mailbox. 
+
+**Parameters**: 
+
+  
+* **mailboxCfg** Pointer to Mailbox structure. 
+  
+* **controllerObj** Pointer to Can controller Config structure. 
+  
+* **hth** HW object in the configuration. 
+  
+* **messageBox** HW object in the controller. 
+  
+* **pduInfo** Pointer to SDU user memory, DLC and Identifier. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_HwUnitTxDonePollingPriv
+
+```
+void Can_HwUnitTxDonePollingPriv(
+    Can_ControllerObjType * canController,
+    const Can_MailboxObjType * canMailbox,
+    uint8 htrh
+)
+```
+
+
+**Brief**: 
+This function will poll for Tx confirmation. 
+
+**Parameters**: 
+
+  
+* **canController** Pointer to Can controller Config structure. 
+  
+* **mailboxCfg** Pointer to Mailbox structure. 
+  
+* **htrh** HW object in the configuration. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_ReadRxMailboxPriv
+
+```
+void Can_ReadRxMailboxPriv(
+    Can_ControllerObjType * controllerObj,
+    const Can_MailboxObjType * canMailbox,
+    uint8 maxMbCnt
+)
+```
+
+
+**Brief**: 
+This function will read Rx messages from Mailbox. 
+
+**Parameters**: 
+
+  
+* **controllerObj** Pointer to Can controller Config structure. 
+  
+* **canMailbox** Pointer to Mailbox structure. 
+  
+* **maxMbCnt** Maximum number of mailbox configured. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_BusOffProcessPriv
+
+```
+void Can_BusOffProcessPriv(
+    Can_ControllerObjType * controllerObj
+)
+```
+
+
+**Brief**: 
+This function will inform CanIf if bus off is detected. 
+
+**Parameters**: 
+
+  
+* **controllerObj** Pointer to Can controller Config structure. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_WakeupProcessPriv
+
+```
+void Can_WakeupProcessPriv(
+    Can_ControllerObjType * controllerObj
+)
+```
+
+
+**Brief**: 
+This function will inform EcuM if Wakeup is detected. 
+
+**Parameters**: 
+
+  
+* **controllerObj** Pointer to Can controller Config structure. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_ModeProcessPriv
+
+```
+void Can_ModeProcessPriv(
+    Can_ControllerObjType * controllerObj,
+    Can_CanIfIndicationType * indication
+)
+```
+
+
+**Brief**: 
+This function will inform CanIf if any mode changes are detected. 
+
+**Parameters**: 
+
+  
+* **controllerObj** Pointer to Can controller Config structure. 
+  
+* **indication** Pointer to a struct containing Start/Stop/Sleep/Wakeup controller status indication done to CanIf module 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_ProcessISR
+
+```
+void Can_ProcessISR(
+    Can_ControllerInstance canInstance,
+    uint32 lineSelect
+)
+```
+
+
+### function Can_RegMFReadRaw32
+
+```
+static inline uint32 Can_RegMFReadRaw32(
+    uint32 addr,
+    uint32 mask,
+    uint32 shift
+)
+```
+
+
+**Brief**: 
+This function reads a 32 bit register, masks specific set of bits and the left shifted value. 
+
+**Parameters**: 
+
+  
+* **addr** Address of the memory mapped hardware register. 
+  
+* **mask** Mask for the bit field. 
+  
+* **shift** Bit field shift from LSB. 
+
+
+**Returns**: 
+
+  
+* **Value** of the type uint32. 
+<br> 
+
+
+**Return**: Bit-field value (absolute value - shifted to LSB position). 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_RegMFWriteRaw32
+
+```
+static inline void Can_RegMFWriteRaw32(
+    uint32 addr,
+    uint32 mask,
+    uint32 shift,
+    uint32 value
+)
+```
+
+
+**Brief**: 
+This function writes a 32 bit register masking specific set of bits and the left shifted value. 
+
+**Parameters**: 
+
+  
+* **addr** Address of the memory mapped hardware register. 
+  
+* **mask** Mask for the bit field. 
+  
+* **shift** Bit field shift from LSB. 
+  
+* **value** Value to write in the memory mapped hardware register. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_RegReadRaw32
+
+```
+static inline uint32 Can_RegReadRaw32(
+    uint32 addr
+)
+```
+
+
+**Brief**: 
+This function reads a 32 bit register. 
+
+**Parameters**: 
+
+  
+* **addr** Address of the memory mapped hardware register. 
+
+
+**Returns**: 
+
+  
+* **Value** of the type uint32. 
+<br> 
+
+
+**Return**: Bit-field value (absolute value - shifted to LSB position). 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_RegWriteRaw32
+
+```
+static inline void Can_RegWriteRaw32(
+    uint32 addr,
+    uint32 value
+)
+```
+
+
+**Brief**: 
+This function writes a 32 bit register. 
+
+**Parameters**: 
+
+  
+* **addr** Address of the memory mapped hardware register. 
+  
+* **value** Value to write in the 32-bit register. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+
+
+
+-------------------------------
