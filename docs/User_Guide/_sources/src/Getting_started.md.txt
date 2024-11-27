@@ -1,0 +1,602 @@
+# Getting Started With F29x MCAL
+
+## Package installer
+
+### Installation Procedure
+
+1.Run the installer executable & Click Next
+
+```{figure} Assets/images/Installation_Step1.png
+:alt: Installation Step1
+:align: center
+
+
+Installation Step1
+```
+
+2.Accept the license agreement & Click Next
+
+```{figure} Assets/images/Installation_Step2.png
+:alt: Installation Step2
+:align: center
+
+
+Installation Step2
+```
+
+3.Specify the installation directory & Click Next
+
+```{figure} Assets/images/Installation_Step3.png
+:alt: Installation Step3
+:align: center
+
+
+Installation Step3
+```
+
+4.Click Next to begin installation
+
+```{figure} Assets/images/Installation_Step4.png
+:alt: Installation Step4
+:align: center
+
+
+Installation Step4
+```
+
+5.Wait until the Setup complete the installation
+
+```{figure} Assets/images/Installation_Step5.png
+:alt: Installation Step5
+:align: center
+
+
+Installation Step5
+```
+
+6.Click Finish to complete the Setup
+
+```{figure} Assets/images/Installation_Step6.png
+:alt: Installation Step6
+:align: center
+
+
+Installation Step6
+```
+
+7.Check the installation directory (which is selected in step3) for the package contents **F29xxxxMCAL_xx_xx_xx** & **uninstall** executable.
+
+```{figure} Assets/images/Installation_Step7.png
+:alt: Installation Step7
+:align: center
+
+
+Installation Step7
+```
+
+### Un-installation Procedure
+
+1.To uninstall the package, Run the **uninstall** executable & Click Yes
+
+```{figure} Assets/images/Uninstallation_Step1.png
+:alt: Uninstallation Step1
+:align: center
+
+
+Uninstallation Step1
+```
+
+```{figure} Assets/images/Uninstallation_Step2.png
+:alt: Uninstallation Step2
+:align: center
+
+
+Uninstallation Step2
+```
+
+2.To complete the un-installation process, click OK
+
+```{figure} Assets/images/Uninstallation_Step3.png
+:alt: Uninstallation Step3
+:align: center
+
+
+Uninstallation Step3
+```
+
+## F29H85x MCAL overview
+
+F29H85x MCAL consists of three main components, Micro-controller abstraction layer (MCAL Driver code), Bare metal Example applications & EB Tresos studio Plugins.
+
+* **drivers**: The drivers folder includes driver code of MCAL modules. The MCAL drivers implement the Software specification as mentioned in the AUTOSAR 4.3.1 release. It also contains basic software stubs and hardware register information.
+
+* **examples**: The examples folder includes bare metal example applications for the MCAL driver modules that can be compiled and run on hardware. Additionally, the device support and AppUtils folders are included to support Flash-programming and UART console functionality.
+
+* **plugins**: The plugins folder includes plugins for the MCAL modules that can be loaded, compiled and generate configuration files with EB Tresos Studio software.
+
+## Folder structure
+
+📦**F29x_MCAL**\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂**drivers**\
+ ┃ ┣ 📂ModuleName\
+ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┣ 📜ModuleName.h : *Contains the API declarations of the driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┣ 📜ModuleName_Priv.h : *Contains data structures and Internal function declarations.*\
+ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┣ 📜ModuleName.c : *Contains the implementation of the API for driver.*\
+ ┃ ┃ ┃ ┗ 📜ModuleName_Priv.c : *Contains Functions that support the API for driver*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📂**examples**\
+ ┃ ┣ 📂ModuleName\
+ ┃ ┃ ┣ 📂ModuleName_Example\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_Example.projectspec : *Project template which can be imported into CCS*\
+ ┃ ┃ ┃ ┣ 📂ModuleName_config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName.xdm : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.h : *Contains the generated pre-complier configuration header.*\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.c or ModuleName_LCfg.c or ModuleName_PBCfg.c : *Contains the pre/Link/Post build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜ModuleName_example.c : *Example application for driver*\
+ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📂**plugins**\
+ ┃ ┣ 📂ModuleName_TI_DeviceName\
+ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┣ 📜ModuleName.arxml : *Vendor Specific Module Description : ECU Configuration and ECU Parameter definitions for the MCAL module*\
+ ┃ ┃ ┃ ┗ 📜ModuleName.xdm : *ECU Parameter definition for the MCAL module.*\
+ ┃ ┃ ┣ 📂generate\
+ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_Cfg.h :*Provides template to generate header file*\
+ ┃ ┃ ┃ ┗ 📂src\
+ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.c : *Provides template to generate Compile Time module configurations*\
+ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_PBCfg.c : *Provides template to generate Post Build module configurations*\
+ ┃ ┃ ┣ 📂generate_swcd\
+ ┃ ┃ ┃ ┗ 📂swcd\
+ ┃ ┃ ┃ ┃ ┗ 📜ModuleName_BSWMD.arxml :*Base Software Module Description : Contains details such exclusive area, Module Entries, Interrupts, MemMap etc...*\
+ ┃ ┃ ┣ 📂META-INF\
+ ┃ ┃ ┃ ┗ 📜MANIFEST.MF : *Licensing and module include information*\
+ ┃ ┃ ┗ 📜plugin.xml :*XML file used to register resources with EB Tresos Studio*\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+## Getting access to CSP
+
+Will be added in later release.
+
+## Compiler and Linker Settings
+
+C29 compiler version to be used is **ti-cgt-c29_0.1.0.STS**
+
+Compiler Option  |Description|
+-----------------|------------|
+-mcpu               | Target processor version : **c29.c0** |
+-mfpu               | Floating-Point Support Option : Use native 32-bit floating-point hardware operations, but emulate 64-bit floating-point operations in software. <br> **none**|
+-g                  | Debug information : The c29clang compiler generates DWARF debug information if the -g option is selected.|
+-Wall               | Enable most warning categories |
+-D                  | Predefined Symbol Options : <br> **-DDEBUG <br> -DASSERT_ENABLE** |
+-O                  | Level of optimization <br> **-O1 (for Debug build type) <br> -O2 (for Release build type)** |
+-I                  | Option to add directories to the include file directory path|
+-cl-single-precision-constant | Option with the c29clang compiler to treat double precision floating-point constants as single precision constants|
+Build Type          | User-option to select the build type : **Debug/Release**. To configure this option refer section [Build system](#build-system)|
+Build Configuration | User-option to select the build configuration: **RAM/FLASH**. To configure this option refer section [Build system](#build-system)|
+
+Linker Option  |Description|
+---------------|------------|
+--map_file | Produces a map or listing of the input and output sections, including holes, and places the listing in filename : **Project_name.map** (as file name)  |
+--stack_size | Sets C system stack size to size bytes and defines a global symbol that specifies the stack size. <br>  **Note : specific for application** |
+--heap_size | Sets heap size (for the dynamic memory allocation in C) to size bytes and defines a global symbol that specifies the heap size. <br> **Note : specific for application** |
+--entry_point | Defines a global symbol that specifies the primary entry point for the output module|
+--xml_link_info | Generates a well-formed XML file containing detailed information about the result of a link : **Project_name._linkInfo.xml** (as file name)|
+--reread_libs | Forces rereading of libraries, which resolves back references|
+--warn_sections | Option to cause the linker to display a message when it creates a new output section|
+--rom_model | Tells the linker to auto initialize variables at run time|
+--display_error_number | Displays a diagnostic’s identifiers along with its text|
+--diag_wrap | Wrap diagnostic messages in the output display. This option is enabled by default|
+
+[Refer this link to get more information on C29 Compiler options](https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/indexC29.html)
+
+## Modules Supported
+
+Driver   | Comments  | Supported SoC | Available Cores|  MCAL Supported Cores|
+---------|-----------|---------------|----------------|----------------------|
+Mcu |  Driver for Mcu module |  F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Dio |  Driver for DIO module |  F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Gpt |  Driver for GPT module |  F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Port | Driver for PORT module | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Can |  Driver for CAN module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+
+## Getting access to MCAL
+
+F29H85x MCAL can be requested from [ti.com](https://www.ti.com/drr/opn/F29H85X-MCAL)
+
+## Multi-core support & resource allocator
+
+### Supported Devices
+
+Device Family | Devices |
+--------------|---------|
+F29x | F29H85x |
+
+### Core Naming Conventions
+
+SoC Family  | Cores Names     | Referred as  | Comments |
+------------|-----------------|--------------|----------|
+F29H85x | C29xx_CPU1 | CPU 1 | Supported in F29H85x MCAL |
+F29H85x | C29xx_CPU2 | CPU 2 | Not supported in F29H85x MCAL |
+F29H85x | C29xx_CPU3 | CPU 3 | Not supported in F29H85x MCAL |
+
+## Dependencies
+
+### Hardware Dependencies
+
+#### Emulator
+
+F29x EVMs includes an **XDS110 USB** emulator which could be used with CCS Theia.
+
+```{Note}
+ Please refer to ti.com or contact your FAE for documents describing the EVM.
+ ```
+
+### Software Dependencies
+
+#### IDE (CCS Theia)
+
+Code Composer Studio is an integrated development environment (IDE) that supports TI's Micro-controller and Embedded Processors portfolio.
+
+```{Note}
+Please refer release notes for CCS Theia Studio version details.
+ ```
+
+[Refer this link to get access for CCS Theia](https://www.ti.com/drr/opn/C2000-F29-3P)
+
+## Start-up & AppUtils
+
+### Start-up code
+
+📦**F29x_MCAL**\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂**examples**\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂**DeviceSupport**\
+ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┣ 📂LinkerCMD\
+ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┣ 📜**codestartbranch.asm**\
+ ┃ ┃ ┃ ┗ 📜**DeviceSupport.c** : *Contains functions that Flash intialize wait states*\
+ ┃ ┃ ┣ 📂targetconfigs\
+ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┗ 📜makefile.defs\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┣ 📂plugins\
+ ┣ 📜**CMakeLists.txt** : *Top-level CMake file*\
+ ┗ 📜CMakePresets.json
+
+* **codestartbranch.asm:** Defines the code start point, it disables watchdog and calls the _c_int00 function.
+The _c_int00 function is the startup/boot routine responsible for setting up the C environment.
+Refer [compiler user guide](https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/compiler_manual/program_loading_and_running/run-time-initialization-slau1316977.html#the-c-int00-function) to know more details about _c_int00 function.
+
+* **DeviceSupport.c:** Defines DeviceSupport_Init function that initializes the required flash wait states(only for FLASH build configuration).
+
+```{Attention}
+Start-up code is for reference only, it should not be used as-is in a typical AUTOSAR applications.
+ ```
+
+### AppUtils
+
+📦**F29x_MCAL**\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂**examples**\
+ ┃ ┣ 📂**AppUtils**\
+ ┃ ┃ ┣ 📜**AppUtils.c** : *Contains AppUtils function definitions*\
+ ┃ ┃ ┣ 📜**AppUtils.h**\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┣ 📂plugins\
+ ┣ 📜**CMakeLists.txt** : *Top-level CMake file*\
+ ┗ 📜CMakePresets.json
+
+AppUtils provides functions for baremetal MCAL examples.
+
+Below are all the functions that are defined by AppUtils:
+
+* **AppUtils_Init**: This function configures UART by setting the baudrate, clock, parity, data length and stop bits. It enables UART transmission and reception.
+
+* **AppUtils_Printf**: This function internally uses UART to print a message or text on the serial console. This function has a limitation of printing a maximum of 1000 characters for each function call.
+
+* **AppUtils_DeInit**: This function disables UART, which basically disables both transmission & reception of the UART after the it completes the transmission of the data, if there are any pending.
+
+* **AppUtils_GetChar**: This function allows user to enter a character on the serial console.
+
+* **AppUtils_GetNum**: This function allows user to enter a 32-bit number on the serial console.
+
+* **AppUtils_AssertFunc**: This is a macro defined to check if the condition passed to the macro is TRUE at runtime.
+
+```{Attention}
+AppUtils source code is for reference only, it should not be used as-is in a typical AUTOSAR applications.
+ ```
+
+## Build system
+
+### CMake (Cross-Platform Make)
+
+CMake is an open-source cross-platform build system generator for software projects that allows developers to specify build parameters in a simple, portable, text file format.
+This file is then used by CMake to generate project files for native build tools. CMake is not a build system itself; it generates another system's build files.
+It can generate native build files for different platforms and compilers, such as Makefiles, Ninja files, Visual Studio solutions, or Xcode projects.
+
+The build of a program or library with CMake is a two-stage process.
+
+* **Stage 1:** CMake input files (.txt and .cmake) are processed to generate build tool files based on the selected build system (make, ninja,Xcode or Visual Studio).
+* **Stage 2:** The generated build tool files are used to compile and build source files to generate binaries (executables or libraries).
+
+```{figure} Assets/images/CMake_Stage_Flow.png
+:alt: CMake Stage Flow
+:align: center
+
+
+CMake Stage Flow
+```
+
+```{Note}
+For more information on CMake, please refer CMake [official documentation](https://cmake.org/cmake/help/latest/)
+```
+
+#### F29x MCAL CMake Architecture
+
+📦**F29x_mcal**\
+ ┣ 📂build\
+ ┃ ┣📂artefacts : *CMake generated configuration files* \
+ ┃ ┣📂assets : *Built assets* \
+ ┃ ┣📂toolchain\
+ ┃ ┃ ┣ 📂signing\
+ ┃ ┃ ┣ 📜**c2000-f29h85x.cmake** : *Toolchain CMake file*\
+ ┃ ┃ ┗ 📜**ti-cgt-c29-clang.cmake** : *Toolchain CMake file*\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┣ 📜Can.h\
+ ┃ ┃ ┃ ┣ 📜Can_Priv.h\
+ ┃ ┃ ┃ ┗ 📜Can_Reg_Access.h\
+ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┣ 📜Can.c\
+ ┃ ┃ ┃ ┣ 📜Can_Irq.c\
+ ┃ ┃ ┃ ┗ 📜Can_Priv.c\
+ ┃ ┃ ┗ 📜CMakeLists.txt : *CAN driver CMake file*\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┗ 📂Port\
+ ┣ 📂**examples**\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┃ ┣ 📂**Can_Example_Classic**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┣ 📂**f29h85x_config**\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Can_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜**CMakeLists.txt** : *CMake file for f29h85x_config folder*\
+ ┃ ┃ ┃ ┣ 📜Can_Example_Classic.c\
+ ┃ ┃ ┃ ┣ 📜Can_Example_Classic.h\
+ ┃ ┃ ┃ ┗ 📜**CMakeLists.txt** : *Can_Example_Classic CAN example CMake file*\
+ ┃ ┃ ┣ 📂Can_Example_Icom\
+ ┃ ┃ ┗ 📂Can_Example_loopback\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┗ 📜**CMakeLists.txt** : *Examples CMake file*\
+ ┣ 📜**CMakeLists.txt** : *Root-Level CMake file*\
+ ┗ 📜**CMakePresets.json** : *CMake preset json file*
+
+F29x MCAL specific CMake files are described below -
+
+* **CMakePresets.json**
+  * This file contains recommended presets configured for F29x MCAL projects, users can continue to use the presets as-is or choose to override them with their project specific requirements by adding a CMakeUserPresets.json file.
+  * It also define all the compiler and linker options as defined in [Compiler and Linker Settings](compiler-and-linker-settings)
+  * The presets file defines support for different generators -
+    1. **mingw-c2000-f29h85x:** Preset for MinGW Makefiles generator - works on Windows based system
+    2. **unix-c2000-f29h85x:** Preset for Unix Makefiles generator - works on Linux based system
+    3. **ninja-c2000-f29h85x:** Preset for Ninja generator - works on both Windows and Linux based system.
+
+    ```{Note}
+    The options set in CMakePresets.json file can be overridden using CMakeUserPresets.json file. For more information about CMake Presets refer [cmake-presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html).
+    ```
+
+* **Toolchain**
+  * Since we need to perform cross-compilation toolchain files are defined to ease the compiler integration in CMake.
+  * **c2000-f29h85x.cmake :** This file defines the required CPU Flags and is device / core specific.
+  * **ti-cgt-c29-clang.cmake :** This file defines all necessary information required to use C29Clang compiler including Compiler path handling, standard library inclusion etc.
+
+* **CMakelists.txt** file at Root-level
+  * This file defines the minimum required CMake version for the project.
+  * It defines the **BUILD_CONFIGURATION** which controls whether the executable runs from *FLASH* or *RAM* on the target.
+  * It also provides *Signing* function which is needed to sign the generated executable when *FLASH* mode is selected.
+
+* **CMakelists.txt** file at MCAL Driver level
+  * This file is used to create interface library for each MCAL / CDD for easy inclusion in Application.
+  * The library is defined using the **add_library**.
+  * All the source files in the driver are added using **target_sources**.
+  * All header file include paths are added to the library using **target_include_directories**.
+  * Any application wanting to use the MCAL / CDD can do so by adding this file into their CMakelists.txt.
+
+* **CMakelists.txt** file at config level
+  * This file is used to create an interface library for the generated config file from EB Tresos.
+  * It is recommended to use this file for easier management of files generated from the Configurator.
+  * Any application wanting to use the MCAL / CDD needs to also include this file along with the driver level CMakelists.txt to compile MCAL / CDD correctly.
+  * Reference for this file can be found in all of the provided MCAL / CDD examples.
+
+* **CMakelists.txt** file at Example level
+  * This file defines the actual executable target to be created by using **add_executable**.
+  * All required interface libraries are add using **add_subdirectory**.
+  * To protect against re-inclusion of a library / target an **IF** check is added.
+  * Additional Linker options are defined using **add_link_options** command.
+  * Required interface libraries are linked using **target_link_libraries** command.
+  * **add_custom_command** is used to move the generated files to a different location.
+
+#### CMake options
+
+##### F29x MCAL Specific options during *CMake configure* (Stage 1)
+
+To configure CMake following command can be executed in terminal -
+**cmake -S {source_dir_path} --preset {preset_name} -DCMAKE_BUILD_TYPE = {build_type} -DBUILD_CONFIGURATION = {build_configuration} -DTCP={path-to-the-compiler}**
+
+Configure Option  |Description|
+-----------------|------------|
+**TCP**|Compiler path can be specified with this parameter, if the compiler is not already on the system's PATH environment variable.|
+**CMAKE_BUILD_TYPE**|Defines the build type for the project. Possible options are - <br> **Debug :** Includes debug information in the compiled files (allowing easy debugging). <br> **Release :** Has optimizations enabled (**default**) |
+**BUILD_CONFIGURATION**|Controls which memory area application executes from. Possible options are - <br> **RAM :** Application executes from RAM. Recommended with Debug mode for small size applications. <br> **FLASH :** Application executes from internal FLASH. Recommended with Release mode. (**default**)|
+
+##### F29x MCAL Specific options during *CMake build* (Stage 2) 
+
+To build following command can be executed in terminal -
+**cmake --build {path-to-the-CMake-generated-files} -t {target}**
+
+Configure Option  |Description|
+-----------------|------------|
+**path-to-the-CMake-generated-files** |Path to CMake generated files from stage 1. This is located at *build/artefacts* folder.|
+**target** |Name of the target to be built (**default :** all)|
+
+```{Note}
+--clean-first option can be appended to the target build command to clean the build before re-building a target.
+ ```
+
+#### How to link F29x MCAL / CDD CMake to your application
+
+Any MCAL example CMake file can be used as reference.
+
+1. Create a main CMake file to handle CMake build for your application.
+2. Include required MCAL / CDD drivers using **add_subdirectory**.
+3. Add generated code from MCAL Configurator by creating a separate CMakelists.txt for the generated files and including this file in your application CMakelists.txt using **add_subdirectory**.
+4. Add required compiler and linker options.
+5. Link all the added interface libraries in Step 2 and 3 by using **target_link_libraries**.
+
+```{Note}
+For more information on CMake support by the C29Clang compiler you can refer [compiler documentation](https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/getting_started_guide/building_simple_application.html?highlight=cmake#compile-and-link-using-build-automation-tools)
+```
+
+### Code Composer Studio (CCS)
+
+#### Importing projects into CCS
+
+📦**F29x_mcal**\
+ ┣ 📂build\
+ ┣ 📂drivers\
+ ┣ 📂**examples**\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┃ ┣ 📂**Can_Example_Classic**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Can_Example_Classic.projectspec** : *Project template which can be imported into CCS*\
+ ┃ ┃ ┃ ┣ 📂f29h85x_config\
+ ┃ ┃ ┃ ┣ 📜Can_Example_Classic.c\
+ ┃ ┃ ┃ ┣ 📜Can_Example_Classic.h\
+ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┣ 📂Can_Example_Icom\
+ ┃ ┃ ┗ 📂Can_Example_loopback\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+Every F29x MCAL example comes with a projectspec file which can be imported in CCS.
+
+1. Open CCS and select Import Project -
+
+    ```{figure} Assets/images/CCS_Import_Step1.png
+    :alt: CCS Import Step 1
+    :align: center
+
+
+    CCS Import Step 1
+    ```
+
+2. Browse to the folder containing Projectspec file and select the desired CCS Project to be imported.
+
+    ```{figure} Assets/images/CCS_Import_Step2.png
+    :alt: CCS Import Step 2
+    :align: center
+
+
+    CCS Import Step 2
+    ```
+
+3. Once project is imported you can continue to build and debug the project.
+
+    ```{figure} Assets/images/CCS_Import_Step3.png
+    :alt: CCS Project Imported
+    :align: center
+
+
+    CCS Project Imported
+    ```
+
+```{Note}
+For more information on projectspec and their use in CCS [refer documentation](https://software-dl.ti.com/ccs/esd/documents/ccs_projectspecs.html).
+```
+
+#### Building and Debugging projects in CCS
+
+```{Note}
+For information on how to build and debug any project in CCS [refer documentation](https://software-dl.ti.com/ccs/esd/documents/users_guide_ccs_theia/index_project-management.html).
+```
+
+## Information on the F29x device family
+
+### F29x CPU Architecture
+
+The F29x CPU is a VLIW (Very Long Instruction Word) architecture with a fully protected pipeline. The CPU supports multiple instruction sizes (16/32/48 bits). The CPU also supports variable instruction packet size, with each packet able to contain up to eight instructions that execute in parallel.
+
+Following are the list of F29H85x CPU major features:
+
+* Ease of use
+* Improved parallelism
+* Improved bus throughput
+* Code efficiency
+* ASIL-D safety capability with code isolation in hardware
+* Multi-zone security in hardware
+* Enhanced debug and trace capabilities
+
+[Refer this link to get access for TRM details](https://www.ti.com/drr/opn/C2000-F29-3P)
+
+## Boot Modes
+
+Will be added in later release.

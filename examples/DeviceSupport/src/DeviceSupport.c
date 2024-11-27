@@ -1,0 +1,263 @@
+/*********************************************************************************************************************
+ *  COPYRIGHT
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  \verbatim
+ *
+ *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *
+ *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
+ *                 is strictly prohibited.  This product  is  protected  under  copyright  law
+ *                 and  trade  secret law as an  unpublished work.
+ *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *
+ *  \endverbatim
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  FILE DESCRIPTION
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  File:       DeviceSupport.c
+ *  Generator:  None
+ *
+ *  Description:  DeviceSupport source file
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Header Files
+ *********************************************************************************************************************/
+#include "DeviceSupport.h"
+
+/*********************************************************************************************************************
+ * Version Check (if required)
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Local Preprocessor #define Constants
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Local Preprocessor #define Macros
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Local Type Declarations
+ *********************************************************************************************************************/
+
+ /*********************************************************************************************************************
+ * Exported Object Definitions
+ *********************************************************************************************************************/
+#ifdef _FLASH
+#if !defined(__CPU2__) && !defined(__CPU3__)
+    //
+    //  Dummy certificate section which is updated when actual certificate is generated
+    //  as part of the post build steps
+    //
+    __attribute__((retain, section("cert"))) const uint8 certificate[4096U] = {0U};
+#endif
+#endif
+
+/*********************************************************************************************************************
+ * Local Object Definitions
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Local Function Prototypes
+ *********************************************************************************************************************/
+#ifdef _FLASH
+static void Flash_InitModule(uint16 waitstates);
+#endif
+
+/*********************************************************************************************************************
+ *  Local Inline Function Definitions and Function-Like Macros
+ *********************************************************************************************************************/
+//*****************************************************************************
+//
+// Delay instruction that allows for register configuration to complete.
+//
+//*****************************************************************************
+#define    FLASH_DELAY_CONFIG   __asm(" NOP #8"); __asm(" NOP #8"); __asm(" NOP #4");
+
+#ifdef _FLASH
+//*****************************************************************************
+//
+//! Configures FRI
+//!
+//! \param friID is the Flash_FRI enum associated with the FRI desired for
+//! for configuration
+//!
+//! \param configFlags is the value to be written and should be built with values
+//! from the FRI option macros
+//!
+//!
+//! This function allows the user to configure FRI prefetch, data cache,
+//! code cache, and data preread flags.
+//!
+//! \return None.
+//
+//*****************************************************************************
+__attribute__((section(".TI.ramfunc.link2")))
+static inline void
+Flash_ConfigFRI(Flash_FRI friID, uint32 configFlags)
+{
+
+    //
+    // Set the FRI options.
+    //
+    HWREG(FRI1_BASE + FRI_O_1_INTF_CTRL + (friID * FRI_REG_STEP)) = configFlags;
+
+}
+
+//*****************************************************************************
+//
+//! Sets the random read wait state amount.
+//!
+//!
+//! \param waitstates is the wait-state value.
+//!
+//! This function sets the number of wait states for a flash read access. The
+//! \e waitstates parameter is a number between 1 and 15. It is \b important
+//! to look at your device's datasheet for information about what the required
+//! minimum flash wait-state is for your selected SYSCLK frequency.
+//!
+//! By default the wait state amount is configured to the maximum 15.
+//!
+//! \return None.
+//
+//*****************************************************************************
+__attribute__((section(".TI.ramfunc.link2")))
+static inline void
+Flash_SetWaitstates(uint16 waitstates)
+{
+    //
+    // waitstates is 4 bits wide.
+    //
+    if((waitstates <= 0xFU) && (waitstates >= 0x1U))
+    {
+        //
+        // Write flash read wait-state amount to appropriate register.
+        //
+        HWREG(FRI1_BASE + FRI_O_FRDCNTL) =
+            (HWREG(FRI1_BASE + FRI_O_FRDCNTL) &
+             ~(uint32)FRI_FRDCNTL_RWAIT_M) |
+            ((uint32)waitstates << FRI_FRDCNTL_RWAIT_S);
+    }
+}
+
+//*****************************************************************************
+//
+//! Initializes the flash config 1 trim registers.
+//!
+//! \return None.
+//!
+//!
+//*****************************************************************************
+static inline void
+Flash_WriteTrims(uint32 reg_offset, uint32 mask,
+                 uint32 shift, uint32 value)
+{
+    //
+    // Set the requested bits to the value.
+    //
+    HWREG(ANALOGSUBSYS_BASE + reg_offset) &= ~(uint32)mask;
+
+    HWREG(ANALOGSUBSYS_BASE + reg_offset) |= ((uint32)value << shift);
+
+}
+#endif
+/*********************************************************************************************************************
+ *  External Functions Definition
+ *********************************************************************************************************************/
+void DeviceSupport_Init()
+{
+#ifdef _FLASH
+    //
+    // Call Flash Initialization to setup flash waitstates. This function must
+    // reside in RAM.
+    //
+    Flash_InitModule(DEVICE_FLASH_WAITSTATES);
+#endif    
+}
+
+/*********************************************************************************************************************
+ *  Local Functions Definition
+ *********************************************************************************************************************/
+#ifdef _FLASH
+__attribute__((section(".TI.ramfunc.link2")))
+static void Flash_InitModule(uint16 waitstates)
+{
+    if((waitstates <= 0xFU) && (waitstates >= 0x1U))
+    {
+        //
+        // Disable data cache, code cache, prefetch, and data preread before changing wait states
+        //
+        Flash_ConfigFRI(FLASH_FRI1, FLASH_DATAPREREAD_DISABLE \
+                        | FLASH_CODECACHE_DISABLE \
+                        | FLASH_DATACACHE_DISABLE \
+                        | FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLASH_FRI2, FLASH_DATAPREREAD_DISABLE \
+                        | FLASH_CODECACHE_DISABLE \
+                        | FLASH_DATACACHE_DISABLE \
+                        | FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLASH_FRI3, FLASH_DATAPREREAD_DISABLE \
+                        | FLASH_CODECACHE_DISABLE \
+                        | FLASH_DATACACHE_DISABLE \
+                        | FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLASH_FRI4, FLASH_DATAPREREAD_DISABLE \
+                        | FLASH_CODECACHE_DISABLE \
+                        | FLASH_DATACACHE_DISABLE \
+                        | FLASH_PREFETCH_DISABLE);
+
+        //
+        // Set waitstates according to frequency.
+        //
+        Flash_SetWaitstates(waitstates);
+
+        //
+        // Configure TRIMCOMMITREAD and TRIMCOMMITOTHER in TRIMCOMMIT register
+        //
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITREAD,
+                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITREAD);
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITOTHER,
+                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITOTHER);
+
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITREAD,
+                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITREAD);
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITOTHER,
+                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITOTHER);
+
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITREAD,
+                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITREAD);
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITOTHER,
+                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITOTHER);
+
+        //
+        // Enable data cache, code cache, prefetch, and data preread to improve performance of code
+        // executed from flash.
+        //
+        Flash_ConfigFRI(FLASH_FRI1, FLASH_DATAPREREAD_ENABLE \
+                        | FLASH_CODECACHE_ENABLE \
+                        | FLASH_DATACACHE_ENABLE \
+                        | FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLASH_FRI2, FLASH_DATAPREREAD_ENABLE \
+                        | FLASH_CODECACHE_ENABLE \
+                        | FLASH_DATACACHE_ENABLE \
+                        | FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLASH_FRI3, FLASH_DATAPREREAD_ENABLE \
+                        | FLASH_CODECACHE_ENABLE \
+                        | FLASH_DATACACHE_ENABLE \
+                        | FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLASH_FRI4, FLASH_DATAPREREAD_ENABLE \
+                        | FLASH_CODECACHE_ENABLE \
+                        | FLASH_DATACACHE_ENABLE \
+                        | FLASH_PREFETCH_ENABLE);
+
+        //
+        // Force a pipeline flush to ensure that the write to the last register
+        // configured occurs before returning.
+        //
+
+        FLASH_DELAY_CONFIG;
+    }
+}
+#endif
+/*********************************************************************************************************************
+ *  End of File: DeviceSupport.c
+ *********************************************************************************************************************/

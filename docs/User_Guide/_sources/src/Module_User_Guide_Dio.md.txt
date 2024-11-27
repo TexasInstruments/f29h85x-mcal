@@ -1,0 +1,506 @@
+## DIO Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|RTE|Runtime Environment|
+|BSW|Basic Software|
+|GPIO|General Purpose Input Output|
+|MCAL|Micro controller Abstraction Layer|
+|API|Application Programming Interface|
+|DET|Default Error Tracer|
+|HW |Hardware|
+|SW |Software|
+|DIO |Digital Input Output|
+|I/O|Input/Output|
+|ID |Identifier|
+
+### Introduction
+
+The DIO module provides interfaces to external peripherals by abstracting the
+input and output pins on the micro controller device, Following sections highlight key aspects of this implementation which would be
+of interest to an integrator.
+
+```{figure} Assets/images/Dio_Autosar_MCAL.png
+:alt: DIO MCAL AUTOSAR
+:align: center
+
+DIO MCAL AUTOSAR
+```
+
+This document details AUTOSAR BSW DIO module implementation
+
+|Supported AUTOSAR Release|**4.3.1**|
+|---------------|---------------|
+| **Supported Configuration Variants**  | **Pre-Compile & Link Time**  |
+| **Vendor ID**                         | **DIO_VENDOR_ID (44)**       |
+| **Module ID**                         | **DIO_MODULE_ID (120)**      |
+
+### Functional Overview
+
+The DIO Driver abstracts the access to the micro controller's hardware pins. Furthermore, it allows the grouping of those pins. This module works on pins and ports which are configured by the PORT driver for this purpose. For this reason, there is no configuration and initialization of this port structure in the DIO Driver.
+
+The DIO Modules expects that pin mux is set correctly to configure the GPIO pins for GPIO mode. This is done by the PORT driver. The pin direction shall also be set by the PORT driver.
+
+The DIO Driver provides services for reading and writing to/from
+
+* DIO Channels - Represents a single general-purpose digital input/output pin.
+* DIO Ports - Represents several DIO channels that are grouped by hardware (typically controlled by one hardware register).
+* DIO Channel Groups - A channel group is a formal logical combination of several adjoining DIO channels within a DIO port. A DIO channel group shall belong to one DIO port. Below picture describes this.
+
+The basic behavior of this driver is synchronous.
+
+```{figure} Assets/images/Dio_driver_channel_group_info.png
+:alt: Schematic description of a ChannelGroup
+:align: center
+
+Schematic description of a ChannelGroup
+```
+
+### Hardware Features
+
+#### Hardware Features supported
+
+Features Supported at a high level are:
+
+* Un-Buffered Read & Write of GPIO Pin Levels
+* Un-Buffered Read & Write of internal general purpose I/O ports
+* Un-Buffered Read & Write of subset of internal general purpose I/O ports
+* Flipping GPIO Pin Levels
+
+For the device there are up to 8 Possible I/O Ports.
+
+|Port  | ChannelId | Port ID |
+|------|-----------|---------|
+|Port A| 0 - 31    | 0  |
+|Port B| 32 - 63   | 1  |
+|Port C| 64 - 95   | 2  |
+|Port D| 96 - 127  | 3  |
+|Port E| 128 - 159 | 4  |
+|Port F| 160 - 191 | 5  |
+|Port G| 192 - 223 | 6  |
+|Port H| 224 - 255 | 7  |
+
+```{NOTE}
+The number of pins shown above may vary depending on the specific device being used. For accurate and up-to-date information, please consult the device's datasheet.
+```
+
+#### Not supported Features
+
+None
+
+#### Non compliance
+
+DIO Channel validity will be checked against maximum allowed DIO channels which is 256
+
+Below AUTOSAR design requirement is not supported for Dio Driver :\
+**SWS_Dio_00084** : *If the micro-controller does not support the direct read-back of a pin value, the Dio module's read functions shall provide the value of the output register, when they are used on a channel which is configured as an output channel*
+>Rejection Reason : Direct read back of a pin value is achieved using GPyDAT register, Hence this requirement is rejected.
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂**Dio**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Dio.h** : *Contains the API declarations of the DIO driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┗ 📜**Dio_Priv.h** : *contains the private functions declarations*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Dio.c** : *contains the implementation of the API’s for DIO driver.*\
+ ┃ ┃ ┃ ┗ 📜**Dio_Priv.c** : *contains the implementation for DIO private functions which will directly interact with hardware registers.*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┗ 📂Port\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Dio_Header_File_Structure.png
+:alt: Dio Header File Structure
+:align: center
+
+Dio Header File Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+There is no scheduling functions in Dio
+
+#### Error handling
+
+##### Development Error Reporting
+
+Development errors are reported to the DET using the service Det_ReportError(), when enabled.
+The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|API parameter checking: Invalid channel requested|DIO_E_PARAM_INVALID_CHANNEL_ID|0x0A|
+|API parameter checking: Invalid port requested|DIO_E_PARAM_INVALID_PORT_ID|0x14|  
+|API parameter checking: Invalid channel group requested|DIO_E_PARAM_INVALID_GROUP|0x1F|
+|API service called with a NULL pointer|DIO_E_PARAM_POINTER|0x20|
+
+### Used resources
+
+#### Interrupt Handling
+
+There are no Interrupts in Dio
+
+#### Instance support
+
+|CPU instances|supported|
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+Below image shows Dio driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.
+
+```{figure} Assets/images/Dio_HW_SW_Mapping.png
+:alt: Dio HW/SW Mapping
+:align: center
+
+Dio HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This implementation depends on the DET in order to report development errors
+The detection of development errors is configurable (ON / OFF), The switch DIO_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+
+##### PORT
+
+PORT Module is required to initialize Pin configurations like MUX mode, Pin direction and more
+
+##### MCU
+
+MCU Module is required to initialize all the clock to be used by different peripherals
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Dio Driver implementation supports multiple configuration variants, namely Dio Pre-Compile config and Link-Time config. the driver expects generated **Dio_Cfg.h**
+to be present as input file. The associated dio driver configuration generated files are **Dio_Cfg.c** or **Dio_Lcfg.c**
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+#### DioGeneral
+
+##### DioDevErrorDetect
+
+|SWS Item|ECUC_Dio_00141:|
+|--------|---------------|
+|**Name**|DioDevErrorDetect|
+|**Description**| Switches the development error detection and notification on or off.<br>&bull; **TRUE**: detection and notification is enabled.<br> &bull; **FALSE**: detection and notification is disabled.|
+|**Multiplicity**|1|
+|**Type**| EcucBooleanParamDef |
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value configuration class**|--|
+|Pre-compile time| All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope/Dependency**|scope: local|
+
+##### DioFlipChannelApi
+
+|SWS Item|ECUC_Dio_00153:|
+|--------|---------------|
+|**Name**| DioFlipChannelApi|
+|**Parent Container**| DioGeneral|
+|**Description**| Adds / removes the service Dio_FlipChannel() from the code.<br>&bull; **TRUE** : Enabled - Function Dio_FlipChannel() is available.<br> &bull; **FALSE** : Disabled - Function Dio_FlipChannel() is not available|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|true|
+|**Post-Build Variant Value**| false|
+|**Value Configuration Class**|--|
+|Pre-compile time| All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**| scope: local|
+
+##### DioVersionInfoApi
+
+|SWS Item|ECUC_Dio_00143 : |
+|--------|----------------|
+|**Name**|DioVersionInfoApi|
+|**Parent Container**|DioGeneral|
+|**Description**|Adds / removes the service Dio_GetVersionInfo() from the code.<br>&bull; **TRUE** : Enabled - Function Dio_GetVersionInfo() is available.<br> &bull; **FALSE** : Disabled - Function Dio_GetVersionInfo() is not available|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|false|
+|**Post-Build Variant Value**|false |
+|**Value Configuration Class**|--|
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### DioPort
+
+##### DioPortId
+
+|SWS Item|ECUC_Dio_00145 : |
+|--------|-----------------|
+|**Name**|DioPortId|
+|**Parent Container**|DioPort|
+|**Description**|Numeric identifier of the DIO port. Not all MCU ports may be used for DIO, thus there may be "gaps" in the list of all IDs. This value will be assigned to the DIO port symbolic name (i.e. the SHORT-NAME of the DioPort container).|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef (Symbolic Name generated for this parameter)|
+|**Range**|0 .. 4294967295|
+|**Default value**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**|--|
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: ECU|
+
+#### DioChannel
+
+##### DioChannelId
+
+| **SWS Item** | ECUC_Dio_00147: |
+|---|---|
+| **Name** | DioChannelId |
+| **Parent Container** | DioChannel |
+| **Description** | Channel Id of the DIO channel. This value will be assigned to the symbolic names. |
+| **Multiplicity** | 1 |
+| **Type** | EcucIntegerParamDef (Symbolic Name generated for this parameter) |
+| **Range** | 0.. 4294967295 |
+| **Default value** | -- |
+| **Post-Build Variant Value** | false |
+| **Value Configuration Class** |--|
+| Pre-compile time | All Variants |
+| Link time | -- |
+| Post-build time | -- |
+| **Scope / Dependency** | scope: ECU |
+
+##### DioPinNumRef
+
+| Item ||
+|--------|----------------|
+| **Name** | DioPinNumRef |
+| **Parent Container** | DioChannel |
+| **Description** | Reference to the Port Pin configuration, which is set in the PORT driver configuration |
+| **Type** | Reference |
+| **Post-Build Variant Value** | false |
+| **Value Configuration Class** |--|
+| Pre-compile time | VARIANT-PRE-COMPILE |
+| Link time | -- |
+| Post-build time | -- |
+| **Scope / Dependency** | scope: local |
+
+#### DioChannelGroup
+
+##### DioChannelGroupIdentification
+
+| **SWS Item** | ECUC_Dio_00149: |
+|---|---|
+| **Name** | DioChannelGroupIdentification |
+| **Parent Container** | DioChannelGroup |
+| **Description** | The DIO channel group is identified in DIO API by a pointer to a data structure (of type Dio_ChannelGroupType). That data structure contains the channel group information. This parameter contains the code fragment that has to be inserted in the API call of the calling module to get the address of the variable in memory which holds the channel group information. Example values are "&MyDioGroup1" or "&MyDioGroupArray[0]". |
+| **Multiplicity** | 1 |
+| **Type** | EcucStringParamDef (Symbolic Name generated for this parameter) |
+| **Default value** | -- |
+| **maxLength** | -- |
+| **minLength** | -- |
+| **regularExpression** | -- |
+| **Post-Build Variant Value** | false |
+| **Value Configuration Class** |--|
+| Pre-compile time | All Variants |
+| Link time | -- |
+| Post-build time | -- |
+| **Scope / Dependency** | scope: ECU |
+
+##### DioPortMask
+
+| **SWS Item** | ECUC_Dio_00150: |
+|---|---|
+| **Name** | DioPortMask |
+| **Parent Container** | DioChannelGroup |
+| **Description** | This shall be the mask which defines the positions of the channel group. The channels shall consist of adjoining bits in the same port. The data type depends on the port width. |
+| **Multiplicity** | 1 |
+| **Type** | EcucIntegerParamDef |
+| **Range** | 0.. 4294967295 |
+| **Default value** | 4294967295 |
+| **Post-Build Variant Value** | false |
+| **Value Configuration Class** |--|
+| Pre-compile time | VARIANT-PRE-COMPILE |
+| Link time |VARIANT-LINK-TIME |
+| Post-build time | -- |
+| **Scope/Dependency** | scope: local |
+
+##### DioPortOffset
+
+| **SWS Item** | ECUC_Dio_00151: |
+|---|---|
+| **Name** | DioPortOffset |
+| **Parent Container** | DioChannelGroup |
+| **Description** | The position of the Channel Group on the port, counted from the LSB. This value can be derived from DioPortMask. calculationFormula = Position of the first bit of DioPortMask which is set to '1' counted from LSB |
+| **Multiplicity** | 1 |
+| **Type** | EcucIntegerParamDef |
+| **Range** | 0.. 31 |
+| **Default value** | 0 |
+| **Post-Build Variant Value** | false |
+| **Value Configuration Class** |--|
+| Pre-compile time | VARIANT-PRE-COMPILE |
+| Link time | VARIANT-LINK-TIME |
+| Post-build time | -- |
+| **Scope/Dependency** | scope: local |
+
+#### Steps To Configure Dio Module
+
+1. Open EB Tresos configurator tool and load Port and Dio modules
+2. Open PORT module plugin and configure required pins as GPIO's
+3. Open DIO module plugin, Select the Config Variant (Pre-compile/Link-Time)
+4. In DIO module plugin, Create port container, add Channels by referring port pins configured in port plugin
+5. Add channel groups
+6. Save the configuration and generate the configuration.
+
+### Examples
+
+The example application demonstrates use of Dio module, the list below identifies key steps performed the example.
+
+#### Overview
+
+* Dio_Example_Read_Write_All
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+  * Perform channel read/write  on initialized channels
+  * Perform channel group read/write on initialized channel group
+  * Perform port read/write on initialized ports
+  * Perform flip channel on initialized channel
+
+#### Setup required to run example
+
+* Install Code Composer Studio(CCS) Theia
+* Install latest C29 compiler
+
+#### How to run examples
+
+* Open CCS Theia and Import Dio example
+* Connect the hardware and power up
+* Build project then debug project
+* Connect the UART set up to check the log on serial console
+
+#### Sample Log
+
+```{EXAMPLE LOGS}
+Sample Application - STARTS !!!
+DIO MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 120
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+
+Test A. Write and Read Channel
+-------------------------------
+Reading channel 4
+Writing High to channel 4
+Reading channel 4
+Writing Low to channel 4
+Reading channel 4
+DIO Test A :Service API: Write/Read Channel completed
+
+Test B. Write/Read Port
+----------------------------
+Writing on to Port 0
+Reading from Port 0
+Test B. Write/Read Port completed
+
+Test C. Write/Read Channel group
+----------------------------
+Writing on to channel group 0
+Reding from channel group 0
+DIO Test C :Service API: Write/Read Channel group completed
+
+Test D. Flip Channel
+---------------------
+Reading from channel 8
+Flipping channel 8 level
+PASS: channel 8 level flipped
+DIO Test D :Service API: Flip Channel completed
+
+Dio_Example_Read_Write_All: Sample Application - Completes successfully !!!
+```
+
+#### File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┃ ┗ 📂**Dio_Example_Read_Write_All**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Dio_Example_Read_Write_All.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Dio_Example_Read_Write_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Dio.xdm**: *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Dio_Cfg.h** : *Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Dio_Lcfg.c** : *Contains the pre-build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┗ 📜**Dio_Example_Read_Write_All.c**\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{Note}
+ Either Dio_Lcfg.c OR Dio_Cfg.c will be present based on selected config variant by user
+ ```

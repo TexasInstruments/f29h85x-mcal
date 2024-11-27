@@ -1,0 +1,27 @@
+---
+title: Can_StdMsgIDFilterElement
+summary: Structure for MCAN Standard Message ID Filter Element. 
+
+---
+
+# Can_StdMsgIDFilterElement
+
+**Module:** **[Can API GUIDE Header file](../Modules/group___c_a_n.md)**
+
+
+
+Structure for MCAN Standard Message ID Filter Element. 
+
+
+`#include <Can_Priv.h>`
+
+## Structure Members
+
+|  Member Type   | Member name    | Brief |
+| -------------- | -------------- | ----- |
+|  uint32 | sfid2 |  Standard Filter ID 2.  |
+|  uint32 | sfid1 |  Standard Filter ID 1.  |
+|  uint32 | sfec |  Standard Filter Element Configuration 000 = Disable filter element 001 = Store in Rx FIFO 0 if filter matches 010 = Store in Rx FIFO 1 if filter matches 011 = Reject ID if filter matches 100 = Set priority if filter matches 101 = Set priority and store in FIFO 0 if filter matches 110 = Set priority and store in FIFO 1 if filter matches 111 = Store into Rx Buffer or as debug message, configuration of SFT[1:0] ignored. If SFEC = “100”, “101”, or “110” a match sets high priority message event is generated.  |
+|  uint32 | sft |  Standard Filter Type 00 = Range filter from SFID1 to SFID2 (SFID2 ≥ SFID1) 01 = Dual ID filter for SFID1 or SFID2 10 = Classic filter: SFID1 = filter, SFID2 = mask 11 = Filter element disabled.  |
+
+-------------------------------

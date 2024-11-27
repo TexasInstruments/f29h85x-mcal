@@ -1,0 +1,1216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
+[!AUTOSPACING!][!//
+[!VAR "mcan1_cat1"="0"!][!//
+[!VAR "mcan2_cat1"="0"!][!//
+[!VAR "mcan3_cat1"="0"!][!//
+[!VAR "mcan4_cat1"="0"!][!//
+[!VAR "mcan5_cat1"="0"!][!//
+[!VAR "mcan6_cat1"="0"!][!//
+[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
+[!IF "CanControllerInstance = 'MCAN1'"!][!//
+[!IF "CanInteruptType != 'CAN_ISR_CAT2'"!][!//
+[!VAR "mcan1_cat1" = "$mcan1_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN2'"!][!//
+[!IF "CanInteruptType != 'CAN_ISR_CAT2'"!][!//
+[!VAR "mcan2_cat1" = "$mcan2_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN3'"!][!//
+[!IF "CanInteruptType != 'CAN_ISR_CAT2'"!][!//
+[!VAR "mcan3_cat1" = "$mcan3_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN4'"!][!//
+[!IF "CanInteruptType != 'CAN_ISR_CAT2'"!][!//
+[!VAR "mcan4_cat1" = "$mcan4_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN5'"!][!//
+[!IF "CanInteruptType != 'CAN_ISR_CAT2'"!][!//
+[!VAR "mcan5_cat1" = "$mcan5_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN6'"!][!//
+[!IF "CanInteruptType != 'CAN_ISR_CAT2'"!][!//
+[!VAR "mcan6_cat1" = "$mcan6_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="d0139ccf-7a37-4cea-9556-c19ff75d9730">
+      <SHORT-NAME>Can_TI_F29H85x</SHORT-NAME>
+      <ELEMENTS>
+        <BSW-MODULE-DESCRIPTION UUID="a8a09041-02e0-4a9f-b670-83948ef52a85">
+          <SHORT-NAME>Can</SHORT-NAME>
+          <CATEGORY>BSW_MODULE</CATEGORY>
+          <IMPLEMENTED-ENTRYS>
+[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
+[!IF "CanControllerInstance = 'MCAN1'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_1_Int0ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_1_Int1ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN2'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_2_Int0ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_2_Int1ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN3'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_3_Int0ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_3_Int1ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN4'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_4_Int0ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_4_Int1ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN5'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_5_Int0ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_5_Int1ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN6'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_6_Int0ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_6_Int1ISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_CheckWakeup</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_DeInit</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_DisableControllerInterrupts</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_EnableControllerInterrupts</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_GetControllerErrorState</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_GetControllerMode</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanVersionInfoApi = 'true'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_GetVersionInfo</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_Init</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_BusOff</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Mode</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Read_[!"@name"!]</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Write_[!"@name"!]</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDLOOP!][!ENDLOOP!][!//
+[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Wakeup</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+[!IF "as:modconf('Can')[1]/CanGeneral/CanSetBaudrateApi = 'true'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_SetBaudrate</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_SetControllerMode</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanPublicIcomSupport = 'true'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_SetIcomConfiguration</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_Write</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+          </IMPLEMENTED-ENTRYS>
+          <MODULE-ID>80</MODULE-ID>
+          <BSW-MODULE-DEPENDENCYS>
+            <BSW-MODULE-DEPENDENCY UUID="ed6d0c22-58ff-45dd-9f2b-66aa5b33b39b">
+              <SHORT-NAME>CanIf</SHORT-NAME>
+              <TARGET-MODULE-ID>60</TARGET-MODULE-ID>
+              <TARGET-MODULE-REFS>
+                <BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+                  <BSW-MODULE-DESCRIPTION-REF DEST="BSW-MODULE-DESCRIPTION">/AUTOSAR_CanIf/CanIf</BSW-MODULE-DESCRIPTION-REF>
+                </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+              </TARGET-MODULE-REFS>
+            </BSW-MODULE-DEPENDENCY>
+            <BSW-MODULE-DEPENDENCY UUID="22ced14e-b185-4962-9e91-249ead1d3ed9">
+              <SHORT-NAME>Dem</SHORT-NAME>
+              <TARGET-MODULE-ID>54</TARGET-MODULE-ID>
+              <TARGET-MODULE-REFS>
+                <BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+                  <BSW-MODULE-DESCRIPTION-REF DEST="BSW-MODULE-DESCRIPTION">/AUTOSAR_Dem/Dem</BSW-MODULE-DESCRIPTION-REF>
+                </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+              </TARGET-MODULE-REFS>
+            </BSW-MODULE-DEPENDENCY>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+            <BSW-MODULE-DEPENDENCY UUID="89a01fa7-bf07-49d6-9f89-81801def83b0">
+              <SHORT-NAME>Det</SHORT-NAME>
+              <TARGET-MODULE-ID>15</TARGET-MODULE-ID>
+              <TARGET-MODULE-REFS>
+                <BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+                  <BSW-MODULE-DESCRIPTION-REF DEST="BSW-MODULE-DESCRIPTION">/AUTOSAR_Det/Det</BSW-MODULE-DESCRIPTION-REF>
+                </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+              </TARGET-MODULE-REFS>
+            </BSW-MODULE-DEPENDENCY>
+[!ENDIF!][!//
+            <BSW-MODULE-DEPENDENCY UUID="ed58f969-0910-47a8-897b-b0583b0807e1">
+              <SHORT-NAME>EcuM</SHORT-NAME>
+              <TARGET-MODULE-ID>10</TARGET-MODULE-ID>
+              <TARGET-MODULE-REFS>
+                <BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+                  <BSW-MODULE-DESCRIPTION-REF DEST="BSW-MODULE-DESCRIPTION">/AUTOSAR_EcuM/EcuM</BSW-MODULE-DESCRIPTION-REF>
+                </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+              </TARGET-MODULE-REFS>
+            </BSW-MODULE-DEPENDENCY>
+            <BSW-MODULE-DEPENDENCY UUID="b5a30f56-3d16-49ce-9a48-7c2a1961a0f2">
+              <SHORT-NAME>Os</SHORT-NAME>
+              <TARGET-MODULE-ID>1</TARGET-MODULE-ID>
+              <TARGET-MODULE-REFS>
+                <BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+                  <BSW-MODULE-DESCRIPTION-REF DEST="BSW-MODULE-DESCRIPTION">/AUTOSAR_Os/Os</BSW-MODULE-DESCRIPTION-REF>
+                </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+              </TARGET-MODULE-REFS>
+            </BSW-MODULE-DEPENDENCY>
+          </BSW-MODULE-DEPENDENCYS>
+          <INTERNAL-BEHAVIORS>
+            <BSW-INTERNAL-BEHAVIOR UUID="f2dcdace-6a1b-4072-82ec-06cc85ec443d">
+              <SHORT-NAME>Can_Behavior</SHORT-NAME>
+              <EXCLUSIVE-AREAS>
+                <EXCLUSIVE-AREA UUID="d81ab087-eb21-4856-8f0e-e9905a614b29">
+                  <SHORT-NAME>CAN_EXCLUSIVE_AREA_0</SHORT-NAME>
+                </EXCLUSIVE-AREA>
+                <EXCLUSIVE-AREA UUID="20949289-7189-4e4a-a65e-f73504b70e81">
+                  <SHORT-NAME>CAN_EXCLUSIVE_AREA_1</SHORT-NAME>
+                </EXCLUSIVE-AREA>
+              </EXCLUSIVE-AREAS>
+              <ENTITYS>
+[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
+[!IF "CanControllerInstance = 'MCAN1'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="0919f480-8665-401d-beb7-a4f9a9d1964c">
+                  <SHORT-NAME>Can_1_Int0ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_1_Int0ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                <BSW-INTERRUPT-ENTITY UUID="e75bd73a-8eb4-4dc8-bbaa-6231e844c340">
+                  <SHORT-NAME>Can_1_Int1ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_1_Int1ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN2'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="230b7166-9a6b-4960-a5c5-0a367f56c1c0">
+                  <SHORT-NAME>Can_2_Int0ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_2_Int0ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                <BSW-INTERRUPT-ENTITY UUID="d4f28071-2fda-4227-a6f4-2a05bf429a3f">
+                  <SHORT-NAME>Can_2_Int1ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_2_Int1ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN3'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="d92ffa98-518c-4d93-b687-d078f37e2e31">
+                  <SHORT-NAME>Can_3_Int0ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_3_Int0ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                <BSW-INTERRUPT-ENTITY UUID="ab0c3188-beb2-4860-bbb4-0c0b84edc9e7">
+                  <SHORT-NAME>Can_3_Int1ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_3_Int1ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN4'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="c7ceef86-e0ac-449d-b555-7aaee2c4114b">
+                  <SHORT-NAME>Can_4_Int0ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_4_Int0ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                <BSW-INTERRUPT-ENTITY UUID="8d5ea773-d021-48b7-9639-1eac7c87f716">
+                  <SHORT-NAME>Can_4_Int1ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_4_Int1ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN5'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="ded1dbc3-ccf1-4372-8303-6626e77efcfa">
+                  <SHORT-NAME>Can_5_Int0ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_5_Int0ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                <BSW-INTERRUPT-ENTITY UUID="58e6d24f-45da-40d1-ab99-d9ed71a36f93">
+                  <SHORT-NAME>Can_5_Int1ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_5_Int1ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+[!ENDIF!][!//
+[!IF "CanControllerInstance = 'MCAN6'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="ec65c15b-8cae-43b4-ab4e-1b902271e82f">
+                  <SHORT-NAME>Can_6_Int0ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_6_Int0ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                <BSW-INTERRUPT-ENTITY UUID="345a0923-ed2e-4a4f-b9a5-ceca84007262">
+                  <SHORT-NAME>Can_6_Int1ISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_6_Int1ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "CanInteruptType = 'CAN_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+                <BSW-CALLED-ENTITY UUID="1cc15b6a-18c7-4743-9b71-69b98953f864">
+                  <SHORT-NAME>Can_CheckWakeup</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+[!ENDIF!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>EcuM_CheckWakeup</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_EcuM/BSWModuleEntry/EcuM_CheckWakeup</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_CheckWakeup</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+[!ENDIF!][!//
+                <BSW-CALLED-ENTITY UUID="d1246a1a-7cde-4949-b8bb-3223f4bcafd1">
+                  <SHORT-NAME>Can_DeInit</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_DeInit</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="8d11ae68-b661-409b-be88-4452461eec36">
+                  <SHORT-NAME>Can_DisableControllerInterrupts</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Can_TI_F29H85x/Can/Can_Behavior/CAN_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_EnableControllerInterrupts</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="9b481760-196e-404a-b447-953d4aa1c95c">
+                  <SHORT-NAME>Can_EnableControllerInterrupts</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Can_TI_F29H85x/Can/Can_Behavior/CAN_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_EnableControllerInterrupts</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="c827c014-4aa7-4c70-911c-199360b0da4f">
+                  <SHORT-NAME>Can_GetControllerErrorState</SHORT-NAME>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_GetControllerErrorState</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="5bd97c2b-ca7b-4717-9360-e4ebd87ed539">
+                  <SHORT-NAME>Can_GetControllerMode</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_GetControllerMode</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanVersionInfoApi = 'true'"!][!//
+                <BSW-CALLED-ENTITY UUID="b4f574fb-e16a-4463-be23-aa5bd04176e8">
+                  <SHORT-NAME>Can_GetVersionInfo</SHORT-NAME>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_GetVersionInfo</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+[!ENDIF!][!//
+                <BSW-CALLED-ENTITY UUID="a0c04389-d210-4ae6-9c93-44c3c586441f">
+                  <SHORT-NAME>Can_Init</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_Init</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-SCHEDULABLE-ENTITY UUID="0a2ee4e6-1098-4061-b034-f5ab36b433af">
+                  <SHORT-NAME>Can_MainFunction_BusOff</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>CanIf_ControllerBusOff</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_CanIf/BSWModuleEntry/CanIf_ControllerBusOff</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_BusOff</IMPLEMENTED-ENTRY-REF>
+                </BSW-SCHEDULABLE-ENTITY>
+                <BSW-SCHEDULABLE-ENTITY UUID="94a5d372-a6b0-4356-b097-df6ff1416505">
+                  <SHORT-NAME>Can_MainFunction_Mode</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>CanIf_ControllerModeIndication</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_CanIf/BSWModuleEntry/CanIf_ControllerModeIndication</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Mode</IMPLEMENTED-ENTRY-REF>
+                </BSW-SCHEDULABLE-ENTITY>
+[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
+                <BSW-SCHEDULABLE-ENTITY UUID="[!"as:uuid()"!]">
+                  <SHORT-NAME>Can_MainFunction_Read_[!"@name"!]</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>CanIf_RxIndication</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_CanIf/BSWModuleEntry/CanIf_RxIndication</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Read_[!"@name"!]</IMPLEMENTED-ENTRY-REF>
+                </BSW-SCHEDULABLE-ENTITY>
+                <BSW-SCHEDULABLE-ENTITY UUID="[!"as:uuid()"!]">
+                  <SHORT-NAME>Can_MainFunction_Write_[!"@name"!]</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>CanIf_TxConfirmation</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_CanIf/BSWModuleEntry/CanIf_TxConfirmation</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Write_[!"@name"!]</IMPLEMENTED-ENTRY-REF>
+                </BSW-SCHEDULABLE-ENTITY>
+[!ENDLOOP!][!ENDLOOP!][!//
+[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+                <BSW-SCHEDULABLE-ENTITY UUID="261e4315-94fb-4b76-9bfc-6fb5a2c85fe3">
+                  <SHORT-NAME>Can_MainFunction_Wakeup</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>EcuM_SetWakeupEvent</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_EcuM/BSWModuleEntry/EcuM_SetWakeupEvent</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Wakeup</IMPLEMENTED-ENTRY-REF>
+                </BSW-SCHEDULABLE-ENTITY>
+[!ENDIF!][!//
+[!IF "as:modconf('Can')[1]/CanGeneral/CanSetBaudrateApi = 'true'"!][!//
+                <BSW-CALLED-ENTITY UUID="bc10d170-54ca-40ac-a0d1-5d2eec51583d">
+                  <SHORT-NAME>Can_SetBaudrate</SHORT-NAME>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+[!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_SetBaudrate</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+[!ENDIF!][!//
+                <BSW-CALLED-ENTITY UUID="fdd790bc-661b-431d-837b-33f8a371af11">
+                  <SHORT-NAME>Can_SetControllerMode</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+[!ENDIF!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>GetCounterValue</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_EcuM/BSWModuleEntry/GetCounterValue</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>GetElapsedValue</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_EcuM/BSWModuleEntry/GetElapsedValue</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_SetControllerMode</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="3259097d-1aca-496a-baca-5493c76b263c">
+                  <SHORT-NAME>Can_SetIcomConfiguration</SHORT-NAME>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>CanIf_CurrentIcomConfiguration</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_CanIf/BSWModuleEntry/CanIf_CurrentIcomConfiguration</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+[!ENDIF!][!//
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_SetIcomConfiguration</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="8966f83b-51b6-4ff4-af37-911c7ae33fce">
+                  <SHORT-NAME>Can_Write</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Can_TI_F29H85x/Can/Can_Behavior/CAN_EXCLUSIVE_AREA_1</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>CanIf_TxConfirmation</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_CanIf/BSWModuleEntry/CanIf_TxConfirmation</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+[!ENDIF!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>GetCounterValue</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_EcuM/BSWModuleEntry/GetCounterValue</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>GetElapsedValue</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_EcuM/BSWModuleEntry/GetElapsedValue</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_Write</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+              </ENTITYS>
+              <EVENTS>
+                <BSW-TIMING-EVENT UUID="35ea8b2e-e764-4486-adeb-56757b7be741">
+                  <SHORT-NAME>Can_MainFunctionTimingEvent_BusOff</SHORT-NAME>
+                  <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_BusOff</STARTS-ON-EVENT-REF>
+                  <PERIOD>[!"as:modconf('Can')[1]/CanGeneral/CanMainFunctionBusoffPeriod"!]</PERIOD>
+                </BSW-TIMING-EVENT>
+                <BSW-TIMING-EVENT UUID="04cd4bb0-cb81-452f-92cf-623e46acc15c">
+                  <SHORT-NAME>Can_MainFunctionTimingEvent_Mode</SHORT-NAME>
+                  <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_Mode</STARTS-ON-EVENT-REF>
+                  <PERIOD>[!"as:modconf('Can')[1]/CanGeneral/CanMainFunctionModePeriod"!]</PERIOD>
+                </BSW-TIMING-EVENT>
+[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
+                <BSW-TIMING-EVENT UUID="[!"as:uuid()"!]">
+                  <SHORT-NAME>Can_MainFunctionTimingEvent_Read_[!"@name"!]</SHORT-NAME>
+                  <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_Read_[!"@name"!]</STARTS-ON-EVENT-REF>
+                  <PERIOD>[!"CanMainFunctionPeriod"!]</PERIOD>
+                </BSW-TIMING-EVENT>
+                <BSW-TIMING-EVENT UUID="[!"as:uuid()"!]">
+                  <SHORT-NAME>Can_MainFunctionTimingEvent_Write_[!"@name"!]</SHORT-NAME>
+                  <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_Write_[!"@name"!]</STARTS-ON-EVENT-REF>
+                  <PERIOD>[!"CanMainFunctionPeriod"!]</PERIOD>
+                </BSW-TIMING-EVENT>
+[!ENDLOOP!][!ENDLOOP!][!//
+[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+                <BSW-TIMING-EVENT UUID="8b5dd1a5-2776-4eef-b311-aef69f165068">
+                  <SHORT-NAME>Can_MainFunctionTimingEvent_Wakeup</SHORT-NAME>
+                  <PERIOD>[!"as:modconf('Can')[1]/CanGeneral/CanMainFunctionWakeupPeriod"!]</PERIOD>
+                  <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_Wakeup</STARTS-ON-EVENT-REF>
+                </BSW-TIMING-EVENT>
+[!ENDIF!][!//
+              </EVENTS>
+            </BSW-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </BSW-MODULE-DESCRIPTION>
+        <BSW-IMPLEMENTATION UUID="336e4941-2375-403d-9ab0-a211ecb7dafa">
+          <SHORT-NAME>Can_Impl</SHORT-NAME>
+          <CODE-DESCRIPTORS>
+            <CODE UUID="cfa46fbf-452d-43e7-9a05-a87f1f02ca8f">
+              <SHORT-NAME>Files</SHORT-NAME>
+              <ARTIFACT-DESCRIPTORS>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>generate::include::Can_Cfg.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>generate::src::Can_PBcfg.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>generate::src::Dio_Cfg.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>include::Can.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>include::Can_Priv.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>include::Can_Reg_Access.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Can.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Can_Irq.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Can_Priv.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+              </ARTIFACT-DESCRIPTORS>
+            </CODE>
+          </CODE-DESCRIPTORS>
+          <COMPILERS>
+            <COMPILER UUID="7b7ad218-3b3d-4c0a-8660-d5c277e953c2">
+              <SHORT-NAME>c29clang</SHORT-NAME>
+              <NAME>TI C29 Clang Compiler</NAME>
+              <VENDOR>Texas Instruments</VENDOR>
+              <VERSION>0.17.4</VERSION>
+            </COMPILER>
+          </COMPILERS>
+          <LINKERS>
+            <LINKER UUID="0768cf44-7dc4-4948-986f-e3719d0caba5">
+              <SHORT-NAME>c29lnk</SHORT-NAME>
+              <NAME>TI C29 Linker</NAME>
+              <VENDOR>Texas Instruments</VENDOR>
+              <VERSION>0.17.4</VERSION>
+            </LINKER>
+          </LINKERS>
+		  <PROGRAMMING-LANGUAGE>C</PROGRAMMING-LANGUAGE>
+          <RESOURCE-CONSUMPTION UUID="014cc1bb-df57-4463-ac65-9a6716333457">
+            <SHORT-NAME>ResourceConsumption</SHORT-NAME>
+            <MEMORY-SECTIONS>
+              <MEMORY-SECTION UUID="46032e93-30dc-4f81-ba38-7f5f4ffabdb5">
+                <SHORT-NAME>CAN_CODE</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CODE</SW-ADDRMETHOD-REF>
+                <SYMBOL>CODE</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="098b7980-8967-4297-97df-2e4034d02f05">
+                <SHORT-NAME>CAN_CONFIG_DATA</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CONST_PBCFG</SW-ADDRMETHOD-REF>
+                <SYMBOL>CONFIG_DATA</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="ba479406-8b46-4cb5-b878-bea6b0db925b">
+                <SHORT-NAME>CAN_ISR_CODE</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CODE</SW-ADDRMETHOD-REF>
+                <SYMBOL>ISR_CODE</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="b41d052a-ccf3-4af2-9a8b-613565486687">
+                <SHORT-NAME>CAN_VAR_INIT_8</SHORT-NAME>
+                <ALIGNMENT>8</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/VAR_INIT</SW-ADDRMETHOD-REF>
+                <SYMBOL>VAR_INIT_8</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="c41d032a-ccf3-4bf2-9a7b-914365466257">
+                <SHORT-NAME>CAN_CONST_8</SHORT-NAME>
+                <ALIGNMENT>8</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CONST</SW-ADDRMETHOD-REF>
+                <SYMBOL>CONST_8</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="098b7980-8967-4297-97df-2e4034d02f06">
+                <SHORT-NAME>CAN_VAR_NO_INIT_UNSPECIFIED</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/VAR_NO_INIT</SW-ADDRMETHOD-REF>
+                <SYMBOL>VAR_NO_INIT_UNSPECIFIED</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="098c7650-8247-1257-c7af-2e3034e02c06">
+                <SHORT-NAME>CAN_VAR_INIT_UNSPECIFIED</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/VAR_INIT</SW-ADDRMETHOD-REF>
+                <SYMBOL>VAR_INIT_UNSPECIFIED</SYMBOL>
+              </MEMORY-SECTION>
+            </MEMORY-SECTIONS>
+          </RESOURCE-CONSUMPTION>
+          <SW-VERSION>[!"$moduleSoftwareVer"!]</SW-VERSION>
+          <VENDOR-ID>44</VENDOR-ID>
+          <AR-RELEASE-VERSION>[!"substring-after($moduleReleaseVer, 'AUTOSAR ')"!]</AR-RELEASE-VERSION>
+          <BEHAVIOR-REF DEST="BSW-INTERNAL-BEHAVIOR">/Can_TI_F29H85x/Can/Can_Behavior</BEHAVIOR-REF>
+          <VENDOR-SPECIFIC-MODULE-DEF-REFS>
+            <VENDOR-SPECIFIC-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Can</VENDOR-SPECIFIC-MODULE-DEF-REF>
+          </VENDOR-SPECIFIC-MODULE-DEF-REFS>
+        </BSW-IMPLEMENTATION>
+      </ELEMENTS>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="27f45f41-07dd-4a6b-adb0-f873878d4812">
+          <SHORT-NAME>BSWModuleEntry</SHORT-NAME>
+          <ELEMENTS>
+            <BSW-MODULE-ENTRY UUID="44431d29-ba0d-41d0-a391-dc276e5c328f">
+              <SHORT-NAME>Can_1_Int0ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan1_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="d44e0d86-68f4-48f6-8459-1ff5bcb83049">
+              <SHORT-NAME>Can_1_Int1ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan1_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="4a109a10-86c8-42aa-9a5c-5cd34f1e92e6">
+              <SHORT-NAME>Can_2_Int0ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan2_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="95683c2d-38e2-4969-a09a-ebb05d625282">
+              <SHORT-NAME>Can_2_Int1ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan2_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="d93a05be-20dd-4069-81cd-eeac2e74a718">
+              <SHORT-NAME>Can_3_Int0ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan3_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="52f99cd2-0437-4345-842f-6643d058c338">
+              <SHORT-NAME>Can_3_Int1ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan3_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="58a9a666-086d-41da-b532-de2f0548439b">
+              <SHORT-NAME>Can_4_Int0ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan4_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="e08c5775-2c8c-4e51-8584-f5718b28659a">
+              <SHORT-NAME>Can_4_Int1ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan4_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="4021d842-71cb-4cad-acc4-bf25c57bba56">
+              <SHORT-NAME>Can_5_Int0ISR</SHORT-NAME>
+              <SHORT-NAME-PATTERN/>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan5_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="159e1139-25a8-476a-9fbd-68196623cfbc">
+              <SHORT-NAME>Can_5_Int1ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan5_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="5a286883-2dc4-4446-9150-5c575498e955">
+              <SHORT-NAME>Can_6_Int0ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan6_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="7a59453a-3040-48b6-8be6-dc9e4041f362">
+              <SHORT-NAME>Can_6_Int1ISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$mcan6_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="dd88d3e2-2701-4b8b-8485-2af777ef92e6">
+              <SHORT-NAME>Can_CheckWakeup</SHORT-NAME>
+              <SERVICE-ID>11</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="09c96344-c852-4451-8f74-eced966e9fd2">
+              <SHORT-NAME>Can_DeInit</SHORT-NAME>
+              <SERVICE-ID>16</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="c8615ea2-ae83-457e-bc83-c1184336354e">
+              <SHORT-NAME>Can_DisableControllerInterrupts</SHORT-NAME>
+              <SERVICE-ID>4</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="d28bb33f-b6d7-4023-9a55-b574b5afd211">
+              <SHORT-NAME>Can_EnableControllerInterrupts</SHORT-NAME>
+              <SERVICE-ID>5</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY S="" UUID="19c022e2-449a-4d7c-b4c8-4cd055a7a3d4">
+              <SHORT-NAME>Can_GetControllerErrorState</SHORT-NAME>
+              <SERVICE-ID>17</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="5fe6baa5-477e-4efe-8a57-cbde50ed2a56">
+              <SHORT-NAME>Can_GetControllerMode</SHORT-NAME>
+              <SERVICE-ID>18</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="71e4ef93-b0f4-4819-b004-3d3e51e63775">
+              <SHORT-NAME>Can_GetVersionInfo</SHORT-NAME>
+              <SERVICE-ID>7</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="ae40053d-4aec-499f-9822-251b7ee9b519">
+              <SHORT-NAME>Can_Init</SHORT-NAME>
+              <SERVICE-ID>0</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="53cda482-4487-4b4e-a70d-bd1c5e7bce86">
+              <SHORT-NAME>Can_MainFunction_BusOff</SHORT-NAME>
+              <SERVICE-ID>9</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="34aa4ce7-5a7b-441b-a568-93a8bddc79c0">
+              <SHORT-NAME>Can_MainFunction_Mode</SHORT-NAME>
+              <SERVICE-ID>12</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
+            <BSW-MODULE-ENTRY UUID="[!"as:uuid()"!]">
+              <SHORT-NAME>Can_MainFunction_Read_[!"@name"!]</SHORT-NAME>
+              <SERVICE-ID>8</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="[!"as:uuid()"!]">
+              <SHORT-NAME>Can_MainFunction_Write_[!"@name"!]</SHORT-NAME>
+              <SERVICE-ID>1</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+[!ENDLOOP!][!ENDLOOP!][!//
+            <BSW-MODULE-ENTRY UUID="8171fcd9-784f-4620-925c-2590fac600f0">
+              <SHORT-NAME>Can_MainFunction_Wakeup</SHORT-NAME>
+              <SERVICE-ID>10</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="78097bc5-f10e-4265-9741-b90be5afbe5a">
+              <SHORT-NAME>Can_SetBaudrate</SHORT-NAME>
+              <SERVICE-ID>15</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="1e0e9556-e2ae-4c21-9aa5-c68f5ea16c1e">
+              <SHORT-NAME>Can_SetControllerMode</SHORT-NAME>
+              <SERVICE-ID>3</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="32061c87-93cc-4b6a-9cd7-a867bff4d12f">
+              <SHORT-NAME>Can_SetIcomConfiguration</SHORT-NAME>
+              <SERVICE-ID>33</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="c2696840-64a7-40cd-82ab-c36898b9cfd1">
+              <SHORT-NAME>Can_Write</SHORT-NAME>
+              <SERVICE-ID>6</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>
+

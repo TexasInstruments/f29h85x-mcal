@@ -1,0 +1,47 @@
+---
+title: Can_MsgRAMConfigParams
+summary: Structure for MCAN Message RAM Configuration Parameters Message RAM can contain following sections: Standard ID filters, Extended ID filters, TX FIFO(or TX Q), TX Buffers, TX EventFIFO, RX FIFO0, RX FIFO1, RX Buffer. Note: If particular section in the RAM is not used then it's size should be initialized to '0' (Number of buffers in case of Tx/Rx buffer). 
+
+---
+
+# Can_MsgRAMConfigParams
+
+**Module:** **[Can API GUIDE Header file](../Modules/group___c_a_n.md)**
+
+
+
+Structure for MCAN Message RAM Configuration Parameters Message RAM can contain following sections: Standard ID filters, Extended ID filters, TX FIFO(or TX Q), TX Buffers, TX EventFIFO, RX FIFO0, RX FIFO1, RX Buffer. Note: If particular section in the RAM is not used then it's size should be initialized to '0' (Number of buffers in case of Tx/Rx buffer). 
+
+
+`#include <Can_Priv.h>`
+
+## Structure Members
+
+|  Member Type   | Member name    | Brief |
+| -------------- | -------------- | ----- |
+|  uint32 | flssa |  Standard ID Filter List Start Address.  |
+|  uint32 | lss |  List Size: Standard ID 0 = No standard Message ID filter 1-127 = Number of standard Message ID filter elements others = Values greater than 128 are interpreted as 128.  |
+|  uint32 | flesa |  Extended ID Filter List Start Address.  |
+|  uint32 | lse |  List Size: Extended ID 0 = No standard Message ID filter 1-64 = Number of standard Message ID filter elements others = Values greater than 64 are interpreted as 64.  |
+|  uint32 | txStartAddr |  Tx Buffers Start Address.  |
+|  uint8 | txBufNum |  Number of Dedicated Transmit Buffers 0 = No Dedicated Tx Buffers 1-32 = Number of Dedicated Tx Buffers others = Values greater than 32 are interpreted as 32.  |
+|  uint8 | txFIFOSize |  Transmit FIFO/Queue Size 0 = No Tx FIFO/Queue 1-32 = Number of Tx Buffers used for Tx FIFO/Queue others = Values greater than 32 are interpreted as 32.  |
+|  uint32 | txBufMode |  Tx FIFO/Queue Mode 0 = Tx FIFO operation 1 = Tx Queue operation.  |
+|  uint32 | txBufElemSize |  Tx Buffer Element Size.  |
+|  uint32 | txEventFIFOStartAddr |  Tx Event FIFO Start Address.  |
+|  uint32 | txEventFIFOSize |  Event FIFO Size 0 = Tx Event FIFO disabled 1-32 = Number of Tx Event FIFO elements others = Values greater than 32 are interpreted as 32.  |
+|  uint32 | txEventFIFOWaterMark |  Tx Event FIFO Watermark 0 = Watermark interrupt disabled 1-32 = Level for Tx Event FIFO watermark interrupt others = Watermark interrupt disabled.  |
+|  uint32 | rxFIFO0startAddr |  Rx FIFO0 Start Address.  |
+|  uint32 | rxFIFO0size |  Rx FIFO0 Size 0 = No Rx FIFO 1-64 = Number of Rx FIFO elements others = Values greater than 64 are interpreted as 64.  |
+|  uint32 | rxFIFO0waterMark |  Rx FIFO0 Watermark 0 = Watermark interrupt disabled 1-63 = Level for Rx FIFO 0 watermark interrupt others = Watermark interrupt disabled.  |
+|  uint32 | rxFIFO0OpMode |  Rx FIFO0 Operation Mode 0 = FIFO blocking mode 1 = FIFO overwrite mode.  |
+|  uint32 | rxFIFO1startAddr |  Rx FIFO1 Start Address.  |
+|  uint32 | rxFIFO1size |  Rx FIFO1 Size 0 = No Rx FIFO 1-64 = Number of Rx FIFO elements others = Values greater than 64 are interpreted as 64.  |
+|  uint32 | rxFIFO1waterMark |  Rx FIFO1 Watermark 0 = Watermark interrupt disabled 1-63 = Level for Rx FIFO 1 watermark interrupt others = Watermark interrupt disabled.  |
+|  uint32 | rxFIFO1OpMode |  Rx FIFO1 Operation Mode 0 = FIFO blocking mode 1 = FIFO overwrite mode.  |
+|  uint32 | rxBufStartAddr |  Rx Buffer Start Address.  |
+|  uint32 | rxBufElemSize |  Rx Buffer Element Size.  |
+|  uint32 | rxFIFO0ElemSize |  Rx FIFO0 Element Size.  |
+|  uint32 | rxFIFO1ElemSize |  Rx FIFO1 Element Size.  |
+
+-------------------------------

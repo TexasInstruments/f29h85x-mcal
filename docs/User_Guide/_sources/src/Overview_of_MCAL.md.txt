@@ -1,0 +1,89 @@
+# Overview of MCAL
+
+## Overview of AUTOSAR Stack
+
+**AUTOSAR** (**AUT**omotive **O**pen **S**ystem **AR**chitecture) is an open and standardized automotive software architecture jointly developed by automobile manufacturers, suppliers, and tool developers. AUTOSAR focuses on main strategic targets as modularity, configurability and transferability of software modules, and the standardization of their interfaces to accomplish the project objectives.
+AUTOSAR is based on the concept of separation between infrastructure and application. AUTOSAR software component implementation is independent from the infrastructure.
+
+Autosar infrastructure consists of the following layers in the architecture:
+
+1. Runtime Environment (RTE): Middleware layer which provides communication services for the application software and makes the components independent of a specific MCU.
+2. Basic Software (BSW) Layer: Software layer with basic services and drivers to leverage features of the underlying hardware, and enabling interface to application and RTE layer.
+3. Services Layer: Offers basic services, Memory Services, Diagnostic Services, state management for components in the basic layer.
+4. ECU Abstraction Layer: Interfaces the drivers of MCAL and makes higher software layers independent of hardware layout and offers access to I/O signals.
+5. Microcontroller Abstraction Layer (MCAL): Microcontroller Abstraction Layer which is the lowest software layer designed to make higher level software independent of a microcontroller.
+6. Complex driver: Collection of complex sensor and actuator control or non-standardized drivers that may need migration.
+
+## What is MCAL
+
+**MicroController Abstraction Layer (MCAL)** is a software module that enables direct access to on-chip MCU peripheral modules and makes the upper software layer independent of the MCU.
+
+The Microcontroller abstraction layer (MCAL) is the lowest layer of the AUTOSAR Basic Software architecture. MCAL contains drivers with direct access to the Microcontroller internal peripherals and memory mapped Microcontroller external devices. MCAL is a hardware specific layer that ensures a standard interface to the Basic Software. It manages the microcontroller peripherals and provides the components of the Basic Software with microcontroller independent values. MCAL also implements notification mechanisms to support the distribution of commands, responses, and information to processes.
+
+```{figure} Assets/images/PortUserguide_MCAL_AUTOSAR.png
+:alt: AUTOSAR MCAL Layer
+:align: center
+
+AUTOSAR MCAL Layer
+```
+
+MCAL software (which is part of the package that includes the hardware platform) needs to be configured for the specific automotive application.
+For example, CAN BUS (MCAL) driver needs to be configured for in-vehicle networking application. Similarly, several drivers like LIN BUS, FlexRay, PWM, SPI, and Ethernet have to be configured based on specific requirements of an automotive application.
+
+Configuration of these drivers is carried out by using specialized tools for code generation and configuration; for example EB Tresos. The source files generated using the Tool consist of structures with elements such as configuration values. These configuration files are generated based on the values specified in the Parameters Definition File. The configuration values need to be fed to the peripheral registers, address pointers, macro definition, etc.
+The MCAL drivers implement the Software specification as mentioned in the AUTOSAR 4.3.1 release. Additionally, examples to demonstrate MCAL driver usages have also been included.
+
+## What is CDD
+
+CDD stands for Complex Device Drivers. A Complex Driver is a software entity which provides the possibility to integrate special purpose
+functionality/drivers that are not defined in AUTOSAR.  A CDD is a specific module located in the Complex Drivers Layer of the Basic SoftWare which interacts with standard BSW modules or RTE.
+
+* A CDD may need to interface to modules of the layered software architecture
+* A module of the layered software architecture may need to interface to a CDD
+* A CDD may need to interface SW-Cs via RTE
+
+```{figure} Assets/images/CDD_userguide.png
+:alt: CDD in Layered Software Architecture
+:align: center
+
+CDD in Layered Software Architecture
+```
+
+The main goal of the CDD is to implement complex sensor evaluation and actuator
+control with direct access to the microcontroller using specific interrupts and/or complex microcontroller peripherals, external devices (communication transceivers, ASIC...) to fulfill the special functional and timing requirements. In addition it might be used to implement enhanced services / protocols or encapsulates legacy functionality of a non-AUTOSAR system.
+CDD Implementation might be application, Microcontroller and ECU dependent.
+Finally, the CDD can serve as mechanism of migration to introduce existing or new concepts into the AUTOSAR Software Architecture.
+
+Refer [AUTOSAR_EXP_LayeredSoftwareArchitecture](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_EXP_LayeredSoftwareArchitecture.pdf) document for more details on CDD related configurations.
+
+## MCAL Safety Strategy
+
+### Safety Certified MCAL Modules
+
+MCAL is a collective package of Safety Certified Driver Modules (ASIL D/B depending on device). It is developed with process that is certified to be compliant with ISO 26262.
+
+Drivers implement the HW safety mechanisms listed for the specific peripherals in the HW Safety Manual to manage random faults. Each of the releases of the MCAL will include a CSP. However, only the final safety release will be assessed for functional safety.
+
+### CSP
+
+The **Software Compliance Support Package** ( CSP ) is the set of evidence that TI provides to and is intended to assist the customer in their certification efforts for the integrated system.
+The provided CSP assists customer to qualify MCAL in their system context. This will be needed if customers modify the SW or change the tooling that will make TI’s functional safety assessment of MCAL void.
+Each HW IP Module MCAL driver will have its individual CSP provided to customers.
+
+## Software Offering
+
+TI offers MCAL and CDD drivers (source code) for MCU devices along with the licensed Configurator Package. The rest of the AUTOSAR Basic Software is provided by the AUTOSAR Vendors (Vector, Elektrobit, ETAS, etc).
+
+```{figure} Assets/images/Software_Offering_TI.png
+:alt: Software Offering
+:align: center
+
+Software Offering
+```
+
+Customer gets:
+
+* MCALs and EB Configurator Tool from TI.
+* AUTOSAR BSW/RTE from their preferred vendor with an OS port for the target TI device.
+
+Customer integrates these deliverables based on integration guides provided by AUTOSAR vendor and TI

@@ -1,0 +1,19 @@
+# Check if Python3 is installed
+CHECK_PYTHON3 = $(shell command -v python3 2>/dev/null)
+PYTHON_TOOL ?= None
+
+ifeq ($(CHECK_PYTHON3), )
+	# If not found, try to find Python
+	CHECK_PYTHON = $(shell command -v python 2>/dev/null)
+	PYTHON_TOOL := python
+else
+	# Use Python3 if found
+	CHECK_PYTHON = $(CHECK_PYTHON3)
+	PYTHON_TOOL := python3
+endif
+
+ifeq ($(CCS_HOST_OS),linux)
+	RENAME_TOOL := mv
+else ifeq ($(CCS_HOST_OS),win32)
+	RENAME_TOOL := ren
+endif

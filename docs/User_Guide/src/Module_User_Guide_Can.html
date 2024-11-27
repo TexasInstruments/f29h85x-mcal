@@ -1,0 +1,4690 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.5. CAN Module &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. API guide" href="api_guide.html" />
+    <link rel="prev" title="4.4. GPT Module" href="Module_User_Guide_Gpt.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.00.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.1. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.2. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.3. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.4. GPT Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. CAN Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.5.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.5.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.5.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.5.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.5.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.5.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.5.4.3. Non compliance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.5.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.5.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.5.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.5.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.5.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.5.6.4. Error codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.5.7. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.5.7.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.5.7.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.5.7.3. Hardware-Software Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.5.8. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.5.8.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.5.8.2. Multi-core and Resource allocator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.5.9. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cancontroller">4.5.9.1. CanController</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cancontrollerconfig">4.5.9.2. CanControllerConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cancontrollerbaudrateconfig">4.5.9.3. CanControllerBaudrateConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cancontrollerfdbaudrateconfig">4.5.9.4. CanControllerFdBaudrateConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canhardwareobject">4.5.9.5. CanHardwareObject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canhwfilter">4.5.9.6. CanHwFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canicom">4.5.9.7. CanIcom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canicomconfig">4.5.9.8. CanIcomConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canicomrxmessage">4.5.9.9. CanIcomRxMessage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canicomrxmessagesignalconfig">4.5.9.10. CanIcomRxMessageSignalConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cangeneral">4.5.9.11. CanGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canicomgeneral">4.5.9.12. CanIcomGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canmainfunctionrwperiods">4.5.9.13. CanMainFunctionRWPeriods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#candemeventparameterrefs">4.5.9.14. CanDemEventParameterRefs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-can-module">4.5.9.15. Steps To Configure Can Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.5.10. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#can-example-loopback">4.5.10.1. Can_Example_loopback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#can-example-classic">4.5.10.2. Can_Example_Classic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#can-example-icom">4.5.10.3. Can_Example_Icom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.5.10.4. File Structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
+      <li><span class="section-number">4.5. </span>CAN Module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="can-module">
+<h1><span class="section-number">4.5. </span>CAN Module<a class="headerlink" href="#can-module" title="Link to this heading"></a></h1>
+<section id="acronyms-and-definitions">
+<h2><span class="section-number">4.5.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AUTOSAR</p></td>
+<td><p>Automotive Open System Architecture</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTE</p></td>
+<td><p>Runtime Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>BSW</p></td>
+<td><p>Basic Software</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPIO</p></td>
+<td><p>General Purpose Input Output</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL</p></td>
+<td><p>Micro Controller Abstraction Layer</p></td>
+</tr>
+<tr class="row-odd"><td><p>API</p></td>
+<td><p>Application Programming Interface</p></td>
+</tr>
+<tr class="row-even"><td><p>DET</p></td>
+<td><p>Default Error Tracer</p></td>
+</tr>
+<tr class="row-odd"><td><p>HW</p></td>
+<td><p>Hardware</p></td>
+</tr>
+<tr class="row-even"><td><p>SW</p></td>
+<td><p>Software</p></td>
+</tr>
+<tr class="row-odd"><td><p>I/O</p></td>
+<td><p>Input/Output</p></td>
+</tr>
+<tr class="row-even"><td><p>CAN</p></td>
+<td><p>Controller Area Network</p></td>
+</tr>
+<tr class="row-odd"><td><p>CanIf</p></td>
+<td><p>Can Interface</p></td>
+</tr>
+<tr class="row-even"><td><p>L-PDU</p></td>
+<td><p>Data Link Layer Protocol Data Unit. Consists of Identifier, Data Length and Data (SDU).</p></td>
+</tr>
+<tr class="row-odd"><td><p>DLC</p></td>
+<td><p>Data Length Code</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="introduction">
+<h2><span class="section-number">4.5.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This document details AUTOSAR BSW CAN module implementation</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Supported AUTOSAR Release</p></th>
+<th class="head"><p><strong>4.3.1</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Supported Configuration Variants</strong></p></td>
+<td><p><strong>Post-build, Pre-Compile</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Vendor ID</strong></p></td>
+<td><p><strong>CAN_VENDOR_ID (44)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Module ID</strong></p></td>
+<td><p><strong>CAN_MODULE_ID (80)</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>The CAN driver provides services for basic transmission and reception of CAN frames in both interrupt and polling mode.
+These components can be used by an application.</p>
+<figure class="align-center" id="id5">
+<img alt="CAN MCAL AUTOSAR" src="../_images/Can_Autosar_MCAL.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.17 </span><span class="caption-text">Can MCAL AUTOSAR</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="functional-overview">
+<h2><span class="section-number">4.5.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<p>The CAN module initializes and controls the internal CAN Controllers of the microcontroller.
+It provides services to write, read, and configure mailboxes of the Can controllers</p>
+<p>Programming of clock source for the can, is beyond the scope of this document.
+The driver expects user of this module has programmed required clock source.</p>
+<p>Can module offers following services.</p>
+<ul class="simple">
+<li><p>On L-PDU transmission, the Can module writes the L-PDU in an appropriate buffer inside the CAN controller hardware.</p></li>
+<li><p>On L-PDU reception, the Can module calls the RX indication callback function with ID, DLC and pointer to L-SDU as parameter.</p></li>
+<li><p>The Can module provides an interface that serves as periodical processing function, and which must be called by the Basic Software Scheduler module periodically.</p></li>
+<li><p>The Can module provides services to control the state of the CAN controllers. Bus-off and Wake-up events are notified by means of callback functions.</p></li>
+</ul>
+</section>
+<section id="hardware-features">
+<h2><span class="section-number">4.5.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<section id="hardware-features-supported">
+<h3><span class="section-number">4.5.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Conforms with CAN Protocol 2.0 A, B and ISO 11898-1:2015</p></li>
+<li><p>Full CAN FD support (up to 64 data bytes)</p></li>
+<li><p>1-Mbps nominal bit rate, 5-Mbps data bit rate</p></li>
+<li><p>Loop-back mode for self-test</p></li>
+<li><p>AUTOSAR and SAE J1939 support</p></li>
+<li><p>Maskable interrupt (two configurable interrupt lines and clock stop or wakeup)</p></li>
+<li><p>Two clock domains (CAN clock and host clock)</p></li>
+<li><p>Clock stop and wakeup support</p></li>
+<li><p>Up to 32 dedicated transmit buffers</p></li>
+<li><p>Configurable transmit FIFO, up to 32 elements</p></li>
+<li><p>Configurable transmit queue, up to 32 elements</p></li>
+<li><p>Configurable transmit Event FIFO, up to 32 elements</p></li>
+<li><p>Up to 64 dedicated receive buffers</p></li>
+<li><p>Two configurable receive FIFOs, up to 64 elements each</p></li>
+<li><p>Up to 128 filter elements</p></li>
+</ul>
+</section>
+<section id="not-supported-features">
+<h3><span class="section-number">4.5.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<p>None</p>
+</section>
+<section id="non-compliance">
+<h3><span class="section-number">4.5.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<p>Below AUTOSAR requirement are not supported for Can Driver :</p>
+<p>[<strong>SWS_Can_00447</strong> ,<strong>SWS_Can_00446</strong>, <strong>SWS_Can_00445</strong>, <strong>SWS_Can_00391</strong>, <strong>SWS_Can_00244</strong>, <strong>SWS_Can_00242</strong>]</p>
+<blockquote>
+<div><blockquote>
+<div><p>Rejection Reason : Currently Can driver using internal Can controller, so implementation of wakeup events through external hardware Can controller not required.</p>
+</div></blockquote>
+</div></blockquote>
+<p>[<strong>SWS_Can_00405</strong> ,<strong>SWS_Can_00290</strong>, <strong>SWS_Can_00267</strong>, <strong>SWS_Can_00404</strong>, <strong>SWS_Can_00258</strong>]</p>
+<blockquote>
+<div><blockquote>
+<div><p>Rejection Reason : Can driver supports SLEEP and WAKEUP functionality, implementation of logical SLEEP state not required.</p>
+</div></blockquote>
+</div></blockquote>
+<p>For more details, Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_CanDriver.pdf">AUTOSAR_SWS_CanDriver : Section: 5.1.2 : Header File Structure</a></p>
+</section>
+</section>
+<section id="source-files">
+<h2><span class="section-number">4.5.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┃ ┣ 📂BSW_Stubs<br />
+┃ ┣ 📂<strong>Can</strong><br />
+┃ ┃ ┣ 📂<strong>include</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Can.h</strong> : <em>Contains the API’s of the Can driver to be used by upper layers.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Can_Priv.h</strong> : <em>Contains data structures and Internal function declarations.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Can_Reg_Access.h</strong> : <em>Contains the MACROs for CAN register access.</em><br />
+┃ ┃ ┣ 📂<strong>src</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Can.c</strong> : <em>Contains the implementation of the API’s for Can driver.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Can_Irq.c</strong> : <em>contains the implementation for Can interrupts handlers.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Can_Priv.c</strong> : <em>Contains Functions that support the API’s for Can driver</em><br />
+┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂hw_include<br />
+┃ ┣ 📂Mcal_Lib<br />
+┃ ┣ 📂Mcu<br />
+┃ ┗ 📂Port<br />
+┣ 📂examples<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<figure class="align-center" id="id6">
+<img alt="CAN Header File Structure" src="../_images/Can_Header_File_Structure.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.18 </span><span class="caption-text">Can Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="module-requirements">
+<h2><span class="section-number">4.5.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<section id="memory-mapping">
+<h3><span class="section-number">4.5.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<p>Will be added in later release</p>
+</section>
+<section id="scheduling">
+<h3><span class="section-number">4.5.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Schedule Function API</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Can_MainFunction_Write</p></td>
+<td><p>This function performs the polling of TX confirmation when CAN_TX_PROCESSING is set to POLLING</p></td>
+</tr>
+<tr class="row-odd"><td><p>Can_MainFunction_Read</p></td>
+<td><p>This function performs the polling of RX indications when CAN_RX_PROCESSING is set to POLLING.</p></td>
+</tr>
+<tr class="row-even"><td><p>Can_MainFunction_BusOff</p></td>
+<td><p>This function performs the polling of bus-off events that are configured statically as ‘to be polled’.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Can_MainFunction_Wakeup</p></td>
+<td><p>This function performs the polling of wake-up events that are configured statically as ‘to be polled’.</p></td>
+</tr>
+<tr class="row-even"><td><p>Can_MainFunction_Mode</p></td>
+<td><p>This function performs the polling of CAN controller mode transitions.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="error-handling">
+<h3><span class="section-number">4.5.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<section id="development-error-reporting">
+<h4><span class="section-number">4.5.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<p>Development errors are reported to the DET using the service Det_ReportError(),when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
+</section>
+</section>
+<section id="error-codes">
+<h3><span class="section-number">4.5.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of Error</p></th>
+<th class="head"><p>Related Error code</p></th>
+<th class="head"><p>Value (Hex)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>API service called with wrong parameter pointer</p></td>
+<td><p>CAN_E_PARAM_POINTER</p></td>
+<td><p>0x01</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called with wrong hardware handle</p></td>
+<td><p>CAN_E_PARAM_HANDLE</p></td>
+<td><p>0x02</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called with wrong data length</p></td>
+<td><p>CAN_E_PARAM_DATA_LENGTH</p></td>
+<td><p>0x03</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called with wrong parameter Controller</p></td>
+<td><p>CAN_E_PARAM_CONTROLLER</p></td>
+<td><p>0x04</p></td>
+</tr>
+<tr class="row-even"><td><p>API service used without initialization</p></td>
+<td><p>CAN_E_UNINIT</p></td>
+<td><p>0x05</p></td>
+</tr>
+<tr class="row-odd"><td><p>Invalid transition for the current mode.</p></td>
+<td><p>CAN_E_TRANSITION</p></td>
+<td><p>0x06</p></td>
+</tr>
+<tr class="row-even"><td><p>Parameter baud rate has an invalid value.</p></td>
+<td><p>CAN_E_PARAM_BAUDRATE</p></td>
+<td><p>0x07</p></td>
+</tr>
+<tr class="row-odd"><td><p>invalid ICOM configuration Id</p></td>
+<td><p>CAN_E_ICOM_CONFIG_INVALID</p></td>
+<td><p>0x08</p></td>
+</tr>
+<tr class="row-even"><td><p>Invalid Configuration set selection.</p></td>
+<td><p>CAN_E_INIT_FAILED</p></td>
+<td><p>0x09</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="used-resources">
+<h2><span class="section-number">4.5.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<section id="interrupt-handling">
+<h3><span class="section-number">4.5.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_CANDriver.pdf">AUTOSAR_SWS_CANDriver section: 10 Configuration specification</a>, details the expected behavior and control flow for ISR implementation, please refer the same.</p>
+<p>The Driver doesn’t register any interrupts handler (ISR), it’s expected that consumer of this driver registers the required interrupt handler.</p>
+<p>For every CAN Instance, an ISR requires to be registered. The Interrupt number associated with instance of the CAN is detailed in TRM (also, please refer the Example application).
+Interrupt type should be selected in CAN plugin.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Can Instance</p></th>
+<th class="head"><p>Interrupt handler</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Can A</p></td>
+<td><p>Can_1_Int1ISR</p></td>
+</tr>
+<tr class="row-odd"><td><p>Can B</p></td>
+<td><p>Can_2_Int1ISR</p></td>
+</tr>
+<tr class="row-even"><td><p>Can C</p></td>
+<td><p>Can_3_Int1ISR</p></td>
+</tr>
+<tr class="row-odd"><td><p>Can D</p></td>
+<td><p>Can_4_Int1ISR</p></td>
+</tr>
+<tr class="row-even"><td><p>Can E</p></td>
+<td><p>Can_5_Int1ISR</p></td>
+</tr>
+<tr class="row-odd"><td><p>Can F</p></td>
+<td><p>Can_6_Int1ISR</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Same interrupt category should be configured in Os module,</p>
+</div>
+</section>
+<section id="instance-support">
+<h3><span class="section-number">4.5.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CPU instances</p></th>
+<th class="head"><p>supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CPU 1</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPU 2</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU 3</p></td>
+<td><p>NO</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hardware-software-mapping">
+<h3><span class="section-number">4.5.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<p>Below image shows CAN driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
+<figure class="align-center" id="id7">
+<img alt="CAN HW/SW Mapping" src="../_images/Can_HW_SW_Mapping.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.19 </span><span class="caption-text">Can HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="integration-description">
+<h2><span class="section-number">4.5.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<section id="dependent-modules">
+<h3><span class="section-number">4.5.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<section id="det">
+<h4><span class="section-number">4.5.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<p>This implementation depends on the DET in order to report development errors
+The detection of development errors is configurable (ON / OFF), The switch CAN_CFG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors..</p>
+</section>
+<section id="schm">
+<h4><span class="section-number">4.5.8.1.2. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that CAN module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.</p>
+<p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter RteExclusiveAreaImplMechanism. This parameter is an input for RTE generator.
+For CAN Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Exclusive Area Functions used</p></th>
+<th class="head"><p>CAN Function calling Exclusive Area</p></th>
+<th class="head"><p>Need for Exclusive Area</p></th>
+<th class="head"><p>Recommended Exclusive Area Mapping</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CAN_EXCLUSIVE_AREA_0</p></td>
+<td><p>Can_DisableControllerInterrupts<br>Can_EnableControllerInterrupts</p></td>
+<td><p>To protect against multiple access for shared resources, <em>i.e. Can interrupt Registers</em>, which can lead to race condition</p></td>
+<td><p><strong>ALL_INTERRUPT_BLOCKING</strong> : All interrupts should be blocked as this API’s can be called in the interrupts</p></td>
+</tr>
+<tr class="row-odd"><td><p>CAN_EXCLUSIVE_AREA_1</p></td>
+<td><p>Can_Write</p></td>
+<td><p>To protect again multiple access to the same hth handle in the Can_write API</p></td>
+<td><p><strong>OS_RESOURCE</strong> : If the Can_Write API is only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br><strong>None</strong>: If Can_Write API is only called from non pre-emptible task context, its recommended to use this mechanism as multiple access protection to shared resource is not needed.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mcu">
+<h4><span class="section-number">4.5.8.1.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<p>MCU Module is required to initialize all the clock to be used by different peripherals</p>
+</section>
+<section id="port">
+<h4><span class="section-number">4.5.8.1.4. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
+<p>PORT Module is required to initialize Pin configurations and MUX mode for CAN Instances</p>
+</section>
+</section>
+<section id="multi-core-and-resource-allocator">
+<h3><span class="section-number">4.5.8.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
+<p>Not Supported</p>
+</section>
+</section>
+<section id="configuration">
+<h2><span class="section-number">4.5.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The Can Driver implementation supports multiple configuration variants
+The driver expects generated <strong>Can_Cfg.h</strong> to be present as input file.
+The associated Can driver configuration generated source files are <strong>Can_Cfg.c</strong> and <strong>Can_PBcfg.c</strong> if Post-Build config variant is selected, only <strong>Can_Cfg.c</strong> if Pre-Compile variant is selected</p>
+<p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<section id="cancontroller">
+<h3><span class="section-number">4.5.9.1. </span>CanController<a class="headerlink" href="#cancontroller" title="Link to this heading"></a></h3>
+<section id="canbusoffprocessing">
+<h4><span class="section-number">4.5.9.1.1. </span>CanBusoffProcessing<a class="headerlink" href="#canbusoffprocessing" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00314</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanBusoffProcessing</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enables / disables API Can_MainFunction_BusOff() for handling busoff events in polling mode .</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>INTERRUPT<br>POLLING</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>POLLING</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrolleractivation">
+<h4><span class="section-number">4.5.9.1.2. </span>CanControllerActivation<a class="headerlink" href="#cancontrolleractivation" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00315</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerActivation</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Defines if a CAN controller is used in the configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollerinstance">
+<h4><span class="section-number">4.5.9.1.3. </span>CanControllerInstance<a class="headerlink" href="#cancontrollerinstance" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerInstance</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Selects Can Controller Instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>MCAN1<br>MCAN2<br>MCAN3<br>MCAN4<br>MCAN5<br>MCAN6</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>MCAN1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollerbaseaddress">
+<h4><span class="section-number">4.5.9.1.4. </span>CanControllerBaseAddress<a class="headerlink" href="#cancontrollerbaseaddress" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00382</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerBaseAddress</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the CAN controller base address.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..4294967295</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollerid">
+<h4><span class="section-number">4.5.9.1.5. </span>CanControllerId<a class="headerlink" href="#cancontrollerid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00316</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter provides the controller ID which is unique in a given CAN Driver. The value for this parameter starts with 0 and continue without any gaps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canrxprocessing">
+<h4><span class="section-number">4.5.9.1.6. </span>CanRxProcessing<a class="headerlink" href="#canrxprocessing" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00317</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanRxProcessing</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enables / disables API Can_MainFunction_Read() for handling PDU reception events in polling mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>INTERRUPT<br>MIXED<br>POLLING</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>POLLING</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cantxprocessing">
+<h4><span class="section-number">4.5.9.1.7. </span>CanTxProcessing<a class="headerlink" href="#cantxprocessing" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00318</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanTxProcessing</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enables / disables API Can_MainFunction_Write() for handling PDU transmission events in polling mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>INTERRUPT<br>MIXED<br>POLLING</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>POLLING</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canwakeupfunctionalityapi">
+<h4><span class="section-number">4.5.9.1.8. </span>CanWakeupFunctionalityAPI<a class="headerlink" href="#canwakeupfunctionalityapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00466</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanWakeupFunctionalityAPI</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service Can_CheckWakeup() from the code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canwakeupprocessing">
+<h4><span class="section-number">4.5.9.1.9. </span>CanWakeupProcessing<a class="headerlink" href="#canwakeupprocessing" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00319</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanWakeupProcessing</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enables / disables API Can_MainFunction_Wakeup() for handling wakeup events in polling mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>INTERRUPT<br>POLLING</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>POLLING</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canwakeupsupport">
+<h4><span class="section-number">4.5.9.1.10. </span>CanWakeupSupport<a class="headerlink" href="#canwakeupsupport" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00330</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanWakeupSupport</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>CAN driver support for wakeup over CAN Bus</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="caninterrupttype">
+<h4><span class="section-number">4.5.9.1.11. </span>CanInterruptType<a class="headerlink" href="#caninterrupttype" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanInteruptType</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Defines the interrupt type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CAN_ISR_CAT1_RTINT<br>CAN_ISR_CAT1_INT<br>CAN_ISR_CAT2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CAN_ISR_CAT1_RTINT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollerdefaultbaudrate">
+<h4><span class="section-number">4.5.9.1.12. </span>CanControllerDefaultBaudrate<a class="headerlink" href="#cancontrollerdefaultbaudrate" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00435</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerDefaultBaudrate</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to baudrate configuration container configured for the Can Controller.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>REFERENCE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancpuclockref">
+<h4><span class="section-number">4.5.9.1.13. </span>CanCpuClockRef<a class="headerlink" href="#cancpuclockref" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00313</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanCpuClockRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to the CPU clock configuration, which is set in the MCU driver configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>REFERENCE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canwakeupsourceref">
+<h4><span class="section-number">4.5.9.1.14. </span>CanWakeupSourceRef<a class="headerlink" href="#canwakeupsourceref" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00359</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanWakeupSourceRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanController</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to the CPU clock configuration, which is set in the MCU driver configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>SYMBOLIC-NAME-REFERENCE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cancontrollerconfig">
+<h3><span class="section-number">4.5.9.2. </span>CanControllerConfig<a class="headerlink" href="#cancontrollerconfig" title="Link to this heading"></a></h3>
+<section id="canfdmode">
+<h4><span class="section-number">4.5.9.2.1. </span>CanFDMode<a class="headerlink" href="#canfdmode" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanFDMode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enable Flexible Datarate Operation</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canloopbackmode">
+<h4><span class="section-number">4.5.9.2.2. </span>CanLoopbackMode<a class="headerlink" href="#canloopbackmode" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanLoopbackMode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enable internal loopback mode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cantransmitpause">
+<h4><span class="section-number">4.5.9.2.3. </span>CanTransmitPause<a class="headerlink" href="#cantransmitpause" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanTransmitPause</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enable Transmit Pause.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="candisableautomaticretransmission">
+<h4><span class="section-number">4.5.9.2.4. </span>CanDisableAutomaticRetransmission<a class="headerlink" href="#candisableautomaticretransmission" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanDisableAutomaticRetransmission</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Disable automatic re-transmission on transmit errors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cancontrollerbaudrateconfig">
+<h3><span class="section-number">4.5.9.3. </span>CanControllerBaudrateConfig<a class="headerlink" href="#cancontrollerbaudrateconfig" title="Link to this heading"></a></h3>
+<section id="cancontrollerbaudrate">
+<h4><span class="section-number">4.5.9.3.1. </span>CanControllerBaudRate<a class="headerlink" href="#cancontrollerbaudrate" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00005</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerBaudRate</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the baudrate of the controller in kbps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..2000</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>1000</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollerbaudrateconfigid">
+<h4><span class="section-number">4.5.9.3.2. </span>CanControllerBaudRateConfigID<a class="headerlink" href="#cancontrollerbaudrateconfigid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00471</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerBaudRateConfigID</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Uniquely identifies a specific baud rate configuration. This ID is used by SetBaudrate API.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollerpropseg">
+<h4><span class="section-number">4.5.9.3.3. </span>CanControllerPropSeg<a class="headerlink" href="#cancontrollerpropseg" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00073</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerPropSeg</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies propagation delay in time quantas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollerseg1">
+<h4><span class="section-number">4.5.9.3.4. </span>CanControllerSeg1<a class="headerlink" href="#cancontrollerseg1" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00074</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerSeg1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies phase segment 1 in time quantas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollerseg2">
+<h4><span class="section-number">4.5.9.3.5. </span>CanControllerSeg2<a class="headerlink" href="#cancontrollerseg2" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00075</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerSeg2</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies phase segment 2 in time quantas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>2..128</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollersyncjumpwidth">
+<h4><span class="section-number">4.5.9.3.6. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#cancontrollersyncjumpwidth" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00383</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerSyncJumpWidth</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the synchronization jump width for the controller in time quantas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..128</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cancontrollerfdbaudrateconfig">
+<h3><span class="section-number">4.5.9.4. </span>CanControllerFdBaudrateConfig<a class="headerlink" href="#cancontrollerfdbaudrateconfig" title="Link to this heading"></a></h3>
+<section id="cancontrollerfdbaudrate">
+<h4><span class="section-number">4.5.9.4.1. </span>CanControllerFdBaudRate<a class="headerlink" href="#cancontrollerfdbaudrate" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00481</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerFdBaudRate</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerFdBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the data segment baud rate of the controller in kbps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..16000</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>1000</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id1">
+<h4><span class="section-number">4.5.9.4.2. </span>CanControllerPropSeg<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00476</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerPropSeg</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerFdBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies propagation delay in time quantas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..32</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h4><span class="section-number">4.5.9.4.3. </span>CanControllerSeg1<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00477</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerSeg1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerFdBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies phase segment 1 in time quantas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..32</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h4><span class="section-number">4.5.9.4.4. </span>CanControllerSeg2<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00478</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerSeg2</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerFdBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies phase segment 2 in time quantas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..16</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id4">
+<h4><span class="section-number">4.5.9.4.5. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00479</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerSyncJumpWidth</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerFdBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the synchronization jump width for the controller in time quantas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..16</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollertrcvdelaycompensationoffset">
+<h4><span class="section-number">4.5.9.4.6. </span>CanControllerTrcvDelayCompensationOffset<a class="headerlink" href="#cancontrollertrcvdelaycompensationoffset" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00480</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerTrcvDelayCompensationOffset</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerFdBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the Transceiver Delay Compensation Offset in ns. If not specified Transceiver Delay Compensation is disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..400</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>POSTBUILDVARIANTMULTIPLICITY</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollertrcvdelaycompensationfilter">
+<h4><span class="section-number">4.5.9.4.7. </span>CanControllerTrcvDelayCompensationFilter<a class="headerlink" href="#cancontrollertrcvdelaycompensationfilter" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerTrcvDelayCompensationFilter</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerFdBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the Transceiver Delay Compensation Filter in ns. If not specified Transceiver Delay Compensation is disabled..</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..400</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollertxbitrateswitch">
+<h4><span class="section-number">4.5.9.4.8. </span>CanControllerTxBitRateSwitch<a class="headerlink" href="#cancontrollertxbitrateswitch" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00475</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerTxBitRateSwitch</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanControllerFdBaudrateConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies if the bit rate switching shall be used for transmissions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="canhardwareobject">
+<h3><span class="section-number">4.5.9.5. </span>CanHardwareObject<a class="headerlink" href="#canhardwareobject" title="Link to this heading"></a></h3>
+<section id="canfdpaddingvalue">
+<h4><span class="section-number">4.5.9.5.1. </span>CanFdPaddingValue<a class="headerlink" href="#canfdpaddingvalue" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00485</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanFdPaddingValue</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the value which is used to pad unspecified data in CAN FD frames &gt; 8 bytes for transmission. This is necessary due to the discrete possible values of the DLC if &gt; 8 bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>POSTBUILDVARIANTMULTIPLICITY</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canhandletype">
+<h4><span class="section-number">4.5.9.5.2. </span>CanHandleType<a class="headerlink" href="#canhandletype" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00323</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanHandleType</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the type (Full-CAN or Basic-CAN) of a hardware object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>BASIC<br>FULL</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>BASIC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canhardwareobjectusespolling">
+<h4><span class="section-number">4.5.9.5.3. </span>CanHardwareObjectUsesPolling<a class="headerlink" href="#canhardwareobjectusespolling" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00490</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanHardwareObjectUsesPolling</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enables polling of this hardware object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canhwobjectcount">
+<h4><span class="section-number">4.5.9.5.4. </span>CanHwObjectCount<a class="headerlink" href="#canhwobjectcount" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00467</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanHardwareObjectCount</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Number of hardware objects used to implement one HOH. In case of a HRH this parameter defines the number of elements in the hardware FIFO or the number of shadow buffers, in case of a HTH it defines the number of hardware objects used for multiplexed transmission or for a hardware FIFO used by a FullCAN HTH.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canidtype">
+<h4><span class="section-number">4.5.9.5.5. </span>CanIdType<a class="headerlink" href="#canidtype" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00065</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIdType</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies whether the IdValue is of type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>EXTENDED<br>MIXED<br>STANDARD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>MIXED</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canobjectid">
+<h4><span class="section-number">4.5.9.5.6. </span>CanObjectId<a class="headerlink" href="#canobjectid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00326</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanObjectId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Holds the handle ID of HRH or HTH. The value of this parameter is unique in a given CAN Driver, and it should start with 0 and continue without any gaps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canobjecttype">
+<h4><span class="section-number">4.5.9.5.7. </span>CanObjectType<a class="headerlink" href="#canobjecttype" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00327</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanObjectType</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies if the HardwareObject is used as Transmit or as Receive object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>RECEIVE<br>TRANSMIT</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>TRANSMIT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cantriggertransmitenable">
+<h4><span class="section-number">4.5.9.5.8. </span>CanTriggerTransmitEnable<a class="headerlink" href="#cantriggertransmitenable" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00486</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanTriggerTransmitEnable</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines if or if not Can supports the trigger-transmit API for this handle.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cancontrollerref">
+<h4><span class="section-number">4.5.9.5.9. </span>CanControllerRef<a class="headerlink" href="#cancontrollerref" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00322</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanControllerRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to CAN Controller to which the HOH is associated to.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>REFERENCE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canmainfunctionrwperiodref">
+<h4><span class="section-number">4.5.9.5.10. </span>CanMainFunctionRWPeriodRef<a class="headerlink" href="#canmainfunctionrwperiodref" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00438</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanMainFunctionRWPeriodRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHardwareObject</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to CanMainFunctionPeriod</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>REFERENCE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Multiplicity Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="canhwfilter">
+<h3><span class="section-number">4.5.9.6. </span>CanHwFilter<a class="headerlink" href="#canhwfilter" title="Link to this heading"></a></h3>
+<section id="canhwfiltercode">
+<h4><span class="section-number">4.5.9.6.1. </span>CanHwFilterCode<a class="headerlink" href="#canhwfiltercode" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00469</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanHwFilterCode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHwFilter</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies (together with the filter mask) the identifiers range that passes the hardware filter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..4294967295</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canhwfiltermask">
+<h4><span class="section-number">4.5.9.6.2. </span>CanHwFilterMask<a class="headerlink" href="#canhwfiltermask" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00470</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanHwFilterMask</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanHwFilter</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Describes a mask for hardware-based filtering of CAN identifiers. The CAN identifiers of incoming messages are masked with the appropriate CanFilterMaskValue. Bits holding a 0 mean don’t care, i.e. do not compare the message’s identifier in the respective bit position.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..4294967295</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="canicom">
+<h3><span class="section-number">4.5.9.7. </span>CanIcom<a class="headerlink" href="#canicom" title="Link to this heading"></a></h3>
+</section>
+<section id="canicomconfig">
+<h3><span class="section-number">4.5.9.8. </span>CanIcomConfig<a class="headerlink" href="#canicomconfig" title="Link to this heading"></a></h3>
+<section id="canicomconfigid">
+<h4><span class="section-number">4.5.9.8.1. </span>CanIcomConfigId<a class="headerlink" href="#canicomconfigid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00441</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomConfigId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter identifies the ID of the ICOM configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canicomwakeonbusoff">
+<h4><span class="section-number">4.5.9.8.2. </span>CanIcomWakeOnBusOff<a class="headerlink" href="#canicomwakeonbusoff" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00442</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomWakeOnBusOff</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines that the MCU shall wake if the bus off is detected or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="canicomrxmessage">
+<h3><span class="section-number">4.5.9.9. </span>CanIcomRxMessage<a class="headerlink" href="#canicomrxmessage" title="Link to this heading"></a></h3>
+<section id="canicomcountervalue">
+<h4><span class="section-number">4.5.9.9.1. </span>CanIcomCounterValue<a class="headerlink" href="#canicomcountervalue" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00448</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomCounterValue</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomRxMessage</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines that the MCU shall wake if the message with the ID is received n times on the communication channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..65536</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>POSTBUILDVARIANTMULTIPLICITY</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canicommessageid">
+<h4><span class="section-number">4.5.9.9.2. </span>CanIcomMessageId<a class="headerlink" href="#canicommessageid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00449</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomMessageId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomRxMessage</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines that the MCU shall wake if the message with the ID is received n times on the communication channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..536870912</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canicommessageidmask">
+<h4><span class="section-number">4.5.9.9.3. </span>CanIcomMessageIdMask<a class="headerlink" href="#canicommessageidmask" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00465</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomMessageIdMask</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomRxMessage</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Describes a mask for filtering of CAN identifiers. The CAN identifiers of incoming messages are masked with this CanIcomMessageIdMask. If the masked identifier matches the masked value of CanIcomMessageId, it can create a wakeup condition for this CanIcomRxMessage. Bits holding a 0 mean don’t care, i.e. do not compare the message’s identifier in the respective bit position. The mask shall be build by filling with leading 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..536870912</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>POSTBUILDVARIANTMULTIPLICITY</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canicommissingmessagetimervalue">
+<h4><span class="section-number">4.5.9.9.4. </span>CanIcomMissingMessageTimerValue<a class="headerlink" href="#canicommissingmessagetimervalue" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00450</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomMissingMessageTimerValue</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomRxMessage</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines that the MCU shall wake if the message with the ID is not received for a specific time in s on the.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>FLOAT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..536870912</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>POSTBUILDVARIANTMULTIPLICITY</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canicompayloadlengtherror">
+<h4><span class="section-number">4.5.9.9.5. </span>CanIcomPayloadLengthError<a class="headerlink" href="#canicompayloadlengtherror" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00451</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomPayloadLengthError</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomRxMessage</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines that the MCU shall wake if the bus off is detected or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="canicomrxmessagesignalconfig">
+<h3><span class="section-number">4.5.9.10. </span>CanIcomRxMessageSignalConfig<a class="headerlink" href="#canicomrxmessagesignalconfig" title="Link to this heading"></a></h3>
+<section id="canicomsignalmask">
+<h4><span class="section-number">4.5.9.10.1. </span>CanIcomSignalMask<a class="headerlink" href="#canicomsignalmask" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00487</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomSignalMask</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomRxMessageSignalConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter shall be used to mask a signal in the payload of a CAN message.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..18446744073709551615</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canicomsignaloperation">
+<h4><span class="section-number">4.5.9.10.2. </span>CanIcomSignalOperation<a class="headerlink" href="#canicomsignaloperation" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00462</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomSignalOperation</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomRxMessageSignalConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the operation, which shall be used to verify the signal value creates a wakeup condition.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>AND<br>EQUAL<br>GREATER<br>SMALLER<br>XOR</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>EQUAL</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canicomsignalvalue">
+<h4><span class="section-number">4.5.9.10.3. </span>CanIcomSignalValue<a class="headerlink" href="#canicomsignalvalue" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00488</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomSignalValue</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomRxMessageSignalConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter shall be used to define a signal value which shall be compared (CanIcomSignalOperation) with the masked CanIcomSignalMask value of the received signal (CanIcomSignalRef).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..18446744073709551615</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canicomsignalref">
+<h4><span class="section-number">4.5.9.10.4. </span>CanIcomSignalRef<a class="headerlink" href="#canicomsignalref" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00456</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomSignalRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomRxMessageSignalConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines a reference to the signal which shall be checked additional to the message id (CanIcomMessageId).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>REFERENCE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cangeneral">
+<h3><span class="section-number">4.5.9.11. </span>CanGeneral<a class="headerlink" href="#cangeneral" title="Link to this heading"></a></h3>
+<section id="candeverrordetect">
+<h4><span class="section-number">4.5.9.11.1. </span>CanDevErrorDetect<a class="headerlink" href="#candeverrordetect" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00064</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanDevErrorDetect</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the development error detection and notification on or off.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..18446744073709551615</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canindex">
+<h4><span class="section-number">4.5.9.11.2. </span>CanIndex<a class="headerlink" href="#canindex" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00320</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIndex</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0..</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canlpdureceivecalloutfunction">
+<h4><span class="section-number">4.5.9.11.3. </span>CanLPduReceiveCalloutFunction<a class="headerlink" href="#canlpdureceivecalloutfunction" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00434</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanLPduReceiveCalloutFunction</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the existence and the name of a callout function that is called after a successful.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>FUNCTION-NAME</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>POSTBUILDVARIANTMULTIPLICITY</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canmainfunctionbusoffperiod">
+<h4><span class="section-number">4.5.9.11.4. </span>CanMainFunctionBusoffPeriod<a class="headerlink" href="#canmainfunctionbusoffperiod" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00355</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanMainFunctionBusoffPeriod</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter describes the period for cyclic call to Can_MainFunction_Busoff. Unit is seconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>FLOAT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..infinity</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>POSTBUILDVARIANTMULTIPLICITY</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canmainfunctionmodeperiod">
+<h4><span class="section-number">4.5.9.11.5. </span>CanMainFunctionModePeriod<a class="headerlink" href="#canmainfunctionmodeperiod" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00376</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanMainFunctionModePeriod</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter describes the period for cyclic call to Can_MainFunction_Mode. Unit is seconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>FLOAT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..infinity</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canmainfunctionwakeupperiod">
+<h4><span class="section-number">4.5.9.11.6. </span>CanMainFunctionWakeupPeriod<a class="headerlink" href="#canmainfunctionwakeupperiod" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00357</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanMainFunctionWakeupPeriod</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter describes the period for cyclic call to Can_MainFunction_Wakeup. Unit is seconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>FLOAT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..infinity</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>POSTBUILDVARIANTMULTIPLICITY</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canmultiplexedtransmission">
+<h4><span class="section-number">4.5.9.11.7. </span>CanMultiplexedTransmission<a class="headerlink" href="#canmultiplexedtransmission" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00095</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanMultiplexedTransmission</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies if multiplexed transmission shall be supported.ON or OFF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canpublicicomsupport">
+<h4><span class="section-number">4.5.9.11.8. </span>CanPublicIcomSupport<a class="headerlink" href="#canpublicicomsupport" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00483</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanPublicIcomSupport</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Selects support of Pretended Network features in Can driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cansetbaudrateapi">
+<h4><span class="section-number">4.5.9.11.9. </span>CanSetBaudrateApi<a class="headerlink" href="#cansetbaudrateapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00482</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanSetBaudrateApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>The support of the Can_SetBaudrate API is optional.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cantimeoutduration">
+<h4><span class="section-number">4.5.9.11.10. </span>CanTimeoutDuration<a class="headerlink" href="#cantimeoutduration" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00113</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanTimeoutDuration</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the maximum time for blocking function until a timeout is detected. Unit is seconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>FLOAT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1.0E-6..65.535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0.1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canversioninfoapi">
+<h4><span class="section-number">4.5.9.11.11. </span>CanVersionInfoApi<a class="headerlink" href="#canversioninfoapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00106</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanVersionInfoApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the Can_GetVersionInfo() API ON or OFF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canoscounterref">
+<h4><span class="section-number">4.5.9.11.12. </span>CanOsCounterRef<a class="headerlink" href="#canoscounterref" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00431</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanOsCounterRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter contains a reference to the OsCounter, which is used by the CAN driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>REFERENCE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="canicomgeneral">
+<h3><span class="section-number">4.5.9.12. </span>CanIcomGeneral<a class="headerlink" href="#canicomgeneral" title="Link to this heading"></a></h3>
+<section id="canicomlevel">
+<h4><span class="section-number">4.5.9.12.1. </span>CanIcomLevel<a class="headerlink" href="#canicomlevel" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00445</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomLevel</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>The support of the Can_SetBaudrate API is optional.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CAN_ICOM_LEVEL_ONE<br>CAN_ICOM_LEVEL_TWO</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CAN_ICOM_LEVEL_ONE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="canicomvariant">
+<h4><span class="section-number">4.5.9.12.2. </span>CanIcomVariant<a class="headerlink" href="#canicomvariant" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00446</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanIcomVariant</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanIcomGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Defines the variant, which is supported by this CanController.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CAN_ICOM_VARIANT_HW<br>CAN_ICOM_VARIANT_NONE<br>CAN_ICOM_VARIANT_SW</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CAN_ICOM_VARIANT_SW</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="canmainfunctionrwperiods">
+<h3><span class="section-number">4.5.9.13. </span>CanMainFunctionRWPeriods<a class="headerlink" href="#canmainfunctionrwperiods" title="Link to this heading"></a></h3>
+<section id="canmainfunctionperiod">
+<h4><span class="section-number">4.5.9.13.1. </span>CanMainFunctionPeriod<a class="headerlink" href="#canmainfunctionperiod" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Can_00484</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CanMainFunctionPeriod</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanMainFunctionRWPeriods</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter describes the period for cyclic call to Can_MainFunction_Read or Can_MainFunction_Write depending on the referring item. Unit is seconds. Different poll-cycles will be configurable if more than one CanMainFunctionPeriod is configured. In this case multiple Can_MainFunction_Read() or Can_MainFunction_Write() will be provided by the CAN Driver module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>FLOAT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..infinity</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="candemeventparameterrefs">
+<h3><span class="section-number">4.5.9.14. </span>CanDemEventParameterRefs<a class="headerlink" href="#candemeventparameterrefs" title="Link to this heading"></a></h3>
+<section id="can-e-hardware-error">
+<h4><span class="section-number">4.5.9.14.1. </span>CAN_E_HARDWARE_ERROR<a class="headerlink" href="#can-e-hardware-error" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CAN_E_HARDWARE_ERROR</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CanDemEventParameterRefs</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to configured DEM event to report “Can hardware failure”.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>SYMBOLIC-NAME-REFERENCE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>LOCAL</p></td>
+</tr>
+</tbody>
+</table>
+<p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_CANDriver.pdf">AUTOSAR_SWS_CANDriver section: 10 Configuration specification</a> for configuration parameters details</p>
+</section>
+</section>
+<section id="steps-to-configure-can-module">
+<h3><span class="section-number">4.5.9.15. </span>Steps To Configure Can Module<a class="headerlink" href="#steps-to-configure-can-module" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Open EB Tresos configurator tool and load Port, Mcu and Can modules</p></li>
+<li><p>Open PORT module plugin and configure required pins as CAN-TX, CAN-RX</p></li>
+<li><p>Open CAN module plugin, Select the Config Variant (Pre-compile/Link-Time)</p></li>
+<li><p>In CAN module plugin configure required parameters.</p></li>
+<li><p>Save the configuration and generate the configuration.</p></li>
+</ol>
+</section>
+</section>
+<section id="examples">
+<h2><span class="section-number">4.5.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>The example application demonstrates use of Can module, the list below identifies key steps performed the example.</p>
+<section id="can-example-loopback">
+<h3><span class="section-number">4.5.10.1. </span>Can_Example_loopback<a class="headerlink" href="#can-example-loopback" title="Link to this heading"></a></h3>
+<section id="overview-of-can-example-loopback">
+<h4><span class="section-number">4.5.10.1.1. </span>Overview of Can_Example_loopback<a class="headerlink" href="#overview-of-can-example-loopback" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Can_Example_loopback</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes pins as CAN-Tx and CAN-Rx using Port_Init()</p></li>
+<li><p>Initializes Can instances in loopback mode.</p></li>
+</ul>
+</li>
+<li><p>Set controller state to STARTED.</p></li>
+<li><p>Send the data using can_write() with pre-defined data.</p></li>
+<li><p>Read Tx confirmation and rx indication.</p></li>
+<li><p>Validate the received data with pre-defined transmit data.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-can-example-loopback">
+<h4><span class="section-number">4.5.10.1.2. </span>Setup required to run Can_Example_loopback<a class="headerlink" href="#setup-required-to-run-can-example-loopback" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest c29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-can-example-loopback">
+<h4><span class="section-number">4.5.10.1.3. </span>How to run Can_Example_loopback<a class="headerlink" href="#how-to-run-can-example-loopback" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS Theia and Import Can_Example_loopback example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-can-example-loopback">
+<h4><span class="section-number">4.5.10.1.4. </span>Sample Log of Can_Example_loopback<a class="headerlink" href="#sample-log-of-can-example-loopback" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    Can_Example_loopback : Sample Application - STARTS !!!
+    Can_Example_loopback : Can Controller: MCAN A
+    Can_Example_loopback : Can Transmission Started 
+    Can_Example_loopback : Transmitted and Received Message Id is 0x64
+    Can_Example_loopback : Sample Application success
+</pre></div>
+</div>
+</section>
+</section>
+<section id="can-example-classic">
+<h3><span class="section-number">4.5.10.2. </span>Can_Example_Classic<a class="headerlink" href="#can-example-classic" title="Link to this heading"></a></h3>
+<section id="overview-of-can-example-classic">
+<h4><span class="section-number">4.5.10.2.1. </span>Overview of Can_Example_Classic<a class="headerlink" href="#overview-of-can-example-classic" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Can_Example_Classic</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes pins as CAN-Tx and CAN-Rx using Port_Init()</p></li>
+<li><p>Initializes Can instances</p></li>
+</ul>
+</li>
+<li><p>Set controller state to STARTED.</p></li>
+<li><p>Set PCAN with the same setting.</p></li>
+<li><p>Start sending predefined data from PCAN</p></li>
+<li><p>Send the data using can_write() with pre-defined data.</p></li>
+<li><p>Read Tx confirmation and rx indication.</p></li>
+<li><p>Validate the received data with pre-defined transmit data.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-can-example-classic">
+<h4><span class="section-number">4.5.10.2.2. </span>Setup required to run Can_Example_Classic<a class="headerlink" href="#setup-required-to-run-can-example-classic" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest c29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect CANA Tx and Rx pins to CAN transceiver</p></li>
+<li><p>Connect PCAN CANH, CANL to CAN transceiver</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-can-example-classic">
+<h4><span class="section-number">4.5.10.2.3. </span>How to run Can_Example_Classic<a class="headerlink" href="#how-to-run-can-example-classic" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS Theia and Import Can_Example_Classic example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-can-example-classic">
+<h4><span class="section-number">4.5.10.2.4. </span>Sample Log of Can_Example_Classic<a class="headerlink" href="#sample-log-of-can-example-classic" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    Can_Example_Classic : Sample Application - STARTS !!!
+    Can_Example_Classic : Can Controller: MCAN A
+    Can_Example_Classic : Transmitted ID value: 0x64 and length : 8 
+    Can_Example_Classic : Transmission data: 0xa1 0x1a 0xff 0xff 0xc1 0x1c 0xb1 0x1b 
+    Can_Example_Classic : Can Transmission Started 
+    Can_Example_Classic : Received Message Id is 0x101
+    Can_Example_Classic : Sample Application success
+</pre></div>
+</div>
+</section>
+</section>
+<section id="can-example-icom">
+<h3><span class="section-number">4.5.10.3. </span>Can_Example_Icom<a class="headerlink" href="#can-example-icom" title="Link to this heading"></a></h3>
+<section id="overview-of-can-example-icom">
+<h4><span class="section-number">4.5.10.3.1. </span>Overview of Can_Example_Icom<a class="headerlink" href="#overview-of-can-example-icom" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Can_Example_Icom</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes pins as CAN-Tx and CAN-Rx using Port_Init()</p></li>
+<li><p>Initializes Can instances</p></li>
+</ul>
+</li>
+<li><p>Set PCAN with the same setting.</p></li>
+<li><p>Start sending predefined data from PCAN</p></li>
+<li><p>Send the data using can_write() with pre-defined data.</p></li>
+<li><p>Read Tx confirmation and rx indication.</p></li>
+<li><p>Validate the received data with pre-defined Transmit data.</p></li>
+<li><p>Set Icom configuration by calling Can_SetIcomConfiguration.</p></li>
+<li><p>Send pre-defined data from the PCAN same as Icom signal configuration.</p></li>
+<li><p>Read Rx indication.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-can-example-icom">
+<h4><span class="section-number">4.5.10.3.2. </span>Setup required to run Can_Example_Icom<a class="headerlink" href="#setup-required-to-run-can-example-icom" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest c29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect CANA Tx and Rx pins to CAN transceiver</p></li>
+<li><p>Connect PCAN CANH, CANL to CAN transceiver</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-can-example-icom">
+<h4><span class="section-number">4.5.10.3.3. </span>How to run Can_Example_Icom<a class="headerlink" href="#how-to-run-can-example-icom" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS Theia and Import Can_Example_Icom example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-can-example-icom">
+<h4><span class="section-number">4.5.10.3.4. </span>Sample Log of Can_Example_Icom<a class="headerlink" href="#sample-log-of-can-example-icom" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    Can_Example_Icom : Sample Application - STARTS !!!
+    ICOM ConfigurationCan_Example_Icom : Can Controller: MCAN A
+    Can_Example_Icom : Transmitted ID value: 0x64 and length : 8 
+    Can_Example_Icom : Transmission data: 0xa1 0x1a 0xff 0xff 0xc1 0x1c 0xb1 0x1b 
+    Can_Example_Icom : Can Transmission Started 
+    Can_Example_Icom : Enabling pretended networking.
+    Can_Example_Icom : Sample Application for pretended networking was success
+</pre></div>
+</div>
+</section>
+</section>
+<section id="file-structure">
+<h3><span class="section-number">4.5.10.4. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<p>📦f29H85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂examples<br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂<strong>Can</strong><br />
+┃ ┃ ┣ 📂 <strong>Can_Example_Classic</strong><br />
+┃ ┃ ┣ 📂 <strong>Can_Example_Icom</strong><br />
+┃ ┃ ┗ 📂 <strong>Can_Example_loopback</strong><br />
+┃ ┃ ┃ ┣ 📂ccs<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>Can_Example_loopback.projectspec</strong><br />
+┃ ┃ ┃ ┣ 📂f29h85x_config<br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Can.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm<br />
+┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Can_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header.</em></i>*<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Can_Cfg.c</strong> : <em>Contains the pre-compile configuration parameters.</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜<strong>Can_Example_loopback.c</strong> : <em>Example application for CAN</em><br />
+┃ ┃ ┗ ┗ 📜<strong>Can_Example_loopback.h</strong> : <em>Contains data structures and Internal function declarations.</em><br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┗ 📜CMakeLists.txt<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Can_PBcfg.c and Can_Cfg.c will be present if Post-Build config variant is selected, only Can_Cfg.c will be present if Pre-Compile variant is selected
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Module_User_Guide_Gpt.html" class="btn btn-neutral float-left" title="4.4. GPT Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_guide.html" class="btn btn-neutral float-right" title="5. API guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Oct 22, 2024.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

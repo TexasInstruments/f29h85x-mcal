@@ -1,0 +1,681 @@
+---
+title: Port API GUIDE Header file
+
+---
+
+# PORT
+
+
+
+## Types
+
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|enum| **[Port_PinDirectionType](../Modules/group___p_o_r_t.md#enum-port-pindirectiontype)** | Enum of Port Direction.  | 
+|enum| **[Port_PinLevelValueType](../Modules/group___p_o_r_t.md#enum-port-pinlevelvaluetype)** | Enum of Port Pin Level.  | 
+|enum| **[Port_PinPadConfigType](../Modules/group___p_o_r_t.md#enum-port-pinpadconfigtype)** | Enum of Port Pin Pad, Up/Down Type selection.  | 
+|enum| **[Port_PinQualificationMode](../Modules/group___p_o_r_t.md#enum-port-pinqualificationmode)** | Values that can be passed to set qualification parameter to initialize MCU module.  | 
+|enum| **[Port_PinCoreSelect](../Modules/group___p_o_r_t.md#enum-port-pincoreselect)** | Values that can be passed to select master core for MCU module.  | 
+|enum| **[Port_AnalogModeType](../Modules/group___p_o_r_t.md#enum-port-analogmodetype)** | Values that can be passed to set the mode in which Pin should operate.  | 
+|typedef uint32  | **[Port_PinType](../Modules/group___p_o_r_t.md#typedef-port-pintype)** | Type for symbolic name of Port pins.  | 
+|typedef uint32  | **[Port_PinModeType](../Modules/group___p_o_r_t.md#typedef-port-pinmodetype)** | Pin Mode type structure.  | 
+|typedef uint8  | **[Port_PinConfigFlagType](../Modules/group___p_o_r_t.md#typedef-port-pinconfigflagtype)** | Type for Pin Config Flag. Pin config flags Bit 0 - Is Pin configurable? Bit 1 - Does Pin support Analog Mode? Bit 2 - Does Pin operate in AGPIO mode? Bit 3 - Does Pin operate in AIO mode? Bit 4 - Does Pin operate in GPIO mode?  | 
+
+
+
+### enum Port_PinDirectionType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| PORT_PIN_IN | | Direction IN.   |
+| PORT_PIN_OUT | | Direction OUT.   |
+| PORT_PIN_NA | | NA Direction.   |
+
+
+
+
+**Brief**: 
+Enum of Port Direction. 
+
+
+
+### enum Port_PinLevelValueType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| PORT_PIN_LEVEL_HIGH | | Pin Level HIGH.   |
+| PORT_PIN_LEVEL_LOW | | Pin Level LOW.   |
+| PORT_PIN_LEVEL_NA | | Pin Level NA.   |
+
+
+
+
+**Brief**: 
+Enum of Port Pin Level. 
+
+
+
+### enum Port_PinPadConfigType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| PORT_PIN_TYPE_STD | 1U| Standard pad configuration with pull up disable.   |
+| PORT_PIN_TYPE_PULLUP | 2U| Enable pull up for the pin.   |
+| PORT_PIN_TYPE_STD_PULLUP | 3U| Standard pad configuration with pull up enable.   |
+| PORT_PIN_TYPE_OPEN_DRAIN | 4U| Open Drain pad configuration with pull up disable.   |
+| PORT_PIN_TYPE_OPEN_DRAIN_PULLUP | 6U| Open Drain pad configuration with pull up enable.   |
+| PORT_PIN_TYPE_NA | 255U| No pad configuration.   |
+
+
+
+
+**Brief**: 
+Enum of Port Pin Pad, Up/Down Type selection. 
+
+
+
+### enum Port_PinQualificationMode
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| PORT_QUAL_SYNC | | Synchronization to SYSCLKOUT.   |
+| PORT_QUAL_3SAMPLE | | Qualified with 3 samples.   |
+| PORT_QUAL_6SAMPLE | | Qualified with 6 samples.   |
+| PORT_QUAL_ASYNC | | No synchronization.   |
+| PORT_QUAL_NA | | Invalid synchronization.   |
+
+
+
+
+**Brief**: 
+Values that can be passed to set qualification parameter to initialize MCU module. 
+
+
+
+### enum Port_PinCoreSelect
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| PORT_CORE_CPU1 | | CPU1 selected as master core.   |
+| PORT_CORE_CPU2 | | CPU2 selected as master core.   |
+| PORT_CORE_CPU3 | | CPU3 selected as master core.   |
+
+
+
+
+**Brief**: 
+Values that can be passed to select master core for MCU module. 
+
+
+
+### enum Port_AnalogModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| PORT_ANALOG_DISABLED | | Pin is in digital mode.   |
+| PORT_ANALOG_ENABLED | | Pin is in analog mode.   |
+
+
+
+
+**Brief**: 
+Values that can be passed to set the mode in which Pin should operate. 
+
+
+
+
+
+
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Port_PinModeConfigType](../Classes/struct_port___pin_mode_config_type.md)** | Pin Mux Mode Config type structure.  |
+| **[Port_PinConfigType](../Classes/struct_port___pin_config_type.md)** | Pin Configuration structure.  |
+| **[Port_ConfigType](../Classes/struct_port___config_type.md)** | PORT Module ROOT configuration.  |
+| **[Port_ControllerSpecificType](../Classes/struct_port___controller_specific_type.md)** | Controller Specific structure.  |
+
+
+
+
+## Defines
+
+| Name           |  Brief     |
+| -------------- | ---------- |
+| PORT_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
+| PORT_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| PORT_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| PORT_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by PORT Driver.  |
+| PORT_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by PORT Driver.  |
+| PORT_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by PORT Driver.  |
+| PORT_VENDOR_ID   | Texas Instruments Vendor ID.  |
+| PORT_MODULE_ID   | PORT Driver Module ID.  |
+| PORT_INSTANCE_ID   | PORT Driver Instance ID.  |
+| PORT_E_PARAM_PIN   | Invalid Port Pin ID requested.  |
+| PORT_E_DIRECTION_UNCHANGEABLE   | Port Pin not configured as changeable.  |
+| PORT_E_INIT_FAILED   | API Port_Init service called with wrong parameter.  |
+| PORT_E_PARAM_INVALID_MODE   | API Port_SetPinMode service called when mode is unchangeable.  |
+| PORT_E_MODE_UNCHANGEABLE   | API Port_SetPinMode service called when mode is unchangeable.  |
+| PORT_E_UNINIT   | API service called without module initialization.  |
+| PORT_E_PARAM_POINTER   | APIs called with a Null pointer.  |
+| PORT_SID_INIT   | Service ID - Port_Init().  |
+| PORT_SID_SET_PIN_DIR   | Service ID - Port_SetPinDirection().  |
+| PORT_SID_REFRESH_PORT_DIR   | Service ID - Port_RefreshPortDirection()  |
+| PORT_SID_GET_VERSION_INFO   | Service ID - Port_GetVersionInfo().  |
+| PORT_SID_SET_PIN_MODE   | Service ID - Port_SetPinMode().  |
+| PORT_IS_PIN_CONFIGURABLE (x)  | Pin configuration check.  |
+| PORT_IS_ANALOG_MODE_SUPPORTED (x)  | Pin Analog Support check.  |
+| PORT_IS_PIN_AGPIO (x)  | AGPIO Pin check.  |
+| PORT_IS_PIN_AIO (x)  | AIO Pin check.  |
+| PORT_IS_PIN_GPIO (x)  | GPIO Pin check.  |
+| PORT_WIDTH   | Port Width : 32.  |
+| PORT_WIDTH_HALF   | Half of Port Width.  |
+| PORT_WIDTH_QUARTER   | Quater of Port Width.  |
+| ONE_BIT_MASK   | One bit mask value.  |
+| TWO_BIT_MASK   | Two bit mask value.  |
+| PORT_CTRL_REGS_STEP   | Port Control register step size.  |
+| PORT_DATA_REGS_STEP   | Port Data register step size.  |
+| PORT_DATA_READ_REGS_STEP   | Port Data read register step size.  |
+| PORT_CTRL_REGS_INDEX   | Port Control register Index value.  |
+| PORT_QSEL_REGS_INDEX   | Port Q-Select register Index value.  |
+| PORT_MUX_REGS_INDEX   | Port MUX register Index value.  |
+| PORT_PUD_REGS_INDEX   | Port Pull up disable register Index value.  |
+| PORT_INV_REGS_INDEX   | Port Invert polarity register Index value.  |
+| PORT_ODR_REGS_INDEX   | Port Open drain register Index value.  |
+| PORT_AMSEL_REGS_INDEX   | Port AM Select register Index value.  |
+| PORT_GMUX_REGS_INDEX   | Port GMUX register Index value.  |
+| PORT_CSEL_REGS_INDEX   | Port Core Select register Index value.  |
+| PORT_LOCK_REGS_INDEX   | Port Lock configuration register Index value.  |
+| PORT_CR_REGS_INDEX   | Port lock commit register Index value.  |
+| PORT_DAT_REGS_INDEX   | Port Data register Index value.  |
+| PORT_SET_REGS_INDEX   | Port Data Set register Index value.  |
+| PORT_CLEAR_REGS_INDEX   | Port Data Clear register Index value.  |
+| PORT_TOGGLE_REGS_INDEX   | Port Data Toggle register Index value.  |
+| PORT_DIR_REGS_INDEX   | Port Data Direction Set register Index value.  |
+| GPIO_DAT_R_REGS_INDEX   | Port Data read register Index value.  |
+| PORT_MUX_TO_GMUX   | Port MUX to GMUX difference value.  |
+
+## Functions
+
+| Return type    | Function Name           |      Brief        |
+| -------------- | ----------------------- | ----------------- |
+| void | **[Port_Init](../Modules/group___p_o_r_t.md#function-port-init)**(const [Port_ConfigType](Classes/struct_port___config_type.md) * CfgPtr)| Initializes the Port Driver module.  |
+| void | **[Port_SetPinDirection](../Modules/group___p_o_r_t.md#function-port-setpindirection)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) Pin, [Port_PinDirectionType](Modules/group___p_o_r_t.md#enum-port-pindirectiontype) Direction)| Sets the port pin direction.  |
+| void | **[Port_RefreshPortDirection](../Modules/group___p_o_r_t.md#function-port-refreshportdirection)**(void )| Refreshes port direction.  |
+| void | **[Port_GetVersionInfo](../Modules/group___p_o_r_t.md#function-port-getversioninfo)**(Std_VersionInfoType * versioninfo)| Service to get the version information of the module.  |
+| void | **[Port_SetPinMode](../Modules/group___p_o_r_t.md#function-port-setpinmode)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) Pin, [Port_PinModeType](Modules/group___p_o_r_t.md#typedef-port-pinmodetype) Mode)| Sets the port pin mode.  |
+| Std_ReturnType | **[Port_SetCntSpConfig](../Modules/group___p_o_r_t.md#function-port-setcntspconfig)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfigPtr)| Sets the pad/pull configuration for the specified pin.  |
+| Std_ReturnType | **[Port_SetPinLevel](../Modules/group___p_o_r_t.md#function-port-setpinlevel)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfigPtr, [Port_PinLevelValueType](Modules/group___p_o_r_t.md#enum-port-pinlevelvaluetype) PinLevel)| Writes the level value to the specified pin.  |
+| Std_ReturnType | **[Port_EnableLPMWakeUpPin](../Modules/group___p_o_r_t.md#function-port-enablelpmwakeuppin)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfig)| Set pins as Low Power wakeup modes GPIO pins.  |
+| void | **[Port_SetPinModeConfig](../Modules/group___p_o_r_t.md#function-port-setpinmodeconfig)**(uint32 PinMode)| Configures the Pin Mode function of a PORT pin.  |
+| Std_ReturnType | **[Port_SetDirectionMode](../Modules/group___p_o_r_t.md#function-port-setdirectionmode)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfigPtr, [Port_PinDirectionType](Modules/group___p_o_r_t.md#enum-port-pindirectiontype) PinDirection)| Sets the direction of the specified pin.  |
+| Std_ReturnType | **[Port_IsPinNumberValid](../Modules/group___p_o_r_t.md#function-port-ispinnumbervalid)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) PinNumber)| Checks if the provided pin number is Valid or Not.  |
+| Std_ReturnType | **[Port_ValidateSetPinMode](../Modules/group___p_o_r_t.md#function-port-validatesetpinmode)**([Port_PinModeType](Modules/group___p_o_r_t.md#typedef-port-pinmodetype) Mode, const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * pinConfig, uint8 * errorIdPtr)| Validates the pin Mode provided.  |
+
+
+
+### function Port_Init
+
+```
+void Port_Init(
+    const Port_ConfigType * CfgPtr
+)
+```
+
+
+**Brief**: 
+Initializes the Port Driver module. 
+
+This function is called by user to initialize the Port pins of the microcontroller
+
+
+**Parameters**: 
+
+  
+* **CfgPtr** is the configuration pointer for Port module. 
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_SetPinDirection
+
+```
+void Port_SetPinDirection(
+    Port_PinType Pin,
+    Port_PinDirectionType Direction
+)
+```
+
+
+**Brief**: 
+Sets the port pin direction. 
+
+This function is used to change the direction of the pin during runtime.
+
+
+**Parameters**: 
+
+  
+* **Pin** is the symbolic name of the pin. 
+  
+* **Direction** is the direction to which pin is to be set. 
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Port_Init should be called before calling this function 
+
+**Postcondition**: None 
+
+### function Port_RefreshPortDirection
+
+```
+void Port_RefreshPortDirection(
+    void 
+)
+```
+
+
+**Brief**: 
+Refreshes port direction. 
+
+This function refreshes the Port pins to their initial direction. Pins whose direction can be changed during runtime are excluded from this action.
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Port_Init should be called before calling this function 
+
+**Postcondition**: None 
+
+### function Port_GetVersionInfo
+
+```
+void Port_GetVersionInfo(
+    Std_VersionInfoType * versioninfo
+)
+```
+
+
+**Brief**: 
+Service to get the version information of the module. 
+
+This service writes the version information of this module into the data structure referenced by the parameter. If this parameter references NULL_PTR, a development error is reported to Det. This service is only available if the pre-compile configuration parameter PORT_CFG_GET_VERSION_INFO_API is enabled.
+
+
+**Parameters**: 
+
+  
+* **Versioninfo** structure that contains the version information parameters. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_SetPinMode
+
+```
+void Port_SetPinMode(
+    Port_PinType Pin,
+    Port_PinModeType Mode
+)
+```
+
+
+**Brief**: 
+Sets the port pin mode. 
+
+This function is used to change the Mode of the pin during runtime.
+
+
+**Parameters**: 
+
+  
+* **Pin** is the symbolic name of the pin. 
+  
+* **Mode** is desired functionality of the Pin e.g. PORT_PIN_MODE_ADC, PORT_PIN_MODE_DIO etc. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Port_Init should be called before calling this function 
+
+**Postcondition**: None 
+
+### function Port_SetCntSpConfig
+
+```
+Std_ReturnType Port_SetCntSpConfig(
+    const Port_PinConfigType * PinConfigPtr
+)
+```
+
+
+**Brief**: 
+Sets the pad/pull configuration for the specified pin. 
+
+This function sets the controller specific parameters for the specified pin. The pin is specified by its numerical value. For example, GPIO34 is specified by passing 34 as _PinNumber_.
+
+
+**Parameters**: 
+
+  
+* **PinConfigPtr** is the pointer to the pin config structure. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_SetPinLevel
+
+```
+Std_ReturnType Port_SetPinLevel(
+    const Port_PinConfigType * PinConfigPtr,
+    Port_PinLevelValueType PinLevel
+)
+```
+
+
+**Brief**: 
+Writes the level value to the specified pin. 
+
+Writes the corresponding bit values to the output pin specified by _PinNumber_. Writing to a pin configured as an input pin has no effect.
+
+The pin is specified by its numerical value. For example, GPIO34 is specified by passing 34 as _PinNumber_.
+
+
+**Parameters**: 
+
+  
+* **PinConfigPtr** is the pointer to the pin config structure. 
+  
+* **PinLevel** is the value to write to the pin. 
+  
+* **returnvalue** 
+
+
+**Returns**: 
+
+  
+* **E_OK** if Level Set success 
+<br> 
+  
+* **E_NOT_OK** if Level Set Fails 
+<br> 
+
+
+**Return**: returnValue 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_EnableLPMWakeUpPin
+
+```
+Std_ReturnType Port_EnableLPMWakeUpPin(
+    const Port_PinConfigType * PinConfig
+)
+```
+
+
+**Brief**: 
+Set pins as Low Power wakeup modes GPIO pins. 
+
+This function Writes the corresponding bit values to the LPM registers.
+
+
+**Parameters**: 
+
+  
+* **controllerSpecificPtr** is the structure containing LPM details. 
+  
+* **returnvalue** 
+
+
+**Returns**: 
+
+  
+* **E_OK** if Wakeup Enable is success 
+<br> 
+  
+* **E_NOT_OK** if Wakeup Enable is failure 
+<br> 
+
+
+**Return**: returnValue 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_SetPinModeConfig
+
+```
+void Port_SetPinModeConfig(
+    uint32 PinMode
+)
+```
+
+
+**Brief**: 
+Configures the Pin Mode function of a PORT pin. 
+
+This function configures the pin mux that selects the peripheral function associated with a particular PORT pin. Only one peripheral function at a time can be associated with a PORT pin, and each peripheral function should only be associated with a single PORT pin at a time (despite the fact that many of them can be associated with more than one PORT pin).
+
+The available mappings are supplied in Port_Pin_Map.h
+
+
+**Parameters**: 
+
+  
+* **PinMode** is the pin configuration value for pin 
+  
+* **returnvalue** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: returnValue 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_SetDirectionMode
+
+```
+Std_ReturnType Port_SetDirectionMode(
+    const Port_PinConfigType * PinConfigPtr,
+    Port_PinDirectionType PinDirection
+)
+```
+
+
+**Brief**: 
+Sets the direction of the specified pin. 
+
+This function configures the specified pin on the selected GPIO port as either input or output.
+
+The parameter _PinDirection_ is an enumerated data type that can be one of the following values:
+
+
+
+* **PORT_PIN_IN**
+* **PORT_PIN_OUT**
+
+where **PORT_PIN_IN** specifies that the pin is programmed as an input and **PORT_PIN_OUT** specifies that the pin is programmed as an output.
+
+The pin is specified by its numerical value. For example, GPIO34 is specified by passing 34 as _pin_.
+
+
+**Parameters**: 
+
+  
+* **PinConfigPtr** is the pointer to the pin config structure. 
+  
+* **PinDirection** is the pin direction mode. 
+
+
+**Returns**: 
+
+  
+* **E_OK** if pin direction is set successfully. 
+<br> 
+  
+* **E_NOT_OK** if pin direction is Not set successfully. 
+<br> 
+
+
+**Return**: returnValue 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_IsPinNumberValid
+
+```
+Std_ReturnType Port_IsPinNumberValid(
+    Port_PinType PinNumber
+)
+```
+
+
+**Brief**: 
+Checks if the provided pin number is Valid or Not. 
+
+This function Checks if the pin number provided in the configuration is valid or not.
+
+
+**Parameters**: 
+
+  
+* **PinNumber** is the pin num value provided in the pin configuration 
+  
+* **returnvalue** 
+
+
+**Returns**: 
+
+  
+* **E_OK** if pin number is valid. 
+<br> 
+  
+* **E_NOT_OK** if pin number is not valid. 
+<br> 
+
+
+**Return**: returnValue 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_ValidateSetPinMode
+
+```
+Std_ReturnType Port_ValidateSetPinMode(
+    Port_PinModeType Mode,
+    const Port_PinConfigType * pinConfig,
+    uint8 * errorIdPtr
+)
+```
+
+
+**Brief**: 
+Validates the pin Mode provided. 
+
+This function checks with the Pin mode provided for the particular pin config is valid mode or not
+
+
+**Parameters**: 
+
+  
+* **Mode** is the Mode passed to Pin 
+  
+* **pinConfig** is the Pointer having pin config 
+  
+* **errorIdPtr** is the error pointer 
+  
+* **retVal** 
+
+
+**Returns**: 
+
+  
+* **E_OK** if valid mode is provided 
+<br> 
+  
+* **E_NOT_OK** if mode provided is not valid 
+<br> 
+
+
+**Return**: retVal 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+
+
+
+-------------------------------

@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. Getting Started With F29x MCAL &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Module User Guide" href="ModuleUserGuide_list.html" />
+    <link rel="prev" title="2. MCAL Configurator And EB Tresos User Guide" href="MCAL_Configuration_and_EB_Tresos.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.00.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Getting Started With F29x MCAL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#package-installer">3.1. Package installer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation-procedure">3.1.1. Installation Procedure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#un-installation-procedure">3.1.2. Un-installation Procedure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#f29h85x-mcal-overview">3.2. F29H85x MCAL overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#folder-structure">3.3. Folder structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-access-to-csp">3.4. Getting access to CSP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compiler-and-linker-settings">3.5. Compiler and Linker Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules-supported">3.6. Modules Supported</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-access-to-mcal">3.7. Getting access to MCAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-core-support-resource-allocator">3.8. Multi-core support &amp; resource allocator</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#supported-devices">3.8.1. Supported Devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core-naming-conventions">3.8.2. Core Naming Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">3.9. Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-dependencies">3.9.1. Hardware Dependencies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#emulator">3.9.1.1. Emulator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#software-dependencies">3.9.2. Software Dependencies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ide-ccs-theia">3.9.2.1. IDE (CCS Theia)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#start-up-apputils">3.10. Start-up &amp; AppUtils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#start-up-code">3.10.1. Start-up code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apputils">3.10.2. AppUtils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#build-system">3.11. Build system</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cmake-cross-platform-make">3.11.1. CMake (Cross-Platform Make)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#f29x-mcal-cmake-architecture">3.11.1.1. F29x MCAL CMake Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cmake-options">3.11.1.2. CMake options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-link-f29x-mcal-cdd-cmake-to-your-application">3.11.1.3. How to link F29x MCAL / CDD CMake to your application</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#code-composer-studio-ccs">3.11.2. Code Composer Studio (CCS)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#importing-projects-into-ccs">3.11.2.1. Importing projects into CCS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-debugging-projects-in-ccs">3.11.2.2. Building and Debugging projects in CCS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#information-on-the-f29x-device-family">3.12. Information on the F29x device family</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#f29x-cpu-architecture">3.12.1. F29x CPU Architecture</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#boot-modes">3.13. Boot Modes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">3. </span>Getting Started With F29x MCAL</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="getting-started-with-f29x-mcal">
+<h1><span class="section-number">3. </span>Getting Started With F29x MCAL<a class="headerlink" href="#getting-started-with-f29x-mcal" title="Link to this heading"></a></h1>
+<section id="package-installer">
+<h2><span class="section-number">3.1. </span>Package installer<a class="headerlink" href="#package-installer" title="Link to this heading"></a></h2>
+<section id="installation-procedure">
+<h3><span class="section-number">3.1.1. </span>Installation Procedure<a class="headerlink" href="#installation-procedure" title="Link to this heading"></a></h3>
+<p>1.Run the installer executable &amp; Click Next</p>
+<figure class="align-center" id="id1">
+<img alt="Installation Step1" src="../_images/Installation_Step1.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Installation Step1</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>2.Accept the license agreement &amp; Click Next</p>
+<figure class="align-center" id="id2">
+<img alt="Installation Step2" src="../_images/Installation_Step2.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.2 </span><span class="caption-text">Installation Step2</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>3.Specify the installation directory &amp; Click Next</p>
+<figure class="align-center" id="id3">
+<img alt="Installation Step3" src="../_images/Installation_Step3.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.3 </span><span class="caption-text">Installation Step3</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>4.Click Next to begin installation</p>
+<figure class="align-center" id="id4">
+<img alt="Installation Step4" src="../_images/Installation_Step4.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.4 </span><span class="caption-text">Installation Step4</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>5.Wait until the Setup complete the installation</p>
+<figure class="align-center" id="id5">
+<img alt="Installation Step5" src="../_images/Installation_Step5.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.5 </span><span class="caption-text">Installation Step5</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>6.Click Finish to complete the Setup</p>
+<figure class="align-center" id="id6">
+<img alt="Installation Step6" src="../_images/Installation_Step6.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.6 </span><span class="caption-text">Installation Step6</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>7.Check the installation directory (which is selected in step3) for the package contents <strong>F29xxxxMCAL_xx_xx_xx</strong> &amp; <strong>uninstall</strong> executable.</p>
+<figure class="align-center" id="id7">
+<img alt="Installation Step7" src="../_images/Installation_Step7.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.7 </span><span class="caption-text">Installation Step7</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="un-installation-procedure">
+<h3><span class="section-number">3.1.2. </span>Un-installation Procedure<a class="headerlink" href="#un-installation-procedure" title="Link to this heading"></a></h3>
+<p>1.To uninstall the package, Run the <strong>uninstall</strong> executable &amp; Click Yes</p>
+<figure class="align-center" id="id8">
+<img alt="Uninstallation Step1" src="../_images/Uninstallation_Step1.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.8 </span><span class="caption-text">Uninstallation Step1</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id9">
+<img alt="Uninstallation Step2" src="../_images/Uninstallation_Step2.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.9 </span><span class="caption-text">Uninstallation Step2</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>2.To complete the un-installation process, click OK</p>
+<figure class="align-center" id="id10">
+<img alt="Uninstallation Step3" src="../_images/Uninstallation_Step3.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.10 </span><span class="caption-text">Uninstallation Step3</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="f29h85x-mcal-overview">
+<h2><span class="section-number">3.2. </span>F29H85x MCAL overview<a class="headerlink" href="#f29h85x-mcal-overview" title="Link to this heading"></a></h2>
+<p>F29H85x MCAL consists of three main components, Micro-controller abstraction layer (MCAL Driver code), Bare metal Example applications &amp; EB Tresos studio Plugins.</p>
+<ul class="simple">
+<li><p><strong>drivers</strong>: The drivers folder includes driver code of MCAL modules. The MCAL drivers implement the Software specification as mentioned in the AUTOSAR 4.3.1 release. It also contains basic software stubs and hardware register information.</p></li>
+<li><p><strong>examples</strong>: The examples folder includes bare metal example applications for the MCAL driver modules that can be compiled and run on hardware. Additionally, the device support and AppUtils folders are included to support Flash-programming and UART console functionality.</p></li>
+<li><p><strong>plugins</strong>: The plugins folder includes plugins for the MCAL modules that can be loaded, compiled and generate configuration files with EB Tresos Studio software.</p></li>
+</ul>
+</section>
+<section id="folder-structure">
+<h2><span class="section-number">3.3. </span>Folder structure<a class="headerlink" href="#folder-structure" title="Link to this heading"></a></h2>
+<p>📦<strong>F29x_MCAL</strong><br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂<strong>drivers</strong><br />
+┃ ┣ 📂ModuleName<br />
+┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┣ 📜ModuleName.h : <em>Contains the API declarations of the driver to be used by upper layers.</em><br />
+┃ ┃ ┃ ┣ 📜ModuleName_Priv.h : <em>Contains data structures and Internal function declarations.</em><br />
+┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┣ 📜ModuleName.c : <em>Contains the implementation of the API for driver.</em><br />
+┃ ┃ ┃ ┗ 📜ModuleName_Priv.c : <em>Contains Functions that support the API for driver</em><br />
+┃ ┃ ┗ 📜CMakeLists.txt<br />
+┣ 📂<strong>examples</strong><br />
+┃ ┣ 📂ModuleName<br />
+┃ ┃ ┣ 📂ModuleName_Example<br />
+┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┗ 📜ModuleName_Example.projectspec : <em>Project template which can be imported into CCS</em><br />
+┃ ┃ ┃ ┣ 📂ModuleName_config<br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName.xdm : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.h : <em>Contains the generated pre-complier configuration header.</em><br />
+┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.c or ModuleName_LCfg.c or ModuleName_PBCfg.c : <em>Contains the pre/Link/Post build configuration parameters.</em><br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜ModuleName_example.c : <em>Example application for driver</em><br />
+┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┗ 📜CMakeLists.txt<br />
+┣ 📂<strong>plugins</strong><br />
+┃ ┣ 📂ModuleName_TI_DeviceName<br />
+┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┣ 📜ModuleName.arxml : <em>Vendor Specific Module Description : ECU Configuration and ECU Parameter definitions for the MCAL module</em><br />
+┃ ┃ ┃ ┗ 📜ModuleName.xdm : <em>ECU Parameter definition for the MCAL module.</em><br />
+┃ ┃ ┣ 📂generate<br />
+┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┗ 📜ModuleName_Cfg.h :<em>Provides template to generate header file</em><br />
+┃ ┃ ┃ ┗ 📂src<br />
+┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.c : <em>Provides template to generate Compile Time module configurations</em><br />
+┃ ┃ ┃ ┃ ┗ 📜ModuleName_PBCfg.c : <em>Provides template to generate Post Build module configurations</em><br />
+┃ ┃ ┣ 📂generate_swcd<br />
+┃ ┃ ┃ ┗ 📂swcd<br />
+┃ ┃ ┃ ┃ ┗ 📜ModuleName_BSWMD.arxml :<em>Base Software Module Description : Contains details such exclusive area, Module Entries, Interrupts, MemMap etc…</em><br />
+┃ ┃ ┣ 📂META-INF<br />
+┃ ┃ ┃ ┗ 📜MANIFEST.MF : <em>Licensing and module include information</em><br />
+┃ ┃ ┗ 📜plugin.xml :<em>XML file used to register resources with EB Tresos Studio</em><br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+</section>
+<section id="getting-access-to-csp">
+<h2><span class="section-number">3.4. </span>Getting access to CSP<a class="headerlink" href="#getting-access-to-csp" title="Link to this heading"></a></h2>
+<p>Will be added in later release.</p>
+</section>
+<section id="compiler-and-linker-settings">
+<h2><span class="section-number">3.5. </span>Compiler and Linker Settings<a class="headerlink" href="#compiler-and-linker-settings" title="Link to this heading"></a></h2>
+<p>C29 compiler version to be used is <strong>ti-cgt-c29_0.1.0.STS</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Compiler Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>-mcpu</p></td>
+<td><p>Target processor version : <strong>c29.c0</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>-mfpu</p></td>
+<td><p>Floating-Point Support Option : Use native 32-bit floating-point hardware operations, but emulate 64-bit floating-point operations in software. <br> <strong>none</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>-g</p></td>
+<td><p>Debug information : The c29clang compiler generates DWARF debug information if the -g option is selected.</p></td>
+</tr>
+<tr class="row-odd"><td><p>-Wall</p></td>
+<td><p>Enable most warning categories</p></td>
+</tr>
+<tr class="row-even"><td><p>-D</p></td>
+<td><p>Predefined Symbol Options : <br> <strong>-DDEBUG <br> -DASSERT_ENABLE</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>-O</p></td>
+<td><p>Level of optimization <br> <strong>-O1 (for Debug build type) <br> -O2 (for Release build type)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>-I</p></td>
+<td><p>Option to add directories to the include file directory path</p></td>
+</tr>
+<tr class="row-odd"><td><p>-cl-single-precision-constant</p></td>
+<td><p>Option with the c29clang compiler to treat double precision floating-point constants as single precision constants</p></td>
+</tr>
+<tr class="row-even"><td><p>Build Type</p></td>
+<td><p>User-option to select the build type : <strong>Debug/Release</strong>. To configure this option refer section <a class="reference internal" href="#build-system"><span class="xref myst">Build system</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Build Configuration</p></td>
+<td><p>User-option to select the build configuration: <strong>RAM/FLASH</strong>. To configure this option refer section <a class="reference internal" href="#build-system"><span class="xref myst">Build system</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Linker Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>–map_file</p></td>
+<td><p>Produces a map or listing of the input and output sections, including holes, and places the listing in filename : <strong>Project_name.map</strong> (as file name)</p></td>
+</tr>
+<tr class="row-odd"><td><p>–stack_size</p></td>
+<td><p>Sets C system stack size to size bytes and defines a global symbol that specifies the stack size. <br>  <strong>Note : specific for application</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>–heap_size</p></td>
+<td><p>Sets heap size (for the dynamic memory allocation in C) to size bytes and defines a global symbol that specifies the heap size. <br> <strong>Note : specific for application</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>–entry_point</p></td>
+<td><p>Defines a global symbol that specifies the primary entry point for the output module</p></td>
+</tr>
+<tr class="row-even"><td><p>–xml_link_info</p></td>
+<td><p>Generates a well-formed XML file containing detailed information about the result of a link : <strong>Project_name._linkInfo.xml</strong> (as file name)</p></td>
+</tr>
+<tr class="row-odd"><td><p>–reread_libs</p></td>
+<td><p>Forces rereading of libraries, which resolves back references</p></td>
+</tr>
+<tr class="row-even"><td><p>–warn_sections</p></td>
+<td><p>Option to cause the linker to display a message when it creates a new output section</p></td>
+</tr>
+<tr class="row-odd"><td><p>–rom_model</p></td>
+<td><p>Tells the linker to auto initialize variables at run time</p></td>
+</tr>
+<tr class="row-even"><td><p>–display_error_number</p></td>
+<td><p>Displays a diagnostic’s identifiers along with its text</p></td>
+</tr>
+<tr class="row-odd"><td><p>–diag_wrap</p></td>
+<td><p>Wrap diagnostic messages in the output display. This option is enabled by default</p></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/indexC29.html">Refer this link to get more information on C29 Compiler options</a></p>
+</section>
+<section id="modules-supported">
+<h2><span class="section-number">3.6. </span>Modules Supported<a class="headerlink" href="#modules-supported" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Driver</p></th>
+<th class="head"><p>Comments</p></th>
+<th class="head"><p>Supported SoC</p></th>
+<th class="head"><p>Available Cores</p></th>
+<th class="head"><p>MCAL Supported Cores</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Mcu</p></td>
+<td><p>Driver for Mcu module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dio</p></td>
+<td><p>Driver for DIO module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Gpt</p></td>
+<td><p>Driver for GPT module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Port</p></td>
+<td><p>Driver for PORT module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Can</p></td>
+<td><p>Driver for CAN module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="getting-access-to-mcal">
+<h2><span class="section-number">3.7. </span>Getting access to MCAL<a class="headerlink" href="#getting-access-to-mcal" title="Link to this heading"></a></h2>
+<p>F29H85x MCAL can be requested from <a class="reference external" href="https://www.ti.com/drr/opn/F29H85X-MCAL">ti.com</a></p>
+</section>
+<section id="multi-core-support-resource-allocator">
+<h2><span class="section-number">3.8. </span>Multi-core support &amp; resource allocator<a class="headerlink" href="#multi-core-support-resource-allocator" title="Link to this heading"></a></h2>
+<section id="supported-devices">
+<h3><span class="section-number">3.8.1. </span>Supported Devices<a class="headerlink" href="#supported-devices" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Device Family</p></th>
+<th class="head"><p>Devices</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>F29x</p></td>
+<td><p>F29H85x</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="core-naming-conventions">
+<h3><span class="section-number">3.8.2. </span>Core Naming Conventions<a class="headerlink" href="#core-naming-conventions" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SoC Family</p></th>
+<th class="head"><p>Cores Names</p></th>
+<th class="head"><p>Referred as</p></th>
+<th class="head"><p>Comments</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>F29H85x</p></td>
+<td><p>C29xx_CPU1</p></td>
+<td><p>CPU 1</p></td>
+<td><p>Supported in F29H85x MCAL</p></td>
+</tr>
+<tr class="row-odd"><td><p>F29H85x</p></td>
+<td><p>C29xx_CPU2</p></td>
+<td><p>CPU 2</p></td>
+<td><p>Not supported in F29H85x MCAL</p></td>
+</tr>
+<tr class="row-even"><td><p>F29H85x</p></td>
+<td><p>C29xx_CPU3</p></td>
+<td><p>CPU 3</p></td>
+<td><p>Not supported in F29H85x MCAL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="dependencies">
+<h2><span class="section-number">3.9. </span>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
+<section id="hardware-dependencies">
+<h3><span class="section-number">3.9.1. </span>Hardware Dependencies<a class="headerlink" href="#hardware-dependencies" title="Link to this heading"></a></h3>
+<section id="emulator">
+<h4><span class="section-number">3.9.1.1. </span>Emulator<a class="headerlink" href="#emulator" title="Link to this heading"></a></h4>
+<p>F29x EVMs includes an <strong>XDS110 USB</strong> emulator which could be used with CCS Theia.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please refer to ti.com or contact your FAE for documents describing the EVM.</p>
+</div>
+</section>
+</section>
+<section id="software-dependencies">
+<h3><span class="section-number">3.9.2. </span>Software Dependencies<a class="headerlink" href="#software-dependencies" title="Link to this heading"></a></h3>
+<section id="ide-ccs-theia">
+<h4><span class="section-number">3.9.2.1. </span>IDE (CCS Theia)<a class="headerlink" href="#ide-ccs-theia" title="Link to this heading"></a></h4>
+<p>Code Composer Studio is an integrated development environment (IDE) that supports TI’s Micro-controller and Embedded Processors portfolio.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please refer release notes for CCS Theia Studio version details.</p>
+</div>
+<p><a class="reference external" href="https://www.ti.com/drr/opn/C2000-F29-3P">Refer this link to get access for CCS Theia</a></p>
+</section>
+</section>
+</section>
+<section id="start-up-apputils">
+<h2><span class="section-number">3.10. </span>Start-up &amp; AppUtils<a class="headerlink" href="#start-up-apputils" title="Link to this heading"></a></h2>
+<section id="start-up-code">
+<h3><span class="section-number">3.10.1. </span>Start-up code<a class="headerlink" href="#start-up-code" title="Link to this heading"></a></h3>
+<p>📦<strong>F29x_MCAL</strong><br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂<strong>examples</strong><br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂<strong>DeviceSupport</strong><br />
+┃ ┃ ┣ 📂include<br />
+┃ ┃ ┣ 📂LinkerCMD<br />
+┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┣ 📜<strong>codestartbranch.asm</strong><br />
+┃ ┃ ┃ ┗ 📜<strong>DeviceSupport.c</strong> : <em>Contains functions that Flash intialize wait states</em><br />
+┃ ┃ ┣ 📂targetconfigs<br />
+┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┗ 📜makefile.defs<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┣ 📂plugins<br />
+┣ 📜<strong>CMakeLists.txt</strong> : <em>Top-level CMake file</em><br />
+┗ 📜CMakePresets.json</p>
+<ul class="simple">
+<li><p><strong>codestartbranch.asm:</strong> Defines the code start point, it disables watchdog and calls the _c_int00 function.
+The _c_int00 function is the startup/boot routine responsible for setting up the C environment.
+Refer <a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/compiler_manual/program_loading_and_running/run-time-initialization-slau1316977.html#the-c-int00-function">compiler user guide</a> to know more details about _c_int00 function.</p></li>
+<li><p><strong>DeviceSupport.c:</strong> Defines DeviceSupport_Init function that initializes the required flash wait states(only for FLASH build configuration).</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Start-up code is for reference only, it should not be used as-is in a typical AUTOSAR applications.</p>
+</div>
+</section>
+<section id="apputils">
+<h3><span class="section-number">3.10.2. </span>AppUtils<a class="headerlink" href="#apputils" title="Link to this heading"></a></h3>
+<p>📦<strong>F29x_MCAL</strong><br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂<strong>examples</strong><br />
+┃ ┣ 📂<strong>AppUtils</strong><br />
+┃ ┃ ┣ 📜<strong>AppUtils.c</strong> : <em>Contains AppUtils function definitions</em><br />
+┃ ┃ ┣ 📜<strong>AppUtils.h</strong><br />
+┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┣ 📂plugins<br />
+┣ 📜<strong>CMakeLists.txt</strong> : <em>Top-level CMake file</em><br />
+┗ 📜CMakePresets.json</p>
+<p>AppUtils provides functions for baremetal MCAL examples.</p>
+<p>Below are all the functions that are defined by AppUtils:</p>
+<ul class="simple">
+<li><p><strong>AppUtils_Init</strong>: This function configures UART by setting the baudrate, clock, parity, data length and stop bits. It enables UART transmission and reception.</p></li>
+<li><p><strong>AppUtils_Printf</strong>: This function internally uses UART to print a message or text on the serial console. This function has a limitation of printing a maximum of 1000 characters for each function call.</p></li>
+<li><p><strong>AppUtils_DeInit</strong>: This function disables UART, which basically disables both transmission &amp; reception of the UART after the it completes the transmission of the data, if there are any pending.</p></li>
+<li><p><strong>AppUtils_GetChar</strong>: This function allows user to enter a character on the serial console.</p></li>
+<li><p><strong>AppUtils_GetNum</strong>: This function allows user to enter a 32-bit number on the serial console.</p></li>
+<li><p><strong>AppUtils_AssertFunc</strong>: This is a macro defined to check if the condition passed to the macro is TRUE at runtime.</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>AppUtils source code is for reference only, it should not be used as-is in a typical AUTOSAR applications.</p>
+</div>
+</section>
+</section>
+<section id="build-system">
+<h2><span class="section-number">3.11. </span>Build system<a class="headerlink" href="#build-system" title="Link to this heading"></a></h2>
+<section id="cmake-cross-platform-make">
+<h3><span class="section-number">3.11.1. </span>CMake (Cross-Platform Make)<a class="headerlink" href="#cmake-cross-platform-make" title="Link to this heading"></a></h3>
+<p>CMake is an open-source cross-platform build system generator for software projects that allows developers to specify build parameters in a simple, portable, text file format.
+This file is then used by CMake to generate project files for native build tools. CMake is not a build system itself; it generates another system’s build files.
+It can generate native build files for different platforms and compilers, such as Makefiles, Ninja files, Visual Studio solutions, or Xcode projects.</p>
+<p>The build of a program or library with CMake is a two-stage process.</p>
+<ul class="simple">
+<li><p><strong>Stage 1:</strong> CMake input files (.txt and .cmake) are processed to generate build tool files based on the selected build system (make, ninja,Xcode or Visual Studio).</p></li>
+<li><p><strong>Stage 2:</strong> The generated build tool files are used to compile and build source files to generate binaries (executables or libraries).</p></li>
+</ul>
+<figure class="align-center" id="id11">
+<img alt="CMake Stage Flow" src="../_images/CMake_Stage_Flow.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.11 </span><span class="caption-text">CMake Stage Flow</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information on CMake, please refer CMake <a class="reference external" href="https://cmake.org/cmake/help/latest/">official documentation</a></p>
+</div>
+<section id="f29x-mcal-cmake-architecture">
+<h4><span class="section-number">3.11.1.1. </span>F29x MCAL CMake Architecture<a class="headerlink" href="#f29x-mcal-cmake-architecture" title="Link to this heading"></a></h4>
+<p>📦<strong>F29x_mcal</strong><br />
+┣ 📂build<br />
+┃ ┣📂artefacts : <em>CMake generated configuration files</em> <br />
+┃ ┣📂assets : <em>Built assets</em> <br />
+┃ ┣📂toolchain<br />
+┃ ┃ ┣ 📂signing<br />
+┃ ┃ ┣ 📜<strong>c2000-f29h85x.cmake</strong> : <em>Toolchain CMake file</em><br />
+┃ ┃ ┗ 📜<strong>ti-cgt-c29-clang.cmake</strong> : <em>Toolchain CMake file</em><br />
+┣ 📂drivers<br />
+┃ ┣ 📂BSW_Stubs<br />
+┃ ┣ 📂Can<br />
+┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┣ 📜Can.h<br />
+┃ ┃ ┃ ┣ 📜Can_Priv.h<br />
+┃ ┃ ┃ ┗ 📜Can_Reg_Access.h<br />
+┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┣ 📜Can.c<br />
+┃ ┃ ┃ ┣ 📜Can_Irq.c<br />
+┃ ┃ ┃ ┗ 📜Can_Priv.c<br />
+┃ ┃ ┗ 📜CMakeLists.txt : <em>CAN driver CMake file</em><br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂hw_include<br />
+┃ ┣ 📂Mcal_Lib<br />
+┃ ┣ 📂Mcu<br />
+┃ ┗ 📂Port<br />
+┣ 📂<strong>examples</strong><br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Can<br />
+┃ ┃ ┣ 📂<strong>Can_Example_Classic</strong><br />
+┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┣ 📂<strong>f29h85x_config</strong><br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┣ 📂<strong>include</strong><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃ ┣ 📂<strong>src</strong><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Can_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Can_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>CMakeLists.txt</strong> : <em>CMake file for f29h85x_config folder</em><br />
+┃ ┃ ┃ ┣ 📜Can_Example_Classic.c<br />
+┃ ┃ ┃ ┣ 📜Can_Example_Classic.h<br />
+┃ ┃ ┃ ┗ 📜<strong>CMakeLists.txt</strong> : <em>Can_Example_Classic CAN example CMake file</em><br />
+┃ ┃ ┣ 📂Can_Example_Icom<br />
+┃ ┃ ┗ 📂Can_Example_loopback<br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┗ 📜<strong>CMakeLists.txt</strong> : <em>Examples CMake file</em><br />
+┣ 📜<strong>CMakeLists.txt</strong> : <em>Root-Level CMake file</em><br />
+┗ 📜<strong>CMakePresets.json</strong> : <em>CMake preset json file</em></p>
+<p>F29x MCAL specific CMake files are described below -</p>
+<ul>
+<li><p><strong>CMakePresets.json</strong></p>
+<ul>
+<li><p>This file contains recommended presets configured for F29x MCAL projects, users can continue to use the presets as-is or choose to override them with their project specific requirements by adding a CMakeUserPresets.json file.</p></li>
+<li><p>It also define all the compiler and linker options as defined in <a class="reference internal" href="#compiler-and-linker-settings"><span class="xref myst">Compiler and Linker Settings</span></a></p></li>
+<li><p>The presets file defines support for different generators -</p>
+<ol class="arabic simple">
+<li><p><strong>mingw-c2000-f29h85x:</strong> Preset for MinGW Makefiles generator - works on Windows based system</p></li>
+<li><p><strong>unix-c2000-f29h85x:</strong> Preset for Unix Makefiles generator - works on Linux based system</p></li>
+<li><p><strong>ninja-c2000-f29h85x:</strong> Preset for Ninja generator - works on both Windows and Linux based system.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The options set in CMakePresets.json file can be overridden using CMakeUserPresets.json file. For more information about CMake Presets refer <a class="reference external" href="https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html">cmake-presets</a>.</p>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Toolchain</strong></p>
+<ul class="simple">
+<li><p>Since we need to perform cross-compilation toolchain files are defined to ease the compiler integration in CMake.</p></li>
+<li><p><strong>c2000-f29h85x.cmake :</strong> This file defines the required CPU Flags and is device / core specific.</p></li>
+<li><p><strong>ti-cgt-c29-clang.cmake :</strong> This file defines all necessary information required to use C29Clang compiler including Compiler path handling, standard library inclusion etc.</p></li>
+</ul>
+</li>
+<li><p><strong>CMakelists.txt</strong> file at Root-level</p>
+<ul class="simple">
+<li><p>This file defines the minimum required CMake version for the project.</p></li>
+<li><p>It defines the <strong>BUILD_CONFIGURATION</strong> which controls whether the executable runs from <em>FLASH</em> or <em>RAM</em> on the target.</p></li>
+<li><p>It also provides <em>Signing</em> function which is needed to sign the generated executable when <em>FLASH</em> mode is selected.</p></li>
+</ul>
+</li>
+<li><p><strong>CMakelists.txt</strong> file at MCAL Driver level</p>
+<ul class="simple">
+<li><p>This file is used to create interface library for each MCAL / CDD for easy inclusion in Application.</p></li>
+<li><p>The library is defined using the <strong>add_library</strong>.</p></li>
+<li><p>All the source files in the driver are added using <strong>target_sources</strong>.</p></li>
+<li><p>All header file include paths are added to the library using <strong>target_include_directories</strong>.</p></li>
+<li><p>Any application wanting to use the MCAL / CDD can do so by adding this file into their CMakelists.txt.</p></li>
+</ul>
+</li>
+<li><p><strong>CMakelists.txt</strong> file at config level</p>
+<ul class="simple">
+<li><p>This file is used to create an interface library for the generated config file from EB Tresos.</p></li>
+<li><p>It is recommended to use this file for easier management of files generated from the Configurator.</p></li>
+<li><p>Any application wanting to use the MCAL / CDD needs to also include this file along with the driver level CMakelists.txt to compile MCAL / CDD correctly.</p></li>
+<li><p>Reference for this file can be found in all of the provided MCAL / CDD examples.</p></li>
+</ul>
+</li>
+<li><p><strong>CMakelists.txt</strong> file at Example level</p>
+<ul class="simple">
+<li><p>This file defines the actual executable target to be created by using <strong>add_executable</strong>.</p></li>
+<li><p>All required interface libraries are add using <strong>add_subdirectory</strong>.</p></li>
+<li><p>To protect against re-inclusion of a library / target an <strong>IF</strong> check is added.</p></li>
+<li><p>Additional Linker options are defined using <strong>add_link_options</strong> command.</p></li>
+<li><p>Required interface libraries are linked using <strong>target_link_libraries</strong> command.</p></li>
+<li><p><strong>add_custom_command</strong> is used to move the generated files to a different location.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cmake-options">
+<h4><span class="section-number">3.11.1.2. </span>CMake options<a class="headerlink" href="#cmake-options" title="Link to this heading"></a></h4>
+<section id="f29x-mcal-specific-options-during-cmake-configure-stage-1">
+<h5><span class="section-number">3.11.1.2.1. </span>F29x MCAL Specific options during <em>CMake configure</em> (Stage 1)<a class="headerlink" href="#f29x-mcal-specific-options-during-cmake-configure-stage-1" title="Link to this heading"></a></h5>
+<p>To configure CMake following command can be executed in terminal -
+<strong>cmake -S {source_dir_path} –preset {preset_name} -DCMAKE_BUILD_TYPE = {build_type} -DBUILD_CONFIGURATION = {build_configuration} -DTCP={path-to-the-compiler}</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Configure Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>TCP</strong></p></td>
+<td><p>Compiler path can be specified with this parameter, if the compiler is not already on the system’s PATH environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>CMAKE_BUILD_TYPE</strong></p></td>
+<td><p>Defines the build type for the project. Possible options are - <br> <strong>Debug :</strong> Includes debug information in the compiled files (allowing easy debugging). <br> <strong>Release :</strong> Has optimizations enabled (<strong>default</strong>)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>BUILD_CONFIGURATION</strong></p></td>
+<td><p>Controls which memory area application executes from. Possible options are - <br> <strong>RAM :</strong> Application executes from RAM. Recommended with Debug mode for small size applications. <br> <strong>FLASH :</strong> Application executes from internal FLASH. Recommended with Release mode. (<strong>default</strong>)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="f29x-mcal-specific-options-during-cmake-build-stage-2">
+<h5><span class="section-number">3.11.1.2.2. </span>F29x MCAL Specific options during <em>CMake build</em> (Stage 2)<a class="headerlink" href="#f29x-mcal-specific-options-during-cmake-build-stage-2" title="Link to this heading"></a></h5>
+<p>To build following command can be executed in terminal -
+<strong>cmake –build {path-to-the-CMake-generated-files} -t {target}</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Configure Option</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>path-to-the-CMake-generated-files</strong></p></td>
+<td><p>Path to CMake generated files from stage 1. This is located at <em>build/artefacts</em> folder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>target</strong></p></td>
+<td><p>Name of the target to be built (<strong>default :</strong> all)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>–clean-first option can be appended to the target build command to clean the build before re-building a target.</p>
+</div>
+</section>
+</section>
+<section id="how-to-link-f29x-mcal-cdd-cmake-to-your-application">
+<h4><span class="section-number">3.11.1.3. </span>How to link F29x MCAL / CDD CMake to your application<a class="headerlink" href="#how-to-link-f29x-mcal-cdd-cmake-to-your-application" title="Link to this heading"></a></h4>
+<p>Any MCAL example CMake file can be used as reference.</p>
+<ol class="arabic simple">
+<li><p>Create a main CMake file to handle CMake build for your application.</p></li>
+<li><p>Include required MCAL / CDD drivers using <strong>add_subdirectory</strong>.</p></li>
+<li><p>Add generated code from MCAL Configurator by creating a separate CMakelists.txt for the generated files and including this file in your application CMakelists.txt using <strong>add_subdirectory</strong>.</p></li>
+<li><p>Add required compiler and linker options.</p></li>
+<li><p>Link all the added interface libraries in Step 2 and 3 by using <strong>target_link_libraries</strong>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information on CMake support by the C29Clang compiler you can refer <a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/getting_started_guide/building_simple_application.html?highlight=cmake#compile-and-link-using-build-automation-tools">compiler documentation</a></p>
+</div>
+</section>
+</section>
+<section id="code-composer-studio-ccs">
+<h3><span class="section-number">3.11.2. </span>Code Composer Studio (CCS)<a class="headerlink" href="#code-composer-studio-ccs" title="Link to this heading"></a></h3>
+<section id="importing-projects-into-ccs">
+<h4><span class="section-number">3.11.2.1. </span>Importing projects into CCS<a class="headerlink" href="#importing-projects-into-ccs" title="Link to this heading"></a></h4>
+<p>📦<strong>F29x_mcal</strong><br />
+┣ 📂build<br />
+┣ 📂drivers<br />
+┣ 📂<strong>examples</strong><br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Can<br />
+┃ ┃ ┣ 📂<strong>Can_Example_Classic</strong><br />
+┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>Can_Example_Classic.projectspec</strong> : <em>Project template which can be imported into CCS</em><br />
+┃ ┃ ┃ ┣ 📂f29h85x_config<br />
+┃ ┃ ┃ ┣ 📜Can_Example_Classic.c<br />
+┃ ┃ ┃ ┣ 📜Can_Example_Classic.h<br />
+┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┣ 📂Can_Example_Icom<br />
+┃ ┃ ┗ 📂Can_Example_loopback<br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┗ 📜CMakeLists.txt<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<p>Every F29x MCAL example comes with a projectspec file which can be imported in CCS.</p>
+<ol class="arabic">
+<li><p>Open CCS and select Import Project -</p>
+<figure class="align-center" id="id12">
+<img alt="CCS Import Step 1" src="../_images/CCS_Import_Step1.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.12 </span><span class="caption-text">CCS Import Step 1</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Browse to the folder containing Projectspec file and select the desired CCS Project to be imported.</p>
+<figure class="align-center" id="id13">
+<img alt="CCS Import Step 2" src="../_images/CCS_Import_Step2.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.13 </span><span class="caption-text">CCS Import Step 2</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Once project is imported you can continue to build and debug the project.</p>
+<figure class="align-center" id="id14">
+<img alt="CCS Project Imported" src="../_images/CCS_Import_Step3.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.14 </span><span class="caption-text">CCS Project Imported</span><a class="headerlink" href="#id14" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more information on projectspec and their use in CCS <a class="reference external" href="https://software-dl.ti.com/ccs/esd/documents/ccs_projectspecs.html">refer documentation</a>.</p>
+</div>
+</section>
+<section id="building-and-debugging-projects-in-ccs">
+<h4><span class="section-number">3.11.2.2. </span>Building and Debugging projects in CCS<a class="headerlink" href="#building-and-debugging-projects-in-ccs" title="Link to this heading"></a></h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For information on how to build and debug any project in CCS <a class="reference external" href="https://software-dl.ti.com/ccs/esd/documents/users_guide_ccs_theia/index_project-management.html">refer documentation</a>.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="information-on-the-f29x-device-family">
+<h2><span class="section-number">3.12. </span>Information on the F29x device family<a class="headerlink" href="#information-on-the-f29x-device-family" title="Link to this heading"></a></h2>
+<section id="f29x-cpu-architecture">
+<h3><span class="section-number">3.12.1. </span>F29x CPU Architecture<a class="headerlink" href="#f29x-cpu-architecture" title="Link to this heading"></a></h3>
+<p>The F29x CPU is a VLIW (Very Long Instruction Word) architecture with a fully protected pipeline. The CPU supports multiple instruction sizes (16/32/48 bits). The CPU also supports variable instruction packet size, with each packet able to contain up to eight instructions that execute in parallel.</p>
+<p>Following are the list of F29H85x CPU major features:</p>
+<ul class="simple">
+<li><p>Ease of use</p></li>
+<li><p>Improved parallelism</p></li>
+<li><p>Improved bus throughput</p></li>
+<li><p>Code efficiency</p></li>
+<li><p>ASIL-D safety capability with code isolation in hardware</p></li>
+<li><p>Multi-zone security in hardware</p></li>
+<li><p>Enhanced debug and trace capabilities</p></li>
+</ul>
+<p><a class="reference external" href="https://www.ti.com/drr/opn/C2000-F29-3P">Refer this link to get access for TRM details</a></p>
+</section>
+</section>
+<section id="boot-modes">
+<h2><span class="section-number">3.13. </span>Boot Modes<a class="headerlink" href="#boot-modes" title="Link to this heading"></a></h2>
+<p>Will be added in later release.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="MCAL_Configuration_and_EB_Tresos.html" class="btn btn-neutral float-left" title="2. MCAL Configurator And EB Tresos User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ModuleUserGuide_list.html" class="btn btn-neutral float-right" title="4. Module User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Oct 22, 2024.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

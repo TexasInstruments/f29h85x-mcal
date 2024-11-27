@@ -1,0 +1,541 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
+        <a:a name="UUID"  value="150c5234-3b70-4d11-a654-786ae10128ad"/>
+        <d:lst type="ELEMENTS">
+          <d:chc name="Gpt" type="AR-ELEMENT" value="MODULE-DEF">
+            <v:ctr type="MODULE-DEF">
+              <a:a name="ADMIN-DATA" type="ADMIN-DATA">
+                <ad:ADMIN-DATA>
+                  <ad:DOC-REVISIONS>
+                    <ad:DOC-REVISION>
+                      <ad:REVISION-LABEL>4.3.1</ad:REVISION-LABEL>
+                      <ad:ISSUED-BY>AUTOSAR</ad:ISSUED-BY>
+                    </ad:DOC-REVISION>
+                  </ad:DOC-REVISIONS>
+                </ad:ADMIN-DATA>
+              </a:a>
+              <a:a name="DESC" 
+                   value="EN: Configuration of the Gpt (General Purpose Timer) module."/>
+              <a:a name="LOWER-MULTIPLICITY" value="1"/>
+              <a:a name="POSTBUILDVARIANTSUPPORT" value="true"/>
+              <a:a name="RELEASE" value="asc:4.3.1"/>
+              <a:a name="UPPER-MULTIPLICITY" value="1"/>
+              <a:a name="UUID" value="5aadb25b-c021-47cc-9dce-8e06288c0e4c"/>
+              <v:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION">
+                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                     type="IMPLEMENTATIONCONFIGCLASS">
+                  <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                </a:a>
+                <a:a name="LABEL" value="Config Variant"/>
+                <a:a name="UUID" value="051c5214-3b80-4d10-a6a4-787ae10118ad"/>
+                <a:da name="DEFAULT" value="VariantPreCompile"/>
+                <a:da name="RANGE">
+                  <a:v>VariantPostBuild</a:v>
+                  <a:v>VariantPreCompile</a:v>
+                </a:da>
+              </v:var>
+              <v:ctr name="GptChannelConfigSet" type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: This container is the base of a Configuration Set which contains the configured GPT channels. This way, different configuration sets can be defined for post-build process."/>
+                <a:a name="UUID" value="3f95e26f-ca8d-46d3-be8f-4a6c93a3759c"/>
+                    <v:var name="GptUseTimer2InOS" type="BOOLEAN">
+                      <a:a name="DESC" 
+                           value="EN: Enable/Disable of CPU timer2 usage in OS"/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="as:uuid()"/>
+                      <a:da name="DEFAULT" value="false"/>
+                    </v:var>
+                <v:lst name="GptChannelConfiguration" type="MAP">
+                  <a:da name="MIN" value="1"/>
+                  <a:da name="MAX" value="3"/>
+                  <v:ctr name="GptChannelConfiguration" type="IDENTIFIABLE">
+                    <a:a name="DESC" 
+                         value="EN: Configuration of an individual GPT channel."/>
+                    <a:a name="UUID" 
+                         value="20401008-a0d3-4e94-9a26-9ac5025c1b59"/>
+                    <v:var name="GptChannelId" type="INTEGER">
+                      <a:a name="DESC" 
+                           value="EN: Channel Id of the GPT channel. This value will be assigned to the symbolic name derived of the GptChannelConfiguration container short name."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="SCOPE" value="ECU"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="true"/>
+                      <a:a name="UUID" 
+                           value="103f6fe6-c25d-4d9c-a7d8-ee4cbfb154ae"/>
+                      <a:da name="DEFAULT" value="0"/>
+                      <a:da name="INVALID" type="Range">
+                        <a:tst expr="&lt;=2"/>
+                        <a:tst expr="&gt;=0"/>
+                      </a:da>
+                      <a:da name="INVALID" type="XPath">
+                        <a:tst expr="text:uniq((../../..//*[@name='GptChannelId']),node:value(.))" false="GptChannelId selection has to be unique across all Gpt containers"/>
+                        <a:tst expr="(/AUTOSAR/TOP-LEVEL-PACKAGES/Gpt/ELEMENTS/Gpt/GptChannelConfigSet/GptUseTimer2InOS = 'true') and (node:value(.)=2)"  true="CPU Timer2 is enabled for OS usage"/>
+                      </a:da>
+                    </v:var>
+                    <v:var name="GptChannelMode" type="ENUMERATION">
+                      <a:a name="DESC" 
+                           value="EN: Specifies the behavior of the timer channel after the target time is reached."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                      <a:a name="SCOPE" value="ECU"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="0eb7e1aa-a499-404e-9ba7-c9e04f4accea"/>
+                      <a:da name="DEFAULT" value="GPT_CH_MODE_ONESHOT"/>
+                      <a:da name="RANGE">
+                        <a:v>GPT_CH_MODE_CONTINUOUS</a:v>
+                        <a:v>GPT_CH_MODE_ONESHOT</a:v>
+                      </a:da>
+                    </v:var>
+                    <v:var name="GptChannelPrescaleValue" type="INTEGER">
+                      <a:a name="DESC" value="EN:  The input GPT clock will be divided by this value"/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                        <icc:v class="PostBuild">VariantPostBuild</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" value="as:uuid()"/>
+                      <a:da name="DEFAULT" value="0"/>
+                      <a:da name="INVALID" type="Range">
+                        <a:tst expr="&lt;=65535"/>
+                        <a:tst expr="&gt;=0"/>
+                      </a:da>
+                      <a:da name="EDITABLE" value="true"/>
+                    </v:var>
+                    <v:var name="GptChannelTickFrequency" type="FLOAT">
+                      <a:a name="DESC" 
+                           value="EN: Specifies the tick frequency of the timer channel in Hz."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                      <a:a name="SCOPE" value="ECU"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="dc4b9f43-b73b-4453-8320-98c9c1bcc637"/>
+                      <a:da name="DEFAULT" value="1.0"/>
+                      <a:da name="INVALID" type="Range">
+                        <a:tst expr="&lt;=Infinity"/>
+                        <a:tst expr="&gt;=0.0"/>
+                      </a:da>
+                      <a:da name="EDITABLE" value="false"/>
+                      <a:da name="VISIBLE"  value="false"/>
+                    </v:var>
+                    <v:var name="GptChannelTickValueMax" type="INTEGER">
+                      <a:a name="DESC" 
+                           value="EN: Maximum value in ticks, the timer channel is able to count. With the next tick, the timer rolls over to zero."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                      <a:a name="SCOPE" value="ECU"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="acbfb4fd-6e0d-474b-af55-7dd54a966c66"/>
+                      <a:da name="DEFAULT" value="4294967295"/>
+                      <a:da name="INVALID" type="Range">
+                        <a:tst expr="&lt;=4294967295"/>
+                        <a:tst expr="&gt;=0"/>
+                      </a:da>
+                      <a:da name="EDITABLE" value="false"/>
+                      <a:da name="VISIBLE"  value="false"/>
+                    </v:var>
+                    <!-- Note : C29x does not support timer wakeup funtionality. -->
+                    <v:var name="GptEnableWakeup" type="BOOLEAN">
+                      <a:a name="DESC" 
+                           value="EN: Enables wakeup capability of MCU for a channel."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="a0a50e95-5d43-474b-855f-bcd0fe8db85c"/>
+                      <a:da name="DEFAULT" value="false"/>
+                      <a:da name="EDITABLE" value="false"/>
+                      <a:da name="VISIBLE"  value="true"/>
+                    </v:var>
+                    <v:var name="GptNotification" type="FUNCTION-NAME">
+                      <a:a name="DESC" 
+                           value="EN: Function pointer to callback function (for non-wakeup notification)"/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="OPTIONAL" value="true"/>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="POSTBUILDVARIANTMULTIPLICITY" value="true"/>
+                      <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="035f4513-a7ad-457e-8888-202918e3cdfa"/>
+                      <a:da name="DEFAULT" value="NULL_PTR"/>
+                    </v:var>
+                    <v:ref name="GptChannelClkSrcRef" type="REFERENCE">
+                      <a:a name="DESC" 
+                           value="EN: Reference to the GptClockReferencePoint from which the channel"/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="UUID" 
+                           value="cb5b9d2e-2c21-4620-a685-195ddca94a27"/>
+                      <a:da name="REF" 
+                            value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Gpt/GptDriverConfiguration/GptClockReferencePoint"/>
+                      <a:da name="VISIBLE"  value="true"/>
+                      <a:da name="EDITABLE"  value="false"/>
+                    </v:ref>
+                    <v:var name="GptSimulationStatus" type="ENUMERATION">
+                      <a:a name="DESC" 
+                            value="EN: Specifies the simulation state(Enable/Disable) of the timer."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                            type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                      <a:a name="SCOPE" value="ECU"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                            value="as:uuid()"/>
+                      <a:da name="DEFAULT" value="GPT_SIM_DISABLE"/>
+                      <a:da name="RANGE">
+                        <a:v>GPT_SIM_DISABLE</a:v>
+                        <a:v>GPT_SIM_ENABLE</a:v>
+                      </a:da>
+                    </v:var>
+                    <v:var name="GptSimulationMode" type="ENUMERATION">
+                      <a:a name="DESC" 
+                            value="EN: Specifies the behavior of the timer in simulation mode(Stop timer at next counter decrement or Stop timer at nect elapsed time)."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                            type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                      <a:a name="SCOPE" value="ECU"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                            value="as:uuid()"/>
+                      <a:da name="DEFAULT" value="GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC"/>
+                      <a:da name="RANGE">
+                        <a:v>GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC</a:v>
+                        <a:v>GPT_SIM_STOP_TIMER_AT_NEXT_TIMER_ELAPSE</a:v>
+                      </a:da>
+                      <a:da name="EDITABLE" type="XPath" expr="(../GptSimulationStatus='GPT_SIM_ENABLE')" />
+                    </v:var>
+                    <v:var name="GptTypeofInterrupt" type="ENUMERATION">
+                        <a:a name="DESC" value="EN: Type of ISR function"/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v class="PreCompile">VariantPostBuild</icc:v>
+                            <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="ORIGIN" value="Texas Instruments"/>
+                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                        <a:a name="UUID" value="as:uuid()"/>
+                        <a:da name="DEFAULT" value="GPT_ISR_CAT1_RTINT"/>
+                        <a:da name="RANGE">
+                            <a:v>GPT_ISR_CAT1_RTINT</a:v>
+                            <a:v>GPT_ISR_CAT1_INT</a:v>
+                            <a:v>GPT_ISR_CAT2</a:v>
+                        </a:da>
+                    </v:var>
+                    <v:ctr name="GptWakeupConfiguration" 
+                           type="IDENTIFIABLE">
+                      <a:a name="DESC" 
+                           value="EN: Function pointer to callback function (for wakeup notification)."/>
+                      <a:a name="OPTIONAL" value="true"/>
+                      <a:a name="UUID" 
+                           value="255416d4-9b17-408b-bff3-2fe1db5ec1f9"/>
+                      <a:da name="ENABLE" value="false"/>
+                      <v:ref name="GptWakeupSourceRef" 
+                             type="SYMBOLIC-NAME-REFERENCE">
+                        <a:a name="DESC" 
+                             value="EN: In case the wakeup-capability is true this value is transmitted to the Ecu State Manager."/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                             type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                        <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                        <a:a name="SCOPE" value="LOCAL"/>
+                        <a:a name="UUID" 
+                             value="2f5d5c27-d9fe-4fca-aba8-a4df14e39634"/>
+                        <a:da name="REF" 
+                              value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/EcuM/EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource"/>
+                      </v:ref>
+                      <a:da name="EDITABLE"  value="false"/>
+                      <a:da name="VISIBLE"  value="true"/>
+                    </v:ctr>
+                  </v:ctr>
+                </v:lst>
+              </v:ctr>
+              <v:ctr name="GptConfigurationOfOptApiServices" 
+                     type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: This container contains all configuration switches for configuring optional API services of the GPT driver."/>
+                <a:a name="UUID" value="cd3bf2f4-2e73-404b-9b9d-50739718d645"/>
+                <v:var name="GptDeinitApi" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Adds / removes the service Gpt_DeInit() from the code."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="1530b51d-7d9c-4467-8f24-3c61091d212f"/>
+                  <a:da name="DEFAULT" value="false"/>
+                </v:var>
+                <v:var name="GptEnableDisableNotificationApi" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Adds / removes the services Gpt_EnableNotification() and Gpt_DisableNotification from the code."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="64914cc2-6703-4d6f-8cc7-bc3c4607131b"/>
+                  <a:da name="DEFAULT" value="false"/>
+                </v:var>
+                <v:var name="GptTimeElapsedApi" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Adds / removes the service Gpt_GetTimeElapsed() from the code"/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="fa05b784-bf19-45f4-9a2f-c980f676d242"/>
+                  <a:da name="DEFAULT" value="false"/>
+                </v:var>
+                <v:var name="GptTimeRemainingApi" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Adds / removes the service Gpt_GetTimeRemaining() from the code."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="09271960-f5a6-4ea3-a4c4-59305f2e7ba8"/>
+                  <a:da name="DEFAULT" value="false"/>
+                </v:var>
+                <v:var name="GptVersionInfoApi" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Adds / removes the service Gpt_GetVersionInfo() from the code."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="443bc675-c57e-42a8-9ed0-0f5e9123dd6f"/>
+                  <a:da name="DEFAULT" value="false"/>
+                </v:var>
+                <v:var name="GptWakeupFunctionalityApi" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Adds / removes the services Gpt_SetMode(), Gpt_EnableWakeup() Gpt_DisableWakeup() and Gpt_CheckWakeup() from the code."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="88b3e337-e6c2-47c6-bd80-4ca709c30b26"/>
+                  <a:da name="DEFAULT" value="false"/>
+                  <a:da name="EDITABLE" value="false"/>
+                  <a:da name="VISIBLE"  value="true"/>
+                </v:var>
+              </v:ctr>
+              <v:ctr name="GptDriverConfiguration" type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: This container contains the module-wide configuration (parameters) of the GPT Driver"/>
+                <a:a name="UUID" value="fac92a03-7e05-48a1-9902-23275d460169"/>
+                <v:var name="GptDevErrorDetect" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Switches the development error detection and notification on or off."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="72ee0989-ecfc-4bc9-93d6-9b92d99e161c"/>
+                  <a:da name="DEFAULT" value="false"/>
+                </v:var>
+                <!-- Note : In C29x Predef timers functionality was not supported. -->
+                <v:var name="GptPredefTimer100us32bitEnable" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Enables/disables the GPT Predef Timer 100?s32bit."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="ECU"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="591a5e5d-d2ab-47f0-a8f9-8df5c3597d5c"/>
+                  <a:da name="DEFAULT" value="false"/>
+                  <a:da name="VISIBLE"  value="true"/>
+                  <a:da name="EDITABLE"  value="false"/>
+                </v:var>
+                <v:var name="GptPredefTimer1usEnablingGrade" type="ENUMERATION">
+                  <a:a name="DESC" 
+                       value="EN: Specifies the grade of enabling the GPT Predef Timers with 1?s tick duration."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="ECU"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="aaca5567-a44d-407d-b24a-c7a11560691a"/>
+                  <a:da name="DEFAULT" value="GPT_PREDEF_TIMER_1US_DISABLED"/>
+                  <a:da name="RANGE">
+                    <a:v>GPT_PREDEF_TIMER_1US_16BIT_ENABLED</a:v>
+                    <a:v>GPT_PREDEF_TIMER_1US_16_24BIT_ENABLED</a:v>
+                    <a:v>GPT_PREDEF_TIMER_1US_16_24_32BIT_ENABLED</a:v>
+                    <a:v>GPT_PREDEF_TIMER_1US_DISABLED</a:v>
+                  </a:da>
+                  <a:da name="VISIBLE"  value="true"/>
+                  <a:da name="EDITABLE"  value="false"/>
+                </v:var>
+                <!-- Note : C29x does not support timer wakeup funtionality. -->
+                <v:var name="GptReportWakeupSource" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Enables/Disables wakeup source reporting."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="7cb506fd-6bdd-47ec-8169-37c2e3b18521"/>
+                  <a:da name="DEFAULT" value="false"/>
+                  <a:da name="VISIBLE"  value="true"/>
+                  <a:da name="EDITABLE"  value="false"/>
+                </v:var>
+                <v:lst name="GptClockReferencePoint" type="MAP">
+                  <a:da name="MIN" value="1"/>
+                  <a:da name="MAX" value="3"/>
+                  <v:ctr name="GptClockReferencePoint" type="IDENTIFIABLE">
+                    <a:a name="DESC" 
+                         value="EN: This container contains a parameter, which represents a reference to a container of the type McuClockReferencePoint (defined in module MCU)."/>
+                    <a:a name="UUID" 
+                         value="48008531-c4c1-4a55-9d32-19553c5bc391"/>
+                    <v:ref name="GptClockReference" type="REFERENCE">
+                      <a:a name="DESC" 
+                           value="EN: Reference to a container of the type McuClockReferencePoint, to select an input clock."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="UUID" 
+                           value="b2272326-6bcb-4970-9be7-67fdcc3b2bfa"/>
+                      <a:da name="REF" 
+                            value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
+                    </v:ref>
+                    <a:da name="VISIBLE"  value="true"/>
+                    <a:da name="EDITABLE"  value="false"/>
+                  </v:ctr>
+                </v:lst>
+              </v:ctr>
+              <d:ref type="REFINED_MODULE_DEF" 
+                     value="ASPath:/AUTOSAR/EcucDefs/Gpt"/>
+            </v:ctr>
+          </d:chc>
+          <d:chc name="myEcuParameterDefinition" type="AR-ELEMENT" 
+                 value="ECU_PARAMETER_DEFINITION">
+            <d:ctr type="AR-ELEMENT">
+              <a:a name="DEF" 
+                   value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
+              <d:lst name="MODULE_REF">
+                <d:ref type="MODULE_REF" value="ASPath:/TI_F29H85x/Gpt"/>
+              </d:lst>
+            </d:ctr>
+          </d:chc>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

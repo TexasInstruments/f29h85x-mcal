@@ -1,0 +1,819 @@
+## PORT Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|RTE|Runtime Environment|
+|BSW|Basic Software|
+|GPIO|General Purpose Input Output|
+|MCAL|Micro Controller Abstraction Layer|
+|API|Application Programming Interface|
+|DET|Default Error Tracer|
+|HW |Hardware|
+|SW |Software|
+|I/O|Input/Output|
+
+### Introduction
+
+The Port driver module is an I/O driver in AUTOSAR Basic Software (BSW) layer. PORT driver provide the services for initializing the whole PORT structure of the microcontroller.
+It is used to assign various functionalities to Port and port pins (e.g. GPIOs, ADC, SPI and other peripheral modes)
+
+```{figure} Assets/images/Port_Autosar_MCAL.png
+:alt: PORT MCAL AUTOSAR
+:align: center
+
+PORT MCAL AUTOSAR
+```
+
+This document details AUTOSAR BSW PORT module implementation
+
+|Supported AUTOSAR Release|**4.3.1**|
+|------|-------------|
+| **Supported Configuration Variants** | **Pre-Compile & Post Build**|
+| **Vendor ID**                      |   **PORT_VENDOR_ID (44)**|
+| **Module ID**                      |   **PORT_MODULE_ID (124)**|
+
+### Functional Overview
+
+The Port module shall provide the service for initializing the whole PORT structure of the microcontroller. Many ports and port pins can be assigned to various functionalities, For e.g.
+
+* General purpose I/O
+* CAN
+* SPI
+* ADC
+* LIN
+etc
+
+Up to twelve independent peripheral signals are multiplexed on a single GPIO-enabled pin in addition to the CPU-controlled I/O capability. Each pin output can be controlled by either a peripheral or one of the CPU controllers.
+PORT driver module shall complete the overall configuration and initialization of the port structure which is used in other dependent driver modules. Therefore, other dependent modules driver works on pins and ports which are configured by the PORT driver. Hence PORT driver shall be initialized prior to use of other driver modules functions. Otherwise those functions might exhibit undefined behavior.
+
+### Hardware Features
+
+#### Hardware Features supported
+
+Features Supported at a high level are:
+
+* Configure each port and port pin (Input/Output, Pin driver characteristics).
+* Set pins to an initial default value.
+* Refresh the direction of the initial configuration.
+* Switch the port pin configuration during runtime.
+* Pin direction changeable during runtime.
+* Port mode changeable during runtime.
+
+##### Port Structure
+
+For the device there are up to 8 Possible I/O Ports. Up to twelve independent peripheral signals are multiplexed on a single GPIO-enabled pin in addition to the CPU-controlled I/O capability.
+
+Each pin output can be controlled by either a peripheral or one of the CPU controllers.
+
+|Port  | GPIO Number | Port ID |
+|------|-------------|---------|
+|Port A|   0 - 31    | 0       |
+|Port B|   32 - 63   | 1       |
+|Port C|   64 - 95   | 2       |
+|Port D|   96 - 127  | 3       |
+|Port E|   128 - 159 | 4       |
+|Port F|   160 - 191 | 5       |
+|Port G|   192 - 223 | 6       |
+|Port H|   224 - 255 | 7       |
+
+##### AIOs
+
+Some GPIOs are multiplexed with analog pins and only have digital input functionality. These are also referred to as AIOs. Pins with only an AIO option on this port can only function in input mode. See the device data sheet for list of AIO signals. By default, these pins function as analog pins and the GPIOs are in a high-impedance state.
+
+##### AGPIOs
+
+Some GPIOs are multiplexed with analog pins and have digital input and output functionality. These are also referred to as AGPIOs. Unlike AIOs, AGPIOs have full input and output capability. By default, the AGPIOs are not connected and must be configured.
+
+##### Input Qualification
+
+The input qualification scheme has been designed to be very flexible. Input qualification can be configured by user using the configurator tool. In the case of a GPIO input pin, the qualification can be specified as only synchronized to SYSCLKOUT or qualification by a sampling window. For pins that are configured as peripheral inputs, the input can also be asynchronous in addition to synchronized to SYSCLKOUT or qualified by a sampling window. The remainder of this section describes the options available.
+
+* No Synchronization (Asynchronous Input) : This mode is used for peripherals where input synchronization is not required or the peripheral itself performs the
+synchronization. Examples include communication ports McBSP, SCI, SPI, and I2C. In addition, the ePWM trip zone (TZn) signals can function independent of the presence of SYSCLKOUT
+* Synchronization to SYSCLKOUT Only : This is the default qualification mode of all the pins at reset. In this mode, the input signal is only synchronized to the system clock (SYSCLKOUT). Because the incoming signal is asynchronous, a SYSCLKOUT period of delay is needed for the input to the device to be changed. No further qualification is performed on the signal.
+* Qualification Using a Sampling Window : In this mode, the signal is first synchronized to the system clock (SYSCLKOUT) and then qualified by a specified
+number of cycles before the input is allowed to change. Two parameters are specified by the user for this type of qualification: (1) the sampling period, or how often the signal is sampled, and (2) the number of samples to be
+taken.
+
+```{NOTE}
+Using input synchronization when the peripheral itself performs the synchronization can cause unexpected results. The user must make sure that the GPIO pin is configured for asynchronous in this case.
+```
+
+##### GPIO and Peripheral Muxing
+
+Up to twelve different peripheral functions are multiplexed to each pin along with a general-purpose input/output (GPIO) function. This allows user to choose the peripheral mix and pinout that works best for your particular application.
+
+```{NOTE}
+Available Pin Packages:
+Port Driver needs to be initialized as per the available pin package. Refer Device Data Sheet for details about available pin packages.
+```
+
+#### Not supported Features
+
+* Out of total number of available pins for a particular pin package, there are few reserved/not configurable pins.
+
+```{NOTE}
+Refer Device Data Sheet for details about reserved/non-configurable pins for the respective  pin package.
+```
+
+* Lock Configuration and Lock Commit configuration as not supported for the module
+
+#### Non compliance
+
+Below AUTOSAR design requirement is not supported for Port Driver :\
+**SWS_Port_00205** : *Port_Lcfg.c shall include Port_MemMap.h and Port.h*
+>Rejection Reason : Port Driver doesn't have any Link Time configuration input file, it only supports Pre-Compile and Port-Build configurations.
+
+For more details, Refer [AUTOSAR_SWS_PortDriver : Section: 5.1.2 : Header File Structure](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf)
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┗ 📂**Port**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Port.h** : *Contains the API declarations of the Port driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┣ 📜**Port_Pin_Map.h** : *Contains the MACROs to define GPIO MUX values.*\
+ ┃ ┃ ┃ ┗ 📜**Port_Priv.h** : *Contains data structures and Internal function declarations.*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Port.c** : *Contains the implementation of the API for Port driver.*\
+ ┃ ┃ ┃ ┗ 📜**Port_Priv.c** : *Contains Functions that support the API for Port driver*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Port_Header_File_Structure.png
+:alt: Port Header File Structure
+:align: center
+
+Port Header File Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+None
+
+#### Error handling
+
+##### Development Error Reporting
+
+Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|Invalid Port Pin ID requested.|PORT_E_PARAM_PIN|0x0A|
+|Port Pin not configured as changeable.|PORT_E_DIRECTION_UNCHANGEABLE|0x0B|  
+|API Port_Init service called with wrong parameter.|PORT_E_INIT_FAILED|0x0C|
+|API Port_SetPinMode service called when mode is unchangeable. Invalid Mode Passed|PORT_E_PARAM_INVALID_MODE|0x0D|
+|API Port_SetPinMode service called when mode is unchangeable.|PORT_E_MODE_UNCHANGEABLE|0x0E|
+|API service called without module initialization.|PORT_E_UNINIT|0x0F|
+|API called with a Null Pointer.|PORT_E_PARAM_POINTER|0x10|
+
+### Used resources
+
+#### Interrupt Handling
+
+There are no Interrupts in Port
+
+#### Instance support
+
+|CPU instances|supported|
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+Below image shows Port driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.
+
+```{figure} Assets/images/Port_HW_SW_Mapping.png
+:alt: Port HW/SW Mapping
+:align: center
+
+Port HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This implementation depends on the DET in order to report development errors
+The detection of development errors is configurable (ON / OFF), The switch PORT_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+
+##### SchM
+
+If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that PORT module calls at begin and end of critical sections.
+This implementation requires 1 level of exclusive access to guard critical sections.
+
+The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be
+applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter **RteExclusiveAreaImplMechanism**. This parameter is an input for RTE generator. \
+For Port Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
+
+| Exclusive Area Functions used | Port Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
+|-------|-------|-------|-------|
+|PORT_EXCLUSIVE_AREA_0 | Port_SetPinDirection<br>Port_RefreshPortDirection<br>Port_SetPinMode | To protect against multiple access for shared resources, *i.e. GPIO Data and Mode Registers*, which can lead to race condition | **OS_RESOURCE** : If the Port APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If Port APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+
+##### MCU
+
+MCU Module is required to initialize all the clock to be used by different peripherals
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Port Driver implementation supports multiple configuration variants, namely Port Post-Build config and Pre-Compile config. The driver expects generated **Port_cfg.h** to be present as input file.
+The associated Port driver configuration generated source files are **Port_Cfg.c** or
+**Port_PBcfg.c**
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+```{Note}
+Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
+```
+
+#### PortGeneral
+
+##### PortDevErrorDetect
+
+|SWS Item |ECUC_Port_00123|
+|---------|---------------|
+|**Name**   |PortDevErrorDetect|
+|**Parent Container**|PortGeneral|
+|**Description**|-Switches the development error detection and notification on or off <br> &bull; **TRUE**: detection and notification is enabled. <br> &bull; **FALSE**: detection and notification is disabled.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|false|
+|**Post-Build Variant value**|false|
+|Pre-compile time | All Variants|
+|Link time |--|
+|Post-build time|--|
+|**Scope/Dependency**|scope:local|
+
+##### PortSetPinDirectionApi
+
+|SWS Item |ECUC_Port_00131|
+|---------|---------------|
+|**Name**   |PortSetPinDirectionApi|
+|**Parent Container**|PortGeneral|
+|**Description**|Pre-processor switch to enable or disable the use of the function Port_setPinDirection().<br>&bull; **TRUE** : Enabled - Function Port_SetPinDirection() is available <br>&bull; **FALSE** : Disabled - Function Port_SetPinDirection() is not available.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant value**|false|
+|Pre-compile time | All Variants|
+|Link time |--|
+|Post-build time|--|
+|**Scope/Dependency**|scope:local|
+
+##### PortSetPinModeApi
+
+|SWS Item|ECUC_Port_00132|
+|--------|----------------|
+|**Name**|PortSetPinModeApi|
+|**Parent Container**|PortGeneral|
+|**Description**|Pre-processor switch to enable / disable the use of the function Port_SetPinMode().<br> &bull; **TRUE** : Enabled - Function Port_SetPinMode() is available. <br> &bull; **FALSE** : Disabled - Function Port_SetPinMode() is not available|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope:local|
+
+##### PortVersionInfoApi
+
+|SWS Item|ECUC_Port_00133|
+|--------|----------------|
+|**Name**|PortVersionInfoApi|
+|**Parent Container**|PortGeneral|
+|**Description**|Pre-processor switch to enable / disable the API to read out the modules version information.<br>&bull; **TRUE** : Version info API enabled<br>&bull; **FALSE** : Version info API disabled|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope:local|
+
+##### PortDeviceVariant
+
+|Item||
+|----|----|
+|**Name**|PortDeviceVariant|
+|**Parent Container**|PortGeneral|
+|**Description**|Select package variant for F29H85x|
+|**Multiplicity**|1|
+|**type**|EcucEnumerationParamDef|
+|**Range**|--|
+|**Default**|--|
+|Pre-compile time|All Variants|
+|Post-build time|--|
+|**Scope / Dependency**|scope:local|
+
+#### Port Container
+
+##### PortNumberOfPortPins
+
+|SWS Item |ECUC_Port_00124|
+|---------|---------------|
+|**Name**   |PortNumberOfPortPins|
+|**Parent Container**|PortContainer|
+|**Description**|The number of specified PortPins in this PortContainer|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|1.. 65535|
+|**Default value**|..|
+|**Post-Build Variant value**|false|
+|Pre-compile time | All Variants|
+|Link time |--|
+|Post-build time| --|
+|**Scope/Dependency**|scope:local|
+
+#### PortPin
+
+##### PortPinPeripheral
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPinPeripheral|
+|**Parent Container**|PortPin|
+|**Description**|Available Peripherals for the pin package|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Default value**||
+|**Post-Build Variant Value**||
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPinPeripheralInstance
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPinPeripheralInstance|
+|**Parent Container**|PortPin|
+|**Description**|Available instances for the Peripheral selected.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Default value**||
+|**Post-Build Variant Value**||
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPinPeripheralSignal
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPinPeripheralSignal|
+|**Parent Container**|PortPin|
+|**Description**|Select specific type of peripheral signal pin of interest.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**||
+|**Post-Build Variant Value**||
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPhysicalPinId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPhysicalPinId|
+|**Parent Container**|PortPin|
+|**Description**| Identifying The physical Pin Number on the selected Pin Package.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**||
+|**Post-Build Variant Value**||
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPinName
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPinName|
+|**Parent Container**|PortPin|
+|**Description**| Device Pin Name for reference.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPinDirection
+
+|SWS Item|ECUC_Port_00125|
+|--------|----------------|
+|**Name**|PortPinDirection|
+|**Parent Container**|PortPin|
+|**Description**|The initial direction of the pin (IN or OUT). If the direction is not changeable, the value configured here is fixed. The direction must match the pin mode. E.g. a pin used for an ADC must be configured to be an in port. Implementation Type: Port_PinDirectionType|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**||
+|PORT_PIN_IN|Port Pin direction set as input|
+|PORT_PIN_OUT|Port Pin direction set as output|
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope:local|
+
+##### PortPinDirectionChangeable
+
+|SWS Item|ECUC_Port_00126|
+|--------|----------------|
+|**Name**|PortPinDirectionChangeable|
+|**Parent Container**|PortPin|
+|**Description**|Parameter to indicate if the direction is changeable on a port pin during runtime <br>&bull; **TRUE** : Port Pin direction changeable enabled.<br>&bull; **FALSE** : Port Pin direction changeable disabled .|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope:local|
+
+##### PortPinId
+
+|SWS Item|ECUC_Port_00127|
+|--------|----------------|
+|**Name**|PortPinId|
+|**Parent Container**|PortPin|
+|**Description**|Pin Id of the port pin. This value will be assigned to the symbolic name derived from the port pin container short name.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef (Symbolic Name generated for this parameter)|
+|**Range**|1..65535|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope:local|
+
+##### PortPinInitialMode
+
+|SWS Item|ECUC_Port_00128|
+|--------|----------------|
+|**Name**|PortPinInitialMode|
+|**Parent Container**|PortPin|
+|**Description**|Port pin mode from mode list for use with Port_Init() function.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**||
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope:local|
+
+##### PortPinLevelValue
+
+|SWS Item|ECUC_Port_00129|
+|--------|----------------|
+|**Name**|PortPinLevelValue|
+|**Parent Container**|PortPin|
+|**Description**|Port Pin Level value from Port pin list.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**||
+|PORT_PIN_LEVEL_HIGH|Port Pin level is High|
+|PORT_PIN_LEVEL_LOW|Port Pin level is LOW|
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope:local|
+
+##### PortPinMode
+
+|SWS Item|ECUC_Mcu_00130|
+|--------|----------------|
+|**Name**|PortPinMode|
+|**Parent Container**|PortPin|
+|**Description**|Port pin mode from mode list. <br>NOTE: that more than one mode is allowed by default. That way it is e.g. possible to combine DIO with another mode such as ICU..|
+|**Multiplicity**|1..*|
+|**Type**|EcucEnumerationParamDef|
+|**Range**||
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope:local|
+
+##### PortPinModeChangeable
+
+|SWS Item|ECUC_Port_00134|
+|--------|----------------|
+|**Name**|PortPinModeChangeable|
+|**Parent Container**|PortPin|
+|**Description**| Parameter to indicate if the mode is changeable on a port pin during runtime<br>&bull; **TRUE** : Port Pin mode changeable allowed<br> &bull; **FALSE** : Port Pin mode changeable not permitted.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortAnalogMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortAnalogMode|
+|**Parent Container**|PortPin|
+|**Description**|Select whether the pin operates in Analog Mode.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**||
+|**Range**|PORT_ANALOG_DISABLED<br>PORT_ANALOG_ENABLED|
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPinPadConfig
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPinPadConfig|
+|**Parent Container**|PortPin|
+|**Description**|Enable Push-Pull or Open Drain functionality.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**||
+|**Range**|PORT_PIN_TYPE_STD<br>PORT_PIN_TYPE_OPEN_DRAIN<br>PORT_PIN_TYPE_NA|
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPinPullUpConfig
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPinPullUpConfig|
+|**Parent Container**|PortPin|
+|**Description**|Enable Pull Up.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPinQualificationMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPinQualificationMode|
+|**Parent Container**|PortPin|
+|**Description**|Synchronization mode of the peripheral signals.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|PORT_QUAL_SYNC|
+||PORT_QUAL_3SAMPLE|
+||PORT_QUAL_6SAMPLE|
+||PORT_QUAL_ASYNC|
+||PORT_QUAL_NA|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPinQualificationPeriod
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPinQualificationPeriod|
+|**Parent Container**|PortPin|
+|**Description**|Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Default value**|1|
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortPinCoreSelect
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortPinCoreSelect|
+|**Parent Container**|PortPin|
+|**Description**|Selection of core to which pin is to be mapped.|
+|**Multiplicity**|1|
+|**Type**|Enumeration|
+|**Default value**|PORT_CORE_CPU1|
+|**Range**|PORT_CORE_CPU1<br>PORT_CORE_CPU2<br>PORT_CORE_CPU3|
+|**Post-Build Variant Value**|true|
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+##### PortEnableWakeUpPinLPM
+
+|SWS Item||
+|--------|----------------|
+|**Name**|PortEnableWakeUpPinLPM|
+|**Parent Container**|PortPin|
+|**Description**|Use/Don't use the GPIO Pin as a wake up source for the low power modes - standby/halt.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**||
+|Pre-compile time|VARIANT-PRE-COMPILE |
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD |
+|**Scope / Dependency**|scope:local|
+
+Refer [AUTOSAR_SWS_PortDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf) for more configuration parameters details
+
+```{NOTE}
+The analog signals on this device are multiplexed with digital inputs and outputs. Some of these analog IO (AIO) pins do not have digital output capability. Others of these pins are analog pins capable of full digital input and output capability (AGPIO). Analog pins with AIO (digital input only) capability contain "AIO" signals in the Pin Attributes table of the device data sheet. Analog pins with full input and output capability (AGPIO pins) contain "GPIO" signals in the Pin Attributes table of the device data sheet. AGPIO pins also have pin names with both analog signals and GPIO in the name.<br>
+```
+
+#### Steps To Configure Port Module
+
+1. Open EB Tresos configurator tool and Select the Config Variant ( Precompile/Post-Build) and Device Variant ( Pin Package ) parameters
+2. Go to Port Container tab and create a new container
+3. Open the created container and go to PortPin container to create a portPin configuration. ( Multiple PortPin configurations can be created )
+4. Open the created Port pin, and configure the pin parameters
+5. Select the Port pin peripheral instance ( Mode ) which needs to be configured and accordingly select the Peripheral Signal. As per selected Signal, physical pin ID needs to be selected from the list
+6. Configure the other parameters as per pin usage.
+7. Open Port pin Mode tab and add the default port pin mode ( at least one mode is required for this field ). Other supported modes for that pin can also be configured if user needs to change the mode for the pin afterwards.
+8. Configure the number of port pins in port container general tab
+9. Save the configuration and generate the configuration.
+
+### Examples
+
+The example application demonstrates use of Port module, the list below identifies key steps performed in the example.
+
+#### Overview
+
+* Port_Example_Init
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes one pin from each port as GPIO Output using Port_Init()
+  * Port_SetPinDirection Changes the direction of GPIO0 pin to Input ( LED can be connected to GPIO0 to observe the behavior )
+  * Port_RefreshPinDirection will refresh the direction of the pins where direction changeable is FALSE
+  * Port_SetPinMode will change the Mode from GPIO to CAND_TX of the GPIO0 pin
+  * Port_GetVersionInfo will get the software version info details
+
+#### Setup required to run example
+
+* Install Code Composer Studio Theia(CCS Theia) latest version
+* Install latest C29 compiler
+
+#### How to run examples
+
+* Open CCS Theia and import Port Example
+* Build project and start debug project
+
+#### Sample Log
+
+```{EXAMPLE LOGS}
+PORT Driver Sample Application - Starts!!!
+---------------------------------------------------------------------------
+
+Test 1: Initialize Port Driver
+Initializing Port Driver...
+API Port_Init executed successfully
+
+---------------------------------------------------------------------------
+
+Test 2: Change direction for PortPin_0
+Direction changed to INPUT for PortPin_0
+API Port_SetPinDirection executed successfully
+
+---------------------------------------------------------------------------
+
+Test 3: Change Mode for PortPin_0
+Mode changed to MCAND_TX for PortPin_0
+API Port_SetPinMode executed successfully
+
+---------------------------------------------------------------------------
+
+Test 4: Refresh Pin direction for direction unchangeable pins
+API Port_RefreshPortDirection executed successfully
+
+---------------------------------------------------------------------------
+
+Test 5: Get Version info for Port
+ API Port_GetVersionInfo executed successfully
+ PORT MCAL Version Info
+ ---------------------
+ Vendor ID           : 44
+ Module ID           : 124
+ SW Major Version    : 1
+ SW Minor Version    : 0
+ SW Patch Version    : 0
+ 
+---------------------------------------------------------------------------
+
+Port Example App run is Completed
+Result - PASS!!
+```
+
+#### File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂**Port**\
+ ┃ ┃ ┗ 📂 **Port_Example_Init**\
+ ┃ ┃ ┃ ┣ 📂ccs\
+ ┃ ┃ ┃ ┃ ┗ 📜**Port_Example_Init.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Port_Example_Init_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Port.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Port_Cfg.h** : *Contains the generated pre-complier configuration header.*</i>*\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Port_PBcfg.c** : *Contains the Post build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┗ ┗ 📜**📂Port_Example_Init.c** : *Example application for Port*\
+ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{Note}
+ Either Port_PBcfg.c OR Port_Cfg.c will be present based on selected config variant by user
+ ```
