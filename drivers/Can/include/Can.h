@@ -62,7 +62,7 @@ extern "C" {
 /** \brief  Driver Implementation Minor Version. */
 #define CAN_SW_MINOR_VERSION    (0U)
 /** \brief  Driver Implementation Patch Version. */
-#define CAN_SW_PATCH_VERSION    (0U)
+#define CAN_SW_PATCH_VERSION    (1U)
 
 /** 
  * \brief Defines for CAN Driver AUTOSAR version used for compatibility checks. 

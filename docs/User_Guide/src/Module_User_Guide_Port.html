@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.2. PORT Module &mdash; Documentation for F29H85x</title>
+  <title>4.4. PORT Module &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.3. DIO Module" href="Module_User_Guide_Dio.html" />
-    <link rel="prev" title="4.1. MCU Module" href="Module_User_Guide_Mcu.html" /> 
+    <link rel="next" title="4.5. CAN Module" href="Module_User_Guide_Can.html" />
+    <link rel="prev" title="4.3. GPT Module" href="Module_User_Guide_Gpt.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.00.00
+                01.01.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -61,58 +61,64 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Getting_started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.1. MCU Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. PORT Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.2.1. Acronyms and Definitions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">4.2.2. Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.2.3. Functional Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.2.4. Hardware Features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.2.4.1. Hardware Features supported</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.2.4.2. Not supported Features</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.2.4.3. Non compliance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.2. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.3. GPT Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. PORT Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.4.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.4.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.4.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.4.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.4.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.4.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.4.4.3. Non compliance</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#source-files">4.2.5. Source files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.2.6. Module requirements</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.2.6.1. Memory Mapping</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.2.6.2. Scheduling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.2.6.3. Error handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.2.6.4. Error codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.4.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.4.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.4.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.4.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.4.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.4.6.4. Error codes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.2.7. Used resources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.2.7.1. Interrupt Handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.2.7.2. Instance support</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.2.7.3. Hardware-Software Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.4.7. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.4.7.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.4.7.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.4.7.3. Hardware-Software Mapping</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.2.8. Integration description</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.2.8.1. Dependent modules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.2.8.2. Multi-core and Resource allocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.4.8. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.4.8.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.4.8.2. Multi-core and Resource allocator</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">4.2.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#portgeneral">4.2.9.1. PortGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#port-container">4.2.9.2. Port Container</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#portpin">4.2.9.3. PortPin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-port-module">4.2.9.4. Steps To Configure Port Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.4.9. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#portgeneral">4.4.9.1. PortGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-container">4.4.9.2. Port Container</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#portpin">4.4.9.3. PortPin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-port-module">4.4.9.4. Steps To Configure Port Module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">4.2.10. Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#overview">4.2.10.1. Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-example">4.2.10.2. Setup required to run example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-run-examples">4.2.10.3. How to run examples</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sample-log">4.2.10.4. Sample Log</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.2.10.5. File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.4.10. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">4.4.10.1. Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-example">4.4.10.2. Setup required to run example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-run-examples">4.4.10.3. How to run examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample-log">4.4.10.4. Sample Log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.4.10.5. File Structure</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.3. DIO Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.4. GPT Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.5. CAN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.6. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.7. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.8. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.9. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.10. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.11. CDD XBAR Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -134,7 +140,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
-      <li><span class="section-number">4.2. </span>PORT Module</li>
+      <li><span class="section-number">4.4. </span>PORT Module</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -144,9 +150,9 @@
            <div itemprop="articleBody">
              
   <section id="port-module">
-<h1><span class="section-number">4.2. </span>PORT Module<a class="headerlink" href="#port-module" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.4. </span>PORT Module<a class="headerlink" href="#port-module" title="Link to this heading"></a></h1>
 <section id="acronyms-and-definitions">
-<h2><span class="section-number">4.2.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
@@ -188,13 +194,13 @@
 </table>
 </section>
 <section id="introduction">
-<h2><span class="section-number">4.2.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>The Port driver module is an I/O driver in AUTOSAR Basic Software (BSW) layer. PORT driver provide the services for initializing the whole PORT structure of the microcontroller.
 It is used to assign various functionalities to Port and port pins (e.g. GPIOs, ADC, SPI and other peripheral modes)</p>
 <figure class="align-center" id="id1">
 <img alt="PORT MCAL AUTOSAR" src="../_images/Port_Autosar_MCAL.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.6 </span><span class="caption-text">PORT MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.14 </span><span class="caption-text">PORT MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>This document details AUTOSAR BSW PORT module implementation</p>
@@ -218,7 +224,7 @@ It is used to assign various functionalities to Port and port pins (e.g. GPIOs, 
 </table>
 </section>
 <section id="functional-overview">
-<h2><span class="section-number">4.2.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
 <p>The Port module shall provide the service for initializing the whole PORT structure of the microcontroller. Many ports and port pins can be assigned to various functionalities, For e.g.</p>
 <ul class="simple">
 <li><p>General purpose I/O</p></li>
@@ -232,9 +238,9 @@ etc</p></li>
 PORT driver module shall complete the overall configuration and initialization of the port structure which is used in other dependent driver modules. Therefore, other dependent modules driver works on pins and ports which are configured by the PORT driver. Hence PORT driver shall be initialized prior to use of other driver modules functions. Otherwise those functions might exhibit undefined behavior.</p>
 </section>
 <section id="hardware-features">
-<h2><span class="section-number">4.2.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
 <section id="hardware-features-supported">
-<h3><span class="section-number">4.2.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
 <p>Features Supported at a high level are:</p>
 <ul class="simple">
 <li><p>Configure each port and port pin (Input/Output, Pin driver characteristics).</p></li>
@@ -245,7 +251,7 @@ PORT driver module shall complete the overall configuration and initialization o
 <li><p>Port mode changeable during runtime.</p></li>
 </ul>
 <section id="port-structure">
-<h4><span class="section-number">4.2.4.1.1. </span>Port Structure<a class="headerlink" href="#port-structure" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.4.1.1. </span>Port Structure<a class="headerlink" href="#port-structure" title="Link to this heading"></a></h4>
 <p>For the device there are up to 8 Possible I/O Ports. Up to twelve independent peripheral signals are multiplexed on a single GPIO-enabled pin in addition to the CPU-controlled I/O capability.</p>
 <p>Each pin output can be controlled by either a peripheral or one of the CPU controllers.</p>
 <table class="docutils align-default">
@@ -292,15 +298,15 @@ PORT driver module shall complete the overall configuration and initialization o
 </table>
 </section>
 <section id="aios">
-<h4><span class="section-number">4.2.4.1.2. </span>AIOs<a class="headerlink" href="#aios" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.4.1.2. </span>AIOs<a class="headerlink" href="#aios" title="Link to this heading"></a></h4>
 <p>Some GPIOs are multiplexed with analog pins and only have digital input functionality. These are also referred to as AIOs. Pins with only an AIO option on this port can only function in input mode. See the device data sheet for list of AIO signals. By default, these pins function as analog pins and the GPIOs are in a high-impedance state.</p>
 </section>
 <section id="agpios">
-<h4><span class="section-number">4.2.4.1.3. </span>AGPIOs<a class="headerlink" href="#agpios" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.4.1.3. </span>AGPIOs<a class="headerlink" href="#agpios" title="Link to this heading"></a></h4>
 <p>Some GPIOs are multiplexed with analog pins and have digital input and output functionality. These are also referred to as AGPIOs. Unlike AIOs, AGPIOs have full input and output capability. By default, the AGPIOs are not connected and must be configured.</p>
 </section>
 <section id="input-qualification">
-<h4><span class="section-number">4.2.4.1.4. </span>Input Qualification<a class="headerlink" href="#input-qualification" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.4.1.4. </span>Input Qualification<a class="headerlink" href="#input-qualification" title="Link to this heading"></a></h4>
 <p>The input qualification scheme has been designed to be very flexible. Input qualification can be configured by user using the configurator tool. In the case of a GPIO input pin, the qualification can be specified as only synchronized to SYSCLKOUT or qualification by a sampling window. For pins that are configured as peripheral inputs, the input can also be asynchronous in addition to synchronized to SYSCLKOUT or qualified by a sampling window. The remainder of this section describes the options available.</p>
 <ul class="simple">
 <li><p>No Synchronization (Asynchronous Input) : This mode is used for peripherals where input synchronization is not required or the peripheral itself performs the
@@ -316,7 +322,7 @@ taken.</p></li>
 </div>
 </section>
 <section id="gpio-and-peripheral-muxing">
-<h4><span class="section-number">4.2.4.1.5. </span>GPIO and Peripheral Muxing<a class="headerlink" href="#gpio-and-peripheral-muxing" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.4.1.5. </span>GPIO and Peripheral Muxing<a class="headerlink" href="#gpio-and-peripheral-muxing" title="Link to this heading"></a></h4>
 <p>Up to twelve different peripheral functions are multiplexed to each pin along with a general-purpose input/output (GPIO) function. This allows user to choose the peripheral mix and pinout that works best for your particular application.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -326,7 +332,7 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 </section>
 </section>
 <section id="not-supported-features">
-<h3><span class="section-number">4.2.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Out of total number of available pins for a particular pin package, there are few reserved/not configurable pins.</p></li>
 </ul>
@@ -339,7 +345,7 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 </ul>
 </section>
 <section id="non-compliance">
-<h3><span class="section-number">4.2.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
 <p>Below AUTOSAR design requirement is not supported for Port Driver :<br />
 <strong>SWS_Port_00205</strong> : <em>Port_Lcfg.c shall include Port_MemMap.h and Port.h</em></p>
 <blockquote>
@@ -349,7 +355,7 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 </section>
 </section>
 <section id="source-files">
-<h2><span class="section-number">4.2.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -377,29 +383,29 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 <figure class="align-center" id="id2">
 <img alt="Port Header File Structure" src="../_images/Port_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.7 </span><span class="caption-text">Port Header File Structure</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.15 </span><span class="caption-text">Port Header File Structure</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="module-requirements">
-<h2><span class="section-number">4.2.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
 <section id="memory-mapping">
-<h3><span class="section-number">4.2.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
 <p>Will be added in later release</p>
 </section>
 <section id="scheduling">
-<h3><span class="section-number">4.2.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
 <p>None</p>
 </section>
 <section id="error-handling">
-<h3><span class="section-number">4.2.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
 <section id="development-error-reporting">
-<h4><span class="section-number">4.2.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
 <p>Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
 </section>
 </section>
 <section id="error-codes">
-<h3><span class="section-number">4.2.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Type of Error</p></th>
@@ -441,13 +447,13 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 </section>
 </section>
 <section id="used-resources">
-<h2><span class="section-number">4.2.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
 <section id="interrupt-handling">
-<h3><span class="section-number">4.2.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
 <p>There are no Interrupts in Port</p>
 </section>
 <section id="instance-support">
-<h3><span class="section-number">4.2.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>CPU instances</p></th>
@@ -468,27 +474,27 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 </table>
 </section>
 <section id="hardware-software-mapping">
-<h3><span class="section-number">4.2.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
 <p>Below image shows Port driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
 <figure class="align-center" id="id3">
 <img alt="Port HW/SW Mapping" src="../_images/Port_HW_SW_Mapping.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.8 </span><span class="caption-text">Port HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.16 </span><span class="caption-text">Port HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="integration-description">
-<h2><span class="section-number">4.2.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
 <section id="dependent-modules">
-<h3><span class="section-number">4.2.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
 <section id="det">
-<h4><span class="section-number">4.2.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
 <p>This implementation depends on the DET in order to report development errors
 The detection of development errors is configurable (ON / OFF), The switch PORT_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.</p>
 </section>
 <section id="schm">
-<h4><span class="section-number">4.2.8.1.2. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.2. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
 <p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that PORT module calls at begin and end of critical sections.
 This implementation requires 1 level of exclusive access to guard critical sections.</p>
 <p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be
@@ -512,17 +518,17 @@ For Port Module, data consistency and exclusive access to critical sections are 
 </table>
 </section>
 <section id="mcu">
-<h4><span class="section-number">4.2.8.1.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
 <p>MCU Module is required to initialize all the clock to be used by different peripherals</p>
 </section>
 </section>
 <section id="multi-core-and-resource-allocator">
-<h3><span class="section-number">4.2.8.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.8.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
 <p>Not Supported</p>
 </section>
 </section>
 <section id="configuration">
-<h2><span class="section-number">4.2.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The Port Driver implementation supports multiple configuration variants, namely Port Post-Build config and Pre-Compile config. The driver expects generated <strong>Port_cfg.h</strong> to be present as input file.
 The associated Port driver configuration generated source files are <strong>Port_Cfg.c</strong> or
 <strong>Port_PBcfg.c</strong></p>
@@ -532,9 +538,9 @@ The associated Port driver configuration generated source files are <strong>Port
 <p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
 </div>
 <section id="portgeneral">
-<h3><span class="section-number">4.2.9.1. </span>PortGeneral<a class="headerlink" href="#portgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.1. </span>PortGeneral<a class="headerlink" href="#portgeneral" title="Link to this heading"></a></h3>
 <section id="portdeverrordetect">
-<h4><span class="section-number">4.2.9.1.1. </span>PortDevErrorDetect<a class="headerlink" href="#portdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.1.1. </span>PortDevErrorDetect<a class="headerlink" href="#portdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -579,7 +585,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portsetpindirectionapi">
-<h4><span class="section-number">4.2.9.1.2. </span>PortSetPinDirectionApi<a class="headerlink" href="#portsetpindirectionapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.1.2. </span>PortSetPinDirectionApi<a class="headerlink" href="#portsetpindirectionapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -624,7 +630,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portsetpinmodeapi">
-<h4><span class="section-number">4.2.9.1.3. </span>PortSetPinModeApi<a class="headerlink" href="#portsetpinmodeapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.1.3. </span>PortSetPinModeApi<a class="headerlink" href="#portsetpinmodeapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -669,7 +675,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portversioninfoapi">
-<h4><span class="section-number">4.2.9.1.4. </span>PortVersionInfoApi<a class="headerlink" href="#portversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.1.4. </span>PortVersionInfoApi<a class="headerlink" href="#portversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -714,7 +720,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portdevicevariant">
-<h4><span class="section-number">4.2.9.1.5. </span>PortDeviceVariant<a class="headerlink" href="#portdevicevariant" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.1.5. </span>PortDeviceVariant<a class="headerlink" href="#portdevicevariant" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -757,9 +763,9 @@ The associated Port driver configuration generated source files are <strong>Port
 </section>
 </section>
 <section id="port-container">
-<h3><span class="section-number">4.2.9.2. </span>Port Container<a class="headerlink" href="#port-container" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.2. </span>Port Container<a class="headerlink" href="#port-container" title="Link to this heading"></a></h3>
 <section id="portnumberofportpins">
-<h4><span class="section-number">4.2.9.2.1. </span>PortNumberOfPortPins<a class="headerlink" href="#portnumberofportpins" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.1. </span>PortNumberOfPortPins<a class="headerlink" href="#portnumberofportpins" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -808,9 +814,9 @@ The associated Port driver configuration generated source files are <strong>Port
 </section>
 </section>
 <section id="portpin">
-<h3><span class="section-number">4.2.9.3. </span>PortPin<a class="headerlink" href="#portpin" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.3. </span>PortPin<a class="headerlink" href="#portpin" title="Link to this heading"></a></h3>
 <section id="portpinperipheral">
-<h4><span class="section-number">4.2.9.3.1. </span>PortPinPeripheral<a class="headerlink" href="#portpinperipheral" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.1. </span>PortPinPeripheral<a class="headerlink" href="#portpinperipheral" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -855,7 +861,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinperipheralinstance">
-<h4><span class="section-number">4.2.9.3.2. </span>PortPinPeripheralInstance<a class="headerlink" href="#portpinperipheralinstance" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.2. </span>PortPinPeripheralInstance<a class="headerlink" href="#portpinperipheralinstance" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -900,7 +906,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinperipheralsignal">
-<h4><span class="section-number">4.2.9.3.3. </span>PortPinPeripheralSignal<a class="headerlink" href="#portpinperipheralsignal" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.3. </span>PortPinPeripheralSignal<a class="headerlink" href="#portpinperipheralsignal" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -945,7 +951,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portphysicalpinid">
-<h4><span class="section-number">4.2.9.3.4. </span>PortPhysicalPinId<a class="headerlink" href="#portphysicalpinid" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.4. </span>PortPhysicalPinId<a class="headerlink" href="#portphysicalpinid" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -990,7 +996,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinname">
-<h4><span class="section-number">4.2.9.3.5. </span>PortPinName<a class="headerlink" href="#portpinname" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.5. </span>PortPinName<a class="headerlink" href="#portpinname" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1035,7 +1041,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpindirection">
-<h4><span class="section-number">4.2.9.3.6. </span>PortPinDirection<a class="headerlink" href="#portpindirection" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.6. </span>PortPinDirection<a class="headerlink" href="#portpindirection" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1086,7 +1092,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpindirectionchangeable">
-<h4><span class="section-number">4.2.9.3.7. </span>PortPinDirectionChangeable<a class="headerlink" href="#portpindirectionchangeable" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.7. </span>PortPinDirectionChangeable<a class="headerlink" href="#portpindirectionchangeable" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1131,7 +1137,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinid">
-<h4><span class="section-number">4.2.9.3.8. </span>PortPinId<a class="headerlink" href="#portpinid" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.8. </span>PortPinId<a class="headerlink" href="#portpinid" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1179,7 +1185,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpininitialmode">
-<h4><span class="section-number">4.2.9.3.9. </span>PortPinInitialMode<a class="headerlink" href="#portpininitialmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.9. </span>PortPinInitialMode<a class="headerlink" href="#portpininitialmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1224,7 +1230,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinlevelvalue">
-<h4><span class="section-number">4.2.9.3.10. </span>PortPinLevelValue<a class="headerlink" href="#portpinlevelvalue" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.10. </span>PortPinLevelValue<a class="headerlink" href="#portpinlevelvalue" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1275,7 +1281,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinmode">
-<h4><span class="section-number">4.2.9.3.11. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.11. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1335,7 +1341,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinmodechangeable">
-<h4><span class="section-number">4.2.9.3.12. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.12. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1380,7 +1386,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portanalogmode">
-<h4><span class="section-number">4.2.9.3.13. </span>PortAnalogMode<a class="headerlink" href="#portanalogmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.13. </span>PortAnalogMode<a class="headerlink" href="#portanalogmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1428,7 +1434,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinpadconfig">
-<h4><span class="section-number">4.2.9.3.14. </span>PortPinPadConfig<a class="headerlink" href="#portpinpadconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.14. </span>PortPinPadConfig<a class="headerlink" href="#portpinpadconfig" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1476,7 +1482,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinpullupconfig">
-<h4><span class="section-number">4.2.9.3.15. </span>PortPinPullUpConfig<a class="headerlink" href="#portpinpullupconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.15. </span>PortPinPullUpConfig<a class="headerlink" href="#portpinpullupconfig" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1521,7 +1527,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinqualificationmode">
-<h4><span class="section-number">4.2.9.3.16. </span>PortPinQualificationMode<a class="headerlink" href="#portpinqualificationmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.16. </span>PortPinQualificationMode<a class="headerlink" href="#portpinqualificationmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1581,7 +1587,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpinqualificationperiod">
-<h4><span class="section-number">4.2.9.3.17. </span>PortPinQualificationPeriod<a class="headerlink" href="#portpinqualificationperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.17. </span>PortPinQualificationPeriod<a class="headerlink" href="#portpinqualificationperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1626,7 +1632,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portpincoreselect">
-<h4><span class="section-number">4.2.9.3.18. </span>PortPinCoreSelect<a class="headerlink" href="#portpincoreselect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.18. </span>PortPinCoreSelect<a class="headerlink" href="#portpincoreselect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1674,7 +1680,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </table>
 </section>
 <section id="portenablewakeuppinlpm">
-<h4><span class="section-number">4.2.9.3.19. </span>PortEnableWakeUpPinLPM<a class="headerlink" href="#portenablewakeuppinlpm" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.19. </span>PortEnableWakeUpPinLPM<a class="headerlink" href="#portenablewakeuppinlpm" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SWS Item</p></th>
@@ -1725,7 +1731,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </section>
 </section>
 <section id="steps-to-configure-port-module">
-<h3><span class="section-number">4.2.9.4. </span>Steps To Configure Port Module<a class="headerlink" href="#steps-to-configure-port-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.4. </span>Steps To Configure Port Module<a class="headerlink" href="#steps-to-configure-port-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and Select the Config Variant ( Precompile/Post-Build) and Device Variant ( Pin Package ) parameters</p></li>
 <li><p>Go to Port Container tab and create a new container</p></li>
@@ -1740,10 +1746,10 @@ The associated Port driver configuration generated source files are <strong>Port
 </section>
 </section>
 <section id="examples">
-<h2><span class="section-number">4.2.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>The example application demonstrates use of Port module, the list below identifies key steps performed in the example.</p>
 <section id="overview">
-<h3><span class="section-number">4.2.10.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.10.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Port_Example_Init</p>
 <ul>
@@ -1762,21 +1768,21 @@ The associated Port driver configuration generated source files are <strong>Port
 </ul>
 </section>
 <section id="setup-required-to-run-example">
-<h3><span class="section-number">4.2.10.2. </span>Setup required to run example<a class="headerlink" href="#setup-required-to-run-example" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.10.2. </span>Setup required to run example<a class="headerlink" href="#setup-required-to-run-example" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Install Code Composer Studio Theia(CCS Theia) latest version</p></li>
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest C29 compiler</p></li>
 </ul>
 </section>
 <section id="how-to-run-examples">
-<h3><span class="section-number">4.2.10.3. </span>How to run examples<a class="headerlink" href="#how-to-run-examples" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.10.3. </span>How to run examples<a class="headerlink" href="#how-to-run-examples" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Open CCS Theia and import Port Example</p></li>
+<li><p>Open CCS and import Port Example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log">
-<h3><span class="section-number">4.2.10.4. </span>Sample Log<a class="headerlink" href="#sample-log" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.10.4. </span>Sample Log<a class="headerlink" href="#sample-log" title="Link to this heading"></a></h3>
 <div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>PORT Driver Sample Application - Starts!!!
 ---------------------------------------------------------------------------
 
@@ -1821,7 +1827,7 @@ Result - PASS!!
 </div>
 </section>
 <section id="file-structure">
-<h3><span class="section-number">4.2.10.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.10.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -1875,15 +1881,15 @@ Result - PASS!!
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Module_User_Guide_Mcu.html" class="btn btn-neutral float-left" title="4.1. MCU Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Module_User_Guide_Dio.html" class="btn btn-neutral float-right" title="4.3. DIO Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Module_User_Guide_Gpt.html" class="btn btn-neutral float-left" title="4.3. GPT Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Can.html" class="btn btn-neutral float-right" title="4.5. CAN Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Oct 22, 2024.
+          <span class="lastupdated" >Last updated on Dec 18, 2024.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

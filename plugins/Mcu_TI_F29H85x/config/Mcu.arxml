@@ -6,13 +6,13 @@
     <AR-PACKAGE UUID="59d0c860-31ea-4817-b5ec-924da6304cd9">
       <SHORT-NAME>TI_F29H85x</SHORT-NAME>
       <ELEMENTS>
-        <ECUC-DEFINITION-COLLECTION UUID="98bcdc0a-c901-4209-990c-2a3691418326">
+        <ECUC-DEFINITION-COLLECTION>
           <SHORT-NAME>myEcuParameterDefinition</SHORT-NAME>
           <MODULE-REFS>
             <MODULE-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Mcu</MODULE-REF>
           </MODULE-REFS>
         </ECUC-DEFINITION-COLLECTION>
-        <ECUC-MODULE-DEF UUID="16456b23-9bb0-4552-b17d-04403012e935">
+        <ECUC-MODULE-DEF UUID="59d0c860-31ea-4817-b5ec-924da6304dc9">
           <SHORT-NAME>Mcu</SHORT-NAME>
           <DESC>
             <L-2 L="EN">Configuration of the Mcu (Microcontroller Unit) module.</L-2>
@@ -25,8 +25,6 @@
               </DOC-REVISION>
             </DOC-REVISIONS>
           </ADMIN-DATA>
-          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
           <POST-BUILD-VARIANT-SUPPORT>true</POST-BUILD-VARIANT-SUPPORT>
           <REFINED-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/AUTOSAR/EcucDefs/Mcu</REFINED-MODULE-DEF-REF>
           <SUPPORTED-CONFIG-VARIANTS>
@@ -34,21 +32,17 @@
             <SUPPORTED-CONFIG-VARIANT>VARIANT-PRE-COMPILE</SUPPORTED-CONFIG-VARIANT>
           </SUPPORTED-CONFIG-VARIANTS>
           <CONTAINERS>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="8f814c54-5465-4e68-8f3d-e8d07249efc2">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="9fc20e0c-35b4-4f58-834f-2413df677af3">
               <SHORT-NAME>McuGeneralConfiguration</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">This container contains the configuration (parameters) of the MCU driver.</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <PARAMETERS>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="c8c4af84-df44-466d-8343-380a7ef0b8e4">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="b23de9eb-4979-4b3b-bc31-f2b8f1d1d518">
                   <SHORT-NAME>McuDevErrorDetect</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Switches the development error detection and notification on or off.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -65,13 +59,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="f4eb0802-5a3a-4737-87a2-915bcbcfae49">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="b473f85f-d019-42eb-a2be-e2f0211ed3a9">
                   <SHORT-NAME>McuGetRamStateApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Pre-processor switch to enable/disable the API Mcu_GetRamState.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -88,13 +80,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>true</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="cd95307b-a35b-4a6f-aff5-cd920b7f5357">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="36d63278-dab4-473a-911d-ee776916a764">
                   <SHORT-NAME>McuInitClock</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">If this parameter is set to FALSE, the clock initialization has to be disabled from the MCU driver. This concept applies when there are some write once clock registers and a bootloader is present. If this parameter is set to TRUE, the MCU driver is responsible of the clock initialization.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -111,13 +101,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>true</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="274366b6-ed2c-4c93-9053-d66723ae59a3">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="5faa2aa7-df4e-47cd-b4e6-c57d9186d49d">
                   <SHORT-NAME>McuNoPll</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This parameter shall be set True, if the H/W does not have a PLL or the PLL circuitry is enabled after the power on without S/W intervention. In this case MCU_DistributePllClock has to be disabled and  MCU_GetPllStatus has to return MCU_PLL_STATUS_UNDEFINED. Otherwise this parameters has to be set False</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -134,13 +122,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>true</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="f2ebaa8b-2059-4276-a535-d145a242bed3">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="4d8ee4b3-d1f8-488f-89d8-32ea2facaffa">
                   <SHORT-NAME>McuPerformResetApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Pre-processor switch to enable / disable the use of the function Mcu_PerformReset()</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -157,13 +143,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>true</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="3b477f60-326f-4c59-910b-cd6d22ff2468">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="1a50876a-4fa4-4f98-9951-15411b993c4f">
                   <SHORT-NAME>McuVersionInfoApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Pre-processor switch to enable / disable the API to read out the modules version information.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -182,22 +166,18 @@
                 </ECUC-BOOLEAN-PARAM-DEF>
               </PARAMETERS>
             </ECUC-PARAM-CONF-CONTAINER-DEF>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="4e7f2a32-3ad3-481e-b468-15c0a92da18d">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="5eb0df1b-e149-40ec-aa3d-7d3fd1c9bdfa">
               <SHORT-NAME>McuModuleConfiguration</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">This container contains the configuration (parameters) of the MCU driver</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
               <PARAMETERS>
-                <ECUC-ENUMERATION-PARAM-DEF UUID="0e74cb8a-5c18-4174-8e19-0152b8910189">
+                <ECUC-ENUMERATION-PARAM-DEF UUID="7f35a273-edab-4b99-b3cf-cc1f8c09c580">
                   <SHORT-NAME>McuClockSrcFailureNotification</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Enables/Disables clock failure notification. In case this feature is not supported by HW the setting should be disabled.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -224,13 +204,11 @@
                     </ECUC-ENUMERATION-LITERAL-DEF>
                   </LITERALS>
                 </ECUC-ENUMERATION-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="9daabe2e-4831-4018-9a18-878ac9ccb1fe">
+                <ECUC-INTEGER-PARAM-DEF UUID="823392a2-1a5e-4596-bb9a-5d93de6391c9">
                   <SHORT-NAME>McuNumberOfMcuModes</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This parameter shall represent the number of Modes available for the MCU.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -249,13 +227,11 @@
                   <MAX>255</MAX>
                   <MIN>1</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="d63e54f2-d399-4ef9-95fe-b7d3fee210f8">
+                <ECUC-INTEGER-PARAM-DEF UUID="ffd9f3d9-ae1b-437e-b93a-2e4291b2b711">
                   <SHORT-NAME>McuRamSectors</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This parameter shall represent the number of RAM sectors available for the MCU.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -274,7 +250,7 @@
                   <MAX>4294967295</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="ec065121-7ad0-4855-9684-6d965b3e3164">
+                <ECUC-INTEGER-PARAM-DEF UUID="0912db63-9529-4f23-a8bc-6608f804e339">
                   <SHORT-NAME>McuResetSetting</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This parameter relates to the MCU specific reset configuration. This applies to the function Mcu_PerformReset, which performs a microcontroller reset using the hardware feature of the microcontroller.</L-2>
@@ -312,7 +288,7 @@
                 </ECUC-INTEGER-PARAM-DEF>
               </PARAMETERS>
               <SUB-CONTAINERS>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f6a8c773-88b3-42b6-aba9-208ad77582c3">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="12f74ca9-646b-48f0-ba34-733254136656">
                   <SHORT-NAME>McuClockSettingConfig</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the configuration (parameters) for the Clock settings of the MCU.  Please see MCU031 for more information on the MCU clock settings.</L-2>
@@ -321,13 +297,11 @@
                   <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-INTEGER-PARAM-DEF UUID="5ebbbd8d-c127-4f2f-b570-0bb62156a959">
+                    <ECUC-INTEGER-PARAM-DEF UUID="5ebff19c-241a-493a-86b3-7574da008997">
                       <SHORT-NAME>McuClockSettingId</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">The Id of this McuClockSettingConfig to be used as argument for the API call &quot;Mcu_InitClock&quot;.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -348,7 +322,7 @@
                     </ECUC-INTEGER-PARAM-DEF>
                   </PARAMETERS>
                   <SUB-CONTAINERS>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="57b7be8b-944e-41f2-bf0c-9103db0b3c2b">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="0463be10-4ccb-4bf4-a6c9-90ce10f4158c">
                       <SHORT-NAME>McuClockReferencePoint</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This container defines a reference point in the Mcu Clock tree. It defines the frequency which then can be used by other modules as an input value. Lower multiplicity is 1, as even in the simplest case (only one frequency is used), there is one frequency to be defined.</L-2>
@@ -357,13 +331,11 @@
                       <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-FLOAT-PARAM-DEF UUID="97aec582-0ea9-4d23-9dd0-40b28d3a3ad5">
+                        <ECUC-FLOAT-PARAM-DEF UUID="39ab3639-f00e-4666-ac1a-57dea120597d">
                           <SHORT-NAME>McuClockReferencePointFrequency</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">This is the frequency for the specific instance of the McuClockReferencePoint container. It shall be given in Hz.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -384,15 +356,13 @@
                         </ECUC-FLOAT-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="51bf1bc9-d556-4c4e-9824-682b939c579f">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="28117d70-6a62-41ef-940d-cb694bcc98e3">
                       <SHORT-NAME>McuClkConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific clock settings</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="bf1435af-739b-4eb5-8730-354f70ae33bd">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="7f1036b8-b146-48e5-a29d-ee6bc3c571c0">
                           <SHORT-NAME>McuClockSource</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Select Clock Source</L-4>
@@ -400,8 +370,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the clock source.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -435,7 +403,7 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="94ca7d9e-a0bd-4dd8-b536-0bab598fb5c9">
+                        <ECUC-INTEGER-PARAM-DEF UUID="5f266438-58ce-46a7-8cc8-1493562db656">
                           <SHORT-NAME>McuExternalClkFreq</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">External Clock Frequency</L-4>
@@ -465,7 +433,7 @@
                           <MAX>25000000</MAX>
                           <MIN>10000000</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="0c0087fb-70a0-4541-953f-bbfe2d2aa17f">
+                        <ECUC-INTEGER-PARAM-DEF UUID="61e40616-a593-4779-948d-67057eedd04b">
                           <SHORT-NAME>McuSysClkDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">System Clock Divider</L-4>
@@ -473,8 +441,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the System Clock Divider. Value should be 1 or even value up to 64.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -492,7 +458,7 @@
                           <MAX>64</MAX>
                           <MIN>1</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="bdad3663-5ced-4030-8fe9-fc86e0772875">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="64b7a6fa-9ffe-480d-a4ba-823df2b65336">
                           <SHORT-NAME>McuHsmClkDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">HSM Clock Divider</L-4>
@@ -500,8 +466,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the HSM Clock Divider. Value should be 1 or even value up to 16.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -539,7 +503,7 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="1a8c6999-e351-4e6a-a4a3-f98e00017255">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="c3d65227-472c-41c9-9fc0-273aa3255cb0">
                           <SHORT-NAME>McuEpwmClkDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">EPWM Clock Divider</L-4>
@@ -547,8 +511,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the EPWM Clock Divider. Value should be 1 or 2.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -574,7 +536,7 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="e0c543e0-2d3b-4fe6-8d8c-d4796f321896">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="8a3e0137-9340-4462-bf58-b207f57dd681">
                           <SHORT-NAME>McuEmifClkDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">EMIF Clock Divider</L-4>
@@ -582,8 +544,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the EMIF Clock Divider. Value should be 1 or 2 or 4.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -615,7 +575,7 @@
                         </ECUC-ENUMERATION-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="918cc58c-19fa-49b3-b59a-7447a65d25f9">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="460f917e-74f7-431f-a922-4c697937b18f">
                       <SHORT-NAME>McuLinClkConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Lin clock settings</L-2>
@@ -624,7 +584,7 @@
                       <UPPER-MULTIPLICITY>2</UPPER-MULTIPLICITY>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="f0107f0f-f5f2-43ca-9741-2ed3e909466b">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="05e044b2-7f28-40fc-a589-dddac6d2e385">
                           <SHORT-NAME>McuLinInstance</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Select Lin Instance ID</L-4>
@@ -632,8 +592,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the Instance ID for Lin module.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -659,7 +617,7 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="04a124e1-3866-44d9-84a7-5b38836a94e1">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="c49fb4d6-b992-4235-8579-10344c2b91f7">
                           <SHORT-NAME>McuLinClkDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Lin Clock Divider</L-4>
@@ -667,8 +625,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the Lin Clock Divider.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -700,7 +656,7 @@
                         </ECUC-ENUMERATION-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="e6663c2d-199a-46d9-87da-cff83e85cc17">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c04e43a4-160b-4b0b-af5b-02edf953b380">
                       <SHORT-NAME>McuMCanClkConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific MCan clock settings</L-2>
@@ -709,7 +665,7 @@
                       <UPPER-MULTIPLICITY>6</UPPER-MULTIPLICITY>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="c130012e-2240-48e4-9f1d-b8da0c371af9">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="0e000ef0-ab5c-47ea-84ca-5de56f53bfb0">
                           <SHORT-NAME>McuMCanInstance</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Select MCan Instance ID</L-4>
@@ -717,8 +673,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the Instance ID for MCan module.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -760,7 +714,7 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="dbf896c3-c174-43ae-92ca-f91e581a5e28">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="f8a7f6bc-1bc9-4c86-be70-0004b49169b6">
                           <SHORT-NAME>McuMCanClockSource</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Select MCan Clock Source</L-4>
@@ -768,8 +722,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the clock source for MCan module.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -799,7 +751,7 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="e4dd51d8-76f1-493a-9230-c1c2fde84ee5">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="f4b4c3bb-e93a-4a4c-b157-a8a055a9ca4d">
                           <SHORT-NAME>McuMCanClkDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">MCan Clock Divider</L-4>
@@ -807,8 +759,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the MCan Clock Divider.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -908,15 +858,13 @@
                         </ECUC-ENUMERATION-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="7bb42838-2c0e-4f83-aec7-8f23d5419df9">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f42ea3d6-d0d3-4c78-99e7-63933a98f5f7">
                       <SHORT-NAME>McuCpuTimerClkConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific CPU Timer clock settings</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="58b763c6-9a69-47b2-b33e-7f9d88d0764b">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="60691d3d-81da-47f5-8338-4f6fa236a992">
                           <SHORT-NAME>McuCpuTimer2ClockSource</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Select CPU timer2 Clock Source</L-4>
@@ -924,8 +872,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the clock source for CpuTimer 2 module.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -959,7 +905,7 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="1c6c2b06-9f52-4119-834f-9343a028bf9f">
+                        <ECUC-INTEGER-PARAM-DEF UUID="5909eb22-0fc8-42e8-9c39-50e73d8111f3">
                           <SHORT-NAME>McuCpuTimer2ClkDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Cpu timer 2 Clock Divider</L-4>
@@ -967,8 +913,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the CpuTimer 2 prescalar.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -988,21 +932,17 @@
                         </ECUC-INTEGER-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="e6bdea40-a9c5-469e-a832-05b9777e2995">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="58f41d14-1eb2-4d41-95d3-89dc0291eff3">
                       <SHORT-NAME>McuExternalClkOutConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific External clock output settings</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b9f715b2-ce36-45c5-8e8e-f4fc70a7e325">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="e4cc9b2d-10d1-4e30-87a8-d8291cc0cd3d">
                           <SHORT-NAME>McuExternalClockOut</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">External Clock output Enable flag.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1019,7 +959,7 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="eb32e0c0-58a4-4b9d-bf57-a485556d412f">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="8e63a030-6d23-4a87-900b-927da0dc5b11">
                           <SHORT-NAME>McuExternalClockOutSource</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Select External Clock Output Source</L-4>
@@ -1077,7 +1017,7 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="86510b8a-48e4-40e0-86fa-83c4568cc84d">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="be54714a-acf1-46ff-8126-f2fbc676d17f">
                           <SHORT-NAME>McuExternalClkOutDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">External Clock Output Divider</L-4>
@@ -1125,21 +1065,17 @@
                         </ECUC-ENUMERATION-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="987014e5-827d-4955-92a8-10b6778a8836">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="408c803c-ed03-4234-ba94-6beea43b229a">
                       <SHORT-NAME>McuEthercatClkConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Ethercat clock settings</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="6cf2443f-66b0-4c3b-b1c6-4258ee347c4b">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="e5bb64aa-d617-45c0-980b-08bdcd8be9f6">
                           <SHORT-NAME>McuEthercatPhyClkEnable</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Ethercat Clock Enable value.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1166,7 +1102,7 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="43a97434-cc48-4423-af3e-69fcf30f5123">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="9ec94822-7942-4b15-b315-e7eaecd0d5d3">
                           <SHORT-NAME>McuEthercatClkDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Ethercat clock Divider</L-4>
@@ -1174,8 +1110,6 @@
                           <DESC>
                             <L-2 L="EN">Configures the Ethercat clock divider.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -1227,7 +1161,7 @@
                         </ECUC-ENUMERATION-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="5b00cd15-4fe9-49bd-beef-dea8def781af">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="78e2d2cb-7f24-48bc-9ae5-87b66feb36af">
                       <SHORT-NAME>McuPllConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific PLL settings</L-2>
@@ -1238,7 +1172,7 @@
                       <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-INTEGER-PARAM-DEF UUID="9643da70-3622-4892-bab6-3bfd4f7ce669">
+                        <ECUC-INTEGER-PARAM-DEF UUID="21bdac1b-1d4c-4779-b8a2-84e7954214cc">
                           <SHORT-NAME>McuPLLRefDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Reference Clock Divider</L-4>
@@ -1246,8 +1180,6 @@
                           <DESC>
                             <L-2 L="EN">Configures Reference Clock Divider.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -1265,7 +1197,7 @@
                           <MAX>32</MAX>
                           <MIN>1</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="d2d7c963-eb7c-4ae0-a5da-725e03432866">
+                        <ECUC-INTEGER-PARAM-DEF UUID="e691f67a-0aa0-4cd2-aa0f-29dea656b0ef">
                           <SHORT-NAME>McuPLLIntMult</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Integer Multiplier</L-4>
@@ -1273,8 +1205,6 @@
                           <DESC>
                             <L-2 L="EN">Configures Integer Multiplier.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -1292,7 +1222,7 @@
                           <MAX>127</MAX>
                           <MIN>4</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="82eac765-0971-4212-861c-b037725e316a">
+                        <ECUC-INTEGER-PARAM-DEF UUID="c45d156d-c83e-4453-87d4-b484085d135a">
                           <SHORT-NAME>McuPLLOutDiv</SHORT-NAME>
                           <LONG-NAME>
                             <L-4 L="EN">Output Clock Divider</L-4>
@@ -1300,8 +1230,6 @@
                           <DESC>
                             <L-2 L="EN">Configures Output Clock Divider.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -1321,21 +1249,17 @@
                         </ECUC-INTEGER-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="18de5bac-0e37-4f4c-b0d8-cd2f7417540f">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="a461dff8-15a2-4b16-9a2c-6511c9b79a6a">
                       <SHORT-NAME>McuPeripheralClock0</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="1e08fcb9-f7c5-4322-97c4-134d0c1684c3">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="9969e9a5-4af5-473a-82cd-638e892ffa54">
                           <SHORT-NAME>MCU_PERIPH_CLK_RTDMA1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1352,13 +1276,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="0fecb704-ebce-40c0-84dd-ce3c02b56bab">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="fe2c7e88-7866-4578-a6bc-48627e2fb2c0">
                           <SHORT-NAME>MCU_PERIPH_CLK_RTDMA2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1375,13 +1297,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="94837080-f0d4-41c6-9ec0-882040d34ac0">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="9bde1555-e608-4540-be1c-69bc856662aa">
                           <SHORT-NAME>MCU_PERIPH_CLK_CPUTIMER0</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1398,13 +1318,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b5d601b9-7d6b-4d91-b634-dbcf42ad3003">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="55f574ec-4e4d-427f-ac75-f62504860f42">
                           <SHORT-NAME>MCU_PERIPH_CLK_CPUTIMER1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1421,13 +1339,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="2223a36a-acfc-45d0-bea5-4bc00bf481f6">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="6098ad7d-fa15-44bc-b6c5-8c0138b4e2b0">
                           <SHORT-NAME>MCU_PERIPH_CLK_CPUTIMER2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1444,13 +1360,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="940bcdca-b5a7-44e2-883d-87c2714b1e98">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="2ad32808-d86d-4322-988f-87c6c31cb302">
                           <SHORT-NAME>MCU_PERIPH_CLK_TBCLKSYNC</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM Time Base Clock sync.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1467,13 +1381,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="21aa40df-15fb-4f74-9f75-1b2af8eb98cc">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="4f41e4da-a5fc-442c-89ee-0004b5669381">
                           <SHORT-NAME>MCU_PERIPH_CLK_GTBCLKSYNC</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM Time Base Clock Global sync.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1490,13 +1402,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b7be7b97-7a2a-4587-b6af-aae8daec0fc9">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="bdbbe5b3-66c9-42ea-b233-b8a6d314c6e7">
                           <SHORT-NAME>MCU_PERIPH_CLK_CPUXERAD</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ERAD Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1513,13 +1423,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="719123fd-e999-43fe-9765-9b58f3172842">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="95cdadcb-cb85-43c0-841c-09767669cb3e">
                           <SHORT-NAME>MCU_PERIPH_CLK_CPUXDLT</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">DLT Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1538,21 +1446,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="41454282-7deb-4fdb-8e2c-112a70761348">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="8f9b9383-e375-48a3-b219-b3bfb69bef3a">
                       <SHORT-NAME>McuPeripheralClock1</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Peripheral Clock Gating - EMIF</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="c9f9f886-09d4-4d80-8b78-cb4143c78bb9">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="10c8c4a5-9971-4636-b27d-93c50b84f2af">
                           <SHORT-NAME>MCU_PERIPH_CLK_EMIF1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EMIF1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1571,21 +1475,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="fac4b2b2-d14d-4054-9835-4c1db49c5406">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="aea30547-0915-4ac5-90fd-3c931bcbf082">
                       <SHORT-NAME>McuPeripheralClock2</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - EPWM</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="77cd52e8-0c47-4119-9555-55a7cd5284ef">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="91509fd7-10bb-4bbd-86d8-5a9d50d72846">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1602,13 +1502,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="0c74a215-c897-491c-8858-4ec4eb78f546">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="9d4db964-3925-405a-83dc-fc46ecdc4384">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM2 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1625,13 +1523,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b78f88ce-2fda-4503-9eb0-ffa3d9286a37">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="986bd0d7-0649-4b4a-be75-557581f714ad">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM3 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1648,13 +1544,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="18723087-68b5-464d-8eed-cc9ecfd2feba">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="6f672ac1-a808-459c-a9b1-a1b558fc5ba5">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM4</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM4 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1671,13 +1565,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="d9f93f48-1ca0-471d-a2bc-12ec947027ee">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="ffe4be58-1925-4536-9b92-6b0bd587036c">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM5</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM5 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1694,13 +1586,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="fa12da99-cd6e-4efb-afed-14442cee14f4">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="0fc47630-28b8-4464-889b-535fd4cf1ae4">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM6</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM6 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1717,13 +1607,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="e5d630a4-272a-4767-88b4-4e22f0948f14">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="69c8a88b-dcd1-45e2-b57a-34cc53635e5b">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM7</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM7 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1740,13 +1628,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="9ec7596b-f9c6-468a-a666-e8fbb2687422">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a2848a4b-0056-4bef-96e7-3511465db19e">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM8</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM8 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1763,13 +1649,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="a0014743-9fdf-45a7-833a-3648c4027bef">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="67a34af9-8d38-48f4-941e-e58334bf764d">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM9</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM9 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1786,13 +1670,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="7f82412d-b3de-40a5-bb3d-061533b8d507">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="3ee71d7e-00e3-42ba-878e-42a6f9513f36">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM10</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM10 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1809,13 +1691,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b0cf4b1f-8830-4edf-9a1f-a01eaf119252">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="f8f9f9da-1f54-496f-944a-be770b46e143">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM11</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM11 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1832,13 +1712,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="f6b4f331-0e88-48ed-a3f4-3e69ada9f178">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="c96f601f-2f85-4345-a01b-d202858a347e">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM12</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM12 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1855,13 +1733,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="98f5c8f8-d026-4a50-b5f4-eccc6dabb117">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="4012b0c1-a9c2-4ebf-b2e6-fd767a7fec7d">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM13</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM13 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1878,13 +1754,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="802b4735-b5e7-42c3-94f7-8e60406e107a">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="f42ff023-38c1-4a76-8c0c-05e94f00d182">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM14</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM14 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1901,13 +1775,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="6b1daa75-7197-4927-8a01-920ee050d0d7">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="08f72a81-4266-4258-9a94-dc0f018458fe">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM15</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM15 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1924,13 +1796,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="10b116e4-feae-4df2-af5f-4aaa8a18ff94">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="58b104a3-47fd-491f-9948-9cb1ad1819cb">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM16</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM16 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1947,13 +1817,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="a918b094-507a-46bb-8d9b-3fe1bf5dc6dc">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a2c9c438-cd82-48f7-acbf-f5bd9dbe5810">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM17</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM17 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1970,13 +1838,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="e24d1bfb-559d-4f97-8be1-acce876c55e8">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="afa88853-d5e0-4a42-8c9b-029804a23073">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPWM18</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPWM18 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1995,21 +1861,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="3d53d96b-b48e-40e2-9ed0-70231868254c">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f290f1d2-2d0e-4ef9-beb2-025c22a0907c">
                       <SHORT-NAME>McuPeripheralClock3</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - ECAP</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="11d0373f-f279-469f-9a0e-fedc9a8d38fb">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="368686a7-0ba9-48c0-a171-ec42dc39880c">
                           <SHORT-NAME>MCU_PERIPH_CLK_ECAP1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ECAP1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2026,13 +1888,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="6ad7e395-543c-4314-8021-0b064d77facd">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d7296933-944c-4191-8f19-5964c28db2b8">
                           <SHORT-NAME>MCU_PERIPH_CLK_ECAP2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ECAP1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2049,13 +1909,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="e102fe3b-a5f0-46d9-9444-ee1f80ee12cc">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="7324e62e-3c71-40b6-8002-c6cad6001dfe">
                           <SHORT-NAME>MCU_PERIPH_CLK_ECAP3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ECAP1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2072,13 +1930,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="162e4b10-ca5c-4a19-b002-8fe94fba1d40">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="3881f025-f2a2-4bab-9bd8-4b5d69c1509b">
                           <SHORT-NAME>MCU_PERIPH_CLK_ECAP4</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ECAP4 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2095,13 +1951,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="74c3b153-6597-4231-a53d-a084f4c2f05e">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="3a234fb3-e630-4e2a-9f4e-d71886580260">
                           <SHORT-NAME>MCU_PERIPH_CLK_ECAP5</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ECAP5 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2118,13 +1972,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="02ad39b5-c39c-409b-a9c6-b19a4c97a8e0">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d89bfcff-dab1-4652-9f1e-75666930d81b">
                           <SHORT-NAME>MCU_PERIPH_CLK_ECAP6</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ECAP6 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2143,21 +1995,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c1593b2c-bb67-4fc2-b9fe-93ebae8c3434">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="95f17114-4bf3-4b9c-b92a-1a9bbd9dbecb">
                       <SHORT-NAME>McuPeripheralClock4</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - EQEP</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="03fb1ac2-b6be-4e4c-ba6f-f958b4758ab1">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="8836508a-1063-4abc-b617-ea7c5e6dc3a3">
                           <SHORT-NAME>MCU_PERIPH_CLK_EQEP1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EQEP1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2174,13 +2022,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="aff25a3a-3b1b-4a18-b1b3-7ec33376d945">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="4f623e30-8e45-4af1-93d9-11bbc73cb65e">
                           <SHORT-NAME>MCU_PERIPH_CLK_EQEP2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EQEP1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2197,13 +2043,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="bae411b8-43f2-4157-b876-5c60074d740b">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="9874f90e-1721-454d-a560-17f03e01befb">
                           <SHORT-NAME>MCU_PERIPH_CLK_EQEP3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EQEP3 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2220,13 +2064,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="4add12f6-b933-4c3a-9959-3bba5f19984b">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="19ed98a9-52d0-4ab2-9db1-d45df1d44d13">
                           <SHORT-NAME>MCU_PERIPH_CLK_EQEP4</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EQEP4 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2243,13 +2085,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="4b3b0df7-9814-4665-8c78-3ef4f6bbb6bf">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d1790dc7-d5b0-4ea0-9282-3b443a28fceb">
                           <SHORT-NAME>MCU_PERIPH_CLK_EQEP5</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EQEP5 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2266,13 +2106,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="918a82a7-a77e-4dda-a9c2-97b9df28cc88">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="c5ba491e-ee87-4c17-abb2-0d2acea9614f">
                           <SHORT-NAME>MCU_PERIPH_CLK_EQEP6</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EQEP6 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2291,21 +2129,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="a4da9271-5a97-4d92-8018-4bdc4959a70f">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="88a33ad2-87ab-489f-adac-2f106436bb2d">
                       <SHORT-NAME>McuPeripheralClock6</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - SDFM</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="fa6307db-9ef7-4430-b1c5-c74dda82d1cc">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="fe2c9d95-eb6b-4622-aedf-025400b56ec0">
                           <SHORT-NAME>MCU_PERIPH_CLK_SD1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SD1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2322,13 +2156,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="a005c17a-7515-4f22-ba44-9fd6401bcbfb">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d09caf9b-0f8f-41fa-ad49-a5fbaccdcbb6">
                           <SHORT-NAME>MCU_PERIPH_CLK_SD2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SD2 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2345,13 +2177,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="dd1a647e-31ba-482d-a1f6-9f46fe229bc0">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="17996f8d-fb4b-481c-ad93-128a1265f1eb">
                           <SHORT-NAME>MCU_PERIPH_CLK_SD3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SD3 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2368,13 +2198,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="c5feaa86-7734-4732-becc-5690b0fdcadd">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a4ef9f43-2c54-424f-b7d6-346f9e97b5cb">
                           <SHORT-NAME>MCU_PERIPH_CLK_SD4</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SD4 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2393,21 +2221,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="906f2a98-e18c-4614-9f89-5972f9599652">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ed88a448-880c-45e8-b79e-b046082cc892">
                       <SHORT-NAME>McuPeripheralClock7</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - SCI, UART</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="329fae44-3281-4a73-8032-c38017a37eb1">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d3da657a-3ea5-4331-929f-059dcaa958c3">
                           <SHORT-NAME>MCU_PERIPH_CLK_UARTA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">UART A Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2424,13 +2248,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="1d0a0f9a-de9a-4cfb-ad53-b4311b9eafb5">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="b1199dc8-3ea6-4a2e-83b6-52b80b7c8535">
                           <SHORT-NAME>MCU_PERIPH_CLK_UARTB</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">UART B Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2447,13 +2269,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="0e696e89-bc1c-431e-9ab4-83c6dd781db1">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="e8bf5e0c-07fb-451d-aede-f9cc192bea46">
                           <SHORT-NAME>MCU_PERIPH_CLK_UARTC</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">UART C Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2470,13 +2290,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="c984aa4b-d223-4b6e-9f45-7c5a6a4640e8">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="eab62b45-9169-46e5-ac9e-17f41f66df42">
                           <SHORT-NAME>MCU_PERIPH_CLK_UARTD</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">UART D Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2493,13 +2311,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="baefb243-92ce-4a93-85ec-4e399e1ff330">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="303178d3-44a9-41e1-a5b6-c14116e49201">
                           <SHORT-NAME>MCU_PERIPH_CLK_UARTE</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">UART E Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2516,13 +2332,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="610d56a1-7510-4957-a65c-8e7025ab81c8">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d929daa2-1db0-4bab-b636-9f944b3c803d">
                           <SHORT-NAME>MCU_PERIPH_CLK_UARTF</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">UART F Module Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2541,21 +2355,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="8ee6a824-87ae-43bf-8089-27edcd6e08c1">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="b45dedf2-6903-4e61-90a5-c1eeb46af96d">
                       <SHORT-NAME>McuPeripheralClock8</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - SPI</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="2c4a19ed-114d-47c7-b820-70a81b64fe75">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="385b0d84-9f52-4d90-82e9-b5d25174f4fd">
                           <SHORT-NAME>MCU_PERIPH_CLK_SPIA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SPI_A Clock Enable bit</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2572,13 +2382,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="c3e55dfe-d2a8-472c-a1eb-4d6e7e94d337">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="17809a57-597b-41a0-9f83-4ae56717ff19">
                           <SHORT-NAME>MCU_PERIPH_CLK_SPIB</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SPI_B Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2595,13 +2403,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="86ea66d4-6c0d-4fe9-a6da-e2b21e0bbb0b">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="61d9ae5c-b7db-467e-aeb9-0150ab42bbaf">
                           <SHORT-NAME>MCU_PERIPH_CLK_SPIC</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SPI_C Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2618,13 +2424,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="f709be9b-b6e0-4c43-bc79-f11dd5a59884">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="194bd8ee-a841-4fdd-8ce1-2271a912a825">
                           <SHORT-NAME>MCU_PERIPH_CLK_SPID</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SPI_D Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2641,13 +2445,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="025098c7-4995-4867-b133-b05b5bc5a99b">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d42f03fe-001a-4428-ba52-3edde355b8cf">
                           <SHORT-NAME>MCU_PERIPH_CLK_SPIE</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SPI_E Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2666,21 +2468,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ad7acb0d-f143-420a-a1c1-eaa1639f16c0">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="00642b8d-8005-4375-ab68-8ce77d9caf80">
                       <SHORT-NAME>McuPeripheralClock9</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - I2C</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="4a8ea91d-3acf-4f13-b1e9-e81f26579469">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="1c09e59a-58e6-4a0d-b5a8-4e4e52e6da12">
                           <SHORT-NAME>MCU_PERIPH_CLK_I2CA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">I2C_A Clock Enable bit:.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2697,13 +2495,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="aa097791-b6e4-4b9f-80a7-53ac538dfc4f">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d0e5201d-ec31-49d9-acf3-1146a87edb91">
                           <SHORT-NAME>MCU_PERIPH_CLK_I2CB</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">I2C_B Clock Enable bit:.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2722,21 +2518,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="e7b90e1f-b92c-4acb-b9ba-2192d68d2d70">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="e114d7b4-5d82-4871-a0ba-bd99153f387e">
                       <SHORT-NAME>McuPeripheralClock10</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - CAN</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="5009403d-c4ca-4379-bc32-2960697276ff">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="3412bfad-86b9-431d-94f8-14ba741c883a">
                           <SHORT-NAME>MCU_PERIPH_CLK_MCANA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">MCAN_A Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2753,13 +2545,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="4a144ae9-29fb-4736-8dd5-b413b61bbaeb">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="6f73edde-f3ab-43c1-b208-8675a0bcc542">
                           <SHORT-NAME>MCU_PERIPH_CLK_MCANB</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">MCAN_B Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2776,13 +2566,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="53790614-452f-470b-b10b-1f8ef70de4bd">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d4280234-6013-4d8e-9459-6dd23773a227">
                           <SHORT-NAME>MCU_PERIPH_CLK_MCANC</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">MCAN_C Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2799,13 +2587,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="90b00db7-6fa3-4749-8f60-9907ceaa5e23">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d64247b4-e85b-4880-bb3e-5566f9567358">
                           <SHORT-NAME>MCU_PERIPH_CLK_MCAND</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">MCAN_D Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2822,13 +2608,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="fd17c437-3e6d-43d6-b782-6e827fd10f44">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="3a6b7def-d3de-4936-9ff4-351c07f2324d">
                           <SHORT-NAME>MCU_PERIPH_CLK_MCANE</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">MCAN_E Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2845,13 +2629,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="c840fe7d-cee4-4a26-8d84-cd2721707c9f">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="05176552-82b3-4891-9859-90c3ec34302c">
                           <SHORT-NAME>MCU_PERIPH_CLK_MCANF</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">MCAN_F Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2870,21 +2652,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ee739a5a-a122-4078-9c9e-f21005f02a4d">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="d7e24825-bf6d-4dbe-90a0-92ae8fb6f463">
                       <SHORT-NAME>McuPeripheralClock13</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - ADC</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="198428e0-a76b-4957-b52c-aae052d0647e">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="6817a1f7-9693-4fad-8ac7-3427a1861f22">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ADC_A Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2901,13 +2679,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="88aed488-a7d7-4852-b290-7a9bffd92f53">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="8d109865-01d2-4b86-acaa-7be324160674">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCB</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ADC_B Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2924,13 +2700,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="cdecfaee-e749-4bd7-8355-23e4e5431386">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="21a6f86b-6473-43ec-b684-acede6567f2d">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCC</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ADC_C Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2947,13 +2721,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="67096ec9-de9d-4756-b1e4-b11e3ff4e2ea">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="7925c92b-1caf-4d84-8c56-19a667b88947">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCD</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ADC_D Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2970,13 +2742,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="0775a2fc-eb7c-45e3-bd55-66e949fdab57">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="77577a58-2722-4977-8918-e84251a9384a">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCE</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ADC_E Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2995,21 +2765,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="34d85c4b-db53-4bad-a389-b9ab7007d46d">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="1c5495ac-2b65-43fd-bd2c-d40ffb395eba">
                       <SHORT-NAME>McuPeripheralClock14</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - CMPSS</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="592fefde-fd27-473e-9f7d-23187bc28021">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="74b4b739-d40a-4c73-a4fe-95367a1cd318">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3026,13 +2792,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="a7c37385-1285-4e23-8cb9-fb4be7067ba2">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="f50df8bd-1a0b-4025-88bb-4257c789b774">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS2 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3049,13 +2813,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="d77b1996-44d0-4f79-aca9-25110a93d05d">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="8e81ce0d-e4ed-4b0a-8e22-066f95426132">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS3 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3072,13 +2834,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="998b9f70-c85d-45b0-8a58-62ec76dc5381">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="be0a55b0-c427-457f-a598-f36ee96aeee2">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS4</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS4 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3095,13 +2855,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="8f01d465-6ab5-49f2-a89e-08cf68ec6e5e">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="f6776d01-5f9b-46e5-a14b-9447f7626336">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS5</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS5 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3118,13 +2876,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="31f556db-d2ac-4b86-99f2-6c234b63f311">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="8c66f50d-47be-4906-82f9-e8b0a7b04c7a">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS6</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS6 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3141,13 +2897,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="ddfa5241-6f6e-4575-8267-bb54cb1453bf">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a4d2af63-39f1-4cfa-a29b-8cd83dbafc6f">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS7</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS7 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3164,13 +2918,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="a6e8ded4-0cae-4f73-b874-4a388803f4f2">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="714efcb7-2db3-48b1-a190-b94256b60b83">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS8</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS8 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3187,13 +2939,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b5e7b4b8-4114-4396-858e-22e2bf6c9d61">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="661e7397-36f8-4ea7-858e-3f6ade583afe">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS9</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS9 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3210,13 +2960,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="cd570dd0-aeff-4582-a37b-027943d61ed9">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="eccf7cab-4aac-42da-a5ae-f219132b1630">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS10</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS10 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3233,13 +2981,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="e665b37e-eae6-41bc-a093-252a9d9ea361">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="55c880f5-464f-45fd-88fe-f9464291f36d">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS11</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS11 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3256,13 +3002,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="1d84f619-80d6-43f7-a628-251af7ff1bbf">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d5af3b68-a10e-41b1-a6e3-8cef173b9de1">
                           <SHORT-NAME>MCU_PERIPH_CLK_CMPSS12</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CMPSS12 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3281,21 +3025,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ad2e269e-62a1-42b7-bb10-83ae59caa8e1">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="2b01d9bc-89c5-47b0-b335-e788577d592f">
                       <SHORT-NAME>McuPeripheralClock16</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings- Buf DAC</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="f5f257b5-6fa5-454f-9375-83fd0d8ea693">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="4f9b51b9-289f-442b-ace6-9cd00c119a0f">
                           <SHORT-NAME>MCU_PERIPH_CLK_DACA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Buffered_DAC_A Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3312,13 +3052,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="90418750-8de6-4ea7-a677-7492c5160dc8">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="85db0b57-9570-48fa-b64e-d448b4e0a8ca">
                           <SHORT-NAME>MCU_PERIPH_CLK_DACB</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Buffered_DAC_B Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3337,21 +3075,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="d49529d9-543c-4ae9-9e64-e9edd159a5dd">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="6c0a803d-79f9-4bac-a9b8-be9ea212c7a5">
                       <SHORT-NAME>McuPeripheralClock17</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - CLB</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="dbd6001f-17c9-4b54-9cf4-249cfdaf8acf">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="7d545d34-416e-4235-97a0-2925d2655dcb">
                           <SHORT-NAME>MCU_PERIPH_CLK_CLB1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CLB1 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3368,13 +3102,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="df70b1f5-90d6-44c7-82a4-ec37b4ca8920">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="ffadad73-6aab-4e2b-b418-e78b5e6cad81">
                           <SHORT-NAME>MCU_PERIPH_CLK_CLB2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CLB2 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3391,13 +3123,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="4263135a-2ae0-40a0-a155-eb93ac0c28a9">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="cd95dafd-6012-4ae8-91cd-9cff7fb19374">
                           <SHORT-NAME>MCU_PERIPH_CLK_CLB3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CLB3 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3414,13 +3144,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="234be4d5-8b13-4bc4-bad2-5c6086945543">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="408bdbed-39c8-404b-aebe-7b02be0c97ee">
                           <SHORT-NAME>MCU_PERIPH_CLK_CLB4</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CLB4 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3437,13 +3165,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="cca71471-b196-461d-b2a5-98b49e64b7c0">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="767121c1-43a8-45cc-957d-88f4527fcc25">
                           <SHORT-NAME>MCU_PERIPH_CLK_CLB5</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CLB5 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3460,13 +3186,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="30c5ee76-eda3-4163-891b-0a34b8bb0f3d">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="eb4bc12d-1096-4e8c-953f-583f3fdd6c0e">
                           <SHORT-NAME>MCU_PERIPH_CLK_CLB6</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">CLB6 Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3485,21 +3209,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="b5d59355-4466-4ad5-b7e8-03db52fcff17">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c67efd9b-394d-4d06-9937-d0db97e4c18c">
                       <SHORT-NAME>McuPeripheralClock18</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - FSI</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="777053d4-725a-4d4c-84d9-1450fbf5667c">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="4c7f002e-6e52-4f4b-8c7d-73c548e45063">
                           <SHORT-NAME>MCU_PERIPH_CLK_FSITXA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">FSITX_A Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3516,13 +3236,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="5427b5bf-c3bb-4871-a958-dce35a1b605b">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="de002052-16d2-4f48-a378-d895e3d32df2">
                           <SHORT-NAME>MCU_PERIPH_CLK_FSITXB</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">FSITX_B Clock Enable bit</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3539,13 +3257,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="f786dc23-86e4-40d9-8e40-24eaeb11d31f">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="f79b8733-209b-44b0-9cb2-5bf949626ee3">
                           <SHORT-NAME>MCU_PERIPH_CLK_FSITXC</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">FSITX_C Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3562,13 +3278,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="6babc3c5-91d9-438d-90f8-c7167ea53718">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="0860a478-33f5-4182-92cb-47f982ca6511">
                           <SHORT-NAME>MCU_PERIPH_CLK_FSITXD</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">FSITX_D Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3585,13 +3299,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="fea06a7c-fedc-4ca9-8541-aaba91985a59">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a2c675e8-6c97-4e92-8534-7332f637e82e">
                           <SHORT-NAME>MCU_PERIPH_CLK_FSIRXA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">FSIRX_A Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3608,13 +3320,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="f65077e3-5c05-41d7-bcc4-0c58c24e53e9">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="fa2bb55a-1021-4939-9115-88d2b77eadfb">
                           <SHORT-NAME>MCU_PERIPH_CLK_FSIRXB</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">FSIRX_B Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3631,13 +3341,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="08a8882c-d679-4df0-b7b0-541359ccbd09">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a7c5d380-7e71-44d0-88f7-8b6f805bc413">
                           <SHORT-NAME>MCU_PERIPH_CLK_FSIRXC</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">FSIRX_C Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3654,13 +3362,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="82666cea-d6dd-41b1-97b6-725e6dac5b6c">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="146a666d-9544-4119-b5b9-c4504b7b4edb">
                           <SHORT-NAME>MCU_PERIPH_CLK_FSIRXD</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">FSIRX_D Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3679,21 +3385,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f1dcc23d-4ee7-4555-bcbc-a49dbed6693d">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="58fb4def-c2bc-430f-b590-24b8f064a983">
                       <SHORT-NAME>McuPeripheralClock19</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - LIN</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="dd3d14da-e9f1-4c33-a51d-2f20c2c98337">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="46a832c0-6c22-4d52-88c1-c388ee23d609">
                           <SHORT-NAME>MCU_PERIPH_CLK_LINA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">LIN_A Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3710,13 +3412,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b9d4b9de-f984-40ed-98ed-5dc152e88a9a">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="962952de-1274-4ff9-888d-bf9aea84d778">
                           <SHORT-NAME>MCU_PERIPH_CLK_LINB</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">LIN_B Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3735,21 +3435,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="8b0e9c9e-c0bf-4350-a202-cd7211357fa1">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="83817383-418e-4949-be2b-012fce031814">
                       <SHORT-NAME>McuPeripheralClock20</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - PMBUS</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="404c1aba-87c5-4a3d-b74e-205b5b199b89">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="65256b8c-49a1-44dd-bc97-0f7f1a7ba686">
                           <SHORT-NAME>MCU_PERIPH_CLK_PMBUSA</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">PMBUS_A Clock Enable bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3768,21 +3464,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="d3cd11ba-0109-4362-9891-9c5d0837f697">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c99f7c07-3a88-4b52-8931-f56a72ec390d">
                       <SHORT-NAME>McuPeripheralClock21</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - DCC</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="64b0a26f-07d4-4654-a8a3-5360f55a6847">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="fa16abfd-53f7-4644-b224-3ffe43302872">
                           <SHORT-NAME>MCU_PERIPH_CLK_DCC1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">DCC1 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3799,13 +3491,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="ae2e25b7-b836-4051-9502-65fb3c35152b">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="4a3e8e33-8b53-4a33-a82c-1ae2a4b1f105">
                           <SHORT-NAME>MCU_PERIPH_CLK_DCC2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">DCC1 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3822,13 +3512,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="9a54366c-d2a3-4935-a5a6-66af623869ea">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a0466849-df05-4f51-8210-24af7578e763">
                           <SHORT-NAME>MCU_PERIPH_CLK_DCC3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">DCC3 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3847,21 +3535,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="e8251138-d8f4-4e4e-881b-cb409b21e1f5">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="4caa4587-ff39-4919-80b4-530659d80aee">
                       <SHORT-NAME>McuPeripheralClock23</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - EtherCAT</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b10a642e-93ed-4984-b219-bf92ccbfc63b">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="23ae3ac4-75f8-41c3-83b9-93488fe7a661">
                           <SHORT-NAME>MCU_PERIPH_CLK_ETHERCAT</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">ETHERCAT Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3880,21 +3564,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="bfd02ee2-0fbb-4636-ac61-a6f6cd1847fc">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="0fc929cc-bfb6-4c8e-8ddd-bf38159ad026">
                       <SHORT-NAME>McuPeripheralClock25</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - HRCAL0,1,2</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="0e5e3a19-ee51-49e9-8dc4-0b3efdd94012">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="c570995b-fad0-422f-a9ac-f2335935a13f">
                           <SHORT-NAME>MCU_PERIPH_CLK_HRCAL0</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">HRCAL0 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3911,13 +3591,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="ea513571-37d0-40e8-9207-f6950aef8db2">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="f28daef3-66d5-4b69-a3a6-ddde18662f09">
                           <SHORT-NAME>MCU_PERIPH_CLK_HRCAL1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">HRCAL1 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3934,13 +3612,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="130057e0-0103-4a84-b756-aa6116d67d0c">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="f800c904-64da-4caf-9257-08c016bec573">
                           <SHORT-NAME>MCU_PERIPH_CLK_HRCAL2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">HRCAL2 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3959,21 +3635,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="319c0766-7a6d-49cf-a983-d8f65905d6bd">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="96d8c960-e051-45c0-af6b-483897d92271">
                       <SHORT-NAME>McuPeripheralClock27</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - EPG</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b3913ec3-145f-47f6-9402-b0991e148d32">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="ecea373f-d227-4eb2-984d-040965266f92">
                           <SHORT-NAME>MCU_PERIPH_CLK_EPG1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">EPG1 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -3992,21 +3664,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="902c7518-480b-40b0-a8ab-0fc551760c60">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="dbc2a027-ff70-4143-8c3f-ba6bd7750a93">
                       <SHORT-NAME>McuPeripheralClock28</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - ADCCHECKER</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="c2d513d1-f90d-4dd2-ada9-3582cd1ba268">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="954bda1c-362c-4bf7-b275-b89af92e84d4">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4023,13 +3691,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="0f119c6b-8aa6-498a-afb7-8da5f8e3fc66">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="05f772ae-118e-46dd-99d5-dec6b87555fe">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4046,13 +3712,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="7ec09e16-dbfa-414d-aa1e-99ae5a31acdc">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="be824183-5d20-4df1-86c9-65841031265f">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4069,13 +3733,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="e91fe067-6093-4153-92aa-f24deb3f4d0d">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="761822ec-88c1-4b3b-b38a-cc9003712fb7">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER4</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4092,13 +3754,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="afb1030f-af3f-4dfc-a507-9638df0d13b2">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="9f3dec1f-72ce-4a33-b6ab-60d0d0b868da">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER5</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4115,13 +3775,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="26226ff6-5597-437c-a9b8-6fab79236368">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="fcb7abf1-af98-4f4a-93ea-047b27deddbe">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER6</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4138,13 +3796,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="62ec86b0-bb75-44e9-a6dd-c23a1736736d">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="aaba45a6-2e01-42f9-9e3f-74dd7abdb11c">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER7</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4161,13 +3817,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="2b9da817-9d7e-4a4a-b576-ee9fb0d1db7b">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="9d05f242-539a-402a-b831-e77d4b056d6a">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER8</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4184,13 +3838,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="bed0c059-1451-492b-9053-1b48381c3c28">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="cecc7b1e-c01a-408d-8e6c-dbe90f38db4b">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER9</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4207,13 +3859,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="90f88207-17d6-4cf7-973f-8346cb7ec0fe">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a9fcdfc3-6f4f-429d-89df-e4e11fc9acb3">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCCHECKER10</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4230,13 +3880,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="1abec96e-6c5d-4ca8-89c7-eb39cd8704dd">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="57c7f953-0948-4134-9870-9353bc97c140">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCSEAGGRCPU1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4253,13 +3901,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="b079481d-d192-4bac-beb0-017d7e2e2df7">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="f61da6f9-53b0-41be-ba95-493c08bf914d">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCSEAGGRCPU2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4276,13 +3922,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="08deebe5-185b-4d73-9215-dc6aea9a35a5">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a61c73a0-f14e-43eb-8e44-80a823ebdd77">
                           <SHORT-NAME>MCU_PERIPH_CLK_ADCSEAGGRCPU3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4301,21 +3945,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="2557412e-94b3-44af-bbf9-aace79a4ee06">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c5f6c360-45f3-4d15-9bd8-46d9610cca44">
                       <SHORT-NAME>McuPeripheralClock30</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - SENT</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="5a1c54de-83ab-4a7d-aded-361bf949d8b1">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="c162cf15-6a4c-48ce-9576-539bfed11188">
                           <SHORT-NAME>MCU_PERIPH_CLK_SENT1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SENT1 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4332,13 +3972,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="afe76374-27a2-43ff-bdc0-5f49452aaf78">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="54e424cd-49dd-4bf2-bd6d-338ff587b066">
                           <SHORT-NAME>MCU_PERIPH_CLK_SENT2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SENT2 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4355,13 +3993,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="81cc0fb7-e9e0-46d4-bf97-8bc3764a32ba">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="0ae5d864-6f6a-49da-bca8-62d49311d6a2">
                           <SHORT-NAME>MCU_PERIPH_CLK_SENT3</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SENT3 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4378,13 +4014,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="14c55367-7e77-41da-9e10-069735586ab5">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="806d2c20-5f9d-4989-a568-a0721deac168">
                           <SHORT-NAME>MCU_PERIPH_CLK_SENT4</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SENT4 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4401,13 +4035,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="55c9a075-8026-43b3-bc25-88087b8e6519">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="35701255-11b3-4d5c-ae1f-1efadc4cb0b6">
                           <SHORT-NAME>MCU_PERIPH_CLK_SENT5</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SENT1 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4424,13 +4056,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="12899701-5e4f-4a80-9461-6de3bdc8d599">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a3ff22ea-843c-41e1-b4c7-5a05a41a277d">
                           <SHORT-NAME>MCU_PERIPH_CLK_SENT6</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">SENT6 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4449,21 +4079,17 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="e11b8981-fe31-44c9-8a85-b794cb79e255">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="08745113-6dce-4937-b581-a6963de0fef9">
                       <SHORT-NAME>McuPeripheralClock32</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Device specific Peripheral Clock settings - WADI</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="2052e861-627d-4a27-957e-6042059230a4">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="7c0b0594-b4a7-4964-9818-827806917084">
                           <SHORT-NAME>MCU_PERIPH_CLK_WADI1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">WADI1 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4480,13 +4106,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="367ebd6b-2d20-4792-aed5-05487dd968d2">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="868ca603-24f8-493c-9d00-d49732ac82fb">
                           <SHORT-NAME>MCU_PERIPH_CLK_WADI2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">WADI2 Clock Enable Bit.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4507,7 +4131,7 @@
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
                   </SUB-CONTAINERS>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="77dc3658-a257-48b6-bfaf-04a7961912a2">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="6ec22c5a-b6f6-4089-a116-3b893206b25b">
                   <SHORT-NAME>McuDemEventParameterRefs</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter&apos;s DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references.</L-2>
@@ -4516,7 +4140,7 @@
                   <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <REFERENCES>
-                    <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="06683ebf-4b0a-43c5-862a-a8bcfd265934">
+                    <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="acaa7683-7d07-4ba1-9900-939db2754e20">
                       <SHORT-NAME>MCU_E_CLOCK_FAILURE</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to configured DEM event to report &quot;Clock source failure&quot;.</L-2>
@@ -4551,7 +4175,7 @@
                     </ECUC-SYMBOLIC-NAME-REFERENCE-DEF>
                   </REFERENCES>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c965662d-afd1-49b7-9815-1ba9a45cf526">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="91d79876-630b-4dd0-a0e9-92ae3a892351">
                   <SHORT-NAME>McuModeSettingConf</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the configuration (parameters) for the Mode setting of the MCU.  Please see MCU035 for more information on the MCU mode settings.</L-2>
@@ -4560,13 +4184,11 @@
                   <UPPER-MULTIPLICITY>2</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-INTEGER-PARAM-DEF UUID="dc55a4aa-08b9-4b96-b365-4b9af447cffa">
+                    <ECUC-INTEGER-PARAM-DEF UUID="b17981d7-aaf9-4ad6-bbd4-3be913a6520a">
                       <SHORT-NAME>McuMode</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">The parameter represents the MCU Mode settings. IDLE Mode :0, STANDBY mode :1</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4582,8 +4204,10 @@
                       </VALUE-CONFIG-CLASSES>
                       <SYMBOLIC-NAME-VALUE>true</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>0</DEFAULT-VALUE>
+                      <MAX>1</MAX>
+                      <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="cfce9c38-03fd-43ca-929e-3f54e678c530">
+                    <ECUC-INTEGER-PARAM-DEF UUID="77df1660-7e31-4b23-a011-0f8fe8f9c5a3">
                       <SHORT-NAME>McuQualPeriod</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">The number of OSCCLK clock cycles used to qualify the selected inputs when waking from STANDBY mode.</L-2>
@@ -4610,7 +4234,7 @@
                       <MAX>65</MAX>
                       <MIN>2</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="ca44b0eb-84ff-40ff-ba20-18840f5b40b4">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="65e117a6-4b95-4366-9fec-5f978047c116">
                       <SHORT-NAME>McuEnableWDWakeup</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enable/Disable using watchdog to wakeup from standby or halt mode</L-2>
@@ -4637,7 +4261,7 @@
                     </ECUC-BOOLEAN-PARAM-DEF>
                   </PARAMETERS>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="a938a0b1-eff8-4a53-aa2c-0bafaedd3659">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="7d61465c-ab26-45c0-95a3-54c705d32c5f">
                   <SHORT-NAME>McuRamSectorSettingConf</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the configuration (parameters) for the RAM Sector setting. Please see MCU030 for more information on RAM sec-tor settings.</L-2>
@@ -4646,13 +4270,11 @@
                   <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-INTEGER-PARAM-DEF UUID="6289d66f-1695-4638-8515-8c8e1ebc0900">
+                    <ECUC-INTEGER-PARAM-DEF UUID="f3ea71b0-e082-4217-b381-01ea42cc5ad6">
                       <SHORT-NAME>McuRamDefaultValue</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This parameter shall represent the Data pre-setting to be initialized</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -4671,13 +4293,11 @@
                       <MAX>255</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="551f8d26-fa12-4dd9-ae05-fa508852ec95">
+                    <ECUC-INTEGER-PARAM-DEF UUID="84a431c3-86b2-4039-a426-99a18869b2b8">
                       <SHORT-NAME>McuRamSectionBaseAddress</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This parameter shall represent the MCU RAM section base address</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -4696,13 +4316,11 @@
                       <MAX>4294967295</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="c4257263-5ce0-4420-8a32-f36eb8d1decb">
+                    <ECUC-INTEGER-PARAM-DEF UUID="311aad3b-e574-49a9-90a2-56ed745ce784">
                       <SHORT-NAME>McuRamSectionSize</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This parameter represents the MCU RAM Section size in bytes.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -4721,13 +4339,11 @@
                       <MAX>4294967295</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="6b647203-f4de-4b82-971f-e808a5da6c9c">
+                    <ECUC-INTEGER-PARAM-DEF UUID="2fa95053-5c5f-48fb-9975-d03ba1bc9ddf">
                       <SHORT-NAME>McuRamSectionWriteSize</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This parameter shall define the size in bytes of data which can be written into RAM at once.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -4750,15 +4366,13 @@
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
               </SUB-CONTAINERS>
             </ECUC-PARAM-CONF-CONTAINER-DEF>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="891615c4-8b90-4f02-b220-bcb2d3fe75ea">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f85a6677-e794-4955-9f83-e4421e6f9c86">
               <SHORT-NAME>McuPublishedInformation</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">Container holding all MCU specific published information parameters</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <SUB-CONTAINERS>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ea874ab2-4c2e-4c8f-8971-b4ef14f29dc1">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="8c2b3d9d-d29b-4cdf-9315-d3eb4f9273fd">
                   <SHORT-NAME>McuResetReasonConf</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the configuration for the different type of reset reason that can be retrieved from Mcu_GetResetReason Api.</L-2>
@@ -4767,13 +4381,11 @@
                   <UPPER-MULTIPLICITY>7</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-INTEGER-PARAM-DEF UUID="5c6e63dc-f357-40a9-9fbf-a917e6a8ceeb">
+                    <ECUC-INTEGER-PARAM-DEF UUID="cf8d6a03-0723-4d4e-a807-650a11e14087">
                       <SHORT-NAME>McuResetReason</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">The parameter represents the different type of reset that a Micro supports. This parameter is referenced by the parameter EcuMResetReason in the ECU State manager module.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -4788,7 +4400,7 @@
                         </ECUC-VALUE-CONFIGURATION-CLASS>
                       </VALUE-CONFIG-CLASSES>
                       <SYMBOLIC-NAME-VALUE>true</SYMBOLIC-NAME-VALUE>
-                      <!-- @Calculated /TI_F29H85x/Mcu/McuPublishedInformation/McuResetReasonConf/McuResetReason: DEFAULT(XPath: string(text:split(&apos;0 1 2 3 4 5 6&apos;)[var:set(&apos;idx&apos;,position()) and normalize-space(text:split(&apos;MCU_POWER_ON_RESET MCU_EXTERNAL_RESET MCU_ESM_NMI_WATCHDOG_RESET MCU_WATCHDOG_RESET MCU_SW_RESET MCU_ESM_RESET MCU_RESET_UNDEFINED&apos;)[position() = $idx]) = name(node:fallback(node:current()/..,&apos;&apos;))]))-->
+                      <DEFAULT-VALUE>0</DEFAULT-VALUE>
                       <MAX>6</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>

@@ -312,12 +312,12 @@ static CONST(Mcu_LinClkConfigType, MCU_CONFIG_DATA) Mcu_LinClkCfgSet[!"num:i($Cl
  * Design: MCAL-21891, MCAL-21892, MCAL-21893, MCAL-21894, MCAL-21895, MCAL-21896,
  * Design: MCAL-21897, MCAL-21898, MCAL-21899, MCAL-21900, MCAL-21901, MCAL-21872, MCAL-21873
  */
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!VAR "ClkCfgSetNo" = "@index"!]
-static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet[!"num:i($ClkCfgSetNo)"!][[!"num:i(count(McuClockSettingConfig/*))"!]] =
+[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!VAR "McuModuleCfgSetNo" = "@index"!]
+static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet[!"num:i($McuModuleCfgSetNo)"!][[!"num:i(count(McuClockSettingConfig/*))"!]] =
 {
-[!LOOP "McuClockSettingConfig/*"!]    {
+[!LOOP "McuClockSettingConfig/*"!][!VAR "ClkCfgSetNo" = "@index"!]    {
     .Mcu_ClockSourceId = ((Mcu_ClkSourceIdType) [!"McuClkConfig/McuClockSource"!]),
-    .Mcu_PeripheralClkConfigPtr = ((Mcu_PeripheralClkRegConfigPtrType) &Mcu_PerClkCfgSet[!"num:i($ClkCfgSetNo)"!][[!"@index"!]]),
+    .Mcu_PeripheralClkConfigPtr = ((Mcu_PeripheralClkRegConfigPtrType) &Mcu_PerClkCfgSet[!"num:i($McuModuleCfgSetNo)"!][[!"@index"!]]),
     .Mcu_MCanInstancesCount     = ((uint32) [!"num:i(count(McuMCanClkConfig/*))"!]U),
     .Mcu_LinInstancesCount      = ((uint32) [!"num:i(count(McuLinClkConfig/*))"!]U),
     .Mcu_MCanClkConfig          = ((Mcu_MCanClkConfigPtrType) Mcu_MCanClkCfgSet[!"num:i($ClkCfgSetNo)"!]),

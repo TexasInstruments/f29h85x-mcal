@@ -90,6 +90,7 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@nam
 [!VAR "TimingValues" = "1 + CanControllerPropSeg + CanControllerSeg1 + CanControllerSeg2"!][!//
 [!VAR "brp" = "num:i(num:add((num:div($CanClock, num:mul(CanControllerBaudRate, $TimingValues))), 0.5))"!][!//
 [!ASSERT "num:i($brp) <= 512","STOP: BRP more than 512 for a controller is not allowed"!][!//
+[!ASSERT "num:i($brp) >= 1","STOP: BRP less than 1 for a controller is not allowed"!][!//
     .BrpValue = (uint16 )[!"$brp"!]U,
     /* Data Phase Baud Rate */
 [!VAR "BaudFD" = "0"!][!//
@@ -115,6 +116,7 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@nam
 [!VAR "TimingValues" = "1 + CanControllerFdBaudrateConfig/CanControllerPropSeg + CanControllerFdBaudrateConfig/CanControllerSeg1 + CanControllerFdBaudrateConfig/CanControllerSeg2"!][!//
 [!VAR "brp" = "num:i(num:add((num:div($CanClock, num:mul(CanControllerFdBaudrateConfig/CanControllerFdBaudRate, $TimingValues))), 0.5))"!][!//
 [!ASSERT "num:i($brp) <= 32","STOP: BRP more than 32 for a controller is not allowed"!][!//
+[!ASSERT "num:i($brp) >= 1","STOP: BRP less than 1 for a controller is not allowed"!][!//
         .BrpValue = (uint16 )[!"$brp"!]U,
         .CanControllerTxBitRateSwitch = (boolean )[!IF "CanControllerFdBaudrateConfig/CanControllerTxBitRateSwitch='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
 [!VAR "TxDelayComp" = "0"!][!//

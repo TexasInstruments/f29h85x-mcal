@@ -1,0 +1,3787 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.8. SPI Module &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.9. CDD ADC Module" href="Module_User_Guide_Cdd_Adc.html" />
+    <link rel="prev" title="4.7. LIN Module" href="Module_User_Guide_Lin.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.01.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.1. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.2. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.3. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.4. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.5. CAN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.6. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.7. LIN Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.8. SPI Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.8.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.8.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.8.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.8.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.8.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.8.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.8.4.3. Non compliance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.8.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.8.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.8.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.8.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.8.6.3. Error handling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.8.7. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.8.7.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.8.7.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.8.7.3. Hardware-Software Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.8.8. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.8.8.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.8.8.2. Multi-core and Resource allocator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.8.9. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#spidemeventparameterrefs">4.8.9.1. SpiDemEventParameterRefs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spidriver">4.8.9.2. SpiDriver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spichannel">4.8.9.3. SpiChannel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spidefaultdata">4.8.9.4. SpiDefaultData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spiexternaldevice">4.8.9.5. SpiExternalDevice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spijob">4.8.9.6. SpiJob</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spichannellist">4.8.9.7. SpiChannelList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spisequence">4.8.9.8. SpiSequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spihwunitconfig">4.8.9.9. SpiHwUnitConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spigeneral">4.8.9.10. SpiGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spipublishedinformation">4.8.9.11. SpiPublishedInformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-spi-module">4.8.9.12. Steps To Configure Spi Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.8.10. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#spi-example-sync-asynctransfer">4.8.10.1. Spi_Example_Sync_AsyncTransfer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spi-example-asynctransfer-interrupt">4.8.10.2. Spi_Example_AsyncTransfer_Interrupt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spi-example-synctransfer">4.8.10.3. Spi_Example_SyncTransfer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.8.10.4. File Structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.9. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.10. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.11. CDD XBAR Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
+      <li><span class="section-number">4.8. </span>SPI Module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spi-module">
+<h1><span class="section-number">4.8. </span>SPI Module<a class="headerlink" href="#spi-module" title="Link to this heading"></a></h1>
+<section id="acronyms-and-definitions">
+<h2><span class="section-number">4.8.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI</p></td>
+<td><p>Serial peripheral Interface</p></td>
+</tr>
+<tr class="row-odd"><td><p>AUTOSAR</p></td>
+<td><p>AUTomotive Open System ARchitecture</p></td>
+</tr>
+<tr class="row-even"><td><p>BSW</p></td>
+<td><p>Basic Software</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTE</p></td>
+<td><p>Runtime Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL</p></td>
+<td><p>MicroController Abstraction Layer</p></td>
+</tr>
+<tr class="row-odd"><td><p>API</p></td>
+<td><p>Application Programming Interface</p></td>
+</tr>
+<tr class="row-even"><td><p>ECU</p></td>
+<td><p>Electronic Control Unit</p></td>
+</tr>
+<tr class="row-odd"><td><p>CS</p></td>
+<td><p>Chip Select</p></td>
+</tr>
+<tr class="row-even"><td><p>MISO</p></td>
+<td><p>Master Input Slave Output</p></td>
+</tr>
+<tr class="row-odd"><td><p>MOSI</p></td>
+<td><p>Master Output Slave Input</p></td>
+</tr>
+<tr class="row-even"><td><p>Master</p></td>
+<td><p>A device controlling other devices (slaves)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Slave</p></td>
+<td><p>A device being completely controlled by a master device</p></td>
+</tr>
+<tr class="row-even"><td><p>Channel</p></td>
+<td><p>A Channel is a software exchange medium for data that are defined with the same criteria: Config. Parameters, Number of Data elements with same size and data pointers (Source &amp; Destination) or location.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Job</p></td>
+<td><p>A Job is composed of one or several Channels with the same Chip Select (is not released during the processing of Job). A Job is considered atomic and therefore cannot be interrupted by another Job. A Job has an assigned priority.</p></td>
+</tr>
+<tr class="row-even"><td><p>Sequence</p></td>
+<td><p>A Sequence is a number of consecutive Jobs to transmit but it can be rescheduled between Jobs using a priority mechanism. A Sequence transmission is interruptible (by another Sequence transmission) or not depending on a static configuration</p></td>
+</tr>
+<tr class="row-odd"><td><p>ID</p></td>
+<td><p>Identification Number of an element (Channel, Job, Sequence)</p></td>
+</tr>
+<tr class="row-even"><td><p>EB</p></td>
+<td><p>Externally buffered channels. Buffers containing data to transfer are outside the SPI Handler/Driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>IB</p></td>
+<td><p>Internally buffered channels. Buffers containing data to transfer are inside the SPI Handler/Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>NMI</p></td>
+<td><p>Non Maskable Interrupt</p></td>
+</tr>
+<tr class="row-odd"><td><p>OS</p></td>
+<td><p>Operating System</p></td>
+</tr>
+<tr class="row-even"><td><p>DET</p></td>
+<td><p>Default Error Tracer</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEM</p></td>
+<td><p>Diagnostic Event Manager – module to handle diagnostic relevant events.</p></td>
+</tr>
+<tr class="row-even"><td><p>DAR</p></td>
+<td><p>Decision Analysis and Resolution</p></td>
+</tr>
+<tr class="row-odd"><td><p>SoC</p></td>
+<td><p>System on a Chip</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="introduction">
+<h2><span class="section-number">4.8.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The SPI driver provides services for basic transmission and reception of SPI data using channels, Jobs and Sequences software components.
+These API’s and components can be used by an application.</p>
+<figure class="align-center" id="id1">
+<img alt="SPI MCAL AUTOSAR" src="../_images/Spi_Autosar_MCAL.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.28 </span><span class="caption-text">SPI MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>This document details AUTOSAR BSW SPI module implementation</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Supported AUTOSAR Release</p></th>
+<th class="head"><p><strong>4.3.1</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Supported Configuration Variants</strong></p></td>
+<td><p><strong>Pre-Compile, Link-Time &amp; Post Build</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Vendor ID</strong></p></td>
+<td><p><strong>SPI_VENDOR_ID (44)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Module ID</strong></p></td>
+<td><p><strong>SPI_MODULE_ID (83)</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functional-overview">
+<h2><span class="section-number">4.8.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<p>A SPI bus is a Controller-peripheral  multi node bus system, the controller sets a Chip Select (CS) to select a peripheral for data communication. The SPI (Serial Peripheral Interface) has a 4-wire synchronous serial interface. Data communication is enabled with a Chip Select wire (CS). Data is transmitted with a 3-wire interface consisting of wires for serial data input (MOSI), serial data output (MISO) and Serial ClocK (SCK). The following SPI module provides channel based read, write and transfer access to different devices on SPI busses. A SPI channel represents data elements (8 to 16 data bits). These channels could be combined in sequence which shall not be interrupted (e.g. Daisy-Chain, EEPROM). Channels have a static configuration defining baud rate, chip select A SPI device is generally identified by the used SPI hardware unit and the associated chip select line. This module can operate only as SPI controller.</p>
+</section>
+<section id="hardware-features">
+<h2><span class="section-number">4.8.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<section id="hardware-features-supported">
+<h3><span class="section-number">4.8.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Two operational modes: Controller and Peripheral</p></li>
+<li><p>Baud rate: 125 different programmable rates. The maximum baud rate that can be employed is limited by the
+maximum speed of the I/O buffers used on the SPI pins. See the device data sheet for more details.</p></li>
+<li><p>Data word length: 1 to 16 data bits</p></li>
+<li><p>Four clocking schemes (controlled by clock polarity and clock phase bits) include:</p>
+<ul>
+<li><p>Falling edge without phase delay: SPICLK active-high. SPI transmits data on the falling edge of the SPICLK signal and receives data on the rising edge of the SPICLK signal.</p></li>
+<li><p>Falling edge with phase delay: SPICLK active-high. SPI transmits data one half-cycle ahead of the falling edge of the SPICLK signal and receives data on the falling edge of the SPICLK signal.</p></li>
+<li><p>Rising edge without phase delay: SPICLK inactive-low. SPI transmits data on the rising edge of the SPICLK signal and receives data on the falling edge of the SPICLK signal.</p></li>
+<li><p>Rising edge with phase delay: SPICLK inactive-low. SPI transmits data one half-cycle ahead of the rising edge of the SPICLK signal and receives data on the rising edge of the SPICLK signal.</p></li>
+</ul>
+</li>
+<li><p>Simultaneous receive and transmit operation (transmit function can be disabled in software)</p></li>
+<li><p>Transmitter and receiver operations are accomplished through either interrupt- driven or polled algorithm</p></li>
+<li><p>Delayed transmit control</p></li>
+<li><p>16-level transmit/receive FIFO</p></li>
+<li><p>High-speed mode</p></li>
+</ul>
+</section>
+<section id="not-supported-features">
+<h3><span class="section-number">4.8.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The SPI Handler/Driver does not handle peripheral mode(slave mode).</p></li>
+<li><p>The SPI Handler/Driver only supports full-duplex mode, and F29x SPI three-wire mode is a half-duplex communication, three-wire mode is not supported in SPI Handler/Driver as per AUTOSAR.</p></li>
+<li><p>The LEVEL 2 SPI Handler/Driver is specified for microcontrollers that have to provide, at least, two SPI busses using separated hardware units. Otherwise, using this level of functionality does not make sense.</p></li>
+<li><p>SPIPTE inversion for digital audio interface receive mode on devices with two SPI modules- since it requires SPI to be configured as peripheral mode, it is not handled in SPI Handler/Driver as per AUTOSAR</p></li>
+</ul>
+</section>
+<section id="non-compliance">
+<h3><span class="section-number">4.8.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Since F29x SPI is 16 bit, SPI transfer/receive of word length greater than 16 bits are not supported.</p></li>
+</ul>
+</section>
+</section>
+<section id="source-files">
+<h2><span class="section-number">4.8.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┃ ┣ 📂BSW_Stubs<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂hw_include<br />
+┃ ┣ 📂Mcal_Lib<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂<strong>Spi</strong><br />
+┃ ┃ ┣ 📂<strong>include</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Spi.h</strong> : <em>Contains the API’s of the Spi driver to be used by upper layers.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Spi_Priv.h</strong> : <em>Contains data structures and Internal function declarations.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Spi_Reg_Access.h</strong> : <em>Contains the MACROs for Spi register access.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Spi_Utils.h</strong> : <em>Contains Internal function declarations.</em><br />
+┃ ┃ ┣ 📂<strong>src</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Spi.c</strong> : <em>Contains the implementation of the API’s for Spi driver.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Spi_Irq.c</strong> : <em>contains the implementation for Spi interrupts handlers.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Spi_Priv.c</strong> : <em>Contains Functions that support the API’s for Spi driver</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Spi_Utils.c</strong> : <em>Contains Functions that support the API’s for Spi driver</em><br />
+┃ ┃ ┗ 📜CMakeLists.txt<br />
+┣ 📂examples<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<figure class="align-center" id="id2">
+<img alt="Spi_Header_File_Structure" src="../_images/Spi_Header_File_Structure.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.29 </span><span class="caption-text">Spi_Header_File_Structure</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="module-requirements">
+<h2><span class="section-number">4.8.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<section id="memory-mapping">
+<h3><span class="section-number">4.8.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<p>Will be added in later release</p>
+</section>
+<section id="scheduling">
+<h3><span class="section-number">4.8.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Schedule Function API</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Spi_MainFunction_Handling</p></td>
+<td><p>This function performs the polling of Rx interrupt flag and performs next transmission</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="error-handling">
+<h3><span class="section-number">4.8.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<section id="development-error-reporting">
+<h4><span class="section-number">4.8.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<p>Development errors are reported to the DET using the service Det_ReportError(),when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
+<p>Development RunTime errors are reported to the DET using the service Det_ReportRuntimeError().</p>
+<section id="error-codes">
+<h5><span class="section-number">4.8.6.3.1.1. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of Error</p></th>
+<th class="head"><p>Related Error code</p></th>
+<th class="head"><p>Value (Hex)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>API SPI_Init service is called while the SPI the driver has already been initialized</p></td>
+<td><p>SPI_E_ALREADY_INITIALIZED</p></td>
+<td><p>0x4A</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service used without module initialization</p></td>
+<td><p>SPI_E_UNINIT</p></td>
+<td><p>0x1A</p></td>
+</tr>
+<tr class="row-even"><td><p>APIs called with a Null Pointer</p></td>
+<td><p>SPI_E_PARAM_POINTER</p></td>
+<td><p>0x10</p></td>
+</tr>
+<tr class="row-odd"><td><p>API parameter checking: invalid channel</p></td>
+<td><p>SPI_E_PARAM_CHANNEL</p></td>
+<td><p>0x0A</p></td>
+</tr>
+<tr class="row-even"><td><p>API parameter checking: invalid job</p></td>
+<td><p>SPI_E_PARAM_JOB</p></td>
+<td><p>0x0B</p></td>
+</tr>
+<tr class="row-odd"><td><p>API parameter checking: invalid sequence</p></td>
+<td><p>SPI_E_PARAM_SEQ</p></td>
+<td><p>0x0C</p></td>
+</tr>
+<tr class="row-even"><td><p>API parameter checking: invalid length</p></td>
+<td><p>SPI_E_PARAM_LENGTH</p></td>
+<td><p>0x0D</p></td>
+</tr>
+<tr class="row-odd"><td><p>API parameter checking: invalid HWUnit</p></td>
+<td><p>SPI_E_PARAM_UNIT</p></td>
+<td><p>0x0E</p></td>
+</tr>
+<tr class="row-even"><td><p>Runtime Error - Services called in a wrong sequence</p></td>
+<td><p>SPI_E_SEQ_PENDING</p></td>
+<td><p>0x2A</p></td>
+</tr>
+<tr class="row-odd"><td><p>Runtime Error - Synchronous transmission service</p></td>
+<td><p>SPI_E_SEQ_IN_PROCESS</p></td>
+<td><p>0x3A</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="extended-production-error-reporting">
+<h4><span class="section-number">4.8.6.3.2. </span>Extended Production Error Reporting<a class="headerlink" href="#extended-production-error-reporting" title="Link to this heading"></a></h4>
+<p>Extended production errors are reported to the DEM using the service Dem_SetEventStatus(),
+when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
+</section>
+</section>
+</section>
+<section id="used-resources">
+<h2><span class="section-number">4.8.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<section id="interrupt-handling">
+<h3><span class="section-number">4.8.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_SPIHandlerDriver.pdf">AUTOSAR_SWS_SPIDriver section: 10 Configuration specification</a>, details the expected behavior and control flow for ISR implementation, please refer the same.</p>
+<p>The Driver doesn’t register any interrupts handler (ISR), it’s expected that consumer of this driver registers the required interrupt handler.</p>
+<p>For every SPI Instance, an ISR requires to be registered. The Interrupt number associated with instance of the SPI is detailed in TRM (also, please refer the Example application).
+Interrupt type should be selected in SPI plugin.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SPI Instance</p></th>
+<th class="head"><p>Interrupt handler</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPIA</p></td>
+<td><p>SPIA_RxINT</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPIB</p></td>
+<td><p>SPIB_RxINT</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIC</p></td>
+<td><p>SPIC_RxINT</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPID</p></td>
+<td><p>SPID_RxINT</p></td>
+</tr>
+<tr class="row-even"><td><p>SPIE</p></td>
+<td><p>SPIE_RxINT</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Same Interrupt Category needs to be configured in both SPI and OS Modules.
+SPI Tx Interrupt is not used by SPI driver.</p>
+</div>
+</section>
+<section id="instance-support">
+<h3><span class="section-number">4.8.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CPU instances</p></th>
+<th class="head"><p>supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CPU 1</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPU 2</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU 3</p></td>
+<td><p>NO</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hardware-software-mapping">
+<h3><span class="section-number">4.8.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<p>Below image shows SPI driver Hardware-Software mapping. For more information related to HW, refer the F29x Reference Manual.</p>
+<figure class="align-center" id="id3">
+<img alt="SPI HW/SW Mapping" src="../_images/Spi_HW_SW_Mapping.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.30 </span><span class="caption-text">Spi HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="integration-description">
+<h2><span class="section-number">4.8.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<section id="dependent-modules">
+<h3><span class="section-number">4.8.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<section id="det">
+<h4><span class="section-number">4.8.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<p>This implementation depends on the DET in order to report development errors
+The detection of development errors is configurable (ON / OFF), The switch SPI_CFG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.</p>
+</section>
+<section id="dem">
+<h4><span class="section-number">4.8.8.1.2. </span>DEM<a class="headerlink" href="#dem" title="Link to this heading"></a></h4>
+<p>SPI Production errors are reported to DEM ( Diagnostic Event Manager ) Module.</p>
+</section>
+<section id="schm">
+<h4><span class="section-number">4.8.8.1.3. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that SPI module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.</p>
+<p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter <strong>RteExclusiveAreaImplMechanism</strong>. This parameter is an input for RTE generator.</p>
+<p>For SPI Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Exclusive Area Functions used</p></th>
+<th class="head"><p>SPI Function calling Exclusive Area</p></th>
+<th class="head"><p>Need for Exclusive Area</p></th>
+<th class="head"><p>Recommended Exclusive Area Mapping</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_EXCLUSIVE_AREA_0</p></td>
+<td><p>Spi_AsyncTransmit<br>Spi_Cancel<br> Spi_SyncTransmit<br>Spi_GetHWUnitStatus<br>Spi_WriteIB<br>Spi_ReadIB<br>Spi_SetupEB</p></td>
+<td><p>To protect against multiple access for shared resources</p></td>
+<td><p><strong>OS_RESOURCE</strong> : If the SPI APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br><strong>None</strong>: If SPI APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mcu">
+<h4><span class="section-number">4.8.8.1.4. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<p>MCU Module is required to initialize all the clock to be used by different peripherals.</p>
+</section>
+<section id="port">
+<h4><span class="section-number">4.8.8.1.5. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
+<p>PORT Module is required to initialize Pin configurations and MUX mode for SPI Instances.</p>
+</section>
+<section id="dio">
+<h4><span class="section-number">4.8.8.1.6. </span>DIO<a class="headerlink" href="#dio" title="Link to this heading"></a></h4>
+<p>Dio Module is required to handle SPI chip select when GPIO is configured to use as chip select.</p>
+</section>
+</section>
+<section id="multi-core-and-resource-allocator">
+<h3><span class="section-number">4.8.8.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
+<p>Not Supported</p>
+</section>
+</section>
+<section id="configuration">
+<h2><span class="section-number">4.8.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The Spi Driver implementation supports multiple configuration variants
+The driver expects generated <strong>Spi_Cfg.h</strong> to be present as input file.
+The associated Spi driver configuration generated source files are <strong>Spi_LCfg.c</strong> if Link-Time variant is selected and <strong>Spi_PBcfg.c</strong> if Post-Build config variant is selected, only <strong>Spi_Cfg.c</strong> if Pre-Compile variant is selected</p>
+<p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<section id="spidemeventparameterrefs">
+<h3><span class="section-number">4.8.9.1. </span>SpiDemEventParameterRefs<a class="headerlink" href="#spidemeventparameterrefs" title="Link to this heading"></a></h3>
+<section id="spi-e-hardware-error">
+<h4><span class="section-number">4.8.9.1.1. </span>SPI_E_HARDWARE_ERROR<a class="headerlink" href="#spi-e-hardware-error" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00241</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SPI_E_HARDWARE_ERROR</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiDemEventParameterRefs</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to configured DEM event to report “Hardware failure”. If the reference is not configured the error shall not be reported.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Symbolic name reference to [DemEventParameter]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spidriver">
+<h3><span class="section-number">4.8.9.2. </span>SpiDriver<a class="headerlink" href="#spidriver" title="Link to this heading"></a></h3>
+<section id="spimaxchannel">
+<h4><span class="section-number">4.8.9.2.1. </span>SpiMaxChannel<a class="headerlink" href="#spimaxchannel" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00197</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiMaxChannel</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiDriver</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter contains the number of Channels configured. It will be gathered by tools during the configuration stage</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spimaxjob">
+<h4><span class="section-number">4.8.9.2.2. </span>SpiMaxJob<a class="headerlink" href="#spimaxjob" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00198</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiMaxJob</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiDriver</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Total number of Jobs configured.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spimaxsequence">
+<h4><span class="section-number">4.8.9.2.3. </span>SpiMaxSequence<a class="headerlink" href="#spimaxsequence" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00199</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiMaxSequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiDriver</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Total number of Sequences configured.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spimaxchannelsperjob">
+<h4><span class="section-number">4.8.9.2.4. </span>SpiMaxChannelsPerJob<a class="headerlink" href="#spimaxchannelsperjob" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiMaxChannelsPerJob</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiDriver</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Maximum channels allowed per job</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..32</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spimaxjobspersequence">
+<h4><span class="section-number">4.8.9.2.5. </span>SpiMaxJobsPerSequence<a class="headerlink" href="#spimaxjobspersequence" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiMaxJobsPerSequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiDriver</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Maximum jobs allowed per sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..32</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spichannel">
+<h3><span class="section-number">4.8.9.3. </span>SpiChannel<a class="headerlink" href="#spichannel" title="Link to this heading"></a></h3>
+<section id="spichannelid">
+<h4><span class="section-number">4.8.9.3.1. </span>SpiChannelId<a class="headerlink" href="#spichannelid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00200</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiChannelId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>SPI Channel ID, used as parameter in SPI API functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef (Symbolic Name generated for this parameter)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spichanneltype">
+<h4><span class="section-number">4.8.9.3.2. </span>SpiChannelType<a class="headerlink" href="#spichanneltype" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00201</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiChannelType</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Buffer usage with EB/IB channel</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>EB External Buffer <br> IB Internal Buffer</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spidatawidth">
+<h4><span class="section-number">4.8.9.3.3. </span>SpiDataWidth<a class="headerlink" href="#spidatawidth" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00202</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiDataWidth</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter is the width of a transmitted data uni</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..32</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spidefaultdata">
+<h3><span class="section-number">4.8.9.4. </span>SpiDefaultData<a class="headerlink" href="#spidefaultdata" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00203</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiDefaultData</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>The default data to be transmitted when (for internal buffer or external buffer) the pointer passed to Spi_WriteIB (for internal buffer) or to Spi_SetupEB (for external buffer) is NULL.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 4294967295</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+<section id="spiebmaxlength">
+<h4><span class="section-number">4.8.9.4.1. </span>SpiEbMaxLength<a class="headerlink" href="#spiebmaxlength" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00204</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiEbMaxLength</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter contains the maximum size (number of data elements) of data buffers in case of EB Channels and only</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local <br>dependency: The SPI_CHANNEL_TYPE parameter has to be configured as EB for this Channel.<br>The SPI_CHANNEL_BUFFERS_ALLOWED parameter has to be configured as 1 or 2</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spiibnbuffers">
+<h4><span class="section-number">4.8.9.4.2. </span>SpiIbNBuffers<a class="headerlink" href="#spiibnbuffers" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00205</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiIbNBuffers</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter contains the maximum number of data buffers in case of IB Channels and only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spitransferstart">
+<h4><span class="section-number">4.8.9.4.3. </span>SpiTransferStart<a class="headerlink" href="#spitransferstart" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00206</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiTransferStart</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the first starting bit for transmission.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>LSB Transmission starts with the Least Significant Bit first <br> MSB Transmission starts with the Most Significant Bit first</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spiexternaldevice">
+<h3><span class="section-number">4.8.9.5. </span>SpiExternalDevice<a class="headerlink" href="#spiexternaldevice" title="Link to this heading"></a></h3>
+<section id="spibaudrate">
+<h4><span class="section-number">4.8.9.5.1. </span>SpiBaudrate<a class="headerlink" href="#spibaudrate" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00208</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiBaudrate</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter is the communication baudrate - This parameter allows using a range of values, from the point of view of configuration tools,from Hz up to MHz</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucFloatParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>[0 .. INF]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spicsidentifier">
+<h4><span class="section-number">4.8.9.5.2. </span>SpiCsIdentifier<a class="headerlink" href="#spicsidentifier" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00209</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiCsIdentifier</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter is the symbolic name to identify the Chip Select (CS) allocated to this Job.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucStringParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spicspolarity">
+<h4><span class="section-number">4.8.9.5.3. </span>SpiCsPolarity<a class="headerlink" href="#spicspolarity" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00210</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiCsPolarity</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the active polarity of Chip Select.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>HIGH LOW</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spicsselection">
+<h4><span class="section-number">4.8.9.5.4. </span>SpiCsSelection<a class="headerlink" href="#spicsselection" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00239</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiCsSelection</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>When the Chip select handling is enabled (see SpiEnableCs), then this parameter specifies if the chip select is handled automatically by Peripheral HW engine or via general purpose IO by Spi driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CS_VIA_GPIO chip select handled via gpio by Spi driver. <br> CS_VIA_PERIPHERAL_ENGINE chip select is handled automatically by Peripheral HW engine</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CS_VIA_PERIPHERAL_ENGINE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local <br> depdendency:SpiEnableCs</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spidatashiftedge">
+<h4><span class="section-number">4.8.9.5.5. </span>SpiDataShiftEdge<a class="headerlink" href="#spidatashiftedge" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00211</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiDataShiftEdge</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the SPI data shift edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>LEADING TRAILING</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spienablecs">
+<h4><span class="section-number">4.8.9.5.6. </span>SpiEnableCs<a class="headerlink" href="#spienablecs" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00212</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiEnableCs</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter enables or not the Chip Select handling functions. If this parameter is enabled then parameter SpiCsSelection further details the type of chip selection</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spihwunit">
+<h4><span class="section-number">4.8.9.5.7. </span>SpiHwUnit<a class="headerlink" href="#spihwunit" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00217</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiHwUnit</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter is the symbolic name to identify the HW SPI Hardware microcontroller peripheral allocated to this Job.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>SPI_UNIT_SPIA SPI_UNIT_SPIB SPI_UNIT_SPIC SPI_UNIT_SPID SPI_UNIT_SPIE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spishiftclockidlelevel">
+<h4><span class="section-number">4.8.9.5.8. </span>SpiShiftClockIdleLevel<a class="headerlink" href="#spishiftclockidlelevel" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00213</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiShiftClockIdleLevel</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the SPI shift clock idle level.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>HIGH LOW</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spitimeclk2cs">
+<h4><span class="section-number">4.8.9.5.9. </span>SpiTimeClk2Cs<a class="headerlink" href="#spitimeclk2cs" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00214</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiTimeClk2Cs</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Timing between clock and chip select (in seconds) - This parameter allows to use a range of values from 0 up to 0.0001 seconds.The real configuration-value used in software BSW-SPI is calculated out of this by the generator-tools.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucFloatParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>[0 .. 1E-4]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spicsgpiopinnumref">
+<h4><span class="section-number">4.8.9.5.10. </span>SpiCsGpioPinNumRef<a class="headerlink" href="#spicsgpiopinnumref" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiCsGpioPinNumRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to the Port Pin configuration, which is set in the PORT driver configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>REFERENCE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spicsgpiopinid">
+<h4><span class="section-number">4.8.9.5.11. </span>SpiCsGpioPinId<a class="headerlink" href="#spicsgpiopinid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiCsGpioPinId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>GPIO pin ID . This value will be assigned to the symbolic names.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Integer</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spidataworddelay">
+<h4><span class="section-number">4.8.9.5.12. </span>SpiDataWordDelay<a class="headerlink" href="#spidataworddelay" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiDataWordDelay</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiExternalDevice</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the SPI delay between every transfer from FIFO transmit buffer to transmit shift register, work only in FIFO mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Integer</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spijob">
+<h3><span class="section-number">4.8.9.6. </span>SpiJob<a class="headerlink" href="#spijob" title="Link to this heading"></a></h3>
+<section id="spihwunitsynchronous">
+<h4><span class="section-number">4.8.9.6.1. </span>SpiHwUnitSynchronous<a class="headerlink" href="#spihwunitsynchronous" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00238</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiHwUnitSynchronous</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiJob</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>If SpiHwUnitSynchronous is set to “SYNCHRONOUS”, the SpiJob uses its containing SpiDriver in a synchronous manner. If it is set to “ASYNCHRONOUS”, it uses the driver in an asynchronous way. If the parameter is not set, the SpiChannel uses the driver also in an asynchronous way. Tags:atp.Status=obsolete</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>ASYNCHRONOUS SYNCHRONOUS</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spijobendnotification">
+<h4><span class="section-number">4.8.9.6.2. </span>SpiJobEndNotification<a class="headerlink" href="#spijobendnotification" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00218</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiJobEndNotification</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiJob</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter is a reference to a notification function</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucFunctionNameDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spijobid">
+<h4><span class="section-number">4.8.9.6.3. </span>SpiJobId<a class="headerlink" href="#spijobid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00219</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiJobId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiJob</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>SPI Job ID, used as parameter in SPI API functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spijobpriority">
+<h4><span class="section-number">4.8.9.6.4. </span>SpiJobPriority<a class="headerlink" href="#spijobpriority" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00220</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiJobPriority</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiJob</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Priority set accordingly to SPI093: 0, lowest, 3, highest priority.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..3</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spideviceassignment">
+<h4><span class="section-number">4.8.9.6.5. </span>SpiDeviceAssignment<a class="headerlink" href="#spideviceassignment" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00216</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiDeviceAssignment</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiJob</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to the external device used by this job.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Reference</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spichannellist">
+<h3><span class="section-number">4.8.9.7. </span>SpiChannelList<a class="headerlink" href="#spichannellist" title="Link to this heading"></a></h3>
+<section id="spichannelindex">
+<h4><span class="section-number">4.8.9.7.1. </span>SpiChannelIndex<a class="headerlink" href="#spichannelindex" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00234</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiChannelIndex</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiChannelList</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter specifies the order of Channels within the Job.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spichannelassignment">
+<h4><span class="section-number">4.8.9.7.2. </span>SpiChannelAssignment<a class="headerlink" href="#spichannelassignment" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00215</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiChannelAssignment</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>A job reference to a SPI channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Reference</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spisequence">
+<h3><span class="section-number">4.8.9.8. </span>SpiSequence<a class="headerlink" href="#spisequence" title="Link to this heading"></a></h3>
+<section id="spiinterruptiblesequence">
+<h4><span class="section-number">4.8.9.8.1. </span>SpiInterruptibleSequence<a class="headerlink" href="#spiinterruptiblesequence" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00222</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiInterruptibleSequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiSequence</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter allows or not this Sequence to be suspended by another one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local dependency: This SPI_INTERRUPTIBLE_SEQ_ALLOWED parameter as to be configured as ON.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spiseqendnotification">
+<h4><span class="section-number">4.8.9.8.2. </span>SpiSeqEndNotification<a class="headerlink" href="#spiseqendnotification" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00223</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiSeqEndNotification</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiSequence</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter is a reference to a notification function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucFunctionNameDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spisequenceid">
+<h4><span class="section-number">4.8.9.8.3. </span>SpiSequenceId<a class="headerlink" href="#spisequenceid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00224</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiSequenceId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiSequence</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>SPI Sequence ID, used as parameter in SPI API functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>ECU</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spijobassignment">
+<h4><span class="section-number">4.8.9.8.4. </span>SpiJobAssignment<a class="headerlink" href="#spijobassignment" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00221</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiJobAssignment</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiSequence</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>A sequence references several jobs, which are executed during a communication sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1..*</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Reference to [ SpiJob ]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spihwunitconfig">
+<h3><span class="section-number">4.8.9.9. </span>SpiHwUnitConfig<a class="headerlink" href="#spihwunitconfig" title="Link to this heading"></a></h3>
+<section id="spihwunittype">
+<h4><span class="section-number">4.8.9.9.1. </span>SpiHwUnitType<a class="headerlink" href="#spihwunittype" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiHwUnitType</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiHwUnitConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>SPI HW unit to use</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>SPI_UNIT_SPIA SPI_UNIT_SPIB SPI_UNIT_SPIC SPI_UNIT_SPID SPI_UNIT_SPIE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spihighspeedmode">
+<h4><span class="section-number">4.8.9.9.2. </span>SpiHighSpeedMode<a class="headerlink" href="#spihighspeedmode" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiHighSpeedMode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiHwUnitConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enables High speed mode for SPI instance, Note: Since only selected pins support HS mode, to enable high speed communication apropriate HS pins shall be configured for SPI in port configration, please check F29x TRM and data sheet for HS mode supported pins.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>SPI_UNIT_SPIA SPI_UNIT_SPIB SPI_UNIT_SPIC SPI_UNIT_SPID SPI_UNIT_SPIE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spififomodeenable">
+<h4><span class="section-number">4.8.9.9.3. </span>SpiFifoModeEnable<a class="headerlink" href="#spififomodeenable" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiFifoModeEnable</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiHwUnitConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Enables FIFO mode for SPI instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spiirqtype">
+<h4><span class="section-number">4.8.9.9.4. </span>SpiIrqType<a class="headerlink" href="#spiirqtype" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiIrqType</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiHwUnitConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Type of Isr function: CAT1 realtime interrupt or CAT1 : interrupt void func(void) or CAT2 : ISR(func).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>SPI_ISR_CAT1_RTINT SPI_ISR_CAT1_INT SPI_ISR_CAT2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>SPI_ISR_CAT2</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spigeneral">
+<h3><span class="section-number">4.8.9.10. </span>SpiGeneral<a class="headerlink" href="#spigeneral" title="Link to this heading"></a></h3>
+<section id="spicancelapi">
+<h4><span class="section-number">4.8.9.10.1. </span>SpiCancelApi<a class="headerlink" href="#spicancelapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00226</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiCancelApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the Spi_Cancel function ON or OFF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spichannelbuffersallowed">
+<h4><span class="section-number">4.8.9.10.2. </span>SpiChannelBuffersAllowed<a class="headerlink" href="#spichannelbuffersallowed" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00227</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiChannelBuffersAllowed</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the SPI Handler/Driver Channel Buffers usage allowed and delivered.<br>IB = 0;<br>EB = 1; <br>IB/EB = 2.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spideverrordetect">
+<h4><span class="section-number">4.8.9.10.3. </span>SpiDevErrorDetect<a class="headerlink" href="#spideverrordetect" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00228</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiCSpiDevErrorDetectancelApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the development error detection and notification on or off.<br>true: detection and notification is enabled.<br> false: detection and notification is disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spihwstatusapi">
+<h4><span class="section-number">4.8.9.10.4. </span>SpiHwStatusApi<a class="headerlink" href="#spihwstatusapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00229</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiHwStatusApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the Spi_GetHWUnitStatus function ON or OFF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spiinterruptibleseqallowed">
+<h4><span class="section-number">4.8.9.10.5. </span>SpiInterruptibleSeqAllowed<a class="headerlink" href="#spiinterruptibleseqallowed" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00230</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiInterruptibleSeqAllowed</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the Interruptible Sequences handling functionality ON or OFF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local dependency: This parameter depends on SPI_LEVEL_DELIVERED value. <br> It is only used for SPI_LEVEL_DELIVERED configured to 1 or 2.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spileveldelivered">
+<h4><span class="section-number">4.8.9.10.6. </span>SpiLevelDelivered<a class="headerlink" href="#spileveldelivered" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00231</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiLevelDelivered</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the SPI Handler/Driver level of scalable functionality that is available and delivered.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spimainfunctionperiod">
+<h4><span class="section-number">4.8.9.10.7. </span>SpiMainFunctionPeriod<a class="headerlink" href="#spimainfunctionperiod" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00242</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiMainFunctionPeriod</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the cycle time of the function Spi_MainFunction_Handling in seconds. The parameter is not used by the driver it self, but it is used by upper layer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucFloatParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..INF</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spisupportconcurrentsynctransmit">
+<h4><span class="section-number">4.8.9.10.8. </span>SpiSupportConcurrentSyncTransmit<a class="headerlink" href="#spisupportconcurrentsynctransmit" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00237</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiSupportConcurrentSyncTransmit</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies whether concurrent Spi_SyncTransmit() calls for different sequences shall be configurable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spiusercallbackheaderfile">
+<h4><span class="section-number">4.8.9.10.9. </span>SpiUserCallbackHeaderFile<a class="headerlink" href="#spiusercallbackheaderfile" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00243</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiUserCallbackHeaderFile</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Header file name which will be included by the Spi. The value of this parameter shall be used as h-char-sequence or q-char-sequence according to ISO C90 section 6.10.2 “source file inclusion”. The parameter value MUST NOT represent a path, since ISO C90 does not specify how such a path is treated (i.e., this is implementation defined (and additionally depends on the operating system and the underlying file system))..</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..*</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucStringParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spiversioninfoapi">
+<h4><span class="section-number">4.8.9.10.10. </span>SpiVersionInfoApi<a class="headerlink" href="#spiversioninfoapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Spi_00232</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiVersionInfoApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the Spi_GetVersionInfo function ON or OFF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spichannelinternalbuffermaxlength">
+<h4><span class="section-number">4.8.9.10.11. </span>SpiChannelInternalBufferMaxLength<a class="headerlink" href="#spichannelinternalbuffermaxlength" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiChannelInternalBufferMaxLength</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Internal Buffer length in bytes - applicable for SpiChannelBuffer type - SPI_IB. This is the maximum length that can be allocated by each channel and it is fixed.Can vary buffer length per channel by configuring SpiIbNBuffers and SpiDataWidth. Refer MCAL-1255 and MCAL-1203.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1..4294967295</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spiloopbackmodeapi">
+<h4><span class="section-number">4.8.9.10.12. </span>SpiLoopbackModeApi<a class="headerlink" href="#spiloopbackmodeapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiLoopbackModeApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the Spi_SetLoopbackMode function ON or OFF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spipublishedinformation">
+<h3><span class="section-number">4.8.9.11. </span>SpiPublishedInformation<a class="headerlink" href="#spipublishedinformation" title="Link to this heading"></a></h3>
+<section id="spimaxhwunit">
+<h4><span class="section-number">4.8.9.11.1. </span>SpiMaxHwUnit<a class="headerlink" href="#spimaxhwunit" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>SpiMaxHwUnit</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>SpiPublishedInformation</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Number of different SPI hardware microcontroller peripherals (units/busses) available and handled by this SPI Handler/Driver module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER_LABEL</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0..5</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+<p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_SPIDriver.pdf">AUTOSAR_SWS_SPIDriver section: 10 Configuration specification</a> for configuration parameters details</p>
+</section>
+</section>
+<section id="steps-to-configure-spi-module">
+<h3><span class="section-number">4.8.9.12. </span>Steps To Configure Spi Module<a class="headerlink" href="#steps-to-configure-spi-module" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Open EB Tresos configurator tool and load Port, Mcu, Ecum, Os, Dem and Spi modules</p></li>
+<li><p>Open PORT module plugin and configure required pins as MISO, MOSI, CLK, CS.</p></li>
+<li><p>Open SPI module plugin, Select the Config Variant (Pre-compile or Link-Time or Post-Build)</p></li>
+<li><p>In SPI module plugin configure required parameters.</p></li>
+<li><p>Save the configuration and generate the configuration.</p></li>
+</ol>
+</section>
+</section>
+<section id="examples">
+<h2><span class="section-number">4.8.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>The example application demonstrates use of Spi module, the list below identifies key steps performed the example.</p>
+<section id="spi-example-sync-asynctransfer">
+<h3><span class="section-number">4.8.10.1. </span>Spi_Example_Sync_AsyncTransfer<a class="headerlink" href="#spi-example-sync-asynctransfer" title="Link to this heading"></a></h3>
+<section id="overview-of-spi-example-sync-asynctransfer">
+<h4><span class="section-number">4.8.10.1.1. </span>Overview of Spi_Example_Sync_AsyncTransfer<a class="headerlink" href="#overview-of-spi-example-sync-asynctransfer" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Spi_Example_Sync_AsyncTransfer</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes required port pins for SPI.</p></li>
+</ul>
+</li>
+<li><p>Spi_Init()</p></li>
+<li><p>Write the data into channels if channel buffer type is IB,setup buffer if channel buffer type is EB.</p></li>
+<li><p>Transmit One sequence Synchronously.</p></li>
+<li><p>Transmit another sequence Asynchronously.</p></li>
+<li><p>Check for HWUnit, Job, Sequence status.</p></li>
+<li><p>Read the data from channels.</p></li>
+<li><p>Validate the received data with pre-defined transmit data.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-spi-example-sync-asynctransfer">
+<h4><span class="section-number">4.8.10.1.2. </span>Setup required to run Spi_Example_Sync_AsyncTransfer<a class="headerlink" href="#setup-required-to-run-spi-example-sync-asynctransfer" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest c29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-spi-example-sync-asynctransfer">
+<h4><span class="section-number">4.8.10.1.3. </span>How to run Spi_Example_Sync_AsyncTransfer<a class="headerlink" href="#how-to-run-spi-example-sync-asynctransfer" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and Import Spi_Example_Sync_AsyncTransfer</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-spi-example-sync-asynctransfer">
+<h4><span class="section-number">4.8.10.1.4. </span>Sample Log of Spi_Example_Sync_AsyncTransfer<a class="headerlink" href="#sample-log-of-spi-example-sync-asynctransfer" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    Sample Application - STARTS !!!
+    SPI MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 83
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Setting loopback mode
+    Writing to internal buffer channel0.
+    Writing to internal buffer channel1.
+    Writing to external buffer channel2.
+    Transmitting data in asynchronous mode.
+    AsyncTransmit status is 0
+    Getting job status.
+    Called Sequence end notification function
+    Called Sequence end notification function
+    Getting sequence status.
+    Result of sequence_1 is SPI_SEQ_OK.
+    De-initializing SPI.
+</pre></div>
+</div>
+</section>
+</section>
+<section id="spi-example-asynctransfer-interrupt">
+<h3><span class="section-number">4.8.10.2. </span>Spi_Example_AsyncTransfer_Interrupt<a class="headerlink" href="#spi-example-asynctransfer-interrupt" title="Link to this heading"></a></h3>
+<section id="overview-of-spi-example-asynctransfer-interrupt">
+<h4><span class="section-number">4.8.10.2.1. </span>Overview of Spi_Example_AsyncTransfer_Interrupt<a class="headerlink" href="#overview-of-spi-example-asynctransfer-interrupt" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Spi_Example_AsyncTransfer_Interrupt</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes required port pins for SPI.</p></li>
+</ul>
+</li>
+<li><p>Spi_Init()</p></li>
+<li><p>Write the data into channels if channel buffer type is IB,setup buffer if channel buffer type is EB.</p></li>
+<li><p>Transmit data asynchronously.</p></li>
+<li><p>Check for HWUnit, Job, Sequence status.</p></li>
+<li><p>Read the data from channels.</p></li>
+<li><p>Validate the received data with pre-defined transmit data.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-spi-example-asynctransfer-interrupt">
+<h4><span class="section-number">4.8.10.2.2. </span>Setup required to run Spi_Example_AsyncTransfer_Interrupt<a class="headerlink" href="#setup-required-to-run-spi-example-asynctransfer-interrupt" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest c29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-spi-example-asynctransfer-interrupt">
+<h4><span class="section-number">4.8.10.2.3. </span>How to run Spi_Example_AsyncTransfer_Interrupt<a class="headerlink" href="#how-to-run-spi-example-asynctransfer-interrupt" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and Import Spi_Example_AsyncTransfer_Interrupt</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-spi-example-asynctransfer-interrupt">
+<h4><span class="section-number">4.8.10.2.4. </span>Sample Log of Spi_Example_AsyncTransfer_Interrupt<a class="headerlink" href="#sample-log-of-spi-example-asynctransfer-interrupt" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    Sample Application - STARTS !!!
+    SPI MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 83
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Writing to internal buffer channel0.
+    Writing to internal buffer channel1.
+    Writing to external buffer channel2.
+    Transmitting data in asynchronous mode.
+    Called Sequence end notification function
+    ACalled Sequence end notification function
+    syncTransmit status is 0
+    Getting hardware unit status.
+    Result of Hardware unit is not SPI_BUSY.
+    Getting job status.
+    Getting sequence status.
+    Result of sequence_1 is SPI_SEQ_OK.
+    De-initializing SPI.
+</pre></div>
+</div>
+</section>
+</section>
+<section id="spi-example-synctransfer">
+<h3><span class="section-number">4.8.10.3. </span>Spi_Example_SyncTransfer<a class="headerlink" href="#spi-example-synctransfer" title="Link to this heading"></a></h3>
+<section id="overview-of-spi-example-synctransfer">
+<h4><span class="section-number">4.8.10.3.1. </span>Overview of Spi_Example_SyncTransfer<a class="headerlink" href="#overview-of-spi-example-synctransfer" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Spi_Example_SyncTransfer</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes required port pins for SPI.</p></li>
+</ul>
+</li>
+<li><p>Spi_Init()</p></li>
+<li><p>Write the data into channels if channel buffer type is IB,setup buffer if channel buffer type is EB.</p></li>
+<li><p>Transmit data synchronously.</p></li>
+<li><p>Check for HWUnit, Job, Sequence status.</p></li>
+<li><p>Read the data from channels.</p></li>
+<li><p>Validate the received data with pre-defined transmit data.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-spi-example-synctransfer">
+<h4><span class="section-number">4.8.10.3.2. </span>Setup required to run Spi_Example_SyncTransfer<a class="headerlink" href="#setup-required-to-run-spi-example-synctransfer" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest c29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-spi-example-synctransfer">
+<h4><span class="section-number">4.8.10.3.3. </span>How to run Spi_Example_SyncTransfer<a class="headerlink" href="#how-to-run-spi-example-synctransfer" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and Import Spi_Example_SyncTransfer</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-spi-example-synctransfer">
+<h4><span class="section-number">4.8.10.3.4. </span>Sample Log of Spi_Example_SyncTransfer<a class="headerlink" href="#sample-log-of-spi-example-synctransfer" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    Sample Application - STARTS !!!
+    SPI MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 83
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Setting loopback mode
+    Writing to internal buffer channel0.
+    Writing to internal buffer channel1.
+    Writing to external buffer channel2.
+    Transmitting data in synchronous mode.
+    SyncTransmit status is 0
+    Getting sequence status.
+    Deinitializing SPI.
+</pre></div>
+</div>
+</section>
+</section>
+<section id="file-structure">
+<h3><span class="section-number">4.8.10.4. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂examples<br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂<strong>Spi</strong><br />
+┃ ┃ ┣ 📂 <strong>Spi_Example_Sync_AsyncTransfer</strong><br />
+┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>Spi_Example_Sync_AsyncTransfer.projectspec</strong><br />
+┃ ┃ ┃ ┣ 📂F29H85x_Config<br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Port.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Spi.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Spi_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header.</em><br />
+┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Spi_PBcfg.c</strong> : <em>Contains the Post build configuration parameters.</em><br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜<strong>Spi_Example_Sync_AsyncTransfer.c</strong> : <em>Example application for Spi</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Spi_Example_Sync_AsyncTransfer.h</strong> : <em>Example application for Spi</em><br />
+┃ ┃ ┣ 📂 <strong>Spi_Example_AsyncTransfer_Interrupt</strong><br />
+┃ ┃ ┗ 📂 <strong>Spi_Example_SyncTransfer</strong><br />
+┃ ┗ 📜CMakeLists.txt<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Spi_PBcfg.c will be present if Post-Build config variant is selected, only Spi_Cfg.c will be present if Pre-Compile variant is selected and only Spi_Lcfg.c will be present if Link-Time variant is selected</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Module_User_Guide_Lin.html" class="btn btn-neutral float-left" title="4.7. LIN Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Cdd_Adc.html" class="btn btn-neutral float-right" title="4.9. CDD ADC Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Dec 18, 2024.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

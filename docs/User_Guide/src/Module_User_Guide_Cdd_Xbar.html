@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.11. CDD XBAR Module &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. API guide" href="api_guide.html" />
+    <link rel="prev" title="4.10. CDD SENT Module" href="Module_User_Guide_Cdd_Sent.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.01.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.1. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.2. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.3. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.4. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.5. CAN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.6. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.7. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.8. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.9. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.10. CDD SENT Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.11. CDD XBAR Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.11.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.11.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.11.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.11.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.11.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.11.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.11.4.3. Non compliance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.11.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.11.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.11.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.11.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.11.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.11.6.4. Error codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.11.7. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.11.7.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.11.7.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.11.7.3. Hardware-Software Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.11.8. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.11.8.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.11.8.2. Multi-core and Resource allocator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.11.9. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cddxbargeneral">4.11.9.1. CddXbarGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddxbar-configuration">4.11.9.2. CddXbar Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-port-module">4.11.9.3. Steps To Configure Port Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.11.10. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">4.11.10.1. Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-example">4.11.10.2. Setup required to run example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-run-examples">4.11.10.3. How to run examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample-log">4.11.10.4. Sample Log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.11.10.5. File Structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
+      <li><span class="section-number">4.11. </span>CDD XBAR Module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-xbar-module">
+<h1><span class="section-number">4.11. </span>CDD XBAR Module<a class="headerlink" href="#cdd-xbar-module" title="Link to this heading"></a></h1>
+<section id="acronyms-and-definitions">
+<h2><span class="section-number">4.11.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AUTOSAR</p></td>
+<td><p>Automotive Open System Architecture</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD</p></td>
+<td><p>Complex Device Driver</p></td>
+</tr>
+<tr class="row-even"><td><p>XBAR</p></td>
+<td><p>Crossbar</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL</p></td>
+<td><p>Micro Controller Abstraction Layer</p></td>
+</tr>
+<tr class="row-even"><td><p>CLB</p></td>
+<td><p>Configurable Logic Block</p></td>
+</tr>
+<tr class="row-odd"><td><p>ePWM</p></td>
+<td><p>Enhanced Pulse Width Modulation</p></td>
+</tr>
+<tr class="row-even"><td><p>MINDB</p></td>
+<td><p>Minimum Dead-band</p></td>
+</tr>
+<tr class="row-odd"><td><p>ICL</p></td>
+<td><p>Illegal Combo Logic</p></td>
+</tr>
+<tr class="row-even"><td><p>API</p></td>
+<td><p>Application Programming Interface</p></td>
+</tr>
+<tr class="row-odd"><td><p>DET</p></td>
+<td><p>Default Error Tracer</p></td>
+</tr>
+<tr class="row-even"><td><p>HW</p></td>
+<td><p>Hardware</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW</p></td>
+<td><p>Software</p></td>
+</tr>
+<tr class="row-even"><td><p>AUXSIG</p></td>
+<td><p>Auxiliary Input</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="introduction">
+<h2><span class="section-number">4.11.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The CDD Xbar driver is a Complex Device Driver that provides services to connect device inputs, outputs, and internal resources in a variety of configurations.</p>
+<figure class="align-center" id="id1">
+<img alt="CDD XBAR MCAL AUTOSAR" src="../_images/CDD_XBAR_AUTOSAR_MCAL.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.41 </span><span class="caption-text">Cdd Xbar MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>This document details AUTOSAR Cdd Xbar module implementation</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Supported AUTOSAR Release</p></th>
+<th class="head"><p><strong>4.3.1</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Supported Configuration Variants</strong></p></td>
+<td><p><strong>Pre-Compile</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Vendor ID</strong></p></td>
+<td><p><strong>CDD_XBAR_VENDOR_ID (44)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Module ID</strong></p></td>
+<td><p><strong>CDD_XBAR_MODULE_ID (255)</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functional-overview">
+<h2><span class="section-number">4.11.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<p>The CDD Xbar driver is part of the Complex Device Driver layer(CDD). CDD Xbar is a logical connection circuitry that is used to route signals from a set of inputs to several outputs. Crossbars are named based on their outputs, according to where the Xbar takes signals.</p>
+<p>CDD Xbar, for this device, supports six categories of Crossbars:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Crossbar Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Input X-Bar</p></td>
+<td><p>Routes signals from a GPIO/AIO to many different IP blocks such as the ADC, eCAP, ePWM, and external interrupts</p></td>
+</tr>
+<tr class="row-odd"><td><p>Output X-Bar</p></td>
+<td><p>Routes signals from inside the device to a GPIO</p></td>
+</tr>
+<tr class="row-even"><td><p>CLB X-Bar</p></td>
+<td><p>Routes signals to the CLB modules</p></td>
+</tr>
+<tr class="row-odd"><td><p>ePWM X-Bar</p></td>
+<td><p>Routes signals to the ePWM modules</p></td>
+</tr>
+<tr class="row-even"><td><p>MINDB X-Bar</p></td>
+<td><p>Routes various EPWM signals and CLB outputs to the Minimum Dead-band sub-module of the ePWM</p></td>
+</tr>
+<tr class="row-odd"><td><p>ICL X-Bar</p></td>
+<td><p>Routes various EPWM signals and CLB outputs to the Illegal Combination Logic sub-module of the ePWM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hardware-features">
+<h2><span class="section-number">4.11.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<section id="hardware-features-supported">
+<h3><span class="section-number">4.11.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<p>Features Supported at a high level are:</p>
+<ul class="simple">
+<li><p>Routing signals from a set of inputs or logic HIGH or logic LOW to several outputs or IP blocks.</p></li>
+<li><p>Inversion of the output signal in case of Output Xbar, CLB Xbar, ePWM Xbar, MINDB Xbar and ICL Xbar.</p></li>
+<li><p>Locking of the input-output configurations of all Xbars.</p></li>
+<li><p>Routing a latched event as the output of an Output Xbar output line.</p></li>
+<li><p>Inversion of the output signal before latching an event in an Output Xbar output line.</p></li>
+<li><p>Forcing the latch of an Output Xbar output line.</p></li>
+<li><p>Stretching the output of an Output Xbar output line to 16 SYSCLK or 32 SYSCLK.</p></li>
+</ul>
+<section id="input-xbar">
+<h4><span class="section-number">4.11.4.1.1. </span>Input Xbar<a class="headerlink" href="#input-xbar" title="Link to this heading"></a></h4>
+<p>Input Xbar is used to route signals from a GPIO or AIO or logic HIGH or logic LOW to many different IP blocks such as the ADC, eCAP, ePWM, and external interrupts. The input of each Input Xbar instance (INPUTx) can be any GPIO or AIO, while the output of each instance connects to various IP blocks in the device. The logic level HIGH and logic level LOW are also available as inputs to the Input Xbar. The GPIO/AIO selected by the Input Xbar can be configured as either an input or an output. The Input Xbar simply connects the signal on the input buffer to the output of the selected Input Xbar instance. The Input Xbar contains sixteen output lines denoted as INPUTx where x = 1 to 64.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/Cdd_Xbar_Input_Xbar.png"><img alt="Input Xbar architecture" src="../_images/Cdd_Xbar_Input_Xbar.png" style="width: 65%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.42 </span><span class="caption-text">Input Xbar architecture</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The Input Xbar provides the following features:</p>
+<ul class="simple">
+<li><p><strong>Selection of an input</strong> : Any GPIO or AIO configured with the PORT configuration can be selected as input to the INPUTx. It also provides a feature to select LOGIC HIGH or LOGIC low as input to the INPUTx.</p></li>
+<li><p><strong>Locking of each Input Xbar instances</strong> : The input output configurations of the each Input Xbar instance (INPUTx) can be locked. Once locked, it can be cleared only through a system reset.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more details, refer the device’s TRM.</p>
+</div>
+</section>
+<section id="output-xbar">
+<h4><span class="section-number">4.11.4.1.2. </span>Output Xbar<a class="headerlink" href="#output-xbar" title="Link to this heading"></a></h4>
+<p>The GPIO Output Xbar takes signals from inside the device and brings them out to a GPIO. The Xbar allows the selection of a single input or a logical-OR of many inputs. The Xbar contains sixteen outputs and each contains at least one position on the GPIO mux, denoted as OUTPUTXBARx. The final output is only recognized on the GPIO if the proper OUTPUTXBARx muxing options are selected using the PORT configurations.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/Cdd_Xbar_Output_Xbar.png"><img alt="Output Xbar architecture" src="../_images/Cdd_Xbar_Output_Xbar.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.43 </span><span class="caption-text">Output Xbar architecture</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The Output Xbar provides the following features:</p>
+<ul class="simple">
+<li><p><strong>Selection of multiple inputs</strong> : Multiple inputs can be configured as input to an individual OUTPUTXBARx.</p></li>
+<li><p><strong>Output stretching</strong> : The output of the OUTPUTXBARx can be stretched to stretch length of 16 SYSCLK or 32 SYSCLK.</p></li>
+<li><p><strong>Latching of output</strong> : The ORed output of the OUTPUTXBARx can be latched and the latched event can be used to drive the final OUTPUTXBARx. It also provides a feature the force the latched event to ‘1’ and clear the latched event.</p></li>
+<li><p><strong>Inversion before latching</strong> : The ORed output of the OUTPUTXBARx can be inverted before latching.</p></li>
+<li><p><strong>Inversion at the final output stage</strong> : The output of the OUTPUTXBARx at the final output stage can be inverted.</p></li>
+<li><p><strong>Status of the ORed output</strong> : It can indicate the status of the ORed output of OUTPUTXBARx.</p></li>
+<li><p><strong>Locking of Output Xbar</strong> : The input output configurations of the entire Output Xbar can be locked. Once locked, it can be cleared only through a system reset.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For more details regarding the inputs for each OUTPUTXBARx, refer the device’s TRM.</p>
+</div>
+</section>
+<section id="epwm-xbar">
+<h4><span class="section-number">4.11.4.1.3. </span>ePWM Xbar<a class="headerlink" href="#epwm-xbar" title="Link to this heading"></a></h4>
+<p>The ePWM Xbar brings signals to the ePWM modules. Specifically, the ePWM Xbar is connected to the Digital Compare (DC) submodule of each ePWM module for actions such as tripzones and syncing. The ePWM Xbar has 16 outputs that are routed to each ePWM module. The output lines of ePWM Xbar are denoted as TRIPx where x = 1 to 16. The outputs of ePWM X-BAR from TRIP1 to TRIP 8 are connected to trips inputs 1-8 of each ePWM instance, while TRIP9-TRIP12 and TRIP14-TRIP15 are connected to trips 9-12 and trips 14-15 of each ePWM instance, respectively. Note that TRIP5 and TRIP8 are not connected to any ePWM trip source.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/Cdd_Xbar_ePWM_Xbar.png"><img alt="ePWM Xbar architecture" src="../_images/Cdd_Xbar_ePWM_Xbar.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.44 </span><span class="caption-text">ePWM Xbar architecture</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The ePWM Xbar provides the following features:</p>
+<ul class="simple">
+<li><p><strong>Selection of multiple inputs</strong> : Multiple inputs can be configured as input to an individual TRIPx.</p></li>
+<li><p><strong>Inversion at the final output stage</strong> : The output of the TRIPx at the final output stage can be inverted.</p></li>
+<li><p><strong>Locking of ePWM Xbar</strong> : The input output configurations of the entire ePWM Xbar can be locked. Once locked, it can be cleared only through a system reset.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>For more details regarding the inputs for each TRIPx, refer the device’s TRM.</p></li>
+</ul>
+</div>
+</section>
+<section id="clb-xbar">
+<h4><span class="section-number">4.11.4.1.4. </span>CLB Xbar<a class="headerlink" href="#clb-xbar" title="Link to this heading"></a></h4>
+<p>The CLB X-BAR brings signals to the CLB modules. The CLB X-BAR has eight outputs that are routed to each CLB module denoted as AUXSIGx where x = 1 to 8. There is one instance of CLB-Xbar per AUXSIG input.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/Cdd_Xbar_CLB_Xbar.png"><img alt="CLB Xbar architecture" src="../_images/Cdd_Xbar_CLB_Xbar.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.45 </span><span class="caption-text">CLB Xbar architecture</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The CLB Xbar provides the following features:</p>
+<ul class="simple">
+<li><p><strong>Selection of multiple inputs</strong> : Multiple inputs can be configured as input to an individual AUXSIGx.</p></li>
+<li><p><strong>Inversion at the final output stage</strong> : The output of the AUXSIGx at the final output stage can be inverted.</p></li>
+<li><p><strong>Locking of CLB Xbar</strong> : The input output configurations of the entire CLB Xbar can be locked. Once locked, it can be cleared only through a system reset.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>For more details regarding the inputs for each AUXSIGx refer the device’s TRM.</p></li>
+</ul>
+</div>
+</section>
+<section id="mindb-and-icl-xbar">
+<h4><span class="section-number">4.11.4.1.5. </span>MINDB and ICL Xbar<a class="headerlink" href="#mindb-and-icl-xbar" title="Link to this heading"></a></h4>
+<p>The Illegal Combo Logic (ICL) X-BAR and Minimum Dead-band (MINDB) X-BAR are used to route various EPWM signals and CLB outputs to the Minimum Dead-band and Illegal Combination Logic sub-module of the EPWM. The MINDB Xbar has 16 outputs denoted as MINDBXBARx where x = 1 to 16. The ICL Xbar has 16 outputs denoted as ICLXBARx where x = 1 to 16.</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/Cdd_Xbar_MINDB_ICL_Xbar.png"><img alt="MINDB and ICL Xbar architecture" src="../_images/Cdd_Xbar_MINDB_ICL_Xbar.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.46 </span><span class="caption-text">MINDB and ICL Xbar</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The MINDB and ICL Xbars provides the following features:</p>
+<ul class="simple">
+<li><p><strong>Selection of multiple inputs</strong> : Multiple inputs can be configured as input to an individual output lines.</p></li>
+<li><p><strong>Inversion at the final output stage</strong> : The output of the MINDBXBARx and ICLXBARx at the final output stage can be inverted.</p></li>
+<li><p><strong>Locking of MINDB and ICL Xbars</strong> : The input output configurations of the entire MINDB Xbar/ICL Xbar can be locked. Once locked, it can be cleared only through a system reset.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>For more details regarding the inputs for each MINDBXBARx / ICLXBARx, refer the device’s TRM.</p></li>
+</ul>
+</div>
+</section>
+<section id="xbar-input-flags">
+<h4><span class="section-number">4.11.4.1.6. </span>Xbar Input Flags<a class="headerlink" href="#xbar-input-flags" title="Link to this heading"></a></h4>
+<p>With the exception of the CMPSS signals, the ePWM Xbar and the Output Xbar have all of the same input signals. Due to the inputs being similar between the ePWM Xbar, CLB Xbar, and Output Xbar, all Xbar modules leverage a single set of input flags to indicate which input signals have been triggered. This allows software to check the input flags when an event occurs. There is a bit allocated for each input signal in one of the XBARFLGx registers. The flag remains set until cleared through the appropriate XBARCLRx register.</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/Cdd_Xbar_Input_Flags.png"><img alt="Xbar Input Sources" src="../_images/Cdd_Xbar_Input_Flags.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.47 </span><span class="caption-text">Xbar Input Sources</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="not-supported-features">
+<h3><span class="section-number">4.11.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The output stretching, output inversion before locking, selection of latched event as output of the Output Xbar is affected by the locking of the Output Xbar, i.e., once locked these configurations cannot be changed.</p></li>
+</ul>
+</section>
+<section id="non-compliance">
+<h3><span class="section-number">4.11.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<p>None</p>
+</section>
+</section>
+<section id="source-files">
+<h2><span class="section-number">4.11.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┃ ┣ 📂BSW_Stubs<br />
+┃ ┣ 📂Adc<br />
+┃ ┣ 📂Can<br />
+┃ ┗ 📂<strong>Cdd_Xbar</strong><br />
+┃ ┃ ┣ 📂<strong>include</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Xbar.h</strong> : <em>Contains the API declarations of the Cdd Xbar driver to be used by upper layers.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Cdd_Xbar_Priv.h</strong> : <em>Contains data structures and Internal function declarations.</em><br />
+┃ ┃ ┣ 📂<strong>src</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Xbar.c</strong> : <em>Contains the implementation of the API for Cdd Xbar driver.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Cdd_Xbar_Priv.c</strong> : <em>Contains Functions that support the API for Cdd Xbar driver</em><br />
+┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂hw_include<br />
+┃ ┣ 📂Mcal_Lib<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┗ 📂Wdg<br />
+┣ 📂examples<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<figure class="align-center" id="id8">
+<img alt="Cdd Xbar Header File Structure" src="../_images/Cdd_Xbar_Header_File_Structure.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.48 </span><span class="caption-text">Cdd Xbar Header File Structure</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="module-requirements">
+<h2><span class="section-number">4.11.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<section id="memory-mapping">
+<h3><span class="section-number">4.11.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<p>Will be added in later release</p>
+</section>
+<section id="scheduling">
+<h3><span class="section-number">4.11.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<p>None</p>
+</section>
+<section id="error-handling">
+<h3><span class="section-number">4.11.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<section id="development-error-reporting">
+<h4><span class="section-number">4.11.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<p>Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
+</section>
+</section>
+<section id="error-codes">
+<h3><span class="section-number">4.11.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of Error</p></th>
+<th class="head"><p>Related Error code</p></th>
+<th class="head"><p>Value (Hex)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>API called for reinitialization of already initialized crossbars.</p></td>
+<td><p>CDD_XBAR_E_INIT_ALREADY</p></td>
+<td><p>0x01</p></td>
+</tr>
+<tr class="row-odd"><td><p>API called with invalid parameter.</p></td>
+<td><p>CDD_XBAR_E_PARAM_VALUE</p></td>
+<td><p>0x02</p></td>
+</tr>
+<tr class="row-even"><td><p>API called with invalid parameter pointer.</p></td>
+<td><p>CDD_XBAR_E_PARAM_POINTER</p></td>
+<td><p>0x03</p></td>
+</tr>
+<tr class="row-odd"><td><p>API called with invalid operations on a locked crossbar.</p></td>
+<td><p>CDD_XBAR_E_LOCK</p></td>
+<td><p>0x04</p></td>
+</tr>
+<tr class="row-even"><td><p>API called with uninitialized driver.</p></td>
+<td><p>CDD_XBAR_E_UNINIT</p></td>
+<td><p>0x05</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="used-resources">
+<h2><span class="section-number">4.11.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<section id="interrupt-handling">
+<h3><span class="section-number">4.11.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<p>There are no Interrupts in Cdd Xbar</p>
+</section>
+<section id="instance-support">
+<h3><span class="section-number">4.11.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CPU instances</p></th>
+<th class="head"><p>supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CPU 1</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPU 2</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU 3</p></td>
+<td><p>NO</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hardware-software-mapping">
+<h3><span class="section-number">4.11.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<p>Below image shows Cdd Xbar driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../_images/Cdd_Xbar_Hw_Sw_Maping.png"><img alt="Cdd Xbar HW/SW Mapping" src="../_images/Cdd_Xbar_Hw_Sw_Maping.png" style="width: 75%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.49 </span><span class="caption-text">Cdd Xbar HW/SW Mapping</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="integration-description">
+<h2><span class="section-number">4.11.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<section id="dependent-modules">
+<h3><span class="section-number">4.11.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<section id="det">
+<h4><span class="section-number">4.11.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<p>This implementation depends on the DET in order to report development errors. The detection of development errors is configurable (ON / OFF), The switch CDD_XBAR_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.</p>
+</section>
+<section id="port">
+<h4><span class="section-number">4.11.8.1.2. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
+<p>PORT Module is required to initialize Pin configurations for Input Xbar inputs(GPIOs, AIOs) and OUTPUTXBARx.</p>
+</section>
+<section id="mcu">
+<h4><span class="section-number">4.11.8.1.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<p>MCU Module is required to initialize all the clock to be used by different peripherals</p>
+</section>
+</section>
+<section id="multi-core-and-resource-allocator">
+<h3><span class="section-number">4.11.8.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
+<p>Not Supported</p>
+</section>
+</section>
+<section id="configuration">
+<h2><span class="section-number">4.11.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The Cdd Xbar Driver implementation supports single configuration variants, namely Pre-Compile config. The driver expects generated <strong>Cdd_Xbar_Cfg.h</strong> to be present as input file.
+The associated Cdd Xbar driver configuration generated source file is <strong>Cdd_Xbar_Cfg.c</strong>.</p>
+<p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
+</div>
+<section id="cddxbargeneral">
+<h3><span class="section-number">4.11.9.1. </span>CddXbarGeneral<a class="headerlink" href="#cddxbargeneral" title="Link to this heading"></a></h3>
+<section id="cddxbardeverrordetect">
+<h4><span class="section-number">4.11.9.1.1. </span>CddXbarDevErrorDetect<a class="headerlink" href="#cddxbardeverrordetect" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarDevErrorDetect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarGeneral</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the development error detection and notification on or off <br> • <strong>TRUE</strong>: detection and notification is enabled. <br> • <strong>FALSE</strong>: detection and notification is disabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarapienable">
+<h4><span class="section-number">4.11.9.1.2. </span>CddXbarAPIEnable<a class="headerlink" href="#cddxbarapienable" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarAPIEnable</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarGeneral</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Enables or Disables the APIs of Cdd Xbar driver. <br> • <strong>TRUE</strong>: All APIs are enabled. <br> • <strong>FALSE</strong>: All APIs are disabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarversioninfoapi">
+<h4><span class="section-number">4.11.9.1.3. </span>CddXbarVersionInfoApi<a class="headerlink" href="#cddxbarversioninfoapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarVersionInfoApi</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarGeneral</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Enables or Disables the Cdd_Xbar_GetVersionInfo API. <br> • <strong>TRUE</strong>: Cdd_Xbar_GetVersionInfo API is enabled. <br> • <strong>FALSE</strong>: Cdd_Xbar_GetVersionInfo API is disabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarinputflagapi">
+<h4><span class="section-number">4.11.9.1.4. </span>CddXbarInputFlagApi<a class="headerlink" href="#cddxbarinputflagapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarInputFlagApi</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarGeneral</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Enables or Disables the Cdd_Xbar_InputFlagStatus() and Cdd_Xbar_InputFlagClear() APIs. <br> • <strong>TRUE</strong>: Input flag related APIs are enabled. <br> • <strong>FALSE</strong>: Input flag related APIs are disabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddxbar-configuration">
+<h3><span class="section-number">4.11.9.2. </span>CddXbar Configuration<a class="headerlink" href="#cddxbar-configuration" title="Link to this heading"></a></h3>
+<section id="cddxbarinputxbarconfig">
+<h4><span class="section-number">4.11.9.2.1. </span>CddXbarInputXbarConfig<a class="headerlink" href="#cddxbarinputxbarconfig" title="Link to this heading"></a></h4>
+<section id="cddxbarinputxbarinputsourceselection">
+<h5><span class="section-number">4.11.9.2.1.1. </span>CddXbarInputXbarInputSourceSelection<a class="headerlink" href="#cddxbarinputxbarinputsourceselection" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarInputXbarInputSourceSelection</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarInputXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects GPIO/AIO/LOGIC HIGH/LOGIC LOW as input to the Input XBar</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarinputxbarinputsource">
+<h5><span class="section-number">4.11.9.2.1.2. </span>CddXbarInputXbarInputSource<a class="headerlink" href="#cddxbarinputxbarinputsource" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarInputXbarInputSource</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarInputXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to GPIO/AIO Pin, obtained from the configuration of PORT plugin if GPIO/AIO is selected as the input source for Input Xbar</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>GPIO</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarinputxbarinput">
+<h5><span class="section-number">4.11.9.2.1.3. </span>CddXbarInputXbarInput<a class="headerlink" href="#cddxbarinputxbarinput" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarInputXbarInput</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarInputXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selection of the Input Xbar(INPUTx) to be configured.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_INPUT1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarinputxbarinputselectconfigurationlock">
+<h5><span class="section-number">4.11.9.2.1.4. </span>CddXbarInputXbarInputSelectConfigurationLock<a class="headerlink" href="#cddxbarinputxbarinputselectconfigurationlock" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarInputXbarInputSelectConfigurationLock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarInputXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Lock the current input output configurations of the INPUTx from any further configuration until System Reset. Once locked, cannot be unlocked without reset</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddxbaroutputxbarconfig">
+<h4><span class="section-number">4.11.9.2.2. </span>CddXbarOutputXbarConfig<a class="headerlink" href="#cddxbaroutputxbarconfig" title="Link to this heading"></a></h4>
+<section id="cddxbaroutputxbarinstanceconfig">
+<h5><span class="section-number">4.11.9.2.2.1. </span>CddXbarOutputXbarInstanceConfig<a class="headerlink" href="#cddxbaroutputxbarinstanceconfig" title="Link to this heading"></a></h5>
+<p>○ CddXbarOutputXbarInput</p>
+<p>• CddXbarOutputXbarInputGroup</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarOutputXbarInputGroup</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarOutputXbarInput</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input group to be chosen for Output Crossbar as input</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_INPUT_GROUP_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>• CddXbarOutputXbarInputLine</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarOutputXbarInputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarOutputXbarInputLine</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input line to be chosen from the selected input group for Output Crossbar as input</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_INPUT_GROUP_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbaroutputxbaroutputline">
+<h5><span class="section-number">4.11.9.2.2.2. </span>CddXbarOutputXbarOutputLine<a class="headerlink" href="#cddxbaroutputxbaroutputline" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarOutputXbarOutputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarOutputXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selection of the Output Xbar output line to be configured.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_OUTPUT1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbaroutputxbaroutputpulsestretch">
+<h5><span class="section-number">4.11.9.2.2.3. </span>CddXbarOutputXbarOutputPulseStretch<a class="headerlink" href="#cddxbaroutputxbaroutputpulsestretch" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarOutputXbarOutputPulseStretch</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarOutputXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the stretching of the output signal for the selected output line of the Output Crossbar instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_SYSTICKS_STRETCH_OFF</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbaroutputxbaroutputinversion">
+<h5><span class="section-number">4.11.9.2.2.4. </span>CddXbarOutputXbarOutputInversion<a class="headerlink" href="#cddxbaroutputxbaroutputinversion" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarOutputXbarOutputInversion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarOutputXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the inversion of the output signal for the selected output line of the Output Crossbar instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbaroutputxbaroutputlatch">
+<h5><span class="section-number">4.11.9.2.2.5. </span>CddXbarOutputXbarOutputLatch<a class="headerlink" href="#cddxbaroutputxbaroutputlatch" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarOutputXbarOutputLatch</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarOutputXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the latched event as output of selected output line for Output Crossbar instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbaroutputxbaroutputflagconfig">
+<h5><span class="section-number">4.11.9.2.2.6. </span>CddXbarOutputXbarOutputFlagConfig<a class="headerlink" href="#cddxbaroutputxbaroutputflagconfig" title="Link to this heading"></a></h5>
+<p>○ CddXbarOutputXbarInversionBeforeLatch</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarOutputXbarInversionBeforeLatch</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarOutputXbarOutputFlagConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Enables or disables the inversion of the output before latching for the selected output line for Output Crossbar instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>○ CddXbarOutputXbarOutputLatchInitSts</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarOutputXbarOutputLatchInitSts</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarOutputXbarOutputFlagConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configures the initial status of the latched event, it can be forced, latched or can be left in default state.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbaroutputxbarconfigurationlock">
+<h5><span class="section-number">4.11.9.2.2.7. </span>CddXbarOutputXbarConfigurationLock<a class="headerlink" href="#cddxbaroutputxbarconfigurationlock" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarOutputXbarConfigurationLock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarOutputXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Lock the Output Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddxbarepwmxbarconfig">
+<h4><span class="section-number">4.11.9.2.3. </span>CddXbarEpwmXbarConfig<a class="headerlink" href="#cddxbarepwmxbarconfig" title="Link to this heading"></a></h4>
+<section id="cddxbarepwmxbarinstanceconfig">
+<h5><span class="section-number">4.11.9.2.3.1. </span>CddXbarEpwmXbarInstanceConfig<a class="headerlink" href="#cddxbarepwmxbarinstanceconfig" title="Link to this heading"></a></h5>
+<p>○ CddXbarEpwmXbarInput</p>
+<p>• CddXbarEpwmXbarInputGroup</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarEpwmXbarInputGroup</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarEpwmXbarInput</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input group to be chosen for ePWM Crossbar, as input.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_INPUT_GROUP_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>• CddXbarEpwmXbarInputLine</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarEpwmXbarInputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarEpwmXbarInput</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input line to be chosen from the selected input group for ePWM Crossbar, as input.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_EPWM_CMPSS1_CTRIPH</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>○ CddXbarEpwmXbarOutputLine</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarEpwmXbarOutputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarEpwmXbarInstanceConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selection of the ePWM Xbar output line to be configured.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_TRIP2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>○ CddXbarEpwmXbarOutputInversion</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarEpwmXbarOutputInversion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarEpwmXbarInstanceConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the inversion of the output signal for the selected output line of the ePWM Crossbar instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarepwmxbarconfigurationlock">
+<h5><span class="section-number">4.11.9.2.3.2. </span>CddXbarEpwmXbarConfigurationLock<a class="headerlink" href="#cddxbarepwmxbarconfigurationlock" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarEpwmXbarConfigurationLock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarEpwmXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Lock the ePWM Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddxbarclbxbarconfig">
+<h4><span class="section-number">4.11.9.2.4. </span>CddXbarClbXbarConfig<a class="headerlink" href="#cddxbarclbxbarconfig" title="Link to this heading"></a></h4>
+<section id="cddxbarclbxbarinstanceconfig">
+<h5><span class="section-number">4.11.9.2.4.1. </span>CddXbarClbXbarInstanceConfig<a class="headerlink" href="#cddxbarclbxbarinstanceconfig" title="Link to this heading"></a></h5>
+<p>○ CddXbarClbXbarInput</p>
+<p>• CddXbarClbXbarInputGroup</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarClbXbarInputGroup</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarClbXbarInput</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input group to be chosen for CLB Crossbar, as input.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_INPUT_GROUP_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>• CddXbarClbXbarInputLine</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarClbXbarInputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarClbXbarInput</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input line to be chosen from the selected input group for CLB Crossbar, as input.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_CLB_CMPSS1_CTRIPH</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>○ CddXbarClbXbarOutputLine</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarClbXbarOutputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarClbXbarInstanceConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selection of the CLB Xbar output line to be configured.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_AUXSIG1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>○ CddXbarClbXbarOutputInversion</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarClbXbarOutputInversion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarClbXbarInstanceConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the inversion of the output signal for the selected output line of the CLB Crossbar instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarclbxbarconfigurationlock">
+<h5><span class="section-number">4.11.9.2.4.2. </span>CddXbarClbXbarConfigurationLock<a class="headerlink" href="#cddxbarclbxbarconfigurationlock" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarClbXbarConfigurationLock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarClbXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Lock the CLB Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddxbarmindbxbarconfig">
+<h4><span class="section-number">4.11.9.2.5. </span>CddXbarMindbXbarConfig<a class="headerlink" href="#cddxbarmindbxbarconfig" title="Link to this heading"></a></h4>
+<section id="cddxbarmindbxbarinstanceconfig">
+<h5><span class="section-number">4.11.9.2.5.1. </span>CddXbarMindbXbarInstanceConfig<a class="headerlink" href="#cddxbarmindbxbarinstanceconfig" title="Link to this heading"></a></h5>
+<p>○ CddXbarMindbXbarInput</p>
+<p>• CddXbarMindbXbarInputGroup</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarMindbXbarInputGroup</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarMindbXbarInput</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input group to be chosen for MINDB Crossbar, as input.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_INPUT_GROUP_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>• CddXbarMindbXbarInputLine</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarMindbXbarInputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarMindbXbarInput</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input line to be chosen from the selected input group for MINDB Crossbar, as input.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_MINDB_EPWM1A_DB_NO_HR</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>○ CddXbarMindbXbarOutputLine</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarMindbXbarOutputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarMindbXbarInstanceConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selection of the MINDB Xbar output line to be configured.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_MINDBXBAR1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>○ CddXbarMindbXbarOutputInversion</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarMindbXbarOutputInversion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarMindbXbarInstanceConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the inversion of the output signal for the selected output line of the MINDB Crossbar instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarmindbxbarconfigurationlock">
+<h5><span class="section-number">4.11.9.2.5.2. </span>CddXbarMindbXbarConfigurationLock<a class="headerlink" href="#cddxbarmindbxbarconfigurationlock" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarMindbXbarConfigurationLock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarMindbXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Lock the MINDB Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddxbariclxbarconfig">
+<h4><span class="section-number">4.11.9.2.6. </span>CddXbarIclXbarConfig<a class="headerlink" href="#cddxbariclxbarconfig" title="Link to this heading"></a></h4>
+<section id="cddxbariclxbarinstanceconfig">
+<h5><span class="section-number">4.11.9.2.6.1. </span>CddXbarIclXbarInstanceConfig<a class="headerlink" href="#cddxbariclxbarinstanceconfig" title="Link to this heading"></a></h5>
+<p>○ CddXbarIclXbarInput</p>
+<p>• CddXbarIclXbarInputGroup</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarIclXbarInputGroup</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarIclXbarInput</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input group to be chosen for MINDB Crossbar, as input.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_INPUT_GROUP_0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>• CddXbarIclXbarInputLine</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarIclXbarInputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarIclXbarInput</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the input line to be chosen from the selected input group for ICL Crossbar, as input.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_ICL_EPWM1A_MINDB</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>○ CddXbarIclXbarOutputLine</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarIclXbarOutputLine</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarIclXbarInstanceConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selection of the ICL Xbar output line to be configured.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>CDD_XBAR_ICLXBAR1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+<p>○ CddXbarIclXbarOutputInversion</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarIclXbarOutputInversion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarIclXbarInstanceConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the inversion of the output signal for the selected output line of the ICL Crossbar instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbariclxbarconfigurationlock">
+<h5><span class="section-number">4.11.9.2.6.2. </span>CddXbarIclXbarConfigurationLock<a class="headerlink" href="#cddxbariclxbarconfigurationlock" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Name</strong></p></th>
+<th class="head"><p>CddXbarIclXbarConfigurationLock</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Parent Container</strong></p></td>
+<td><p>CddXbarIclXbarConfig</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Lock the CL Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Type</strong></p></td>
+<td><p>BOOLEAN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
+<td><p>scope:local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="steps-to-configure-port-module">
+<h3><span class="section-number">4.11.9.3. </span>Steps To Configure Port Module<a class="headerlink" href="#steps-to-configure-port-module" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Open EB Tresos configurator tool.</p></li>
+<li><p>Go to Cdd Xbar Container tab and the specific Xbar which needs to be configured.</p></li>
+<li><p>For Input Xbar, create a new container, select the Input Xbar source to be selected as input which is configured in the PORT configurator, INPUTx to be configured and select the lock configuration if required.</p></li>
+<li><p>For Output Xbar, create a new container, select the Output XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarOutputXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarOutputXbarInputLine and select the inputs that needs to be configured.</p></li>
+<li><p>For ePWM Xbar, create a new container, select the ePWM XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarEpwmXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarEpwmXbarInputLine and select the inputs that needs to be configured.</p></li>
+<li><p>For CLB Xbar, create a new container, select the CLB XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarClbXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarClbXbarInputLine and select the inputs that needs to be configured.</p></li>
+<li><p>For MINDB Xbar, create a new container, select the MINDB XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarMindbXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarMindbXbarInputLine and select the inputs that needs to be configured.</p></li>
+<li><p>For ICL Xbar, create a new container, select the ICL XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarIclXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarIclXbarInputLine and select the inputs that needs to be configured.</p></li>
+<li><p>Save the configuration and generate the configuration.</p></li>
+</ol>
+</section>
+</section>
+<section id="examples">
+<h2><span class="section-number">4.11.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>The example application demonstrates use of Cdd Xbar module, the list below identifies key steps performed in the example.</p>
+<section id="overview">
+<h3><span class="section-number">4.11.10.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Cdd_Xbar_GpioToGpio</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init().</p></li>
+<li><p>Initializes the input pins for Input Xbar and the OUTPUTXBARx using Port_Init().</p></li>
+<li><p>Initializes the Xbar configurations according to the configurations selected in the configurator.</p></li>
+</ul>
+</li>
+<li><p>Cdd_Xbar_GetVersionInfo will get the software version info details.</p></li>
+<li><p>Cdd_Xbar_SelectInput will select/deselect the inputs for the specific Xbar.</p></li>
+<li><p>Cdd_Xbar_LockStatus will return the lock status of the specific Xbar.</p></li>
+<li><p>Cdd_Xbar_Lock will lock the specific Xbar.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-example">
+<h3><span class="section-number">4.11.10.2. </span>Setup required to run example<a class="headerlink" href="#setup-required-to-run-example" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest c29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-examples">
+<h3><span class="section-number">4.11.10.3. </span>How to run examples<a class="headerlink" href="#how-to-run-examples" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Open CCS and import Cdd Xbar Example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log">
+<h3><span class="section-number">4.11.10.4. </span>Sample Log<a class="headerlink" href="#sample-log" title="Link to this heading"></a></h3>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>Sample Application - STARTS !!!
+CDD XBAR MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 255
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+-------------------------------------------- 
+Checking lock status of INPUT XBAR1 
+INPUT XBAR1 is locked 
+-------------------------------------------- 
+Checking lock status of INPUT XBAR2 
+INPUT XBAR2 is not locked 
+Selecting GPIO4 as input to INPUT XBAR2 
+-------------------------------------------- 
+Checking lock status of OUTPUT XBAR 
+Selecting INPUT XBAR2 as input to OUTPUT XBAR2 
+INPUT XBAR2 is selected as input to OUTPUT XBAR2 
+=================================================================================
+PASS: GPIO0(INPUT XBAR1) and GPIO4(INPUT XBAR2) are routed to GPIO2(OUTPUT XBAR1) 
+</pre></div>
+</div>
+</section>
+<section id="file-structure">
+<h3><span class="section-number">4.11.10.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂examples<br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Adc<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Lin<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┣ 📂Wdg<br />
+┃ ┣ 📂<strong>Cdd Xbar</strong><br />
+┃ ┃ ┗ 📂 <strong>Cdd_Xbar_GpioToGpio</strong><br />
+┃ ┃ ┃ ┣ 📂ccs<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>Cdd_Xbar_GpioToGpio.projectspec</strong><br />
+┃ ┃ ┃ ┣ 📂Cdd_Xbar_GpioToGpio_Config<br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dio.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Port.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Cdd_Xbar.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dio_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Cdd_Xbar_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header</em><br />
+┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dio_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Cdd_Xbar_Cfg.c</strong> : <em>Contains the generated pre-complier configuration source</em><br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Xbar_GpioToGpio.h</strong> : <em>Contains data structures and Internal function declarations</em><br />
+┃ ┃ ┗ ┗ 📜<strong>Cdd_Xbar_GpioToGpio.c</strong>: <em>Example application for Cdd Xbar</em><br />
+┃ ┗ 📜CMakeLists.txt<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Module_User_Guide_Cdd_Sent.html" class="btn btn-neutral float-left" title="4.10. CDD SENT Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_guide.html" class="btn btn-neutral float-right" title="5. API guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Dec 18, 2024.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.6. WDG Module &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.7. LIN Module" href="Module_User_Guide_Lin.html" />
+    <link rel="prev" title="4.5. CAN Module" href="Module_User_Guide_Can.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.01.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.1. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.2. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.3. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.4. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.5. CAN Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.6. WDG Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.6.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.6.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.6.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.6.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.6.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.6.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.6.4.3. Non compliance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.6.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.6.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.6.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.6.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.6.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.6.6.4. Error codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.6.7. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.6.7.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.6.7.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.6.7.3. Hardware-Software Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.6.8. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.6.8.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.6.8.2. Multi-core and Resource allocator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.6.9. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#wdgdemeventparameterrefs">4.6.9.1. WdgDemEventParameterRefs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdggeneral">4.6.9.2. WdgGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdgpublishedinformation">4.6.9.3. WdgPublishedInformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdgsettingsconfig">4.6.9.4. WdgSettingsConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdgexternalconfiguration">4.6.9.5. WdgExternalConfiguration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdgsettingsfast">4.6.9.6. WdgSettingsFast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdgsettingsoff">4.6.9.7. WdgSettingsOff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdgsettingsslow">4.6.9.8. WdgSettingsSlow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-wdg-module">4.6.9.9. Steps To Configure Wdg Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.6.10. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#wdg-example-service">4.6.10.1. Wdg_Example_Service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wdg-example-interrupt">4.6.10.2. Wdg_Example_Interrupt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.6.10.3. File Structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.7. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.8. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.9. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.10. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.11. CDD XBAR Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
+      <li><span class="section-number">4.6. </span>WDG Module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wdg-module">
+<h1><span class="section-number">4.6. </span>WDG Module<a class="headerlink" href="#wdg-module" title="Link to this heading"></a></h1>
+<section id="acronyms-and-definitions">
+<h2><span class="section-number">4.6.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AUTOSAR</p></td>
+<td><p>Automotive Open System Architecture</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTE</p></td>
+<td><p>Runtime Environment</p></td>
+</tr>
+<tr class="row-even"><td><p>BSW</p></td>
+<td><p>Basic Software</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCU</p></td>
+<td><p>Micro-Controller Unit</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL</p></td>
+<td><p>Micro-Controller Abstraction Layer</p></td>
+</tr>
+<tr class="row-odd"><td><p>API</p></td>
+<td><p>Application Programming Interface</p></td>
+</tr>
+<tr class="row-even"><td><p>DET</p></td>
+<td><p>Default Error Tracer</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEM</p></td>
+<td><p>Diagnostics Event Manager</p></td>
+</tr>
+<tr class="row-even"><td><p>HW</p></td>
+<td><p>Hardware</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW</p></td>
+<td><p>Software</p></td>
+</tr>
+<tr class="row-even"><td><p>I/O</p></td>
+<td><p>Input/Output</p></td>
+</tr>
+<tr class="row-odd"><td><p>WDG</p></td>
+<td><p>Watchdog</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="introduction">
+<h2><span class="section-number">4.6.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The Wdg module provides services for initialization, changing the operation mode and setting the trigger condition (timeout).</p>
+<figure class="align-center" id="id1">
+<img alt="WDG MCAL AUTOSAR" src="../_images/Wdg_Autosar_MCAL.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.20 </span><span class="caption-text">WDG MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>This document details AUTOSAR BSW WDG module implementation</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Supported AUTOSAR Release</p></th>
+<th class="head"><p><strong>: 4.3.1</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Supported Configuration Variants</strong></p></td>
+<td><p><strong>: Pre-Compile, Link-Time &amp; Post Build</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Vendor ID</strong></p></td>
+<td><p><strong>: WDG_VENDOR_ID (44)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Module ID</strong></p></td>
+<td><p><strong>: WDG_MODULE_ID (102)</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functional-overview">
+<h2><span class="section-number">4.6.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<p>The watchdog module generates an output pulse 512 watchdog-clocks (WDCLKs) wide whenever the 8-bit watchdog up counter has reached the maximum value. The watchdog clock source is INTOSC1 which is 10 MHz clock. Software must periodically write a 0x55 + 0xAA sequence into the watchdog key register to reset the watchdog counter. The counter can also be disabled.</p>
+<figure class="align-center" id="id2">
+<img alt="WDG MCAL AUTOSAR" src="../_images/Wdg_Timer_Module.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.21 </span><span class="caption-text">WDG TIMER MODULE</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="hardware-features">
+<h2><span class="section-number">4.6.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<section id="hardware-features-supported">
+<h3><span class="section-number">4.6.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<p>The main features includes Servicing the Watchdog Timer,  Minimum Window Check, Watchdog Reset or Watchdog Interrupt Mode and Watchdog Operation in Low-Power Modes. Details are explained in below sections.</p>
+<section id="servicing-the-watchdog-timer">
+<h4><span class="section-number">4.6.4.1.1. </span>Servicing the Watchdog Timer<a class="headerlink" href="#servicing-the-watchdog-timer" title="Link to this heading"></a></h4>
+<p>The watchdog counter (WDCNTR) is reset when the proper sequence is written to the WDKEY register before the 8-bit watchdog counter overflows. The WDCNTR is reset-enabled when a value of 0x55 is written to the WDKEY. When the next value written to the WDKEY register is 0xAA, then the WDCNTR is reset. Any value written to the WDKEY other than 0x55 or 0xAA causes no action. Any sequence of 0x55 and 0xAA values can be written to the WDKEY without causing a system reset; only a write of 0x55 followed by a write of 0xAA to the WDKEY resets the WDCNTR.</p>
+</section>
+<section id="minimum-window-check">
+<h4><span class="section-number">4.6.4.1.2. </span>Minimum Window Check<a class="headerlink" href="#minimum-window-check" title="Link to this heading"></a></h4>
+<p>To complement the timeout mechanism, the watchdog also contains an optional “windowing” feature that requires a minimum delay between counter resets.
+To set the window minimum, write the desired minimum watchdog count to the WDWCR register. This value takes effect after the next WDKEY sequence. From then on, any attempt to service the watchdog when WDCNTR is less than WDWCR triggers a watchdog interrupt or reset. When WDCNTR is greater than or equal to WDWCR, the watchdog can be serviced normally.</p>
+</section>
+<section id="watchdog-reset-or-watchdog-interrupt-mode">
+<h4><span class="section-number">4.6.4.1.3. </span>Watchdog Reset or Watchdog Interrupt Mode<a class="headerlink" href="#watchdog-reset-or-watchdog-interrupt-mode" title="Link to this heading"></a></h4>
+<p>The watchdog can be configured in the SCSR register to either reset the device (WDRST) or assert an interrupt (WDINT), if the watchdog counter reaches the maximum value.</p>
+<p><strong>Reset mode</strong>: If the watchdog is configured to reset the device, then the WDRST signal pulls the device reset (XRS) pin low for 512 OSCCLK cycles when the watchdog counter reaches the maximum value.</p>
+<p><strong>Interrupt mode</strong>: When the watchdog counter expires, the watchdog asserts an interrupt by driving the WDINT signal low for 512 OSCCLK cycles. WDINT is mapped to the PIPE module to assert appropriate CPU interrupt line as configured.</p>
+</section>
+<section id="watchdog-operation-in-low-power-modes">
+<h4><span class="section-number">4.6.4.1.4. </span>Watchdog Operation in Low-Power Modes<a class="headerlink" href="#watchdog-operation-in-low-power-modes" title="Link to this heading"></a></h4>
+<p><strong>IDLE mode</strong>: In IDLE mode, the watchdog interrupt (WDINT) signal can generate an interrupt to the CPU to take the CPU out of IDLE mode.</p>
+<p><strong>STANDBY mode</strong>:In STANDBY mode, clocks to the peripherals are turned off based on LPMCR, PCLKCRx and STANDBYEN registers. The CPU clock is gated when entering STANDBY mode based on LPMCR.LPM configuration but the watchdog remains functional since the module runs off the internal oscillator clock (INTOSC1). The WDINTsignal is applied to the Low Power Modes (LPM) block, so that the LPM block can be used to wake the CPU from STANDBY low-power mode.</p>
+</section>
+</section>
+<section id="not-supported-features">
+<h3><span class="section-number">4.6.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<p>None</p>
+</section>
+<section id="non-compliance">
+<h3><span class="section-number">4.6.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<p>Below AUTOSAR design requirements are not supported for Wdg Driver:</p>
+<p><strong>SWS_Wdg_00136</strong> : <em>The function SetTriggerCondition shall reset the watchdog timeout counter according to the timeout value passed.</em></p>
+<blockquote>
+<div><p>Rejection Reason : When user request non zero timeout value in Wdg_SetTriggerCondition API, it will be ignored. Due to hardware limitation, it is not possible to set the hardware watchdog counter value based on user provided timeout. Timeout value will always remain as per statically configured slow and fast mode timeout values.</p>
+</div></blockquote>
+<p><strong>SWS_Wdg_00034</strong> : <em>General design rule: configure Start address of trigger routine</em></p>
+<blockquote>
+<div><p>Rejection Reason : Trigger routine information is not provided by hardware and not needed by the system.</p>
+</div></blockquote>
+<p><strong>SWS_Wdg_00076</strong> : <em>External Watchdog Driver</em></p>
+<blockquote>
+<div><p>Rejection Reason : Internal watchdog is only supported, external watchdog support is not part of the current implementation.</p>
+</div></blockquote>
+<p>For more details, Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_WatchdogDriver.pdf">AUTOSAR_SWS_WdgDriver</a></p>
+</section>
+</section>
+<section id="source-files">
+<h2><span class="section-number">4.6.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┃ ┣ 📂BSW_Stubs<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂hw_include<br />
+┃ ┣ 📂Mcal_Lib<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┗ 📂<strong>Wdg</strong><br />
+┃ ┃ ┣ 📂<strong>include</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Wdg_Priv.h</strong> : <em>Contains data structures and Internal function declarations.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Wdg.h</strong> : <em>Contains the API declarations of the Wdg driver to be used by upper layers.</em><br />
+┃ ┃ ┣ 📂<strong>src</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Wdg_Priv.c</strong> : <em>Contains Functions that support the API for Wdg driver</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Wdg.c</strong> : <em>Contains the implementation of the API for Wdg driver.</em><br />
+┃ ┃ ┗ 📜CMakeLists.txt<br />
+┣ 📂examples<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<figure class="align-center" id="id3">
+<img alt="Wdg Header File Structure" src="../_images/Wdg_Header_File_Structure.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.22 </span><span class="caption-text">Wdg Header File Structure</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="module-requirements">
+<h2><span class="section-number">4.6.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<section id="memory-mapping">
+<h3><span class="section-number">4.6.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<p>Will be added in later release</p>
+</section>
+<section id="scheduling">
+<h3><span class="section-number">4.6.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<p>None</p>
+</section>
+<section id="error-handling">
+<h3><span class="section-number">4.6.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<section id="development-error-reporting">
+<h4><span class="section-number">4.6.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<p>Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
+</section>
+<section id="extended-production-error-reporting">
+<h4><span class="section-number">4.6.6.3.2. </span>Extended Production Error Reporting<a class="headerlink" href="#extended-production-error-reporting" title="Link to this heading"></a></h4>
+<p>Extended production errors are reported to the DEM using the service Dem_SetEventStatus(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
+</section>
+</section>
+<section id="error-codes">
+<h3><span class="section-number">4.6.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of Error</p></th>
+<th class="head"><p>Related Error code</p></th>
+<th class="head"><p>Value (Hex)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>API service used in wrong context:</p></td>
+<td><p>WDG_E_DRIVER_STATE</p></td>
+<td><p>0x10</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called with wrong / inconsistent parameter(s):</p></td>
+<td><p>WDG_E_PARAM_MODE</p></td>
+<td><p>0x11</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called with wrong / inconsistent parameter(s):</p></td>
+<td><p>WDG_E_PARAM_CONFIG</p></td>
+<td><p>0x12</p></td>
+</tr>
+<tr class="row-odd"><td><p>The passed timeout value is higher than the maximum timeout value:</p></td>
+<td><p>WDG_E_PARAM_TIMEOUT</p></td>
+<td><p>0x13</p></td>
+</tr>
+<tr class="row-even"><td><p>API is called with wrong pointer value</p></td>
+<td><p>WDG_E_PARAM_POINTER</p></td>
+<td><p>0x14</p></td>
+</tr>
+<tr class="row-odd"><td><p>Invalid configuration set selection</p></td>
+<td><p>WDG_E_INIT_FAILED</p></td>
+<td><p>0x15</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="used-resources">
+<h2><span class="section-number">4.6.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<section id="interrupt-handling">
+<h3><span class="section-number">4.6.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+</section>
+<section id="instance-support">
+<h3><span class="section-number">4.6.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CPU instances</p></th>
+<th class="head"><p>supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CPU 1</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPU 2</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU 3</p></td>
+<td><p>NO</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hardware-software-mapping">
+<h3><span class="section-number">4.6.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<p>Below image shows Wdg driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29 Reference Manual.</p>
+<figure class="align-center" id="id4">
+<img alt="Wdg HW/SW Mapping" src="../_images/Wdg_HW_SW_Mapping.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.23 </span><span class="caption-text">Wdg HW/SW Mapping</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="integration-description">
+<h2><span class="section-number">4.6.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<section id="dependent-modules">
+<h3><span class="section-number">4.6.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<section id="det">
+<h4><span class="section-number">4.6.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<p>This implementation depends on the DET in order to report development errors. The detection of development errors is configurable (ON / OFF), The switch WDG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.</p>
+</section>
+<section id="dem">
+<h4><span class="section-number">4.6.8.1.2. </span>DEM<a class="headerlink" href="#dem" title="Link to this heading"></a></h4>
+<p>This implementation depends on the DEM in order to report Extended production errors and can be turned OFF. The switch WDG_DEM_ENABLE will activate or deactivate the detection of all extended production errors.</p>
+</section>
+</section>
+<section id="multi-core-and-resource-allocator">
+<h3><span class="section-number">4.6.8.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
+<p>Not Supported</p>
+</section>
+</section>
+<section id="configuration">
+<h2><span class="section-number">4.6.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The Wdg Driver implementation supports multiple configuration variants, namely Wdg Post-Build config and Pre-Compile config. The driver expects generated <strong>Wdg_Cfg.h</strong> to be present as input file.
+The associated Wdg driver configuration generated source files are <strong>Wdg_Cfg.c</strong> or <strong>Wdg_Lcfg.c</strong> or <strong>Wdg_PBcfg.c</strong></p>
+<p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<section id="wdgdemeventparameterrefs">
+<h3><span class="section-number">4.6.9.1. </span>WdgDemEventParameterRefs<a class="headerlink" href="#wdgdemeventparameterrefs" title="Link to this heading"></a></h3>
+<section id="wdg-e-disable-rejected">
+<h4><span class="section-number">4.6.9.1.1. </span>WDG_E_DISABLE_REJECTED<a class="headerlink" href="#wdg-e-disable-rejected" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00150</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WDG_E_DISABLE_REJECTED</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgDemEventParameterRefs</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to the DemEventParameter which shall be issued when the error “Initialization or mode switch failed because it would disable the watchdog” has occurred.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0 .. 1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Symbolic name reference to [ DemEventParameter ]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdg-e-mode-failed">
+<h4><span class="section-number">4.6.9.1.2. </span>WDG_E_MODE_FAILED<a class="headerlink" href="#wdg-e-mode-failed" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00149</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WDG_E_MODE_FAILED</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgDemEventParameterRefs</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to the DemEventParameter which shall be issued when the error “Setting a watchdog mode failed (during initialization or mode switch)” has occurred.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0 .. 1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Symbolic name reference to [ DemEventParameter ]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="wdggeneral">
+<h3><span class="section-number">4.6.9.2. </span>WdgGeneral<a class="headerlink" href="#wdggeneral" title="Link to this heading"></a></h3>
+<section id="wdgdeverrordetect">
+<h4><span class="section-number">4.6.9.2.1. </span>WdgDevErrorDetect<a class="headerlink" href="#wdgdeverrordetect" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00115</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgDevErrorDetect</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the development error detection and notification on or off.<br> true: detection and notification is enabled.<br> false: detection and notification is disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdgdisableallowed">
+<h4><span class="section-number">4.6.9.2.2. </span>WdgDisableAllowed<a class="headerlink" href="#wdgdisableallowed" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00116</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgDisableAllowed</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Compile switch to allow / forbid disabling the watchdog driver during runtime.<br> True: Disabling the watchdog driver at runtime is allowed.<br> False: Disabling the watchdog driver at runtime is not allowed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local<br>dependency: Safety relevant compile switch, this has to be in accordance with the corresponding settings for the watchdog manager.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdgindex">
+<h4><span class="section-number">4.6.9.2.3. </span>WdgIndex<a class="headerlink" href="#wdgindex" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00117</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgIndex</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdginitialtimeout">
+<h4><span class="section-number">4.6.9.2.4. </span>WdgInitialTimeout<a class="headerlink" href="#wdginitialtimeout" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00130</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgInitialTimeout</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>The initial timeout (sec) for the trigger condition to be initialized during Init function. It shall be not larger than WdgMaxTimeout.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucFloatParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 65.535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdgmaxtimeout">
+<h4><span class="section-number">4.6.9.2.5. </span>WdgMaxTimeout<a class="headerlink" href="#wdgmaxtimeout" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00131</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgMaxTimeout</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>The maximum timeout (sec) to which the watchdog trigger condition can be initialized.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucFloatParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 65.535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdgrunarea">
+<h4><span class="section-number">4.6.9.2.6. </span>WdgRunArea<a class="headerlink" href="#wdgrunarea" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00147</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgRunArea</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Represents the watchdog driver execution area is either from ROM(Flash) or RAM as required with the particular microcontroller.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>RAM</p></td>
+<td><p>Watchdog driver to be executed out of RAM area</p></td>
+</tr>
+<tr class="row-odd"><td><p>ROM</p></td>
+<td><p>Watchdog driver to be executed out of ROM area</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdgtriggerlocation">
+<h4><span class="section-number">4.6.9.2.7. </span>WdgTriggerLocation<a class="headerlink" href="#wdgtriggerlocation" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00118</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgTriggerLocation</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Location (memory address) of the watchdog trigger routine.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucFunctionNameDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>maxLength</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>minLength</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>regularExpression</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local<br>dependency: Only relevant if provided by hardware and needed by the system.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdgversioninfoapi">
+<h4><span class="section-number">4.6.9.2.8. </span>WdgVersionInfoApi<a class="headerlink" href="#wdgversioninfoapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00119</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgVersionInfoApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Compile switch to enable / disable the version information API<br> True: API enabled<br> False: API disabled</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>All variants</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="wdgpublishedinformation">
+<h3><span class="section-number">4.6.9.3. </span>WdgPublishedInformation<a class="headerlink" href="#wdgpublishedinformation" title="Link to this heading"></a></h3>
+<section id="wdgtriggermode">
+<h4><span class="section-number">4.6.9.3.1. </span>WdgTriggerMode<a class="headerlink" href="#wdgtriggermode" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00127</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgTriggerMode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgPublishedInformation</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Watchdog trigger mode (toggle/window/both)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>WDG_BOTH</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>WDG_TOGGLE</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>WDG_WINDOW</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Published Information</strong></p></td>
+<td><p>All Variants</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="wdgsettingsconfig">
+<h3><span class="section-number">4.6.9.4. </span>WdgSettingsConfig<a class="headerlink" href="#wdgsettingsconfig" title="Link to this heading"></a></h3>
+<section id="wdgdefaultmode">
+<h4><span class="section-number">4.6.9.4.1. </span>WdgDefaultMode<a class="headerlink" href="#wdgdefaultmode" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00120</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgDefaultMode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgSettingsConfig</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Default mode for watchdog driver initialization.<br>ImplementationType: WdgIf_ModeType</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucEnumerationParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>WDGIF_FAST_MODE</p></td>
+<td><p>Default watchdog mode is “fast”</p></td>
+</tr>
+<tr class="row-odd"><td><p>WDGIF_OFF_MODE</p></td>
+<td><p>Default watchdog mode is “off”</p></td>
+</tr>
+<tr class="row-even"><td><p>WDGIF_SLOW_MODE</p></td>
+<td><p>Default watchdog mode is “slow”</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local<br>dependency: “Off” mode only possible if disabling the watchdog driver is allowed.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="wdgexternalconfiguration">
+<h3><span class="section-number">4.6.9.5. </span>WdgExternalConfiguration<a class="headerlink" href="#wdgexternalconfiguration" title="Link to this heading"></a></h3>
+<section id="wdgexternalcontainerref">
+<h4><span class="section-number">4.6.9.5.1. </span>WdgExternalContainerRef<a class="headerlink" href="#wdgexternalcontainerref" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Wdg_00113</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgExternalContainerRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgExternalConfiguration</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to either<br>a DioChannelGroup container in case the hardware watchdog is connected via DIO pins<br> an SpiSequenceConfiguration container in case the watchdog hardware is accessed via SPI.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Choice reference to [ DioChannelGroup , SpiSequence ]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local<br>dependency: See DIO resp. SPI SWS</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="wdgsettingsfast">
+<h3><span class="section-number">4.6.9.6. </span>WdgSettingsFast<a class="headerlink" href="#wdgsettingsfast" title="Link to this heading"></a></h3>
+</section>
+<section id="wdgsettingsoff">
+<h3><span class="section-number">4.6.9.7. </span>WdgSettingsOff<a class="headerlink" href="#wdgsettingsoff" title="Link to this heading"></a></h3>
+</section>
+<section id="wdgsettingsslow">
+<h3><span class="section-number">4.6.9.8. </span>WdgSettingsSlow<a class="headerlink" href="#wdgsettingsslow" title="Link to this heading"></a></h3>
+<section id="wdgpredivider">
+<h4><span class="section-number">4.6.9.8.1. </span>WdgPredivider<a class="headerlink" href="#wdgpredivider" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgPredivider</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgSettingsFast</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Wdg_PreDivider  determines the watchdog clock pre-divider, which is the first of the two dividers between INTOSC1 and the watchdog counter clock (WDCLK)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PREDIV_2</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_PREDIV_4</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PREDIV_8</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_PREDIV_16</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PREDIV_32</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_PREDIV_64</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PREDIV_128</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_PREDIV_256</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PREDIV_512</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_PREDIV_1024</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PREDIV_2048</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_PREDIV_4096</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>WDG_PREDIV_512</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdgprescaler">
+<h4><span class="section-number">4.6.9.8.2. </span>WdgPrescaler<a class="headerlink" href="#wdgprescaler" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgPrescaler</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgSettingsFast</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Wdg_PreScaler determines the watchdog clock prescaler, which is the second of the two dividers between INTOSC1 and the watchdog counter clock (WDCLK)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PRESCALE_1</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_PRESCALE_2</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PRESCALE_4</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_PRESCALE_8</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PRESCALE_16</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_PRESCALE_32</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_PRESCALE_64</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<td><p>WDG_PRESCALE_1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The watchdog reset or interrupt pulse is 512 INTOSC1 cycles long, so the counter period must be longer. To guarantee this, the product
+of the prescaler and pre-divider must be greater than or equal to four.</p>
+</div>
+</section>
+<section id="wdgtimeout">
+<h4><span class="section-number">4.6.9.8.3. </span>WdgTimeout<a class="headerlink" href="#wdgtimeout" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgTimeout</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgSettingsFast</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This is the maximum timeout value in milliseconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>FLOAT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0.0 .. 6685.0</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>13.05</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The timeout value is in Milliseconds.</p>
+</div>
+</section>
+<section id="wdgreaction">
+<h4><span class="section-number">4.6.9.8.4. </span>WdgReaction<a class="headerlink" href="#wdgreaction" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgReaction</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgSettingsFast</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Watchdog reaction for timer expiration or incorrect service.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>ENUMERATION</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>WDG_GENERATE_RESET</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>WDG_GENERATE_INTERRUPT</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>WDG_GENERATE_INTERRUPT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdgthresholdvalue">
+<h4><span class="section-number">4.6.9.8.5. </span>WdgThresholdValue<a class="headerlink" href="#wdgthresholdvalue" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>WdgThresholdValue</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>WdgSettingsFast</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Watchdog Threshold. It specifies lower limit of the watchdog counter reset  window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>INTEGER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p>255</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>VARIANT-LINK-TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>scope: local</p></td>
+</tr>
+</tbody>
+</table>
+<p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_WatchdogDriver.pdf">AUTOSAR_SWS_WDGDriver section: 10 Configuration specification</a> for configuration parameters details</p>
+</section>
+</section>
+<section id="steps-to-configure-wdg-module">
+<h3><span class="section-number">4.6.9.9. </span>Steps To Configure Wdg Module<a class="headerlink" href="#steps-to-configure-wdg-module" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Open EB Tresos configurator tool, load Wdg and Dem modules. Select the Config Variant ( Precompile/Post-Build/Link-Time)</p></li>
+<li><p>Open DEM module plugin and register DEM event “WDG_E_DISABLE_REJECTED” &amp; “WDG_E_MODE_FAILED” to report extended production errors</p></li>
+<li><p>Open WDG module plugin and make sure that required parameters and mode settings are configured correctly</p></li>
+<li><p>Make sure that fastmode, slowmode configuration settings are provided</p></li>
+<li><p>Save the configuration and generate the configuration.</p></li>
+</ol>
+</section>
+</section>
+<section id="examples">
+<h2><span class="section-number">4.6.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>The example application demonstrates use of Wdg module, the list below identifies key steps performed the example.</p>
+<section id="wdg-example-service">
+<h3><span class="section-number">4.6.10.1. </span>Wdg_Example_Service<a class="headerlink" href="#wdg-example-service" title="Link to this heading"></a></h3>
+<section id="overview-of-wdg-example-service">
+<h4><span class="section-number">4.6.10.1.1. </span>Overview of Wdg_Example_Service<a class="headerlink" href="#overview-of-wdg-example-service" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Wdg_Example_Service</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes pins as GPIO Outpus and GPIO Inputs using Port_Init()</p></li>
+</ul>
+</li>
+<li><p>Verify the wdg servicing without expiry on configired timeouts</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-wdg-example-service">
+<h4><span class="section-number">4.6.10.1.2. </span>Setup required to run Wdg_Example_Service<a class="headerlink" href="#setup-required-to-run-wdg-example-service" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio latest version</p></li>
+<li><p>Install latest C29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-wdg-example-service">
+<h4><span class="section-number">4.6.10.1.3. </span>How to run Wdg_Example_Service<a class="headerlink" href="#how-to-run-wdg-example-service" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and Import Wdg_Example_Service example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-wdg-example-service">
+<h4><span class="section-number">4.6.10.1.4. </span>Sample Log of Wdg_Example_Service<a class="headerlink" href="#sample-log-of-wdg-example-service" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    App_Utils Initialization is completed !!!
+    Sample Application to test Wdg Interrupt &amp; Servicing - STARTS !!!
+    Wdg GetVersionInfo API - STARTS !!!
+    WDG MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 102
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Wdg GetVersionInfo API - ENDS !!!
+    Wdg Initialization - STARTS !!!
+    Wdg Initialization - ENDS !!!
+    Wdg Max timeout duration in milliseconds is : 3342 !!!
+    Wdg servicing is called in loop, So interrupts will not be generated !!!    
+</pre></div>
+</div>
+</section>
+</section>
+<section id="wdg-example-interrupt">
+<h3><span class="section-number">4.6.10.2. </span>Wdg_Example_Interrupt<a class="headerlink" href="#wdg-example-interrupt" title="Link to this heading"></a></h3>
+<section id="overview-of-wdg-example-interrupt">
+<h4><span class="section-number">4.6.10.2.1. </span>Overview of Wdg_Example_Interrupt<a class="headerlink" href="#overview-of-wdg-example-interrupt" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Wdg_Example_Interrupt</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()</p></li>
+</ul>
+</li>
+<li><p>Verify the wdg interrupts generation on timeout</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-wdg-example-interrupt">
+<h4><span class="section-number">4.6.10.2.2. </span>Setup required to run Wdg_Example_Interrupt<a class="headerlink" href="#setup-required-to-run-wdg-example-interrupt" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio latest version</p></li>
+<li><p>Install latest C29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-wdg-example-interrupt">
+<h4><span class="section-number">4.6.10.2.3. </span>How to run Wdg_Example_Interrupt<a class="headerlink" href="#how-to-run-wdg-example-interrupt" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and Import Wdg_Example_Interrupt example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-wdg-example-interrupt">
+<h4><span class="section-number">4.6.10.2.4. </span>Sample Log of Wdg_Example_Interrupt<a class="headerlink" href="#sample-log-of-wdg-example-interrupt" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    App_Utils Initialization is completed !!!
+    Sample Application to test Wdg Interrupt &amp; Servicing - STARTS !!!
+    Wdg GetVersionInfo API - STARTS !!!
+    WDG MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 102
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Wdg GetVersionInfo API - ENDS !!!
+    Wdg Initialization - STARTS !!!
+    Wdg Initialization - ENDS !!!
+    Wdg Max timeout duration in milliseconds is : 3342 !!!
+    Wdg Interrupt is generated after timeout!!!
+    Wdg Example Interrupt: Sample Application - Completes successfully !!! 
+</pre></div>
+</div>
+</section>
+</section>
+<section id="file-structure">
+<h3><span class="section-number">4.6.10.3. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂examples<br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂<strong>Wdg</strong><br />
+┃ ┃ ┗ 📂 <strong>📂Wdg_Example_Service</strong><br />
+┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>📜Wdg_Example_Service.projectspec</strong><br />
+┃ ┃ ┃ ┣ 📂📜Wdg_Service_Config<br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Wdg.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Wdg_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header.</em><br />
+┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Wdg_PBcfg.c</strong> : <em>Contains the Post build configuration parameters.</em><br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┗ ┗ 📜<strong>Wdg_Example_Service.c</strong> : <em>Example application for Wdg</em><br />
+┃ ┗ 📜CMakeLists.txt<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Either Wdg_PBcfg.c OR Wdg_Lcfg.c OR Wdg_Cfg.c will be present based on selected config variant by user</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Module_User_Guide_Can.html" class="btn btn-neutral float-left" title="4.5. CAN Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Lin.html" class="btn btn-neutral float-right" title="4.7. LIN Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Dec 18, 2024.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -50,7 +50,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version. */
 #define GPT_SW_MINOR_VERSION            (0U)
 /** \brief Driver Implementation Patch Version. */
-#define GPT_SW_PATCH_VERSION            (0U)
+#define GPT_SW_PATCH_VERSION            (1U)
 
 
 /** \brief AUTOSAR major version specification implemented by GPT Driver. */

@@ -6,13 +6,13 @@
     <AR-PACKAGE UUID="150c5234-3b70-4d11-a654-786ae10128ad">
       <SHORT-NAME>TI_F29H85x</SHORT-NAME>
       <ELEMENTS>
-        <ECUC-DEFINITION-COLLECTION UUID="bf6e27c9-f275-4a50-8c66-14cf5d7d2cbf">
+        <ECUC-DEFINITION-COLLECTION>
           <SHORT-NAME>myEcuParameterDefinition</SHORT-NAME>
           <MODULE-REFS>
             <MODULE-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Gpt</MODULE-REF>
           </MODULE-REFS>
         </ECUC-DEFINITION-COLLECTION>
-        <ECUC-MODULE-DEF UUID="5bbbb34d-d938-44ac-b375-0058253fc6e8">
+        <ECUC-MODULE-DEF UUID="5aadb25b-c021-47cc-9dce-8e06288c0e4c">
           <SHORT-NAME>Gpt</SHORT-NAME>
           <DESC>
             <L-2 L="EN">Configuration of the Gpt (General Purpose Timer) module.</L-2>
@@ -25,8 +25,6 @@
               </DOC-REVISION>
             </DOC-REVISIONS>
           </ADMIN-DATA>
-          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
           <POST-BUILD-VARIANT-SUPPORT>true</POST-BUILD-VARIANT-SUPPORT>
           <REFINED-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/AUTOSAR/EcucDefs/Gpt</REFINED-MODULE-DEF-REF>
           <SUPPORTED-CONFIG-VARIANTS>
@@ -34,21 +32,17 @@
             <SUPPORTED-CONFIG-VARIANT>VARIANT-PRE-COMPILE</SUPPORTED-CONFIG-VARIANT>
           </SUPPORTED-CONFIG-VARIANTS>
           <CONTAINERS>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="53acbd3d-ddfe-4956-93af-2a62d698348e">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="3f95e26f-ca8d-46d3-be8f-4a6c93a3759c">
               <SHORT-NAME>GptChannelConfigSet</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">This container is the base of a Configuration Set which contains the configured GPT channels. This way, different configuration sets can be defined for post-build process.</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <PARAMETERS>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="4a69e2ee-353f-4863-bfca-32178b5c52dc">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="as:uuid()">
                   <SHORT-NAME>GptUseTimer2InOS</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Enable/Disable of CPU timer2 usage in OS</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>Texas Instruments</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -67,7 +61,7 @@
                 </ECUC-BOOLEAN-PARAM-DEF>
               </PARAMETERS>
               <SUB-CONTAINERS>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="a7a6d0ce-4a8d-4cd3-b82b-6da8a12c45f9">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="20401008-a0d3-4e94-9a26-9ac5025c1b59">
                   <SHORT-NAME>GptChannelConfiguration</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Configuration of an individual GPT channel.</L-2>
@@ -76,13 +70,11 @@
                   <UPPER-MULTIPLICITY>3</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-INTEGER-PARAM-DEF UUID="9dd22276-eef6-4ed4-9219-86a1563096d3">
+                    <ECUC-INTEGER-PARAM-DEF UUID="103f6fe6-c25d-4d9c-a7d8-ee4cbfb154ae">
                       <SHORT-NAME>GptChannelId</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Channel Id of the GPT channel. This value will be assigned to the symbolic name derived of the GptChannelConfiguration container short name.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -101,13 +93,11 @@
                       <MAX>2</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="c90fb9d2-4766-4c8b-bcaa-c7b277789f8b">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="0eb7e1aa-a499-404e-9ba7-c9e04f4accea">
                       <SHORT-NAME>GptChannelMode</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies the behavior of the timer channel after the target time is reached.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -134,13 +124,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="c42d60c7-46b9-45be-8b06-524149357203">
+                    <ECUC-INTEGER-PARAM-DEF UUID="as:uuid()">
                       <SHORT-NAME>GptChannelPrescaleValue</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN"> The input GPT clock will be divided by this value</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <ORIGIN>Texas Instruments</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                       <VALUE-CONFIG-CLASSES>
@@ -158,13 +146,11 @@
                       <MAX>65535</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-FLOAT-PARAM-DEF UUID="079cb29b-c314-4eb7-b523-7543f556351b">
+                    <ECUC-FLOAT-PARAM-DEF UUID="dc4b9f43-b73b-4453-8320-98c9c1bcc637">
                       <SHORT-NAME>GptChannelTickFrequency</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies the tick frequency of the timer channel in Hz.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -183,13 +169,11 @@
                       <MAX>INF</MAX>
                       <MIN>0.0</MIN>
                     </ECUC-FLOAT-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="b290f625-6e09-4e2c-b348-e51185563a4c">
+                    <ECUC-INTEGER-PARAM-DEF UUID="acbfb4fd-6e0d-474b-af55-7dd54a966c66">
                       <SHORT-NAME>GptChannelTickValueMax</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Maximum value in ticks, the timer channel is able to count. With the next tick, the timer rolls over to zero.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -208,13 +192,11 @@
                       <MAX>4294967295</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="e40eb8e4-9a52-4fce-a0fd-8c616b61946f">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="a0a50e95-5d43-474b-855f-bcd0fe8db85c">
                       <SHORT-NAME>GptEnableWakeup</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enables wakeup capability of MCU for a channel.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -231,7 +213,7 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>false</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-FUNCTION-NAME-DEF UUID="bc1f944e-8394-404f-a2a2-e57cb26990af">
+                    <ECUC-FUNCTION-NAME-DEF UUID="035f4513-a7ad-457e-8888-202918e3cdfa">
                       <SHORT-NAME>GptNotification</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Function pointer to callback function (for non-wakeup notification)</L-2>
@@ -269,13 +251,11 @@
                         </ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
                       </ECUC-FUNCTION-NAME-DEF-VARIANTS>
                     </ECUC-FUNCTION-NAME-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="d9961e81-2626-4ab8-bbd6-f4647b802391">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="as:uuid()">
                       <SHORT-NAME>GptSimulationStatus</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies the simulation state(Enable/Disable) of the timer.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>Texas Instruments</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -302,13 +282,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="069c8558-8963-46de-9e46-5235df61c963">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="as:uuid()">
                       <SHORT-NAME>GptSimulationMode</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies the behavior of the timer in simulation mode(Stop timer at next counter decrement or Stop timer at nect elapsed time).</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>Texas Instruments</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -335,13 +313,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="aa79a69c-0af6-4be1-a6d0-33e835f8e741">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="as:uuid()">
                       <SHORT-NAME>GptTypeofInterrupt</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Type of ISR function</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <ORIGIN>Texas Instruments</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                       <VALUE-CONFIG-CLASSES>
@@ -373,13 +349,11 @@
                     </ECUC-ENUMERATION-PARAM-DEF>
                   </PARAMETERS>
                   <REFERENCES>
-                    <ECUC-REFERENCE-DEF UUID="a26a1a3f-b088-4931-9aa2-92a541d13275">
+                    <ECUC-REFERENCE-DEF UUID="cb5b9d2e-2c21-4620-a685-195ddca94a27">
                       <SHORT-NAME>GptChannelClkSrcRef</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to the GptClockReferencePoint from which the channel</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -397,7 +371,7 @@
                     </ECUC-REFERENCE-DEF>
                   </REFERENCES>
                   <SUB-CONTAINERS>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="64469806-e22b-480f-b2eb-1acbe30ba3d8">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="255416d4-9b17-408b-bff3-2fe1db5ec1f9">
                       <SHORT-NAME>GptWakeupConfiguration</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Function pointer to callback function (for wakeup notification).</L-2>
@@ -406,13 +380,11 @@
                       <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <REFERENCES>
-                        <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="49f841cf-3528-46df-a278-f9115f5281fe">
+                        <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="2f5d5c27-d9fe-4fca-aba8-a4df14e39634">
                           <SHORT-NAME>GptWakeupSourceRef</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">In case the wakeup-capability is true this value is transmitted to the Ecu State Manager.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -434,21 +406,17 @@
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
               </SUB-CONTAINERS>
             </ECUC-PARAM-CONF-CONTAINER-DEF>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="84dc875d-b733-4095-9972-7ad8d7c64d35">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="cd3bf2f4-2e73-404b-9b9d-50739718d645">
               <SHORT-NAME>GptConfigurationOfOptApiServices</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">This container contains all configuration switches for configuring optional API services of the GPT driver.</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <PARAMETERS>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="63a708a7-4ffd-41b2-a3a0-58f354b8eb50">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="1530b51d-7d9c-4467-8f24-3c61091d212f">
                   <SHORT-NAME>GptDeinitApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Adds / removes the service Gpt_DeInit() from the code.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -465,13 +433,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="60687f72-e5ed-4506-8c7d-142371e47814">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="64914cc2-6703-4d6f-8cc7-bc3c4607131b">
                   <SHORT-NAME>GptEnableDisableNotificationApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Adds / removes the services Gpt_EnableNotification() and Gpt_DisableNotification from the code.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -488,13 +454,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="774dabae-d302-466a-97a6-78a1f0cc35c1">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="fa05b784-bf19-45f4-9a2f-c980f676d242">
                   <SHORT-NAME>GptTimeElapsedApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Adds / removes the service Gpt_GetTimeElapsed() from the code</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -511,13 +475,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="fa15a285-80b5-485a-8b70-e841e8d4a4db">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="09271960-f5a6-4ea3-a4c4-59305f2e7ba8">
                   <SHORT-NAME>GptTimeRemainingApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Adds / removes the service Gpt_GetTimeRemaining() from the code.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -534,13 +496,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="9509227c-2021-424e-aa7c-8e7f4c813139">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="443bc675-c57e-42a8-9ed0-0f5e9123dd6f">
                   <SHORT-NAME>GptVersionInfoApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Adds / removes the service Gpt_GetVersionInfo() from the code.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -557,13 +517,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="9369aefc-e371-4d24-88c5-d8083a8dd6de">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="88b3e337-e6c2-47c6-bd80-4ca709c30b26">
                   <SHORT-NAME>GptWakeupFunctionalityApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Adds / removes the services Gpt_SetMode(), Gpt_EnableWakeup() Gpt_DisableWakeup() and Gpt_CheckWakeup() from the code.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -582,21 +540,17 @@
                 </ECUC-BOOLEAN-PARAM-DEF>
               </PARAMETERS>
             </ECUC-PARAM-CONF-CONTAINER-DEF>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="2450e606-446c-4c23-a391-da01e3f95e18">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="fac92a03-7e05-48a1-9902-23275d460169">
               <SHORT-NAME>GptDriverConfiguration</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">This container contains the module-wide configuration (parameters) of the GPT Driver</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <PARAMETERS>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="07955e86-fe61-46b7-8523-9fab8076dc25">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="72ee0989-ecfc-4bc9-93d6-9b92d99e161c">
                   <SHORT-NAME>GptDevErrorDetect</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Switches the development error detection and notification on or off.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -613,13 +567,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="384a7486-95f9-4821-ab12-e05f75f36bfe">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="591a5e5d-d2ab-47f0-a8f9-8df5c3597d5c">
                   <SHORT-NAME>GptPredefTimer100us32bitEnable</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Enables/disables the GPT Predef Timer 100?s32bit.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>ECU</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -636,13 +588,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-ENUMERATION-PARAM-DEF UUID="6b163a58-c0d3-4d2c-abba-11ebf92e8eed">
+                <ECUC-ENUMERATION-PARAM-DEF UUID="aaca5567-a44d-407d-b24a-c7a11560691a">
                   <SHORT-NAME>GptPredefTimer1usEnablingGrade</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Specifies the grade of enabling the GPT Predef Timers with 1?s tick duration.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>ECU</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -677,13 +627,11 @@
                     </ECUC-ENUMERATION-LITERAL-DEF>
                   </LITERALS>
                 </ECUC-ENUMERATION-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="c8a77c23-34f2-4974-8de7-78d3b041048f">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="7cb506fd-6bdd-47ec-8169-37c2e3b18521">
                   <SHORT-NAME>GptReportWakeupSource</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Enables/Disables wakeup source reporting.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -702,7 +650,7 @@
                 </ECUC-BOOLEAN-PARAM-DEF>
               </PARAMETERS>
               <SUB-CONTAINERS>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="96cd18ba-b969-4961-841d-3eb36f1ab685">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="48008531-c4c1-4a55-9d32-19553c5bc391">
                   <SHORT-NAME>GptClockReferencePoint</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains a parameter, which represents a reference to a container of the type McuClockReferencePoint (defined in module MCU).</L-2>
@@ -711,13 +659,11 @@
                   <UPPER-MULTIPLICITY>3</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <REFERENCES>
-                    <ECUC-REFERENCE-DEF UUID="1835456b-e5c4-42b8-8f88-ecb5211969db">
+                    <ECUC-REFERENCE-DEF UUID="b2272326-6bcb-4970-9be7-67fdcc3b2bfa">
                       <SHORT-NAME>GptClockReference</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to a container of the type McuClockReferencePoint, to select an input clock.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>

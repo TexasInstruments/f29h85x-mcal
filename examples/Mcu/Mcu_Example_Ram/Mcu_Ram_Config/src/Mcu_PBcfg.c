@@ -71,8 +71,410 @@
  * Design: MCAL-21901
  */
 
-static CONST(Mcu_PeripheralClkRegConfigType, MCU_CONFIG_DATA) Mcu_PerClkCfgSet0[1] =
+static CONST(Mcu_PeripheralClkRegConfigType, MCU_CONFIG_DATA) Mcu_PerClkCfgSet0[3] =
 {
+    {
+    /* Peripheral Clock Gating Register0 (PCLKCR0) */
+    (uint32)((0x00000000U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<19U)
+    |(1UL<<20U)
+    |(1UL<<24U)
+    |(1UL<<25U)),
+
+    /* Peripheral Clock Gating Register1 (PCLKCR1) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)),
+
+    /* Peripheral Clock Gating Register2 (PCLKCR2) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<7U)
+    |(1UL<<8U)
+    |(1UL<<9U)
+    |(1UL<<10U)
+    |(1UL<<11U)
+    |(1UL<<12U)
+    |(1UL<<13U)
+    |(1UL<<14U)
+    |(1UL<<15U)
+    |(1UL<<16U)
+    |(1UL<<17U)),
+
+    /* Peripheral Clock Gating Register3 (PCLKCR3) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)),
+
+    /* Peripheral Clock Gating Register4 (PCLKCR4) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)),
+
+    /* Peripheral Clock Gating Register6 (PCLKCR6) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)),
+
+    /* Peripheral Clock Gating Register7 (PCLKCR7) */
+    (uint32)((0x00000000U)
+    |(1UL<<16U)
+    |(1UL<<17U)
+    |(1UL<<18U)
+    |(1UL<<19U)
+    |(1UL<<20U)
+    |(1UL<<21U)),
+
+    /* Peripheral Clock Gating Register8 (PCLKCR8) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)),
+
+    /* Peripheral Clock Gating Register9 (PCLKCR9) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)),
+
+    /* Peripheral Clock Gating Register10 (PCLKCR10) */
+    (uint32)((0x00000000U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<7U)
+    |(1UL<<8U)
+    |(1UL<<9U)),
+
+    /* Peripheral Clock Gating Register13 (PCLKCR13) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)),
+
+    /* Peripheral Clock Gating Register14 (PCLKCR14) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<7U)
+    |(1UL<<8U)
+    |(1UL<<9U)
+    |(1UL<<10U)
+    |(1UL<<11U)),
+
+    /* Peripheral Clock Gating Register16 (PCLKCR16) */
+    (uint32)((0x00000000U)
+    |(1UL<<16U)
+    |(1UL<<17U)),
+
+    /* Peripheral Clock Gating Register17 (PCLKCR17) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)),
+
+    /* Peripheral Clock Gating Register18 (PCLKCR18) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<16U)
+    |(1UL<<17U)
+    |(1UL<<18U)
+    |(1UL<<19U)),
+
+    /* Peripheral Clock Gating Register19 (PCLKCR19) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)),
+
+    /* Peripheral Clock Gating Register20 (PCLKCR20) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)),
+
+    /* Peripheral Clock Gating Register21 (PCLKCR21) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)),
+
+    /* Peripheral Clock Gating Register23 (PCLKCR23) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)),
+
+    /* Peripheral Clock Gating Register25 (PCLKCR25) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)),
+
+    /* Peripheral Clock Gating Register27 (PCLKCR27) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)),
+
+    /* Peripheral Clock Gating Register28 (PCLKCR28) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<7U)
+    |(1UL<<8U)
+    |(1UL<<9U)
+    |(1UL<<16U)
+    |(1UL<<17U)
+    |(1UL<<18U)),
+
+    /* Peripheral Clock Gating Register30 (PCLKCR30) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)),
+
+    /* Peripheral Clock Gating Register32 (PCLKCR32) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)),
+    },
+    {
+    /* Peripheral Clock Gating Register0 (PCLKCR0) */
+    (uint32)((0x00000000U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<19U)
+    |(1UL<<20U)
+    |(1UL<<24U)
+    |(1UL<<25U)),
+
+    /* Peripheral Clock Gating Register1 (PCLKCR1) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)),
+
+    /* Peripheral Clock Gating Register2 (PCLKCR2) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<7U)
+    |(1UL<<8U)
+    |(1UL<<9U)
+    |(1UL<<10U)
+    |(1UL<<11U)
+    |(1UL<<12U)
+    |(1UL<<13U)
+    |(1UL<<14U)
+    |(1UL<<15U)
+    |(1UL<<16U)
+    |(1UL<<17U)),
+
+    /* Peripheral Clock Gating Register3 (PCLKCR3) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)),
+
+    /* Peripheral Clock Gating Register4 (PCLKCR4) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)),
+
+    /* Peripheral Clock Gating Register6 (PCLKCR6) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)),
+
+    /* Peripheral Clock Gating Register7 (PCLKCR7) */
+    (uint32)((0x00000000U)
+    |(1UL<<16U)
+    |(1UL<<17U)
+    |(1UL<<18U)
+    |(1UL<<19U)
+    |(1UL<<20U)
+    |(1UL<<21U)),
+
+    /* Peripheral Clock Gating Register8 (PCLKCR8) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)),
+
+    /* Peripheral Clock Gating Register9 (PCLKCR9) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)),
+
+    /* Peripheral Clock Gating Register10 (PCLKCR10) */
+    (uint32)((0x00000000U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<7U)
+    |(1UL<<8U)
+    |(1UL<<9U)),
+
+    /* Peripheral Clock Gating Register13 (PCLKCR13) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)),
+
+    /* Peripheral Clock Gating Register14 (PCLKCR14) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<7U)
+    |(1UL<<8U)
+    |(1UL<<9U)
+    |(1UL<<10U)
+    |(1UL<<11U)),
+
+    /* Peripheral Clock Gating Register16 (PCLKCR16) */
+    (uint32)((0x00000000U)
+    |(1UL<<16U)
+    |(1UL<<17U)),
+
+    /* Peripheral Clock Gating Register17 (PCLKCR17) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)),
+
+    /* Peripheral Clock Gating Register18 (PCLKCR18) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<16U)
+    |(1UL<<17U)
+    |(1UL<<18U)
+    |(1UL<<19U)),
+
+    /* Peripheral Clock Gating Register19 (PCLKCR19) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)),
+
+    /* Peripheral Clock Gating Register20 (PCLKCR20) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)),
+
+    /* Peripheral Clock Gating Register21 (PCLKCR21) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)),
+
+    /* Peripheral Clock Gating Register23 (PCLKCR23) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)),
+
+    /* Peripheral Clock Gating Register25 (PCLKCR25) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)),
+
+    /* Peripheral Clock Gating Register27 (PCLKCR27) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)),
+
+    /* Peripheral Clock Gating Register28 (PCLKCR28) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)
+    |(1UL<<6U)
+    |(1UL<<7U)
+    |(1UL<<8U)
+    |(1UL<<9U)
+    |(1UL<<16U)
+    |(1UL<<17U)
+    |(1UL<<18U)),
+
+    /* Peripheral Clock Gating Register30 (PCLKCR30) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)
+    |(1UL<<2U)
+    |(1UL<<3U)
+    |(1UL<<4U)
+    |(1UL<<5U)),
+
+    /* Peripheral Clock Gating Register32 (PCLKCR32) */
+    (uint32)((0x00000000U)
+    |(1UL<<0U)
+    |(1UL<<1U)),
+    },
     {
     /* Peripheral Clock Gating Register0 (PCLKCR0) */
     (uint32)((0x00000000U)
@@ -291,11 +693,53 @@ static CONST(Mcu_MCanClkConfigType, MCU_CONFIG_DATA) Mcu_MCanClkCfgSet0[1] =
 };
 
 
+static CONST(Mcu_MCanClkConfigType, MCU_CONFIG_DATA) Mcu_MCanClkCfgSet1[1] =
+{
+    {
+    /* MCan clock configuration settings */
+    .Mcu_MCanInstance    = ((Mcu_MCANInstance) MCU_MCAN_A),
+    .Mcu_MCanClkSource   = ((Mcu_MCanClkSrc) MCU_MCANCLKSRC_PERxSYSCLK),
+    .Mcu_MCanClkDiv      = ((Mcu_MCANClkDivider) MCU_MCANCLK_DIV_20),
+    }   
+};
+
+
+static CONST(Mcu_MCanClkConfigType, MCU_CONFIG_DATA) Mcu_MCanClkCfgSet2[1] =
+{
+    {
+    /* MCan clock configuration settings */
+    .Mcu_MCanInstance    = ((Mcu_MCANInstance) MCU_MCAN_A),
+    .Mcu_MCanClkSource   = ((Mcu_MCanClkSrc) MCU_MCANCLKSRC_PERxSYSCLK),
+    .Mcu_MCanClkDiv      = ((Mcu_MCANClkDivider) MCU_MCANCLK_DIV_20),
+    }   
+};
+
+
 
 
 
 
 static CONST(Mcu_LinClkConfigType, MCU_CONFIG_DATA) Mcu_LinClkCfgSet0[1] =
+{
+    {
+    /* Lin clock configuration settings */
+    .Mcu_LinInstance    = ((Mcu_LINInstance) MCU_LIN_A),
+    .Mcu_LinClkDiv      = ((Mcu_LINClkDivider) MCU_LINCLK_DIV_2),
+    }   
+};
+
+
+static CONST(Mcu_LinClkConfigType, MCU_CONFIG_DATA) Mcu_LinClkCfgSet1[1] =
+{
+    {
+    /* Lin clock configuration settings */
+    .Mcu_LinInstance    = ((Mcu_LINInstance) MCU_LIN_A),
+    .Mcu_LinClkDiv      = ((Mcu_LINClkDivider) MCU_LINCLK_DIV_2),
+    }   
+};
+
+
+static CONST(Mcu_LinClkConfigType, MCU_CONFIG_DATA) Mcu_LinClkCfgSet2[1] =
 {
     {
     /* Lin clock configuration settings */
@@ -312,10 +756,10 @@ static CONST(Mcu_LinClkConfigType, MCU_CONFIG_DATA) Mcu_LinClkCfgSet0[1] =
  * Design: MCAL-21897, MCAL-21898, MCAL-21899, MCAL-21900, MCAL-21901, MCAL-21872, MCAL-21873
  */
 
-static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet0[1] =
+static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet0[3] =
 {
     {
-    .Mcu_ClockSourceId = ((Mcu_ClkSourceIdType) MCU_CLKSRC_XTAL),
+    .Mcu_ClockSourceId = ((Mcu_ClkSourceIdType) MCU_CLKSRC_OSC2),
     .Mcu_PeripheralClkConfigPtr = ((Mcu_PeripheralClkRegConfigPtrType) &Mcu_PerClkCfgSet0[0]),
     .Mcu_MCanInstancesCount     = ((uint32) 1U),
     .Mcu_LinInstancesCount      = ((uint32) 1U),
@@ -341,8 +785,68 @@ static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet0[1] =
     .Mcu_EmifClkDiv      = ((Mcu_EMIFClkDivider) MCU_EMIFCLK_DIV_2),
     
     .Mcu_PllRefDiv       = ((uint8) 1U),
+    .Mcu_PllIntMult      = ((uint8) 40U),
+    .Mcu_PllOutDiv       = ((uint8) 2U),
+    },
+    {
+    .Mcu_ClockSourceId = ((Mcu_ClkSourceIdType) MCU_CLKSRC_XTAL),
+    .Mcu_PeripheralClkConfigPtr = ((Mcu_PeripheralClkRegConfigPtrType) &Mcu_PerClkCfgSet0[1]),
+    .Mcu_MCanInstancesCount     = ((uint32) 1U),
+    .Mcu_LinInstancesCount      = ((uint32) 1U),
+    .Mcu_MCanClkConfig          = ((Mcu_MCanClkConfigPtrType) Mcu_MCanClkCfgSet1),
+    .Mcu_LinClkConfig           = ((Mcu_LinClkConfigPtrType) Mcu_LinClkCfgSet1),
+    .Mcu_CpuTimerClkConfig = {
+        .Mcu_CpuTimer2ClkSource = ((Mcu_CpuTimerClkSrc) MCU_CPUTIMERCLKSRC_SYSCLK),
+        .Mcu_CpuTimer2ClkDiv    = ((uint8) 1U)
+    },
+    .Mcu_ExternalClkOutConfig = {
+        .Mcu_ExternalClockOutSource = ((Mcu_ExternalClockOutClkSrc) MCU_XCLKOUTSRC_PLLSYS),
+        .Mcu_ExternalClkOutDiv      = ((Mcu_ExternalClockOutDiv) MCU_XCLKOUT_DIV_8),
+        .Mcu_ExternalClockOut       = ((boolean) FALSE)
+    },
+    .Mcu_EthercatClkConfig = {
+        .Mcu_EthercatClkDiv       = ((Mcu_EthercatClockDiv) MCU_ECATCLKOUT_DIV_8),
+        .Mcu_EthercatPhyClkEnable = ((Mcu_EthercatPhyClk)   MCU_ECAT_PHYCLK_ENABLE)
+    },
+    .Mcu_ExternalClkFreq = ((uint32) 20000000U),
+    .Mcu_SysClkDiv       = ((uint8) 1U),
+    .Mcu_HsmClkDiv       = ((Mcu_HsmClockDiv) MCU_HSMCLK_DIV_16),
+    .Mcu_EpwmClkDiv      = ((Mcu_EPWMClkDivider) MCU_EPWMCLK_DIV_2),
+    .Mcu_EmifClkDiv      = ((Mcu_EMIFClkDivider) MCU_EMIFCLK_DIV_2),
+    
+    .Mcu_PllRefDiv       = ((uint8) 1U),
     .Mcu_PllIntMult      = ((uint8) 30U),
     .Mcu_PllOutDiv       = ((uint8) 3U),
+    },
+    {
+    .Mcu_ClockSourceId = ((Mcu_ClkSourceIdType) MCU_CLKSRC_XTAL_SE),
+    .Mcu_PeripheralClkConfigPtr = ((Mcu_PeripheralClkRegConfigPtrType) &Mcu_PerClkCfgSet0[2]),
+    .Mcu_MCanInstancesCount     = ((uint32) 1U),
+    .Mcu_LinInstancesCount      = ((uint32) 1U),
+    .Mcu_MCanClkConfig          = ((Mcu_MCanClkConfigPtrType) Mcu_MCanClkCfgSet2),
+    .Mcu_LinClkConfig           = ((Mcu_LinClkConfigPtrType) Mcu_LinClkCfgSet2),
+    .Mcu_CpuTimerClkConfig = {
+        .Mcu_CpuTimer2ClkSource = ((Mcu_CpuTimerClkSrc) MCU_CPUTIMERCLKSRC_SYSCLK),
+        .Mcu_CpuTimer2ClkDiv    = ((uint8) 1U)
+    },
+    .Mcu_ExternalClkOutConfig = {
+        .Mcu_ExternalClockOutSource = ((Mcu_ExternalClockOutClkSrc) MCU_XCLKOUTSRC_PLLSYS),
+        .Mcu_ExternalClkOutDiv      = ((Mcu_ExternalClockOutDiv) MCU_XCLKOUT_DIV_8),
+        .Mcu_ExternalClockOut       = ((boolean) FALSE)
+    },
+    .Mcu_EthercatClkConfig = {
+        .Mcu_EthercatClkDiv       = ((Mcu_EthercatClockDiv) MCU_ECATCLKOUT_DIV_8),
+        .Mcu_EthercatPhyClkEnable = ((Mcu_EthercatPhyClk)   MCU_ECAT_PHYCLK_ENABLE)
+    },
+    .Mcu_ExternalClkFreq = ((uint32) 25000000U),
+    .Mcu_SysClkDiv       = ((uint8) 1U),
+    .Mcu_HsmClkDiv       = ((Mcu_HsmClockDiv) MCU_HSMCLK_DIV_16),
+    .Mcu_EpwmClkDiv      = ((Mcu_EPWMClkDivider) MCU_EPWMCLK_DIV_2),
+    .Mcu_EmifClkDiv      = ((Mcu_EMIFClkDivider) MCU_EMIFCLK_DIV_2),
+    
+    .Mcu_PllRefDiv       = ((uint8) 2U),
+    .Mcu_PllIntMult      = ((uint8) 32U),
+    .Mcu_PllOutDiv       = ((uint8) 2U),
     }
 };
 
@@ -394,7 +898,7 @@ CONST(Mcu_ConfigType, MCU_CONFIG_DATA) Mcu_ModuleConfiguration_0 =
     /* Mcu_ModeConfig */ 
     .Mcu_ModeConfig                = ((Mcu_ModeConfigPtrType) Mcu_ModeConfigurationSet0),
     /* Mcu_ClockSetting */ 
-    .Mcu_ClockSetting              = ((uint8) 1U),
+    .Mcu_ClockSetting              = ((uint8) 3U),
     /* Mcu_NumberOfRamSectors */ 
     .Mcu_NumberOfRamSectors        = ((uint8) 1U),
     /* Mcu_ModesNumber */ 
