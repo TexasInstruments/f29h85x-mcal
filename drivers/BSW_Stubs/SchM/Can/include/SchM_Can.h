@@ -8,32 +8,33 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
  *  FILE DESCRIPTION
  *  ------------------------------------------------------------------------------------------------------------------
- *  File:         SchM_Gpt.h
+ *  File:         SchM_Can.h
  *  Generator:    None
  *
- *  Description:  This file contains GPT SchM API proto types
+ *  Description:  This file contains Can SchM API proto types
  *********************************************************************************************************************/
-
 
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
+ #ifndef SCHM_CAN_H
+ #define SCHM_CAN_H
 
-#ifndef SCHM_GPT_H
-#define SCHM_GPT_H
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
 
-/*********************************************************************************************************************
+ /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
 #include "Std_Types.h"
 #include "Mcal_Lib_Cpu.h"
-
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -53,23 +54,26 @@
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
+    
 extern volatile uint8 Can_Exclusive_Count0;
 extern volatile uint8 Can_Exclusive_Count1;
-
 /*********************************************************************************************************************
  * Exported Function Prototypes
  *********************************************************************************************************************/
-void SchM_Enter_Can_CAN_EXCLUSIVE_AREA_0(void);
-void SchM_Exit_Can_CAN_EXCLUSIVE_AREA_0(void);
-void SchM_Enter_Can_CAN_EXCLUSIVE_AREA_1(void);
-void SchM_Exit_Can_CAN_EXCLUSIVE_AREA_1(void);
-
+    
+void SchM_Enter_Can_CAN_EXCLUSIVE_AREA_0(void);             
+void SchM_Exit_Can_CAN_EXCLUSIVE_AREA_0(void); 
+void SchM_Enter_Can_CAN_EXCLUSIVE_AREA_1(void);             
+void SchM_Exit_Can_CAN_EXCLUSIVE_AREA_1(void); 
 /*********************************************************************************************************************
  * Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
+ #ifdef __cplusplus
+}
+#endif
 
-#endif /*SCHM_GPT_H*/
-
+#endif /*SCHM_CAN_H*/
 /*********************************************************************************************************************
- *  End of File: SchM_Mcu.h
- *********************************************************************************************************************/
+*  End of File: SchM_Can.h
+*********************************************************************************************************************/
+    

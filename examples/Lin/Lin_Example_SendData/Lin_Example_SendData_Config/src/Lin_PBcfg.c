@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -42,11 +42,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((LIN_SW_MAJOR_VERSION != (1U)) || (LIN_SW_MINOR_VERSION != (0U)))
+#if ((LIN_SW_MAJOR_VERSION != (1U)) || (LIN_SW_MINOR_VERSION != (1U)))
   #error "Version numbers of Lin_PBcfg.c and Lin.h are inconsistent!"
 #endif
 
-#if ((LIN_CFG_MAJOR_VERSION != (1U)) || (LIN_CFG_MINOR_VERSION != (0U)))
+#if ((LIN_CFG_MAJOR_VERSION != (1U)) || (LIN_CFG_MINOR_VERSION != (1U)))
   #error "Version numbers of Lin_PBcfg.c and Lin_Cfg.h are inconsistent!"
 #endif
 

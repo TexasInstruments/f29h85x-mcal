@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -44,7 +44,6 @@ extern "C" {
 #include "hw_types.h"
 #include "hw_memmap.h"
 #include "Det.h"
-
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -247,11 +246,6 @@ typedef struct
 
 } Spi_DriverObjType;
 
-/*
- * Design : MCAL-25183
- */
-/** \brief SPI driver object */
-extern Spi_DriverObjType Spi_DrvObj;
 
 /*
  * Design : MCAL-25182
@@ -301,7 +295,8 @@ FUNC(void, SPI_CODE) Spi_CopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)d
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_HwUnitInit(P2VAR(Spi_HwUnitObjType,AUTOMATIC,SPI_CODE)hwUnitObj);
+FUNC(void, SPI_CODE) Spi_HwUnitInit(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
+                                    P2VAR(Spi_HwUnitObjType,AUTOMATIC,SPI_CODE)hwUnitObj);
 
 /** \brief function to de-initialize SPI hardware unit
  *
@@ -327,7 +322,8 @@ FUNC(void, SPI_CODE) Spi_HwUnitDeInit(P2VAR(Spi_HwUnitObjType,AUTOMATIC,SPI_CODE
  * \retval Spi_HwUnitObjType: pointer to HW unit object
  *
  ********************************************************************************************************************/
-Spi_HwUnitObjType *Spi_GetHwUnitObj(VAR(Spi_HWUnitType,AUTOMATIC)HWUnit);
+Spi_HwUnitObjType *Spi_GetHwUnitObj(VAR(Spi_HWUnitType,AUTOMATIC)HWUnit,
+                                     P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj);
 
 /** \brief function to disable all the interrupts
  *
@@ -370,7 +366,8 @@ FUNC(void, SPI_CODE) Spi_EnableInterrupt(VAR(uint32,AUTOMATIC)baseAddr, VAR(bool
  * \retval E_NOT_OK: sequence transfer start in async mode failed
  *
  ********************************************************************************************************************/
-FUNC(Std_ReturnType, SPI_CODE) Spi_StartSeqAsync(P2VAR(Spi_SeqObjType,AUTOMATIC,SPI_CODE)seqObj);
+FUNC(Std_ReturnType, SPI_CODE) Spi_StartSeqAsync(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
+                                                 P2VAR(Spi_SeqObjType,AUTOMATIC,SPI_CODE)seqObj);
 
 /** \brief private function to start synchronous transmission
  *
@@ -384,7 +381,8 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_StartSeqAsync(P2VAR(Spi_SeqObjType,AUTOMATIC,
  * \retval E_NOT_OK: sequence transfer start in sync mode failed
  *
  ********************************************************************************************************************/
-FUNC(Std_ReturnType, SPI_CODE) Spi_StartSeqSync(P2VAR(Spi_SeqObjType,AUTOMATIC,SPI_CODE)seqObj);
+FUNC(Std_ReturnType, SPI_CODE) Spi_StartSeqSync(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
+                                                P2VAR(Spi_SeqObjType,AUTOMATIC,SPI_CODE)seqObj);
 
 /** \brief process receive interrupt(RXINT/INT)
  *
@@ -413,7 +411,8 @@ FUNC(void, SPI_CODE) Spi_ProcessRxEvent(VAR(Spi_HWUnitType,AUTOMATIC)hwUnitId);
  *
  ********************************************************************************************************************/
 FUNC(void, SPI_CODE) Spi_ProcessChCompletion(P2VAR(Spi_HwUnitObjType,AUTOMATIC, SPI_CODE)hwUnitObj, \
-                             VAR(Spi_JobResultType,AUTOMATIC)jobResult);
+                             VAR(Spi_JobResultType,AUTOMATIC)jobResult,
+                              P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE) drvObj);
 #if(STD_ON == SPI_CS_VIA_GPIO)
 /** \brief function to Enable or Disable chip-select when it is a GPIO
  *
@@ -454,7 +453,8 @@ FUNC(uint32, SPI_CODE) Spi_GetHwUnitBaseAddr(VAR(Spi_HWUnitType,AUTOMATIC)HwUnit
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_CancelSequence(P2VAR(Spi_SeqObjType,AUTOMATIC,SPI_CODE)seqObj);
+FUNC(void, SPI_CODE) Spi_CancelSequence(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
+                                        P2VAR(Spi_SeqObjType,AUTOMATIC,SPI_CODE)seqObj);
 #if ((SPI_CHANNEL_BUFFERS == SPI_IB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
 /** \brief function to write into internal buffer in 8 bits
  *
@@ -625,9 +625,8 @@ FUNC(void, SPI_CODE) Spi_PrivExtDevCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,
  * \retval pointer to bufPtr
  *
  ********************************************************************************************************************/
-LOCAL_INLINE const uint8 *Spi_FifoWrite8(VAR(uint32,AUTOMATIC) baseAddr,\
-                                      VAR(uint32,AUTOMATIC) wordSize,\
-                                      P2CONST(uint8,AUTOMATIC,SPI_CODE)bufPtr,\
+LOCAL_INLINE FUNC(void, SPI_CODE) Spi_FifoWrite8(VAR(uint32,AUTOMATIC) baseAddr,\
+                                       P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)chObj,\
                                        VAR(uint32,AUTOMATIC) transferLength,\
                                        VAR(uint16,AUTOMATIC) curTxWords);
 
@@ -645,9 +644,8 @@ LOCAL_INLINE const uint8 *Spi_FifoWrite8(VAR(uint32,AUTOMATIC) baseAddr,\
  * \retval pointer to bufPtr
  *
  ********************************************************************************************************************/
-LOCAL_INLINE const uint16 *Spi_FifoWrite16(VAR(uint32,AUTOMATIC) baseAddr,\
-                                      VAR(uint32,AUTOMATIC) wordSize,\
-                                      P2CONST(uint16,AUTOMATIC,SPI_CODE)bufPtr,\
+LOCAL_INLINE FUNC(void, SPI_CODE) Spi_FifoWrite16(VAR(uint32,AUTOMATIC) baseAddr,\
+                                       P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)chObj,\
                                        VAR(uint32,AUTOMATIC) transferLength,\
                                        VAR(uint16,AUTOMATIC) curTxWords);
 
@@ -708,9 +706,8 @@ LOCAL_INLINE uint16 *Spi_FifoRead16(VAR(uint32,AUTOMATIC)baseAddr,\
  *
  ********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, SPI_CODE) Spi_FifoWriteDefault( VAR(uint32,AUTOMATIC)baseAddr,\
-                                        VAR(uint32,AUTOMATIC)wordSize,\
-                                        VAR(uint16,AUTOMATIC)defaultTxData,\
-                                        VAR(uint32,AUTOMATIC)transferLength);
+                                        VAR(uint32,AUTOMATIC)transferLength,
+                                        P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)chObj);
 
 /** \brief function to read from Register and discard
  *
@@ -768,6 +765,22 @@ LOCAL_INLINE FUNC(void, SPI_CODE) Spi_WriteTxBufferNonFifo(P2VAR(Spi_ChannelObjT
  *
  ********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, SPI_CODE) Spi_ClearPIPEINTFlag(VAR(uint32,AUTOMATIC) intNum);
+
+/** \brief  Service for SPI initialization.
+ *
+ * This service initializes all the configured Spi channels, jobs, sequences and SPI instances This will set the
+ * state of SPI driver to Initialized.
+ *
+ * \param[in] CfgPtr - Pointer to configuration set
+ * \param[in] drvObj - Pointer to Driver Object
+ * \pre CfgPtr shall be null in Pre-Compile variant, Link-Time variant and shall not be NULL in Post-Build variant
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, SPI_CODE) Spi_PrivInit(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE) drvObj, \
+                                  P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) CfgPtr);
 /*********************************************************************************************************************
  *  Mark the end of the C bindings section for C++ compilers.
  *********************************************************************************************************************/

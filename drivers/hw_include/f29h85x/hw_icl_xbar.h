@@ -16,14 +16,14 @@
 // The following are defines for the ICL_XBAR register offsets
 //
 //*************************************************************************************************
-#define ICL_XBAR_O_ICLXBAROUTINVERT   0x30U                   // Output Signal Invert Select
-#define ICL_XBAR_O_ICLXBARLOCK        0x80U                   // Configuration Lock register
-#define ICL_XBAR_O_ICLXBARG0SEL(i)    (0x100U + ((i) * 64))   // (0 <= i < 16) ICLXBAR G0 Input
-                                                              // Select
-#define ICL_XBAR_O_ICLXBARG1SEL(i)    (0x104U + ((i) * 64))   // (0 <= i < 16) ICLXBAR G1 Input
-                                                              // Select
-#define ICL_XBAR_O_ICLXBARG2SEL(i)    (0x108U + ((i) * 64))   // (0 <= i < 16) ICLXBAR G2 Input
-                                                              // Select
+#define ICL_XBAR_O_ICLXBAROUTINVERT   0x30U                    // Output Signal Invert Select
+#define ICL_XBAR_O_ICLXBARLOCK        0x80U                    // Configuration Lock register
+#define ICL_XBAR_O_ICLXBARG0SEL(i)    (0x100U + ((i) * 64U))   // (0 <= i < 16) ICLXBAR G0 Input
+                                                               // Select
+#define ICL_XBAR_O_ICLXBARG1SEL(i)    (0x104U + ((i) * 64U))   // (0 <= i < 16) ICLXBAR G1 Input
+                                                               // Select
+#define ICL_XBAR_O_ICLXBARG2SEL(i)    (0x108U + ((i) * 64U))   // (0 <= i < 16) ICLXBAR G2 Input
+                                                               // Select
 
 
 //*************************************************************************************************

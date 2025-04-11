@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -37,11 +37,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (0U)))
+#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (1U)))
     #error "Version numbers of Can_cfg.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (0U)))
+#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Can_cfg.c and Can_Cfg.h are inconsistent!"
 #endif
 
@@ -79,7 +79,7 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) CanConfigSet_CanController_0_CanContr
     .CanControllerSeg1 = (uint8 )3U,
     .CanControllerSeg2 = (uint8 )4U,
     .CanControllerSyncJumpWidth = (uint8 )4U,
-    .BrpValue = (uint16 )1U,
+    .BrpValue = (uint16 )20U,
     /* Data Phase Baud Rate */
     .BaudFdEnable = FALSE,
 };
@@ -138,15 +138,54 @@ CONST(Can_IcomConfigType, CAN_CONFIG_DATA) Can_CanIcomConfig_0 =
     .CanIcomRxMessage[0] = {
         .CanIcomMessageId = (uint32 )0x100U,
         .CanIcomPayloadLengthError = (boolean )FALSE,
-        .CanIcomCounterValue = (uint16 )1U,
+        .CanIcomCounterValue = (uint16 )5U,
         .CanIcomMessageIdMask = (uint32 )0xfffU,
-        .SignalCount = (uint16 )1U,
+        .SignalCount = (uint16 )5U,
 
         .CanIcomRxMessageSignalConfig[0] = { 
             .CanIcomSignalMask = (uint64 )18446744073709551615U,
             .CanIcomSignalOperation = (Can_Icom_signal_operation_type )EQUAL,
             .CanIcomSignalValue = (uint64 )1311768467302729063U,
         },
+
+        .CanIcomRxMessageSignalConfig[1] = { 
+            .CanIcomSignalMask = (uint64 )18446744073709551615U,
+            .CanIcomSignalOperation = (Can_Icom_signal_operation_type )AND,
+            .CanIcomSignalValue = (uint64 )12302652059516914909U,
+        },
+
+        .CanIcomRxMessageSignalConfig[2] = { 
+            .CanIcomSignalMask = (uint64 )18446744073709551615U,
+            .CanIcomSignalOperation = (Can_Icom_signal_operation_type )GREATER,
+            .CanIcomSignalValue = (uint64 )18446744073709551360U,
+        },
+
+        .CanIcomRxMessageSignalConfig[3] = { 
+            .CanIcomSignalMask = (uint64 )18446744073709551615U,
+            .CanIcomSignalOperation = (Can_Icom_signal_operation_type )SMALLER,
+            .CanIcomSignalValue = (uint64 )2U,
+        },
+
+        .CanIcomRxMessageSignalConfig[4] = { 
+            .CanIcomSignalMask = (uint64 )18446744073709551615U,
+            .CanIcomSignalOperation = (Can_Icom_signal_operation_type )XOR,
+            .CanIcomSignalValue = (uint64 )1311768467302729063U,
+        },
+
+   },
+};
+/* Icom configuration for  CanIcomConfig_1 */
+CONST(Can_IcomConfigType, CAN_CONFIG_DATA) Can_CanIcomConfig_1 =
+{
+    .CanIcomConfigId = (IcomConfigIdType )2U,
+    .CanIcomWakeOnBusOff = (boolean )FALSE,
+    .RxMessageCount = (uint16 )1U,
+    .CanIcomRxMessage[0] = {
+        .CanIcomMessageId = (uint32 )0x100U,
+        .CanIcomPayloadLengthError = (boolean )FALSE,
+        .CanIcomCounterValue = (uint16 )1U,
+        .CanIcomMessageIdMask = (uint32 )0xfffU,
+        .SignalCount = (uint16 )0U,
 
    },
 };
@@ -155,6 +194,7 @@ CONST(Can_IcomConfigType, CAN_CONFIG_DATA) Can_CanIcomConfig_0 =
 CONST(Can_IcomConfigType*, CAN_CONFIG_DATA) Can_IcomConfigurationList[] =
 {
     (Can_IcomConfigType* )&Can_CanIcomConfig_0,
+    (Can_IcomConfigType* )&Can_CanIcomConfig_1,
 };
 
 
@@ -205,6 +245,8 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_1 =
     .CanTriggerTransmitEnable = (boolean )FALSE,
     .CanHwFilterCode = (uint32 )0U,   /*CanHwFilterCode*/
     .CanHwFilterMask = {(uint32 )0U},
+    .CanStandardFilterType = CAN_CLASSIC_FILTER,
+    .CanEventPin = CAN_EVENT_PIN_NONE,
 
     .CanMainFunctionRWPeriodRef = {(uint16 )CanMainFunctionRWPeriods_2},
 };

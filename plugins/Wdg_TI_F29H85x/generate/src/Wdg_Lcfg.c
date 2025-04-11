@@ -1,4 +1,4 @@
-[!IF "as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!]
+[!SKIPFILE "node:value(as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantLinkTime'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -121,7 +121,3 @@ CONST(Wdg_ConfigType, WDG_CONFIG_DATA) Wdg_ConfigSetptr =
 /*********************************************************************************************************************
  *  End of File: Wdg_Lcfg.c
  *********************************************************************************************************************/
- [!ELSE!]
-/*
-Refer Pre-Compile Variant or Post-Build Variant. */
-[!ENDIF!]

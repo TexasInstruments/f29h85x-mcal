@@ -16,28 +16,28 @@
 // The following are defines for the EPWM_XBAR register offsets
 //
 //*************************************************************************************************
-#define EPWM_XBAR_O_PWMXBAROUTINVERT   0x30U                   // Output Signal Invert Select
-#define EPWM_XBAR_O_PWMXBARLOCK        0x80U                   // Configuration Lock register
-#define EPWM_XBAR_O_PWMXBARG0SEL(i)    (0x100U + ((i) * 64))   // (0 <= i < 16) PWMXBAR G0 Input
-                                                               // Select
-#define EPWM_XBAR_O_PWMXBARG1SEL(i)    (0x104U + ((i) * 64))   // (0 <= i < 16) PWMXBAR G1 Input
-                                                               // Select
-#define EPWM_XBAR_O_PWMXBARG2SEL(i)    (0x108U + ((i) * 64))   // (0 <= i < 16) PWMXBAR G2 Input
-                                                               // Select
-#define EPWM_XBAR_O_PWMXBARG3SEL(i)    (0x10CU + ((i) * 64))   // (0 <= i < 16) PWMXBAR G3 Input
-                                                               // Select
-#define EPWM_XBAR_O_PWMXBARG4SEL(i)    (0x110U + ((i) * 64))   // (0 <= i < 16) PWMXBAR G4 Input
-                                                               // Select
-#define EPWM_XBAR_O_PWMXBARG5SEL(i)    (0x114U + ((i) * 64))   // (0 <= i < 16) PWMXBAR G5 Input
-                                                               // Select
-#define EPWM_XBAR_O_PWMXBARG6SEL(i)    (0x118U + ((i) * 64))   // (0 <= i < 16) PWMXBAR G6 Input
-                                                               // Select
-#define EPWM_XBAR_O_PWMXBARG7SEL(i)    (0x11CU + ((i) * 64))   // (0 <= i < 16) PWMXBAR G7 Input
-                                                               // Select
-#define EPWM_XBAR_O_PWMXBARG8SEL(i)    (0x120U + ((i) * 64))   // (0 <= i < 16) PWMXBAR G8 Input
-                                                               // Select
-#define EPWM_XBAR_O_PWMXBARG9SEL(i)    (0x124U + ((i) * 64))   // (0 <= i < 16) PWMXBAR G9 Input
-                                                               // Select
+#define EPWM_XBAR_O_PWMXBAROUTINVERT   0x30U                    // Output Signal Invert Select
+#define EPWM_XBAR_O_PWMXBARLOCK        0x80U                    // Configuration Lock register
+#define EPWM_XBAR_O_PWMXBARG0SEL(i)    (0x100U + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G0 Input
+                                                                // Select
+#define EPWM_XBAR_O_PWMXBARG1SEL(i)    (0x104U + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G1 Input
+                                                                // Select
+#define EPWM_XBAR_O_PWMXBARG2SEL(i)    (0x108U + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G2 Input
+                                                                // Select
+#define EPWM_XBAR_O_PWMXBARG3SEL(i)    (0x10CU + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G3 Input
+                                                                // Select
+#define EPWM_XBAR_O_PWMXBARG4SEL(i)    (0x110U + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G4 Input
+                                                                // Select
+#define EPWM_XBAR_O_PWMXBARG5SEL(i)    (0x114U + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G5 Input
+                                                                // Select
+#define EPWM_XBAR_O_PWMXBARG6SEL(i)    (0x118U + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G6 Input
+                                                                // Select
+#define EPWM_XBAR_O_PWMXBARG7SEL(i)    (0x11CU + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G7 Input
+                                                                // Select
+#define EPWM_XBAR_O_PWMXBARG8SEL(i)    (0x120U + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G8 Input
+                                                                // Select
+#define EPWM_XBAR_O_PWMXBARG9SEL(i)    (0x124U + ((i) * 64U))   // (0 <= i < 16) PWMXBAR G9 Input
+                                                                // Select
 
 
 //*************************************************************************************************

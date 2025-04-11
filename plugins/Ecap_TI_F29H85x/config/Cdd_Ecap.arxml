@@ -1,0 +1,612 @@
+<?xml version='1.0'?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>TI_F29H85x</SHORT-NAME>
+      <AR-PACKAGES>
+        <AR-PACKAGE>
+          <SHORT-NAME>Cdd_Ecap</SHORT-NAME>
+          <ELEMENTS>
+            <ECUC-MODULE-DEF UUID="43a746a1-6a65-4305-b1ac-19d04de48ab6">
+              <SHORT-NAME>Cdd</SHORT-NAME>
+              <DESC>
+                <L-2 L="EN">Configuration of Ecap (Enhanced Capture Module) module.</L-2>
+              </DESC>
+              <ADMIN-DATA>
+                <DOC-REVISIONS>
+                  <DOC-REVISION>
+                    <REVISION-LABEL>4.3.1</REVISION-LABEL>
+                    <ISSUED-BY>AUTOSAR</ISSUED-BY>
+                  </DOC-REVISION>
+                </DOC-REVISIONS>
+              </ADMIN-DATA>
+              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+              <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+              <API-SERVICE-PREFIX>Cdd_Ecap</API-SERVICE-PREFIX>
+              <REFINED-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/AUTOSAR/EcucDefs/Cdd</REFINED-MODULE-DEF-REF>
+              <SUPPORTED-CONFIG-VARIANTS>
+                <SUPPORTED-CONFIG-VARIANT>VARIANT-PRE-COMPILE</SUPPORTED-CONFIG-VARIANT>
+              </SUPPORTED-CONFIG-VARIANTS>
+              <CONTAINERS>
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ECUC:65e11074-8c5d-4fb7-b332-10e4889287f2">
+                  <SHORT-NAME>CddEcapConfigSet</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">This container contains the configuration parameters and sub containers of the AUTOSAR CddEcap module.</L-2>
+                  </DESC>
+                  <PARAMETERS>
+                    <ECUC-INTEGER-PARAM-DEF UUID="ECUC:65e2f79c-922e-4180-90dc-0819fc20f890">
+                      <SHORT-NAME>CddEcapMaxChannel</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">This parameter contains the number of Channels configured. It will be gathered by tools during the configuration stage.</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>1</DEFAULT-VALUE>
+                      <MAX>5</MAX>
+                      <MIN>0</MIN>
+                    </ECUC-INTEGER-PARAM-DEF>
+                  </PARAMETERS>
+                  <SUB-CONTAINERS>
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ECUC:74f0ce69-2156-4784-bae9-57ea4699e6e4">
+                      <SHORT-NAME>CddEcapChannel</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Configuration of an individual CDD ECAP channel.</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                      <UPPER-MULTIPLICITY>6</UPPER-MULTIPLICITY>
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <PARAMETERS>
+                        <ECUC-INTEGER-PARAM-DEF UUID="ECUC:3e518668-f29a-463d-b183-d4b4d1c28766">
+                          <SHORT-NAME>CddEcapChannelId</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Channel Id of the CDD ECAP channel. This value will be assigned to the symbolic name derived of the CddEcapChannel container short name.</L-2>
+                          </DESC>
+                          <SCOPE>ECU</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>true</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>1</DEFAULT-VALUE>
+                          <MAX>5</MAX>
+                          <MIN>0</MIN>
+                        </ECUC-INTEGER-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="ECUC:29f03c55-e634-4f63-90cf-2027f4cd10f1">
+                          <SHORT-NAME>CddEcapDefaultStartEdge</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configures the default-activation-edge which shall be used for this channel if there was no activation-edge configured by the call of service CddEcap_SetActivationCondition().</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>CDD_ECAP_RISING_EDGE</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CDD_ECAP_BOTH_EDGES</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CDD_ECAP_FALLING_EDGE</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CDD_ECAP_RISING_EDGE</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="8ac4af3c-9be8-492f-8089-457bfd76f9f6">
+                          <SHORT-NAME>CddEcapInputSelect</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configures the source to be used in order to give CDD ECAP the required input</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <DEFAULT-VALUE>CDD_ECAP_INPUT_INPUTXBAR1</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="ac8494e8-cac9-44f0-a3e7-f7f6d44410e1">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="ECUC:24a348ed-2ff8-426c-a392-18f905c53c25">
+                          <SHORT-NAME>CddEcapIrqType</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Type of Isr function:
+                          void functionname(void)
+                          CAT1  see description in oil tool : interrupt void func(void)
+                          CAT2  see description in oil tool : ISR(func)</L-2>
+                          </DESC>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>ISR_CAT1_INT</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>ISR_CAT1_INT</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>ISR_CAT1_RINT</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>ISR_CAT2_INT</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="ECUC:b9e816ea-2297-4329-8830-328ccdeabda3">
+                          <SHORT-NAME>CddEcapMeasurementMode</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configures the measurement mode of this channel.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>CDD_ECAP_MODE_EDGE_COUNTER</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CDD_ECAP_MODE_EDGE_COUNTER</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CDD_ECAP_MODE_SIGNAL_EDGE_DETECT</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CDD_ECAP_MODE_SIGNAL_MEASUREMENT</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CDD_ECAP_MODE_TIMESTAMP</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="48307890-d187-4aea-a7d8-c455309142a0">
+                          <SHORT-NAME>CddEcapPrescaler</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configures the prescale value, keep it as 0 if you want to bypass it</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <DEFAULT-VALUE>CDD_ECAP_PRESCALAR_1</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="f1001862-5d70-467d-8731-5ebf548c917c">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-INTEGER-PARAM-DEF UUID="044de017-20d6-45a4-bce3-0cb93d5e909b">
+                          <SHORT-NAME>CddEcapClkFrequency</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Reference to a container of the type McuClockReferencePoint, to select an input clock.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <DEFAULT-VALUE>200000000</DEFAULT-VALUE>
+                          <MAX>200000000</MAX>
+                          <MIN>2000000</MIN>
+                        </ECUC-INTEGER-PARAM-DEF>
+                      </PARAMETERS>
+                      <REFERENCES>
+                        <ECUC-REFERENCE-DEF UUID="2146cf79-626b-498e-b6ab-674a42a8842e">
+                          <SHORT-NAME>CddEcapFunctionalClock</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Reference to a container of the type McuClockReferencePoint, to select an input clock.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/TI_F29H85x/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint</DESTINATION-REF>
+                        </ECUC-REFERENCE-DEF>
+                      </REFERENCES>
+                      <SUB-CONTAINERS>
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ECUC:d5664952-203b-47c4-9c69-bc138c81857b">
+                          <SHORT-NAME>CddEcapSignalMeasurement</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">This container contains the configuration (parameters) in case the measurement mode is &quot;CddEcapSignalMeasurement&quot;</L-2>
+                          </DESC>
+                          <PARAMETERS>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="ECUC:dd5a6572-bc3a-4853-985d-753d3392a183">
+                              <SHORT-NAME>CddEcapSignalMeasurementProperty</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Configures the property that could be measured in case the mode is &quot;CddEcapSignalMeasurement&quot;.</L-2>
+                              </DESC>
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <DEFAULT-VALUE>CDD_ECAP_HIGH_TIME</DEFAULT-VALUE>
+                              <LITERALS>
+                                <ECUC-ENUMERATION-LITERAL-DEF>
+                                  <SHORT-NAME>CDD_ECAP_DUTY_CYCLE</SHORT-NAME>
+                                  <ORIGIN>Texas Instruments</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <ECUC-ENUMERATION-LITERAL-DEF>
+                                  <SHORT-NAME>CDD_ECAP_HIGH_TIME</SHORT-NAME>
+                                  <ORIGIN>Texas Instruments</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <ECUC-ENUMERATION-LITERAL-DEF>
+                                  <SHORT-NAME>CDD_ECAP_LOW_TIME</SHORT-NAME>
+                                  <ORIGIN>Texas Instruments</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <ECUC-ENUMERATION-LITERAL-DEF>
+                                  <SHORT-NAME>CDD_ECAP_PERIOD_TIME</SHORT-NAME>
+                                  <ORIGIN>Texas Instruments</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                          </PARAMETERS>
+                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ECUC:3bb68cd5-7dfc-43b4-b64f-f601cb9d99ea">
+                          <SHORT-NAME>CddEcapTimestampMeasurement</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">This container contains the configuration (parameters) in case the measurement mode is &quot;CddEcapTimestamp&quot;</L-2>
+                          </DESC>
+                          <PARAMETERS>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="ECUC:b13ccde7-442b-4468-a875-28648408d95e">
+                              <SHORT-NAME>CddEcapTimestampMeasurementProperty</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Configures the handling of the buffer in case the mode is &quot;Timestamp&quot;</L-2>
+                              </DESC>
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <DEFAULT-VALUE>CDD_ECAP_CIRCULAR_BUFFER</DEFAULT-VALUE>
+                              <LITERALS>
+                                <ECUC-ENUMERATION-LITERAL-DEF>
+                                  <SHORT-NAME>CDD_ECAP_CIRCULAR_BUFFER</SHORT-NAME>
+                                  <ORIGIN>Texas Instruments</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <ECUC-ENUMERATION-LITERAL-DEF>
+                                  <SHORT-NAME>CDD_ECAP_LINEAR_BUFFER</SHORT-NAME>
+                                  <ORIGIN>Texas Instruments</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                            <ECUC-FUNCTION-NAME-DEF UUID="ECUC:0a447661-94c2-4817-b14f-930ee4258f2f">
+                              <SHORT-NAME>CddEcapTimestampNotification</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Notification function if the number of requested timestamps</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <SCOPE>LOCAL</SCOPE>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-MULTIPLICITY>true</POST-BUILD-VARIANT-MULTIPLICITY>
+                              <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                                  <DEFAULT-VALUE>NULL_PTR</DEFAULT-VALUE>
+                                </ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                              </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                            </ECUC-FUNCTION-NAME-DEF>
+                          </PARAMETERS>
+                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ECUC:761a76f3-f5c6-4715-a916-9a077db4a160">
+                          <SHORT-NAME>CddEcapSignalEdgeDetection</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">This container contains the configuration (parameters) in case the measurement mode is &quot;CddEcapSignalEdgeDetection&quot;</L-2>
+                          </DESC>
+                          <PARAMETERS>
+                            <ECUC-FUNCTION-NAME-DEF UUID="ECUC:98319c3e-7a97-4edf-8ec1-9da0994e2db2">
+                              <SHORT-NAME>CddEcapSignalNotification</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Notification function for signal notification.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <SCOPE>LOCAL</SCOPE>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-MULTIPLICITY>true</POST-BUILD-VARIANT-MULTIPLICITY>
+                              <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                                  <DEFAULT-VALUE>NULL_PTR</DEFAULT-VALUE>
+                                </ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
+                              </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                            </ECUC-FUNCTION-NAME-DEF>
+                          </PARAMETERS>
+                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                      </SUB-CONTAINERS>
+                    </ECUC-PARAM-CONF-CONTAINER-DEF>
+                  </SUB-CONTAINERS>
+                </ECUC-PARAM-CONF-CONTAINER-DEF>
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ECUC:1d7a6ee1-8bc5-4f5f-b509-c17e210792d6">
+                  <SHORT-NAME>CddEcapGeneral</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Configuration of general CDD ECAP parameters.</L-2>
+                  </DESC>
+                  <PARAMETERS>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:7224bf75-cdc8-408f-91ff-3a99e7a18f84">
+                      <SHORT-NAME>CddEcapDevErrorDetect</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Switches the development error detection and notification on or off.</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:4d39ccac-2595-4da7-a69e-66453109d78a">
+                      <SHORT-NAME>CddEcapDeInitApi</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Adds / removes the service CddEcap_DeInit() from the code.</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>true</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:cdf40ca5-30d2-4ef5-ab1f-8718f7c34a1b">
+                      <SHORT-NAME>CddEcapEdgeCountApi</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Adds / removes all services related to the edge counting functionality as listed below, from the code: CddEcap_ResetEdgeCount(), CddEcap_EnableEdgeCount(), CddEcap_DisableEdgeCount(), CddEcap_GetEdgeNumbers().</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:c7120c6a-ec51-4ec8-af9f-6ff680d2a9a8">
+                      <SHORT-NAME>CddEcapEdgeDetectApi</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Adds / removes the services related to the edge detection functionality, from the code:</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:8c295fd4-29a0-4f33-8275-5e5885f0d0da">
+                      <SHORT-NAME>CddEcapGetDutyCycleValuesApi</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Adds / removes the service CddEcap_GetDutyCycleValues() from the code.</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:45a58d33-058d-473d-bb4e-16e883293e42">
+                      <SHORT-NAME>CddEcapGetInputStateApi</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Adds / removes the service CddEcap_GetInputState() from the code.</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:a87b3e59-925b-48f0-9e65-7dd842060e1a">
+                      <SHORT-NAME>CddEcapGetTimeElapsedApi</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Adds / removes the service CddEcap_GetTimeElapsed() from the code.</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:ab4fff0d-bcf9-4cd4-8d5f-a8c599f9f4a6">
+                      <SHORT-NAME>CddEcapGetVersionInfoApi</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Adds / removes the service CddEcap_GetVersionInfo() from the code.</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:e7f32d8d-d9d3-485b-ae88-cf3658bfbaf9">
+                      <SHORT-NAME>CddEcapSignalMeasurementApi</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Adds / removes the services CddEcap_StartSignalMeasurement() and CddEcap_StopSignalMeasurement() from the code.</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>true</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="ECUC:b4d200cd-fefe-4c78-8338-cccedb398ee1">
+                      <SHORT-NAME>CddEcapTimestampApi</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Adds / removes all services related to the timestamping functionality as listed below from the code: CddEcap_StartTimestamp(), CddEcap_StopTimestamp(), CddEcap_GetTimestampIndex().</L-2>
+                      </DESC>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                  </PARAMETERS>
+                </ECUC-PARAM-CONF-CONTAINER-DEF>
+              </CONTAINERS>
+            </ECUC-MODULE-DEF>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

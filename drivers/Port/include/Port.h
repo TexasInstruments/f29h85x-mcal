@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version. */
 #define PORT_SW_MAJOR_VERSION    (1U)
 /** \brief Driver Implementation Minor Version. */
-#define PORT_SW_MINOR_VERSION    (0U)
+#define PORT_SW_MINOR_VERSION    (1U)
 /**  \brief Driver Implementation Patch Version. */
 #define PORT_SW_PATCH_VERSION    (0U)
 
@@ -155,6 +155,8 @@ extern "C" {
 #define PORT_SID_GET_VERSION_INFO   ((uint8)0x3U)
 /** \brief Service ID - Port_SetPinMode(). */
 #define PORT_SID_SET_PIN_MODE       ((uint8)0x4U)
+/** \brief Service ID - Port_CommitConfiguration(). */
+#define PORT_SID_COMMIT_CONFIGURATION       ((uint8)0x5U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -357,6 +359,21 @@ FUNC(void, PORT_CODE) Port_GetVersionInfo(Std_VersionInfoType *versioninfo);
  *********************************************************************************************************************/
 FUNC(void, PORT_CODE) Port_SetPinMode(Port_PinType Pin, Port_PinModeType Mode);
 #endif
+
+
+/** \brief Commits the locked Critical Configuration registers for the current Configuration.
+ * 
+ * This function Commits the locked Critical Configuration registers for the current Configuration
+ *
+ * \param[in] None
+ * \pre Port_Init should be called before calling this function
+ * \post None
+ * \return None
+ * \retval None
+ * \retval None
+ *
+ ****************************************************************************/
+FUNC(void, PORT_CODE) Port_CommitConfiguration(void);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

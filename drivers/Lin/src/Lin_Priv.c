@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -26,6 +26,7 @@
 #include "EcuM_Cbk.h"
 #include "LinIf_Cbk.h"
 #include "Mcal_Lib.h"
+#include "Mcal_Lib_RegAccess.h"
 
  /*********************************************************************************************************************
  * Version Check (if required)
@@ -49,9 +50,11 @@
  *          byte with value 0xF0 */
 #define LIN_WAKEUP_KEY                      (0xF0U)
 
-/** \brief  LIN/SCI Go To Sleep signal is sent by sending an
- *          byte with value 0xF0 */
-#define LIN_GOTOSLEEP_KEY                   (0x00FFFFFFU)
+/** \brief  LIN/SCI Go To Sleep signal is sent by sending 
+ * commander request frame with identifier 0x3C (60), 
+ * with the first data field as 0x00 */
+#define LIN_GOTOSLEEP_TD0KEY                   (0x00FFFFFFU)
+#define LIN_GOTOSLEEP_TD1KEY                   (0xFFFFFFFFU)
 
 /** \brief  Max data length of the LIN SDU */
 #define LIN_MAX_DATA_LENGTH                  (8U)
@@ -408,7 +411,7 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_CheckWakeupInternal(uint8 Channel)
         if((boolean)TRUE == (boolean)Lin_CheckWakeupStatus(base))
         {
             /* Clear Wakeup Flag*/
-            Lin_RegMFWriteRaw32((base + LIN_O_SCIFLR), LIN_SCIFLR_WAKEUP, SCIFLR_WAKEUP_SHIFT, (uint32)TRUE);
+            McalLib_RegMFWriteRaw32((base + LIN_O_SCIFLR), LIN_SCIFLR_WAKEUP, SCIFLR_WAKEUP_SHIFT, (uint32)TRUE);
             
             /* Wakeup event sent to ECU Manager */
             EcuM_SetWakeupEvent(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linWakeupSource);
@@ -432,8 +435,8 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_WakeupProcess(uint8 Channel)
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_NOT_OK;
     if((uint8)LIN_CHANNEL_SLEEP == (uint8)Lin_Channel_Status[Channel].linChannelNetworkStatus)
     {
+        Lin_SendWakeupSignal(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr);
         Lin_EnterLowPowerMode(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr, FALSE);
-        Lin_SendWakeupSignal(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr);        
         Lin_Channel_Status[Channel].linChannelNetworkStatus = LIN_CHANNEL_OPERATIONAL;
 
         return_value = E_OK;
@@ -464,6 +467,37 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_WakeupInternalProcess(uint8 Channel)
         /* Do Nothing */
     }
     return (return_value);  
+}
+
+/*
+ * Design : MCAL-25553,MCAL-25564,MCAL-25573,MCAL-25582
+ */
+FUNC(Lin_StatusType, LIN_CODE)
+Lin_GetStatusInternalProcess(uint8 Channel, P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin_SduPtr, \
+                                        P2CONST(uint32, AUTOMATIC, LIN_CONFIG_DATA) lin_cnt_base_addr)
+{
+    VAR(Lin_StatusType, AUTOMATIC) return_value = LIN_NOT_OK;
+
+    if(LIN_CHANNEL_OPERATIONAL == Lin_Channel_Status[Channel].linChannelNetworkStatus)
+    {  
+        return_value = Lin_GetStatusInternal(Channel, Lin_SduPtr, lin_cnt_base_addr);
+    }
+    else if((LIN_CHANNEL_SLEEP == Lin_Channel_Status[Channel].linChannelNetworkStatus))
+    {
+        return_value = LIN_CH_SLEEP;
+    }
+    else if((LIN_CHANNEL_SLEEP_PENDING == Lin_Channel_Status[Channel].linChannelNetworkStatus))
+    {
+        Lin_Channel_Status[Channel].linChannelNetworkStatus = LIN_CHANNEL_SLEEP;
+        return_value = LIN_CH_SLEEP;
+    }
+    else
+    {
+        /* Do Nothing */
+    }
+
+    return return_value;
+
 }
 
 /*
@@ -602,11 +636,11 @@ P2CONST(Lin_PduType, AUTOMATIC, LIN_APPL_CONST) pduInfoPtr)
     if((LIN_MASTER_RESPONSE == pduInfoPtr->Drc) && (length != 0U))
     {
         /* Enable transmit bit. */
-        Lin_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)Lin_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
+        McalLib_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)McalLib_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
                             (uint32)LIN_SCIGCR1_TXENA);
 
         /* Enable receive bit. */
-        Lin_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)Lin_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
+        McalLib_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)McalLib_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
                         (uint32)LIN_SCIGCR1_RXENA);
 
         /* Set Mask ID for TX */
@@ -626,7 +660,7 @@ P2CONST(Lin_PduType, AUTOMATIC, LIN_APPL_CONST) pduInfoPtr)
         /* Shift each 8-bit piece of data into the correct register. */
         for (i = (sint8)data_length; i >= 0; i--)
         {
-            Lin_RegWriteRaw8(lin_cnt_base_addr + (uint8)LIN_O_TD0 + ((uint8)i ^ (uint8)3U), *p_data);
+            McalLib_RegWriteRaw8(lin_cnt_base_addr + (uint8)LIN_O_TD0 + ((uint8)i ^ (uint8)3U), *p_data);
             p_data--;
         }
 
@@ -636,11 +670,11 @@ P2CONST(Lin_PduType, AUTOMATIC, LIN_APPL_CONST) pduInfoPtr)
     else if((LIN_SLAVE_RESPONSE == pduInfoPtr->Drc) && (length != 0U))
     {
         /* Enable transmit bit. */
-        Lin_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)Lin_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
+        McalLib_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)McalLib_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
                             (uint32)LIN_SCIGCR1_TXENA);
 
         /* Enable receive bit. */
-        Lin_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)Lin_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
+        McalLib_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)McalLib_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
                             (uint32)LIN_SCIGCR1_RXENA);
 
         /*
@@ -660,11 +694,11 @@ P2CONST(Lin_PduType, AUTOMATIC, LIN_APPL_CONST) pduInfoPtr)
     else if (LIN_SLAVE_TO_SLAVE == pduInfoPtr->Drc)
     {
         /* Enable transmit bit. */
-        Lin_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)Lin_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
+        McalLib_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)McalLib_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
                             (uint32)LIN_SCIGCR1_TXENA);
 
         /* Enable receive bit. */
-        Lin_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)Lin_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
+        McalLib_RegWriteRaw32((lin_cnt_base_addr + LIN_O_SCIGCR1), (uint32)McalLib_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIGCR1) | 
                             (uint32)LIN_SCIGCR1_RXENA);
                             
         /* Set Mask ID for RX to not accept any message as we don't need to read the message */
@@ -699,13 +733,13 @@ P2VAR(uint8*, AUTOMATIC, LIN_APPL_CONST) sduPtr)
     *sduPtr = Lin_RxShadowBuffer[channelID];
 
     /* Get the length from the SCIFORMAT register. */
-    length = ((uint32)((uint32)Lin_RegReadRaw32(base + LIN_O_SCIFORMAT) & (uint32)LIN_SCIFORMAT_LENGTH_M) \
+    length = ((uint32)((uint32)McalLib_RegReadRaw32(base + LIN_O_SCIFORMAT) & (uint32)LIN_SCIFORMAT_LENGTH_M) \
                     >> (uint32)LIN_SCIFORMAT_LENGTH_S);
 
     /* Read each data Byte by Byte. */
     for (uint8 i = (uint8)0U; i <= (uint8)length; i++)
     {
-        Lin_RxShadowBuffer[channelID][i] = Lin_RegReadRaw8(base + LIN_O_RD0 + ((uint32)i ^ 3U));
+        Lin_RxShadowBuffer[channelID][i] = McalLib_RegReadRaw8(base + LIN_O_RD0 + ((uint32)i ^ 3U));
     }
 }
 
@@ -715,7 +749,7 @@ P2VAR(uint8*, AUTOMATIC, LIN_APPL_CONST) sduPtr)
 FUNC(Lin_StatusType, LIN_CODE) Lin_FetchTxStatus(uint32 base)
 {
     VAR(Lin_StatusType, AUTOMATIC) return_value = LIN_TX_BUSY;
-    VAR(uint32, AUTOMATIC) reg_val = Lin_RegReadRaw32(base + LIN_O_SCIFLR);
+    VAR(uint32, AUTOMATIC) reg_val = McalLib_RegReadRaw32(base + LIN_O_SCIFLR);
 
     if(((reg_val & LIN_SCIFLR_PBE) == LIN_SCIFLR_PBE))
     {
@@ -735,7 +769,7 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchTxStatus(uint32 base)
     }
 
     /* Clear status bits after read */
-    Lin_RegWriteRaw32((base + LIN_O_SCIFLR), reg_val);
+    McalLib_RegWriteRaw32((base + LIN_O_SCIFLR), reg_val);
     return return_value;
 }
 
@@ -745,15 +779,18 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchTxStatus(uint32 base)
 FUNC(Lin_StatusType, LIN_CODE) Lin_FetchRxStatus(uint32 base)
 {
     VAR(Lin_StatusType, AUTOMATIC) return_value = LIN_RX_BUSY;
-    VAR(uint32, AUTOMATIC) reg_val = Lin_RegReadRaw32(base + LIN_O_SCIFLR);
+    VAR(uint32, AUTOMATIC) reg_val = McalLib_RegReadRaw32(base + LIN_O_SCIFLR);
 
     if((reg_val & LIN_SCIFLR_NRE) == LIN_SCIFLR_NRE)
     {
         return_value = LIN_RX_NO_RESPONSE;
     }
+    /* TI_COVERAGE_GAP_START [MC/DC Gap] in RX status, Overrun, Parity, and Frame error can't be reproduced by S/W*/
     else if(((reg_val & LIN_SCIFLR_CE) == LIN_SCIFLR_CE) ||
                 ((reg_val & LIN_SCIFLR_OE) == LIN_SCIFLR_OE) ||
-                ((reg_val & LIN_SCIFLR_PE) == LIN_SCIFLR_PE))
+                ((reg_val & LIN_SCIFLR_PE) == LIN_SCIFLR_PE) ||
+                ((reg_val & LIN_SCIFLR_FE) == LIN_SCIFLR_FE))
+    /* TI_COVERAGE_GAP_STOP*/
     {
         return_value = LIN_RX_ERROR;
     }
@@ -767,7 +804,7 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchRxStatus(uint32 base)
     }
 
     /* Clear status bits after read */
-    Lin_RegWriteRaw32((base + LIN_O_SCIFLR), reg_val);
+    McalLib_RegWriteRaw32((base + LIN_O_SCIFLR), reg_val);
 
     return return_value;
 }
@@ -778,10 +815,10 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchRxStatus(uint32 base)
 FUNC(void, LIN_CODE) Lin_SendWakeupSignal(uint32 base)
 {
     /* Set key in Byte 0 (MSB) of transmit buffer 0 register */
-    Lin_RegMFWriteRaw32((base + LIN_O_TD0), LIN_TD0_TD0_M, LIN_TD0_TD0_S, (uint16)LIN_WAKEUP_KEY);
+    McalLib_RegMFWriteRaw32((base + LIN_O_TD0), LIN_TD0_TD0_M, LIN_TD0_TD0_S, (uint16)LIN_WAKEUP_KEY);
 
     /* Transmit TDO for wakeup */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR2), LIN_SCIGCR2_GENWU, SCIGCR2_GENWU_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR2), LIN_SCIGCR2_GENWU, SCIGCR2_GENWU_SHIFT, (uint32)TRUE);
 }
 
 /*
@@ -797,11 +834,11 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_SendGoToSleepSignal(uint32 base)
     #endif
 
     /* Enable transmit bit. */
-    Lin_RegWriteRaw32((base + LIN_O_SCIGCR1), (uint32)Lin_RegReadRaw32(base + LIN_O_SCIGCR1) | 
+    McalLib_RegWriteRaw32((base + LIN_O_SCIGCR1), (uint32)McalLib_RegReadRaw32(base + LIN_O_SCIGCR1) | 
                     (uint32)LIN_SCIGCR1_TXENA);
 
     /* Enable receive bit. */
-    Lin_RegWriteRaw32((base + LIN_O_SCIGCR1), (uint32)Lin_RegReadRaw32(base + LIN_O_SCIGCR1) | 
+    McalLib_RegWriteRaw32((base + LIN_O_SCIGCR1), (uint32)McalLib_RegReadRaw32(base + LIN_O_SCIGCR1) | 
                     (uint32)LIN_SCIGCR1_RXENA);
 
     /* Set Mask ID for TX for GoToSleep Command*/
@@ -813,12 +850,13 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_SendGoToSleepSignal(uint32 base)
     /*
     * Set the frame length (number of bytes to be transmitted)
     */
-    Lin_SetFrameLength(base, 0x4U);
+    Lin_SetFrameLength(base, 0x8U);
 
     /* Set key in Byte 0 (MSB) of transmit buffer 0 register 
         * For Go to Sleep Command, the first Byte should be 0 and remaining byte Should be 0xFF
         */
-    Lin_RegWriteRaw32((base + LIN_O_TD0), (uint32)LIN_GOTOSLEEP_KEY);
+    McalLib_RegWriteRaw32((base + LIN_O_TD1), (uint32)LIN_GOTOSLEEP_TD1KEY);
+    McalLib_RegWriteRaw32((base + LIN_O_TD0), (uint32)LIN_GOTOSLEEP_TD0KEY);
     /*
         * Set the message ID as 60 OR 0x3C to initiate a header transmission.
         * This causes the ID to be written to the bus followed by the
@@ -829,7 +867,7 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_SendGoToSleepSignal(uint32 base)
     #ifdef LIN_TIMEOUT_DURATION
     while (timeout_duration > 0U)
     {
-        reg_val = Lin_RegReadRaw32(base + LIN_O_SCIFLR);
+        reg_val = McalLib_RegReadRaw32(base + LIN_O_SCIFLR);
         if ((reg_val & LIN_SCIFLR_TXEMPTY) == LIN_SCIFLR_TXEMPTY)
         {
             return_value = E_OK;
@@ -837,7 +875,7 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_SendGoToSleepSignal(uint32 base)
         }
         else
         {
-            McalLib_Delay(1);
+            McalLib_Delay(LIN_MCAL_LIB_DELAY);
             timeout_duration--;
             /* Wait for TX Ready flag */      
         }
@@ -855,7 +893,7 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_SendGoToSleepSignal(uint32 base)
 FUNC(void, LIN_CODE) Lin_EnterLowPowerMode(uint32 base, boolean enable)
 {
     /* Entering Powerdown */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR2), LIN_SCIGCR2_POWERDOWN, SCIGCR2_POWERDOWN_SHIFT, (uint32)enable);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR2), LIN_SCIGCR2_POWERDOWN, SCIGCR2_POWERDOWN_SHIFT, (uint32)enable);
 }
 
 /*
@@ -863,7 +901,7 @@ FUNC(void, LIN_CODE) Lin_EnterLowPowerMode(uint32 base, boolean enable)
  */
 FUNC(boolean, LIN_CODE) Lin_CheckWakeupStatus(uint32 base)
 {
-    return (((uint32)Lin_RegReadRaw32(base + LIN_O_SCIGCR2) & \
+    return (((uint32)McalLib_RegReadRaw32(base + LIN_O_SCIGCR2) & \
                 (uint32)LIN_SCIGCR2_POWERDOWN) != (uint32)LIN_SCIGCR2_POWERDOWN);
 }
 
@@ -876,10 +914,10 @@ FUNC(void, LIN_CODE) Lin_AbortTransmission(uint32 base)
         transmission / reception is started. */
 
     /* Disable transmit bit. */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_TXENA, SCIGCR1_TXENA_SHIFT, (uint32)FALSE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_TXENA, SCIGCR1_TXENA_SHIFT, (uint32)FALSE);
 
     /* Disable receive bit. */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_RXENA, SCIGCR1_RXENA_SHIFT, (uint32)FALSE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_RXENA, SCIGCR1_RXENA_SHIFT, (uint32)FALSE);
 }
 
 /*
@@ -905,11 +943,11 @@ boolean enable)
  */
 FUNC(void, LIN_CODE) Lin_ProcessISR(uint32 channelID)
 {
-    uint32 lin_cnt_base_addr = Lin_Drv_Config_Ptr->linChannelCfg[channelID].linControllerConfig.CntrAddr;
+    VAR(uint32, AUTOMATIC)  lin_cnt_base_addr = Lin_Drv_Config_Ptr->linChannelCfg[channelID].linControllerConfig.CntrAddr;
     Lin_InterruptLineNum int_line =  Lin_Drv_Config_Ptr->linChannelCfg[channelID].linControllerConfig.IntrLineNum;
 
     if((TRUE == Lin_Drv_Config_Ptr->linChannelCfg[channelID].linChannelWakeupSupport) && 
-        ((((uint32)Lin_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIFLR) & (uint32)LIN_SCIFLR_WAKEUP) == 
+        ((((uint32)McalLib_RegReadRaw32(lin_cnt_base_addr + LIN_O_SCIFLR) & (uint32)LIN_SCIFLR_WAKEUP) == 
             (uint32)LIN_SCIFLR_WAKEUP)))
     {
         /* Come out of low power mode */
@@ -934,34 +972,46 @@ FUNC(void, LIN_CODE) Lin_ProcessISR(uint32 channelID)
  *  Local Functions Definition
  *********************************************************************************************************************/
 
+/*
+ * Design : MCAL-28463
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_DisableHWUnit(uint32 base)
 {
     /* Disable TX and RX pin control functionality. */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIPIO0), LIN_SCIPIO0_RXFUNC, SCIPIO0_RXFUNC_SHIFT, (uint32)FALSE);
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIPIO0), LIN_SCIPIO0_TXFUNC, SCIPIO0_TXFUNC_SHIFT, (uint32)FALSE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIPIO0), LIN_SCIPIO0_RXFUNC, SCIPIO0_RXFUNC_SHIFT, (uint32)FALSE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIPIO0), LIN_SCIPIO0_TXFUNC, SCIPIO0_TXFUNC_SHIFT, (uint32)FALSE);
 
     /* Reset reset bit. SCIGCR0 Register Offset = 0x0U */
-    Lin_RegMFWriteRaw32(base, LIN_SCIGCR0_RESET, SCIGCR0_RESET_SHIFT, (uint32)FALSE);
+    McalLib_RegMFWriteRaw32(base, LIN_SCIGCR0_RESET, SCIGCR0_RESET_SHIFT, (uint32)FALSE);
 }
 
+/*
+ * Design : MCAL-28464
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_EnableHWUnit(uint32 base)
 {
     /* Set reset bit. SCIGCR0 Register Offset = 0x0U*/
-    Lin_RegMFWriteRaw32((base), LIN_SCIGCR0_RESET, SCIGCR0_RESET_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base), LIN_SCIGCR0_RESET, SCIGCR0_RESET_SHIFT, (uint32)TRUE);
     
     /* Disable TX and RX pin control functionality. */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIPIO0), LIN_SCIPIO0_RXFUNC, SCIPIO0_RXFUNC_SHIFT, (uint32)TRUE);
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIPIO0), LIN_SCIPIO0_TXFUNC, SCIPIO0_TXFUNC_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIPIO0), LIN_SCIPIO0_RXFUNC, SCIPIO0_RXFUNC_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIPIO0), LIN_SCIPIO0_TXFUNC, SCIPIO0_TXFUNC_SHIFT, (uint32)TRUE);
 }
 
+/*
+ * Design : MCAL-28465
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_EnterSoftwareReset(uint32 base)
 {
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_SWNRST, SCIGCR1_SWRESET_SHIFT, (uint32)FALSE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_SWNRST, SCIGCR1_SWRESET_SHIFT, (uint32)FALSE);
 }
 
+/*
+ * Design : MCAL-28466
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_ExitSoftwareReset(uint32 base)
 {
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_SWNRST, SCIGCR1_SWRESET_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_SWNRST, SCIGCR1_SWRESET_SHIFT, (uint32)TRUE);
 }
 
 /*
@@ -971,125 +1021,152 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetLinMode(uint32 base)
 {
 
     /* Program Timing Mode bit */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_TIMINGMODE, SCIGCR1_TIMINGMODE_SHIFT, (uint32)FALSE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_TIMINGMODE, SCIGCR1_TIMINGMODE_SHIFT, (uint32)FALSE);
 
     /* Set Mode as LIN */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_LINMODE, SCIGCR1_LINMODE_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_LINMODE, SCIGCR1_LINMODE_SHIFT, (uint32)TRUE);
 
     /* Program LIN Mode to Master */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_CLK_COMMANDER, SCIGCR1_CLKCOMMANDER_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_CLK_COMMANDER, SCIGCR1_CLKCOMMANDER_SHIFT, (uint32)TRUE);
 
     /* Disable Automatic Baudrate Adjustment */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_ADAPT, SCIGCR1_ADAPT_SHIFT, (uint32)FALSE); 
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_ADAPT, SCIGCR1_ADAPT_SHIFT, (uint32)FALSE); 
 
     /* Write communication mode selection to the appropriate bit - will use the length set during Lin_SendFrame */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_COMMMODE, SCIGCR1_COMMMODE_SHIFT, (uint32)FALSE); 
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_COMMMODE, SCIGCR1_COMMMODE_SHIFT, (uint32)FALSE); 
 
     /* Set Debug Suspend mode - Complete Tx/Rx before Freezing*/
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_CONT, SCIGCR1_CONT_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_CONT, SCIGCR1_CONT_SHIFT, (uint32)TRUE);
 
     /* Sets the message filtering type - Filtering uses LIN message ID Byte */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_HGENCTRL, SCIGCR1_HGENCTRL_SHIFT, (uint32)FALSE); 
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_HGENCTRL, SCIGCR1_HGENCTRL_SHIFT, (uint32)FALSE); 
 
     /* Enable Multi-buffer Mode */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_MBUFMODE, SCIGCR1_MBUF_SHIFT, (uint32)TRUE); 
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_MBUFMODE, SCIGCR1_MBUF_SHIFT, (uint32)TRUE); 
 
     /* Enable the parity mode */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_PARITYENA, SCIGCR1_PARITYENA_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_PARITYENA, SCIGCR1_PARITYENA_SHIFT, (uint32)TRUE);
 
     /* Comparing the Check Sum */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR2), LIN_SCIGCR2_CC, SCIGCR2_CC_SHIFT, (uint32)TRUE);
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR2), LIN_SCIGCR2_CC, SCIGCR2_CC_SHIFT, (uint32)TRUE);
 
     /* Set LIN interrupts to disabled */
     Lin_DisableInterrupt(base, LIN_INT_ALL);
 }
 
+/*
+ * Design : MCAL-28467
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetSyncFields(uint32 base, uint16 syncBreak, uint16 delimiter)
 {
     /* Clear sync values and set new values */
-    Lin_RegMFWriteRaw32((base + LIN_O_COMP), (LIN_COMP_SDEL_M | LIN_COMP_SBREAK_M),
+    McalLib_RegMFWriteRaw32((base + LIN_O_COMP), (LIN_COMP_SDEL_M | LIN_COMP_SBREAK_M),
                         LIN_COMP_SDEL_S, ((uint32)syncBreak | ((uint32)delimiter - 1U)));
 
-    Lin_RegWriteRaw32((base + LIN_O_COMP), ((uint32)syncBreak | ( ((uint32)delimiter - 1U) << LIN_COMP_SDEL_S)));
+    McalLib_RegWriteRaw32((base + LIN_O_COMP), ((uint32)syncBreak | ( ((uint32)delimiter - 1U) << LIN_COMP_SDEL_S)));
 
 }
 
+/*
+ * Design : MCAL-28468
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetTxMask(uint32 base, uint16 mask)
 {
     /* Clear previous mask value and set new mask */
-    Lin_RegMFWriteRaw32((base + LIN_O_MASK), LIN_MASK_TXIDMASK_M, LIN_MASK_TXIDMASK_S, (uint32)mask);
+    McalLib_RegMFWriteRaw32((base + LIN_O_MASK), LIN_MASK_TXIDMASK_M, LIN_MASK_TXIDMASK_S, (uint32)mask);
 }
 
+/*
+ * Design : MCAL-28469
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetRxMask(uint32 base, uint16 mask)
 {
     /* Clear previous mask value and set new mask */
-    Lin_RegMFWriteRaw32((base + LIN_O_MASK), LIN_MASK_RXIDMASK_M, LIN_MASK_RXIDMASK_S, (uint32)mask);
+    McalLib_RegMFWriteRaw32((base + LIN_O_MASK), LIN_MASK_RXIDMASK_M, LIN_MASK_RXIDMASK_S, (uint32)mask);
 }
 
+/*
+ * Design : MCAL-28470
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetBaudrateConfig(uint32 base, \
 P2CONST(Lin_BaudRateConfigType, AUTOMATIC, LIN_APPL_CONST) baudrateconfig)
 {
     /* Set baud rate prescaler and divider. */
-    Lin_RegWriteRaw32((base + LIN_O_BRSR), (baudrateconfig->Prescalar | 
+    McalLib_RegWriteRaw32((base + LIN_O_BRSR), (baudrateconfig->Prescalar | 
                 (baudrateconfig->FractionalDivider << LIN_BRSR_M_S)));
 
 }
 
+/*
+ * Design : MCAL-28471
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetFrameLength(uint32 base, uint16 length)
 {
     /* Clear and set frame length value */
-    Lin_RegMFWriteRaw32((base + LIN_O_SCIFORMAT), LIN_SCIFORMAT_LENGTH_M, LIN_SCIFORMAT_LENGTH_S, \
+    McalLib_RegMFWriteRaw32((base + LIN_O_SCIFORMAT), LIN_SCIFORMAT_LENGTH_M, LIN_SCIFORMAT_LENGTH_S, \
                         ((uint32)length - (uint32)1U));
 }
 
+/*
+ * Design : MCAL-28472
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetChecksumType(uint32 base, Lin_FrameCsModelType type)
 {
     /* Set checksum type. */
     if(LIN_ENHANCED_CS == type)
     {
-        Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_CTYPE, SCIGCR1_CTYPE_SHIFT, (uint32)1);
+        McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_CTYPE, SCIGCR1_CTYPE_SHIFT, (uint32)1);
     }
     else
     {
-        Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_CTYPE, SCIGCR1_CTYPE_SHIFT, (uint32)0);
+        McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_CTYPE, SCIGCR1_CTYPE_SHIFT, (uint32)0);
     }
 }
 
+/*
+ * Design : MCAL-28473
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetIDByte(uint32 base, Lin_FramePidType identifier)
 {
-    Lin_RegMFWriteRaw32((base + LIN_O_ID), LIN_ID_IDBYTE_M, LIN_ID_IDBYTE_S, (uint32) identifier);
+    McalLib_RegMFWriteRaw32((base + LIN_O_ID), LIN_ID_IDBYTE_M, LIN_ID_IDBYTE_S, (uint32) identifier);
 }
 
+/*
+ * Design : MCAL-28474
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_EnableInterrupt(uint32 base, Lin_InterruptLineNum intrLineNum, uint32 intFlags)
 {
     /* Set Interrupt Flags */
-    Lin_RegWriteRaw32((base + LIN_O_SCISETINT), (uint32)Lin_RegReadRaw32(base + LIN_O_SCISETINT) | (uint32)intFlags);
+    McalLib_RegWriteRaw32((base + LIN_O_SCISETINT), (uint32)McalLib_RegReadRaw32(base + LIN_O_SCISETINT) | (uint32)intFlags);
 
     if (LIN_INTERRUPT_LINE_NUM_1 == intrLineNum)
     {
         /* Set interrupt levels to 1 */
-        Lin_RegWriteRaw32((base + LIN_O_SCISETINTLVL), \
-                    (uint32)Lin_RegReadRaw32(base + LIN_O_SCISETINTLVL) | (uint32)intFlags);
+        McalLib_RegWriteRaw32((base + LIN_O_SCISETINTLVL), \
+                    (uint32)McalLib_RegReadRaw32(base + LIN_O_SCISETINTLVL) | (uint32)intFlags);
 
-        HWREGB(base + LIN_O_GLB_INT_EN) |= (uint8)(LIN_GLB_INT_EN_GLBINT1_EN << (uint8)intrLineNum);     
+        HWREGB(base + LIN_O_GLB_INT_EN) |= (uint8)(LIN_GLB_INT_EN_GLBINT0_EN << (uint8)intrLineNum);     
     }
     else
     {
         /* Set interrupt levels to 0 */
-        Lin_RegWriteRaw32((base + LIN_O_SCICLEARINTLVL), intFlags);
+        McalLib_RegWriteRaw32((base + LIN_O_SCICLEARINTLVL), intFlags);
         HWREGB(base + LIN_O_GLB_INT_EN) |= (uint8)(LIN_GLB_INT_EN_GLBINT0_EN << (uint8)intrLineNum);
     }
 }
 
 /*
- *  Design : MCAL-25542,MCAL-25543
+ * Design : MCAL-28476
  */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_DisableInterrupt(uint32 base, uint32 intFlags)
 {
     /* Clear Interrupt Flags */
-    Lin_RegWriteRaw32((base + LIN_O_SCICLEARINT), intFlags);
+    McalLib_RegWriteRaw32((base + LIN_O_SCICLEARINT), intFlags);
 }
 
+/*
+ * Design : MCAL-28477
+ */
 LOCAL_INLINE FUNC(void, LIN_CODE) Lin_ServiceInterrupts(uint32 base, Lin_InterruptLineNum int_line)
 {
     /* Clear All the Interrupt Flags in SCIFLR */
@@ -1112,34 +1189,34 @@ static FUNC(void, LIN_CODE) Lin_SetLoopbackMode(uint32 base, Lin_LoopbackModeTyp
         case LIN_LOOPBACK_DISABLED:
             
             /* Disable Internal Loopback */
-            Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_LOOPBACK, SCIGCR1_LOOPBACK_SHIFT, (uint32)FALSE);
+            McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_LOOPBACK, SCIGCR1_LOOPBACK_SHIFT, (uint32)FALSE);
 
             /* Disable External Loopback */
-            Lin_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_LPBENA, IODFTCTRL_LPBENA_SHIFT, (uint32)FALSE);
+            McalLib_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_LPBENA, IODFTCTRL_LPBENA_SHIFT, (uint32)FALSE);
 
             /* Set Analog Loopback Path */
-            Lin_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_RXPENA, IODFTCTRL_RXPENA_SHIFT, (uint32)FALSE);
+            McalLib_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_RXPENA, IODFTCTRL_RXPENA_SHIFT, (uint32)FALSE);
 
             break;
 
         case LIN_LOOPBACK_INTERNAL:
 
             /* Enable Internal Loopback */
-            Lin_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_LOOPBACK, SCIGCR1_LOOPBACK_SHIFT, (uint32)TRUE);
+            McalLib_RegMFWriteRaw32((base + LIN_O_SCIGCR1), LIN_SCIGCR1_LOOPBACK, SCIGCR1_LOOPBACK_SHIFT, (uint32)TRUE);
 
             break;
 
         case LIN_LOOPBACK_EXTERNAL:
 
             /* Clear the IO DFT Enable Key */
-            Lin_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_IODFTENA_M, LIN_IODFTCTRL_IODFTENA_S,\
+            McalLib_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_IODFTENA_M, LIN_IODFTCTRL_IODFTENA_S,\
                                 LIN_IO_DFT_KEY);
 
             /* Enable Digital External Loopback */
-            Lin_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_LPBENA, IODFTCTRL_LPBENA_SHIFT, (uint32)FALSE);
+            McalLib_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_LPBENA, IODFTCTRL_LPBENA_SHIFT, (uint32)FALSE);
 
             /* Set Analog Loopback Path */
-            Lin_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_RXPENA, IODFTCTRL_RXPENA_SHIFT, (uint32)FALSE);
+            McalLib_RegMFWriteRaw32((base + LIN_O_IODFTCTRL), LIN_IODFTCTRL_RXPENA, IODFTCTRL_RXPENA_SHIFT, (uint32)FALSE);
 
             break;
 

@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -31,7 +31,8 @@ extern "C" {
  *********************************************************************************************************************/
 #include "Std_Types.h"
 #include "Mcal_Lib_Cpu.h"
-
+#include "hw_ipc.h"
+#include "hw_memmap.h"
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -76,6 +77,30 @@ extern "C" {
  *********************************************************************************************************************/
 extern FUNC(void, MCAL_LIB_CODE) McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count);
 
+/** \brief This function reads IPC free run timer (64-bit value) and update startTime param
+ *
+ * \param[out] startTime pointer to store IPC timer value
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ ******************************************************************************/    
+extern FUNC(void, MCAL_LIB_CODE) McalLib_GetCounterValue(P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) startTime);
+
+/** \brief This function reads the elapsed value in timer ticks of IPC free run counter(running at sysclock frequency) 
+ * with respect startTime param.
+ *
+ * \param[in] startTime pointer which has timer reference value
+ * \param[out] elapsedTime pointer in which elapsed value in number of timer ticks is updated
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ ******************************************************************************/
+extern FUNC(void, MCAL_LIB_CODE) McalLib_GetElapsedValue(P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) startTime, \
+                                                            P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) elapsedTime);
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

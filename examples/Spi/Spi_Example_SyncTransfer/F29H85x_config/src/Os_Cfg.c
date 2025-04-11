@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -64,6 +64,17 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_ConfigSet =
     {
         
     },
+
+    .counter_cfg =
+    {
+        
+        [0] =
+        {
+            .max_timercount = (Os_CounterMaxValue)4294967295U,
+            .counter_id = (Os_CounterIdType)0U,
+            .counter_type = (Os_CounterType)OS_HARDWARE_COUNTER,
+        }
+    },    
 
     .threshold = (Os_ThresholdType)0U,
 };   

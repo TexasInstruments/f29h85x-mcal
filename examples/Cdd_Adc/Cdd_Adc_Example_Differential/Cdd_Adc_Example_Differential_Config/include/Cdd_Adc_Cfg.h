@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ extern "C" {
 
 /* CDD ADC Driver Configuration SW Version Info */
 
-#define CDD_ADC_CFG_MAJOR_VERSION           (1U)
+#define CDD_ADC_CFG_MAJOR_VERSION           (2U)
 #define CDD_ADC_CFG_MINOR_VERSION           (0U)
 #define CDD_ADC_CFG_PATCH_VERSION           (0U)
 
@@ -52,7 +52,7 @@ extern "C" {
 
 #define CDD_ADC_PRE_COMPILE_VARIANT         (STD_ON)
 
-#define CDD_ADC_CONFIG_PC       CddAdcConfigSet
+#define CDD_ADC_CONFIG_PC       Cdd_Adc_ConfigSet1
 
 /* Macro to define the number of channels configured */
 #define CDD_ADC_CHN_COUNT                   ((uint8)8U)
@@ -309,9 +309,9 @@ typedef enum
 typedef enum
 {
     CDD_ADC_SAFETY_CHECKER_INPUT_DISABLE  = 0x0U, /* Safety checker i/p disabled    */
-    CDD_ADC_SAFETY_CHECKER_INPUT_SOCx     = 0x1U, /* Safety checker i/p is SOCx     */
-    CDD_ADC_SAFETY_CHECKER_INPUT_PPBx     = 0x2U, /* Safety checker i/p is PPBx     */
-    CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx  = 0x3U  /* Safety checker i/p is PPBSUMx  */
+    CDD_ADC_SAFETY_CHECKER_INPUT_SOC      = 0x1U, /* Safety checker i/p is SOC     */
+    CDD_ADC_SAFETY_CHECKER_INPUT_PPB      = 0x2U, /* Safety checker i/p is PPB     */
+    CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM   = 0x3U  /* Safety checker i/p is PPBSUM  */
 } Cdd_Adc_CheckerInputType;
 
 typedef enum{
@@ -506,7 +506,7 @@ typedef enum
  * Exported Object Declarations
  *********************************************************************************************************************/
 
-extern const struct Cdd_Adc_ConfigTag CddAdcConfigSet;
+extern const struct Cdd_Adc_ConfigTag Cdd_Adc_ConfigSet1;
 
 
 /*********************************************************************************************************************

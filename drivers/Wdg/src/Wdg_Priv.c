@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -158,6 +158,75 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogReaction(VAR(Wdg_Reaction, AUTO
 LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_IsWatchdogInterruptActive(void);
 
 
+/** \brief Checks the reaction parameter range
+ * 
+ * \param[in] reaction Reaction type i.e reset or interrupt
+ * \param[out] None
+ * \pre None
+ * \post None
+ * \return boolean type
+ * \retval TRUE if it is valid param
+ *         FALSE if it is invalid param
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckReactionParam(VAR(Wdg_Reaction, AUTOMATIC) reaction);
+
+
+/** \brief Checks the Prescaler parameter range
+ * 
+ * \param[in] prescaler Prescaler value
+ * \param[out] None
+ * \pre None
+ * \post None
+ * \return boolean type
+ * \retval TRUE if it is valid param
+ *         FALSE if it is invalid param
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckPrescalerParam(VAR(Wdg_PreScaler, AUTOMATIC) prescaler);
+
+/** \brief Checks the Predivider parameter range
+ * 
+ * \param[in] predivider Predivider value
+ * \param[out] None
+ * \pre None
+ * \post None
+ * \return boolean type
+ * \retval TRUE if it is valid param
+ *         FALSE if it is invalid param
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckPredividerParam(VAR(Wdg_PreDivider, AUTOMATIC) predivider);
+
+
+/** \brief Checks the Threshold parameter range
+ * 
+ * \param[in] threshold Threshold value
+ * \param[out] None
+ * \pre None
+ * \post None
+ * \return boolean type
+ * \retval TRUE if it is valid param
+ *         FALSE if it is invalid param
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckThresholdParam(VAR(uint16, AUTOMATIC) threshold);
+
+
+/** \brief Check the Mode configuration parameters range
+ * 
+ * \param[in] ModeCfg pointer to the Watchdog Mode settings
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: command has been accepted
+ * \retval E_NOT_OK: command has not been accepted
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(Std_ReturnType, WDG_CODE) 
+Wdg_CheckConfigParameterRange(P2CONST(Wdg_ModeInfoType, AUTOMATIC, WDG_APPL_DATA) ModeCfg);
+
+
 /*********************************************************************************************************************
  *  External Functions Definition
  *********************************************************************************************************************/
@@ -166,7 +235,7 @@ LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_IsWatchdogInterruptActive(void);
  */
 FUNC(Std_ReturnType, WDG_CODE) Wdg_PlatformInit(P2CONST(Wdg_ConfigType, AUTOMATIC, WDG_APPL_DATA) ConfigPtr)
 {
-    VAR(Std_ReturnType, AUTOMATIC) ret_val = (Std_ReturnType) E_OK;
+    VAR(Std_ReturnType, AUTOMATIC) ret_val = (Std_ReturnType) E_NOT_OK;
     P2CONST(Wdg_ModeInfoType, AUTOMATIC, WDG_APPL_CONST) mode_cfg = NULL_PTR;
 
     /* Assign the Default mode configuration settings */
@@ -190,39 +259,44 @@ FUNC(Std_ReturnType, WDG_CODE) Wdg_PlatformInit(P2CONST(Wdg_ConfigType, AUTOMATI
  */
 FUNC(Std_ReturnType, WDG_CODE) Wdg_SetModeConfig(P2CONST(Wdg_ModeInfoType, AUTOMATIC, WDG_APPL_DATA) ModeCfg)
 {
-    VAR(Std_ReturnType, AUTOMATIC) ret_val = (Std_ReturnType) E_OK;
+    VAR(Std_ReturnType, AUTOMATIC) ret_val = (Std_ReturnType) E_NOT_OK;
 
-    /* Write the Pre-divider value into register */
-    Wdg_SetWatchdogPredivider(ModeCfg->PreDivider);
+    /* Check the Mode configuration parameters range */
+    ret_val = Wdg_CheckConfigParameterRange(ModeCfg);
 
-    /* Write the Pre-scaler value into register */
-    Wdg_SetWatchdogPrescaler(ModeCfg->PreScaler);
-
-    if ((boolean) Wdg_IsWatchdogInterruptActive() == (boolean) FALSE)
+    /* if all parameters validation is correct, then set mode configuration*/
+    if(ret_val == (Std_ReturnType) E_OK)
     {
-        /* Write the Reaction type into register */
-        Wdg_SetWatchdogReaction(ModeCfg->Reaction);
-    }
+        /* Write the Pre-divider value into register */
+        Wdg_SetWatchdogPredivider(ModeCfg->PreDivider);
 
-    /* Check the threshold limit ranges */
-    if (ModeCfg->Threshold  > WDG_MAX_THRESHOLD_VALUE)
-    {
-        /* If value is not within range, return the error*/
-        ret_val = (Std_ReturnType) E_NOT_OK;
-    }
-    else
-    {       
+        /* Write the Pre-scaler value into register */
+        Wdg_SetWatchdogPrescaler(ModeCfg->PreScaler);
+
+        if ((boolean) Wdg_IsWatchdogInterruptActive() == (boolean) FALSE)
+        {
+            /* Write the Reaction type into register */
+            Wdg_SetWatchdogReaction(ModeCfg->Reaction);
+        }
+    
         /* Write the Windowed Minimum Threshold value into register */
         Wdg_SetWatchdogWindowValue(ModeCfg->Threshold);
-    }
 
-    /* Delay of at least 69 OSCCLK cycles required */
-    McalLib_Delay((uint32)14U);
+        /* Delay of at least 69 OSCCLK cycles required */
+        McalLib_Delay((uint32)14U);
+    }
+    else
+    {
+        /* Do nothing*/
+    }
 
     return ret_val;
 }
 
 
+ /*
+ * Design: MCAL-28557
+ */
 FUNC(void, WDG_CODE) Wdg_EnableWatchdog(void)
 {
     /* Clear the disable bit */
@@ -231,6 +305,9 @@ FUNC(void, WDG_CODE) Wdg_EnableWatchdog(void)
 }
 
 
+ /*
+ * Design: MCAL-28558
+ */
 FUNC(void, WDG_CODE) Wdg_DisableWatchdog(void)
 {
      /* Set the disable bit */
@@ -238,6 +315,9 @@ FUNC(void, WDG_CODE) Wdg_DisableWatchdog(void)
 }
 
 
+ /*
+ * Design: MCAL-28559
+ */
 FUNC(void, WDG_CODE) Wdg_ServiceWatchdog(void)
 {
     /* Enable the counter to be reset and then reset it */
@@ -246,6 +326,9 @@ FUNC(void, WDG_CODE) Wdg_ServiceWatchdog(void)
 }
 
 
+ /*
+ * Design: MCAL-28560
+ */
 FUNC(void, WDG_CODE) Wdg_GenerateImmediateEvent(void)
 {
     /* Write the WDCHK(3 bit field) value other than "1 0 1" in to WDCR register */
@@ -254,10 +337,70 @@ FUNC(void, WDG_CODE) Wdg_GenerateImmediateEvent(void)
     HWREGH(WD_BASE + SYSCTL_O_WDCR) |= (uint16)WDG_CHKBITS_RESET ;
 }
 
+
+ /*
+ * Design: MCAL-28561
+ */
+FUNC(uint16, WDG_CODE) Wdg_GetWatchdogCounterValue(void)
+{
+    /* Read and return the value of the watchdog counter. */
+    return(HWREGH(WD_BASE + SYSCTL_O_WDCNTR));
+}
+
+
+ /*
+ * Design: MCAL-28876
+ */
+FUNC(uint16, WDG_CODE) Wdg_GetMaxTimeout(P2CONST(Wdg_DriverObjType, AUTOMATIC, WDG_APPL_DATA) Wdg_DrvObjPtr)
+{
+    VAR(uint16, AUTOMATIC) return_val = 0U;
+    if(WDGIF_FAST_MODE == Wdg_DrvObjPtr->Wdg_PreviousMode)
+    {
+        return_val = Wdg_DrvObjPtr->Wdg_FastModeCfg.Timeout;
+    }
+    else if(WDGIF_SLOW_MODE == Wdg_DrvObjPtr->Wdg_PreviousMode)
+    {
+        return_val = Wdg_DrvObjPtr->Wdg_SlowModeCfg.Timeout;
+    }
+    else
+    {
+        /* Do nothing */
+    }
+    return return_val;
+}
+
+
+ /*
+ * Design: MCAL-28878
+ */
+FUNC(void, WDG_CODE) Wdg_SetTriggerConditionPriv(VAR(uint16, AUTOMATIC) Time_out)
+{
+    if (0U == Time_out)
+    {
+        uint16 current_wdg_cntr_value = Wdg_GetWatchdogCounterValue();
+
+        /* In case the counter value stored inside watchdog has the value "255",
+           the service Wdg_SetTriggerCondition shall do nothing */
+        if (current_wdg_cntr_value != WDG_MAX_8BIT_CNTR_VALUE)
+        {
+            /* Write Bad key to generate immediate watchdog event */
+            Wdg_GenerateImmediateEvent();
+        }
+
+    }
+    else
+    {
+        /* Service Watchdog: Write Good Key */
+        Wdg_ServiceWatchdog();
+    }
+}
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
 
+ /*
+ * Design: MCAL-28562
+ */
 LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogPredivider(VAR(Wdg_PreDivider, AUTOMATIC) predivider)
 {
     VAR(uint16, AUTOMATIC) reg_val = (uint16) 0U;
@@ -270,6 +413,9 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogPredivider(VAR(Wdg_PreDivider, 
 }
 
 
+ /*
+ * Design: MCAL-28563
+ */
 LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogPrescaler(VAR(Wdg_PreScaler, AUTOMATIC) prescaler)
 {
     VAR(uint16, AUTOMATIC) reg_val = (uint16) 0U;
@@ -282,6 +428,9 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogPrescaler(VAR(Wdg_PreScaler, AU
 }
 
 
+ /*
+ * Design: MCAL-28564
+ */
 LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogWindowValue(VAR(uint16, AUTOMATIC) value)
 {
     /* Clear the windowed value */
@@ -292,6 +441,9 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogWindowValue(VAR(uint16, AUTOMAT
 }
 
 
+ /*
+ * Design: MCAL-28565
+ */
 LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogReaction(VAR(Wdg_Reaction, AUTOMATIC) reaction)
 {
     /*  Either set or clear the WDENINT bit to that will determine whether the
@@ -313,10 +465,101 @@ LOCAL_INLINE FUNC(void, WDG_CODE) Wdg_SetWatchdogReaction(VAR(Wdg_Reaction, AUTO
 }
 
 
+ /*
+ * Design: MCAL-28566
+ */
 LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_IsWatchdogInterruptActive(void)
 {
     /* If the status bit is cleared, the WDINTn signal is active.*/
     return ((HWREGH(WD_BASE + SYSCTL_O_SCSR) & SYSCTL_SCSR_WDINTS) == 0U);
+}
+
+
+ /*
+ * Design: MCAL-28567
+ */
+LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckReactionParam(VAR(Wdg_Reaction, AUTOMATIC) reaction)
+{
+    VAR(boolean, AUTOMATIC) status = FALSE;
+
+    /* reset or Interrupt reaction*/
+    if((reaction == WDG_GENERATE_RESET) || (reaction == WDG_GENERATE_INTERRUPT))
+    {
+        /* Valid Parameters */
+        status = TRUE;
+    }
+    return status;
+}
+
+ /*
+ * Design: MCAL-28568
+ */
+LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckPrescalerParam(VAR(Wdg_PreScaler, AUTOMATIC) prescaler)
+{
+    VAR(boolean, AUTOMATIC) status = FALSE;
+
+    /* range within PRESCALE_1 and PRESCALE_64 */
+    if((prescaler >= WDG_PRESCALE_1) && (prescaler <= WDG_PRESCALE_64))
+    {
+        /* Valid Parameters */
+        status = TRUE;
+    }
+    return status;
+}
+
+ /*
+ * Design: MCAL-28569
+ */
+LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckPredividerParam(VAR(Wdg_PreDivider, AUTOMATIC) predivider)
+{
+    VAR(boolean, AUTOMATIC) status = FALSE;
+
+    if( (predivider == WDG_PREDIV_2)    || (predivider == WDG_PREDIV_4)    || (predivider == WDG_PREDIV_8)    || \
+        (predivider == WDG_PREDIV_16)   || (predivider == WDG_PREDIV_32)   ||  (predivider == WDG_PREDIV_64)  || \
+        (predivider == WDG_PREDIV_128)  || (predivider == WDG_PREDIV_256)  ||  (predivider == WDG_PREDIV_512) || \
+        (predivider == WDG_PREDIV_1024) || (predivider == WDG_PREDIV_2048) ||  (predivider == WDG_PREDIV_4096) ) 
+    {
+        /* Valid Parameters */
+        status = TRUE;
+    }
+    return status;
+}
+
+ /*
+ * Design: MCAL-28570
+ */
+LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckThresholdParam(VAR(uint16, AUTOMATIC) threshold)
+{
+    VAR(boolean, AUTOMATIC) status = FALSE;
+
+    /* 0-255 range */
+    if(threshold <= WDG_MAX_THRESHOLD_VALUE) 
+    {
+        /* Valid Parameters */
+        status = TRUE;
+    }
+    return status;
+}
+
+
+ /*
+ * Design: MCAL-28571
+ */
+LOCAL_INLINE FUNC(Std_ReturnType, WDG_CODE) 
+Wdg_CheckConfigParameterRange(P2CONST(Wdg_ModeInfoType, AUTOMATIC, WDG_APPL_DATA) ModeCfg)
+{
+    VAR(Std_ReturnType, AUTOMATIC) ret_val = (Std_ReturnType) E_NOT_OK;
+
+    /* check if reaction type, Prescaler, Predivider and threshold values are valid or not */
+    if( ((boolean) TRUE == (boolean) Wdg_CheckReactionParam(ModeCfg->Reaction)) && \
+        ((boolean) TRUE == (boolean) Wdg_CheckPrescalerParam(ModeCfg->PreScaler)) && \
+        ((boolean) TRUE == (boolean) Wdg_CheckPredividerParam(ModeCfg->PreDivider)) && \
+        ((boolean) TRUE == (boolean) Wdg_CheckThresholdParam(ModeCfg->Threshold)) )
+    {
+        ret_val = (Std_ReturnType) E_OK;
+    }
+
+    return ret_val;
 }
 
 

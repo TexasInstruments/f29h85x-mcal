@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -55,17 +55,17 @@ extern "C" {
  *********************************************************************************************************************/
 
 /**
- * \brief Defines for CAN Driver version used for compatibility checks.
+ * Defines for CAN Driver version used for compatibility checks.
  */
 /** \brief  Driver Implementation Major Version. */
 #define CAN_SW_MAJOR_VERSION    (1U)
 /** \brief  Driver Implementation Minor Version. */
-#define CAN_SW_MINOR_VERSION    (0U)
+#define CAN_SW_MINOR_VERSION    (1U)
 /** \brief  Driver Implementation Patch Version. */
-#define CAN_SW_PATCH_VERSION    (1U)
+#define CAN_SW_PATCH_VERSION    (0U)
 
 /** 
- * \brief Defines for CAN Driver AUTOSAR version used for compatibility checks. 
+ * Defines for CAN Driver AUTOSAR version used for compatibility checks. 
  */
 /** \brief  AUTOSAR Major version specification implemented by CAN Driver */
 #define CAN_AR_RELEASE_MAJOR_VERSION    (4U)  
@@ -132,6 +132,8 @@ extern "C" {
 #define CAN_SID_PROCESSISR          0x13U
 /** \brief Service ID - Can_SetIcomConfiguration(). */
 #define CAN_SID_ICOMCONFIG          0x21U
+/** \brief Service ID - Can_PeriodicReadback(). */
+#define CAN_SID_READBACK            0x22U
 
 /*
  *Design: MCAL-22929
@@ -258,6 +260,7 @@ typedef enum
     CAN_CONTROLLER_INSTANCE_MCAN6 = 0x5U,
 
 } Can_ControllerInstance;
+
 
 /*
  *Design: MCAL-24244
@@ -427,6 +430,8 @@ typedef struct Can_MailboxType_s
     Can_MaskType CanHwFilterMask;
     /** \brief  If PduInfo->SduLength does not match possible DLC values CanDrv will use the next higher valid DLC for
                 transmission with initialization of unused bytes to the value of the corresponding CanFdPaddingValue. */
+    Can_EventPin CanEventPin;
+    Can_StandardFilterType CanStandardFilterType;
     uint8 CanFdPaddingValue;
     /** \brief  Trigger Transmit Enable/Disable */
     boolean CanTriggerTransmitEnable;
@@ -488,7 +493,7 @@ typedef struct Can_IcomRxMessageType_s
     /** \brief Signal Count */
      uint16  SignalCount;
     /** \brief Icom Rx Message Signal Config */
-    Can_IcomSignalConfigType CanIcomRxMessageSignalConfig[1];
+    Can_IcomSignalConfigType CanIcomRxMessageSignalConfig[MAX_ICOM_RX_SIGNAL_COUNT];
 
 } Can_IcomRxMessageType;
 
@@ -507,7 +512,7 @@ typedef struct Can_IcomConfigType_s
     /** \brief Rx Message Count */
      uint16    RxMessageCount;
     /** \brief Icom Rx Message */
-     Can_IcomRxMessageType CanIcomRxMessage[1];
+     Can_IcomRxMessageType CanIcomRxMessage[MAX_ICOM_MESSAGES];
     /** \brief Icom Counter value */
     uint32  CanIcomCounterValue;
 } Can_IcomConfigType;
@@ -536,6 +541,63 @@ typedef struct Can_ConfigType_s
     const Can_IcomConfigType**      IcomConfigurationList;
 #endif
 } Can_ConfigType;
+
+
+/** \brief  Can periodic readback register definition */
+typedef struct Can_PeriodicReadBackDataType_s
+{
+    /** \brief Register data for MCANSS_CTRL register */
+    uint32 CanMcanSSCtrl;
+    /** \brief Register data for MCAN_DBTP register */
+    uint32 CanMcanDBTP;
+    /** \brief Register data for MCAN_TEST register */
+    uint32 CanMcanTest;
+    /** \brief Register data for MCAN_CCCR register */
+    uint32 CanMcanCccr;
+    /** \brief Register data for MCAN_NBTP register */
+    uint32 CanMcanNBTP;
+    /** \brief Register data for MCAN_PSR register */
+    uint32 CanMcanPsr;
+    /** \brief Register data for MCAN_TDCR register */
+    uint32 CanMcanTdcr;
+    /** \brief Register data for MCAN_IR register */
+    uint32 CanMcanIr;
+    /** \brief Register data for MCAN_IE register */
+    uint32 CanMcanIe;
+    /** \brief Register data for MCAN_ILS register */
+    uint32 CanMcanIls;
+    /** \brief Register data for MCAN_ILE register */
+    uint32 CanMcanIle;
+    /** \brief Register data for MCAN_GFC register */
+    uint32 CanMcanGfc;
+    /** \brief Register data for MCAN_SIDFC register */
+    uint32 CanMcanSidfc;
+    /** \brief Register data for MCAN_XIDFC register */
+    uint32 CanMcanXidfc;
+    /** \brief Register data for MCANERR_CTRL register */
+    uint32 CanMcanErrCtrl;
+    /** \brief Register data for MCANSS_IE register */
+    uint32 CanMcanSSIe;
+    /** \brief Register data for MCANSS_EXT_TS_PRESCALER register */
+    uint32 CanMcanSSExtTSPrescaler;
+    /** \brief Register data for MCAN_RWD register */
+    uint32 CanMcanRwd;
+    /** \brief Register data for MCAN_TSCC register */
+    uint32 CanMcanTscc;
+    /** \brief Register data for MCAN_TSCV register */
+    uint32 CanMcanTscv;
+    /** \brief Register data for MCAN_TOCC register */
+    uint32 CanMcanTocc;
+    /** \brief Register data for MCAN_TOCV register */
+    uint32 CanMcanTocv;
+    /** \brief Register data for MCAN_ECR register */
+    uint32 CanMcanEcr;
+    /** \brief Register data for MCAN_XIDAM register */
+    uint32 CanMcanXidam;
+    /** \brief Register data for MCAN_HPMS register */
+    uint32 CanMcanHpms;
+
+}Can_PeriodicReadBackDataType;
 
 /*
  *Design: MCAL-24253
@@ -594,8 +656,7 @@ Can_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CAN_APPL_DATA) \
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
-Can_Init(P2CONST(Can_ConfigType, AUTOMATIC, CAN_PBCFG) ConfigPtr);
+FUNC(void, CAN_CODE) Can_Init(P2CONST(Can_ConfigType, AUTOMATIC, CAN_APPL_CONST) Config_Ptr);
 
 /** \brief This function deinitializes the module.
  *
@@ -713,8 +774,8 @@ Can_CheckWakeup(uint8 Controller);
  * \retval E_NOT_OK - Error state request has not been accepted..
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) \
-Can_GetControllerErrorState(uint8 Controller, Can_ErrorStateType* ErrorStatePtr);
+FUNC(Std_ReturnType, CAN_CODE) Can_GetControllerErrorState(uint8 Controller, \
+                P2VAR(Can_ErrorStateType, AUTOMATIC, CAN_APPL_DATA) ErrorStatePtr);
 
 /** \brief This service reports about the current status of the requested CAN controller.
  *
@@ -730,8 +791,8 @@ Can_GetControllerErrorState(uint8 Controller, Can_ErrorStateType* ErrorStatePtr)
  * \retval E_NOT_OK - Controller mode request has not been accepted.
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) \
-Can_GetControllerMode(uint8 Controller, Can_ControllerStateType* ControllerModePtr);
+FUNC(Std_ReturnType, CAN_CODE) Can_GetControllerMode(uint8 Controller, \
+            P2VAR(Can_ControllerStateType, AUTOMATIC, CAN_APPL_DATA) ControllerModePtr );
 
 /** \brief This service is called by CanIf to pass a CAN message to CanDrv
  * for transmission.
@@ -753,8 +814,8 @@ Can_GetControllerMode(uint8 Controller, Can_ControllerStateType* ControllerModeP
  *                   Can_Write that can't be implemented re-entrant
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) \
-Can_Write(uint8 Hth, const Can_PduType* PduInfo);
+FUNC(Std_ReturnType, CAN_CODE) Can_Write(uint8 Hth, 
+            P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo);
 
 
 
@@ -857,6 +918,20 @@ Can_MainFunction_Mode(void);
  *****************************************************************************/
 FUNC(Std_ReturnType, CAN_CODE) \
  Can_SetIcomConfiguration( uint8 Controller, IcomConfigIdType ConfigurationId);
+
+/** \brief This service shall read all the statically configured registers 
+ *
+ * \param[in] Controller CAN controller for which the configured registers shall be read
+ * \param[out] ReadBackRegisterdata pointer for the read back registers
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+ FUNC(void, CAN_CODE) \
+Can_PeriodicReadback(uint8 Controller, \
+        P2VAR(Can_PeriodicReadBackDataType, AUTOMATIC, CAN_APPL_DATA) ReadBackRegisterdata);
  
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

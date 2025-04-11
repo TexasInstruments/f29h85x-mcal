@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -30,6 +30,9 @@
 extern "C" {
 #endif
 
+/*
+ * Design: MCAL-28616
+ */
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -45,7 +48,25 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
+/** \brief Max 32 bit value. */
+#define CDD_SENT_MAX_32BIT_VAL           (0xFFFFFFFFU)
 
+/** \brief Max 16 bit value. */
+#define CDD_SENT_MAX_16BIT_VAL           (0xFFFFU)
+
+/** \brief Sent CRC nibble position 1 */
+#define CDD_SENT_CRC_NIBBLE_PS_0       ((uint32) 0U)
+/** \brief Sent CRC nibble position 2 */
+#define CDD_SENT_CRC_NIBBLE_PS_1       ((uint32) 1U)
+/** \brief Sent CRC Status nibble position */
+#define CDD_SENT_CRC_NIBBLE_PS_2       ((uint32) 2U)
+
+/** \brief Sent CRC nibble 1 */
+#define CDD_SENT_CRC_NIBBLE_1       ((uint32) 10U)
+/** \brief Sent CRC nibble 2 */
+#define CDD_SENT_CRC_NIBBLE_2       ((uint32) 11U)
+/** \brief Sent CRC Status nibble */
+#define CDD_SENT_CRC_STATUS_NIBBLE       ((uint32) 15U)
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -73,7 +94,7 @@ extern "C" {
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_SENT_CODE) Cdd_Sent_SetDriverObjPtr( Cdd_Sent_ConfigType* Set_DrvObj);
+FUNC(void, CDD_SENT_CODE) Cdd_Sent_SetDriverObjPtr(Cdd_Sent_DriverObjType* Set_DrvObj);
 
 /** \brief Initialize the Sent instance.
  *
@@ -117,20 +138,41 @@ Cdd_Sent_MTPInitPrv(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_CONST) Conf
 FUNC(void, CDD_SENT_CODE) \
 Cdd_Sent_HwDenitPrv(P2CONST(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_CONST) ConfigPtr);
 
+/** \brief Get the array index of a channel from configuration array/vector
+ *
+ *  This function populates the 'ChannelIndex' pointer with the array index of the 
+ *  'Channel' present in configuration array
+ *
+ * \param[in] CddSentDrvObj is a structure containing multiple timer configurations.
+ * \param[in] SentInstance Numeric identifier of the Sent instance.
+ * \param[out] InstanceIndex Pointer to populate the index of channel present in config
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+*********************************************************************************************************************/
+FUNC(void, CDD_SENT_CODE) Cdd_Sent_GetChIdxPriv(const Cdd_Sent_DriverObjType *CddSentDrvObj, Cdd_SentInstance SentInstance, 
+     uint32* InstanceIndex);
+
 /** \brief Trigger particular Sent instance.
  *
  * This function trigger particular Sent instance using the configuration parameters.
  *
  * \param[in] Instance_Id is the sent instance id.
  * \param[in] Channel_Id is the sent Channel id.
+ * \param[in] Trigger_Source is the type of trigger source.
+ * \param[in] PduInfoPtr is the PDU Information Type.
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
+
 FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_TriggerPrv(uint8 Instance_Id,uint8 Channel_Id);
+Cdd_Sent_TriggerPrv(uint8 Instance_Id,Cdd_SentTriggerSource Trigger_Source,uint8 Channel_Id,\
+            P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr);
 
 /** \brief Cdd_Sent_ProcessISR: Invoked by the respective Sent channel ISR.
  *
@@ -146,21 +188,6 @@ Cdd_Sent_TriggerPrv(uint8 Instance_Id,uint8 Channel_Id);
  *********************************************************************************************************************/
 void Cdd_Sent_ProcessISR(Cdd_SentInstance SentInstance);
 
-/** \brief Get Frame data.
- *
- * This function Enable MTP Channel using the configuration parameters.
- *
- * \param[in] membase is the base address of the SENT module.
- * \param[in] SENTWord is the sentWord.
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) \
-Cdd_Sent_getFrameData(uint32 memBase, uint16 SENTWord);
-
 /** \brief Get message data.
  *
  * This function get the message id of slow data.
@@ -168,8 +195,8 @@ Cdd_Sent_getFrameData(uint32 memBase, uint16 SENTWord);
  * \param[in] SentInstance is the base instance of the SENT module.
  * \pre None
  * \post None
- * \return None
- * \retval None
+ * \return uint32
+ * \retval returns message data
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) \
@@ -182,8 +209,8 @@ Cdd_Sent_getMessageID(Cdd_SentInstance SentInstance);
  * \param[in] SentInstance is the instance of the SENT module.
  * \pre None
  * \post None
- * \return None
- * \retval None
+ * \return uint32
+ * \retval returns slow data
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) \
@@ -202,7 +229,39 @@ Cdd_Sent_getSlowData(Cdd_SentInstance SentInstance);
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_enableMTPChannel(uint32 mtpBase, Cdd_SentChannelType channel);
+Cdd_Sent_enableMTPChannel(uint32 mtpBase, Cdd_SentSensorType channel);
+
+/** \brief Set MTP Timeout.
+ *
+ * This function Set MTP Timeout using the configuration parameters.
+ *
+ * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] sensorNum is the sent Channel type.
+ * \param[in] sensorTimeout is the Time period.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
+Cdd_Sent_configureMTPTimeout(uint32 mtpBase, Cdd_SentSensorType sensorNum,
+                            uint32 sensorTimeout);
+
+/** \brief Set MTP WaitTime.
+ *
+ * This function Set MTP waittime using the configuration parameters.
+ *
+ * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] waitTime is the Time period.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
+Cdd_Sent_setMTPWaitTime(uint32 mtpBase, uint32 waitTime);
 
 /** \brief Set MTP Period.
  *
@@ -218,7 +277,7 @@ Cdd_Sent_enableMTPChannel(uint32 mtpBase, Cdd_SentChannelType channel);
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_setMTPPeriod(uint32 mtpBase, Cdd_SentChannelType channel, uint32 period);
+Cdd_Sent_setMTPPeriod(uint32 mtpBase, Cdd_SentSensorType channel, uint32 period);
 
 /** \brief Clear Interrupt Flag.
  *
@@ -333,7 +392,7 @@ Cdd_Sent_setSensor4MTPToggleTime(uint32 mtpBase, uint32 compareNum, \
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_disableMTPChannel(uint32 mtpBase, Cdd_SentChannelType channel);
+Cdd_Sent_disableMTPChannel(uint32 mtpBase, Cdd_SentSensorType channel);
 
 /** \brief Disable Sent receiver.
  *
@@ -346,7 +405,7 @@ Cdd_Sent_disableMTPChannel(uint32 mtpBase, Cdd_SentChannelType channel);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) 
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
 Cdd_Sent_disableSentReceiver(uint32 base);
 
 /** \brief Enable Sent receiver.
@@ -360,23 +419,9 @@ Cdd_Sent_disableSentReceiver(uint32 base);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) 
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
 Cdd_Sent_EnableSentReceiver(uint32 base);
 
-/** \brief Set Tick Time.
- *
- * This function set tick time using the configuration parameters.
- *
- * \param[in] base is the base address of the SENT module.
- * \param[in] ttClock is the tick time.
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_setTTClock(uint32 base, uint32 ttClock);
 
 /** \brief Set GFlit clock cycle.
  *
@@ -390,7 +435,7 @@ Cdd_Sent_setTTClock(uint32 base, uint32 ttClock);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
 Cdd_Sent_setGFILTClockCycle(uint32 base, uint32 gFiltClock);
 
 /** \brief Configure the FIFO Mode.
@@ -407,7 +452,7 @@ Cdd_Sent_setGFILTClockCycle(uint32 base, uint32 gFiltClock);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE void
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
 Sent_ConfigureFifoMode(uint32 base, Cdd_SentFIFOMode fifoMode);
 
 /** \brief Configure timeout.
@@ -421,7 +466,7 @@ Sent_ConfigureFifoMode(uint32 base, Cdd_SentFIFOMode fifoMode);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
 Cdd_Sent_configureTimeout(uint32 base, uint32 timeOut);
 
 /** \brief Enable the interrupt for channel.
@@ -435,7 +480,7 @@ Cdd_Sent_configureTimeout(uint32 base, uint32 timeOut);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
+FUNC(void, CDD_SENT_CODE) \
 Cdd_Sent_enableInterrupt(uint32 base, uint32 intFlags);
 
 /** \brief Set data nibbles count.
@@ -449,7 +494,7 @@ Cdd_Sent_enableInterrupt(uint32 base, uint32 intFlags);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
 Cdd_Sent_setDataNibble(uint32 base, Cdd_SentDataNibblesCount dataNibble);
 
 /** \brief Set the trigger level for receiver FIFO triggerinterrupt.
@@ -463,7 +508,7 @@ Cdd_Sent_setDataNibble(uint32 base, Cdd_SentDataNibblesCount dataNibble);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
 Cdd_Sent_setRFIFOTriggerLevel(uint32 base, Cdd_SentTriggerLevel triggerLevel);
 
 /** \brief Get SENT FIFO data.
@@ -476,7 +521,7 @@ Cdd_Sent_setRFIFOTriggerLevel(uint32 base, Cdd_SentTriggerLevel triggerLevel);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
+LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) \
 Cdd_Sent_getFIFO(uint32 base);
 
 /** \brief Disable the interrupt for channel.
@@ -490,7 +535,7 @@ Cdd_Sent_getFIFO(uint32 base);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
+FUNC(void, CDD_SENT_CODE) \
 Cdd_Sent_disableInterrupt(uint32 base, uint32 intFlags);
 
 /** \brief Configure the receiver data sorting format.
@@ -507,8 +552,8 @@ Cdd_Sent_disableInterrupt(uint32 base, uint32 intFlags);
  * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE void
-Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber,
+LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
+Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber, \
                         Cdd_SentNibbleNumber nibbleNum, Cdd_SentNibble nibble);
 
 /** \brief Trigger software trigger request.
@@ -524,298 +569,44 @@ Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber,
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_enableMTPSoftwareTrigger(uint32 SentBase, Cdd_SentChannelType channel);
+Cdd_Sent_enableMTPSoftwareTrigger(uint32 SentBase, Cdd_SentSensorType channel);
+
+/** \brief Cdd_Sent_InitPriv : Initializes the CDD_SENT Channels and Enables Sent Receiver.
+ *
+ * This service initializes the configured HW units.
+ * \param[in] Cdd_Sent_DriverObj Cdd_Sent_DrvObj is the Cdd_Sent driver object defined in Cdd_Sent.c
+ * \param[in] Cdd_Sent_DrvInitialized Cdd_Sent_DriverInitialized is the boolean variable
+ *                                       defined in Cdd_Sent.c
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_SENT_CODE) Cdd_Sent_InitPriv(\
+   P2VAR(Cdd_Sent_DriverObjType, AUTOMATIC, CDD_SENT_APPL_DATA) Cdd_Sent_DriverObj,\
+   P2VAR(boolean, AUTOMATIC, CDD_SENT_APPL_DATA) Cdd_Sent_DrvInitialized);
+
+/** \brief Cdd_Sent_TransmitPriv : Triggers the MTP.
+ *
+ * This service will trigger the MTP in case of MTP enabled.
+ *
+ * \param[in] PduInfoPtr Pointer to PDU Information.
+ * \param[in] TxPduId ID of the Tx PDU
+ * \pre Cdd_Sent_Init should be called first before calling this service.
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: command has been accepted
+ * \retval E_NOT_OK: command has not been accepted
+ *
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_SENT_CODE) Cdd_Sent_TransmitPriv(
+    P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr,
+    PduIdType TxPduId);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
- *********************************************************************************************************************/
-
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) \
-Cdd_Sent_getFrameData(uint32 memBase, uint16 SENTWord)
-{
-    /* Return the received work from SENT Fast channel data when FIFO is */
-    /* not enabled and it is memory mapped. */
-    uint32 data= HWREG(memBase + SENT_O_MDATA(SENTWord));
-    return data;
-}
-
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) \
-Cdd_Sent_getMessageID(Cdd_SentInstance SentInstance)
-{
-    uint32 Sent_Base = (((uint32)SENT1CSENT_BASE) + (((uint32)SentInstance) +0x1000U));
-    uint32 Slow_Data_Base = HWREG(Sent_Base+0x28U);
-    uint32 mask = 0xFF000000U;
-    uint32 MessageID= Slow_Data_Base & mask;
-    return MessageID;
-}
-
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) \
-Cdd_Sent_getSlowData(Cdd_SentInstance SentInstance)
-{
-    uint32 Sent_Base = (((uint32)SENT1CSENT_BASE) + (((uint32)SentInstance) + 0x1000U));
-    uint32 Slow_Data_Base = HWREG(Sent_Base+0x28U);
-    uint32 mask = 0xFFFF00U;
-    uint32 Slow_Data= Slow_Data_Base & mask;
-    return Slow_Data;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_enableMTPChannel(uint32 mtpBase, Cdd_SentChannelType channel)
-{
-    VAR(uint32, AUTOMATIC) channelOffset;
-	VAR(uint32, AUTOMATIC) SENT_MTP_CHANNEL_STEP = 0x100U;
-
-	channelOffset = (((uint32)SENT_MTP_CHANNEL_STEP*(uint32)channel) +
-				SENT_O_BC_MTP_EN);
-
-    /* Enable the channel to generate trigger pulses. */
-
-    HWREG(mtpBase + channelOffset) |= SENT_BC_MTP_EN_MTP_EN;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_setMTPPeriod(uint32 mtpBase, Cdd_SentChannelType channel, uint32 period)
-{
-    VAR(uint32, AUTOMATIC) periodOffset;
-	VAR(uint32, AUTOMATIC) SENT_MTP_PERIOD_STEP = 0x100U;
-
-    periodOffset = (SENT_MTP_PERIOD_STEP * (uint32)channel) +
-                    SENT_O_BC_MTP_PERIOD;
-
-    /* Set the period that the master trigger pulse output waveform is active. */
-
-    HWREG(mtpBase + periodOffset) = (HWREG(mtpBase + periodOffset) &
-                                        ~SENT_BC_MTP_PERIOD_PERIOD_M) | period;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_clearInterruptFlag(uint32 base, uint32 intFlags)
-{
-    /* Clear the specified interrupt. */
-
-    HWREG(base + SENT_O_RCLRINT) |= intFlags;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_setBroadcastChMTPToggleTime(uint32 mtpBase, \
-                            uint32 compareNum, uint32 toggleTime)
-{
-    VAR(uint32, AUTOMATIC) toggleOffset;
-	VAR(uint32, AUTOMATIC) SENT_MTP_TOGGLETIME_STEP = 0x4U;
-
-    toggleOffset = (SENT_MTP_TOGGLETIME_STEP * ((uint32)compareNum - 1U)) +
-                    SENT_O_BC_MTP_CMP1;
-
-    /* Set the toggle time for MTPG output of broadcast channel. */
-
-    HWREG(mtpBase + toggleOffset) = (HWREG(mtpBase + toggleOffset) &
-                                 ~SENT_BC_MTP_CMP1_TOGGLETIME_M) | toggleTime;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_setSensor1MTPToggleTime(uint32 mtpBase, uint32 compareNum, \
-                            uint32 toggleTime)
-{
-    VAR(uint32, AUTOMATIC) toggleOffset;
-	VAR(uint32, AUTOMATIC) SENT_MTP_TOGGLETIME_STEP = 0x4U;
-
-    toggleOffset = (SENT_MTP_TOGGLETIME_STEP * ((uint32)compareNum - 1U)) +
-                    SENT_O_S1_MTP_CMP1;
-
-    /* Set the toggle time for MTPG output of broadcast channel. */
-
-    HWREG(mtpBase + toggleOffset) = (HWREG(mtpBase + toggleOffset) &
-                                 ~SENT_S1_MTP_CMP1_TOGGLETIME_M) | toggleTime;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_setSensor2MTPToggleTime(uint32 mtpBase, uint32 compareNum, \
-                            uint32 toggleTime)
-{
-    VAR(uint32, AUTOMATIC) toggleOffset;
-	VAR(uint32, AUTOMATIC) SENT_MTP_TOGGLETIME_STEP = 0x4U;
-
-
-    toggleOffset = (SENT_MTP_TOGGLETIME_STEP * ((uint32)compareNum - 1U)) +
-                    SENT_O_S2_MTP_CMP1;
-
-    /* Set the toggle time for MTPG output of broadcast channel. */
-
-    HWREG(mtpBase + toggleOffset) = (HWREG(mtpBase + toggleOffset) &
-                                 ~SENT_S2_MTP_CMP1_TOGGLETIME_M) | toggleTime;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_setSensor3MTPToggleTime(uint32 mtpBase, uint32 compareNum, \
-                            uint32 toggleTime)
-{
-    VAR(uint32, AUTOMATIC) toggleOffset;
-	VAR(uint32, AUTOMATIC) SENT_MTP_TOGGLETIME_STEP = 0x4U;
-
-    toggleOffset = (SENT_MTP_TOGGLETIME_STEP * ((uint32)compareNum - 1U)) +
-                    SENT_O_S3_MTP_CMP1;
-
-    /* Set the toggle time for MTPG output of Sensor 3 channel. */
-
-    HWREG(mtpBase + toggleOffset) = (HWREG(mtpBase + toggleOffset) &
-                                 ~SENT_S3_MTP_CMP1_TOGGLETIME_M) | toggleTime;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_setSensor4MTPToggleTime(uint32 mtpBase, uint32 compareNum, \
-                            uint32 toggleTime)
-{
-    VAR(uint32, AUTOMATIC) toggleOffset;
-	VAR(uint32, AUTOMATIC) SENT_MTP_TOGGLETIME_STEP = 0x4U;
-
-    toggleOffset = (SENT_MTP_TOGGLETIME_STEP * ((uint32)compareNum - 1U)) +
-                    SENT_O_S4_MTP_CMP1;
-
-    /*  Set the toggle time for MTPG output of Sensor 4 channel. */
-
-    HWREG(mtpBase + toggleOffset) = (HWREG(mtpBase + toggleOffset) &
-                                 ~SENT_S4_MTP_CMP1_TOGGLETIME_M) | toggleTime;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_disableMTPChannel(uint32 mtpBase, Cdd_SentChannelType channel)
-{
-    VAR(uint32, AUTOMATIC) channelOffset;
-	VAR(uint32, AUTOMATIC) SENT_MTP_CHANNEL_STEP = 0x100U;
-
-    channelOffset = (SENT_MTP_CHANNEL_STEP * (uint32)channel) +
-                    SENT_O_BC_MTP_EN;
-
-    /* Disable the channel to generate trigger pulses. */
-
-    HWREG(mtpBase + channelOffset) &= ~SENT_BC_MTP_EN_MTP_EN;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) 
-Cdd_Sent_disableSentReceiver(uint32 base)
-{
-    /* Disable SENT receiver. */
-
-    HWREG(base + SENT_O_RCFG) &= ~SENT_RCFG_RX_ENB;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) 
-Cdd_Sent_EnableSentReceiver(uint32 base)
-{
-    /* Enable SENT reveiver to monitor the SENT bus. */
-    HWREG(base + SENT_O_RCFG) |= SENT_RCFG_RX_ENB;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_setTTClock(uint32 base, uint32 ttClock)
-{
-    /* Set the number of clock cycle per tick time. */
-
-    HWREG(base + SENT_O_RCFG) = (HWREG(base + SENT_O_RCFG) &
-                                ~SENT_RCFG_TTCLK_M) |
-                                ((uint32)ttClock << SENT_RCFG_TTCLK_S);
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_setGFILTClockCycle(uint32 base, uint32 gFiltClock)
-{
-    /* Set the number of clock cycle to be filtered out. */
-
-    HWREG(base + SENT_O_RCFG2) = (HWREG(base + SENT_O_RCFG2) &
-                                ~SENT_RCFG2_GFILT_M) |
-                                ((uint32)gFiltClock << SENT_RCFG2_GFILT_S);
-}
-
-LOCAL_INLINE void
-Sent_ConfigureFifoMode(uint32 base, Cdd_SentFIFOMode fifoMode)
-{
-    /* Configure FIFO Mode. */
-
-    HWREG(base + SENT_O_RCFG2) = (HWREG(base + SENT_O_RCFG2) &
-                                 ~SENT_RCFG2_FIFO_MODE) | (uint32)fifoMode;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_configureTimeout(uint32 base, uint32 timeOut)
-{
-    /* Configure the timeout for SENT module. */
-
-    HWREG(base + SENT_O_CSENT_TO) = timeOut;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_enableInterrupt(uint32 base, uint32 intFlags)
-{
-    /* Enable the specified interrupt. */
-
-    HWREG(base + SENT_O_REINT) |= intFlags;
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_setDataNibble(uint32 base, Cdd_SentDataNibblesCount dataNibble)
-{
-    /* Set the number of data nibbles for standard SENT. */
-    HWREG(base + SENT_O_RCFG) =
-                            (HWREG(base + SENT_O_RCFG) & ~SENT_RCFG_RX_DNIB_M) |
-                            (((uint32)dataNibble) << SENT_RCFG_RX_DNIB_S);
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_setRFIFOTriggerLevel(uint32 base, Cdd_SentTriggerLevel triggerLevel)
-{
-    /* Configure the trigger level for the receiver FIFO trigger interrupt and */
-    /* DMA trigger. */
-
-    HWREG(base + SENT_O_RCFG2) = (HWREG(base + SENT_O_RCFG2) &
-                        ~SENT_RCFG2_RFIFO_TRIGLEV_M) |
-                        ((uint32)triggerLevel << SENT_RCFG2_RFIFO_TRIGLEV_S);
-}
-
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
-Cdd_Sent_getFIFO(uint32 base)
-{
-    /* Return the received SENT fast channel data located at the */
-    /* top of the receive FIFO. */
-
-    return(HWREG(base + SENT_O_RFDATA));
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
-Cdd_Sent_disableInterrupt(uint32 base, uint32 intFlags)
-{
-    /* Disable the specified interrupt. */
-
-    HWREG(base + SENT_O_REINT) &= ~intFlags;
-}
-
-LOCAL_INLINE void
-Cdd_Sent_setDataSortingFormat(uint32 base, Cdd_Sent_DataNumber dataNumber,
-                        Cdd_SentNibbleNumber nibbleNum, Cdd_SentNibble nibble)
-{
-    uint32 dataOffset;
-    uint32 shiftVal;
-
-    dataOffset = ((uint32)SENT_DATAXMAP_STEP * (uint32)dataNumber) + (uint32)SENT_O_DATA0_MAP;
-    shiftVal = (uint32)nibbleNum * (uint32)4;
-
-    HWREG(base + dataOffset) = (HWREG(base + dataOffset) &
-                        ~((uint32)SENT_DATA0_MAP_D0_NIB0_M << shiftVal)) |
-                        ((uint32)nibble << shiftVal);
-
-}
-
-LOCAL_INLINE FUNC(void, CDD_SENT_CODE) \
-Cdd_Sent_enableMTPSoftwareTrigger(uint32 SentBase, Cdd_SentChannelType channel)
-{
-    VAR(uint32, AUTOMATIC) triggerOffset;
-
-    triggerOffset = (SENT_MTP_SWTR_STEP + (uint32)channel) +
-                     SENT_O_BC_MTP_SWTR;
-
-    /* Enable broadcast channel's software trigger. */
-
-     HWREG(SentBase + triggerOffset) |= SENT_BC_MTP_SWTR_SWTR;
-}
+ *********************************************************************************************************************/ 
 /*********************************************************************************************************************
  *
  *  Mark the end of the C bindings section for C++ compilers.

@@ -72,7 +72,7 @@
                     <d:ref name="CanControllerDefaultBaudrate" type="REFERENCE" 
                            value="ASPath:/Can/Can/CanConfigSet/CanController_0/CanControllerBaudrateConfig_0"/>
                     <d:ref name="CanCpuClockRef" type="REFERENCE" 
-                           value="ASPath:/Mcu/Mcu/Mcu_ModuleConfiguration_0/McuClockSettingConfig_0/MCANCLK"/>
+                           value="ASPath:/Mcu/Mcu/Mcu_ModuleConfiguration_0/McuClockSettingConfig_Osc2/MCANCLK"/>
                     <d:ref name="CanWakeupSourceRef" type="REFERENCE" >
                       <a:a name="ENABLE" value="false"/>
                       <a:a name="IMPORTER_INFO" value="@DEF"/>
@@ -118,7 +118,6 @@
                         </d:var>
                         <d:ctr name="CanControllerFdBaudrateConfig" 
                                type="IDENTIFIABLE">
-                          <a:a name="ENABLE" value="false"/>
                           <d:var name="CanControllerFdBaudRate" type="INTEGER" 
                                  value="1000">
                             <a:a name="IMPORTER_INFO" value="@DEF"/>
@@ -304,6 +303,10 @@
                         <d:var name="CanHwFilterMask" type="INTEGER" value="0">
                           <a:a name="IMPORTER_INFO" value="@DEF"/>
                         </d:var>
+                        <d:var name="CanStandardFilterType" type="ENUMERATION" 
+                               value="CAN_CLASSIC_FILTER"/>
+                        <d:var name="CanEventPin" type="ENUMERATION" 
+                               value="CAN_EVENT_PIN_NONE"/>
                       </d:ctr>
                     </d:lst>
                     <d:lst name="CanTTHardwareObjectTrigger" type="MAP"/>
@@ -344,6 +347,7 @@
                 <d:var name="CanPublicIcomSupport" type="BOOLEAN" value="false">
                   <a:a name="IMPORTER_INFO" value="@DEF"/>
                 </d:var>
+                <d:var name="CanECCSupport" type="BOOLEAN" value="false"/>
                 <d:var name="CanSetBaudrateApi" type="BOOLEAN" value="false">
                   <a:a name="ENABLE" value="true"/>
                 </d:var>
@@ -393,6 +397,10 @@
                 <d:ctr name="CanDemEventParameterRefs" type="IDENTIFIABLE">
                   <a:a name="ENABLE" value="false"/>
                   <d:ref name="CAN_E_HARDWARE_ERROR" type="REFERENCE" >
+                    <a:a name="ENABLE" value="false"/>
+                    <a:a name="IMPORTER_INFO" value="@DEF"/>
+                  </d:ref>
+                  <d:ref name="CAN_E_SAFTEY_BEU_ERROR" type="REFERENCE" >
                     <a:a name="ENABLE" value="false"/>
                     <a:a name="IMPORTER_INFO" value="@DEF"/>
                   </d:ref>

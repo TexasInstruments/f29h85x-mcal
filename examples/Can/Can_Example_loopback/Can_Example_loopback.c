@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ extern uint8  CanIf_TxConfirmationCount;
 extern uint32 CanIf_Mainfuc_Bussoff_Cnt;
 extern uint32 CanIf_Mainfunc_Mode;
 extern uint32 CanIf_Idval;
-
+extern PduIdType CanIf_CanTxPduId;
 
 /*********************************************************************************************************************
  *  Local Function Prototypes
@@ -191,6 +191,10 @@ int main(void)
             }
         }
         else
+        {
+            gTestPassed = E_NOT_OK;
+        }
+        if(CanIf_CanTxPduId != PduInfo->swPduHandle)
         {
             gTestPassed = E_NOT_OK;
         }

@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -60,6 +60,9 @@ extern "C" {
 #define WDG_RSTKEY        (0x00AAU) /* */
 /** \brief Reset pattern for WDCR register's WDCHK field. */
 #define WDG_CHKBITS_RESET (0x0038U)
+/** \brief Maximum 8 bit counter value. */
+#define WDG_MAX_8BIT_CNTR_VALUE (255U)
+
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -153,6 +156,39 @@ FUNC(void, WDG_CODE) Wdg_ServiceWatchdog(void);
  *********************************************************************************************************************/
 FUNC(void, WDG_CODE) Wdg_GenerateImmediateEvent(void);
 
+
+/** \brief Gets the watchdog counter value.
+ * 
+ * \param[in] None
+ * \param[out] None
+*  \post None
+ * \return Returns the current value of the 8-bit watchdog counter.
+ * \retval Wdg counter value
+ * 
+ *********************************************************************************************************************/
+FUNC(uint16, WDG_CODE) Wdg_GetWatchdogCounterValue(void);
+
+/** \brief Gets the watchdog Maximum Timeout value.
+ *
+ * \param[in] Wdg_DrvObjPtr pointer to the Watchdog Driver Object which is initialised in Wdg.c
+ * \param[out] None
+*  \post None
+ * \return Returns the Watchdog Maximum Timeout Value.
+ * \retval Wdg Maximum Timeout value
+ *
+ *********************************************************************************************************************/
+FUNC(uint16, WDG_CODE) Wdg_GetMaxTimeout(P2CONST(Wdg_DriverObjType, AUTOMATIC, WDG_APPL_DATA) Wdg_DrvObjPtr);
+
+/** \brief Sets the timeout value for the trigger counter
+ *
+ * \param[in] Time_out Time_out value (milliseconds) for setting the trigger counter
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, WDG_CODE) Wdg_SetTriggerConditionPriv(VAR(uint16, AUTOMATIC) Time_out);
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

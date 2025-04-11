@@ -1,0 +1,1724 @@
+---
+title: Cdd_Ecap public API GUIDE Header file
+
+---
+
+# CDD_ECAP
+
+
+
+## Types
+
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|enum| **[Cdd_Ecap_ModeType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-modetype)** | This type defines a range of mode type.  | 
+|enum| **[Cdd_Ecap_InputStateType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-inputstatetype)** | This type defines a input state of CDD_ECAP driver.  | 
+|enum| **[Cdd_Ecap_ActivationType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-activationtype)** | This type defines Activation range.  | 
+|enum| **[Cdd_Ecap_IntrCapSelect](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-intrcapselect)** | This type defines the source of interrupt.  | 
+|enum| **[Cdd_Ecap_MeasurementModeType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-measurementmodetype)** | This type defines available measurement modes.  | 
+|enum| **[Cdd_Ecap_SignalMeasurementPropertyType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-signalmeasurementpropertytype)** | This type defines Signal Measurement Property range.  | 
+|enum| **[Cdd_Ecap_TimestampBufferType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-timestampbuffertype)** | This type defines TimeStamp Property range.  | 
+|enum| **[Cdd_Ecap_CounterRstType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-counterrsttype)** | This type defines Counter Reset Mode.  | 
+|enum| **[Cdd_Ecap_EmulationMode](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-emulationmode)** | This defines the available emulation modes.  | 
+|enum| **[Cdd_Ecap_InputSelect](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-inputselect)** | This type defines Xbar input to select.  | 
+|typedef uint16  | **[Cdd_Ecap_ValueType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-valuetype)** | This type defines Value type.  | 
+|typedef uint32  | **[Cdd_Ecap_IndexType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-indextype)** | This type defines return value Cdd_Ecap_GetTimeStampIndex.  | 
+|typedef uint32  | **[Cdd_Ecap_EdgeNumberType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-edgenumbertype)** | This type defines return value of Cdd_Ecap_GetEdgeNumbers.  | 
+|typedef uint8  | **[Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype)** | This type defines Channel type.  | 
+|typedef uint8  | **[Cdd_Ecap_ChannelPrescalerType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channelprescalertype)** | This type defines Prescaler type.  | 
+|typedef void(*)(void)  | **[Cdd_Ecap_NotifyFuncType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-notifyfunctype)** | Notification callback function pointer  | 
+
+
+
+### enum Cdd_Ecap_ModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_MODE_NORMAL | | Normal Mode.   |
+| CDD_ECAP_MODE_SLEEP | | Sleep Mode.   |
+
+
+
+
+**Brief**: 
+This type defines a range of mode type. 
+
+
+
+### enum Cdd_Ecap_InputStateType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_ACTIVE | | Module is in active state.   |
+| CDD_ECAP_IDLE | | Module is in idle state.   |
+
+
+
+
+**Brief**: 
+This type defines a input state of CDD_ECAP driver. 
+
+
+
+### enum Cdd_Ecap_ActivationType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_RISING_EDGE | | Rising Edge Activation type.   |
+| CDD_ECAP_FALLING_EDGE | | Falling Edge Activation type.   |
+| CDD_ECAP_BOTH_EDGES | | Both Edge Activation type.   |
+
+
+
+
+**Brief**: 
+This type defines Activation range. 
+
+
+
+### enum Cdd_Ecap_IntrCapSelect
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_CEVT1_INT | (0x2U)|   |
+| CDD_ECAP_CEVT2_INT | (0x4U)|   |
+| CDD_ECAP_CEVT3_INT | (0x8U)|   |
+| CDD_ECAP_CEVT4_INT | (0x10U)|   |
+| CDD_ECAP_CEVT1_CEVT2_INT | (0x2U) \| (0x4U)|   |
+| CDD_ECAP_CEVT1_CEVT3_INT | (0x2U) \| (0x8U)|   |
+| CDD_ECAP_CEVT1_CEVT4_INT | (0x2U) \| (0x10U)|   |
+| CDD_ECAP_CEVT2_CEVT3_INT | (0x4U) \| (0x8U)|   |
+| CDD_ECAP_CEVT2_CEVT4_INT | (0x4U) \| (0x10U)|   |
+| CDD_ECAP_CEVT3_CEVT4_INT | (0x8U) \| (0x10U)|   |
+| CDD_ECAP_CEVT1_CEVT2_CEVT3_INT | (0x2U) \| (0x4U) \| (0x8U)|   |
+| CDD_ECAP_CEVT1_CEVT2_CEVT4_INT | (0x2U) \| (0x4U) \| (0x10U)|   |
+| CDD_ECAP_CEVT1_CEVT3_CEVT4_INT | (0x2U) \| (0x8U) \| (0x10U)|   |
+| CDD_ECAP_CEVT2_CEVT3_CEVT4_INT | (0x4U) \| (0x8U) \| (0x10U)|   |
+| CDD_ECAP_INT_ALL | (0x2U) \| (0x4U) \| (0x8U) \| (0x10U)|   |
+
+
+
+
+**Brief**: 
+This type defines the source of interrupt. 
+
+
+
+### enum Cdd_Ecap_MeasurementModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_MODE_SIGNAL_EDGE_DETECT | | Signal Edge Detect Mode.   |
+| CDD_ECAP_MODE_SIGNAL_MEASUREMENT | | Signal measurement Mode.   |
+| CDD_ECAP_MODE_TIMESTAMP | | Signal Timestamp Mode.   |
+| CDD_ECAP_MODE_EDGE_COUNTER | | Signal Edge counter Mode.   |
+
+
+
+
+**Brief**: 
+This type defines available measurement modes. 
+
+
+
+### enum Cdd_Ecap_SignalMeasurementPropertyType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_LOW_TIME | | Signal Low time.   |
+| CDD_ECAP_HIGH_TIME | | Signal High time.   |
+| CDD_ECAP_PERIOD_TIME | | Signal Period time.   |
+| CDD_ECAP_DUTY_CYCLE | | Signal Duty Cycle time.   |
+
+
+
+
+**Brief**: 
+This type defines Signal Measurement Property range. 
+
+
+
+### enum Cdd_Ecap_TimestampBufferType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_LINEAR_BUFFER | | Linear Buffer to be used in Timestamp.   |
+| CDD_ECAP_CIRCULAR_BUFFER | | Circular Buffer to be used in Timestamp.   |
+
+
+
+
+**Brief**: 
+This type defines TimeStamp Property range. 
+
+
+
+### enum Cdd_Ecap_CounterRstType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_ABSOLUTE_MODE | |   |
+| CDD_ECAP_DELTA_MODE | | Don't Reset counter upon counter event.  Reset upon counter capture event  |
+
+
+
+
+**Brief**: 
+This type defines Counter Reset Mode. 
+
+
+
+### enum Cdd_Ecap_EmulationMode
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_EMULATION_STOP | 0x0U| TSCTR is stopped on emulation suspension.   |
+| CDD_ECAP_EMULATION_RUN_TO_ZERO | 0x1U| runs until 0 before stopping on emulation suspension   |
+| CDD_ECAP_EMULATION_FREE_RUN | 0x2U| is not affected by emulation suspension   |
+
+
+
+
+**Brief**: 
+This defines the available emulation modes. 
+
+
+
+### enum Cdd_Ecap_InputSelect
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_INPUT_INPUTXBAR1 | 0|   |
+| CDD_ECAP_INPUT_INPUTXBAR2 | 1| GPIO Input Crossbar output signal-1.   |
+| CDD_ECAP_INPUT_INPUTXBAR3 | 2| GPIO Input Crossbar output signal-2.   |
+| CDD_ECAP_INPUT_INPUTXBAR4 | 3| GPIO Input Crossbar output signal-3.   |
+| CDD_ECAP_INPUT_INPUTXBAR5 | 4| GPIO Input Crossbar output signal-4.   |
+| CDD_ECAP_INPUT_INPUTXBAR6 | 5| GPIO Input Crossbar output signal-5.   |
+| CDD_ECAP_INPUT_INPUTXBAR7 | 6| GPIO Input Crossbar output signal-6.   |
+| CDD_ECAP_INPUT_INPUTXBAR8 | 7| GPIO Input Crossbar output signal-7.   |
+| CDD_ECAP_INPUT_INPUTXBAR9 | 8| GPIO Input Crossbar output signal-8.   |
+| CDD_ECAP_INPUT_INPUTXBAR10 | 9| GPIO Input Crossbar output signal-9.   |
+| CDD_ECAP_INPUT_INPUTXBAR11 | 10| GPIO Input Crossbar output signal-10.   |
+| CDD_ECAP_INPUT_INPUTXBAR12 | 11| GPIO Input Crossbar output signal-11.   |
+| CDD_ECAP_INPUT_INPUTXBAR13 | 12| GPIO Input Crossbar output signal-12.   |
+| CDD_ECAP_INPUT_INPUTXBAR14 | 13| GPIO Input Crossbar output signal-13.   |
+| CDD_ECAP_INPUT_INPUTXBAR15 | 14| GPIO Input Crossbar output signal-14.   |
+| CDD_ECAP_INPUT_INPUTXBAR16 | 15| GPIO Input Crossbar output signal-15.   |
+| CDD_ECAP_INPUT_ECAP0_CLB1_OUT14 | 16| GPIO Input Crossbar output signal-16.   |
+| CDD_ECAP_INPUT_ECAP1_CLB1_OUT14 | 16| CLB1 OUT14.   |
+| CDD_ECAP_INPUT_ECAP0_CLB1_OUT15 | 17| CLB1 OUT14.   |
+| CDD_ECAP_INPUT_ECAP1_CLB1_OUT15 | 17| CLB1 OUT15.   |
+| CDD_ECAP_INPUT_ECAP2_CLB2_OUT14 | 16| CLB1 OUT15.   |
+| CDD_ECAP_INPUT_ECAP3_CLB2_OUT14 | 16| CLB2 OUT14.   |
+| CDD_ECAP_INPUT_ECAP4_CLB2_OUT14 | 16| CLB2 OUT14.   |
+| CDD_ECAP_INPUT_ECAP2_CLB2_OUT15 | 17| CLB2 OUT14.   |
+| CDD_ECAP_INPUT_ECAP3_CLB2_OUT15 | 17| CLB2 OUT15.   |
+| CDD_ECAP_INPUT_ECAP4_CLB2_OUT15 | 17| CLB2 OUT15.   |
+| CDD_ECAP_INPUT_ECAP5_CLB3_OUT14 | 16| CLB2 OUT15.   |
+| CDD_ECAP_INPUT_ECAP5_CLB3_OUT15 | 17| CLB3 OUT14.   |
+| CDD_ECAP_INPUT_ECAP5_CLB4_OUT14 | 18| CLB3 OUT15.   |
+| CDD_ECAP_INPUT_ECAP5_CLB4_OUT15 | 19| CLB4 OUT14.   |
+| CDD_ECAP_INPUT_ECAP0_CLB5_OUT14 | 18| CLB4 OUT15.   |
+| CDD_ECAP_INPUT_ECAP1_CLB5_OUT14 | 18| CLB5 OUT14.   |
+| CDD_ECAP_INPUT_ECAP0_CLB5_OUT15 | 19| CLB5 OUT14.   |
+| CDD_ECAP_INPUT_ECAP1_CLB5_OUT15 | 19| CLB5 OUT15.   |
+| CDD_ECAP_INPUT_ECAP2_CLB6_OUT14 | 18| CLB5 OUT15.   |
+| CDD_ECAP_INPUT_ECAP3_CLB6_OUT14 | 18| CLB6 OUT14.   |
+| CDD_ECAP_INPUT_ECAP4_CLB6_OUT14 | 18| CLB6 OUT14.   |
+| CDD_ECAP_INPUT_ECAP2_CLB6_OUT15 | 19| CLB6 OUT14.   |
+| CDD_ECAP_INPUT_ECAP3_CLB6_OUT15 | 19| CLB6 OUT15.   |
+| CDD_ECAP_INPUT_ECAP4_CLB6_OUT15 | 19| CLB6 OUT15.   |
+| CDD_ECAP_INPUT_OUTPUTXBAR1 | 20| CLB6 OUT15.   |
+| CDD_ECAP_INPUT_OUTPUTXBAR2 | 21| Output Xbar Output-1.   |
+| CDD_ECAP_INPUT_OUTPUTXBAR3 | 22| Output Xbar Output-2.   |
+| CDD_ECAP_INPUT_OUTPUTXBAR4 | 23| Output Xbar Output-3.   |
+| CDD_ECAP_INPUT_OUTPUTXBAR5 | 24| Output Xbar Output-4.   |
+| CDD_ECAP_INPUT_OUTPUTXBAR6 | 25| Output Xbar Output-5.   |
+| CDD_ECAP_INPUT_OUTPUTXBAR7 | 26| Output Xbar Output-6.   |
+| CDD_ECAP_INPUT_OUTPUTXBAR8 | 27| Output Xbar Output-7.   |
+| CDD_ECAP_INPUT_ADC_E_EVENT4 | 28| Output Xbar Output-8.   |
+| CDD_ECAP_INPUT_ADC_E_EVENT3 | 29| ADCE Event4.   |
+| CDD_ECAP_INPUT_ADC_E_EVENT2 | 30| ADCE Event3.   |
+| CDD_ECAP_INPUT_ADC_E_EVENT1 | 31| ADCE Event2.   |
+| CDD_ECAP_INPUT_ADC_D_EVENT4 | 32| ADCE Event1.   |
+| CDD_ECAP_INPUT_ADC_D_EVENT3 | 33| ADCD Event4.   |
+| CDD_ECAP_INPUT_ADC_D_EVENT2 | 34| ADCD Event3.   |
+| CDD_ECAP_INPUT_ADC_D_EVENT1 | 35| ADCD Event2.   |
+| CDD_ECAP_INPUT_ADC_C_EVENT4 | 36| ADCD Event1.   |
+| CDD_ECAP_INPUT_ADC_C_EVENT3 | 37| ADCC Event4.   |
+| CDD_ECAP_INPUT_ADC_C_EVENT2 | 38| ADCC Event3.   |
+| CDD_ECAP_INPUT_ADC_C_EVENT1 | 39| ADCC Event2.   |
+| CDD_ECAP_INPUT_ADC_B_EVENT4 | 40| ADCC Event1.   |
+| CDD_ECAP_INPUT_ADC_B_EVENT3 | 41| ADCB Event4.   |
+| CDD_ECAP_INPUT_ADC_B_EVENT2 | 42| ADCB Event3.   |
+| CDD_ECAP_INPUT_ADC_B_EVENT1 | 43| ADCB Event2.   |
+| CDD_ECAP_INPUT_ADC_A_EVENT4 | 44| ADCB Event1.   |
+| CDD_ECAP_INPUT_ADC_A_EVENT3 | 45| ADCA Event4.   |
+| CDD_ECAP_INPUT_ADC_A_EVENT2 | 46| ADCA Event3.   |
+| CDD_ECAP_INPUT_ADC_A_EVENT1 | 47| ADCA Event2.   |
+| CDD_ECAP_INPUT_FSIA_RX_MSR_LINE | 48| ADCA Event1.   |
+| CDD_ECAP_INPUT_FSIA_RX_MSR_LINE_RISE | 49| FSIA Rx MSR Line.   |
+| CDD_ECAP_INPUT_FSIA_RX_MSR_LINE_FALL | 50| FSIA Rx MSR Line Rise.   |
+| CDD_ECAP_INPUT_FSIB_RX_MSR_LINE | 51| FSIA Rx MSR Line Fall.   |
+| CDD_ECAP_INPUT_FSIB_RX_MSR_LINE_RISE | 52| FSIB Rx MSR Line.   |
+| CDD_ECAP_INPUT_FSIB_RX_MSR_LINE_FALL | 53| FSIB Rx MSR Line Rise.   |
+| CDD_ECAP_INPUT_FSIC_RX_MSR_LINE | 54| FSIB Rx MSR Line Fall.   |
+| CDD_ECAP_INPUT_FSIC_RX_MSR_LINE_RISE | 55| FSIC Rx MSR Line.   |
+| CDD_ECAP_INPUT_FSIC_RX_MSR_LINE_FALL | 56| FSIC Rx MSR Line Rise.   |
+| CDD_ECAP_INPUT_FSID_RX_MSR_LINE | 57| FSIC Rx MSR Line Fall.   |
+| CDD_ECAP_INPUT_FSID_RX_MSR_LINE_RISE | 58| FSID Rx MSR Line.   |
+| CDD_ECAP_INPUT_FSID_RX_MSR_LINE_FALL | 59| FSID Rx MSR Line Rise.   |
+| CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_LOW | 60| FSID Rx MSR Line Fall.   |
+| CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_LOW | 61| SDFM-2 Filter-1 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_LOW | 62| SDFM-2 Filter-2 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_LOW | 63| SDFM-2 Filter-3 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_LOW | 64| SDFM-2 Filter-4 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_LOW | 65| SDFM-1 Filter-1 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_LOW | 66| SDFM-1 Filter-2 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_LOW | 67| SDFM-1 Filter-3 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_Z | 68| SDFM-1 Filter-4 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_Z | 69| SDFM-2 Filter-1 Compare Z Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_Z | 70| SDFM-2 Filter-2 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_Z | 71| SDFM-2 Filter-3 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_Z | 72| SDFM-2 Filter-4 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_Z | 73| SDFM-1 Filter-1 Compare Z Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_Z | 74| SDFM-1 Filter-2 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_Z | 75| SDFM-1 Filter-3 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_HIGH | 76| SDFM-1 Filter-4 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_HIGH | 77| SDFM-2 Filter-1 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_HIGH | 78| SDFM-2 Filter-2 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_HIGH | 79| SDFM-2 Filter-3 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_HIGH | 80| SDFM-2 Filter-4 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_HIGH | 81| SDFM-1 Filter-1 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_HIGH | 82| SDFM-1 Filter-2 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_HIGH | 83| SDFM-1 Filter-3 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_HIGH_OR_LOW | 84| SDFM-1 Filter-4 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_HIGH_OR_LOW | 85| SDFM-2 Filter-1 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_HIGH_OR_LOW | 86| SDFM-2 Filter-2 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_HIGH_OR_LOW | 87| SDFM-2 Filter-3 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_HIGH_OR_LOW | 88| SDFM-2 Filter-4 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_HIGH_OR_LOW | 89| SDFM-1 Filter-1 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_HIGH_OR_LOW | 90| SDFM-1 Filter-2 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_HIGH_OR_LOW | 91| SDFM-1 Filter-3 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_ECAP4_ECAP5_DELAY_CLK | 92| SDFM-1 Filter-4 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_ECAP5_ECAP4_DELAY_CLK | 93| Delay clock for measurement.   |
+| CDD_ECAP_INPUT_ECATSYNC0 | 94| Delay clock for measurement.   |
+| CDD_ECAP_INPUT_ECATSYNC1 | 95| Ethercat Sync0.   |
+| CDD_ECAP_INPUT_CMPSS1_CTRIP_LOW | 96| Ethercat Sync1.   |
+| CDD_ECAP_INPUT_CMPSS2_CTRIP_LOW | 97| Compare Subsystem-1 Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS3_CTRIP_LOW | 98| Compare Subsystem-2 Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS4_CTRIP_LOW | 99| Compare Subsystem-3 Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS5_CTRIP_LOW | 100| Compare Subsystem-4 Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS6_CTRIP_LOW | 101| Compare Subsystem-5 Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS7_CTRIP_LOW | 102| Compare Subsystem-6 Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS8_CTRIP_LOW | 103| Compare Subsystem-7 Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS1_CTRIP_HIGH | 107| Compare Subsystem-8 Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS2_CTRIP_HIGH | 108| Compare Subsystem-1 High Trip.   |
+| CDD_ECAP_INPUT_CMPSS3_CTRIP_HIGH | 109| Compare Subsystem-2 High Trip.   |
+| CDD_ECAP_INPUT_CMPSS4_CTRIP_HIGH | 110| Compare Subsystem-3 High Trip.   |
+| CDD_ECAP_INPUT_CMPSS5_CTRIP_HIGH | 111| Compare Subsystem-4 High Trip.   |
+| CDD_ECAP_INPUT_CMPSS6_CTRIP_HIGH | 112| Compare Subsystem-5 High Trip.   |
+| CDD_ECAP_INPUT_CMPSS7_CTRIP_HIGH | 113| Compare Subsystem-6 High Trip.   |
+| CDD_ECAP_INPUT_CMPSS8_CTRIP_HIGH | 114| Compare Subsystem-7 High Trip.   |
+| CDD_ECAP_INPUT_GPIO8 | 115| Compare Subsystem-8 High Trip.   |
+| CDD_ECAP_INPUT_GPIO9 | 116| GPIO8.   |
+| CDD_ECAP_INPUT_GPIO22 | 117| GPIO9.   |
+| CDD_ECAP_INPUT_GPIO23 | 118| GPIO22.   |
+| CDD_ECAP_INPUT_CMPSS1_CTRIP_HIGH_OR_LOW | 119| GPIO23.   |
+| CDD_ECAP_INPUT_CMPSS2_CTRIP_HIGH_OR_LOW | 120| Compare Subsystem-1 High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS3_CTRIP_HIGH_OR_LOW | 121| Compare Subsystem-1 High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS4_CTRIP_HIGH_OR_LOW | 122| Compare Subsystem-2 High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS5_CTRIP_HIGH_OR_LOW | 123| Compare Subsystem-3 High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS6_CTRIP_HIGH_OR_LOW | 124| Compare Subsystem-4 High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS7_CTRIP_HIGH_OR_LOW | 125| Compare Subsystem-5 High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_CMPSS8_CTRIP_HIGH_OR_LOW | 126| Compare Subsystem-6 High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_ECAP0_INPUTXBAR7 | 127| Compare Subsystem-7 High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_ECAP1_INPUTXBAR8 | 127| GPIO Input Crossbar output signal-7.   |
+| CDD_ECAP_INPUT_ECAP2_INPUTXBAR9 | 127| GPIO Input Crossbar output signal-8.   |
+| CDD_ECAP_INPUT_ECAP3_INPUTXBAR10 | 127| GPIO Input Crossbar output signal-9.   |
+| CDD_ECAP_INPUT_ECAP4_INPUTXBAR11 | 127| GPIO Input Crossbar output signal-10.   |
+| CDD_ECAP_INPUT_ECAP5_INPUTXBAR12 | 127| GPIO Input Crossbar output signal-11.   |
+| CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_LOW | 128| GPIO Input Crossbar output signal-12.   |
+| CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_LOW | 129| SDFM-4 Filter-1 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_LOW | 130| SDFM-4 Filter-2 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_LOW | 131| SDFM-4 Filter-3 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT1_COMPARE_LOW | 132| SDFM-4 Filter-4 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT2_COMPARE_LOW | 133| SDFM-3 Filter-1 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT3_COMPARE_LOW | 134| SDFM-3 Filter-2 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_LOW | 135| SDFM-3 Filter-3 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_Z | 139| SDFM-3 Filter-4 Compare Low Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_Z | 143| SDFM-4 Filter-4 Compare Z Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_HIGH | 144| SDFM-3 Filter-4 Compare Z Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_HIGH | 145| SDFM-4 Filter-1 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_HIGH | 146| SDFM-4 Filter-2 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_HIGH | 147| SDFM-4 Filter-3 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT1_COMPARE_HIGH | 148| SDFM-4 Filter-4 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT2_COMPARE_HIGH | 149| SDFM-3 Filter-1 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT3_COMPARE_HIGH | 150| SDFM-3 Filter-2 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_HIGH | 151| SDFM-3 Filter-3 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_HIGH_OR_LOW | 152| SDFM-3 Filter-4 Compare High Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_HIGH_OR_LOW | 153| SDFM-4 Filter-1 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_HIGH_OR_LOW | 154| SDFM-4 Filter-2 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_HIGH_OR_LOW | 155| SDFM-4 Filter-3 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT1_COMPARE_HIGH_OR_LOW | 156| SDFM-4 Filter-4 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT2_COMPARE_HIGH_OR_LOW | 157| SDFM-3 Filter-1 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT3_COMPARE_HIGH_OR_LOW | 158| SDFM-3 Filter-2 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_HIGH_OR_LOW | 159| SDFM-3 Filter-3 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_EPWM18_DEL_ACTIVE | 160| SDFM-3 Filter-4 Compare High Trip or Low Trip.   |
+| CDD_ECAP_INPUT_EPWM17_DEL_ACTIVE | 161| EPWM-18 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM16_DEL_ACTIVE | 162| EPWM-17 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM15_DEL_ACTIVE | 163| EPWM-16 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM14_DEL_ACTIVE | 164| EPWM-15 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM13_DEL_ACTIVE | 165| EPWM-14 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM12_DEL_ACTIVE | 166| EPWM-13 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM11_DEL_ACTIVE | 167| EPWM-12 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM10_DEL_ACTIVE | 168| EPWM-11 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM9_DEL_ACTIVE | 169| EPWM-10 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM8_DEL_ACTIVE | 170| EPWM-9 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM7_DEL_ACTIVE | 171| EPWM-8 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM6_DEL_ACTIVE | 172| EPWM-7 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM5_DEL_ACTIVE | 173| EPWM-6 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM4_DEL_ACTIVE | 174| EPWM-5 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM3_DEL_ACTIVE | 175| EPWM-4 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM2_DEL_ACTIVE | 176| EPWM-3 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_EPWM1_DEL_ACTIVE | 177| EPWM-2 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_GPIO11 | 251| EPWM-1 Diode Emulation Logic Active.   |
+| CDD_ECAP_INPUT_GPIO12 | 252| GPIO11.   |
+| CDD_ECAP_INPUT_GPIO13 | 253| GPIO12.   |
+| CDD_ECAP_INPUT_GPIO14 | 254| GPIO13.   |
+| CDD_ECAP_INPUT_ECAP0_EPG1_DATAOUT49 | 255| GPIO14.   |
+| CDD_ECAP_INPUT_ECAP1_EPG1_DATAOUT50 | 255| EPG-1 Data Output-49 Connection.   |
+| CDD_ECAP_INPUT_ECAP2_EPG1_DATAOUT51 | 255| EPG-1 Data Output-50 Connection.   |
+| CDD_ECAP_INPUT_ECAP3_EPG1_DATAOUT52 | 255| EPG-1 Data Output-51 Connection.   |
+| CDD_ECAP_INPUT_ECAP4_EPG1_DATAOUT53 | 255| EPG-1 Data Output-52 Connection.   |
+| CDD_ECAP_INPUT_ECAP5_EPG1_DATAOUT54 | 255| EPG-1 Data Output-53 Connection.   |
+
+
+
+
+**Brief**: 
+This type defines Xbar input to select. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Cdd_Ecap_DutyCycleType](../Classes/struct_cdd___ecap___duty_cycle_type.md)** | This type defines Duty Cycle struct.  |
+| **[Cdd_Ecap_ChannelConfigType](../Classes/struct_cdd___ecap___channel_config_type.md)** | CDD_ECAP Channel Config Structure.  |
+| **[Cdd_Ecap_ConfigType](../Classes/struct_cdd___ecap___config_type.md)** | CDD_ECAP Config Structure.  |
+| **[Cdd_Ecap_ChObjType](../Classes/struct_cdd___ecap___ch_obj_type.md)** | CDD ECAP configuration structure internal to driver.  |
+
+
+
+
+## Defines
+
+| Name           |  Brief     |
+| -------------- | ---------- |
+| CDD_ECAP_INIT_ID   | Cdd_Ecap_Init() API Service ID.  |
+| CDD_ECAP_DEINIT_ID   | Cdd_Ecap_DeInit() API Service ID.  |
+| CDD_ECAP_SETMODE_ID   | Cdd_Ecap_SetMode() API Service ID.  |
+| CDD_ECAP_SETACTIVATIONCONDITION_ID   | Cdd_Ecap_SetActivationCondition() API Service ID.  |
+| CDD_ECAP_DISABLENOTIFICATION_ID   | Cdd_Ecap_DisableNotification() API Service ID.  |
+| CDD_ECAP_ENABLENOTIFICATION_ID   | Cdd_Ecap_EnableNotification() API Service ID.  |
+| CDD_ECAP_GETINPUTSTATE_ID   | Cdd_Ecap_GetInputState() API Service ID.  |
+| CDD_ECAP_STARTTIMESTAMP_ID   | Cdd_Ecap_StartTimestamp() API Service ID.  |
+| CDD_ECAP_STOPTIMESTAMP_ID   | Cdd_Ecap_StopTimestamp() API Service ID.  |
+| CDD_ECAP_GETTIMESTAMPINDEX_ID   | Cdd_Ecap_GetTimeStampIndex() API Service ID.  |
+| CDD_ECAP_RESETEDGECOUNT_ID   | Cdd_Ecap_ResetEdgeCount() API Service ID.  |
+| CDD_ECAP_ENABLEEDGECOUNT_ID   | Cdd_Ecap_EnableEdgeCount() API Service ID.  |
+| CDD_ECAP_DISABLEEDGECOUNT_ID   | Cdd_Ecap_DisableEdgeCount() API Service ID.  |
+| CDD_ECAP_GETEDGENUMBERS_ID   | Cdd_Ecap_GetEdgeNumbers() API Service ID.  |
+| CDD_ECAP_GETTIMEELAPSED_ID   | Cdd_Ecap_GetTimeElapsed() API Service ID.  |
+| CDD_ECAP_GETDUTYCYCLEVALUES_ID   | Cdd_Ecap_GetDutyCycleValues() API Service ID.  |
+| CDD_ECAP_GETVERSIONINFO_ID   | Cdd_Ecap_GetVersionInfo() API Service ID.  |
+| CDD_ECAP_STARTSIGNALMEASUREMENT_ID   | Cdd_Ecap_StartSignalMeasurement() API Service ID.  |
+| CDD_ECAP_STOPSIGNALMEASUREMENT_ID   | Cdd_Ecap_StopSignalMeasurement() API Service ID.  |
+| CDD_ECAP_ENABLEEDGEDETECTION_ID   | Cdd_Ecap_EnableEdgeDetection() API Service ID.  |
+| CDD_ECAP_DISABLEEDGEDETECTION_ID   | Cdd_Ecap_DisableEdgeDetection() API Service ID.  |
+| CDD_ECAP_E_PARAM_POINTER   | API service called with invalid pointer.  |
+| CDD_ECAP_E_PARAM_CHANNEL   | API service called with invalid channel identifier or channel not configured.  |
+| CDD_ECAP_E_PARAM_ACTIVATION   | API service calleed with an invalid or not feasible activation.  |
+| CDD_ECAP_E_INIT_FAILED   | Init Function Failed.  |
+| CDD_ECAP_E_PARAM_BUFFER_SIZE   | API service used with invalid Buffer size.  |
+| CDD_ECAP_E_PARAM_MODE   | API service called with invalid mode.  |
+| CDD_ECAP_E_UNINIT   | API service calleed without module initialisation.  |
+| CDD_ECAP_E_NOT_STARTED   | Cdd_Ecap_StopTimestamp called on channel not started or already stopped.  |
+| CDD_ECAP_E_BUSY_OPERATION   | API service called while a running operation.  |
+| CDD_ECAP_E_ALREADY_INITIALIZED   | API service Cdd_Ecap_Init called when module already initialized.  |
+| CDD_ECAP_E_PARAM_NOTIFY_INTERVAL   | API service called when notify interval is invalid.  |
+| CDD_ECAP_E_PARAM_VINFO   | API service Cdd_Ecap_GetVersionInfo called and parameter is invalid.  |
+| CDD_ECAP_STATUS_UNINIT   | CDD_ECAP driver Status uninitialized.  |
+| CDD_ECAP_STATUS_INIT   | CDD_ECAP driver Status Initialized.  |
+| CDD_ECAP_ECEINT_CEVT1   | Capture Event 1 Interrupt Enable.  |
+| CDD_ECAP_ECEINT_CEVT2   | Capture Event 2 Interrupt Enable.  |
+| CDD_ECAP_ECEINT_CEVT3   | Capture Event 3 Interrupt Enable.  |
+| CDD_ECAP_ECEINT_CEVT4   | Capture Event 4 Interrupt Enable.  |
+| CDD_ECAP_VENDOR_ID   | Texas Instruments Vendor ID.  |
+| CDD_ECAP_MODULE_ID   | CDD ECAP Driver Module ID.  |
+| CDD_ECAP_INSTANCE_ID   | CDD ECAP Driver Instance ID.  |
+| CDD_ECAP_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
+| CDD_ECAP_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| CDD_ECAP_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| CDD_ECAP_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by CDD_ECAP Driver.  |
+| CDD_ECAP_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by CDD_ECAP Driver.  |
+| CDD_ECAP_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by CDD_ECAP Driver.  |
+| CDD_ECAPTIMER_MAX_RESOLUTION   |  |
+| CDD_ECAPTICKMAXVALUE   |  |
+| CDD_ECAP_EVENT_1   |  |
+| CDD_ECAP_EVENT_2   |  |
+| CDD_ECAP_EVENT_3   |  |
+| CDD_ECAP_EVENT_4   |  |
+| CDD_ECAP_CONTINUOUS_CAPTURE_MODE   |  |
+| CDD_ECAP_ONE_SHOT_CAPTURE_MODE   |  |
+| CDD_ECAP_COUNTER_STOP   |  |
+| CDD_ECAP_COUNTER_FREE_RUNNING   |  |
+| CDD_ECAP_CAPTURE_MODE   |  |
+| CDD_ECAP_APWM_MODE   |  |
+| CDD_ECAP_MAX_PRESCALER_VALUE   |  |
+| CDD_ECAP_CFG_MAJOR_VERSION   |  |
+| CDD_ECAP_CFG_MINOR_VERSION   |  |
+| CDD_ECAP_CFG_PATCH_VERSION   |  |
+| CDD_ECAP_HW_CNT   |  |
+| CDD_ECAP_DE_INIT_API   | Enable/Disable Cdd_Ecap DeInit API.  |
+| CDD_ECAP_EDGE_COUNT_API   | Enable/Disable Edge Count API.  |
+| CDD_ECAP_EDGE_DETECT_API   | Enable/Disable Edge Detect API.  |
+| CDD_ECAP_GET_DUTY_CYCLE_VALUES_API   | Enable/Disable Get Duty Cycle Values API.  |
+| CDD_ECAP_GET_INPUT_STATE_API   | Enable/Disable Get Input State API.  |
+| CDD_ECAP_GET_TIME_ELAPSED_API   | Enable/Disable Get Time Elapsed API.  |
+| CDD_ECAP_GET_VERSION_INFO_API   | Enable/Disable Get Version Info API.  |
+| CDD_ECAP_SIGNAL_MEASUREMENT_API   | Enable/Disable Signal Measurement API.  |
+| CDD_ECAP_TIMESTAMP_API   | Enable/Disable Timestamp API.  |
+| CDD_ECAP_DEV_ERROR_DETECT   | Enable/Disable Development error detet.  |
+| CDD_ECAP_MAX_NUM_CHANNELS   | Maximum number of Cdd_Ecap channels.  |
+| CDD_ECAP_INIT_CONFIG_PC   | Pre Compile config macro name.  |
+| CddEcapConf_CddEcapChannel_CddEcapChannel_0   | Channel ID Symbolic Names Configured channel ID(s)  |
+| CddEcapConf_CddEcapChannel_CddEcapChannel_1   | Channel identifiers.  |
+| CddEcapConf_CddEcapChannel_CddEcapChannel_2   | Channel identifiers.  |
+| CddEcapConf_CddEcapChannel_CddEcapChannel_3   | Channel identifiers.  |
+| CDD_ECAP_CHANNEL0   | Channel identifiers.  |
+| CDD_ECAP_CHANNEL1   | ECAP Channel 1, in MAIN DOMAIN.  |
+| CDD_ECAP_CHANNEL2   | ECAP Channel 2, in MAIN DOMAIN.  |
+| CDD_ECAP_CHANNEL3   | ECAP Channel 3, in MAIN DOMAIN.  |
+| CDD_ECAP_CHANNEL0_INT_ENABLE   |  |
+| CDD_ECAP_CHANNEL0_INT_ISR_CAT1_INT   |  |
+| CDD_ECAP_CHANNEL1_INT_ENABLE   |  |
+| CDD_ECAP_CHANNEL1_INT_ISR_CAT1_INT   |  |
+| CDD_ECAP_CHANNEL2_INT_ENABLE   |  |
+| CDD_ECAP_CHANNEL2_INT_ISR_CAT1_INT   |  |
+| CDD_ECAP_CHANNEL3_INT_ENABLE   |  |
+| CDD_ECAP_CHANNEL3_INT_ISR_CAT1_INT   |  |
+
+## Functions
+
+| Return type    | Function Name           |      Brief        |
+| -------------- | ----------------------- | ----------------- |
+| void | **[Cdd_Ecap_Init](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-init)**(const [Cdd_Ecap_ConfigType](Classes/struct_cdd___ecap___config_type.md) * ConfigPtr)| Service to initialize Cdd Ecap driver.  |
+| void | **[Cdd_Ecap_DeInit](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-deinit)**(void )| Service to De-initialize Cdd Ecap driver.  |
+| void | **[Cdd_Ecap_SetActivationCondition](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-setactivationcondition)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel, [Cdd_Ecap_ActivationType](Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-activationtype) Activation)| Service for setting the activation condition.  |
+| void | **[Cdd_Ecap_DisableNotification](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-disablenotification)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for disabling the notification.  |
+| void | **[Cdd_Ecap_EnableNotification](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-enablenotification)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for enabling the notification.  |
+| [Cdd_Ecap_InputStateType](Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-inputstatetype) | **[Cdd_Ecap_GetInputState](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-getinputstate)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for getting the input state of CDD_ECAP channel.  |
+| void | **[Cdd_Ecap_StartTimestamp](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-starttimestamp)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel, [Cdd_Ecap_ValueType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-valuetype) * BufferPtr, uint16 BufferSize, uint16 NotifyInterval)| Service for starting the timestamp measurement.  |
+| void | **[Cdd_Ecap_StopTimestamp](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-stoptimestamp)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for stopping the timestamp measurement.  |
+| [Cdd_Ecap_IndexType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-indextype) | **[Cdd_Ecap_GetTimestampIndex](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-gettimestampindex)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for reading the index of the timestamp measurement.  |
+| void | **[Cdd_Ecap_ResetEdgeCount](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-resetedgecount)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service resets the edge count value to 0.  |
+| void | **[Cdd_Ecap_EnableEdgeCount](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-enableedgecount)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for enabling the counting of edges of the given channel.  |
+| void | **[Cdd_Ecap_DisableEdgeCount](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-disableedgecount)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for disabling the counting of edges of the given channel.  |
+| [Cdd_Ecap_EdgeNumberType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-edgenumbertype) | **[Cdd_Ecap_GetEdgeNumbers](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-getedgenumbers)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for getting the count of edges of the given channel.  |
+| void | **[Cdd_Ecap_EnableEdgeDetection](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-enableedgedetection)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for enabling the detection of edges of the given channel.  |
+| void | **[Cdd_Ecap_DisableEdgeDetection](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-disableedgedetection)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for disabling the detection of edges of the given channel.  |
+| void | **[Cdd_Ecap_StartSignalMeasurement](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-startsignalmeasurement)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for starting the measurement of signals for a given channel.  |
+| void | **[Cdd_Ecap_StopSignalMeasurement](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-stopsignalmeasurement)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for stopping the measurement of signals for a given channel.  |
+| [Cdd_Ecap_ValueType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-valuetype) | **[Cdd_Ecap_GetTimeElapsed](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-gettimeelapsed)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| Service for reading the time elapsed between the edges of a channel.  |
+| void | **[Cdd_Ecap_GetDutyCycleValues](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-getdutycyclevalues)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel, [Cdd_Ecap_DutyCycleType](Classes/struct_cdd___ecap___duty_cycle_type.md) * DutyCycleValues)| Service for reading the active time and period.  |
+| void | **[Cdd_Ecap_GetVersionInfo](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| service that returns the version information of the module.  |
+| void | **[Cdd_Ecap_ResetChObj](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-resetchobj)**([Cdd_Ecap_ChObjType](Classes/struct_cdd___ecap___ch_obj_type.md) * chObj)| This API will reset CDD ECAP s/w channel object.  |
+| void | **[Cdd_Ecap_CopyConfig](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-copyconfig)**([Cdd_Ecap_ChObjType](Classes/struct_cdd___ecap___ch_obj_type.md) * chObj, const [Cdd_Ecap_ChannelConfigType](Classes/struct_cdd___ecap___channel_config_type.md) * chCfg)| This API will copy all channel configuration into local ECAP Object.  |
+| void | **[Cdd_Ecap_HwUnitInit](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-hwunitinit)**([Cdd_Ecap_ChObjType](Classes/struct_cdd___ecap___ch_obj_type.md) * chObj)| This API will initialize ECAP channel object associated with logical channel.  |
+| void | **[Cdd_Ecap_SignalMeasurement_Init](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-signalmeasurement-init)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| This API will Clears the Signal Measurment API Structure.  |
+| void | **[Cdd_Ecap_TimeStamp_Init](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-timestamp-init)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel, [Cdd_Ecap_ValueType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-valuetype) * StartPtr, uint16 Size, uint16 NotifyInterval)| This API will Init the Timestamp API Structure.  |
+| void | **[Cdd_Ecap_Timestamp_ISR](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-timestamp-isr)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| This API will be called by ISR for timestamp API.  |
+| void | **[Cdd_Ecap_TimeStamp_Clear](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-timestamp-clear)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) Channel)| This API will clear the timestamp structure.  |
+| void | **[Cdd_Ecap_ConfigEcap](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-configecap)**(uint32 baseAddr, [Cdd_Ecap_ActivationType](Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-activationtype) activation, [Cdd_Ecap_CounterRstType](Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-counterrsttype) cntRst, boolean interruptEnable, [Cdd_Ecap_IntrCapSelect](Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-intrcapselect) capture, uint32 Channel)| This API will configure the ECAP module.  |
+| void | **[Cdd_Ecap_ChannelISR](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-channelisr)**([Cdd_Ecap_ChannelType](Modules/group___c_d_d___e_c_a_p.md#typedef-cdd-ecap-channeltype) ChannelNumber)| This is the Channel ISR.  |
+| void | **[Cdd_Ecap_selectECAPInput](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-selectecapinput)**(uint32 base, [Cdd_Ecap_InputSelect](Modules/group___c_d_d___e_c_a_p.md#enum-cdd-ecap-inputselect) input)| This will select ECAP Input.  |
+| void | **[Cdd_Ecap_captureLoadingDisable](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-captureloadingdisable)**(uint32 baseAddr)| This function disables capture loading.  |
+| void | **[Cdd_Ecap_intrDisable](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-intrdisable)**(uint32 baseAddr, uint32 flag)| This function disables the specified interrupts.  |
+| void | **[Cdd_Ecap_intrStatusClear](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-intrstatusclear)**(uint32 baseAddr, uint16 flag)| This function clears of the status specified interrupts.  |
+| void | **[Cdd_Ecap_reArm](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-rearm)**(uint32 baseAddr)| This function resets the MOD counter of the given channel.  |
+| void | **[Cdd_Ecap_TimeStampNotify](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-timestampnotify)**(void )|  |
+| void | **[Cdd_Ecap_SignalNotify](../Modules/group___c_d_d___e_c_a_p.md#function-cdd-ecap-signalnotify)**(void )|  |
+
+
+
+### function Cdd_Ecap_Init
+
+```
+void Cdd_Ecap_Init(
+    const Cdd_Ecap_ConfigType * ConfigPtr
+)
+```
+
+
+**Brief**: 
+Service to initialize Cdd Ecap driver. 
+
+This service initializes all the ECAP HW units.
+
+
+**Parameters**: 
+
+  
+* **ConfigPtr** Pointer to configuration set (Varaint PC requires a NULL_PTR) 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_DeInit
+
+```
+void Cdd_Ecap_DeInit(
+    void 
+)
+```
+
+
+**Brief**: 
+Service to De-initialize Cdd Ecap driver. 
+
+This service De-initializes all the ECAP HW units.
+
+
+**Parameters**: 
+
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_SetActivationCondition
+
+```
+void Cdd_Ecap_SetActivationCondition(
+    Cdd_Ecap_ChannelType Channel,
+    Cdd_Ecap_ActivationType Activation
+)
+```
+
+
+**Brief**: 
+Service for setting the activation condition. 
+
+This service sets the activation condition of a channel(Rising, Falling or Both Edges).
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+  
+* **Activation** Activation condition or Edge to be selected 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_DisableNotification
+
+```
+void Cdd_Ecap_DisableNotification(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for disabling the notification. 
+
+This service disables the notification function of a channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_EnableNotification
+
+```
+void Cdd_Ecap_EnableNotification(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for enabling the notification. 
+
+This service enables the notification function of a channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_GetInputState
+
+```
+Cdd_Ecap_InputStateType Cdd_Ecap_GetInputState(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for getting the input state of CDD_ECAP channel. 
+
+This service gets the input state of CDD_ECAP channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_StartTimestamp
+
+```
+void Cdd_Ecap_StartTimestamp(
+    Cdd_Ecap_ChannelType Channel,
+    Cdd_Ecap_ValueType * BufferPtr,
+    uint16 BufferSize,
+    uint16 NotifyInterval
+)
+```
+
+
+**Brief**: 
+Service for starting the timestamp measurement. 
+
+This service starts the timestamp measurement on the edges of a given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+  
+* **BufferPtr** Pointer which points to timestamp buffer 
+  
+* **BufferSize** Size of the timestamp buffer 
+  
+* **NotifyInterval** Notify Interval 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_StopTimestamp
+
+```
+void Cdd_Ecap_StopTimestamp(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for stopping the timestamp measurement. 
+
+This service stops the timestamp measurement on the edges of a given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_GetTimestampIndex
+
+```
+Cdd_Ecap_IndexType Cdd_Ecap_GetTimestampIndex(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for reading the index of the timestamp measurement. 
+
+This service reads the index of the timestamp measurement.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_ResetEdgeCount
+
+```
+void Cdd_Ecap_ResetEdgeCount(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service resets the edge count value to 0. 
+
+This service resets the edge count value to 0.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_EnableEdgeCount
+
+```
+void Cdd_Ecap_EnableEdgeCount(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for enabling the counting of edges of the given channel. 
+
+This service enables the counting of edges of the given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_DisableEdgeCount
+
+```
+void Cdd_Ecap_DisableEdgeCount(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for disabling the counting of edges of the given channel. 
+
+This service disables the counting of edges of the given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_GetEdgeNumbers
+
+```
+Cdd_Ecap_EdgeNumberType Cdd_Ecap_GetEdgeNumbers(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for getting the count of edges of the given channel. 
+
+This service counts the edges of the given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_EnableEdgeDetection
+
+```
+void Cdd_Ecap_EnableEdgeDetection(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for enabling the detection of edges of the given channel. 
+
+This service enables the edge detection of given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_DisableEdgeDetection
+
+```
+void Cdd_Ecap_DisableEdgeDetection(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for disabling the detection of edges of the given channel. 
+
+This service disables the edge detection of given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_StartSignalMeasurement
+
+```
+void Cdd_Ecap_StartSignalMeasurement(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for starting the measurement of signals for a given channel. 
+
+This service starts the signal measurement of a given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_StopSignalMeasurement
+
+```
+void Cdd_Ecap_StopSignalMeasurement(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for stopping the measurement of signals for a given channel. 
+
+This service stops the signal measurement of a given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_GetTimeElapsed
+
+```
+Cdd_Ecap_ValueType Cdd_Ecap_GetTimeElapsed(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service for reading the time elapsed between the edges of a channel. 
+
+This service reads the time elapsed between the edges of a channel(High time, low time, period and duty).
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_GetDutyCycleValues
+
+```
+void Cdd_Ecap_GetDutyCycleValues(
+    Cdd_Ecap_ChannelType Channel,
+    Cdd_Ecap_DutyCycleType * DutyCycleValues
+)
+```
+
+
+**Brief**: 
+Service for reading the active time and period. 
+
+This service reads the active time and period of a given channel.
+
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_GetVersionInfo
+
+```
+void Cdd_Ecap_GetVersionInfo(
+    Std_VersionInfoType * VersionInfoPtr
+)
+```
+
+
+**Brief**: 
+service that returns the version information of the module. 
+
+This service returns the version information of the Cdd Ecap module.
+
+
+**Parameters**: 
+
+  
+* **VersionInfoPtr** Pointer to where to store the version information of this module 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_ResetChObj
+
+```
+void Cdd_Ecap_ResetChObj(
+    Cdd_Ecap_ChObjType * chObj
+)
+```
+
+
+**Brief**: 
+This API will reset CDD ECAP s/w channel object. 
+
+**Parameters**: 
+
+  
+* **chObj** Pointer to channel object.
+
+
+**Return**: None. 
+
+### function Cdd_Ecap_CopyConfig
+
+```
+void Cdd_Ecap_CopyConfig(
+    Cdd_Ecap_ChObjType * chObj,
+    const Cdd_Ecap_ChannelConfigType * chCfg
+)
+```
+
+
+**Brief**: 
+This API will copy all channel configuration into local ECAP Object. 
+
+**Parameters**: 
+
+  
+* **chObj** Pointer to driver object. 
+  
+* **chCfg** Pointer to configuration object sent by application. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_HwUnitInit
+
+```
+void Cdd_Ecap_HwUnitInit(
+    Cdd_Ecap_ChObjType * chObj
+)
+```
+
+
+**Brief**: 
+This API will initialize ECAP channel object associated with logical channel. 
+
+**Parameters**: 
+
+  
+* **chObj** Pointer to channel object. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_SignalMeasurement_Init
+
+```
+void Cdd_Ecap_SignalMeasurement_Init(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+This API will Clears the Signal Measurment API Structure. 
+
+**Parameters**: 
+
+  
+* **Channel** CDD ECAP Channel in Use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_TimeStamp_Init
+
+```
+void Cdd_Ecap_TimeStamp_Init(
+    Cdd_Ecap_ChannelType Channel,
+    Cdd_Ecap_ValueType * StartPtr,
+    uint16 Size,
+    uint16 NotifyInterval
+)
+```
+
+
+**Brief**: 
+This API will Init the Timestamp API Structure. 
+
+**Parameters**: 
+
+  
+* **Channel** CDD ECAP Channel in Use 
+  
+* **StartPtr** Start of the Buffer ptr 
+  
+* **Size** Size of the Buffer to use 
+  
+* **NotifyInterval** Notify Inerval 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_Timestamp_ISR
+
+```
+void Cdd_Ecap_Timestamp_ISR(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+This API will be called by ISR for timestamp API. 
+
+**Parameters**: 
+
+  
+* **Channel** ECAP Channel in Use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_TimeStamp_Clear
+
+```
+void Cdd_Ecap_TimeStamp_Clear(
+    Cdd_Ecap_ChannelType Channel
+)
+```
+
+
+**Brief**: 
+This API will clear the timestamp structure. 
+
+**Parameters**: 
+
+  
+* **Channel** ECAP Channel in Use 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_ConfigEcap
+
+```
+void Cdd_Ecap_ConfigEcap(
+    uint32 baseAddr,
+    Cdd_Ecap_ActivationType activation,
+    Cdd_Ecap_CounterRstType cntRst,
+    boolean interruptEnable,
+    Cdd_Ecap_IntrCapSelect capture,
+    uint32 Channel
+)
+```
+
+
+**Brief**: 
+This API will configure the ECAP module. 
+
+**Parameters**: 
+
+  
+* **baseAddr** Baseaddress of channel 
+  
+* **activation** Activation Edge type 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_ChannelISR
+
+```
+void Cdd_Ecap_ChannelISR(
+    Cdd_Ecap_ChannelType ChannelNumber
+)
+```
+
+
+**Brief**: 
+This is the Channel ISR. 
+
+**Parameters**: 
+
+  
+* **Channel** Channel number 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_selectECAPInput
+
+```
+void Cdd_Ecap_selectECAPInput(
+    uint32 base,
+    Cdd_Ecap_InputSelect input
+)
+```
+
+
+**Brief**: 
+This will select ECAP Input. 
+
+**Parameters**: 
+
+  
+* **input** Cdd Ecap Input 
+  
+* **base** Baseaddress of channel 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_captureLoadingDisable
+
+```
+void Cdd_Ecap_captureLoadingDisable(
+    uint32 baseAddr
+)
+```
+
+
+**Brief**: 
+This function disables capture loading. 
+
+**Parameters**: 
+
+  
+* **baseAddr** It is the Memory address of the ECAP instance used. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_intrDisable
+
+```
+void Cdd_Ecap_intrDisable(
+    uint32 baseAddr,
+    uint32 flag
+)
+```
+
+
+**Brief**: 
+This function disables the specified interrupts. 
+
+**Parameters**: 
+
+  
+* **baseAddr** It is the Memory address of the ECAP instance used. 
+  
+* **flag** It is the value which specifies the interrupts to be disabled. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_intrStatusClear
+
+```
+void Cdd_Ecap_intrStatusClear(
+    uint32 baseAddr,
+    uint16 flag
+)
+```
+
+
+**Brief**: 
+This function clears of the status specified interrupts. 
+
+**Parameters**: 
+
+  
+* **baseAddr** It is the Memory address of the ECAP instance used. 
+  
+* **flag** It is the value which specifies the status of interrupts to be cleared. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_reArm
+
+```
+void Cdd_Ecap_reArm(
+    uint32 baseAddr
+)
+```
+
+
+**Brief**: 
+This function resets the MOD counter of the given channel. 
+
+**Parameters**: 
+
+  
+* **baseAddr** It is the Memory address of the ECAP instance used. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_TimeStampNotify
+
+```
+void Cdd_Ecap_TimeStampNotify(
+    void 
+)
+```
+
+
+### function Cdd_Ecap_SignalNotify
+
+```
+void Cdd_Ecap_SignalNotify(
+    void 
+)
+```
+
+
+
+
+
+-------------------------------

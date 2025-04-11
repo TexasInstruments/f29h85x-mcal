@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Cdd_Xbar')/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!]
+[!SKIPFILE "as:modconf('Cdd_Xbar/Cdd')/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited. This product is protected under copyright law and
  *                 trade secret law as an unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -35,11 +35,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_XBAR_SW_MAJOR_VERSION != (1U)) || (CDD_XBAR_SW_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_SW_MAJOR_VERSION != (2U)) || (CDD_XBAR_SW_MINOR_VERSION != (0U)))
     #error "Version numbers of Cdd_Xbar.c and Cdd_Xbar.h are inconsistent!"
 #endif
 
-#if ((CDD_XBAR_CFG_MAJOR_VERSION != (1U)) || (CDD_XBAR_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_CFG_MAJOR_VERSION != (2U)) || (CDD_XBAR_CFG_MINOR_VERSION != (0U)))
     #error "Version numbers of Cdd_Xbar_Cfg.c and Cdd_Xbar_Cfg.h are inconsistent!"
 #endif
 
@@ -77,7 +77,7 @@
 #define CDD_XBAR_START_SEC_CONFIG_DATA
 #include "Cdd_Xbar_MemMap.h"
 
-[!SELECT "as:modconf('Cdd_Xbar')/CddXbarConfiguration"!]
+[!SELECT "as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration"!]
 /** \brief CDD Crossbar Configuration */
 VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Configuration = 
 {
@@ -117,8 +117,8 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Configuration =
             .outputStretchPulse = [!"../CddXbarOutputXbarOutputPulseStretch"!],    /* Design: MCAL-25719 */
             .outputInversion = [!"text:toupper(../CddXbarOutputXbarOutputInversion)"!],    /* Design: MCAL-25713 */
             .outputLatch = [!"text:toupper(../CddXbarOutputXbarOutputLatch)"!],    /* Design: MCAL-25718 */
-            .outputInversionBeforeLatch = [!"text:toupper(../CddXbarOutputXbarOutputFlagConfig/CddXbarOutputXbarInversionBeforeLatch)"!],    /* Design: MCAL-xxxxx */
-            .outputFlag = [!"../CddXbarOutputXbarOutputFlagConfig/CddXbarOutputXbarOutputLatchInitSts"!],    /* Design: MCAL-xxxxx */
+            .outputInversionBeforeLatch = [!"text:toupper(../CddXbarOutputXbarOutputFlagConfig/CddXbarOutputXbarInversionBeforeLatch)"!],    /* Design: MCAL-25814 */
+            .outputFlag = [!"../CddXbarOutputXbarOutputFlagConfig/CddXbarOutputXbarOutputLatchInitSts"!],    /* Design: MCAL-25813 */
         },
 [!ENDLOOP!]
     },

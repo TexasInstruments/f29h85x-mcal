@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ extern "C" {
  * Design : MCAL-25142, MCAL-25144, MCAL-25146, MCAL-25159, MCAL-25132, MCAL-25134,
  * Design : MCAL-25135, MCAL-25136, MCAL-25137, MCAL-25129, MCAL-25130, MCAL-25131,
  * Design : MCAL-25116, MCAL-25117, MCAL-25118, MCAL-25119, MCAL-25120, MCAL-25160,
- * Design : MCAL-25105,    
+ * Design : MCAL-25105, MCAL-24883  
  */
 [!LOOP "as:modconf('Spi')[1]/SpiDriver"!][!//
 CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_ConfigObj =

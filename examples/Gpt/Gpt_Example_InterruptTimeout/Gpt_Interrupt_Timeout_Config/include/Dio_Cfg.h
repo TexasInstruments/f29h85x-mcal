@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ extern "C" {
 /** \brief Dio configuration Minor Version */
 #define DIO_CFG_MINOR_VERSION           (0U)
 /** \brief Dio configuration Patch Version */
-#define DIO_CFG_PATCH_VERSION           (1U)
+#define DIO_CFG_PATCH_VERSION           (2U)
 
 
 /*********************************************************************************************************************
@@ -81,7 +81,7 @@ extern "C" {
  *
  *********************************************************************************************************************/
 /* Design: MCAL-22503 */
-#define DIO_VERSION_INFO_API      (STD_ON)
+#define DIO_VERSION_INFO_API      (STD_OFF)
 
 /*********************************************************************************************************************
  *
@@ -163,22 +163,6 @@ extern "C" {
 /* Design: MCAL-22471, MCAL-22469, MCAL-22506, MCAL-22507, MCAL-22470, MCAL-22537, MCAL-22538*/
 /* Symbolic name for GPIO channel #0 DioChannel_0 */
 #define DioConf_DioChannel_DioChannel_0 ((Dio_ChannelType) 0U) /*~ASR~*/
-/* Symbolic name for GPIO channel #1 DioChannel_1 */
-#define DioConf_DioChannel_DioChannel_1 ((Dio_ChannelType) 1U) /*~ASR~*/
-/* Symbolic name for GPIO channel #2 DioChannel_2 */
-#define DioConf_DioChannel_DioChannel_2 ((Dio_ChannelType) 2U) /*~ASR~*/
-/* Symbolic name for GPIO channel #3 DioChannel_3 */
-#define DioConf_DioChannel_DioChannel_3 ((Dio_ChannelType) 3U) /*~ASR~*/
-/* Symbolic name for GPIO channel #4 DioChannel_4 */
-#define DioConf_DioChannel_DioChannel_4 ((Dio_ChannelType) 4U) /*~ASR~*/
-/* Symbolic name for GPIO channel #5 DioChannel_5 */
-#define DioConf_DioChannel_DioChannel_5 ((Dio_ChannelType) 5U) /*~ASR~*/
-/* Symbolic name for GPIO channel #6 DioChannel_6 */
-#define DioConf_DioChannel_DioChannel_6 ((Dio_ChannelType) 6U) /*~ASR~*/
-/* Symbolic name for GPIO channel #7 DioChannel_7 */
-#define DioConf_DioChannel_DioChannel_7 ((Dio_ChannelType) 7U) /*~ASR~*/
-/* Symbolic name for GPIO channel #8 DioChannel_8 */
-#define DioConf_DioChannel_DioChannel_8 ((Dio_ChannelType) 8U) /*~ASR~*/
 
 /*********************************************************************************************************************
  *

@@ -1,0 +1,135 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="Cdd_Ipc" type="AR-PACKAGE">
+        <d:lst type="ELEMENTS">
+          <d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+            <d:ctr type="MODULE-CONFIGURATION">
+              <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Ipc/Cdd"/>
+              <d:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION" 
+                     value="VariantPreCompile">
+                <a:a name="IMPORTER_INFO" value="@DEF"/>
+              </d:var>
+              <d:ctr name="CddIpcConfig" type="IDENTIFIABLE">
+                <d:lst name="CddIpcRemoteCoreConfig" type="MAP">
+                  <d:ctr name="CddIpcRemoteCoreConfig_0" type="IDENTIFIABLE">
+                    <d:var name="CddIpcRemoteCore" type="ENUMERATION" 
+                           value="CDD_IPC_CPU3"/>
+                    <d:lst name="CddIpcTxInstanceConfig" type="MAP">
+                      <d:ctr name="CddIpcTxInstanceConfig_0" 
+                             type="IDENTIFIABLE">
+                        <d:var name="CddIpcTxInstance" type="ENUMERATION" 
+                               value="CDD_IPC_CPU1_L_CPU3_R_INST0">
+                          <a:a name="IMPORTER_INFO">
+                            <a:v>@DEF</a:v>
+                            <a:v>@CALC</a:v>
+                          </a:a>
+                        </d:var>
+                        <d:lst name="CddIpcTxChannelConfig" type="MAP">
+                          <d:ctr name="CddIpcTxChannelConfig_0" 
+                                 type="IDENTIFIABLE">
+                            <d:var name="CddIpcTxChannelId" type="INTEGER" 
+                                   value="1">
+                              <a:a name="IMPORTER_INFO" value="@DEF"/>
+                            </d:var>
+                            <d:var name="CddIpcTxProcessing" type="ENUMERATION" 
+                                   value="CDD_IPC_POLLING"/>
+                            <d:ref name="CddIpcTxPduID" type="REFERENCE" >
+                              <a:a name="IMPORTER_INFO" value="@DEF"/>
+                            </d:ref>
+                            <d:var name="CddIpcTxGlobalChannelId" 
+                                   type="INTEGER" value="1">
+                              <a:a name="IMPORTER_INFO">
+                                <a:v>@DEF</a:v>
+                                <a:v>@CALC</a:v>
+                              </a:a>
+                            </d:var>
+                          </d:ctr>
+                        </d:lst>
+                      </d:ctr>
+                    </d:lst>
+                    <d:lst name="CddIpcRxInstanceConfig" type="MAP">
+                      <d:ctr name="CddIpcRxInstanceConfig_0" 
+                             type="IDENTIFIABLE">
+                        <d:var name="CddIpcRxInstance" type="ENUMERATION" 
+                               value="CDD_IPC_CPU1_L_CPU3_R_INST1"/>
+                        <d:var name="CddIpcInteruptType" type="ENUMERATION" 
+                               value="ISR_CAT2_INT"/>
+                        <d:lst name="CddIpcRxChannelConfig" type="MAP">
+                          <d:ctr name="CddIpcRxChannelConfig_0" 
+                                 type="IDENTIFIABLE">
+                            <d:var name="CddIpcRxChannelId" type="INTEGER" 
+                                   value="2"/>
+                            <d:var name="CddIpcUserCallbackFunction" 
+                                   type="FUNCTION-NAME" 
+                                   value="CddIpcRxChannelConfig_1_Rxindication">
+                              <a:a name="ENABLE" value="true"/>
+                            </d:var>
+                            <d:ref name="CddIpcRxPduID" type="REFERENCE" >
+                              <a:a name="IMPORTER_INFO" value="@DEF"/>
+                            </d:ref>
+                            <d:var name="CddIpcRxGlobalChannelId" 
+                                   type="INTEGER" value="1">
+                              <a:a name="IMPORTER_INFO">
+                                <a:v>@DEF</a:v>
+                                <a:v>@CALC</a:v>
+                              </a:a>
+                            </d:var>
+                          </d:ctr>
+                        </d:lst>
+                      </d:ctr>
+                    </d:lst>
+                  </d:ctr>
+                </d:lst>
+              </d:ctr>
+              <d:ctr name="CddComStackContribution" type="IDENTIFIABLE">
+                <d:ctr name="CddPduRLowerLayerContribution" type="IDENTIFIABLE">
+                  <a:a name="ENABLE" value="false"/>
+                  <d:lst name="CddPduRLowerLayerRxPdu" type="MAP"/>
+                  <d:lst name="CddPduRLowerLayerTxPdu" type="MAP"/>
+                </d:ctr>
+              </d:ctr>
+              <d:ctr name="CddIpcGeneral" type="IDENTIFIABLE">
+                <d:var name="CddIpcDevErrorDetect" type="BOOLEAN" value="true"/>
+                <d:var name="CddIpcVersionInfoApi" type="BOOLEAN" value="true"/>
+                <d:var name="CddIpcIntegrationWithAsrComStackEnable" 
+                       type="BOOLEAN" value="false"/>
+                <d:var name="CddIpcReservedInstances" type="INTEGER" value="0">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+                <d:var name="CddIpcLocalCore" type="ENUMERATION" 
+                       value="CDD_IPC_CPU1">
+                  <a:a name="IMPORTER_INFO">
+                    <a:v>@DEF</a:v>
+                    <a:v>@CALC</a:v>
+                  </a:a>
+                </d:var>
+                <d:var name="CddIpcMainFunctionReadPeriod" type="FLOAT" 
+                       value="0.01">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+                <d:var name="CddIpcTimeoutDuration" type="FLOAT" value="10.0"/>
+                <d:ref name="CddIpcCounterClockRef" type="REFERENCE" 
+                       value="ASPath:/Mcu/Mcu/Mcu_ModuleConfiguration_0/McuClockSettingConfig_Osc2/SYSCLK"/>
+              </d:ctr>
+            </d:ctr>
+          </d:chc>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

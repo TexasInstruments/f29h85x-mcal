@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -48,11 +48,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((PORT_SW_MAJOR_VERSION != (1U)) || (PORT_SW_MINOR_VERSION != (0U)))
+#if ((PORT_SW_MAJOR_VERSION != (1U)) || (PORT_SW_MINOR_VERSION != (1U)))
    #error "Version numbers of Port_PBcfg.c and Port.h are inconsistent!"
 #endif
 
-#if ((PORT_CFG_MAJOR_VERSION != (1U)) || (PORT_CFG_MINOR_VERSION != (0U)))
+#if ((PORT_CFG_MAJOR_VERSION != (1U)) || (PORT_CFG_MINOR_VERSION != (1U)))
    #error "Version numbers of Port_PBcfg.c and Port_Cfg.h are inconsistent!"
 #endif
 
@@ -75,7 +75,7 @@
 #include "Port_MemMap.h"
 
 
-static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig[2] =
+static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig[3] =
 {
    
    {
@@ -95,8 +95,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(0UL<<2U)
-                            |(0UL<<3U)
+                            |(1UL<<2U)
+                            |(1UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -130,8 +130,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(0UL<<2U)
-                            |(0UL<<3U)
+                            |(1UL<<2U)
+                            |(1UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -147,6 +147,41 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     }
 
    },
+   
+   {
+    /* .Port_PhysicalPinId = A8U,    Physical Pin Number*/
+	.Port_PinId = (Port_PinType)0U,
+    .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_NA,
+    .Port_DirectionChangeable = (boolean) FALSE,
+    .Port_ModeChangeable = (boolean) FALSE,
+    .Port_PinLevelValue = (Port_PinLevelValueType)PORT_PIN_LEVEL_NA,
+    .Port_ControllerSpecific =
+    {
+        .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
+        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_MUXMODE_NA,
+        .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD,
+        .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_SYNC,
+        .Port_PinQualificationPeriod = (uint32)1U,
+        .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
+        .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
+                            |(0UL<<1U)
+                            |(1UL<<2U)
+                            |(1UL<<3U)
+                            |(1UL<<4U)),
+        .Port_EnableWakeupPinLPM = (boolean) FALSE
+    },
+    .Port_NumPortMuxModes = (uint32)1U,
+    .Port_PinMode =
+    {
+        
+        
+        [0] = 
+        {
+        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_MUXMODE_NA
+        },
+    }
+
+   },
 
 };
 
@@ -155,7 +190,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
 const struct Port_ConfigType_s Port_PortConfigSet = 
 {
     .Port_PinConfig = (const Port_PinConfigType *)&Port_PortConfigSet_PinConfig[0],
-    .Port_NumberOfPortPins = (Port_PinType)2U
+    .Port_NumberOfPortPins = (Port_PinType)3U
 };
 
 

@@ -173,7 +173,60 @@
                   <MAX>255</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
+                <ECUC-FLOAT-PARAM-DEF UUID="86920dfb-bcf9-46bf-8e65-d0c6569a799e">
+                  <SHORT-NAME>SpiSequenceTimeOut</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">TimeOut value for sync transmission in seconds, if sync transmission didn&apos;t happen within this time frame transmission will be aborted and DET runtime error is reported with SPI_E_SEQ_TIMEOUT error code</L-2>
+                  </DESC>
+                  <SCOPE>LOCAL</SCOPE>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>LINK</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-LINK-TIME</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                  <DEFAULT-VALUE>5.0E-5</DEFAULT-VALUE>
+                  <MAX>10.0</MAX>
+                  <MIN>1.0E-6</MIN>
+                </ECUC-FLOAT-PARAM-DEF>
               </PARAMETERS>
+              <REFERENCES>
+                <ECUC-REFERENCE-DEF UUID="4f7c6bce-8d07-43c8-b7ff-859d4c7e0efd">
+                  <SHORT-NAME>SpiCounterClockRef</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">This parameter contains a reference to the sysClock to calculate clock cycles for IPC free run counter, which is used by the SPI driver.</L-2>
+                  </DESC>
+                  <SCOPE>LOCAL</SCOPE>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>LINK</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-LINK-TIME</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint</DESTINATION-REF>
+                </ECUC-REFERENCE-DEF>
+              </REFERENCES>
               <SUB-CONTAINERS>
                 <ECUC-PARAM-CONF-CONTAINER-DEF UUID="b7a46d54-1527-44b9-b431-067bef2d33f0">
                   <SHORT-NAME>SpiChannel</SHORT-NAME>
@@ -374,7 +427,7 @@
                     <ECUC-ENUMERATION-PARAM-DEF UUID="af14c272-347f-47a9-a36e-68f9e1c461df">
                       <SHORT-NAME>SpiTransferStart</SHORT-NAME>
                       <DESC>
-                        <L-2 L="EN">This parameter defines the first starting bit for transmission. In c29x only MSB is supported</L-2>
+                        <L-2 L="EN">This parameter defines the first starting bit for transmission.</L-2>
                       </DESC>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
@@ -827,7 +880,7 @@
                   <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-INTEGER-PARAM-DEF UUID="3cc0154d-077a-4300-aef6-869826a7472b">
+                    <ECUC-INTEGER-PARAM-DEF UUID="bc8f473d-67cc-4939-9bcd-d4798902d06a">
                       <SHORT-NAME>SpiExternalDeviceId</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">The index of the corresponding external device config associated with job. </L-2>
@@ -1168,7 +1221,7 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="259620e9-ff8e-4c42-9a00-98a6b6df720f">
+                    <ECUC-INTEGER-PARAM-DEF UUID="dfd2527a-8c0b-4fb0-b8f6-6c5c236aed74">
                       <SHORT-NAME>SpiDataWordDelay</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This parameter defines the SPI delay between every transfer from FIFO transmit buffer to transmit shift register, work only in FIFO mode</L-2>
@@ -1224,7 +1277,7 @@
                     </ECUC-FLOAT-PARAM-DEF>
                   </PARAMETERS>
                   <REFERENCES>
-                    <ECUC-REFERENCE-DEF UUID="9c575be2-51b4-4405-9322-1dd569e8b4b4">
+                    <ECUC-REFERENCE-DEF UUID="5fe2f64c-2395-4f90-ab9b-66250c5984ce">
                       <SHORT-NAME>SpiSysClockRef</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to the SPI clock source configuration, which is set in the MCU driver configuration.</L-2>
@@ -1248,7 +1301,7 @@
                       </VALUE-CONFIG-CLASSES>
                       <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint</DESTINATION-REF>
                     </ECUC-REFERENCE-DEF>
-                    <ECUC-REFERENCE-DEF UUID="a3f0f21d-e7c8-4bec-a60f-c8f6fac081a8">
+                    <ECUC-REFERENCE-DEF UUID="6e85bbd9-7a2f-446c-bfa2-7a8a510c5298">
                       <SHORT-NAME>SpiCsGpioRef</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to the Dio channel configuration to get symbolic name from Dio, which is set in the DIO driver configuration</L-2>
@@ -1293,7 +1346,7 @@
                     </ECUC-REFERENCE-DEF>
                   </REFERENCES>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="66d56a25-a2ed-4edb-ace8-f036ebfc2256">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c64b25df-b21d-4e1d-8e11-e2389dae6141">
                   <SHORT-NAME>SpiHwUnitConfig</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">HW Unit configurations</L-2>
@@ -1302,7 +1355,7 @@
                   <UPPER-MULTIPLICITY>5</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="d88dcf37-2cf1-4a8f-9e2c-2ff68e3d999f">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="cd3b1db7-fbef-4541-a8ae-d02370ee55ca">
                       <SHORT-NAME>SpiHwUnitType</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">SPI HW unit to use.</L-2>
@@ -1349,7 +1402,7 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="d9ca6dc7-453b-40f3-8d41-ae65d882b73c">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="f81076b5-90ad-45be-ba69-2e6228dacfcd">
                       <SHORT-NAME>SpiHighSpeedMode</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enables High speed mode for SPI instance, Note: Since only selected pins support HS mode, to enable high speed communication apropriate HS pins shall be configured for SPI in port configration, please check c29x TRM and data sheet for HS mode supported pins</L-2>
@@ -1374,7 +1427,7 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>false</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="91131c64-9051-4d43-a50b-4b618cac7c5f">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="c4828573-5f3e-4a37-a858-187cb465ed0d">
                       <SHORT-NAME>SpiLoopBackMode</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enables Loop Back mode for SPI instance</L-2>
@@ -1399,7 +1452,7 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>false</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="7b2da5f8-4d6b-4781-8268-c566fcd8267c">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="a46192f2-e548-46e9-998d-f99aa6cc8d75">
                       <SHORT-NAME>SpiFifoModeEnable</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enables FIFO mode for SPI instance</L-2>
@@ -1424,7 +1477,7 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>true</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="37c938ec-c439-4054-b1ea-27bd49516dc1">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="c6d5a47b-b753-4a0f-8d62-8d11af8caec6">
                       <SHORT-NAME>SpiIrqType</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Type of Isr function: CAT1 realtime interrupt or CAT1 : interrupt void func(void) or CAT2 : ISR(func)</L-2>
@@ -1524,7 +1577,7 @@
                   <MAX>2</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="95055181-8989-4af1-8110-b9a3e65a958e">
+                <ECUC-INTEGER-PARAM-DEF UUID="17e2aa9f-d892-4fca-8663-c3d5abe1f422">
                   <SHORT-NAME>SpiChannelInternalBufferMaxLength</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Internal Buffer length in bytes - applicable for SpiChannelBuffer type - SPI_IB. This is the maximum length that can be allocated by each channel and it is fixed.Can vary buffer length per channel by configuring SpiIbNBuffers and SpiDataWidth. Refer MCAL-24874 and MCAL-25127</L-2>

@@ -35,6 +35,7 @@ title: Mcu API GUIDE Header file
 |typedef uint8  | **[Mcu_RamSectionType](../Modules/group___m_c_u.md#typedef-mcu-ramsectiontype)** | This type specifies the identification (ID) for a RAM section used in Mcu_InitRamSection.  | 
 |typedef const [Mcu_RamSectionConfigType](Classes/struct_mcu___ram_section_config_type.md) *  | **[Mcu_RamConfigPtrType](../Modules/group___m_c_u.md#typedef-mcu-ramconfigptrtype)** 
 |typedef const [Mcu_PeripheralClkRegConfigType](Classes/struct_mcu___peripheral_clk_reg_config_type.md) *  | **[Mcu_PeripheralClkRegConfigPtrType](../Modules/group___m_c_u.md#typedef-mcu-peripheralclkregconfigptrtype)** 
+|typedef const [Mcu_PeripheralResetRegConfigType](Classes/struct_mcu___peripheral_reset_reg_config_type.md) *  | **[Mcu_PeripheralResetRegConfigPtrType](../Modules/group___m_c_u.md#typedef-mcu-peripheralresetregconfigptrtype)** 
 |typedef const [Mcu_MCanClkConfigType](Classes/struct_mcu___m_can_clk_config_type.md) *  | **[Mcu_MCanClkConfigPtrType](../Modules/group___m_c_u.md#typedef-mcu-mcanclkconfigptrtype)** 
 |typedef const [Mcu_LinClkConfigType](Classes/struct_mcu___lin_clk_config_type.md) *  | **[Mcu_LinClkConfigPtrType](../Modules/group___m_c_u.md#typedef-mcu-linclkconfigptrtype)** 
 |typedef const [Mcu_ClockConfigType](Classes/struct_mcu___clock_config_type.md) *  | **[Mcu_ClockConfigPtrType](../Modules/group___m_c_u.md#typedef-mcu-clockconfigptrtype)** 
@@ -369,6 +370,8 @@ List of low power modes.
 
 
 
+
+
 ## Structures
 |   Name         | Brief          |
 | -------------- | -------------- |
@@ -380,6 +383,7 @@ List of low power modes.
 | **[Mcu_CpuTimerClkConfigType](../Classes/struct_mcu___cpu_timer_clk_config_type.md)** | Structure for Cpu Timer clock register setting.  |
 | **[Mcu_ExternalClkOutConfigType](../Classes/struct_mcu___external_clk_out_config_type.md)** | Structure for External Clock Output setting.  |
 | **[Mcu_PeripheralClkRegConfigType](../Classes/struct_mcu___peripheral_clk_reg_config_type.md)** | Structure for peripheral clock register setting.  |
+| **[Mcu_PeripheralResetRegConfigType](../Classes/struct_mcu___peripheral_reset_reg_config_type.md)** | Structure for peripheral Reset register setting.  |
 | **[Mcu_ClockConfigType](../Classes/struct_mcu___clock_config_type.md)** | Structure for device clock setting.  |
 | **[Mcu_ModeConfigType](../Classes/struct_mcu___mode_config_type.md)** | Structure for Mcu low power mode configuration type.  |
 
@@ -441,6 +445,7 @@ List of low power modes.
 | MCU_LPM_STANDBY   | LPM defines for LPMCR.LPM STANDBY.  |
 | MCU_STANDBY_QUALPERIOD_MAX   | Maximum Standby Qualification period supported.  |
 | MCU_STANDBY_QUALPERIOD_MIN   | Minimum Standby Qualification period supported.  |
+| SYSCTL_SYNCBUSY_TIMEOUT_CYCLES   | Timeout cycles.  |
 
 ## Functions
 
@@ -464,14 +469,7 @@ List of low power modes.
 | void | **[Mcu_ClearReset](../Modules/group___m_c_u.md#function-mcu-clearreset)**([Mcu_RawResetType](Modules/group___m_c_u.md#typedef-mcu-rawresettype) RawResetType)| Clears the Reset Cause register.  |
 | void | **[Mcu_PerformControllerReset](../Modules/group___m_c_u.md#function-mcu-performcontrollerreset)**(void )| Perform simulation of external reset.  |
 | void | **[Mcu_EnterLowPowerMode](../Modules/group___m_c_u.md#function-mcu-enterlowpowermode)**([Mcu_ModeConfigPtrType](Classes/struct_mcu___mode_config_type.md) ModeConfigPtr)| Set & enter the Low Power Mode.  |
-| boolean | **[Mcu_IsMCDClockFailureDetected](../Modules/group___m_c_u.md#function-mcu-ismcdclockfailuredetected)**(void )| Get the missing clock detection Failure Status.  |
-| void | **[Mcu_ResetMCD](../Modules/group___m_c_u.md#function-mcu-resetmcd)**(void )| Reset the missing clock detection logic after clock failure.  |
-| void | **[Mcu_SetPLLSysClk](../Modules/group___m_c_u.md#function-mcu-setpllsysclk)**(uint16 divider)| Sets up PLLSYSCLK divider.  |
-| void | **[Mcu_EnterIdleMode](../Modules/group___m_c_u.md#function-mcu-enteridlemode)**(void )| Enters IDLE mode.  |
-| void | **[Mcu_EnterStandbyMode](../Modules/group___m_c_u.md#function-mcu-enterstandbymode)**(void )| Enters STANDBY mode.  |
-| void | **[Mcu_SetStandbyQualificationPeriod](../Modules/group___m_c_u.md#function-mcu-setstandbyqualificationperiod)**(uint16 cycles)| Sets the number of cycles to qualify an input on waking from STANDBY mode.  |
-| void | **[Mcu_EnableWatchdogStandbyWakeup](../Modules/group___m_c_u.md#function-mcu-enablewatchdogstandbywakeup)**(void )| Enable the device to wake from STANDBY mode upon a watchdog interrupt.  |
-| void | **[Mcu_DisableWatchdogStandbyWakeup](../Modules/group___m_c_u.md#function-mcu-disablewatchdogstandbywakeup)**(void )| Disable the device from waking from STANDBY mode upon a watchdog interrupt.  |
+| void | **[Mcu_FillRamSection](../Modules/group___m_c_u.md#function-mcu-fillramsection)**([Mcu_RamConfigPtrType](Classes/struct_mcu___ram_section_config_type.md) RamSectionConfigPtr)| Mcu_FillRamSection - This API will fill the ram sections with configured data.  |
 
 
 
@@ -1050,231 +1048,25 @@ Set & enter the Low Power Mode.
 
 **Postcondition**: None 
 
-### function Mcu_IsMCDClockFailureDetected
+### function Mcu_FillRamSection
 
 ```
-static inline boolean Mcu_IsMCDClockFailureDetected(
-    void 
+void Mcu_FillRamSection(
+    Mcu_RamConfigPtrType RamSectionConfigPtr
 )
 ```
 
 
 **Brief**: 
-Get the missing clock detection Failure Status. 
-
-A failure means the oscillator clock is missing
-
-
-**Returns**: 
-
-  
-* **TRUE** if a failure is detected 
-<br> 
-  
-* **FALSE** if a failure isn't detected 
-<br> 
-
-
-**Return**: boolean type 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Mcu_ResetMCD
-
-```
-static inline void Mcu_ResetMCD(
-    void 
-)
-```
-
-
-**Brief**: 
-Reset the missing clock detection logic after clock failure. 
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Mcu_SetPLLSysClk
-
-```
-static inline void Mcu_SetPLLSysClk(
-    uint16 divider
-)
-```
-
-
-**Brief**: 
-Sets up PLLSYSCLK divider. 
-
-This function sets up the PLLSYSCLK divider. There is only one divider that scales PLLSYSCLK to generate the system clock.
-
-The divider parameter can have one value from the set below: 0x0 = /1 0x1 = /2 0x2 = /4 (default on reset) 0x3 = /6 0x4 = /8 ...... 0x3F =/126
-
+Mcu_FillRamSection - This API will fill the ram sections with configured data. 
 
 **Parameters**: 
 
   
-* **divider** is the value that configures the divider. 
-
-
-**Returns**: 
-
+* **RamSectionConfigPtr** Pointer to Ram section configuration set. 
   
 * **None** 
-<br> 
 
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Mcu_EnterIdleMode
-
-```
-static inline void Mcu_EnterIdleMode(
-    void 
-)
-```
-
-
-**Brief**: 
-Enters IDLE mode. 
-
-This function puts the device into IDLE mode. The CPU clock is gated while all peripheral clocks are left running. Any enabled interrupt will wake the CPU up from IDLE mode.
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Mcu_EnterStandbyMode
-
-```
-static inline void Mcu_EnterStandbyMode(
-    void 
-)
-```
-
-
-**Brief**: 
-Enters STANDBY mode. 
-
-This function puts the device into STANDBY mode. This will gate both the CPU clock and any peripheral clocks derived from SYSCLK. The watchdog is left active, and an NMI or an optional watchdog interrupt will wake the CPU subsystem from STANDBY mode.
-
-GPIOs may be configured to wake the CPU subsystem.
-
-The CPU will receive an interrupt (WAKEINT) on wakeup.
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Mcu_SetStandbyQualificationPeriod
-
-```
-static inline void Mcu_SetStandbyQualificationPeriod(
-    uint16 cycles
-)
-```
-
-
-**Brief**: 
-Sets the number of cycles to qualify an input on waking from STANDBY mode. 
-
-This function sets the number of OSCCLK clock cycles used to qualify the selected inputs when waking from STANDBY mode. The cycles parameter should be between 2 and 65 cycles inclusive.
-
-
-**Parameters**: 
-
-  
-* **cycles** is the number of OSCCLK cycles. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Mcu_EnableWatchdogStandbyWakeup
-
-```
-static inline void Mcu_EnableWatchdogStandbyWakeup(
-    void 
-)
-```
-
-
-**Brief**: 
-Enable the device to wake from STANDBY mode upon a watchdog interrupt. 
-
-In order to use this option, Need to configure the watchdog to generate an interrupt.
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Mcu_DisableWatchdogStandbyWakeup
-
-```
-static inline void Mcu_DisableWatchdogStandbyWakeup(
-    void 
-)
-```
-
-
-**Brief**: 
-Disable the device from waking from STANDBY mode upon a watchdog interrupt. 
 
 **Returns**: 
 

@@ -74,10 +74,12 @@
                       <a:a name="UUID" 
                            value="baf42744-ebe2-47e8-8852-be93b118c53d"/>
                       <a:da name="INVALID" type="Range">
-                      <a:tst expr="&lt;=ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),'.numberOfPins'))"/>
+                      <a:tst expr="&lt;= node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),'.numberOfPins'))&quot;,num:i(1))"/>
                         <a:tst expr="&gt;=1"/>
                       </a:da>
-                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(num:i(count(../PortPin/*)),0)"/>
+					            <a:da name="DEFAULT" type="XPath">
+                      <a:tst expr="node:fallback(&quot;-> num:i(count(../PortPin/*))&quot;,num:i(1))"/>
+                      </a:da>
                       <a:da name="READONLY" value="false"/>
                     </v:var>
 					
@@ -100,8 +102,9 @@
 								<a:a name="ORIGIN" value="Texas Instruments"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
 								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),'.AllMuxModes'))"/>
+								<a:da name="DEFAULT" value="GPIO"/>
 							</v:var>
 			
 							<v:var name="PortPinPeripheralInstance" type="ENUMERATION">
@@ -115,8 +118,9 @@
 								<a:a name="ORIGIN" value="Texas Instruments"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
 								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_',node:value(../PortPinPeripheral)),'.MuxModeSignal')))"/>
+								<a:da name="DEFAULT" value="GPIO0"/>
 							</v:var>					
 
 							<v:var name="PortPinPeripheralSignal" type="ENUMERATION">
@@ -130,8 +134,9 @@
 								<a:a name="ORIGIN" value="Texas Instruments"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
 								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_',node:value(../PortPinPeripheralInstance)),'.MuxModeSignalType')))"/>
+								<a:da name="DEFAULT" value="GPIO0"/>
 							</v:var>
 										
 							<v:var name="PortPhysicalPinId" type="ENUMERATION">
@@ -146,10 +151,13 @@
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
 								<a:a name="UUID" 
-									   value="as:uuid()"/>
+									   type="XPath" expr="as:uuid()"/>
 									
 								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_',node:value(../PortPinPeripheralSignal)),'.PhysicalPinNumber')))"/>
 								<a:da name="INVALID" type="XPath" expr="text:uniq((../../../..//*[@name='PortPhysicalPinId']),node:value(.))" false="Port Pin selection has to be unique across all PortConfig containers"/>
+								<a:da name="DEFAULT" type="XPath">
+								<a:tst expr="node:fallback(&quot;-> ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_',node:value(../PortPinPeripheralSignal)),'.PhysicalPinNumber')))&quot;,'A8')"/>
+								</a:da>
 							</v:var>
 										
 							<v:var name="PortPinName" type="ENUMERATION">
@@ -164,10 +172,11 @@
 								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
 								<a:da name="RANGE" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinName')))" />
-								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinName')))" />
-								
+								<a:da name="DEFAULT" type="XPath">
+								<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinName')))&quot;,'GPIO0')"/>
+								</a:da>
 							</v:var>
 							
 							<v:var name="PortPinId" type="INTEGER">
@@ -183,7 +192,16 @@
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="true"/>
 								<a:a name="UUID" value="0d2b90af-1985-459b-9230-9934d447670f"/>
-								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinNumber')))" />
+								
+								<a:da name="DEFAULT" type="XPath">
+								<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinNumber')))&quot;,'0')"/>
+								</a:da>
+								
+								<a:da name="INVALID" type="Range">
+								  <a:tst expr="&lt;= node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),'.numberOfPins'))&quot;,num:i(1))"/>
+									<!--<a:tst expr="&gt;=0"/>-->
+								</a:da>
+								
 								<a:a name="VISIBLE" value="true"/>
 								
 							</v:var>
@@ -200,9 +218,11 @@
 								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
-								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isConfigurable')))" />
-								<a:a name="VISIBLE" value="false"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
+								<a:da name="DEFAULT" type="XPath" >
+								<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isConfigurable')))&quot;,'true')"/>
+								</a:da>
+                <a:a name="VISIBLE" value="false"/>
 								<a:da name="READONLY" value="true"/>
 							</v:var>
 							
@@ -218,9 +238,11 @@
 								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
-								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAnalogModeSupported')))" />
-								<a:a name="VISIBLE" value="false"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
+								<a:da name="DEFAULT" type="XPath">
+								<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAnalogModeSupported')))&quot;,'false')"/>
+								</a:da>
+                <a:a name="VISIBLE" value="false"/>
 								<a:da name="READONLY" value="true"/>
 							</v:var>
 									  
@@ -236,9 +258,12 @@
 								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
-								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAGPIO')))" />
-								<a:a name="VISIBLE" value="false"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
+								<!--<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAGPIO')))" />-->
+								<a:da name="DEFAULT" type="XPath">
+									<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAGPIO')))&quot;,'true')"/>
+								</a:da>
+                <a:a name="VISIBLE" value="false"/>
 								<a:da name="READONLY" value="true"/>
 							</v:var>
 									  
@@ -254,9 +279,11 @@
 								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
-								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAIO')))" />
-								<a:a name="VISIBLE" value="false"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
+								<a:da name="DEFAULT" type="XPath">
+									<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAIO')))&quot;,'true')"/>
+								</a:da>
+                <a:a name="VISIBLE" value="false"/>
 								<a:da name="READONLY" value="true"/>
 							</v:var>
 									  
@@ -272,9 +299,11 @@
 								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
-								<a:da name="DEFAULT" type="XPath" expr="ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isGPIO')))" />
-								<a:a name="VISIBLE" value="false"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
+								<a:da name="DEFAULT" type="XPath">
+									<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isGPIO')))&quot;,'true')"/>
+								</a:da>
+                <a:a name="VISIBLE" value="false"/>
 								<a:da name="READONLY" value="true"/>
 							</v:var>
 									  
@@ -290,13 +319,15 @@
 								<a:a name="POSTBUILDVARIANTVALUE" value="true"/>
 								<a:a name="SCOPE" value="LOCAL"/>
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-								<a:a name="UUID" value="as:uuid()"/>
+								<a:a name="UUID" type="XPath" expr="as:uuid()"/>
 								<a:da name="RANGE">
 								  <a:v>PORT_ANALOG_DISABLED</a:v>
 								  <a:v>PORT_ANALOG_ENABLED</a:v>
 								</a:da>
-								<a:da name="DEFAULT" type="XPath" expr="(../PortIsAnalogModeSupported) and (../PortPinPeripheral = 'ANALOG')" true="PORT_ANALOG_ENABLED" false="PORT_ANALOG_DISABLED" />
-								<a:da name="EDITABLE" type="XPath" expr="(../PortIsAnalogModeSupported) and (../PortPinPeripheral = 'ANALOG')" />
+								<a:da name="DEFAULT" type="XPath">
+									<a:tst expr="node:fallback(&quot;-> (../PortIsAnalogModeSupported) and (../PortPinPeripheral = 'ANALOG')&quot;,'PORT_ANALOG_DISABLED')" true="PORT_ANALOG_ENABLED" false="PORT_ANALOG_DISABLED"/>
+								</a:da>
+                <a:da name="EDITABLE" type="XPath" expr="(../PortIsAnalogModeSupported) and (../PortPinPeripheral = 'ANALOG')" />
 							</v:var>
 							
 							<v:var name="PortPinInitialMode" type="ENUMERATION">
@@ -313,10 +344,12 @@
                 <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                 <a:a name="UUID" 
 									   value="d31ccffe-6df7-47f0-82f9-f8e43cfb691c"/>
-                <a:da name="RANGE" type="XPath" expr="node:fallback(ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.muxMode'))),'PORT_MUXMODE_NA')" />
+								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->  ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.muxMode')))&quot;,'PORT_MUXMODE_NA')" />
                 <a:da name="EDITABLE" type="XPath" expr="(../PortIsPinConfigurable='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED')" />
-								<a:da name="DEFAULT" type="XPath" expr="node:fallback('PORT_MUXMODE_NA','PORT_MUXMODE_NA')"/>
-              </v:var>
+								<a:da name="DEFAULT" type="XPath">
+									<a:tst expr="node:fallback(&quot;-> 'PORT_MUXMODE_NA'&quot;,'PORT_MUXMODE_NA')"/>
+								</a:da>
+                </v:var>
 										
 							<v:var name="PortPinDirection" type="ENUMERATION">
 								<a:a name="DESC" 
@@ -332,9 +365,11 @@
 								<a:a name="SYMBOLICNAMEVALUE" value="false"/>
 								<a:a name="UUID" 
 									   value="0d7a1769-4d06-4e74-908f-4c1413257af2"/>
-								<a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.supportedDirection')))" />
-								<a:da name="DEFAULT" type="XPath" expr="((../PortIsPinConfigurable='true') and ((contains(node:value(../PortPinInitialMode), 'GPIO')) or (contains(node:value(../PortPinInitialMode), 'AIO'))) and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))" true="PORT_PIN_IN" false="PORT_PIN_NA" />
-								<a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and ((contains(node:value(../PortPinInitialMode), 'GPIO')) or (contains(node:value(../PortPinInitialMode), 'AIO')) or (../PortPinModeChangeable='true')) and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
+								<a:da name="RANGE" type="XPath" expr="node:fallback(&quot;-> ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.supportedDirection')))&quot;,'PORT_PIN_NA')" />
+								<a:da name="DEFAULT" type="XPath">
+									<a:tst expr="node:fallback(&quot;-> ((../PortIsPinConfigurable='true') and ((contains(node:value(../PortPinInitialMode), 'GPIO')) or (contains(node:value(../PortPinInitialMode), 'AIO'))) and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))&quot;,'PORT_PIN_NA')" true="PORT_PIN_IN" false="PORT_PIN_NA"/>
+								</a:da>
+                <a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and ((contains(node:value(../PortPinInitialMode), 'GPIO')) or (contains(node:value(../PortPinInitialMode), 'AIO')) or (../PortPinModeChangeable='true')) and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
 							</v:var>
 						
 							<v:var name="PortPinDirectionChangeable" type="BOOLEAN">
@@ -367,14 +402,15 @@
                                 <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                <a:a name="UUID" value="as:uuid()"/>
+                                <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                                 <a:da name="RANGE">
                                   <a:v>PORT_PIN_TYPE_STD</a:v>
                                   <a:v>PORT_PIN_TYPE_OPEN_DRAIN</a:v>
                                   <a:v>PORT_PIN_TYPE_NA</a:v>
                                 </a:da>
                                 <a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
-                                <a:da name="DEFAULT" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))" true= "PORT_PIN_TYPE_STD" false="PORT_PIN_TYPE_NA"/>
+
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> ((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))&quot;,'PORT_PIN_TYPE_NA')" true= "PORT_PIN_TYPE_STD" false="PORT_PIN_TYPE_NA"/>
                             </v:var>
 							
                             <v:var name="PortPinPullUpConfig" type="BOOLEAN">
@@ -389,7 +425,7 @@
                                 <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                <a:a name="UUID" value="as:uuid()"/>
+                                <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                                 <a:da name="EDITABLE" type="XPath" expr="(../PortPinPadConfig!='PORT_PIN_TYPE_NA')"/>
                                 <a:da name="DEFAULT" value="false"/>
                             </v:var>
@@ -406,7 +442,7 @@
                                 <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                <a:a name="UUID" value="as:uuid()"/>
+                                <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                                 <a:da name="RANGE">
                                   <a:v>PORT_QUAL_SYNC</a:v>
                                   <a:v>PORT_QUAL_3SAMPLE</a:v>
@@ -415,24 +451,26 @@
                                   <a:v>PORT_QUAL_NA</a:v>
                                 </a:da>
                                 <a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
-                                <a:da name="DEFAULT" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))" true= "PORT_QUAL_SYNC" false="PORT_QUAL_NA"/>
+								
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> ((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))&quot;,'PORT_QUAL_NA')" true= "PORT_QUAL_SYNC" false="PORT_QUAL_NA"/>
+								
                                 <a:da name="WARNING" type="Multi">
 									                <mt:xpath expr="((../PortPinDirection='PORT_PIN_IN') and (node:value(.)='PORT_QUAL_NA'))" true = "Port Pin Direction IN and Qualification NA is not advisable to keep. Make sure to use proper input Pin Qualification."/>
 									                <mt:xpath expr="((../PortPinDirection='PORT_PIN_OUT') and (../PortPinDirectionChangeable='true') and (node:value(.)='PORT_QUAL_NA'))" true = "Port Pin Direction OUT and Qualification as NA where direction can be changed afterwards ( DirectionChangeable = True ) might result in unexpected behaviour. Make sure to use proper input Pin Qualification."/>
 								                </a:da>
                             </v:var>							  
 							  
-							<v:var name="PortPinQualificationPeriod" type="INTEGER">					
-                                <a:a name="DESC" 
-                                    value="EN: Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs
-									For Instance:
-									Qualification sampling period for GPIO0 to GPIO7: 
-									0x00,QUALPRDx = PLLSYSCLK 
-									0x01,QUALPRDx = PLLSYSCLK/2
-									0x02,QUALPRDx = PLLSYSCLK/4
-									....
-									0xFF,QUALPRDx = PLLSYSCLK/510
-									Reset type: SYSRSn"/>
+                            <v:var name="PortPinQualificationPeriod" type="INTEGER">					
+                                              <a:a name="DESC" 
+                                                  value="EN: Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs
+                                For Instance:
+                                Qualification sampling period for GPIO0 to GPIO7: 
+                                0x00,QUALPRDx = PLLSYSCLK 
+                                0x01,QUALPRDx = PLLSYSCLK/2
+                                0x02,QUALPRDx = PLLSYSCLK/4
+                                ....
+                                0xFF,QUALPRDx = PLLSYSCLK/510
+                                Reset type: SYSRSn"/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                     type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
@@ -442,15 +480,15 @@
                                 <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                <a:a name="UUID" value="as:uuid()"/>
+                                <a:a name="UUID" type="XPath" expr="as:uuid()"/>
 									
-								<a:da name="DEFAULT" value="1"/>  
+                                <a:da name="DEFAULT" value="1"/>  
 
-								<a:da name="INVALID" type="XPath">
-                                    <a:tst expr="(node:value(.)=1) or (node:value(.) mod 2 = 0 and node:value(.) &lt;= 510 and node:value(.) &gt; 1)" false="Value must be &gt;=1 and &lt;=510"/>
-                                </a:da>										
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(node:value(.)=1) or (node:value(.) mod 2 = 0 and node:value(.) &lt;= 510 and node:value(.) &gt;= 1)" false="Value must be &gt;=1 and &lt;=510"/>
+                                </a:da>											
                                 <a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
-                                
+                                                
                             </v:var>
                         
 							<v:var name="PortPinLevelValue" type="ENUMERATION">
@@ -473,7 +511,8 @@
 									  <a:v>PORT_PIN_LEVEL_NA</a:v>
 								</a:da>
 								<a:da name="EDITABLE" type="XPath" expr="((../PortIsPinConfigurable='true') and (contains(node:value(../PortPinInitialMode), 'GPIO') or (../PortPinModeChangeable='true')) and (../PortPinDirection='PORT_PIN_OUT') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))"/>
-								<a:da name="DEFAULT" type="XPath" expr="((../PortIsPinConfigurable='true') and (contains(node:value(../PortPinInitialMode), 'GPIO')) and (../PortPinDirection='PORT_PIN_OUT') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))" true="PORT_PIN_LEVEL_LOW" false="PORT_PIN_LEVEL_NA"/>
+								
+								<a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> ((../PortIsPinConfigurable='true') and (contains(node:value(../PortPinInitialMode), 'GPIO')) and (../PortPinDirection='PORT_PIN_OUT') and (((../PortIsAnalogModeSupported='false')) or ((../PortIsAnalogModeSupported='true') and (../PortAnalogMode='PORT_ANALOG_DISABLED'))))&quot;,'PORT_PIN_LEVEL_NA')" true="PORT_PIN_LEVEL_LOW" false="PORT_PIN_LEVEL_NA"/>
 							</v:var>
 							
 						    <v:var name="PortPinCoreSelect" type="ENUMERATION">
@@ -488,7 +527,7 @@
                                 <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                <a:a name="UUID" value="as:uuid()"/>
+                                <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                                 <a:da name="RANGE">
                                   <a:v>PORT_CORE_CPU1</a:v>
                                   <a:v>PORT_CORE_CPU2</a:v>
@@ -506,14 +545,14 @@
                                    </a:a>
                                    <a:a name="ORIGIN" value="Texas Instruments"/>
                                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                   <a:a name="UUID" value="as:uuid()"/>
+                                   <a:a name="UUID" type="XPath" expr="as:uuid()"/>
 								   <a:da name="EDITABLE" type="XPath" expr="(((../PortPinId)&gt;=0 and (../PortPinId)&lt;=63) and (text:contains(node:value(../PortPinPeripheral),'GPIO')))"/>
                                    <a:da name="DEFAULT" value="false"/>
                             </v:var>
 						
                         <v:lst name="PortPinMode">
                             <a:da name="MIN" value="1"/>
-						    <a:da name="MAX" type="XPath" expr="count(ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.muxMode'))))"/>
+						                <a:da name="MAX" type="XPath" expr="node:fallback(&quot;-> count(ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.muxMode'))))&quot;,'1')"/>
                             <v:var name="PortPinMode" type="ENUMERATION">
                             <a:a name="DESC" 
                                  value="EN: Port pin mode from mode list."/>
@@ -530,9 +569,11 @@
                             <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                             <a:a name="SCOPE" value="LOCAL"/>
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="UUID" value="as:uuid()"/>
-                            <a:da name="RANGE" type="XPath" expr="ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../../PortPhysicalPinId)),'.muxMode')))" />
-							<a:da name="DEFAULT" type="XPath" expr="../../PortPinInitialMode" />
+                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../../PortPhysicalPinId)),'.muxMode')))&quot;,'PORT_MUXMODE_NA')" />
+                            <a:da name="DEFAULT" type="XPath">
+                              <a:tst expr="node:fallback(&quot;-> node:value(../../PortPinInitialMode)&quot;,'PORT_MUXMODE_NA')"/>
+                            </a:da>
                             <a:da name="EDITABLE" type="XPath" expr="(../../PortIsPinConfigurable='true') and (../../PortAnalogMode='PORT_ANALOG_DISABLED')" />
 
                         </v:var>
@@ -554,6 +595,7 @@
                                value="1a065d60-79aa-4e14-bc6a-1bff6ab8d55f"/>
 						  <a:da name="DEFAULT" value="false"/>
                         </v:var>
+                        <a:da name="INVALID" type="XPath" expr="text:uniq((../../../../PortContainer/*/PortPin/*/@name), @name)" false="Port Pin name has to be unique across all PortConfig containers"/>
                       </v:ctr>
                     </v:lst>
                   </v:ctr>
@@ -620,6 +662,18 @@
                   <a:da name="DEFAULT" value="false"/>
                 </v:var>
 				
+				<v:var name="PortLockConfiguration" type="BOOLEAN">
+				   <a:a name="DESC" value="EN: Lock All pins configuration."/>
+				   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+				   <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+				   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+				   </a:a>
+				   <a:a name="ORIGIN" value="Texas Instruments"/>
+				   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+				   <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+				   <a:da name="DEFAULT" value="false"/>
+                </v:var>
+				
 				<v:var name="PortDeviceVariant" type="ENUMERATION">
                       <a:a name="DESC" 
                            value="EN: Select package variant for F29H85x."/>
@@ -631,15 +685,15 @@
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" value="as:uuid()"/>
+                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <!--
                       The following expression ecu:parameters('subderivate') collects the
                       values of each parameter with name "subderivate" that is assigned 
                       to a resource properties file (extension point
                       "dreisoft.tresos.autosar2.api.plugin.ecuresource").
                       -->
-                      <a:da name="RANGE" type="XPath" expr="node:fallback(ecu:parameters('subderivate'),'F29H85x_256ZEX')"/>
-                      <a:da name="DEFAULT" type="XPath" expr="node:fallback('F29H85x_256ZEX','F29H85x_256ZEX')"/>
+                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;-> ecu:parameters('subderivate')&quot;,'F29H85x_256ZEX')"/>
+                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->'F29H85x_256ZEX'&quot;,'F29H85x_256ZEX')"/>
                     </v:var>
 				
               </v:ctr>

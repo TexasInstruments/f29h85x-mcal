@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -44,6 +44,7 @@
 #include "DeviceSupport.h"
 #include "EcuM.h"
 #include "Cdd_Sent_Cbk.h"
+#include "Mcal_Lib.h"
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -79,6 +80,7 @@ volatile uint32 data_received_count = 0;
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
+#define CDD_SENT_TIME_DELAY_PER_SECOND (50000000U) /* 1 second Mcal delay*/
 /*********************************************************************************************************************
  * External Functions Definition
  *********************************************************************************************************************/
@@ -104,18 +106,27 @@ int main(void)
     AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Sent_VersionInfo.sw_patch_version);
 #endif
 
+    AppUtils_Printf("Initilizing Cdd_Sent Driver\n");
     Cdd_Sent_Init(NULL_PTR);
-    for(;;)
+    AppUtils_Printf("Cdd Sent Drive initilized\n");
+
+    /* Wait for 1 seconds*/
+    McalLib_Delay(CDD_SENT_TIME_DELAY_PER_SECOND*1);
+
+    if(data_received_count >= 2)
     {
-        if(data_received_count >= 5)
-        {
-            return_value = E_OK;
-            (void) Cdd_Sent_Deinit();
-            AppUtils_Printf("Cdd_Sent_Standard: Sample Application - Completes successfully !!!\n");
-            break;
-        }
- 
+        return_value = E_OK;
+        AppUtils_Printf("Cdd_Sent_Standard: Sample Application - Completes successfully !!!\n");
+        
     }
+    else
+    {
+        return_value = E_NOT_OK;
+        AppUtils_Printf("Cdd_Sent_Standard: Sample Application - FAILED !!!\n");
+    }
+    
+    AppUtils_Printf("De-Initilizing Cdd_Sent Driver\n");
+    (void) Cdd_Sent_Deinit();
 
     return return_value;
 }
@@ -125,12 +136,22 @@ void CddSent_Callback(PduIdType id, const PduInfoType *PduInfoPtr)
     uint32 * data = (uint32 *)PduInfoPtr->SduDataPtr;
     if(PduInfoPtr->SduLength > 2)
     {
-        AppUtils_Printf("Timestamp received  from Fast channel : %d\n", *data);
-        AppUtils_Printf("Data received  from Fast channel : %d\n", *(data+1));
+            AppUtils_Printf("Id received  from Fast channel : %d\n", id);
+            AppUtils_Printf("Timestamp received  from Fast channel : %d\n", *data);
+            AppUtils_Printf("Data received  from Fast channel : %d\n", *(data+1));
+    }
+    else 
+    {
+        AppUtils_Printf("Id received  from Slow channel : %d\n", id);
+        AppUtils_Printf("Data received  from Slow channel : %d\n", *data);
     }
     data_received_count++;
 }
 
+void CddSent_Error_Callback()
+{
+        AppUtils_Printf("Error data received \n");
+}
 /*********************************************************************************************************************
  *  End of File: Cdd_Sent_Standard.c
  *********************************************************************************************************************/

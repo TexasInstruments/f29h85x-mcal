@@ -525,15 +525,15 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_WriteIB</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
               </ENTITYS>
+              [!IF "node:exists(as:modconf('Spi')[1]/SpiGeneral/SpiMainFunctionPeriod)"!][!//
               <EVENTS>
                 <BSW-TIMING-EVENT UUID="35ea7b2e-c64-4586-aceb-56657b4be751">
                   <SHORT-NAME>SpiMainFunctionPeriod</SHORT-NAME>
                   <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Spi_TI_F29H85x/Spi/Spi_Behavior/Spi_MainFunction_Handling</STARTS-ON-EVENT-REF>
-                  [!IF "node:exists(as:modconf('Spi')[1]/SpiGeneral/SpiMainFunctionPeriod)"!][!//
                   <PERIOD>[!"as:modconf('Spi')[1]/SpiGeneral/SpiMainFunctionPeriod"!]</PERIOD>
-                  [!ENDIF!][!//
                 </BSW-TIMING-EVENT>
               </EVENTS>
+              [!ENDIF!][!//
             </BSW-INTERNAL-BEHAVIOR>
           </INTERNAL-BEHAVIORS>
         </BSW-MODULE-DESCRIPTION>
@@ -565,10 +565,6 @@
                 </AUTOSAR-ENGINEERING-OBJECT>
                 <AUTOSAR-ENGINEERING-OBJECT>
                   <SHORT-LABEL>include::Spi_Priv.h</SHORT-LABEL>
-                  <CATEGORY>SWHDR</CATEGORY>
-                </AUTOSAR-ENGINEERING-OBJECT>
-                <AUTOSAR-ENGINEERING-OBJECT>
-                  <SHORT-LABEL>include::Spi_Reg_Access.h</SHORT-LABEL>
                   <CATEGORY>SWHDR</CATEGORY>
                 </AUTOSAR-ENGINEERING-OBJECT>
                 <AUTOSAR-ENGINEERING-OBJECT>

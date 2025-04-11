@@ -21,35 +21,37 @@
 #define OUTPUT_XBAR_O_OUTPUTXBARFLAGCLEAR   0x1CU   // Output latched flag clear register
 #define OUTPUT_XBAR_O_OUTPUTXBARFLAGFORCE   0x20U   // Output latched flag Force register
 
-#define OUTPUT_XBAR_O_OUTPUTXBARFLAGINVERT   0x14U                   // Output Signal inversion
-                                                                     // register
-#define OUTPUT_XBAR_O_OUTPUTXBAROUTLATCH     0x24U                   // Output Signal Select Latch
-#define OUTPUT_XBAR_O_OUTPUTXBAROUTSTRETCH   0x28U                   // Output Signal Stretched
-                                                                     // Pulse Version Select
-#define OUTPUT_XBAR_O_OUTPUTXBAROUTLENGTH    0x2CU                   // Output Signal Stretched
-                                                                     // Pulse Length Select
-#define OUTPUT_XBAR_O_OUTPUTXBAROUTINVERT    0x30U                   // Output Signal Invert Select
-#define OUTPUT_XBAR_O_OUTPUTXBARLOCK         0x80U                   // Configuration Lock register
-#define OUTPUT_XBAR_O_OUTPUTXBARG0SEL(i)     (0x100U + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G0
-                                                                     // Input Select
-#define OUTPUT_XBAR_O_OUTPUTXBARG1SEL(i)     (0x104U + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G1
-                                                                     // Input Select
-#define OUTPUT_XBAR_O_OUTPUTXBARG2SEL(i)     (0x108U + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G2
-                                                                     // Input Select
-#define OUTPUT_XBAR_O_OUTPUTXBARG3SEL(i)     (0x10CU + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G3
-                                                                     // Input Select
-#define OUTPUT_XBAR_O_OUTPUTXBARG4SEL(i)     (0x110U + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G4
-                                                                     // Input Select
-#define OUTPUT_XBAR_O_OUTPUTXBARG5SEL(i)     (0x114U + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G5
-                                                                     // Input Select
-#define OUTPUT_XBAR_O_OUTPUTXBARG6SEL(i)     (0x118U + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G6
-                                                                     // Input Select
-#define OUTPUT_XBAR_O_OUTPUTXBARG7SEL(i)     (0x11CU + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G7
-                                                                     // Input Select
-#define OUTPUT_XBAR_O_OUTPUTXBARG8SEL(i)     (0x120U + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G8
-                                                                     // Input Select
-#define OUTPUT_XBAR_O_OUTPUTXBARG9SEL(i)     (0x124U + ((i) * 64))   // (0 <= i < 16) OUTPUTXBAR G9
-                                                                     // Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARFLAGINVERT   0x14U                    // Output Signal inversion
+                                                                      // register
+#define OUTPUT_XBAR_O_OUTPUTXBAROUTLATCH     0x24U                    // Output Signal Select Latch
+#define OUTPUT_XBAR_O_OUTPUTXBAROUTSTRETCH   0x28U                    // Output Signal Stretched
+                                                                      // Pulse Version Select
+#define OUTPUT_XBAR_O_OUTPUTXBAROUTLENGTH    0x2CU                    // Output Signal Stretched
+                                                                      // Pulse Length Select
+#define OUTPUT_XBAR_O_OUTPUTXBAROUTINVERT    0x30U                    // Output Signal Invert
+                                                                      // Select
+#define OUTPUT_XBAR_O_OUTPUTXBARLOCK         0x80U                    // Configuration Lock
+                                                                      // register
+#define OUTPUT_XBAR_O_OUTPUTXBARG0SEL(i)     (0x100U + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G0 Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARG1SEL(i)     (0x104U + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G1 Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARG2SEL(i)     (0x108U + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G2 Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARG3SEL(i)     (0x10CU + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G3 Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARG4SEL(i)     (0x110U + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G4 Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARG5SEL(i)     (0x114U + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G5 Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARG6SEL(i)     (0x118U + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G6 Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARG7SEL(i)     (0x11CU + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G7 Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARG8SEL(i)     (0x120U + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G8 Input Select
+#define OUTPUT_XBAR_O_OUTPUTXBARG9SEL(i)     (0x124U + ((i) * 64U))   // (0 <= i < 16) OUTPUTXBAR
+                                                                      // G9 Input Select
 
 
 //*************************************************************************************************

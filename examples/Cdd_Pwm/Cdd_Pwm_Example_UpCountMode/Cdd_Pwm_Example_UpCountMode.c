@@ -1,0 +1,211 @@
+/*********************************************************************************************************************
+ *  COPYRIGHT
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  \verbatim
+ *
+ *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *
+ *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
+ *                 is strictly prohibited.  This product  is  protected  under  copyright  law
+ *                 and  trade  secret law as an  unpublished work.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *
+ *  \endverbatim
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  FILE DESCRIPTION
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  File:       Cdd_Pwm_Example_UpCountMode.c
+ *  Generator:  None
+ *
+ *  Description:  Cdd_Pwm example source file.This example demonstrates independent waveform generation on two output
+ *                channels of a PWM instance using Cdd_Pwm driver.50Hz PWM waveforms with different duty cycles can be
+ *                observed on the PWM1 channel output waveforms. 1KHz waveforms can be observed with the PWM2 channel
+ *                output waveforms.
+ * 
+ * Setup required for the example:
+ * Connect the GPIO0 & GPIO1 pins to the logic analyzer to observe the PWM1 channel A & channel B waveforms
+ * Connect the GPIO2 & GPIO3 pins to the logic analyzer to observe the PWM2 channel A & channel B waveforms
+ * 
+ * Steps followed in the example: 
+ * DeviceSupport_Init()
+ * - Initialize FLASH if the example is run in FLASH mode
+ * EcuM_Init()
+ * - Initialize clock to 100 MHz using Mcu_Init()
+ * - Initialize pins in EPWM mode with Port_Init()
+ * - Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
+ * Enable channel A rising edge notifications for both the PWM instances
+ * Set the all the outputs to IDLE with Cdd_Pwm_SetOutputToIdle API
+ * Activate the channels and change the duty cycle of the waveform with Cdd_Pwm_SetDutyCycle() API and 
+ * observe the change in the generated PWM output waveform
+ * Set PWM1 outputs to IDLE with Cdd_Pwm_SetOutputToIdle API
+ * Activate the channels & period of the channels  associated to PWM1 instance with Cdd_Pwm_SetPeriod() API and 
+ * observe the change in the frequency of the generated output waveforms
+ * 
+ * PWM1 Channel A waveform can be observed on the GPIO0 pin and channel B waveform on the GPIO1 pin
+ * PWM2 Channel A waveform can be observed on the GPIO2 pin and channel B waveform on the GPIO3 pin
+ * 
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Header Files
+ *********************************************************************************************************************/
+#include "Cdd_Pwm_Cfg.h"
+#include "Mcal_Lib.h"
+#include "EcuM.h"
+#include "AppUtils.h"
+#include "DeviceSupport.h"
+#include "Os.h"
+#include "Cdd_Pwm.h"
+#include "Port.h"
+#include "Mcu.h"
+
+/*********************************************************************************************************************
+ * Version Check (if required)
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Local Preprocessor #define Constants
+ *********************************************************************************************************************/
+
+#define OS_COUNTER_ID   ((Os_CounterIdType)0U)
+#define CDD_PWM_EVENT_COUNT ((uint8)1U)
+
+#define CDD_PWM_100HZ_PERIOD    (31249U)
+#define CDD_PWM_DUTY_CYCLE_25_PERCENT   (0x2000U)
+#define CDD_PWM_DUTY_CYCLE_50_PERCENT   (0x4000U)
+#define CDD_PWM_DUTY_CYCLE_75_PERCENT   (0x6000U)
+
+/*********************************************************************************************************************
+ * Local Preprocessor #define Macros
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Local Type Declarations
+ *********************************************************************************************************************/
+
+/* Array to store the notification of the PWM instances */
+uint32 Cdd_Pwm_NotificationCount[CDD_PWM_COUNT];
+
+ /*********************************************************************************************************************
+ * Exported Object Definitions
+ *********************************************************************************************************************/
+ 
+/*********************************************************************************************************************
+ * Local Object Definitions
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Local Function Prototypes
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Local Inline Function Definitions and Function-Like Macros
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  External Functions Definition
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Local Functions Definition
+ *********************************************************************************************************************/
+
+void Cdd_Pwm_AsymmetricNotification()
+{
+    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0]++;
+}
+
+void Cdd_Pwm_SymmetricNotification()
+{
+    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1]++;
+}
+
+int main()
+{
+    /* Set the notification count to zero */
+    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0] = 0U;
+    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1] = 0U;
+    Os_TickType start_time,elapsed_time;
+
+    DeviceSupport_Init();
+    /* Initilaize all modules */
+    EcuM_Init();
+    
+    AppUtils_Init(200000000U); // Initialize AppUtils to enable prints
+    AppUtils_Printf("Executing Cdd_Pwm_Example_UpCountMode example\r\n");
+
+    GetCounterValue((Os_CounterIdType)OS_COUNTER_ID,&start_time);
+
+    McalLib_Delay(50000000U);
+
+    /* Set all channels in the IDLE state */
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_1);
+
+    /* Enable channel notification */
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0,CDD_PWM_CHANNEL_A,\
+                                                                    CDD_PWM_RISING_EDGE,CDD_PWM_EVENT_COUNT);
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1,CDD_PWM_CHANNEL_A,CDD_PWM_BOTH_EDGES,\
+                                                                                        CDD_PWM_EVENT_COUNT);
+    McalLib_Delay(5000000U);
+
+    /* Set Duty cycle */
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_0,CDD_PWM_DUTY_CYCLE_25_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_1,CDD_PWM_DUTY_CYCLE_75_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_0,CDD_PWM_DUTY_CYCLE_50_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_1,CDD_PWM_DUTY_CYCLE_25_PERCENT);
+
+    AppUtils_Printf("The duty cycles of the EPWM1 & EPWM2 channels have been modified\r\n");
+
+    McalLib_Delay(50000000U);
+
+    /* Set the output to IDLE */
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_1);
+
+    AppUtils_Printf("All the EPWM1 & EPWM2 channels in IDLE state\r\n");
+
+    AppUtils_Printf("The notification count for EPWM1 instance after calling Cdd_Pwm_SetDutyCycle API is %d\r\n",\
+                                        Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0]);
+    AppUtils_Printf("The notification count for EPWM2 instance after calling Cdd_Pwm_SetDutyCycle API is %d\r\n",\
+                                        Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1]);
+
+    McalLib_Delay(5000000U);
+
+    /* Change the period of EPWM1 channels */
+    Cdd_Pwm_SetPeriod(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0,CDD_PWM_100HZ_PERIOD);
+
+    /* Change the duty cycle of EPWM2 channels */
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_0,CDD_PWM_DUTY_CYCLE_25_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_1,CDD_PWM_DUTY_CYCLE_50_PERCENT);
+
+    AppUtils_Printf("The frequency of EPWM1 has been doubled(period halved)\r\n");
+    AppUtils_Printf("The duty cycles of the EPWM2 channels have been modified\r\n");
+
+    McalLib_Delay(50000000U);
+
+    GetElapsedValue((Os_CounterIdType)OS_COUNTER_ID,&start_time,&elapsed_time);
+
+    /* DeInitialize PWM */
+    Cdd_Pwm_DeInit();
+
+    AppUtils_Printf("Time elapsed in US(microsecond) from when the notification is enabled until Deinit is %d\r\n",\
+                                                                                                    elapsed_time);
+    AppUtils_Printf("Number of rising edges detected for EPWM1 are %d\r\n",\
+                    (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0] * CDD_PWM_EVENT_COUNT));
+    AppUtils_Printf("Number of edges detected for EPWM2 are %d\r\n",\
+                    (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1] * CDD_PWM_EVENT_COUNT));
+    AppUtils_Printf("Cdd_Pwm_Example_UpCountMode executed successfully\r\n");
+
+    while(1){}
+
+    return 0;
+}
+
+/*********************************************************************************************************************
+ *  End of File: Cdd_Pwm_Example_UpCountMode.c
+ *********************************************************************************************************************/

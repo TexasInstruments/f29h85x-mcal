@@ -6,9 +6,9 @@
  *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
  *
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited. This product is protected under copyright law
- *                 and trade secret law as an unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 is strictly prohibited.  This product  is  protected  under  copyright  law
+ *                 and  trade  secret law as an  unpublished work.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -16,67 +16,198 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Cdd_Xbar_MemMap.h
  *  Project:    C29x MCAL
- *  Module:     CDD XBar Driver
+ *  Module:     CDD_XBAR
  *  Generator:  None
  *
- *  Description:  Memory Map file for CDD XBar module.
- *                                                                   
+ *  Description:  Memory Map template file for Cdd_Xbar module.
+ *
+ *********************************************************************************************************************/
+
+ 
+ /*********************************************************************************************************************
+ * Header Files
  *********************************************************************************************************************/
 #ifndef CDD_XBAR_MEMMAP_H
 #define CDD_XBAR_MEMMAP_H
- 
-/*********************************************************************************************************************
- * Standard Header Files
- *********************************************************************************************************************/
-
-/* None */
-
-/*********************************************************************************************************************
- * Other Header Files
- *********************************************************************************************************************/
- 
-/* None */
 
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
 
-/* None */
-
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
 
-
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-
-/* None */
 
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
 
-/* None */
-
 /*********************************************************************************************************************
- *  Exported Function Prototypes
+ * Exported Function Prototypes
  *********************************************************************************************************************/
-
-/* None */
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
- 
-#endif /* CDD_XBAR_MEMMAP_H */
 
+     
+#if defined CDD_XBAR_START_SEC_CODE
+#ifdef MEMMAP_SECTION_OPEN
+    #error "Using CDD_XBAR_START_SEC_CODE is not possible as a memory section \
+            has already been opened. Nesting is not supported."
+#endif
+#define MEMMAP_SECTION_OPEN
+#define CDD_XBAR_CODE_OPEN
+#pragma clang section text = ".CDD_XBAR_CODE"
+#undef CDD_XBAR_START_SEC_CODE
+#undef MEMMAP_ERROR
+
+#elif defined CDD_XBAR_STOP_SEC_CODE
+#ifndef MEMMAP_SECTION_OPEN
+    #error "Using CDD_XBAR_STOP_SEC_CODE is not possible as no memory section \
+            has been opened."
+#endif
+#undef MEMMAP_SECTION_OPEN
+#ifndef CDD_XBAR_CODE_OPEN
+    #error "Using CDD_XBAR_STOP_SEC_CODE is not possible as the corresponding \
+            memory section has not been opened."
+#endif
+#undef CDD_XBAR_CODE_OPEN
+#pragma clang section text = ""
+#undef CDD_XBAR_STOP_SEC_CODE
+#undef MEMMAP_ERROR
+            
+#elif defined CDD_XBAR_START_SEC_CONFIG_DATA
+#ifdef MEMMAP_SECTION_OPEN
+    #error "Memory section CONFIG_DATA is already opened, Cannot reopen section using \
+           CDD_XBAR_START_SEC_CONFIG_DATA ."
+#endif
+#define MEMMAP_SECTION_OPEN
+#define CDD_XBAR_CONFIG_DATA_OPEN
+#pragma clang section rodata = ".CDD_XBAR_CONFIG_DATA"
+#undef CDD_XBAR_START_SEC_CONFIG_DATA
+#undef MEMMAP_ERROR
+
+#elif defined CDD_XBAR_STOP_SEC_CONFIG_DATA
+#ifndef MEMMAP_SECTION_OPEN
+#error "Memory section CONFIG_DATA is not open, Cannot close section using \
+         CDD_XBAR_STOP_SEC_CONFIG_DATA."
+#endif
+#undef MEMMAP_SECTION_OPEN
+#ifndef CDD_XBAR_CONFIG_DATA_OPEN
+    #error "Memory section CONFIG_DATA is not open ,Cannot close section using \
+           CDD_XBAR_STOP_SEC_CONFIG_DATA."
+#endif
+#undef CDD_XBAR_CONFIG_DATA_OPEN
+#pragma clang section rodata = ""
+#undef CDD_XBAR_STOP_SEC_CONFIG_DATA
+#undef MEMMAP_ERROR
+            
+#elif defined CDD_XBAR_START_SEC_VAR_INIT_8
+#ifdef MEMMAP_SECTION_OPEN
+    #error "Memory section VAR_INIT_8 is already opened, Cannot reopen section using \
+           CDD_XBAR_START_SEC_VAR_INIT_8 ."
+#endif
+#define MEMMAP_SECTION_OPEN
+#define CDD_XBAR_VAR_INIT_8_OPEN
+#pragma clang section data = ".CDD_XBAR_VAR_INIT_8"
+#undef CDD_XBAR_START_SEC_VAR_INIT_8
+#undef MEMMAP_ERROR
+
+#elif defined CDD_XBAR_STOP_SEC_VAR_INIT_8
+#ifndef MEMMAP_SECTION_OPEN
+#error "Memory section VAR_INIT_8 is not open, Cannot close section using \
+         CDD_XBAR_STOP_SEC_VAR_INIT_8."
+#endif
+#undef MEMMAP_SECTION_OPEN
+#ifndef CDD_XBAR_VAR_INIT_8_OPEN
+    #error "Memory section VAR_INIT_8 is not open ,Cannot close section using \
+           CDD_XBAR_STOP_SEC_VAR_INIT_8."
+#endif
+#undef CDD_XBAR_VAR_INIT_8_OPEN
+#pragma clang section data = ""
+#undef CDD_XBAR_STOP_SEC_VAR_INIT_8
+#undef MEMMAP_ERROR
+            
+#elif defined CDD_XBAR_START_SEC_VAR_INIT_PTR
+#ifdef MEMMAP_SECTION_OPEN
+    #error "Memory section VAR_INIT_PTR is already opened, Cannot reopen section using \
+           CDD_XBAR_START_SEC_VAR_INIT_PTR ."
+#endif
+#define MEMMAP_SECTION_OPEN
+#define CDD_XBAR_VAR_INIT_PTR_OPEN
+#pragma clang section data = ".CDD_XBAR_VAR_INIT_PTR"
+#undef CDD_XBAR_START_SEC_VAR_INIT_PTR
+#undef MEMMAP_ERROR
+
+#elif defined CDD_XBAR_STOP_SEC_VAR_INIT_PTR
+#ifndef MEMMAP_SECTION_OPEN
+#error "Memory section VAR_INIT_PTR is not open, Cannot close section using \
+         CDD_XBAR_STOP_SEC_VAR_INIT_PTR."
+#endif
+#undef MEMMAP_SECTION_OPEN
+#ifndef CDD_XBAR_VAR_INIT_PTR_OPEN
+    #error "Memory section VAR_INIT_PTR is not open ,Cannot close section using \
+           CDD_XBAR_STOP_SEC_VAR_INIT_PTR."
+#endif
+#undef CDD_XBAR_VAR_INIT_PTR_OPEN
+#pragma clang section data = ""
+#undef CDD_XBAR_STOP_SEC_VAR_INIT_PTR
+#undef MEMMAP_ERROR
+            
+#endif
+
+
+/**********************************************************************************************************************
+ *  MEMMAP ERROR CHECKS
+ *********************************************************************************************************************/
+    
+#ifdef CDD_XBAR_START_SEC_CODE
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_XBAR_START_SEC_CODE."
+#endif
+#ifdef CDD_XBAR_STOP_SEC_CODE
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_XBAR_STOP_SEC_CODE."
+#endif
+
+#ifdef CDD_XBAR_START_SEC_CONFIG_DATA
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_XBAR_START_SEC_CONFIG_DATA."
+#endif
+#ifdef CDD_XBAR_STOP_SEC_CONFIG_DATA
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_XBAR_STOP_SEC_CONFIG_DATA."
+#endif
+
+#ifdef CDD_XBAR_START_SEC_VAR_INIT_8
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_XBAR_START_SEC_VAR_INIT_8."
+#endif
+#ifdef CDD_XBAR_STOP_SEC_VAR_INIT_8
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_XBAR_STOP_SEC_VAR_INIT_8."
+#endif
+
+#ifdef CDD_XBAR_START_SEC_VAR_INIT_PTR
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_XBAR_START_SEC_VAR_INIT_PTR."
+#endif
+#ifdef CDD_XBAR_STOP_SEC_VAR_INIT_PTR
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           CDD_XBAR_STOP_SEC_VAR_INIT_PTR."
+#endif
+
+ #endif /* CDD_XBAR_MEMMAP_H */
 /*********************************************************************************************************************
  *  End of File: Cdd_Xbar_MemMap.h
  *********************************************************************************************************************/
+    

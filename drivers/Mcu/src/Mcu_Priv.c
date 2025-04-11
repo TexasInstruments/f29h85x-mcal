@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -40,9 +40,6 @@
 
 /* Macro used to add wait cycles to allow load capacitors to charge */
 #define SYSCTL_XTAL_CHARGE_DELAY   asm(" NOP #5");
-
-/* This bit allows the odd division for the sys clock divider */
-#define SYSCTL_SYSCLKDIVSEL_PLLSYSCLKDIV_LSB   (256U)
 
 /* SIMRESET Key */
 #define SYSCTL_SIMRESET_KEY    ((uint16)0xA5A5U)
@@ -186,6 +183,36 @@ static FUNC(void, MCU_CODE) Mcu_SetEmifClock(Mcu_EMIFClkDivider EmifClkDiv);
 static FUNC(void, MCU_CODE) Mcu_DeviceEnablePeripherals(Mcu_PeripheralClkRegConfigPtrType PeripheralClkConfigPtr);
 
 
+/** \brief Resets a peripheral
+ * 
+ * This function uses the SOFTPRESx registers to reset a specified peripheral
+ * 
+ * \param[in] PeripheralResetConfigPtr points to config of which peripherals to reset.
+ * \param[out] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * 
+ *********************************************************************************************************************/
+static FUNC(void, MCU_CODE) Mcu_DeviceResetPeripherals(Mcu_PeripheralResetRegConfigPtrType PeripheralResetConfigPtr);
+
+
+/** \brief Resets all peripherals
+ * 
+ * This function uses the SOFTPRESx registers to reset all peripherals
+ * 
+ * \param[in] None
+ * \param[out] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * 
+ *********************************************************************************************************************/
+static FUNC(void, MCU_CODE) Mcu_DeviceResetAllPeripherals(void);
+
+
 /** \brief Selects the oscillator to be used for the clocking of the device.
  * 
  * This function configures the oscillator to be used in the clocking of the
@@ -307,9 +334,198 @@ static FUNC(boolean, MCU_CODE) Mcu_PllSettingsRangeCheck(Mcu_ClockConfigPtrType 
 static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(uint32 oscClk, Mcu_ClockConfigPtrType ClockConfigPtr);
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
 
+
+/** \brief Converts the controller specific reset reason to AUTOSAR format.
+ * 
+ * \param[in] RawResetType Reset Reason
+ * \pre None
+ * \post None
+ * \return Mcu_ResetType
+ * \retval Returns Reset reason defined. 
+ * 
+ *********************************************************************************************************************/
+static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertFirstGroup(Mcu_RawResetType RawResetType);
+
+
+/** \brief Converts the controller specific reset reason to AUTOSAR format.
+ * 
+ * \param[in] RawResetType Reset Reason
+ * \pre None
+ * \post None
+ * \return Mcu_ResetType
+ * \retval Returns Reset reason defined. 
+ * 
+ *********************************************************************************************************************/
+static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertSecondGroup(Mcu_RawResetType RawResetType);
+
+
+/** \brief Keep clearing the counter until it is no longer saturated
+ * 
+ * \param[in] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * 
+ *********************************************************************************************************************/
+static FUNC(void, MCU_CODE) Mcu_ClearX1Counter(void);
+
+
+/** \brief Wait for the X1 clock to saturate
+ * 
+ * \param[in] loop_count Loop count value
+ * \pre None
+ * \post None
+ * \return boolean type
+ * \retval TRUE\FALSE
+ * 
+ *********************************************************************************************************************/
+static FUNC(boolean, MCU_CODE) Mcu_WaitX1Saturate(uint16 loop_count);
+
+/*********************************************************************************************************************
+ *  Exported Inline Function Definitions and Function-Like Macros
+ *********************************************************************************************************************/
+
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
+
+/** \brief Get the missing clock detection Failure Status
+ * 
+ * A failure means the oscillator clock is missing
+ * 
+ * \pre None
+ * \post None
+ * \return boolean type
+ * \retval TRUE if a failure is detected 
+ * \retval FALSE if a failure isn't detected
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(boolean, MCU_CODE) Mcu_IsMCDClockFailureDetected(void);
+
+
+/** \brief Reset the missing clock detection logic after clock failure
+ * 
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None 
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_ResetMCD(void);
+
+
+/** \brief Sets up PLLSYSCLK divider
+ * 
+ * This function sets up the PLLSYSCLK divider. There is only one
+ * divider that scales PLLSYSCLK to generate the system clock.
+ * 
+ * The divider parameter can have one value from the set below:
+ *     0x0 = /1
+ *     0x1 = /2
+ *     0x2 = /4 (default on reset)
+ *     0x3 = /6
+ *     0x4 = /8
+ *    ......
+ *     0x3F =/126
+ * 
+ * \param[in] divider is the value that configures the divider.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None 
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_SetPLLSysClk(uint16 divider);
+
+
+/** \brief Enters IDLE mode.
+ * 
+ * This function puts the device into IDLE mode. 
+ * The CPU clock is gated while all peripheral clocks are left running.
+ * Any enabled interrupt will wake the CPU up from IDLE mode.
+ * 
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None 
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_EnterIdleMode(void);
+
+
+/** \brief Enters STANDBY mode.
+ * 
+ * This function puts the device into STANDBY mode. This will gate both the
+ * CPU clock and any peripheral clocks derived from SYSCLK. The watchdog is
+ * left active, and an NMI or an optional watchdog interrupt will wake the
+ * CPU subsystem from STANDBY mode.
+ * 
+ * GPIOs may be configured to wake the CPU subsystem.
+ * 
+ * The CPU will receive an interrupt (WAKEINT) on wakeup.
+ * 
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None 
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_EnterStandbyMode(void);
+
+
+/** \brief Sets the number of cycles to qualify an input on waking from STANDBY mode.
+ * 
+ * This function sets the number of OSCCLK clock cycles used to qualify the
+ * selected inputs when waking from STANDBY mode. The cycles parameter
+ * should be between 2 and 65 cycles inclusive.
+ * 
+ * \param[in] cycles is the number of OSCCLK cycles.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None 
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_SetStandbyQualificationPeriod(uint16 cycles);
+
+
+/** \brief Enable the device to wake from STANDBY mode upon a watchdog interrupt.
+ * 
+ * In order to use this option, Need to configure the watchdog to generate an interrupt.
+ * 
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None 
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_EnableWatchdogStandbyWakeup(void);
+
+
+/** \brief Disable the device from waking from STANDBY mode upon a watchdog interrupt.
+ * 
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None 
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_DisableWatchdogStandbyWakeup(void);
+
+
+
+/** \brief Poll the Registers for Sync Busy
+ * 
+ * \param[in] mask the register value that needs to be polled
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None 
+ * 
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_PollSyncBusy(uint32 mask);
+
 
 #define MCU_START_SEC_CODE
 #include "Mcu_MemMap.h"
@@ -392,6 +608,8 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetClock(Mcu_ClockConfigPtrType ClockConfigPt
         /* Delay of at least 120 OSCCLK cycles required post PLL bypass */
         McalLib_Delay((uint32)28U);
 
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSPLLCTL1);
+
         /* Derive the current and previous oscillator clock source values */
         osc_clksrc_sel = (uint16)(HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL1) &
                         (uint16)SYSCTL_CLKSRCCTL1_OSCCLKSRCSEL_M);
@@ -412,6 +630,8 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetClock(Mcu_ClockConfigPtrType ClockConfigPt
             /* Delay of at least 60 OSCCLK cycles required between powerdown to powerup of PLL */
             McalLib_Delay((uint32)14U);
 
+            Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSPLLCTL1);
+
             /* Configure oscillator source */
             Mcu_SelectOscSource(ClockConfigPtr->Mcu_ClockSourceId);
 
@@ -425,6 +645,8 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetClock(Mcu_ClockConfigPtrType ClockConfigPt
 
         /* Set dividers to /1 to ensure the fastest PLL configuration */
         Mcu_SetPLLSysClk((uint16)0U);
+
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSCLKDIVSEL);
 
 #if(STD_OFF == MCU_CFG_NO_PLL)
     /* Get the PLL multiplier settings from config */
@@ -458,12 +680,19 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetClock(Mcu_ClockConfigPtrType ClockConfigPt
         /* Delay of at least 60 OSCCLK cycles required between powerdown to powerup of PLL */
         McalLib_Delay((uint32)14U);
 
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSPLLCTL1);
+
         /* Write multiplier, which automatically turns on the PLL */
         HWREG(DEVCFG_BASE + SYSCTL_O_SYSPLLMULT) = pll_mult;
+
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSPLLMULT);
 
         /* Enable/ turn on PLL */
         HWREGH(DEVCFG_BASE + SYSCTL_O_SYSPLLCTL1) |=
             ((uint16)SYSCTL_SYSPLLCTL1_PLLEN);
+
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSPLLCTL1);
+
         return_value = (Std_ReturnType)E_OK;
     }
     else
@@ -478,14 +707,15 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetClock(Mcu_ClockConfigPtrType ClockConfigPt
 #endif /*MCU_CFG_NO_PLL*/
 
     /* Set the divider to user value */
-    sys_clk_div = ((uint16)ClockConfigPtr->Mcu_SysClkDiv / (uint16)2U);
-
-    if(((uint8)2U < ClockConfigPtr->Mcu_SysClkDiv) && (0U != (ClockConfigPtr->Mcu_SysClkDiv % (uint8)2U)))
+    if((uint16)ClockConfigPtr->Mcu_SysClkDiv > (uint16)0U)
     {
-        sys_clk_div |= (uint16)(SYSCTL_SYSCLKDIVSEL_PLLSYSCLKDIV_LSB);
-    }   
+        sys_clk_div = ((uint16)ClockConfigPtr->Mcu_SysClkDiv - (uint16)1U);
+    }
+  
     /* Set the PLL Sys Clock divider */
     Mcu_SetPLLSysClk(sys_clk_div);
+
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSCLKDIVSEL);
 
     for (uint32 i = 0; i < ClockConfigPtr->Mcu_MCanInstancesCount; i++)
     {
@@ -517,8 +747,14 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetClock(Mcu_ClockConfigPtrType ClockConfigPt
     /* Configure the EMIF clock divider */       
     Mcu_SetEmifClock(ClockConfigPtr->Mcu_EmifClkDiv);
 
+    /* Reset the all peripherals */
+    Mcu_DeviceResetAllPeripherals(); 
+
     /* Enable clocks to peripherals */
-    Mcu_DeviceEnablePeripherals(ClockConfigPtr->Mcu_PeripheralClkConfigPtr);   
+    Mcu_DeviceEnablePeripherals(ClockConfigPtr->Mcu_PeripheralClkConfigPtr);  
+
+    /* Sets the appropriate reset bit for unused peripherals and clears the reset bits for the remaining peripherals. */
+    Mcu_DeviceResetPeripherals(ClockConfigPtr->Mcu_PeripheralResetConfigPtr); 
     }
     return (return_value);
 }
@@ -545,6 +781,8 @@ FUNC(void, MCU_CODE) Mcu_EnablePll(void)
         Mcu_SetPLLSysClk(sys_clk_div + 4U);
     }
 
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSCLKDIVSEL);
+
     /* Enable PLLSYSCLK is fed from system PLL clock */ 
     HWREGH(DEVCFG_BASE + SYSCTL_O_SYSPLLCTL1) |= ((uint16)SYSCTL_SYSPLLCTL1_PLLCLKEN);
 
@@ -552,8 +790,12 @@ FUNC(void, MCU_CODE) Mcu_EnablePll(void)
         prior to increasing entire system clock frequency. */
     McalLib_Delay((uint32)48U);
 
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSPLLCTL1);
+
     /* Set the PLL Sys Clock divider */
     Mcu_SetPLLSysClk(sys_clk_div);
+
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_SYSCLKDIVSEL);
 }
 
 
@@ -599,45 +841,13 @@ FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertResetReason(Mcu_RawResetType RawResetTy
 {
     VAR(Mcu_ResetType, AUTOMATIC) reset_reason = MCU_RESET_UNDEFINED;
     
-    /* Power On Reset */
-    if ((uint32)SYSCTL_RESC_POR ==
-        ((uint32)SYSCTL_RESC_POR & RawResetType))
+    reset_reason = Mcu_ConvertFirstGroup(RawResetType);
+
+    /* if reset reason is not validated and converted from first group POR, WDRS and SIMRESET */
+    if(reset_reason == MCU_RESET_UNDEFINED)
     {
-        reset_reason = MCU_POWER_ON_RESET;
-    }
-    /* Watchdog reset */
-    else if ((uint32)SYSCTL_RESC_WDRSN ==
-            ((uint32)SYSCTL_RESC_WDRSN & RawResetType))
-    {
-        reset_reason = MCU_WATCHDOG_RESET;
-    }
-    /* Simulation of External Reset */
-    else if (((uint32)SYSCTL_RESC_SIMRESET_XRSN ==
-            ((uint32)SYSCTL_RESC_SIMRESET_XRSN & RawResetType)))
-    {
-        reset_reason = MCU_SW_RESET;
-    }
-    /* External Reset */
-    else if ((uint32)SYSCTL_RESC_XRSN ==
-            ((uint32)SYSCTL_RESC_XRSN & RawResetType))
-    {
-        reset_reason = MCU_EXTERNAL_RESET;
-    }
-    /* NMI Watchdog reset */
-    else if ((uint32)SYSCTL_RESC_NMIWDRSN ==
-            ((uint32)SYSCTL_RESC_NMIWDRSN & RawResetType))
-    {
-        reset_reason = MCU_ESM_NMI_WATCHDOG_RESET;
-    }
-    /* ESM reset */
-    else if ((uint32)SYSCTL_RESC_ESMRESET ==
-            ((uint32)SYSCTL_RESC_ESMRESET & RawResetType))
-    {
-        reset_reason = MCU_ESM_RESET;
-    }
-    else
-    {
-        /* Do Nothing*/
+        /* cehck if reset reason is validated and converted from second group XRS, NMIWDRS and ESM resets */ 
+        reset_reason = Mcu_ConvertSecondGroup(RawResetType);
     }
 
     return reset_reason;
@@ -688,7 +898,6 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetModeParamCheck(Mcu_ModeConfigPtrType ModeC
 }
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
 
-
 /*
  * Design: MCAL-21928
  */
@@ -725,10 +934,207 @@ FUNC(void, MCU_CODE) Mcu_EnterLowPowerMode(Mcu_ModeConfigPtrType ModeConfigPtr)
     }
 }
 
+/*
+ * Design: MCAL-28522
+ */
+FUNC(void, MCU_CODE) Mcu_FillRamSection(Mcu_RamConfigPtrType RamSectionConfigPtr)
+{
+    /* RAM destination pointer */
+    P2VAR(uint8, AUTOMATIC, MCU_APPL_DATA) ram_destination = NULL_PTR;
+
+    /* Local word counter */
+    VAR(uint32, MCU_VAR) section_size            = 0U;
+    VAR(uint8, MCU_VAR)  section_writeSize       = 0U;
+    VAR(uint8, MCU_VAR)  section_defaultValue    = 0U;
+    VAR(uint32, MCU_VAR) num_iterations          = 0U;
+
+    /* Load the RAM Section Base address from the configuration */
+    ram_destination = RamSectionConfigPtr->Mcu_RamSectionBaseAddress;
+
+    /* Load the Section Size & Section Write size & Default value from configuration*/
+    section_size            = RamSectionConfigPtr->Mcu_RamSectionBytes;
+    section_writeSize       = RamSectionConfigPtr->Mcu_RamSectionWriteSize;
+    section_defaultValue    = RamSectionConfigPtr->Mcu_RamDefaultValue;
+
+    /*  Calculate the number of iterations required to fill the entire RAM section */
+    num_iterations = (section_size / section_writeSize);
+
+    switch (section_writeSize)
+    {
+        case 1U:
+        {
+            /* section_writeSize == 1U */
+            uint8* write_buffer = ram_destination;
+            for (uint32 i = 0; i < num_iterations; i++)
+            {
+                write_buffer[i] = section_defaultValue;
+            }
+            break;
+        }
+
+        case 2U:
+        {
+            /* section_writeSize == 2U */
+            uint16* write_buffer = (uint16 *)ram_destination;
+            for (uint32 i = 0; i < num_iterations; i++)
+            {
+                write_buffer[i] = section_defaultValue;
+            }
+            break;
+        }
+
+        case 4U:
+        {
+            /* section_writeSize == 4U */
+            uint32* write_buffer = (uint32 *)ram_destination;
+            for (uint32 i = 0; i < num_iterations; i++)
+            {
+                write_buffer[i] = section_defaultValue;
+            }
+            break;
+        }
+
+        case 8U:
+        {
+            /* section_writeSize == 8U */
+            uint64* write_buffer = (uint64 *) ram_destination;
+            for (uint32 i = 0; i < num_iterations; i++)
+            {
+                write_buffer[i] = section_defaultValue;
+            }
+            break;
+        }
+
+        default:
+        {
+            /* Do Nothing */
+            break;
+        }
+    }
+}
+
+#if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
+FUNC(void, MCU_CODE) Mcu_UnlockClockConfigRegisters(void)
+{
+    HWREG(DEVCFG_BASE + SYSCTL_O_CLKCFGLOCK1) = 0U;
+}
+
+
+FUNC(void, MCU_CODE) Mcu_LockClockConfigRegisters(void)
+{
+    HWREG(DEVCFG_BASE + SYSCTL_O_CLKCFGLOCK1) = 0xFFFFFFFFU;
+}
+#endif /*MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS*/
+
+
+#if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
+FUNC(void, MCU_CODE) Mcu_UnlockCpuPeripheralConfigRegisters(void)
+{
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_CPUPERCFGLOCK1) = 0U;
+}
+
+
+FUNC(void, MCU_CODE) Mcu_LockCpuPeripheralConfigRegisters(void)
+{
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_CPUPERCFGLOCK1) = 0xFFFFFFFFU;
+}
+#endif /*MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS*/
+
+
+#if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
+FUNC(void, MCU_CODE) Mcu_UnlockCpuSysRegisters(void)
+{
+    /* LPMCR Register */
+    VAR(uint32, AUTOMATIC) reg = ((uint32)(CPUSYS_BASE + SYSCTL_O_CPUSYSLOCK1) | 0x2U);
+    HWREG((uint32)reg) = (uint32)reg & 0U;
+}
+
+
+FUNC(void, MCU_CODE) Mcu_LockCpuSysRegisters(void)
+{
+    /* LOCK LPMCR Register */
+    VAR(uint32, AUTOMATIC) reg = ((uint32)(CPUSYS_BASE + SYSCTL_O_CPUSYSLOCK1) | 0x2U);
+    HWREG((uint32)reg) = (uint32)reg & 0xFFFFFFFFU;
+}
+#endif /*MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS*/
+
+
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
+/*
+ * Design: MCAL-28523
+ */
+static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertFirstGroup(Mcu_RawResetType RawResetType)
+{
+    VAR(Mcu_ResetType, AUTOMATIC) reset_reason = MCU_RESET_UNDEFINED;
+    
+    /* Power On Reset */
+    if ((uint32)SYSCTL_RESC_POR ==
+        ((uint32)SYSCTL_RESC_POR & RawResetType))
+    {
+        reset_reason = MCU_POWER_ON_RESET;
+    }
+    /* Watchdog reset */
+    else if ((uint32)SYSCTL_RESC_WDRSN ==
+            ((uint32)SYSCTL_RESC_WDRSN & RawResetType))
+    {
+        reset_reason = MCU_WATCHDOG_RESET;
+    }
+    /* Simulation of External Reset */
+    else if(((uint32)SYSCTL_RESC_SIMRESET_XRSN ==
+            ((uint32)SYSCTL_RESC_SIMRESET_XRSN & RawResetType)))
+    {
+        reset_reason = MCU_SW_RESET;
+    }
+    else
+    {
+        /* Do Nothing*/
+    }
 
+    return reset_reason;
+}
+
+/*
+ * Design: MCAL-28524
+ */
+static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertSecondGroup(Mcu_RawResetType RawResetType)
+{
+    VAR(Mcu_ResetType, AUTOMATIC) reset_reason = MCU_RESET_UNDEFINED;
+
+    /* External Reset */
+    if ((uint32)SYSCTL_RESC_XRSN ==
+            ((uint32)SYSCTL_RESC_XRSN & RawResetType))
+    {
+        reset_reason = MCU_EXTERNAL_RESET;
+    }
+    /* TI_COVERAGE_GAP_START [Branch Gap] ESM_NMI_WATCHDOG_RESET reason is not supported. Unable to reproduce condition */
+    /* NMI Watchdog reset */
+    else if ((uint32)SYSCTL_RESC_NMIWDRSN ==
+            ((uint32)SYSCTL_RESC_NMIWDRSN & RawResetType))
+    {
+        reset_reason = MCU_ESM_NMI_WATCHDOG_RESET;
+    }
+    /* TI_COVERAGE_GAP_STOP*/
+    /* TI_COVERAGE_GAP_START [Branch Gap] ESM_RESET reason is not supported. Unable to reproduce condition */
+    /* ESM reset */
+    else if ((uint32)SYSCTL_RESC_ESMRESET ==
+            ((uint32)SYSCTL_RESC_ESMRESET & RawResetType))
+    {
+        reset_reason = MCU_ESM_RESET;
+    }
+    /* TI_COVERAGE_GAP_STOP*/
+    else
+    {
+        /* Do Nothing*/
+    }
+
+    return reset_reason;
+}
+
+/*
+ * Design: MCAL-28525
+ */
 static FUNC(void, MCU_CODE) Mcu_SetMCanClock(const Mcu_MCanClkConfigType* MCanClkCfg)
 {
     VAR(uint8, AUTOMATIC) bitpos = (uint8)0U;
@@ -743,14 +1149,20 @@ static FUNC(void, MCU_CODE) Mcu_SetMCanClock(const Mcu_MCanClkConfigType* MCanCl
              ~(SYSCTL_MCANCLKDIVSEL_MCANACLKDIV_M << bitpos)) |
             ((uint16)divider << bitpos);
 
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_MCANCLKDIVSEL);
+
     /* Configure the clock source */
     bitpos = (uint8)((SYSCTL_CLKSRCCTL2_MCANABCLKSEL_S) + (2U * (uint8)mcan_inst));
     HWREG(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL2) =
             (HWREG(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL2) & ~(0x3U << bitpos)) |
             ((uint16)clksrc << bitpos);
 
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_CLKSRCCTL2);
 }
 
+/*
+ * Design: MCAL-28526
+ */
 static FUNC(void, MCU_CODE) Mcu_SetLinClock(const Mcu_LinClkConfigType* LinClkCfg)
 {
     VAR(Mcu_LINInstance, AUTOMATIC)   lin_inst = LinClkCfg->Mcu_LinInstance;
@@ -763,6 +1175,8 @@ static FUNC(void, MCU_CODE) Mcu_SetLinClock(const Mcu_LinClkConfigType* LinClkCf
             (HWREG(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) &
                 ~SYSCTL_PERCLKDIVSEL_LINACLKDIV_M) |
             ((uint32)divider << SYSCTL_PERCLKDIVSEL_LINACLKDIV_S);
+        
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_PERCLKDIVSEL);
     }
 
     if(lin_inst == (Mcu_LINInstance) MCU_LIN_B)
@@ -772,10 +1186,15 @@ static FUNC(void, MCU_CODE) Mcu_SetLinClock(const Mcu_LinClkConfigType* LinClkCf
                 (HWREG(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) &
                     ~SYSCTL_PERCLKDIVSEL_LINBCLKDIV_M) |
                 ((uint32)divider << SYSCTL_PERCLKDIVSEL_LINBCLKDIV_S);
+        
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_PERCLKDIVSEL);
     }
 
 }
 
+/*
+ * Design: MCAL-28527
+ */
 static FUNC(void, MCU_CODE) Mcu_SetCpuTimerClock(const Mcu_CpuTimerClkConfigType* CpuTimerClkCfg)
 {
 
@@ -792,7 +1211,9 @@ static FUNC(void, MCU_CODE) Mcu_SetCpuTimerClock(const Mcu_CpuTimerClkConfigType
         (((uint16)CpuTimerClkCfg->Mcu_CpuTimer2ClkDiv - (uint16)1U) << (uint16)SYSCTL_TMR2CLKCTL_TMR2CLKPRESCALE_S);
 }
 
-
+/*
+ * Design: MCAL-28528
+ */
 static FUNC(void, MCU_CODE) Mcu_SetExternalClockOutput(const Mcu_ExternalClkOutConfigType* ExternalClkOutCfg)
 {
     if((boolean)TRUE == ExternalClkOutCfg->Mcu_ExternalClockOut)
@@ -803,11 +1224,18 @@ static FUNC(void, MCU_CODE) Mcu_SetExternalClockOutput(const Mcu_ExternalClkOutC
             (uint16)~(SYSCTL_CLKSRCCTL3_XCLKOUTSEL_M)) |
             ((uint16)(ExternalClkOutCfg->Mcu_ExternalClockOutSource) << (uint16)SYSCTL_CLKSRCCTL3_XCLKOUTSEL_S);
 
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_CLKSRCCTL3);
+
         /* Set External Clock Output Divider */
         HWREG(DEVCFG_BASE + SYSCTL_O_XCLKOUTDIVSEL) = ExternalClkOutCfg->Mcu_ExternalClkOutDiv;
+
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_XCLKOUTDIVSEL);
     }
 }
 
+/*
+ * Design: MCAL-28529
+ */
 static FUNC(void, MCU_CODE) Mcu_SetEthercatClock(const Mcu_EthercatClkConfigType* EthercatClkCfg)
 {
     /* Select Ethercat Clock divder and enable/disable flag */
@@ -817,9 +1245,13 @@ static FUNC(void, MCU_CODE) Mcu_SetEthercatClock(const Mcu_EthercatClkConfigType
         (uint16)SYSCTL_ETHERCATCLKCTL_ECATDIV_M) |
         (uint16)((uint16)EthercatClkCfg->Mcu_EthercatClkDiv << (uint16)SYSCTL_ETHERCATCLKCTL_ECATDIV_S)) |
         (uint16)EthercatClkCfg->Mcu_EthercatPhyClkEnable;
+
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_ETHERCATCLKCTL);
 }
 
-
+/*
+ * Design: MCAL-28530
+ */
 static FUNC(void, MCU_CODE) Mcu_SetHsmClock(Mcu_HsmClockDiv HsmClkDiv)
 {
     /* Select Hsm Clock divder */
@@ -829,14 +1261,22 @@ static FUNC(void, MCU_CODE) Mcu_SetHsmClock(Mcu_HsmClockDiv HsmClkDiv)
         ((uint32)HsmClkDiv << (uint32)SYSCTL_HSMCLKDIVSEL_HSMCLKDIV_S);
 }
 
+/*
+ * Design: MCAL-28531
+ */
 static FUNC(void, MCU_CODE) Mcu_SetEpwmClock(Mcu_EPWMClkDivider EpwmClkDiv)
 {
     /* Select Epwm Clock divder  */
     HWREGH(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) =
         (HWREGH(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) &
          ~SYSCTL_PERCLKDIVSEL_EPWMCLKDIV_M) | (uint16)EpwmClkDiv;
+
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_PERCLKDIVSEL);
 }
 
+/*
+ * Design: MCAL-28532
+ */
 static FUNC(void, MCU_CODE) Mcu_SetEmifClock(Mcu_EMIFClkDivider EmifClkDiv)
 {
     /* Select Emif Clock divder  */
@@ -844,8 +1284,13 @@ static FUNC(void, MCU_CODE) Mcu_SetEmifClock(Mcu_EMIFClkDivider EmifClkDiv)
             (HWREG(DEVCFG_BASE + SYSCTL_O_PERCLKDIVSEL) &
                 ~SYSCTL_PERCLKDIVSEL_EMIF1CLKDIV_M) |
             ((uint32)EmifClkDiv << SYSCTL_PERCLKDIVSEL_EMIF1CLKDIV_S);
+
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_PERCLKDIVSEL);
 }
 
+/*
+ * Design: MCAL-28533
+ */
 static FUNC(void, MCU_CODE) Mcu_SelectOscSource(Mcu_ClkSourceIdType OscSource)
 {
     /* Select the specified source. */
@@ -855,6 +1300,8 @@ static FUNC(void, MCU_CODE) Mcu_SelectOscSource(Mcu_ClkSourceIdType OscSource)
             /* Clk Src = INTOSC2 */
             HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL1) &=
                 (uint16)~SYSCTL_CLKSRCCTL1_OSCCLKSRCSEL_M;
+            
+            Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_CLKSRCCTL1);
             break;
 
         case MCU_CLKSRC_OSC1:
@@ -863,6 +1310,8 @@ static FUNC(void, MCU_CODE) Mcu_SelectOscSource(Mcu_ClkSourceIdType OscSource)
                 (uint16)(HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL1) &
                 (uint16)~SYSCTL_CLKSRCCTL1_OSCCLKSRCSEL_M) |
                 (uint16)MCU_CLKSRC_OSC1;
+
+            Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_CLKSRCCTL1);
             break;
 
         case MCU_CLKSRC_XTAL:
@@ -874,14 +1323,17 @@ static FUNC(void, MCU_CODE) Mcu_SelectOscSource(Mcu_ClkSourceIdType OscSource)
             /* Select XTAL in single-ended mode and wait for it to power up */
             Mcu_SelectXTALSingleEnded();
             break;
-
+        /* TI_COVERAGE_GAP_START [Branch Gap] Default check added as MISRA required */
         default:
             /* Do nothing. Not a valid oscSource value. */
             break;
+        /* TI_COVERAGE_GAP_STOP*/
     }
 }
 
-
+/*
+ * Design: MCAL-28534
+ */
 static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
 {
     VAR(boolean, AUTOMATIC) status = FALSE;
@@ -899,6 +1351,8 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
     HWREGH(DEVCFG_BASE + SYSCTL_O_XTALCR) &= (uint16)~SYSCTL_XTALCR_OSCOFF;
     HWREGH(DEVCFG_BASE + SYSCTL_O_XTALCR) &= (uint16)~SYSCTL_XTALCR_SE;
 
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_XTALCR);
+
     /*  Wait for the X1 clock to saturate */
     status = Mcu_PollX1Counter();
 
@@ -908,10 +1362,14 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
         ((uint16)~SYSCTL_CLKSRCCTL1_OSCCLKSRCSEL_M)) |
         ((uint16)MCU_CLKSRC_XTAL));
 
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_CLKSRCCTL1);
+
     /* If a missing clock failure was detected, try waiting for the X1 counter
     to saturate again. Consider modifying this code to add a 10ms timeout */
-    while ((TRUE == Mcu_IsMCDClockFailureDetected()) && (status == FALSE) &&
+    /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
+    while (((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected()) && ((boolean)status == (boolean)FALSE) &&
             (loop_count < (uint16)4U))
+    /* TI_COVERAGE_GAP_STOP*/
     {
         /* Clear the MCD failure */
         Mcu_ResetMCD();
@@ -925,9 +1383,12 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
             ((uint16)~SYSCTL_CLKSRCCTL1_OSCCLKSRCSEL_M)) |
             ((uint16)MCU_CLKSRC_XTAL));
 
+        Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_CLKSRCCTL1);
+
         loop_count ++;
     }
-
+    
+    /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
     if(status == FALSE)
     {         
         /* If code is stuck here, it means crystal has not started.  
@@ -935,8 +1396,12 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void)
         Replace the EMUSTOP0 with an appropriate error-handling routine. */
         MCAL_LIB_EMUSTOP0;     
     }
+    /* TI_COVERAGE_GAP_STOP*/
 }
 
+/*
+ * Design: MCAL-28535
+ */
 static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
 {
     VAR(boolean, AUTOMATIC) status = FALSE;
@@ -952,7 +1417,9 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
 
     /* Turn on XTAL and select single ended mode */
     HWREGH(DEVCFG_BASE + SYSCTL_O_XTALCR) &= ((uint16)~SYSCTL_XTALCR_OSCOFF);
-    HWREGH(DEVCFG_BASE + SYSCTL_O_XTALCR) &= ((uint16)SYSCTL_XTALCR_SE);
+    HWREGH(DEVCFG_BASE + SYSCTL_O_XTALCR) |= ((uint16)SYSCTL_XTALCR_SE);
+
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_XTALCR);
 
     /*  Wait for the X1 clock to saturate */
     status = Mcu_PollX1Counter();
@@ -961,12 +1428,16 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
     HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL1) =
         ((uint16)(HWREGH(DEVCFG_BASE + SYSCTL_O_CLKSRCCTL1) &
         ((uint16)~SYSCTL_CLKSRCCTL1_OSCCLKSRCSEL_M)) |
-        ((uint16)MCU_CLKSRC_XTAL_SE));
+        ((uint16)MCU_CLKSRC_XTAL));
+
+    Mcu_PollSyncBusy(SYSCTL_SYNCBUSY_CLKSRCCTL1);
 
     /* If a missing clock failure was detected, try waiting for the X1 counter
     to saturate again. Consider modifying this code to add a 10ms timeout */
-    while ((TRUE == Mcu_IsMCDClockFailureDetected()) && (status == FALSE) &&
+    /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
+    while (((boolean)TRUE == (boolean)Mcu_IsMCDClockFailureDetected()) && ((boolean)status == (boolean)FALSE) &&
             (loop_count < (uint16)4U))
+    /* TI_COVERAGE_GAP_STOP*/
     {
         /* Clear the MCD failure */
         Mcu_ResetMCD();
@@ -982,7 +1453,8 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
 
         loop_count ++;
     }
-
+    
+    /* TI_COVERAGE_GAP_START [Branch Gap] unable to simulate mcddetect in test */
     if(status == FALSE)
     {         
         /* If code is stuck here, it means crystal has not started.  
@@ -990,13 +1462,65 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void)
         Replace the EMUSTOP0 with an appropriate error-handling routine. */
         MCAL_LIB_EMUSTOP0;     
     }
+    /* TI_COVERAGE_GAP_STOP*/
 }
 
+/*
+ * Design: MCAL-28536
+ */
+static FUNC(void, MCU_CODE) Mcu_ClearX1Counter(void)
+{
+    /* Keep clearing the counter until it is no longer saturated */
+    while (HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) > (uint32)SYSCTL_X1CNT_X1CNT_M) /* 0x7FFU*/
+    {
+        HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) |= ((uint32)SYSCTL_X1CNT_CLR);
+    }
+}
 
+/*
+ * Design: MCAL-28537
+ */
+static FUNC(boolean, MCU_CODE) Mcu_WaitX1Saturate(uint16 loop_count)
+{
+    VAR(boolean, AUTOMATIC) status = FALSE;
+    VAR(uint32, AUTOMATIC) local_counter = (uint32)0U;
+
+    /* Wait for the X1 clock to saturate */
+    /* TI_COVERAGE_GAP_START [Branch Gap] unable to reproduce the scenario using S/W */
+    while (HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) != (uint32)SYSCTL_X1CNT_X1CNT_M) /* 0x7FFU*/
+    {
+        /* If your application is stuck in this loop, please check if the
+        input clock source is valid */
+
+        local_counter++;
+        if(local_counter > (uint32)2500000U)
+        {
+            if(loop_count == (uint16)3U)
+            {
+                status = FALSE;
+            }
+            break;
+        }
+    }
+    /* TI_COVERAGE_GAP_STOP*/
+
+    if ((loop_count == (uint16)3U) &&
+        (HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) == (uint32)SYSCTL_X1CNT_X1CNT_M))
+    {
+        status = TRUE;
+    }
+
+    local_counter = ((uint32)0U);
+
+    return status;
+}
+
+/*
+ * Design: MCAL-28538
+ */
 static FUNC(boolean, MCU_CODE) Mcu_PollX1Counter(void)
 {
     VAR(uint16, AUTOMATIC) loop_count = (uint16)0U;
-    VAR(uint32, AUTOMATIC) local_counter = (uint32)0U;
     VAR(boolean, AUTOMATIC) status = FALSE;
 
     /* Delay for 1 ms while the XTAL powers up 
@@ -1007,42 +1531,21 @@ static FUNC(boolean, MCU_CODE) Mcu_PollX1Counter(void)
     do
     {
         /* Keep clearing the counter until it is no longer saturated */
-        while (HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) > (uint32)SYSCTL_X1CNT_X1CNT_M) /* 0x7FFU*/
-        {
-            HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) |= ((uint32)SYSCTL_X1CNT_CLR);
-        }
+        Mcu_ClearX1Counter();
 
         /* Wait for the X1 clock to saturate */
-        while (HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) != (uint32)SYSCTL_X1CNT_X1CNT_M) /* 0x7FFU*/
-        {
-            /* If your application is stuck in this loop, please check if the
-            input clock source is valid */
-
-            local_counter++;
-            if(local_counter > (uint32)2500000U)
-            {
-                if(loop_count == (uint16)3U)
-                {
-                    status = FALSE;
-                }
-                break;
-            }
-        }
-
-        if ((loop_count == (uint16)3U) &&
-        (HWREG(DEVCFG_BASE + SYSCTL_O_X1CNT) == (uint32)SYSCTL_X1CNT_X1CNT_M))
-        {
-            status = TRUE;
-        }
+        status = Mcu_WaitX1Saturate(loop_count);
 
         /* Increment the counter */
         loop_count++;
-        local_counter = ((uint32)0U);
     } while (loop_count < (uint16)4U);
 
     return status;
 }
 
+/*
+ * Design: MCAL-28539
+ */
 static FUNC(void, MCU_CODE) Mcu_DeviceEnablePeripherals(Mcu_PeripheralClkRegConfigPtrType PeripheralClkConfigPtr)
 {
     /* Turn on the module clock. */
@@ -1072,8 +1575,70 @@ static FUNC(void, MCU_CODE) Mcu_DeviceEnablePeripherals(Mcu_PeripheralClkRegConf
     HWREG(CPUPERCFG_BASE + SYSCTL_O_PCLKCR32) = PeripheralClkConfigPtr->Mcu_PeripheralClk32Reg;
 }
 
+static FUNC(void, MCU_CODE) Mcu_DeviceResetPeripherals(Mcu_PeripheralResetRegConfigPtrType PeripheralResetConfigPtr)
+{
+    /* Reset the peripheral. */
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES0) = PeripheralResetConfigPtr->Mcu_PeripheralReset0Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES1) = PeripheralResetConfigPtr->Mcu_PeripheralReset1Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES2) = PeripheralResetConfigPtr->Mcu_PeripheralReset2Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES3) = PeripheralResetConfigPtr->Mcu_PeripheralReset3Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES4) = PeripheralResetConfigPtr->Mcu_PeripheralReset4Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES6) = PeripheralResetConfigPtr->Mcu_PeripheralReset6Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES7) = PeripheralResetConfigPtr->Mcu_PeripheralReset7Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES8) = PeripheralResetConfigPtr->Mcu_PeripheralReset8Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES9) = PeripheralResetConfigPtr->Mcu_PeripheralReset9Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES10) = PeripheralResetConfigPtr->Mcu_PeripheralReset10Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES13) = PeripheralResetConfigPtr->Mcu_PeripheralReset13Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES14) = PeripheralResetConfigPtr->Mcu_PeripheralReset14Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES16) = PeripheralResetConfigPtr->Mcu_PeripheralReset16Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES17) = PeripheralResetConfigPtr->Mcu_PeripheralReset17Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES18) = PeripheralResetConfigPtr->Mcu_PeripheralReset18Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES19) = PeripheralResetConfigPtr->Mcu_PeripheralReset19Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES20) = PeripheralResetConfigPtr->Mcu_PeripheralReset20Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES21) = PeripheralResetConfigPtr->Mcu_PeripheralReset21Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES23) = PeripheralResetConfigPtr->Mcu_PeripheralReset23Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES25) = PeripheralResetConfigPtr->Mcu_PeripheralReset25Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES27) = PeripheralResetConfigPtr->Mcu_PeripheralReset27Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES28) = PeripheralResetConfigPtr->Mcu_PeripheralReset28Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES30) = PeripheralResetConfigPtr->Mcu_PeripheralReset30Reg;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES32) = PeripheralResetConfigPtr->Mcu_PeripheralReset32Reg;
+}
+
+
+static FUNC(void, MCU_CODE) Mcu_DeviceResetAllPeripherals(void)
+{
+    /* Reset all peripherals. */
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES0) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES1) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES2) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES3) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES4) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES6) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES7) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES8) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES9) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES10) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES13) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES14) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES16) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES17) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES18) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES19) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES20) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES21) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES23) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES25) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES27) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES28) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES30) = (uint32) 0xFFFFFFFFU;
+    HWREG(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES32) = (uint32) 0xFFFFFFFFU;
+}
+
 
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+/*
+ * Design: MCAL-28540
+ */
 static FUNC(boolean, MCU_CODE) Mcu_XtalFreqRangeCheck(Mcu_ClockConfigPtrType ClockConfigPtr)
 {
     VAR(boolean, AUTOMATIC) status = FALSE;
@@ -1091,6 +1656,9 @@ static FUNC(boolean, MCU_CODE) Mcu_XtalFreqRangeCheck(Mcu_ClockConfigPtrType Clo
     return status;
 }
 
+/*
+ * Design: MCAL-28541
+ */
 static FUNC(boolean, MCU_CODE) Mcu_PllSettingsRangeCheck(Mcu_ClockConfigPtrType ClockConfigPtr)
 {
     VAR(boolean, AUTOMATIC) status = FALSE;
@@ -1098,7 +1666,7 @@ static FUNC(boolean, MCU_CODE) Mcu_PllSettingsRangeCheck(Mcu_ClockConfigPtrType 
 #if(STD_OFF == MCU_CFG_NO_PLL) 
     /* Check the PLL settings */
     if((MCU_PLLREFDIV_MAX < ClockConfigPtr->Mcu_PllRefDiv) ||    /* Reference Divider Max Range: 32U */
-        (MCU_PLLINTMULT_MAX < ClockConfigPtr->Mcu_PllIntMult) || /* Integer Multiplier Max Range: 127U */
+        (MCU_PLLINTMULT_MAX < ClockConfigPtr->Mcu_PllIntMult) || /* Integer Multiplier Max Range: 255U */
         (MCU_PLLOUTDIV_MAX < ClockConfigPtr->Mcu_PllOutDiv))     /* Output Divider Max Range: 32U */
     {
         /* Invalid Parameters */
@@ -1109,6 +1677,9 @@ static FUNC(boolean, MCU_CODE) Mcu_PllSettingsRangeCheck(Mcu_ClockConfigPtrType 
     return status;
 }
 
+/*
+ * Design: MCAL-28542
+ */
 static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(uint32 oscClk, Mcu_ClockConfigPtrType ClockConfigPtr)
 {
     VAR(boolean, AUTOMATIC) status = FALSE;
@@ -1155,9 +1726,114 @@ static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(uint32 oscClk, Mcu
 }
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
 
+
+
 /*********************************************************************************************************************
- *  Local Inline Function Definitions and Function-Like Macros
+ *  Local Functions Definition
  *********************************************************************************************************************/
+/*
+ * Design: MCAL-28543
+ */
+LOCAL_INLINE FUNC(boolean, MCU_CODE) Mcu_IsMCDClockFailureDetected(void)
+{ 
+    /* Check the status bit to determine failure */ 
+    return ((HWREGH(DEVCFG_BASE + SYSCTL_O_MCDCR) & (uint16)SYSCTL_MCDCR_MCLKSTS) != (uint16)0U);
+}
+
+/*
+ * Design: MCAL-28544
+ */
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_ResetMCD(void)
+{
+    /* reset missing clock detection control register */ 
+    HWREGH(DEVCFG_BASE + SYSCTL_O_MCDCR) |= (uint16)SYSCTL_MCDCR_MCLKCLR;
+}
+
+/*
+ * Design: MCAL-28545
+ */
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_SetPLLSysClk(uint16 divider)
+{
+    HWREGH(DEVCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) = divider;
+}
+
+/*
+ * Design: MCAL-28546
+ */
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_EnterIdleMode(void)
+{
+    /* Configure the device to go into IDLE mode when IDLE is executed. */
+    HWREG(CPUSYS_BASE + SYSCTL_O_LPMCR) =
+    (HWREG(CPUSYS_BASE + SYSCTL_O_LPMCR) &
+    ~(uint32)SYSCTL_LPMCR_LPM_M) |
+    MCU_LPM_IDLE;
+
+    /* IDLE Instruction for putting processor into a low-power mode */
+    MCAL_LIB_IDLE;
+}
+
+/*
+ * Design: MCAL-28547
+ */
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_EnterStandbyMode(void)
+{
+    /* Configure the device to go into STANDBY mode when IDLE is executed. */
+    HWREG(CPUSYS_BASE + SYSCTL_O_LPMCR) =
+    (HWREG(CPUSYS_BASE + SYSCTL_O_LPMCR) &
+    ~(uint32)SYSCTL_LPMCR_LPM_M) |
+    MCU_LPM_STANDBY;
+
+    /* IDLE Instruction for putting processor into a low-power mode */
+    MCAL_LIB_IDLE;
+}
+
+/*
+ * Design: MCAL-28548
+ */
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_SetStandbyQualificationPeriod(uint16 cycles)
+{
+    /* Set the standby qualification period */
+    HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) =
+    (HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) &
+    ~(uint16)SYSCTL_LPMCR_QUALSTDBY_M) |
+    ((cycles - (uint16)2U) << (uint16)SYSCTL_LPMCR_QUALSTDBY_S);
+}
+
+/*
+ * Design: MCAL-28549
+ */
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_EnableWatchdogStandbyWakeup(void)
+{
+    /* Set the bit enables the watchdog to wake up the device from STANDBY. */
+    HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) |= (uint16)SYSCTL_LPMCR_WDINTE;
+}
+
+/*
+ * Design: MCAL-28550
+ */
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_DisableWatchdogStandbyWakeup(void)
+{
+    /* Clear the bit enables the watchdog to wake up the device from STANDBY.*/
+    HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) &= (uint16)~SYSCTL_LPMCR_WDINTE;
+}
+
+
+LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_PollSyncBusy(uint32 mask)
+{
+    VAR(uint32, AUTOMATIC) timeoutCnt = (uint32)0U;
+
+    /* Wait for BUSY bit to clear */
+    while((HWREG(DEVCFG_BASE + SYSCTL_O_SYNCBUSY) & mask) == mask)
+    {
+        if(timeoutCnt >= SYSCTL_SYNCBUSY_TIMEOUT_CYCLES)
+        {
+            break;
+        }
+
+        timeoutCnt++;
+    }
+}
+
 
 #define MCU_STOP_SEC_CODE
 #include "Mcu_MemMap.h"

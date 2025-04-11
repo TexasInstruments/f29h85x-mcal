@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.13. CDD PWM Module &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.14. CDD SENT Module" href="Module_User_Guide_Cdd_Sent.html" />
+    <link rel="prev" title="4.12. CDD IPC Module" href="Module_User_Guide_Cdd_Ipc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.02.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.1. CAN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.2. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Fls.html">4.3. FLS Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.4. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.5. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.6. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.7. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.8. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.9. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.10. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.11. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.12. CDD IPC Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.13. CDD PWM Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.13.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.13.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.13.3. Functional Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-the-dutycycle-is-configured-in-the-hardware">4.13.3.1. How the dutycycle is configured in the hardware</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#epwm-waveform">4.13.3.2. EPWM Waveform</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.13.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.13.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.13.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.13.4.3. Non compliance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.13.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.13.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.13.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.13.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.13.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.13.6.4. Error codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.13.7. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.13.7.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.13.7.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.13.7.3. Hardware-Software Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.13.8. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.13.8.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.13.8.2. Multi-core and Resource allocator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.13.9. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cddpwmconfigset">4.13.9.1. CddPwmConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddpwmgeneral">4.13.9.2. CddPwmGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-pwm-module">4.13.9.3. Steps To Configure Cdd_Pwm Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.13.10. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-pwm-example-upcountmode">4.13.10.1. Cdd_Pwm_Example_UpCountMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.13.10.2. File Structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
+      <li><span class="section-number">4.13. </span>CDD PWM Module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-pwm-module">
+<h1><span class="section-number">4.13. </span>CDD PWM Module<a class="headerlink" href="#cdd-pwm-module" title="Link to this heading"></a></h1>
+<section id="acronyms-and-definitions">
+<h2><span class="section-number">4.13.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AUTOSAR</p></td>
+<td><p>Automotive Open System Architecture</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD</p></td>
+<td><p>Complex Device Driver</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL</p></td>
+<td><p>Micro Controller Abstraction Layer</p></td>
+</tr>
+<tr class="row-odd"><td><p>API</p></td>
+<td><p>Application Programming Interface</p></td>
+</tr>
+<tr class="row-even"><td><p>DET</p></td>
+<td><p>Default Error Tracer</p></td>
+</tr>
+<tr class="row-odd"><td><p>HW</p></td>
+<td><p>Hardware</p></td>
+</tr>
+<tr class="row-even"><td><p>SW</p></td>
+<td><p>Software</p></td>
+</tr>
+<tr class="row-odd"><td><p>LA</p></td>
+<td><p>Logic Analyzer</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWM</p></td>
+<td><p>Enhanced Pulse Width Modulation</p></td>
+</tr>
+<tr class="row-odd"><td><p>PWM Instance</p></td>
+<td><p>Single EPWM hardware unit</p></td>
+</tr>
+<tr class="row-even"><td><p>Channel</p></td>
+<td><p>Each PWM instance supports two output channels EPWMxA and EPWMxB. Each output is considered as a channel</p></td>
+</tr>
+<tr class="row-odd"><td><p>PWM Output State</p></td>
+<td><p>Defines the output state for a PWM signal. It could be: High or Low</p></td>
+</tr>
+<tr class="row-even"><td><p>PWM Idle State</p></td>
+<td><p>The idle state represents the output state of the PWM channel after the call of Cdd_Pwm_SetOutputToIdle or Cdd_Pwm_DeInit</p></td>
+</tr>
+<tr class="row-odd"><td><p>PWM Polarity</p></td>
+<td><p>Defines the starting output state of each PWM channel</p></td>
+</tr>
+<tr class="row-even"><td><p>PWM Duty cycle</p></td>
+<td><p>Defines a percentage of the polarity(level) related to the period for each PWM channel</p></td>
+</tr>
+<tr class="row-odd"><td><p>PWM period</p></td>
+<td><p>Defines the value corresponds to the period of the PWM instance (This value is written into the TBPRD register). This is parameter is only applicable to the EPWM instance (not applicable to channel)</p></td>
+</tr>
+<tr class="row-even"><td><p>TBPRD</p></td>
+<td><p>Time-Base Period - Period value that is written into the register</p></td>
+</tr>
+<tr class="row-odd"><td><p>SYSCLK</p></td>
+<td><p>System clock</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWMCLK</p></td>
+<td><p>Clock to the EPWM module</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWMCLKDIV</p></td>
+<td><p>EPWM clock divider. This divides the SYSCLK and produces EPWMCLK to the EPWM instances</p></td>
+</tr>
+<tr class="row-even"><td><p>CLKDIV</p></td>
+<td><p>Clock divider prescaler which divides the EPWMCLK that is fed to the EPWM instance</p></td>
+</tr>
+<tr class="row-odd"><td><p>HSCLKDIV</p></td>
+<td><p>High speed clock divider, it is multiplied with CLKDIV and divides the EPWMCLK that is fed to the EPWM instance</p></td>
+</tr>
+<tr class="row-even"><td><p>T_TBCLK</p></td>
+<td><p>Time period of the time-base clock. This is calculated based on the clock to the EPWM module and the configured clock prescalers.</p></td>
+</tr>
+<tr class="row-odd"><td><p>F_TBCLK</p></td>
+<td><p>Frequency of the time-base clock.(1/T_TBCLK)</p></td>
+</tr>
+<tr class="row-even"><td><p>T_PWM</p></td>
+<td><p>Time Period of the generated PWM waveform</p></td>
+</tr>
+<tr class="row-odd"><td><p>F_PWM</p></td>
+<td><p>Frequency of the time-base clock.(1/T_PWM)</p></td>
+</tr>
+<tr class="row-even"><td><p>GPIO</p></td>
+<td><p>General Purpose Input Output</p></td>
+</tr>
+<tr class="row-odd"><td><p>Edge</p></td>
+<td><p>Change in the output level from HIGH to LOW or LOW to HIGH</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="introduction">
+<h2><span class="section-number">4.13.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>CDD PWM driver is a Complex Device Driver used to represent an analog signal with a digital approximation. It provides services to change the duty cycle and period of the PWM/EPWM channels. It provides service to set the PWM channels in the IDLE state. Furthermore, it provides services to enable and disable notification mechanism and routines to count the edges detected.</p>
+<figure class="align-center" id="id1">
+<img alt="CDD PWM MCAL AUTOSAR" src="../_images/CDD_PWM_AUTOSAR_MCAL.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.51 </span><span class="caption-text">Cdd Pwm MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>This document details AUTOSAR Cdd Pwm module implementation</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Supported AUTOSAR Release</p></th>
+<th class="head"><p><strong>4.3.1</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Supported Configuration Variants</strong></p></td>
+<td><p><strong>Pre-Compile</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Vendor ID</strong></p></td>
+<td><p><strong>CDD_PWM_VENDOR_ID (44)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Module ID</strong></p></td>
+<td><p><strong>CDD_PWM_MODULE_ID (255)</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functional-overview">
+<h2><span class="section-number">4.13.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<p>EPWM (Enhanced Pulse width modulation)/PWM is a general method for representing an analog signal with a digital approximation. A PWM signal consists of a sequence of variable width, constant amplitude pulses which contain the same total energy as the original analog signal. This property is valuable in digital motor control as sinusoidal current (energy) can be delivered to the motor using PWM signals applied to a power converter.</p>
+<p>Each EPWM/PWM instance supports 2 channels: Channel A &amp; Channel B. Period and notification configuration is common for both the channels of the PWM instance. Duty cycle can be configured independently.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The overview only covers what is implemented in the driver.</p>
+</div>
+<section id="how-the-dutycycle-is-configured-in-the-hardware">
+<h3><span class="section-number">4.13.3.1. </span>How the dutycycle is configured in the hardware<a class="headerlink" href="#how-the-dutycycle-is-configured-in-the-hardware" title="Link to this heading"></a></h3>
+<p>As per the current implementation each EPWM has 3 sub-modules that determines the output of the PWM channel, the sub-modules are:</p>
+<section id="time-base-counter">
+<h4><span class="section-number">4.13.3.1.1. </span>Time Base counter<a class="headerlink" href="#time-base-counter" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>This sub-module primarily consists of a 16-bit counter which partially determines the period &amp; frequency of the PWM waveform.</p></li>
+<li><p>The mode of the time-base counter decides the symmetry of the waveform. For Asymmetric waveform the counter runs in Up-Count Mode and runs in Up-Down-Count Mode for symmetric waveforms.</p></li>
+</ul>
+<p><strong>Up-count Mode</strong>:
+The counter starts counting from zero and increments until it reaches the time-base period register value, then the counter resets to zero and the count sequence starts again.</p>
+<p><strong>Up-Down-Count Mode</strong>:
+The counter starts counting from zero and increments until it reaches the time-base period register value, then the counter decrements until it reaches zero and the count sequence repeats.</p>
+<p><strong>Clocking</strong>:
+The clock used for the EPWM counter is originally sourced from a device’s system clock. A configurable clock divider divides down the system clock to generate the EPWM clock (EPWMCLK). EPWM clock pre-scaler values can then be used to further divide down the EPWM clock for the EPWM counter and a EPWM time-base period register. The counter and the time-base period value control the frequency and period of the generated EPWM waveforms.</p>
+<ul class="simple">
+<li><p>Time-Base Clock TBCLK = EPWMCLK / (HSPCLKDIV * CLKDIV) \</p></li>
+<li><p>Clock Pre-scaler = HSPCLKDIV * CLKDIV</p></li>
+<li><p>TBPRD = Period value from the configurator/with Cdd_Pwm_Period API</p></li>
+<li><p>DutyCycle =  DutyCycle value from the configurator/with Cdd_Pwm_SetDutyCycle API</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Shadow registers act like a buffer to allow register updates to be synchronized with the EPWM counter or a specific (configurable) event and avoid corruption or spurious operation from the register being modified asynchronously by software.</p>
+</div>
+</section>
+<section id="counter-compare">
+<h4><span class="section-number">4.13.3.1.2. </span>Counter Compare<a class="headerlink" href="#counter-compare" title="Link to this heading"></a></h4>
+<p>When a match occurs (counter = CMPA / CMPB), this is known as a compare event. Compare events are used by the EPWM action-qualifier submodule to influence EPWM outputs.</p>
+<p>An integral compare value is calculated based on the configured duty cycle of the channel and period of the instance. The output level can be decided based on the Action qualifier events. In scenarios where the calculated value is same for different configured duty cycles the output is going to be exactly same.
+Note that for up-count modes, a counter-compare match (counter = CMPx) can occur only once per cycle which produces a Asymmetric waveform; however, for up-down-count mode, a counter match can occur twice per cycle since there can be a match on the up-count and another match on the down-count which generates a Symmetric output waveform.</p>
+</section>
+<section id="action-qualifier-aq">
+<h4><span class="section-number">4.13.3.1.3. </span>Action qualifier(AQ)<a class="headerlink" href="#action-qualifier-aq" title="Link to this heading"></a></h4>
+<p>The action-qualifier submodule is responsible for constructing the shape of PWM waveforms. This submodule utilizes compare events from the time-base and counter-compare submodules  to performing actions on an EPWM modules two output channels (EPWMxA and EPWMxB). These first three submodules (time-base, counter-compare, and action-qualifier) are the key submodules needed to generate a basic PWM waveform. Based on the configuration these are the actions supported for each event:</p>
+<ul class="simple">
+<li><p>Set PWM output high</p></li>
+<li><p>Clear PWM output low</p></li>
+<li><p>Toggle PWM output (if high, toggle low; if low, toggle high)</p></li>
+<li><p>Do nothing to PWM output</p></li>
+</ul>
+<p>Based on the symmetry and the polarity of the instance, compare value and AQ actions are set for each channel as per the desired duty cycle by the driver.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Other sub-modules are not currently supported by the driver. We will add support in later releases.</p>
+</div>
+</section>
+</section>
+<section id="epwm-waveform">
+<h3><span class="section-number">4.13.3.2. </span>EPWM Waveform<a class="headerlink" href="#epwm-waveform" title="Link to this heading"></a></h3>
+<p>Two different waveform types are supported for each PWM instance:</p>
+<section id="asymmetric-scenario">
+<h4><span class="section-number">4.13.3.2.1. </span>Asymmetric scenario<a class="headerlink" href="#asymmetric-scenario" title="Link to this heading"></a></h4>
+<p>The time-base counter runs in Up-Count mode and a period ends when the counter value equals to the zero again.
+In this mode one of the edges will occur at counter equals to Zero event and the other edge occurs when the counter equals to the configured compare value.</p>
+<p>For polarity HIGH: The falling edge occurs when counter is equal to the CMP value and the rising edge occurs when the counter is equal to Zero.
+For polarity LOW: The falling edge occurs when counter is equal to zero and the rising edge occurs when the counter is equal to the CMP value.</p>
+<p>The calculated Compare Value(CMP) based on the Period of the EPWM/PWM instance and the configured duty cycle is</p>
+<ul class="simple">
+<li><p>Time-Base Period (TBPRD) = (T<sub>pwm</sub> / T<sub>TBCLK</sub>) - 1</p></li>
+<li><p>CMP(compare value) = (DutyCycle*(TBPRD +1)) / (0x8000)</p></li>
+</ul>
+<p>Where, <br />
+T<sub>pwm</sub> = Switching Period <br />
+T<sub>TBCLK</sub> = Timer Period</p>
+</section>
+<section id="symmetric-scenario">
+<h4><span class="section-number">4.13.3.2.2. </span>Symmetric scenario<a class="headerlink" href="#symmetric-scenario" title="Link to this heading"></a></h4>
+<p>The counter runs in Up-Down-Count mode which affects the period of the generated PWM waveform. For the same configured period the frequency of the Symmetric waveform will be half of the frequency of the Asymmetric waveform.</p>
+<p>In this mode one of the edges will occur at counter equals to compare value event during up-mode and the other edge occurs when the counter equals to the compare value event during down-mode.</p>
+<p>For polarity HIGH: The falling edge occurs when counter is equal to the CMP value and the rising edge occurs when the counter is equal to Zero.
+For polarity LOW: The falling edge occurs when counter is equal to zero and the rising edge occurs when the counter is equal to the CMP value.</p>
+<p>The calculated Compare Value (CMP) based on the Period of the EPWM/PWM instance and the configured duty cycle is</p>
+<ul class="simple">
+<li><p>Time-Base Period (TBPRD) = (T<sub>pwm</sub> / (2 * T<sub>TBCLK</sub>))</p></li>
+<li><p>CMP(compare value) = (DutyCycle*TBPRD) / (0x8000)</p></li>
+</ul>
+<p>Where, <br />
+T<sub>pwm</sub> = Switching Period <br />
+T<sub>TBCLK</sub> = Timer Period</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/Cdd_Pwm_Block_Diagram.png"><img alt="Cdd Pwm module" src="../_images/Cdd_Pwm_Block_Diagram.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.52 </span><span class="caption-text">Cdd Pwm module architecture</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All duty cycle values may not be valid for a particular configured period. The duty cycle is calculated based on the compare value which is an integer.
+Period configured in EB tresos or set by calling Cdd_Pwm_SetPeriod() is written directly into the TBPRD register.</p>
+</div>
+<p>In case of asymmetric waveform, the notification at the counter = Zero event is common for both the channels of the PWM instance. The notification count in such scenarios will be only one instead of two.<br />
+<strong>For example</strong>: For asymmetric waveform, if the notification is enabled on both edges for both the channels then the notification count when both the channels have HIGH polarity is (1 for falling of Channel A +  1 for falling of Channel B + 1 for rising edge of both Channels A &amp; B)
+This happens because counter=Zero event is common for both the channels and both the outputs have the rising edge at that particular event.
+This scenario is not applicable to the Symmetric waveform because both the edges occur at counter=CMP and different events are supported for each output channel.</p>
+<p>Cdd_Pwm_EnableNotification &amp; Cdd_Pwm_DisableNotification APIs enable and disable the EPWM interrupt respectively.</p>
+</section>
+</section>
+</section>
+<section id="hardware-features">
+<h2><span class="section-number">4.13.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<section id="hardware-features-supported">
+<h3><span class="section-number">4.13.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<p>Features Supported at a high level are:</p>
+<ul class="simple">
+<li><p>Dedicated 16-bit time-base counter with period and frequency control.</p></li>
+<li><p>Two PWM outputs (EPWMxA and EPWMxB) that can be used in the following configurations -</p>
+<ul>
+<li><p>Two independent PWM outputs with single-edge operation.</p></li>
+<li><p>Two independent PWM outputs with dual-edge symmetric operation.</p></li>
+<li><p>One independent PWM output with dual-edge asymmetric operation.</p></li>
+</ul>
+</li>
+<li><p>Asynchronous override control of PWM signals through software.</p></li>
+<li><p>Programmable phase-control support for lag or lead operation relative to other EPWM modules.</p></li>
+<li><p>Hardware-locked (synchronized) phase relationship on a cycle-by-cycle basis.</p></li>
+<li><p>All events can trigger CPU interrupts</p></li>
+<li><p>Programmable event prescaling minimizes CPU overhead on interrupts.</p></li>
+</ul>
+</section>
+<section id="not-supported-features">
+<h3><span class="section-number">4.13.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Programmable phase-control support for lag or lead operation relative to other ePWM modules.</p></li>
+<li><p>Hardware-locked (synchronized) phase relationship on a cycle-by-cycle basis.</p></li>
+<li><p>Dead-band generation with independent rising and falling edge delay control.</p></li>
+<li><p>Programmable trip zone allocation of both cycle-by-cycle trip and one-shot trip on fault conditions.</p></li>
+<li><p>A trip condition can force either high, low, or high-impedance state logic levels at PWM outputs.</p></li>
+<li><p>All events can trigger both CPU interrupts and ADC start of conversion (SOC)</p></li>
+<li><p>Programmable event prescaling minimizes CPU overhead on interrupts.</p></li>
+<li><p>PWM chopping by high-frequency carrier signal, useful for pulse transformer gate drives.</p></li>
+</ul>
+</section>
+<section id="non-compliance">
+<h3><span class="section-number">4.13.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Cdd_Pwm_GetOutputState : This API is not supported.</p></li>
+<li><p>Cdd_Pwm_SetOutputToIdle : API is supported but with deviations.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cdd_Pwm_SetOutputToIdle doesn’t set the PWM output to IDLE state immediately. The API operates in shadow mode so the IDLE state will be effective from CTR=Zero event.
+All the supported APIs work in shadow mode which means any update in the period, dutycycle, action qualifier actions and IDLE output will happen when the counter is equal to zero.</p>
+</div>
+</section>
+</section>
+<section id="source-files">
+<h2><span class="section-number">4.13.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┃ ┣ 📂BSW_Stubs<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_Ipc<br />
+┃ ┣ 📂<strong>Cdd_Pwm</strong><br />
+┃ ┃ ┣ 📂<strong>include</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Pwm.h</strong> : <em>Contains the API declarations of the Cdd_Pwm driver to be used by upper layers.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Pwm_Priv.h</strong> : <em>Declaration of the private APIs.</em><br />
+┃ ┃ ┣ 📂<strong>src</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Pwm.c</strong> : <em>Implementation of the Cdd_Pwm public APIs.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Pwm_Irq.c</strong> : <em>Implementation for Cdd_Pwm interrupts handlers.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Cdd_Pwm_Priv.c</strong> : <em>Implementation of the private APIs</em><br />
+┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Uart<br />
+┃ ┣ 📂Cdd_Xbar<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂hw_include<br />
+┃ ┣ 📂Lin<br />
+┃ ┣ 📂Mcal_Lib<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┗ 📂Wdg<br />
+┣ 📂examples<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<figure class="align-center" id="id3">
+<img alt="Cdd Pwm Header File Structure" src="../_images/Cdd_Pwm_HeaderFile_Structure.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.53 </span><span class="caption-text">Cdd Pwm Header File Structure</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="module-requirements">
+<h2><span class="section-number">4.13.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<section id="memory-mapping">
+<h3><span class="section-number">4.13.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<p>Will be added in later release</p>
+</section>
+<section id="scheduling">
+<h3><span class="section-number">4.13.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<p>None</p>
+</section>
+<section id="error-handling">
+<h3><span class="section-number">4.13.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<section id="development-error-reporting">
+<h4><span class="section-number">4.13.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<p>Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
+</section>
+</section>
+<section id="error-codes">
+<h3><span class="section-number">4.13.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of Error</p></th>
+<th class="head"><p>Related Error code</p></th>
+<th class="head"><p>Value (Hex)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>API called when the driver is not initialized</p></td>
+<td><p>CDD_PWM_E_UNINIT</p></td>
+<td><p>0x0AU</p></td>
+</tr>
+<tr class="row-odd"><td><p>Init API called when the driver is already initialized</p></td>
+<td><p>CDD_PWM_E_ALREADY_INITIALIZED</p></td>
+<td><p>0x0BU</p></td>
+</tr>
+<tr class="row-even"><td><p>Init API called with invalid pointer</p></td>
+<td><p>CDD_PWM_E_PARAM_POINTER</p></td>
+<td><p>0x0CU</p></td>
+</tr>
+<tr class="row-odd"><td><p>API called with invalid ID(parameter)</p></td>
+<td><p>CDD_PWM_E_INVALID_ID</p></td>
+<td><p>0x0DU</p></td>
+</tr>
+<tr class="row-even"><td><p>API called for the PWM instance whose has no notification pointer available</p></td>
+<td><p>CDD_PWM_E_NOTIF_CAPABILITY</p></td>
+<td><p>0x0EU</p></td>
+</tr>
+<tr class="row-odd"><td><p>API called for the PWM instance whose channel class is not variable period</p></td>
+<td><p>CDD_PWM_E_CHANNEL_CLASS</p></td>
+<td><p>0x0FU</p></td>
+</tr>
+<tr class="row-even"><td><p>API called when the channel configured for the notification is invalid</p></td>
+<td><p>CDD_PWM_E_INVALID_CHANNEL_NOTIFICATION</p></td>
+<td><p>0x11U</p></td>
+</tr>
+<tr class="row-odd"><td><p>API called when the edge notification type is not valid</p></td>
+<td><p>CDD_PWM_E_INVALID_NOTIFICATION</p></td>
+<td><p>0x12U</p></td>
+</tr>
+<tr class="row-even"><td><p>API called when the event count is invalid/out-of-range</p></td>
+<td><p>CDD_PWM_E_INVALID_EVENT_COUNT</p></td>
+<td><p>0x13U</p></td>
+</tr>
+<tr class="row-odd"><td><p>API called with invalid/out-of-range duty cycle value</p></td>
+<td><p>CDD_PWM_E_INVALID_DUTY_CYCLE</p></td>
+<td><p>0x18U</p></td>
+</tr>
+</tbody>
+</table>
+<section id="runtime-errors">
+<h4><span class="section-number">4.13.6.4.1. </span>Runtime Errors<a class="headerlink" href="#runtime-errors" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of Error</p></th>
+<th class="head"><p>Related Error code</p></th>
+<th class="head"><p>Value (Hex)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>API called whose notification is already enabled or invalid channel notification is called for the instance</p></td>
+<td><p>CDD_PWM_E_NOTIF_ALREADY_ENABLED</p></td>
+<td><p>0x10U</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="used-resources">
+<h2><span class="section-number">4.13.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<section id="interrupt-handling">
+<h3><span class="section-number">4.13.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<p>Cdd_Pwm driver provides ISRs. The ISRs are implemented in the Cdd_Pwm_Irq.c file.
+Interrupt and the category should be selected in the Cdd_Pwm plugin.The Interrupt ID associated with the PWM instance is mentioned in the TRM (also, please refer the Example application).</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cdd_Pwm Instance</p></th>
+<th class="head"><p>Interrupt handler</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>EPWM1</p></td>
+<td><p>Cdd_Pwm_Epwm1_IntIsr</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWM2</p></td>
+<td><p>Cdd_Pwm_Epwm2_IntIsr</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWM3</p></td>
+<td><p>Cdd_Pwm_Epwm3_IntIsr</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWM4</p></td>
+<td><p>Cdd_Pwm_Epwm4_IntIsr</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWM5</p></td>
+<td><p>Cdd_Pwm_Epwm5_IntIsr</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWM6</p></td>
+<td><p>Cdd_Pwm_Epwm6_IntIsr</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWM7</p></td>
+<td><p>Cdd_Pwm_Epwm7_IntIsr</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWM8</p></td>
+<td><p>Cdd_Pwm_Epwm8_IntIsr</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWM9</p></td>
+<td><p>Cdd_Pwm_Epwm9_IntIsr</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWM10</p></td>
+<td><p>Cdd_Pwm_Epwm10_IntIsr</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWM11</p></td>
+<td><p>Cdd_Pwm_Epwm11_IntIsr</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWM12</p></td>
+<td><p>Cdd_Pwm_Epwm12_IntIsr</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWM13</p></td>
+<td><p>Cdd_Pwm_Epwm13_IntIsr</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWM14</p></td>
+<td><p>Cdd_Pwm_Epwm14_IntIsr</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWM15</p></td>
+<td><p>Cdd_Pwm_Epwm15_IntIsr</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWM16</p></td>
+<td><p>Cdd_Pwm_Epwm16_IntIsr</p></td>
+</tr>
+<tr class="row-even"><td><p>EPWM17</p></td>
+<td><p>Cdd_Pwm_Epwm17_IntIsr</p></td>
+</tr>
+<tr class="row-odd"><td><p>EPWM18</p></td>
+<td><p>Cdd_Pwm_Epwm18_IntIsr</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Same Interrupt Category needs to be configured in both Cdd_Pwm and OS Module.
+Both the channels under a EPWM/PWM instance share the same interrupt.</p>
+</div>
+</section>
+<section id="instance-support">
+<h3><span class="section-number">4.13.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CPU instances</p></th>
+<th class="head"><p>supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CPU 1</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPU 2</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU 3</p></td>
+<td><p>NO</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hardware-software-mapping">
+<h3><span class="section-number">4.13.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<p>Below image shows Cdd_Pwm driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
+<figure class="align-center" id="id4">
+<img alt="Cdd_Pwm HW/SW Mapping" src="../_images/Cdd_Pwm_HW_SW_Mapping.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.54 </span><span class="caption-text">Cdd_Pwm HW/SW Mapping</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="integration-description">
+<h2><span class="section-number">4.13.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<section id="dependent-modules">
+<h3><span class="section-number">4.13.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<section id="det">
+<h4><span class="section-number">4.13.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<p>This driver depends on the DET in order to report development and runtime errors.
+The detection of development errors is configurable ON/OFF. The switch CDD_PWM_DEV_ERROR_DETECT will activate or deactivate the detection of development errors. Runtime errors are reported even when CDD_PWM_DEV_ERROR_DETECT is OFF.</p>
+</section>
+<section id="mcu">
+<h4><span class="section-number">4.13.8.1.2. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<p>MCU Module is required for the PWM clock initialization.</p>
+</section>
+<section id="os">
+<h4><span class="section-number">4.13.8.1.3. </span>OS<a class="headerlink" href="#os" title="Link to this heading"></a></h4>
+<p>The Cdd_Pwm driver uses interrupts and therefore there is a dependency on the OS, which configures the interrupt sources.</p>
+</section>
+<section id="port">
+<h4><span class="section-number">4.13.8.1.4. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
+<p>The Port module configures the port pins used for the PWM driver in the EPWM mode. Hence, the Port driver has to be initialized prior to use PWM functions and to generate proper PWM output. Otherwise unpredictable output might be generated.</p>
+</section>
+<section id="schm">
+<h4><span class="section-number">4.13.8.1.5. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that CDD PWM module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.</p>
+<p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter <strong>RteExclusiveAreaImplMechanism</strong>. This parameter is an input for RTE generator.</p>
+<p>For CDD_PWM Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Exclusive Area Functions used</p></th>
+<th class="head"><p>CDD_PWM Function calling Exclusive Area</p></th>
+<th class="head"><p>Need for Exclusive Area</p></th>
+<th class="head"><p>Recommended Exclusive Area Mapping</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_PWM_EXCLUSIVE_AREA_0</p></td>
+<td><p>Cdd_Pwm_SetDutyCycle<br>Cdd_Pwm_SetPeriod<br>Cdd_Pwm_SetOutputToIdle<br>Cdd_Pwm_EnableNotification<br>Cdd_Pwm_DisableNotification</p></td>
+<td><p>To protect against multiple access for shared resources</p></td>
+<td><p><strong>ALL_INTERRUPT_BLOCKING</strong> : All interrupts should be blocked as this API’s can be called in the interrupts.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="multi-core-and-resource-allocator">
+<h3><span class="section-number">4.13.8.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
+<p>Not Supported</p>
+</section>
+</section>
+<section id="configuration">
+<h2><span class="section-number">4.13.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The Cdd_Pwm Driver implementation supports one configuration variant Pre-Compile config. The driver expects generated Cdd_Pwm_Cfg.h to be present as input file.
+The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_Cfg.c</p>
+<p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<section id="cddpwmconfigset">
+<h3><span class="section-number">4.13.9.1. </span>CddPwmConfigSet<a class="headerlink" href="#cddpwmconfigset" title="Link to this heading"></a></h3>
+<p>This container contains the configuration parameters and sub containers of the AUTOSAR Pwm instance.</p>
+<section id="cddpwmhwunitconfig">
+<h4><span class="section-number">4.13.9.1.1. </span>CddPwmHwUnitConfig<a class="headerlink" href="#cddpwmhwunitconfig" title="Link to this heading"></a></h4>
+<p>Configuration of an individual PWM instance.</p>
+<section id="cddpwminstanceid">
+<h5><span class="section-number">4.13.9.1.1.1. </span>CddPwmInstanceId<a class="headerlink" href="#cddpwminstanceid" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmInstanceId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Pwm hardware instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmoutputclass">
+<h5><span class="section-number">4.13.9.1.1.2. </span>CddPwmOutputClass<a class="headerlink" href="#cddpwmoutputclass" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmOutputClass</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Class of PWM Channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_PWM_VARIABLE_PERIOD</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_PWM_FIXED_PERIOD<br>CDD_PWM_VARIABLE_PERIOD</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmclockdivider">
+<h5><span class="section-number">4.13.9.1.1.3. </span>CddPwmClockDivider<a class="headerlink" href="#cddpwmclockdivider" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmClockDivider</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Time base clock pre-scale value.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_PWM_CLK_DIVIDER_1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmhighspeedclockdivider">
+<h5><span class="section-number">4.13.9.1.1.4. </span>CddPwmHighSpeedClockDivider<a class="headerlink" href="#cddpwmhighspeedclockdivider" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmHighSpeedClockDivider</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>High speed clock divider for the PWM instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_PWM_HSCLK_DIVIDER_1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmfrequency">
+<h5><span class="section-number">4.13.9.1.1.5. </span>CddPwmFrequency<a class="headerlink" href="#cddpwmfrequency" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmFrequency</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the frequency of the PWM instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>1.0E8</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmperiod">
+<h5><span class="section-number">4.13.9.1.1.6. </span>CddPwmPeriod<a class="headerlink" href="#cddpwmperiod" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmPeriod</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Value of period used for Initialization. This value will be written into the TBPRD register</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
+<td><p>65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwminterruptenable">
+<h5><span class="section-number">4.13.9.1.1.7. </span>CddPwmInterruptEnable<a class="headerlink" href="#cddpwminterruptenable" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmInterruptEnable</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Enables/disables the interrupt for the PWM instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwminterruptcategory">
+<h5><span class="section-number">4.13.9.1.1.8. </span>CddPwmInterruptCategory<a class="headerlink" href="#cddpwminterruptcategory" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmInterruptCategory</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameters defines the category of the interrupt.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>ISR_CAT1_RTINT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>ISR_CAT1_INT<br>ISR_CAT1_RTINT<br>ISR_CAT2_INT</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmsymmetry">
+<h5><span class="section-number">4.13.9.1.1.9. </span>CddPwmSymmetry<a class="headerlink" href="#cddpwmsymmetry" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmSymmetry</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the symmetry of the generated waveform.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_PWM_ASYMMETRIC_WAVEFORM</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_PWM_ASYMMETRIC_WAVEFORM<br>CDD_PWM_SYMMETRIC_WAVEFORM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmnotification">
+<h5><span class="section-number">4.13.9.1.1.10. </span>CddPwmNotification<a class="headerlink" href="#cddpwmnotification" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmNotification</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Definition of the Callback function.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>NULL_PTR</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmmcuclockreferencepoint">
+<h5><span class="section-number">4.13.9.1.1.11. </span>CddPwmMcuClockReferencePoint<a class="headerlink" href="#cddpwmmcuclockreferencepoint" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmMcuClockReferencePoint</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter contains reference to the McuClockReferencePoint</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddpwmoutputchannel">
+<h4><span class="section-number">4.13.9.1.2. </span>CddPwmOutputChannel<a class="headerlink" href="#cddpwmoutputchannel" title="Link to this heading"></a></h4>
+<p>Configuration of output channel A.</p>
+<section id="cddpwmchannel">
+<h5><span class="section-number">4.13.9.1.2.1. </span>CddPwmChannel<a class="headerlink" href="#cddpwmchannel" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmChannel</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Defines the output channel for the PWM instance.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_PWM_OUTPUT_A</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_PWM_OUTPUT_A<br>CDD_PWM_OUTPUT_B</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmpolarity">
+<h5><span class="section-number">4.13.9.1.2.2. </span>CddPwmPolarity<a class="headerlink" href="#cddpwmpolarity" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmPolarity</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Defines the starting polarity of the PWM channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_PWM_LOW</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_PWM_HIGH<br>CDD_PWM_LOW</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmidlestate">
+<h5><span class="section-number">4.13.9.1.2.3. </span>CddPwmIdleState<a class="headerlink" href="#cddpwmidlestate" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmIdleState</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>The parameter PWM_IDLE_STATE represents the output state of the channel after the signal is stopped (e.g.call of Pwm_SetOutputToIdle).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_PWM_LOW</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_PWM_HIGH<br>CDD_PWM_LOW</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmdutycycle">
+<h5><span class="section-number">4.13.9.1.2.4. </span>CddPwmDutyCycle<a class="headerlink" href="#cddpwmdutycycle" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmDutyCycle</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Value of duty cycle used for Initialization</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>16384</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
+<td><p>32768</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmdutycycleinpercentage">
+<h5><span class="section-number">4.13.9.1.2.5. </span>CddPwmDutyCycleInPercentage<a class="headerlink" href="#cddpwmdutycycleinpercentage" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmDutyCycleInPercentage</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter defines the configured duty cycle in percentage.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>50.0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="cddpwmgeneral">
+<h3><span class="section-number">4.13.9.2. </span>CddPwmGeneral<a class="headerlink" href="#cddpwmgeneral" title="Link to this heading"></a></h3>
+<p>General configuration (parameters) of the PWM Driver software module.</p>
+<section id="cddpwmdeverrordetect">
+<h4><span class="section-number">4.13.9.2.1. </span>CddPwmDevErrorDetect<a class="headerlink" href="#cddpwmdeverrordetect" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmDevErrorDetect</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the development error detection on or off.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmdeinitapi">
+<h4><span class="section-number">4.13.9.2.2. </span>CddPwmDeInitApi<a class="headerlink" href="#cddpwmdeinitapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmDeInitApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service Cdd_Pwm_DeInit() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmsetdutycycle">
+<h4><span class="section-number">4.13.9.2.3. </span>CddPwmSetDutyCycle<a class="headerlink" href="#cddpwmsetdutycycle" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmSetDutyCycle</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service Cdd_Pwm_SetDutyCycle() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmsetoutputtoidle">
+<h4><span class="section-number">4.13.9.2.4. </span>CddPwmSetOutputToIdle<a class="headerlink" href="#cddpwmsetoutputtoidle" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmSetOutputToIdle</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service Cdd_Pwm_SetOutputToIdle() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmsetperiod">
+<h4><span class="section-number">4.13.9.2.5. </span>CddPwmSetPeriod<a class="headerlink" href="#cddpwmsetperiod" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmSetPeriod</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service Cdd_Pwm_SetPeriod() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmversioninfoapi">
+<h4><span class="section-number">4.13.9.2.6. </span>CddPwmVersionInfoApi<a class="headerlink" href="#cddpwmversioninfoapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddPwmVersionInfoApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Switch to indicate that the Pwm_ GetVersionInfo is supported</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="steps-to-configure-cdd-pwm-module">
+<h3><span class="section-number">4.13.9.3. </span>Steps To Configure Cdd_Pwm Module<a class="headerlink" href="#steps-to-configure-cdd-pwm-module" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Open EB Tresos configurator tool, load Cdd_Pwm module. Only Precompile Config Variant is supported.</p></li>
+<li><p>Configure the required parameters.</p></li>
+<li><p>By default the EPWMCLKDIV is set to 2 (this divides the SYSCLK by 2), to modify the value ASPath:/TI_F29H85x/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClkConfig/McuEpwmClkDiv parameter in the Mcu plugin should be modified.</p></li>
+<li><p>Run the unattended wizard with calculated values enabled to show the updated calculated values.</p></li>
+<li><p>Save the module and click on generate to generate the configuration files.</p></li>
+<li><p>Click on generate_SWC-T to generate the BSWMD arxml file</p></li>
+</ol>
+</section>
+</section>
+<section id="examples">
+<h2><span class="section-number">4.13.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>The example application demonstrates use of Cdd_Pwm module, the list below identifies key steps performed in the example.</p>
+<section id="cdd-pwm-example-upcountmode">
+<h3><span class="section-number">4.13.10.1. </span>Cdd_Pwm_Example_UpCountMode<a class="headerlink" href="#cdd-pwm-example-upcountmode" title="Link to this heading"></a></h3>
+<section id="overview-of-cdd-pwm-example-upcountmode">
+<h4><span class="section-number">4.13.10.1.1. </span>Overview Of Cdd_Pwm_Example_UpCountMode<a class="headerlink" href="#overview-of-cdd-pwm-example-upcountmode" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Cdd_Pwm_Example_UpCountMode</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 100 MHz using Mcu_Init().</p></li>
+<li><p>Initializes the pins for EPWM using Port_Init().</p></li>
+<li><p>Initializes the Pwm configurations according to the configurations selected in the configurator with Cdd_Pwm_Init.</p></li>
+</ul>
+</li>
+<li><p>Cdd_Pwm_SetOutputToIdle will set the PWM output in the IDLE state for the specified channel.</p></li>
+<li><p>Cdd_Pwm_EnableNotification will enable the notification for the specified PWM instance.</p></li>
+<li><p>Cdd_Pwm_SetDutyCycle will reactivate the Pwm output for the specified channel.</p></li>
+<li><p>McalLib_Delay allows delay in the Application/program</p></li>
+<li><p>Cdd_Pwm_SetPeriod will change the period of the specified Pwm instance.</p></li>
+<li><p>Cdd_Pwm_DeInit will de-initialize the driver and reset the Pwm registers. The output of the channels will be in the configured IDLE state.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-cdd-pwm-example-upcountmode-example">
+<h4><span class="section-number">4.13.10.1.2. </span>Setup required to run Cdd_Pwm_Example_UpCountMode example<a class="headerlink" href="#setup-required-to-run-cdd-pwm-example-upcountmode-example" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest C29 compiler</p></li>
+<li><p>Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.</p></li>
+<li><p>Power the board and run the example</p></li>
+<li><p>Open serial console to observe print statements of the example</p></li>
+</ul>
+</section>
+<section id="how-to-run-cdd-pwm-example-upcountmode-example">
+<h4><span class="section-number">4.13.10.1.3. </span>How to run Cdd_Pwm_Example_UpCountMode example<a class="headerlink" href="#how-to-run-cdd-pwm-example-upcountmode-example" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and import Cdd_Pwm_standard Example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-cdd-pwm-example-upcountmode-example">
+<h4><span class="section-number">4.13.10.1.4. </span>Sample Log of Cdd_Pwm_Example_UpCountMode example<a class="headerlink" href="#sample-log-of-cdd-pwm-example-upcountmode-example" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>Executing Cdd_Pwm_Example_UpCountMode example
+The duty cycles of the EPWM1 &amp; EPWM2 channels have been modified
+All the EPWM1 &amp; EPWM2 channels in IDLE state
+The notification count for EPWM1 instance after calling Cdd_Pwm_SetDutyCycle API is 50
+The notification count for EPWM2 instance after calling Cdd_Pwm_SetDutyCycle API is 2013
+The frequency of EPWM1 has been doubled(period halved)
+The duty cycles of the EPWM2 channels have been modified
+Time elapsed in US(microsecond) from when the notification is enabled until Deinit is 3236216
+Number of rising edges detected for EPWM1 are 151
+Number of edges detected for EPWM2 are 4035
+Cdd_Pwm_Example_UpCountMode executed successfully
+</pre></div>
+</div>
+</section>
+</section>
+<section id="file-structure">
+<h3><span class="section-number">4.13.10.2. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂examples<br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Ecap<br />
+┃ ┣ 📂Cdd_Ipc<br />
+┃ ┣ 📂<strong>Cdd_Pwm</strong><br />
+┃ ┃ ┣ 📂<strong>Cdd_Pwm_Example_UpCountMode</strong><br />
+┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>Cdd_Pwm_Example_UpCountMode.projectspec</strong><br />
+┃ ┃ ┃ ┣ Cdd_Pwm_Example_UpCountMode_Config<br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Cdd_Pwm.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm<br />
+┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Cdd_Pwm_Cfg.h</strong> : <em>Contains the generated pre-compiler build variant configuration header file</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Cdd_Pwm_Cfg.c</strong> : <em>Contains the Pre-compile build variant configuration parameters.</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜<strong>Cdd_Pwm_Example_UpCountMode.c</strong> : <em>Example application for Cdd_Pwm.</em><br />
+┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Uart<br />
+┃ ┣ 📂Cdd_Xbar<br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Lin<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┣ 📂Wdg<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Module_User_Guide_Cdd_Ipc.html" class="btn btn-neutral float-left" title="4.12. CDD IPC Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Cdd_Sent.html" class="btn btn-neutral float-right" title="4.14. CDD SENT Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Apr 11, 2025.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.02.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = '';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

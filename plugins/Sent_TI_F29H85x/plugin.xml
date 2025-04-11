@@ -21,7 +21,7 @@
                 allowMultiple="false"
                 description="Cdd Sent Module Plugin"
                 copyright="(c) 2024 Texas Instruments Incorporated"
-                swVersionMajor="1"
+                swVersionMajor="2"
                 swVersionMinor="0"
                 swVersionPatch="0"
                 specVersionMajor="1"
@@ -32,13 +32,11 @@
                 relVersionMinor="3"
                 relVersionPatch="1"
                 categoryType="Cdd_Sent"
-                categoryLayer="MCAL"
+                categoryLayer="Complex Device Driver"
                 categoryCategory="Com"
                 categoryComponent="ECUC">
            <ecuType target="C2000" derivate="F29H85x"/>
-           <cluster name="Sent Stack
-
-"/>      
+           <cluster name="Sent Stack"/>
        </module>	  	           
    </extension>
    
@@ -78,7 +76,7 @@
                <manager
                      class="dreisoft.tresos.autosar2.resourcehandling.AutosarConfigManager"
                      />      
-               <schemaNode path="ASPath:/TI_F29H85x/Cdd_Sent"/>
+               <schemaNode path="ASPath:/TI_F29H85x/Cdd_Sent/Cdd"/>
            </data>                    
            
            <!--
@@ -96,7 +94,7 @@
                  <!--
                    Defines the toplevel node of the schema used to render the editor
                  -->
-                 <parameter name="schema" value="ASPath:/TI_F29H85x/Cdd_Sent"/>
+                 <parameter name="schema" value="ASPath:/TI_F29H85x/Cdd_Sent/Cdd"/>
                  <parameter name="title" value="Cdd_Sent"/>
                  <parameter name="noTabs" value="false"/>
                  <parameter name="noLinks" value="true"/>
@@ -156,7 +154,7 @@
             With the template-based code generator, new modes (other than "generate"
             and "verify" can be introduced. Together with mode-dependent parameters,
             this can be used to introduce special generation modes for a module and
-            to pass different parameter sets to the tempplate-based code generator.
+            to pass different parameter sets to the template-based code generator.
             The two parameters below e.g. define the two special modes "verify_SWC-T"
             and "generate_SWC-T". If parameters with the name "mode_type" are 
             present, the template-based code generator will return the value-
@@ -172,7 +170,7 @@
             the "verify_SWC-T" mode is of mode-type "verify" and the "generate_SWC-T"
             mode is if mode-type "generate".
           -->
-          <parameter name="mode_type" mode="verify_SWC-T" value="verify"/>
+		  <parameter name="mode_type" mode="verify_SWC-T" value="verify"/>
           <parameter name="mode_type" mode="generate_SWC-T" value="generate"/>
 
           <!--
@@ -202,6 +200,34 @@
           <parameter name="UnixLf" mode="*" value="false"/>
          
        </generator>
+   </extension>
+
+   <!-- definition of ecu resource properties files -->
+   <extension
+         point="dreisoft.tresos.autosar2.api.plugin.ecuresource">
+      <!-- Defines properties file E under folder resources relative to the
+        plugin's root folder. The special parameter "subderivate" is considered by a
+        DefaultEcuResourceFinder. -->
+      <ecuresource
+            target="C2000"
+            derivate="F29H85x"
+            moduleId="Cdd_Sent_F29H85x"
+            file="resources/Sent_External_triggers_F29H85x.properties">
+      </ecuresource>
+   </extension>
+
+   <!-- Defines a new DefaultEcuResourceFinder. The predefined parameters "name" and "path"
+     are registered with this finder. Therefore the given schema path (from parameter "path")
+     is evaluated and the resulting value is checked against the values of parameter
+     "subderivate" of any ecu resource properties with the relevant target and derivate.
+     -->
+   <extension
+         point="dreisoft.tresos.autosar2.api.plugin.ecuresourcefinder">
+      <ecuresourcefinder>
+         <finder
+            class="dreisoft.tresos.autosar2.api.ecuresource.DefaultEcuResourceFinder">
+         </finder>
+      </ecuresourcefinder>
    </extension>
 
 </plugin>

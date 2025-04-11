@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -55,18 +55,19 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-/*
- *Design: MCAL-25536
- */
+
 /*****************************************************************************
  *
  * Defines for LIN Driver version used for compatibility checks.
  *
  *****************************************************************************/
+/* 
+ * Design: MCAL-25697  
+ */
 /** \brief Driver Implementation Major Version. */
 #define LIN_SW_MAJOR_VERSION    (1U)
 /** \brief Driver Implementation Minor Version. */
-#define LIN_SW_MINOR_VERSION    (0U)
+#define LIN_SW_MINOR_VERSION    (1U)
 /**  \brief Driver Implementation Patch Version. */
 #define LIN_SW_PATCH_VERSION    (0U)
 
@@ -75,6 +76,9 @@ extern "C" {
  * Defines for LIN Driver AUTOSAR version used for compatibility checks.
  *
  *****************************************************************************/
+/* 
+ * Design: MCAL-25697  
+ */
 /** \brief AUTOSAR Major version specification implemented by LIN Driver. */
 #define LIN_AR_RELEASE_MAJOR_VERSION    (4U)
 
@@ -135,7 +139,7 @@ extern "C" {
  * 
  *****************************************************************************/
 /* 
- *Design: MCAL-25587
+ *Design: MCAL-25587, MCAL-25696
  */
 /** \brief Service ID - Lin_Init(). */ 
 #define LIN_SID_INIT                   ((uint8)0x00U)
@@ -176,7 +180,7 @@ extern "C" {
  *********************************************************************************************************************/
 
 /* 
- *Design: MCAL-25544,MCAL-25545,MCAL-25546   
+ *Design: MCAL-25544,MCAL-25545,MCAL-25546,MCAL-25536,MCAL-25658
  */
 /** \brief  Lin Channel type structure */
 typedef struct Lin_ChannelTag

@@ -284,7 +284,7 @@ For CDD_ADC Module, data consistency and exclusive access to critical sections a
 
 | Exclusive Area Functions used | CDD_ADC Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
 |-------|-------|-------|-------|
-|CDD_ADC_EXCLUSIVE_AREA_0| Cdd_Adc_Init<br>Cdd_Adc_DeInit<br> Cdd_Adc_StartGroupConversion<br>Cdd_Adc_StopGroupConversion<br>Cdd_Adc_ReadGroup<br>Cdd_Adc_EnableHardwareTrigger<br>Cdd_Adc_DisableHardwareTrigger <br>Cdd_Adc_EnableGroupNotification<br>Cdd_Adc_DisableGroupNotification<br>Cdd_Adc_GetGroupStatus<br>Cdd_Adc_GetStreamLastPointer<br>Cdd_Adc_SetupResultBuffer<br>Cdd_Adc_StartResultChecker<br>Cdd_Adc_StopResultChecker<br>Cdd_Adc_ClearCheckerEvt<br>Cdd_Adc_StartGlobalSwTrig<br>Cdd_Adc_StopGlobalSwTrig<br>Cdd_Adc_SetResolution<br>Cdd_Adc_ReadPpbValue<br>Cdd_Adc_ReadPartialPpbValue<br>Cdd_Adc_ReadPpb<br>Cdd_Adc_ClearPpbEvt<br>Cdd_Adc_GetDelayStamp<br>Cdd_Adc_GetTemperatureC<br>Cdd_Adc_GetTemperatureK<br>Cdd_Adc_SetInternalTestNode| To protect against multiple access for shared resources | **OS_RESOURCE** : If the CDD ADC APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If CDD ADC APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+|CDD_ADC_EXCLUSIVE_AREA_0| Cdd_Adc_StartGroupConversion<br>Cdd_Adc_StopGroupConversion<br>Cdd_Adc_ReadGroup<br>Cdd_Adc_EnableHardwareTrigger<br>Cdd_Adc_DisableHardwareTrigger <br>Cdd_Adc_EnableGroupNotification<br>Cdd_Adc_DisableGroupNotification<br>Cdd_Adc_GetGroupStatus<br>Cdd_Adc_GetStreamLastPointer<br>Cdd_Adc_SetupResultBuffer<br>Cdd_Adc_StartResultChecker<br>Cdd_Adc_StopResultChecker<br>Cdd_Adc_ClearCheckerEvt<br>Cdd_Adc_StartGlobalSwTrig<br>Cdd_Adc_StopGlobalSwTrig<br>Cdd_Adc_SetResolution<br>Cdd_Adc_ReadPpbValue<br>Cdd_Adc_ReadPartialPpbValue<br>Cdd_Adc_ReadPpb<br>Cdd_Adc_ClearPpbEvt<br>Cdd_Adc_GetDelayStamp<br>Cdd_Adc_GetTemperatureC<br>Cdd_Adc_GetTemperatureK<br>Cdd_Adc_SetInternalTestNode| To protect against multiple access for shared resources | **OS_RESOURCE** : If the CDD ADC APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If CDD ADC APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
 
 ##### MCU
 
@@ -308,6 +308,31 @@ The Cdd_Adc Driver implementation supports only Pre-Compile configuration varian
 The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the driver configuration.
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files. If edited manually the driver may behavior might deviate from the expected behavior.
+
+#### Migration Guide to v2.0.0 from v1.0.0
+To make v1.0.0 Adc schema(generated .xdm file) compatable with v2.0.0 below changes are required:
+1. Change 'AR-ELEMENT' name from Cdd_Adc to Cdd.
+2. Update MODULE-CONFIGURATION path from 'ASPath:/TI_F29H85x/Cdd_Adc' to 'ASPath:/TI_F29H85x/Cdd_Adc/Cdd'.
+3. REFERENCE type parameters refers to other parameter by it's schema path. With the schema change in the plugin(.xdm file) the schema path has also changed which requires manual update for the already existing configuration.
+
+For example: CddAdcPpbChannel expects reference to a channel. With old schema the path was '/Cdd_Adc/Cdd_Adc/CddAdcConfigSet/CddAdcHwUnit_0/CddAdcGroup_0/CddAdcChannel_0', this should be updated to '/Cdd_Adc/Cdd/CddAdcConfigSet/CddAdcHwUnit_0/CddAdcGroup_0/CddAdcChannel_0' to fit with the latest schema.
+
+```Earlier schema:
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Adc" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd_Adc" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc"/>
+
+Modified new schema:
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Adc" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc/Cdd"/>
+```
 
 #### CddAdcConfigSet
 

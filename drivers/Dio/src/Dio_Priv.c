@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -192,7 +192,7 @@ FUNC(void, DIO_CODE)
 Dio_PinFlipVal(Dio_ChannelType ChannelId)
 {
     P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpioDataReg;
-    uint32          pinMaskVal;
+    VAR(uint32, AUTOMATIC) pinMaskVal;
 
     gpioDataReg = \
         (uint32 *)((uint32*)GPIODATA_BASE + ((ChannelId/DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));

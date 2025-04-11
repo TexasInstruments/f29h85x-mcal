@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -78,11 +78,11 @@
 
 volatile EcuM_WakeupEventSourceType EcuM_EventRecord[ECUM_CFG_WAKEUP_EVENT_COUNT]=
 {
-    [0] = 
-    {
-        .source_id                  = 1U,
-        .wakeup_funcptr             = (EcuM_WakeupFuncPtrType)Ecum_Lin_CheckWakeup,
-    }
+      [0] = 
+      {
+          .source_id                  = 1U,
+          .wakeup_funcptr             = (EcuM_WakeupFuncPtrType)Ecum_Lin_CheckWakeup,
+      }
 };
 
 volatile uint32 EcuM_WakeupBitSet = 1;

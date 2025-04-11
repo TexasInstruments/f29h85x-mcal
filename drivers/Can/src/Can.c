@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -57,11 +57,11 @@
     #error "AUTOSAR Version Numbers of Can are different"
 #endif
 
-#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (0U)))
+#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (1U)))
     #error "Version numbers of Can.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (0U)))
+#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Can.c and Can_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -82,10 +82,10 @@
 #define CAN_START_SEC_VAR_NO_INIT_UNSPECIFIED
 #include "Can_MemMap.h"
 /** \brief Can driver object contains the all the can driver related information. */
-VAR(Can_DriverObjType, CAN_VAR_NO_INIT) Can_DriverObj;
+VAR(Can_DriverObjType, CAN_VAR_NO_INIT) Can_DriverObj = {0};
    
 /** \brief Indication Type whether the state change of the Controller (Start/Stop/Sleep) is done. */
-VAR(Can_CanIfIndicationType, CAN_VAR_NO_INIT) Can_CanIfIndication[KMAX_CONTROLLER];
+VAR(Can_CanIfIndicationType, CAN_VAR_NO_INIT) Can_canIfindication[KMAX_CONTROLLER];
 #define CAN_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
 #include "Can_MemMap.h"
 
@@ -119,7 +119,120 @@ VAR(Can_DrvState, CAN_VAR_INIT) Can_ModuleState = CAN_UNINIT;
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
- 
+
+/** \brief The function do initialisation when the Controller is active.
+ *
+ * \param[in] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+static FUNC(void, CAN_CODE) Can_InitControllerPriv(void);
+
+/** \brief The function perfroms the transition of the CAN controller state machine which is software triggered.
+ *
+ * \param[in] Controller CAN controller for which the status shall be changed.
+ * \param[in] Transition Transition value to request new CAN controller state.
+ * \param[in] indication Indication Type whether the state change of the Controller (Start/Stop/Sleep) is done.
+ * \pre None
+ * \post None
+ * \return Setting the controller mode successful/failure.
+ * \retval E_OK: Request accepted.
+ * \retval E_NOT_OK: Request not accepted i.e. an error occured while
+ *                     requesting an incorrect from one state to other or an
+ *                     incorrect transition.
+ *
+ *****************************************************************************/
+static FUNC(Std_ReturnType, CAN_CODE) Can_ControllerStatePriv(uint8 Controller,Can_ControllerStateType Transition,
+                        P2VAR(Can_CanIfIndicationType, AUTOMATIC, CAN_APPL_DATA) indication);
+
+#if (STD_ON == CAN_CFG_SET_BAUDRATE_API)
+/** \brief This function sets the baud rate configuration of the CAN controller.
+ *
+ * \param[in] Controller CAN controller for which the status shall be changed.
+ * \param[in] BaudRateConfigID references a baud rate configuration by ID.
+ * \pre None
+ * \post None
+ * \return Setting the Baudrate successful or failure.
+ * \retval E_OK - If baud rate config is successful.
+ * \retval E_NOT_OK - If baud rate config is unsuccessful..
+ *
+ *****************************************************************************/
+static FUNC(Std_ReturnType, CAN_CODE) Can_SetControllerBaudRatePriv(uint8 controller,const uint16 baudRateConfigID);
+#endif
+
+#if (STD_ON == CAN_CFG_ICOM_SUPPORT)
+/** \brief This function sets the baud rate configuration of the CAN controller.
+ *
+ * \param[in] Controller CAN controller for which the status shall be changed.
+ * \param[in] BaudRateConfigID references a baud rate configuration by ID.
+ * \pre None
+ * \post None
+ * \return Setting the Baudrate successful or failure.
+ * \retval E_OK - If baud rate config is successful.
+ * \retval E_NOT_OK - If baud rate config is unsuccessful..
+ *
+ *****************************************************************************/
+static FUNC(Std_ReturnType, CAN_CODE) Can_SetIcomConfigurationPriv(uint8 controller,IcomConfigIdType configurationId);
+#endif
+
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+/** \brief This service is called by CanIf to pass a CAN message to CanDrv
+ * for transmission.
+ *
+ * \param[in] Hwth information which HW-transmit handle shall be used for transmit.
+ *        Implicitly this is also the information about the controller to use
+ *        because the Hth numbers are unique inside one hardware unit.
+ * \param[in] pduInfor Pointer to SDU user memory, DLC and Identifier.
+ * \pre None
+ * \post None
+ * \return Can write command is accepted (or) resulted in an error (or) Controller is busy
+ * \retval E_OK: Write command has been accepted.
+ * \retval E_NOT_OK: Development error occurred.
+ *
+ *****************************************************************************/
+static FUNC(Std_ReturnType, CAN_CODE) Can_DetCheckWrite1(uint8 Hwth,\
+                P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfor);
+#endif
+
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+/** \brief This service is called by CanIf to pass a CAN message to CanDrv
+ * for transmission.
+ *
+ * \param[in] Hwth information which HW-transmit handle shall be used for transmit.
+ *        Implicitly this is also the information about the controller to use
+ *        because the Hth numbers are unique inside one hardware unit.
+ * \param[in] pduInfor Pointer to SDU user memory, DLC and Identifier.
+ * \pre None
+ * \post None
+ * \return Can write command is accepted (or) resulted in an error (or) Controller is busy
+ * \retval E_OK: Write command has been accepted.
+ * \retval E_NOT_OK: Development error occurred.
+ *
+ *****************************************************************************/
+static FUNC(Std_ReturnType, CAN_CODE) Can_DetCheckWrite2(uint8 Hwth,\
+                P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfor);
+#endif
+
+/** \brief This service is called by CanIf to pass a CAN message to CanDrv
+ * for transmission.
+ *
+ * \param[in] mailbox Mailbox Configuration parameters.
+ * \param[in] pduInfo Pointer to SDU user memory, DLC and Identifier.
+ * \pre None
+ * \post None
+ * \return Can write command is accepted (or) resulted in an error (or) Controller is busy
+ * \retval E_OK: Write command has been accepted.
+ * \retval E_NOT_OK: Development error occurred.
+ * \retval CAN_BUSY: No TX hardware buffer available or pre-emptive call of
+ *                   Can_Write that can't be implemented re-entrant
+ *
+ *****************************************************************************/
+static FUNC(Std_ReturnType, CAN_CODE) Can_WritePriv(uint8 mailbox, P2VAR(Can_PduType, AUTOMATIC, CAN_DATA) pduInfo);
+
+
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
@@ -165,10 +278,9 @@ FUNC(void, CAN_CODE) Can_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CA
  *Design: MCAL-22824, MCAL-22845, MCAL-22932, MCAL-22930, MCAL-23022, MCAL-23017, MCAL-23016,
  *Design: MCAL-22881, MCAL-23012, MCAL-23020, MCAL-22843, MCAL-22844, MCAL-22823, MCAL-22931
  */
-FUNC(void, CAN_CODE) Can_Init(P2CONST(Can_ConfigType, AUTOMATIC, CAN_COST) Config_Ptr)
+FUNC(void, CAN_CODE) Can_Init(P2CONST(Can_ConfigType, AUTOMATIC, CAN_APPL_CONST) Config_Ptr)
 {
-    VAR(uint8, AUTOMATIC)controllerIdx = (uint8)0U;
-    P2CONST(Can_ConfigType, AUTOMATIC, CAN_COST) ConfigPtr = Config_Ptr;
+    P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) ConfigPtr = Config_Ptr;
 
 #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
         
@@ -214,37 +326,7 @@ FUNC(void, CAN_CODE) Can_Init(P2CONST(Can_ConfigType, AUTOMATIC, CAN_COST) Confi
         {
             Can_ResetDrvObjPriv(&Can_DriverObj);
             Can_InitDrvObjPriv(&Can_DriverObj, ConfigPtr);
-            for (controllerIdx = ((uint8)0U); controllerIdx < Can_DriverObj.canMaxControllerCount; controllerIdx++)
-            {
-#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
-                if(CAN_CS_UNINIT != Can_DriverObj.canController[controllerIdx].canState)
-                {
-                    /* Can controller is in not in UNINIT state */
-                    (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                                        (uint8)CAN_INSTANCE_ID,
-                                        (uint8)CAN_SID_INIT,
-                                        (uint8)CAN_E_TRANSITION);
-                }
-                else
-#endif
-                {
-                    /* If Controller is active then only do initialization */
-                    if(TRUE == Can_DriverObj.canController[controllerIdx].canControllerConfig.CanControllerActivation)
-                    {
-                        /* Init individual controller */
-                        Can_HwUnitConfigPriv(&Can_DriverObj.canController[controllerIdx],
-                                            &Can_DriverObj.canMailbox[0U],
-                                            Can_DriverObj.maxMbCnt, &Can_HthMbMapping[0U]);
-
-                        /* Change the state to STOPPED from UNINIT state */
-                        Can_DriverObj.canController[controllerIdx].canState = CAN_CS_STOPPED;
-                    }
-                    else
-                    {
-                        /* Do Nothing */
-                    }
-                }
-            }
+            Can_InitControllerPriv();
         }
 #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
         Can_ModuleState = CAN_READY;
@@ -310,10 +392,8 @@ FUNC(void, CAN_CODE) Can_DeInit(void)
 FUNC(Std_ReturnType, CAN_CODE) Can_SetBaudrate(uint8 Controller, 
                                     const uint16 BaudRateConfigID)
 {
-    VAR(uint32, AUTOMATIC)baseAddr = (uint32)0U;
-    VAR(Std_ReturnType, AUTOMATIC)returnValue = E_NOT_OK;
-    P2CONST(Can_BaudConfigType, AUTOMATIC, CAN_COST) setBaud = (Can_BaudConfigType*)NULL_PTR;
 
+Std_ReturnType returnValue = E_NOT_OK;
 #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
     
     /* Check if the CAN driver is not initialized and report a DET error. */
@@ -346,19 +426,7 @@ FUNC(Std_ReturnType, CAN_CODE) Can_SetBaudrate(uint8 Controller,
     else
 #endif
     {
-        
-        /* Check if the controller is not in stopped state. */
-        if (CAN_CS_STOPPED == Can_DriverObj.canController[Controller].canState)
-        {
-            baseAddr = Can_DriverObj.canController[Controller].canControllerConfig.CanControllerBaseAddress;
-            setBaud = Can_DriverObj.canController[Controller].canControllerConfig.BaudRateConfigList[BaudRateConfigID];
-            returnValue = Can_HWSetBaudRatePriv(baseAddr, setBaud);   
-        }
-        else
-        {
-            /* Return should be E_NOT_OK */
-        }
-        
+        returnValue = Can_SetControllerBaudRatePriv(Controller,BaudRateConfigID);
     }
 
     return returnValue;
@@ -394,27 +462,7 @@ FUNC(void, CAN_CODE) Can_DisableControllerInterrupts(uint8 Controller)
     else
 #endif
     {
-        if ((POLLING != Can_DriverObj.canController[Controller].canControllerConfig.CanRxProcessing) 
-        && (POLLING != Can_DriverObj.canController[Controller].canControllerConfig.CanTxProcessing)
-        && (POLLING != Can_DriverObj.canController[Controller].canControllerConfig.CanBusoffProcessing)
-        && (POLLING != Can_DriverObj.canController[Controller].canControllerConfig.CanWakeupProcessing))
-        {
-            SchM_Enter_Can_CAN_EXCLUSIVE_AREA_0();
-            if ((uint8)0U == Can_DriverObj.canController[Controller].canInterruptCounter)
-            {
-                Can_DisableInterruptsPriv(&Can_DriverObj.canController[Controller].canControllerConfig);
-            }
-            else
-            {
-                /* Do Nothing */
-            }
-            Can_DriverObj.canController[Controller].canInterruptCounter++;
-            SchM_Exit_Can_CAN_EXCLUSIVE_AREA_0();
-        }
-        else
-        {
-            /* Do Nothing */
-        }
+        Can_PollingCheck(&Can_DriverObj,Controller);
     }
 }
 
@@ -447,25 +495,7 @@ Can_EnableControllerInterrupts(uint8 Controller)
     } else
 #endif
     {
-        if ((uint8)0U < Can_DriverObj.canController[Controller].canInterruptCounter) 
-        {
-            SchM_Enter_Can_CAN_EXCLUSIVE_AREA_0();
-            Can_DriverObj.canController[Controller].canInterruptCounter--;
-            
-            if ((uint8)0U == Can_DriverObj.canController[Controller].canInterruptCounter) 
-            {
-                Can_EnableInterruptsPriv(&Can_DriverObj.canController[Controller].canControllerConfig);
-            } 
-            else 
-            {
-                /* Do Nothing */
-            }
-            SchM_Exit_Can_CAN_EXCLUSIVE_AREA_0();
-        } 
-        else 
-        {
-            /* Do Nothing */
-        }
+        Can_InterruptCounterCheckPriv(&Can_DriverObj,Controller);
     }
 }
 
@@ -503,7 +533,7 @@ FUNC(Std_ReturnType, CAN_CODE)Can_CheckWakeup(uint8 Controller)
     {
         status = Can_HWCheckWakeupPriv(&Can_DriverObj.canController[Controller].canControllerConfig);
 
-        if (E_OK == status) 
+        if (E_OK == status)
         {
             /* Wakeup detected inform EcuM*/
             EcuM_SetWakeupEvent(Can_DriverObj.canController[Controller]
@@ -625,7 +655,6 @@ FUNC(Std_ReturnType, CAN_CODE) Can_SetControllerMode(uint8 Controller,
                     Can_ControllerStateType Transition)
 {
     VAR(Std_ReturnType, AUTOMATIC)returnValue = E_NOT_OK;
-    P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_DATA) controllerObj = NULL_PTR; 
 
 #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
     
@@ -649,100 +678,7 @@ FUNC(Std_ReturnType, CAN_CODE) Can_SetControllerMode(uint8 Controller,
     else
 #endif
     {
-        controllerObj = &Can_DriverObj.canController[Controller];
-        switch (Transition)
-        {
-            case CAN_CS_STARTED:
-            {
-                if(CAN_CS_STOPPED == controllerObj->canState)
-                {
-# if (STD_ON == CAN_CFG_ICOM_SUPPORT)
-                    if(Can_DriverObj.Can_IcomActivation[Controller] == TRUE)
-                    {
-                        Can_DriverObj.Can_IcomActivation[Controller] = FALSE;
-                    }
-#endif
-                    returnValue = Can_HwUnitStartPriv(controllerObj, &Can_CanIfIndication[Controller]);
-                }
-                else
-                {
-    #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
-                    (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                                          (uint8)CAN_INSTANCE_ID,
-                                          (uint8)CAN_SID_SETCTR,
-                                          (uint8)CAN_E_TRANSITION);   
-    #endif
-                }
-                break;
-            }
-            
-            case CAN_CS_STOPPED:
-            {
-                if(CAN_CS_SLEEP == controllerObj->canState)
-                {
-# if (STD_ON == CAN_CFG_ICOM_SUPPORT)
-                    if(Can_DriverObj.Can_IcomActivation[Controller] == TRUE)
-                    {
-                        Can_DriverObj.Can_IcomActivation[Controller] = FALSE;
-                    }
-#endif
-                    returnValue = Can_HwUnitWakeupPriv(controllerObj, &Can_CanIfIndication[Controller]);
-                }
-                else if (CAN_CS_UNINIT != controllerObj->canState)
-                {
-# if (STD_ON == CAN_CFG_ICOM_SUPPORT)
-                    if(Can_DriverObj.Can_IcomActivation[Controller] == TRUE)
-                    {
-                        Can_DriverObj.Can_IcomActivation[Controller] = FALSE;
-                    }
-#endif
-                    Can_HwUnitStopPriv(controllerObj, &Can_CanIfIndication[Controller]);
-                    returnValue = E_OK;
-                }
-                else
-                {
-#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
-                    (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                                          (uint8)CAN_INSTANCE_ID,
-                                          (uint8)CAN_SID_SETCTR,
-                                          (uint8)CAN_E_TRANSITION);   
-#endif
-                    /* Do Noting */
-                }
-                break;
-            }
-            case CAN_CS_SLEEP:
-            {
-                if(CAN_CS_STOPPED == controllerObj->canState)
-                {
-                    returnValue = Can_HwUnitSleepPriv(controllerObj, &Can_CanIfIndication[Controller]);
-                }
-                else if(CAN_CS_SLEEP != controllerObj->canState)
-                {
-#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
-                    (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                                          (uint8)CAN_INSTANCE_ID,
-                                          (uint8)CAN_SID_SETCTR,
-                                          (uint8)CAN_E_TRANSITION);   
-#endif
-                }
-                else
-                {
-                    returnValue = E_OK;
-                }
-                break;
-            }
-            default:
-            {
-#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
-                    (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                                          (uint8)CAN_INSTANCE_ID,
-                                          (uint8)CAN_SID_SETCTR,
-                                          (uint8)CAN_E_TRANSITION);
-#endif
-                break;
-            }
-        }
+        returnValue = Can_ControllerStatePriv(Controller,Transition,&Can_canIfindication[0]);
     }   
     return returnValue;
 }
@@ -756,100 +692,23 @@ FUNC(Std_ReturnType, CAN_CODE) Can_SetControllerMode(uint8 Controller,
  *Design: MCAL-22931
  */
 FUNC(Std_ReturnType, CAN_CODE) Can_Write(uint8 Hth, 
-            P2CONST(Can_PduType, AUTOMATIC, CAN_COST) PduInfo)
+            P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo)
 {
     VAR(Std_ReturnType, AUTOMATIC)returnValue = E_NOT_OK;
-    VAR(Std_ReturnType, AUTOMATIC)canIfTTStatus = E_NOT_OK;
     VAR(uint8, AUTOMATIC)mailbox = (uint8)0U;
     VAR(uint8, AUTOMATIC)msgController = (uint8)0U;
     VAR(Can_HwHandleType, AUTOMATIC)messageBox = (Can_HwHandleType)0U;
     P2VAR(Can_PduType, AUTOMATIC, CAN_DATA) pduInfo = (Can_PduType *)PduInfo;
+    VAR(PduIdType, AUTOMATIC)TxMailboxId = (PduIdType)0U;
 
 #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
-    
-    /* Check if the CAN driver is not initialized and report a DET error. */
-    if (CAN_UNINIT == Can_ModuleState)
-    {
-        (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                              (uint8)CAN_INSTANCE_ID,
-                              (uint8)CAN_SID_WRITE,
-                              (uint8)CAN_E_UNINIT);
-    }
-    
-    /* Check if the PduInfo is NULL and report a DET error. */
-    else if ((Can_PduType*)NULL_PTR == PduInfo)
-    {
-        (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                              (uint8)CAN_INSTANCE_ID,
-                              (uint8)CAN_SID_WRITE,
-                              (uint8)CAN_E_PARAM_POINTER);
-    }
-    
-    /* Since Trigger Transmit is not supported, check if the Sdu is NULL and report a DET error. */
-    
-    /* Check if the data length is incorrect and report a DET error. */
-    else if ((CAN_FD_PAYLOAD_MAX_BYTES < PduInfo->length) ||
-                ((CAN_CLASSIC_PAYLOAD_MAX_BYTES < PduInfo->length) &&
-                (CAN_ID_CAN_CONTROLLER_TYPE_MASK != 
-                (CAN_ID_CAN_CONTROLLER_TYPE_MASK & PduInfo->id))))
-    {
-        (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                              (uint8)CAN_INSTANCE_ID,
-                              (uint8)CAN_SID_WRITE,
-                              (uint8)CAN_E_PARAM_DATA_LENGTH); 
-
-    }
-    else if (Can_DriverObj.maxMbCnt <= Hth)
-    {
-        /* Check if Hth is not part of configured Hardware Transmit Handle and report a DET error. */
-        (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                                (uint8)CAN_INSTANCE_ID,
-                                (uint8)CAN_SID_WRITE,
-                                (uint8)CAN_E_PARAM_HANDLE);
-    }
-    else
+    if(((Std_ReturnType)E_OK == Can_DetCheckWrite1(Hth,PduInfo)) && ((Std_ReturnType)E_OK == Can_DetCheckWrite2(Hth,PduInfo)))  
 #endif
     {
         mailbox = Can_HthMbMapping[Hth];
         msgController = Can_DriverObj.canMailbox[mailbox].mailBoxConfig.CanControllerRef->CanControllerId;
-        if(msgController < KMAX_CONTROLLER)
-        {
-            if (((uint8*)NULL_PTR == PduInfo->sdu) && 
-            ( TRUE == Can_DriverObj.canMailbox[mailbox].mailBoxConfig.CanTriggerTransmitEnable))
-            {
-                canIfTTStatus = CanIf_TriggerTransmit(Can_DriverObj.canMailbox[mailbox].canTxRxPduId[0U],
-                                                    &Can_DriverObj.canController[msgController].pduInfo);
-                if (E_OK == canIfTTStatus) 
-                {
-                    pduInfo->length = (uint8) Can_DriverObj.canController[msgController].pduInfo.SduLength;
-                    pduInfo->sdu = Can_DriverObj.canController[msgController].pduInfo.SduDataPtr;
-                    returnValue = E_OK;
-                }
-                else
-                {
-                    returnValue = E_NOT_OK;
-                }
-            }
-            else if((uint8*)NULL_PTR != PduInfo->sdu)
-            {
-                returnValue = E_OK;
-            }
-            else
-            {
-#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
-                (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                                    (uint8)CAN_INSTANCE_ID,
-                                    (uint8)CAN_SID_WRITE,
-                                    (uint8)CAN_E_PARAM_POINTER);
-#endif
-                returnValue = E_NOT_OK;
-            }
-        
-        }
-        else
-        {
-            /* Do Nothing */
-        }
+        returnValue = Can_WritePriv(mailbox,pduInfo);
+
         /* Only for Tx Mailbox */
         if ((E_OK == returnValue) && (Can_DriverObj.Can_IcomActivation[msgController] == TRUE))
         {
@@ -879,7 +738,8 @@ FUNC(Std_ReturnType, CAN_CODE) Can_Write(uint8 Hth,
                                     pduInfo);
                
                 /* Store the transmitted Pdu SWPdu Handle for Tx confirmation */
-                Can_DriverObj.canMailbox[mailbox].canTxRxPduId[messageBox] = PduInfo->swPduHandle;
+                TxMailboxId = Can_DriverObj.canMailToTxMailMapping[mailbox];
+                Can_DriverObj.canTxMailbox[TxMailboxId].canTxRxPduId[messageBox] = PduInfo->swPduHandle;
 
                 /* Set that this object is transmitted */
                 Can_DriverObj.canController[msgController].canTxStatus[messageBox] = ((uint8)1U);
@@ -973,7 +833,8 @@ Can_MainFunction_BusOff(void)
     {
         if(TRUE == Can_DriverObj.canController[loopCnt].canControllerConfig.CanControllerActivation)
         {
-            if ((Can_ProcessingType) POLLING == Can_DriverObj.canController[loopCnt].canControllerConfig.CanBusoffProcessing)
+            if ((Can_ProcessingType) POLLING == \
+                    Can_DriverObj.canController[loopCnt].canControllerConfig.CanBusoffProcessing)
             {
                 Can_BusOffProcessPriv(&Can_DriverObj.canController[loopCnt]);
             }
@@ -988,7 +849,7 @@ Can_MainFunction_BusOff(void)
 
 
 /*
- *Design: MCAL-22003, MCAL-23002, MCAL-23003, MCAL-23018, MCAL-22845, MCAL-22932, MCAL-22875, MCAL-22913,
+ *Design: MCAL-23002, MCAL-23003, MCAL-23018, MCAL-22845, MCAL-22932, MCAL-22875, MCAL-22913,
  *Design: MCAL-22930, MCAL-23012, MCAL-22843, MCAL-22914, MCAL-22844, MCAL-22931, MCAL-22830
  */
 FUNC(void, CAN_CODE)
@@ -1001,7 +862,8 @@ Can_MainFunction_Wakeup(void)
     {
         if(TRUE == Can_DriverObj.canController[loopCnt].canControllerConfig.CanControllerActivation)
         {
-            if ((Can_ProcessingType) POLLING == Can_DriverObj.canController[loopCnt].canControllerConfig.CanWakeupProcessing)
+            if ((Can_ProcessingType) POLLING == \
+                Can_DriverObj.canController[loopCnt].canControllerConfig.CanWakeupProcessing)
             {   
                 Can_WakeupProcessPriv(&Can_DriverObj.canController[loopCnt]);
             }
@@ -1028,7 +890,7 @@ Can_MainFunction_Mode(void)
     {
         if(TRUE == Can_DriverObj.canController[loopCnt].canControllerConfig.CanControllerActivation)
         {
-            Can_ModeProcessPriv(&Can_DriverObj.canController[loopCnt], &Can_CanIfIndication[loopCnt]);
+            Can_ModeProcessPriv(&Can_DriverObj.canController[loopCnt], &Can_canIfindication[loopCnt]);
         }
         else
         {
@@ -1037,7 +899,38 @@ Can_MainFunction_Mode(void)
     }
 }
 
-# if (STD_ON == CAN_CFG_ICOM_SUPPORT)
+/*
+ *Design: MCAL-29470
+ */
+FUNC(void, CAN_CODE)
+Can_PeriodicReadback(uint8 Controller,
+        P2VAR(Can_PeriodicReadBackDataType, AUTOMATIC, CAN_APPL_DATA) ReadBackRegisterdata)
+{
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+    
+    /* Check if the CAN driver is not initialized and report a DET error. */
+    if (CAN_UNINIT == Can_ModuleState)
+    {
+        (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                              (uint8)CAN_INSTANCE_ID,
+                              (uint8)CAN_SID_READBACK,
+                              (uint8)CAN_E_UNINIT);
+    }
+    else if(KMAX_CONTROLLER <= Controller)
+    {
+        (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                              (uint8)CAN_INSTANCE_ID,
+                              (uint8)CAN_SID_READBACK,
+                              (uint8)CAN_E_PARAM_CONTROLLER);
+    }
+    else
+#endif
+    {
+        Can_PeriodicReadbackPrv(Controller,ReadBackRegisterdata);
+    }
+}
+
+#if (STD_ON == CAN_CFG_ICOM_SUPPORT)
 /*
  * Design: MCAL-22915, MCAL-22916, MCAL-22917, MCAL-22918, MCAL-22919, MCAL-22920, MCAL-22921,
  * Design: MCAL-22922, MCAL-22923, MCAL-22924, MCAL-22925, MCAL-22926, MCAL-22927, MCAL-22928,
@@ -1048,7 +941,6 @@ FUNC(Std_ReturnType, CAN_CODE)
  Can_SetIcomConfiguration( uint8 Controller, 
                     IcomConfigIdType ConfigurationId)
 {
-    VAR(uint8, AUTOMATIC)loopCnt = (uint8)0U;
     VAR(Std_ReturnType, AUTOMATIC)status = E_NOT_OK;
     
 #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
@@ -1073,43 +965,8 @@ FUNC(Std_ReturnType, CAN_CODE)
     else
 #endif        
     {
-        /*Check the configuration ID */
-        if (((IcomConfigIdType )ICOM_CONFIG_DISABLE) == ConfigurationId)
-        {
-            status = E_OK;
-            /* Disable pretended networking */
-            Can_DriverObj.Can_IcomActivation[Controller] = FALSE;
-            CanIf_CurrentIcomConfiguration(Controller,ConfigurationId,ICOM_SWITCH_E_OK);
-        }
-        else
-        {
-            for(loopCnt = 0;loopCnt < MAX_ICOM_CONFIGURATION;loopCnt++)
-            {
-                if(ConfigurationId == Can_DriverObj.IcomConfigurationList[loopCnt].CanIcomConfigId)
-                {
-                    status = E_OK;
-                }
-                
-            }
-            if(E_OK == status)
-            {
-                /* enable pretended networking */
-                Can_DriverObj.Can_IcomActivation[Controller] = TRUE;
-                Can_DriverObj.Can_IcomConfigurationId[Controller] = loopCnt;
-                Can_DriverObj.Can_IcomCounterValue[Controller] = 0U;
-                CanIf_CurrentIcomConfiguration(Controller,ConfigurationId,ICOM_SWITCH_E_OK);
-            }
-            else
-            {
-                CanIf_CurrentIcomConfiguration(Controller,ConfigurationId,ICOM_SWITCH_E_FAILED);
-#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
-                (void)Det_ReportError((uint16)CAN_MODULE_ID,
-                      (uint8)CAN_INSTANCE_ID,
-                      (uint8)CAN_SID_ICOMCONFIG,
-                      (uint8)CAN_E_ICOM_CONFIG_INVALID);
-#endif
-            }
-        }
+        status = Can_SetIcomConfigurationPriv(Controller,ConfigurationId);
+
     }
     return status;
 }
@@ -1117,6 +974,356 @@ FUNC(Std_ReturnType, CAN_CODE)
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
+/*
+ * Design: MCAL-28418
+ */
+static FUNC(void, CAN_CODE) Can_InitControllerPriv(void)
+{
+    VAR(uint8, AUTOMATIC)controllerIdx = (uint8)0U;
+    for (; controllerIdx < Can_DriverObj.canMaxControllerCount; controllerIdx++)
+    {
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+        if(CAN_CS_UNINIT != Can_DriverObj.canController[controllerIdx].canState)
+        {
+            /* Can controller is in not in UNINIT state */
+            (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                                (uint8)CAN_INSTANCE_ID,
+                                (uint8)CAN_SID_INIT,
+                                (uint8)CAN_E_TRANSITION);
+        }
+        else
+#endif
+        {
+            /* If Controller is active then only do initialization */
+            if(TRUE == Can_DriverObj.canController[controllerIdx].canControllerConfig.CanControllerActivation)
+            {
+                /* Init individual controller */
+                Can_HwUnitConfigPriv(&Can_DriverObj.canController[controllerIdx],
+                                    &Can_DriverObj.canMailbox[0U],
+                                    Can_DriverObj.maxMbCnt, &Can_HthMbMapping[0U]);
+
+                /* Change the state to STOPPED from UNINIT state */
+                Can_DriverObj.canController[controllerIdx].canState = CAN_CS_STOPPED;
+            }
+            else
+            {
+                /* Do Nothing */
+            }
+        }
+    }
+}
+
+/*
+ * Design: MCAL-28419
+ */
+static FUNC(Std_ReturnType, CAN_CODE) Can_ControllerStatePriv(uint8 Controller,Can_ControllerStateType Transition,
+                        P2VAR(Can_CanIfIndicationType, AUTOMATIC, CAN_APPL_DATA) indication)
+{
+    VAR(Std_ReturnType, AUTOMATIC)returnVal = E_NOT_OK;
+    P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_DATA) controllerObj = NULL_PTR; 
+
+    controllerObj = &Can_DriverObj.canController[Controller];
+    switch (Transition)
+    {
+        case CAN_CS_STARTED:
+        {
+            if(CAN_CS_STOPPED == controllerObj->canState)
+                {
+# if (STD_ON == CAN_CFG_ICOM_SUPPORT)
+                    if(Can_DriverObj.Can_IcomActivation[Controller] == TRUE)
+                    {
+                        Can_DriverObj.Can_IcomActivation[Controller] = FALSE;
+                    }
+#endif
+                    returnVal = Can_HwUnitStartPriv(controllerObj, &indication[Controller]);
+                }
+                else
+                {
+    #if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+                    (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                                          (uint8)CAN_INSTANCE_ID,
+                                          (uint8)CAN_SID_SETCTR,
+                                          (uint8)CAN_E_TRANSITION);   
+    #endif
+                }
+            }
+            break;
+            case CAN_CS_STOPPED:
+            {
+                if(CAN_CS_SLEEP == controllerObj->canState)
+                {
+# if (STD_ON == CAN_CFG_ICOM_SUPPORT)
+                    if(Can_DriverObj.Can_IcomActivation[Controller] == TRUE)
+                    {
+                        Can_DriverObj.Can_IcomActivation[Controller] = FALSE;
+                    }
+#endif
+                    returnVal = Can_HwUnitWakeupPriv(controllerObj, &indication[Controller]);
+                }
+                else if (CAN_CS_UNINIT != controllerObj->canState)
+                {
+# if (STD_ON == CAN_CFG_ICOM_SUPPORT)
+                    if(Can_DriverObj.Can_IcomActivation[Controller] == TRUE)
+                    {
+                        Can_DriverObj.Can_IcomActivation[Controller] = FALSE;
+                    }
+#endif
+                    Can_HwUnitStopPriv(controllerObj, &indication[Controller]);
+                    returnVal = E_OK;
+                }
+                else
+                {
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+                    (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                                          (uint8)CAN_INSTANCE_ID,
+                                          (uint8)CAN_SID_SETCTR,
+                                          (uint8)CAN_E_TRANSITION);   
+#endif
+                    /* Do Noting */
+                }
+            }
+            break;
+            case CAN_CS_SLEEP:
+            {
+                if(CAN_CS_STOPPED == controllerObj->canState)
+                {
+                    returnVal = Can_HwUnitSleepPriv(controllerObj, &indication[Controller]);
+                }
+                else if(CAN_CS_SLEEP != controllerObj->canState)
+                {
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+                    (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                                          (uint8)CAN_INSTANCE_ID,
+                                          (uint8)CAN_SID_SETCTR,
+                                          (uint8)CAN_E_TRANSITION);   
+#endif
+                }
+                else
+                {
+                    returnVal = E_OK;
+                }
+            }
+            break;
+            default:
+            {
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+                    (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                                          (uint8)CAN_INSTANCE_ID,
+                                          (uint8)CAN_SID_SETCTR,
+                                          (uint8)CAN_E_TRANSITION);
+#endif
+            }
+            break;
+        }
+        return returnVal;
+
+}
+
+#if (STD_ON == CAN_CFG_SET_BAUDRATE_API)
+/*
+ * Design: MCAL-28420
+ */
+static FUNC(Std_ReturnType, CAN_CODE) Can_SetControllerBaudRatePriv(uint8 controller,const uint16 baudRateConfigID)
+{
+    VAR(Std_ReturnType, AUTOMATIC)returnVal = E_NOT_OK;
+    VAR(uint32, AUTOMATIC)baseAddr = (uint32)0U;
+    P2CONST(Can_BaudConfigType, AUTOMATIC, CAN_CONST) setBaud = (Can_BaudConfigType*)NULL_PTR;
+
+    /* Check if the controller is not in stopped state. */
+    if (CAN_CS_STOPPED == Can_DriverObj.canController[controller].canState)
+    {
+        baseAddr = Can_DriverObj.canController[controller].canControllerConfig.CanControllerBaseAddress;
+        setBaud = Can_DriverObj.canController[controller].canControllerConfig.BaudRateConfigList[baudRateConfigID];
+        Can_HWSetBaudRatePriv(baseAddr, setBaud);
+        returnVal = E_OK; 
+    }
+    else
+    {
+        /* Return should be E_NOT_OK */
+    }
+
+    return returnVal;
+}
+#endif
+
+#if (STD_ON == CAN_CFG_ICOM_SUPPORT)
+/*
+ * Design: MCAL-28421
+ */
+static FUNC(Std_ReturnType, CAN_CODE) Can_SetIcomConfigurationPriv(uint8 controller,IcomConfigIdType configurationId)
+{
+    VAR(Std_ReturnType, AUTOMATIC)returnVal = E_NOT_OK;
+    VAR(uint8, AUTOMATIC)loopCnt = (uint8)0U;
+    
+    /*Check the configuration ID */
+    if (((IcomConfigIdType )ICOM_CONFIG_DISABLE) == configurationId)
+    {
+        returnVal = E_OK;
+        /* Disable pretended networking */
+        Can_DriverObj.Can_IcomActivation[controller] = FALSE;
+        CanIf_CurrentIcomConfiguration(controller,configurationId,ICOM_SWITCH_E_OK);
+    }
+    else
+    {
+        for(loopCnt = 0;loopCnt < MAX_ICOM_CONFIGURATION;loopCnt++)
+        {
+            if(configurationId == Can_DriverObj.IcomConfigurationList[loopCnt].CanIcomConfigId)
+            {
+                returnVal = E_OK;
+                break;
+            }
+            
+        }
+        if(E_OK == returnVal)
+        {
+            /* enable pretended networking */
+            Can_DriverObj.Can_IcomActivation[controller] = TRUE;
+            Can_DriverObj.Can_IcomConfigurationId[controller] = configurationId;
+            Can_DriverObj.Can_IcomCounterValue[controller] = 0U;
+            CanIf_CurrentIcomConfiguration(controller,configurationId,ICOM_SWITCH_E_OK);
+        }
+        else
+        {
+            CanIf_CurrentIcomConfiguration(controller,configurationId,ICOM_SWITCH_E_FAILED);
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+            (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                (uint8)CAN_INSTANCE_ID,
+                (uint8)CAN_SID_ICOMCONFIG,
+                (uint8)CAN_E_ICOM_CONFIG_INVALID);
+#endif
+        }
+    }
+    return returnVal;
+}
+#endif
+
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+/*
+ * Design: MCAL-28422
+ */
+static FUNC(Std_ReturnType, CAN_CODE) Can_DetCheckWrite1(uint8 Hwth,
+                                    P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfor)
+{
+    VAR(Std_ReturnType, AUTOMATIC)returnVal = E_NOT_OK;
+/* Check if the CAN driver is not initialized and report a DET error. */
+    if (CAN_UNINIT == Can_ModuleState)
+    {
+        (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                              (uint8)CAN_INSTANCE_ID,
+                              (uint8)CAN_SID_WRITE,
+                              (uint8)CAN_E_UNINIT);
+    }
+    
+    /* Check if the PduInfo is NULL and report a DET error. */
+    else if ((Can_PduType*)NULL_PTR == pduInfor)
+    {
+        (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                              (uint8)CAN_INSTANCE_ID,
+                              (uint8)CAN_SID_WRITE,
+                              (uint8)CAN_E_PARAM_POINTER);
+    }
+    
+    else
+    {
+        returnVal = E_OK;
+    }
+
+    return returnVal;
+}
+#endif
+
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+/*
+ * Design: MCAL-28423
+ */
+static FUNC(Std_ReturnType, CAN_CODE) Can_DetCheckWrite2(uint8 Hwth,
+                                    P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfor)
+{
+    VAR(Std_ReturnType, AUTOMATIC)returnVal = E_NOT_OK;
+    
+    /* Since Trigger Transmit is not supported, check if the Sdu is NULL and report a DET error. */
+    
+    /* Check if the data length is incorrect and report a DET error. */
+    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This is a false positive. has covered in Tests */
+    if ((CAN_FD_PAYLOAD_MAX_BYTES < pduInfor->length) ||
+                ((CAN_CLASSIC_PAYLOAD_MAX_BYTES < pduInfor->length) &&
+                (CAN_ID_CAN_CONTROLLER_TYPE_MASK != 
+                (CAN_ID_CAN_CONTROLLER_TYPE_MASK & pduInfor->id))))
+    {
+        (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                              (uint8)CAN_INSTANCE_ID,
+                              (uint8)CAN_SID_WRITE,
+                              (uint8)CAN_E_PARAM_DATA_LENGTH); 
+
+    }
+    /* TI_COVERAGE_GAP_STOP */
+    else if (Can_DriverObj.maxMbCnt <= Hwth)
+    {
+        /* Check if Hth is not part of configured Hardware Transmit Handle and report a DET error. */
+        (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                                (uint8)CAN_INSTANCE_ID,
+                                (uint8)CAN_SID_WRITE,
+                                (uint8)CAN_E_PARAM_HANDLE);
+    }
+    else
+    {
+        returnVal = E_OK;
+    }
+
+    return returnVal;
+}
+#endif
+
+/*
+ * Design: MCAL-28424
+ */
+static FUNC(Std_ReturnType, CAN_CODE) Can_WritePriv(uint8 mailbox, P2VAR(Can_PduType, AUTOMATIC, CAN_DATA) pduInfo)
+{
+    VAR(Std_ReturnType, AUTOMATIC)returnValue = E_NOT_OK;
+    VAR(uint8, AUTOMATIC)msgController = (uint8)0U;
+
+    msgController = Can_DriverObj.canMailbox[mailbox].mailBoxConfig.CanControllerRef->CanControllerId;
+
+    if(msgController < KMAX_CONTROLLER)
+    {
+
+        if (((uint8*)NULL_PTR == pduInfo->sdu) &&
+        ( TRUE == Can_DriverObj.canMailbox[mailbox].mailBoxConfig.CanTriggerTransmitEnable) &&
+        ( E_OK == CanIf_TriggerTransmit(Can_DriverObj.canMailbox[mailbox].canTxRxPduId[0U],
+                                                &Can_DriverObj.canController[msgController].pduInfo)))
+        {
+            pduInfo->length = (uint8) Can_DriverObj.canController[msgController].pduInfo.SduLength;
+            pduInfo->sdu = Can_DriverObj.canController[msgController].pduInfo.SduDataPtr;
+            returnValue = E_OK;
+        }
+
+        else if((uint8*)NULL_PTR != pduInfo->sdu)
+        {
+            returnValue = E_OK;
+        }
+
+        else
+        {
+#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
+            (void)Det_ReportError((uint16)CAN_MODULE_ID,
+                                (uint8)CAN_INSTANCE_ID,
+                                (uint8)CAN_SID_WRITE,
+                                (uint8)CAN_E_PARAM_POINTER);
+#endif
+            returnValue = E_NOT_OK;
+        }
+
+    }
+
+    else
+    {
+        /* Do Nothing */
+    }
+
+    return returnValue;
+
+}
+
 #define CAN_STOP_SEC_CODE
 #include "Can_MemMap.h"
 /*********************************************************************************************************************

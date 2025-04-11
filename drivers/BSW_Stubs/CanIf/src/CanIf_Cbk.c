@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -63,6 +63,7 @@ uint32 CanIf_Idval;
 uint8 CanIf_Controller;
 Can_ControllerStateType CanIf_ControllerMode1;
 uint8 CanIf_Hoh;
+PduIdType CanIf_CanTxPduId;
 
 /*********************************************************************************************************************
  *  Local Function Prototypes
@@ -88,6 +89,7 @@ void CanIf_ControllerModeIndication(uint8 ControllerId,Can_ControllerStateType C
 void CanIf_TxConfirmation(PduIdType CanTxPduId)
 {
     CanIf_TxConfirmationCount++;
+    CanIf_CanTxPduId = CanTxPduId;
 }
 void CanIf_RxIndication(const Can_HwType *Mailbox, const PduInfoType *PduInfoPtr)
 {

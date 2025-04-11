@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -73,7 +73,6 @@
 
 void AppUtils_AssertFunc(uint32 Condition,char *Str,char *FileName,uint32 LineNum)
 {
-#if defined (ASSERT_ENABLE)
     if (Condition == 0U)
     {
         /* Print the statement */
@@ -84,10 +83,6 @@ void AppUtils_AssertFunc(uint32 Condition,char *Str,char *FileName,uint32 LineNu
         while (TRUE){}
 #endif /* #if defined(DEBUG) */
     }
-#else
-        AppUtils_Printf("ASSERT_ENABLE is not defined, so condition(paramter passed) assertion is not done\n");
-        AppUtils_Printf("To enable this define ASSERT_ENABLE\n");
-#endif /* if defined(ASSERT_ENABLE) */
 
     return;
 }
@@ -204,7 +199,7 @@ sint32 AppUtils_GetNum(void)
     {
         rx_data = Uart_ReadChar();
 
-        /* Checking if the entered character is a carriage return. Pressing the 
+        /* Checking if the entered character is a carriage return. Pressing the
          * 'Enter' key on the keyboard executes a carriage return on the serial console. */
         if ((sint8) '\r' == rx_data)
         {
@@ -228,15 +223,15 @@ void AppUtils_Printf(const char *Message, ...)
     /* This type is used to retrieve the additional arguments of a function. */
     va_list var_arg;
 
-    /* 
-     * Initializes a variable argument list. 
-     * Initializes var_arg to retrieve the additional arguments after parameter Message. 
+    /*
+     * Initializes a variable argument list.
+     * Initializes var_arg to retrieve the additional arguments after parameter Message.
      */
     va_start(var_arg,Message);
 
-    /* 
-     * Write formatted data from variable argument list to sized buffer 
-     * Returns the number of characters that would have been written if the buffer had been 
+    /*
+     * Write formatted data from variable argument list to sized buffer
+     * Returns the number of characters that would have been written if the buffer had been
      * sufficiently large, not counting the terminating null character.
      */
     string_size = vsnprintf(buffer,sizeof(buffer),Message,var_arg);

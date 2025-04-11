@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -40,6 +40,54 @@
 /*********************************************************************************************************************
  * Local Type Declarations
  *********************************************************************************************************************/
+//**************************************************************************************************
+//
+//! Values that can be passed as parameter \e cpu in all the functions
+//
+//**************************************************************************************************
+typedef enum
+{
+    SSU_CPU1 = 0,
+    SSU_CPU2 = 1,
+    SSU_CPU3 = 2
+} DEVICESUPPORT_SSU_CPUID;
+
+//**************************************************************************************************
+//
+//! SSU Links
+//
+//**************************************************************************************************
+typedef enum{
+    SSU_LINK0   = 0,
+    SSU_LINK1   = 1,
+    SSU_LINK2   = 2,
+    SSU_LINK3   = 3,
+    SSU_LINK4   = 4,
+    SSU_LINK5   = 5,
+    SSU_LINK6   = 6,
+    SSU_LINK7   = 7,
+    SSU_LINK8   = 8,
+    SSU_LINK9   = 9,
+    SSU_LINK10  = 10,
+    SSU_LINK11  = 11,
+    SSU_LINK12  = 12,
+    SSU_LINK13  = 13,
+    SSU_LINK14  = 14,
+    SSU_LINK15  = 15,
+} DEVICESUPPORT_SSU_Link;
+
+//**************************************************************************************************
+//
+//! Values that can be passed as parameter \e reset in SSU_controlCPUReset()
+//! functions
+//
+//**************************************************************************************************
+typedef enum
+{
+    SSU_CORE_RESET_ACTIVE     = 0xC9,  //! CPU is held in reset
+    SSU_CORE_RESET_DEACTIVE   = 0x36   //! CPU reset is released (if no HSM) or
+                                       //! determined by HSM input
+} DEVICESUPPORT_SSU_CoreReset;
 
  /*********************************************************************************************************************
  * Exported Object Definitions
@@ -54,6 +102,19 @@
 #endif
 #endif
 
+#if !defined(__CPU2__) && !defined(__CPU3__)
+#ifdef MULTICORE_ENABLE_CPU3
+#ifndef  CPU3_APPSIZE
+#ifdef _FLASH
+#define CPU3_APPSIZE    0x100000
+#else
+#define CPU3_APPSIZE    0x8000
+#endif  /* _FLASH */
+#endif  /* CPU3_APPSIZE */
+__attribute__((retain, section("cpu3app"))) const uint8 cpu3App[CPU3_APPSIZE] = {0U};
+#endif  /* MULTICORE_ENABLE_CPU3 */
+#endif /* !defined(__CPU2__) && !defined(__CPU3__) */
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
@@ -64,6 +125,16 @@
 #ifdef _FLASH
 static void Flash_InitModule(uint16 waitstates);
 #endif
+
+#ifdef MULTICORE_ENABLE_CPU3
+
+void DeviceSupport_ConfigBootAddress(DEVICESUPPORT_SSU_CPUID cpu, uint32 addr, DEVICESUPPORT_SSU_Link link);
+
+void DeviceSupport_ControlCPUReset(DEVICESUPPORT_SSU_CPUID cpu, DEVICESUPPORT_SSU_CoreReset control);
+
+static inline boolean DeviceSupport_IsCPU3Reset();
+
+#endif 
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -174,6 +245,19 @@ void DeviceSupport_Init()
     //
     Flash_InitModule(DEVICE_FLASH_WAITSTATES);
 #endif    
+
+#ifdef MULTICORE_ENABLE_CPU3
+    //
+    // Boot CPU3
+    //
+    DeviceSupport_ConfigBootAddress(SSU_CPU3, (uint32)&CPU3_RESET_VECTOR, SSU_LINK2);
+    //
+    // Bring CPU3 out of reset. Wait for CPU3 to go out of reset.
+    //
+    DeviceSupport_ControlCPUReset(SSU_CPU3, SSU_CORE_RESET_DEACTIVE);
+    while(DeviceSupport_IsCPU3Reset() == 0x1U);
+#endif 
+
 }
 
 /*********************************************************************************************************************
@@ -258,6 +342,54 @@ static void Flash_InitModule(uint16 waitstates)
     }
 }
 #endif
+
+#ifdef MULTICORE_ENABLE_CPU3
+
+void DeviceSupport_ConfigBootAddress(DEVICESUPPORT_SSU_CPUID cpu, uint32 addr, DEVICESUPPORT_SSU_Link link)
+{
+    if (cpu == SSU_CPU2)
+    {
+        HWREG(SSUCPU2CFG_BASE + SSU_O_RST_VECT) = addr;
+        HWREG(SSUCPU2CFG_BASE + SSU_O_RST_LINK) = link;
+    }
+    else if (cpu == SSU_CPU3)
+    {
+        HWREG(SSUCPU3CFG_BASE + SSU_O_RST_VECT) = (uint32)addr;
+        HWREG(SSUCPU3CFG_BASE + SSU_O_RST_LINK) = link;
+    }
+    else
+    {
+        //
+        // Invalid option
+        //
+    }
+}
+
+void DeviceSupport_ControlCPUReset(DEVICESUPPORT_SSU_CPUID cpu, DEVICESUPPORT_SSU_CoreReset control)
+{
+    if(cpu == SSU_CPU2)
+    {
+        HWREG(SSUCPU2CFG_BASE + SSU_O_CPU_RST_CTRL) = control;
+    }
+    else if(cpu == SSU_CPU3)
+    {
+        HWREG(SSUCPU3CFG_BASE + SSU_O_CPU_RST_CTRL) = control;
+    }
+    else
+    {
+        //
+        // Invalid option
+        //
+    }
+}
+
+static inline boolean DeviceSupport_IsCPU3Reset()
+{
+    return((HWREGH(DEVCFG_BASE + SYSCTL_O_RSTSTAT) & SYSCTL_RSTSTAT_CPU3) == 0U);
+}
+
+#endif 
+
 /*********************************************************************************************************************
  *  End of File: DeviceSupport.c
  *********************************************************************************************************************/

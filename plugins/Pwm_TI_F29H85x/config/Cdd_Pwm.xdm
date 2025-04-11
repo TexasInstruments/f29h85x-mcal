@@ -1,0 +1,432 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
+        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+        <d:lst type="TOP-LEVEL-PACKAGES">
+          <d:ctr name="Cdd_Pwm" type="AR-PACKAGE">
+            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+            <d:lst type="ELEMENTS">
+              <d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-DEF">
+                <v:ctr type="MODULE-DEF">
+                  <a:a name="ADMIN-DATA" type="ADMIN-DATA">
+                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                    <ad:ADMIN-DATA>
+                      <ad:DOC-REVISIONS>
+                        <ad:DOC-REVISION>
+                          <ad:REVISION-LABEL>4.3.1</ad:REVISION-LABEL>
+                          <ad:ISSUED-BY>AUTOSAR</ad:ISSUED-BY>
+                        </ad:DOC-REVISION>
+                      </ad:DOC-REVISIONS>
+                    </ad:ADMIN-DATA>
+                  </a:a>
+                  <a:a name="DESC" 
+                      value="EN: Configuration of Pwm (Pulse Width Modulation) module."/>
+                  <a:a name="LOWER-MULTIPLICITY" value="1"/>
+                  <a:a name="RELEASE" value="asc:4.3.1"/>
+                  <a:a name="UPPER-MULTIPLICITY" value="1"/>
+                  <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                  <a:a name="API-SERVICE-PREFIX" value="Cdd_Pwm"/>
+                  <v:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION">
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                        type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="LABEL" value="Config Variant"/>
+                    <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                    <a:da name="DEFAULT" value="VariantPreCompile"/>
+                    <a:da name="RANGE">
+                      <a:v>VariantPreCompile</a:v>
+                    </a:da>
+                  </v:var>
+                  <v:ctr name="CddPwmConfigSet" type="IDENTIFIABLE">
+                    <a:a name="DESC" 
+                        value="EN: This container contains the configuration parameters and sub containers of the AUTOSAR Pwm instance."/>
+                    <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                    <v:lst name="CddPwmHwUnitConfig" type="MAP">
+                      <a:da name="MIN" value="1"/>
+                      <a:da name="MAX" value="18"/>
+                      <v:ctr name="CddPwmHwUnitConfig" type="IDENTIFIABLE">
+                        <a:a name="DESC" 
+                            value="EN: Configuration of an individual PWM instance."/>
+                        <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                        <v:var name="CddPwmInstanceId" type="INTEGER">
+                          <a:a name="DESC" 
+                              value="EN: Pwm hardware instance."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="INVALID" type="Multi">
+                            <mt:range>
+                              <mt:tst expr="&lt;=node:fallback(&quot;->ecu:get('Cdd_Pwm_InstanceCount')&quot;,num:i(1))"/>
+                              <mt:tst expr="&gt;=1"/>
+                            </mt:range> 
+                            <mt:xpath expr="text:uniq(../.././/*[@name='CddPwmInstanceId'],node:value(.))" false="Pwm instance ID should be unique."/>
+                          </a:da>
+                          <a:da name="DEFAULT" value="1"/>
+                        </v:var>
+                        <v:var name="CddPwmOutputClass" type="ENUMERATION">
+                          <a:a name="DESC" value="EN: Class of PWM Channel."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="RANGE">
+                            <a:v>CDD_PWM_FIXED_PERIOD</a:v>
+                            <a:v>CDD_PWM_VARIABLE_PERIOD</a:v>
+                          </a:da>
+                          <a:da name="DEFAULT" value="CDD_PWM_VARIABLE_PERIOD"/>
+                        </v:var>
+                        <v:var name="CddPwmClockDivider" type="ENUMERATION">
+                          <a:a name="DESC"
+                              value="EN:Time base clock pre-scale value."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Pwm_ClockDivider')&quot;,'CDD_PWM_CLK_DIVIDER_1')"/> 
+                          <a:da name="DEFAULT" value="CDD_PWM_CLK_DIVIDER_1"/>
+                        </v:var>
+                        <v:var name="CddPwmHighSpeedClockDivider" type="ENUMERATION">
+                          <a:a name="DESC"
+                              value="EN:High speed clock divider for the PWM instance."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Pwm_HighSpeedClockDivider')&quot;,'CDD_PWM_HSCLK_DIVIDER_1')"/> 
+                          <a:da name="DEFAULT" value="CDD_PWM_HSCLK_DIVIDER_1"/>
+                        </v:var>
+                        <v:ref name="CddPwmMcuClockReferencePoint" type="REFERENCE">
+                          <a:a name="DESC" 
+                              value="EN: This parameter contains reference to the McuClockReferencePoint"/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="ECU"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="REF" 
+                                value="ASPathDataOfSchema:/TI_F29H85x/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
+                        </v:ref>
+                        <v:var name="CddPwmFrequency" type="FLOAT">
+                          <a:a name="DESC"
+                              value="EN:This parameter defines the frequency of the PWM instance."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:f(node:value(concat(node:path(node:ref(../CddPwmMcuClockReferencePoint)),'/McuClockReferencePointFrequency')))div(num:i(substring-after(node:value(../CddPwmClockDivider),'CDD_PWM_CLK_DIVIDER_'))*num:i(substring-after(node:value(../CddPwmHighSpeedClockDivider),'CDD_PWM_HSCLK_DIVIDER_')))&quot;,num:f('1.0E8'))"/>
+                          <a:da name="EDITABLE" value="false"/>
+                        </v:var>
+                        <v:var name="CddPwmPeriod" type="INTEGER">
+                          <a:a name="DESC" 
+                              value="EN: Value of period used for Initialization. This value will be written into the TBPRD register"/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="INVALID" type="Range">
+                            <a:tst expr="&lt;=65535"/>
+                            <a:tst expr="&gt;=0"/>
+                          </a:da>
+                          <a:da name="DEFAULT" value="0"/>
+                        </v:var>
+                        <v:var name="CddPwmInterruptEnable" type="BOOLEAN">
+                          <a:a name="DESC" 
+                              value="EN: Enables/disables the interrupt for the PWM instance."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="CddPwmInterruptCategory" type="ENUMERATION">
+                          <a:a name="DESC" value="EN: This parameters defines the category of the interrupt."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="EDITABLE" type="XPath" expr="(../CddPwmInterruptEnable = 'true')"/>
+                          <a:da name="DEFAULT" value="ISR_CAT1_RTINT"/>
+                          <a:da name="RANGE">
+                            <a:v>ISR_CAT1_INT</a:v>
+                            <a:v>ISR_CAT1_RTINT</a:v>
+                            <a:v>ISR_CAT2_INT</a:v>
+                          </a:da>
+                        </v:var>
+                        <v:var name="CddPwmSymmetry" type="ENUMERATION">
+                          <a:a name="DESC"
+                              value="EN:This parameter defines the symmetry of the generated waveform."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="RANGE">
+                            <a:v>CDD_PWM_ASYMMETRIC_WAVEFORM</a:v>
+                            <a:v>CDD_PWM_SYMMETRIC_WAVEFORM</a:v>
+                          </a:da>
+                          <a:da name="DEFAULT" value="CDD_PWM_ASYMMETRIC_WAVEFORM"/>
+                        </v:var>
+                        <v:var name="CddPwmNotification" type="FUNCTION-NAME">
+                          <a:a name="DESC" 
+                              value="EN: Definition of the Callback function."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="OPTIONAL" value="true"/>
+                          <a:da name="DEFAULT" value="NULL_PTR"/>
+                          <a:da name="INVALID" type="XPath">
+                            <a:tst expr="(as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmNotificationSupported)" 
+                              false="CddPwmNotificationSupported should be enabled to provide the function name"/>
+                            <a:tst expr="not(. = 'NULL_PTR')" false="Notification should not be NULL_PTR"/>
+                          </a:da>
+                        </v:var>
+                        <v:lst name="CddPwmOutputChannel" type="MAP">
+                          <a:da name="MIN" value="1"/>
+                          <a:da name="MAX" value="2"/>
+                          <v:ctr name="CddPwmOutputChannel" type="IDENTIFIABLE">
+                            <a:a name="DESC" 
+                                value="EN: Configuration of output channel A."/>
+                            <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                            <v:var name="CddPwmChannel" type="ENUMERATION">
+                              <a:a name="DESC" 
+                                  value="EN: Defines the output channel for the PWM instance."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="RANGE">
+                                <a:v>CDD_PWM_OUTPUT_A</a:v>
+                                <a:v>CDD_PWM_OUTPUT_B</a:v>
+                              </a:da>
+                              <a:da name="DEFAULT" value="CDD_PWM_OUTPUT_A"/>
+                              <a:da name="INVALID" type="XPath" expr="text:uniq(../.././/*[@name='CddPwmChannel'],node:value(.))" false="PWM output channel should be unique."/>
+                            </v:var>
+                            <v:var name="CddPwmPolarity" type="ENUMERATION">
+                              <a:a name="DESC" 
+                                  value="EN: Defines the starting polarity of the PWM channel."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="RANGE">
+                                <a:v>CDD_PWM_HIGH</a:v>
+                                <a:v>CDD_PWM_LOW</a:v>
+                              </a:da>
+                              <a:da name="DEFAULT" value="CDD_PWM_LOW"/>
+                            </v:var>
+                            <v:var name="CddPwmIdleState" type="ENUMERATION">
+                              <a:a name="DESC" 
+                                  value="EN: The parameter PWM_IDLE_STATE represents the output state of the channel after the signal is stopped (e.g.call of Pwm_SetOutputToIdle)."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="RANGE">
+                                <a:v>CDD_PWM_HIGH</a:v>
+                                <a:v>CDD_PWM_LOW</a:v>
+                              </a:da>
+                              <a:da name="DEFAULT" value="CDD_PWM_LOW"/>
+                            </v:var>
+                            <v:var name="CddPwmDutyCycle" type="INTEGER">
+                              <a:a name="DESC" 
+                                  value="EN: Value of duty cycle used for Initialization"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=32768"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                              <a:a name="DEFAULT_RADIX" value="HEX"/>
+                              <a:da name="DEFAULT" value="16384"/>
+                            </v:var>
+                            <v:var name="CddPwmDutyCycleInPercentage" type="FLOAT">
+                              <a:a name="DESC" 
+                                  value="EN: This parameter defines the configured duty cycle in percentage."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="EDITABLE" value="false"/>
+                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:f((num:f(node:value(../CddPwmDutyCycle)) * num:f('100')) div (num:f('32768')))&quot;,num:f('50'))"/>
+                            </v:var>
+                          </v:ctr>
+                        </v:lst>
+                      </v:ctr>
+                    </v:lst>
+                  </v:ctr>
+                  <v:ctr name="CddPwmGeneral" type="IDENTIFIABLE">
+                    <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                    <a:a name="DESC" 
+                        value="EN: General configuration (parameters) of the PWM Driver software module."/>
+                    <v:var name="CddPwmDevErrorDetect" type="BOOLEAN">
+                      <a:a name="DESC" 
+                          value="EN: Switches the development error detection on or off."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                          type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="DEFAULT" value="false"/>
+                    </v:var>
+                    <v:var name="CddPwmDeInitApi" type="BOOLEAN">
+                      <a:a name="DESC" 
+                          value="EN: Adds / removes the service Cdd_Pwm_DeInit() from the code."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                          type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="DEFAULT" value="true"/>
+                    </v:var>
+                    <v:var name="CddPwmSetDutyCycle" type="BOOLEAN">
+                      <a:a name="DESC" 
+                          value="EN: Adds / removes the service Cdd_Pwm_SetDutyCycle() from the code."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                          type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="DEFAULT" value="true"/>
+                    </v:var>
+                    <v:var name="CddPwmSetOutputToIdle" type="BOOLEAN">
+                      <a:a name="DESC" 
+                          value="EN: Adds / removes the service Cdd_Pwm_SetOutputToIdle() from the code."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                          type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="DEFAULT" value="true"/>
+                    </v:var>
+                    <v:var name="CddPwmSetPeriod" type="BOOLEAN">
+                      <a:a name="DESC" 
+                          value="EN: Adds / removes the service Cdd_Pwm_SetPeriod() from the code."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                          type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="DEFAULT" value="true"/>
+                    </v:var>
+                    <v:var name="CddPwmVersionInfoApi" type="BOOLEAN">
+                      <a:a name="DESC" 
+                          value="EN: Switch to indicate that the Pwm_ GetVersionInfo is supported"/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                          type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="DEFAULT" value="false"/>
+                    </v:var>
+                    <v:var name="CddPwmNotificationSupported" type="BOOLEAN">
+                      <a:a name="DESC" 
+                          value="EN: Switch to indicate that the notifications are supported"/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                          type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:da name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="DEFAULT" value="true"/>
+                    </v:var>
+                  </v:ctr>
+                  <d:ref type="REFINED_MODULE_DEF" 
+                        value="ASPath:/AUTOSAR/EcucDefs/Cdd"/>
+                </v:ctr>
+              </d:chc>
+              <d:chc name="ecuParameterDefinition" type="AR-ELEMENT" 
+                    value="ECU_PARAMETER_DEFINITION">
+                <d:ctr type="AR-ELEMENT">
+                  <a:a name="DEF" value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
+                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                  <d:lst name="MODULE_REF">
+                    <d:ref type="MODULE_REF" value="ASPath:/TI_F29H85x/Cdd_Pwm/Cdd"/>
+                  </d:lst>
+                </d:ctr>
+              </d:chc>
+            </d:lst>
+          </d:ctr>
+        </d:lst>  
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

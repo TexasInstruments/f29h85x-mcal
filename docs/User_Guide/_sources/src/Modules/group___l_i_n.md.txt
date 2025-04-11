@@ -154,6 +154,7 @@ Enum of Lin Loopbackmode, Internal/External/Disabled Type selection.
 | Std_ReturnType | **[Lin_CheckWakeupInternal](../Modules/group___l_i_n.md#function-lin-checkwakeupinternal)**(uint8 Channel)| Lin_CheckWakeupInternal - This function checks if a wakeup has occurred on the addressed LIN channel.  |
 | Std_ReturnType | **[Lin_WakeupProcess](../Modules/group___l_i_n.md#function-lin-wakeupprocess)**(uint8 Channel)| Lin_WakeupProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.  |
 | Std_ReturnType | **[Lin_WakeupInternalProcess](../Modules/group___l_i_n.md#function-lin-wakeupinternalprocess)**(uint8 Channel)| Lin_WakeupInternalProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL without generating a wake up pulse.  |
+| Lin_StatusType | **[Lin_GetStatusInternalProcess](../Modules/group___l_i_n.md#function-lin-getstatusinternalprocess)**(uint8 Channel, uint8 ** Lin_SduPtr, const uint32 * lin_cnt_base_addr)| Lin_GetStatusInternalProcess - Gets the status of the LIN driver.  |
 | Lin_StatusType | **[Lin_GetStatusInternal](../Modules/group___l_i_n.md#function-lin-getstatusinternal)**(uint8 Channel, uint8 ** Lin_SduPtr, const uint32 * lin_cnt_base_addr)| Lin_GetStatusInternal - Gets the status of the LIN driver.  |
 | Std_ReturnType | **[Lin_HwUnitConfig](../Modules/group___l_i_n.md#function-lin-hwunitconfig)**(const [Lin_ChannelType](Classes/struct_lin___channel_type.md) * linChannel)| Lin_HwUnitConfig - This API will configure Lin IP instance.  |
 | Std_ReturnType | **[Lin_SendData](../Modules/group___l_i_n.md#function-lin-senddata)**(const [Lin_ChannelType](Classes/struct_lin___channel_type.md) * linChannel, [Lin_ChannelActivityStatusType](Modules/group___l_i_n.md#enum-lin-channelactivitystatustype) * linChannelActivityStatus, const Lin_PduType * pduInfoPtr)| Lin_SendData - This API will copy data into LIN_TDx registers and start transmission.  |
@@ -167,11 +168,6 @@ Enum of Lin Loopbackmode, Internal/External/Disabled Type selection.
 | void | **[Lin_AbortTransmission](../Modules/group___l_i_n.md#function-lin-aborttransmission)**(uint32 base)| Lin_AbortTransmission - This API will abort ongoing transmission.  |
 | void | **[Lin_EnableWakeupDetection](../Modules/group___l_i_n.md#function-lin-enablewakeupdetection)**(const [Lin_ChannelType](Classes/struct_lin___channel_type.md) * linChannel, boolean enable)| Lin_EnableWakeupDetection - This API will enable wakeup detection.  |
 | void | **[Lin_ProcessISR](../Modules/group___l_i_n.md#function-lin-processisr)**(uint32 channelID)| Lin_ProcessISR - This API will process ISR for given channel.  |
-| __inline void | **[Lin_RegWriteRaw32](../Modules/group___l_i_n.md#function-lin-regwriteraw32)**(uint32 addr, uint32 value)| This function writes a 32 bit register.  |
-| __inline void | **[Lin_RegWriteRaw8](../Modules/group___l_i_n.md#function-lin-regwriteraw8)**(uint32 addr, uint8 value)| This function writes a 8 bit register value.  |
-| __inline void | **[Lin_RegMFWriteRaw32](../Modules/group___l_i_n.md#function-lin-regmfwriteraw32)**(uint32 addr, uint32 mask, uint32 shift, uint32 value)| This function writes a 32 bit register masking specific set of bits and the left shifted value.  |
-| __inline uint32 | **[Lin_RegReadRaw32](../Modules/group___l_i_n.md#function-lin-regreadraw32)**(uint32 addr)| This function reads a 32 bit register.  |
-| __inline uint8 | **[Lin_RegReadRaw8](../Modules/group___l_i_n.md#function-lin-regreadraw8)**(uint32 addr)| This function reads a 8 bits of 32 bit register.  |
 
 
 
@@ -672,6 +668,83 @@ Lin_WakeupInternalProcess - Generates a wake up pulse and sets the channel state
 <br> 
   
 * **E_NOT_OK** Wake-up request has not been accepted, development or production error occurred. 
+<br> 
+
+
+**Return**: return_value 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Lin_GetStatusInternalProcess
+
+```
+Lin_StatusType Lin_GetStatusInternalProcess(
+    uint8 Channel,
+    uint8 ** Lin_SduPtr,
+    const uint32 * lin_cnt_base_addr
+)
+```
+
+
+**Brief**: 
+Lin_GetStatusInternalProcess - Gets the status of the LIN driver. 
+
+**Parameters**: 
+
+  
+* **Channel** LIN channel to be addressed. 
+  
+* **lin_cnt_base_addr** Base address of the lin 
+  
+* **Lin_SduPtr** Pointer to pointer to a shadow buffer or memory mapped LIN Hardware receive buffer where the current SDU is stored. 
+
+
+**Returns**: 
+
+  
+* **LIN_NOT_OK** Development or production error occurred 
+<br> 
+  
+* **LIN_TX_OK** Successful transmission 
+<br> 
+  
+* **LIN_TX_BUSY** Ongoing transmission (Header or Response) 
+<br> 
+  
+* **LIN_TX_HEADER_ERROR** Erroneous header transmission such as:
+
+* Mismatch between sent and read back data
+* Identifier parity error or Physical bus error 
+<br> 
+  
+* **LIN_TX_ERROR** Erroneous response transmission such as:
+
+* Mismatch between sent and read back data
+* Physical bus error 
+<br> 
+  
+* **LIN_RX_OK** Reception of correct response 
+<br> 
+  
+* **LIN_RX_BUSY** Ongoing reception: at least one response byte has been received, but the checksum byte has not been received 
+<br> 
+  
+* **LIN_RX_ERROR** Erroneous response reception such as:
+
+* Framing error
+* Overrun error
+* Checksum error or Short response 
+<br> 
+  
+* **LIN_RX_NO_RESPONSE** No response byte has been received so far 
+<br> 
+  
+* **LIN_OPERATIONAL** Normal operation; the related LIN channel is woken up from the LIN_CH_SLEEP and no data has been sent. 
+<br> 
+  
+* **LIN_CH_SLEEP** Sleep state operation; in this state wake-up detection from slave nodes is enabled. 
 <br> 
 
 
@@ -1185,186 +1258,6 @@ Lin_ProcessISR - This API will process ISR for given channel.
 
 
 **Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Lin_RegWriteRaw32
-
-```
-static __inline void Lin_RegWriteRaw32(
-    uint32 addr,
-    uint32 value
-)
-```
-
-
-**Brief**: 
-This function writes a 32 bit register. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **value** Value to write in the 32-bit register. 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Lin_RegWriteRaw8
-
-```
-static __inline void Lin_RegWriteRaw8(
-    uint32 addr,
-    uint8 value
-)
-```
-
-
-**Brief**: 
-This function writes a 8 bit register value. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **value** Value to write 8 bits to the 32-bit register. 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Lin_RegMFWriteRaw32
-
-```
-static __inline void Lin_RegMFWriteRaw32(
-    uint32 addr,
-    uint32 mask,
-    uint32 shift,
-    uint32 value
-)
-```
-
-
-**Brief**: 
-This function writes a 32 bit register masking specific set of bits and the left shifted value. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **mask** Mask for the bit field. 
-  
-* **shift** Bit field shift from LSB. 
-  
-* **value** Value to write in the memory mapped hardware register. 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Lin_RegReadRaw32
-
-```
-static __inline uint32 Lin_RegReadRaw32(
-    uint32 addr
-)
-```
-
-
-**Brief**: 
-This function reads a 32 bit register. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **Value** of the type uint32. 
-<br> 
-
-
-**Return**: Bit-field value (absolute value - shifted to LSB position). 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Lin_RegReadRaw8
-
-```
-static __inline uint8 Lin_RegReadRaw8(
-    uint32 addr
-)
-```
-
-
-**Brief**: 
-This function reads a 8 bits of 32 bit register. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **Value** of the type uint32. 
-<br> 
-
-
-**Return**: Bit-field value (absolute value - shifted to LSB position). 
 
 **Precondition**: None 
 

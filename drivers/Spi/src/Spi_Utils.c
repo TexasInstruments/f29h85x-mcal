@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -161,8 +161,9 @@ static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj  *llobj,
                                    const Spi_UtilsParams *params,
                                    uint8                  currSeqId)
 {
-    uint32         interruptible;
-    Spi_UtilsNode *curNode, *prevNode;
+    VAR(uint32, AUTOMATIC) interruptible;
+    P2VAR(Spi_UtilsNode, AUTOMATIC, SPI_CODE) curNode;
+    P2VAR(Spi_UtilsNode, AUTOMATIC, SPI_CODE) prevNode;
 
     prevNode                      = NULL_PTR;
     node->params.data             = params->data;
@@ -175,11 +176,11 @@ static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj  *llobj,
     while (NULL_PTR != curNode)
     {
         /* Check if we can insert the job after current job */
-        interruptible = (uint32) TRUE;
-        if ((((uint8) FALSE) == curNode->params.seqInterruptible) &&
-            (currSeqId == curNode->params.seqId))
+        if (currSeqId == curNode->params.seqId)
         {
-            interruptible = (uint32) FALSE;
+            interruptible = (uint32) TRUE;
+        }else{
+            interruptible = (uint32) curNode->params.seqInterruptible;
         }
 
         /* Nodes with the same priority are always added to the bottom

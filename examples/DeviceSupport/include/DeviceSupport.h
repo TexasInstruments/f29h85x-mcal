@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -34,6 +34,8 @@ extern "C" {
 #include "hw_fri.h"
 #include "hw_types.h"
 #include "hw_asysctl.h"
+#include "hw_ssu.h"
+#include "hw_sysctl.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -108,6 +110,7 @@ typedef enum {
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
+extern uint32 CPU3_RESET_VECTOR;
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes

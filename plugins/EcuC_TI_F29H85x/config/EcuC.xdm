@@ -1,0 +1,524 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
+        <d:lst type="ELEMENTS">
+          <d:chc name="EcuC" type="AR-ELEMENT" value="MODULE-DEF">
+            <v:ctr type="MODULE-DEF">
+              <a:a name="ADMIN-DATA" type="ADMIN-DATA">
+                <ad:ADMIN-DATA>
+                  <ad:DOC-REVISIONS>
+                    <ad:DOC-REVISION>
+                      <ad:REVISION-LABEL>4.3.1</ad:REVISION-LABEL>
+                      <ad:ISSUED-BY>AUTOSAR</ad:ISSUED-BY>
+                    </ad:DOC-REVISION>
+                  </ad:DOC-REVISIONS>
+                </ad:ADMIN-DATA>
+              </a:a>
+              <a:a name="DESC" 
+                   value="EN: Virtual module to collect ECU Configuration specific / global configuration information."/>
+              <a:a name="LOWER-MULTIPLICITY" value="1"/>
+              <a:a name="POSTBUILDVARIANTSUPPORT" value="true"/>
+              <a:a name="RELEASE" value="asc:4.3.1"/>
+              <a:a name="UPPER-MULTIPLICITY" value="1"/>
+              <a:a name="UUID" value="e04b8819-b5ea-45b3-9ac5-c3cca68e5ac6"/>
+              <v:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION">
+                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                     type="IMPLEMENTATIONCONFIGCLASS">
+                  <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                </a:a>
+                <a:a name="LABEL" value="Config Variant"/>
+                <a:a name="UUID" value="e246b135-0ad1-4147-ada9-09f790148c23"/>
+                <a:da name="DEFAULT" value="VariantPostBuild"/>
+                <a:da name="RANGE">
+                  <a:v>VariantPostBuild</a:v>
+                  <a:v>VariantPreCompile</a:v>
+                </a:da>
+              </v:var>
+              <v:ctr name="EcucConfigSet" type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: This container contains the configuration parameters and sub containers of the global PduCollection."/>
+                <a:a name="OPTIONAL" value="true"/>
+                <a:a name="UUID" value="b0bcc3d7-a8ca-4a06-91e4-05f8a7bd09f7"/>
+                <a:da name="ENABLE" value="false"/>
+                <v:ctr name="EcucPduCollection" type="IDENTIFIABLE">
+                  <a:a name="DESC" 
+                       value="EN: Collection of all Pdu objects flowing through the Com-Stack."/>
+                  <a:a name="OPTIONAL" value="true"/>
+                  <a:a name="UUID" value="acc5ed15-f96f-4414-b252-fb8abe91ea2f"/>
+                  <a:da name="ENABLE" value="false"/>
+                  <v:var name="PduIdTypeEnum" type="ENUMERATION">
+                    <a:a name="DESC" 
+                         value="EN: The PduIdType is used within the entire AUTOSAR Com Stack except for bus drivers. The size of this global type depends on the maximum number of PDUs used within one software module. If no software module deals with more PDUs that 256, this type can be set to uint8. If at least one software module handles more than 256 PDUs, this type must be set to uint16. See AUTOSAR_SWS_CommunicationStackTypes for more details."/>
+                    <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                    <a:a name="UUID" 
+                         value="41c4a183-3aba-4999-b131-cd8a0ea0f0c0"/>
+                    <a:da name="RANGE">
+                      <a:v>UINT16</a:v>
+                      <a:v>UINT8</a:v>
+                    </a:da>
+                  </v:var>
+                  <v:var name="PduLengthTypeEnum" type="ENUMERATION">
+                    <a:a name="DESC" 
+                         value="EN: The PduLengthType is used within the entire AUTOSAR Com Stack except for bus drivers. The size of this global type depends on the maximum length of PDUs to be sent by an ECU. If no segmentation is used the length depends on the maximum payload size of a frame of the underlying communication system (for FlexRay maximum size is 255 bytes, therefore uint8). If segmentation is used it depends on the maximum length of a  segmented N-SDU (in general uint16 is used). See AUTOSAR_SWS_CommunicationStackTypes for more details."/>
+                    <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                    <a:a name="UUID" 
+                         value="132e3c17-3ed0-435e-b376-39ce857c1632"/>
+                    <a:da name="RANGE">
+                      <a:v>UINT16</a:v>
+                      <a:v>UINT32</a:v>
+                      <a:v>UINT8</a:v>
+                    </a:da>
+                  </v:var>
+                  <v:lst name="MetaDataType" type="MAP">
+                    <v:ctr name="MetaDataType" type="IDENTIFIABLE">
+                      <a:a name="DESC" 
+                           value="EN: Meta data serves to transport information through the AUTOSAR layers. It is transported by the PduInfoType structure via a separate pointer to a byte array alongside the length of and a pointer to the payload of the PDU. This container defines the content of the meta data."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="UUID" 
+                           value="3227aeb8-90cb-4298-a0f4-6168971254d3"/>
+                      <v:lst name="MetaDataItem" type="MAP">
+                        <a:da name="MIN" value="1"/>
+                        <v:ctr name="MetaDataItem" type="IDENTIFIABLE">
+                          <a:a name="DESC" 
+                               value="EN: The content of meta data in a Pdu consists of an ordered list of meta data items."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                               type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="REQUIRES-INDEX" value="true"/>
+                          <a:a name="UUID" 
+                               value="1184233d-eb1a-4cea-b62e-19c978c149d6"/>
+                          <v:var name="MetaDataItemLength" type="INTEGER">
+                            <a:a name="DESC" 
+                                 value="EN: This parameter defines the length of a meta data item in bytes."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                 type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" 
+                                 value="857a95f6-8a9c-475e-b8ec-f274f1cc3b3d"/>
+                            <a:da name="INVALID" type="Range">
+                              <a:tst expr="&lt;=64"/>
+                              <a:tst expr="&gt;=1"/>
+                            </a:da>
+                          </v:var>
+                          <v:var name="MetaDataItemType" type="ENUMERATION">
+                            <a:a name="DESC" 
+                                 value="EN: This parameter defines the type of a meta data item."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                 type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" 
+                                 value="da1b9877-5deb-4ed3-b4bb-910c1566b365"/>
+                            <a:da name="RANGE">
+                              <a:v>ADDRESS_EXTENSION_8</a:v>
+                              <a:v>CAN_ID_32</a:v>
+                              <a:v>ETHERNET_MAC_64</a:v>
+                              <a:v>LIN_NAD_8</a:v>
+                              <a:v>PRIORITY_8</a:v>
+                              <a:v>SOCKET_CONNECTION_ID_16</a:v>
+                              <a:v>SOURCE_ADDRESS_16</a:v>
+                              <a:v>TARGET_ADDRESS_16</a:v>
+                            </a:da>
+                          </v:var>
+                        </v:ctr>
+                      </v:lst>
+                    </v:ctr>
+                  </v:lst>
+                  <v:lst name="Pdu" type="MAP">
+                    <v:ctr name="Pdu" type="IDENTIFIABLE">
+                      <a:a name="DESC" 
+                           value="EN: One Pdu flowing through the COM-Stack."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="POSTBUILDVARIANTMULTIPLICITY" value="true"/>
+                      <a:a name="UUID" 
+                           value="71955abf-b5e5-46f9-8818-d83a684a8501"/>
+                      <v:var name="J1939Requestable" type="BOOLEAN">
+                        <a:a name="DESC" 
+                             value="EN: Pdu can be triggered by the J1939 request message."/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                             type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
+                          <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="OPTIONAL" value="true"/>
+                        <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                        <a:a name="POSTBUILDVARIANTMULTIPLICITY" value="true"/>
+                        <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                        <a:a name="UUID" 
+                             value="757191bc-2a02-4e83-8754-c4def25e6b31"/>
+                        <a:da name="ENABLE" value="false"/>
+                      </v:var>
+                      <v:var name="PduLength" type="INTEGER">
+                        <a:a name="DESC" 
+                             value="EN: Length of the Pdu in bytes.  It should be noted that in former AUTOSAR releases (Rel 2.1, Rel 3.0, Rel 3.1, Rel 4.0 Rev. 1) this parameter was defined in bits."/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                             type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                        <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                        <a:a name="UUID" 
+                             value="a8221332-d452-42a5-83ff-a909a95542af"/>
+                        <a:da name="INVALID" type="Range">
+                          <a:tst expr="&lt;=4294967295"/>
+                          <a:tst expr="&gt;=0"/>
+                        </a:da>
+                      </v:var>
+                      <v:ref name="MetaDataTypeRef" type="REFERENCE">
+                        <a:a name="DESC" 
+                             value="EN: Reference to meta data that is transported in the Pdu through the AUTOSAR layers."/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                             type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="OPTIONAL" value="true"/>
+                        <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                        <a:a name="UUID" 
+                             value="a7d71f26-418d-498d-8a0a-25dc0d6194c8"/>
+                        <a:da name="ENABLE" value="false"/>
+                        <a:da name="REF" 
+                              value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/EcuC/EcucConfigSet/EcucPduCollection/MetaDataType"/>
+                      </v:ref>
+                      <v:ref name="SysTPduToFrameTriggeringRef" 
+                             type="FOREIGN-REFERENCE">
+                        <a:a name="DESC" 
+                             value="EN: Reference to the FrameTriggering from the SystemTemplate which this Pdu belongs to."/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                             type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
+                          <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="OPTIONAL" value="true"/>
+                        <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                        <a:a name="POSTBUILDVARIANTMULTIPLICITY" value="true"/>
+                        <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                        <a:a name="UUID" 
+                             value="8c48758b-b4f6-4a6b-856c-4959e2e67977"/>
+                        <a:da name="ENABLE" value="false"/>
+                        <a:da name="REF" value="ASTyped:FrameTriggering"/>
+                      </v:ref>
+                      <v:ref name="SysTPduToPduTriggeringRef" 
+                             type="FOREIGN-REFERENCE">
+                        <a:a name="DESC" 
+                             value="EN: Reference to the PduTriggering from the SystemTemplate which this Pdu represents."/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                             type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
+                          <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="OPTIONAL" value="true"/>
+                        <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                        <a:a name="POSTBUILDVARIANTMULTIPLICITY" value="true"/>
+                        <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                        <a:a name="UUID" 
+                             value="e3e3751d-9a55-4429-9fc5-0d1c0ec5a4ea"/>
+                        <a:da name="ENABLE" value="false"/>
+                        <a:da name="REF" value="ASTyped:PduTriggering"/>
+                      </v:ref>
+                    </v:ctr>
+                  </v:lst>
+                </v:ctr>
+              </v:ctr>
+              <v:ctr name="EcucHardware" type="IDENTIFIABLE">
+                <a:a name="DESC" value="EN: Hardware definition of this Ecu."/>
+                <a:a name="OPTIONAL" value="true"/>
+                <a:a name="UUID" value="437d2edb-c727-4286-ab88-955de5c2c9e6"/>
+                <a:da name="ENABLE" value="false"/>
+                <v:lst name="EcucCoreDefinition" type="MAP">
+                  <v:ctr name="EcucCoreDefinition" type="IDENTIFIABLE">
+                    <a:a name="DESC" 
+                         value="EN: Definition of one Core on this Ecu."/>
+                    <a:a name="UUID" 
+                         value="fd139bf5-be78-40ae-8d46-504f4440b54e"/>
+                    <v:var name="EcucCoreId" type="INTEGER">
+                      <a:a name="DESC" value="EN: ID of the core."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="f16d5409-cad0-45a9-a3af-b3e07ab99c26"/>
+                      <a:da name="INVALID" type="Range">
+                        <a:tst expr="&lt;=65535"/>
+                        <a:tst expr="&gt;=0"/>
+                      </a:da>
+                    </v:var>
+                    <v:ref name="EcucCoreHwRef" type="FOREIGN-REFERENCE">
+                      <a:a name="DESC" 
+                           value="EN: Optional reference to the HwElement of HwCategory ProcessingUnit that represents this Core in the ECU Resource Template."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="OPTIONAL" value="true"/>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="UUID" 
+                           value="83e8c50f-cd59-41a9-a494-6532c3ed657d"/>
+                      <a:da name="ENABLE" value="false"/>
+                      <a:da name="REF" value="ASTyped:HW-ELEMENT"/>
+                    </v:ref>
+                  </v:ctr>
+                </v:lst>
+              </v:ctr>
+              <v:ctr name="EcucPartitionCollection" type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: Collection of Partitions defined for this ECU."/>
+                <a:a name="OPTIONAL" value="true"/>
+                <a:a name="UUID" value="b9ca0097-1148-43f0-9971-dfc2389a0244"/>
+                <a:da name="ENABLE" value="false"/>
+                <v:lst name="EcucPartition" type="MAP">
+                  <v:ctr name="EcucPartition" type="IDENTIFIABLE">
+                    <a:a name="DESC" 
+                         value="EN: Definition of one Partition on this ECU."/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                         type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                      <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="UUID" 
+                         value="4131eb73-279e-48f5-b4ae-9707437d933a"/>
+                    <v:var name="EcucPartitionBswModuleExecution" 
+                           type="BOOLEAN">
+                      <a:a name="DESC" 
+                           value="EN: Denotes that this partition will execute BSW Modules. BSW Modules can only be executed in such partitions."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="41a4eaac-2e2f-4db0-afc0-d123011f1270"/>
+                    </v:var>
+                    <v:var name="EcucPartitionQmBswModuleExecution" 
+                           type="BOOLEAN">
+                      <a:a name="DESC" 
+                           value="EN: Denotes that this partition will execute QM BSW."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="SCOPE" value="ECU"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="e7dfa3ab-c9d2-4a04-9375-d854ef6d922a"/>
+                      <a:da name="DEFAULT" value="true"/>
+                    </v:var>
+                    <v:var name="PartitionCanBeRestarted" type="BOOLEAN">
+                      <a:a name="DESC" 
+                           value="EN: Specifies the requirement whether the Partition can be restarted. If set to true all software executing in this partition shall be capable of handling a restart."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="5208f5f5-23b5-4660-ace8-fac377cc3967"/>
+                    </v:var>
+                    <v:lst name="EcucPartitionBswModuleDistinguishedPartition">
+                      <v:ref 
+                             name="EcucPartitionBswModuleDistinguishedPartition" 
+                             type="FOREIGN-REFERENCE">
+                        <a:a name="DESC" 
+                             value="EN: This maps the abstract partition of the Bsw Module to a concrete Partition existing in the ECU."/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                             type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                          <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                        <a:a name="UUID" 
+                             value="a5c80bf5-7913-478b-9f36-339a796e3eb5"/>
+                        <a:da name="REF" 
+                              value="ASTyped:BswDistinguishedPartition"/>
+                      </v:ref>
+                    </v:lst>
+                    <v:lst name="EcucPartitionSoftwareComponentInstanceRef" 
+                           type="MAP">
+                      <v:ctr name="EcucPartitionSoftwareComponentInstanceRef" 
+                             type="INSTANCE">
+                        <a:a name="DESC" 
+                             value="EN: References the SW Component instances from the Ecu Extract that shall be executed in this partition."/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                             type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                          <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                        <a:a name="UUID" 
+                             value="3e1a6172-fbd4-45a0-b382-3ff8126599fe"/>
+                        <v:ref name="TARGET" type="REFERENCE">
+                          <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                          <a:a name="UUID" 
+                               value="d00e4b0f-90ba-459d-91cb-ceff3da519e2"/>
+                          <a:da name="REF" value="ASTyped:SwComponentPrototype"/>
+                        </v:ref>
+                        <v:lst name="CONTEXT">
+                          <v:ref name="CONTEXT" type="REFERENCE">
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="UUID" 
+                                 value="e7b24c28-b0ee-4437-8d71-152b3d153c21"/>
+                            <a:da name="RANGE" type="IRefCtxt" 
+                                  expr="ROOT-SW-COMPOSITION-PROTOTYPE"/>
+                          </v:ref>
+                        </v:lst>
+                      </v:ctr>
+                    </v:lst>
+                  </v:ctr>
+                </v:lst>
+              </v:ctr>
+              <v:ctr name="EcucPostBuildVariants" type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: Collection of toplevel PostBuildSelectable variants. The PredefinedVariants linked inside this container will determine how many PostBuildSelectableVariants exist. If this container exist the name pattern for initialization of BSW modules will be &lt;Mip&gt;_Config_&lt;PredefinedVariant.shortName&gt;. If this container does not exist the name pattern for initialization of BSW modlues will be &lt;Mip&gt;_Config."/>
+                <a:a name="OPTIONAL" value="true"/>
+                <a:a name="UUID" value="be6052de-b673-41c8-a8b5-88246d31386a"/>
+                <a:da name="ENABLE" value="false"/>
+                <v:lst name="EcucPostBuildVariantRef">
+                  <a:da name="MIN" value="1"/>
+                  <v:ref name="EcucPostBuildVariantRef" 
+                         type="FOREIGN-REFERENCE">
+                    <a:a name="DESC" 
+                         value="EN: Reference to a PredefinedVariant that defines one toplevel postBuild configuration set (covering all post-build capable BSW modules). PredefinedVariants that are referenced here shall contain only PostBuildVariantCriterionValueSets."/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                         type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                      <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                    <a:a name="UUID" 
+                         value="e0c0fb19-6457-4cd8-8649-58714e381004"/>
+                    <a:da name="REF" value="ASTyped:PredefinedVariant"/>
+                  </v:ref>
+                </v:lst>
+              </v:ctr>
+              <v:ctr name="EcucUnitGroupAssignment" type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: Collection of UnitGroup references to support the generation of ASAM MCD file."/>
+                <a:a name="OPTIONAL" value="true"/>
+                <a:a name="UUID" value="4b8fe287-68a0-4fb2-9cd7-4dff23fc52b1"/>
+                <a:da name="ENABLE" value="false"/>
+                <v:lst name="EcucUnitGroupRef">
+                  <a:da name="MIN" value="1"/>
+                  <v:ref name="EcucUnitGroupRef" type="FOREIGN-REFERENCE">
+                    <a:a name="DESC" 
+                         value="EN: Optional reference to the UnitGroup to support the generation of ASAM MCD file. These UnitGroups are selecting a set of  units for a specific country."/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                         type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                      <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                    <a:a name="UUID" 
+                         value="25798db9-211e-45fb-9526-9846bba14ee9"/>
+                    <a:da name="REF" value="ASTyped:UnitGroup"/>
+                  </v:ref>
+                </v:lst>
+              </v:ctr>
+              <v:ctr name="EcucVariationResolver" type="IDENTIFIABLE">
+                <a:a name="DESC" 
+                     value="EN: Collection of PredefinedVariant elements containing definition of values for SwSystemconst which shall be applied when resolving the variability during ECU Configuration."/>
+                <a:a name="OPTIONAL" value="true"/>
+                <a:a name="UUID" value="0b8245ca-8b33-46ea-9534-f51e70d954b3"/>
+                <a:da name="ENABLE" value="false"/>
+                <v:lst name="PredefinedVariantRef">
+                  <a:da name="MIN" value="1"/>
+                  <v:ref name="PredefinedVariantRef" type="FOREIGN-REFERENCE">
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                         type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                      <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                    <a:a name="UUID" 
+                         value="1acea7c4-fd79-4c36-9edc-59596d0a5621"/>
+                    <a:da name="REF" value="ASTyped:PredefinedVariant"/>
+                  </v:ref>
+                </v:lst>
+              </v:ctr>
+              <d:ref type="REFINED_MODULE_DEF" 
+                     value="ASPath:/AUTOSAR/EcucDefs/EcuC"/>
+            </v:ctr>
+          </d:chc>
+          <d:chc name="myEcuParameterDefinition" type="AR-ELEMENT" 
+                 value="ECU_PARAMETER_DEFINITION">
+            <d:ctr type="AR-ELEMENT">
+              <a:a name="DEF" 
+                   value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
+              <d:lst name="MODULE_REF">
+                <d:ref type="MODULE_REF" value="ASPath:/TI_F29H85x/EcuC"/>
+              </d:lst>
+            </d:ctr>
+          </d:chc>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>
