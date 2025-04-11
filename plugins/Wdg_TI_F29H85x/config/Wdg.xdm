@@ -159,7 +159,7 @@
                 </v:var>
                 <v:var name="WdgInitialTimeout" type="FLOAT">
                   <a:a name="DESC" 
-                       value="EN: The initial timeout (sec) for the trigger condition to be initialized during Init function. It shall be not larger than WdgMaxTimeout."/>
+                       value="EN: This is read only parameter just to display the initial timeout value based on the default mode. The initial timeout (sec) for the trigger condition to be initialized during Init function. It shall be not larger than WdgMaxTimeout. (click on auto calculate before generating)"/>
                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                        type="IMPLEMENTATIONCONFIGCLASS">
                     <icc:v vclass="PreCompile">VariantLinkTime</icc:v>
@@ -169,16 +169,17 @@
                   <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                   <a:a name="SCOPE" value="LOCAL"/>
                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:da name="EDITABLE" value="false"/>
                   <a:a name="UUID" value="d5518c81-303f-4309-9d12-2c3ea45508f7"/>
-                  <a:da name="DEFAULT" value="0.0"/>
+                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> (node:when((node:value(../../WdgSettingsConfig/WdgDefaultMode) !='WDGIF_OFF_MODE'), node:when((node:value(../../WdgSettingsConfig/WdgDefaultMode) ='WDGIF_SLOW_MODE'), (node:value(../../WdgSettingsConfig/WdgSettingsSlow/WdgTimeout) div (255)) div 1000, (node:value(../../WdgSettingsConfig/WdgSettingsFast/WdgTimeout) div (255)) div 1000), '0.0'))&quot;,'0.1')"/>
                   <a:da name="INVALID" type="Range">
-                    <a:tst expr="&lt;=6.684"/>
+                    <a:tst expr="&lt;=node:fallback(&quot;-> (node:when((node:value(../../WdgSettingsConfig/WdgDefaultMode) !='WDGIF_OFF_MODE'), node:when((node:value(../../WdgSettingsConfig/WdgDefaultMode) ='WDGIF_SLOW_MODE'), node:value(../../WdgSettingsConfig/WdgSettingsSlow/WdgTimeout) div 1000, node:value(../../WdgSettingsConfig/WdgSettingsFast/WdgTimeout) div 1000), '0.0'))&quot;,'0.1')"/>
                     <a:tst expr="&gt;=0.0"/>
                   </a:da>
                 </v:var>
                 <v:var name="WdgMaxTimeout" type="FLOAT">
                   <a:a name="DESC" 
-                       value="EN: The maximum timeout (sec) to which the watchdog trigger condition can be initialized."/>
+                       value="EN: This is read only parameter just to display the maximum timeout value based on the default mode. The maximum timeout (sec) to which the watchdog trigger condition can be initialized.Set the fast/slow mode timeout settings. (click on auto calculate before generating)"/>
                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                        type="IMPLEMENTATIONCONFIGCLASS">
                     <icc:v vclass="PreCompile">VariantLinkTime</icc:v>
@@ -188,10 +189,11 @@
                   <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                   <a:a name="SCOPE" value="LOCAL"/>
                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:da name="EDITABLE" value="false"/>
                   <a:a name="UUID" value="b4b1233a-8b7c-4dd7-86e6-4676f5a64661"/>
-                  <a:da name="DEFAULT" value="6.684"/>
+                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> (node:when((node:value(../../WdgSettingsConfig/WdgDefaultMode) !='WDGIF_OFF_MODE'), node:when((node:value(../../WdgSettingsConfig/WdgDefaultMode) ='WDGIF_SLOW_MODE'), node:value(../../WdgSettingsConfig/WdgSettingsSlow/WdgTimeout) div 1000, node:value(../../WdgSettingsConfig/WdgSettingsFast/WdgTimeout) div 1000), '0.0'))&quot;,'6.6')"/>
                   <a:da name="INVALID" type="Range">
-                    <a:tst expr="&lt;=6.684"/>
+                    <a:tst expr="&lt;=node:fallback(&quot;-> (node:when((node:value(../../WdgSettingsConfig/WdgDefaultMode) !='WDGIF_OFF_MODE'), node:when((node:value(../../WdgSettingsConfig/WdgDefaultMode) ='WDGIF_SLOW_MODE'), node:value(../../WdgSettingsConfig/WdgSettingsSlow/WdgTimeout) div 1000, node:value(../../WdgSettingsConfig/WdgSettingsFast/WdgTimeout) div 1000), '0.0'))&quot;,'6.6')"/>
                     <a:tst expr="&gt;=0.0"/>
                   </a:da>
                 </v:var>

@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ extern "C" {
  *********************************************************************************************************************/
 /* Defines for CDD_ADC Driver version used for compatibility checks.*/
 /** \brief Driver Implementation Major Version */
-#define CDD_ADC_SW_MAJOR_VERSION     (1U)
+#define CDD_ADC_SW_MAJOR_VERSION     (2U)
 /** \brief Driver Implementation Minor Version */
 #define CDD_ADC_SW_MINOR_VERSION     (0U)
 /** \brief Driver Implementation Patch Version */
@@ -956,7 +956,7 @@ FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_SetResolution(VAR(Cdd_Adc_HwUnitInstan
  * \retval sint16 - Value after the result is converted to Celsius
  *
  *********************************************************************************************************************/
-FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitType,AUTOMATIC) HwUnit,\
+FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType,AUTOMATIC) HwUnit,\
         VAR(Cdd_Adc_ValueGroupType,AUTOMATIC) TempResult);
 
 /** \brief service to convert the ADC conversion value to Kelvin.
@@ -971,7 +971,7 @@ FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitType,AUTOMAT
  * \retval sint16 - Value after the result is converted to Kelvin
  *
  *********************************************************************************************************************/
-FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitType,AUTOMATIC) HwUnit,\
+FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType,AUTOMATIC) HwUnit,\
         VAR(Cdd_Adc_ValueGroupType,AUTOMATIC) TempResult);
 #endif
 

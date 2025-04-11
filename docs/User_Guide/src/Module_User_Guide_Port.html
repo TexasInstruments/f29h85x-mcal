@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.4. PORT Module &mdash; Documentation for F29H85x</title>
+  <title>4.7. PORT Module &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.5. CAN Module" href="Module_User_Guide_Can.html" />
-    <link rel="prev" title="4.3. GPT Module" href="Module_User_Guide_Gpt.html" /> 
+    <link rel="next" title="4.8. SPI Module" href="Module_User_Guide_Spi.html" />
+    <link rel="prev" title="4.6. MCU Module" href="Module_User_Guide_Mcu.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.01.00
+                01.02.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -63,62 +63,68 @@
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.1. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.1. CAN Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.2. DIO Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.3. GPT Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. PORT Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.4.1. Acronyms and Definitions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">4.4.2. Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.4.3. Functional Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.4.4. Hardware Features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.4.4.1. Hardware Features supported</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.4.4.2. Not supported Features</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.4.4.3. Non compliance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Fls.html">4.3. FLS Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.4. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.5. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.6. MCU Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.7. PORT Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.7.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.7.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.7.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.7.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.7.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.7.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.7.4.3. Non compliance</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#source-files">4.4.5. Source files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.4.6. Module requirements</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.4.6.1. Memory Mapping</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.4.6.2. Scheduling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.4.6.3. Error handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.4.6.4. Error codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.7.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.7.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.7.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.7.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.7.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.7.6.4. Error codes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.4.7. Used resources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.4.7.1. Interrupt Handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.4.7.2. Instance support</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.4.7.3. Hardware-Software Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safety-mechanism">4.7.7. Safety Mechanism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.7.8. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.7.8.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.7.8.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.7.8.3. Hardware-Software Mapping</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.4.8. Integration description</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.4.8.1. Dependent modules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.4.8.2. Multi-core and Resource allocator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.7.9. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.7.9.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.7.9.2. Multi-core and Resource allocator</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">4.4.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#portgeneral">4.4.9.1. PortGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#port-container">4.4.9.2. Port Container</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#portpin">4.4.9.3. PortPin</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-port-module">4.4.9.4. Steps To Configure Port Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.7.10. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-precautions">4.7.10.1. Configuration Precautions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#portconfigset">4.7.10.2. PortConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#portgeneral">4.7.10.3. PortGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-port-module">4.7.10.4. Steps To Configure Port Module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">4.4.10. Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#overview">4.4.10.1. Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-example">4.4.10.2. Setup required to run example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-run-examples">4.4.10.3. How to run examples</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sample-log">4.4.10.4. Sample Log</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.4.10.5. File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.7.11. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">4.7.11.1. Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-example">4.7.11.2. Setup required to run example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-run-examples">4.7.11.3. How to run examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample-log">4.7.11.4. Sample Log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.7.11.5. File Structure</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.5. CAN Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.6. WDG Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.7. LIN Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.8. SPI Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.9. CDD ADC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.10. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.11. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.9. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.10. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.11. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.12. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.13. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -140,7 +146,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
-      <li><span class="section-number">4.4. </span>PORT Module</li>
+      <li><span class="section-number">4.7. </span>PORT Module</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -150,9 +156,9 @@
            <div itemprop="articleBody">
              
   <section id="port-module">
-<h1><span class="section-number">4.4. </span>PORT Module<a class="headerlink" href="#port-module" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.7. </span>PORT Module<a class="headerlink" href="#port-module" title="Link to this heading"></a></h1>
 <section id="acronyms-and-definitions">
-<h2><span class="section-number">4.4.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
@@ -194,13 +200,13 @@
 </table>
 </section>
 <section id="introduction">
-<h2><span class="section-number">4.4.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>The Port driver module is an I/O driver in AUTOSAR Basic Software (BSW) layer. PORT driver provide the services for initializing the whole PORT structure of the microcontroller.
 It is used to assign various functionalities to Port and port pins (e.g. GPIOs, ADC, SPI and other peripheral modes)</p>
 <figure class="align-center" id="id1">
 <img alt="PORT MCAL AUTOSAR" src="../_images/Port_Autosar_MCAL.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.14 </span><span class="caption-text">PORT MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.24 </span><span class="caption-text">PORT MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>This document details AUTOSAR BSW PORT module implementation</p>
@@ -224,7 +230,7 @@ It is used to assign various functionalities to Port and port pins (e.g. GPIOs, 
 </table>
 </section>
 <section id="functional-overview">
-<h2><span class="section-number">4.4.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
 <p>The Port module shall provide the service for initializing the whole PORT structure of the microcontroller. Many ports and port pins can be assigned to various functionalities, For e.g.</p>
 <ul class="simple">
 <li><p>General purpose I/O</p></li>
@@ -238,9 +244,9 @@ etc</p></li>
 PORT driver module shall complete the overall configuration and initialization of the port structure which is used in other dependent driver modules. Therefore, other dependent modules driver works on pins and ports which are configured by the PORT driver. Hence PORT driver shall be initialized prior to use of other driver modules functions. Otherwise those functions might exhibit undefined behavior.</p>
 </section>
 <section id="hardware-features">
-<h2><span class="section-number">4.4.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
 <section id="hardware-features-supported">
-<h3><span class="section-number">4.4.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
 <p>Features Supported at a high level are:</p>
 <ul class="simple">
 <li><p>Configure each port and port pin (Input/Output, Pin driver characteristics).</p></li>
@@ -251,7 +257,7 @@ PORT driver module shall complete the overall configuration and initialization o
 <li><p>Port mode changeable during runtime.</p></li>
 </ul>
 <section id="port-structure">
-<h4><span class="section-number">4.4.4.1.1. </span>Port Structure<a class="headerlink" href="#port-structure" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.4.1.1. </span>Port Structure<a class="headerlink" href="#port-structure" title="Link to this heading"></a></h4>
 <p>For the device there are up to 8 Possible I/O Ports. Up to twelve independent peripheral signals are multiplexed on a single GPIO-enabled pin in addition to the CPU-controlled I/O capability.</p>
 <p>Each pin output can be controlled by either a peripheral or one of the CPU controllers.</p>
 <table class="docutils align-default">
@@ -298,15 +304,15 @@ PORT driver module shall complete the overall configuration and initialization o
 </table>
 </section>
 <section id="aios">
-<h4><span class="section-number">4.4.4.1.2. </span>AIOs<a class="headerlink" href="#aios" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.4.1.2. </span>AIOs<a class="headerlink" href="#aios" title="Link to this heading"></a></h4>
 <p>Some GPIOs are multiplexed with analog pins and only have digital input functionality. These are also referred to as AIOs. Pins with only an AIO option on this port can only function in input mode. See the device data sheet for list of AIO signals. By default, these pins function as analog pins and the GPIOs are in a high-impedance state.</p>
 </section>
 <section id="agpios">
-<h4><span class="section-number">4.4.4.1.3. </span>AGPIOs<a class="headerlink" href="#agpios" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.4.1.3. </span>AGPIOs<a class="headerlink" href="#agpios" title="Link to this heading"></a></h4>
 <p>Some GPIOs are multiplexed with analog pins and have digital input and output functionality. These are also referred to as AGPIOs. Unlike AIOs, AGPIOs have full input and output capability. By default, the AGPIOs are not connected and must be configured.</p>
 </section>
 <section id="input-qualification">
-<h4><span class="section-number">4.4.4.1.4. </span>Input Qualification<a class="headerlink" href="#input-qualification" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.4.1.4. </span>Input Qualification<a class="headerlink" href="#input-qualification" title="Link to this heading"></a></h4>
 <p>The input qualification scheme has been designed to be very flexible. Input qualification can be configured by user using the configurator tool. In the case of a GPIO input pin, the qualification can be specified as only synchronized to SYSCLKOUT or qualification by a sampling window. For pins that are configured as peripheral inputs, the input can also be asynchronous in addition to synchronized to SYSCLKOUT or qualified by a sampling window. The remainder of this section describes the options available.</p>
 <ul class="simple">
 <li><p>No Synchronization (Asynchronous Input) : This mode is used for peripherals where input synchronization is not required or the peripheral itself performs the
@@ -322,7 +328,7 @@ taken.</p></li>
 </div>
 </section>
 <section id="gpio-and-peripheral-muxing">
-<h4><span class="section-number">4.4.4.1.5. </span>GPIO and Peripheral Muxing<a class="headerlink" href="#gpio-and-peripheral-muxing" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.4.1.5. </span>GPIO and Peripheral Muxing<a class="headerlink" href="#gpio-and-peripheral-muxing" title="Link to this heading"></a></h4>
 <p>Up to twelve different peripheral functions are multiplexed to each pin along with a general-purpose input/output (GPIO) function. This allows user to choose the peripheral mix and pinout that works best for your particular application.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -332,7 +338,7 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 </section>
 </section>
 <section id="not-supported-features">
-<h3><span class="section-number">4.4.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Out of total number of available pins for a particular pin package, there are few reserved/not configurable pins.</p></li>
 </ul>
@@ -345,17 +351,25 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 </ul>
 </section>
 <section id="non-compliance">
-<h3><span class="section-number">4.4.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
-<p>Below AUTOSAR design requirement is not supported for Port Driver :<br />
+<h3><span class="section-number">4.7.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<p>Below AUTOSAR design requirements are not supported/partially supported for Port Driver :<br />
 <strong>SWS_Port_00205</strong> : <em>Port_Lcfg.c shall include Port_MemMap.h and Port.h</em></p>
 <blockquote>
 <div><p>Rejection Reason : Port Driver doesn’t have any Link Time configuration input file, it only supports Pre-Compile and Port-Build configurations.</p>
+</div></blockquote>
+<p><strong>ECUC_Port_00127</strong> : <em>Pin Id of the port pin. Range : 1 .. 65535</em></p>
+<blockquote>
+<div><p>Partial Non Compliance Reason : In current implementation, Pin Id range starts from 0 instead of 1 as mapping of Pin Id to GPIOs starts from 0. Therefore Port Pin Id Range is 0 to Number of Pins in Pin package. i.e for 256 pin package , range will be 0-255.</p>
+</div></blockquote>
+<p><strong>SWS_BSW_00042</strong> : Detection of Development Errors: The detection and reporting of Development errors shall be performed only if the configuration parameter for detection of Development errors is set</p>
+<blockquote>
+<div><p>Partial Non Compliance Reason : Few Null pointer input parameter checks are needed irrespective of Development errors is set, to handle MISRA requirement.</p>
 </div></blockquote>
 <p>For more details, Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf">AUTOSAR_SWS_PortDriver : Section: 5.1.2 : Header File Structure</a></p>
 </section>
 </section>
 <section id="source-files">
-<h2><span class="section-number">4.4.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -383,29 +397,29 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 <figure class="align-center" id="id2">
 <img alt="Port Header File Structure" src="../_images/Port_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.15 </span><span class="caption-text">Port Header File Structure</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.25 </span><span class="caption-text">Port Header File Structure</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="module-requirements">
-<h2><span class="section-number">4.4.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
 <section id="memory-mapping">
-<h3><span class="section-number">4.4.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
 <p>Will be added in later release</p>
 </section>
 <section id="scheduling">
-<h3><span class="section-number">4.4.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
 <p>None</p>
 </section>
 <section id="error-handling">
-<h3><span class="section-number">4.4.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
 <section id="development-error-reporting">
-<h4><span class="section-number">4.4.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
 <p>Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
 </section>
 </section>
 <section id="error-codes">
-<h3><span class="section-number">4.4.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Type of Error</p></th>
@@ -446,14 +460,36 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 </table>
 </section>
 </section>
+<section id="safety-mechanism">
+<h2><span class="section-number">4.7.7. </span>Safety Mechanism<a class="headerlink" href="#safety-mechanism" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>TI Diagnostic Unique Identifier</p></th>
+<th class="head"><p>Summary</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>GPIO1</p></td>
+<td><p>Lock Mechanism for Control Registers</p></td>
+<td><p>Port Pins Pad control register configuration can be locked and locked configurations can be committed. If user calls Port_Init or Port_SetPinMode APIs after committing the locked configuration, it will result in DET error PORT_E_INIT_FAILED or PORT_PIN_MODE_UNCHANGEABLE respectively</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Locked Configurations can be committed by user during runtime. After committing the configurations, user won’t be able to change the configurations during runtime. To change the configuration after committing, hard reset will be required.
+More details of Safety Mechanisms can be found in Safety Manual.</p>
+</div>
+</section>
 <section id="used-resources">
-<h2><span class="section-number">4.4.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.8. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
 <section id="interrupt-handling">
-<h3><span class="section-number">4.4.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.8.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
 <p>There are no Interrupts in Port</p>
 </section>
 <section id="instance-support">
-<h3><span class="section-number">4.4.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.8.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>CPU instances</p></th>
@@ -474,27 +510,27 @@ Port Driver needs to be initialized as per the available pin package. Refer Devi
 </table>
 </section>
 <section id="hardware-software-mapping">
-<h3><span class="section-number">4.4.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.8.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
 <p>Below image shows Port driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
 <figure class="align-center" id="id3">
 <img alt="Port HW/SW Mapping" src="../_images/Port_HW_SW_Mapping.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.16 </span><span class="caption-text">Port HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.26 </span><span class="caption-text">Port HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="integration-description">
-<h2><span class="section-number">4.4.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.9. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
 <section id="dependent-modules">
-<h3><span class="section-number">4.4.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.9.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
 <section id="det">
-<h4><span class="section-number">4.4.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.9.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
 <p>This implementation depends on the DET in order to report development errors
 The detection of development errors is configurable (ON / OFF), The switch PORT_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.</p>
 </section>
 <section id="schm">
-<h4><span class="section-number">4.4.8.1.2. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.9.1.2. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
 <p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that PORT module calls at begin and end of critical sections.
 This implementation requires 1 level of exclusive access to guard critical sections.</p>
 <p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be
@@ -518,17 +554,17 @@ For Port Module, data consistency and exclusive access to critical sections are 
 </table>
 </section>
 <section id="mcu">
-<h4><span class="section-number">4.4.8.1.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.7.9.1.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
 <p>MCU Module is required to initialize all the clock to be used by different peripherals</p>
 </section>
 </section>
 <section id="multi-core-and-resource-allocator">
-<h3><span class="section-number">4.4.8.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.9.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
 <p>Not Supported</p>
 </section>
 </section>
 <section id="configuration">
-<h2><span class="section-number">4.4.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.10. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The Port Driver implementation supports multiple configuration variants, namely Port Post-Build config and Pre-Compile config. The driver expects generated <strong>Port_cfg.h</strong> to be present as input file.
 The associated Port driver configuration generated source files are <strong>Port_Cfg.c</strong> or
 <strong>Port_PBcfg.c</strong></p>
@@ -537,190 +573,25 @@ The associated Port driver configuration generated source files are <strong>Port
 <p class="admonition-title">Note</p>
 <p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
 </div>
-<section id="portgeneral">
-<h3><span class="section-number">4.4.9.1. </span>PortGeneral<a class="headerlink" href="#portgeneral" title="Link to this heading"></a></h3>
-<section id="portdeverrordetect">
-<h4><span class="section-number">4.4.9.1.1. </span>PortDevErrorDetect<a class="headerlink" href="#portdeverrordetect" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00123</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortDevErrorDetect</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortGeneral</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>-Switches the development error detection and notification on or off <br> • <strong>TRUE</strong>: detection and notification is enabled. <br> • <strong>FALSE</strong>: detection and notification is disabled.</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucBooleanParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>All Variants</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Scope/Dependency</strong></p></td>
-<td><p>scope:local</p></td>
-</tr>
-</tbody>
-</table>
+<section id="configuration-precautions">
+<h3><span class="section-number">4.7.10.1. </span>Configuration Precautions<a class="headerlink" href="#configuration-precautions" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>For any peripheral pin configuration, make sure to set correct pad configurations or else it will result in unexpected behavior of the module.</p></li>
+<li><p>Similarly in case of Pin Mode Changeable support, make sure to set proper pad configurations for the supported pins.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>More details related to Configuration precautions can be found in Safety Manual.</p>
+</div>
 </section>
-<section id="portsetpindirectionapi">
-<h4><span class="section-number">4.4.9.1.2. </span>PortSetPinDirectionApi<a class="headerlink" href="#portsetpindirectionapi" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00131</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortSetPinDirectionApi</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortGeneral</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Pre-processor switch to enable or disable the use of the function Port_setPinDirection().<br>• <strong>TRUE</strong> : Enabled - Function Port_SetPinDirection() is available <br>• <strong>FALSE</strong> : Disabled - Function Port_SetPinDirection() is not available.</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucBooleanParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>All Variants</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Scope/Dependency</strong></p></td>
-<td><p>scope:local</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="portsetpinmodeapi">
-<h4><span class="section-number">4.4.9.1.3. </span>PortSetPinModeApi<a class="headerlink" href="#portsetpinmodeapi" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00132</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortSetPinModeApi</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortGeneral</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Pre-processor switch to enable / disable the use of the function Port_SetPinMode().<br> • <strong>TRUE</strong> : Enabled - Function Port_SetPinMode() is available. <br> • <strong>FALSE</strong> : Disabled - Function Port_SetPinMode() is not available</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucBooleanParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>All Variants</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="portversioninfoapi">
-<h4><span class="section-number">4.4.9.1.4. </span>PortVersionInfoApi<a class="headerlink" href="#portversioninfoapi" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00133</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortVersionInfoApi</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortGeneral</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Pre-processor switch to enable / disable the API to read out the modules version information.<br>• <strong>TRUE</strong> : Version info API enabled<br>• <strong>FALSE</strong> : Version info API disabled</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucBooleanParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>All Variants</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="portdevicevariant">
-<h4><span class="section-number">4.4.9.1.5. </span>PortDeviceVariant<a class="headerlink" href="#portdevicevariant" title="Link to this heading"></a></h4>
+<section id="portconfigset">
+<h3><span class="section-number">4.7.10.2. </span>PortConfigSet<a class="headerlink" href="#portconfigset" title="Link to this heading"></a></h3>
+<p>This container contains the configuration parameters and sub containers of the AUTOSAR Port module.</p>
+<section id="portcontainer">
+<h4><span class="section-number">4.7.10.2.1. </span>PortContainer<a class="headerlink" href="#portcontainer" title="Link to this heading"></a></h4>
+<p>Container collecting the PortPins.</p>
+<section id="portnumberofportpins">
+<h5><span class="section-number">4.7.10.2.1.1. </span>PortNumberOfPortPins<a class="headerlink" href="#portnumberofportpins" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -729,97 +600,47 @@ The associated Port driver configuration generated source files are <strong>Port
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortDeviceVariant</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortGeneral</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Select package variant for F29H85x</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>type</strong></p></td>
-<td><p>EcucEnumerationParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Default</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>All Variants</p></td>
-</tr>
-<tr class="row-even"><td><p>Post-build time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="port-container">
-<h3><span class="section-number">4.4.9.2. </span>Port Container<a class="headerlink" href="#port-container" title="Link to this heading"></a></h3>
-<section id="portnumberofportpins">
-<h4><span class="section-number">4.4.9.2.1. </span>PortNumberOfPortPins<a class="headerlink" href="#portnumberofportpins" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00124</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortNumberOfPortPins</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortContainer</p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>The number of specified PortPins in this PortContainer.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>The number of specified PortPins in this PortContainer</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucIntegerParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p>1.. 65535</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Default value</strong></p></td>
-<td><p>..</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Post-Build Variant value</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>false</p></td>
 </tr>
-<tr class="row-even"><td><p>Pre-compile time</p></td>
-<td><p>All Variants</p></td>
-</tr>
-<tr class="row-odd"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>Post-build time</p></td>
-<td><p>–</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Scope/Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Max-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Min-value</strong></p></td>
+<td><p>1</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 </section>
 <section id="portpin">
-<h3><span class="section-number">4.4.9.3. </span>PortPin<a class="headerlink" href="#portpin" title="Link to this heading"></a></h3>
+<h4><span class="section-number">4.7.10.2.2. </span>PortPin<a class="headerlink" href="#portpin" title="Link to this heading"></a></h4>
+<p>Configuration of the individual port pins.</p>
 <section id="portpinperipheral">
-<h4><span class="section-number">4.4.9.3.1. </span>PortPinPeripheral<a class="headerlink" href="#portpinperipheral" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.1. </span>PortPinPeripheral<a class="headerlink" href="#portpinperipheral" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -827,44 +648,35 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinPeripheral</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Available Peripherals for the pin package</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucEnumerationParamDef</p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>GPIO</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portpinperipheralinstance">
-<h4><span class="section-number">4.4.9.3.2. </span>PortPinPeripheralInstance<a class="headerlink" href="#portpinperipheralinstance" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.2. </span>PortPinPeripheralInstance<a class="headerlink" href="#portpinperipheralinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -872,44 +684,35 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinPeripheralInstance</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Available instances for the Peripheral selected</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Available instances for the Peripheral selected.</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucEnumerationParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>GPIO0</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portpinperipheralsignal">
-<h4><span class="section-number">4.4.9.3.3. </span>PortPinPeripheralSignal<a class="headerlink" href="#portpinperipheralsignal" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.3. </span>PortPinPeripheralSignal<a class="headerlink" href="#portpinperipheralsignal" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -917,44 +720,35 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinPeripheralSignal</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Select specific type of peripheral signal pin of interest</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Select specific type of peripheral signal pin of interest.</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>ENUMERATION</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>GPIO0</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portphysicalpinid">
-<h4><span class="section-number">4.4.9.3.4. </span>PortPhysicalPinId<a class="headerlink" href="#portphysicalpinid" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.4. </span>PortPhysicalPinId<a class="headerlink" href="#portphysicalpinid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -962,44 +756,35 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPhysicalPinId</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Identifying The physical Pin Number on the selected Pin Package.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>ENUMERATION</p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>A8</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portpinname">
-<h4><span class="section-number">4.4.9.3.5. </span>PortPinName<a class="headerlink" href="#portpinname" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.5. </span>PortPinName<a class="headerlink" href="#portpinname" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -1007,389 +792,254 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinName</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Device Pin Name for reference.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>ENUMERATION</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>true</p></td>
 </tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="portpindirection">
-<h4><span class="section-number">4.4.9.3.6. </span>PortPinDirection<a class="headerlink" href="#portpindirection" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00125</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortPinDirection</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>The initial direction of the pin (IN or OUT). If the direction is not changeable, the value configured here is fixed. The direction must match the pin mode. E.g. a pin used for an ADC must be configured to be an in port. Implementation Type: Port_PinDirectionType</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucEnumerationParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p>PORT_PIN_IN</p></td>
-<td><p>Port Pin direction set as input</p></td>
-</tr>
-<tr class="row-odd"><td><p>PORT_PIN_OUT</p></td>
-<td><p>Port Pin direction set as output</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p>true</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
-<tr class="row-even"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
-<td><p>VARIANT-POST-BUILD</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="portpindirectionchangeable">
-<h4><span class="section-number">4.4.9.3.7. </span>PortPinDirectionChangeable<a class="headerlink" href="#portpindirectionchangeable" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00126</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortPinDirectionChangeable</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Parameter to indicate if the direction is changeable on a port pin during runtime <br>• <strong>TRUE</strong> : Port Pin direction changeable enabled.<br>• <strong>FALSE</strong> : Port Pin direction changeable disabled .</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucBooleanParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p>true</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
-<td><p>VARIANT-POST-BUILD</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>GPIO0</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portpinid">
-<h4><span class="section-number">4.4.9.3.8. </span>PortPinId<a class="headerlink" href="#portpinid" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.6. </span>PortPinId<a class="headerlink" href="#portpinid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00127</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinId</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Pin Id of the port pin. This value will be assigned to the symbolic name derived from the port pin container short name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucIntegerParamDef (Symbolic Name generated for this parameter)</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p>1..65535</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Default value</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>false</p></td>
 </tr>
-<tr class="row-even"><td><p>Pre-compile time</p></td>
-<td><p>All Variants</p></td>
-</tr>
-<tr class="row-odd"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>Post-build time</p></td>
-<td><p>–</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
-</tbody>
-</table>
-</section>
-<section id="portpininitialmode">
-<h4><span class="section-number">4.4.9.3.9. </span>PortPinInitialMode<a class="headerlink" href="#portpininitialmode" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00128</p></th>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>0</p></td>
 </tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortPinInitialMode</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Port pin mode from mode list for use with Port_Init() function.</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<tr class="row-even"><td><p><strong>Max-value</strong></p></td>
 <td><p>1</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucEnumerationParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p>true</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
-<td><p>VARIANT-POST-BUILD</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
-</tr>
 </tbody>
 </table>
 </section>
-<section id="portpinlevelvalue">
-<h4><span class="section-number">4.4.9.3.10. </span>PortPinLevelValue<a class="headerlink" href="#portpinlevelvalue" title="Link to this heading"></a></h4>
+<section id="portispinconfigurable">
+<h5><span class="section-number">4.7.10.2.2.7. </span>PortIsPinConfigurable<a class="headerlink" href="#portispinconfigurable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00129</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortPinLevelValue</p></td>
+<td><p>PortIsPinConfigurable</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Whether configuration is supported for this pin.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Port Pin Level value from Port pin list.</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucEnumerationParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p>PORT_PIN_LEVEL_HIGH</p></td>
-<td><p>Port Pin level is High</p></td>
-</tr>
-<tr class="row-odd"><td><p>PORT_PIN_LEVEL_LOW</p></td>
-<td><p>Port Pin level is LOW</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>true</p></td>
 </tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="portpinmode">
-<h4><span class="section-number">4.4.9.3.11. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h4>
+<section id="portisanalogmodesupported">
+<h5><span class="section-number">4.7.10.2.2.8. </span>PortIsAnalogModeSupported<a class="headerlink" href="#portisanalogmodesupported" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Mcu_00130</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortPinMode</p></td>
+<td><p>PortIsAnalogModeSupported</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Whether analog mode is supported for this pin.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Port pin mode from mode list. <br>NOTE: that more than one mode is allowed by default. That way it is e.g. possible to combine DIO with another mode such as ICU..</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1..*</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucEnumerationParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>true</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p>true</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p>Pre-compile time</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
-<tr class="row-odd"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p>Post-build time</p></td>
-<td><p>VARIANT-POST-BUILD</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="portpinmodechangeable">
-<h4><span class="section-number">4.4.9.3.12. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h4>
+<section id="portisagpio">
+<h5><span class="section-number">4.7.10.2.2.9. </span>PortIsAGPIO<a class="headerlink" href="#portisagpio" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
-<th class="head"><p>ECUC_Port_00134</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortPinModeChangeable</p></td>
+<td><p>PortIsAGPIO</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Whether this pin is AGPIO.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Parameter to indicate if the mode is changeable on a port pin during runtime<br>• <strong>TRUE</strong> : Port Pin mode changeable allowed<br> • <strong>FALSE</strong> : Port Pin mode changeable not permitted.</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>EcucBooleanParamDef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>true</p></td>
 </tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portisaio">
+<h5><span class="section-number">4.7.10.2.2.10. </span>PortIsAIO<a class="headerlink" href="#portisaio" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortIsAIO</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Whether this pin is AIO.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portisgpio">
+<h5><span class="section-number">4.7.10.2.2.11. </span>PortIsGPIO<a class="headerlink" href="#portisgpio" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortIsGPIO</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Whether this pin is GPIO.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portanalogmode">
-<h4><span class="section-number">4.4.9.3.13. </span>PortAnalogMode<a class="headerlink" href="#portanalogmode" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.12. </span>PortAnalogMode<a class="headerlink" href="#portanalogmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -1397,47 +1047,152 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortAnalogMode</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Select whether the pin operates in Analog Mode.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>ENUMERATION</p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>PORT_ANALOG_ENABLED</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Range</strong></p></td>
 <td><p>PORT_ANALOG_DISABLED<br>PORT_ANALOG_ENABLED</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+</tbody>
+</table>
+</section>
+<section id="portpininitialmode">
+<h5><span class="section-number">4.7.10.2.2.13. </span>PortPinInitialMode<a class="headerlink" href="#portpininitialmode" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortPinInitialMode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Port pin mode from mode list for use with Port_Init() function.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>true</p></td>
 </tr>
-<tr class="row-even"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-odd"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>PORT_MUXMODE_NA</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Range</strong></p></td>
+<td><p>PORT_MUXMODE_NA</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portpindirection">
+<h5><span class="section-number">4.7.10.2.2.14. </span>PortPinDirection<a class="headerlink" href="#portpindirection" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortPinDirection</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>The initial direction of the pin (IN or OUT). If the direction is not changeable, the value configured here is fixed.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>PORT_PIN_IN</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Range</strong></p></td>
+<td><p>PORT_PIN_NA</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portpindirectionchangeable">
+<h5><span class="section-number">4.7.10.2.2.15. </span>PortPinDirectionChangeable<a class="headerlink" href="#portpindirectionchangeable" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortPinDirectionChangeable</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Parameter to indicate if the direction is changeable on a port pin during runtime.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>False</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portpinpadconfig">
-<h4><span class="section-number">4.4.9.3.14. </span>PortPinPadConfig<a class="headerlink" href="#portpinpadconfig" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.16. </span>PortPinPadConfig<a class="headerlink" href="#portpinpadconfig" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -1445,47 +1200,38 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinPadConfig</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Enable Push-Pull or Open Drain functionality.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>ENUMERATION</p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>PORT_PIN_TYPE_STD</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Range</strong></p></td>
 <td><p>PORT_PIN_TYPE_STD<br>PORT_PIN_TYPE_OPEN_DRAIN<br>PORT_PIN_TYPE_NA</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p>true</p></td>
-</tr>
-<tr class="row-even"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-odd"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p>Post-build time</p></td>
-<td><p>VARIANT-POST-BUILD</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portpinpullupconfig">
-<h4><span class="section-number">4.4.9.3.15. </span>PortPinPullUpConfig<a class="headerlink" href="#portpinpullupconfig" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.17. </span>PortPinPullUpConfig<a class="headerlink" href="#portpinpullupconfig" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -1493,44 +1239,35 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinPullUpConfig</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Enable Pull Up.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>BOOLEAN</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>true</p></td>
 </tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portpinqualificationmode">
-<h4><span class="section-number">4.4.9.3.16. </span>PortPinQualificationMode<a class="headerlink" href="#portpinqualificationmode" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.18. </span>PortPinQualificationMode<a class="headerlink" href="#portpinqualificationmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -1538,59 +1275,38 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinQualificationMode</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Synchronization mode of the peripheral signals.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>ENUMERATION</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p>PORT_QUAL_SYNC</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p>PORT_QUAL_3SAMPLE</p></td>
-</tr>
-<tr class="row-odd"><td><p></p></td>
-<td><p>PORT_QUAL_6SAMPLE</p></td>
-</tr>
-<tr class="row-even"><td><p></p></td>
-<td><p>PORT_QUAL_ASYNC</p></td>
-</tr>
-<tr class="row-odd"><td><p></p></td>
-<td><p>PORT_QUAL_NA</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Default value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>true</p></td>
 </tr>
-<tr class="row-even"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-odd"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>PORT_QUAL_SYNC</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Range</strong></p></td>
+<td><p>PORT_QUAL_SYNC<br>PORT_QUAL_3SAMPLE<br>PORT_QUAL_6SAMPLE<br>PORT_QUAL_ASYNC<br>PORT_QUAL_NA</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portpinqualificationperiod">
-<h4><span class="section-number">4.4.9.3.17. </span>PortPinQualificationPeriod<a class="headerlink" href="#portpinqualificationperiod" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.19. </span>PortPinQualificationPeriod<a class="headerlink" href="#portpinqualificationperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -1598,44 +1314,80 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinQualificationPeriod</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs                                 For Instance:                                 Qualification sampling period for GPIO0 to GPIO7:                                  0x00,QUALPRDx = PLLSYSCLK                                  0x01,QUALPRDx = PLLSYSCLK/2                                 0x02,QUALPRDx = PLLSYSCLK/4                                 ….                                 0xFF,QUALPRDx = PLLSYSCLK/510                                 Reset type: SYSRSn</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs.</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>INTEGER</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>true</p></td>
 </tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Max-value</strong></p></td>
+<td><p>9223372036854775807</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Min-value</strong></p></td>
+<td><p>-9223372036854775808</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portpinlevelvalue">
+<h5><span class="section-number">4.7.10.2.2.20. </span>PortPinLevelValue<a class="headerlink" href="#portpinlevelvalue" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortPinLevelValue</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Port Pin Level value from Port pin list.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>PORT_PIN_LEVEL_LOW</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Range</strong></p></td>
+<td><p>PORT_PIN_LEVEL_HIGH<br>PORT_PIN_LEVEL_LOW<br>PORT_PIN_LEVEL_NA</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="portpincoreselect">
-<h4><span class="section-number">4.4.9.3.18. </span>PortPinCoreSelect<a class="headerlink" href="#portpincoreselect" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.21. </span>PortPinCoreSelect<a class="headerlink" href="#portpincoreselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -1643,47 +1395,38 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortPinCoreSelect</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Selection of core to which pin is to be mapped.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>Enumeration</p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
 <td><p>PORT_CORE_CPU1</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Range</strong></p></td>
 <td><p>PORT_CORE_CPU1<br>PORT_CORE_CPU2<br>PORT_CORE_CPU3</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p>true</p></td>
-</tr>
-<tr class="row-even"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-odd"><td><p>Link time</p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-even"><td><p>Post-build time</p></td>
-<td><p>VARIANT-POST-BUILD</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
-</tr>
 </tbody>
 </table>
 </section>
 <section id="portenablewakeuppinlpm">
-<h4><span class="section-number">4.4.9.3.19. </span>PortEnableWakeUpPinLPM<a class="headerlink" href="#portenablewakeuppinlpm" title="Link to this heading"></a></h4>
+<h5><span class="section-number">4.7.10.2.2.22. </span>PortEnableWakeUpPinLPM<a class="headerlink" href="#portenablewakeuppinlpm" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
 <th class="head"><p></p></th>
 </tr>
 </thead>
@@ -1691,39 +1434,301 @@ The associated Port driver configuration generated source files are <strong>Port
 <tr class="row-even"><td><p><strong>Name</strong></p></td>
 <td><p>PortEnableWakeUpPinLPM</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
-<td><p>PortPin</p></td>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Use/Don’t use the GPIO Pin as a wakeup source for the low power modes - standby/halt.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Description</strong></p></td>
-<td><p>Use/Don’t use the GPIO Pin as a wake up source for the low power modes - standby/halt.</p></td>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Type</strong></p></td>
-<td><p>BOOLEAN</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
 <td><p>false</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-compile time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link time</p></td>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-build time</p></td>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
-<td><p>scope:local</p></td>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
 </tr>
 </tbody>
 </table>
-<p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf">AUTOSAR_SWS_PortDriver section: 10 Configuration specification</a> for more configuration parameters details</p>
+</section>
+<section id="portpinmode">
+<h5><span class="section-number">4.7.10.2.2.23. </span>PortPinMode<a class="headerlink" href="#portpinmode" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortPinMode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Port pin mode from mode list.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>PORT_MUXMODE_NA</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>PORT_MUXMODE_NA</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portpinmodechangeable">
+<h5><span class="section-number">4.7.10.2.2.24. </span>PortPinModeChangeable<a class="headerlink" href="#portpinmodechangeable" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortPinModeChangeable</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Parameter to indicate if the mode is changeable on a port pin during runtime. True: Port Pin mode changeable allowed. False: Port Pin mode changeable not permitted.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="portgeneral">
+<h3><span class="section-number">4.7.10.3. </span>PortGeneral<a class="headerlink" href="#portgeneral" title="Link to this heading"></a></h3>
+<p>Module wide configuration parameters of the PORT driver.</p>
+<section id="portdeverrordetect">
+<h4><span class="section-number">4.7.10.3.1. </span>PortDevErrorDetect<a class="headerlink" href="#portdeverrordetect" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortDevErrorDetect</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the development error detection and notification on or off.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portsetpindirectionapi">
+<h4><span class="section-number">4.7.10.3.2. </span>PortSetPinDirectionApi<a class="headerlink" href="#portsetpindirectionapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortSetPinDirectionApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Pre-processor switch to enable / disable the use of the function Port_SetPinDirection().</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portsetpinmodeapi">
+<h4><span class="section-number">4.7.10.3.3. </span>PortSetPinModeApi<a class="headerlink" href="#portsetpinmodeapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortSetPinModeApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Pre-processor switch to enable / disable the use of the function Port_SetPinMode().</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portversioninfoapi">
+<h4><span class="section-number">4.7.10.3.4. </span>PortVersionInfoApi<a class="headerlink" href="#portversioninfoapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortVersionInfoApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Pre-processor switch to enable / disable the API to read out the modules version information.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>AUTOSAR_ECUC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="portlockconfiguration">
+<h4><span class="section-number">4.7.10.3.5. </span>PortLockConfiguration<a class="headerlink" href="#portlockconfiguration" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>PortLockConfiguration</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Lock All pins configuration.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf">AUTOSAR_SWS_PortDriver section: 10 Configuration specification</a> for more configuration parameters details</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The analog signals on this device are multiplexed with digital inputs and outputs. Some of these analog IO (AIO) pins do not have digital output capability. Others of these pins are analog pins capable of full digital input and output capability (AGPIO). Analog pins with AIO (digital input only) capability contain “AIO” signals in the Pin Attributes table of the device data sheet. Analog pins with full input and output capability (AGPIO pins) contain “GPIO” signals in the Pin Attributes table of the device data sheet. AGPIO pins also have pin names with both analog signals and GPIO in the name.<br></p>
@@ -1731,7 +1736,7 @@ The associated Port driver configuration generated source files are <strong>Port
 </section>
 </section>
 <section id="steps-to-configure-port-module">
-<h3><span class="section-number">4.4.9.4. </span>Steps To Configure Port Module<a class="headerlink" href="#steps-to-configure-port-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.10.4. </span>Steps To Configure Port Module<a class="headerlink" href="#steps-to-configure-port-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and Select the Config Variant ( Precompile/Post-Build) and Device Variant ( Pin Package ) parameters</p></li>
 <li><p>Go to Port Container tab and create a new container</p></li>
@@ -1746,10 +1751,10 @@ The associated Port driver configuration generated source files are <strong>Port
 </section>
 </section>
 <section id="examples">
-<h2><span class="section-number">4.4.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.7.11. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>The example application demonstrates use of Port module, the list below identifies key steps performed in the example.</p>
 <section id="overview">
-<h3><span class="section-number">4.4.10.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.11.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Port_Example_Init</p>
 <ul>
@@ -1768,21 +1773,21 @@ The associated Port driver configuration generated source files are <strong>Port
 </ul>
 </section>
 <section id="setup-required-to-run-example">
-<h3><span class="section-number">4.4.10.2. </span>Setup required to run example<a class="headerlink" href="#setup-required-to-run-example" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.11.2. </span>Setup required to run example<a class="headerlink" href="#setup-required-to-run-example" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest C29 compiler</p></li>
 </ul>
 </section>
 <section id="how-to-run-examples">
-<h3><span class="section-number">4.4.10.3. </span>How to run examples<a class="headerlink" href="#how-to-run-examples" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.11.3. </span>How to run examples<a class="headerlink" href="#how-to-run-examples" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Open CCS and import Port Example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log">
-<h3><span class="section-number">4.4.10.4. </span>Sample Log<a class="headerlink" href="#sample-log" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.11.4. </span>Sample Log<a class="headerlink" href="#sample-log" title="Link to this heading"></a></h3>
 <div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>PORT Driver Sample Application - Starts!!!
 ---------------------------------------------------------------------------
 
@@ -1827,7 +1832,7 @@ Result - PASS!!
 </div>
 </section>
 <section id="file-structure">
-<h3><span class="section-number">4.4.10.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.7.11.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -1855,7 +1860,7 @@ Result - PASS!!
 ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Port_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header.</em></i>*<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Port_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header.</em></i>*<br />
 ┃ ┃ ┃ ┃ ┣ 📂src<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
@@ -1881,15 +1886,15 @@ Result - PASS!!
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Module_User_Guide_Gpt.html" class="btn btn-neutral float-left" title="4.3. GPT Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Module_User_Guide_Can.html" class="btn btn-neutral float-right" title="4.5. CAN Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Module_User_Guide_Mcu.html" class="btn btn-neutral float-left" title="4.6. MCU Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Spi.html" class="btn btn-neutral float-right" title="4.8. SPI Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Dec 18, 2024.
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Apr 11, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1903,7 +1908,50 @@ Result - PASS!!
       </div>
     </section>
   </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.02.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
   <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = '';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

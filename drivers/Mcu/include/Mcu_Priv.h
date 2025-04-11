@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ extern "C" {
 #define MCU_PLLREFDIV_MAX           ((uint8)32U)
 
 /** \brief Maximum PLL Integer Multiplier supported */
-#define MCU_PLLINTMULT_MAX          ((uint8)127U)
+#define MCU_PLLINTMULT_MAX          ((uint8)255U)
 
 /** \brief Maximum PLL Output Clock Divider supported */
 #define MCU_PLLOUTDIV_MAX           ((uint8)32U)
@@ -120,6 +120,8 @@ extern "C" {
 /** \brief Minimum Standby Qualification period supported */
 #define MCU_STANDBY_QUALPERIOD_MIN	((uint16)2U)
 
+/** \brief Timeout cycles */
+#define SYSCTL_SYNCBUSY_TIMEOUT_CYCLES      ((uint32)10000U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -254,7 +256,6 @@ FUNC(void, MCU_CODE) Mcu_PerformControllerReset(void);
 FUNC(Std_ReturnType, MCU_CODE) Mcu_SetModeParamCheck(Mcu_ModeConfigPtrType ModeConfigPtr);
 #endif
 
-
 /** \brief Set & enter the Low Power Mode.
  * 
  * \param[in] ModeConfigPtr Pointer to Power mode configuration set. (Mcu_ModeConfigPtrType) configured in EB Tresos.
@@ -267,179 +268,99 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_SetModeParamCheck(Mcu_ModeConfigPtrType ModeC
 FUNC(void, MCU_CODE) Mcu_EnterLowPowerMode(Mcu_ModeConfigPtrType ModeConfigPtr);
 
 
+/** \brief Mcu_FillRamSection - This API will fill the ram sections with configured data
+ * 
+ * \param[in] RamSectionConfigPtr Pointer to Ram section configuration set.
+ * \param[out] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_FillRamSection(Mcu_RamConfigPtrType RamSectionConfigPtr);
+
+#if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
+/** \brief Unlocks all Clock configuration registers
+ * 
+ * \param[in] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * 
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_UnlockClockConfigRegisters(void);
+
+
+/** \brief Locks all Clock configuration registers
+ * 
+ * \param[in] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * 
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_LockClockConfigRegisters(void);
+#endif /*MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS*/
+
+
+#if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
+/** \brief Unlocks all Cpu Peripheral configuration registers
+ * 
+ * \param[in] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * 
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_UnlockCpuPeripheralConfigRegisters(void);
+
+
+/** \brief Locks all Cpu Peripheral configuration registers
+ * 
+ * \param[in] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * 
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_LockCpuPeripheralConfigRegisters(void);
+#endif /*MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS*/
+
+
+#if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
+/** \brief Unlocks Cpu system registers
+ * 
+ * \param[in] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * 
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_UnlockCpuSysRegisters(void);
+
+
+/** \brief Locks Cpu system registers
+ * 
+ * \param[in] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * 
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_LockCpuSysRegisters(void);
+
+#endif /*MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS*/
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
-
-/** \brief Get the missing clock detection Failure Status
- * 
- * A failure means the oscillator clock is missing
- * 
- * \pre None
- * \post None
- * \return boolean type
- * \retval TRUE if a failure is detected 
- * \retval FALSE if a failure isn't detected
- * 
- *********************************************************************************************************************/
-static inline FUNC(boolean, MCU_CODE) Mcu_IsMCDClockFailureDetected(void)
-{ 
-    /* Check the status bit to determine failure */ 
-    return ((HWREGH(DEVCFG_BASE + SYSCTL_O_MCDCR) & (uint16)SYSCTL_MCDCR_MCLKSTS) != (uint16)0U);
-}
-
-
-/** \brief Reset the missing clock detection logic after clock failure
- * 
- * \pre None
- * \post None
- * \return None
- * \retval None 
- * 
- *********************************************************************************************************************/
-static inline FUNC(void, MCU_CODE) Mcu_ResetMCD(void)
-{
-    /* reset missing clock detection control register */ 
-    HWREGH(DEVCFG_BASE + SYSCTL_O_MCDCR) |= (uint16)SYSCTL_MCDCR_MCLKCLR;
-}
-
-
-/** \brief Sets up PLLSYSCLK divider
- * 
- * This function sets up the PLLSYSCLK divider. There is only one
- * divider that scales PLLSYSCLK to generate the system clock.
- * 
- * The divider parameter can have one value from the set below:
- *     0x0 = /1
- *     0x1 = /2
- *     0x2 = /4 (default on reset)
- *     0x3 = /6
- *     0x4 = /8
- *    ......
- *     0x3F =/126
- * 
- * \param[in] divider is the value that configures the divider.
- * \pre None
- * \post None
- * \return None
- * \retval None 
- * 
- *********************************************************************************************************************/
-static inline FUNC(void, MCU_CODE) Mcu_SetPLLSysClk(uint16 divider)
-{
-    HWREGH(DEVCFG_BASE + SYSCTL_O_SYSCLKDIVSEL) = divider;
-}
-
-
-/** \brief Enters IDLE mode.
- * 
- * This function puts the device into IDLE mode. 
- * The CPU clock is gated while all peripheral clocks are left running.
- * Any enabled interrupt will wake the CPU up from IDLE mode.
- * 
- * \pre None
- * \post None
- * \return None
- * \retval None 
- * 
- *********************************************************************************************************************/
-static inline FUNC(void, MCU_CODE) Mcu_EnterIdleMode(void)
-{
-    /* Configure the device to go into IDLE mode when IDLE is executed. */
-    HWREG(CPUSYS_BASE + SYSCTL_O_LPMCR) =
-    (HWREG(CPUSYS_BASE + SYSCTL_O_LPMCR) &
-    ~(uint32)SYSCTL_LPMCR_LPM_M) |
-    MCU_LPM_IDLE;
-
-    /* IDLE Instruction for putting processor into a low-power mode */
-    MCAL_LIB_IDLE;
-}
-
-
-/** \brief Enters STANDBY mode.
- * 
- * This function puts the device into STANDBY mode. This will gate both the
- * CPU clock and any peripheral clocks derived from SYSCLK. The watchdog is
- * left active, and an NMI or an optional watchdog interrupt will wake the
- * CPU subsystem from STANDBY mode.
- * 
- * GPIOs may be configured to wake the CPU subsystem.
- * 
- * The CPU will receive an interrupt (WAKEINT) on wakeup.
- * 
- * \pre None
- * \post None
- * \return None
- * \retval None 
- * 
- *********************************************************************************************************************/
-static inline FUNC(void, MCU_CODE) Mcu_EnterStandbyMode(void)
-{
-    /* Configure the device to go into STANDBY mode when IDLE is executed. */
-    HWREG(CPUSYS_BASE + SYSCTL_O_LPMCR) =
-    (HWREG(CPUSYS_BASE + SYSCTL_O_LPMCR) &
-    ~(uint32)SYSCTL_LPMCR_LPM_M) |
-    MCU_LPM_STANDBY;
-
-    /* IDLE Instruction for putting processor into a low-power mode */
-    MCAL_LIB_IDLE;
-}
-
-
-/** \brief Sets the number of cycles to qualify an input on waking from STANDBY mode.
- * 
- * This function sets the number of OSCCLK clock cycles used to qualify the
- * selected inputs when waking from STANDBY mode. The cycles parameter
- * should be between 2 and 65 cycles inclusive.
- * 
- * \param[in] cycles is the number of OSCCLK cycles.
- * \pre None
- * \post None
- * \return None
- * \retval None 
- * 
- *********************************************************************************************************************/
-static inline FUNC(void, MCU_CODE) Mcu_SetStandbyQualificationPeriod(uint16 cycles)
-{
-    /* Set the standby qualification period */
-    HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) =
-    (HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) &
-    ~(uint16)SYSCTL_LPMCR_QUALSTDBY_M) |
-    ((cycles - (uint16)2U) << (uint16)SYSCTL_LPMCR_QUALSTDBY_S);
-}
-
-
-/** \brief Enable the device to wake from STANDBY mode upon a watchdog interrupt.
- * 
- * In order to use this option, Need to configure the watchdog to generate an interrupt.
- * 
- * \pre None
- * \post None
- * \return None
- * \retval None 
- * 
- *********************************************************************************************************************/
-static inline FUNC(void, MCU_CODE) Mcu_EnableWatchdogStandbyWakeup(void)
-{
-    /* Set the bit enables the watchdog to wake up the device from STANDBY. */
-    HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) |= (uint16)SYSCTL_LPMCR_WDINTE;
-}
-
-
-/** \brief Disable the device from waking from STANDBY mode upon a watchdog interrupt.
- * 
- * \pre None
- * \post None
- * \return None
- * \retval None 
- * 
- *********************************************************************************************************************/
-static inline FUNC(void, MCU_CODE) Mcu_DisableWatchdogStandbyWakeup(void)
-{
-    /* Clear the bit enables the watchdog to wake up the device from STANDBY.*/
-    HWREGH(CPUSYS_BASE + SYSCTL_O_LPMCR) &= (uint16)~SYSCTL_LPMCR_WDINTE;
-}
-
 
 #ifdef __cplusplus
 extern "C" }

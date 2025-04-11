@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -39,6 +39,20 @@
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
 
+/** \brief Defines for symbolic names for the PduR Handle Id's */
+
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_0        0U	  /*~ASR~*/
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_1        1U	  /*~ASR~*/
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_2        2U    /*~ASR~*/
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_3        3U    /*~ASR~*/	
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_4        4U    /*~ASR~*/	
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_5        5U    /*~ASR~*/		
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_6        6U    /*~ASR~*/		
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_7        7U    /*~ASR~*/		
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_8        8U    /*~ASR~*/		
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_9        9U    /*~ASR~*/		
+#define PduRConf_PduRSrcPdu_PduRSrcPdu_Pdu_10       10U   /*~ASR~*/		
+
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -60,6 +74,8 @@
  *********************************************************************************************************************/
 
 Std_ReturnType PduR_Cdd_Sent_RxIndication( PduIdType RxPduId, const PduInfoType* PduInfoPtr );
+
+Std_ReturnType PduR_Cdd_Ipc_RxIndication( PduIdType RxPduId, const PduInfoType* PduInfoPtr );
 
 #endif /* PDUR_H */
 /*********************************************************************************************************************

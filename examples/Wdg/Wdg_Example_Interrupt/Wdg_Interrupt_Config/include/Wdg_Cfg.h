@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ extern "C" {
  *********************************************************************************************************************/
 #define WDG_CFG_MAJOR_VERSION               (1U)
 #define WDG_CFG_MINOR_VERSION               (0U)
-#define WDG_CFG_PATCH_VERSION               (0U)
+#define WDG_CFG_PATCH_VERSION               (1U)
 
 
 /*********************************************************************************************************************
@@ -120,7 +120,7 @@ extern "C" {
  * Design: MCAL-25308, MCAL-25309
  */
 #define WDG_INITIAL_TIMEOUT        (uint16) (0)
-#define WDG_MAX_TIMEOUT            (uint16) (6684)
+#define WDG_MAX_TIMEOUT            (uint16) (3342)
 
 
 /*********************************************************************************************************************

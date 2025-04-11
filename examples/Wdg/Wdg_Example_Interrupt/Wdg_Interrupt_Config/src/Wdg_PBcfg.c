@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ CONST(Wdg_ConfigType, WDG_CONFIG_DATA) Wdg_ConfigSetptr =
     .Wdg_DefaultMode    = ((WdgIf_ModeType) WDGIF_SLOW_MODE),
     .Wdg_InstanceId     = ((uint16) 0U),
     .Wdg_InitialTimeOut = ((uint16) 0U),
-    .Wdg_MaxTimeOut     = ((uint16) 6684U),
+    .Wdg_MaxTimeOut     = ((uint16) 3342U),
     .Wdg_FastModeCfg    =
    {
       .Reaction   = ((Wdg_Reaction) WDG_GENERATE_INTERRUPT),
@@ -121,4 +121,3 @@ CONST(Wdg_ConfigType, WDG_CONFIG_DATA) Wdg_ConfigSetptr =
 /*********************************************************************************************************************
  *  End of File: Wdg_PBcfg.c
  *********************************************************************************************************************/
- 

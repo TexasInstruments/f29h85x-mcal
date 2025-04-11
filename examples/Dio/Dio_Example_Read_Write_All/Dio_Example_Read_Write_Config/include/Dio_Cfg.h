@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ extern "C" {
 /** \brief Dio configuration Minor Version */
 #define DIO_CFG_MINOR_VERSION           (0U)
 /** \brief Dio configuration Patch Version */
-#define DIO_CFG_PATCH_VERSION           (1U)
+#define DIO_CFG_PATCH_VERSION           (2U)
 
 
 /*********************************************************************************************************************

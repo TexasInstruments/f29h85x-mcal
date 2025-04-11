@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -85,10 +85,10 @@ volatile uint32 EcuM_WakeupBitSet = 0;
 
 FUNC(void, ECUM_CODE) EcuM_InitList(void)
 {
-       Mcu_Init(&Mcu_ModuleConfiguration_0);
+    Mcu_Init(&Mcu_ModuleConfiguration_0);
 
 #if (STD_ON == MCU_CFG_INIT_CLOCK_API)
-	Mcu_InitClock(McuConf_McuClockSettingConfig_McuClockSettingConfig_0);
+	Mcu_InitClock(McuConf_McuClockSettingConfig_McuClockSettingConfig_Osc2);
 
     while ( MCU_PLL_LOCKED != Mcu_GetPllStatus() ) /* Get PLL status and check */
     {

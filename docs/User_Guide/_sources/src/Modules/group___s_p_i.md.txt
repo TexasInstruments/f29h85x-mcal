@@ -175,10 +175,10 @@ Spi Cs Selection - Chip select handling.
 ### enum Spi_ClkMode
 | Enumerator | Value | Description |
 | ---------- | ----- | ----------- |
-| SPI_CLK_MODE_0 | 0x00U| SPI Clock Phase = 0 (rising edge latch), Polarity = 0 (Active HIGH)   |
-| SPI_CLK_MODE_1 | 0x01U| SPI Clock Phase = 1 (falling edge latch), Polarity = 0 (Active HIGH)   |
-| SPI_CLK_MODE_2 | 0x02U| SPI Clock Phase = 0 (rising edge latch), Polarity = 1 (Active LOW)   |
-| SPI_CLK_MODE_3 | 0x03U| SPI Clock Phase = 1 (falling edge latch), Polarity = 1 (Active LOW)   |
+| SPI_CLK_MODE_0 | 0x00U| SPI Clock Phase = 0 Polarity = 0.   |
+| SPI_CLK_MODE_1 | 0x01U| SPI Clock Phase = 1 Polarity = 0   |
+| SPI_CLK_MODE_2 | 0x02U| SPI Clock Phase = 0 Polarity = 1   |
+| SPI_CLK_MODE_3 | 0x03U| SPI Clock Phase = 1 Polarity = 1   |
 
 
 
@@ -291,6 +291,7 @@ SPI Job Priority.
 | SPI_E_SEQ_PENDING   | Services called in a wrong sequence.  |
 | SPI_E_SEQ_IN_PROCESS   | Synchronous transmission service called at wrong time.  |
 | SPI_E_ALREADY_INITIALIZED   | API Spi_Init service called while the SPI driver has already been initialized.  |
+| SPI_E_SEQ_TIMEOUT   | sequence transmission failed with a timeout  |
 
 ## Functions
 
@@ -312,18 +313,18 @@ SPI Job Priority.
 | void | **[Spi_MainFunction_Handling](../Modules/group___s_p_i.md#function-spi-mainfunction-handling)**(void )| Spi_MainFunction_Handling: This function shall polls the SPI interrupts linked to HW Units.  |
 | void | **[Spi_ResetDrvObj](../Modules/group___s_p_i.md#function-spi-resetdrvobj)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj)| function to reset driver object  |
 | void | **[Spi_CopyConfig](../Modules/group___s_p_i.md#function-spi-copyconfig)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into driver obj  |
-| void | **[Spi_HwUnitInit](../Modules/group___s_p_i.md#function-spi-hwunitinit)**(Spi_HwUnitObjType * hwUnitObj)| function to initialize SPI hardware unit  |
+| void | **[Spi_HwUnitInit](../Modules/group___s_p_i.md#function-spi-hwunitinit)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj, Spi_HwUnitObjType * hwUnitObj)| function to initialize SPI hardware unit  |
 | void | **[Spi_HwUnitDeInit](../Modules/group___s_p_i.md#function-spi-hwunitdeinit)**(Spi_HwUnitObjType * hwUnitObj)| function to de-initialize SPI hardware unit  |
-| Spi_HwUnitObjType * | **[Spi_GetHwUnitObj](../Modules/group___s_p_i.md#function-spi-gethwunitobj)**([Spi_HWUnitType](Modules/group___s_p_i.md#typedef-spi-hwunittype) HWUnit)| function to get hardware unit object based on HW unit ID  |
+| Spi_HwUnitObjType * | **[Spi_GetHwUnitObj](../Modules/group___s_p_i.md#function-spi-gethwunitobj)**([Spi_HWUnitType](Modules/group___s_p_i.md#typedef-spi-hwunittype) HWUnit, [Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj)| function to get hardware unit object based on HW unit ID  |
 | void | **[Spi_DisableInterrupt](../Modules/group___s_p_i.md#function-spi-disableinterrupt)**(uint32 baseAddr, boolean isFifoEnabled)| function to disable all the interrupts  |
 | void | **[Spi_EnableInterrupt](../Modules/group___s_p_i.md#function-spi-enableinterrupt)**(uint32 baseAddr, boolean isFifoEnabled)| function to enable interrupts  |
-| Std_ReturnType | **[Spi_StartSeqAsync](../Modules/group___s_p_i.md#function-spi-startseqasync)**([Spi_SeqObjType](Classes/struct_spi___seq_obj_type.md) * seqObj)| private function to start Asynchronous transmission  |
-| Std_ReturnType | **[Spi_StartSeqSync](../Modules/group___s_p_i.md#function-spi-startseqsync)**([Spi_SeqObjType](Classes/struct_spi___seq_obj_type.md) * seqObj)| private function to start synchronous transmission  |
+| Std_ReturnType | **[Spi_StartSeqAsync](../Modules/group___s_p_i.md#function-spi-startseqasync)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj, [Spi_SeqObjType](Classes/struct_spi___seq_obj_type.md) * seqObj)| private function to start Asynchronous transmission  |
+| Std_ReturnType | **[Spi_StartSeqSync](../Modules/group___s_p_i.md#function-spi-startseqsync)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj, [Spi_SeqObjType](Classes/struct_spi___seq_obj_type.md) * seqObj)| private function to start synchronous transmission  |
 | void | **[Spi_ProcessRxEvent](../Modules/group___s_p_i.md#function-spi-processrxevent)**([Spi_HWUnitType](Modules/group___s_p_i.md#typedef-spi-hwunittype) hwUnitId)| process receive interrupt(RXINT/INT)  |
-| void | **[Spi_ProcessChCompletion](../Modules/group___s_p_i.md#function-spi-processchcompletion)**(Spi_HwUnitObjType * hwUnitObj, [Spi_JobResultType](Modules/group___s_p_i.md#enum-spi-jobresulttype) jobResult)| process channel completion  |
+| void | **[Spi_ProcessChCompletion](../Modules/group___s_p_i.md#function-spi-processchcompletion)**(Spi_HwUnitObjType * hwUnitObj, [Spi_JobResultType](Modules/group___s_p_i.md#enum-spi-jobresulttype) jobResult, [Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj)| process channel completion  |
 | void | **[Spi_ConfigGpioChipSelect](../Modules/group___s_p_i.md#function-spi-configgpiochipselect)**(const [Spi_JobObjType](Classes/struct_spi___job_obj_type.md) * jobObj, boolean enable)| function to Enable or Disable chip-select when it is a GPIO  |
 | uint32 | **[Spi_GetHwUnitBaseAddr](../Modules/group___s_p_i.md#function-spi-gethwunitbaseaddr)**([Spi_HWUnitType](Modules/group___s_p_i.md#typedef-spi-hwunittype) HwUnitId)| function to get HW unit base address  |
-| void | **[Spi_CancelSequence](../Modules/group___s_p_i.md#function-spi-cancelsequence)**([Spi_SeqObjType](Classes/struct_spi___seq_obj_type.md) * seqObj)| function to cancel ongoing sequence  |
+| void | **[Spi_CancelSequence](../Modules/group___s_p_i.md#function-spi-cancelsequence)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj, [Spi_SeqObjType](Classes/struct_spi___seq_obj_type.md) * seqObj)| function to cancel ongoing sequence  |
 | void | **[Spi_PrivIntlBufWrite8](../Modules/group___s_p_i.md#function-spi-privintlbufwrite8)**([Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * ChObj, const [Spi_DataBufferType](Modules/group___s_p_i.md#typedef-spi-databuffertype) * DataBufferPtr)| function to write into internal buffer in 8 bits  |
 | void | **[Spi_PrivIntlBufWrite16](../Modules/group___s_p_i.md#function-spi-privintlbufwrite16)**([Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * ChObj, const [Spi_DataBufferType](Modules/group___s_p_i.md#typedef-spi-databuffertype) * DataBufferPtr)| function to write into internal buffer in 16 bits  |
 | void | **[Spi_PrivReadIB](../Modules/group___s_p_i.md#function-spi-privreadib)**([Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * ChObj, const [Spi_DataBufferType](Modules/group___s_p_i.md#typedef-spi-databuffertype) * DataBufferPtr)| function to read from internal buffer  |
@@ -334,21 +335,16 @@ SPI Job Priority.
 | void | **[Spi_PrivChannelCopyConfig](../Modules/group___s_p_i.md#function-spi-privchannelcopyconfig)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into Channel obj  |
 | void | **[Spi_PrivHWUnitCopyConfig](../Modules/group___s_p_i.md#function-spi-privhwunitcopyconfig)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into HWUnit obj  |
 | void | **[Spi_PrivExtDevCopyConfig](../Modules/group___s_p_i.md#function-spi-privextdevcopyconfig)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into External Device obj  |
-| __inline const uint8 * | **[Spi_FifoWrite8](../Modules/group___s_p_i.md#function-spi-fifowrite8)**(uint32 baseAddr, uint32 wordSize, const uint8 * bufPtr, uint32 transferLength, uint16 curTxWords)| function to write into Register in 8 bits  |
-| __inline const uint16 * | **[Spi_FifoWrite16](../Modules/group___s_p_i.md#function-spi-fifowrite16)**(uint32 baseAddr, uint32 wordSize, const uint16 * bufPtr, uint32 transferLength, uint16 curTxWords)| function to write into Register in 16 bits  |
-| __inline uint8 * | **[Spi_FifoRead8](../Modules/group___s_p_i.md#function-spi-fiforead8)**(uint32 baseAddr, uint8 * bufPtr, uint32 numWordsToRead, uint16 dataWidthBitMask, uint16 curRxWords)| function to read from Register to bufPtr in 8 bits  |
-| __inline uint16 * | **[Spi_FifoRead16](../Modules/group___s_p_i.md#function-spi-fiforead16)**(uint32 baseAddr, uint16 * bufPtr, uint32 numWordsToRead, uint16 dataWidthBitMask, uint16 curRxWords)| function to read from Register to bufPtr in 16 bits  |
-| __inline void | **[Spi_FifoWriteDefault](../Modules/group___s_p_i.md#function-spi-fifowritedefault)**(uint32 baseAddr, uint32 wordSize, uint16 defaultTxData, uint32 transferLength)| function to write Default data into Register  |
-| __inline void | **[Spi_FifoReadDiscard](../Modules/group___s_p_i.md#function-spi-fiforeaddiscard)**(uint32 baseAddr, uint32 transferLength)| function to read from Register and discard  |
-| __inline void | **[Spi_ReadRxBufferNonFifo](../Modules/group___s_p_i.md#function-spi-readrxbuffernonfifo)**([Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * chObj, uint32 baseAddr)| function to read from Register to Channel Object  |
-| __inline void | **[Spi_WriteTxBufferNonFifo](../Modules/group___s_p_i.md#function-spi-writetxbuffernonfifo)**([Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * chObj, uint32 baseAddr)| function to write into Register from Channel Object  |
-| __inline void | **[Spi_ClearPIPEINTFlag](../Modules/group___s_p_i.md#function-spi-clearpipeintflag)**(uint32 intNum)| function to clear PIPE interrupt  |
-| uint16 | **[Spi_RegMFReadRaw16](../Modules/group___s_p_i.md#function-spi-regmfreadraw16)**(uint32 addr, uint16 mask, uint16 shift)| This function reads a 16 bit register, masks specific set of bits and the left shifted value.  |
-| void | **[Spi_RegMFWriteRaw16](../Modules/group___s_p_i.md#function-spi-regmfwriteraw16)**(uint32 addr, uint16 mask, uint16 shift, uint16 value)| This function writes a 16 bit register masking specific set of bits and the left shifted value.  |
-| uint16 | **[Spi_RegReadRaw16](../Modules/group___s_p_i.md#function-spi-regreadraw16)**(uint32 addr)| This function reads a 16 bit register.  |
-| void | **[Spi_RegWriteRaw16](../Modules/group___s_p_i.md#function-spi-regwriteraw16)**(uint32 addr, uint16 value)| This function writes a 16 bit register.  |
-| void | **[Spi_RegBitSet16](../Modules/group___s_p_i.md#function-spi-regbitset16)**(uint32 addr, uint16 mask)| This function sets one of the bit in 16 bit register.  |
-| void | **[Spi_RegBitClear16](../Modules/group___s_p_i.md#function-spi-regbitclear16)**(uint32 addr, uint16 mask)| This function clears one of the bit in 16 bit register.  |
+| void | **[Spi_FifoWrite8](../Modules/group___s_p_i.md#function-spi-fifowrite8)**(uint32 baseAddr, [Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * chObj, uint32 transferLength, uint16 curTxWords)| function to write into Register in 8 bits  |
+| void | **[Spi_FifoWrite16](../Modules/group___s_p_i.md#function-spi-fifowrite16)**(uint32 baseAddr, [Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * chObj, uint32 transferLength, uint16 curTxWords)| function to write into Register in 16 bits  |
+| uint8 * | **[Spi_FifoRead8](../Modules/group___s_p_i.md#function-spi-fiforead8)**(uint32 baseAddr, uint8 * bufPtr, uint32 numWordsToRead, uint16 dataWidthBitMask, uint16 curRxWords)| function to read from Register to bufPtr in 8 bits  |
+| uint16 * | **[Spi_FifoRead16](../Modules/group___s_p_i.md#function-spi-fiforead16)**(uint32 baseAddr, uint16 * bufPtr, uint32 numWordsToRead, uint16 dataWidthBitMask, uint16 curRxWords)| function to read from Register to bufPtr in 16 bits  |
+| void | **[Spi_FifoWriteDefault](../Modules/group___s_p_i.md#function-spi-fifowritedefault)**(uint32 baseAddr, uint32 transferLength, [Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * chObj)| function to write Default data into Register  |
+| void | **[Spi_FifoReadDiscard](../Modules/group___s_p_i.md#function-spi-fiforeaddiscard)**(uint32 baseAddr, uint32 transferLength)| function to read from Register and discard  |
+| void | **[Spi_ReadRxBufferNonFifo](../Modules/group___s_p_i.md#function-spi-readrxbuffernonfifo)**([Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * chObj, uint32 baseAddr)| function to read from Register to Channel Object  |
+| void | **[Spi_WriteTxBufferNonFifo](../Modules/group___s_p_i.md#function-spi-writetxbuffernonfifo)**([Spi_ChannelObjType](Classes/struct_spi___channel_obj_type.md) * chObj, uint32 baseAddr)| function to write into Register from Channel Object  |
+| void | **[Spi_ClearPIPEINTFlag](../Modules/group___s_p_i.md#function-spi-clearpipeintflag)**(uint32 intNum)| function to clear PIPE interrupt  |
+| void | **[Spi_PrivInit](../Modules/group___s_p_i.md#function-spi-privinit)**([Spi_DriverObjType](Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](Classes/struct_spi___config_type.md) * CfgPtr)| Service for SPI initialization.  |
 | void | **[Spi_UtilsInitLinkList](../Modules/group___s_p_i.md#function-spi-utilsinitlinklist)**([Spi_UtilsLinkListObj](Classes/struct_spi___utils_link_list_obj.md) * llobj)| function to Initialize linked list  |
 | void | **[Spi_UtilsDeInitLinkList](../Modules/group___s_p_i.md#function-spi-utilsdeinitlinklist)**([Spi_UtilsLinkListObj](Classes/struct_spi___utils_link_list_obj.md) * llobj)| function to De-Initialize linked list  |
 | void | **[Spi_UtilsLinkNodePri](../Modules/group___s_p_i.md#function-spi-utilslinknodepri)**([Spi_UtilsLinkListObj](Classes/struct_spi___utils_link_list_obj.md) * llobj, Spi_UtilsNode * node, const [Spi_UtilsParams](Classes/struct_spi___utils_params.md) * params, uint8 currSeqId)| Links a node to the linked list. The memory to the node object should be allocated by the caller. This is used for link list with priority.  |
@@ -948,6 +944,7 @@ function to copy driver object
 
 ```
 void Spi_HwUnitInit(
+    Spi_DriverObjType * drvObj,
     Spi_HwUnitObjType * hwUnitObj
 )
 ```
@@ -1016,7 +1013,8 @@ function to de-initialize SPI hardware unit
 
 ```
 Spi_HwUnitObjType * Spi_GetHwUnitObj(
-    Spi_HWUnitType HWUnit
+    Spi_HWUnitType HWUnit,
+    Spi_DriverObjType * drvObj
 )
 ```
 
@@ -1124,6 +1122,7 @@ function to enable interrupts
 
 ```
 Std_ReturnType Spi_StartSeqAsync(
+    Spi_DriverObjType * drvObj,
     Spi_SeqObjType * seqObj
 )
 ```
@@ -1161,6 +1160,7 @@ private function to start Asynchronous transmission
 
 ```
 Std_ReturnType Spi_StartSeqSync(
+    Spi_DriverObjType * drvObj,
     Spi_SeqObjType * seqObj
 )
 ```
@@ -1233,7 +1233,8 @@ function to process receive interrupt
 ```
 void Spi_ProcessChCompletion(
     Spi_HwUnitObjType * hwUnitObj,
-    Spi_JobResultType jobResult
+    Spi_JobResultType jobResult,
+    Spi_DriverObjType * drvObj
 )
 ```
 
@@ -1340,6 +1341,7 @@ function to get HW unit base address
 
 ```
 void Spi_CancelSequence(
+    Spi_DriverObjType * drvObj,
     Spi_SeqObjType * seqObj
 )
 ```
@@ -1747,10 +1749,9 @@ function to reset External Device object
 ### function Spi_FifoWrite8
 
 ```
-static __inline const uint8 * Spi_FifoWrite8(
+static inline void Spi_FifoWrite8(
     uint32 baseAddr,
-    uint32 wordSize,
-    const uint8 * bufPtr,
+    Spi_ChannelObjType * chObj,
     uint32 transferLength,
     uint16 curTxWords
 )
@@ -1793,10 +1794,9 @@ function to write into Register
 ### function Spi_FifoWrite16
 
 ```
-static __inline const uint16 * Spi_FifoWrite16(
+static inline void Spi_FifoWrite16(
     uint32 baseAddr,
-    uint32 wordSize,
-    const uint16 * bufPtr,
+    Spi_ChannelObjType * chObj,
     uint32 transferLength,
     uint16 curTxWords
 )
@@ -1837,7 +1837,7 @@ function to write into Register
 ### function Spi_FifoRead8
 
 ```
-static __inline uint8 * Spi_FifoRead8(
+static inline uint8 * Spi_FifoRead8(
     uint32 baseAddr,
     uint8 * bufPtr,
     uint32 numWordsToRead,
@@ -1883,7 +1883,7 @@ function to read from Register
 ### function Spi_FifoRead16
 
 ```
-static __inline uint16 * Spi_FifoRead16(
+static inline uint16 * Spi_FifoRead16(
     uint32 baseAddr,
     uint16 * bufPtr,
     uint32 numWordsToRead,
@@ -1929,11 +1929,10 @@ function to read from Register
 ### function Spi_FifoWriteDefault
 
 ```
-static __inline void Spi_FifoWriteDefault(
+static inline void Spi_FifoWriteDefault(
     uint32 baseAddr,
-    uint32 wordSize,
-    uint16 defaultTxData,
-    uint32 transferLength
+    uint32 transferLength,
+    Spi_ChannelObjType * chObj
 )
 ```
 
@@ -1972,7 +1971,7 @@ function to write default data into Register
 ### function Spi_FifoReadDiscard
 
 ```
-static __inline void Spi_FifoReadDiscard(
+static inline void Spi_FifoReadDiscard(
     uint32 baseAddr,
     uint32 transferLength
 )
@@ -2009,7 +2008,7 @@ function to read from Register
 ### function Spi_ReadRxBufferNonFifo
 
 ```
-static __inline void Spi_ReadRxBufferNonFifo(
+static inline void Spi_ReadRxBufferNonFifo(
     Spi_ChannelObjType * chObj,
     uint32 baseAddr
 )
@@ -2046,7 +2045,7 @@ function to read from Register
 ### function Spi_WriteTxBufferNonFifo
 
 ```
-static __inline void Spi_WriteTxBufferNonFifo(
+static inline void Spi_WriteTxBufferNonFifo(
     Spi_ChannelObjType * chObj,
     uint32 baseAddr
 )
@@ -2083,7 +2082,7 @@ function to write into Register
 ### function Spi_ClearPIPEINTFlag
 
 ```
-static __inline void Spi_ClearPIPEINTFlag(
+static inline void Spi_ClearPIPEINTFlag(
     uint32 intNum
 )
 ```
@@ -2114,68 +2113,28 @@ function to write into Register
 
 **Postcondition**: None 
 
-### function Spi_RegMFReadRaw16
+### function Spi_PrivInit
 
 ```
-static inline uint16 Spi_RegMFReadRaw16(
-    uint32 addr,
-    uint16 mask,
-    uint16 shift
+void Spi_PrivInit(
+    Spi_DriverObjType * drvObj,
+    const Spi_ConfigType * CfgPtr
 )
 ```
 
 
 **Brief**: 
-This function reads a 16 bit register, masks specific set of bits and the left shifted value. 
+Service for SPI initialization. 
+
+This service initializes all the configured Spi channels, jobs, sequences and SPI instances This will set the state of SPI driver to Initialized.
+
 
 **Parameters**: 
 
   
-* **addr** Address of the memory mapped hardware register. 
+* **CfgPtr** - Pointer to configuration set 
   
-* **mask** Mask for the bit field. 
-  
-* **shift** Bit field shift from LSB. 
-
-
-**Returns**: 
-
-  
-* **Value** of the type uint16. 
-<br> 
-
-
-**Return**: Bit-field value (absolute value - shifted to LSB position). 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_RegMFWriteRaw16
-
-```
-static inline void Spi_RegMFWriteRaw16(
-    uint32 addr,
-    uint16 mask,
-    uint16 shift,
-    uint16 value
-)
-```
-
-
-**Brief**: 
-This function writes a 16 bit register masking specific set of bits and the left shifted value. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **mask** Mask for the bit field. 
-  
-* **shift** Bit field shift from LSB. 
-  
-* **value** Value to write in the memory mapped hardware register. 
+* **drvObj** - Pointer to Driver Object 
 
 
 **Returns**: 
@@ -2187,140 +2146,7 @@ This function writes a 16 bit register masking specific set of bits and the left
 
 **Return**: None 
 
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_RegReadRaw16
-
-```
-static inline uint16 Spi_RegReadRaw16(
-    uint32 addr
-)
-```
-
-
-**Brief**: 
-This function reads a 16 bit register. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-
-
-**Returns**: 
-
-  
-* **Value** of the type uint16. 
-<br> 
-
-
-**Return**: Bit-field value (absolute value - shifted to LSB position). 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_RegWriteRaw16
-
-```
-static inline void Spi_RegWriteRaw16(
-    uint32 addr,
-    uint16 value
-)
-```
-
-
-**Brief**: 
-This function writes a 16 bit register. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **value** Value to write in the 16-bit register. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_RegBitSet16
-
-```
-static inline void Spi_RegBitSet16(
-    uint32 addr,
-    uint16 mask
-)
-```
-
-
-**Brief**: 
-This function sets one of the bit in 16 bit register. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **mask** mask of the bit to set. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_RegBitClear16
-
-```
-static inline void Spi_RegBitClear16(
-    uint32 addr,
-    uint16 mask
-)
-```
-
-
-**Brief**: 
-This function clears one of the bit in 16 bit register. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **mask** mask of the bit to clear. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
+**Precondition**: CfgPtr shall be null in Pre-Compile variant, Link-Time variant and shall not be NULL in Post-Build variant 
 
 **Postcondition**: None 
 

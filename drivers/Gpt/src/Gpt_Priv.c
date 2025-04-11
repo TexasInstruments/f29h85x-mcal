@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -24,6 +24,7 @@
  * Header Files
  *********************************************************************************************************************/
 #include "Gpt_Priv.h"
+#include "Det.h"
 
  /*********************************************************************************************************************
  * Version Check (if required)
@@ -75,11 +76,14 @@ P2VAR(Gpt_DriverObjType, AUTOMATIC, VAR_NO_INIT_UNSPECIFIED) Gpt_DrvObjPtr;
  *********************************************************************************************************************/
 #define GPT_START_SEC_CODE
 #include "Gpt_MemMap.h"
+
+/*
+ *Design: MCAL-28449
+ */
 FUNC(void, GPT_CODE) Gpt_SetDriverObjPtr( Gpt_DriverObjType* Set_DrvObj)
 {
     Gpt_DrvObjPtr = Set_DrvObj;
 }
-
 
 /*
  *Design: MCAL-22077
@@ -157,21 +161,15 @@ FUNC(void, GPT_CODE) Gpt_InitPriv(const Gpt_ChannelConfigType *ChannelObj)
         switch (ChannelObj->Gpt_SimMode)
         {
             case (GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC):
-            {
                 HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TCR)) &= ((uint16)~CPUTIMER_TCR_FREE);
                 HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TCR)) &= ((uint16)~CPUTIMER_TCR_SOFT);
                 break;
-            }
             case (GPT_SIM_STOP_TIMER_AT_NEXT_TIMER_ELAPSE):
-            {
                 HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TCR)) &= ((uint16)~CPUTIMER_TCR_FREE);
                 HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TCR)) |= ((uint16)CPUTIMER_TCR_SOFT);
                 break;
-            }
             default:
-            {
                 break;
-            }
         }
     }
     else
@@ -271,7 +269,7 @@ FUNC(void, GPT_CODE) Gpt_DisableIntPriv(const Gpt_ChannelConfigType *ChannelObj)
 
 
 /*
- *Design: MCAL-22040, MCAL-21957, MCAL-21958, MCAL-21960, MCAL-22038, MCAL-22039
+ *Design: MCAL-28452, 22040, MCAL-21957, MCAL-21958, MCAL-21960, MCAL-22038, MCAL-22039
  */
 FUNC(void, GPT_CODE) Gpt_IsrNotifyFunction(Gpt_ChannelType Channel)
 {
@@ -298,6 +296,7 @@ FUNC(void, GPT_CODE) Gpt_IsrNotifyFunction(Gpt_ChannelType Channel)
         }
     }
 }
+
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/

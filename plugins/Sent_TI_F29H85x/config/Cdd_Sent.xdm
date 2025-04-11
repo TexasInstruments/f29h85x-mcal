@@ -7,6 +7,7 @@
 
   <d:ctr type="AUTOSAR" factory="autosar" 
          xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
          xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
          xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
          xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
@@ -14,9 +15,10 @@
          xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
     <d:lst type="TOP-LEVEL-PACKAGES">
       <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
-        <a:a name="UUID"  value="150c5234-3b70-4d11-a654-786ae10128ad"/>
+        <d:lst type="TOP-LEVEL-PACKAGES">
+          <d:ctr name="Cdd_Sent" type="AR-PACKAGE">
             <d:lst type="ELEMENTS">
-              <d:chc name="Cdd_Sent" type="AR-ELEMENT" value="MODULE-DEF">
+              <d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-DEF">
                 <v:ctr type="MODULE-DEF">
                   <a:a name="ADMIN-DATA" type="ADMIN-DATA">
                     <ad:ADMIN-DATA>
@@ -29,13 +31,13 @@
                     </ad:ADMIN-DATA>
                   </a:a>
                   <a:a name="DESC" 
-                       value="EN: Configuration of the CddSent module."/>
-                  <a:a name="LOWER-MULTIPLICITY" value="0"/>
+                       value="EN: Configuration of the CddSent module"/>
+                  <a:a name="LOWER-MULTIPLICITY" value="1"/>
                   <a:a name="POSTBUILDVARIANTSUPPORT" value="false"/>
                   <a:a name="RELEASE" value="asc:4.3.1"/>
-                  <a:a name="UPPER-MULTIPLICITY" value="1"/>
-                  <a:a name="UUID" 
-                       value="ECUC:8a22156a-f55e-407d-9677-9660dae4c9d4"/>
+                  <a:a name="UPPER-MULTIPLICITY" value="*"/>
+                  <a:a name="UUID" value="8de76b7c-c31f-441c-a674-5819632fed2c"/>
+                  <a:a name="API-SERVICE-PREFIX" value="Cdd_Sent"/>
                   <v:var name="IMPLEMENTATION_CONFIG_VARIANT" 
                          type="ENUMERATION">
                     <a:a name="IMPLEMENTATIONCONFIGCLASS" 
@@ -43,6 +45,8 @@
                       <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                     </a:a>
                     <a:a name="LABEL" value="Config Variant"/>
+                    <a:a name="UUID" 
+                         value="5b679a01-e0f7-4df9-96df-b99f40140b7a"/>
                     <a:da name="DEFAULT" value="VariantPreCompile"/>
                     <a:da name="RANGE">
                       <a:v>VariantPreCompile</a:v>
@@ -53,7 +57,6 @@
                          value="EN: This container contains the configuration parameters and sub containers of the CddSent module."/>
                     <a:a name="UUID" 
                          value="ECUC:b9ea6561-fd73-4381-bdb6-8e027a43ad62"/>
-
                     <v:lst name="CddSentController" type="MAP">
                       <a:da name="MIN" value="1"/>
                       <a:da name="MAX" value="6"/>
@@ -69,11 +72,10 @@
                                type="IMPLEMENTATIONCONFIGCLASS">                           
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
-                          <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:87199697-72c8-46ee-b7c7-276cc811d698"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="RANGE">
                             <a:v>SENT1</a:v>
                             <a:v>SENT2</a:v>
@@ -87,7 +89,6 @@
                              <a:tst expr="text:uniq((../../..//*[@name='CddSentInstance']),node:value(.))" false="CddSentInstance selection has to be unique across all containers"/>
                           </a:da>
                         </v:var> 
-
                         <v:var name="CddSentBaseAddress" type="INTEGER">
                           <a:a name="DESC" 
                                value="EN: Specifies the CddSent HW unit base address."/>
@@ -98,8 +99,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:69afaa0c-2dc7-4390-a7c9-c605ae01c22f"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="INVALID" type="Range">
                             <a:tst expr="&lt;=4294967295"/>
                             <a:tst expr="&gt;=0"/>
@@ -110,7 +110,6 @@
                           </a:da>
                           <a:da name="READONLY" value="true"/>
                         </v:var>
-
                         <v:var name="CddSentHWUnitId" type="INTEGER">
                           <a:a name="DESC" 
                                value="EN: This parameter provides the HW unit ID which is unique in a given CddSent Driver. The value for this parameter starts with 0 and continue without any gaps."/>
@@ -121,8 +120,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="ECU"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="true"/>
-                          <a:a name="UUID" 
-                               value="ECUC:efc9b48f-271a-4833-9ba0-aa53aa4cf276"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="DEFAULT" value="0"/>
                           <a:da name="INVALID" type="Range">
                             <a:tst expr="&lt;=5"/>
@@ -142,8 +140,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="ECU"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:efc9b48f-271a-4833-9ba0-aa53aa4cf278"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:value(concat(node:path(node:ref(../CddSentCpuClockRef)), '/McuClockReferencePointFrequency')) div (1000000) * 3 )&quot;,num:i(0))"/>
                          <a:da name="INVALID" type="Range">
                             <a:tst expr="&lt;=600"/>
@@ -161,8 +158,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:6386bf05-7b63-43d6-960e-42e2c45d4cd0"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                             <a:da name="DEFAULT" value="CDD_SENT_ISR_CAT2"/>
                             <a:da name="RANGE">
                                 <a:v>CDD_SENT_ISR_CAT1_RTINT</a:v>
@@ -180,8 +176,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:20d99dc2-e3fe-4832-8ecf-379936ade262"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="DEFAULT" value="CDD_SENT_CRC_RECOMENDED_2010"/>
                             <a:da name="RANGE">
                                 <a:v>CDD_SENT_CRC_LEGACY_2007</a:v>
@@ -199,8 +194,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:10d99dc2-e3fe-3832-8ecf-379936ade262"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="DEFAULT" value="CDD_SENT_CRC_4_BIT"/>
                             <a:da name="RANGE">
                                 <a:v>CDD_SENT_CRC_4_BIT</a:v>
@@ -218,8 +212,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:20d99dc2-eefe-4832-8ecf-379936ade262"/>
+                           <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="DEFAULT" value="CDD_SENT_CRC_WITH_STATUS"/>
                             <a:da name="RANGE">
                                 <a:v>CDD_SENT_CRC_WITH_STATUS</a:v>
@@ -236,8 +229,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:20d99dc2-e3fe-4811-8ecf-379936ade262"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="DEFAULT" value="CDD_SENT_6_DATA_NIBBLES"/>
                             <a:da name="RANGE">
                                 <a:v>CDD_SENT_1_DATA_NIBBLES</a:v>
@@ -260,13 +252,11 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:20d99dc2-e3fe-4832-8ecf-379956ade264"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="ENABLE" type="XPath" expr="(../CddSentMTP = 'false')"/>
                           <a:da name="DEFAULT" value="CDD_SENT_TRIGLEV6"/>
                             <a:da name="RANGE">
                                 <a:v>CDD_SENT_TRIGDISABLE</a:v>
-                                <a:v>CDD_SENT_TRIGLEV1</a:v>
-                                <a:v>CDD_SENT_TRIGLEV2</a:v>
                                 <a:v>CDD_SENT_TRIGLEV3</a:v>
                                 <a:v>CDD_SENT_TRIGLEV4</a:v>
                                 <a:v>CDD_SENT_TRIGLEV5</a:v>
@@ -284,36 +274,37 @@
                           </a:da>
                         </v:var>
                         <v:var name="CddSentUserCallbackFunction" type="FUNCTION-NAME">
-                         <a:a name="DESC" 
-                                   value="EN: Call back function for the data"/>
-                         <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                   type="IMPLEMENTATIONCONFIGCLASS">                 
-                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              <a:a name="DESC" 
+                                        value="EN: Call back function for the data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                         </a:a>
-                         <a:a name="OPTIONAL" value="true"/>
-                         <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
-                         <a:a name="SCOPE" value="LOCAL"/>
-                         <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                         <a:a name="UUID" 
-                                   value="9ee0e506-f44c-4dd1-bd39-e475f0026b51"/>
-                         <a:da name="ENABLE" value="true"/>
-                         <a:da name="DEFAULT" value="NULL_PTR"/>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="ENABLE" value="true"/>
+                              <a:da name="DEFAULT" value="NULL_PTR"/>
+                              <a:da name="INVALID" type="XPath">
+                                   <a:tst expr="../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true' or (node:value(.) != 'NULL_PTR' and not(node:empty(.)))" false="CddSentChannelType selection has to be unique across all containers"/>
+                              </a:da>
                          </v:var>
-                        <v:var name="CddSentPausePulse" type="BOOLEAN">
-                          <a:a name="DESC" 
-                               value="EN: Enable/Disable Pause pulse."/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                               type="IMPLEMENTATIONCONFIGCLASS">
-                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                          </a:a>
-                          <a:a name="ORIGIN" value="Texas Instruments"/>
-                          <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:20d99dc2-e3fe-4882-8ecf-379936ade262"/>
-                          <a:da name="DEFAULT" value="true"/>
-                        </v:var>
+                         <v:var name="CddSentUserErrorCallbackFunction" type="FUNCTION-NAME">
+                              <a:a name="DESC" 
+                                        value="EN: Call back function for the data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="ENABLE" value="true"/>
+                              <a:da name="DEFAULT" value="NULL_PTR"/>
+                              <a:da name="INVALID" type="XPath">
+                                   <a:tst expr="node:refexists(as:modconf('Cdd_Sent')[1]/CddSentDemEventParameterRefs/CDD_E_HARDWARE_ERROR) or node:value(.) != 'NULL_PTR' or not(node:empty(.))" false="CddSentChannelType selection has to be unique across all containers"/>
+                              </a:da>
+                         </v:var>
                         <v:var name="CddSentSyncTimeout" type="INTEGER">
                           <a:a name="DESC" 
                                value="EN: This parameter is for setting Timeout for receiving the synchronization pulse"/>
@@ -324,8 +315,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="ECU"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:efc9b48f-271a-4833-9ba0-aa53aa4cf279"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="DEFAULT" value="0"/>
                           <a:da name="INVALID" type="Range">
                             <a:tst expr="&lt;=255"/>
@@ -342,11 +332,42 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="ECU"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:efc9b48f-271a-4832-9ba0-aa52aa4cf278"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="DEFAULT" value="5"/>
                           <a:da name="INVALID" type="Range">
                             <a:tst expr="&lt;=255"/>
+                            <a:tst expr="&gt;=0"/>
+                          </a:da>
+                        </v:var>
+                         <v:var name="CddSentMTP" type="BOOLEAN">
+                          <a:a name="DESC" 
+                               value="EN: Enable/disable MTP functionality."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                               type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                       <v:var name="CddSentGlobalWaitTime" type="INTEGER">
+                          <a:a name="DESC" 
+                               value="EN: This parameter is for delay time  between the last frame received to the new master trigger pulse to be generated"/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                               type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="ECU"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="DEFAULT" value="256"/>
+                          <a:da name="ENABLE" type="XPath" expr="(../CddSentMTP = 'true')"/>
+                          <a:da name="INVALID" type="Range">
+                            <a:tst expr="&lt;=65535"/>
                             <a:tst expr="&gt;=0"/>
                           </a:da>
                         </v:var>
@@ -360,10 +381,22 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="ECUC:21d99dc2-e3fe-4832-8ecf-378936ade262"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="DEFAULT" value="false"/>
                         </v:var>
+                         <v:var name="CddSentEnableTimeStamp" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: Enable/disable Time stamping."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="true"/>
+                         </v:var>
                         <v:ref name="CddSentCpuClockRef" type="REFERENCE">
                           <a:a name="DESC" 
                                value="EN: Reference to the CPU clock configuration, which is set in the MCU driver configuration"/>
@@ -373,42 +406,40 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="UUID" 
-                               value="ECUC:2e20d271-b4b3-47cc-a0ee-a6e49b8373ec"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <a:da name="REF" 
                                 value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
                         </v:ref>
                         <v:lst name="CddSentChannelObject" type="MAP">
                           <a:da name="MIN" value="1"/>
-                          <a:da name="MAX" value="256"/>
                           <v:ctr name="CddSentChannelObject" type="IDENTIFIABLE">
                             <a:a name="DESC" 
                                  value="EN: This container contains the configuration parameters of the CddSent channel object"/>
                             <a:a name="UUID" 
-                                 value="ECUC:a69e276f-cf20-496c-8587-edf4d9d2f01b"/> 
-                           <v:var name="CddSentSensorType" type="ENUMERATION">
-                              <a:a name="DESC" 
-                                   value="EN: selection of sensor types"/>
-                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                   type="IMPLEMENTATIONCONFIGCLASS">
-                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                              </a:a>
-                              <a:a name="ORIGIN" value="Texas Instruments"/>
-                              <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                              <a:a name="UUID" 
-                                   value="ECUC:20d99dc2-e3fe-4832-8ecf-378936ade262"/>
-                              <a:da name="DEFAULT" value="CDD_SENT_CHANNEL_SENSOR_1"/>
-                                <a:da name="RANGE">
-                                    <a:v>CDD_SENT_CHANNEL_SENSOR_1</a:v>
-                                    <a:v>CDD_SENT_CHANNEL_SENSOR_2</a:v>
-                                    <a:v>CDD_SENT_CHANNEL_SENSOR_3</a:v>
-                                    <a:v>CDD_SENT_CHANNEL_SENSOR_4</a:v>
-                              </a:da>
-                              <a:da name="INVALID" type="XPath">
-                                   <a:tst expr="not(text:uniq((../../..//*[@name='CddSentSensorType']),node:value(.))) or num:i(count(../../../CddSentChannelObject/*)) &lt;='1'" false="CddSentChannelType selection has to be unique across all containers"/>
-                              </a:da>
-                          </v:var>
+                                 value="ECUC:a69e276f-cf20-496c-8587-edf4d9d2f01b"/>
+                            <a:da name="INVALID" type="XPath">
+                                   <a:tst expr="text:uniq((../../../../CddSentController/*/CddSentChannelObject/*/@name),@name)" false="CddSentChannelObject selection has to be unique across all containers"/>
+                            </a:da>
+                              <v:var name="CddSentSensorType" type="ENUMERATION">
+                                   <a:a name="DESC" 
+                                        value="EN: selection of sensor types"/>
+                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                        type="IMPLEMENTATIONCONFIGCLASS">
+                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                   </a:a>
+                                   <a:a name="ORIGIN" value="Texas Instruments"/>
+                                   <a:a name="SCOPE" value="LOCAL"/>
+                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                   <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                   <a:da name="DEFAULT" value="CDD_SENT_CHANNEL_STANDARD_SENSOR"/>
+                                   <a:da name="RANGE">
+                                        <a:v>CDD_SENT_CHANNEL_STANDARD_SENSOR</a:v>
+                                        <a:v>CDD_SENT_CHANNEL_SENSOR_1</a:v>
+                                        <a:v>CDD_SENT_CHANNEL_SENSOR_2</a:v>
+                                        <a:v>CDD_SENT_CHANNEL_SENSOR_3</a:v>
+                                        <a:v>CDD_SENT_CHANNEL_SENSOR_4</a:v>
+                                   </a:da>
+                            </v:var> 
                             <v:var name="CddSentChannelType" type="ENUMERATION">
                               <a:a name="DESC" 
                                    value="EN: selection of channel types"/>
@@ -419,23 +450,401 @@
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                              <a:a name="UUID" 
-                                   value="ECUC:20d99dc2-e3fe-4832-eecf-379936ad2262"/>
-                              <a:da name="DEFAULT" value="FAST_CHANNEL"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="CDD_SENT_CHANNEL_STANDARD_SENSOR_FAST_CHANNEL"/>
                                 <a:da name="RANGE">
-                                    <a:v>FAST_CHANNEL</a:v>
-                                    <a:v>SHORT_SERIAL_SLOW_CHANNEL</a:v>
-                                    <a:v>ENHANCED_SERIAL_12BIT_SLOW_CHANNEL</a:v>
+                                    <a:v>CDD_SENT_CHANNEL_STANDARD_SENSOR_FAST_CHANNEL</a:v>
+                                    <a:v>CDD_SENT_CHANNEL_SENSOR_1_FAST_CHANNEL</a:v>
+                                    <a:v>CDD_SENT_CHANNEL_SENSOR_2_FAST_CHANNEL</a:v>
+                                    <a:v>CDD_SENT_CHANNEL_SENSOR_3_FAST_CHANNEL</a:v>
+                                    <a:v>CDD_SENT_CHANNEL_SENSOR_4_FAST_CHANNEL</a:v>
+                                    <a:v>SHORT_SERIAL_ENHANCED_SERIAL_12BIT_SLOW_CHANNEL</a:v>6
                                     <a:v>ENHANCED_SERIAL_16BIT_SLOW_CHANNEL</a:v>
                               </a:da>
                               <a:da name="INVALID" type="XPath">
-                                        <a:tst expr="text:uniq((../../..//*[@name='CddSentChannelType']),'FAST_CHANNEL')" false="CddSentChannelType selection has to be unique across all containers"/>
+                                   <a:tst expr="../CddSentChannelType = 'SHORT_SERIAL_ENHANCED_SERIAL_12BIT_SLOW_CHANNEL' or ../CddSentChannelType = 'ENHANCED_SERIAL_16BIT_SLOW_CHANNEL'or text:contains(node:value(.), node:value(../CddSentSensorType)) and text:uniq((../../..//*[@name='CddSentChannelType']),node:value(.))" false="CddSentChannelType selection has to be unique across all containers"/>
                               </a:da>
                             </v:var>
-                           
-                            <v:var name="CddSentEnableTimeStamp" type="BOOLEAN">
+                            <v:ref name="CddSentPduID" type="REFERENCE">
                               <a:a name="DESC" 
-                                   value="EN: Enable/disable Time stamping."/>
+                                   value="EN: This parameter will be used when CddSentIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in receive function callback to PduR to address the received Pdu from respective sensor. "/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                                                        
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="ENABLE" type="XPath" expr="(../../../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true')"/>
+                              <a:da name="INVALID" type="XPath">
+                                   <a:tst expr="text:uniq((../../../..//*[@name='CddSentPduID']),node:value(.)) and not(node:empty(.))" false="CddSentChannelType selection has to be unique across all containers"/>
+                              </a:da>
+                              <a:da name="REF" 
+                                        value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Cdd/CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerRxPdu"/>
+                            </v:ref>
+                            <v:var name="CddSentChannelObjectID" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: This parameter will be used when CddSentIntegrationWithAsrComStackEnable is disabled. This channel object identifier will be used in configured receive callback function to  address the received object from respective sensor. "/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="ENABLE" value="true"/>
+                              <a:da name="EDITABLE" value="false"/>
+                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> (num:i(count(preceding::CddSentChannelObjectID))) &quot;, num:i(0))"/>
+                              <a:da name="INVALID" type="XPath">
+                              <a:tst expr="text:uniq((../../../..//*[@name='CddSentChannelObjectID']),node:value(.))" false="CddSentChannelObjectID selection has to be unique across all containers"/>
+                              </a:da>
+                           </v:var>
+                           <v:var name="CddSentMessageID" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: This parameter is the message id"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="ENABLE" type="XPath" expr="(contains(node:value(../CddSentChannelType), 'CDD_SENT_CHANNEL_STANDARD_SENSOR_FAST_CHANNEL')) or (contains(node:value(../CddSentChannelType), 'CDD_SENT_CHANNEL_SENSOR_1_FAST_CHANNEL')) or (contains(node:value(../CddSentChannelType), 'CDD_SENT_CHANNEL_SENSOR_2_FAST_CHANNEL')) or (contains(node:value(../CddSentChannelType), 'CDD_SENT_CHANNEL_SENSOR_3_FAST_CHANNEL')) or (contains(node:value(../CddSentChannelType), 'CDD_SENT_CHANNEL_SENSOR_4_FAST_CHANNEL'))" true="false" false="true"/>
+                              <a:da name="DEFAULT" value="1"/>
+                              <a:da name="INVALID" type="Range">
+                              <a:tst expr="&lt;=255"/>
+                              <a:tst expr="&gt;=1"/>
+                              </a:da>
+                              <a:da name="INVALID" type="XPath">
+                                   <a:tst expr="text:uniq((../../..//*[@name='CddSentMessageID']),node:value(.))" false="CddSentChannelType selection has to be unique across all containers"/>
+                              </a:da>
+                           </v:var>
+                          </v:ctr>
+                        </v:lst>
+                        <v:lst name="CddSentExternalDeviceConfig" type="MAP">
+                          <a:da name="MIN" type="XPath" expr="node:fallback(&quot;->node:when(../CddSentMTP = 'true',1,0)&quot;,num:i(0))"/> 
+                          <a:da name="MAX" value="5"/>
+                          <v:ctr name="CddSentExternalDeviceConfig" type="IDENTIFIABLE">
+                            <a:a name="DESC" 
+                                 value="EN: This container contains the configuration parameters of the CddSent MTP triggers."/>
+                            <a:a name="UUID" 
+                                 value="ECUC:a79e276f-cf10-496c-8587-edf4d9d2f01b"/>
+                            <a:da name="ENABLE" type="XPath" expr="(contains(node:value(../../CddSentMTP), 'true'))"/>
+                            <v:var name="CddSentMTPSensorType" type="ENUMERATION">
+                              <a:a name="DESC" 
+                                   value="EN: selection of channel types"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="XPath">
+                                   <a:tst expr="text:uniq((../..//*[@name='CddSentMTPSensorType']),node:value(.))" false="CddSentMTPSensorType selection has to be unique across all containers"/>
+                              </a:da>	
+                              <a:da name="DEFAULT" value="CDD_SENT_CHANNEL_SENSOR_1"/>
+                                <a:da name="RANGE">
+                                    <a:v>CDD_SENT_CHANNEL_BROADCAST</a:v>
+                                    <a:v>CDD_SENT_CHANNEL_SENSOR_1</a:v>
+                                    <a:v>CDD_SENT_CHANNEL_SENSOR_2</a:v>
+                                    <a:v>CDD_SENT_CHANNEL_SENSOR_3</a:v>
+                                    <a:v>CDD_SENT_CHANNEL_SENSOR_4</a:v>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentSensorTriggerSource" type="ENUMERATION">
+                              <a:a name="DESC" 
+                                   value="EN: selection of channel types"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <!-- <a:da name="DEFAULT" value="TRIGGER_DISABLE"/> -->
+                                <!-- <a:da name="RANGE">
+                                    <a:v>TRIGGER_DISABLE</a:v>
+                                    <a:v>BROADCAST_TRIGGER_SOURCE</a:v>
+                                    <a:v>SENSOR_1_TRIGGER_SOURCE</a:v>
+                                    <a:v>SENSOR_2_TRIGGER_SOURCE</a:v>
+                                    <a:v>SENSOR_3_TRIGGER_SOURCE</a:v>
+                                    <a:v>SENSOR_4_TRIGGER_SOURCE</a:v>
+                              </a:da> -->
+                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Sent_F29H85x_External_Triggers')[1]&quot;,'DISABLE')"/>
+                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Sent_F29H85x_External_Triggers')&quot;,'DISABLE')"/>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorEnable" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: Accept PArticular MTP channel."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">  
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare1" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: The time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled. No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS"> 
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare2" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare1, No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare3" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare2, No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS"> 
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare4" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare3, No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">                     
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare5" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare4, No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare6" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare5, No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare7" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare6, No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare8" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare7, No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare9" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare8, No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorCompare10" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare9, No toggle if TOGGLETIME = 0."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:da name="ENABLE" type="XPath" expr="not(../CddSentMTPSensorType = 'CDD_SENT_CHANNEL_BROADCAST')"/> 
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:var name="CddSentMTPSensorPeriod" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: the total time (inclock tick unit) mater trigger pulse output waveform is active. The CddSentMTPSensorPeriod must be larger than all Channel CddSentMTPSensorCompare10 value."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=1023"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                           <v:var name="CddSentMTPSensorTimeout" type="INTEGER">
+                              <a:a name="DESC" 
+                                   value="EN: The parameter CddSentMTPSensorTimeout indicates a time to initiate an interrupt if the sent receiver has not received responce"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="ECU"/>
+                              <a:da name="DEFAULT" value="0"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:da name="ENABLE" type="XPath" expr="not(../CddSentMTPSensorType = 'CDD_SENT_CHANNEL_BROADCAST')"/> 
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;=4294967295"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
+                            <v:ref name="CddSentMTPSensorPduID" type="REFERENCE">
+                                   <a:a name="DESC" 
+                                        value="EN: This parameter will be used when CddSentIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in transmit function to address the respective sensor. "/>
+                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                        type="IMPLEMENTATIONCONFIGCLASS">
+                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                   </a:a>
+                                   <a:a name="ORIGIN" value="Texas Instruments"/>
+                                   <a:a name="SCOPE" value="LOCAL"/>
+                                   <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                   <a:da name="ENABLE" type="XPath" expr="((../../../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true') and not(../CddSentMTPSensorType = 'CDD_SENT_CHANNEL_BROADCAST'))"/> 
+                                   <a:da name="INVALID" type="XPath">
+                                        <a:tst expr="text:uniq((../..//*[@name='CddSentMTPSensorPduID']),node:value(.)) and not(node:empty(.))" false="CddSentMTPSensorPduID selection has to be unique across all containers"/>
+                                   </a:da>	
+                                   <a:da name="REF" 
+                                        value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Cdd/CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerTxPdu"/>
+                              </v:ref>
+                              <v:var name="CddSentExternalDeviceID" type="INTEGER">
+                                   <a:a name="DESC" 
+                                        value="EN: This parameter will be used when CddSentIntegrationWithAsrComStackEnable is disabled. This device identifier will be used in transmit function to address the respective sensor. "/>
+                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                        type="IMPLEMENTATIONCONFIGCLASS">
+                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                   <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                                   </a:a>
+                                   <a:a name="ORIGIN" value="Texas Instruments"/>
+                                   <a:a name="SCOPE" value="ECU"/>
+                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                   <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                   <a:da name="ENABLE" type="XPath" expr="((../../../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'false') and not(../CddSentMTPSensorType = 'CDD_SENT_CHANNEL_BROADCAST'))"/>
+                                   <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> (num:i(count(preceding::CddSentExternalDeviceID))) &quot;, num:i(0))"/>
+                                   <a:da name="INVALID" type="XPath">
+                                        <a:tst expr="text:uniq((../..//*[@name='CddSentExternalDeviceID']),node:value(.))" false="CddSentExternalDeviceID selection has to be unique across all containers"/>
+                                   </a:da>	
+                              </v:var>
+                          </v:ctr>
+                        </v:lst> 
+                      <v:ctr name="CddSentFIFOInterrupts" type="IDENTIFIABLE">
+                        <a:a name="DESC" value="EN: Valid data interrupts"/>
+                        <a:a name="UUID" 
+                             value="ECUC:a79e276f-cf20-496c-8587-edf5d9d2f01b"/>
+                        <a:da name="ENABLE" type="XPath" expr="(../CddSentMTP = 'false')"/>
+                        <a:a name="TAB" value="CddSentInterruptSources"/>
+                        <v:var name="FIFO_Trigger_Event" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: The number of data in the receiver FIFO is greater than  programmed trigger"/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                    type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -443,67 +852,541 @@
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                              <a:a name="UUID" 
-                                   value="ECUC:20d69dc2-e3fe-4832-8ecf-379936ade262"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                               <a:da name="DEFAULT" value="false"/>
-                              <a:da name="ENABLE" type="XPath" expr="(contains(node:value(../CddSentChannelType), 'FAST_CHANNEL'))" true='true' false='false'/>
-                            </v:var>
-
-                            <v:var name="CddSentChannelID" type="INTEGER">
+                        </v:var>
+                        <v:var name="FIFO_Overflow_Error" type="BOOLEAN">
                               <a:a name="DESC" 
-                                   value="EN: This parameter is the sensor id for upper layer communication"/>
+                                   value="EN: The CPU reads the receiver FIFO when it is full"/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                    type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
-                              <a:a name="SCOPE" value="ECU"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                              <a:a name="UUID" 
-                                   value="ECUC:efc9b48f-271a-4822-9ba0-aa52aa4cf278"/>
-                              <a:da name="DEFAULT" value="0"/>
-                              <a:da name="INVALID" type="Range">
-                              <a:tst expr="&lt;=255"/>
-                              <a:tst expr="&gt;=0"/>
-                              </a:da>
-                              <a:da name="INVALID" type="XPath">
-                                   <a:tst expr="text:uniq((../../../../..//*[@name='CddSentChannelID']),node:value(.))" false="CddSentChannelType selection has to be unique across all containers"/>
-                              </a:da>
-                           </v:var>
-
-                           <v:var name="CddSentMessageID" type="INTEGER">
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="FIFO_Underflow_Error" type="BOOLEAN">
                               <a:a name="DESC" 
-                                   value="EN: This parameter is the message id"/>
+                                   value="EN: The CPU reads the receiver FIFO when it is empty"/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                    type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
-                              <a:a name="SCOPE" value="ECU"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                              <a:a name="UUID" 
-                                   value="ECUC:efc9a48f-271a-4832-9ba0-aa52aa4cf278"/>
-                              <a:da name="ENABLE" type="XPath" expr="(contains(node:value(../CddSentChannelType), 'FAST_CHANNEL'))" true="false" false="true"/>
-                              <a:da name="DEFAULT" value="1"/>
-                              <a:da name="INVALID" type="Range">
-                              <a:tst expr="&lt;=255"/>
-                              <a:tst expr="&gt;=0"/>
-                              </a:da>
-                              <a:da name="INVALID" type="XPath">
-                                   <a:tst expr="text:uniq((/../../..//*[@name='CddSentMessageID']),node:value(.))" false="CddSentChannelType selection has to be unique across all containers"/>
-                              </a:da>
-                           </v:var>
-
-                          </v:ctr>
-                        </v:lst>  
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                      </v:ctr>   
+                      <v:ctr name="CddSentSlowChannelInterrupts" type="IDENTIFIABLE">
+                        <a:a name="DESC" value="EN: Valid data interrupts"/>
+                        <a:a name="UUID" 
+                             value="ECUC:a79e276f-cf20-496c-8557-edf5d9d2f01b"/>
+                        <a:a name="TAB" value="CddSentInterruptSources"/>
+                        <v:var name="Slow_Channel" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: A valid slow channel data is recieved from single sensor"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Slow_Channel_With_CRC_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: If there is a CRC ierror in slow channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Slow_Channel_With_Format_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: If there is a format error in slow channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
                       </v:ctr>
-                    </v:lst>         
+                      <v:ctr name="CddSentFastChannelCRCErrorInterrupts" type="IDENTIFIABLE">
+                        <a:a name="DESC" value="EN: Valid data interrupts"/>
+                        <a:a name="UUID" 
+                             value="ECUC:a79e276f-cf20-4966-8557-edf5d9d2f01b"/>
+                        <a:a name="TAB" value="CddSentInterruptSources"/>
+                        <v:var name="Sensor_1_Fast_Channel_With_CRC_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When there is a CRC error in sensor 1 fast channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_2_Fast_Channel_With_CRC_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When there is a CRC error in sensor 2 fast channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_3_Fast_Channel_With_CRC_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When there is a CRC error in sensor 3 fast channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_4_Fast_Channel_With_CRC_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When there is a CRC error in sensor 4 fast channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                      </v:ctr>
+                      <v:ctr name="CddSentFastChannelFrameErrorInterrupts" type="IDENTIFIABLE">
+                        <a:a name="DESC" value="EN: Valid data interrupts"/>
+                       <a:a name="UUID" 
+                             value="ECUC:a77e276f-cf20-4966-8557-edf5d9d2f01b"/>
+                        <a:a name="TAB" value="CddSentInterruptSources"/>
+                        <v:var name="Sensor_1_Fast_Channel_With_Frame_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When there is a frame error (Invalif nibble) in sensor 1 fast channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_2_Fast_Channel_With_Frame_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When there is a frame error (Invalif nibble) in sensor 2 fast channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_3_Fast_Channel_With_Frame_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When there is a frame error (Invalif nibble) in sensor 3 fast channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_4_Fast_Channel_With_Frame_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When there is a frame error (Invalif nibble) in sensor 4 fast channel data"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                      </v:ctr>
+                      <v:ctr name="CddSentTimeoutErrorInterrupts" type="IDENTIFIABLE">
+                        <a:a name="DESC" value="EN: Valid data interrupts"/>
+                        <a:a name="UUID" 
+                             value="ECUC:a77e276f-cf20-4965-8557-edf5d9d2f01b"/>
+                        <a:a name="TAB" value="CddSentInterruptSources"/>
+                        <v:var name="Sensor_1_Timeout_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: No responce from sensor 1 in timeout specified"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_2_Timeout_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: No responce from sensor 2 in timeout specified"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_3_Timeout_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: No responce from sensor 3 in timeout specified"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_4_Timeout_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: No responce from sensor 4 in timeout specified"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                      </v:ctr>
+                      <v:ctr name="CddSentOverflowErrorInterrupts" type="IDENTIFIABLE">
+                        <a:a name="DESC" value="EN: Valid data interrupts"/>
+                        <a:a name="UUID" 
+                             value="ECUC:a77e276f-cf22-4965-8557-edf5d9d2f01b"/>
+                        <a:a name="TAB" value="CddSentInterruptSources"/>
+                        <v:var name="Broadcast_Overflow_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When the Broadcast channel trigger pulse genarator recieves a trigger reuest while it is busy"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_1_Overflow_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When the sensor 1 channel trigger pulse genarator recieves a trigger reuest while it is busy"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_2_Overflow_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When the sensor 2 channel trigger pulse genarator recieves a trigger reuest while it is busy"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_3_Overflow_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When the sensor 3 channel trigger pulse genarator recieves a trigger reuest while it is busy"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Sensor_4_Overflow_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: When the sensor 4 channel trigger pulse genarator recieves a trigger reuest while it is busy"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                      </v:ctr>
+                      <v:ctr name="CddSentSyncErrorInterrupts" type="IDENTIFIABLE">
+                        <a:a name="DESC" value="EN: Valid data interrupts"/>
+                        <a:a name="UUID" 
+                             value="ECUC:a76e276f-cf22-4965-8557-edf5d9d2f01b"/>
+                        <a:a name="TAB" value="CddSentInterruptSources"/>
+                        <v:var name="Fast_Channel_Sync_Pulse_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: Indicates that the synchronization pulse varies by more than 25% from the expected 56 clock ticks"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Successive_Calibration_Pulse_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: The successive calibration pulses differ by greater than +1.5625 or less than -1.5625"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                        <v:var name="Frequency_Drift_Error" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                   value="EN: The ratio of the calibration pulse to the message length varies by greater than 1/64 or less than -1/64 from one message to another"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="DEFAULT" value="false"/>
+                        </v:var>
+                      </v:ctr>
+                      </v:ctr>
+                    </v:lst>   
+                  </v:ctr>
+                  <v:ctr name="CddComStackContribution" type="IDENTIFIABLE">
+                    <a:a name="DESC" 
+                         value="EN: Contribution of COM Stack modules."/>
+                    <a:a name="UUID" 
+                         value="161d6be2-67e5-48cc-8518-a905f4c21672"/>
+                    <a:da name="ENABLE" type="XPath" expr="(../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true')"/>
+                    <v:ctr name="CddPduRLowerLayerContribution" 
+                           type="IDENTIFIABLE">
+                      <a:a name="DESC" 
+                           value="EN: Parameters that are necessary for the configuration of a Complex Driver that serves as the LowerLayer of the Pdu Router module."/>
+                      <a:a name="OPTIONAL" value="true"/>
+                      <a:a name="UUID" 
+                           value="f7561d1b-df9e-495a-96dd-6e108e268b6d"/>
+                      <a:da name="ENABLE" value="false"/>
+                      <v:lst name="CddPduRLowerLayerRxPdu" type="MAP">
+                        <a:da name="MIN" value="1"/>
+                        <v:ctr name="CddPduRLowerLayerRxPdu" 
+                               type="IDENTIFIABLE">
+                          <a:a name="DESC" 
+                               value="EN: This container specifies Rx PDUs that are exchanged between the CDD and the standardized BSW module."/>
+                          <a:a name="UUID" 
+                               value="24e1e7cf-c6bc-4637-b875-24d96277176d"/>
+                          <v:var name="CddPduRApiType" type="ENUMERATION">
+                            <a:a name="DESC" 
+                                 value="EN: This parameter configures the type of the CDD interface (IF/TP)"/>
+                            <a:a name="OPTIONAL" value="true"/>
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" 
+                                 value="cbaefcc0-8c49-44fe-b648-dd0edf46ae76"/>
+                           <a:da name="ENABLE" value="false"/>
+                           <a:da name="DEFAULT" value="IF"/>
+                            <a:da name="READONLY" value="true"/>
+                            <a:da name="RANGE">
+                              <a:v>IF</a:v>
+                            </a:da>
+                          </v:var>
+                          <v:var name="CddPduRLowerLayerHandleId" 
+                                 type="INTEGER">
+                            <a:a name="DESC" 
+                                 value="EN: ECU wide unique, symbolic handle for the Pdu."/>
+                            <a:a name="OPTIONAL" value="true"/>
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="true"/>
+                            <a:a name="UUID" 
+                                 value="48fb57c9-baea-4239-8461-9ec515a6d2a4"/>
+                            <a:da name="ENABLE" value="false"/>
+                            <a:da name="DEFAULT" value="0"/>
+                            <a:da name="INVALID" type="Range">
+                              <a:tst expr="&lt;=65535"/>
+                              <a:tst expr="&gt;=0"/>
+                            </a:da>
+                          </v:var>
+                          <v:ref name="CddPduRLowerLayerPduRef" 
+                                 type="REFERENCE">
+                            <a:a name="DESC" 
+                                 value="EN: Reference to the &quot;global&quot; Pdu structure to allow harmonization of handle IDs in the COM-Stack."/>
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="UUID" 
+                                 value="5e8c721d-7743-4cc6-8605-b7c125b2c085"/>
+                            <a:da name="INVALID" type="XPath">
+                                   <a:tst expr="text:uniq((../../..//*[@name='CddPduRLowerLayerPduRef']),node:value(.)) and not(node:empty(.))" false="CddPduRLowerLayerPduRef selection has to be unique across all containers"/>
+                            </a:da>
+                            <a:da name="REF" 
+                                  value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/EcuC/EcucConfigSet/EcucPduCollection/Pdu"/>
+                          </v:ref>
+                          <v:var name="CddSentPduRHandle" 
+                                 type="STRING">
+                            <a:a name="DESC" 
+                                 value="EN: CddSentPduRHandle is a symbolic name of the Pdu with which Cdd_Sent module invokes the receive indication for upper layer. User can modify this parameter to match with the symbolic name used by upper layer."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                             </a:a> 
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:da name="INVALID" type="XPath">
+                               <a:tst expr="text:uniq((../../..//*[@name='CddSentPduRHandle']),node:value(.))" false="CddSentPduRHandle selection has to be unique."/>
+                           </a:da>
+                            <a:da name="ENABLE" type="XPath" expr="(../../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true')"/>
+                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:when(node:empty(../CddPduRLowerLayerPduRef), '', 'PduRConf_PduRSrcPdu_PduRSrcPdu_'),substring-after(node:value(../CddPduRLowerLayerPduRef), '/EcuC/EcuC/EcucConfigSet/EcucPduCollection/'))&quot;,'NULL')"/>
+                            <a:a name="UUID" 
+                                 value="ECUC:f4dbfb7a-93e4-4404-83f1-e66f2d41df74"/>
+                          </v:var>
+                        </v:ctr>
+                      </v:lst>
+                      <v:lst name="CddPduRLowerLayerTxPdu" type="MAP">
+                        <a:da name="MIN" type="XPath" expr="node:fallback(&quot;->node:when(../../../CddSentConfig/CddSentController/*/CddSentMTP = 'true',1,0)&quot;,num:i(0))"/> 
+                        <v:ctr name="CddPduRLowerLayerTxPdu" 
+                               type="IDENTIFIABLE">
+                          <a:a name="DESC" 
+                               value="EN: This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module."/>
+                          <a:a name="UUID" 
+                               value="53f1ad8a-16b0-4e5b-a61e-771e90acd056"/>
+                          <v:var name="CddPduRApiType" type="ENUMERATION">
+                            <a:a name="DESC" 
+                                 value="EN: This parameter configures the type of the CDD interface (IF/TP)"/>
+                            <a:a name="OPTIONAL" value="true"/>
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" 
+                                 value="1e934f66-27fe-4918-9643-1bb7ee642441"/>
+                            <a:da name="ENABLE" value="false"/>
+                           <a:da name="DEFAULT" value="IF"/>
+                            <a:da name="READONLY" value="true"/>
+                            <a:da name="RANGE">
+                              <a:v>IF</a:v>
+                            </a:da>
+                          </v:var>
+                          <v:var name="CddPduRLowerLayerHandleId" 
+                                 type="INTEGER">
+                            <a:a name="DESC" 
+                                 value="EN: ECU wide unique, symbolic handle for the Pdu."/>
+                            <a:a name="OPTIONAL" value="true"/>
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="true"/>
+                            <a:a name="UUID" 
+                                 value="a92a50b4-6fde-4185-8ab1-4421466a43de"/>
+                            <a:da name="ENABLE" value="false"/>
+                            <a:da name="DEFAULT" value="0"/>
+                            <a:da name="INVALID" type="Range">
+                              <a:tst expr="&lt;=65535"/>
+                              <a:tst expr="&gt;=0"/>
+                            </a:da>
+                          </v:var>
+                          <v:ref name="CddPduRLowerLayerPduRef" 
+                                 type="REFERENCE">
+                            <a:a name="DESC" 
+                                 value="EN: Reference to the &quot;global&quot; Pdu structure to allow harmonization of handle IDs in the COM-Stack."/>
+                            <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                            <a:a name="UUID" 
+                                 value="ed630001-2f32-45ff-8650-42044b99f540"/>
+                            <a:da name="INVALID" type="XPath">
+                                   <a:tst expr="text:uniq((../../..//*[@name='CddPduRLowerLayerPduRef']),node:value(.))" false="CddPduRLowerLayerPduRef selection has to be unique across all containers"/>
+                            </a:da>
+                            <a:da name="REF" 
+                                  value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/EcuC/EcucConfigSet/EcucPduCollection/Pdu"/>
+                          </v:ref>
+                        </v:ctr>
+                      </v:lst>
+                    </v:ctr>
                   </v:ctr>
                   <v:ctr name="CddSentGeneral" type="IDENTIFIABLE">
                     <a:a name="DESC" 
-                         value="EN: General CddSent` module configuration parameters."/>
+                         value="EN: Contains the general configuration parameters of the module."/>
+                    <a:a name="OPTIONAL" value="true"/>
                     <a:a name="UUID" 
-                         value="ECUC:ba24cf3d-7a2a-4465-a7a7-6a5f42c8e3ba"/>
+                         value="e9825758-8bf4-4d92-bdeb-70878d8182fa"/>
+                    <a:da name="ENABLE" value="false"/>
+                    <v:var name="CddInstanceId" type="INTEGER">
+                      <a:a name="DESC" 
+                           value="EN: Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" 
+                           value="78621e5c-a1b1-4421-ba38-83b3f356fd02"/>
+				  <a:da name="EDITABLE" value="false"/>
+				  <a:da name="DEFAULT" value="0"/>
+                      <a:da name="INVALID" type="Range">
+                        <a:tst expr="&lt;=255"/>
+                        <a:tst expr="&gt;=0"/>
+                      </a:da>
+                    </v:var>
                     <v:var name="CddSentDevErrorDetect" type="BOOLEAN">
                       <a:a name="DESC" 
                            value="EN: Switches the development error detection and notification on or off."/>
@@ -514,8 +1397,7 @@
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" 
-                           value="ECUC:f82078d3-b78e-4805-8069-a1cb89699750"/>
+                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <a:da name="DEFAULT" value="false"/>
                     </v:var>
                     <v:var name="CddSentVersionInfoApi" type="BOOLEAN">
@@ -528,12 +1410,27 @@
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" 
-                           value="ECUC:20d99dc1-e3fe-4832-8ecf-379936ade162"/>
+                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="DEFAULT" value="false"/>
+                    </v:var>
+                    <v:var name="CddSentIntegrationWithAsrComStackEnable" type="BOOLEAN">
+                      <a:a name="DESC" 
+                           value="EN: This parameter is used to enable the integration of Cdd Sent module with Autosar Com Stack.
+                                  0: Cdd Sent module is not integrated with Autosar Com stack. Transmission and Reception  will be handled via Application Cdd or wrapper. 
+                                  1: Cdd Sent module is integrated as lower module to PduR in Autosar Com stack. Transmission and Reception  will be handled via Com Stack i.e. to and from PduR. 
+                                 "/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <a:da name="DEFAULT" value="false"/>
                     </v:var>
                   </v:ctr>
-                 <v:ctr name="CddSentDemEventParameterRefs" type="IDENTIFIABLE">
+                   <v:ctr name="CddSentDemEventParameterRefs" type="IDENTIFIABLE">
                     <a:a name="DESC"
                          value="EN: Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter&apos;s DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references."/>
                     <a:a name="OPTIONAL" value="true"/>
@@ -546,9 +1443,10 @@
                       <a:a name="IMPLEMENTATIONCONFIGCLASS"
                            type="IMPLEMENTATIONCONFIGCLASS">
                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
                       <a:a name="OPTIONAL" value="true"/>
-                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="ORIGIN" value="CddSentDemEventParameterRefs"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="UUID"
                            value="acaa7683-7d07-4ba1-9900-939db2754e20"/>
@@ -557,23 +1455,27 @@
                             value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Dem/DemConfigSet/DemEventParameter"/>
 					  <a:da name="INVALID" type="XPath" expr="node:refexists(node:value(.))" false="Dem event should be assigned and it should not be empty and invalid"/>
                     </v:ref>
-                  </v:ctr>
-              <d:ref type="REFINED_MODULE_DEF" 
-                     value="ASPath:/AUTOSAR/EcucDefs/Cdd"/>
-            </v:ctr>
-          </d:chc>
-          <d:chc name="myEcuParameterDefinition" type="AR-ELEMENT" 
-                 value="ECU_PARAMETER_DEFINITION">
-            <d:ctr type="AR-ELEMENT">
-              <a:a name="DEF" 
-                   value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
-              <d:lst name="MODULE_REF">
-                <d:ref type="MODULE_REF" value="ASPath:/TI_F29H85x/Cdd_Sent"/>
-              </d:lst>
-            </d:ctr>
-          </d:chc>
+                    </v:ctr>
+                  <d:ref type="REFINED_MODULE_DEF" 
+                         value="ASPath:/AUTOSAR/EcucDefs/Cdd"/>
+                </v:ctr>
+              </d:chc>
+              <d:chc name="myEcuParameterDefinition" type="AR-ELEMENT" 
+                     value="ECU_PARAMETER_DEFINITION">
+                <d:ctr type="AR-ELEMENT">
+                  <a:a name="DEF" 
+                       value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
+                  <d:lst name="MODULE_REF">
+                    <d:ref type="MODULE_REF" 
+                           value="ASPath:/TI_F29H85x/Cdd_Sent/Cdd"/>
+                  </d:lst>
+                </d:ctr>
+              </d:chc>
+            </d:lst>
+          </d:ctr>
         </d:lst>
       </d:ctr>
     </d:lst>
   </d:ctr>
+
 </datamodel>

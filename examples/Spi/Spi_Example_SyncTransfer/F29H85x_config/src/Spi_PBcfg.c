@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@
  * Version Check (if required)
  * AUTOSAR version information check has to match definition in header file.
  *********************************************************************************************************************/
-#if ((SPI_SW_MAJOR_VERSION != (1U)) || (SPI_SW_MINOR_VERSION != (0U)))
+#if ((SPI_SW_MAJOR_VERSION != (1U)) || (SPI_SW_MINOR_VERSION != (1U)))
   #error "Version numbers of Spi_PBcfg.c and Spi.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -75,7 +75,7 @@ extern "C" {
  * Design : MCAL-25142, MCAL-25144, MCAL-25146, MCAL-25159, MCAL-25132, MCAL-25134,
  * Design : MCAL-25135, MCAL-25136, MCAL-25137, MCAL-25129, MCAL-25130, MCAL-25131,
  * Design : MCAL-25116, MCAL-25117, MCAL-25118, MCAL-25119, MCAL-25120, MCAL-25160,
- * Design : MCAL-25105,    
+ * Design : MCAL-25105, MCAL-24883  
  */
 CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_ConfigObj =
 {

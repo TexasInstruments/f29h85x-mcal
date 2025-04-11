@@ -23,6 +23,8 @@ title: Can API GUIDE Header file
 |enum| **[Can_MailboxElemSizeType](../Modules/group___c_a_n.md#enum-can-mailboxelemsizetype)** | Enum to represent FIFO/Buffer element Size.  | 
 |enum| **[Can_MemType](../Modules/group___c_a_n.md#enum-can-memtype)** | Enum to represent the CAN Message RAM type.  | 
 |enum| **[Can_RxFifoNumType](../Modules/group___c_a_n.md#enum-can-rxfifonumtype)** | Enum to represent the MCAN Rx FIFO number.  | 
+|enum| **[Can_EventPin](../Modules/group___c_a_n.md#enum-can-eventpin)** | Enum for the event pin.  | 
+|enum| **[Can_StandardFilterType](../Modules/group___c_a_n.md#enum-can-standardfiltertype)** | Enum for the Can standard filter selection.  | 
 
 
 
@@ -207,6 +209,37 @@ Enum to represent the MCAN Rx FIFO number.
 
 
 
+### enum Can_EventPin
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_EVENT_PIN_0 | 0x0U| EVENT PIN0.   |
+| CAN_EVENT_PIN_1 | 0x1U| EVENT PIN1.   |
+| CAN_EVENT_PIN_NONE | 0x2U| EVENT NONE.   |
+
+
+
+
+**Brief**: 
+Enum for the event pin. 
+
+
+
+### enum Can_StandardFilterType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CAN_RANGE_FILTER | 0x0U| Range filter from SFID1 to SFID2 (SFID2 ≥ SFID1)   |
+| CAN_DUAL_ID_FILTER | 0x1U| Dual ID filter for SFID1 or SFID2.   |
+| CAN_CLASSIC_FILTER | 0x2U| Classic filter: SFID1 = filter; SFID2 = mask.   |
+| CAN_FILTER_DISABLED | 0x03| Filter element disabled.   |
+
+
+
+
+**Brief**: 
+Enum for the Can standard filter selection. 
+
+
+
 
 ## Structures
 |   Name         | Brief          |
@@ -222,6 +255,7 @@ Enum to represent the MCAN Rx FIFO number.
 | **[Can_IcomRxMessageType](../Classes/struct_can___icom_rx_message_type.md)** | Icom Rx message data structure.  |
 | **[Can_IcomConfigType](../Classes/struct_can___icom_config_type.md)** | Icom data structure containing the overall ICOM configuration data.  |
 | **[Can_ConfigType](../Classes/struct_can___config_type.md)** | External data structure containing the overall initialization data for the CAN driver and SFR settings affecting all controllers.  |
+| **[Can_PeriodicReadBackDataType](../Classes/struct_can___periodic_read_back_data_type.md)** | Can periodic readback register definition.  |
 | **[Can_CanIfIndicationType](../Classes/struct_can___can_if_indication_type.md)** | Can State Transition indication done to CanIf module.  |
 | **[Can_MsgRAMConfigParams](../Classes/struct_can___msg_r_a_m_config_params.md)** | Structure for MCAN Message RAM Configuration Parameters Message RAM can contain following sections: Standard ID filters, Extended ID filters, TX FIFO(or TX Q), TX Buffers, TX EventFIFO, RX FIFO0, RX FIFO1, RX Buffer. Note: If particular section in the RAM is not used then it's size should be initialized to '0' (Number of buffers in case of Tx/Rx buffer).  |
 | **[Can_StdMsgIDFilterElement](../Classes/struct_can___std_msg_i_d_filter_element.md)** | Structure for MCAN Standard Message ID Filter Element.  |
@@ -242,10 +276,10 @@ Enum to represent the MCAN Rx FIFO number.
 
 | Name           |  Brief     |
 | -------------- | ---------- |
-| CAN_SW_MAJOR_VERSION   | Defines for CAN Driver version used for compatibility checks.  |
+| CAN_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
 | CAN_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
 | CAN_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
-| CAN_AR_RELEASE_MAJOR_VERSION   | Defines for CAN Driver AUTOSAR version used for compatibility checks.  |
+| CAN_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by CAN Driver.  |
 | CAN_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by CAN Driver.  |
 | CAN_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by CAN Driver.  |
 | CAN_VENDOR_ID   | CAN Driver ID Info.  |
@@ -271,6 +305,7 @@ Enum to represent the MCAN Rx FIFO number.
 | CAN_SID_GETCNTRMODE   | Service ID - Can_GetControllerMode().  |
 | CAN_SID_PROCESSISR   | Service ID - Can_ProcessISR().  |
 | CAN_SID_ICOMCONFIG   | Service ID - Can_SetIcomConfiguration().  |
+| CAN_SID_READBACK   | Service ID - Can_PeriodicReadback().  |
 | CAN_E_PARAM_POINTER   | Error codes returned by Can functions - Development Errors.  |
 | CAN_E_PARAM_HANDLE   | Invalid Controller Handle.  |
 | CAN_E_PARAM_DATA_LENGTH   | Invalid length of msg.  |
@@ -312,19 +347,13 @@ Enum to represent the MCAN Rx FIFO number.
 | CAN_INTR_MASK_ALL   | Macro defines mask for all the interrupts status for MCAN.  |
 | MCAN_INT_LINE_0   | MCAN Interrupt line 0.  |
 | MCAN_INT_LINE_1   | MCAN Interrupt line 0.  |
-| CAN_REG_MF_READ32 (regAddr, REG_FIELD)  | This macro calls read field API for 32 bit register. It also frames the mask and shift from register field macro.  |
-| CAN_REG_MF_WRITE32 (regAddr, REG_FIELD, fieldVal)  | This macro calls read-modify-write API for 32 bit register. It also frames the mask and shift from register field macro.  |
-| CAN_REG_READ32 (regAddr)  | This macro reads a 32-bit value from a hardware register and returns the value.  |
-| CAN_REG_WRITE32 (regAddr, value)  | This macro writes a 32-bit value to a hardware register.  |
-| CAN_FIELD_SET32 (regVal, REG_FIELD, fieldVal)  | Macro to write a specific field value. This macro first clears the specified field value and then performs "OR" of the field value which is shifted and masked. This will set the field value at its desired position.  |
-| CAN_FIELD_GET (regVal, REG_FIELD)  | Macro to extract a field value. This macro extracts the field value from a 32-bit variable (which contains the register value). This macro does not read from actual register address, and only extracts the field from a variable.  |
 
 ## Functions
 
 | Return type    | Function Name           |      Brief        |
 | -------------- | ----------------------- | ----------------- |
 | void | **[Can_GetVersionInfo](../Modules/group___c_a_n.md#function-can-getversioninfo)**(Std_VersionInfoType * versioninfo)| Function returns the version information of this module.  |
-| void | **[Can_Init](../Modules/group___c_a_n.md#function-can-init)**(const [Can_ConfigType](Classes/struct_can___config_type.md) * ConfigPtr)| This function initializes the configuration.  |
+| void | **[Can_Init](../Modules/group___c_a_n.md#function-can-init)**(const [Can_ConfigType](Classes/struct_can___config_type.md) * Config_Ptr)| This function initializes the configuration.  |
 | void | **[Can_DeInit](../Modules/group___c_a_n.md#function-can-deinit)**(void )| This function deinitializes the module.  |
 | Std_ReturnType | **[Can_SetBaudrate](../Modules/group___c_a_n.md#function-can-setbaudrate)**(uint8 Controller, const uint16 BaudRateConfigID)| This service shall set the baud rate configuration of the CAN Controller.  |
 | Std_ReturnType | **[Can_SetControllerMode](../Modules/group___c_a_n.md#function-can-setcontrollermode)**(uint8 Controller, Can_ControllerStateType Transition)| This service performs software triggered state transitions of the CAN controller State machine.  |
@@ -340,10 +369,12 @@ Enum to represent the MCAN Rx FIFO number.
 | void | **[Can_MainFunction_Wakeup](../Modules/group___c_a_n.md#function-can-mainfunction-wakeup)**(void )| This function performs the polling of wake-up events that are configured statically as 'to be polled'.  |
 | void | **[Can_MainFunction_Mode](../Modules/group___c_a_n.md#function-can-mainfunction-mode)**(void )| This function performs the polling of CAN controller mode transitions.  |
 | Std_ReturnType | **[Can_SetIcomConfiguration](../Modules/group___c_a_n.md#function-can-seticomconfiguration)**(uint8 Controller, IcomConfigIdType ConfigurationId)| This service shall change the Icom Configuration of a CAN controller to the requested one.  |
+| void | **[Can_PeriodicReadback](../Modules/group___c_a_n.md#function-can-periodicreadback)**(uint8 Controller, [Can_PeriodicReadBackDataType](Classes/struct_can___periodic_read_back_data_type.md) * ReadBackRegisterdata)| This service shall read all the statically configured registers.  |
 | void | **[Can_ResetDrvObjPriv](../Modules/group___c_a_n.md#function-can-resetdrvobjpriv)**([Can_DriverObjType](Classes/struct_can___driver_obj_type.md) * drvObj)| This function will reset default Config structure.  |
 | void | **[Can_InitDrvObjPriv](../Modules/group___c_a_n.md#function-can-initdrvobjpriv)**([Can_DriverObjType](Classes/struct_can___driver_obj_type.md) * drvObj, const [Can_ConfigType](Classes/struct_can___config_type.md) * ConfigPtr)| This function will initialize Driver Config structure.  |
 | void | **[Can_HwUnitConfigPriv](../Modules/group___c_a_n.md#function-can-hwunitconfigpriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * canController, const [Can_MailboxObjType](Classes/struct_can___mailbox_obj_type.md) * canMailbox, uint8 maxMbCnt, uint8 * canHtrhMbMap)| This function will initialize Can HW Unit.  |
-| Std_ReturnType | **[Can_HWSetBaudRatePriv](../Modules/group___c_a_n.md#function-can-hwsetbaudratepriv)**(uint32 baseAddr, const [Can_BaudConfigType](Classes/struct_can___baud_config_type.md) * baudConfig)| This API will configure a bit timings for MCAN module.  |
+| void | **[Can_MsgRamConfigPriv](../Modules/group___c_a_n.md#function-can-msgramconfigpriv)**(uint32 baseAddr, [Can_FdMsgRAMConfigObjType](Classes/struct_can___fd_msg_r_a_m_config_obj_type.md) * canFDMsgRamConfig)| This API will configure the Message RAM.  |
+| void | **[Can_HWSetBaudRatePriv](../Modules/group___c_a_n.md#function-can-hwsetbaudratepriv)**(uint32 baseAddr, const [Can_BaudConfigType](Classes/struct_can___baud_config_type.md) * baudConfig)| This API will configure a bit timings for MCAN module.  |
 | void | **[Can_DisableInterruptsPriv](../Modules/group___c_a_n.md#function-can-disableinterruptspriv)**(const [Can_ControllerType](Classes/struct_can___controller_type.md) * configParam)| This function will disable MCAN interrupts as per config.  |
 | void | **[Can_EnableInterruptsPriv](../Modules/group___c_a_n.md#function-can-enableinterruptspriv)**(const [Can_ControllerType](Classes/struct_can___controller_type.md) * configParam)| This function will enable MCAN interrupts as per config.  |
 | void | **[Can_HwDeInitPriv](../Modules/group___c_a_n.md#function-can-hwdeinitpriv)**(const [Can_ControllerType](Classes/struct_can___controller_type.md) * configParam)| This function will de-initialize Can HW Unit.  |
@@ -360,11 +391,26 @@ Enum to represent the MCAN Rx FIFO number.
 | void | **[Can_BusOffProcessPriv](../Modules/group___c_a_n.md#function-can-busoffprocesspriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj)| This function will inform CanIf if bus off is detected.  |
 | void | **[Can_WakeupProcessPriv](../Modules/group___c_a_n.md#function-can-wakeupprocesspriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj)| This function will inform EcuM if Wakeup is detected.  |
 | void | **[Can_ModeProcessPriv](../Modules/group___c_a_n.md#function-can-modeprocesspriv)**([Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj, [Can_CanIfIndicationType](Classes/struct_can___can_if_indication_type.md) * indication)| This function will inform CanIf if any mode changes are detected.  |
-| void | **[Can_ProcessISR](../Modules/group___c_a_n.md#function-can-processisr)**([Can_ControllerInstance](Modules/group___c_a_n.md#enum-can-controllerinstance) canInstance, uint32 lineSelect)|  |
-| uint32 | **[Can_RegMFReadRaw32](../Modules/group___c_a_n.md#function-can-regmfreadraw32)**(uint32 addr, uint32 mask, uint32 shift)| This function reads a 32 bit register, masks specific set of bits and the left shifted value.  |
-| void | **[Can_RegMFWriteRaw32](../Modules/group___c_a_n.md#function-can-regmfwriteraw32)**(uint32 addr, uint32 mask, uint32 shift, uint32 value)| This function writes a 32 bit register masking specific set of bits and the left shifted value.  |
-| uint32 | **[Can_RegReadRaw32](../Modules/group___c_a_n.md#function-can-regreadraw32)**(uint32 addr)| This function reads a 32 bit register.  |
-| void | **[Can_RegWriteRaw32](../Modules/group___c_a_n.md#function-can-regwriteraw32)**(uint32 addr, uint32 value)| This function writes a 32 bit register.  |
+| void | **[Can_ProcessLine0ISR](../Modules/group___c_a_n.md#function-can-processline0isr)**([Can_ControllerInstance](Modules/group___c_a_n.md#enum-can-controllerinstance) canInstance, uint32 lineSelect)|  |
+| void | **[Can_ProcessLine1ISR](../Modules/group___c_a_n.md#function-can-processline1isr)**([Can_ControllerInstance](Modules/group___c_a_n.md#enum-can-controllerinstance) canInstance, uint32 lineSelect)|  |
+| void | **[Can_ProcessWakeUpISR](../Modules/group___c_a_n.md#function-can-processwakeupisr)**([Can_ControllerInstance](Modules/group___c_a_n.md#enum-can-controllerinstance) instance)| Can_ProcessWakeUpISR: Invoked by the respective CAN controller ISR.  |
+| void | **[Can_PollingCheck](../Modules/group___c_a_n.md#function-can-pollingcheck)**([Can_DriverObjType](Classes/struct_can___driver_obj_type.md) * drvObj, uint8 Controller)| This service disables all interrupts.  |
+| void | **[Can_InterruptCounterCheckPriv](../Modules/group___c_a_n.md#function-can-interruptcountercheckpriv)**([Can_DriverObjType](Classes/struct_can___driver_obj_type.md) * drvObj, uint8 Controller)| This service enables all allowed interrupts.  |
+| void | **[Can_HwMsgRamConfigPriv](../Modules/group___c_a_n.md#function-can-hwmsgramconfigpriv)**(uint32 baseAddr, const [Can_MsgRAMConfigParams](Classes/struct_can___msg_r_a_m_config_params.md) * msgRAMConfigParams)| This API will configure the Message RAM.  |
+| void | **[Can_AddPdgValFindStdDtlen](../Modules/group___c_a_n.md#function-can-addpdgvalfindstddtlen)**(const Can_PduType * pduInfo, [Can_TxBufElementType](Classes/struct_can___tx_buf_element_type.md) * elemPtr, const [Can_MailboxType](Classes/struct_can___mailbox_type.md) * mailboxCfg)| This function will add padding value to unused to data in payload and find standard data length .  |
+| void | **[Can_CallRxIndication](../Modules/group___c_a_n.md#function-can-callrxindication)**(const boolean RxIndicationStatus, const uint8 htrh, const uint32 canIdentifier, const uint8 canDataLength, [Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj)| This function will Call Receive Indication .  |
+| void | **[Can_CanSetBaudRatePriv](../Modules/group___c_a_n.md#function-can-cansetbaudratepriv)**(uint32 baseAddr, const [Can_BaudConfigType](Classes/struct_can___baud_config_type.md) * baudConfig)| This function will configure a bit timings for MCAN module.  |
+| Std_ReturnType | **[Can_ValidateIcomConfigPriv](../Modules/group___c_a_n.md#function-can-validateicomconfigpriv)**(uint16 loopCnt, const [Can_IcomConfigType](Classes/struct_can___icom_config_type.md) * icomConfigPtr, uint64 sduData, uint16 rxMessageConfigId)| This function will validate the icom configuration critiria based on rx message configs.  |
+| void | **[Can_CheckTxDelayCompEnablePriv](../Modules/group___c_a_n.md#function-can-checktxdelaycompenablepriv)**(uint32 baseAddress, const [Can_BaudConfigType](Classes/struct_can___baud_config_type.md) * baudConfig)| This function will Configure Transceiver Delay Compensation.  |
+| void | **[Can_WriteRxFIFOAckPriv](../Modules/group___c_a_n.md#function-can-writerxfifoackpriv)**(uint32 baseAddr, uint32 idx)| This API will write acknowledgment for read of Rx FIFO.  |
+| Std_ReturnType | **[Can_IcomSignalOp](../Modules/group___c_a_n.md#function-can-icomsignalop)**(const [Can_IcomSignalConfigType](Classes/struct_can___icom_signal_config_type.md) * signalData, uint64 sduData)| This function will validate the icom configuration critiria based on rx message configs.  |
+| void | **[Can_HwUnitTxConfirmationPriv](../Modules/group___c_a_n.md#function-can-hwunittxconfirmationpriv)**(uint32 loopCnt, uint32 buffNum, uint8 htrh, [Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * canController, const [Can_MailboxObjType](Classes/struct_can___mailbox_obj_type.md) * canMailbox)| This API will Call Tx Confirmation.  |
+| uint8 | **[Can_CheckCtrltypeActstMaildir](../Modules/group___c_a_n.md#function-can-checkctrltypeactstmaildir)**(uint8 maxMbCnt, [Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObj, const [Can_MailboxObjType](Classes/struct_can___mailbox_obj_type.md) * canMailbox, uint8 elemxtd, uint32 canIdentifier)| This function will Check for Controller type and Active state as well as MailBox Direction.  |
+| uint8 | **[Can_CheckControllerType](../Modules/group___c_a_n.md#function-can-checkcontrollertype)**(uint8 maxMbCount, [Can_RxBufElementType](Classes/struct_can___rx_buf_element_type.md) * elm, [Can_ControllerObjType](Classes/struct_can___controller_obj_type.md) * controllerObject, const [Can_MailboxObjType](Classes/struct_can___mailbox_obj_type.md) * canMailboxObject)| This function will Check for Controller type and Active state as well as MailBox Direction.  |
+| void | **[Can_WriteMsgRamPriv](../Modules/group___c_a_n.md#function-can-writemsgrampriv)**(uint32 baseAddr, uint32 bufNum, const [Can_TxBufElementType](Classes/struct_can___tx_buf_element_type.md) * elem, const Can_PduType * pdu_Info, const [Can_MailboxType](Classes/struct_can___mailbox_type.md) * mailBoxConfig)| This API will update data in the Message RAM.  |
+| void | **[Can_ReadMsgRamPriv](../Modules/group___c_a_n.md#function-can-readmsgrampriv)**(uint32 baseAddr, uint32 memType, uint32 bufNum, [Can_RxBufElementType](Classes/struct_can___rx_buf_element_type.md) * elem)| This API will read data from Message Ram of Can Hw Unit.  |
+| void | **[Can_PeriodicReadbackPrv](../Modules/group___c_a_n.md#function-can-periodicreadbackprv)**(uint8 Controller, [Can_PeriodicReadBackDataType](Classes/struct_can___periodic_read_back_data_type.md) * ReadBackRegisterdata)| This service shall read all the statically configured registers.  |
+| void | **[Can_EccLoadRegister](../Modules/group___c_a_n.md#function-can-eccloadregister)**(uint32 baseAddr, uint32 regOffset)| This service shall load the specific ECC register based on the parameters.  |
 
 
 
@@ -406,7 +452,7 @@ This service writes the version information of this module into the data structu
 
 ```
 void Can_Init(
-    const Can_ConfigType * ConfigPtr
+    const Can_ConfigType * Config_Ptr
 )
 ```
 
@@ -958,6 +1004,40 @@ This service shall change the Icom Configuration of a CAN controller to the requ
 
 **Postcondition**: None 
 
+### function Can_PeriodicReadback
+
+```
+void Can_PeriodicReadback(
+    uint8 Controller,
+    Can_PeriodicReadBackDataType * ReadBackRegisterdata
+)
+```
+
+
+**Brief**: 
+This service shall read all the statically configured registers. 
+
+**Parameters**: 
+
+  
+* **Controller** CAN controller for which the configured registers shall be read 
+  
+* **ReadBackRegisterdata** pointer for the read back registers 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
 ### function Can_ResetDrvObjPriv
 
 ```
@@ -1063,10 +1143,44 @@ This function will initialize Can HW Unit.
 
 **Postcondition**: None 
 
+### function Can_MsgRamConfigPriv
+
+```
+void Can_MsgRamConfigPriv(
+    uint32 baseAddr,
+    Can_FdMsgRAMConfigObjType * canFDMsgRamConfig
+)
+```
+
+
+**Brief**: 
+This API will configure the Message RAM. 
+
+**Parameters**: 
+
+  
+* **baseAddr** Base Address of controller. 
+  
+* **canFDMsgRamConfig** Message RAM Configuration parameters. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
 ### function Can_HWSetBaudRatePriv
 
 ```
-Std_ReturnType Can_HWSetBaudRatePriv(
+void Can_HWSetBaudRatePriv(
     uint32 baseAddr,
     const Can_BaudConfigType * baudConfig
 )
@@ -1087,14 +1201,11 @@ This API will configure a bit timings for MCAN module.
 **Returns**: 
 
   
-* **E_OK** - If baud rate config is successful. 
-<br> 
-  
-* **E_NOT_OK** - If baud rate config is unsuccessful. 
+* **None** 
 <br> 
 
 
-**Return**: The status of whether the Baud Rate configuration is successful 
+**Return**: None 
 
 **Precondition**: None 
 
@@ -1676,78 +1787,45 @@ This function will inform CanIf if any mode changes are detected.
 
 **Postcondition**: None 
 
-### function Can_ProcessISR
+### function Can_ProcessLine0ISR
 
 ```
-void Can_ProcessISR(
+void Can_ProcessLine0ISR(
     Can_ControllerInstance canInstance,
     uint32 lineSelect
 )
 ```
 
 
-### function Can_RegMFReadRaw32
+### function Can_ProcessLine1ISR
 
 ```
-static inline uint32 Can_RegMFReadRaw32(
-    uint32 addr,
-    uint32 mask,
-    uint32 shift
+void Can_ProcessLine1ISR(
+    Can_ControllerInstance canInstance,
+    uint32 lineSelect
+)
+```
+
+
+### function Can_ProcessWakeUpISR
+
+```
+void Can_ProcessWakeUpISR(
+    Can_ControllerInstance instance
 )
 ```
 
 
 **Brief**: 
-This function reads a 32 bit register, masks specific set of bits and the left shifted value. 
+Can_ProcessWakeUpISR: Invoked by the respective CAN controller ISR. 
+
+This Interrupt function is invoked when CAN wakeup event occur for a controller, inside the respective Controller ISR, when the interrupts for the controller are enabled.
+
 
 **Parameters**: 
 
   
-* **addr** Address of the memory mapped hardware register. 
-  
-* **mask** Mask for the bit field. 
-  
-* **shift** Bit field shift from LSB. 
-
-
-**Returns**: 
-
-  
-* **Value** of the type uint32. 
-<br> 
-
-
-**Return**: Bit-field value (absolute value - shifted to LSB position). 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Can_RegMFWriteRaw32
-
-```
-static inline void Can_RegMFWriteRaw32(
-    uint32 addr,
-    uint32 mask,
-    uint32 shift,
-    uint32 value
-)
-```
-
-
-**Brief**: 
-This function writes a 32 bit register masking specific set of bits and the left shifted value. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **mask** Mask for the bit field. 
-  
-* **shift** Bit field shift from LSB. 
-  
-* **value** Value to write in the memory mapped hardware register. 
+* **instance** the Can Controller Instance ID 
 
 
 **Returns**: 
@@ -1763,56 +1841,634 @@ This function writes a 32 bit register masking specific set of bits and the left
 
 **Postcondition**: None 
 
-### function Can_RegReadRaw32
+### function Can_PollingCheck
 
 ```
-static inline uint32 Can_RegReadRaw32(
-    uint32 addr
+void Can_PollingCheck(
+    Can_DriverObjType * drvObj,
+    uint8 Controller
 )
 ```
 
 
 **Brief**: 
-This function reads a 32 bit register. 
+This service disables all interrupts. 
+
+This function checks if there is a DET Error and then disables all the interrupts for the controller. 
+
 
 **Parameters**: 
 
   
-* **addr** Address of the memory mapped hardware register. 
+* **drvObj** Pointer to Can controller Config structure. 
+  
+* **Controller** CAN controller for which interrupts shall be re-enabled. 
 
 
 **Returns**: 
 
   
-* **Value** of the type uint32. 
+* **None** 
 <br> 
 
 
-**Return**: Bit-field value (absolute value - shifted to LSB position). 
+**Return**: None 
 
 **Precondition**: None 
 
 **Postcondition**: None 
 
-### function Can_RegWriteRaw32
+### function Can_InterruptCounterCheckPriv
 
 ```
-static inline void Can_RegWriteRaw32(
-    uint32 addr,
-    uint32 value
+void Can_InterruptCounterCheckPriv(
+    Can_DriverObjType * drvObj,
+    uint8 Controller
 )
 ```
 
 
 **Brief**: 
-This function writes a 32 bit register. 
+This service enables all allowed interrupts. 
+
+This function checks the total number of interrupts and enables all the interrupts allowed for the controller. 
+
 
 **Parameters**: 
 
   
-* **addr** Address of the memory mapped hardware register. 
+* **drvObj** Pointer to Can controller Config structure. 
   
-* **value** Value to write in the 32-bit register. 
+* **Controller** CAN controller for which interrupts shall be re-enabled. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_HwMsgRamConfigPriv
+
+```
+void Can_HwMsgRamConfigPriv(
+    uint32 baseAddr,
+    const Can_MsgRAMConfigParams * msgRAMConfigParams
+)
+```
+
+
+**Brief**: 
+This API will configure the Message RAM. 
+
+**Parameters**: 
+
+  
+* **baseAddr** Base Address of controller. 
+  
+* **msgRAMConfigParams** Message RAM Configuration parameters. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_AddPdgValFindStdDtlen
+
+```
+void Can_AddPdgValFindStdDtlen(
+    const Can_PduType * pduInfo,
+    Can_TxBufElementType * elemPtr,
+    const Can_MailboxType * mailboxCfg
+)
+```
+
+
+**Brief**: 
+This function will add padding value to unused to data in payload and find standard data length . 
+
+**Parameters**: 
+
+  
+* **pduInfo** Base Address of controller. 
+  
+* **elemPtr** Pointer to location to store value read. 
+  
+* **mailboxCfg** Mailbox Configuration parameters. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_CallRxIndication
+
+```
+void Can_CallRxIndication(
+    const boolean RxIndicationStatus,
+    const uint8 htrh,
+    const uint32 canIdentifier,
+    const uint8 canDataLength,
+    Can_ControllerObjType * controllerObj
+)
+```
+
+
+**Brief**: 
+This function will Call Receive Indication . 
+
+**Parameters**: 
+
+  
+* **RxIndicationStatus** Receive indication status. 
+  
+* **controllerObj** Pointer to Can controller config parameters. 
+  
+* **canIdentifier** Holds Can Identifier value. 
+  
+* **htrh** Handle ID of HTH. 
+  
+* **canDataLength** Frame length of msg. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_CanSetBaudRatePriv
+
+```
+void Can_CanSetBaudRatePriv(
+    uint32 baseAddr,
+    const Can_BaudConfigType * baudConfig
+)
+```
+
+
+**Brief**: 
+This function will configure a bit timings for MCAN module. 
+
+**Parameters**: 
+
+  
+* **baseAddr** Base Address of controller. 
+  
+* **baudConfig** Configuration parameters for MCAN bit timing. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_ValidateIcomConfigPriv
+
+```
+Std_ReturnType Can_ValidateIcomConfigPriv(
+    uint16 loopCnt,
+    const Can_IcomConfigType * icomConfigPtr,
+    uint64 sduData,
+    uint16 rxMessageConfigId
+)
+```
+
+
+**Brief**: 
+This function will validate the icom configuration critiria based on rx message configs. 
+
+**Parameters**: 
+
+  
+* **loopCnt** Signal Count. 
+  
+* **icomConfigPtr** Pointer to Icom data structure containing the overall ICOM configuration data. 
+  
+* **sduData** Hold sdu data. 
+  
+* **rxMessageConfigId** Indidicates Receive Message Id. 
+
+
+**Returns**: 
+
+  
+* **E_OK** - If icom configuration matched. 
+<br> 
+  
+* **E_NOT_OK** - If icom configuration not matched. 
+<br> 
+
+
+**Return**: The status of whether the icom configuration critiria matched or not 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_CheckTxDelayCompEnablePriv
+
+```
+void Can_CheckTxDelayCompEnablePriv(
+    uint32 baseAddress,
+    const Can_BaudConfigType * baudConfig
+)
+```
+
+
+**Brief**: 
+This function will Configure Transceiver Delay Compensation. 
+
+**Parameters**: 
+
+  
+* **baseAddr** Base Address of controller. 
+  
+* **baudConfig** Configuration parameters for MCAN bit timing. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_WriteRxFIFOAckPriv
+
+```
+void Can_WriteRxFIFOAckPriv(
+    uint32 baseAddr,
+    uint32 idx
+)
+```
+
+
+**Brief**: 
+This API will write acknowledgment for read of Rx FIFO. 
+
+**Parameters**: 
+
+  
+* **baseAddr** Base Address of controller. 
+  
+* **idx** FIFO element ID. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_IcomSignalOp
+
+```
+Std_ReturnType Can_IcomSignalOp(
+    const Can_IcomSignalConfigType * signalData,
+    uint64 sduData
+)
+```
+
+
+**Brief**: 
+This function will validate the icom configuration critiria based on rx message configs. 
+
+**Parameters**: 
+
+  
+* **signalData** Hold Icom signal config data 
+  
+* **sduData** Hold sdu data. 
+
+
+**Returns**: 
+
+  
+* **E_OK** - If icom Signal Operation configuration matched. 
+<br> 
+  
+* **E_NOT_OK** - If icom Signal Operation configuration not matched. 
+<br> 
+
+
+**Return**: The status of whether the icom configuration critiria matched or not 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_HwUnitTxConfirmationPriv
+
+```
+void Can_HwUnitTxConfirmationPriv(
+    uint32 loopCnt,
+    uint32 buffNum,
+    uint8 htrh,
+    Can_ControllerObjType * canController,
+    const Can_MailboxObjType * canMailbox
+)
+```
+
+
+**Brief**: 
+This API will Call Tx Confirmation. 
+
+**Parameters**: 
+
+  
+* **loopCnt** Tx number of buffer elements. 
+  
+* **buffNum** Tx number of buffer and FIFO elements. 
+  
+* **canController** Pointer to Can controller config parameters. 
+  
+* **canMailbox** Message RAM Configuration parameters. 
+  
+* **htrh** Handle ID of HTH. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_CheckCtrltypeActstMaildir
+
+```
+uint8 Can_CheckCtrltypeActstMaildir(
+    uint8 maxMbCnt,
+    Can_ControllerObjType * controllerObj,
+    const Can_MailboxObjType * canMailbox,
+    uint8 elemxtd,
+    uint32 canIdentifier
+)
+```
+
+
+**Brief**: 
+This function will Check for Controller type and Active state as well as MailBox Direction. 
+
+**Parameters**: 
+
+  
+* **maxMbCnt** Maximum number of Mailbox to be configured. 
+  
+* **controllerObj** Pointer to Can controller config parameters. 
+  
+* **canMailbox** Message RAM Configuration parameters.. 
+  
+* **elemxtd** Extended Identifier of CAN Rx Buffer element 
+  
+* **canIdentifier** Holds Can Identifier value 
+
+
+**Returns**: 
+
+  
+* **returns** the value of type uint8 
+<br> 
+
+
+**Return**: returns the value of uint8 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_CheckControllerType
+
+```
+uint8 Can_CheckControllerType(
+    uint8 maxMbCount,
+    Can_RxBufElementType * elm,
+    Can_ControllerObjType * controllerObject,
+    const Can_MailboxObjType * canMailboxObject
+)
+```
+
+
+**Brief**: 
+This function will Check for Controller type and Active state as well as MailBox Direction. 
+
+**Parameters**: 
+
+  
+* **maxMbCount** Maximum number of Mailbox to be configured. 
+  
+* **elm** Pointer to location to store value read. 
+  
+* **controllerObject** Pointer to Can controller config parameters. 
+  
+* **canMailboxObject** Message RAM Configuration parameters. 
+
+
+**Returns**: 
+
+  
+* **returns** the value of type uint8 
+<br> 
+
+
+**Return**: returns htrh value 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_WriteMsgRamPriv
+
+```
+void Can_WriteMsgRamPriv(
+    uint32 baseAddr,
+    uint32 bufNum,
+    const Can_TxBufElementType * elem,
+    const Can_PduType * pdu_Info,
+    const Can_MailboxType * mailBoxConfig
+)
+```
+
+
+**Brief**: 
+This API will update data in the Message RAM. 
+
+**Parameters**: 
+
+  
+* **baseAddr** Base Address of controller. 
+  
+* **buffNum** Transmit Buffer number. 
+  
+* **elem** Pointer to the data to be written in Message RAM. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Can module must be initialized 
+
+**Postcondition**: None 
+
+### function Can_ReadMsgRamPriv
+
+```
+void Can_ReadMsgRamPriv(
+    uint32 baseAddr,
+    uint32 memType,
+    uint32 bufNum,
+    Can_RxBufElementType * elem
+)
+```
+
+
+**Brief**: 
+This API will read data from Message Ram of Can Hw Unit. 
+
+**Parameters**: 
+
+  
+* **baseAddr** Base Address of controller. 
+  
+* **memType** Base Address of controller. 
+  
+* **bufNum** Transmit Buffer number. 
+  
+* **elem** Pointer to location to store value read. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_PeriodicReadbackPrv
+
+```
+void Can_PeriodicReadbackPrv(
+    uint8 Controller,
+    Can_PeriodicReadBackDataType * ReadBackRegisterdata
+)
+```
+
+
+**Brief**: 
+This service shall read all the statically configured registers. 
+
+**Parameters**: 
+
+  
+* **Controller** CAN controller for which the configured registers shall be read 
+  
+* **ReadBackRegisterdata** pointer for the read back registers 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Can_EccLoadRegister
+
+```
+void Can_EccLoadRegister(
+    uint32 baseAddr,
+    uint32 regOffset
+)
+```
+
+
+**Brief**: 
+This service shall load the specific ECC register based on the parameters. 
+
+**Parameters**: 
+
+  
+* **baseAddr** CAN controller base address. 
+  
+* **regOffset** regOffset for the register to load. 
 
 
 **Returns**: 

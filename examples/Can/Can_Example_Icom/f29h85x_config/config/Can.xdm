@@ -72,7 +72,7 @@
                     <d:ref name="CanControllerDefaultBaudrate" type="REFERENCE" 
                            value="ASPath:/Can/Can/CanConfigSet/CanController_0/CanControllerBaudrateConfig_0"/>
                     <d:ref name="CanCpuClockRef" type="REFERENCE" 
-                           value="ASPath:/Mcu/Mcu/Mcu_ModuleConfiguration_0/McuClockSettingConfig_0/MCANCLK"/>
+                           value="ASPath:/Mcu/Mcu/Mcu_ModuleConfiguration_0/McuClockSettingConfig_Osc2/MCANCLK"/>
                     <d:ref name="CanWakeupSourceRef" type="REFERENCE" >
                       <a:a name="ENABLE" value="false"/>
                       <a:a name="IMPORTER_INFO" value="@DEF"/>
@@ -118,7 +118,6 @@
                         </d:var>
                         <d:ctr name="CanControllerFdBaudrateConfig" 
                                type="IDENTIFIABLE">
-                          <a:a name="ENABLE" value="false"/>
                           <d:var name="CanControllerFdBaudRate" type="INTEGER" 
                                  value="1000">
                             <a:a name="IMPORTER_INFO" value="@DEF"/>
@@ -304,6 +303,10 @@
                         <d:var name="CanHwFilterMask" type="INTEGER" value="0">
                           <a:a name="IMPORTER_INFO" value="@DEF"/>
                         </d:var>
+                        <d:var name="CanStandardFilterType" type="ENUMERATION" 
+                               value="CAN_CLASSIC_FILTER"/>
+                        <d:var name="CanEventPin" type="ENUMERATION" 
+                               value="CAN_EVENT_PIN_NONE"/>
                       </d:ctr>
                     </d:lst>
                     <d:lst name="CanTTHardwareObjectTrigger" type="MAP"/>
@@ -324,7 +327,7 @@
                         <d:lst name="CanIcomRxMessage" type="MAP">
                           <d:ctr name="CanIcomRxMessage_0" type="IDENTIFIABLE">
                             <d:var name="CanIcomCounterValue" type="INTEGER" 
-                                   value="1">
+                                   value="5">
                               <a:a name="ENABLE" value="true"/>
                             </d:var>
                             <d:var name="CanIcomMessageId" type="INTEGER" 
@@ -358,7 +361,91 @@
                                   <a:a name="IMPORTER_INFO" value="@DEF"/>
                                 </d:ref>
                               </d:ctr>
+                              <d:ctr name="CanIcomRxMessageSignalConfig_1" 
+                                     type="IDENTIFIABLE">
+                                <d:var name="CanIcomSignalMask" type="INTEGER" 
+                                       value="18446744073709551615"/>
+                                <d:var name="CanIcomSignalOperation" 
+                                       type="ENUMERATION" value="AND"/>
+                                <d:var name="CanIcomSignalValue" type="INTEGER" 
+                                       value="12302652059516914909"/>
+                                <d:ref name="CanIcomSignalRef" type="REFERENCE" >
+                                  <a:a name="ENABLE" value="false"/>
+                                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                                </d:ref>
+                              </d:ctr>
+                              <d:ctr name="CanIcomRxMessageSignalConfig_2" 
+                                     type="IDENTIFIABLE">
+                                <d:var name="CanIcomSignalMask" type="INTEGER" 
+                                       value="18446744073709551615"/>
+                                <d:var name="CanIcomSignalOperation" 
+                                       type="ENUMERATION" value="GREATER"/>
+                                <d:var name="CanIcomSignalValue" type="INTEGER" 
+                                       value="18446744073709551360"/>
+                                <d:ref name="CanIcomSignalRef" type="REFERENCE" >
+                                  <a:a name="ENABLE" value="false"/>
+                                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                                </d:ref>
+                              </d:ctr>
+                              <d:ctr name="CanIcomRxMessageSignalConfig_3" 
+                                     type="IDENTIFIABLE">
+                                <d:var name="CanIcomSignalMask" type="INTEGER" 
+                                       value="18446744073709551615"/>
+                                <d:var name="CanIcomSignalOperation" 
+                                       type="ENUMERATION" value="SMALLER"/>
+                                <d:var name="CanIcomSignalValue" type="INTEGER" 
+                                       value="2"/>
+                                <d:ref name="CanIcomSignalRef" type="REFERENCE" >
+                                  <a:a name="ENABLE" value="false"/>
+                                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                                </d:ref>
+                              </d:ctr>
+                              <d:ctr name="CanIcomRxMessageSignalConfig_4" 
+                                     type="IDENTIFIABLE">
+                                <d:var name="CanIcomSignalMask" type="INTEGER" 
+                                       value="18446744073709551615"/>
+                                <d:var name="CanIcomSignalOperation" 
+                                       type="ENUMERATION" value="XOR"/>
+                                <d:var name="CanIcomSignalValue" type="INTEGER" 
+                                       value="1311768467302729063"/>
+                                <d:ref name="CanIcomSignalRef" type="REFERENCE" >
+                                  <a:a name="ENABLE" value="false"/>
+                                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                                </d:ref>
+                              </d:ctr>
                             </d:lst>
+                          </d:ctr>
+                        </d:lst>
+                      </d:ctr>
+                    </d:ctr>
+                    <d:ctr name="CanIcomConfig_1" type="IDENTIFIABLE">
+                      <d:var name="CanIcomConfigId" type="INTEGER" value="2"/>
+                      <d:var name="CanIcomWakeOnBusOff" type="BOOLEAN" 
+                             value="false"/>
+                      <d:ctr name="CanIcomWakeupCauses" type="IDENTIFIABLE">
+                        <d:lst name="CanIcomRxMessage" type="MAP">
+                          <d:ctr name="CanIcomRxMessage_0" type="IDENTIFIABLE">
+                            <d:var name="CanIcomCounterValue" type="INTEGER" 
+                                   value="1">
+                              <a:a name="ENABLE" value="true"/>
+                            </d:var>
+                            <d:var name="CanIcomMessageId" type="INTEGER" 
+                                   value="256"/>
+                            <d:var name="CanIcomMessageIdMask" type="INTEGER" 
+                                   value="4095">
+                              <a:a name="ENABLE" value="true"/>
+                            </d:var>
+                            <d:var name="CanIcomMissingMessageTimerValue" 
+                                   type="FLOAT" value="0.0">
+                              <a:a name="ENABLE" value="false"/>
+                              <a:a name="IMPORTER_INFO" value="@DEF"/>
+                            </d:var>
+                            <d:var name="CanIcomPayloadLengthError" 
+                                   type="BOOLEAN" value="false">
+                              <a:a name="IMPORTER_INFO" value="@DEF"/>
+                            </d:var>
+                            <d:lst name="CanIcomRxMessageSignalConfig" 
+                                   type="MAP"/>
                           </d:ctr>
                         </d:lst>
                       </d:ctr>
@@ -394,6 +481,7 @@
                   <a:a name="IMPORTER_INFO" value="@DEF"/>
                 </d:var>
                 <d:var name="CanPublicIcomSupport" type="BOOLEAN" value="true"/>
+                <d:var name="CanECCSupport" type="BOOLEAN" value="false"/>
                 <d:var name="CanSetBaudrateApi" type="BOOLEAN" value="false">
                   <a:a name="ENABLE" value="true"/>
                 </d:var>
@@ -442,6 +530,10 @@
                 <d:ctr name="CanDemEventParameterRefs" type="IDENTIFIABLE">
                   <a:a name="ENABLE" value="false"/>
                   <d:ref name="CAN_E_HARDWARE_ERROR" type="REFERENCE" >
+                    <a:a name="ENABLE" value="false"/>
+                    <a:a name="IMPORTER_INFO" value="@DEF"/>
+                  </d:ref>
+                  <d:ref name="CAN_E_SAFTEY_BEU_ERROR" type="REFERENCE" >
                     <a:a name="ENABLE" value="false"/>
                     <a:a name="IMPORTER_INFO" value="@DEF"/>
                   </d:ref>

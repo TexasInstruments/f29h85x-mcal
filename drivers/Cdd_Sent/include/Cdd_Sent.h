@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -34,13 +34,15 @@ extern "C" {
  * Below are the global requirements which are met by this Cdd_SENT driver which
  * can't be mapped to a particular source ID.
  *
- * Design:  MCAL-xxxxx
+ * Design:  MCAL-28615
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
-/* Design: MCAL-xxxx */
+/*
+ * Design: MCAL-28632, MCAL-28611, MCAL-28612, MCAL-28613, MCAL-28614, MCAL-28623,  MCAL-28681
+ */
 #include "Std_Types.h"
 #include "Cdd_Sent_Cfg.h"
 #include "ComStack_Types.h"
@@ -55,54 +57,80 @@ extern "C" {
  *********************************************************************************************************************/
 
 /** \brief Driver Implementation Major Version. */
-#define CDD_SENT_SW_MAJOR_VERSION     (1U)
+#define CDD_SENT_SW_MAJOR_VERSION     (2U)
 /** \brief Driver Implementation Minor Version. */
 #define CDD_SENT_SW_MINOR_VERSION     (0U)
 /** \brief Driver Implementation Patch Version. */
 #define CDD_SENT_SW_PATCH_VERSION     (0U)
 
-/** \brief AUTOSAR major version specification implemented by CDD_SENT Driver. */
+/** \brief AUTOSAR major version specification implemented by Cdd_Sent Driver. */
 #define CDD_SENT_AR_RELEASE_MAJOR_VERSION    (4U)
-/** \brief AUTOSAR minor version specification implemented by CDD_SENT Driver. */
+/** \brief AUTOSAR minor version specification implemented by Cdd_Sent Driver. */
 #define CDD_SENT_AR_RELEASE_MINOR_VERSION    (3U)
-/** \brief AUTOSAR Patch version specification implemented by CDD_SENT Driver. */
+/** \brief AUTOSAR Patch version specification implemented by Cdd_Sent Driver. */
 #define CDD_SENT_AR_RELEASE_REVISION_VERSION (1U)
 
 /** \brief Texas Instruments Vendor ID. */
 #define CDD_SENT_VENDOR_ID   ((uint16) 44U)
-/** \brief CDD_SENT Driver Module ID. */
+/** \brief Cdd_Sent Driver Module ID. */
 #define CDD_SENT_MODULE_ID   ((uint16) 255U)
-/** \brief  CDD_SENT Driver Instance ID. */
+/** \brief  Cdd_Sent Driver Instance ID. */
 #define CDD_SENT_INSTANCE_ID ((uint8) 0U)
-                                                
+
+/*
+ * Design: MCAL-28630
+ */
 /** \brief API parameter checking: invalid pointer. */
 #ifndef CDD_SENT_E_PARAM_POINTER
 #define CDD_SENT_E_PARAM_POINTER             (0x20U)
 #endif
 
+/*
+ * Design: MCAL-28629
+ */
 /** \brief API parameter checking: invalid value. */
 #ifndef CDD_SENT_E_PARAM_CHANNEL
 #define CDD_SENT_E_PARAM_CHANNEL             (0x21U)
 #endif
 
+/*
+ * Design: MCAL-28631
+ */
 /** \brief API service for initialization called when already  initialized. */
 #ifndef CDD_SENT_E_ALREADY_INITIALIZED
 #define CDD_SENT_E_ALREADY_INITIALIZED       (0x22U)
 #endif
 
+/*
+ * Design: MCAL-28628
+ */
 /** \brief  API service called without module initialization. */
 #ifndef CDD_SENT_E_UNINIT
 #define CDD_SENT_E_UNINIT                    (0x23U)
 #endif
 
+/*
+ * Design: MCAL-28627
+ */
+/*********************************************************************************************************************
+ * CDD SENT Service Ids.
+ *
+ * The Service Id is one of the argument to Det_ReportError function and is
+ * used to identify the source of the error.
+ *********************************************************************************************************************/
 /** \brief Cdd_Sent_GetVersionInfo(). */
 #define CDD_SENT_SID_GET_VERSION_INFO       (0x0U)
 /** \brief Cdd_Sent_Init(). */
 #define CDD_SENT_SID_INIT                   (0x1U)
 /** \brief Cdd_Sent_Deinit(). */
 #define CDD_SENT_SID_DEINIT                 (0x2U)
-/** \brief Cdd_Sent_TriggerPulse(). */
+/** \brief Cdd_Sent_Transmit(). */
 #define CDD_SENT_SID_TRANSMIT               (0x3U) 
+/** \brief Cdd_Sent_Enable_Interrupts(). */
+#define CDD_SENT_SID_ENABLE_INTERRUPT               (0x4U) 
+/** \brief Cdd_Sent_Disable_Interrupts(). */
+#define CDD_SENT_SID_DISABLE_INTERRUPT               (0x5U) 
+
 /** \brief TIMESTAMP MEMDATA */
 #define TIMESTAMP_MEMDATA                   ((uint16) 0x3U)
 /** \brief DATA0 MEMDATA */
@@ -112,15 +140,14 @@ extern "C" {
 #define SENT_DATAXMAP_STEP       (SENT_O_DATA1_MAP - SENT_O_DATA0_MAP)
 /** \brief software trigger step */
 #define SENT_MTP_SWTR_STEP      (SENT_O_S1_MTP_SWTR - SENT_O_BC_MTP_SWTR)
+/** \brief Mtp Timeout step */
+#define SENT_MTP_TIMEOUT_STEP   (SENT_O_S2_MTP_TO - SENT_O_S1_MTP_TO)
+/*
+ * Design: MCAL-28668
+ */
+/** \brief maximum number of sensors */
+#define MAXIMUM_NUMBER_OF_SENSORS      (4U)
 
-/** \brief SENSOR 1 ERROR INTERRUPTS */
-#define SENSOR_1_ERROR_INTERRUPTS      (0x381100U)
-/** \brief SENSOR 2 ERROR INTERRUPTS */
-#define SENSOR_2_ERROR_INTERRUPTS      (0x382200U)
-/** \brief SENSOR 3 ERROR INTERRUPTS */
-#define SENSOR_3_ERROR_INTERRUPTS      (0x384400U)
-/** \brief SENSOR 4 ERROR INTERRUPTS */
-#define SENSOR_4_ERROR_INTERRUPTS      (0x388800U)
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -129,9 +156,15 @@ extern "C" {
  * Exported Type Declarations
  *********************************************************************************************************************/
 
-/** \brief Type for Cdd_SENT Instance */
+/** \brief Type for reading and setting the channel index */
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28675
+ */
+typedef uint32 CddSent_ValueType;
+
+/** \brief Type for Cdd_Sent Instance */
+/*
+ * Design: MCAL-28636
  */
 typedef enum
 {
@@ -149,7 +182,11 @@ typedef enum
     CDD_SENT_INSTANCE_SENT6,
 } Cdd_SentInstance;
 
+
 /** \brief Type for Receiver Data */
+/*
+ * Design: MCAL-28637
+ */
 typedef enum
 {
     /** \brief Receiver Data 0 */
@@ -159,6 +196,9 @@ typedef enum
 } Cdd_Sent_DataNumber;
 
 /** \brief Type for Receiver Data Nibble Number */
+/*
+ * Design: MCAL-28638
+ */
 typedef enum
 {
     /** \brief DataX Nibble Number 0 */
@@ -180,6 +220,9 @@ typedef enum
 } Cdd_SentNibbleNumber;
 
 /** \brief Type for Receiver Data Nibble*/
+/*
+ * Design: MCAL-28639
+ */
 typedef enum
 {
     /** \brief No Nibble Selected */
@@ -210,7 +253,7 @@ typedef enum
 
 /** \brief Type for SENT CRC Type */
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28640
  */
 typedef enum
 {
@@ -225,7 +268,7 @@ typedef enum
 
 /** \brief Type for SENT CRC Width */
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28641
  */
 typedef enum
 {
@@ -238,6 +281,9 @@ typedef enum
 } Cdd_SentCRCWidth;
 
 /** \brief Sent Data mode type */
+/*
+ * Design: MCAL-28642
+ */
 typedef enum
 {
     /** \brief Direct Mapping Mode */
@@ -248,14 +294,13 @@ typedef enum
 } Cdd_SentFIFOMode;
 
 /** \brief Type for Trigger Level */
+/*
+ * Design: MCAL-28643
+ */
 typedef enum
 {
     /** \brief Trigger disable */
-    CDD_SENT_TRIGDISABLE    = 0U,
-    /** \brief Trigger level 1 */
-    CDD_SENT_TRIGLEV1       = 1U,       
-    /** \brief Trigger level 2 */
-    CDD_SENT_TRIGLEV2       = 2U,      
+    CDD_SENT_TRIGDISABLE    = 0U,    
     /** \brief Trigger level 3 */
     CDD_SENT_TRIGLEV3       = 3U,    
     /** \brief Trigger level 4 */
@@ -288,7 +333,7 @@ typedef enum
 
 /** \brief Type for SENT CRC includes status or not */
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28644
  */
 typedef enum
 {
@@ -301,7 +346,7 @@ typedef enum
 
 /** \brief Type for SENT number of data nibbles count */
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28645
  */
 typedef enum
 {
@@ -326,10 +371,12 @@ typedef enum
 
 /** \brief Type for SENT Sensor type */
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28646
  */
 typedef enum
 {
+    /** \brief Broadcast sensor trigger*/
+    CDD_SENT_CHANNEL_BROADCAST,
     /** \brief sensor trigger 1 */
     CDD_SENT_CHANNEL_SENSOR_1,
     /** \brief sensor trigger 2 */
@@ -338,117 +385,192 @@ typedef enum
     CDD_SENT_CHANNEL_SENSOR_3,
     /** \brief sensor trigger 4 */
     CDD_SENT_CHANNEL_SENSOR_4,
-    /** \brief Broadcast sensor trigger*/
-    CDD_SENT_CHANNEL_BROADCAST,
+    /** \brief Standard sensor trigger  */
+    CDD_SENT_CHANNEL_STANDARD_SENSOR,
 }Cdd_SentSensorType;
 
 
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28647
  */
 /** \brief  Sent Channel Type. */
 typedef enum
 {
-    /** \brief Fast channel */
-    FAST_CHANNEL,
-    /** \brief Short serial slow channel */
-    SHORT_SERIAL_SLOW_CHANNEL,
-    /** \brief Enhanced serial 12 bit slow channel */
-    ENHANCED_SERIAL_12BIT_SLOW_CHANNEL,
+    /** \brief Fast channel for Stanadard sensor */
+    CDD_SENT_CHANNEL_STANDARD_SENSOR_FAST_CHANNEL,
+    /** \brief Fast channel for sensor 1 */
+    CDD_SENT_CHANNEL_SENSOR_1_FAST_CHANNEL,
+    /** \brief Fast channel for sensor 2 */
+    CDD_SENT_CHANNEL_SENSOR_2_FAST_CHANNEL,
+    /** \brief Fast channel for sensor 3 */
+    CDD_SENT_CHANNEL_SENSOR_3_FAST_CHANNEL,
+    /** \brief Fast channel for sensor 4 */
+    CDD_SENT_CHANNEL_SENSOR_4_FAST_CHANNEL,
+    /** \brief Short serial and Enhanced serial 12  slow channel */
+    SHORT_SERIAL_ENHANCED_SERIAL_12BIT_SLOW_CHANNEL,
     /** \brief enhanced serial 16 bit slowc channel */
     ENHANCED_SERIAL_16BIT_SLOW_CHANNEL
 }Cdd_SentChannelType;
 
 /** \brief  Sent Data Buffer. */
+/*
+ * Design: MCAL-28648
+ */
 typedef struct
 {
-    #if ENABLE_TIMESTAMP
-        /** \brief Timestamp */
-        uint32 Timestamp[1];
-    #endif
+    /** \brief Timestamp */
+    uint32 Timestamp[1];
     /** \brief Data Buffer */
-    uint32 Data_Buffer[1];
+    uint32 Data_Buffer[2];
 }Cdd_Sent_Data_Buffer;
 
-
+/*
+ * Design: MCAL-28664
+ */
 /** \brief  Notification callback function pointer. */
 typedef void (*Cdd_Sent_NotifyType)(PduIdType id, const PduInfoType *PduInfoPtr);
 
+/*
+ * Design: MCAL-28665
+ */
+/** \brief  Error Notification callback function pointer. */
+typedef void (*Cdd_Sent_ErrorNotifyType)(void);
+
 /** \brief  Configuration per HW unit */
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28674
+ */
+typedef struct Cdd_Sent_MTPConfigType_s
+{
+    /** \brief Cdd_Sent channel type*/
+    Cdd_SentSensorType    CddSentMTPSensorType;
+    /** \brief interrupt source*/
+    Cdd_SentTriggerSource  CddSentTriggerSource;
+    /** \brief Cdd_Sent MTP enable or not */
+    boolean               CddSentMTPSensorEnable;
+    /** \brief Cdd_Sent sensor Timeout */
+    uint32                 CddSentMTPSensorTimeout;
+    /** \brief Cdd_Sent MTP Channel Period */
+	uint16                CddSentMTPSensorPeriod;
+    /** \brief Cdd_Sent MTP Channel Compare 1 */
+    uint16                CddSentMTPSensorCompare1;
+    /** \brief Cdd_Sent MTP Channel Compare 2 */
+    uint16                CddSentMTPSensorCompare2;
+    /** \brief Cdd_Sent MTP Channel Compare 3 */
+    uint16                CddSentMTPSensorCompare3;
+    /** \brief Cdd_Sent MTP Channel Compare 4 */
+    uint16                CddSentMTPSensorCompare4;
+    /** \brief Cdd_Sent MTP Channel Compare 5 */
+    uint16                CddSentMTPSensorCompare5;
+    /** \brief Cdd_Sent MTP Channel Compare 6 */
+    uint16                CddSentMTPSensorCompare6;
+    /** \brief Cdd_Sent MTP Channel Compare 7 */
+    uint16                CddSentMTPSensorCompare7;
+    /** \brief Cdd_Sent MTP Channel Compare 8 */
+    uint16                CddSentMTPSensorCompare8;
+    /** \brief Cdd_Sent MTP Channel Compare 9 */
+    uint16                CddSentMTPSensorCompare9;
+    /** \brief Cdd_Sent MTP Channel Compare 10 */
+    uint16                CddSentMTPSensorCompare10;
+    /** \brief Cdd_Sent Sensor PduId*/
+    uint16                 CddSentMTPSensorPduID;
+
+} Cdd_Sent_MTPConfigType;
+
+/** \brief  Configuration per HW unit */
+/*
+ * Design: MCAL-28672
  */
 typedef struct Cdd_Sent_ChannelConfigType_s
 {
-    /** \brief CDD_SENT sensor type */
-    Cdd_SentSensorType Cdd_SentSensorType;
-    /** \brief CDD_SENT channel */
-    Cdd_SentChannelType Cdd_SentChannelType;
-    /** \brief CDD_SENT Enable Timestamp */
-    boolean                EnableTimeStamp;
-    /** \brief CDD_SENT ChannelID */  
-    uint32                 Cdd_Sent_channelID;
-    /** \brief CDD_SENT SensorID*/
-    uint32                  Cdd_Sent_MessageID;
-    /** \brief CDD_SENT Data buffer */
-    Cdd_Sent_Data_Buffer             Cdd_Sent_Buffer_Data;
+    /** \brief Cdd_Sent sensor type */
+    Cdd_SentSensorType CddSentSensorType;
+    /** \brief Cdd_Sent channel */
+    Cdd_SentChannelType CddSentChannelType;
+    /** \brief Cdd_Sent PduID */
+    uint32                  CddSentPduID;
+    /** \brief Cdd_Sent SensorID*/
+    uint32                  CddSentMessageID;
 } Cdd_Sent_ChannelConfigType;
 
 /** \brief  Configuration per HW unit */
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28672
  */
 typedef struct Cdd_Sent_HWUnitType_s
 {
-    /** \brief CDD_SENT HW unit ID */
-    uint8               Cdd_SentHWUnitId;
-    /** \brief CDD_SENT HW unit Instance */ 
-    Cdd_SentInstance   Cdd_SentInstance;
-    /** \brief CDD_SENT Enable Fast Interrupt */
-    uint32             Enable_Fast_Interrupt;
-    /** \brief CDD_SENT Enable Slow Interrupt */
-    uint32             Enable_Slow_Interrupt;
-    /** \brief CDD_SENT HW unit Base Address */
-    uint32              Cdd_SentBaseAddress;
-    /** \brief Clock tick time for the CDD_SENT data range 3usec -10 usec*/
-    uint32               Cdd_SentClockTick;
-    /** \brief CDD_SENT CRC type */
-    Cdd_SentCRCType    Cdd_SentCRCType;
-    /** \brief CDD_SENT CRC Width */
-    Cdd_SentCRCWidth   Cdd_SentCRCWidth;
-    /** \brief CDD_SENT CRC status */
-    Cdd_SentCRCWithStatus  Cdd_SentCRCWithStatus;
-    /** \brief CDD_SENT Data Nibbles Count */
-    Cdd_SentDataNibblesCount    Cdd_SentDataNibblesCount;
-    /** \brief CDD_SENT FIFO trigger level */
-    Cdd_SentTriggerLevel  FIFOTriggerLevel;
-    /** \brief CDD_SENT Sync Timeout */
-    uint32              SyncTimeout;
+    /** \brief Cdd_Sent HW unit ID */
+    uint8               CddSentHWUnitId;
+    /** \brief Cdd_Sent HW unit Instance */
+    Cdd_SentInstance   CddSentInstance;
+    /** \brief Cdd_Sent HW unit Base Address */
+    uint32              CddSentBaseAddress;
+    /** \brief Clock tick time for the Cdd_Sent data range 3usec -10 usec*/
+    uint32               CddSentClockTick;
+    /** \brief Cdd_Sent CRC type */
+    Cdd_SentCRCType    CddSentCRCType;
+    /** \brief Cdd_Sent CRC Width */
+    Cdd_SentCRCWidth   CddSentCRCWidth;
+    /** \brief Cdd_Sent CRC status */
+    Cdd_SentCRCWithStatus  CddSentCRCWithStatus;
+    /** \brief Cdd_Sent Data Nibbles Count */
+    Cdd_SentDataNibblesCount    CddSentDataNibblesCount;
+    /** \brief Cdd_Sent FIFO trigger level */
+    Cdd_SentTriggerLevel  CddSentFIFOTriggerLevel;
+    /** \brief Cdd_Sent Sync Timeout */
+    uint32              CddSentSyncTimeout;
     /** \brief Accept Error Data */
-    boolean                AcceptErrorData;
+    boolean                CddSentAcceptErrorData;
+    /** \brief Cdd_Sent Enable Timestamp */
+    boolean                CddSentEnableTimeStamp;    
     /** \brief Glitch filter */
-    uint8                  GlitchFilter;
-    /** \brief CDD_SENT Pause Pulse */
-    boolean                Cdd_SentPausePulse;
-    /** \brief CDD_SENT Channel Count */
-    uint8               Cdd_SentChannelCount;
-    /** \brief CDD_SENT CONFIG List */
-    Cdd_Sent_ChannelConfigType**    Cdd_SentChannelConfigList;
+    uint8                  CddSentGlitchFilter;
+    /** \brief Cdd_Sent Channel Count */
+    uint8               CddSentChannelCount;
+    /** \brief Cdd_Sent CONFIG List */
+    Cdd_Sent_ChannelConfigType**    CddSentChannelConfigList;
+    /** \brief Cdd_Sent MTP */
+    boolean                CddSentMTP;
+    /** \brief Cdd_Sent MTP Channel Count */
+    uint8               CddSentMTPChannelCount;
+    /** \brief Cdd_Sent MTP CONFIG List */
+    Cdd_Sent_MTPConfigType**    CddSentMTPConfigList;
+    /** \brief Global wait time */
+    uint16                      CddSentGlobalWaitTime;
     /** \brief User call back function */
-    Cdd_Sent_NotifyType         Cdd_SentUserCallbackFunction;
+    Cdd_Sent_NotifyType         CddSentUserCallbackFunction;
+    /** \brief User call back function for Errors */
+    Cdd_Sent_ErrorNotifyType   CddSentUserErrorCallbackFunction;
+    /** \brief Cdd_Sent Data buffer */
+    Cdd_Sent_Data_Buffer             CddSent_Buffer_Data;
 } Cdd_Sent_HWUnitType;
 
 /** \brief  Configuration per HW unit */
 /*
- *Design: MCAL-xxxx
+ * Design: MCAL-28673
  */
 
-typedef struct Cdd_Sent_DriverObjType_s
+typedef struct Cdd_Sent_ConfigType_s
 {
-    /* SENT HW unit ID */
-    Cdd_Sent_HWUnitType *Cdd_Sent_HWUnit[6];  /* [SENT_MAX_HW_UNITS]*/
+    /** \brief  SENT HW unit ID */
+    Cdd_Sent_HWUnitType *Cdd_Sent_HWUnit[SENT_MAX_HW_UNITS];
 
 } Cdd_Sent_ConfigType;
+
+/** \brief  Cdd_Sent driver object type structure */
+/*
+ * Design: MCAL-28679, MCAL-28633, MCAL-28634, MCAL-28635
+ */
+typedef struct Cdd_Sent_DriverObjType_s
+{
+    /** \brief Cdd Sent driver configuration pointer.*/
+    const Cdd_Sent_ConfigType      *CddSent_CfgPtr;
+    /** \brief Lookup Table for Channel-Index  Ex:CddSent_Lut_Channel_Index[Ch] = index */
+    CddSent_ValueType             CddSent_Lut_Channel_Index[SENT_MAX_HW_UNITS];
+    /** \brief Array to store fast channel PDU id's */
+    PduIdType             CddSent_Fast_Channel_PduID[SENT_MAX_HW_UNITS][MAXIMUM_NUMBER_OF_SENSORS];
+
+} Cdd_Sent_DriverObjType;
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -499,12 +621,18 @@ FUNC(void, CDD_SENT_CODE) Cdd_Sent_Init(P2CONST(Cdd_Sent_ConfigType, AUTOMATIC, 
  *********************************************************************************************************************/
 FUNC(void, CDD_SENT_CODE) Cdd_Sent_Deinit(void);
 
-/** \brief Cdd_Sent_TriggerPulse : Triggers the MTP.
+/** \brief Cdd_Sent_Transmit : Triggers the MTP.
  *
- * This service will trigger the MTP in case of MTP enabled.
  *
  * \param[in] PduInfoPtr Pointer to PDU Information.
- * \param[in] TxPduId ID of the Tx PDU
+ *                       If PduInfoPtr->SduDataPtr[0] is 0, Will disbale HW trigger
+ *                       If PduInfoPtr->SduDataPtr[0] is 1, Will configure HW trigger to configuration value
+ *                       If PduInfoPtr->SduDataPtr[0] is 2, Will trigger SW trigger
+ * \param[in] TxPduId  : When Cdd Sent is integrated with Autosar Com stack, this TxPduId parameter
+ * is a Pdu identifier used  to address the respective sensor.
+ * When Cdd Sent is not integrated with Autosar Com stack, this TxPduId parameter
+ * is a device identifier used  to address the respective sensor.
+ * 
  * \pre Cdd_Sent_Init should be called first before calling this service.
  * \post None
  * \return Std_ReturnType
@@ -512,12 +640,43 @@ FUNC(void, CDD_SENT_CODE) Cdd_Sent_Deinit(void);
  * \retval E_NOT_OK: command has not been accepted
  *
  *********************************************************************************************************************/
-
+#if (STD_ON == CDD_SENT_ENABLE_MTP_MODE)
 FUNC(Std_ReturnType, CDD_SENT_CODE) \
-Cdd_Sent_TriggerPulse(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr, \
+Cdd_Sent_Transmit(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr,
                     PduIdType TxPduId);
+#endif /* CDD_SENT_ENABLE_MTP_MODE */
 
+/** \brief Cdd_Sent_Enable_Interrupts : Enable Interrupts.
+ *
+ * This service will enable interrupts.
+ *
+ * \param[in] SentInstance id of Sent HW unit.
+ * \pre Cdd_Sent_Init should be called first before calling this service.
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
 
+FUNC(void, CDD_SENT_CODE)
+Cdd_Sent_Enable_Interrupts(Cdd_SentInstance SentInstance);
+
+/** \brief Cdd_Sent_Disable_Interrupts : Disable Interrupts.
+ *
+ * This service will Disable interrupts and ignore any received data as there
+ * is no polling API for Cdd_Sent.
+ *
+ * \param[in] SentInstance id of Sent HW unit.
+ * \pre Cdd_Sent_Init should be called first before calling this service.
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+
+ FUNC(void, CDD_SENT_CODE)
+ Cdd_Sent_Disable_Interrupts(Cdd_SentInstance SentInstance);
+ 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

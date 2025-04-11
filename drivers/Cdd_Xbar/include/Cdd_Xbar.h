@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited. This product is protected under copyright law and
  *                 trade secret law as an unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc. All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc. All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -44,7 +44,7 @@
  *********************************************************************************************************************/
 
 /** \brief Driver Implementation Major Version. */
-#define CDD_XBAR_SW_MAJOR_VERSION                 (1U)
+#define CDD_XBAR_SW_MAJOR_VERSION                 (2U)
 /** \brief Driver Implementation Minor Version. */
 #define CDD_XBAR_SW_MINOR_VERSION                 (0U)
 /** \brief Driver Implementation Patch Version. */
@@ -130,8 +130,6 @@
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-/** \brief Type for symbolic name of CDD XBAR instances. */
-typedef uint32 Cdd_XbarType;
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -147,253 +145,272 @@ typedef uint32 Cdd_XbarType;
 /* Design: MCAL-25737, MCAL-25738 */
 /** \brief Service for getting CDD crossbar driver version information.
  *
- * Loads the corresponding vendor ID, module ID and software release version information for CDD Crossbar module
+ * Loads the corresponding vendor ID, module ID and software release version information for CDD Crossbar module.
  *
- * \param[out] VersionInfoPtr is the pointer to a Std_VersionInfoType struct
+ * \param[out] VersionInfoPtr is the pointer to a Std_VersionInfoType struct.
  * \pre Preconditions - None
  * \post Postconditions - None
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_XBAR_APPL_DATA) VersionInfoPtr);
+FUNC(void, CDD_XBAR_CODE) 
+Cdd_Xbar_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_XBAR_APPL_DATA) VersionInfoPtr);
 #endif  /* STD_ON == CDD_XBAR_GET_VERSION_INFO_API */
 
-/* Design: MCAL-25733, MCAL-25734, MCAL-25735, MCAL-25736 */
+/* Design: MCAL-25733, MCAL-25734, MCAL-25735, MCAL-25736, MCAL-28136, MCAL-28137, MCAL-28138,MCAL-28139, MCAL-28140*/
 /** \brief Service to initialize CDD Crossbar driver.
  *
  * Initializes crossbar driver for usage with the configured settings and enabling its other functionalities offered.
  *
- * \param[in] ConfigPtr is the configuration pointer pointing to a generated configuration variant from plugin
- * \pre Preconditions - Driver not already initialized
- * \post Postconditions - Driver in initialized state
+ * \param[in] ConfigPtr is the configuration pointer pointing to a generated configuration variant from plugin.
+ * \pre Preconditions - Driver not already initialized.
+ * \post Postconditions - Driver in initialized state.
  * \return None
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_Init(P2CONST(Cdd_Xbar_ConfigType, AUTOMATIC, CDD_XBAR_CONFIG_DATA) ConfigPtr);
 
+#if ((0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS) || \
+     (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS) || \
+     (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS))
 /* Design: MCAL-25739, MCAL-25740 */
 /** \brief Service for selecting available inputs for a given Crossbar Module.
  *
  * Selection of one input line at a time from a group to enable or 
  * disable their signal route to the output lines if selectable 
- * (i.e., not in a locked state)
+ * (i.e., not in a locked state).
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \param[in] InputLine is the crossbar input
- * \param[in] Selection is the selection updation for the identified inputs
- * \pre Preconditions - Driver is already initialized but not locked
- * \post Postconditions - None
- * \return Status of input selection
- * \retval E_OK if inputs selected
- * \retval E_NOT_OK if input selection failed
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \param[in] InputLine is the crossbar input. In case of Input Xbar: PortPinId. In case of other Xbars, enumerations 
+ * available in Cdd_Xbar_Output_Xbar_Input_LinesType, Cdd_Xbar_Epwm_Xbar_Input_LinesType, 
+ * Cdd_Xbar_Clb_Xbar_Input_LinesType, Cdd_Xbar_Mindb_Xbar_Input_LinesType or Cdd_Xbar_Icl_Xbar_Input_LinesType.
+ * \param[in] Selection is the selection updation for the identified inputs, TRUE or FALSE.
+ * \pre Preconditions - Driver is already initialized but not locked.
+ * \post Postconditions - None.
+ * \return Status of input selection.
+ * \retval E_OK if inputs selected.
+ * \retval E_NOT_OK if input selection failed.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_XBAR_CODE) \
-Cdd_Xbar_SelectInput(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit, VAR(uint32, AUTOMATIC) InputLine, VAR(boolean, AUTOMATIC) Selection);
+FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_SelectInput
+(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(uint16, AUTOMATIC) InputLine, VAR(boolean, AUTOMATIC) Selection);
 
+#if (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS)
 /* Design: MCAL-25741, MCAL-25742 */
-/** \brief Service for enabling or disabling the output latch to drive the selected output.
+/** \brief Service for enabling or disabling the output latch to drive the output of the selected output crossbar instance.
  *
- * Enables/Disables the latched output for the given output line number of Output Crossbar entity.
+ * Enables/Disables the latched output for the given output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \param[in] LatchEnable is the parameter to determines whether or not to select latch, to drive the Output XBAR Linenumber.
- * \pre Preconditions - Driver is already initialized but not locked
- * \post Postconditions - None
- * \return Enablement status of output latch
- * \retval E_OK on enabling/disabling as per LatchEnable
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \param[in] LatchEnable is the parameter to determines whether or not to select latch, 
+ *  to drive the output of output crossbar instance., TRUE or FALSE.
+ * \pre Preconditions - Driver is already initialized but not locked.
+ * \post Postconditions - None.
+ * \return Enablement status of output latch.
+ * \retval E_OK on enabling/disabling as per LatchEnable.
  * \retval E_NOT_OK on failure to enable/disable as per LatchEnable.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutLatchSelect(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit, VAR(boolean, AUTOMATIC) LatchEnable);
-
-/* Design: MCAL-25741, MCAL-25742 */
-/** \brief Service for checking the status of enabling the latched event as output of any Output Crossbar output line.
- *
- * Fetches Output Latch enablement status of the given Output Crossbar output line. 
- *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
- * \return Enablement status of setting latched event as output
- * \retval TRUE if latched event selected as output
- * \retval FALSE if latch event not selected as output
- *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutLatchSelectSts(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutLatchSelect
+(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(boolean, AUTOMATIC) LatchEnable);
 
 /* Design: MCAL-25743, MCAL-25744 */
-/** \brief Service for fetching latch status of output LineNumber of an Output Crossbar.
+/** \brief Service for checking the status of enabling the latched event as output of any output crossbar instance.
  *
- * Fetches Output Latch status on the given output line number of Output Crossbar. 
+ * Fetches Output Latch enablement status of the given output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
- * \return Latch status of the output LineNumber of output crossbar.
- * \retval True if there is a latched event
- * \retval False if latched event is not present
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
+ * \return Enablement status of setting latched event as output.
+ * \retval TRUE if latched event selected as output.
+ * \retval FALSE if latch event not selected as output.
+ *********************************************************************************************************************/
+FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutLatchSelectSts(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
+
+/*Design: MCAL-28141, MCAL-28142 */
+/** \brief Service for fetching latch status of output crossbar instance.
+ *
+ * Fetches Output Latch status on the given output crossbar instance.
+ *
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
+ * \return Latch status of the output crossbar instance.
+ * \retval True if there is a latched event.
+ * \retval False if latched event is not present.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutLatchFlagStatus(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutLatchFlagStatus(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
 
-/* Design: MCAL-25743, MCAL-25744 */
+/* Design: MCAL-28143, MCAL-28144 */
 /** \brief Service for setting the respective Output X-BAR output signal latch.
  *
- * Forces the output latch of the given output line number of Output Crossbar. 
+ * Forces the output latch of the given output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
  * \return Status of the setting the latch of output LineNumber of output crossbar.
  * \retval E_OK if latch setting is successful.
  * \retval E_OK if latch setting failed.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutLatchFlagForce(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutLatchFlagForce(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
 
 
-/* Design: MCAL-25743, MCAL-25744 */
+/* Design: MCAL-28145, MCAL-28146 */
 /** \brief Service for clearing the respective Output X-BAR output signal latch.
  *
- * Cleares the output latch of the given output line number of Output Crossbar. 
+ * Cleares the output latch of the given output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
- * \return Status of the clearing the latch of output LineNumber of output crossbar.
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
+ * \return Status of clearing the latch of output crossbar instance.
  * \retval E_OK if latch clearing is successful.
  * \retval E_OK if latch clearing failed.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutLatchFlagClear(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutLatchFlagClear(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
 
 
-/* Design: MCAL-25743, MCAL-25744 */
-/** \brief Service for setting and restoring output line inversion before latch for a chosen output XBAR output line.
+/* Design: MCAL-28147, MCAL-28148 */
+/** \brief Service for setting and restoring output line inversion before latch for a chosen output crossbar instance.
  *
- * Sets and restores output line inversion before latch for a chosen output XBAR output line.
+ * Sets and restores output line inversion before latch for a chosen output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \param[in] Selection is the selection for inversion enablement.
- * \pre Preconditions - Driver is already initialized but not locked
- * \post Postconditions - None
- * \return Status of the clearing the latch of output LineNumber of output crossbar.
- * \retval E_OK if latch clearing is successful.
- * \retval E_OK if latch clearing failed.
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \param[in] Selection is the selection for inversion enablement, TRUE or FALSE.
+ * \pre Preconditions - Driver is already initialized but not locked.
+ * \post Postconditions - None.
+ * \return Status of the setting and resetting the output line inversion before latch of output crossbar instance.
+ * \retval E_OK if setting and resetting is successful.
+ * \retval E_OK if setting and resetting failed.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutInvBeforeLatch(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit, VAR(boolean, AUTOMATIC) Selection);
+FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutInvBeforeLatch
+(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(boolean, AUTOMATIC) Selection);
 
 
-/* Design: MCAL-25743, MCAL-25744 */
-/** \brief Service to check inversion before latching for an output line of the given Output Crossbar unit.
+/* Design: MCAL-28149, MCAL-28150 */
+/** \brief Service to check inversion before latching for an output line of the given output crossbar instance.
  *
- * Returns status of output line inversion before latch for a chosen output XBAR output line.
+ * Returns status of output line inversion before latch for a chosen output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
- * \return Status of inversion set before latch
- * \retval TRUE if inverted
- * \retval FALSE if uninverted
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
+ * \return Status of inversion set before latch.
+ * \retval TRUE if inverted.
+ * \retval FALSE if uninverted.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutInvCheckBeforeLatch(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutInvCheckBeforeLatch(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
 
 
 /* Design: MCAL-25745, MCAL-25746 */
-/** \brief Service for finding the signal on a chosen output LineNumber as output of an Output Crossbar.
+/** \brief Service for finding the signal on a output of an output crossbar instance.
  *
- * Getting signal value as high or low as output of Output Crossbar.
+ * Getting signal value as high or low as output of output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
- * \return Output Polarity
- * \retval STD_HIGH if Logic High (1)
- * \retval STD_LOW if Logic Low (0)
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
+ * \return Output Polarity.
+ * \retval STD_HIGH if Logic High (1).
+ * \retval STD_LOW if Logic Low (0).
  *
  *********************************************************************************************************************/
-FUNC(Cdd_Xbar_OutputlevelType, CDD_XBAR_CODE) Cdd_Xbar_OutOutputSignal(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(Cdd_Xbar_OutputlevelType, CDD_XBAR_CODE) Cdd_Xbar_OutOutputSignal(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
+
 /* Design: MCAL-25747, MCAL-25748 */
-/** \brief Service for selecting 16 or 32-bit stretched pulse selection at the output of an Output Crossbar.
+/** \brief Service for selecting 16 or 32-bit stretched pulse selection at the output of an output crossbar instance.
  *
- * Selects or de-selects stretched pulse at the given output line of Output Crossbar.
+ * Selects or de-selects stretched pulse at the given output line of an output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
  * \param[in] TickStretch  is the stretch in ticks as available with enumeration.
- * \pre Preconditions - Driver is already initialized but not locked
- * \post Postconditions - None
- * \return Status whether Output XBar out stretch pulse was set or not
- * \retval E_OK if stretched or unstretched as per Ticks
- * \retval E_NOT_OK if not stretched or unstretched as per Ticks
+ * \pre Preconditions - Driver is already initialized but not locked.
+ * \post Postconditions - None.
+ * \return Status whether Output XBar out stretch pulse was set or not.
+ * \retval E_OK if stretched or unstretched as per Ticks.
+ * \retval E_NOT_OK if not stretched or unstretched as per Ticks.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_XBAR_CODE) \
-Cdd_Xbar_OutStretchPulse(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit, VAR(Cdd_Xbar_TickStretchType, AUTOMATIC) TickStretch);
+FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutStretchPulse
+(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(Cdd_Xbar_TickStretchType, AUTOMATIC) TickStretch);
 
 /* Design: MCAL-25749, MCAL-25750 */
-/** \brief Service for clearing a stretched pulse selection as output of an Output Crossbar.
+/** \brief Service for clearing a stretched pulse selection as output crossbar instance.
  *
- * Clears output line stretched pulse selection for Output Crossbar. 
+ * Clears output line stretched pulse selection for output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized but not locked
- * \post Postconditions - None
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized but not locked.
+ * \post Postconditions - None.
  * \return Status of output stretched pulse selection clearance.
- * \retval E_OK if unstretched
- * \retval E_NOT_OK if not stretched
+ * \retval E_OK if unstretched.
+ * \retval E_NOT_OK if not stretched.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutStretchPulseClear(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_OutStretchPulseClear(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
+
 /* Design: MCAL-25751, MCAL-25752 */
-/** \brief Service for checking a stretched pulse selection as output of an Output Crossbar Unit.
+/** \brief Service for checking a stretched pulse selection of output of output crossbar instance.
+ * 
+ * Checks for output line stretched pulse selection of an output crossbar instance.
  *
- * Checks for output line stretched pulse selection of an Output Crossbar. 
- *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
  * \return Output stretched pulse selection in Sys Ticks.
  * \retval CDD_XBAR_SYSTICKS_16 or CDD_XBAR_SYSTICKS_32 stretch as per stretch, CDD_XBAR_SYSTICKS_STRETCH_OFF otherwise.
  *
  *********************************************************************************************************************/
 FUNC(Cdd_Xbar_TickStretchType, CDD_XBAR_CODE) \
-Cdd_Xbar_OutStretchPulseCheck(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+Cdd_Xbar_OutStretchPulseCheck(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
+#endif  /* STD_ON == CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS */
 
+#if ((0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS) || \
+     (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS) || \
+     (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS))
 /* Design: MCAL-25753, MCAL-25754 */
-/** \brief Service for inverting and restoring inversion of a Crossbar instance of either Crossbar Type.
+/** \brief Service for inverting and restoring inversion of an output crossbar instance.
  *
- * Sets and restores output line inversion for a chosen Crossbar entity.
+ * Sets and restores output line inversion for a chosen output crossbar instance.
  *
- * \param[in] CrossbarUnit is the crossbar instance
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
  * \param[in] Selection is the selection for inversion enablement.
- * \pre Preconditions - Driver is already initialized but not locked
- * \post Postconditions - None
- * \return Status of output inversion
- * \retval E_OK if inverted
- * \retval E_NOT_OK if not inverted
+ * \pre Preconditions - Driver is already initialized but not locked.
+ * \post Postconditions - None.
+ * \return Status of output inversion.
+ * \retval E_OK if inverted.
+ * \retval E_NOT_OK if not inverted.
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_XBAR_CODE) \
-Cdd_Xbar_SelectOutputInversion(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit, VAR(boolean, AUTOMATIC) Selection);
+Cdd_Xbar_SelectOutputInversion(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(boolean, AUTOMATIC) Selection);
 
 /* Design: MCAL-25755, MCAL-25756 */
 /** \brief Service for getting the current status of inversion on the 
- *         output line of a crossbar instance in a given Crossbar Entity
+ *         output line of a crossbar instance in a given Crossbar Entity.
  *
  * Checks whether any given Output Line of a Crossbar type has been set 
- * for inversion of its output signal or not, and returns the inversion
+ * for inversion of its output signal or not, and returns the inversion.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
- * \return Output inversion status
- * \retval TRUE if inverted
- * \retval FALSE if not inverted
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
+ * \return Output inversion status.
+ * \retval TRUE if inverted.
+ * \retval FALSE if not inverted.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_CheckOutputInversion(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_CheckOutputInversion(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
+#endif /* ((0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS) || \
+          (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS) || \
+          (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS))*/
 
 /* Design: MCAL-25757, MCAL-25758 */
 /** \brief Service for locking the given Crossbar entity for freezing the inputs and output inversion unless reset.
@@ -404,57 +421,60 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_CheckOutputInversion(VAR(Cdd_XbarType, AUT
  * Please mind that once a unit is locked, it can not unlock until 
  * system reset.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized but not locked
- * \post Postconditions - None
- * \return Locking attempt status
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized but not locked.
+ * \post Postconditions - None.
+ * \return Locking attempt status.
  * \retval E_OK if the unlocked crossbar passed becomes locked, E_NOT_OK otherwise.
  * \retval E_NOT_OK if the unlocked crossbar not locked.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_Lock(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_Lock(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
 
 /* Design: MCAL-25759, MCAL-25760 */
 /** \brief Service for checking lock status on a given Crossbar Unit.
  *
  * Tells whether the given Crossbar or its given Input Select line is locked or not.
  *
- * \param[in] CrossbarUnit is the crossbar instance
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
- * \return Status of crossbar lock
+ * \param[in] CrossbarUnit is the symbolic name of the crossbar instance.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
+ * \return Status of crossbar lock.
  * \retval TRUE if locked.
  * \retval FALSE if not locked.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_LockStatus(VAR(Cdd_XbarType, AUTOMATIC) CrossbarUnit);
+FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_LockStatus(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
+#endif  /* ((0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS) ||
+            (0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS) ||
+            (0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS) || (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS))*/
 
 #if (STD_ON == CDD_XBAR_INPUT_FLAG_API)
-/* Design: MCAL-xxxxx, MCAL-xxxxx */
-/** \brief Service for checking status of a crossbar input flag
+/* Design: MCAL-28151, MCAL-28152 */
+/** \brief Service for checking status of a crossbar input flag.
  *
  * Returns whether the input flag is triggerred or not. Cdd_Xbar_InputFlagType can be used as an argument to check the 
- * input flag status
+ * input flag status.
  *
- * \param[in] InputFlag is the crossbar input flag type
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
- * \return Status of input flag
+ * \param[in] InputFlag is the crossbar input flag type.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
+ * \return Status of input flag.
  * \retval TRUE if input flag is triggerred.
  * \retval FALSE if input flag is not triggerred.
  *
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_InputFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag);
 
-/* Design: MCAL-xxxxx, MCAL-xxxxx */
-/** \brief Service for clearing a crossbar input flag
+/* Design: MCAL-28153, MCAL-28154 */
+/** \brief Service for clearing a crossbar input flag.
  *
- * Clears the XBAR input flags.Cdd_Xbar_InputFlagType can be used as an argument to clear the input flag
+ * Clears the XBAR input flags.Cdd_Xbar_InputFlagType can be used as an argument to clear the input flag.
  *
- * \param[in] InputFlag is the crossbar input flag type
- * \pre Preconditions - Driver is already initialized
- * \post Postconditions - None
- * \return Status of clearing input flag
+ * \param[in] InputFlag is the crossbar input flag type.
+ * \pre Preconditions - Driver is already initialized.
+ * \post Postconditions - None.
+ * \return Status of clearing input flag.
  * \retval TRUE if input flag is cleared.
  * \retval FALSE if input flag is not cleared.
  *
@@ -465,14 +485,14 @@ FUNC(Std_ReturnType, CDD_XBAR_CODE) Cdd_Xbar_InputFlagClear(VAR(Cdd_Xbar_InputFl
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
-/** \brief Get Line Number selection mask
+/** \brief Get Line Number selection mask.
  * 
- * Returns the line number selection mask for an input line
+ * Returns the line number selection mask for an input line.
  * 
- * \param[in] InputLine is the crossbar input
+ * \param[in] InputLine is the crossbar input.
  * \pre None
  * \post None
- * \return Line Number selection mask
+ * \return Line Number selection mask.
  *********************************************************************************************************************/
 static inline FUNC(uint32, CDD_XBAR_CODE) Cdd_Xbar_Input_Selection_Mask(VAR(uint32, AUTOMATIC) InputLine)
 {

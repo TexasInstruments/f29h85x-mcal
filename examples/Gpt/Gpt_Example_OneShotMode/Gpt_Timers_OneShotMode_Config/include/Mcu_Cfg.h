@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -48,8 +48,8 @@ extern "C" {
  * \brief Mcu Driver Configuration SW Version Info.
  *********************************************************************************************************************/
 #define MCU_CFG_MAJOR_VERSION               (1U)
-#define MCU_CFG_MINOR_VERSION               (0U)
-#define MCU_CFG_PATCH_VERSION               (1U)
+#define MCU_CFG_MINOR_VERSION               (1U)
+#define MCU_CFG_PATCH_VERSION               (0U)
 
 
 /*********************************************************************************************************************
@@ -82,6 +82,23 @@ extern "C" {
 
 /** \brief MCU DEM Event Configuration: MCU Clock failed - AUTOSAR ECUC Driver SWS Item - ECUC_Mcu_00188*/
 #define MCU_E_CLOCK_FAILURE  (DemConf_DemEventParameter_MCU_E_CLOCK_FAILURE)
+
+
+/*********************************************************************************************************************
+ * \brief Enable/Disable Lock registers mechanism for clock configuration registers.
+ *********************************************************************************************************************/
+#define MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS    (STD_OFF)
+
+/*********************************************************************************************************************
+ * \brief Enable/Disable Lock registers mechanism for cpu peripheral configuration registers.
+ *********************************************************************************************************************/
+#define MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS    (STD_OFF)
+
+/*********************************************************************************************************************
+ * \brief Enable/Disable Lock registers mechanism for cpu system registers.
+ *********************************************************************************************************************/
+#define MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS    (STD_OFF)
+
 
 /*********************************************************************************************************************
  * \brief Enable/Disable Development Error Detection.
@@ -613,6 +630,75 @@ typedef struct
  */
 typedef P2CONST(Mcu_PeripheralClkRegConfigType, AUTOMATIC, MCU_CONFIG_DATA) Mcu_PeripheralClkRegConfigPtrType;
 
+
+/** \brief Structure for peripheral Reset register setting */
+typedef struct
+{
+    /** \brief Peripheral Reset Registers */
+    uint32 Mcu_PeripheralReset0Reg; 
+    /** \brief Peripheral Reset Register - EMIF */  
+    uint32 Mcu_PeripheralReset1Reg; 
+    /** \brief Peripheral Reset Register - ETPWM */  
+    uint32 Mcu_PeripheralReset2Reg;  
+    /** \brief Peripheral Reset Register - ECAP */ 
+    uint32 Mcu_PeripheralReset3Reg;  
+    /** \brief Peripheral Reset Register - EQEP */ 
+    uint32 Mcu_PeripheralReset4Reg;   
+    /* Reserved */
+    /** \brief Peripheral Reset Register - SDFM  */
+    uint32 Mcu_PeripheralReset6Reg;  
+    /** \brief Peripheral Reset Register - SCI, UART  */ 
+    uint32 Mcu_PeripheralReset7Reg; 
+    /** \brief Peripheral Reset Register - SPI  */  
+    uint32 Mcu_PeripheralReset8Reg; 
+    /** \brief Peripheral Reset Register - I2C  */  
+    uint32 Mcu_PeripheralReset9Reg;  
+    /** \brief Peripheral Reset Register - CAN  */ 
+    uint32 Mcu_PeripheralReset10Reg;  
+    /* Reserved */
+    /* Reserved */
+    /** \brief Peripheral Reset Register - ADC  */
+    uint32 Mcu_PeripheralReset13Reg;  
+    /** \brief Peripheral Reset Register -  CMPSS  */ 
+    uint32 Mcu_PeripheralReset14Reg;   
+    /* Reserved */
+    /** \brief Peripheral Reset Register - Buf_DAC */
+    uint32 Mcu_PeripheralReset16Reg;  
+    /** \brief Peripheral Reset Register - CLB */ 
+    uint32 Mcu_PeripheralReset17Reg;
+    /** \brief Peripheral Reset Register - FSI */  
+    uint32 Mcu_PeripheralReset18Reg; 
+    /** \brief Peripheral Reset Register - LIN */  
+    uint32 Mcu_PeripheralReset19Reg;
+    /** \brief Peripheral Reset Register - PMBUS */   
+    uint32 Mcu_PeripheralReset20Reg;
+    /** \brief Peripheral Reset Register - DCC */   
+    uint32 Mcu_PeripheralReset21Reg;   
+    /* Reserved */
+    /** \brief Peripheral Reset Register - EtherCAT */
+    uint32 Mcu_PeripheralReset23Reg;   
+    /* Reserved */
+    /** \brief Peripheral Reset Register -  HRCAL0,1,2 */
+    uint32 Mcu_PeripheralReset25Reg;   
+    /* Reserved */
+    /** \brief Peripheral Reset Register - EPG */
+    uint32 Mcu_PeripheralReset27Reg; 
+    /** \brief Peripheral Reset Register - ADCCHECKER */  
+    uint32 Mcu_PeripheralReset28Reg;  
+    /* Reserved */
+    /** \brief Peripheral Reset Register - SENT */
+    uint32 Mcu_PeripheralReset30Reg;   
+    /* Reserved */
+    /** \brief Peripheral Reset Register - WADI */
+    uint32 Mcu_PeripheralReset32Reg;   
+} Mcu_PeripheralResetRegConfigType;
+
+/*********************************************************************************************************************
+ *  \brief Pointer to Mcu_PeripheralResetRegConfigType structure
+ *********************************************************************************************************************/
+typedef P2CONST(Mcu_PeripheralResetRegConfigType, AUTOMATIC, MCU_CONFIG_DATA) Mcu_PeripheralResetRegConfigPtrType;
+
+
 /*********************************************************************************************************************
  *  \brief Pointer to Mcu_MCanClkConfigType structure
  *********************************************************************************************************************/
@@ -634,6 +720,8 @@ typedef struct
     Mcu_ClkSourceIdType               Mcu_ClockSourceId; 
     /** \brief Peripheral clock configuration pointer */          
     Mcu_PeripheralClkRegConfigPtrType Mcu_PeripheralClkConfigPtr;  
+    /** \brief Peripheral reset configuration pointer */          
+    Mcu_PeripheralResetRegConfigPtrType Mcu_PeripheralResetConfigPtr; 
     /** \brief MCan instances count */
     uint32                            Mcu_MCanInstancesCount; 
     /** \brief Lin instances count */     

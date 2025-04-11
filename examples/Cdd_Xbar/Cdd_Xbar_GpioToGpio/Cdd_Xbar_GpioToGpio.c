@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ int main(void)
   {
     AppUtils_Printf("INPUT XBAR2 is not locked \n");
     AppUtils_Printf("Selecting GPIO4 as input to INPUT XBAR2 \n");
-    if (E_OK != Cdd_Xbar_SelectInput(CddXbarConf_CddXbarInputXbarInstanceConfig_CddXbarInputXbarInstanceConfig_1,
+    if (E_OK == Cdd_Xbar_SelectInput(CddXbarConf_CddXbarInputXbarInstanceConfig_CddXbarInputXbarInstanceConfig_1,
                                                                                     4U, TRUE))
     {
       AppUtils_Printf("GPIO4 is selected as input to INPUT XBAR2 \n");

@@ -1,0 +1,1055 @@
+---
+title: Cdd_Pwm API GUIDE Header file
+
+---
+
+# CDD_PWM
+
+
+
+## Types
+
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|enum| **[Cdd_Pwm_OutputStateType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-outputstatetype)** | Output Status type.  | 
+|enum| **[Cdd_Pwm_EdgeNotificationType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-edgenotificationtype)** | Edge notification type.  | 
+|enum| **[Cdd_Pwm_ChannelClassType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-channelclasstype)** | Channel class type.  | 
+|enum| **[Cdd_Pwm_NotificationChannelType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-notificationchanneltype)** | Enumeration to define the output channel type for the notification.  | 
+|enum| **[Cdd_Pwm_AQOutputType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-aqoutputtype)** 
+|enum| **[Cdd_Pwm_AQOutputEvtType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-aqoutputevttype)** | Cdd_Pwm_AQOutputEvtType output defines the action qualifier event type.  | 
+|enum| **[Cdd_Pwm_ActionQualifierContForceType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-actionqualifiercontforcetype)** | Action qualifier continuous force type.  | 
+|enum| **[Cdd_Pwm_ActionQualifierLoadModeType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-actionqualifierloadmodetype)** | Action qualifier Shadow mode load mode.  | 
+|enum| **[Cdd_Pwm_CounterCompareLoadModeType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-countercompareloadmodetype)** | Action qualifier Shadow mode load mode.  | 
+|enum| **[Cdd_Pwm_PeriodLoadType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-periodloadtype)** | Period load mode type.  | 
+|enum| **[Cdd_Pwm_ActionQualifierSwOutputType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-actionqualifierswoutputtype)** 
+|enum| **[Cdd_Pwm_TimeBaseCountModeType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-timebasecountmodetype)** | Enumeration to define the time base counter mode.  | 
+|enum| **[Cdd_Pwm_EvtMixTriggerSourceType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-evtmixtriggersourcetype)** 
+|enum| **[Cdd_Pwm_InterruptSourceType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-interruptsourcetype)** | Enumeration for interrupt source.  | 
+|enum| **[Cdd_Pwm_OuputChannelType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-ouputchanneltype)** | Cdd_Pwm_OuputChannelType determines the channel output.  | 
+|enum| **[Cdd_Pwm_OuputSymmetryType](../Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-ouputsymmetrytype)** | Cdd_Pwm_OuputSymmetryType determines the symmetry of the output waveform of a PWM instance.  | 
+|typedef uint8  | **[Cdd_Pwm_ChannelType](../Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-channeltype)** | Numeric Identifier of a PWM channel.  | 
+|typedef uint8  | **[Cdd_Pwm_InstanceType](../Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-instancetype)** | Numeric Identifier of a PWM instance.  | 
+|typedef uint16  | **[Cdd_Pwm_PeriodType](../Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-periodtype)** | Period of the PWM instance.  | 
+|typedef uint16  | **[Cdd_Pwm_DutyCycleType](../Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-dutycycletype)** | Duty cycle of the PWM channel.  | 
+|typedef void(*)(void)  | **[Cdd_Pwm_NotificationType](../Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-notificationtype)** | Notification function pointer.  | 
+
+
+
+### enum Cdd_Pwm_OutputStateType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_HIGH | | The PWM channel is in high state.   |
+| CDD_PWM_LOW | | The PWM channel is in low state.   |
+
+
+
+
+**Brief**: 
+Output Status type. 
+
+
+
+### enum Cdd_Pwm_EdgeNotificationType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_RISING_EDGE | | Notification will be called when a rising edge occurs on the PWM output signal.   |
+| CDD_PWM_FALLING_EDGE | | Notification will be called when a falling edge occurs on the PWM output signal.  Notification will be called when either a rising edge or falling edge occur on the PWM output signal  |
+| CDD_PWM_BOTH_EDGES | |   |
+| CDD_PWM_EDGE_NONE | | No notification will be called.   |
+
+
+
+
+**Brief**: 
+Edge notification type. 
+
+
+
+### enum Cdd_Pwm_ChannelClassType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_VARIABLE_PERIOD | | The PWM channel has a variable period. The duty cycle and the period can be changed.   |
+| CDD_PWM_FIXED_PERIOD | | The PWM channel has a fixed period. Only the duty cycle can be changed.   |
+
+
+
+
+**Brief**: 
+Channel class type. 
+
+
+
+### enum Cdd_Pwm_NotificationChannelType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_CHANNEL_A | |   |
+| CDD_PWM_CHANNEL_B | | Up - count mode.   |
+| CDD_PWM_BOTH_A_AND_B | | Down - count mode.   |
+| CDD_PWM_NONE | | Up - down - count mode.  Stop - Freeze counter  |
+
+
+
+
+**Brief**: 
+Enumeration to define the output channel type for the notification. 
+
+
+
+### enum Cdd_Pwm_AQOutputType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_AQ_OUTPUT_NO_CHANGE | 0U|   |
+| CDD_PWM_AQ_OUTPUT_LOW | 1U| No change in the output pins.   |
+| CDD_PWM_AQ_OUTPUT_HIGH | 2U| Set output pins to low.   |
+| CDD_PWM_AQ_OUTPUT_TOGGLE | 3U| Set output pins to High.   |
+
+
+
+
+
+
+### enum Cdd_Pwm_AQOutputEvtType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO | 0U| Time base counter equals zero.   |
+| CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_UP | 1U| T1 event on count up.   |
+| CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_PERIOD | 2U| Time base counter equals period.   |
+| CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_DOWN | 3U| T1 event on count down.   |
+| CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA | 4U| Time base counter up equals COMPA.   |
+| CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_UP | 5U| T2 event on count up.   |
+| CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA | 6U| Time base counter down equals COMPA.   |
+| CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_DOWN | 7U| T2 event on count down.   |
+| CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB | 8U| Time base counter up equals COMPB.   |
+| CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB | 10U| Time base counter down equals COMPB.   |
+
+
+
+
+**Brief**: 
+Cdd_Pwm_AQOutputEvtType output defines the action qualifier event type. 
+
+
+
+### enum Cdd_Pwm_ActionQualifierContForceType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_ZERO | 0U| Shadow mode load when counter equals zero.   |
+| CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_PERIOD | 1U| Shadow mode load when counter equals period.   |
+| CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_ZERO_PERIOD | 2U| Shadow mode load when counter equals zero or period.   |
+| CDD_PWM_AQ_SW_IMMEDIATE_LOAD | 3U| No shadow load mode. Immediate mode only.   |
+
+
+
+
+**Brief**: 
+Action qualifier continuous force type. 
+
+
+
+### enum Cdd_Pwm_ActionQualifierLoadModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_AQ_LOAD_ON_CNTR_ZERO | 0U|   |
+| CDD_PWM_AQ_LOAD_ON_CNTR_PERIOD | 1U|   |
+| CDD_PWM_AQ_LOAD_ON_CNTR_ZERO_PERIOD | 2U|   |
+| CDD_PWM_AQ_LOAD_FREEZE | 3U|   |
+| CDD_PWM_AQ_LOAD_ON_SYNC_CNTR_ZERO | 4U|   |
+| CDD_PWM_AQ_LOAD_ON_SYNC_CNTR_PERIOD | 5U|   |
+| CDD_PWM_AQ_LOAD_ON_SYNC_CNTR_ZERO_PERIOD | 6U|   |
+| CDD_PWM_AQ_LOAD_ON_SYNC_ONLY | 8U|   |
+
+
+
+
+**Brief**: 
+Action qualifier Shadow mode load mode. 
+
+
+
+### enum Cdd_Pwm_CounterCompareLoadModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_COMP_LOAD_ON_CNTR_ZERO | 0U|   |
+| CDD_PWM_COMP_LOAD_ON_CNTR_PERIOD | 1U|   |
+| CDD_PWM_COMP_LOAD_ON_CNTR_ZERO_PERIOD | 2U|   |
+| CDD_PWM_COMP_LOAD_FREEZE | 3U|   |
+| CDD_PWM_COMP_LOAD_ON_SYNC_CNTR_ZERO | 4U|   |
+| CDD_PWM_COMP_LOAD_ON_SYNC_CNTR_PERIOD | 5U|   |
+| CDD_PWM_COMP_LOAD_ON_SYNC_CNTR_ZERO_PERIOD | 6U|   |
+| CDD_PWM_COMP_LOAD_ON_SYNC_ONLY | 8U|   |
+
+
+
+
+**Brief**: 
+Action qualifier Shadow mode load mode. 
+
+
+
+### enum Cdd_Pwm_PeriodLoadType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_PERIOD_SHADOW_LOAD | 0U| PWM Period register access is through shadow register.   |
+| CDD_PWM_PERIOD_DIRECT_LOAD | 1U| PWM Period register access is directly.   |
+
+
+
+
+**Brief**: 
+Period load mode type. 
+
+
+
+### enum Cdd_Pwm_ActionQualifierSwOutputType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_AQ_SW_DISABLED | 0U|   |
+| CDD_PWM_AQ_SW_OUTPUT_LOW | 1U| Software forcing disabled.   |
+| CDD_PWM_AQ_SW_OUTPUT_HIGH | 2U| Set output pins to low.   |
+
+
+
+
+
+
+### enum Cdd_Pwm_TimeBaseCountModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_COUNTER_MODE_UP | 0U|   |
+| CDD_PWM_COUNTER_MODE_DOWN | 1U| Up - count mode.   |
+| CDD_PWM_COUNTER_MODE_UP_DOWN | 2U| Down - count mode.   |
+| CDD_PWM_COUNTER_MODE_STOP_FREEZE | 3U| Up - down - count mode.   |
+
+
+
+
+**Brief**: 
+Enumeration to define the time base counter mode. 
+
+
+
+### enum Cdd_Pwm_EvtMixTriggerSourceType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_ETMIX_TBCTR_NONE | 0x0U| No event selected.   |
+| CDD_PWM_ETMIX_TBCTR_ZERO | 0x1U| Time-base counter equal to zero.   |
+| CDD_PWM_ETMIX_TBCTR_PERIOD | 0x2U| Time-base counter equal to period.   |
+| CDD_PWM_ETMIX_TBCTR_U_CMPA | 0x4U| Time-base counter equal to CMPA when the timer is incrementing.   |
+| CDD_PWM_ETMIX_TBCTR_D_CMPA | 0x8U| Time-base counter equal to CMPA when the timer is decrementing.   |
+| CDD_PWM_ETMIX_TBCTR_U_CMPB | 0x10U| Time-base counter equal to CMPB when the timer is incrementing.   |
+| CDD_PWM_ETMIX_TBCTR_D_CMPB | 0x20U| Time-base counter equal to CMPB when the timer is decrementing.   |
+| CDD_PWM_ETMIX_TBCTR_U_CMPC | 0x40U| Time-base counter equal to CMPC when the timer is incrementing.   |
+| CDD_PWM_ETMIX_TBCTR_D_CMPC | 0x80U| Time-base counter equal to CMPC when the timer is decrementing.   |
+| CDD_PWM_ETMIX_TBCTR_U_CMPD | 0x100U| Time-base counter equal to CMPD when the timer is incrementing.   |
+| CDD_PWM_ETMIX_TBCTR_D_CMPD | 0x200U| Time-base counter equal to CMPD when the timer is decrementing.   |
+| CDD_PWM_ETMIX_DCAEVT1 | 0x400U| Event is based on DCAEVT1.   |
+
+
+
+
+
+
+### enum Cdd_Pwm_InterruptSourceType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_INT_TBCTR_ZERO | 1U| Time-base counter equal to zero.   |
+| CDD_PWM_INT_TBCTR_PERIOD | 2U| Time-base counter equal to period.   |
+| CDD_PWM_INT_TBCTR_ETINTMIX | 3U| Time-base counter based on mixed events (ETINTMIX)   |
+| CDD_PWM_INT_TBCTR_U_CMP_A_OR_C | 4U| Time-base counter equal to CMPA or CMPC when the timer is incrementing.   |
+| CDD_PWM_INT_TBCTR_D_CMP_A_OR_C | 5U| Time-base counter equal to CMPA or CMPC when the timer is decrementing.   |
+| CDD_PWM_INT_TBCTR_U_CMP_B_OR_D | 6U| Time-base counter equal to CMPB or CMPD when the timer is incrementing.   |
+| CDD_PWM_INT_TBCTR_D_CMP_B_OR_D | 7U| Time-base counter equal to CMPB or CMPD when the timer is decrementing.   |
+
+
+
+
+**Brief**: 
+Enumeration for interrupt source. 
+
+
+
+### enum Cdd_Pwm_OuputChannelType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_OUTPUT_A | | Ouput channel A.   |
+| CDD_PWM_OUTPUT_B | | Ouput channel B.   |
+
+
+
+
+**Brief**: 
+Cdd_Pwm_OuputChannelType determines the channel output. 
+
+
+
+### enum Cdd_Pwm_OuputSymmetryType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_PWM_ASYMMETRIC_WAVEFORM | | Asymmetric waveform.   |
+| CDD_PWM_SYMMETRIC_WAVEFORM | | Symmetric waveform.   |
+
+
+
+
+**Brief**: 
+Cdd_Pwm_OuputSymmetryType determines the symmetry of the output waveform of a PWM instance. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Cdd_Pwm_ChannelCfgType](../Classes/struct_cdd___pwm___channel_cfg_type.md)** |  |
+| **[Cdd_Pwm_HwUnitCfgType](../Classes/struct_cdd___pwm___hw_unit_cfg_type.md)** |  |
+| **[Cdd_Pwm_ConfigType](../Classes/struct_cdd___pwm___config_type.md)** | PWM driver configuration.  |
+| **[Cdd_Pwm_ChannelObjType](../Classes/struct_cdd___pwm___channel_obj_type.md)** | Channel object structure.  |
+| **[Cdd_Pwm_HwUnitObjType](../Classes/struct_cdd___pwm___hw_unit_obj_type.md)** | Hardware object structure.  |
+| **[Cdd_Pwm_DriverObjType](../Classes/struct_cdd___pwm___driver_obj_type.md)** | Driver object structure.  |
+
+
+
+
+## Defines
+
+| Name           |  Brief     |
+| -------------- | ---------- |
+| CDD_PWM_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
+| CDD_PWM_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| CDD_PWM_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| CDD_PWM_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by CDD_PWM Driver.  |
+| CDD_PWM_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by CDD_PWM Driver.  |
+| CDD_PWM_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by CDD_PWM Driver.  |
+| CDD_PWM_VENDOR_ID   | Texas Instruments Vendor ID.  |
+| CDD_PWM_MODULE_ID   | CDD PWM Driver Module ID.  |
+| CDD_PWM_INSTANCE_ID   | CDD PWM Instance ID.  |
+| CDD_PWM_E_UNINIT   | API service used without module initialization.  |
+| CDD_PWM_E_ALREADY_INITIALIZED   | API Cdd_Pwm_Init service called while the PWM driver has already been initialized.  |
+| CDD_PWM_E_PARAM_POINTER   | API service called with invalid pointer.  |
+| CDD_PWM_E_INVALID_ID   | API service called with invalid parameter ID.  |
+| CDD_PWM_E_NOTIF_CAPABILITY   | Enable/disable notification function for a PWM instance whose configuration set has no notification available.  |
+| CDD_PWM_E_CHANNEL_CLASS   | API service called for the instance whose channel class is not variable period.  |
+| CDD_PWM_E_NOTIF_ALREADY_ENABLED   | API service called when the notification is already enabled.  |
+| CDD_PWM_E_INVALID_CHANNEL_NOTIFICATION   | API service called when the channel configured for the notification is invalid.  |
+| CDD_PWM_E_INVALID_NOTIFICATION   | API service called when the edge notification type is not valid.  |
+| CDD_PWM_E_INVALID_EVENT_COUNT   | API service called when the event count is invalid/out-of-range.  |
+| CDD_PWM_E_INVALID_DUTY_CYCLE   | API service called with the invalid duty cycle value.  |
+| CDD_PWM_SID_INIT   | Cdd_Pwm_Init() API Service ID.  |
+| CDD_PWM_SID_DEINIT   | Cdd_Pwm_DeInit() API Service ID.  |
+| CDD_PWM_SID_SET_DUTY_CYCLE   | Cdd_Pwm_SetDutyCycle() API Service ID.  |
+| CDD_PWM_SID_SET_PERIOD   | Cdd_Pwm_SetPeriod() API Service ID.  |
+| CDD_PWM_SID_SET_OUTPUT_TO_IDLE   | Cdd_Pwm_SetOutputToIdle() API Service ID.  |
+| CDD_PWM_SID_ENABLE_NOTIFICATION   | Cdd_Pwm_EnableNotification() API Service ID.  |
+| CDD_PWM_SID_DISABLE_NOTIFICATION   | Cdd_Pwm_DisableNotification() API Service ID.  |
+| CDD_PWM_SID_GET_VERSION_INFO   | Cdd_Pwm_GetVersionInfo() API Service ID.  |
+| CDD_PWM_MAX_DUTY_CYCLE   |  |
+| CDD_PWM_CFG_MAJOR_VERSION   |  |
+| CDD_PWM_CFG_MINOR_VERSION   |  |
+| CDD_PWM_CFG_PATCH_VERSION   |  |
+| CDD_PWM_PRE_COMPILE_VARIANT   |  |
+| CDD_PWM_CONFIG_PC   |  |
+| CDD_PWM_INSTANCE_COUNT   |  |
+| CDD_PWM_COUNT   |  |
+| CDD_PWM_CHANNEL_COUNT   |  |
+| CDD_PWM_INTEVT_COUNT   |  |
+| CDD_PWM_DEV_ERROR_DETECT   |  |
+| CDD_PWM_SET_OUTPUT_TO_IDLE_API   |  |
+| CDD_PWM_SET_PERIOD_API   |  |
+| CDD_PWM_SET_DUTY_CYCLE_API   |  |
+| CDD_PWM_DEINIT_API   |  |
+| CDD_PWM_VERSION_INFO_API   |  |
+| CDD_PWM_NOTIFICATION_SUPPORTED   |  |
+| CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0   |  |
+| CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_0   |  |
+| CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_1   |  |
+| CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1   |  |
+| CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_0   |  |
+| CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_1   |  |
+| CDD_PWM1_INT_ENABLE   |  |
+| CDD_PWM1_ISR_CAT1_RTINT   |  |
+| CDD_PWM2_INT_ENABLE   |  |
+| CDD_PWM2_ISR_CAT1_RTINT   |  |
+
+## Functions
+
+| Return type    | Function Name           |      Brief        |
+| -------------- | ----------------------- | ----------------- |
+| void | **[Cdd_Pwm_Init](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-init)**(const [Cdd_Pwm_ConfigType](Classes/struct_cdd___pwm___config_type.md) * CfgPtr)| Service to initialize Cdd Pwm driver.  |
+| void | **[Cdd_Pwm_DeInit](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-deinit)**(void )| Service to deinitialize Cdd Pwm driver.  |
+| void | **[Cdd_Pwm_SetDutyCycle](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-setdutycycle)**([Cdd_Pwm_ChannelType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-channeltype) ChannelNumber, [Cdd_Pwm_DutyCycleType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-dutycycletype) DutyCycle)| Service to set the duty cycle.  |
+| void | **[Cdd_Pwm_SetPeriod](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-setperiod)**([Cdd_Pwm_InstanceType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-instancetype) InstanceId, [Cdd_Pwm_PeriodType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-periodtype) Period)| Service to set the period and duty cycle for a PWM channel.  |
+| void | **[Cdd_Pwm_SetOutputToIdle](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-setoutputtoidle)**([Cdd_Pwm_ChannelType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-channeltype) ChannelNumber)| Service to set the output to IDLE for a PWM channel.  |
+| void | **[Cdd_Pwm_EnableNotification](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-enablenotification)**([Cdd_Pwm_InstanceType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-instancetype) InstanceId, [Cdd_Pwm_NotificationChannelType](Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-notificationchanneltype) Channel, [Cdd_Pwm_EdgeNotificationType](Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-edgenotificationtype) Notification, uint8 IntEvtCount)| Service to enable the PWM signal edge notification according to notification parameter.  |
+| void | **[Cdd_Pwm_DisableNotification](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-disablenotification)**([Cdd_Pwm_InstanceType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-instancetype) InstanceId, [Cdd_Pwm_NotificationChannelType](Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-notificationchanneltype) Channel)| Service to disable the PWM signal edge notification.  |
+| void | **[Cdd_Pwm_GetVersionInfo](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-getversioninfo)**(Std_VersionInfoType * VersionInfo)| service that returns the version information of the module.  |
+| void | **[Cdd_Pwm_SetDrvObj](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-setdrvobj)**([Cdd_Pwm_DriverObjType](Classes/struct_cdd___pwm___driver_obj_type.md) * DrvObj, const [Cdd_Pwm_ConfigType](Classes/struct_cdd___pwm___config_type.md) * CfgPtr)| Sets the driver object.  |
+| void | **[Cdd_Pwm_DrvObjInit](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-drvobjinit)**(void )| Initializes the driver object.  |
+| void | **[Cdd_Pwm_HwUnitInit](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-hwunitinit)**(void )| Initializes the Cdd Pwm driver.  |
+| void | **[Cdd_Pwm_UpdatePeriod](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-updateperiod)**([Cdd_Pwm_InstanceType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-instancetype) InstanceId, [Cdd_Pwm_PeriodType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-periodtype) Period)| Service to set the period of the PWM hardware unit.  |
+| void | **[Cdd_Pwm_UpdateDutyCycle](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-updatedutycycle)**([Cdd_Pwm_ChannelType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-channeltype) ChannelNumber, [Cdd_Pwm_DutyCycleType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-dutycycletype) DutyCycle)| Service to set the duty cycle of the PWM channel.  |
+| void | **[Cdd_Pwm_SetIdleOutput](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-setidleoutput)**([Cdd_Pwm_ChannelType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-channeltype) ChannelNumber)| Service to set the output of the PWM channel to the configured idle state.  |
+| void | **[Cdd_Pwm_NotificationEnable](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-notificationenable)**([Cdd_Pwm_InstanceType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-instancetype) InstanceId, [Cdd_Pwm_NotificationChannelType](Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-notificationchanneltype) Channel, [Cdd_Pwm_EdgeNotificationType](Modules/group___c_d_d___p_w_m.md#enum-cdd-pwm-edgenotificationtype) Notification, uint8 IntEvtCount)| Service to enable the notification for the channel.  |
+| void | **[Cdd_Pwm_NotificationDisable](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-notificationdisable)**([Cdd_Pwm_InstanceType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-instancetype) InstanceId)| Service to disable the notification for the channel.  |
+| void | **[Cdd_Pwm_HwUnitDeinit](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-hwunitdeinit)**(void )| De-initializes the Pwm driver.  |
+| void | **[Cdd_Pwm_ProcessIsr](../Modules/group___c_d_d___p_w_m.md#function-cdd-pwm-processisr)**([Cdd_Pwm_InstanceType](Modules/group___c_d_d___p_w_m.md#typedef-cdd-pwm-instancetype) InstanceId)| Interrupt service routine.  |
+
+
+
+### function Cdd_Pwm_Init
+
+```
+void Cdd_Pwm_Init(
+    const Cdd_Pwm_ConfigType * CfgPtr
+)
+```
+
+
+**Brief**: 
+Service to initialize Cdd Pwm driver. 
+
+This service initializes all the PWM channels with the configured values.
+
+
+**Parameters**: 
+
+  
+* **CfgPtr** Pointer to configuration set (Variant PC requires a NULL_PTR) 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_DeInit
+
+```
+void Cdd_Pwm_DeInit(
+    void 
+)
+```
+
+
+**Brief**: 
+Service to deinitialize Cdd Pwm driver. 
+
+This service de-initializes the PWM driver.
+
+
+**Parameters**: 
+
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_SetDutyCycle
+
+```
+void Cdd_Pwm_SetDutyCycle(
+    Cdd_Pwm_ChannelType ChannelNumber,
+    Cdd_Pwm_DutyCycleType DutyCycle
+)
+```
+
+
+**Brief**: 
+Service to set the duty cycle. 
+
+This service sets the duty cycle for the requested PWM Channel.
+
+
+**Parameters**: 
+
+  
+* **ChannelNumber** Numeric ID of the requested PWM Channel. 
+  
+* **DutyCycle** Duty cycles for the requested PWM Channel. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_SetPeriod
+
+```
+void Cdd_Pwm_SetPeriod(
+    Cdd_Pwm_InstanceType InstanceId,
+    Cdd_Pwm_PeriodType Period
+)
+```
+
+
+**Brief**: 
+Service to set the period and duty cycle for a PWM channel. 
+
+This service sets period and duty cycle for the requested PWM Channel.
+
+
+**Parameters**: 
+
+  
+* **ChannelNumber** Numeric ID of the requested PWM Channel. 
+  
+* **Period** Period for the requested PWM Channel. 
+  
+* **DutyCycle** Duty cycles for the requested PWM Channel. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_SetOutputToIdle
+
+```
+void Cdd_Pwm_SetOutputToIdle(
+    Cdd_Pwm_ChannelType ChannelNumber
+)
+```
+
+
+**Brief**: 
+Service to set the output to IDLE for a PWM channel. 
+
+This service sets the output to IDLE for the requested PWM Channel.
+
+
+**Parameters**: 
+
+  
+* **ChannelNumber** Numeric ID of the requested PWM Channel. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_EnableNotification
+
+```
+void Cdd_Pwm_EnableNotification(
+    Cdd_Pwm_InstanceType InstanceId,
+    Cdd_Pwm_NotificationChannelType Channel,
+    Cdd_Pwm_EdgeNotificationType Notification,
+    uint8 IntEvtCount
+)
+```
+
+
+**Brief**: 
+Service to enable the PWM signal edge notification according to notification parameter. 
+
+This service enables the PWM signal edge notification according to notification parameter
+
+
+**Parameters**: 
+
+  
+* **ChannelNumber** Numeric ID of the requested PWM Channel. 
+  
+* **Notification** Type of notification 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_DisableNotification
+
+```
+void Cdd_Pwm_DisableNotification(
+    Cdd_Pwm_InstanceType InstanceId,
+    Cdd_Pwm_NotificationChannelType Channel
+)
+```
+
+
+**Brief**: 
+Service to disable the PWM signal edge notification. 
+
+This service disables signal edge notification for the requested PWM Channels.
+
+
+**Parameters**: 
+
+  
+* **ChannelNumber** Numeric ID of the requested PWM Channel. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_GetVersionInfo
+
+```
+void Cdd_Pwm_GetVersionInfo(
+    Std_VersionInfoType * VersionInfo
+)
+```
+
+
+**Brief**: 
+service that returns the version information of the module. 
+
+This service returns the version information of the Pwm module.
+
+
+**Parameters**: 
+
+  
+* **VersionInfo** Pointer to where to store the version information of this module 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_SetDrvObj
+
+```
+void Cdd_Pwm_SetDrvObj(
+    Cdd_Pwm_DriverObjType * DrvObj,
+    const Cdd_Pwm_ConfigType * CfgPtr
+)
+```
+
+
+**Brief**: 
+Sets the driver object. 
+
+This private function sets the driver object
+
+
+**Parameters**: 
+
+  
+* **DrvObj** Driver object 
+  
+* **CfgPtr** Configuration pointer 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_DrvObjInit
+
+```
+void Cdd_Pwm_DrvObjInit(
+    void 
+)
+```
+
+
+**Brief**: 
+Initializes the driver object. 
+
+This private function initializes the driver object parameters
+
+
+**Parameters**: 
+
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_HwUnitInit
+
+```
+void Cdd_Pwm_HwUnitInit(
+    void 
+)
+```
+
+
+**Brief**: 
+Initializes the Cdd Pwm driver. 
+
+This private function initializes the Cdd Pwm driver.
+
+
+**Parameters**: 
+
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_UpdatePeriod
+
+```
+void Cdd_Pwm_UpdatePeriod(
+    Cdd_Pwm_InstanceType InstanceId,
+    Cdd_Pwm_PeriodType Period
+)
+```
+
+
+**Brief**: 
+Service to set the period of the PWM hardware unit. 
+
+This service sets period for the requested PWM instance.
+
+
+**Parameters**: 
+
+  
+* **InstanceId** Numeric ID of the PWM hardware unit 
+  
+* **Period** Period for the requested PWM instance. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_UpdateDutyCycle
+
+```
+void Cdd_Pwm_UpdateDutyCycle(
+    Cdd_Pwm_ChannelType ChannelNumber,
+    Cdd_Pwm_DutyCycleType DutyCycle
+)
+```
+
+
+**Brief**: 
+Service to set the duty cycle of the PWM channel. 
+
+This service sets duty cycle of the PWM channel
+
+
+**Parameters**: 
+
+  
+* **ChannelNumber** Numeric ID of the PWM channel 
+  
+* **DutyCycle** Requested duty cycle for the PWM Channel. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_SetIdleOutput
+
+```
+void Cdd_Pwm_SetIdleOutput(
+    Cdd_Pwm_ChannelType ChannelNumber
+)
+```
+
+
+**Brief**: 
+Service to set the output of the PWM channel to the configured idle state. 
+
+This service sets the output of the PWM channel to the configured idle state
+
+
+**Parameters**: 
+
+  
+* **ChannelNumber** Numeric ID of the PWM channel 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_NotificationEnable
+
+```
+void Cdd_Pwm_NotificationEnable(
+    Cdd_Pwm_InstanceType InstanceId,
+    Cdd_Pwm_NotificationChannelType Channel,
+    Cdd_Pwm_EdgeNotificationType Notification,
+    uint8 IntEvtCount
+)
+```
+
+
+**Brief**: 
+Service to enable the notification for the channel. 
+
+This service sets period and duty cycle for the requested PWM Channel.
+
+
+**Parameters**: 
+
+  
+* **InstanceId** Numeric ID of the requested PWM instance. 
+  
+* **Channel** Channel type for notification 
+  
+* **Notification** Notification type for the channel 
+  
+* **IntEvtCount** Number of configured events to be occurred to generate an interrupt 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_NotificationDisable
+
+```
+void Cdd_Pwm_NotificationDisable(
+    Cdd_Pwm_InstanceType InstanceId
+)
+```
+
+
+**Brief**: 
+Service to disable the notification for the channel. 
+
+This service disables notification for the requested PWM Channel.
+
+
+**Parameters**: 
+
+  
+* **InstanceId** Numeric ID of the requested PWM instance. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_HwUnitDeinit
+
+```
+void Cdd_Pwm_HwUnitDeinit(
+    void 
+)
+```
+
+
+**Brief**: 
+De-initializes the Pwm driver. 
+
+This private function de-initializes the Pwm driver.
+
+
+**Parameters**: 
+
+  
+* **None** 
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Pwm_ProcessIsr
+
+```
+void Cdd_Pwm_ProcessIsr(
+    Cdd_Pwm_InstanceType InstanceId
+)
+```
+
+
+**Brief**: 
+Interrupt service routine. 
+
+This function is called inside the ISR to clear the interrupt flags
+
+
+**Parameters**: 
+
+  
+* **InstanceId** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+
+
+
+-------------------------------

@@ -32,5 +32,8 @@ set(CMAKE_ASM_COMPILER ${target_tool} ${compiler_flags})
 #Adding this here because preset file doesn't support macro expansion
 add_link_options(-I${compiler_path}/include/c -I${compiler_path}/include/c++ -I${compiler_path}/include/c29.c0-ti-none-eabi/c++/v1/ -I${compiler_path}/lib)
 
+#Adding Linker options to treat warnings as errors and suppress expected warnings
+add_link_options(-Wl,--emit_warnings_as_errors -Wl,--diag_suppress=10068 -Wl,--diag_suppress=10325 -Wl,--diag_suppress=10063)
+
 set(CMAKE_EXECUTABLE_SUFFIX_ASM ".out")
 set(CMAKE_EXECUTABLE_SUFFIX_C ".out")

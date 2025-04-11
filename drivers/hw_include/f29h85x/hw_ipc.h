@@ -19,185 +19,185 @@
 #define IPC_O_COUNTERL   0x0U   // IPCCOUNTERL Register
 #define IPC_O_COUNTERH   0x4U   // IPCCOUNTERH Register
 
-#define IPC_O_CPU1TOCPU2INTIPCSET(i)        (0x0U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCSET Register
-#define IPC_O_CPU1TOCPU2INTIPCCLR(i)        (0x4U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCCLR Register
-#define IPC_O_CPU1TOCPU2INTIPCFLG(i)        (0x8U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCFLG Register
-#define IPC_O_CPU1TOCPU2INTIPCSENDCOM(i)    (0x10U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCSENDCOM Register
-#define IPC_O_CPU1TOCPU2INTIPCSENDADDR(i)   (0x14U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCSENDADDR Register
-#define IPC_O_CPU1TOCPU2INTIPCSENDDATA(i)   (0x18U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCSENDDATA Register
-#define IPC_O_CPU2TOCPU1INTREMOTEREPLY(i)   (0x1CU + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTREMOTEREPLY Register
-#define IPC_O_CPU1TOCPU3INTIPCSET(i)        (0x2000U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCSET Register
-#define IPC_O_CPU1TOCPU3INTIPCCLR(i)        (0x2004U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCCLR Register
-#define IPC_O_CPU1TOCPU3INTIPCFLG(i)        (0x2008U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCFLG Register
-#define IPC_O_CPU1TOCPU3INTIPCSENDCOM(i)    (0x2010U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCSENDCOM Register
-#define IPC_O_CPU1TOCPU3INTIPCSENDADDR(i)   (0x2014U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCSENDADDR Register
-#define IPC_O_CPU1TOCPU3INTIPCSENDDATA(i)   (0x2018U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCSENDDATA Register
-#define IPC_O_CPU3TOCPU1INTREMOTEREPLY(i)   (0x201CU + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTREMOTEREPLY Register
-#define IPC_O_CPU1TOHSMINTIPCSET(i)         (0x6000U + ((i) * 4096))   // (0 <= i < 2)
-                                                                       // CPU1TOHSMINTIPCSET Register
-#define IPC_O_CPU1TOHSMINTIPCCLR(i)         (0x6004U + ((i) * 4096))   // (0 <= i < 2)
-                                                                       // CPU1TOHSMINTIPCCLR Register
-#define IPC_O_CPU1TOHSMINTIPCFLG(i)         (0x6008U + ((i) * 4096))   // (0 <= i < 2)
-                                                                       // CPU1TOHSMINTIPCFLG Register
+#define IPC_O_CPU1TOCPU2INTIPCSET(i)        (0x0U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCSET Register
+#define IPC_O_CPU1TOCPU2INTIPCCLR(i)        (0x4U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCCLR Register
+#define IPC_O_CPU1TOCPU2INTIPCFLG(i)        (0x8U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCFLG Register
+#define IPC_O_CPU1TOCPU2INTIPCSENDCOM(i)    (0x10U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCSENDCOM Register
+#define IPC_O_CPU1TOCPU2INTIPCSENDADDR(i)   (0x14U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCSENDADDR Register
+#define IPC_O_CPU1TOCPU2INTIPCSENDDATA(i)   (0x18U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCSENDDATA Register
+#define IPC_O_CPU2TOCPU1INTREMOTEREPLY(i)   (0x1CU + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTREMOTEREPLY Register
+#define IPC_O_CPU1TOCPU3INTIPCSET(i)        (0x2000U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCSET Register
+#define IPC_O_CPU1TOCPU3INTIPCCLR(i)        (0x2004U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCCLR Register
+#define IPC_O_CPU1TOCPU3INTIPCFLG(i)        (0x2008U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCFLG Register
+#define IPC_O_CPU1TOCPU3INTIPCSENDCOM(i)    (0x2010U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCSENDCOM Register
+#define IPC_O_CPU1TOCPU3INTIPCSENDADDR(i)   (0x2014U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCSENDADDR Register
+#define IPC_O_CPU1TOCPU3INTIPCSENDDATA(i)   (0x2018U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCSENDDATA Register
+#define IPC_O_CPU3TOCPU1INTREMOTEREPLY(i)   (0x201CU + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTREMOTEREPLY Register
+#define IPC_O_CPU1TOHSMINTIPCSET(i)         (0x6000U + ((i) * 4096U))   // (0 <= i < 2)
+                                                                        // CPU1TOHSMINTIPCSET Register
+#define IPC_O_CPU1TOHSMINTIPCCLR(i)         (0x6004U + ((i) * 4096U))   // (0 <= i < 2)
+                                                                        // CPU1TOHSMINTIPCCLR Register
+#define IPC_O_CPU1TOHSMINTIPCFLG(i)         (0x6008U + ((i) * 4096U))   // (0 <= i < 2)
+                                                                        // CPU1TOHSMINTIPCFLG Register
 
-#define IPC_O_CPU2TOCPU1INTIPCSTS(i)        (0x0U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCSTS Register
-#define IPC_O_CPU1TOCPU2INTIPCACK(i)        (0x4U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCACK Register
-#define IPC_O_CPU2TOCPU1INTIPCRECVCOM(i)    (0x10U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCRECVCOM Register
-#define IPC_O_CPU2TOCPU1INTIPCRECVADDR(i)   (0x14U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCRECVADDR Register
-#define IPC_O_CPU2TOCPU1INTIPCRECVDATA(i)   (0x18U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCRECVDATA Register
-#define IPC_O_CPU1TOCPU2INTLOCALREPLY(i)    (0x1CU + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTLOCALREPLY Register
-#define IPC_O_CPU3TOCPU1INTIPCSTS(i)        (0x2000U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCSTS Register
-#define IPC_O_CPU1TOCPU3INTIPCACK(i)        (0x2004U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCACK Register
-#define IPC_O_CPU3TOCPU1INTIPCRECVCOM(i)    (0x2010U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCRECVCOM Register
-#define IPC_O_CPU3TOCPU1INTIPCRECVADDR(i)   (0x2014U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCRECVADDR Register
-#define IPC_O_CPU3TOCPU1INTIPCRECVDATA(i)   (0x2018U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCRECVDATA Register
-#define IPC_O_CPU1TOCPU3INTLOCALREPLY(i)    (0x201CU + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTLOCALREPLY Register
+#define IPC_O_CPU2TOCPU1INTIPCSTS(i)        (0x0U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCSTS Register
+#define IPC_O_CPU1TOCPU2INTIPCACK(i)        (0x4U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCACK Register
+#define IPC_O_CPU2TOCPU1INTIPCRECVCOM(i)    (0x10U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCRECVCOM Register
+#define IPC_O_CPU2TOCPU1INTIPCRECVADDR(i)   (0x14U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCRECVADDR Register
+#define IPC_O_CPU2TOCPU1INTIPCRECVDATA(i)   (0x18U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCRECVDATA Register
+#define IPC_O_CPU1TOCPU2INTLOCALREPLY(i)    (0x1CU + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTLOCALREPLY Register
+#define IPC_O_CPU3TOCPU1INTIPCSTS(i)        (0x2000U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCSTS Register
+#define IPC_O_CPU1TOCPU3INTIPCACK(i)        (0x2004U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCACK Register
+#define IPC_O_CPU3TOCPU1INTIPCRECVCOM(i)    (0x2010U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCRECVCOM Register
+#define IPC_O_CPU3TOCPU1INTIPCRECVADDR(i)   (0x2014U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCRECVADDR Register
+#define IPC_O_CPU3TOCPU1INTIPCRECVDATA(i)   (0x2018U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCRECVDATA Register
+#define IPC_O_CPU1TOCPU3INTLOCALREPLY(i)    (0x201CU + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTLOCALREPLY Register
 
-#define IPC_O_CPU2TOCPU1INTIPCSET(i)        (0x0U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCSET Register
-#define IPC_O_CPU2TOCPU1INTIPCCLR(i)        (0x4U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCCLR Register
-#define IPC_O_CPU2TOCPU1INTIPCFLG(i)        (0x8U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCFLG Register
-#define IPC_O_CPU2TOCPU1INTIPCSENDCOM(i)    (0x10U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCSENDCOM Register
-#define IPC_O_CPU2TOCPU1INTIPCSENDADDR(i)   (0x14U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCSENDADDR Register
-#define IPC_O_CPU2TOCPU1INTIPCSENDDATA(i)   (0x18U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCSENDDATA Register
-#define IPC_O_CPU1TOCPU2INTREMOTEREPLY(i)   (0x1CU + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTREMOTEREPLY Register
-#define IPC_O_CPU2TOCPU3INTIPCSET(i)        (0x2000U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCSET Register
-#define IPC_O_CPU2TOCPU3INTIPCCLR(i)        (0x2004U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCCLR Register
-#define IPC_O_CPU2TOCPU3INTIPCFLG(i)        (0x2008U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCFLG Register
-#define IPC_O_CPU2TOCPU3INTIPCSENDCOM(i)    (0x2010U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCSENDCOM Register
-#define IPC_O_CPU2TOCPU3INTIPCSENDADDR(i)   (0x2014U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCSENDADDR Register
-#define IPC_O_CPU2TOCPU3INTIPCSENDDATA(i)   (0x2018U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCSENDDATA Register
-#define IPC_O_CPU3TOCPU2INTREMOTEREPLY(i)   (0x201CU + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTREMOTEREPLY Register
-#define IPC_O_CPU2TOHSMINTIPCSET(i)         (0x6000U + ((i) * 4096))   // (0 <= i < 2)
-                                                                       // CPU2TOHSMINTIPCSET Register
-#define IPC_O_CPU2TOHSMINTIPCCLR(i)         (0x6004U + ((i) * 4096))   // (0 <= i < 2)
-                                                                       // CPU2TOHSMINTIPCCLR Register
-#define IPC_O_CPU2TOHSMINTIPCFLG(i)         (0x6008U + ((i) * 4096))   // (0 <= i < 2)
-                                                                       // CPU2TOHSMINTIPCFLG Register
+#define IPC_O_CPU2TOCPU1INTIPCSET(i)        (0x0U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCSET Register
+#define IPC_O_CPU2TOCPU1INTIPCCLR(i)        (0x4U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCCLR Register
+#define IPC_O_CPU2TOCPU1INTIPCFLG(i)        (0x8U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCFLG Register
+#define IPC_O_CPU2TOCPU1INTIPCSENDCOM(i)    (0x10U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCSENDCOM Register
+#define IPC_O_CPU2TOCPU1INTIPCSENDADDR(i)   (0x14U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCSENDADDR Register
+#define IPC_O_CPU2TOCPU1INTIPCSENDDATA(i)   (0x18U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCSENDDATA Register
+#define IPC_O_CPU1TOCPU2INTREMOTEREPLY(i)   (0x1CU + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTREMOTEREPLY Register
+#define IPC_O_CPU2TOCPU3INTIPCSET(i)        (0x2000U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCSET Register
+#define IPC_O_CPU2TOCPU3INTIPCCLR(i)        (0x2004U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCCLR Register
+#define IPC_O_CPU2TOCPU3INTIPCFLG(i)        (0x2008U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCFLG Register
+#define IPC_O_CPU2TOCPU3INTIPCSENDCOM(i)    (0x2010U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCSENDCOM Register
+#define IPC_O_CPU2TOCPU3INTIPCSENDADDR(i)   (0x2014U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCSENDADDR Register
+#define IPC_O_CPU2TOCPU3INTIPCSENDDATA(i)   (0x2018U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCSENDDATA Register
+#define IPC_O_CPU3TOCPU2INTREMOTEREPLY(i)   (0x201CU + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTREMOTEREPLY Register
+#define IPC_O_CPU2TOHSMINTIPCSET(i)         (0x6000U + ((i) * 4096U))   // (0 <= i < 2)
+                                                                        // CPU2TOHSMINTIPCSET Register
+#define IPC_O_CPU2TOHSMINTIPCCLR(i)         (0x6004U + ((i) * 4096U))   // (0 <= i < 2)
+                                                                        // CPU2TOHSMINTIPCCLR Register
+#define IPC_O_CPU2TOHSMINTIPCFLG(i)         (0x6008U + ((i) * 4096U))   // (0 <= i < 2)
+                                                                        // CPU2TOHSMINTIPCFLG Register
 
-#define IPC_O_CPU1TOCPU2INTIPCSTS(i)        (0x0U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCSTS Register
-#define IPC_O_CPU2TOCPU1INTIPCACK(i)        (0x4U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTIPCACK Register
-#define IPC_O_CPU1TOCPU2INTIPCRECVCOM(i)    (0x10U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCRECVCOM Register
-#define IPC_O_CPU1TOCPU2INTIPCRECVADDR(i)   (0x14U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCRECVADDR Register
-#define IPC_O_CPU1TOCPU2INTIPCRECVDATA(i)   (0x18U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU2INTIPCRECVDATA Register
-#define IPC_O_CPU2TOCPU1INTLOCALREPLY(i)    (0x1CU + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU2TOCPU1INTLOCALREPLY Register
-#define IPC_O_CPU3TOCPU2INTIPCSTS(i)        (0x2000U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCSTS Register
-#define IPC_O_CPU2TOCPU3INTIPCACK(i)        (0x2004U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCACK Register
-#define IPC_O_CPU3TOCPU2INTIPCRECVCOM(i)    (0x2010U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCRECVCOM Register
-#define IPC_O_CPU3TOCPU2INTIPCRECVADDR(i)   (0x2014U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCRECVADDR Register
-#define IPC_O_CPU3TOCPU2INTIPCRECVDATA(i)   (0x2018U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCRECVDATA Register
-#define IPC_O_CPU2TOCPU3INTLOCALREPLY(i)    (0x201CU + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTLOCALREPLY Register
+#define IPC_O_CPU1TOCPU2INTIPCSTS(i)        (0x0U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCSTS Register
+#define IPC_O_CPU2TOCPU1INTIPCACK(i)        (0x4U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTIPCACK Register
+#define IPC_O_CPU1TOCPU2INTIPCRECVCOM(i)    (0x10U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCRECVCOM Register
+#define IPC_O_CPU1TOCPU2INTIPCRECVADDR(i)   (0x14U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCRECVADDR Register
+#define IPC_O_CPU1TOCPU2INTIPCRECVDATA(i)   (0x18U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU2INTIPCRECVDATA Register
+#define IPC_O_CPU2TOCPU1INTLOCALREPLY(i)    (0x1CU + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU2TOCPU1INTLOCALREPLY Register
+#define IPC_O_CPU3TOCPU2INTIPCSTS(i)        (0x2000U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCSTS Register
+#define IPC_O_CPU2TOCPU3INTIPCACK(i)        (0x2004U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCACK Register
+#define IPC_O_CPU3TOCPU2INTIPCRECVCOM(i)    (0x2010U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCRECVCOM Register
+#define IPC_O_CPU3TOCPU2INTIPCRECVADDR(i)   (0x2014U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCRECVADDR Register
+#define IPC_O_CPU3TOCPU2INTIPCRECVDATA(i)   (0x2018U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCRECVDATA Register
+#define IPC_O_CPU2TOCPU3INTLOCALREPLY(i)    (0x201CU + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTLOCALREPLY Register
 
-#define IPC_O_CPU3TOCPU1INTIPCSET(i)        (0x0U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCSET Register
-#define IPC_O_CPU3TOCPU1INTIPCCLR(i)        (0x4U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCCLR Register
-#define IPC_O_CPU3TOCPU1INTIPCFLG(i)        (0x8U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCFLG Register
-#define IPC_O_CPU3TOCPU1INTIPCSENDCOM(i)    (0x10U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCSENDCOM Register
-#define IPC_O_CPU3TOCPU1INTIPCSENDADDR(i)   (0x14U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCSENDADDR Register
-#define IPC_O_CPU3TOCPU1INTIPCSENDDATA(i)   (0x18U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCSENDDATA Register
-#define IPC_O_CPU1TOCPU3INTREMOTEREPLY(i)   (0x1CU + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTREMOTEREPLY Register
-#define IPC_O_CPU3TOCPU2INTIPCSET(i)        (0x2000U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCSET Register
-#define IPC_O_CPU3TOCPU2INTIPCCLR(i)        (0x2004U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCCLR Register
-#define IPC_O_CPU3TOCPU2INTIPCFLG(i)        (0x2008U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCFLG Register
-#define IPC_O_CPU3TOCPU2INTIPCSENDCOM(i)    (0x2010U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCSENDCOM Register
-#define IPC_O_CPU3TOCPU2INTIPCSENDADDR(i)   (0x2014U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCSENDADDR Register
-#define IPC_O_CPU3TOCPU2INTIPCSENDDATA(i)   (0x2018U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCSENDDATA Register
-#define IPC_O_CPU2TOCPU3INTREMOTEREPLY(i)   (0x201CU + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTREMOTEREPLY Register
-#define IPC_O_CPU3TOHSMINTIPCSET(i)         (0x6000U + ((i) * 4096))   // (0 <= i < 2)
-                                                                       // CPU3TOHSMINTIPCSET Register
-#define IPC_O_CPU3TOHSMINTIPCCLR(i)         (0x6004U + ((i) * 4096))   // (0 <= i < 2)
-                                                                       // CPU3TOHSMINTIPCCLR Register
-#define IPC_O_CPU3TOHSMINTIPCFLG(i)         (0x6008U + ((i) * 4096))   // (0 <= i < 2)
-                                                                       // CPU3TOHSMINTIPCFLG Register
+#define IPC_O_CPU3TOCPU1INTIPCSET(i)        (0x0U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCSET Register
+#define IPC_O_CPU3TOCPU1INTIPCCLR(i)        (0x4U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCCLR Register
+#define IPC_O_CPU3TOCPU1INTIPCFLG(i)        (0x8U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCFLG Register
+#define IPC_O_CPU3TOCPU1INTIPCSENDCOM(i)    (0x10U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCSENDCOM Register
+#define IPC_O_CPU3TOCPU1INTIPCSENDADDR(i)   (0x14U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCSENDADDR Register
+#define IPC_O_CPU3TOCPU1INTIPCSENDDATA(i)   (0x18U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCSENDDATA Register
+#define IPC_O_CPU1TOCPU3INTREMOTEREPLY(i)   (0x1CU + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTREMOTEREPLY Register
+#define IPC_O_CPU3TOCPU2INTIPCSET(i)        (0x2000U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCSET Register
+#define IPC_O_CPU3TOCPU2INTIPCCLR(i)        (0x2004U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCCLR Register
+#define IPC_O_CPU3TOCPU2INTIPCFLG(i)        (0x2008U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCFLG Register
+#define IPC_O_CPU3TOCPU2INTIPCSENDCOM(i)    (0x2010U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCSENDCOM Register
+#define IPC_O_CPU3TOCPU2INTIPCSENDADDR(i)   (0x2014U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCSENDADDR Register
+#define IPC_O_CPU3TOCPU2INTIPCSENDDATA(i)   (0x2018U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCSENDDATA Register
+#define IPC_O_CPU2TOCPU3INTREMOTEREPLY(i)   (0x201CU + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTREMOTEREPLY Register
+#define IPC_O_CPU3TOHSMINTIPCSET(i)         (0x6000U + ((i) * 4096U))   // (0 <= i < 2)
+                                                                        // CPU3TOHSMINTIPCSET Register
+#define IPC_O_CPU3TOHSMINTIPCCLR(i)         (0x6004U + ((i) * 4096U))   // (0 <= i < 2)
+                                                                        // CPU3TOHSMINTIPCCLR Register
+#define IPC_O_CPU3TOHSMINTIPCFLG(i)         (0x6008U + ((i) * 4096U))   // (0 <= i < 2)
+                                                                        // CPU3TOHSMINTIPCFLG Register
 
-#define IPC_O_CPU1TOCPU3INTIPCSTS(i)        (0x0U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCSTS Register
-#define IPC_O_CPU3TOCPU1INTIPCACK(i)        (0x4U + ((i) * 2048))      // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTIPCACK Register
-#define IPC_O_CPU1TOCPU3INTIPCRECVCOM(i)    (0x10U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCRECVCOM Register
-#define IPC_O_CPU1TOCPU3INTIPCRECVADDR(i)   (0x14U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCRECVADDR Register
-#define IPC_O_CPU1TOCPU3INTIPCRECVDATA(i)   (0x18U + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU1TOCPU3INTIPCRECVDATA Register
-#define IPC_O_CPU3TOCPU1INTLOCALREPLY(i)    (0x1CU + ((i) * 2048))     // (0 <= i < 4)
-                                                                       // CPU3TOCPU1INTLOCALREPLY Register
-#define IPC_O_CPU2TOCPU3INTIPCSTS(i)        (0x2000U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCSTS Register
-#define IPC_O_CPU3TOCPU2INTIPCACK(i)        (0x2004U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTIPCACK Register
-#define IPC_O_CPU2TOCPU3INTIPCRECVCOM(i)    (0x2010U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCRECVCOM Register
-#define IPC_O_CPU2TOCPU3INTIPCRECVADDR(i)   (0x2014U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCRECVADDR Register
-#define IPC_O_CPU2TOCPU3INTIPCRECVDATA(i)   (0x2018U + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU2TOCPU3INTIPCRECVDATA Register
-#define IPC_O_CPU3TOCPU2INTLOCALREPLY(i)    (0x201CU + ((i) * 2048))   // (0 <= i < 4)
-                                                                       // CPU3TOCPU2INTLOCALREPLY Register
+#define IPC_O_CPU1TOCPU3INTIPCSTS(i)        (0x0U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCSTS Register
+#define IPC_O_CPU3TOCPU1INTIPCACK(i)        (0x4U + ((i) * 2048U))      // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTIPCACK Register
+#define IPC_O_CPU1TOCPU3INTIPCRECVCOM(i)    (0x10U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCRECVCOM Register
+#define IPC_O_CPU1TOCPU3INTIPCRECVADDR(i)   (0x14U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCRECVADDR Register
+#define IPC_O_CPU1TOCPU3INTIPCRECVDATA(i)   (0x18U + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU1TOCPU3INTIPCRECVDATA Register
+#define IPC_O_CPU3TOCPU1INTLOCALREPLY(i)    (0x1CU + ((i) * 2048U))     // (0 <= i < 4)
+                                                                        // CPU3TOCPU1INTLOCALREPLY Register
+#define IPC_O_CPU2TOCPU3INTIPCSTS(i)        (0x2000U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCSTS Register
+#define IPC_O_CPU3TOCPU2INTIPCACK(i)        (0x2004U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTIPCACK Register
+#define IPC_O_CPU2TOCPU3INTIPCRECVCOM(i)    (0x2010U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCRECVCOM Register
+#define IPC_O_CPU2TOCPU3INTIPCRECVADDR(i)   (0x2014U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCRECVADDR Register
+#define IPC_O_CPU2TOCPU3INTIPCRECVDATA(i)   (0x2018U + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU2TOCPU3INTIPCRECVDATA Register
+#define IPC_O_CPU3TOCPU2INTLOCALREPLY(i)    (0x201CU + ((i) * 2048U))   // (0 <= i < 4)
+                                                                        // CPU3TOCPU2INTLOCALREPLY Register
 
 
 

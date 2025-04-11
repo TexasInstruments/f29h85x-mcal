@@ -1,0 +1,822 @@
+## CDD UART Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|UART|Universal Asynchronous Receiver/Transmitter|
+|ISR |Interrupt Service Routine|
+|INT |Interrupt|
+|API|Application Programming Interface|
+|BSW|Basic Software|
+|ECU|Electronic Control Unit|
+|DET|Development Error Tracer|
+|HW |Hardware|
+|SW |Software|
+|I/O|Input Output|
+|RTDMA|Real-Time Direct Memory Access Controller|
+|FIFO|First In First Out|
+|SIR-Encoder|Serial Infrared Encoder|
+|MCAL|Microcontroller Abstraction Layer|
+|RTE|Runtime Environmental|
+|EOT|End Of Transmission|
+|CDD|Complex Device Driver|
+|SYSCLK|System Clock|
+|IrDA|Infrared Data Association|
+
+### Introduction
+
+The UART driver is a part of complex device drivers (CDD) which provides data read and write transfer using the module unit channels in the device board.
+
+```{figure} Assets/images/Cdd_Uart_Autosar_CDD.png
+:alt: CDD_UART MCAL AUTOSAR
+:align: center
+
+CDD_UART MCAL AUTOSAR
+```
+
+This document details AUTOSAR BSW CDD_UART module implementation
+
+|Supported AUTOSAR Release|**4.3.1**|
+|------|-------------|
+| **Supported Configuration Variants** | **Pre-Compile**|
+| **Vendor ID**                      |   **CDD_UART_VENDOR_ID (44)**|
+| **Module ID**                      |   **CDD_UART_MODULE_ID (255)**|
+
+### Functional Overview
+
+The UART module performs the functions of parallel-to-serial and serial-to-parallel conversions. The transmit logic performs parallel-to-serial conversion on the data read from the transmit FIFO. The control logic outputs the serial bit stream beginning with a start bit and followed by the data bits (LSB first), parity bit, and the stop bits according to the programmed configuration in the control registers. The receive logic performs serial-to-parallel conversion on the received bit stream after a valid start pulse has been detected. Overrun, parity, frame error checking, and line-break detection are also performed, and the status accompanies the data that is written to the receive FIFO.
+
+### Hardware Features
+
+#### Hardware Features supported
+
+The Universal Asynchronous Receiver/Transmitter (UART) module in this device contains the following features:
+
+* Programmable baud-rate generator allowing speeds up to 12.5Mbps for regular speed (divide by 16) and
+25Mbps for high speed (divide by 8)
+* Separate 16-deep and 8-bit wide transmit (TX) and receive (RX) FIFOs to reduce CPU interrupt service
+loading
+* Programmable FIFO length providing conventional double-buffered interface
+* FIFO trigger levels of ⅛, ¼, ½, ¾, and ⅞
+* Standard asynchronous communication bits for start, stop, and parity
+* Line-break generation and detection
+* Fully programmable serial interface characteristics
+  * 5, 6, 7, or 8 data bits
+  * Even, odd, stick, or no parity bit generation and detection
+  * 1 or 2 stop bit generation
+* IrDA serial-IR (SIR) encoder and decoder providing
+  * Programmable use of IrDA SIR or UART input/output
+  * Support of IrDA SIR encoder and decoder functions for data rates up to 115.2kbps half-duplex
+  * Support of normal 3/16 and low-power (1.41 to 2.23μs) bit durations
+  * Programmable internal clock generator enabling division of reference clock by 1 to 256 for low-power mode bit duration
+* EIA-485 9-bit support
+* Standard FIFO-level and End-of-Transmission (EOT) interrupts
+* Efficient transfers using Real-Time Direct Memory Access Controller (RTDMA)
+  * Separate channels for transmit and receive
+  * Receive single request asserted when data is in the FIFO; burst request asserted at programmed FIFO level
+  * Transmit single request asserted when there is space in the FIFO; burst request asserted at programmed FIFO level
+* SYSCLK is used to generate the baud clock.
+
+```{figure} Assets/images/Cdd_Uart_Block_Diagram.png
+:alt: Cdd_Uart Block diagram
+:align: center
+
+Cdd_Uart Block Diagram
+```
+
+#### Features not supported by Hardware
+
+None
+
+#### Features Not supported by the driver
+
+* DMA
+* 9-bit mode data transfer
+* IrDA
+* Polling mode read
+
+#### Non compliance
+
+None
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂**Cdd_Uart**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Uart.h** : *Contains the API declarations of the Cdd_Uart driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Uart_Priv.h** : *Contains data structures and Internal function declarations.*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Uart.c** : *Contains the implementation of the API for Cdd_Uart driver.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Uart_Irq.c** : *Contains the implementation for Cdd_Uart interrupts handlers.*\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Uart_Priv.c** : *Contains Functions that support the API for Cdd_Uart driver*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┗ 📂Port\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Cdd_Uart_Header_File_Structure.png
+:alt: Cdd_Uart Header File Structure
+:align: center
+
+Cdd_Uart Header File Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+None
+
+#### Error handling
+
+Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+##### Development Errors
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|API service used without module initialization|CDD_UART_E_UNINIT|0x01U|
+|API Cdd_Uart_Init service called while the UART driver has already been initialized|CDD_UART_E_ALREADY_INITIALIZED|0x02U|
+|API service called with invalid parameter value|CDD_UART_E_PARAM_VALUE|0x03U|
+|API service called with invalid data buffer pointer|CDD_UART_E_PARAM_POINTER|0x04U|
+|API service called with invalid hardware index|CDD_UART_E_PARAM_HWINDEX|0x05U|
+|API Service called without initialization|CDD_UART_E_NOT_INITIALIZED|0x06U|
+|API service called when UART is busy|CDD_UART_E_BUSY|0x07U|
+
+##### Runtime Errors
+
+None
+
+### Used resources
+
+#### Interrupt Handling
+
+Cdd_Uart driver provides ISRs. The ISRs are implemented in the Cdd_Uart_Irq.c file.
+Interrupt and the category should be selected in the Cdd_Uart plugin.The Interrupt ID associated with the UART instance is mentioned in the TRM (also, please refer the Example application).
+
+ |Cdd_Uart Instance| Interrupt handler|
+|------------|-----------------|
+|Uart0|Cdd_Uart_0_ISR|
+|Uart1|Cdd_Uart_1_ISR|
+|Uart2|Cdd_Uart_2_ISR|
+|Uart3|Cdd_Uart_3_ISR|
+|Uart4|Cdd_Uart_4_ISR|
+|Uart5|Cdd_Uart_5_ISR|
+
+#### Instance support
+
+|CPU instances|supported|
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+Below image shows Cdd_Uart driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Technical Reference Manual.
+
+```{figure} Assets/images/Cdd_Uart_Hw_Sw_Mapping.png
+:alt: Cdd_Uart HW/SW Mapping
+:align: center
+
+Cdd_Uart HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This driver depends on the DET in order to report development and runtime errors.
+The detection of development errors is configurable ON/OFF. The switch UART_CFG_DEV_ERROR_DETECT will activate or deactivate the detection of development errors. Runtime errors are reported even when UART_CFG_DEV_ERROR_DETECT is OFF.
+
+##### SchM
+
+If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that CDD_UART module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.
+
+The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter RteExclusiveAreaImplMechanism. This parameter is an input for RTE generator.
+
+For CDD_UART Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
+
+| Exclusive Area Functions used | CDD_UART Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
+|-------|-------|-------|-------|
+|CDD_UART_EXCLUSIVE_AREA_0 | Cdd_Uart_Read<br>Cdd_Uart_Write<br>Cdd_Uart_CancelWrite<br>Cdd_Uart_CancelRead<br>Cdd_Uart_GetWriteStatus<br>Cdd_Uart_GetReadStatus| To protect against multiple access for shared resources which can lead to race condition |**ALL_INTERRUPT_BLOCKING** : All interrupts should be blocked as this API's can be called in the interrupts |
+
+##### MCU
+
+MCU Module is required for the Uart Baudrate initialization.
+
+##### Port
+
+The Port module configures the analog port pins used for the UART driver. Hence, the Port driver has to be initialized prior to use UART functions and to observe proper conversion results. Otherwise incorrect conversion results will be observed.
+
+##### OS
+
+The Cdd_Uart driver uses interrupts and therefore depends on OS, which configures the interrupts.
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Cdd Uart Driver implementation supports single configuration variants, namely Pre-Compile config. The driver expects generated **Cdd_Uart_Cfg.h** to be present as input file.
+The associated Cdd Uart driver configuration generated source file is **Cdd_Uart_Cfg.c**.
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+```{Note}
+Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
+```
+
+
+
+#### CddUartConfigSet
+This container contains the configuration parameters and sub containers of the CddUart module.
+
+##### CddUartConfig
+This container contains the configuration parameters of the CddUart HW units.
+
+###### CddUartInstance
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartInstance |
+| **Description** | Selects CddUart HW unit Instance. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | UART0 |
+| **Range** | UART0<br>UART1<br>UART2<br>UART3<br>UART4<br>UART5 |
+
+###### CddUartBaseAddress
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartBaseAddress |
+| **Description** | Specifies the CddUart HW unit base address. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
+
+###### CddUartHWUnitId
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartHWUnitId |
+| **Description** | This parameter provides the HW unit ID which is unique in a given CddUart Driver. The value for this parameter starts with 0 and continue without any gaps. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 5 |
+| **Min-value** | 0 |
+
+###### CddUartClockFreq
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartClockFreq |
+| **Description** | This parameter takes the input value of clock frequency |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 200000000 |
+| **Min-value** | 0 |
+
+###### CddUartBaudRate
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartBaudRate |
+| **Description** | This parameter takes the input value of Baud Rate for both the channel (Write/Read) |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 25000000 |
+| **Min-value** | 0 |
+
+###### CddUartProcessingMode
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartProcessingMode |
+| **Description** | Defines the Uart Processing mode. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_UART_MODE_INTERRUPT |
+| **Range** | CDD_UART_MODE_POLLING<br>CDD_UART_MODE_INTERRUPT |
+
+###### CddUartFIFOModeEnable
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartFIFOModeEnable |
+| **Description** | Enable/Disable FIFO Mode. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddUartInteruptType
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartInteruptType |
+| **Description** | This parameter specifies the category of Interrupt Request for callbacks. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_UART_ISR_CAT1_INT |
+| **Range** | CDD_UART_ISR_CAT1_RTINT<br>CDD_UART_ISR_CAT1_INT<br>CDD_UART_ISR_CAT2 |
+
+###### CddUartParityModeEnable
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartParityModeEnable |
+| **Description** | Enable/Disable Parity mode. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddUartParityBit
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartParityBit |
+| **Description** | type of parity bit in the frame |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_UART_PARITY_EVEN |
+| **Range** | CDD_UART_PARITY_EVEN<br>CDD_UART_PARITY_ODD |
+
+###### CddUartStopBit
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartStopBit |
+| **Description** | number of stop bits in the frame |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_UART_STOP_BITS_1 |
+| **Range** | CDD_UART_STOP_BITS_1<br>CDD_UART_STOP_BITS_2 |
+
+###### CddUartWordLength
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartWordLength |
+| **Description** | word length of a frame |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_UART_WORD_LENGTH_8 |
+| **Range** | CDD_UART_WORD_LENGTH_8<br>CDD_UART_WORD_LENGTH_7<br>CDD_UART_WORD_LENGTH_6<br>CDD_UART_WORD_LENGTH_5 |
+
+###### CddUartEnableWrite
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartEnableWrite |
+| **Description** | Enable/Disable Write Mode. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+###### CddUartEnableRead
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartEnableRead |
+| **Description** | Enable/Disable Read Mode. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+###### CddUartLoopBackModeEnable
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartLoopBackModeEnable |
+| **Description** | Enable/Disable Loop Back Mode. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddUartWriteConfig
+This container contains the configuration parameters of the CddUart Write
+
+###### CddUartWriteNotificationHandler
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartWriteNotificationHandler |
+| **Description** | This parameter is a write notification handler function. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+###### CddUartTriggerLevelWriteFIFO
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartTriggerLevelWriteFIFO |
+| **Description** | set interrupt trigger level of Write FIFO |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_UART_FIFO_LEVEL_1_2 |
+| **Range** | CDD_UART_FIFO_LEVEL_1_8<br>CDD_UART_FIFO_LEVEL_1_4<br>CDD_UART_FIFO_LEVEL_1_2<br>CDD_UART_FIFO_LEVEL_3_4<br>CDD_UART_FIFO_LEVEL_7_8 |
+
+##### CddUartReadConfig
+This container contains the configuration parameters of the CddUart Read
+
+###### CddUartReadNotificationHandler
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartReadNotificationHandler |
+| **Description** | This parameter is a read notification handler function. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+###### CddUartErrorNotificationHandler
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartErrorNotificationHandler |
+| **Description** | This parameter is a error notification handler function. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+###### CddUartTriggerLevelReadFIFO
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartTriggerLevelReadFIFO |
+| **Description** | set interrupt trigger level of Read FIFO |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_UART_FIFO_LEVEL_1_2 |
+| **Range** | CDD_UART_FIFO_LEVEL_1_8<br>CDD_UART_FIFO_LEVEL_1_4<br>CDD_UART_FIFO_LEVEL_1_2<br>CDD_UART_FIFO_LEVEL_3_4<br>CDD_UART_FIFO_LEVEL_7_8 |
+
+#### CddUartGeneral
+General CddUart` module configuration parameters.
+
+##### CddUartMainFunctionWritePeriod
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartMainFunctionWritePeriod |
+| **Description** | This parameter describes the period for cyclic call to Cdd_Uart_MainFunction_Write. Unit is seconds. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0.01 |
+| **Max-value** | INF |
+| **Min-value** | 1.0E-6 |
+
+##### CddUartDevErrorDetect
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+#### Steps To Configure Cdd Uart Module
+
+1. Open EB Tresos configurator tool, load Cdd_Uart module. Select the Precompile Config Variant.
+2. Configure the required parameters.
+3. Save the configuration and generate the configuration.
+
+### Examples
+
+The example applications demonstrates usecases of the Cdd_Uart driver APIs. The examples are explained below in detailed .
+
+#### Cdd_Uart_Example_Loopback
+
+##### Overview of Cdd_Uart_Example_Loopback
+
+* Cdd_Uart_Example_Loopback
+  * EcuM_Init()
+    * Initialize clock to 200 MHz using Mcu_Init()
+    * Initialize pins in analog mode with Port_Init()
+    * Initialize Cdd_Uart driver using Cdd_Uart_Init()
+  * Loopback test executed on UART instance D
+  * Transmit sample string data of varying lengths through the WRITE module
+  * Read the data back through the READ module of the same instance
+  * The received data is then meticulously verified against the original transmit data to ensure accuracy and correctness.
+  * This process enables the detection of any errors or discrepancies, ensuring the reliability and functionality of the UART interface.
+
+##### Setup required to run Cdd_Uart_Example_Loopback
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+##### How to run Cdd_Uart_Example_Loopback
+
+* Open CCS and Import Cdd_Uart_Example_Loopback
+* Build project and start debug project
+
+##### Sample Log of Cdd_Uart_Example_Loopback
+
+```{EXAMPLE LOGS}
+Cdd_Uart_Example_Loopback: Sample Application - Starts!!!
+Cdd_Uart MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 255
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+Cdd_Uart_Example_Loopback: Sample Application - Completes successfully !!!
+```
+
+#### Cdd_Uart_Example_Read_Interrupt
+
+##### Overview of Cdd_Uart_Example_Read_Interrupt
+
+* Cdd_Uart_Example_Read_Interrupt
+  * EcuM_Init()
+    * Initialize clock to 200 MHz using Mcu_Init()
+    * Initialize pins in analog mode with Port_Init()
+    * Initialize Cdd_Uart driver using Cdd_Uart_Init()
+  * Read data to the transmit buffer using the Cdd_Uart_Read function
+  * Wait for the reception to complete
+  * Use the CddUartReadDoneCallback function to verify Cdd_Uart read interrupt functionality
+  * The program reads data to the receive buffer and verifies that the reception is complete,
+    demonstrating the reliability and functionality of the Cdd_Uart driver in interrupt mode.
+
+##### Setup required to run Cdd_Uart_Example_Read_Interrupt
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+* Connect GPIO86 (Tx pin) to the target's Rx pin, and connect GPIO77 (Rx pin) to the target's Tx pin
+
+##### How to run Cdd_Uart_Example_Read_Interrupt
+
+* Open CCS and Import Cdd_Uart_Example_Read_Interrupt
+* Build project and start debug project
+
+##### Sample Log of Cdd_Uart_Example_Read_Interrupt
+
+```{EXAMPLE LOGS}
+Cdd_Uart_Example_Read_Interrupt: Sample Application - Starts!!!
+Cdd_Uart MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 255
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+T
+ex
+asI
+nstr
+uments
+T
+ex
+asI
+nstr
+uments
+Cdd_Uart_Example_Read_Interrupt: Sample Application - Completes successfully !!!
+```
+
+#### Cdd_Uart_Example_Write_Interrupt
+
+##### Overview of Cdd_Uart_Example_Write_Interrupt
+
+* Cdd_Uart_Example_Write_Interrupt
+  * EcuM_Init()
+    * Initialize clock to 200 MHz using Mcu_Init()
+    * Initialize pins in analog mode with Port_Init()
+    * Initialize Cdd_Uart driver using Cdd_Uart_Init()
+  * Write data to the transmit buffer using the Cdd_Uart_Write function
+  * Wait for the transmission to complete
+  * Use the CddUartWriteDoneCallback function to verify Cdd_Uart write interrupt functionality
+  * The program writes data to the transmit buffer and verifies that the transmission is complete,
+    demonstrating the reliability and functionality of the Cdd_Uart driver in interrupt mode.
+
+##### Setup required to run Cdd_Uart_Example_Write_Interrupt
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+* Connect GPIO86 (Tx pin) to the target's Rx pin, and connect GPIO77 (Rx pin) to the target's Tx pin
+
+##### How to run Cdd_Uart_Example_Write_Interrupt
+
+* Open CCS and Import Cdd_Uart_Example_Write_Interrupt
+* Build project and start debug project
+
+##### Sample Log of Cdd_Uart_Example_Write_Interrupt
+
+```{EXAMPLE LOGS}
+Cdd_Uart_Example_Write_Interrupt: Sample Application - Starts!!!
+Cdd_Uart MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 255
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+Cdd_Uart_Example_Write_Interrupt: Sample Application - Completes successfully !!!
+```
+
+```{UART LOGS}
+HHeHelHellHelloWHelloWorHelloWorld Texas Instruments
+                                                     HelloWorld Texas InsHelloWo                                                                                                                                                             rld Texas Instruments
+                      HelloWorld Texas Instruments
+                                                   HelloWorld Texas Instruments
+                                                                               H                                                                                                                                                             elloWorldHelloWorld Texas Instruments
+                                      HelloWorld Texas Instruments
+                                                                   HelloWorld Te                                                                                                                                                             xas Instruments
+```
+
+#### Cdd_Uart_Example_Write_Polling
+
+##### Overview of Cdd_Uart_Example_Write_Polling
+
+* Cdd_Uart_Example_Write_Polling
+  * EcuM_Init()
+    * Initialize clock to 200 MHz using Mcu_Init()
+    * Initialize pins in analog mode with Port_Init()
+    * Initialize Cdd_Uart driver using Cdd_Uart_Init()
+  * Write data to the transmit buffer using the Cdd_Uart_Write function, and polled using the Cdd_Uart_MainFunction_Write
+  * Wait for the transmission to complete
+  * Use the CddUartWriteDoneCallback function to verify Cdd_Uart write polling functionality
+  * The program writes data to the transmit buffer and verifies that the transmission is complete,
+    demonstrating the reliability and functionality of the Cdd_Uart driver in polling mode.
+
+##### Setup required to run Cdd_Uart_Example_Write_Polling
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+* Connect GPIO86 (Tx pin) to the target's Rx pin, and connect GPIO77 (Rx pin) to the target's Tx pin
+
+##### How to run Cdd_Uart_Example_Write_Polling
+
+* Open CCS and Import Cdd_Uart_Example_Write_Polling
+* Build project and start debug project
+
+##### Sample Log of Cdd_Uart_Example_Write_Polling
+
+```{EXAMPLE LOGS}
+Cdd_Uart_Example_Write_Polling: Sample Application - Starts!!!
+Cdd_Uart MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 255
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+Cdd_Uart_Example_Write_Polling: Sample Application - Completes successfully !!!
+```
+
+```{UART LOGS}
+HHeHelHellHelloWHelloWorHelloWorld Texas Instruments
+                                                     HelloWorld Texas InsHelloWorld Texas Instruments
+                                                                                                      HelloWorld Texas Instruments
+                                                                                                                                   HelloWorld Texas Instruments
+```
+
+#### Example File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂**Cdd_Uart**\
+ ┃ ┃ ┗ 📂**Cdd_Uart_Example_Loopback**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Uart_Example_Loopback.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Cdd_Uart_Example_Loopback_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Uart.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Uart_Cfg.h** : *Contains the generated pre-compiler configuration header.*</i>*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Cdd_Uart_Cbk.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Uart_Cfg.c** : *Contains the Pre-compile build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Uart_Example_Loopback.c** : *Example application for Cdd_Uart.*\
+ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Xbar\
+ ┃ ┣ 📂Device_Support\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┣ 📂Wdg\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json

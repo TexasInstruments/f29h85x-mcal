@@ -49,6 +49,10 @@ if (NOT TARGET SchM_Port)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Port/ ${CMAKE_BINARY_DIR}/SchM_Port)
 endif ()
 
+if (NOT TARGET SchM_Wdg)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Wdg/ ${CMAKE_BINARY_DIR}/SchM_Wdg)
+endif ()
+
 if (NOT TARGET Wdg_Service_Config)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Wdg_Service_Config/) 
 endif ()
@@ -67,9 +71,9 @@ add_link_options(-Wl,--xml_link_info=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}
 add_link_options(-Wl,-m=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map)
 
 if(BUILD_CONFIGURATION MATCHES "RAM")
-    add_link_options(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_ram_lnk.cmd)
+    add_link_options(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_ram_lnk_cpu1.cmd)
 else()
-    add_link_options(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_flash_lnk.cmd)
+    add_link_options(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_flash_lnk_cpu1.cmd)
 endif()
 
 # This command is used to move the .out file
@@ -79,7 +83,7 @@ add_executable(${PROJECT_NAME}
     Wdg_Example_Service.c
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE  Wdg_Service_Config Mcu Wdg Port hw_include  AUTOSAR_Types  Det  Dem  Mcal_Lib  MemMap SchM_Port EcuM Os AppUtils DeviceSupport)
+target_link_libraries(${PROJECT_NAME} PRIVATE  Wdg_Service_Config Mcu Wdg Port hw_include  AUTOSAR_Types  Det  Dem  Mcal_Lib  MemMap SchM_Port SchM_Wdg EcuM Os AppUtils DeviceSupport)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_linkInfo.xml" "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map"

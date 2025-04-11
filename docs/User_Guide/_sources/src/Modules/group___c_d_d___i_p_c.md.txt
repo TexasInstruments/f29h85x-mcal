@@ -1,0 +1,897 @@
+---
+title: Cdd Ipc
+
+---
+
+# CDD_IPC
+
+
+
+## Types
+
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|enum| **[Cdd_Ipc_CoreType](../Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-coretype)** | CPU cores type.  | 
+|enum| **[Cdd_Ipc_TxProcessingType](../Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-txprocessingtype)** | IPC Tx processing.  | 
+|enum| **[Cdd_Ipc_InstanceType](../Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype)** | IPC Instance type.  | 
+|typedef uint8  | **[Cdd_Ipc_RemoteCoreType](../Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-remotecoretype)** | Specifies ID of the remote core  | 
+|typedef void(*)(const PduInfoType *PduInfoPtr)  | **[Cdd_Ipc_NotifyType](../Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-notifytype)** | Notification callback function pointer.  | 
+
+
+
+### enum Cdd_Ipc_CoreType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_IPC_CPU1 | 0U| CPU1.   |
+| CDD_IPC_CPU2 | 1U| CPU2.   |
+| CDD_IPC_CPU3 | 2U| CPU3.   |
+
+
+
+
+**Brief**: 
+CPU cores type. 
+
+
+
+### enum Cdd_Ipc_TxProcessingType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_IPC_POLLING | 1U| Polling mode.   |
+| CDD_IPC_INTERRUPT | 2U| Interrupt mode.   |
+
+
+
+
+**Brief**: 
+IPC Tx processing. 
+
+
+
+### enum Cdd_Ipc_InstanceType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_IPC_CPU1_L_CPU2_R_INST0 | CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU2INTIPCSET(0U)| CPU1 - Local core, CPU2 - Remote core, Instance 1.   |
+| CDD_IPC_CPU1_L_CPU2_R_INST1 | CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU2INTIPCSET(1U)| CPU1 - Local core, CPU2 - Remote core, Instance 2.   |
+| CDD_IPC_CPU1_L_CPU2_R_INST2 | CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU2INTIPCSET(2U)| CPU1 - Local core, CPU2 - Remote core, Instance 3.   |
+| CDD_IPC_CPU1_L_CPU2_R_INST3 | CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU2INTIPCSET(3U)| CPU1 - Local core, CPU2 - Remote core, Instance 4.   |
+| CDD_IPC_CPU1_L_CPU3_R_INST0 | CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU3INTIPCSET(0U)| CPU1 - Local core, CPU3 - Remote core, Instance 1.   |
+| CDD_IPC_CPU1_L_CPU3_R_INST1 | CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU3INTIPCSET(1U)| CPU1 - Local core, CPU3 - Remote core, Instance 2.   |
+| CDD_IPC_CPU1_L_CPU3_R_INST2 | CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU3INTIPCSET(2U)| CPU1 - Local core, CPU3 - Remote core, Instance 3.   |
+| CDD_IPC_CPU1_L_CPU3_R_INST3 | CPU1IPCSEND_BASE + IPC_O_CPU1TOCPU3INTIPCSET(3U)| CPU1 - Local core, CPU3 - Remote core, Instance 4.   |
+| CDD_IPC_CPU2_L_CPU1_R_INST0 | CPU2IPCSEND_BASE + IPC_O_CPU2TOCPU1INTIPCSET(0U)| CPU2 - Local core, CPU1 - Remote core, Instance 1.   |
+| CDD_IPC_CPU2_L_CPU1_R_INST1 | CPU2IPCSEND_BASE + IPC_O_CPU2TOCPU1INTIPCSET(1U)| CPU2 - Local core, CPU1 - Remote core, Instance 2.   |
+| CDD_IPC_CPU2_L_CPU1_R_INST2 | CPU2IPCSEND_BASE + IPC_O_CPU2TOCPU1INTIPCSET(2U)| CPU2 - Local core, CPU1 - Remote core, Instance 3.   |
+| CDD_IPC_CPU2_L_CPU1_R_INST3 | CPU2IPCSEND_BASE + IPC_O_CPU2TOCPU1INTIPCSET(3U)| CPU2 - Local core, CPU1 - Remote core, Instance 4.   |
+| CDD_IPC_CPU2_L_CPU3_R_INST0 | CPU2IPCSEND_BASE + IPC_O_CPU2TOCPU3INTIPCSET(0U)| CPU2 - Local core, CPU3 - Remote core, Instance 1.   |
+| CDD_IPC_CPU2_L_CPU3_R_INST1 | CPU2IPCSEND_BASE + IPC_O_CPU2TOCPU3INTIPCSET(1U)| CPU2 - Local core, CPU3 - Remote core, Instance 2.   |
+| CDD_IPC_CPU2_L_CPU3_R_INST2 | CPU2IPCSEND_BASE + IPC_O_CPU2TOCPU3INTIPCSET(2U)| CPU2 - Local core, CPU3 - Remote core, Instance 3.   |
+| CDD_IPC_CPU2_L_CPU3_R_INST3 | CPU2IPCSEND_BASE + IPC_O_CPU2TOCPU3INTIPCSET(3U)| CPU2 - Local core, CPU3 - Remote core, Instance 4.   |
+| CDD_IPC_CPU3_L_CPU1_R_INST0 | CPU3IPCSEND_BASE + IPC_O_CPU3TOCPU1INTIPCSET(0U)| CPU3 - Local core, CPU1 - Remote core, Instance 1.   |
+| CDD_IPC_CPU3_L_CPU1_R_INST1 | CPU3IPCSEND_BASE + IPC_O_CPU3TOCPU1INTIPCSET(1U)| CPU3 - Local core, CPU1 - Remote core, Instance 2.   |
+| CDD_IPC_CPU3_L_CPU1_R_INST2 | CPU3IPCSEND_BASE + IPC_O_CPU3TOCPU1INTIPCSET(2U)| CPU3 - Local core, CPU1 - Remote core, Instance 3.   |
+| CDD_IPC_CPU3_L_CPU1_R_INST3 | CPU3IPCSEND_BASE + IPC_O_CPU3TOCPU1INTIPCSET(3U)| CPU3 - Local core, CPU1 - Remote core, Instance 4.   |
+| CDD_IPC_CP3_L_CPU2_R_INST0 | CPU3IPCSEND_BASE + IPC_O_CPU3TOCPU2INTIPCSET(0U)| CPU3 - Local core, CPU2 - Remote core, Instance 1.   |
+| CDD_IPC_CP3_L_CPU2_R_INST1 | CPU3IPCSEND_BASE + IPC_O_CPU3TOCPU2INTIPCSET(1U)| CPU3 - Local core, CPU2 - Remote core, Instance 2.   |
+| CDD_IPC_CP3_L_CPU2_R_INST2 | CPU3IPCSEND_BASE + IPC_O_CPU3TOCPU2INTIPCSET(2U)| CPU3 - Local core, CPU2 - Remote core, Instance 3.   |
+| CDD_IPC_CP3_L_CPU2_R_INST3 | CPU3IPCSEND_BASE + IPC_O_CPU3TOCPU2INTIPCSET(3U)| CPU3 - Local core, CPU2 - Remote core, Instance 4.   |
+
+
+
+
+**Brief**: 
+IPC Instance type. 
+
+
+
+
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Cdd_Ipc_TxChannelConfigType](../Classes/struct_cdd___ipc___tx_channel_config_type.md)** | IPC Tx channel config type.  |
+| **[Cdd_Ipc_TxInstanceConfigType](../Classes/struct_cdd___ipc___tx_instance_config_type.md)** | IPC Tx instance config type.  |
+| **[Cdd_Ipc_RxChannelConfigType](../Classes/struct_cdd___ipc___rx_channel_config_type.md)** | IPC Rx channel config type.  |
+| **[Cdd_Ipc_RxInstanceConfigType](../Classes/struct_cdd___ipc___rx_instance_config_type.md)** | IPC Rx instance config type.  |
+| **[Cdd_Ipc_ConfigType](../Classes/struct_cdd___ipc___config_type.md)** | IPC config type.  |
+
+
+
+
+## Defines
+
+| Name           |  Brief     |
+| -------------- | ---------- |
+| CDD_IPC_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
+| CDD_IPC_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| CDD_IPC_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| CDD_IPC_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by CDD_IPC Driver.  |
+| CDD_IPC_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by CDD_IPC Driver.  |
+| CDD_IPC_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by CDD_IPC Driver.  |
+| CDD_IPC_VENDOR_ID   | Texas Instruments Vendor ID.  |
+| CDD_IPC_MODULE_ID   | CDD IPC Driver Module ID.  |
+| CDD_IPC_INSTANCE_ID   | CDD IPC Instance ID.  |
+| CDD_IPC_E_UNINIT   | API service used without module initialization.  |
+| CDD_IPC_E_ALREADY_INITIALIZED   | API Cdd_Ipc_Init service called while the IPC driver has already been initialized.  |
+| CDD_IPC_E_PARAM_VALUE   | API service called with invalid parameter value.  |
+| CDD_IPC_E_PARAM_POINTER   | API service called with invalid data buffer pointer.  |
+| CDD_IPC_E_INVALID_LENGTH   | API service called with invalid data length.  |
+| CDD_IPC_SID_GET_VERSION_INFO   | Cdd_Ipc_GetVersionInfo() API Service ID.  |
+| CDD_IPC_SID_INIT   | Cdd_Ipc_Init() API Service ID.  |
+| CDD_IPC_SID_SYNC   | Cdd_Ipc_Sync() API Service ID.  |
+| CDD_IPC_SID_TRANSMIT   | Cdd_Ipc_Transmit() API Service ID.  |
+| CDD_IPC_SID_MAIN_FUNCTION_READ   | Cdd_Ipc_MainFunction_Read() API Service ID.  |
+| CDD_IPC_IS_TX_INSTANCE_FREE   | Cdd_Ipc_IsTxInstanceFree() API Service ID.  |
+| CDD_IPC_SID_GET_COUNTER   | Cdd_Ipc_GetCounter() API Service ID.  |
+| BIT_MASK_EIGHT   | Bit mask for last 8 bits.  |
+| BIT_MASK_FOUR   | Bit mask for last 4 bits.  |
+| BIT_SHIFT_BY_8   | Shift bits by 8 bits.  |
+| CDD_IPC_SEND_TO_RCV_STEP   | Send to receive registers step.  |
+| CDD_IPC_REG_SET (x)  | Set register address.  |
+| CDD_IPC_REG_CLR (x)  | Clear register address.  |
+| CDD_IPC_REG_FLG (x)  | Flag register address.  |
+| CDD_IPC_REG_SENDCOM (x)  | Send command register address.  |
+| CDD_IPC_REG_SENDADDR (x)  | Send address register address.  |
+| CDD_IPC_REG_SENDDATA (x)  | Send data register address.  |
+| CDD_IPC_REG_STS (x)  | Status register address.  |
+| CDD_IPC_REG_ACK (x)  | Acknowledgement register address.  |
+| CDD_IPC_REG_RECVCOM (x)  | Receive command register address.  |
+| CDD_IPC_REG_RECVADDR (x)  | Receive address register address.  |
+| CDD_IPC_REG_RECVDATA (x)  | Receive data register address.  |
+| CDD_IPC_FLAG0   | IPC FLAG 0 - Triggers interrupt.  |
+| CDD_IPC_FLAG1   | IPC FLAG 1 - Indicates polling mode.  |
+| CDD_IPC_FLAG2   | IPC FLAG 2 - Reserved for syncronization of CPUs.  |
+| CDD_IPC_COMMBYTE   | Macro to define the upper byte index that can be transmitted/received in command register.  |
+| CDD_IPC_ADDRBYTE   | Macro to define the upper byte index that can be transmitted/received in address register.  |
+| CDD_IPC_DATABYTE   | Macro to define the upper byte index that can be transmitted/received in address register.  |
+| CDD_IPC_COMMANDSIZE   | Macro to define the no of bytes that can be written to a command register.  |
+| CDD_IPC_CHANNELINDEX   | Macro to define the index of channel ID in flag register.  |
+| CDD_IPC_LENGTHINDEX   | Macro to define the index of length in flag register.  |
+
+## Functions
+
+| Return type    | Function Name           |      Brief        |
+| -------------- | ----------------------- | ----------------- |
+| void | **[Cdd_Ipc_GetVersionInfo](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| Service to provide the version information of Cdd Ipc module.  |
+| void | **[Cdd_Ipc_Init](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-init)**(const [Cdd_Ipc_ConfigType](Classes/struct_cdd___ipc___config_type.md) * ConfigPtr)| Service to initialize CDD IPC driver.  |
+| Std_ReturnType | **[Cdd_Ipc_Sync](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-sync)**([Cdd_Ipc_RemoteCoreType](Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-remotecoretype) RemoteCore)| Service to synchronise two cores communicating in IPC communication within a preconfigured timeout.  |
+| Std_ReturnType | **[Cdd_Ipc_Transmit](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-transmit)**(PduIdType ChannelId, const PduInfoType * PduInfoPtr)| Service to request transmission.  |
+| void | **[Cdd_Ipc_MainFunction_Read](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-mainfunction-read)**(void )| Service to perform the polling of confgured IPC Rx instances.  |
+| boolean | **[Cdd_Ipc_IsTxInstanceFree](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-istxinstancefree)**(PduIdType ChannelId)| Service to check the status of the instance that is configured for transmitting the message in the respective channel.  |
+| uint64 | **[Cdd_Ipc_GetCounter](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getcounter)**(void )| Service to read the timestamp counter value.  |
+| void | **[Cdd_Ipc_SetCfgObj](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-setcfgobj)**(const [Cdd_Ipc_ConfigType](Classes/struct_cdd___ipc___config_type.md) * ConfigPtr)| Sets the configuration pointer.  |
+| Std_ReturnType | **[Cdd_Ipc_Sync_Process](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-sync-process)**([Cdd_Ipc_RemoteCoreType](Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-remotecoretype) RemoteCore)| Synchronises two cores for inter process communication.  |
+| Std_ReturnType | **[Cdd_Ipc_Transmit_Priv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-transmit-priv)**(PduIdType ChannelId, const PduInfoType * PduInfoPtr)| Requests the transmission of a PDU.  |
+| void | **[Cdd_Ipc_RxIndication](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-rxindication)**(uint8 Instance_Index, uint8 Channel_Index, const PduInfoType * PduInfoPtr)| Indicates a successful reception of a received Cdd Ipc Rx LPDU to the upper layer.  |
+| boolean | **[Cdd_Ipc_GetChannelPollingStatus](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getchannelpollingstatus)**(uint8 Instance_Index, uint8 * ChannelIndex)| Returns the Rx polling status of the instance.  |
+| void | **[Cdd_Ipc_ReadChannelPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-readchannelpriv)**(uint8 Instance_Index, const PduInfoType * PduInfoPtr)| Copies the received data to the PduInfoPtr.  |
+| void | **[Cdd_Ipc_WriteChannelPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-writechannelpriv)**(uint8 Instance_Index, uint8 Channel_Index, const PduInfoType * PduInfoPtr)| Copies the data to be transmitted from PduInfoPtr to command registers.  |
+| void | **[Cdd_Ipc_Acknowledge](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-acknowledge)**([Cdd_Ipc_InstanceType](Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype) Instance)| Acknowledges the reception of a PDU.  |
+| Std_ReturnType | **[Cdd_Ipc_GetRxIdxPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getrxidxpriv)**([Cdd_Ipc_InstanceType](Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype) Instance, uint8 * InstanceIndex, uint8 * ChannelIndex)| Finds the Rx instance index and Rx channel index for the given instance.  |
+| Std_ReturnType | **[Cdd_Ipc_GetRxChIdx](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getrxchidx)**([Cdd_Ipc_InstanceType](Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype) Instance, uint8 InstanceIndex, uint8 * ChannelIndex)| Finds the Rx channel index for the given instance.  |
+| Std_ReturnType | **[Cdd_Ipc_GetTxIdxPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-gettxidxpriv)**(PduIdType ChannelId, uint8 * InstanceIndex, uint8 * ChannelIndex)| Finds the Tx instance index and Tx channel index for the given Pdu.  |
+| void | **[Cdd_Ipc_ProcessIsr](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-processisr)**([Cdd_Ipc_InstanceType](Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype) Instance)| Invoked by the respective IPC instance ISR.  |
+| boolean | **[Cdd_Ipc_IsChannelIdValid](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-ischannelidvalid)**(PduIdType ChannelId)| Checks whether the TxPdu is valid or not.  |
+| boolean | **[Cdd_Ipc_InstanceStatus](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-instancestatus)**(PduIdType ChannelId)| Returns the status of the instance that is configured for transmitting the PDU.  |
+| uint64 | **[Cdd_Ipc_ReadCounter](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-readcounter)**(void )| Returns the timestamp counter value.  |
+
+
+
+### function Cdd_Ipc_GetVersionInfo
+
+```
+void Cdd_Ipc_GetVersionInfo(
+    Std_VersionInfoType * VersionInfoPtr
+)
+```
+
+
+**Brief**: 
+Service to provide the version information of Cdd Ipc module. 
+
+**Parameters**: 
+
+  
+* **VersionInfoPtr** is the pointer to CDD IPC driver version information. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: This API is available only if CDD_IPC_GET_VERSION_INFO_API is STD_ON 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_Init
+
+```
+void Cdd_Ipc_Init(
+    const Cdd_Ipc_ConfigType * ConfigPtr
+)
+```
+
+
+**Brief**: 
+Service to initialize CDD IPC driver. 
+
+**Parameters**: 
+
+  
+* **ConfigPtr** is the configuration pointer pointing to a generated configuration variant from plugin 
+
+
+**Return**: None 
+
+**Precondition**: Preconditions - Driver not already initialized 
+
+**Postcondition**: Postconditions - Driver in initialized state 
+
+### function Cdd_Ipc_Sync
+
+```
+Std_ReturnType Cdd_Ipc_Sync(
+    Cdd_Ipc_RemoteCoreType RemoteCore
+)
+```
+
+
+**Brief**: 
+Service to synchronise two cores communicating in IPC communication within a preconfigured timeout. 
+
+**Parameters**: 
+
+  
+* **RemoteCore** is the symbolic name of the remote core that needs to be synchronized with. 
+
+
+**Returns**: 
+
+  
+* **E_OK** Synchronization is successful. 
+<br> 
+  
+* **E_NOT_OK** Synchronization failed. 
+<br> 
+
+
+**Return**: Status of synchronization. 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_Transmit
+
+```
+Std_ReturnType Cdd_Ipc_Transmit(
+    PduIdType ChannelId,
+    const PduInfoType * PduInfoPtr
+)
+```
+
+
+**Brief**: 
+Service to request transmission. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : When Cdd Ipc is integrated with Autosar Com stack, this parameter is a Pdu identifier used to address the respective channel. When Cdd Ipc is not integrated with Autosar Com stack, this parameter is a channel identifier used to address the respective channel. 
+  
+* **PduInfoPtr** is the pointer to a struct of type PduInfoType containing the complete data to be transmitted. 
+
+
+**Returns**: 
+
+  
+* **E_OK** Transmit request has been accepted. 
+<br> 
+  
+* **E_NOT_OK** Transmit request has not been accepted. 
+<br> 
+
+
+**Return**: Cdd_Ipc_Transmit request is accepted or not 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_MainFunction_Read
+
+```
+void Cdd_Ipc_MainFunction_Read(
+    void 
+)
+```
+
+
+**Brief**: 
+Service to perform the polling of confgured IPC Rx instances. 
+
+**Parameters**: 
+
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_IsTxInstanceFree
+
+```
+boolean Cdd_Ipc_IsTxInstanceFree(
+    PduIdType ChannelId
+)
+```
+
+
+**Brief**: 
+Service to check the status of the instance that is configured for transmitting the message in the respective channel. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : When Cdd Ipc is integrated with Autosar Com stack, this parameter is a Pdu identifier used to address the respective channel. When Cdd Ipc is not integrated with Autosar Com stack, this parameter is a channel identifier used to address the respective channel. 
+
+
+**Returns**: 
+
+  
+* **TRUE** Instance is free 
+<br> 
+  
+* **FALSE** Instance is busy 
+<br> 
+
+
+**Return**: IPC instance configured for transmitting the PDU is busy or not 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_GetCounter
+
+```
+uint64 Cdd_Ipc_GetCounter(
+    void 
+)
+```
+
+
+**Brief**: 
+Service to read the timestamp counter value. 
+
+**Parameters**: 
+
+  
+* **None** 
+
+
+**Return**: 64-bit timestamp counter value 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_SetCfgObj
+
+```
+void Cdd_Ipc_SetCfgObj(
+    const Cdd_Ipc_ConfigType * ConfigPtr
+)
+```
+
+
+**Brief**: 
+Sets the configuration pointer. 
+
+**Parameters**: 
+
+  
+* **ConfigPtr** Configuration pointer 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_Sync_Process
+
+```
+Std_ReturnType Cdd_Ipc_Sync_Process(
+    Cdd_Ipc_RemoteCoreType RemoteCore
+)
+```
+
+
+**Brief**: 
+Synchronises two cores for inter process communication. 
+
+**Parameters**: 
+
+  
+* **RemoteCore** is the numeric ID of the remote core that needs to be synchronized 
+
+
+**Returns**: 
+
+  
+* **E_OK** Synchronization is successfull 
+<br> 
+  
+* **E_NOT_OK** Synchronization failed 
+<br> 
+
+
+**Return**: Status of synchronization 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_Transmit_Priv
+
+```
+Std_ReturnType Cdd_Ipc_Transmit_Priv(
+    PduIdType ChannelId,
+    const PduInfoType * PduInfoPtr
+)
+```
+
+
+**Brief**: 
+Requests the transmission of a PDU. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : When Cdd Ipc is integrated with Autosar Com stack, this parameter is a Pdu identifier used to address the respective channel. When Cdd Ipc is not integrated with Autosar Com stack, this parameter is a channel identifier used to address the respective channel. 
+  
+* **PduInfoPtr** is the pointer to a struct of type PduInfoType containing the complete data to be transmitted. 
+
+
+**Returns**: 
+
+  
+* **E_OK** Transmit request has been accepted. 
+<br> 
+  
+* **E_NOT_OK** Transmit request has not been accepted. 
+<br> 
+
+
+**Return**: Cdd_Ipc_Transmit request is accepted or not 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_RxIndication
+
+```
+void Cdd_Ipc_RxIndication(
+    uint8 Instance_Index,
+    uint8 Channel_Index,
+    const PduInfoType * PduInfoPtr
+)
+```
+
+
+**Brief**: 
+Indicates a successful reception of a received Cdd Ipc Rx LPDU to the upper layer. 
+
+**Parameters**: 
+
+  
+* **Instance_Index** is the index of the Rx instance in Cdd_Ipc_CfgPtr 
+  
+* **Channel_Index** is the index of the Rx channel in Cdd_Ipc_CfgPtr 
+  
+* **PduInfoPtr** Pointer to the received data and it's length 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_GetChannelPollingStatus
+
+```
+boolean Cdd_Ipc_GetChannelPollingStatus(
+    uint8 Instance_Index,
+    uint8 * ChannelIndex
+)
+```
+
+
+**Brief**: 
+Returns the Rx polling status of the instance. 
+
+**Parameters**: 
+
+  
+* **Instance_Index** is the index of the Rx instance in Cdd_Ipc_CfgPtr 
+  
+* **ChannelIndex** is pointer to the channel index 
+
+
+**Returns**: 
+
+  
+* **TRUE** Message is received in the instance 
+<br> 
+  
+* **FALSE** Message is not received in the instance 
+<br> 
+
+
+**Return**: Rx status of the channel 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_ReadChannelPriv
+
+```
+void Cdd_Ipc_ReadChannelPriv(
+    uint8 Instance_Index,
+    const PduInfoType * PduInfoPtr
+)
+```
+
+
+**Brief**: 
+Copies the received data to the PduInfoPtr. 
+
+**Parameters**: 
+
+  
+* **Instance_Index** is the index of the Rx instance in Cdd_Ipc_CfgPtr 
+  
+* **PduInfoPtr** is the pointer to a struct of type PduInfoType where received data needs to be copied 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_WriteChannelPriv
+
+```
+void Cdd_Ipc_WriteChannelPriv(
+    uint8 Instance_Index,
+    uint8 Channel_Index,
+    const PduInfoType * PduInfoPtr
+)
+```
+
+
+**Brief**: 
+Copies the data to be transmitted from PduInfoPtr to command registers. 
+
+**Parameters**: 
+
+  
+* **Instance_Index** is the index of the Rx instance in Cdd_Ipc_CfgPtr 
+  
+* **Channel_Index** is the index of the Rx channel in Cdd_Ipc_CfgPtr 
+  
+* **PduInfoPtr** is the pointer to a struct of type PduInfoType where received data needs to be copied 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_Acknowledge
+
+```
+void Cdd_Ipc_Acknowledge(
+    Cdd_Ipc_InstanceType Instance
+)
+```
+
+
+**Brief**: 
+Acknowledges the reception of a PDU. 
+
+**Parameters**: 
+
+  
+* **Instance** is the Cdd Ipc Instance 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_GetRxIdxPriv
+
+```
+Std_ReturnType Cdd_Ipc_GetRxIdxPriv(
+    Cdd_Ipc_InstanceType Instance,
+    uint8 * InstanceIndex,
+    uint8 * ChannelIndex
+)
+```
+
+
+**Brief**: 
+Finds the Rx instance index and Rx channel index for the given instance. 
+
+**Parameters**: 
+
+  
+* **Instance** is the Cdd Ipc Instance 
+  
+* **ChannelIndex** is pointer the channel index 
+  
+* **InstanceIndex** is pointer the instance index 
+
+
+**Returns**: 
+
+  
+* **TRUE** Rx instance and channel are configured 
+<br> 
+  
+* **FALSE** Rx instance and channel are not configured 
+<br> 
+
+
+**Return**: Rx channel is configured or not for the given instance and channel 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_GetRxChIdx
+
+```
+Std_ReturnType Cdd_Ipc_GetRxChIdx(
+    Cdd_Ipc_InstanceType Instance,
+    uint8 InstanceIndex,
+    uint8 * ChannelIndex
+)
+```
+
+
+**Brief**: 
+Finds the Rx channel index for the given instance. 
+
+**Parameters**: 
+
+  
+* **Instance** is the Cdd Ipc Instance 
+  
+* **ChannelIndex** is pointer the channel index 
+  
+* **InstanceIndex** is instance index 
+
+
+**Returns**: 
+
+  
+* **TRUE** Rx channel is configured 
+<br> 
+  
+* **FALSE** Rx channel is not configured 
+<br> 
+
+
+**Return**: Rx channel is configured or not for the given instance and channel 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_GetTxIdxPriv
+
+```
+Std_ReturnType Cdd_Ipc_GetTxIdxPriv(
+    PduIdType ChannelId,
+    uint8 * InstanceIndex,
+    uint8 * ChannelIndex
+)
+```
+
+
+**Brief**: 
+Finds the Tx instance index and Tx channel index for the given Pdu. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : Symbolic name of the Tx Pdu to be transmitted when Cdd_Ipc is integrated with Com Stack. Symbolic name Tx channel when Cdd_Ipc is not integrated with Com Stack. 
+  
+* **ChannelIndex** is pointer the channel index 
+  
+* **InstanceIndex** is pointer the instance index 
+
+
+**Returns**: 
+
+  
+* **TRUE** Tx instance and channel are configured for the Pdu 
+<br> 
+  
+* **FALSE** Tx instance and channel are not configured for the Pdu 
+<br> 
+
+
+**Return**: Tx channel is configured or not for the given instance and channel 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_ProcessIsr
+
+```
+void Cdd_Ipc_ProcessIsr(
+    Cdd_Ipc_InstanceType Instance
+)
+```
+
+
+**Brief**: 
+Invoked by the respective IPC instance ISR. 
+
+This Interrupt function is invoked when a reception happens in an IPC instance in any of the channel
+
+
+**Parameters**: 
+
+  
+* **Instance** is the IPC instance 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_IsChannelIdValid
+
+```
+boolean Cdd_Ipc_IsChannelIdValid(
+    PduIdType ChannelId
+)
+```
+
+
+**Brief**: 
+Checks whether the TxPdu is valid or not. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : When Cdd Ipc is integrated with Autosar Com stack, this parameter is a Pdu identifier used to address the respective channel. When Cdd Ipc is not integrated with Autosar Com stack, this parameter is a channel identifier used to address the respective channel. 
+
+
+**Returns**: 
+
+  
+* **TRUE** PDU is valid 
+<br> 
+  
+* **FALSE** PDU is not valid 
+<br> 
+
+
+**Return**: Returns whether PDU is valid or not 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_InstanceStatus
+
+```
+boolean Cdd_Ipc_InstanceStatus(
+    PduIdType ChannelId
+)
+```
+
+
+**Brief**: 
+Returns the status of the instance that is configured for transmitting the PDU. 
+
+**Parameters**: 
+
+  
+* **ChannelId** : When Cdd Ipc is integrated with Autosar Com stack, this parameter is a Pdu identifier used to address the respective channel. When Cdd Ipc is not integrated with Autosar Com stack, this parameter is a channel identifier used to address the respective channel. 
+
+
+**Returns**: 
+
+  
+* **TRUE** Tx channel is free 
+<br> 
+  
+* **FALSE** Tx channel is busy 
+<br> 
+
+
+**Return**: Status of the instance that is configured for transmitting the PDU 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ipc_ReadCounter
+
+```
+uint64 Cdd_Ipc_ReadCounter(
+    void 
+)
+```
+
+
+**Brief**: 
+Returns the timestamp counter value. 
+
+**Parameters**: 
+
+  
+* **None** 
+
+
+**Return**: 64-bit timestamp counter value 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+
+
+
+-------------------------------

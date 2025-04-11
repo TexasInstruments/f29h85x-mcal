@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.3. FLS &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.4. GPT" href="group___g_p_t.html" />
+    <link rel="prev" title="5.2. DIO" href="group___d_i_o.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.02.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="group___c_a_n.html">5.1. CAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___d_i_o.html">5.2. DIO</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.3. FLS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">5.3.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-fls-erasetype">5.3.1.1. enum Fls_EraseType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-fls-fapistatustag">5.3.1.2. enum Fls_FapiStatusTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-fls-flashstatecmdtag">5.3.1.3. enum Fls_FlashStateCmdTag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-fls-fapiregionvaluetype">5.3.1.4. enum Fls_FapiRegionValueType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-fls-flashfritype">5.3.1.5. enum Fls_FlashFRIType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-fls-jobtype">5.3.1.6. enum Fls_JobType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-fls-internalstatetype">5.3.1.7. enum Fls_InternalStateType</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">5.3.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">5.3.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">5.3.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-fls-init">5.3.4.1. function Fls_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-fls-write">5.3.4.2. function Fls_Write</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-fls-compare">5.3.4.3. function Fls_Compare</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-fls-getstatus">5.3.4.4. function Fls_GetStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-fls-getjobresult">5.3.4.5. function Fls_GetJobResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-fls-cancel">5.3.4.6. function Fls_Cancel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-fls-seterasetype">5.3.4.7. function Fls_SetEraseType</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group___g_p_t.html">5.4. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___l_i_n.html">5.5. LIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___m_c_u.html">5.6. MCU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___p_o_r_t.html">5.7. PORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___s_p_i.html">5.8. SPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___w_d_g.html">5.9. WDG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___a_d_c.html">5.10. CDD_ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___e_c_a_p.html">5.11. CDD_ECAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___i_p_c.html">5.12. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___p_w_m.html">5.13. CDD_PWM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___u_a_r_t.html">5.14. CDD_UART</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___s_e_n_t.html">5.15. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___x_b_a_r.html">5.16. CDD_XBAR</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api_guide.html"><span class="section-number">5. </span>API guide</a> &raquo;</li>
+      <li><span class="section-number">5.3. </span>FLS</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fls">
+<h1><span class="section-number">5.3. </span>FLS<a class="headerlink" href="#fls" title="Link to this heading"></a></h1>
+<p><a class="reference internal" href="#detailed-description"><span class="xref myst">More…</span></a></p>
+<section id="types">
+<h2><span class="section-number">5.3.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Base type</p></th>
+<th class="head"><p>Type Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-fls-erasetype"><span class="std std-ref">Fls_EraseType</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-fls-fapistatustag"><span class="std std-ref">Fls_FapiStatusTag</span></a></strong></p></td>
+<td><p>This is the master type containing all possible returned status codes.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-fls-flashstatecmdtag"><span class="std std-ref">Fls_FlashStateCmdTag</span></a></strong></p></td>
+<td><p>This contains all the possible Flash State Machine commands.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-fls-fapiregionvaluetype"><span class="std std-ref">Fls_FapiRegionValueType</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-fls-flashfritype"><span class="std std-ref">Fls_FlashFRIType</span></a></strong></p></td>
+<td><p>Enumeration of FRI register addresses for use with Flash_configFRI()</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-fls-jobtype"><span class="std std-ref">Fls_JobType</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-fls-internalstatetype"><span class="std std-ref">Fls_InternalStateType</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef uint32</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-fls-addresstype"><span class="std std-ref">Fls_AddressType</span></a></strong></p></td>
+<td><p>Type of address type.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint32</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-fls-lengthtype"><span class="std std-ref">Fls_LengthType</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef uint32</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-fls-fapiflashstatus"><span class="std std-ref">Fls_FapiFlashStatus</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<section id="enum-fls-erasetype">
+<h3><span class="section-number">5.3.1.1. </span>enum Fls_EraseType<a class="headerlink" href="#enum-fls-erasetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FLS_SECTOR_ERASE</p></td>
+<td><p>0U</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_BANK_ERASE</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>ENUM for erase type names</p>
+</section>
+<section id="enum-fls-fapistatustag">
+<h3><span class="section-number">5.3.1.2. </span>enum Fls_FapiStatusTag<a class="headerlink" href="#enum-fls-fapistatustag" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+</table>
+<p><strong>Brief</strong>:
+This is the master type containing all possible returned status codes.</p>
+</section>
+<section id="enum-fls-flashstatecmdtag">
+<h3><span class="section-number">5.3.1.3. </span>enum Fls_FlashStateCmdTag<a class="headerlink" href="#enum-fls-flashstatecmdtag" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+</table>
+<p><strong>Brief</strong>:
+This contains all the possible Flash State Machine commands.</p>
+</section>
+<section id="enum-fls-fapiregionvaluetype">
+<h3><span class="section-number">5.3.1.4. </span>enum Fls_FapiRegionValueType<a class="headerlink" href="#enum-fls-fapiregionvaluetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FLS_FAPI_SINGLEVALUE</p></td>
+<td><p>0U</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FAPI_MULTIPLEVALUE</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FAPI_MULTIPLEVALUEECC</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="enum-fls-flashfritype">
+<h3><span class="section-number">5.3.1.5. </span>enum Fls_FlashFRIType<a class="headerlink" href="#enum-fls-flashfritype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FLS_FLASH_FRI1</p></td>
+<td><p>(uint8)(0U)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_FRI2</p></td>
+<td><p>(uint8)(1U)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_FRI3</p></td>
+<td><p>(uint8)(2U)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_FRI4</p></td>
+<td><p>(uint8)(3U)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enumeration of FRI register addresses for use with Flash_configFRI()</p>
+</section>
+<section id="enum-fls-jobtype">
+<h3><span class="section-number">5.3.1.6. </span>enum Fls_JobType<a class="headerlink" href="#enum-fls-jobtype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FLS_JOB_NONE</p></td>
+<td><p>0U</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_JOB_COMPARE</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_JOB_ERASE</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_JOB_READ</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_JOB_WRITE</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_JOB_BLANKCHECK</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>ENUM for job type names</p>
+</section>
+<section id="enum-fls-internalstatetype">
+<h3><span class="section-number">5.3.1.7. </span>enum Fls_InternalStateType<a class="headerlink" href="#enum-fls-internalstatetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FLS_INTERNAL_JOB_WAIT</p></td>
+<td><p>0U</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_INTERNAL_JOB_FAIL</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_INTERNAL_JOB_DONE</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_INTERNAL_JOB_READY</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_INTERNAL_JOB_BUSY</p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p>ENUM for Internal State type names</p>
+</section>
+</section>
+<section id="structures">
+<h2><span class="section-number">5.3.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_fls___sector_type.html"><span class="std std-doc">Fls_SectorType</span></a></strong></p></td>
+<td><p>FLS Module Flashable Sectors and pages.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_fls___config_type.html"><span class="std std-doc">Fls_ConfigType</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_fls___flash_status_word_tag.html"><span class="std std-doc">Fls_FlashStatusWordTag</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_fls___driver_obj_type.html"><span class="std std-doc">Fls_DriverObjType</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="defines">
+<h2><span class="section-number">5.3.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>FLS_SW_MAJOR_VERSION</p></td>
+<td><p>Defines for FLS Driver version used for compatibility checks.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SW_MINOR_VERSION</p></td>
+<td><p>Driver Implementation Minor Version.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SW_PATCH_VERSION</p></td>
+<td><p>Driver Implementation Patch Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_AR_RELEASE_MAJOR_VERSION</p></td>
+<td><p>Defines for FLS Driver AUTOSAR version used for compatibility checks.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_AR_RELEASE_MINOR_VERSION</p></td>
+<td><p>AUTOSAR Minor version specification implemented by FLS Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_AR_RELEASE_REVISION_VERSION</p></td>
+<td><p>AUTOSAR Patch version specification implemented by FLS Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_VENDOR_ID</p></td>
+<td><p>FLS Driver ID Info.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_MODULE_ID</p></td>
+<td><p>FLS Driver Module ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_INSTANCE_ID</p></td>
+<td><p>FLS Driver Instance ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_BASE_ADDRESS_REQ</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_WRITE_ADDRESS_ALIGNMENT</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_E_PARAM_CONFIG</p></td>
+<td><p>FLS Error Codes returned by FLS functions.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_E_PARAM_ADDRESS</p></td>
+<td><p>API service called with wrong parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_E_PARAM_LENGTH</p></td>
+<td><p>API service called with wrong parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_E_PARAM_DATA</p></td>
+<td><p>API service called with wrong parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_E_UNINIT</p></td>
+<td><p>API service used without module initiali-zation.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_E_BUSY</p></td>
+<td><p>APIs called when module is busy.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_E_PARAM_POINTER</p></td>
+<td><p>APIs called with a Null Pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_E_PARAM_ALIGNMENT</p></td>
+<td><p>API service called with wrong parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_E_VERIFY_ERASE_FAILED</p></td>
+<td><p>Runtime Errors WITH HW.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_E_VERIFY_WRITE_FAILED</p></td>
+<td><p>APIs serice Write Verification (Compare) failed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_E_TIMEOUT</p></td>
+<td><p>APIs Timeout Exceeded.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_E_ERASE_FAILED</p></td>
+<td><p>TRANSIENT FAULTS WITH HW.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_E_WRITE_FAILED</p></td>
+<td><p>Flash Write Failed in HW.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_E_READ_FAILED</p></td>
+<td><p>Flash Read Failed in HW.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_E_COMPARE_FAILED</p></td>
+<td><p>Flash Compare Failediin HW.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_E_UNEXPECTED_FLASH_ID</p></td>
+<td><p>Expected HW ID not matched.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_E_BLANK_CHECK_FAILED</p></td>
+<td><p>Flash Blank Check Failediin HW.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SID_INIT</p></td>
+<td><p>The Service Id is one of the argument to Det_ReportError function and is used to identify the source of the error.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SID_ERASE</p></td>
+<td><p>FLS_Erase() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SID_WRITE</p></td>
+<td><p>FLS_Write() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SID_CANCEL</p></td>
+<td><p>FLS_Cancel() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SID_GET_STATUS</p></td>
+<td><p>FLS_GetStatus() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SID_GET_JOB_RESULT</p></td>
+<td><p>Fls_GetJobResult() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SID_READ</p></td>
+<td><p>FLS_Read() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SID_COMPARE</p></td>
+<td><p>FLS_Compare() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SID_SET_MODE</p></td>
+<td><p>FLS_SetMode() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SID_GET_VERSION_INFO</p></td>
+<td><p>Fls_GetVersionInfo() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SID_BLANK_CHECK</p></td>
+<td><p>FLS_BlankCheck() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SID_MAIN_FUNCTION</p></td>
+<td><p>FLS_MainFunction() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SSUGEN_BASE</p></td>
+<td><p>SSU registers.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SSU_O_FLSEMREQ</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SSU_O_FLSEMSTAT</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SSU_O_FLSEMCLR</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SSU_FLSEMSTAT_CPU_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SSU_FLSEMSTAT_CPU_S</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SSU_FLSEMSTAT_ASSIGNED</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SSU_FLSEMSTAT_MATCH</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SSU_O_BEPROT_BANK</p></td>
+<td><p>The following are defines for the bit fields in the BEPROT_BANK register.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SSU_O_BEPROT_STAT</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SSU_BEPROT_BANK_BANKID_S</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SSU_BEPROT_BANK_BANKID_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_SSU_BEPROT_BANK_FLCID_S</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_SSU_BEPROT_BANK_FLCID_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_FLC1_CMD_REGS_BASE</p></td>
+<td><p>FRI register offsets and bit fields.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FRI1_CTL_BASE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_ANALOGSUBSYS_BASE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FRI_O_FRDCNTL</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FRI_O_1_INTF_CTRL</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FRI_FRDCNTL_RWAIT_S</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FRI_FRDCNTL_RWAIT_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_DELAY_CONFIG</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_READINTERFACE_BASE</p></td>
+<td><p>FMC memory map defines.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_FAPI_FLASHNW_FC1_BASE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_C29FLASHBANKFR4RP0STARTADDRESS</p></td>
+<td><p>FR-4 RP0 data flash.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_C29FLASHBANKFR4RP0ENDADDRESS</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_C29FLASHBANKFR4RP0ENDADDRESSPLUS1</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_C29FLASHBANKFR4RP0ECCSTARTADDRESS</p></td>
+<td><p>FR-4 RP0 ECC data flash.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_C29FLASHBANKFR4RP0ECCENDADDRESS</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_C29FLASHBANKFR4RP0ECCENDADDRESSPLUS1</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_C29FLASHBANKFR4RP0BANKMGMTSTARTADDRESS</p></td>
+<td><p>C29 banks : Non-Main Array.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_C29FLASHBANKFR4RP0BANKMGMTENDADDRESS</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_C29FLASHBANKFR4RP0BANKMGMTENDADDRESSPLUS1</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_C29FLASHBANKFR4RP0BANKMGMTECCSTARTADDRESS</p></td>
+<td><p>HSM C29 banks : Non-Main Array ECC.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_C29FLASHBANKFR4RP0BANKMGMTECCENDADDRESS</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_C29FLASHBANKFR4RP0BANKMGMTECCENDADDRESSPLUS1</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_PREFETCH_ENABLE</p></td>
+<td><p>Macros for FRI options to use with the Flash_configFRI() function. Includes macros for enabling and disabling prefetch, data cache, code cache and data preread.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_PREFETCH_DISABLE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_DATACACHE_ENABLE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_DATACACHE_DISABLE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_CODECACHE_ENABLE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_CODECACHE_DISABLE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_DATAPREREAD_ENABLE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_DATAPREREAD_DISABLE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FRI_REG_STEP</p></td>
+<td><p>Macro to define the offset between options for different FRIs. For example, FRI_O_2_INTF_CTRL - FRI_O_1_INTF_CTRL = 0x10U.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_ASYSCTL_O_FLASHTRIMCOMMIT</p></td>
+<td><p>Internal macros used for committing trim registers. Not intended for application use.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_ASYSCTL_FLC1TRIMCOMMITREAD</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_ASYSCTL_FLC1TRIMCOMMITOTHER</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_O_REVISION</p></td>
+<td><p>The following are defines for the FLASH register offsets.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_O_FRDCNTL</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_O_FLCLKCTL</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_FLCLKCTL_KDIV_S</p></td>
+<td><p>The following are defines for the bit fields in the FLCLKCTL register.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_FLCLKCTL_KDIV_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_O_CMDEXEC</p></td>
+<td><p>The following are defines for the FLS_FLASH_NOWRAPPER register offsets.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_O_CMDTYPE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_O_CMDCTL</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_O_CMDADDR</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_O_CMDBYTEN</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_O_CMDDATAINDEX</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_O_CMDDATA0</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_O_CMDWEPROTA</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_O_CMDWEPROTB</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_O_CMDWEPROTNM</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_O_CFGCMD</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_O_STATCMD</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CMDTYPE_CMD_S</p></td>
+<td><p>The following are defines for the bit fields in the CMDTYPE register.</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CMDTYPE_CMD_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CMDTYPE_SECTOR_ERASE</p></td>
+<td><p>Configure for sector erase: Command is erase (2), Size is sector (4)</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CMDTYPE_BANK_ERASE</p></td>
+<td><p>Configure for Bank erase: Command is erase (2), Size is Bank (5)</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CMDTYPE_PROG_ONEWD</p></td>
+<td><p>Configure for 4*128 word program: Command is program (1), Size is FOURWORD (2)</p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CMDCTL_ECCGENOVR</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CMDCTL_ECCGENOVR_S</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CMDCTL_DATAVEREN</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CMDCTL_DATAVEREN_S</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CFGCMD_WAITSTATE_S</p></td>
+<td><p>The following are defines for the bit fields in the CFGCMD register.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CFGCMD_WAITSTATE_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CMDBYTEN_VAL_S</p></td>
+<td><p>The following are defines for the bit fields in the CMDBYTEN register.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CMDBYTEN_VAL_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CMDBYTEN_ECC0VAL_S</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CMDBYTEN_ECC0VAL_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CMDBYTEN_ECC1VAL_S</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CMDBYTEN_ECC1VAL_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CMDWEPROTNM_VAL_S</p></td>
+<td><p>The following are defines for the bit fields in the CMDWEPROTNM register.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_CMDWEPROTNM_VAL_M</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_CMDWEPROTNM_READBACK_VAL</p></td>
+<td><p>Readback val to protect non-main region sector 0 erase.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_STATCMD_CMDDONE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_STATCMD_CMDPASS</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_STATCMD_CMDINPROGRESS</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_STATCMD_FAILWEPROT</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_STATCMD_FAILVERIFY</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_STATCMD_FAILMISC</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_STATCMD_FAILILLADDR</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_FLASH_NW_STATCMD_FAILMODE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_FLASH_NW_STATCMD_FAILINVDATA</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>E_COMPARE_MISMATCH</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>E_BLANKCHECK_MISMATCH</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_S_EDEFAULT</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_S_ERASE_PRECHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_DO_SECTOR_UNLOCK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_DO_ERASE_JOB</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_S_ERASE_POSTCHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_ERASE_FSM_READY_CHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_ERASE_FSM_ISSUE_CMD</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_ERASE_FSM_STATUS_CHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_STATUS_CLEAR_CHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_ERASE_CMD_CHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_WRITE_FSM_READY_CHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_WRITE_FSM_ISSUE_CMD</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_WRITE_FSM_STATUS_CHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_WRITE_CMD_CHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_S_WDEFAULT</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_S_WRITE_PRECHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_DO_WRITE_JOB</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>FLS_S_WRITE_POSTCHECK</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>FLS_CONV_TO_MHZ</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2><span class="section-number">5.3.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Return type</p></th>
+<th class="head"><p>Function Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-init"><span class="std std-ref">Fls_Init</span></a></strong>(const Fls_ConfigType * ConfigPtr)</p></td>
+<td><p>Initializes the Flash Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-erase"><span class="std std-ref">Fls_Erase</span></a></strong>(<a class="reference internal" href="#Modules/group___f_l_s.md#typedef-fls-addresstype"><span class="xref myst">Fls_AddressType</span></a> TargetAddress, Fls_LengthType Length)</p></td>
+<td><p>Erases flash sector(s).</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-write"><span class="std std-ref">Fls_Write</span></a></strong>(<a class="reference internal" href="#Modules/group___f_l_s.md#typedef-fls-addresstype"><span class="xref myst">Fls_AddressType</span></a> TargetAddress, const uint8 * SourceAddressPtr, Fls_LengthType Length)</p></td>
+<td><p>Writes one or more complete flash pages.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-read"><span class="std std-ref">Fls_Read</span></a></strong>(<a class="reference internal" href="#Modules/group___f_l_s.md#typedef-fls-addresstype"><span class="xref myst">Fls_AddressType</span></a> SourceAddress, uint8 * TargetAddressPtr, Fls_LengthType Length)</p></td>
+<td><p>Reads from flash memory..</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-compare"><span class="std std-ref">Fls_Compare</span></a></strong>(<a class="reference internal" href="#Modules/group___f_l_s.md#typedef-fls-addresstype"><span class="xref myst">Fls_AddressType</span></a> SourceAddress, const uint8 * TargetAddressPtr, Fls_LengthType Length)</p></td>
+<td><p>Compares the contents of an area of flash memory with that of an application data buffer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-blankcheck"><span class="std std-ref">Fls_BlankCheck</span></a></strong>(<a class="reference internal" href="#Modules/group___f_l_s.md#typedef-fls-addresstype"><span class="xref myst">Fls_AddressType</span></a> Address, Fls_LengthType Length)</p></td>
+<td><p>The function Fls_BlankCheck shall verify, whether a given memory area has been erased but not (yet) programmed.</p></td>
+</tr>
+<tr class="row-even"><td><p>MemIf_StatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-getstatus"><span class="std std-ref">Fls_GetStatus</span></a></strong>(void )</p></td>
+<td><p>Returns the driver state.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-getversioninfo"><span class="std std-ref">Fls_GetVersionInfo</span></a></strong>(Std_VersionInfoType * versioninfo)</p></td>
+<td><p>This service returns the version information of this module.</p></td>
+</tr>
+<tr class="row-even"><td><p>MemIf_JobResultType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-getjobresult"><span class="std std-ref">Fls_GetJobResult</span></a></strong>(void )</p></td>
+<td><p>Returns the result of the last job.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-mainfunction"><span class="std std-ref">Fls_MainFunction</span></a></strong>(void )</p></td>
+<td><p>Performs the processing of jobs.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-cancel"><span class="std std-ref">Fls_Cancel</span></a></strong>(void )</p></td>
+<td><p>Cancels an ongoing job.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-setmode"><span class="std std-ref">Fls_SetMode</span></a></strong>(MemIf_ModeType Mode)</p></td>
+<td><p>Sets the flash driver’s operation mode.</p></td>
+</tr>
+<tr class="row-even"><td><p>uint32</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-seterasetype"><span class="std std-ref">Fls_SetEraseType</span></a></strong>(<a class="reference internal" href="#Modules/group___f_l_s.md#enum-fls-erasetype"><span class="xref myst">Fls_EraseType</span></a> erasetype)</p></td>
+<td><p>Sets the parameters for required erase type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>struct <a class="reference internal" href="#Classes/struct_fls___flash_status_word_tag.md"><span class="xref myst">Fls_FlashStatusWordTag</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function---attribute--"><span class="std std-ref"><strong>attribute</strong></span></a></strong>((packed) )</p></td>
+<td><p>This is the master type containing all possible returned status codes.</p></td>
+</tr>
+<tr class="row-even"><td><p>Fls_FapiFlashStatus</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-getfsmstatus"><span class="std std-ref">Fls_Fapi_getFsmStatus</span></a></strong>(void )</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-checkfsmforready"><span class="std std-ref">Fls_Fapi_checkFsmForReady</span></a></strong>(void )</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-setupbanksectorenable"><span class="std std-ref">Fls_Fapi_setupBankSectorEnable</span></a></strong>(uint32 reg_address, uint32 value)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-issueasynccommandwithaddress"><span class="std std-ref">Fls_Fapi_issueAsyncCommandWithAddress</span></a></strong>(Fls_FlashStateCmdType oCommand, uint32 * pu32StartAddress)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-issueasynccommand"><span class="std std-ref">Fls_Fapi_issueAsyncCommand</span></a></strong>(Fls_FlashStateCmdType oCommand)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-issuebankerasecommand"><span class="std std-ref">Fls_Fapi_issueBankEraseCommand</span></a></strong>(uint32 * pu32StartAddress)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-initializeapi"><span class="std std-ref">Fls_Fapi_initializeAPI</span></a></strong>(uint32 u32HclkFrequency)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-doblankcheck"><span class="std std-ref">Fls_Fapi_doBlankCheck</span></a></strong>(uint32 * pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType * poFlashStatusWord)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-doverify"><span class="std std-ref">Fls_Fapi_doVerify</span></a></strong>(uint32 * pu32StartAddress, uint32 u32Length, uint32 * pu32CheckValueBuffer, Fls_FlashStatusWordType * poFlashStatusWord)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-doverifybybyte"><span class="std std-ref">Fls_Fapi_doVerifyByByte</span></a></strong>(uint8 * pu8StartAddress, uint32 u32Length, uint8 * pu8CheckValueBuffer, Fls_FlashStatusWordType * poFlashStatusWord)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Fls_FapiStatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-fapi-issueprogrammingcommand"><span class="std std-ref">Fls_Fapi_issueProgrammingCommand</span></a></strong>(uint32 * pu32StartAddress, uint8 * pu8DataBuffer, uint8 u8DataBufferSizeInBytes)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-update-waitstates"><span class="std std-ref">Fls_Update_WaitStates</span></a></strong>(uint16 waitstates)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-ssu-claimflashsemaphore"><span class="std std-ref">Fls_SSU_claimFlashSemaphore</span></a></strong>(void )</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-ssu-releaseflashsemaphore"><span class="std std-ref">Fls_SSU_releaseFlashSemaphore</span></a></strong>(void )</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-processjobs"><span class="std std-ref">Fls_processJobs</span></a></strong>(<a class="reference internal" href="#Modules/group___f_l_s.md#enum-fls-jobtype"><span class="xref myst">Fls_JobType</span></a> job)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-resetdrvobj"><span class="std std-ref">Fls_resetDrvObj</span></a></strong>(<a class="reference internal" href="#Classes/struct_fls___driver_obj_type.md"><span class="xref myst">Fls_DriverObjType</span></a> * drvObj)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-fls-copyconfig"><span class="std std-ref">Fls_copyConfig</span></a></strong>(<a class="reference internal" href="#Classes/struct_fls___driver_obj_type.md"><span class="xref myst">Fls_DriverObjType</span></a> * drvObj, const Fls_ConfigType * cfgPtr)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<section id="function-fls-init">
+<h3><span class="section-number">5.3.4.1. </span>function Fls_Init<a class="headerlink" href="#function-fls-init" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Fls_Init</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Fls_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ConfigPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Initializes the Flash Driver.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">name</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">Fls_Init</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Syntax</span><span class="w">              </span><span class="o">:</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Fls_Init</span><span class="p">(</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Fls_ConfigType</span><span class="o">*</span><span class="w"> </span><span class="n">ConfigPtr</span><span class="w"> </span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Mode</span><span class="w">                </span><span class="o">:</span><span class="w"> </span><span class="n">Supervisor</span><span class="w"> </span><span class="n">Mode</span><span class="w"> </span><span class="p">(</span><span class="n">Privileged</span><span class="w"> </span><span class="n">Mode</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">ID</span><span class="p">[</span><span class="n">hex</span><span class="p">]</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="mh">0x00</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Sync</span><span class="o">/</span><span class="n">Async</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Synchronous</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Reentrancy</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Non</span><span class="w"> </span><span class="n">Reentrant</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="n">ConfigPtr</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Pointer</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">driver</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="n">set</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Return</span><span class="w"> </span><span class="n">value</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Description</span><span class="w">         </span><span class="o">:</span><span class="w"> </span><span class="n">Initializes</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Flash</span><span class="w"> </span><span class="n">Driver</span>
+<span class="o">*</span><span class="w">  </span><span class="err">```</span>
+
+<span class="n">Function</span><span class="w"> </span><span class="n">Name</span><span class="o">:</span><span class="w"> </span><span class="n">Fls_Init</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Init</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">relevant</span><span class="w"> </span><span class="n">registers</span><span class="w"> </span><span class="p">(</span><span class="n">hardware</span><span class="p">)</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">parameters</span><span class="w"> </span><span class="n">provided</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">given</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">SWS_Fls_00249</span><span class="w"> </span>
+
+
+<span class="p">(</span><span class="n">STD_ON</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">FLS_POST_BUILD_VARIANT</span><span class="p">)</span>
+
+<span class="n">SWS_Fls_00015</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STD_ON</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">FLS_DEV_ERROR_DETECT</span><span class="p">)</span>
+
+<span class="n">SWS_Fls_00191</span>
+
+<span class="n">SWS_Fls_00086</span>
+
+<span class="n">Instantiate</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">Driver</span><span class="w"> </span><span class="n">Obj</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">module</span>
+
+<span class="n">Copy</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="n">parameters</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">Driver</span><span class="w"> </span><span class="n">Object</span>
+
+<span class="n">At</span><span class="w"> </span><span class="mi">200</span><span class="n">MHz</span><span class="p">,</span><span class="w"> </span><span class="n">execution</span><span class="w"> </span><span class="n">wait</span><span class="o">-</span><span class="n">states</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">oscillator</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">3</span>
+
+<span class="n">function</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">calculate</span><span class="w"> </span><span class="n">waitstates</span>
+
+<span class="n">Initialize</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Flash</span><span class="w"> </span><span class="n">API</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">providing</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Flash</span><span class="w"> </span><span class="k">register</span><span class="w"> </span><span class="n">base</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">operating</span><span class="w"> </span><span class="n">frequency</span><span class="p">(</span><span class="n">in</span><span class="w"> </span><span class="n">MHz</span><span class="p">).</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">required</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Flash</span><span class="w"> </span><span class="n">API</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">System</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="n">before</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">other</span><span class="w"> </span><span class="n">Flash</span><span class="w"> </span><span class="n">API</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">performed</span><span class="p">.</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">also</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="n">whenever</span><span class="w"> </span><span class="n">System</span><span class="w"> </span><span class="n">frequency</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">RWAIT</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">changed</span><span class="p">.</span>
+
+<span class="n">Check</span><span class="w"> </span><span class="n">Flash</span><span class="w"> </span><span class="n">API</span><span class="w"> </span><span class="n">documentation</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">possible</span><span class="w"> </span><span class="n">errors</span>
+
+<span class="n">SWS_Fls_00323</span>
+
+<span class="n">Check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">size</span>
+
+<span class="n">SWS_Fls_00324</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">finished</span><span class="w"> </span><span class="n">successfully</span>
+
+
+<span class="cp">### function Fls_Erase</span>
+
+</pre></div>
+</div>
+<p>Std_ReturnType Fls_Erase(
+Fls_AddressType TargetAddress,
+Fls_LengthType Length
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="o">**</span><span class="n">Brief</span><span class="o">**:</span><span class="w"> </span>
+<span class="n">Erases</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">sector</span><span class="p">(</span><span class="n">s</span><span class="p">).</span><span class="w"> </span>
+
+
+
+</pre></div>
+</div>
+<ul>
+<li><p>Service name        : Fls_Erase</p></li>
+<li><p>Syntax              : Std_ReturnType Fls_Erase(Fls_AddressType TargetAddress</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   ,Fls_LengthType Length)
+</pre></div>
+</div>
+</li>
+<li><p>Mode                : Supervisor Mode (Privileged Mode)</p></li>
+<li><p>Service ID[hex]     : 0x01</p></li>
+<li><p>Sync/Async          : Asynchronous</p></li>
+<li><p>Reentrancy          : Non Reentrant</p></li>
+<li><p>Parameters (in)     : TargetAddress - Target address in flash memory.</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   This address offset will be added to the flash memory
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   base address.
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   Length - Number of bytes to erase
+</pre></div>
+</div>
+</li>
+<li><p>Parameters (inout)  : None</p></li>
+<li><p>Parameters (out)    : None</p></li>
+<li><p>Return value        : Std_ReturnType -</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   E_OK: erase command has been accepted
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   E_NOT_OK: erase command has not been accepted
+</pre></div>
+</div>
+</li>
+<li><p>Description         : Erases flash sector(s).</p></li>
+<li><div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Function Name: Fls_Erase</p>
+<p>The function Fls_Erase shall erase one or more complete flash sectors. SWS_Fls_00250</p>
+<p>TargetAddress is the offset relative to the FLS base address which is 0x10c00000 for F29H85x device</p>
+<p>The offset should be less than the total flash size (assume 1MB)
+TargetAddress = TargetAddress &amp; 0xFFFFF;</p>
+<p>Fls_Erase erases a flash memory block starting from FlsBaseAddress + TargetAddress of size Length. Length should be rounded up to the next full sector boundary since only complete flash sectors can be erased.</p>
+<p>SWS_Fls_00065</p>
+<p>If development error detection is enabled: the Fls_Erase shall check that the FLS module has been initialized. If this check fails, the Fls_Erase shall reject the erase request, raise the development error FLS_E_UNINIT and return with E_NOT_OK</p>
+<p>SWS_Fls_00023</p>
+<p>If development error detection is enabled: the Fls_Erase shall check that the FLS module is currently not busy. If this check fails, the Fls_Erase shall reject the erase request, raise the development error FLS_E_BUSY and return with E_NOT_OK</p>
+<p>SWS_Fls_00020</p>
+<p>SRS_Fls_12159</p>
+<p>If development error detection is enabled: the Fls_Erase shall check that the erase start address (FlsBaseAddress + TargetAddress) is aligned to a flash sector boundary and that it lies within the specified lower and upper flash address boundaries. If this check fails, the Fls_Erase shall reject the erase request, raise the development error FLS_E_PARAM_ADDRESS and return with E_NOT_OK</p>
+<p>SWS_Fls_00021</p>
+<p>SRS_Fls_12159</p>
+<p>If development error detection for is enabled: the Fls_Erase shall check that the erase length is greater than 0 and that the erase end address (erase start address + length) is aligned to a flash sector boundary and that it lies within the specified upper flash address boundary. If this check fails, the Fls_Erase shall reject the erase request, raise the development error FLS_E_PARAM_LENGTH and return with E_NOT_OK</p>
+<p>if (STD_ON == FLS_DEV_ERROR_DETECT)</p>
+<p>SWS_Fls_00328</p>
+<p>After initiating the erase job, the Fls_Erase shall set the FLS module status to MEMIF_BUSY</p>
+<p>SWS_Fls_00329</p>
+<p>After initiating the erase job, the Fls_Erase shall set the job result to MEMIF_JOB_PENDING</p>
+<p>[ SWS_Fls_00221 ]</p>
+<p>FLS_BANK_ERASE)</p>
+</section>
+<section id="function-fls-write">
+<h3><span class="section-number">5.3.4.2. </span>function Fls_Write<a class="headerlink" href="#function-fls-write" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Fls_Write</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Fls_AddressType</span><span class="w"> </span><span class="n">TargetAddress</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">SourceAddressPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Fls_LengthType</span><span class="w"> </span><span class="n">Length</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Writes one or more complete flash pages.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">name</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">Fls_Write</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Syntax</span><span class="w">              </span><span class="o">:</span><span class="w"> </span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Fls_Write</span><span class="p">(</span><span class="n">Fls_AddressType</span><span class="w"> </span><span class="n">TargetAddress</span>
+<span class="o">*</span><span class="w">                        </span><span class="p">,</span><span class="k">const</span><span class="w"> </span><span class="n">uint8</span><span class="o">*</span><span class="w"> </span><span class="n">SourceAddressPtr</span><span class="p">,</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">Fls_LengthType</span><span class="w"> </span><span class="n">Length</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Mode</span><span class="w">                </span><span class="o">:</span><span class="w"> </span><span class="n">Supervisor</span><span class="w"> </span><span class="n">Mode</span><span class="w"> </span><span class="p">(</span><span class="n">Privileged</span><span class="w"> </span><span class="n">Mode</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">ID</span><span class="p">[</span><span class="n">hex</span><span class="p">]</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="mh">0x02</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Sync</span><span class="o">/</span><span class="n">Async</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Asynchronous</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Reentrancy</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Non</span><span class="w"> </span><span class="n">Reentrant</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="n">TargetAddress</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Target</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span><span class="p">.</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">This</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">added</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">base</span><span class="w"> </span><span class="n">address</span><span class="p">.</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">SourceAddressPtr</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Pointer</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">buffer</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">Length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">erase</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Return</span><span class="w"> </span><span class="n">value</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="o">-</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">E_OK</span><span class="o">:</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">accepted</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">E_NOT_OK</span><span class="o">:</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">accepted</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Description</span><span class="w">         </span><span class="o">:</span><span class="w"> </span><span class="n">Writes</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">complete</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">pages</span><span class="p">.</span>
+<span class="o">*</span><span class="w">  </span><span class="err">```</span>
+
+<span class="n">Function</span><span class="w"> </span><span class="n">Name</span><span class="o">:</span><span class="w"> </span><span class="n">Fls_Write</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">complete</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">pages</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">device</span><span class="p">.</span><span class="w"> </span>
+
+
+<span class="n">SWS_Fls_00226</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">program</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">provided</span><span class="w"> </span><span class="n">via</span><span class="w"> </span><span class="n">SourceAddressPtr</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">FlsBaseAddress</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">TargetAddress</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="n">Length</span><span class="p">.</span>
+
+<span class="n">TargetAddress</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="n">relative</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">base</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mh">0x10c00000</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">F29H85x</span><span class="w"> </span><span class="n">device</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">less</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="p">(</span><span class="n">assume</span><span class="w"> </span><span class="mi">1</span><span class="n">MB</span><span class="p">)</span><span class="w"> </span>
+<span class="n">TargetAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TargetAddress</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFFFFF</span><span class="p">;</span>
+
+<span class="n">SWS_Fls_00066</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">initialized</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_UNINIT</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="n">SWS_Fls_00030</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">currently</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">busy</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_BUSY</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="n">SWS_Fls_00157</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">given</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">being</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">null</span><span class="w"> </span><span class="n">pointer</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">null</span><span class="w"> </span><span class="n">pointer</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_PARAM_DATA</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="n">SWS_Fls_00026</span>
+
+<span class="n">SRS_Fls_12159</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="p">(</span><span class="n">FlsBaseAddress</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">TargetAddress</span><span class="p">)</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">aligned</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="n">boundary</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">lies</span><span class="w"> </span><span class="n">within</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">lower</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">upper</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">boundaries</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_PARAM_ADDRESS</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="n">SWS_Fls_00027</span>
+
+<span class="n">SRS_Fls_12159</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">greater</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="p">(</span><span class="n">write</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">aligned</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="n">boundary</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">lies</span><span class="w"> </span><span class="n">within</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">upper</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">boundary</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_PARAM_LENGTH</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="n">SWS_Fls_00026</span>
+
+<span class="n">SWS_Fls_00027</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STD_ON</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">FLS_DEV_ERROR_DETECT</span><span class="p">)</span>
+
+<span class="p">[</span><span class="n">SWS_Fls_00333</span>
+
+<span class="n">After</span><span class="w"> </span><span class="n">initiating</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">MEMIF_JOB_PENDING</span>
+
+<span class="n">SWS_Fls_00332</span>
+
+<span class="n">After</span><span class="w"> </span><span class="n">initiating</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">write</span><span class="w"> </span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="n">Fls_Write</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">MEMIF_BUSY</span>
+
+<span class="n">SWS_Fls_00226</span>
+
+
+<span class="cp">### function Fls_Read</span>
+
+</pre></div>
+</div>
+<p>Std_ReturnType Fls_Read(
+Fls_AddressType SourceAddress,
+uint8 * TargetAddressPtr,
+Fls_LengthType Length
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="o">**</span><span class="n">Brief</span><span class="o">**:</span><span class="w"> </span>
+<span class="n">Reads</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span><span class="p">..</span><span class="w"> </span>
+
+
+
+</pre></div>
+</div>
+<ul>
+<li><p>Service name        : Fls_Read</p></li>
+<li><p>Syntax              : Std_ReturnType Fls_Read((Fls_AddressType SourceAddress</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   ,const uint8* TargetAddressPtr,
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   Fls_LengthType Length)
+</pre></div>
+</div>
+</li>
+<li><p>Mode                : Supervisor Mode (Privileged Mode)</p></li>
+<li><p>Service ID[hex]     : 0x07</p></li>
+<li><p>Sync/Async          : Asynchronous</p></li>
+<li><p>Reentrancy          : Non Reentrant</p></li>
+<li><p>Parameters (in)     : SourceAddress - source address in flash memory.</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   This address offset will be added to the flash memory
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   base address.
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   TargetAddressPtr - Pointer to source data buffer
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   Length - Number of bytes to erase
+</pre></div>
+</div>
+</li>
+<li><p>Parameters (inout)  : None</p></li>
+<li><p>Parameters (out)    : None</p></li>
+<li><p>Return value        : Std_ReturnType -</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   E_OK: read command has been accepted
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   E_NOT_OK: read command has not been accepted
+</pre></div>
+</div>
+</li>
+<li><p>Description         : Reads from flash memory.</p></li>
+<li><div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Function Name: Fls_Read</p>
+<p>The function Fls_Read shall read from flash memory.</p>
+<p>TargetAddress is the offset relative to the FLS base address which is 0x10c00000 for F29H85x device</p>
+<p>The offset should be less than the total flash size (assume 1MB)
+TargetAddress = TargetAddress &amp; 0xFFFFF;</p>
+<p>SWS_Fls_00239</p>
+<p>The read job of Fls_Read shall copy a continuous flash memory block starting from FlsBaseAddress + SourceAddress of size Length to the buffer pointed to by TargetAddressPtr</p>
+<p>SWS_Fls_00099</p>
+<p>If development error detection for the module Fls is enabled: the function Fls_Read shall check that the driver has been initialized. If this check fails, the function Fls_Read shall reject the read request, raise the development error FLS_E_UNINIT and return with E_NOT_OK</p>
+<p>SWS_Fls_00100</p>
+<p>If development error detection for the module Fls is enabled: the function Fls_Read shall check that the driver is currently not busy. If this check fails, the function Fls_Read shall reject the read request, raise the development error FLS_E_BUSY and return with E_NOT_OK</p>
+<p>SWS_Fls_00158</p>
+<p>If development error detection for the module Fls is enabled: the function Fls_Read shall check the given data buffer pointer for not being a null pointer. If the data buffer pointer is a null pointer, the function Fls_Read shall reject the read request, raise the development error FLS_E_PARAM_DATA and return with E_NOT_OK</p>
+<p>SWS_Fls_00097</p>
+<p>If development error detection for the module Fls is enabled: the function Fls_Read shall check that the read start address (FlsBaseAddress + SourceAddress) lies within the specified lower and upper flash address boundaries. If this check fails, the function Fls_Read shall reject the read job, raise development error FLS_E_PARAM_ADDRESS and return with E_NOT_OK</p>
+<p>SWS_Fls_00098</p>
+<p>If development error detection for the module Fls is enabled: the function Fls_Read shall check that the read length is greater than 0 and that the read end address (read start address + length) lies within the specified upper flash address boundary. If this check fails, the function Fls_Read shall reject the read job, raise the development error FLS_E_PARAM_LENGTH and return with E_NOT_OK</p>
+<p>SWS_Fls_00340</p>
+<p>After initiating a read job, the function Fls_Read shall return with E_OK.</p>
+<p>SWS_Fls_00338</p>
+<p>After initiating a read job, the function Fls_Read shall set the FLS module status to MEMIF_BUSY</p>
+<p>SWS_Fls_00339</p>
+<p>After initiating a read job, the function Fls_Read shall set the FLS module job result to MEMIF_JOB_PENDING</p>
+<p>SWS_Fls_00239</p>
+<p>“Reason - The source address needs to stored, for functionality operation. “</p>
+</section>
+<section id="function-fls-compare">
+<h3><span class="section-number">5.3.4.3. </span>function Fls_Compare<a class="headerlink" href="#function-fls-compare" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Fls_AddressType</span><span class="w"> </span><span class="n">SourceAddress</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">TargetAddressPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Fls_LengthType</span><span class="w"> </span><span class="n">Length</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Compares the contents of an area of flash memory with that of an application data buffer.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">name</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">Fls_Compare</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Syntax</span><span class="w">              </span><span class="o">:</span><span class="w"> </span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Fls_Compare</span>
+<span class="o">*</span><span class="w">                        </span><span class="p">(</span><span class="n">Fls_AddressType</span><span class="w"> </span><span class="n">SourceAddress</span><span class="p">,</span>
+<span class="o">*</span><span class="w">                        </span><span class="k">const</span><span class="w"> </span><span class="n">uint8</span><span class="o">*</span><span class="w"> </span><span class="n">TargetAddressPtr</span><span class="p">,</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">Fls_LengthType</span><span class="w"> </span><span class="n">Length</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Mode</span><span class="w">                </span><span class="o">:</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="n">Mode</span><span class="w"> </span><span class="p">(</span><span class="n">Non</span><span class="o">-</span><span class="n">Privileged</span><span class="w"> </span><span class="n">Mode</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">ID</span><span class="p">[</span><span class="n">hex</span><span class="p">]</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="mh">0x08</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Sync</span><span class="o">/</span><span class="n">Async</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Asynchronous</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Reentrancy</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Non</span><span class="w"> </span><span class="n">Reentrant</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="n">SourceAddress</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Target</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span><span class="p">.</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">This</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">added</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">base</span><span class="w"> </span><span class="n">address</span><span class="p">.</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">TargetAddressPtr</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Pointer</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">buffer</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">Length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Number</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">erase</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Return</span><span class="w"> </span><span class="n">value</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="o">-</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">E_OK</span><span class="o">:</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">accepted</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">E_NOT_OK</span><span class="o">:</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">accepted</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Description</span><span class="w">         </span><span class="o">:</span><span class="w"> </span><span class="n">Compares</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">contents</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span>
+<span class="o">*</span><span class="w">                        </span><span class="n">with</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span>
+<span class="o">*</span><span class="w">  </span><span class="err">```</span>
+
+<span class="n">Function</span><span class="w"> </span><span class="n">Name</span><span class="o">:</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">contents</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="w"> </span>
+
+
+<span class="n">SWS_Fls_00244</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">continuous</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">FlsBaseAddress</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SourceAddress</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="n">Length</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">pointed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">TargetAddressPtr</span>
+
+<span class="n">Source</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="n">relative</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">base</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mh">0x10c00000</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">F29H85x</span><span class="w"> </span><span class="n">device</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">less</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="p">(</span><span class="n">assume</span><span class="w"> </span><span class="mi">1</span><span class="n">MB</span><span class="p">)</span><span class="w"> </span>
+<span class="n">SourceAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SourceAddress</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFFFFF</span><span class="p">;</span>
+
+<span class="n">SWS_Fls_00152</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">driver</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">initialized</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_UNINIT</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="n">SWS_Fls_00153</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">driver</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">currently</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">busy</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_BUSY</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="n">SWS_Fls_00273</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">given</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">being</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">null</span><span class="w"> </span><span class="n">pointer</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">null</span><span class="w"> </span><span class="n">pointer</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_PARAM_DATA</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="n">SWS_Fls_00150</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="p">(</span><span class="n">FlsBaseAddress</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SourceAddress</span><span class="p">)</span><span class="w"> </span><span class="n">lies</span><span class="w"> </span><span class="n">within</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">lower</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">upper</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">boundaries</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_PARAM_ADDRESS</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="n">SWS_Fls_00151</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">given</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">greater</span><span class="w"> </span><span class="n">than</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="p">(</span><span class="n">compare</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">length</span><span class="p">)</span><span class="w"> </span><span class="n">lies</span><span class="w"> </span><span class="n">within</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">upper</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">boundary</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">reject</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_PARAM_LENGTH</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">E_NOT_OK</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STD_ON</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">FLS_DEV_ERROR_DETECT</span><span class="p">)</span>
+
+<span class="n">SWS_Fls_00342</span>
+
+<span class="n">After</span><span class="w"> </span><span class="n">initiating</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">MEMIF_BUSY</span>
+
+<span class="n">SWS_Fls_00343</span>
+
+<span class="n">After</span><span class="w"> </span><span class="n">initiating</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">MEMIF_JOB_PENDING</span>
+
+<span class="n">SWS_Fls_00244</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Compare</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">continuous</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">block</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">FlsBaseAddress</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">SourceAddress</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="n">Length</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">pointed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">TargetAddressPtr</span>
+
+
+<span class="cp">### function Fls_BlankCheck</span>
+
+</pre></div>
+</div>
+<p>Std_ReturnType Fls_BlankCheck(
+Fls_AddressType Address,
+Fls_LengthType Length
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="o">**</span><span class="n">Brief</span><span class="o">**:</span><span class="w"> </span>
+<span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_BlankCheck</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">verify</span><span class="p">,</span><span class="w"> </span><span class="n">whether</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">given</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">erased</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="p">(</span><span class="n">yet</span><span class="p">)</span><span class="w"> </span><span class="n">programmed</span><span class="p">.</span><span class="w"> </span>
+
+
+
+</pre></div>
+</div>
+<ul>
+<li><p>Service name        : Fls_BlankCheck</p></li>
+<li><p>Syntax              : Std_ReturnType Fls_Compare</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   (Fls_AddressType TargetAddress,,
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   Fls_LengthType Length)
+</pre></div>
+</div>
+</li>
+<li><p>Mode                : User Mode (Non-Privileged Mode)</p></li>
+<li><p>Service ID[hex]     : 0x0a</p></li>
+<li><p>Sync/Async          : Asynchronous</p></li>
+<li><p>Reentrancy          : Non Reentrant</p></li>
+<li><p>Parameters (in)     : TargetAddress - Target address in flash memory.</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   This address offset will be added to the flash memory
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   base address.
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   SourceAddressPtr - Pointer to source data buffer
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   Length - Number of bytes to erase
+</pre></div>
+</div>
+</li>
+<li><p>Parameters (inout)  : None</p></li>
+<li><p>Parameters (out)    : None</p></li>
+<li><p>Return value        : Std_ReturnType -</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   E_OK: BlankCheck command has been accepted
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   E_NOT_OK: BlankCheck command has not been accepted
+</pre></div>
+</div>
+</li>
+<li><p>Description         : The function Fls_BlankCheck shall verify,</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   whether a given memory area has been
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   erased but not (yet) programmed.
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Function Name: Fls_BlankCheck The function Fls_BlankCheck shall verify, whether a given memory area</p>
+<p>has been erased.</p>
+<p>SWS_Fls_00379</p>
+<p>The verification job of the function Fls_BlankCheck shall check, that the continuous flash memory area starting from FlsBaseAddress + TargetAddress of size Length is eras</p>
+<p>TargetAddress is the offset relative to the FLS base address which is 0x10c00000 for F29H85x device</p>
+<p>The offset should be less than the total flash size (assume 1MB)
+TargetAddress = TargetAddress &amp; 0xFFFFF;</p>
+<p>SWS_Fls_00382</p>
+<p>If development error detection is enabled: the function Fls_BlankCheck shall check that the driver has been initialized. If this check fails, the function Fls_BlankCheck shall reject the verification request, raise the development error FLS_E_UNINIT and return with E_NOT_OK</p>
+<p>SRS_BSW_00406</p>
+<p>If development error detection for the module FLS is enabled: the function Fls_BlankCheck shall check that the driver is currently not busy. If this check fails, the function Fls_BlankCheck shall reject the verification request, raise the development error FLS_E_BUSY and return with E_NOT_OK</p>
+<p>SWS_Fls_00380</p>
+<p>If development error detection for the module FLS is enabled; the function Fls_BlankCheck shall check that the verification start address (FlsBaseAddress + TargetAddress) lies within the specified lower and upper flash address boundaries. If this check fails, the function Fls_BlankCheck shall reject the verification job, raise the development error FLS_E_PARAM_ADDRESS and return with E_NOT_OK</p>
+<p>SWS_Fls_00381</p>
+<p>If development error detection for the module FLS is enabled: the function Fls_BlankCheck shall check that the given length is greater than 0 and that the verification end address (verification start address + length) lies within the specified upper flash address boundary. If this check fails, the function Fls_BlankCheck shall reject the verification job, raise the development error FLS_E_PARAM_LENGTH and return with E_NOT_OK</p>
+<p>SWS_Fls_00377</p>
+<p>After initiating the verification job, the function Fls_BlankCheck shall return with E_OK</p>
+<p>if (STD_ON == FLS_DEV_ERROR_DETECT)</p>
+<p>SWS_Fls_00375</p>
+<p>After initiating the verification job, the function Fls_BlankCheck shall set the FLS module status to MEMIF_BUSY</p>
+<p>SWS_Fls_00376</p>
+<p>After initiating the verification job, the function Fls_BlankCheck shall set the FLS module job result to MEMIF_JOB_PENDING</p>
+<p>SWS_Fls_00379</p>
+<p>The verification job of the function Fls_BlankCheck shall check, that the continuous flash memory area starting from FlsBaseAddress + TargetAddress of size Length is eras</p>
+</section>
+<section id="function-fls-getstatus">
+<h3><span class="section-number">5.3.4.4. </span>function Fls_GetStatus<a class="headerlink" href="#function-fls-getstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MemIf_StatusType</span><span class="w"> </span><span class="n">Fls_GetStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Returns the driver state.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">name</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">Fls_GetStatus</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Syntax</span><span class="w">              </span><span class="o">:</span><span class="w"> </span><span class="n">MemIf_StatusType</span><span class="w"> </span><span class="n">Fls_GetStatus</span><span class="p">(</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Mode</span><span class="w">                </span><span class="o">:</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="n">Mode</span><span class="w"> </span><span class="p">(</span><span class="n">Non</span><span class="o">-</span><span class="n">Privileged</span><span class="w"> </span><span class="n">Mode</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">ID</span><span class="p">[</span><span class="n">hex</span><span class="p">]</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="mh">0x04</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Sync</span><span class="o">/</span><span class="n">Async</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Synchronous</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Reentrancy</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Reentrant</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Return</span><span class="w"> </span><span class="n">value</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">MemIf_StatusType</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Description</span><span class="w">         </span><span class="o">:</span><span class="w"> </span><span class="n">Returns</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">driver</span><span class="w"> </span><span class="n">state</span><span class="p">.</span>
+<span class="o">*</span><span class="w">  </span><span class="err">```</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STD_ON</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">FLS_BLANK_CHECK_API</span><span class="p">)</span><span class="w"> </span><span class="n">Function</span><span class="w"> </span><span class="n">Name</span><span class="o">:</span><span class="w"> </span><span class="n">Fls_GetStatus</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_GetStatus</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">synchronously</span>
+
+<span class="n">This</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">may</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="n">before</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">initialized</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="no">it</span><span class="w"> </span><span class="no">shall</span><span class="w"> </span><span class="no">return</span><span class="w"> </span><span class="no">MEMIF_UNINIT</span><span class="p">.</span>
+
+<span class="no">SRS_Fls_12138</span><span class="w"> </span>
+
+
+<span class="cp">### function Fls_GetVersionInfo</span>
+
+</pre></div>
+</div>
+<p>Std_ReturnType Fls_GetVersionInfo(
+Std_VersionInfoType * versioninfo
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="o">**</span><span class="n">Brief</span><span class="o">**:</span><span class="w"> </span>
+<span class="n">This</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="n">returns</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="n">information</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">module</span><span class="p">.</span><span class="w"> </span>
+
+
+
+</pre></div>
+</div>
+<ul>
+<li><p>Service name        : Fls_GetVersionInfo</p></li>
+<li><p>Syntax              : void Fls_GetVersionInfo( Std_VersionInfoType*</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                                                            versioninfo )
+</pre></div>
+</div>
+</li>
+<li><p>Mode                : User Mode (Non-Privileged Mode)</p></li>
+<li><p>Service ID[hex]     : 0x10</p></li>
+<li><p>Sync/Async          : Synchronous</p></li>
+<li><p>Reentrancy          : Reentrant</p></li>
+<li><p>Parameters (in)     : None</p></li>
+<li><p>Parameters (inout)  : versioninfo - Pointer to where to store the version</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   information of this module
+</pre></div>
+</div>
+</li>
+<li><p>Parameters (out)    : None</p></li>
+<li><p>Return value        : None</p></li>
+<li><p>Description         : This service returns the version information of this</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   module
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>if (STD_ON == FLS_GET_JOB_RESULT_API) Function Name: Fls_GetVersionInfo The function Returns the version information of this module.</p>
+<p>SWS_Fls_00363</p>
+<p>If development error detection for the module Fls is enabled: the function Fls_GetVersionInfo shall raise the development error FLS_E_PARAM_POINTER if the argument is a NULL pointer and return without any action.</p>
+<p>if (STD_ON == FLS_DEV_ERROR_DETECT)</p>
+</section>
+<section id="function-fls-getjobresult">
+<h3><span class="section-number">5.3.4.5. </span>function Fls_GetJobResult<a class="headerlink" href="#function-fls-getjobresult" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">MemIf_JobResultType</span><span class="w"> </span><span class="n">Fls_GetJobResult</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Returns the result of the last job.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">name</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">Fls_GetJobResult</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Syntax</span><span class="w">              </span><span class="o">:</span><span class="w"> </span><span class="n">MemIf_JobResultType</span><span class="w"> </span><span class="n">Fls_GetJobResult</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Mode</span><span class="w">                </span><span class="o">:</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="n">Mode</span><span class="w"> </span><span class="p">(</span><span class="n">Non</span><span class="o">-</span><span class="n">Privileged</span><span class="w"> </span><span class="n">Mode</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">ID</span><span class="p">[</span><span class="n">hex</span><span class="p">]</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="mh">0x05</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Sync</span><span class="o">/</span><span class="n">Async</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Synchronous</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Reentrancy</span><span class="w">          </span><span class="o">:</span><span class="w"> </span><span class="n">Reentrant</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Parameters</span><span class="w"> </span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">None</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Return</span><span class="w"> </span><span class="n">value</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">MemIf_JobResultType</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Description</span><span class="w">         </span><span class="o">:</span><span class="w"> </span><span class="n">Returns</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="n">job</span><span class="p">.</span>
+<span class="o">*</span><span class="w">  </span><span class="err">```</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STD_ON</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">FLS_GET_STATUS_API</span><span class="p">)</span><span class="w"> </span><span class="n">Function</span><span class="w"> </span><span class="n">Name</span><span class="o">:</span><span class="w"> </span><span class="n">Fls_GetJobResult</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_GetJobResult</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">synchronously</span><span class="w"> </span>
+
+
+<span class="n">SWS_Fls_00358</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_GetJobResult</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">initialized</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_GetJobResult</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_UNINIT</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">MEMIF_JOB_FAILED</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STD_ON</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">FLS_DEV_ERROR_DETECT</span><span class="p">)</span>
+
+
+<span class="cp">### function Fls_MainFunction</span>
+
+</pre></div>
+</div>
+<p>void Fls_MainFunction(
+void
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="o">**</span><span class="n">Brief</span><span class="o">**:</span><span class="w"> </span>
+<span class="n">Performs</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">processing</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">jobs</span><span class="p">.</span><span class="w"> </span>
+
+
+
+</pre></div>
+</div>
+<ul>
+<li><p>Service name        : Fls_MainFunction</p></li>
+<li><p>Syntax              : void Fls_MainFunction(void)</p></li>
+<li><p>Mode                : Supervisor Mode (Privileged Mode)</p></li>
+<li><p>Service ID[hex]     : 0x06</p></li>
+<li><p>Description         : Performs the processing of jobs.</p></li>
+<li><div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>if (STD_ON == FLS_VERSION_INFO_API) Function Name: Fls_MainFunction</p>
+<p>The function Fls_MainFunction shall perform the processing of the flash read, write, erase and compare jobs SWS_Fls_00037, SWS_Fls_00038</p>
+<p>if (STD_ON == FLS_DEV_ERROR_DETECT)</p>
+<p>SWS_Fls_00147</p>
+</section>
+<section id="function-fls-cancel">
+<h3><span class="section-number">5.3.4.6. </span>function Fls_Cancel<a class="headerlink" href="#function-fls-cancel" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Fls_Cancel</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cancels an ongoing job.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">name</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">Fls_Cancel</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Syntax</span><span class="w">              </span><span class="o">:</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Fls_Cancel</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Mode</span><span class="w">                </span><span class="o">:</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="n">Mode</span><span class="w"> </span><span class="p">(</span><span class="n">Non</span><span class="o">-</span><span class="n">Privileged</span><span class="w"> </span><span class="n">Mode</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">ID</span><span class="p">[</span><span class="n">hex</span><span class="p">]</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="mh">0x03</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Description</span><span class="w">         </span><span class="o">:</span><span class="w"> </span><span class="n">Cancels</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">ongoing</span><span class="w"> </span><span class="n">job</span><span class="p">.</span>
+<span class="o">*</span><span class="w">  </span><span class="err">```</span>
+
+<span class="n">Function</span><span class="w"> </span><span class="n">Name</span><span class="o">:</span><span class="w"> </span><span class="n">Fls_Cancel</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Cancel</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">cancel</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">ongoing</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">read</span><span class="p">,</span><span class="w"> </span><span class="n">write</span><span class="p">,</span><span class="w"> </span><span class="n">erase</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">compare</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">synchronously</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">directly</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">returning</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">started</span>
+
+<span class="n">SRS_Fls_12137</span><span class="w"> </span>
+
+
+<span class="n">SWS_Fls_00356</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">detection</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">Fls</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">enabled</span><span class="o">:</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Cancel</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">initialized</span><span class="p">.</span><span class="w"> </span><span class="n">If</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">fails</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Cancel</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">development</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">FLS_E_UNINIT</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="k">return</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STD_ON</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">FLS_DEV_ERROR_DETECT</span><span class="p">)</span>
+
+<span class="n">Reset</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">processing</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="p">(</span><span class="n">like</span><span class="w"> </span><span class="n">address</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">pointer</span><span class="p">)</span>
+
+<span class="n">SWS_Fls_00336</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Cancel</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">module</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">MEMIF_IDLE</span>
+
+<span class="n">SWS_Fls_00033</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Cancel</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">MEMIF_JOB_CANCELED</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">currently</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">MEMIF_JOB_PENDING</span><span class="p">.</span><span class="w"> </span><span class="n">Otherwise</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Cancel</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">leave</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="n">unchanged</span>
+
+<span class="n">SWS_Fls_00147</span>
+
+<span class="n">If</span><span class="w"> </span><span class="n">configured</span><span class="p">,</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_Cancel</span><span class="w"> </span><span class="n">shall</span><span class="w"> </span><span class="n">call</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">inform</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">caller</span><span class="w"> </span><span class="n">about</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">cancellation</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">job</span>
+
+
+<span class="cp">### function Fls_SetMode</span>
+
+</pre></div>
+</div>
+<p>void Fls_SetMode(
+MemIf_ModeType Mode
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="o">**</span><span class="n">Brief</span><span class="o">**:</span><span class="w"> </span>
+<span class="n">Sets</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">driver</span><span class="err">&#39;</span><span class="n">s</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span><span class="w"> </span>
+
+
+
+</pre></div>
+</div>
+<ul>
+<li><p>Service name        : Fls_SetMode</p></li>
+<li><p>Syntax              : void Fls_SetMode(MemIf_ModeType Mode)</p></li>
+<li><p>Mode                : User Mode (Non-Privileged Mode)</p></li>
+<li><p>Service ID[hex]     : 0x09</p></li>
+<li><p>Sync/Async          : Synchronous</p></li>
+<li><p>Reentrancy          : Non Reentrant</p></li>
+<li><p>Parameters (in)     : Mode</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   MEMIF_MODE_SLOW: Slow read access / normal SPI access.
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   MEMIF_MODE_FAST: Fast read access / SPI burst access.
+</pre></div>
+</div>
+</li>
+<li><p>Parameters (inout)  : None</p></li>
+<li><p>Parameters (out)    : None</p></li>
+<li><p>Return value        : None</p></li>
+<li><p>Description         : Sets the flash driver’s operation mode</p></li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   This is a dummy API which is not supported and 
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>                   Added for integration purposes 
+</pre></div>
+</div>
+</li>
+<li><div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>SRS_Fls_13302</p>
+</section>
+<section id="function-fls-seterasetype">
+<h3><span class="section-number">5.3.4.7. </span>function Fls_SetEraseType<a class="headerlink" href="#function-fls-seterasetype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">uint32</span><span class="w"> </span><span class="n">Fls_SetEraseType</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Fls_EraseType</span><span class="w"> </span><span class="n">erasetype</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Sets the parameters for required erase type.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">name</span><span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">Fls_SetEraseType</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Syntax</span><span class="w">              </span><span class="o">:</span><span class="w"> </span><span class="n">uint32</span><span class="w">  </span><span class="n">Fls_SetEraseType</span><span class="p">(</span><span class="n">Fls_EraseType</span><span class="w"> </span><span class="n">erasetype</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Mode</span><span class="w">                </span><span class="o">:</span><span class="w"> </span><span class="n">User</span><span class="w"> </span><span class="n">Mode</span><span class="w"> </span><span class="p">(</span><span class="n">Non</span><span class="o">-</span><span class="n">Privileged</span><span class="w"> </span><span class="n">Mode</span><span class="p">)</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Service</span><span class="w"> </span><span class="n">ID</span><span class="p">[</span><span class="n">hex</span><span class="p">]</span><span class="w">     </span><span class="o">:</span><span class="w"> </span><span class="n">NA</span>
+<span class="o">*</span><span class="w">  </span><span class="n">Description</span><span class="w">         </span><span class="o">:</span><span class="w"> </span><span class="n">Sets</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">parameters</span><span class="w"> </span><span class="n">required</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">application</span><span class="p">,</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">erase</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span>
+<span class="o">*</span><span class="w">                        </span><span class="n">passed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="n">calling</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">Application</span><span class="p">.</span>
+<span class="o">*</span><span class="w">  </span><span class="err">```</span>
+
+<span class="n">Function</span><span class="w"> </span><span class="n">Name</span><span class="o">:</span><span class="w"> </span><span class="n">Fls_SetEraseType</span>
+
+<span class="n">The</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">Fls_SetEraseType</span><span class="w"> </span><span class="n">sets</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">parameters</span><span class="w"> </span><span class="n">like</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">erase</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">sector</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">chip</span><span class="p">),</span><span class="n">typeoferase</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Fls_DrvObj</span><span class="p">,</span><span class="w"> </span><span class="n">which</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">required</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">application</span><span class="p">,</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">erase</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="n">calling</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">Application</span><span class="p">.</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">macros</span><span class="w"> </span><span class="n">enabled</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="n">itself</span><span class="p">.</span><span class="w"> </span><span class="n">Implementation</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">done</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">allow</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">select</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">erase</span><span class="w"> </span><span class="n">types</span><span class="w"> </span><span class="n">based</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">requirement</span><span class="p">.</span><span class="w"> </span>
+
+
+<span class="cp">### function __attribute__</span>
+
+</pre></div>
+</div>
+<p>struct Fls_FlashStatusWordTag <strong>attribute</strong>(
+(packed)
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="o">**</span><span class="n">Brief</span><span class="o">**:</span><span class="w"> </span>
+<span class="n">This</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">master</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">containing</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">possible</span><span class="w"> </span><span class="n">returned</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">codes</span><span class="p">.</span><span class="w"> </span>
+
+<span class="n">This</span><span class="w"> </span><span class="n">contains</span><span class="w"> </span><span class="n">all</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">possible</span><span class="w"> </span><span class="n">Flash</span><span class="w"> </span><span class="n">State</span><span class="w"> </span><span class="n">Machine</span><span class="w"> </span><span class="n">commands</span><span class="p">.</span>
+
+<span class="n">Flash</span><span class="w"> </span><span class="n">status</span><span class="w"> </span>
+
+
+<span class="cp">### function Fls_Fapi_getFsmStatus</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiFlashStatus Fls_Fapi_getFsmStatus(
+void
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_Fapi_checkFsmForReady</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_checkFsmForReady(
+void
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_Fapi_setupBankSectorEnable</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_setupBankSectorEnable(
+uint32 reg_address,
+uint32 value
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_Fapi_issueAsyncCommandWithAddress</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_issueAsyncCommandWithAddress(
+Fls_FlashStateCmdType oCommand,
+uint32 * pu32StartAddress
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_Fapi_issueAsyncCommand</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_issueAsyncCommand(
+Fls_FlashStateCmdType oCommand
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_Fapi_issueBankEraseCommand</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_issueBankEraseCommand(
+uint32 * pu32StartAddress
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_Fapi_initializeAPI</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_initializeAPI(
+uint32 u32HclkFrequency
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="n">Init</span><span class="w"> </span>
+
+
+<span class="cp">### function Fls_Fapi_doBlankCheck</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_doBlankCheck(
+uint32 * pu32StartAddress,
+uint32 u32Length,
+Fls_FlashStatusWordType * poFlashStatusWord
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="n">Read</span><span class="w"> </span><span class="n">commands</span><span class="w"> </span>
+
+
+<span class="cp">### function Fls_Fapi_doVerify</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_doVerify(
+uint32 * pu32StartAddress,
+uint32 u32Length,
+uint32 * pu32CheckValueBuffer,
+Fls_FlashStatusWordType * poFlashStatusWord
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_Fapi_doVerifyByByte</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_doVerifyByByte(
+uint8 * pu8StartAddress,
+uint32 u32Length,
+uint8 * pu8CheckValueBuffer,
+Fls_FlashStatusWordType * poFlashStatusWord
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_Fapi_issueProgrammingCommand</span>
+
+</pre></div>
+</div>
+<p>Fls_FapiStatusType Fls_Fapi_issueProgrammingCommand(
+uint32 * pu32StartAddress,
+uint8 * pu8DataBuffer,
+uint8 u8DataBufferSizeInBytes
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="n">Programming</span><span class="w"> </span><span class="n">Commands</span><span class="w"> </span>
+
+
+<span class="cp">### function Fls_Update_WaitStates</span>
+
+</pre></div>
+</div>
+<p>void Fls_Update_WaitStates(
+uint16 waitstates
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="n">Utility</span><span class="w"> </span><span class="n">Commands</span><span class="w"> </span>
+
+
+<span class="cp">### function Fls_SSU_claimFlashSemaphore</span>
+
+</pre></div>
+</div>
+<p>void Fls_SSU_claimFlashSemaphore(
+void
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_SSU_releaseFlashSemaphore</span>
+
+</pre></div>
+</div>
+<p>void Fls_SSU_releaseFlashSemaphore(
+void
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_processJobs</span>
+
+</pre></div>
+</div>
+<p>void Fls_processJobs(
+Fls_JobType job
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_resetDrvObj</span>
+
+</pre></div>
+</div>
+<p>void Fls_resetDrvObj(
+Fls_DriverObjType * drvObj
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+<span class="cp">### function Fls_copyConfig</span>
+
+</pre></div>
+</div>
+<p>void Fls_copyConfig(
+Fls_DriverObjType * drvObj,
+const Fls_ConfigType * cfgPtr
+)</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>
+
+
+<span class="cp">## Detailed Description</span>
+
+
+<span class="n">This</span><span class="w"> </span><span class="n">files</span><span class="w"> </span><span class="n">defines</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">configuration</span><span class="w"> </span><span class="n">structures</span><span class="w"> </span>
+
+
+
+<span class="o">-------------------------------</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="group___d_i_o.html" class="btn btn-neutral float-left" title="5.2. DIO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group___g_p_t.html" class="btn btn-neutral float-right" title="5.4. GPT" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Apr 11, 2025.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.02.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = '';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

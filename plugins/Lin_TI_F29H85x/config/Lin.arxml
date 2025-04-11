@@ -84,27 +84,6 @@
                 <L-2 L="EN">This container contains the parameters related to each LIN Driver Unit.</L-2>
               </DESC>
               <PARAMETERS>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="d79383fc-aeed-4a1c-916e-41bbf7fd60e7">
-                  <SHORT-NAME>LinDevErrorDetect</SHORT-NAME>
-                  <DESC>
-                    <L-2 L="EN">Switches the development error detection and notification on or off.</L-2>
-                  </DESC>
-                  <SCOPE>LOCAL</SCOPE>
-                  <ORIGIN>AUTOSAR_ECUC</ORIGIN>
-                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
-                  <VALUE-CONFIG-CLASSES>
-                    <ECUC-VALUE-CONFIGURATION-CLASS>
-                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                    </ECUC-VALUE-CONFIGURATION-CLASS>
-                    <ECUC-VALUE-CONFIGURATION-CLASS>
-                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                    </ECUC-VALUE-CONFIGURATION-CLASS>
-                  </VALUE-CONFIG-CLASSES>
-                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                  <DEFAULT-VALUE>false</DEFAULT-VALUE>
-                </ECUC-BOOLEAN-PARAM-DEF>
                 <ECUC-INTEGER-PARAM-DEF UUID="41b5b6d2-6e84-4f0c-99b1-fbb0f191ac5f">
                   <SHORT-NAME>LinIndex</SHORT-NAME>
                   <DESC>
@@ -151,6 +130,27 @@
                   <MAX>65535</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
+                <ECUC-BOOLEAN-PARAM-DEF UUID="d79383fc-aeed-4a1c-916e-41bbf7fd60e7">
+                  <SHORT-NAME>LinDevErrorDetect</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Switches the development error detection and notification on or off.</L-2>
+                  </DESC>
+                  <SCOPE>LOCAL</SCOPE>
+                  <ORIGIN>AUTOSAR_ECUC</ORIGIN>
+                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                  <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                </ECUC-BOOLEAN-PARAM-DEF>
                 <ECUC-BOOLEAN-PARAM-DEF UUID="42f4891d-cc3b-4b3a-a1d7-ce9de4c696d6">
                   <SHORT-NAME>LinVersionInfoApi</SHORT-NAME>
                   <DESC>
@@ -173,6 +173,28 @@
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
               </PARAMETERS>
+              <REFERENCES>
+                <ECUC-REFERENCE-DEF UUID="efc6ad10-c496-4185-b55b-099a9d77f27f">
+                  <SHORT-NAME>SysClockRef</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Reference to the SYSTEM clock source configuration, which is set in the MCU driver configuration.</L-2>
+                  </DESC>
+                  <SCOPE>LOCAL</SCOPE>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint</DESTINATION-REF>
+                </ECUC-REFERENCE-DEF>
+              </REFERENCES>
             </ECUC-PARAM-CONF-CONTAINER-DEF>
             <ECUC-PARAM-CONF-CONTAINER-DEF UUID="06cd75b1-287f-4a5f-b5d2-753a735f8c67">
               <SHORT-NAME>LinGlobalConfig</SHORT-NAME>
@@ -235,7 +257,7 @@
                       <MAX>1</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="130b2efd-3be8-4bf0-930b-dff8afd4baa3">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="da5a8049-9ffa-44f8-a829-501b24145553">
                       <SHORT-NAME>LinInstance</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Selects Lin Instance.</L-2>
@@ -265,7 +287,7 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="49491c12-02a6-4772-baa4-58dac9db251e">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="97630b22-73ac-4679-8be8-6e321cc61e0e">
                       <SHORT-NAME>LinLoopbackMode</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Select loopback mode to be used for this Lin instance.</L-2>
@@ -320,7 +342,7 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>False</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="dab61aae-75cd-41fa-ba79-f1a10cf119bc">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="deb8b6d9-ea44-433c-a4f4-6a96fed5f615">
                       <SHORT-NAME>LinISRType</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Select ISR type to be used for this Lin instance.</L-2>
@@ -354,7 +376,7 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="41857567-a79c-4a30-a149-f16a27842c3f">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="0fb8550b-0190-473c-9fbd-fae8aa394d94">
                       <SHORT-NAME>LinInterruptLineSelect</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Select interrupt line to be used for this Lin instance.</L-2>
@@ -441,13 +463,13 @@
                     </ECUC-REFERENCE-DEF>
                   </REFERENCES>
                   <SUB-CONTAINERS>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="600c17c1-ffe0-4ea3-a252-3a0ec62a8b65">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="8ead3a9b-884e-41a4-99d0-56b5f46215b8">
                       <SHORT-NAME>LinBaudrateConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This container contains the baudrate configuration parameter of the Lin driver.</L-2>
                       </DESC>
                       <PARAMETERS>
-                        <ECUC-FLOAT-PARAM-DEF UUID="9a253868-e9e4-4d0d-8ddb-54011a7ca8b2">
+                        <ECUC-FLOAT-PARAM-DEF UUID="5e9250d2-d1e5-4c25-aaef-b4ff8f2c6b1c">
                           <SHORT-NAME>LinChannelPrescalar</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Prescalar to derive LINCLK from VCLK</L-2>
@@ -470,7 +492,7 @@
                           <MAX>1.6777215E7</MAX>
                           <MIN>0.0</MIN>
                         </ECUC-FLOAT-PARAM-DEF>
-                        <ECUC-FLOAT-PARAM-DEF UUID="a0268727-2dd2-4978-bfc1-b57c78d71d16">
+                        <ECUC-FLOAT-PARAM-DEF UUID="98976bc2-c732-406a-80db-f7ff03b32dd6">
                           <SHORT-NAME>LinChannelFractionalDivider</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">The M field of the BRSR register modifies the integer prescaler P for fine tuning of the baud rate. The M value adds in increments of 1/16 of the P value.</L-2>

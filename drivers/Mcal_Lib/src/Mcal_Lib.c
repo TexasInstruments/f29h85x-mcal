@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -72,8 +72,29 @@ __asm(
     "loop:                            \n"
     "    DECB A0, #1, loop            \n"
     "    RET                          \n"
-    );
+    );                                  
+void McalLib_GetCounterValue(P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) startTime)
+{
+    uint32 regValL;
+    uint32 regValH;
+    regValL = *(volatile uint32 *)(IPCCOUNTERREGS_BASE+IPC_O_COUNTERL);
+    regValH = *(volatile uint32 *)(IPCCOUNTERREGS_BASE+IPC_O_COUNTERH);
+    *startTime = (uint64)(((uint64)regValH << 32) | (uint64)regValL);
+    return;
+}
 
+void McalLib_GetElapsedValue(P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) startTime, \
+                             P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) elapsedTime)
+{
+    uint64 cur_val;
+    uint32 regValL;
+    uint32 regValH;
+    regValL = *(volatile uint32 *)(IPCCOUNTERREGS_BASE+IPC_O_COUNTERL);
+    regValH = *(volatile uint32 *)(IPCCOUNTERREGS_BASE+IPC_O_COUNTERH);
+    cur_val = (uint64)(((uint64)regValH << 32) | (uint64)regValL);
+    *elapsedTime = (cur_val - *startTime);
+    return;
+}
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/

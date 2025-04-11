@@ -11,7 +11,7 @@ title: Cdd_Sent API GUIDE Header file
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
-|enum| **[Cdd_SentInstance](../Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance)** | Type for Cdd_SENT Instance.  | 
+|enum| **[Cdd_SentInstance](../Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance)** | Type for Cdd_Sent Instance.  | 
 |enum| **[Cdd_Sent_DataNumber](../Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sent-datanumber)** | Type for Receiver Data.  | 
 |enum| **[Cdd_SentNibbleNumber](../Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentnibblenumber)** | Type for Receiver Data Nibble Number.  | 
 |enum| **[Cdd_SentNibble](../Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentnibble)** | Type for Receiver Data Nibble.  | 
@@ -23,7 +23,9 @@ title: Cdd_Sent API GUIDE Header file
 |enum| **[Cdd_SentDataNibblesCount](../Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentdatanibblescount)** | Type for SENT number of data nibbles count.  | 
 |enum| **[Cdd_SentSensorType](../Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentsensortype)** | Type for SENT Sensor type.  | 
 |enum| **[Cdd_SentChannelType](../Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentchanneltype)** | Sent Channel Type.  | 
+|typedef uint32  | **[CddSent_ValueType](../Modules/group___c_d_d___s_e_n_t.md#typedef-cddsent-valuetype)** | Type for reading and setting the channel index.  | 
 |typedef void(*)(PduIdType id, const PduInfoType *PduInfoPtr)  | **[Cdd_Sent_NotifyType](../Modules/group___c_d_d___s_e_n_t.md#typedef-cdd-sent-notifytype)** | Notification callback function pointer.  | 
+|typedef void(*)(void)  | **[Cdd_Sent_ErrorNotifyType](../Modules/group___c_d_d___s_e_n_t.md#typedef-cdd-sent-errornotifytype)** | Error Notification callback function pointer.  | 
 
 
 
@@ -41,7 +43,7 @@ title: Cdd_Sent API GUIDE Header file
 
 
 **Brief**: 
-Type for Cdd_SENT Instance. 
+Type for Cdd_Sent Instance. 
 
 
 
@@ -151,8 +153,6 @@ Sent Data mode type.
 | Enumerator | Value | Description |
 | ---------- | ----- | ----------- |
 | CDD_SENT_TRIGDISABLE | 0U| Trigger disable.   |
-| CDD_SENT_TRIGLEV1 | 1U| Trigger level 1.   |
-| CDD_SENT_TRIGLEV2 | 2U| Trigger level 2.   |
 | CDD_SENT_TRIGLEV3 | 3U| Trigger level 3.   |
 | CDD_SENT_TRIGLEV4 | 4U| Trigger level 4.   |
 | CDD_SENT_TRIGLEV5 | 5U| Trigger level 5.   |
@@ -213,11 +213,12 @@ Type for SENT number of data nibbles count.
 ### enum Cdd_SentSensorType
 | Enumerator | Value | Description |
 | ---------- | ----- | ----------- |
+| CDD_SENT_CHANNEL_BROADCAST | | Broadcast sensor trigger.   |
 | CDD_SENT_CHANNEL_SENSOR_1 | | sensor trigger 1   |
 | CDD_SENT_CHANNEL_SENSOR_2 | | sensor trigger 2   |
 | CDD_SENT_CHANNEL_SENSOR_3 | | sensor trigger 3   |
 | CDD_SENT_CHANNEL_SENSOR_4 | | sensor trigger 4   |
-| CDD_SENT_CHANNEL_BROADCAST | | Broadcast sensor trigger.   |
+| CDD_SENT_CHANNEL_STANDARD_SENSOR | | Standard sensor trigger   |
 
 
 
@@ -230,9 +231,12 @@ Type for SENT Sensor type.
 ### enum Cdd_SentChannelType
 | Enumerator | Value | Description |
 | ---------- | ----- | ----------- |
-| FAST_CHANNEL | | Fast channel.   |
-| SHORT_SERIAL_SLOW_CHANNEL | | Short serial slow channel.   |
-| ENHANCED_SERIAL_12BIT_SLOW_CHANNEL | | Enhanced serial 12 bit slow channel.   |
+| CDD_SENT_CHANNEL_STANDARD_SENSOR_FAST_CHANNEL | | Fast channel for Stanadard sensor.   |
+| CDD_SENT_CHANNEL_SENSOR_1_FAST_CHANNEL | | Fast channel for sensor 1.   |
+| CDD_SENT_CHANNEL_SENSOR_2_FAST_CHANNEL | | Fast channel for sensor 2.   |
+| CDD_SENT_CHANNEL_SENSOR_3_FAST_CHANNEL | | Fast channel for sensor 3.   |
+| CDD_SENT_CHANNEL_SENSOR_4_FAST_CHANNEL | | Fast channel for sensor 4.   |
+| SHORT_SERIAL_ENHANCED_SERIAL_12BIT_SLOW_CHANNEL | | Short serial and Enhanced serial 12 slow channel.   |
 | ENHANCED_SERIAL_16BIT_SLOW_CHANNEL | | enhanced serial 16 bit slowc channel   |
 
 
@@ -246,13 +250,19 @@ Sent Channel Type.
 
 
 
+
+
+
+
 ## Structures
 |   Name         | Brief          |
 | -------------- | -------------- |
 | **[Cdd_Sent_Data_Buffer](../Classes/struct_cdd___sent___data___buffer.md)** | Sent Data Buffer.  |
+| **[Cdd_Sent_MTPConfigType](../Classes/struct_cdd___sent___m_t_p_config_type.md)** | Configuration per HW unit.  |
 | **[Cdd_Sent_ChannelConfigType](../Classes/struct_cdd___sent___channel_config_type.md)** | Configuration per HW unit.  |
 | **[Cdd_Sent_HWUnitType](../Classes/struct_cdd___sent___h_w_unit_type.md)** | Configuration per HW unit.  |
 | **[Cdd_Sent_ConfigType](../Classes/struct_cdd___sent___config_type.md)** | Configuration per HW unit.  |
+| **[Cdd_Sent_DriverObjType](../Classes/struct_cdd___sent___driver_obj_type.md)** | Cdd_Sent driver object type structure.  |
 
 
 
@@ -264,12 +274,12 @@ Sent Channel Type.
 | CDD_SENT_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
 | CDD_SENT_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
 | CDD_SENT_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
-| CDD_SENT_AR_RELEASE_MAJOR_VERSION   | AUTOSAR major version specification implemented by CDD_SENT Driver.  |
-| CDD_SENT_AR_RELEASE_MINOR_VERSION   | AUTOSAR minor version specification implemented by CDD_SENT Driver.  |
-| CDD_SENT_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by CDD_SENT Driver.  |
+| CDD_SENT_AR_RELEASE_MAJOR_VERSION   | AUTOSAR major version specification implemented by Cdd_Sent Driver.  |
+| CDD_SENT_AR_RELEASE_MINOR_VERSION   | AUTOSAR minor version specification implemented by Cdd_Sent Driver.  |
+| CDD_SENT_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by Cdd_Sent Driver.  |
 | CDD_SENT_VENDOR_ID   | Texas Instruments Vendor ID.  |
-| CDD_SENT_MODULE_ID   | CDD_SENT Driver Module ID.  |
-| CDD_SENT_INSTANCE_ID   | CDD_SENT Driver Instance ID.  |
+| CDD_SENT_MODULE_ID   | Cdd_Sent Driver Module ID.  |
+| CDD_SENT_INSTANCE_ID   | Cdd_Sent Driver Instance ID.  |
 | CDD_SENT_E_PARAM_POINTER   | API parameter checking: invalid pointer.  |
 | CDD_SENT_E_PARAM_CHANNEL   | API parameter checking: invalid value.  |
 | CDD_SENT_E_ALREADY_INITIALIZED   | API service for initialization called when already initialized.  |
@@ -277,15 +287,23 @@ Sent Channel Type.
 | CDD_SENT_SID_GET_VERSION_INFO   | Cdd_Sent_GetVersionInfo().  |
 | CDD_SENT_SID_INIT   | Cdd_Sent_Init().  |
 | CDD_SENT_SID_DEINIT   | Cdd_Sent_Deinit().  |
-| CDD_SENT_SID_TRANSMIT   | Cdd_Sent_TriggerPulse().  |
+| CDD_SENT_SID_TRANSMIT   | Cdd_Sent_Transmit().  |
+| CDD_SENT_SID_ENABLE_INTERRUPT   | Cdd_Sent_Enable_Interrupts().  |
+| CDD_SENT_SID_DISABLE_INTERRUPT   | Cdd_Sent_Disable_Interrupts().  |
 | TIMESTAMP_MEMDATA   | TIMESTAMP MEMDATA.  |
 | DATA0_MEMDATA   | DATA0 MEMDATA.  |
 | SENT_DATAXMAP_STEP   | Data offsent for data1 and data 0.  |
 | SENT_MTP_SWTR_STEP   | software trigger step  |
-| SENSOR_1_ERROR_INTERRUPTS   | SENSOR 1 ERROR INTERRUPTS.  |
-| SENSOR_2_ERROR_INTERRUPTS   | SENSOR 2 ERROR INTERRUPTS.  |
-| SENSOR_3_ERROR_INTERRUPTS   | SENSOR 3 ERROR INTERRUPTS.  |
-| SENSOR_4_ERROR_INTERRUPTS   | SENSOR 4 ERROR INTERRUPTS.  |
+| SENT_MTP_TIMEOUT_STEP   | Mtp Timeout step.  |
+| MAXIMUM_NUMBER_OF_SENSORS   | maximum number of sensors  |
+| CDD_SENT_MAX_32BIT_VAL   | Max 32 bit value.  |
+| CDD_SENT_MAX_16BIT_VAL   | Max 16 bit value.  |
+| CDD_SENT_CRC_NIBBLE_PS_0   | Sent CRC nibble position 1.  |
+| CDD_SENT_CRC_NIBBLE_PS_1   | Sent CRC nibble position 2.  |
+| CDD_SENT_CRC_NIBBLE_PS_2   | Sent CRC Status nibble position.  |
+| CDD_SENT_CRC_NIBBLE_1   | Sent CRC nibble 1.  |
+| CDD_SENT_CRC_NIBBLE_2   | Sent CRC nibble 2.  |
+| CDD_SENT_CRC_STATUS_NIBBLE   | Sent CRC Status nibble.  |
 
 ## Functions
 
@@ -294,44 +312,42 @@ Sent Channel Type.
 | void | **[Cdd_Sent_GetVersionInfo](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| Cdd_Sent_GetVersionInfo : Returns the Cdd sent Version Info.  |
 | void | **[Cdd_Sent_Init](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-init)**(const [Cdd_Sent_ConfigType](Classes/struct_cdd___sent___config_type.md) * ConfigPtr)| Cdd_Sent_Init : Initializes the CDD_SENT module.  |
 | void | **[Cdd_Sent_Deinit](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-deinit)**(void )| Cdd_Sent_Deinit : De-initializes the CDD_SENT module.  |
-| Std_ReturnType | **[Cdd_Sent_TriggerPulse](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-triggerpulse)**(const PduInfoType * PduInfoPtr, PduIdType TxPduId)| Cdd_Sent_TriggerPulse : Triggers the MTP.  |
-| void | **[Cdd_Sent_SetDriverObjPtr](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setdriverobjptr)**([Cdd_Sent_ConfigType](Classes/struct_cdd___sent___config_type.md) * Set_DrvObj)| Set the Cdd_Sent driver object into global pointer.  |
+| void | **[Cdd_Sent_Enable_Interrupts](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-enable-interrupts)**([Cdd_SentInstance](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance) SentInstance)| Cdd_Sent_Transmit : Triggers the MTP.  |
+| void | **[Cdd_Sent_Disable_Interrupts](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-disable-interrupts)**([Cdd_SentInstance](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance) SentInstance)| Cdd_Sent_Disable_Interrupts : Disable Interrupts.  |
+| void | **[Cdd_Sent_SetDriverObjPtr](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setdriverobjptr)**([Cdd_Sent_DriverObjType](Classes/struct_cdd___sent___driver_obj_type.md) * Set_DrvObj)| Set the Cdd_Sent driver object into global pointer.  |
 | void | **[Cdd_Sent_HwInitPrv](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-hwinitprv)**(const [Cdd_Sent_HWUnitType](Classes/struct_cdd___sent___h_w_unit_type.md) * ConfigPtr)| Initialize the Sent instance.  |
 | void | **[Cdd_Sent_MTPInitPrv](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-mtpinitprv)**(const [Cdd_Sent_HWUnitType](Classes/struct_cdd___sent___h_w_unit_type.md) * ConfigPtr)| Initialize MTP mode.  |
 | void | **[Cdd_Sent_HwDenitPrv](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-hwdenitprv)**(const [Cdd_Sent_HWUnitType](Classes/struct_cdd___sent___h_w_unit_type.md) * ConfigPtr)| DeInitialize the Sent instance.  |
-| void | **[Cdd_Sent_TriggerPrv](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-triggerprv)**(uint8 Instance_Id, uint8 Channel_Id)| Trigger particular Sent instance.  |
+| void | **[Cdd_Sent_GetChIdxPriv](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-getchidxpriv)**(const [Cdd_Sent_DriverObjType](Classes/struct_cdd___sent___driver_obj_type.md) * CddSentDrvObj, [Cdd_SentInstance](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance) SentInstance, uint32 * InstanceIndex)| Get the array index of a channel from configuration array/vector.  |
+| void | **[Cdd_Sent_TriggerPrv](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-triggerprv)**(uint8 Instance_Id, Cdd_SentTriggerSource Trigger_Source, uint8 Channel_Id, const PduInfoType * PduInfoPtr)| Trigger particular Sent instance.  |
 | void | **[Cdd_Sent_ProcessISR](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-processisr)**([Cdd_SentInstance](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance) SentInstance)| Cdd_Sent_ProcessISR: Invoked by the respective Sent channel ISR.  |
-| __inline uint32 | **[Cdd_Sent_getFrameData](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-getframedata)**(uint32 memBase, uint16 SENTWord)| Get Frame data.  |
-| __inline uint32 | **[Cdd_Sent_getMessageID](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-getmessageid)**([Cdd_SentInstance](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance) SentInstance)| Get message data.  |
-| __inline uint32 | **[Cdd_Sent_getSlowData](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-getslowdata)**([Cdd_SentInstance](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance) SentInstance)| Get slow data.  |
-| __inline void | **[Cdd_Sent_enableMTPChannel](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-enablemtpchannel)**(uint32 mtpBase, [Cdd_SentChannelType](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentchanneltype) channel)| Enable MTP Channel.  |
-| __inline void | **[Cdd_Sent_setMTPPeriod](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setmtpperiod)**(uint32 mtpBase, [Cdd_SentChannelType](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentchanneltype) channel, uint32 period)| Set MTP Period.  |
-| __inline void | **[Cdd_Sent_clearInterruptFlag](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-clearinterruptflag)**(uint32 base, uint32 intFlags)| Clear Interrupt Flag.  |
-| __inline void | **[Cdd_Sent_setBroadcastChMTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setbroadcastchmtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Broadcast Channel MTP Toggle Time.  |
-| __inline void | **[Cdd_Sent_setSensor1MTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setsensor1mtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Sensor-1 MTP Toggle Time.  |
-| __inline void | **[Cdd_Sent_setSensor2MTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setsensor2mtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Sensor-2 MTP Toggle Time.  |
-| __inline void | **[Cdd_Sent_setSensor3MTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setsensor3mtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Sensor-3 MTP Toggle Time.  |
-| __inline void | **[Cdd_Sent_setSensor4MTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setsensor4mtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Sensor-4 MTP Toggle Time.  |
-| __inline void | **[Cdd_Sent_disableMTPChannel](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-disablemtpchannel)**(uint32 mtpBase, [Cdd_SentChannelType](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentchanneltype) channel)| Disable MTP Channel.  |
-| __inline void | **[Cdd_Sent_disableSentReceiver](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-disablesentreceiver)**(uint32 base)| Disable Sent receiver.  |
-| __inline void | **[Cdd_Sent_EnableSentReceiver](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-enablesentreceiver)**(uint32 base)| Enable Sent receiver.  |
-| __inline void | **[Cdd_Sent_setTTClock](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setttclock)**(uint32 base, uint32 ttClock)| Set Tick Time.  |
-| __inline void | **[Cdd_Sent_setGFILTClockCycle](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setgfiltclockcycle)**(uint32 base, uint32 gFiltClock)| Set GFlit clock cycle.  |
-| __inline void | **[Sent_ConfigureFifoMode](../Modules/group___c_d_d___s_e_n_t.md#function-sent-configurefifomode)**(uint32 base, [Cdd_SentFIFOMode](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentfifomode) fifoMode)| Configure the FIFO Mode.  |
-| __inline void | **[Cdd_Sent_configureTimeout](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-configuretimeout)**(uint32 base, uint32 timeOut)| Configure timeout.  |
-| __inline void | **[Cdd_Sent_enableInterrupt](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-enableinterrupt)**(uint32 base, uint32 intFlags)| Enable the interrupt for channel.  |
-| __inline void | **[Cdd_Sent_setDataNibble](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setdatanibble)**(uint32 base, [Cdd_SentDataNibblesCount](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentdatanibblescount) dataNibble)| Set data nibbles count.  |
-| __inline void | **[Cdd_Sent_setRFIFOTriggerLevel](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setrfifotriggerlevel)**(uint32 base, [Cdd_SentTriggerLevel](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-senttriggerlevel) triggerLevel)| Set the trigger level for receiver FIFO triggerinterrupt.  |
-| __inline uint32 | **[Cdd_Sent_getFIFO](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-getfifo)**(uint32 base)| Get SENT FIFO data.  |
-| __inline void | **[Cdd_Sent_disableInterrupt](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-disableinterrupt)**(uint32 base, uint32 intFlags)| Disable the interrupt for channel.  |
-| __inline void | **[Cdd_Sent_setDataSortingFormat](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setdatasortingformat)**(uint32 base, [Cdd_Sent_DataNumber](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sent-datanumber) dataNumber, [Cdd_SentNibbleNumber](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentnibblenumber) nibbleNum, [Cdd_SentNibble](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentnibble) nibble)| Configure the receiver data sorting format.  |
-| __inline void | **[Cdd_Sent_enableMTPSoftwareTrigger](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-enablemtpsoftwaretrigger)**(uint32 SentBase, [Cdd_SentChannelType](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentchanneltype) channel)| Trigger software trigger request.  |
-| __inline uint32 | **[Cdd_Sent_RegMFReadRaw32](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-regmfreadraw32)**(uint32 addr, uint32 mask, uint32 shift)| This function reads a 32 bit register, masks specific set of bits and the left shifted value.  |
-| __inline void | **[Cdd_Sent_RegBitClear32](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-regbitclear32)**(uint32 addr, uint32 mask)| This function clears a 32 bit register masking field.  |
-| __inline void | **[Cdd_Sent_RegBitSet32](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-regbitset32)**(uint32 addr, uint32 mask)| This function Set a 32 bit register masking field.  |
-| __inline void | **[Cdd_Sent_RegMFWriteRaw32](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-regmfwriteraw32)**(uint32 addr, uint32 mask, uint32 shift, uint32 value)| This function writes a 32 bit register masking specific set of bits and the left shifted value.  |
-| __inline uint32 | **[Cdd_Sent_RegReadRaw32](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-regreadraw32)**(uint32 addr)| This function reads a 32 bit register.  |
-| __inline void | **[Cdd_Sent_RegWriteRaw32](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-regwriteraw32)**(uint32 addr, uint32 value)| This function writes a 32 bit register.  |
+| uint32 | **[Cdd_Sent_getMessageID](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-getmessageid)**([Cdd_SentInstance](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance) SentInstance)| Get message data.  |
+| uint32 | **[Cdd_Sent_getSlowData](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-getslowdata)**([Cdd_SentInstance](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentinstance) SentInstance)| Get slow data.  |
+| void | **[Cdd_Sent_enableMTPChannel](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-enablemtpchannel)**(uint32 mtpBase, [Cdd_SentSensorType](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentsensortype) channel)| Enable MTP Channel.  |
+| void | **[Cdd_Sent_configureMTPTimeout](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-configuremtptimeout)**(uint32 mtpBase, [Cdd_SentSensorType](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentsensortype) sensorNum, uint32 sensorTimeout)| Set MTP Timeout.  |
+| void | **[Cdd_Sent_setMTPWaitTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setmtpwaittime)**(uint32 mtpBase, uint32 waitTime)| Set MTP WaitTime.  |
+| void | **[Cdd_Sent_setMTPPeriod](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setmtpperiod)**(uint32 mtpBase, [Cdd_SentSensorType](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentsensortype) channel, uint32 period)| Set MTP Period.  |
+| void | **[Cdd_Sent_clearInterruptFlag](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-clearinterruptflag)**(uint32 base, uint32 intFlags)| Clear Interrupt Flag.  |
+| void | **[Cdd_Sent_setBroadcastChMTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setbroadcastchmtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Broadcast Channel MTP Toggle Time.  |
+| void | **[Cdd_Sent_setSensor1MTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setsensor1mtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Sensor-1 MTP Toggle Time.  |
+| void | **[Cdd_Sent_setSensor2MTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setsensor2mtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Sensor-2 MTP Toggle Time.  |
+| void | **[Cdd_Sent_setSensor3MTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setsensor3mtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Sensor-3 MTP Toggle Time.  |
+| void | **[Cdd_Sent_setSensor4MTPToggleTime](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setsensor4mtptoggletime)**(uint32 mtpBase, uint32 compareNum, uint32 toggleTime)| Set Sensor-4 MTP Toggle Time.  |
+| void | **[Cdd_Sent_disableMTPChannel](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-disablemtpchannel)**(uint32 mtpBase, [Cdd_SentSensorType](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentsensortype) channel)| Disable MTP Channel.  |
+| void | **[Cdd_Sent_disableSentReceiver](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-disablesentreceiver)**(uint32 base)| Disable Sent receiver.  |
+| void | **[Cdd_Sent_EnableSentReceiver](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-enablesentreceiver)**(uint32 base)| Enable Sent receiver.  |
+| void | **[Cdd_Sent_setGFILTClockCycle](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setgfiltclockcycle)**(uint32 base, uint32 gFiltClock)| Set GFlit clock cycle.  |
+| void | **[Sent_ConfigureFifoMode](../Modules/group___c_d_d___s_e_n_t.md#function-sent-configurefifomode)**(uint32 base, [Cdd_SentFIFOMode](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentfifomode) fifoMode)| Configure the FIFO Mode.  |
+| void | **[Cdd_Sent_configureTimeout](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-configuretimeout)**(uint32 base, uint32 timeOut)| Configure timeout.  |
+| void | **[Cdd_Sent_enableInterrupt](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-enableinterrupt)**(uint32 base, uint32 intFlags)| Enable the interrupt for channel.  |
+| void | **[Cdd_Sent_setDataNibble](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setdatanibble)**(uint32 base, [Cdd_SentDataNibblesCount](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentdatanibblescount) dataNibble)| Set data nibbles count.  |
+| void | **[Cdd_Sent_setRFIFOTriggerLevel](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setrfifotriggerlevel)**(uint32 base, [Cdd_SentTriggerLevel](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-senttriggerlevel) triggerLevel)| Set the trigger level for receiver FIFO triggerinterrupt.  |
+| uint32 | **[Cdd_Sent_getFIFO](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-getfifo)**(uint32 base)| Get SENT FIFO data.  |
+| void | **[Cdd_Sent_disableInterrupt](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-disableinterrupt)**(uint32 base, uint32 intFlags)| Disable the interrupt for channel.  |
+| void | **[Cdd_Sent_setDataSortingFormat](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-setdatasortingformat)**(uint32 base, [Cdd_Sent_DataNumber](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sent-datanumber) dataNumber, [Cdd_SentNibbleNumber](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentnibblenumber) nibbleNum, [Cdd_SentNibble](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentnibble) nibble)| Configure the receiver data sorting format.  |
+| void | **[Cdd_Sent_enableMTPSoftwareTrigger](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-enablemtpsoftwaretrigger)**(uint32 SentBase, [Cdd_SentSensorType](Modules/group___c_d_d___s_e_n_t.md#enum-cdd-sentsensortype) channel)| Trigger software trigger request.  |
+| void | **[Cdd_Sent_InitPriv](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-initpriv)**([Cdd_Sent_DriverObjType](Classes/struct_cdd___sent___driver_obj_type.md) * Cdd_Sent_DriverObj, boolean * Cdd_Sent_DrvInitialized)| Cdd_Sent_InitPriv : Initializes the CDD_SENT Channels and Enables Sent Receiver.  |
+| Std_ReturnType | **[Cdd_Sent_TransmitPriv](../Modules/group___c_d_d___s_e_n_t.md#function-cdd-sent-transmitpriv)**(const PduInfoType * PduInfoPtr, PduIdType TxPduId)| Cdd_Sent_TransmitPriv : Triggers the MTP.  |
 
 
 
@@ -431,28 +447,32 @@ This service deinitialize the CDD_SENT driver
 
 **Postcondition**: None 
 
-### function Cdd_Sent_TriggerPulse
+### function Cdd_Sent_Enable_Interrupts
 
 ```
-Std_ReturnType Cdd_Sent_TriggerPulse(
-    const PduInfoType * PduInfoPtr,
-    PduIdType TxPduId
+void Cdd_Sent_Enable_Interrupts(
+    Cdd_SentInstance SentInstance
 )
 ```
 
 
 **Brief**: 
-Cdd_Sent_TriggerPulse : Triggers the MTP. 
+Cdd_Sent_Transmit : Triggers the MTP. 
 
-This service will trigger the MTP in case of MTP enabled.
+
+Cdd_Sent_Enable_Interrupts : Enable Interrupts.
+
+This service will enable interrupts.
 
 
 **Parameters**: 
 
   
-* **PduInfoPtr** Pointer to PDU Information. 
+* **PduInfoPtr** Pointer to PDU Information. If PduInfoPtr->SduDataPtr[0] is 0, Will disbale HW trigger If PduInfoPtr->SduDataPtr[0] is 1, Will configure HW trigger to configuration value If PduInfoPtr->SduDataPtr[0] is 2, Will trigger SW trigger 
   
-* **TxPduId** ID of the Tx PDU 
+* **TxPduId** : When Cdd Sent is integrated with Autosar Com stack, this TxPduId parameter is a Pdu identifier used to address the respective sensor. When Cdd Sent is not integrated with Autosar Com stack, this TxPduId parameter is a device identifier used to address the respective sensor.
+  
+* **SentInstance** id of Sent HW unit. 
 
 
 **Returns**: 
@@ -461,11 +481,60 @@ This service will trigger the MTP in case of MTP enabled.
 * **E_OK** command has been accepted 
 <br> 
   
-* **E_NOT_OK** command has not been accepted 
+* **E_NOT_OK** command has not been accepted
+<br> 
+  
+* **None** 
 <br> 
 
 
-**Return**: Std_ReturnType 
+**Return**: 
+
+  * Std_ReturnType 
+  * None 
+
+
+**Precondition**: 
+
+  * Cdd_Sent_Init should be called first before calling this service. 
+  * Cdd_Sent_Init should be called first before calling this service. 
+
+
+**Postcondition**: 
+
+  * None 
+  * None 
+
+
+### function Cdd_Sent_Disable_Interrupts
+
+```
+void Cdd_Sent_Disable_Interrupts(
+    Cdd_SentInstance SentInstance
+)
+```
+
+
+**Brief**: 
+Cdd_Sent_Disable_Interrupts : Disable Interrupts. 
+
+This service will Disable interrupts and ignore any received data as there is no polling API for Cdd_Sent.
+
+
+**Parameters**: 
+
+  
+* **SentInstance** id of Sent HW unit. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
 
 **Precondition**: Cdd_Sent_Init should be called first before calling this service. 
 
@@ -475,7 +544,7 @@ This service will trigger the MTP in case of MTP enabled.
 
 ```
 void Cdd_Sent_SetDriverObjPtr(
-    Cdd_Sent_ConfigType * Set_DrvObj
+    Cdd_Sent_DriverObjType * Set_DrvObj
 )
 ```
 
@@ -607,12 +676,54 @@ This function Deinitialize the Sent using the configuration parameters.
 
 **Postcondition**: None 
 
+### function Cdd_Sent_GetChIdxPriv
+
+```
+void Cdd_Sent_GetChIdxPriv(
+    const Cdd_Sent_DriverObjType * CddSentDrvObj,
+    Cdd_SentInstance SentInstance,
+    uint32 * InstanceIndex
+)
+```
+
+
+**Brief**: 
+Get the array index of a channel from configuration array/vector. 
+
+This function populates the 'ChannelIndex' pointer with the array index of the 'Channel' present in configuration array
+
+
+**Parameters**: 
+
+  
+* **CddSentDrvObj** is a structure containing multiple timer configurations. 
+  
+* **SentInstance** Numeric identifier of the Sent instance. 
+  
+* **InstanceIndex** Pointer to populate the index of channel present in config 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
 ### function Cdd_Sent_TriggerPrv
 
 ```
 void Cdd_Sent_TriggerPrv(
     uint8 Instance_Id,
-    uint8 Channel_Id
+    Cdd_SentTriggerSource Trigger_Source,
+    uint8 Channel_Id,
+    const PduInfoType * PduInfoPtr
 )
 ```
 
@@ -629,6 +740,10 @@ This function trigger particular Sent instance using the configuration parameter
 * **Instance_Id** is the sent instance id. 
   
 * **Channel_Id** is the sent Channel id. 
+  
+* **Trigger_Source** is the type of trigger source. 
+  
+* **PduInfoPtr** is the PDU Information Type. 
 
 
 **Returns**: 
@@ -678,47 +793,10 @@ This Interrupt notification call function is called when interrupt notification 
 
 **Postcondition**: None 
 
-### function Cdd_Sent_getFrameData
-
-```
-static __inline uint32 Cdd_Sent_getFrameData(
-    uint32 memBase,
-    uint16 SENTWord
-)
-```
-
-
-**Brief**: 
-Get Frame data. 
-
-This function Enable MTP Channel using the configuration parameters.
-
-
-**Parameters**: 
-
-  
-* **membase** is the base address of the SENT module. 
-  
-* **SENTWord** is the sentWord. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
 ### function Cdd_Sent_getMessageID
 
 ```
-static __inline uint32 Cdd_Sent_getMessageID(
+static inline uint32 Cdd_Sent_getMessageID(
     Cdd_SentInstance SentInstance
 )
 ```
@@ -739,11 +817,11 @@ This function get the message id of slow data.
 **Returns**: 
 
   
-* **None** 
+* **returns** message data 
 <br> 
 
 
-**Return**: None 
+**Return**: uint32 
 
 **Precondition**: None 
 
@@ -752,7 +830,7 @@ This function get the message id of slow data.
 ### function Cdd_Sent_getSlowData
 
 ```
-static __inline uint32 Cdd_Sent_getSlowData(
+static inline uint32 Cdd_Sent_getSlowData(
     Cdd_SentInstance SentInstance
 )
 ```
@@ -773,11 +851,11 @@ This function fetches slow data.
 **Returns**: 
 
   
-* **None** 
+* **returns** slow data 
 <br> 
 
 
-**Return**: None 
+**Return**: uint32 
 
 **Precondition**: None 
 
@@ -786,9 +864,9 @@ This function fetches slow data.
 ### function Cdd_Sent_enableMTPChannel
 
 ```
-static __inline void Cdd_Sent_enableMTPChannel(
+static inline void Cdd_Sent_enableMTPChannel(
     uint32 mtpBase,
-    Cdd_SentChannelType channel
+    Cdd_SentSensorType channel
 )
 ```
 
@@ -820,12 +898,89 @@ This function Enable MTP Channel using the configuration parameters.
 
 **Postcondition**: None 
 
+### function Cdd_Sent_configureMTPTimeout
+
+```
+static inline void Cdd_Sent_configureMTPTimeout(
+    uint32 mtpBase,
+    Cdd_SentSensorType sensorNum,
+    uint32 sensorTimeout
+)
+```
+
+
+**Brief**: 
+Set MTP Timeout. 
+
+This function Set MTP Timeout using the configuration parameters.
+
+
+**Parameters**: 
+
+  
+* **mtpbase** is the base address of the SENT module. 
+  
+* **sensorNum** is the sent Channel type. 
+  
+* **sensorTimeout** is the Time period. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Sent_setMTPWaitTime
+
+```
+static inline void Cdd_Sent_setMTPWaitTime(
+    uint32 mtpBase,
+    uint32 waitTime
+)
+```
+
+
+**Brief**: 
+Set MTP WaitTime. 
+
+This function Set MTP waittime using the configuration parameters.
+
+
+**Parameters**: 
+
+  
+* **mtpbase** is the base address of the SENT module. 
+  
+* **waitTime** is the Time period. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
 ### function Cdd_Sent_setMTPPeriod
 
 ```
-static __inline void Cdd_Sent_setMTPPeriod(
+static inline void Cdd_Sent_setMTPPeriod(
     uint32 mtpBase,
-    Cdd_SentChannelType channel,
+    Cdd_SentSensorType channel,
     uint32 period
 )
 ```
@@ -863,7 +1018,7 @@ This function Set MTP Period using the configuration parameters.
 ### function Cdd_Sent_clearInterruptFlag
 
 ```
-static __inline void Cdd_Sent_clearInterruptFlag(
+static inline void Cdd_Sent_clearInterruptFlag(
     uint32 base,
     uint32 intFlags
 )
@@ -900,7 +1055,7 @@ This function clear Interrupt flag.
 ### function Cdd_Sent_setBroadcastChMTPToggleTime
 
 ```
-static __inline void Cdd_Sent_setBroadcastChMTPToggleTime(
+static inline void Cdd_Sent_setBroadcastChMTPToggleTime(
     uint32 mtpBase,
     uint32 compareNum,
     uint32 toggleTime
@@ -940,7 +1095,7 @@ This function Set Broadcast Channel MTP Toggle Time using the configuration para
 ### function Cdd_Sent_setSensor1MTPToggleTime
 
 ```
-static __inline void Cdd_Sent_setSensor1MTPToggleTime(
+static inline void Cdd_Sent_setSensor1MTPToggleTime(
     uint32 mtpBase,
     uint32 compareNum,
     uint32 toggleTime
@@ -980,7 +1135,7 @@ This function Set Sensor-1 MTP Toggle Time using the configuration parameters.
 ### function Cdd_Sent_setSensor2MTPToggleTime
 
 ```
-static __inline void Cdd_Sent_setSensor2MTPToggleTime(
+static inline void Cdd_Sent_setSensor2MTPToggleTime(
     uint32 mtpBase,
     uint32 compareNum,
     uint32 toggleTime
@@ -1020,7 +1175,7 @@ This function Set Sensor-2 MTP Toggle Time using the configuration parameters.
 ### function Cdd_Sent_setSensor3MTPToggleTime
 
 ```
-static __inline void Cdd_Sent_setSensor3MTPToggleTime(
+static inline void Cdd_Sent_setSensor3MTPToggleTime(
     uint32 mtpBase,
     uint32 compareNum,
     uint32 toggleTime
@@ -1060,7 +1215,7 @@ This function Set Sensor-3 MTP Toggle Time using the configuration parameters.
 ### function Cdd_Sent_setSensor4MTPToggleTime
 
 ```
-static __inline void Cdd_Sent_setSensor4MTPToggleTime(
+static inline void Cdd_Sent_setSensor4MTPToggleTime(
     uint32 mtpBase,
     uint32 compareNum,
     uint32 toggleTime
@@ -1100,9 +1255,9 @@ This function Set Sensor-4 MTP Toggle Time using the configuration parameters.
 ### function Cdd_Sent_disableMTPChannel
 
 ```
-static __inline void Cdd_Sent_disableMTPChannel(
+static inline void Cdd_Sent_disableMTPChannel(
     uint32 mtpBase,
-    Cdd_SentChannelType channel
+    Cdd_SentSensorType channel
 )
 ```
 
@@ -1137,7 +1292,7 @@ This function Disable MTP Channel using the configuration parameters.
 ### function Cdd_Sent_disableSentReceiver
 
 ```
-static __inline void Cdd_Sent_disableSentReceiver(
+static inline void Cdd_Sent_disableSentReceiver(
     uint32 base
 )
 ```
@@ -1171,7 +1326,7 @@ This function Disable Sent receiver using the configuration parameters.
 ### function Cdd_Sent_EnableSentReceiver
 
 ```
-static __inline void Cdd_Sent_EnableSentReceiver(
+static inline void Cdd_Sent_EnableSentReceiver(
     uint32 base
 )
 ```
@@ -1202,47 +1357,10 @@ This function Enable Sent receiver using the configuration parameters.
 
 **Postcondition**: None 
 
-### function Cdd_Sent_setTTClock
-
-```
-static __inline void Cdd_Sent_setTTClock(
-    uint32 base,
-    uint32 ttClock
-)
-```
-
-
-**Brief**: 
-Set Tick Time. 
-
-This function set tick time using the configuration parameters.
-
-
-**Parameters**: 
-
-  
-* **base** is the base address of the SENT module. 
-  
-* **ttClock** is the tick time. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
 ### function Cdd_Sent_setGFILTClockCycle
 
 ```
-static __inline void Cdd_Sent_setGFILTClockCycle(
+static inline void Cdd_Sent_setGFILTClockCycle(
     uint32 base,
     uint32 gFiltClock
 )
@@ -1279,7 +1397,7 @@ This function set GFlit clock cycle using the configuration parameters.
 ### function Sent_ConfigureFifoMode
 
 ```
-static __inline void Sent_ConfigureFifoMode(
+static inline void Sent_ConfigureFifoMode(
     uint32 base,
     Cdd_SentFIFOMode fifoMode
 )
@@ -1316,7 +1434,7 @@ The _fifoMode_ specifies whether the Timestamp, data0 and data1 data will be map
 ### function Cdd_Sent_configureTimeout
 
 ```
-static __inline void Cdd_Sent_configureTimeout(
+static inline void Cdd_Sent_configureTimeout(
     uint32 base,
     uint32 timeOut
 )
@@ -1350,7 +1468,7 @@ Configure timeout.
 ### function Cdd_Sent_enableInterrupt
 
 ```
-static __inline void Cdd_Sent_enableInterrupt(
+void Cdd_Sent_enableInterrupt(
     uint32 base,
     uint32 intFlags
 )
@@ -1384,7 +1502,7 @@ Enable the interrupt for channel.
 ### function Cdd_Sent_setDataNibble
 
 ```
-static __inline void Cdd_Sent_setDataNibble(
+static inline void Cdd_Sent_setDataNibble(
     uint32 base,
     Cdd_SentDataNibblesCount dataNibble
 )
@@ -1418,7 +1536,7 @@ Set data nibbles count.
 ### function Cdd_Sent_setRFIFOTriggerLevel
 
 ```
-static __inline void Cdd_Sent_setRFIFOTriggerLevel(
+static inline void Cdd_Sent_setRFIFOTriggerLevel(
     uint32 base,
     Cdd_SentTriggerLevel triggerLevel
 )
@@ -1452,7 +1570,7 @@ Set the trigger level for receiver FIFO triggerinterrupt.
 ### function Cdd_Sent_getFIFO
 
 ```
-static __inline uint32 Cdd_Sent_getFIFO(
+static inline uint32 Cdd_Sent_getFIFO(
     uint32 base
 )
 ```
@@ -1483,7 +1601,7 @@ Get SENT FIFO data.
 ### function Cdd_Sent_disableInterrupt
 
 ```
-static __inline void Cdd_Sent_disableInterrupt(
+void Cdd_Sent_disableInterrupt(
     uint32 base,
     uint32 intFlags
 )
@@ -1517,7 +1635,7 @@ Disable the interrupt for channel.
 ### function Cdd_Sent_setDataSortingFormat
 
 ```
-static __inline void Cdd_Sent_setDataSortingFormat(
+static inline void Cdd_Sent_setDataSortingFormat(
     uint32 base,
     Cdd_Sent_DataNumber dataNumber,
     Cdd_SentNibbleNumber nibbleNum,
@@ -1560,9 +1678,9 @@ This function configures where the received nibbles are stored in data0/1 map.
 ### function Cdd_Sent_enableMTPSoftwareTrigger
 
 ```
-static __inline void Cdd_Sent_enableMTPSoftwareTrigger(
+static inline void Cdd_Sent_enableMTPSoftwareTrigger(
     uint32 SentBase,
-    Cdd_SentChannelType channel
+    Cdd_SentSensorType channel
 )
 ```
 
@@ -1594,62 +1712,28 @@ This function triggers software trigger request.
 
 **Postcondition**: None 
 
-### function Cdd_Sent_RegMFReadRaw32
+### function Cdd_Sent_InitPriv
 
 ```
-static __inline uint32 Cdd_Sent_RegMFReadRaw32(
-    uint32 addr,
-    uint32 mask,
-    uint32 shift
+void Cdd_Sent_InitPriv(
+    Cdd_Sent_DriverObjType * Cdd_Sent_DriverObj,
+    boolean * Cdd_Sent_DrvInitialized
 )
 ```
 
 
 **Brief**: 
-This function reads a 32 bit register, masks specific set of bits and the left shifted value. 
+Cdd_Sent_InitPriv : Initializes the CDD_SENT Channels and Enables Sent Receiver. 
+
+This service initializes the configured HW units. 
+
 
 **Parameters**: 
 
   
-* **addr** Address of the memory mapped hardware register. 
+* **Cdd_Sent_DriverObj** Cdd_Sent_DrvObj is the Cdd_Sent driver object defined in Cdd_Sent.c 
   
-* **mask** Mask for the bit field. 
-  
-* **shift** Bit field shift from LSB. 
-
-
-**Returns**: 
-
-  
-* **Value** of the type uint32. 
-<br> 
-
-
-**Return**: Bit-field value (absolute value - shifted to LSB position). 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Sent_RegBitClear32
-
-```
-static __inline void Cdd_Sent_RegBitClear32(
-    uint32 addr,
-    uint32 mask
-)
-```
-
-
-**Brief**: 
-This function clears a 32 bit register masking field. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **mask** Mask for the bit field. 
+* **Cdd_Sent_DrvInitialized** Cdd_Sent_DriverInitialized is the boolean variable defined in Cdd_Sent.c 
 
 
 **Returns**: 
@@ -1665,142 +1749,43 @@ This function clears a 32 bit register masking field.
 
 **Postcondition**: None 
 
-### function Cdd_Sent_RegBitSet32
+### function Cdd_Sent_TransmitPriv
 
 ```
-static __inline void Cdd_Sent_RegBitSet32(
-    uint32 addr,
-    uint32 mask
+Std_ReturnType Cdd_Sent_TransmitPriv(
+    const PduInfoType * PduInfoPtr,
+    PduIdType TxPduId
 )
 ```
 
 
 **Brief**: 
-This function Set a 32 bit register masking field. 
+Cdd_Sent_TransmitPriv : Triggers the MTP. 
+
+This service will trigger the MTP in case of MTP enabled.
+
 
 **Parameters**: 
 
   
-* **addr** Address of the memory mapped hardware register. 
+* **PduInfoPtr** Pointer to PDU Information. 
   
-* **mask** Mask for the bit field. 
+* **TxPduId** ID of the Tx PDU 
 
 
 **Returns**: 
 
   
-* **None** 
+* **E_OK** command has been accepted 
+<br> 
+  
+* **E_NOT_OK** command has not been accepted 
 <br> 
 
 
-**Return**: None 
+**Return**: Std_ReturnType 
 
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Sent_RegMFWriteRaw32
-
-```
-static __inline void Cdd_Sent_RegMFWriteRaw32(
-    uint32 addr,
-    uint32 mask,
-    uint32 shift,
-    uint32 value
-)
-```
-
-
-**Brief**: 
-This function writes a 32 bit register masking specific set of bits and the left shifted value. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **mask** Mask for the bit field. 
-  
-* **shift** Bit field shift from LSB. 
-  
-* **value** Value to write in the memory mapped hardware register. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Sent_RegReadRaw32
-
-```
-static __inline uint32 Cdd_Sent_RegReadRaw32(
-    uint32 addr
-)
-```
-
-
-**Brief**: 
-This function reads a 32 bit register. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-
-
-**Returns**: 
-
-  
-* **Value** of the type uint32. 
-<br> 
-
-
-**Return**: Bit-field value (absolute value - shifted to LSB position). 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Sent_RegWriteRaw32
-
-```
-static __inline void Cdd_Sent_RegWriteRaw32(
-    uint32 addr,
-    uint32 value
-)
-```
-
-
-**Brief**: 
-This function writes a 32 bit register. 
-
-**Parameters**: 
-
-  
-* **addr** Address of the memory mapped hardware register. 
-  
-* **value** Value to write in the 32-bit register. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
+**Precondition**: Cdd_Sent_Init should be called first before calling this service. 
 
 **Postcondition**: None 
 

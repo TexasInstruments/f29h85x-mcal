@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -52,11 +52,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((MCU_SW_MAJOR_VERSION != (1U)) || (MCU_SW_MINOR_VERSION != (0U)))
+#if ((MCU_SW_MAJOR_VERSION != (1U)) || (MCU_SW_MINOR_VERSION != (1U)))
     #error "Version numbers of Mcu.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (1U)) || (MCU_CFG_MINOR_VERSION != (0U)))
+#if ((MCU_CFG_MAJOR_VERSION != (1U)) || (MCU_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Mcu.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
@@ -104,6 +104,18 @@ P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFIG_DATA) Mcu_ConfigObj = NULL_P
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
+
+/** \brief Mcu_ReportClockFailure - This API will report clock failure error to DEM module
+ * 
+ * \param[in] Value set clock functionality return value E_OK or E_NOT_OK
+ * \param[out] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(void, MCU_CODE) Mcu_ReportClockFailure(Std_ReturnType Value);
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -185,15 +197,6 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitRamSection(Mcu_RamSectionType RamSection)
 {
     VAR(Std_ReturnType, AUTOMATIC) init_ramsection_return = (Std_ReturnType)E_NOT_OK;
 
-    /* RAM destination pointer */
-    P2VAR(uint8, AUTOMATIC, MCU_APPL_DATA) ram_destination = NULL_PTR;
-
-    /* Local word counter */
-    VAR(uint32, MCU_VAR) section_size            = 0U;
-    VAR(uint8, MCU_VAR)  section_writeSize       = 0U;
-    VAR(uint8, MCU_VAR)  section_defaultValue    = 0U;
-    VAR(uint32, MCU_VAR) num_iterations          = 0U;
-
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
     if ((boolean)FALSE == Mcu_InitDone)
     {
@@ -211,65 +214,22 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitRamSection(Mcu_RamSectionType RamSection)
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
+        P2CONST(Mcu_RamSectionConfigType, AUTOMATIC, MCU_APPL_CONST) ramsection_config_ptr = &Mcu_ConfigObj->Mcu_ConfigRamSection[RamSection];
+
         /* Check for Ram Section Base Address pointer validity */
-        if (NULL_PTR != Mcu_ConfigObj->Mcu_ConfigRamSection[RamSection].Mcu_RamSectionBaseAddress)
+        if (NULL_PTR != ramsection_config_ptr->Mcu_RamSectionBaseAddress)
         {
-            /* Load the RAM Section Base address from the configuration */
-            ram_destination = Mcu_ConfigObj->Mcu_ConfigRamSection[RamSection].Mcu_RamSectionBaseAddress;
+            /* Fill Ram sections with configured data */
+            Mcu_FillRamSection(ramsection_config_ptr);
 
-            /* Load the Section Size & Section Write size & Default value from configuration*/
-            section_size            = Mcu_ConfigObj->Mcu_ConfigRamSection[RamSection].Mcu_RamSectionBytes;
-            section_writeSize       = Mcu_ConfigObj->Mcu_ConfigRamSection[RamSection].Mcu_RamSectionWriteSize;
-            section_defaultValue    = Mcu_ConfigObj->Mcu_ConfigRamSection[RamSection].Mcu_RamDefaultValue;
-
-            /*  Calculate the number of iterations required to fill the entire RAM section */
-            num_iterations = (section_size / section_writeSize);
-
-            if (section_writeSize == 1U)
-            {
-                uint8* write_buffer = ram_destination;
-                for (uint32 i = 0; i < num_iterations; i++)
-                {
-                    write_buffer[i] = section_defaultValue;
-                }
-            }
-            else if (section_writeSize == 2U)
-            {
-                uint16* write_buffer = (uint16 *)ram_destination;
-                for (uint32 i = 0; i < num_iterations; i++)
-                {
-                    write_buffer[i] = section_defaultValue;
-                }
-            }
-            else if (section_writeSize == 4U)
-            {
-                uint32* write_buffer = (uint32 *)ram_destination;
-                for (uint32 i = 0; i < num_iterations; i++)
-                {
-                    write_buffer[i] = section_defaultValue;
-                }
-            }
-            else if (section_writeSize == 8U)
-            {
-                uint64* write_buffer = (uint64 *) ram_destination;
-                for (uint32 i = 0; i < num_iterations; i++)
-                {
-                    write_buffer[i] = section_defaultValue;
-                }
-            }
-            else
-            {
-                /* Do Nothing */
-            }
-         
             init_ramsection_return = (Std_ReturnType)E_OK;
         }
         else
         {
             /* Do Nothing */
         }
-    }
 
+    }
     return (init_ramsection_return);
 }
 
@@ -304,26 +264,30 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClock(Mcu_ClockType ClockSetting)
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
+        #if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
+        /* Unlocks all Clock configuration registers */
+        Mcu_UnlockClockConfigRegisters();
+        #endif
+
+        #if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
+        /* Unlocks all Cpu Peripheral configuration registers */
+        Mcu_UnlockCpuPeripheralConfigRegisters();
+        #endif
+
         /* Initialize the clock */
         return_value = Mcu_SetClock(clk_config_ptr);
 
-        if((Std_ReturnType)E_NOT_OK == return_value)
-        {
-            if ((boolean)TRUE == Mcu_ConfigObj->Mcu_EnableClkFailNotification)
-            {
-                #ifdef MCU_E_CLOCK_FAILURE
-                (void)Dem_SetEventStatus(MCU_E_CLOCK_FAILURE, DEM_EVENT_STATUS_FAILED);
-                #endif
-            }
-            else 
-            {
-                /* Do Nothing */
-            }
-        }
-        else
-        {
-            /* Do Nothing */
-        }
+        #if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
+        /* Locks all Clock configuration registers */
+        Mcu_LockClockConfigRegisters();
+        #endif
+
+        #if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
+        /* Locks all Cpu Peripheral configuration registers */
+        Mcu_LockCpuPeripheralConfigRegisters();
+        #endif
+
+        Mcu_ReportClockFailure(return_value);
     }
 
     return (return_value);
@@ -515,8 +479,18 @@ FUNC(void, MCU_CODE) Mcu_SetMode(Mcu_ModeType McuMode)
     else
 #endif   /*MCU_CFG_DEV_ERROR_DETECT*/
     {
+        #if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
+        /* Unlocks Cpu system register: LPMCR */
+        Mcu_UnlockCpuSysRegisters();
+        #endif
+
         /* Sets and Enter in to low power modes*/
         Mcu_EnterLowPowerMode(mode_config_ptr);
+
+        #if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
+        /* Locks Cpu system register: LPMCR */
+        Mcu_LockCpuSysRegisters();
+        #endif
     }
 }
 
@@ -550,6 +524,29 @@ FUNC(Mcu_RamStateType, MCU_CODE) Mcu_GetRamState(void)
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
+/*
+ * Design: MCAL-28521
+ */
+static FUNC(void, MCU_CODE) Mcu_ReportClockFailure(Std_ReturnType Value)
+{
+    if((Std_ReturnType)E_NOT_OK == Value)
+    {
+        if ((boolean)TRUE == Mcu_ConfigObj->Mcu_EnableClkFailNotification)
+        {
+            #ifdef MCU_E_CLOCK_FAILURE
+            (void)Dem_SetEventStatus(MCU_E_CLOCK_FAILURE, DEM_EVENT_STATUS_FAILED);
+            #endif
+        }
+        else
+        {
+            /* Do Nothing */
+        }
+    }
+    else
+    {
+        /* Do Nothing */
+    }
+}
 
 #define MCU_STOP_SEC_CODE
 #include "Mcu_MemMap.h"

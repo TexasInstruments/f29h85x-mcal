@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -50,11 +50,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((PORT_SW_MAJOR_VERSION != (1U)) || (PORT_SW_MINOR_VERSION != (0U)))
+#if ((PORT_SW_MAJOR_VERSION != (1U)) || (PORT_SW_MINOR_VERSION != (1U)))
   #error "Version numbers of Port.c and Port.h are inconsistent!"
 #endif
 
-#if ((PORT_CFG_MAJOR_VERSION != (1U)) || (PORT_CFG_MINOR_VERSION != (0U)))
+#if ((PORT_CFG_MAJOR_VERSION != (1U)) || (PORT_CFG_MINOR_VERSION != (1U)))
   #error "Version numbers of Port.c and Port_Cfg.h are inconsistent!"
 #endif
 
@@ -90,19 +90,67 @@ static P2CONST(Port_ConfigType, PORT_CONFIG_DATA, PORT_CONFIG_DATA) Port_ConfigO
 #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
     /* Global Init Done flag  */
     static VAR(boolean, PORT_VAR_INIT) Port_InitDone = (boolean)FALSE;
+
+    /* Global Commit Done flag  */
+    static VAR(boolean, PORT_VAR_INIT) Port_CommitDone = (boolean)FALSE;
 #endif
+
 #define PORT_STOP_SEC_VAR_INIT_BOOLEAN
 #include "Port_MemMap.h"
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
+#define PORT_START_SEC_CODE
+#include "Port_MemMap.h"
+
+/** \brief Initialzes all the pins passed in pin configuration.
+ *
+ * This function initialzes all the pins passed in pin configuration
+ *
+ * \param[in] Port_ConfigObject is the pointer to the pin config structure.
+ * \param[out] returnvalue
+ * \pre None
+ * \post None
+ * \return returnValue
+ * \retval E_OK if Init success
+ * \retval E_NOT_OK if Init Fails
+ *
+ *********************************************************************************************************************/
+static FUNC(Std_ReturnType, PORT_CODE) \
+Port_InitInternal(P2CONST(Port_ConfigType, AUTOMATIC, PORT_CONFIG_DATA) Port_ConfigObject);
+
+
+#if (STD_ON == PORT_CFG_SET_PIN_DIRECTION_API)
+/** \brief Port_SetPinDirectionDetCheck - This API will check for DET errors in Port_SetPinDirection() API.
+ * 
+ * \param[in] Pin Pin ID whose direction needs to be changed.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(Std_ReturnType, PORT_CODE) Port_SetPinDirectionDetCheck(VAR(Port_PinType, AUTOMATIC) Pin);
+#endif
+
+
+#if (STD_ON == PORT_CFG_SET_PIN_MODE_API)
+/** \brief Port_SetPinModeInitAndCommitCheck - This API will check for Port Init Done and Commit Done for
+ *          Port_SetPinMode() API.
+ * 
+ * \param[in] None
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+static FUNC(Std_ReturnType, PORT_CODE) Port_SetPinModeInitAndCommitCheck(void);
+#endif
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
-
-#define PORT_START_SEC_CODE
-#include "Port_MemMap.h"
 
 /*********************************************************************************************************************
  *  External Functions Definition
@@ -115,16 +163,9 @@ static P2CONST(Port_ConfigType, PORT_CONFIG_DATA, PORT_CONFIG_DATA) Port_ConfigO
 */
 FUNC(void, PORT_CODE) Port_Init(P2CONST(Port_ConfigType, AUTOMATIC, PORT_CONFIG_DATA) CfgPtr)
 {
-    VAR(Port_PinType, AUTOMATIC) loop = (Port_PinType)0U;
     /* Local Config pointer initialised with NULL_PTR */
-    P2CONST(Port_ConfigType, AUTOMATIC, PORT_CONFIG_DATA) config_ptr = NULL_PTR; 
-    P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig = NULL_PTR;
-    P2CONST(Port_ControllerSpecificType, AUTOMATIC, PORT_CONFIG_DATA) controllerSpecificPtr = NULL_PTR;
-
+    P2CONST(Port_ConfigType, AUTOMATIC, PORT_CONFIG_DATA) config_ptr = NULL_PTR;
     VAR(Std_ReturnType, AUTOMATIC) returnValue = (Std_ReturnType)E_OK;
-    #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
-        VAR(Std_ReturnType, AUTOMATIC) PortInitPinStatus = (Std_ReturnType)E_OK;
-    #endif
 
 #if (STD_ON == PORT_CFG_PRE_COMPILE_VARIANT)
     if (NULL_PTR == CfgPtr)
@@ -154,65 +195,28 @@ FUNC(void, PORT_CODE) Port_Init(P2CONST(Port_ConfigType, AUTOMATIC, PORT_CONFIG_
     {
         /* Save the pointer to configuration */
         Port_ConfigObj = config_ptr;
+
         /*
         * Initialize all ports and port pins
         */
-        for (loop = ((Port_PinType)0U); loop < Port_ConfigObj->Port_NumberOfPortPins; loop++)
+        returnValue = Port_InitInternal(Port_ConfigObj);        
+
+        if (returnValue == (Std_ReturnType)E_OK)
         {
-            pinConfig = &Port_ConfigObj->Port_PinConfig[loop];
-            controllerSpecificPtr = &pinConfig->Port_ControllerSpecific;
-
-            if((boolean)TRUE == PORT_IS_PIN_CONFIGURABLE(pinConfig))
-            {
-                returnValue |= Port_SetCntSpConfig(pinConfig);
-
-                returnValue |= Port_SetPinLevel(pinConfig, pinConfig->Port_PinLevelValue);
-
-                returnValue |= Port_SetDirectionMode(pinConfig, pinConfig->Port_PinDirection);
-                
-                /* Enable LPM Wakeup Pin if Configured for the current pin*/
-                if ((boolean)TRUE == controllerSpecificPtr->Port_EnableWakeupPinLPM)
-                {
-                    returnValue |= Port_EnableLPMWakeUpPin(pinConfig); 
-                }
-                else
-                {
-                    /* Do Nothing */
-                }
-                if (returnValue == (Std_ReturnType)E_NOT_OK)
-                {
-                #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
-                    PortInitPinStatus = (Std_ReturnType)E_NOT_OK;
-                #endif /*PORT_CFG_DEV_ERROR_DETECT*/          
-                }
-                else
-                {
-                    /* Do Nothing */
-                }
-            }
-            else
-            {
-                /* Do Nothing */
-            }
-        }
-      
-    #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
-
-        /* Set Init Done flag */ 
-        if (PortInitPinStatus == (Std_ReturnType)E_OK)
-        {
+            #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
             Port_InitDone = TRUE;
+            #endif /*PORT_CFG_DEV_ERROR_DETECT*/
         }
         else
         {
+            #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
             (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID,
-                                PORT_SID_INIT,
-                                PORT_E_INIT_FAILED);
-        }          
-    #endif /*PORT_CFG_DEV_ERROR_DETECT*/
+                                    PORT_SID_INIT,
+                                    PORT_E_INIT_FAILED);
+            #endif /*PORT_CFG_DEV_ERROR_DETECT*/
+        }
     }
 }
-
 
 /* 
  * Design: MCAL-22355,MCAL-22356,MCAL-22357,MCAL-22318,MCAL-22319,MCAL-22364,MCAL-22329
@@ -221,76 +225,30 @@ FUNC(void, PORT_CODE) Port_Init(P2CONST(Port_ConfigType, AUTOMATIC, PORT_CONFIG_
 FUNC(void, PORT_CODE) Port_SetPinDirection(Port_PinType Pin, Port_PinDirectionType Direction)
 {
     VAR(Std_ReturnType, AUTOMATIC) returnValue = (Std_ReturnType)E_NOT_OK;
-
     P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig = NULL_PTR;
-    VAR(Port_PinType, AUTOMATIC) NumberOfPortPins =  Port_ConfigObj->Port_NumberOfPortPins;
+    VAR(Std_ReturnType, AUTOMATIC) det_return_value = (Std_ReturnType)E_NOT_OK;
 
-#if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
-    /*
-    * Check if module has been initialized.
-    */
-    if ((boolean)FALSE == Port_InitDone)
-    {
-        /* 
-        * Report a Det error if Port as not been initialized. 
-        */
-        (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID,
-                                PORT_SID_SET_PIN_DIR,
-                                PORT_E_UNINIT);
-    }
-    else
-#endif   /*PORT_CFG_DEV_ERROR_DETECT*/
+    det_return_value = Port_SetPinDirectionDetCheck(Pin);
+
+    if(((Std_ReturnType) E_OK) == det_return_value)
     {
         /* Map Pin Index to the Pin Configuration Port_MapPinIdToCfg(Pin) */
-        if (Pin < NumberOfPortPins)
-        {
-            pinConfig = &Port_ConfigObj->Port_PinConfig[Pin];
-        }
+        pinConfig = &Port_ConfigObj->Port_PinConfig[Pin];
+
+        SchM_Enter_Port_PORT_EXCLUSIVE_AREA_0();
+        returnValue = Port_SetDirectionMode(pinConfig, Direction);
+        SchM_Exit_Port_PORT_EXCLUSIVE_AREA_0();
         
-        if((Pin >= Port_ConfigObj->Port_NumberOfPortPins) || (NULL_PTR == pinConfig) )
+        if(E_NOT_OK == returnValue)                
         {
-        #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
+            #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
             /*
-            * Report a Det error if Pin is invalid.
+            * Report a Det error if Pin direction is unchangeable.
             */
             (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID,
-                                PORT_SID_SET_PIN_DIR,
-                                PORT_E_PARAM_PIN);
-
-        #endif   /*PORT_CFG_DEV_ERROR_DETECT*/
-        }
-        else        
-        {
-            if((TRUE == pinConfig->Port_DirectionChangeable) && 
-                        (TRUE == PORT_IS_PIN_CONFIGURABLE(pinConfig)))
-            {
-                SchM_Enter_Port_PORT_EXCLUSIVE_AREA_0();
-                returnValue = Port_SetDirectionMode(pinConfig, Direction);
-                SchM_Exit_Port_PORT_EXCLUSIVE_AREA_0();
-                
-                if(E_NOT_OK == returnValue)                
-                {
-                #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
-                    /*
-                    * Report a Det error if Pin direction is unchangeable.
-                    */
-                    (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID,
-                                            PORT_SID_SET_PIN_DIR,
-                                            PORT_E_DIRECTION_UNCHANGEABLE);
-                #endif   /*PORT_CFG_DEV_ERROR_DETECT*/
-                }
-            }
-            else
-            {
-            #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
-                /*
-                * Report a Det error if Pin direction is unchangeable.
-                */
-                (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID,
                                     PORT_SID_SET_PIN_DIR,
                                     PORT_E_DIRECTION_UNCHANGEABLE);
             #endif   /*PORT_CFG_DEV_ERROR_DETECT*/
-            }
         }
     }
 }
@@ -372,20 +330,12 @@ FUNC(void, PORT_CODE) Port_SetPinMode(Port_PinType Pin, Port_PinModeType Mode)
     VAR(Port_PinType, AUTOMATIC) NumberOfPortPins =  Port_ConfigObj->Port_NumberOfPortPins;
     VAR(Std_ReturnType, AUTOMATIC) validConfig = (Std_ReturnType)E_NOT_OK;
     VAR(uint8, AUTOMATIC) errId = 0U;
-#if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
+
     /*
-    * Check if module has been initialized.
+    * Check if module has been initialized and configurations as not committed.
     */
-    if ((boolean) FALSE == Port_InitDone)
+    if (((Std_ReturnType)E_OK) == Port_SetPinModeInitAndCommitCheck())
     {
-        /* 
-        *Report error to an Error hook function.
-        */
-        (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID, PORT_SID_SET_PIN_MODE, PORT_E_UNINIT);
-    }
-    else
-#endif 
-   {
         /* Map the Pin Index to Pin configuration Port_MapPinIdToCfg(Pin) */
         if (Pin < NumberOfPortPins)
         {
@@ -413,9 +363,19 @@ FUNC(void, PORT_CODE) Port_SetPinMode(Port_PinType Pin, Port_PinModeType Mode)
                 #endif
             }
             else        
-            {
+            {                
                 SchM_Enter_Port_PORT_EXCLUSIVE_AREA_0();
+
+                #if (STD_ON == PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS)
+                Port_UnlockConfiguration(pinConfig);
+                #endif
+
                 Port_SetPinModeConfig(Mode);
+
+                #if (STD_ON == PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS)
+                Port_LockConfiguration(pinConfig);
+                #endif
+
                 SchM_Exit_Port_PORT_EXCLUSIVE_AREA_0();
             }
         }
@@ -423,9 +383,195 @@ FUNC(void, PORT_CODE) Port_SetPinMode(Port_PinType Pin, Port_PinModeType Mode)
 }
 #endif
 
+/* 
+ *Design: MCAL-29442
+ */
+FUNC(void, PORT_CODE) Port_CommitConfiguration(void)
+{
+    P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig = NULL_PTR;
+    VAR(Port_PinType, AUTOMATIC) pinNumber = 0U;
+    VAR(Port_PinType, AUTOMATIC) loop = (Port_PinType)0U;
+
+#if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
+    /*
+    * Check if module has been initialized.
+    */
+    if ((boolean) FALSE == Port_InitDone)
+    {
+        /* 
+        *Report error to an Error hook function.
+        */
+        (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID, PORT_SID_COMMIT_CONFIGURATION, PORT_E_UNINIT);
+    }
+    else
+#endif 
+   {
+        for (loop = ((Port_PinType)0U); loop < Port_ConfigObj->Port_NumberOfPortPins; loop++)
+        {
+            pinConfig = &Port_ConfigObj->Port_PinConfig[loop];
+            pinNumber = pinConfig->Port_PinId;
+            Port_CommitConfigurationProcess(pinNumber);            
+        }
+
+        #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
+        /* Update Commit Flag to TRUE */
+        Port_CommitDone = TRUE;
+        #endif
+   }
+}
+
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
+static FUNC(Std_ReturnType, PORT_CODE) \
+Port_InitInternal(P2CONST(Port_ConfigType, AUTOMATIC, PORT_CONFIG_DATA) Port_ConfigObject)
+{
+    VAR(Port_PinType, AUTOMATIC) loop = (Port_PinType)0U;
+    P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig = NULL_PTR;
+    VAR(Std_ReturnType, AUTOMATIC) returnValue = (Std_ReturnType)E_OK;
+
+#if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
+    /*
+    * Check if module has been initialized.
+    */
+    if ((boolean)TRUE == Port_CommitDone)
+    {
+        returnValue = E_NOT_OK;
+    }
+    else
+#endif
+    {
+        for (loop = ((Port_PinType)0U); loop < Port_ConfigObject->Port_NumberOfPortPins; loop++)
+        {
+            pinConfig = &Port_ConfigObject->Port_PinConfig[loop];
+
+            if((boolean)TRUE == PORT_IS_PIN_CONFIGURABLE(pinConfig))
+            {
+                #if (STD_ON == PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS)
+                Port_UnlockConfiguration(pinConfig);
+                #endif
+
+                returnValue |= Port_SetCntSpConfig(pinConfig);
+
+                #if (STD_ON == PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS)
+                Port_LockConfiguration(pinConfig);
+                #endif
+
+                returnValue |= Port_SetPinLevel(pinConfig, pinConfig->Port_PinLevelValue);
+
+                returnValue |= Port_SetDirectionMode(pinConfig, pinConfig->Port_PinDirection);
+                
+                returnValue |= Port_EnableLPMWakeUpPin(pinConfig);
+            }
+            else
+            {
+                /* Do Nothing */
+            }
+        }
+    }
+
+    return returnValue;
+}
+
+
+#if (STD_ON == PORT_CFG_SET_PIN_DIRECTION_API)
+static FUNC(Std_ReturnType, PORT_CODE) Port_SetPinDirectionDetCheck(VAR(Port_PinType, AUTOMATIC) Pin)
+{
+    VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_OK;
+
+    #if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
+    P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pin_config = NULL_PTR;
+    /*
+    * Check if module has been initialized.
+    */
+    if ((boolean)FALSE == Port_InitDone)
+    {
+        /* 
+        * Report a Det error if Port as not been initialized. 
+        */
+        (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID,
+                                PORT_SID_SET_PIN_DIR,
+                                PORT_E_UNINIT);
+        return_value = E_NOT_OK;
+    }
+
+    else if(Pin >= Port_ConfigObj->Port_NumberOfPortPins)
+    {        
+        /*
+        * Report a Det error if Pin is invalid.
+        */
+        (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID,
+                            PORT_SID_SET_PIN_DIR,
+                            PORT_E_PARAM_PIN);
+        return_value = E_NOT_OK;
+    }
+    else
+    {
+        /* Map Pin Index to the Pin Configuration Port_MapPinIdToCfg(Pin) for DET Check*/
+        pin_config = &Port_ConfigObj->Port_PinConfig[Pin];
+
+        if(FALSE == pin_config->Port_DirectionChangeable)
+        {
+            /*
+            * Report a Det error if Pin direction is unchangeable.
+            */
+            (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID,
+                                    PORT_SID_SET_PIN_DIR,
+                                    PORT_E_DIRECTION_UNCHANGEABLE);
+            return_value = E_NOT_OK;
+        }
+        else
+        {
+            /* Do Nothing */
+        }
+    }
+   
+    #endif
+
+    return return_value;
+}
+#endif
+
+#if (STD_ON == PORT_CFG_SET_PIN_MODE_API)
+static FUNC(Std_ReturnType, PORT_CODE) Port_SetPinModeInitAndCommitCheck(void)
+{
+    VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_OK;
+
+#if (STD_ON == PORT_CFG_DEV_ERROR_DETECT)
+    /*
+    * Check if module has been initialized.
+    */
+    if ((boolean) FALSE == Port_InitDone)
+    {
+        /* 
+        *Report error to an Error hook function.
+        */
+        (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID, PORT_SID_SET_PIN_MODE, PORT_E_UNINIT);
+
+        return_value = E_NOT_OK;
+    }
+
+    /*
+    * Check if configurations has been committed.
+    */ 
+    else if ((boolean) TRUE == Port_CommitDone)
+    {
+        /* 
+        *Report error to an Error hook function.
+        */
+        (void)Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID, \
+                        PORT_SID_COMMIT_CONFIGURATION, PORT_E_MODE_UNCHANGEABLE);
+        return_value = E_NOT_OK;
+    }
+    else
+    {
+        /* Do Nothing */
+    }
+#endif
+    return return_value;
+}
+#endif
+
 #define PORT_STOP_SEC_CODE
 #include "Port_MemMap.h"
 

@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -64,7 +64,7 @@
  *********************************************************************************************************************/
 #define SPI_START_SEC_ISR_CODE
 #include "Spi_MemMap.h"
-
+/* Design : MCAL-24917 */
 /* define ISR functions for SPI A */
 #if defined(SPI_UNIT_SPIA_ACTIVE)
 #if defined(SPI_SPIA_ISR_CAT1_RTINT)

@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@
  * Header Files
  *********************************************************************************************************************/
 /* 
- * Design: MCAL-22230, MCAL-25537
+ * Design: MCAL-25530, MCAL-25537, MCAL-25539, MCAL-25540, MCAL-25535, MCAL-25590, MCAL-25648
  */
 #include "Lin.h"
 #include "Lin_Priv.h"
@@ -51,11 +51,11 @@
 /*
  * Vendor specific version information is BCD coded
  */
-#if ((LIN_SW_MAJOR_VERSION != (1U)) || (LIN_SW_MINOR_VERSION != (0U)))
+#if ((LIN_SW_MAJOR_VERSION != (1U)) || (LIN_SW_MINOR_VERSION != (1U)))
   #error "Version numbers of Lin.c and Lin.h are inconsistent!"
 #endif
 
-#if ((LIN_CFG_MAJOR_VERSION != (1U)) || (LIN_CFG_MINOR_VERSION != (0U)))
+#if ((LIN_CFG_MAJOR_VERSION != (1U)) || (LIN_CFG_MINOR_VERSION != (1U)))
    #error "Version numbers of Lin.c and Lin_Cfg.h are inconsistent!"
 #endif
 
@@ -119,6 +119,7 @@ VAR(Lin_ChannelStatusType, LIN_VAR) Lin_Channel_Status[LIN_MAX_CHANNEL];
 #define LIN_START_SEC_CODE
 #include "Lin_MemMap.h"
 
+#if (STD_ON == LIN_DEV_ERROR_DETECT)
 /** \brief Lin_SendFrameDetCheck - This API will check for DET errors in Lin_SendFrame() API.
  * 
  * \param[in] Channel LIN channel to be addressed.
@@ -147,6 +148,7 @@ Lin_SendFrameDetCheck(VAR(uint8, AUTOMATIC) Channel, P2CONST(Lin_PduType, AUTOMA
  *********************************************************************************************************************/
 static FUNC(Std_ReturnType, LIN_CODE) \
 Lin_GetStatusDetCheck (VAR(uint8, AUTOMATIC) Channel, P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin_SduPtr);
+#endif
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -158,7 +160,7 @@ Lin_GetStatusDetCheck (VAR(uint8, AUTOMATIC) Channel, P2VAR(uint8*, AUTOMATIC, L
 
 #if (STD_ON == LIN_GET_VERSION_INFO_API)
 /*
- * Design: MCAL-25604, MCAL-25585
+ * Design: MCAL-25585, MCAL-25604, MCAL-25605
  */
 FUNC(void, LIN_CODE) Lin_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, LIN_APPL_DATA) versioninfo)
 {
@@ -182,16 +184,14 @@ FUNC(void, LIN_CODE) Lin_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, LI
 #endif
 
 /*
- * Design: MCAL-25526,MCAL-25550,MCAL-25551,MCAL-25587,MCAL-25594,MCAL-25595,MCAL-25596,MCAL-25597,MCAL-25598,
- * Design: MCAL-25599,MCAL-25600
+ * Design: MCAL-25526,MCAL-25527,MCAL-25528,MCAL-25529,MCAL-25549,MCAL-25550,MCAL-25551,MCAL-25581,MCAL-25584,
+ * Design: MCAL-25587,MCAL-25594,MCAL-25595,MCAL-25596,MCAL-25597,MCAL-25598,MCAL-25599,MCAL-25600,MCAL-25645,
+ * Design: MCAL-25646,MCAL-25647
  */
 FUNC(void, LIN_CODE)
 Lin_Init(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_CONFIG_DATA) Config)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_NOT_OK;
-    #if (STD_ON == LIN_DEV_ERROR_DETECT)
-    VAR(Std_ReturnType, AUTOMATIC) lin_init_status = (Std_ReturnType)E_NOT_OK;
-    #endif
     /* Local Config pointer initialised with NULL_PTR */
     P2CONST(Lin_ConfigType, AUTOMATIC, LIN_CONFIG_DATA) config_ptr = NULL_PTR;
     
@@ -206,7 +206,7 @@ Lin_Init(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_CONFIG_DATA) Config)
         #if (STD_ON == LIN_DEV_ERROR_DETECT)
         (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
                             LIN_SID_INIT,
-                            LIN_E_INVALID_POINTER);
+                            LIN_E_PARAM_POINTER);
         #endif
     }
 #else  /* If Post Build Variant is selected */
@@ -217,22 +217,24 @@ Lin_Init(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_CONFIG_DATA) Config)
     }
 #endif   /*LIN_PRE_COMPILE_VARIANT*/
 
-#if (STD_ON == LIN_DEV_ERROR_DETECT)
     if (NULL_PTR == config_ptr)
     {      
+        #if (STD_ON == LIN_DEV_ERROR_DETECT)
         (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
                                 LIN_SID_INIT,
                                 LIN_E_PARAM_POINTER);
+        #endif
     }
+#if (STD_ON == LIN_DEV_ERROR_DETECT)
     else if(LIN_UNINIT != Lin_Module_State)
-    {
+    {      
         (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
                                 LIN_SID_INIT,
-                                LIN_E_STATE_TRANSITION);
+                                LIN_E_STATE_TRANSITION);       
     }
+#endif
     else
     {
-#endif
         /* Save the Local Config Pointer to Global Configuration Structure Pointer*/
         Lin_Config_Ptr = config_ptr;
         return_value = Lin_InitInternal(Lin_Config_Ptr);
@@ -240,29 +242,22 @@ Lin_Init(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_CONFIG_DATA) Config)
         if ( return_value == E_OK )
         {
             #if (STD_ON == LIN_DEV_ERROR_DETECT)
-            lin_init_status = (Std_ReturnType)E_OK;
-            #endif
-        }
-        else
-        {
-            /* Do Nothing. Init Status will be returned as E_NOT_OK */
-        }
-
-    #if (STD_ON == LIN_DEV_ERROR_DETECT)
-        if ( lin_init_status == E_OK )
-        {
             /*
             * Set Init Done flag
             */
-            Lin_Module_State = LIN_INIT;  
+            Lin_Module_State = LIN_INIT;
+            #endif
         }
+        /* TI_COVERAGE_GAP_START [Line Gap] in LIN_E_INVALID_POINTER, False Positive */
         else
         {
+            #if (STD_ON == LIN_DEV_ERROR_DETECT)
             (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
                                 LIN_SID_INIT,
                                 LIN_E_INVALID_POINTER);
+            #endif
         }
-    #endif
+        /* TI_COVERAGE_GAP_STOP*/
     }
        
 }
@@ -270,7 +265,8 @@ Lin_Init(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_CONFIG_DATA) Config)
 
 
 /*
- * Design: MCAL-25577,MCAL-25587,MCAL-25601,MCAL-25602,MCAL-25603
+ * Design: MCAL-25577,MCAL-25582,MCAL-25583,MCAL-25587,MCAL-25601,MCAL-25602,MCAL-25603,MCAL-25642,MCAL-25643,
+ * Design: MCAL-25644
  */
 FUNC(Std_ReturnType, LIN_CODE)
 Lin_CheckWakeup(VAR(uint8, AUTOMATIC) Channel)
@@ -302,17 +298,28 @@ Lin_CheckWakeup(VAR(uint8, AUTOMATIC) Channel)
 
 /*
  * Design: MCAL-25559,MCAL-25560,MCAL-25561,MCAL-25562,MCAL-25563,MCAL-25565,MCAL-25566,MCAL-25567,MCAL-25568,
- * Design: MCAL-25569,MCAL-25570,MCAL-25571,MCAL-25574,MCAL-25587,MCAL-25606,MCAL-25607,MCAL-25608,MCAL-25609,
- * Design: MCAL-25610,MCAL-25611,MCAL-25612,MCAL-25613,MCAL-25614
+ * Design: MCAL-25569,MCAL-25570,MCAL-25571,MCAL-25572,MCAL-25574,MCAL-25581,MCAL-25582,MCAL-25583,MCAL-25587,
+ * Design: MCAL-25606,MCAL-25607,MCAL-25608,MCAL-25609,MCAL-25610,MCAL-25611,MCAL-25612,MCAL-25613,MCAL-25614
  */
 FUNC(Std_ReturnType, LIN_CODE)
 Lin_SendFrame(VAR(uint8, AUTOMATIC) Channel, P2CONST(Lin_PduType, AUTOMATIC, LIN_APPL_CONST) PduInfoPtr)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_NOT_OK;
-    
-    return_value = Lin_SendFrameDetCheck(Channel, PduInfoPtr);
+
+#if (STD_ON == LIN_DEV_ERROR_DETECT)
+	if(LIN_INIT != Lin_Module_State)
+    {
+        (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
+                            LIN_SID_SEND_FRAME,
+                            LIN_E_UNINIT);        
+    }
+    else
+    {
+        return_value = Lin_SendFrameDetCheck(Channel, PduInfoPtr);
+    }
 
     if(((Std_ReturnType) E_OK) == return_value)
+#endif    
     {
         SchM_Enter_Lin_LIN_EXCLUSIVE_AREA_0();
 
@@ -326,8 +333,8 @@ Lin_SendFrame(VAR(uint8, AUTOMATIC) Channel, P2CONST(Lin_PduType, AUTOMATIC, LIN
 
 
 /*
- * Design: MCAL-25552,MCAL-25575,MCAL-25576,MCAL-25587,MCAL-25615,MCAL-25616,MCAL-25617,MCAL-25618,MCAL-25619,
- * Design: MCAL-25620,MCAL-25621,MCAL-25622
+ * Design: MCAL-25552,MCAL-25575,MCAL-25576,MCAL-25582,MCAL-25583,MCAL-25587,MCAL-25615,MCAL-25616,MCAL-25617,
+ * Design: MCAL-25618,MCAL-25619,MCAL-25620,MCAL-25621,MCAL-25622,MCAL-25642,MCAL-25558
  */
 FUNC(Std_ReturnType, LIN_CODE)
 Lin_GoToSleep(VAR(uint8, AUTOMATIC) Channel)
@@ -367,7 +374,7 @@ Lin_GoToSleep(VAR(uint8, AUTOMATIC) Channel)
         {
             #if(STD_ON == LIN_DEM_ENABLE)
                 #ifdef LIN_E_TIMEOUT
-                Dem_SetEventStatus(LIN_E_TIMEOUT, DEM_EVENT_STATUS_FAILED);
+                Dem_SetEventStatus(LIN_E_TIMEOUT, DEM_EVENT_STATUS_PREFAILED);
                 #endif
             #endif
         }
@@ -386,7 +393,7 @@ Lin_GoToSleep(VAR(uint8, AUTOMATIC) Channel)
 }
 
 /*
- * Design: MCAL-25554,MCAL-25587,MCAL-25623,MCAL-25624,MCAL-25625,MCAL-25626,MCAL-25627
+ * Design: MCAL-25554,MCAL-25582,MCAL-25583,MCAL-25587,MCAL-25623,MCAL-25624,MCAL-25625,MCAL-25626,MCAL-25627
  */
 FUNC(Std_ReturnType, LIN_CODE)
 Lin_GoToSleepInternal(VAR(uint8, AUTOMATIC) Channel)
@@ -433,7 +440,8 @@ Lin_GoToSleepInternal(VAR(uint8, AUTOMATIC) Channel)
 }
 
 /*
- * Design: MCAL-25555,MCAL-25557,MCAL-25578,MCAL-25587,MCAL-25628,MCAL-25629,MCAL-25630
+ * Design: MCAL-25555,MCAL-25557,MCAL-25578,MCAL-25581,MCAL-25582,MCAL-25583,MCAL-25587,MCAL-25628,MCAL-25629,
+ * Design: MCAL-25630
  */
 FUNC(Std_ReturnType, LIN_CODE)
 Lin_Wakeup(VAR(uint8, AUTOMATIC) Channel)
@@ -472,7 +480,8 @@ Lin_Wakeup(VAR(uint8, AUTOMATIC) Channel)
 
 
 /*
- * Design: MCAL-25556,MCAL-25579,MCAL-25587,MCAL-25631,MCAL-25632,MCAL-25633,MCAL-25634
+ * Design: MCAL-25556,MCAL-25579,MCAL-25581,MCAL-25582,MCAL-25583,MCAL-25587,MCAL-25631,MCAL-25632,MCAL-25633,
+ * Design: MCAL-25634
  */
 FUNC(Std_ReturnType, LIN_CODE)
 Lin_WakeupInternal(VAR(uint8, AUTOMATIC) Channel)
@@ -511,98 +520,85 @@ Lin_WakeupInternal(VAR(uint8, AUTOMATIC) Channel)
 
 
 /*
- * Design: MCAL-25553,MCAL-25564,MCAL-25573,MCAL-25587,MCAL-25635,MCAL-25636,MCAL-25637,MCAL-25638,MCAL-25639,
- * Design: MCAL-25640,MCAL-25641
+ * Design: MCAL-25553,MCAL-25564,MCAL-25573,MCAL-25582,MCAL-25583,MCAL-25587,MCAL-25635,MCAL-25636,MCAL-25637,
+ * Design: MCAL-25638,MCAL-25639,MCAL-25640,MCAL-25641
  */
 FUNC(Lin_StatusType, LIN_CODE)
 Lin_GetStatus(VAR(uint8, AUTOMATIC) Channel, P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin_SduPtr)
 {
-    VAR(uint32, AUTOMATIC) channelstate_check = (uint32)0U;
     VAR(Lin_StatusType, AUTOMATIC) return_value = LIN_NOT_OK;
+    VAR(uint32, AUTOMATIC)  lin_cnt_base_addr = (uint32)0U;
+    
+#if (STD_ON == LIN_DEV_ERROR_DETECT)
     VAR(Std_ReturnType, AUTOMATIC) det_return_value = (Std_ReturnType)E_NOT_OK;
-    VAR(uint32, AUTOMATIC)  lin_cnt_base_addr = (uint32)0U;    
 
     det_return_value = Lin_GetStatusDetCheck(Channel, Lin_SduPtr);
 
     if(((Std_ReturnType) E_OK) == det_return_value)
+#endif    
     {
         lin_cnt_base_addr = Lin_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr;
 
         SchM_Enter_Lin_LIN_EXCLUSIVE_AREA_0();
         
-        if(LIN_CHANNEL_OPERATIONAL == Lin_Channel_Status[Channel].linChannelNetworkStatus)
-        {  
-            channelstate_check = (uint32)1U;
-            return_value = Lin_GetStatusInternal(Channel, Lin_SduPtr,&lin_cnt_base_addr);
-        }
-        if((LIN_CHANNEL_SLEEP == Lin_Channel_Status[Channel].linChannelNetworkStatus)&& (channelstate_check == (uint32)0U))
-        {
-            channelstate_check = (uint32)1U;
-            return_value = LIN_CH_SLEEP;
-        }
-        if((LIN_CHANNEL_SLEEP_PENDING == Lin_Channel_Status[Channel].linChannelNetworkStatus) \
-                                        && (channelstate_check == (uint32)0U))
-        {
-            Lin_Channel_Status[Channel].linChannelNetworkStatus = LIN_CHANNEL_SLEEP;
-            return_value = LIN_CH_SLEEP;
-        }
-        else
-        {
-            /* Do Nothing */
-        }
-            SchM_Exit_Lin_LIN_EXCLUSIVE_AREA_0();
+        return_value = Lin_GetStatusInternalProcess(Channel, Lin_SduPtr, &lin_cnt_base_addr);
+
+        SchM_Exit_Lin_LIN_EXCLUSIVE_AREA_0();
     }
     return return_value; 
 }
 
+
+
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
-
+/*
+ * Design : MCAL-28462, MCAL-28461
+ */
+#if (STD_ON == LIN_DEV_ERROR_DETECT)
 static FUNC(Std_ReturnType, LIN_CODE)
 Lin_SendFrameDetCheck(VAR(uint8, AUTOMATIC) Channel, P2CONST(Lin_PduType, AUTOMATIC, LIN_APPL_CONST) PduInfoPtr)
 {
 	VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_OK;
 
-#if (STD_ON == LIN_DEV_ERROR_DETECT)
-	if(LIN_INIT != Lin_Module_State)
-    {
-        (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
-                            LIN_SID_SEND_FRAME,
-                            LIN_E_UNINIT);        
-        return_value = E_NOT_OK;       
-    }
-    if((LIN_MAX_CHANNEL <= Channel) && (return_value == E_OK))
+    if((LIN_MAX_CHANNEL <= Channel))
     {
         (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
                             LIN_SID_SEND_FRAME,
                             LIN_E_INVALID_CHANNEL);
         return_value = E_NOT_OK;
     }
-    if((NULL_PTR == PduInfoPtr) && (return_value == E_OK))
+    else if((NULL_PTR == PduInfoPtr) )
     {
         (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
                             LIN_SID_SEND_FRAME,
                             LIN_E_PARAM_POINTER);            
         return_value = E_NOT_OK;
     }
-    if((LIN_CHANNEL_OPERATIONAL != Lin_Channel_Status[Channel].linChannelNetworkStatus) && (return_value == E_OK))
+    else if((LIN_CHANNEL_OPERATIONAL != Lin_Channel_Status[Channel].linChannelNetworkStatus) )
     {
         (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
                             LIN_SID_SEND_FRAME,
                             LIN_E_STATE_TRANSITION);                  
         return_value = E_NOT_OK;
     }
-#endif
+    else
+    {
+        /* Do Nothing. Return E_OK with No det Errors*/
+    }
+
     return return_value;
 }
 
+/*
+ * Design : MCAL-28462
+ */
 static FUNC(Std_ReturnType, LIN_CODE)
 Lin_GetStatusDetCheck (VAR(uint8, AUTOMATIC) Channel, P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin_SduPtr)
 {
 	VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_OK;
 
-#if (STD_ON == LIN_DEV_ERROR_DETECT)
 	if(LIN_INIT != Lin_Module_State)
     {
         (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
@@ -610,14 +606,14 @@ Lin_GetStatusDetCheck (VAR(uint8, AUTOMATIC) Channel, P2VAR(uint8*, AUTOMATIC, L
                             LIN_E_UNINIT);        
         return_value = E_NOT_OK;
     }
-    if((LIN_MAX_CHANNEL < Channel) && (return_value == E_OK))
+    else if((LIN_MAX_CHANNEL < Channel))
     { 
         (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
                                 LIN_SID_GET_STATUS,
                                 LIN_E_INVALID_CHANNEL);        
         return_value = E_NOT_OK;
     }
-    if ((NULL_PTR == Lin_SduPtr) && (return_value == E_OK))
+    else if ((NULL_PTR == Lin_SduPtr))
     {
         (void)Det_ReportError(LIN_MODULE_ID, LIN_INSTANCE_ID,
                             LIN_SID_GET_STATUS,
@@ -628,9 +624,9 @@ Lin_GetStatusDetCheck (VAR(uint8, AUTOMATIC) Channel, P2VAR(uint8*, AUTOMATIC, L
     {
         /* Do Nothing. Return E_OK with No det Errors*/
     }
-#endif
     return return_value;
 }
+#endif
 
 #define LIN_STOP_SEC_CODE
 #include "Lin_MemMap.h"

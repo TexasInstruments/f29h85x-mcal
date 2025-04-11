@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -52,9 +52,9 @@ extern "C" {
  /** \brief Can configuration Major Version. */
 #define CAN_CFG_MAJOR_VERSION    (1U) 
 /** \brief Can configuration Minor Version. */
-#define CAN_CFG_MINOR_VERSION    (0U)
+#define CAN_CFG_MINOR_VERSION    (1U)
 /** \brief Can configuration Patch Version. */
-#define CAN_CFG_PATCH_VERSION    (1U)
+#define CAN_CFG_PATCH_VERSION    (0U)
 
 
 /*****************************************************************************
@@ -155,6 +155,14 @@ extern "C" {
  *Design: MCAL-22754
  */
 #define CAN_CFG_SET_BAUDRATE_API         (STD_OFF)
+
+
+/*****************************************************************************
+ *
+ * \brief Enable/Disable ECC configuration.
+ *
+ *****************************************************************************/
+#define CAN_CFG_ECC         (STD_OFF)
 
 
 /*****************************************************************************
@@ -315,14 +323,41 @@ extern "C" {
  * \brief Max number of Icom configurations defined 
  *
  *****************************************************************************/
-#define MAX_ICOM_CONFIGURATION               (1U)
+#define MAX_ICOM_CONFIGURATION               (2U)
+
+
+
+
+
+/*****************************************************************************
+ *
+ * \brief Max number of Icom messages defined 
+ *
+ *****************************************************************************/
+#define MAX_ICOM_MESSAGES (1U)
+/*****************************************************************************
+ *
+ * \brief Max number of Icom RX message signals defined 
+ *
+ *****************************************************************************/
+#define MAX_ICOM_RX_SIGNAL_COUNT (5U)
+
+
+
 
 /* DEM Error Definitions */
 /* DEM Error Codes */
 /*********************************************************************************************************************
- * \brief Enable/Disable DEM.
+ * \brief Enable/Disable DEM for Hardware failure.
  *********************************************************************************************************************/
 #define CAN_CFG_DEM_ENABLE    (STD_OFF)
+
+
+
+/*********************************************************************************************************************
+ * \brief Enable/Disable DEM for ECC BEU error.
+ *********************************************************************************************************************/
+#define CAN_CFG_DEM_BEU_ENABLE    (STD_OFF)
 
 
 
@@ -342,6 +377,30 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+
+/** \brief   Enum for the event pin. */
+typedef enum
+{
+    /** \brief  EVENT PIN0 */
+    CAN_EVENT_PIN_0 = 0x0U,
+    /** \brief EVENT PIN1 */
+    CAN_EVENT_PIN_1 = 0x1U,
+    /** \brief EVENT NONE */
+    CAN_EVENT_PIN_NONE = 0x2U,
+} Can_EventPin;
+
+/** \brief   Enum for the Can standard filter selection. */
+typedef enum
+{
+    /** \brief  Range filter from SFID1 to SFID2 (SFID2 ≥ SFID1) */
+    CAN_RANGE_FILTER = 0x0U,
+    /** \brief  Dual ID filter for SFID1 or SFID2 */
+    CAN_DUAL_ID_FILTER = 0x1U,
+    /** \brief  Classic filter: SFID1 = filter; SFID2 = mask */
+    CAN_CLASSIC_FILTER = 0x2U,
+    /** \brief  Filter element disabled */
+    CAN_FILTER_DISABLED = 0x03,
+} Can_StandardFilterType;
 
 /*********************************************************************************************************************
  * Exported Object Declarations

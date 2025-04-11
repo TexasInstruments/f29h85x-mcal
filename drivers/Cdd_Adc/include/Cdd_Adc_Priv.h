@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -63,13 +63,6 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-/** \brief Enable/Disable type */
-typedef enum
-{
-    DISABLE = 0U,    /*!< \brief Value that can be passed to disable a particular mode */
-    ENABLE = 1U      /*!< \brief Value that can be passed to enable a particular mode */
-}Cdd_Adc_EnableDisableType;
-
 /** \brief Group trigger type */
 typedef enum
 {
@@ -689,7 +682,7 @@ FUNC(uint16,CDD_ADC_CODE) Cdd_Adc_ReadPpbMinIndex(uint32 ResultBase,Cdd_Adc_PpbI
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_ADC_CODE) Cdd_Adc_ConfigureCheckerTile(uint32 ScBase, Cdd_Adc_EnableDisableType Mode);
+FUNC(void,CDD_ADC_CODE) Cdd_Adc_ConfigureCheckerTile(uint32 ScBase, boolean Mode);
 
 /** \brief Stops and clears the safety checker flags of the result safety checker module.
  *

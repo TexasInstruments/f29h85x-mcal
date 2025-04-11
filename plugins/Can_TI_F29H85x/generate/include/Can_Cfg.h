@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -174,6 +174,14 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 
 /*****************************************************************************
  *
+ * \brief Enable/Disable ECC configuration.
+ *
+ *****************************************************************************/
+#define CAN_CFG_ECC         [!IF "as:modconf('Can')[1]/CanGeneral/CanECCSupport = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+
+
+/*****************************************************************************
+ *
  * \brief Different periods for the main function read and write.
  *
  *****************************************************************************/
@@ -317,7 +325,7 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
  *
  *****************************************************************************/
 [!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
-[!IF "CanRxProcessing ='INTERRUPT' or CanRxProcessing ='INTERRUPT' or CanBusoffProcessing ='INTERRUPT' or CanWakeupProcessing ='INTERRUPT'"!]
+[!IF "CanRxProcessing ='INTERRUPT' or CanTxProcessing ='INTERRUPT' or CanBusoffProcessing ='INTERRUPT' or CanWakeupProcessing ='INTERRUPT'"!]
 #define CAN_[!"CanControllerInstance"!]_ENABLE
 [!IF "CanInteruptType = 'CAN_ISR_CAT1_RTINT'"!][!//
 #define CAN_[!"CanControllerInstance"!]_ISR_CAT1_RTINT
@@ -354,16 +362,57 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
  *****************************************************************************/
 #define MAX_ICOM_CONFIGURATION               ([!"num:i(count(as:modconf('Can')[1]/CanConfigSet/CanIcom/CanIcomConfig/*))"!]U)
 
+[!VAR "IcomMax" =  "0"!][!//
+[!VAR "IcomRxsignals" =  "0"!][!//
+[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanIcom/CanIcomConfig/*"!][!//
+[!VAR "IcomRxcount" = "num:i(count(CanIcomWakeupCauses/CanIcomRxMessage/*))"!][!//
+[!IF "num:i($IcomRxcount) > num:i($IcomMax)"!][!//
+[!VAR "IcomMax" = "$IcomRxcount"!][!//
+[!ENDIF!][!//
+[!LOOP "CanIcomWakeupCauses/CanIcomRxMessage/*"!][!//
+[!VAR "IcomRxsignalscount" = "num:i(count(CanIcomRxMessageSignalConfig/*))"!][!//
+[!IF "num:i($IcomRxsignalscount) > num:i($IcomRxsignals)"!][!//
+[!VAR "IcomRxsignals" = "$IcomRxsignalscount"!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!//	
+[!ENDLOOP!][!//	
+
+/*****************************************************************************
+ *
+ * \brief Max number of Icom messages defined 
+ *
+ *****************************************************************************/
+#define MAX_ICOM_MESSAGES ([!"num:i($IcomMax)"!]U)
+/*****************************************************************************
+ *
+ * \brief Max number of Icom RX message signals defined 
+ *
+ *****************************************************************************/
+#define MAX_ICOM_RX_SIGNAL_COUNT ([!"num:i($IcomRxsignals)"!]U)
+
+
+
+
 /* DEM Error Definitions */
 /* DEM Error Codes */
 /*********************************************************************************************************************
- * \brief Enable/Disable DEM.
+ * \brief Enable/Disable DEM for Hardware failure.
  *********************************************************************************************************************/
 #define CAN_CFG_DEM_ENABLE    [!IF "node:refexists(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 [!IF "node:refexists(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR)"!]
 
 #define CAN_E_HARDWARE_ERROR  (DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR))"!])
+[!ENDIF!]
+
+/*********************************************************************************************************************
+ * \brief Enable/Disable DEM for ECC BEU error.
+ *********************************************************************************************************************/
+#define CAN_CFG_DEM_BEU_ENABLE    [!IF "node:refexists(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_SAFTEY_BEU_ERROR)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+
+[!IF "node:refexists(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_SAFTEY_BEU_ERROR)"!]
+
+#define CAN_E_SAFTEY_BEU_ERROR  (DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR))"!])
 [!ENDIF!]
 
 /*****************************************************************************
@@ -382,6 +431,30 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+
+/** \brief   Enum for the event pin. */
+typedef enum
+{
+    /** \brief  EVENT PIN0 */
+    CAN_EVENT_PIN_0 = 0x0U,
+    /** \brief EVENT PIN1 */
+    CAN_EVENT_PIN_1 = 0x1U,
+    /** \brief EVENT NONE */
+    CAN_EVENT_PIN_NONE = 0x2U,
+} Can_EventPin;
+
+/** \brief   Enum for the Can standard filter selection. */
+typedef enum
+{
+    /** \brief  Range filter from SFID1 to SFID2 (SFID2 ≥ SFID1) */
+    CAN_RANGE_FILTER = 0x0U,
+    /** \brief  Dual ID filter for SFID1 or SFID2 */
+    CAN_DUAL_ID_FILTER = 0x1U,
+    /** \brief  Classic filter: SFID1 = filter; SFID2 = mask */
+    CAN_CLASSIC_FILTER = 0x2U,
+    /** \brief  Filter element disabled */
+    CAN_FILTER_DISABLED = 0x03,
+} Can_StandardFilterType;
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -412,6 +485,15 @@ extern CONST(struct Can_ControllerType_s, CAN_CONFIG_DATA) [!"../../@name"!]_[!"
 
 [!ENDLOOP!][!ENDLOOP!][!//
 
+
+#if (CAN_CFG_ICOM_SUPPORT == STD_ON)
+[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanIcom/CanIcomConfig/*"!][!//
+/* Icom configuration for  [!"@name"!] */
+extern CONST(struct Can_IcomConfigType_s, CAN_CONFIG_DATA) Can_[!"@name"!];
+[!ENDLOOP!][!//
+
+extern CONST(struct Can_IcomConfigType_s*, CAN_CONFIG_DATA) Can_IcomConfigurationList[[!"num:i(count(as:modconf('Can')[1]/CanConfigSet/CanIcom/CanIcomConfig/*))"!]];
+#endif
 [!ENDIF!]
 
 

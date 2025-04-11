@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -50,9 +50,9 @@ extern "C" {
 
 #define OS_CFG_MAX_ISR          (0U)
 
-#define OS_CFG_MAX_COUNTER      (0U)
+#define OS_CFG_MAX_COUNTER      (1U)
 
-#define OS_COUNTER_ENABLE       (STD_OFF)
+#define OS_COUNTER_ENABLE       (STD_ON)
 
 #define RTINT_THRESHOLD          (0U)
 

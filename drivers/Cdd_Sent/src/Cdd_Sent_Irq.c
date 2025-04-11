@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -20,7 +20,9 @@
  *  Description:  This file contains controller dependent local functions and private functions 
  *                to be used in Cdd_Sent_Irq.c.
  *********************************************************************************************************************/
-
+/* 
+* Design: MCAL-28620
+*/
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -68,7 +70,9 @@
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
-
+/* 
+* Design: MCAL-28621
+*/
 #define CDD_SENT_START_SEC_ISR_CODE
 #include "Cdd_Sent_MemMap.h"
 
@@ -97,7 +101,7 @@ ISR(Cdd_Sent_2_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Sent_ProcessISR(SENT_INSTANCE_SENT2);
+    Cdd_Sent_ProcessISR(CDD_SENT_INSTANCE_SENT2);
 }
 #endif
 
@@ -111,7 +115,7 @@ ISR(Cdd_Sent_3_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Sent_ProcessISR(SENT_INSTANCE_SENT3);
+    Cdd_Sent_ProcessISR(CDD_SENT_INSTANCE_SENT3);
 }
 #endif
 
@@ -125,7 +129,7 @@ ISR(Cdd_Sent_4_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Sent_ProcessISR(SENT_INSTANCE_SENT4);
+    Cdd_Sent_ProcessISR(CDD_SENT_INSTANCE_SENT4);
 }
 #endif
 
@@ -139,7 +143,7 @@ ISR(Cdd_Sent_5_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Sent_ProcessISR(SENT_INSTANCE_SENT5);
+    Cdd_Sent_ProcessISR(CDD_SENT_INSTANCE_SENT5);
 }
 #endif
 
@@ -153,7 +157,7 @@ ISR(Cdd_Sent_6_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Sent_ProcessISR(SENT_INSTANCE_SENT6);
+    Cdd_Sent_ProcessISR(CDD_SENT_INSTANCE_SENT6);
 }
 #endif
 

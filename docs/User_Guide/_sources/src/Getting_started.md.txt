@@ -1,5 +1,9 @@
 # Getting Started With F29x MCAL
 
+## Getting access to MCAL
+
+F29H85x MCAL can be requested from [ti.com](https://www.ti.com/tool/F29-SDK)
+
 ## Package installer
 
 ### Installation Procedure
@@ -64,7 +68,9 @@ Installation Step5
 Installation Step6
 ```
 
-7.Check the installation directory (which is selected in step3) for the package contents **F29xxxxMCAL_xx_xx_xx** & **uninstall** executable.
+### Un-installation Procedure
+
+1.Check the installation directory (which is selected in [Installation Procedure](#installation-procedure) step3) for the package contents **F29xxxxMCAL_xx_xx_xx** & **uninstall** executable.
 
 ```{figure} Assets/images/Installation_Step7.png
 :alt: Installation Step7
@@ -74,9 +80,7 @@ Installation Step6
 Installation Step7
 ```
 
-### Un-installation Procedure
-
-1.To uninstall the package, Run the **uninstall** executable & Click Yes
+2.To uninstall the package, Run the **uninstall** executable & Click Yes
 
 ```{figure} Assets/images/Uninstallation_Step1.png
 :alt: Uninstallation Step1
@@ -94,7 +98,7 @@ Uninstallation Step1
 Uninstallation Step2
 ```
 
-2.To complete the un-installation process, click OK
+3.To complete the un-installation process, click OK
 
 ```{figure} Assets/images/Uninstallation_Step3.png
 :alt: Uninstallation Step3
@@ -170,15 +174,13 @@ Will be added in later release.
 
 ## Compiler and Linker Settings
 
-C29 compiler version to be used is **ti-cgt-c29_1.0.0.STS**
-
 Compiler Option  |Description|
 -----------------|------------|
 -mcpu               | Target processor version : **c29.c0** |
 -mfpu               | Floating-Point Support Option : Use native 32-bit floating-point hardware operations, but emulate 64-bit floating-point operations in software. <br> **none**|
 -g                  | Debug information : The c29clang compiler generates DWARF debug information if the -g option is selected.|
 -Wall               | Enable most warning categories |
--D                  | Predefined Symbol Options : <br> **-DDEBUG <br> -DASSERT_ENABLE** |
+-D                  | Predefined Symbol Options : <br> **-DDEBUG** |
 -O                  | Level of optimization <br> **-O1 (for Debug build type) <br> -O2 (for Release build type)** |
 -I                  | Option to add directories to the include file directory path|
 -cl-single-precision-constant | Option with the c29clang compiler to treat double precision floating-point constants as single precision constants|
@@ -196,28 +198,37 @@ Linker Option  |Description|
 --rom_model | Tells the linker to auto initialize variables at run time|
 --display_error_number | Displays a diagnostic’s identifiers along with its text|
 --diag_wrap | Wrap diagnostic messages in the output display. This option is enabled by default|
+--emit_warnings_as_errors | Treat all warnings as errors |
+--diag_suppress=10068 | Suppress linker warning for no matching section in code |
+--diag_suppress=10325 | Suppress linker warning for creating BOUND sections |
+--diag_suppress=10063 | Suppress linker warning for entry-point symbol |
 
 [Refer this link to get more information on C29 Compiler options](https://software-dl.ti.com/codegen/docs/c29clang/rel1_0_0_LTS/indexC29.html)
+
+```{Note}
+Please refer release notes for C29 compiler version details.
+ ```
 
 ## Modules Supported
 
 Driver   | Comments  | Supported SoC | Available Cores|  MCAL Supported Cores|
 ---------|-----------|---------------|----------------|----------------------|
-Mcu |  Driver for Mcu module |  F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
-Dio |  Driver for DIO module |  F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
-Gpt |  Driver for GPT module |  F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
-Port | Driver for PORT module | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
-Can |  Driver for CAN module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
-Wdg |  Driver for Wdg module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Can |  Driver for Can module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Dio |  Driver for Dio module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Fls |  Driver for Fls module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Gpt |  Driver for Gpt module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
 Lin |  Driver for Lin module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Mcu |  Driver for Mcu module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Port | Driver for Port module | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
 Spi |  Driver for Spi module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Wdg |  Driver for Wdg module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
 Cdd_Adc  |  Driver for Cdd_Adc module   | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Cdd_Ecap |  Driver for Cdd_Ecap module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Cdd_Ipc  |  Driver for Cdd_Ipc module   | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Cdd_Pwm  |  Driver for Cdd_Pwm module   | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Cdd_Uart |  Driver for Cdd_Uart module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
 Cdd_Sent |  Driver for Cdd_Sent module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
 Cdd_Xbar |  Driver for Cdd_Xbar module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
-
-## Getting access to MCAL
-
-F29H85x MCAL can be requested from [ti.com](https://www.ti.com/drr/opn/F29H85X-MCAL)
 
 ## Multi-core support & resource allocator
 
@@ -259,7 +270,7 @@ Please refer release notes for CCS version details.
 
 You can downloaded CCS from [ti.com](https://www.ti.com/tool/CCSTUDIO#downloads)
 
-## Start-up & AppUtils
+## Support Modules
 
 ### Start-up code
 
@@ -271,7 +282,11 @@ You can downloaded CCS from [ti.com](https://www.ti.com/tool/CCSTUDIO#downloads)
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
  ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂**DeviceSupport**\
  ┃ ┃ ┣ 📂include\
@@ -283,6 +298,7 @@ You can downloaded CCS from [ti.com](https://www.ti.com/tool/CCSTUDIO#downloads)
  ┃ ┃ ┣ 📜CMakeLists.txt\
  ┃ ┃ ┗ 📜makefile.defs\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Fls\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
@@ -316,10 +332,15 @@ Start-up code is for reference only, it should not be used as-is in a typical AU
  ┃ ┃ ┗ 📜CMakeLists.txt\
  ┃ ┣ 📂Can\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
  ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Fls\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
@@ -348,6 +369,92 @@ Below are all the functions that are defined by AppUtils:
 
 ```{Attention}
 AppUtils source code is for reference only, it should not be used as-is in a typical AUTOSAR applications.
+ ```
+
+### BSW Stubs
+
+📦**F29x_MCAL**\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂**BSW_Stubs**\
+ ┃ ┃ ┣ 📜**AUTOSAR_Types**\
+ ┃ ┃ ┣ 📜**CanIf**\
+ ┃ ┃ ┣ 📜**Dem**\
+ ┃ ┃ ┣ 📜**Det**\
+ ┃ ┃ ┣ 📜**EcuM**\
+ ┃ ┃ ┣ 📜**LinIf**\
+ ┃ ┃ ┣ 📜**MemMap**\
+ ┃ ┃ ┣ 📜**OS**\
+ ┃ ┃ ┣ 📜**PduR**\
+ ┃ ┃ ┗ 📜**SchM**\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
+ ┃ ┣ 📂Cdd_Xbar\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Fls\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┗ 📂Wdg\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜**CMakeLists.txt** : *Top-level CMake file*\
+ ┗ 📜CMakePresets.json
+
+BSW Stubs provides a set of stubs for various Basic Software (BSW) modules, these stubs mimics the behavior of the actual BSW modules. These stubs allow for the development and testing of MCAL drivers without requiring the actual BSW modules to be implemented. The BSW_Stubs folder contains a collection of subfolders, each representing a specific BSW module. Each of these subfolders contains stub implementations for the corresponding BSW module.
+
+```{Attention}
+BSW Stubs source code is for reference only, it should not be used as-is in a typical AUTOSAR applications.
+ ```
+
+### Device Support
+
+📦**F29x_MCAL**\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂**examples**\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
+ ┃ ┣ 📂Cdd_Xbar\
+ ┃ ┣ 📂**DeviceSupport**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃  ┗  📜**DeviceSupport.h**\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃  ┗  📜**DeviceSupport.c** : *Contains device support function definitions*\
+ ┃ ┃ ┣ 📂**LinkerCMD**\ : *Contains linker files*\
+ ┃ ┃ ┗ 📂**targetconfigs**\ : *Contains target configuration files for CCS*\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Fls\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┗ 📂Wdg\
+ ┣ 📂plugins\
+ ┣ 📜**CMakeLists.txt** : *Top-level CMake file*\
+ ┗ 📜CMakePresets.json
+
+ Device Support contains the device specific files such as linker files and startup code that helps in enabling the MCAL examples to run on the target hardware.
+
+ ```{Attention}
+Device Support source code is for reference only, it should not be used as-is in a typical AUTOSAR applications.
  ```
 
 ## Build system
@@ -398,9 +505,14 @@ For more information on CMake, please refer CMake [official documentation](https
  ┃ ┃ ┃ ┗ 📜Can_Priv.c\
  ┃ ┃ ┗ 📜CMakeLists.txt : *CAN driver CMake file*\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
  ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Fls\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂hw_include\
  ┃ ┣ 📂Lin\
@@ -412,7 +524,7 @@ For more information on CMake, please refer CMake [official documentation](https
  ┣ 📂**examples**\
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
- ┃ ┃ ┣ 📂**Can_Example_Classic**\
+ ┃ ┃ ┣ 📂**Can_Example_Classic_FD**\
  ┃ ┃ ┃ ┣ 📂CCS\
  ┃ ┃ ┃ ┣ 📂**f29h85x_config**\
  ┃ ┃ ┃ ┃ ┣ 📂config\
@@ -432,16 +544,20 @@ For more information on CMake, please refer CMake [official documentation](https
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
  ┃ ┃ ┃ ┃ ┗ 📜**CMakeLists.txt** : *CMake file for f29h85x_config folder*\
- ┃ ┃ ┃ ┣ 📜Can_Example_Classic.c\
- ┃ ┃ ┃ ┣ 📜Can_Example_Classic.h\
- ┃ ┃ ┃ ┗ 📜**CMakeLists.txt** : *Can_Example_Classic CAN example CMake file*\
+ ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.c\
+ ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.h\
+ ┃ ┃ ┃ ┗ 📜**CMakeLists.txt** : *Can_Example_Classic_FD CAN example CMake file*\
  ┃ ┃ ┣ 📂Can_Example_Icom\
  ┃ ┃ ┗ 📂Can_Example_loopback\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_Ipc\
  ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
  ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Fls\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
@@ -502,7 +618,17 @@ F29x MCAL specific CMake files are described below -
 ##### F29x MCAL Specific options during *CMake configure* (Stage 1)
 
 To configure CMake following command can be executed in terminal -
+
+```{CMAKE COMMANDS}
 **cmake -S {source_dir_path} --preset {preset_name} -DCMAKE_BUILD_TYPE = {build_type} -DBUILD_CONFIGURATION = {build_configuration} -DTCP={path-to-the-compiler}**
+```
+
+For example,
+
+```{CMAKE EXAMPLE}
+cmake -S . --preset mingw-c2000-f29h85x  -DCMAKE_BUILD_TYPE=Debug -DBUILD_CONFIGURATION=RAM -DTCP="C:\ti\ti-cgt-c29_1.0.0LTS"
+```
+
 
 Configure Option  |Description|
 -----------------|------------|
@@ -510,10 +636,18 @@ Configure Option  |Description|
 **CMAKE_BUILD_TYPE**|Defines the build type for the project. Possible options are - <br> **Debug :** Includes debug information in the compiled files (allowing easy debugging). <br> **Release :** Has optimizations enabled (**default**) |
 **BUILD_CONFIGURATION**|Controls which memory area application executes from. Possible options are - <br> **RAM :** Application executes from RAM. Recommended with Debug mode for small size applications. <br> **FLASH :** Application executes from internal FLASH. Recommended with Release mode. (**default**)|
 
-##### F29x MCAL Specific options during *CMake build* (Stage 2) 
+##### F29x MCAL Specific options during *CMake build* (Stage 2)
 
 To build following command can be executed in terminal -
+```{CMAKE COMMAND}
 **cmake --build {path-to-the-CMake-generated-files} -t {target}**
+```
+
+For example,
+
+```{CMAKE EXAMPLE}
+**cmake --build build/artefacts -t Can_Example_Classic_FD**
+```
 
 Configure Option  |Description|
 -----------------|------------|
@@ -548,20 +682,24 @@ For more information on CMake support by the C29Clang compiler you can refer [co
  ┣ 📂**examples**\
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
- ┃ ┃ ┣ 📂**Can_Example_Classic**\
+ ┃ ┃ ┣ 📂**Can_Example_Classic_FD**\
  ┃ ┃ ┃ ┣ 📂CCS\
- ┃ ┃ ┃ ┃ ┗ 📜**Can_Example_Classic.projectspec** : *Project template which can be imported into CCS*\
+ ┃ ┃ ┃ ┃ ┗ 📜**Can_Example_Classic_FD.projectspec** : *Project template which can be imported into CCS*\
  ┃ ┃ ┃ ┣ 📂f29h85x_config\
- ┃ ┃ ┃ ┣ 📜Can_Example_Classic.c\
- ┃ ┃ ┃ ┣ 📜Can_Example_Classic.h\
+ ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.c\
+ ┃ ┃ ┃ ┣ 📜Can_Example_Classic_FD.h\
  ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
  ┃ ┃ ┣ 📂Can_Example_Icom\
  ┃ ┃ ┗ 📂Can_Example_loopback\
  ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Ecap\
+ ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
  ┃ ┣ 📂Cdd_Sent\
  ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Fls\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
@@ -692,7 +830,7 @@ Will be added in later release.
 
 * Create and load the plugins required for the example by following the steps in [Create an EB project](./MCAL_Configuration_and_EB_Tresos.md#create-an-eb-project) and [Load plugins](./MCAL_Configuration_and_EB_Tresos.md#load-plugins) and close the EB tresos.
 
-```{figure} Assets/images/EB_Tresos_Example_Step1.png
+```{figure} Assets/images/EB_Tresos_Example_Step1.PNG
 :alt: EB Tresos Example Project Created 
 :align: center
 
@@ -701,7 +839,7 @@ EB Tresos Example Project Created
 
 * Copy the ECU Parameter definition files(.xdm) of the specific example.
 
-```{figure} Assets/images/EB_Tresos_Example_Step2.png
+```{figure} Assets/images/EB_Tresos_Example_Step2.PNG
 :alt: MCAL Example ECU Parameter definition files
 :align: center
 
@@ -710,7 +848,7 @@ MCAL Example ECU Parameter definition files
 
 * Go to the EB tresos project workspace and replace the generated ECU Parameter definition files (.xdm) with the ECU Parameter definition files of your specific example.
 
-```{figure} Assets/images/EB_Tresos_Example_Step3.png
+```{figure} Assets/images/EB_Tresos_Example_Step3.PNG
 :alt: EB Tresos ECU Parameter definition files
 :align: center
 

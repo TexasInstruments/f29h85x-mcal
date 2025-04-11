@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -24,7 +24,7 @@
  *********************************************************************************************************************/
 /* ECUCs and Private Configuration JIRA IDs */
 /*
- *Design: MCAL-22324,MCAL-22369,MCAL-22370,MCAL-22371,MCAL-22372,MCAL-22414
+ *Design: MCAL-22324,MCAL-22369,MCAL-22370,MCAL-22371,MCAL-22372,MCAL-22414,MCAL-29443
  */
 #ifndef PORT_CFG_H
 #define PORT_CFG_H
@@ -56,7 +56,7 @@ extern "C" {
 /** \brief Port configuration Major Version. */
 #define PORT_CFG_MAJOR_VERSION    (1U)
 /** \brief Port configuration Minor Version. */
-#define PORT_CFG_MINOR_VERSION    (0U)
+#define PORT_CFG_MINOR_VERSION    (1U)
 /** \brief Port configuration Patch Version. */
 #define PORT_CFG_PATCH_VERSION    (0U)
 
@@ -99,10 +99,17 @@ extern "C" {
 
 /*****************************************************************************
  *
+ * \brief Lock All Pins Configuration.
+ *
+ *****************************************************************************/
+#define PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS       [!IF "as:modconf('Port')[1]/PortGeneral/PortLockConfiguration"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
+
+/*****************************************************************************
+ *
  * \brief Symbolic names for the individual port pins - INDEX.
  *
  *****************************************************************************/
-[!LOOP "as:modconf('Port')[1]/PortConfigSet"!][!VAR "NameOfContainer" = "@name"!][!LOOP "PortContainer/*[1]/PortPin/*"!]
+[!LOOP "as:modconf('Port')[1]/PortConfigSet"!][!VAR "NameOfContainer" = "@name"!][!LOOP "PortContainer/*/PortPin/*"!]
 #define PortConf_PortPin_[!"@name"!]      [!"@index"!]U			/*~ASR~*/
 [!ENDLOOP!][!ENDLOOP!]
 /*********************************************************************************************************************

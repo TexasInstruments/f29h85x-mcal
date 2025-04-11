@@ -6,13 +6,13 @@
     <AR-PACKAGE UUID="509b9326-6ade-4c76-9a53-5528b69e7863">
       <SHORT-NAME>TI_F29H85x</SHORT-NAME>
       <ELEMENTS>
-        <ECUC-DEFINITION-COLLECTION UUID="c647e200-c8be-4ec5-befd-3abc483160e9">
+        <ECUC-DEFINITION-COLLECTION>
           <SHORT-NAME>myEcuParameterDefinition</SHORT-NAME>
           <MODULE-REFS>
             <MODULE-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Can</MODULE-REF>
           </MODULE-REFS>
         </ECUC-DEFINITION-COLLECTION>
-        <ECUC-MODULE-DEF UUID="f76b6933-24d8-4e78-bd46-a15adb5222b3">
+        <ECUC-MODULE-DEF UUID="508c9749-9ade-4c76-9f53-8528b96e7863">
           <SHORT-NAME>Can</SHORT-NAME>
           <DESC>
             <L-2 L="EN">This container holds the configuration of a single CAN Driver.</L-2>
@@ -34,15 +34,13 @@
             <SUPPORTED-CONFIG-VARIANT>VARIANT-PRE-COMPILE</SUPPORTED-CONFIG-VARIANT>
           </SUPPORTED-CONFIG-VARIANTS>
           <CONTAINERS>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="1c087de0-8169-45d0-b6ed-98d51fcfc9c5">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ce853594-3c43-430b-b981-2654cbd3bc6b">
               <SHORT-NAME>CanConfigSet</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">This container contains the configuration parameters and sub containers of the AUTOSAR Can module.</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <SUB-CONTAINERS>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="85e47b89-420c-48cb-8a21-7094ade2d3f9">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="832bd96d-2be0-4c4e-bd42-4ea49b654066">
                   <SHORT-NAME>CanController</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the configuration parameters of the CAN controller(s).</L-2>
@@ -51,13 +49,11 @@
                   <UPPER-MULTIPLICITY>6</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="6324d880-c67a-46ea-b46e-1f09a41b0ab8">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="a531b4ab-cbe7-4063-8406-2f1d6a6125c7">
                       <SHORT-NAME>CanBusoffProcessing</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enables / disables API Can_MainFunction_BusOff() for handling busoff events in polling mode.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -84,13 +80,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="0045f7fb-1f32-4eeb-bbf0-c3a4e72f3df9">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="80022cac-cd3b-41d7-b963-0056c07bdc36">
                       <SHORT-NAME>CanControllerActivation</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Defines if a CAN controller is used in the configuration.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -107,13 +101,11 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>true</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="6fc17492-d14e-44fc-ab98-21e017917ebe">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="as:uuid()">
                       <SHORT-NAME>CanControllerInstance</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Selects Can Controller Instance.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>Texas Instruments</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -156,13 +148,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="d8eb31b7-2fa4-4e12-aaeb-23e560b41172">
+                    <ECUC-INTEGER-PARAM-DEF UUID="d8d59799-43f5-44ef-af99-81769742d5ad">
                       <SHORT-NAME>CanControllerBaseAddress</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies the CAN controller base address.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -177,17 +167,15 @@
                         </ECUC-VALUE-CONFIGURATION-CLASS>
                       </VALUE-CONFIG-CLASSES>
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                      <!-- @Calculated /TI_F29H85x/Can/CanConfigSet/CanController/CanControllerBaseAddress: DEFAULT(XPath: (contains(node:value(../CanControllerInstance), &apos;MCAN1&apos;)), (contains(node:value(../CanControllerInstance), &apos;MCAN2&apos;)), (contains(node:value(../CanControllerInstance), &apos;MCAN3&apos;)), (contains(node:value(../CanControllerInstance), &apos;MCAN4&apos;)), (contains(node:value(../CanControllerInstance), &apos;MCAN5&apos;)), (contains(node:value(../CanControllerInstance), &apos;MCAN6&apos;)))-->
+                      <DEFAULT-VALUE>0</DEFAULT-VALUE>
                       <MAX>4294967295</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="f9e432ae-e2cc-4192-b21b-69a42e0613fe">
+                    <ECUC-INTEGER-PARAM-DEF UUID="9e16aca9-03fd-47a2-a039-fed6d6040499">
                       <SHORT-NAME>CanControllerId</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This parameter provides the controller ID which is unique in a given CAN Driver. The value for this parameter starts with 0 and continue without any gaps.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -206,13 +194,11 @@
                       <MAX>255</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="7b079f80-dffc-4492-afcd-5e2f983a2216">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="0b82f9b6-e281-4f28-8fc6-d02205e06c60">
                       <SHORT-NAME>CanRxProcessing</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enables / disables API Can_MainFunction_Read() for handling PDU reception events in polling mode.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -243,13 +229,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="d632d13f-1526-42a8-bb88-6ad3f1acd898">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="5649c1f8-3a5f-40d5-9891-311ab230a8a5">
                       <SHORT-NAME>CanTxProcessing</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enables / disables API Can_MainFunction_Write() for handling PDU transmission events in polling mode.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -280,13 +264,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="1ba4dfef-ab94-41c0-a0cd-89acfa378e3d">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="19205371-1ee9-445a-abdf-71ccc8a5531d">
                       <SHORT-NAME>CanWakeupFunctionalityAPI</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Adds / removes the service Can_CheckWakeup() from the code.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -303,13 +285,11 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>false</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="a42c90e8-b101-44c7-aeaa-9909f2f209c0">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="1db9b05a-63f1-45c4-beaf-9c945f46012c">
                       <SHORT-NAME>CanWakeupProcessing</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enables / disables API Can_MainFunction_Wakeup() for handling wakeup events in polling mode.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -336,13 +316,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="42a82624-09aa-46cf-9860-4d9e7f903f1e">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="28562666-644e-4178-9978-cbed7662790e">
                       <SHORT-NAME>CanWakeupSupport</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">CAN driver support for wakeup over CAN Bus.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                       <VALUE-CONFIG-CLASSES>
@@ -358,13 +336,11 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>false</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="6ab8d2c7-6b6a-4f8c-8d91-a3c043abc9f0">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="cf8f19dc-1506-48df-acdc-f5ef0d029e46">
                       <SHORT-NAME>CanInteruptType</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Defines the interrupt type.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>Texas Instruments</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -397,13 +373,11 @@
                     </ECUC-ENUMERATION-PARAM-DEF>
                   </PARAMETERS>
                   <REFERENCES>
-                    <ECUC-REFERENCE-DEF UUID="6eca41a4-53d0-475f-a7c6-0cbaed62a46f">
+                    <ECUC-REFERENCE-DEF UUID="c16ce860-da83-465d-8173-9bd3e947ef6c">
                       <SHORT-NAME>CanControllerDefaultBaudrate</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to baudrate configuration container configured for the Can Controller.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -419,13 +393,11 @@
                       </VALUE-CONFIG-CLASSES>
                       <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/Can/CanConfigSet/CanController/CanControllerBaudrateConfig</DESTINATION-REF>
                     </ECUC-REFERENCE-DEF>
-                    <ECUC-REFERENCE-DEF UUID="65baa1c4-b429-4bd2-a115-4837907bdf3d">
+                    <ECUC-REFERENCE-DEF UUID="073ad853-5334-4a78-a559-c0c9f6d80b2b">
                       <SHORT-NAME>CanCpuClockRef</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to the CPU clock configuration, which is set in the MCU driver configuration</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -441,7 +413,7 @@
                       </VALUE-CONFIG-CLASSES>
                       <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint</DESTINATION-REF>
                     </ECUC-REFERENCE-DEF>
-                    <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="34fa114d-cb3e-4c77-87c3-2a927b1f1626">
+                    <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="4e6e94df-aa96-4a35-a69f-f0c4e7573c8f">
                       <SHORT-NAME>CanWakeupSourceRef</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This parameter contains a reference to the Wakeup Source for this controller as defined in the ECU State Manager.</L-2>
@@ -476,21 +448,17 @@
                     </ECUC-SYMBOLIC-NAME-REFERENCE-DEF>
                   </REFERENCES>
                   <SUB-CONTAINERS>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="61d1a0dc-1f04-473c-bf76-fa5539aaa4be">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="26d41b9b-edee-4c8a-b2d3-92d5a2515a60">
                       <SHORT-NAME>CanControllerConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This container contains CAN Controller specific configuration parameters.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="ba75c3a5-65c4-4317-8335-0eb4a619c003">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="70f11a46-031f-40e8-8e2e-622b543ee7c1">
                           <SHORT-NAME>CanFDMode</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Enable Flexible Datarate Operation.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -506,13 +474,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="de738643-c01c-402f-b72f-4b4eecfed669">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="78994d41-3dea-4f82-aa73-9c1a65da7224">
                           <SHORT-NAME>CanLoopbackMode</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Enable internal loopback mode.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -528,13 +494,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="942f81c5-6bde-4be6-8830-15591fdc2198">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="3ea4e6be-a1b5-4112-bda6-3f3bd4dbef47">
                           <SHORT-NAME>CanTransmitPause</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Enable Transmit Pause.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -550,13 +514,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="3675c046-8a34-4c43-868c-205241de1b05">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="d0b8ec62-ebb5-4eb5-bbe8-ffda253e3a0c">
                           <SHORT-NAME>CanDisableAutomaticRetransmission</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Disable automatic retranmission on transmit errors.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -574,7 +536,7 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="654b48c2-636e-40cd-87fe-815ba4837db3">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="8ed32935-d1e6-42ab-a8b0-fb957f217d50">
                       <SHORT-NAME>CanControllerBaudrateConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This container contains bit timing related configuration parameters of the CAN controller(s).</L-2>
@@ -583,13 +545,11 @@
                       <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-INTEGER-PARAM-DEF UUID="ec2882f8-a6e9-4117-bd25-183fa1dac96d">
+                        <ECUC-INTEGER-PARAM-DEF UUID="1b2996e4-6dad-4cda-972d-ddc52d17051b">
                           <SHORT-NAME>CanControllerBaudRate</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Specifies the baudrate of the controller in kbps.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -608,13 +568,11 @@
                           <MAX>1000</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="20de214d-266d-4649-a79b-1c183fcd6594">
+                        <ECUC-INTEGER-PARAM-DEF UUID="5c6322a3-6a25-44a8-af00-f677b56c92dc">
                           <SHORT-NAME>CanControllerBaudRateConfigID</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Uniquely identifies a specific baud rate configuration. This ID is used by SetBaudrate API.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -633,13 +591,11 @@
                           <MAX>65535</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="c4863702-034d-4e04-be87-c2fca5a29413">
+                        <ECUC-INTEGER-PARAM-DEF UUID="2b7070f7-4358-4720-a580-bfbbe0126d52">
                           <SHORT-NAME>CanControllerPropSeg</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Specifies propagation delay in time quantas.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -658,13 +614,11 @@
                           <MAX>255</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="c3b7f17a-6f52-4e7f-b12e-9f3d6ada9fc9">
+                        <ECUC-INTEGER-PARAM-DEF UUID="65b23fec-a82b-4dbd-8fff-2276019c7f34">
                           <SHORT-NAME>CanControllerSeg1</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Specifies phase segment 1 in time quantas.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -683,13 +637,11 @@
                           <MAX>255</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="4de02849-157b-47fb-a2c6-a72d12d091d1">
+                        <ECUC-INTEGER-PARAM-DEF UUID="7ad7bb82-bb89-43e8-93dd-09ce84089498">
                           <SHORT-NAME>CanControllerSeg2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Specifies phase segment 2 in time quantas.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -708,13 +660,11 @@
                           <MAX>128</MAX>
                           <MIN>2</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="0998b444-5adf-4adc-a1ea-340c2bc0993a">
+                        <ECUC-INTEGER-PARAM-DEF UUID="ff2a4a48-1fd1-4fd1-a449-f59f165f4783">
                           <SHORT-NAME>CanControllerSyncJumpWidth</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Specifies the synchronization jump width for the controller in time quantas.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -735,22 +685,22 @@
                         </ECUC-INTEGER-PARAM-DEF>
                       </PARAMETERS>
                       <SUB-CONTAINERS>
-                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="e5412dcf-5dbe-4a60-8739-ca8103de20f8">
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="967db68b-2145-4757-8b81-91fc1105dec1">
                           <SHORT-NAME>CanControllerFdBaudrateConfig</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">This optional container contains bit timing related configuration parameters of the CAN controller(s) for payload and CRC of a CAN FD frame. If this container exists the controller supports CAN FD frames.</L-2>
                           </DESC>
+                          <!-- @Calculated /TI_F29H85x/Can/CanConfigSet/CanController/CanControllerBaudrateConfig/CanControllerFdBaudrateConfig: ENABLE(XPath: (../../../CanControllerConfig/CanFDMode=&apos;true&apos;))-->
                           <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                          <!-- @CalculatedEnd -->
                           <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <PARAMETERS>
-                            <ECUC-INTEGER-PARAM-DEF UUID="d96a397c-937b-43fb-bdb8-a607c2f49237">
+                            <ECUC-INTEGER-PARAM-DEF UUID="e9237ba5-cc55-431f-a6a3-a2a6937968c6">
                               <SHORT-NAME>CanControllerFdBaudRate</SHORT-NAME>
                               <DESC>
                                 <L-2 L="EN">Specifies the data segment baud rate of the controller in kbps.</L-2>
                               </DESC>
-                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -769,13 +719,11 @@
                               <MAX>5000</MAX>
                               <MIN>0</MIN>
                             </ECUC-INTEGER-PARAM-DEF>
-                            <ECUC-INTEGER-PARAM-DEF UUID="2df3b47e-b649-4a04-9fdc-f48e17f48b89">
+                            <ECUC-INTEGER-PARAM-DEF UUID="68196aeb-bfa6-4096-a998-e68a2485c680">
                               <SHORT-NAME>CanControllerPropSeg</SHORT-NAME>
                               <DESC>
                                 <L-2 L="EN">Specifies propagation delay in time quantas.</L-2>
                               </DESC>
-                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -794,13 +742,11 @@
                               <MAX>32</MAX>
                               <MIN>0</MIN>
                             </ECUC-INTEGER-PARAM-DEF>
-                            <ECUC-INTEGER-PARAM-DEF UUID="690839be-8c91-4d4d-a436-b864b661967d">
+                            <ECUC-INTEGER-PARAM-DEF UUID="801e1932-dcd1-46f7-9fdc-a6e9bce35233">
                               <SHORT-NAME>CanControllerSeg1</SHORT-NAME>
                               <DESC>
                                 <L-2 L="EN">Specifies phase segment 1 in time quantas.</L-2>
                               </DESC>
-                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -819,13 +765,11 @@
                               <MAX>32</MAX>
                               <MIN>0</MIN>
                             </ECUC-INTEGER-PARAM-DEF>
-                            <ECUC-INTEGER-PARAM-DEF UUID="eec2f574-1c5f-4712-b6b2-8c8cb51b6281">
+                            <ECUC-INTEGER-PARAM-DEF UUID="268f2a3a-6c16-4e8b-b259-1d344e05998e">
                               <SHORT-NAME>CanControllerSeg2</SHORT-NAME>
                               <DESC>
                                 <L-2 L="EN">Specifies phase segment 2 in time quantas.</L-2>
                               </DESC>
-                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -844,13 +788,11 @@
                               <MAX>16</MAX>
                               <MIN>1</MIN>
                             </ECUC-INTEGER-PARAM-DEF>
-                            <ECUC-INTEGER-PARAM-DEF UUID="40794e7b-dc0f-4d7b-ad7d-58bf1fd5d1ee">
+                            <ECUC-INTEGER-PARAM-DEF UUID="6f1e7bbb-f27b-42de-9c16-1f1236f63703">
                               <SHORT-NAME>CanControllerSyncJumpWidth</SHORT-NAME>
                               <DESC>
                                 <L-2 L="EN">Specifies the synchronization jump width for the controller in time quantas.</L-2>
                               </DESC>
-                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -869,7 +811,7 @@
                               <MAX>16</MAX>
                               <MIN>1</MIN>
                             </ECUC-INTEGER-PARAM-DEF>
-                            <ECUC-INTEGER-PARAM-DEF UUID="6d0f71dd-71bb-4d52-a140-ee009fd3d690">
+                            <ECUC-INTEGER-PARAM-DEF UUID="ef003efe-fcc6-43cd-854c-a93d2f1fc1ef">
                               <SHORT-NAME>CanControllerTrcvDelayCompensationOffset</SHORT-NAME>
                               <DESC>
                                 <L-2 L="EN">Specifies the Transceiver Delay Compensation Offset in ns. If not specified Transceiver Delay Compensation is disabled.</L-2>
@@ -905,28 +847,34 @@
                               <MAX>400</MAX>
                               <MIN>0</MIN>
                             </ECUC-INTEGER-PARAM-DEF>
-                            <ECUC-INTEGER-PARAM-DEF UUID="60552dc5-3579-42c6-9df2-0bebf70eae2a">
+                            <ECUC-INTEGER-PARAM-DEF UUID="a8bb6f8d-a317-4835-9062-dbdf2e7a96a1">
                               <SHORT-NAME>CanControllerTrcvDelayCompensationFilter</SHORT-NAME>
                               <DESC>
                                 <L-2 L="EN">Specifies the Transceiver Delay Compensation Filter in ns. If not specified Transceiver Delay Compensation is disabled.</L-2>
                               </DESC>
-                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
                               <ORIGIN>Texas Instruments</ORIGIN>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
                               <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                               <DEFAULT-VALUE>0</DEFAULT-VALUE>
                               <MAX>400</MAX>
                               <MIN>0</MIN>
                             </ECUC-INTEGER-PARAM-DEF>
-                            <ECUC-BOOLEAN-PARAM-DEF UUID="9c8afaf8-775e-4139-9ec7-f7d36ec6ef6c">
+                            <ECUC-BOOLEAN-PARAM-DEF UUID="cf88b64f-4e5a-43ae-8d18-bb1c6209afa2">
                               <SHORT-NAME>CanControllerTxBitRateSwitch</SHORT-NAME>
                               <DESC>
                                 <L-2 L="EN">Specifies if the bit rate switching shall be used for transmissions.</L-2>
                               </DESC>
-                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -947,7 +895,7 @@
                         </ECUC-PARAM-CONF-CONTAINER-DEF>
                       </SUB-CONTAINERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="cdb269ad-1199-4ea1-85a5-5e4cc34cc75e">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c52aba0f-1f50-4875-9b8e-ea895d3ad51d">
                       <SHORT-NAME>CanTTController</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">CanTTController is specified in the SWS TTCAN and contains the configuration parameters of the TTCAN controller(s) (which are needed in addition to the configuration parameters of the CAN controller(s)).</L-2>
@@ -955,13 +903,11 @@
                       <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                       <UPPER-MULTIPLICITY>0</UPPER-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-INTEGER-PARAM-DEF UUID="654b891b-bacd-4572-b782-211512986794">
+                        <ECUC-INTEGER-PARAM-DEF UUID="ff136dd7-3fae-4773-82df-b3775842a08a">
                           <SHORT-NAME>CanTTControllerApplWatchdogLimit</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the maximum time period (unit is 256 times NTU) after which the application has to serve the watchdog.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -980,13 +926,11 @@
                           <MAX>255</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="dfdbfd58-1e5a-4a9c-8c84-e804b4403239">
+                        <ECUC-INTEGER-PARAM-DEF UUID="59f5fb85-ed8f-4ced-b50e-41ab56236852">
                           <SHORT-NAME>CanTTControllerCycleCountMax</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the value for cycle_count_max.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1005,13 +949,11 @@
                           <MAX>63</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="9463d48a-7754-4dcf-8bf0-862438e16137">
+                        <ECUC-INTEGER-PARAM-DEF UUID="f2cb07af-fd44-4bdb-80a7-dd4bd4da86d5">
                           <SHORT-NAME>CanTTControllerExpectedTxTrigger</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Number of expected_tx_trigger.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1030,13 +972,11 @@
                           <MAX>255</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="120a39f8-e647-4f54-9ba5-9ce115ebd15f">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="f702c880-ac39-4e65-84fd-f5b3f8e2fc3e">
                           <SHORT-NAME>CanTTControllerExternalClockSynchronisation</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Enables/disables the external clock synchronization.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1053,13 +993,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="7ba150f9-1c94-4af2-a838-57870186e924">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="bb3796c6-9864-45ca-aa9a-dd796876b586">
                           <SHORT-NAME>CanTTControllerGlobalTimeFiltering</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Enables/disables the global time filtering.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1076,13 +1014,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="ba7185a0-7280-40ea-aedc-a5f6d380e8ee">
+                        <ECUC-INTEGER-PARAM-DEF UUID="6e2ec67f-957f-44fe-8376-6fa8e3247d11">
                           <SHORT-NAME>CanTTControllerInitialRefOffset</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the initial value for ref trigger offset.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1101,13 +1037,11 @@
                           <MAX>127</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="8301a181-1679-4fc3-8d1e-6a3b4e97da5f">
+                        <ECUC-INTEGER-PARAM-DEF UUID="26053ab0-9e8c-4387-8dd3-2d8c2fec0215">
                           <SHORT-NAME>CanTTControllerInterruptEnable</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Enables/disables the respective interrupts.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1126,13 +1060,11 @@
                           <MAX>1023</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="bcb98286-6762-4487-bab5-2bb0918626df">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="daf4a664-a909-4482-a645-4e551a724efc">
                           <SHORT-NAME>CanTTControllerLevel2</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines whether Level 2 or Level 1 is used.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1149,13 +1081,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-FLOAT-PARAM-DEF UUID="a445eb9b-d3f4-4ab9-99dc-b9b354e95f46">
+                        <ECUC-FLOAT-PARAM-DEF UUID="9c596d14-4482-4d94-a1da-9c27c3409d58">
                           <SHORT-NAME>CanTTControllerNTUConfig</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the config value for NTU (network time unit).</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1174,13 +1104,11 @@
                           <MAX>100.0</MAX>
                           <MIN>0.0</MIN>
                         </ECUC-FLOAT-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="4be1944f-69f0-4f0d-9911-80b3a7d6dba1">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="e6cb6ee5-3e22-4e02-aafc-9cc840097e5a">
                           <SHORT-NAME>CanTTControllerOperationMode</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the operation mode.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1211,13 +1139,11 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-FLOAT-PARAM-DEF UUID="2dbc65f1-c795-4a88-b9ef-5d3a62db7f02">
+                        <ECUC-FLOAT-PARAM-DEF UUID="28e94969-d0f1-43b8-8d31-5c0e3fd53657">
                           <SHORT-NAME>CanTTControllerSyncDeviation</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the maximum synchronization deviation:</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1236,13 +1162,11 @@
                           <MAX>100.0</MAX>
                           <MIN>0.0</MIN>
                         </ECUC-FLOAT-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="600f796d-51ee-417c-8637-e7cf0181e956">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="18cc5f27-49f8-4e3d-9126-8ac759ac7505">
                           <SHORT-NAME>CanTTControllerTimeMaster</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines whether the controller acts as a potential time master.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1259,13 +1183,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="76094a39-104a-4ead-b1c5-054d3581ec3e">
+                        <ECUC-INTEGER-PARAM-DEF UUID="d9eba342-9cce-478a-bb95-631598b1ef8f">
                           <SHORT-NAME>CanTTControllerTimeMasterPriority</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the time master priority.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1284,13 +1206,11 @@
                           <MAX>7</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="cd5a2eef-74ee-4e6b-88c8-46be02652b05">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="e319bd3a-5c93-4268-8030-efda7a274ded">
                           <SHORT-NAME>CanTTControllerTURRestore</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Enables/disables the TUR restore.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1307,13 +1227,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="2ffe2844-c995-44ed-a76b-11d53f7c0550">
+                        <ECUC-INTEGER-PARAM-DEF UUID="14ab9640-b52d-409c-9112-17db2c2c095b">
                           <SHORT-NAME>CanTTControllerTxEnableWindowLength</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Length of the tx enable window given in CAN bit times.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1332,13 +1250,11 @@
                           <MAX>16</MAX>
                           <MIN>1</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="0f4f3c3d-d597-4adb-9e1f-e538612946e8">
+                        <ECUC-INTEGER-PARAM-DEF UUID="fa48bea1-bd01-4433-8e3e-679a81fc7fac">
                           <SHORT-NAME>CanTTControllerWatchTriggerGapTimeMark</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">watch trigger time mark after a gap</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1357,13 +1273,11 @@
                           <MAX>65535</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="2a94054c-f36e-4d6e-833a-b4b1640ae777">
+                        <ECUC-INTEGER-PARAM-DEF UUID="3e63c8f9-c514-4f80-9b2f-36351dd9d027">
                           <SHORT-NAME>CanTTControllerWatchTriggerTimeMark</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">watch trigger time mark</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1382,13 +1296,11 @@
                           <MAX>65535</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="2af733b9-c89c-4d9f-82f6-8558b8aee674">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="8667e0e1-5c26-4e1d-b790-34b2617724a8">
                           <SHORT-NAME>CanTTIRQProcessing</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Enables / disables API Can_MainFunction_BusOff() for handling busoff events in polling mode.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1419,7 +1331,7 @@
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
                   </SUB-CONTAINERS>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="919b7343-3256-434d-b75f-fe96662868d7">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="aa2db962-bfe3-49eb-af5a-f5625b79855f">
                   <SHORT-NAME>CanHardwareObject</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the configuration (parameters) of CAN Hardware Objects.</L-2>
@@ -1428,13 +1340,11 @@
                   <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-INTEGER-PARAM-DEF UUID="30171439-6e67-4ff7-94ff-c8defb65771a">
+                    <ECUC-INTEGER-PARAM-DEF UUID="0817cb7e-072a-42f0-a525-f339d0d857e6">
                       <SHORT-NAME>CanFdPaddingValue</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies the value which is used to pad unspecified data in CAN FD frames &gt; 8 bytes for transmission. This is necessary due to the discrete possible values of the DLC if &gt; 8 bytes.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1453,13 +1363,11 @@
                       <MAX>255</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="28b4ca2d-5e83-4f02-90e2-18f066dfded3">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="fd539db9-2e68-43c0-8d0f-317e62cce92e">
                       <SHORT-NAME>CanHandleType</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies the type (Full-CAN or Basic-CAN) of a hardware object.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1486,19 +1394,29 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="95c28f6d-01bd-46da-a8f3-d6f6fda1536c">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="31fa8b1a-d8f9-4e0a-9f39-8a4f0981d05d">
                       <SHORT-NAME>CanHardwareObjectUsesPolling</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Enables polling of this hardware object.</L-2>
                       </DESC>
                       <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                       <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <MULTIPLICITY-CONFIG-CLASSES>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      </MULTIPLICITY-CONFIG-CLASSES>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                       <VALUE-CONFIG-CLASSES>
                         <ECUC-VALUE-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
                           <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
                         </ECUC-VALUE-CONFIGURATION-CLASS>
                         <ECUC-VALUE-CONFIGURATION-CLASS>
@@ -1509,13 +1427,11 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>false</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="6a399550-550d-4664-ac05-c5d29a2de214">
+                    <ECUC-INTEGER-PARAM-DEF UUID="48d410ce-6de4-431d-8028-ce521e1edab6">
                       <SHORT-NAME>CanHwObjectCount</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Number of hardware objects used to implement one HOH. In case of a HRH this parameter defines the number of elements in the hardware FIFO or the number of shadow buffers, in case of a HTH it defines the number of hardware objects used for multiplexed transmission or for a hardware FIFO used by a FullCAN HTH.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1534,13 +1450,11 @@
                       <MAX>65535</MAX>
                       <MIN>1</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="2995e807-389c-4adf-9fb9-92c52814830c">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="dc1633cd-3dbf-4e08-a32d-7e1e6503656d">
                       <SHORT-NAME>CanIdType</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies whether the IdValue is of type</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1571,13 +1485,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="8742d96b-a5b0-49bf-8c59-c9ebd0547ec2">
+                    <ECUC-INTEGER-PARAM-DEF UUID="b0ae3dfd-aa7d-4473-9c84-39b80a3e5c69">
                       <SHORT-NAME>CanObjectId</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Holds the handle ID of HRH or HTH. The value of this parameter is unique in a given CAN Driver, and it should start with 0 and continue without any gaps.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1596,13 +1508,11 @@
                       <MAX>65535</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="20afd50a-1a67-4809-bd00-f12373d60a03">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="607cc0f0-63eb-4827-bf97-7dd5ab1aaf68">
                       <SHORT-NAME>CanObjectType</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies if the HardwareObject is used as Transmit or as Receive object</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1629,7 +1539,7 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="417dd25a-a134-47dd-b7f4-585de1e53571">
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="a3e6e9e3-31e7-45f5-992e-83a4cb6da663">
                       <SHORT-NAME>CanTriggerTransmitEnable</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This parameter defines if or if not Can supports the trigger-transmit API for this handle.</L-2>
@@ -1637,12 +1547,22 @@
                       <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                       <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
+                      <MULTIPLICITY-CONFIG-CLASSES>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      </MULTIPLICITY-CONFIG-CLASSES>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                       <VALUE-CONFIG-CLASSES>
                         <ECUC-VALUE-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
                           <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
                         </ECUC-VALUE-CONFIGURATION-CLASS>
                         <ECUC-VALUE-CONFIGURATION-CLASS>
@@ -1655,13 +1575,11 @@
                     </ECUC-BOOLEAN-PARAM-DEF>
                   </PARAMETERS>
                   <REFERENCES>
-                    <ECUC-REFERENCE-DEF UUID="3f245a3d-2c71-4f77-9e5b-984e016f138a">
+                    <ECUC-REFERENCE-DEF UUID="36a8355d-f57c-4575-94a4-91535e165872">
                       <SHORT-NAME>CanControllerRef</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to CAN Controller to which the HOH is associated to.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1677,13 +1595,11 @@
                       </VALUE-CONFIG-CLASSES>
                       <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/Can/CanConfigSet/CanController</DESTINATION-REF>
                     </ECUC-REFERENCE-DEF>
-                    <ECUC-REFERENCE-DEF UUID="cdff576d-74b4-49ec-b3d5-3c894116df80">
+                    <ECUC-REFERENCE-DEF UUID="8ddc0eb0-d780-45f6-94be-d87cdb76d7d8">
                       <SHORT-NAME>CanMainFunctionRWPeriodRef</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to CanMainFunctionPeriod</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1701,7 +1617,7 @@
                     </ECUC-REFERENCE-DEF>
                   </REFERENCES>
                   <SUB-CONTAINERS>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="47a586f1-b908-4fb9-8407-32c866c365d2">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="399a7bc7-b90f-42d3-b64d-374bf14855d4">
                       <SHORT-NAME>CanHwFilter</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This container is only valid for HRHs and contains the configuration (parameters) of one hardware filter.</L-2>
@@ -1710,13 +1626,11 @@
                       <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-INTEGER-PARAM-DEF UUID="2ded42db-0094-43cb-a15a-61cf1b9d31d6">
+                        <ECUC-INTEGER-PARAM-DEF UUID="0aa2988b-9790-4488-87d3-a13e8f360327">
                           <SHORT-NAME>CanHwFilterCode</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Specifies (together with the filter mask) the identifiers range that passes the hardware filter.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -1734,13 +1648,11 @@
                           <MAX>4294967295</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="25262f86-c7a2-4db0-9f45-79abe06cd862">
+                        <ECUC-INTEGER-PARAM-DEF UUID="49024010-3ef8-4962-86c4-37bfdcfdf18e">
                           <SHORT-NAME>CanHwFilterMask</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Describes a mask for hardware-based filtering of CAN identifiers. The CAN identifiers of incoming messages are masked with the appropriate CanFilterMaskValue. Bits holding a 0 mean don&apos;t care, i.e. do not compare the message&apos;s identifier in the respective bit position.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -1758,9 +1670,83 @@
                           <MAX>4294967295</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="4d476f0d-de51-4505-b9ec-cd90c761a71d">
+                          <SHORT-NAME>CanStandardFilterType</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Defines the type of the Standard Filter </L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>CAN_CLASSIC_FILTER</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CAN_RANGE_FILTER</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CAN_DUAL_ID_FILTER</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CAN_CLASSIC_FILTER</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CAN_FILTER_DISABLED</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="344269f6-5151-4dec-8031-f4c59579afc4">
+                          <SHORT-NAME>CanEventPin</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Defines the type of the Event pin </L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>CAN_EVENT_PIN_NONE</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CAN_EVENT_PIN_0</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CAN_EVENT_PIN_1</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>CAN_EVENT_PIN_NONE</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
                       </PARAMETERS>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="e00d8b0b-56ab-40b6-b62b-b1f6a3fd3e93">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="830715f3-b87a-43f1-ae24-671c722b8fff">
                       <SHORT-NAME>CanTTHardwareObjectTrigger</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">CanTTHardwareObjectTrigger is specified in the SWS TTCAN and contains the configuration (parameters) of TTCAN triggers for Hardware Objects, which are additional to the configuration (parameters) of CAN Hardware Objects.</L-2>
@@ -1769,13 +1755,11 @@
                       <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-INTEGER-PARAM-DEF UUID="dd65ada0-23fe-4741-9065-49cb3c387228">
+                        <ECUC-INTEGER-PARAM-DEF UUID="260f56cf-1e9e-48cf-999d-5f800cd7e824">
                           <SHORT-NAME>CanTTHardwareObjectBaseCycle</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the cycle_offset.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1794,13 +1778,11 @@
                           <MAX>63</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="d0022563-d4df-4445-b817-2f569c4fa522">
+                        <ECUC-INTEGER-PARAM-DEF UUID="369cc24f-0fa8-4697-8839-562652a4868c">
                           <SHORT-NAME>CanTTHardwareObjectCycleRepetition</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the repeat_factor.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1819,13 +1801,11 @@
                           <MAX>64</MAX>
                           <MIN>1</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="eb33637f-ddeb-4707-975f-e817d94c8e6a">
+                        <ECUC-INTEGER-PARAM-DEF UUID="f59150f1-8372-42b5-9942-a489a5ba8160">
                           <SHORT-NAME>CanTTHardwareObjectTimeMark</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the point in time, when the trigger will be activated.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1844,13 +1824,11 @@
                           <MAX>65535</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="3d151d97-f719-4e26-853b-a06abddcd79d">
+                        <ECUC-INTEGER-PARAM-DEF UUID="a02b0335-4493-4d13-ae54-dd18ac2619e7">
                           <SHORT-NAME>CanTTHardwareObjectTriggerId</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Sequential number which allows separation of different TTCAN triggers configured for one and the same hardware object.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1869,13 +1847,11 @@
                           <MAX>63</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="7bca95ca-af7d-42fb-88ad-900df507d75f">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="584371a4-5544-4d91-9e13-9de485d6ca71">
                           <SHORT-NAME>CanTTHardwareObjectTriggerType</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the type of the trigger associated with the hardware object. This parameter depends on plain CAN parameter CAN_OBJECT_TYPE.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -1922,7 +1898,7 @@
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
                   </SUB-CONTAINERS>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="3daa2f04-c8b5-42f7-b895-f354705294e5">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="5d6de77b-6ba3-41c8-8620-7b213a2e2087">
                   <SHORT-NAME>CanIcom</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the parameters for configuring pretended networking</L-2>
@@ -1931,7 +1907,7 @@
                   <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <SUB-CONTAINERS>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="6d6d12da-8792-47b1-bca5-94b5d83858c6">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="fff2a1ff-bd0d-4481-af49-90d1c0441a52">
                       <SHORT-NAME>CanIcomConfig</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This container contains the configuration parameters of the ICOM Configuration.</L-2>
@@ -1940,13 +1916,11 @@
                       <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-INTEGER-PARAM-DEF UUID="a2c11c55-284e-47fa-a80c-2577441c2fde">
+                        <ECUC-INTEGER-PARAM-DEF UUID="5ba35b6d-e4d7-4f35-85a7-1b9b8c1b0aba">
                           <SHORT-NAME>CanIcomConfigId</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">This parameter identifies the ID of the ICOM configuration.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1965,13 +1939,11 @@
                           <MAX>255</MAX>
                           <MIN>1</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="03599dda-e2aa-44ca-98a5-95680af12340">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="8ec95ca2-5a4c-45d5-ab9c-5a19944921ef">
                           <SHORT-NAME>CanIcomWakeOnBusOff</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">This parameter defines that the MCU shall wake if the bus off is detected or not.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1990,15 +1962,13 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                       <SUB-CONTAINERS>
-                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="6396abbd-4e9d-42ff-b332-9744887d419a">
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c74bc320-bded-42c2-9d82-685d57640fda">
                           <SHORT-NAME>CanIcomWakeupCauses</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">This container contains the configuration parameters of the wakeup causes to leave the power saving mode.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SUB-CONTAINERS>
-                            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="33efc6a4-cc0a-44ef-8b1a-ed65190f5bdc">
+                            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="80d5eed9-8b90-4c00-b217-8d31577d792a">
                               <SHORT-NAME>CanIcomRxMessage</SHORT-NAME>
                               <DESC>
                                 <L-2 L="EN">This container contains the configuration parameters for the wakeup causes for matching received messages. It has to be configured as often as received messages are defined as wakeup cause.</L-2>
@@ -2007,7 +1977,7 @@
                               <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <PARAMETERS>
-                                <ECUC-INTEGER-PARAM-DEF UUID="adaee1fe-dcc0-40c4-9046-3a3696ef7736">
+                                <ECUC-INTEGER-PARAM-DEF UUID="c42c1f55-f0e9-41c9-be0c-947a8993405e">
                                   <SHORT-NAME>CanIcomCounterValue</SHORT-NAME>
                                   <DESC>
                                     <L-2 L="EN">This parameter defines that the MCU shall wake if the message with the ID is received n times on the communication channel.</L-2>
@@ -2043,13 +2013,11 @@
                                   <MAX>65536</MAX>
                                   <MIN>1</MIN>
                                 </ECUC-INTEGER-PARAM-DEF>
-                                <ECUC-INTEGER-PARAM-DEF UUID="3cbef561-2c63-4761-ba54-16dd25eb98ff">
+                                <ECUC-INTEGER-PARAM-DEF UUID="4657bd29-9e4f-4eca-9911-0839efceb2ee">
                                   <SHORT-NAME>CanIcomMessageId</SHORT-NAME>
                                   <DESC>
                                     <L-2 L="EN">This parameter defines the message ID the wakeup causes of this CanIcomRxMessage are configured for. In addition a mask (CanIcomMessageIdMask) can be defined, in that case it is possible to define a range of rx messages, which can create a wakeup condition.</L-2>
                                   </DESC>
-                                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                                   <SCOPE>ECU</SCOPE>
                                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2068,7 +2036,7 @@
                                   <MAX>536870912</MAX>
                                   <MIN>0</MIN>
                                 </ECUC-INTEGER-PARAM-DEF>
-                                <ECUC-INTEGER-PARAM-DEF UUID="2f5caf28-67f9-42b7-af52-bde3956493c7">
+                                <ECUC-INTEGER-PARAM-DEF UUID="91773ebe-1b01-4966-a5d1-4530b5ee7ce2">
                                   <SHORT-NAME>CanIcomMessageIdMask</SHORT-NAME>
                                   <DESC>
                                     <L-2 L="EN">Describes a mask for filtering of CAN identifiers. The CAN identifiers of incoming messages are masked with this CanIcomMessageIdMask. If the masked identifier matches the masked value of CanIcomMessageId, it can create a wakeup condition for this CanIcomRxMessage. Bits holding a 0 mean don&apos;t care, i.e. do not compare the message&apos;s identifier in the respective bit position. The mask shall be build by filling with leading 0.</L-2>
@@ -2104,7 +2072,7 @@
                                   <MAX>536870912</MAX>
                                   <MIN>0</MIN>
                                 </ECUC-INTEGER-PARAM-DEF>
-                                <ECUC-FLOAT-PARAM-DEF UUID="bdefd160-e204-4d89-a369-362a8fc81a7e">
+                                <ECUC-FLOAT-PARAM-DEF UUID="f4133452-5c78-46df-ac2a-683988780bac">
                                   <SHORT-NAME>CanIcomMissingMessageTimerValue</SHORT-NAME>
                                   <DESC>
                                     <L-2 L="EN">This parameter defines that the MCU shall wake if the message with the ID is not received for a specific time in s on the</L-2>
@@ -2140,13 +2108,11 @@
                                   <MAX>5.36870912E8</MAX>
                                   <MIN>0.0</MIN>
                                 </ECUC-FLOAT-PARAM-DEF>
-                                <ECUC-BOOLEAN-PARAM-DEF UUID="b4f2dc64-3c52-4a95-b423-afc28ba28693">
+                                <ECUC-BOOLEAN-PARAM-DEF UUID="ee712603-4a4d-4608-9ea1-874ff961e203">
                                   <SHORT-NAME>CanIcomPayloadLengthError</SHORT-NAME>
                                   <DESC>
                                     <L-2 L="EN">This parameter defines that the MCU shall wake if a payload error occurs</L-2>
                                   </DESC>
-                                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                                   <SCOPE>ECU</SCOPE>
                                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2165,7 +2131,7 @@
                                 </ECUC-BOOLEAN-PARAM-DEF>
                               </PARAMETERS>
                               <SUB-CONTAINERS>
-                                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="4187cbd1-44d5-4de9-a841-da839427b06a">
+                                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="38605d88-cb65-4deb-ace9-94716b417956">
                                   <SHORT-NAME>CanIcomRxMessageSignalConfig</SHORT-NAME>
                                   <DESC>
                                     <L-2 L="EN">This container contains the configuration parameters for the wakeup causes for matching signals.</L-2>
@@ -2174,13 +2140,11 @@
                                   <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                                   <PARAMETERS>
-                                    <ECUC-INTEGER-PARAM-DEF UUID="b4d8802e-4ca1-41b6-b7b9-a55cccbab57e">
+                                    <ECUC-INTEGER-PARAM-DEF UUID="f21c1fa0-b8f5-4150-8304-604d54439285">
                                       <SHORT-NAME>CanIcomSignalMask</SHORT-NAME>
                                       <DESC>
                                         <L-2 L="EN">This parameter shall be used to mask a signal in the payload of a CAN message.</L-2>
                                       </DESC>
-                                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                                       <SCOPE>LOCAL</SCOPE>
                                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2199,13 +2163,11 @@
                                       <MAX>18446744073709551615</MAX>
                                       <MIN>0</MIN>
                                     </ECUC-INTEGER-PARAM-DEF>
-                                    <ECUC-ENUMERATION-PARAM-DEF UUID="43afc5d2-6134-40f9-85c6-be11a53ec144">
+                                    <ECUC-ENUMERATION-PARAM-DEF UUID="13e52862-5146-4e21-9122-62ce14adee80">
                                       <SHORT-NAME>CanIcomSignalOperation</SHORT-NAME>
                                       <DESC>
                                         <L-2 L="EN">This parameter defines the operation, which shall be used to verify the signal value creates a wakeup condition.</L-2>
                                       </DESC>
-                                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                                       <SCOPE>ECU</SCOPE>
                                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2244,13 +2206,11 @@
                                         </ECUC-ENUMERATION-LITERAL-DEF>
                                       </LITERALS>
                                     </ECUC-ENUMERATION-PARAM-DEF>
-                                    <ECUC-INTEGER-PARAM-DEF UUID="0877a8ed-3446-4721-8604-b273bb204086">
+                                    <ECUC-INTEGER-PARAM-DEF UUID="5f7bff25-f666-45db-b71a-4f04cf3e4691">
                                       <SHORT-NAME>CanIcomSignalValue</SHORT-NAME>
                                       <DESC>
                                         <L-2 L="EN">This parameter shall be used to define a signal value which shall be compared (CanIcomSignalOperation) with the masked CanIcomSignalMask value of the received signal (CanIcomSignalRef).</L-2>
                                       </DESC>
-                                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                                       <SCOPE>LOCAL</SCOPE>
                                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2271,7 +2231,7 @@
                                     </ECUC-INTEGER-PARAM-DEF>
                                   </PARAMETERS>
                                   <REFERENCES>
-                                    <ECUC-REFERENCE-DEF UUID="1792dd9d-b278-420c-be9e-46e62fd732af">
+                                    <ECUC-REFERENCE-DEF UUID="102be81f-ef70-4f0f-bf4d-98814991c3e1">
                                       <SHORT-NAME>CanIcomSignalRef</SHORT-NAME>
                                       <DESC>
                                         <L-2 L="EN">This parameter defines a reference to the signal which shall be checked additional to the message id (CanIcomMessageId).</L-2>
@@ -2316,21 +2276,17 @@
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
               </SUB-CONTAINERS>
             </ECUC-PARAM-CONF-CONTAINER-DEF>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="9bb7c99b-fc80-4dbe-936c-2d87fb81d364">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="5cd8efdb-fc17-423c-b51e-8b445e985ba6">
               <SHORT-NAME>CanGeneral</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">This container contains the parameters related each CAN Driver Unit.</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <PARAMETERS>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="3301d3ba-4963-4bca-a565-7c71676531b6">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="c0bf106f-ad93-436c-82a9-2c1d25a89a23">
                   <SHORT-NAME>CanDevErrorDetect</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Switches the development error detection and notification on or off.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2347,13 +2303,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="297e0c32-b1b1-4711-a042-6156caf36d8d">
+                <ECUC-INTEGER-PARAM-DEF UUID="c6bcec1d-f862-45c5-997a-ae8f76813512">
                   <SHORT-NAME>CanIndex</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2372,7 +2326,7 @@
                   <MAX>255</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
-                <ECUC-FUNCTION-NAME-DEF UUID="781b0adc-12e1-45cf-92b2-6b09e57a4256">
+                <ECUC-FUNCTION-NAME-DEF UUID="a8e5d0e4-77d8-487f-8632-6c4bcfac6646">
                   <SHORT-NAME>CanLPduReceiveCalloutFunction</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This parameter defines the existence and the name of a callout function that is called after a successful</L-2>
@@ -2410,7 +2364,7 @@
                     </ECUC-FUNCTION-NAME-DEF-CONDITIONAL>
                   </ECUC-FUNCTION-NAME-DEF-VARIANTS>
                 </ECUC-FUNCTION-NAME-DEF>
-                <ECUC-FLOAT-PARAM-DEF UUID="d93fbcb4-8059-4f24-be19-f773ed060263">
+                <ECUC-FLOAT-PARAM-DEF UUID="9ee0e506-f44c-4dd1-bd39-e475f0026b51">
                   <SHORT-NAME>CanMainFunctionBusoffPeriod</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This parameter describes the period for cyclic call to Can_MainFunction_Busoff. Unit is seconds.</L-2>
@@ -2445,13 +2399,11 @@
                   <MAX>INF</MAX>
                   <MIN INTERVAL-TYPE="OPEN">0.0</MIN>
                 </ECUC-FLOAT-PARAM-DEF>
-                <ECUC-FLOAT-PARAM-DEF UUID="1c523179-6245-4ffd-b28f-797fc89bd7ec">
+                <ECUC-FLOAT-PARAM-DEF UUID="1387c2aa-b664-4c2c-8a4e-96703a88768c">
                   <SHORT-NAME>CanMainFunctionModePeriod</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This parameter describes the period for cyclic call to Can_MainFunction_Mode. Unit is seconds.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                   <VALUE-CONFIG-CLASSES>
@@ -2469,7 +2421,7 @@
                   <MAX>INF</MAX>
                   <MIN INTERVAL-TYPE="OPEN">0.0</MIN>
                 </ECUC-FLOAT-PARAM-DEF>
-                <ECUC-FLOAT-PARAM-DEF UUID="892c6e04-5d94-47e5-b499-e8207f1619fa">
+                <ECUC-FLOAT-PARAM-DEF UUID="22f42934-d719-45b8-8a1e-c4eda5b6aed1">
                   <SHORT-NAME>CanMainFunctionWakeupPeriod</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This parameter describes the period for cyclic call to Can_MainFunction_Wakeup. Unit is seconds.</L-2>
@@ -2504,13 +2456,11 @@
                   <MAX>INF</MAX>
                   <MIN INTERVAL-TYPE="OPEN">0.0</MIN>
                 </ECUC-FLOAT-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="2bfee465-7a6a-47c8-9fb1-69b476d255d2">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="1319fef4-2821-4880-922d-d9293897861f">
                   <SHORT-NAME>CanMultiplexedTransmission</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Specifies if multiplexed transmission shall be supported.ON or OFF</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>ECU</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2527,13 +2477,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="485e9f5b-7603-40ed-ac4f-66a028918d96">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="f4a8e80b-da25-4f46-979e-049b9eaeb22b">
                   <SHORT-NAME>CanPublicIcomSupport</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Selects support of Pretended Network features in Can driver.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>ECU</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2550,7 +2498,28 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="ef412de0-1832-4a95-91d6-d77abd6e473b">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="51b469d5-17e2-41ac-aa6f-f14df00ba918">
+                  <SHORT-NAME>CanECCSupport</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Enable SRAM ECC configuration.</L-2>
+                  </DESC>
+                  <SCOPE>LOCAL</SCOPE>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                  <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                </ECUC-BOOLEAN-PARAM-DEF>
+                <ECUC-BOOLEAN-PARAM-DEF UUID="cb0152ce-70ad-4939-ba4a-0553289d7cae">
                   <SHORT-NAME>CanSetBaudrateApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">The support of the Can_SetBaudrate API is optional.</L-2>
@@ -2584,13 +2553,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-FLOAT-PARAM-DEF UUID="17022ac9-224d-4df7-b8b4-111f4e265102">
+                <ECUC-FLOAT-PARAM-DEF UUID="f4d4c868-f91e-4bcf-9e99-550c152d1413">
                   <SHORT-NAME>CanTimeoutDuration</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Specifies the maximum time for blocking function until a timeout is detected. Unit is seconds.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2609,13 +2576,11 @@
                   <MAX>65.535</MAX>
                   <MIN>1.0E-6</MIN>
                 </ECUC-FLOAT-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="5bde2c2a-c7a4-48f1-a37b-19a0842eacdd">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="9ae9deee-8960-4369-9404-b42dbc50a335">
                   <SHORT-NAME>CanVersionInfoApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Switches the Can_GetVersionInfo() API ON or OFF.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2634,13 +2599,11 @@
                 </ECUC-BOOLEAN-PARAM-DEF>
               </PARAMETERS>
               <REFERENCES>
-                <ECUC-REFERENCE-DEF UUID="a90492f7-bea0-4547-84a4-453b9796aab9">
+                <ECUC-REFERENCE-DEF UUID="7186c35e-9215-4442-9cac-d1f52b64ea84">
                   <SHORT-NAME>CanOsCounterRef</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This parameter contains a reference to the OsCounter, which is used by the CAN driver.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2656,13 +2619,11 @@
                   </VALUE-CONFIG-CLASSES>
                   <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/Os/OsCounter</DESTINATION-REF>
                 </ECUC-REFERENCE-DEF>
-                <ECUC-REFERENCE-DEF UUID="22b77a1e-d570-446e-8af2-7d2ab7277202">
+                <ECUC-REFERENCE-DEF UUID="b850eed2-e985-47ec-b2da-6bdc9952d6fd">
                   <SHORT-NAME>CanSupportTTCANRef</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">The parameter refers to CanIfSupportTTCAN parameter in the CAN Interface Module configuration.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>ECU</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2680,7 +2641,7 @@
                 </ECUC-REFERENCE-DEF>
               </REFERENCES>
               <SUB-CONTAINERS>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="0dff434e-b4f0-486d-929f-a7e58d9db922">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="a2285654-592b-472c-93e8-f170d0dac1b7">
                   <SHORT-NAME>CanIcomGeneral</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the general configuration parameters of the ICOM Configuration.</L-2>
@@ -2689,7 +2650,7 @@
                   <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="6eb10fe4-4d3f-4a68-bb7a-a6cbf15e5aa6">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="cad45605-5ab2-4d3d-98f0-9b20cf055ad2">
                       <SHORT-NAME>CanIcomLevel</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Defines the level of Pretended Networking.</L-2>
@@ -2733,13 +2694,11 @@
                         </ECUC-ENUMERATION-LITERAL-DEF>
                       </LITERALS>
                     </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="ed2ff178-3393-49e3-b270-33e8d1632e42">
+                    <ECUC-ENUMERATION-PARAM-DEF UUID="2920edc2-ac23-443e-8c44-cd0c315e4262">
                       <SHORT-NAME>CanIcomVariant</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Defines the variant, which is supported by this CanController</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2772,7 +2731,7 @@
                     </ECUC-ENUMERATION-PARAM-DEF>
                   </PARAMETERS>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f063715c-2991-48a5-9641-4cde8f9383e3">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="68f1a814-db61-4df1-a44d-5e3ab465272a">
                   <SHORT-NAME>CanMainFunctionRWPeriods</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">This container contains the parameter for configuring the period for cyclic call to Can_MainFunction_Read or Can_MainFunction_Write depending on the referring item.</L-2>
@@ -2781,13 +2740,11 @@
                   <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-FLOAT-PARAM-DEF UUID="81a1965b-3151-4434-b303-2af5706a2729">
+                    <ECUC-FLOAT-PARAM-DEF UUID="492cb1b3-2838-401c-81fb-dc6304d0edaf">
                       <SHORT-NAME>CanMainFunctionPeriod</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">This parameter describes the period for cyclic call to Can_MainFunction_Read or Can_MainFunction_Write depending on the referring item. Unit is seconds. Different poll-cycles will be configurable if more than one CanMainFunctionPeriod is configured. In this case multiple Can_MainFunction_Read() or Can_MainFunction_Write() will be provided by the CAN Driver module.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -2808,7 +2765,7 @@
                     </ECUC-FLOAT-PARAM-DEF>
                   </PARAMETERS>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="4349207a-96e9-4d84-a0b9-367e54d1f6ce">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="6ec22c5a-b6f6-4089-a116-3b893206b25b">
                   <SHORT-NAME>CanDemEventParameterRefs</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter&apos;s DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references.</L-2>
@@ -2817,10 +2774,43 @@
                   <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <REFERENCES>
-                    <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="0f831d06-d85d-46c7-81de-884e6261d619">
+                    <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="bdea6113-1393-4b97-ad6e-aebeae4c36bf">
                       <SHORT-NAME>CAN_E_HARDWARE_ERROR</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to configured DEM event to report &quot;Can hardware failure&quot;.</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <SCOPE>LOCAL</SCOPE>
+                      <MULTIPLICITY-CONFIG-CLASSES>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      </MULTIPLICITY-CONFIG-CLASSES>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/Dem/DemConfigSet/DemEventParameter</DESTINATION-REF>
+                    </ECUC-SYMBOLIC-NAME-REFERENCE-DEF>
+                    <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="d4a45596-db32-43aa-88ec-bc6134aefda1">
+                      <SHORT-NAME>CAN_E_SAFTEY_BEU_ERROR</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Reference to configured DEM event to report &quot;Can hardware ECC BEW errors&quot;.</L-2>
                       </DESC>
                       <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                       <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>

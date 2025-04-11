@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -192,6 +192,41 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_WakeupProcess(uint8 Channel);
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, LIN_CODE) Lin_WakeupInternalProcess(uint8 Channel);
+
+/** \brief Lin_GetStatusInternalProcess - Gets the status of the LIN driver.
+ * 
+ * \param[in] Channel LIN channel to be addressed.
+ * \param[in] lin_cnt_base_addr Base address of the lin
+ * \param[out] Lin_SduPtr Pointer to pointer to a shadow buffer or memory mapped LIN Hardware receive buffer where the 
+ *                       current SDU is stored.
+ * \pre None
+ * \post None
+ * \return return_value
+ * \retval LIN_NOT_OK: Development or production error occurred 
+ * \retval LIN_TX_OK: Successful transmission 
+ * \retval LIN_TX_BUSY: Ongoing transmission (Header or Response) 
+ * \retval LIN_TX_HEADER_ERROR: Erroneous header transmission such as: 
+ *                      - Mismatch between sent and read back data 
+ *                      - Identifier parity error or Physical bus error 
+ * \retval LIN_TX_ERROR: Erroneous response transmission such as: 
+ *                      - Mismatch between sent and read back data 
+ *                      - Physical bus error 
+ * \retval LIN_RX_OK: Reception of correct response 
+ * \retval LIN_RX_BUSY: Ongoing reception: at least one response byte has been received, 
+ *                      but the checksum byte has not been received 
+ * \retval LIN_RX_ERROR: Erroneous response reception such as: 
+ *                      - Framing error 
+ *                      - Overrun error 
+ *                      - Checksum error or Short response 
+ * \retval LIN_RX_NO_RESPONSE: No response byte has been received so far 
+ * \retval LIN_OPERATIONAL: Normal operation; the related LIN channel is woken up from the LIN_CH_SLEEP 
+ *                      and no data has been sent. 
+ * \retval LIN_CH_SLEEP: Sleep state operation; in this state wake-up detection from slave nodes is enabled.
+ *
+ *********************************************************************************************************************/
+FUNC(Lin_StatusType, LIN_CODE)
+Lin_GetStatusInternalProcess(uint8 Channel, P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin_SduPtr, \
+                                        P2CONST(uint32, AUTOMATIC, LIN_CONFIG_DATA) lin_cnt_base_addr);
 
 
 /** \brief Lin_GetStatusInternal - Gets the status of the LIN driver.
@@ -399,118 +434,6 @@ boolean enable);
  *********************************************************************************************************************/
 FUNC(void, LIN_CODE) Lin_ProcessISR(uint32 channelID);
 
-
-/** \brief This function writes a 32 bit register.
- *
- * \param[in] addr Address of the memory mapped hardware register.
- * \param[in] value Value to write in the 32-bit register.
- * \param[out] None
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- ******************************************************************************/
-LOCAL_INLINE FUNC(void, LIN_CODE) Lin_RegWriteRaw32(uint32 addr, uint32 value);
-
-
-/** \brief This function writes a 8 bit register value.
- *
- * \param[in] addr Address of the memory mapped hardware register.
- * \param[in] value Value to write 8 bits to the 32-bit register.
- * \param[out] None
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- ******************************************************************************/
-LOCAL_INLINE FUNC(void, LIN_CODE) Lin_RegWriteRaw8(uint32 addr, uint8 value);
-
-
-/** \brief This function writes a 32 bit register masking specific set of bits
- *        and the left shifted value.
- *
- * \param[in] addr Address of the memory mapped hardware register.
- * \param[in] mask Mask for the bit field.
- * \param[in] shift Bit field shift from LSB.
- * \param[in] value Value to write in the memory mapped hardware register.
- * \param[out] None
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- ******************************************************************************/
-LOCAL_INLINE FUNC(void, LIN_CODE) Lin_RegMFWriteRaw32(uint32 addr,
-                                      uint32 mask,
-                                      uint32 shift,
-                                      uint32 value);
-
-
-/** \brief This function reads a 32 bit register.
- *
- * \param[in] addr Address of the memory mapped hardware register.
- * \param[out] None
- * \pre None
- * \post None
- * \return Bit-field value (absolute value - shifted to LSB position).
- * \retval Value of the type uint32.
- *
- ******************************************************************************/
-LOCAL_INLINE FUNC(uint32, LIN_CODE) Lin_RegReadRaw32(uint32 addr);
-
-
-/** \brief This function reads a 8 bits of 32 bit register.
- *
- * \param[in] addr Address of the memory mapped hardware register.
- * \param[out] None
- * \pre None
- * \post None
- * \return Bit-field value (absolute value - shifted to LSB position).
- * \retval Value of the type uint32.
- *
- ******************************************************************************/
-LOCAL_INLINE FUNC(uint8, LIN_CODE) Lin_RegReadRaw8(uint32 addr);
-
-
-
-LOCAL_INLINE FUNC(void, LIN_CODE) Lin_RegWriteRaw32(uint32 addr, uint32 value)
-{
-    *(volatile uint32 *) addr = value;
-}
-
-
-LOCAL_INLINE FUNC(void, LIN_CODE) Lin_RegWriteRaw8(uint32 addr, uint8 value)
-{
-    *(volatile uint8 *) addr = value;
-}
-
-
-LOCAL_INLINE FUNC(void, LIN_CODE) Lin_RegMFWriteRaw32(uint32 addr,
-                                      uint32 mask,
-                                      uint32 shift,
-                                      uint32 value)
-{
-    uint32 regVal = *(volatile uint32 *)addr;
-    regVal &= (~mask);
-    regVal |= (value << shift) & mask;
-    *(volatile uint32 *)addr = regVal;
-}
-
-
-LOCAL_INLINE FUNC(uint32, LIN_CODE) Lin_RegReadRaw32(uint32 addr)
-{
-    uint32 regVal = *(volatile uint32 *)addr;
-    return (regVal);
-}
-
-
-LOCAL_INLINE FUNC(uint8, LIN_CODE) Lin_RegReadRaw8(uint32 addr)
-{
-    uint8 regVal = *(volatile uint8 *)addr;
-    return (regVal);
-}
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

@@ -17,6 +17,29 @@ else()
 message(FATAL_ERROR "Only RAM & FLASH build configurations are supported. Select either RAM or FLASH.\n")
 endif()
 
+# Macro to merge CPU3 image into CPU1 image
+macro(CPU3MERGE PROJECT_NAME PROJECT_BIN_PATH CPU3_PROJECT_NAME CPU3_OUT_PATH)
+  # Convert CPU3.out to binary format
+  execute_process(
+  COMMAND ${CMAKE_OBJCOPY} -O binary ${CPU3_OUT_PATH}/${CPU3_PROJECT_NAME}.out ${CMAKE_CURRENT_BINARY_DIR}/${CPU3_PROJECT_NAME}.bin
+  )
+
+
+  # Get the size of CPU3 section
+  file(SIZE ${CMAKE_CURRENT_BINARY_DIR}/${CPU3_PROJECT_NAME}.bin CPU3_APPSIZE)
+
+
+  # Define CPU3_APPSIZE macro and assign the calculated size to it 
+  target_compile_options(${PROJECT_NAME} PRIVATE -DCPU3_APPSIZE=${CPU3_APPSIZE})
+
+
+  # Merge CPU3 image into CPU1 image by updating cpu3app section
+  add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD 
+  COMMAND ${CMAKE_OBJCOPY} --update-section cpu3app=${CMAKE_CURRENT_BINARY_DIR}/${CPU3_PROJECT_NAME}.bin ${PROJECT_BIN_PATH}/${PROJECT_NAME}.out ${PROJECT_BIN_PATH}/${PROJECT_NAME}_merged.out
+  )
+
+
+endmacro()
 # Settings specific for FLASH build configuration
 if(BUILD_CONFIGURATION MATCHES "FLASH")
 
@@ -31,7 +54,10 @@ if(BUILD_CONFIGURATION MATCHES "FLASH")
       COMMAND ${python_tool} ${SIGNING_DIRECTORY}/sign_non_secure.py --b "${PROJECT_BIN_PATH}/${PROJECT_NAME}.bin" --c C29 --k ${SIGNING_DIRECTORY}/keys/key.pem --o 60 --l 0x10001000 
       COMMAND ${CMAKE_OBJCOPY} --update-section cert=${PROJECT_BIN_PATH}/C29-cert.bin ${PROJECT_BIN_PATH}/${PROJECT_NAME}.out ${PROJECT_BIN_PATH}/${PROJECT_NAME}_cert.out
       COMMAND ${CMAKE_COMMAND} -E remove -f "${PROJECT_BIN_PATH}/${PROJECT_NAME}.out"
-      COMMAND ${CMAKE_COMMAND} -E rename "${PROJECT_BIN_PATH}/${PROJECT_NAME}_cert.out" "${PROJECT_BIN_PATH}/${PROJECT_NAME}.out")
+      COMMAND ${CMAKE_COMMAND} -E rename "${PROJECT_BIN_PATH}/${PROJECT_NAME}_cert.out" "${PROJECT_BIN_PATH}/${PROJECT_NAME}.out"
+      COMMAND ${CMAKE_COMMAND} -E remove -f "${PROJECT_BIN_PATH}/x509-temp.cfg"
+      COMMAND ${CMAKE_COMMAND} -E remove -f "${PROJECT_BIN_PATH}/${PROJECT_NAME}.bin"
+      COMMAND ${CMAKE_COMMAND} -E remove -f "${PROJECT_BIN_PATH}/C29-cert.bin")
     endmacro()
 endif()
 

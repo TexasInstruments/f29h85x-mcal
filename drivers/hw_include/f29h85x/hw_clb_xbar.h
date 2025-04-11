@@ -16,24 +16,24 @@
 // The following are defines for the CLB_XBAR register offsets
 //
 //*************************************************************************************************
-#define CLB_XBAR_O_CLBXBAROUTINVERT   0x30U                   // Output Signal Invert Select
-#define CLB_XBAR_O_CLBXBARLOCK        0x80U                   // Configuration Lock register
-#define CLB_XBAR_O_CLBXBARG0SEL(i)    (0x100U + ((i) * 64))   // (0 <= i < 8) CLBXBAR G0 Input
-                                                              // Select
-#define CLB_XBAR_O_CLBXBARG1SEL(i)    (0x104U + ((i) * 64))   // (0 <= i < 8) CLBXBAR G1 Input
-                                                              // Select
-#define CLB_XBAR_O_CLBXBARG2SEL(i)    (0x108U + ((i) * 64))   // (0 <= i < 8) CLBXBAR G2 Input
-                                                              // Select
-#define CLB_XBAR_O_CLBXBARG3SEL(i)    (0x10CU + ((i) * 64))   // (0 <= i < 8) CLBXBAR G3 Input
-                                                              // Select
-#define CLB_XBAR_O_CLBXBARG4SEL(i)    (0x110U + ((i) * 64))   // (0 <= i < 8) CLBXBAR G4 Input
-                                                              // Select
-#define CLB_XBAR_O_CLBXBARG5SEL(i)    (0x114U + ((i) * 64))   // (0 <= i < 8) CLBXBAR G5 Input
-                                                              // Select
-#define CLB_XBAR_O_CLBXBARG6SEL(i)    (0x118U + ((i) * 64))   // (0 <= i < 8) CLBXBAR G6 Input
-                                                              // Select
-#define CLB_XBAR_O_CLBXBARG7SEL(i)    (0x11CU + ((i) * 64))   // (0 <= i < 8) CLBXBAR G7 Input
-                                                              // Select
+#define CLB_XBAR_O_CLBXBAROUTINVERT   0x30U                    // Output Signal Invert Select
+#define CLB_XBAR_O_CLBXBARLOCK        0x80U                    // Configuration Lock register
+#define CLB_XBAR_O_CLBXBARG0SEL(i)    (0x100U + ((i) * 64U))   // (0 <= i < 8) CLBXBAR G0 Input
+                                                               // Select
+#define CLB_XBAR_O_CLBXBARG1SEL(i)    (0x104U + ((i) * 64U))   // (0 <= i < 8) CLBXBAR G1 Input
+                                                               // Select
+#define CLB_XBAR_O_CLBXBARG2SEL(i)    (0x108U + ((i) * 64U))   // (0 <= i < 8) CLBXBAR G2 Input
+                                                               // Select
+#define CLB_XBAR_O_CLBXBARG3SEL(i)    (0x10CU + ((i) * 64U))   // (0 <= i < 8) CLBXBAR G3 Input
+                                                               // Select
+#define CLB_XBAR_O_CLBXBARG4SEL(i)    (0x110U + ((i) * 64U))   // (0 <= i < 8) CLBXBAR G4 Input
+                                                               // Select
+#define CLB_XBAR_O_CLBXBARG5SEL(i)    (0x114U + ((i) * 64U))   // (0 <= i < 8) CLBXBAR G5 Input
+                                                               // Select
+#define CLB_XBAR_O_CLBXBARG6SEL(i)    (0x118U + ((i) * 64U))   // (0 <= i < 8) CLBXBAR G6 Input
+                                                               // Select
+#define CLB_XBAR_O_CLBXBARG7SEL(i)    (0x11CU + ((i) * 64U))   // (0 <= i < 8) CLBXBAR G7 Input
+                                                               // Select
 
 
 //*************************************************************************************************
@@ -41,22 +41,14 @@
 // The following are defines for the bit fields in the CLBXBAROutInvert register
 //
 //*************************************************************************************************
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR1    0x1U      // Invert XBAR Output Select for XBAR1
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR2    0x2U      // Invert XBAR Output Select for XBAR2
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR3    0x4U      // Invert XBAR Output Select for XBAR3
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR4    0x8U      // Invert XBAR Output Select for XBAR4
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR5    0x10U     // Invert XBAR Output Select for XBAR5
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR6    0x20U     // Invert XBAR Output Select for XBAR6
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR7    0x40U     // Invert XBAR Output Select for XBAR7
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR8    0x80U     // Invert XBAR Output Select for XBAR8
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR9    0x100U    // Invert XBAR Output Select for XBAR9
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR10   0x200U    // Invert XBAR Output Select for XBAR10
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR11   0x400U    // Invert XBAR Output Select for XBAR11
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR12   0x800U    // Invert XBAR Output Select for XBAR12
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR13   0x1000U   // Invert XBAR Output Select for XBAR13
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR14   0x2000U   // Invert XBAR Output Select for XBAR14
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR15   0x4000U   // Invert XBAR Output Select for XBAR15
-#define CLB_XBAR_CLBXBAROUTINVERT_XBAR16   0x8000U   // Invert XBAR Output Select for XBAR16
+#define CLB_XBAR_CLBXBAROUTINVERT_XBAR1   0x1U    // Invert XBAR Output Select for XBAR1
+#define CLB_XBAR_CLBXBAROUTINVERT_XBAR2   0x2U    // Invert XBAR Output Select for XBAR2
+#define CLB_XBAR_CLBXBAROUTINVERT_XBAR3   0x4U    // Invert XBAR Output Select for XBAR3
+#define CLB_XBAR_CLBXBAROUTINVERT_XBAR4   0x8U    // Invert XBAR Output Select for XBAR4
+#define CLB_XBAR_CLBXBAROUTINVERT_XBAR5   0x10U   // Invert XBAR Output Select for XBAR5
+#define CLB_XBAR_CLBXBAROUTINVERT_XBAR6   0x20U   // Invert XBAR Output Select for XBAR6
+#define CLB_XBAR_CLBXBAROUTINVERT_XBAR7   0x40U   // Invert XBAR Output Select for XBAR7
+#define CLB_XBAR_CLBXBAROUTINVERT_XBAR8   0x80U   // Invert XBAR Output Select for XBAR8
 
 //*************************************************************************************************
 //

@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <!--
-  Copyright (C) Texas Instruments Inc. - All rights reserved.
+ Copyright 2025 Texas Instruments Inc.  All rights reserved
 
-  CDD XBar Module PlugIn
-  
-  This files defines the module that utilized the templated based 
-  code-generator and the schema based generic editor.
+  Cdd_Xbar F29H85x Module PlugIn with a Template-based Code Generator
 -->
 
 <plugin>
 
     <!-- 
-      This extension defines a new (AUTOSAR Module).
+      This extension defines a new (Autosar Module).
     -->
     <extension point="dreisoft.tresos.launcher2.plugin.module"
-               id="Cdd_Xbar_TI_F29H85xModExt"
-               name="CDD XBar Module PlugIn derived from TemplateGenerator">
-
+	       id="Cdd_Xbar_F29H85x_ModuleId"
+	       name="Xbar_F29H85x Module">
+	           
         <module id="Cdd_Xbar_F29H85x" 
                 label="Cdd_Xbar"
-                mandatory="false"
+    	          mandatory="false"
                 allowMultiple="false"
-                description="CDD Xbar Plugin for F29H85x"
-                copyright="(C) 2024 Texas Instruments Incorporated"
-                swVersionMajor="1"
+                description="Cdd Xbar Module Plugin"
+                copyright="(c) 2025 Texas Instruments Incorporated"
+                swVersionMajor="2"
                 swVersionMinor="0"
                 swVersionPatch="0"
                 specVersionMajor="1"
@@ -50,13 +47,13 @@
      - Editors
    -->
    <extension point="dreisoft.tresos.launcher2.plugin.configuration"  
-              id="Cdd_Xbar_TI_F29H85xConfExt"
-              name="TemplateGenerator Parameter Definition Extension">
+              id="Cdd_Xbar_F29H85x_ConfigId"
+              name="Cdd_Xbar_F29H85x Configuration">
     <configuration moduleId="Cdd_Xbar_F29H85x">
     
            <!-- 
              Register the files from which schemas and pre- an
-             recommended configuration is loaded. For AUTOSAR Modules
+             recommended configuration is loaded. For Autosar Modules
              this is normally dreisoft.tresos.autosar2.project.AutosarSchemaManager
            -->   
            <schema>
@@ -66,8 +63,10 @@
                <!--
                  Define the file(s) from which to load the schemas
                -->
-               <resource value="config/Cdd_Xbar.xdm" type="xdm"/>
-           </schema>
+               <resource value="config/Cdd_Xbar.xdm" 
+                         type="xdm"
+                         id="res_default"/>                      
+           </schema>           
      
            <!--
              Define where the toplevel schema node of the module is. For Autosar
@@ -77,7 +76,7 @@
                <manager
                      class="dreisoft.tresos.autosar2.resourcehandling.AutosarConfigManager"
                      />      
-               <schemaNode path="ASPath:/TI_F29H85x/Cdd_Xbar"/>
+               <schemaNode path="ASPath:/TI_F29H85x/Cdd_Xbar/Cdd"/>
            </data>                    
            
            <!--
@@ -86,17 +85,23 @@
              
              class is in this case always dreisoft.tresos.launcher2.editor.GenericConfigEditor
            -->
-           <editor id="Cdd_Xbar_TI_F29H85xEdit" 
-                   label="Cdd_Xbar_F29H85x"
-                   tooltip="CDD Xbar module for C29x Device F29H85x">
+           <editor id="Cdd_Xbar_F29H85x_EditorId" 
+                   label="Cdd_Xbar"
+                   tooltip="Cdd_Xbar PlugIn for F29H85x">
                <class
                      class="dreisoft.tresos.launcher2.editor.GenericConfigEditor"
                      >
                  <!--
                    Defines the toplevel node of the schema used to render the editor
                  -->
-                 <parameter name="schema" value="ASPath:/TI_F29H85x/Cdd_Xbar"/>
-                 <parameter name="title" value="Cdd Xbar"/>
+                 <parameter name="schema" value="ASPath:/TI_F29H85x/Cdd_Xbar/Cdd"/>
+                 <parameter name="title" value="Cdd_Xbar"/>
+                 <parameter name="noTabs" value="false"/>
+                 <parameter name="noLinks" value="true"/>
+                 <parameter name="groupLinks" value="false"/>
+                 <parameter name="groupContainers" value="false"/>
+                 <parameter name="groupTables" value="true"/>
+                 <parameter name="optionalGeneralTab" value="true"/>               
                </class>
            </editor>   
        </configuration>
@@ -107,8 +112,8 @@
      and the template-based code generator.
    -->
    <extension point="dreisoft.tresos.launcher2.plugin.generator"
-              id="Cdd_Xbar_TI_F29H85xGenExt"
-              name="CDD XBar Module PlugIn Generator">
+              id="Cdd_Xbar_F29H85x_GeneratorId"
+	      name="Cdd_Xbar_F29H85x Generator">
        <!-- 
   	     This element contains the actual data for registering the code generator.
 	     moduleId: id of the module this generator is associated with
@@ -118,7 +123,7 @@
 	   -->
        <generator
              class="dreisoft.tresos.launcher2.generator.TemplateBasedCodeGenerator"
-             id="Cdd_Xbar_TI_F29H85xGenExt"
+             id="Cdd_Xbar_F29H85x_TemplateGeneratorId"
              moduleId="Cdd_Xbar_F29H85x">
           <!--
             In the case of the template-based code generator, the class implementing
@@ -132,8 +137,8 @@
             ommitted, the default "*" is assumed and the parameter applies for all 
             modes. You can also use the value "*" explicitly as mode.
           -->
-          <parameter name="templates" value="generate,generate_swcd"/>
-
+          <parameter name="templates" value="generate"/>
+         
           <!--
             The parameters can be mode-dependent. With the two parameter-tags below, the
             parameter "UnixLf" is set to "true", if the template-based code generator is
@@ -144,20 +149,7 @@
           -->
           <parameter name="UnixLf" mode="generate" value="true"/>
           <parameter name="UnixLf" mode="verify" value="false"/>
-
-          <!--
-            The last occurence of a specific mode can dominate previous occurences of 
-            the parameter. However, the wildcard mode "*" cannot dominate explicitly
-            named modes: although the following parameter "UnixLf" comes after the 
-            previous definitions, it does not override the values for "generate"
-            and "verify". 
-            The parameter below is the last and the less specific, so it does 
-            actually work as "default" for all not yet named modes: since the "UnixLf" 
-            parameter has not been explicitly set for the two modes "verify_SWC-T" and 
-            "generate_SWC-T", the value is now set to "false".
-          -->
-          <parameter name="UnixLf" mode="*" value="false"/>
-
+         
           <!--
             With the template-based code generator, new modes (other than "generate"
             and "verify" can be introduced. Together with mode-dependent parameters,
@@ -178,10 +170,8 @@
             the "verify_SWC-T" mode is of mode-type "verify" and the "generate_SWC-T"
             mode is if mode-type "generate".
           -->
-          <parameter name="mode_type" mode="verify_SWC-T" value="verify"/>
+		  <parameter name="mode_type" mode="verify_SWC-T" value="verify"/>
           <parameter name="mode_type" mode="generate_SWC-T" value="generate"/>
-          <parameter name="mode_type" mode="verify_BSWMD-T" value="verify"/>
-          <parameter name="mode_type" mode="generate_BSWMD-T" value="generate"/>
 
           <!--
             The order of the parameters is important: in general, the last occurence
@@ -189,30 +179,55 @@
             generation mode taken into account, of course).
             Further above, the parameter "templates" was already defined, implicitly
             using the wildcard mode "*". However, the follwing paramter overwrites
-            the value of the parameter for the two modes "verify_BSWMD-T" and
-            "generate_BSWMD-T".
+            the value of the parameter for the two modes "verify_SWC-T" and
+            "generate_SWC-T".
           -->
-          <parameter name="templates" mode="verify_BSWMD-T,generate_BSWMD-T" 
+          <parameter name="templates" 
+                     mode="verify_SWC-T,generate_SWC-T" 
                      value="generate_swcd"/>
+         
+         <!--
+           The last occurence of a specific mode can dominate previous occurences of 
+           the parameter. However, the wildcard mode "*" cannot dominate explicitly
+           named modes: although the following parameter "UnixLf" comes after the 
+           previous definitions, it does not override the values for "generate"
+           and "verify". 
+           The parameter below is the last and the less specific, so it does 
+           actually work as "default" for all not yet named modes: since the "UnixLf" 
+           parameter has not been explcitly set for the two modes "verify_SWC-T" and 
+           "generate_SWC-T", the value is now set to "false".
+         -->
+          <parameter name="UnixLf" mode="*" value="false"/>
          
        </generator>
    </extension>
 
-  <!--
-    This extension identifies ECU resource properties file that has information on 
-    inputs as key:value pairs 
-  -->
-  <extension point="dreisoft.tresos.autosar2.api.plugin.ecuresource">
-    <ecuresource target="C2000" derivate="F29H85x"
-                 moduleId="Cdd_Xbar_F29H85x"
-                 file="resources/Cdd_Xbar.properties">
-    </ecuresource>
-  </extension>
+   <!-- definition of ecu resource properties files -->
+   <extension
+         point="dreisoft.tresos.autosar2.api.plugin.ecuresource">
+      <!-- Defines properties file E under folder resources relative to the
+        plugin's root folder. The special parameter "subderivate" is considered by a
+        DefaultEcuResourceFinder. -->
+      <ecuresource
+            target="C2000"
+            derivate="F29H85x"
+            moduleId="Cdd_Xbar_F29H85x"
+            file="resources/Cdd_Xbar.properties">
+      </ecuresource>
+   </extension>
 
-  <extension point="dreisoft.tresos.autosar2.api.plugin.ecuresourcefinder">
-    <ecuresourcefinder>
-      <finder class="dreisoft.tresos.autosar2.api.ecuresource.DefaultEcuResourceFinder"/>
-    </ecuresourcefinder>
-  </extension>
+   <!-- Defines a new DefaultEcuResourceFinder. The predefined parameters "name" and "path"
+     are registered with this finder. Therefore the given schema path (from parameter "path")
+     is evaluated and the resulting value is checked against the values of parameter
+     "subderivate" of any ecu resource properties with the relevant target and derivate.
+     -->
+   <extension
+         point="dreisoft.tresos.autosar2.api.plugin.ecuresourcefinder">
+      <ecuresourcefinder>
+         <finder
+            class="dreisoft.tresos.autosar2.api.ecuresource.DefaultEcuResourceFinder">
+         </finder>
+      </ecuresourcefinder>
+   </extension>
 
 </plugin>

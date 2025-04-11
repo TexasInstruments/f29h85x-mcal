@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -210,7 +210,7 @@ FUNC(void,OS_CODE) Os_IsrCat2(Os_IntIdType InterruptId);
  * \retval E_OK: No errors
  *
  *********************************************************************************************************************/
-FUNC(StatusType,OS_CODE) Os_GetCounterValue(Os_CounterIdType CounterId, Os_TickRefType Value);
+FUNC(StatusType,OS_CODE) GetCounterValue(Os_CounterIdType CounterId, Os_TickRefType Value);
 
 /** \brief Reads the elapsed count value of a counter.
  *
@@ -226,7 +226,7 @@ FUNC(StatusType,OS_CODE) Os_GetCounterValue(Os_CounterIdType CounterId, Os_TickR
  * \retval E_OK: No errors
  *
  *********************************************************************************************************************/
-FUNC(StatusType,OS_CODE) Os_GetElapsedValue(Os_CounterIdType CounterId, Os_TickRefType Value,Os_TickRefType ElapsedValue);
+FUNC(StatusType,OS_CODE) GetElapsedValue(Os_CounterIdType CounterId, Os_TickRefType Value,Os_TickRefType ElapsedValue);
 #endif
 
 /*********************************************************************************************************************

@@ -1,0 +1,454 @@
+## CDD ECAP Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term                            |Explanation                                                                                    |
+|---------------------------------------------|-----------------------------------------------------------------------------------------------|
+|API                                          |Application Programming Interface                                                              |
+|AUTOSAR                                      |Automotive Open System Architecture                                                            |
+|Activation condition                         |Type of edge that activates the measurement. Rising edge, Falling edge or Both edge            |
+|ACTIVE state                                 |Input state of a CDD ECAP Channel, an activation edge has been detected.                       |
+|BSW                                          |Basic Software                                                                                 |
+|CDD                                          |Complex Device Driver                                                                          |
+|Circular buffer                              |An area of memory used to store a continuous stream of data by starting again at the beginning of the buffer after reaching the end.                                               |
+|Channel                                      |Represents a logical entity bound to one input signal and the hardware resources for the configured measurement mode.                                                              |
+|DET                                          |Default Error Tracer                                                                           |
+|Duty cycle                                   |Percentage of High Time to Period Time. (High Time / Period Time) * 100%                       |
+|ECU                                          |Electronic Control Unit                                                                        |
+|ECAP                                         |Enhanced Capture                                                                               |
+|ECAP instance                                |Single ECAP hardware unit                                                                      |
+|GPIO                                         |General Purpose Input Output                                                                   |
+|High time                                    |Time in ticks during which signal level is high                                                |
+|HW                                           |Hardware                                                                                       |
+|IDLE state                                   |Input state of an Cdd_Ecap Channel, no activation edge has been detected                       |
+|Input state                                  |Logical input state of an Cdd_Ecap Channel. It can be ACTIVE or IDLE.                          |
+|Linear buffer                                |An area of memory used to store a stream of data by starting at the beginning of the buffer and stopping at the latest on reaching the end.                                        |
+|Low time                                     |Time in ticks during which signal level is low                                                 |
+|MCU                                          |Microcontroller unit                                                                           |
+|Measurement mode                             |Measurement mode defines the capability for signal acquisition and evaluation. Possible modes: Signal Edge Detection / Notification, Signal Measurement, Timestamp, Edge Counter   |
+|Measurement mode, Edge counter               |Functionality of an Edge Counter, counting of external edges                                   |
+|Measurement mode, Signal Edge Detection      |Notification on signal edges.                                                                  |
+|Measurement mode, Signal Measurement         |Measurement of elapsed High Time, elapsed Low Time, elapsed Period Time and Duty Cycle of an input signal.                                                                         |
+|Measurement mode, Timestamp                  |Generation of timestamps for signal edges, see Figure “Cdd_Ecap time stamp”                    |
+|MCAL                                         |Micro Controller Abstraction Layer                                                             |
+|Period time                                  |Time in ticks between consecutive rising edges or falling edges                                |
+|RTE                                          |Runtime Environment                                                                            |
+|SW                                           |Software                                                                                       |
+
+### Introduction
+
+The Cdd ECAP Driver controls the input capture unit (ECAP) of the Texas Instruments F29H85x microcontroller.
+
+Input capture is a fundamental technique used to measure the timing of external events, such as the width or period of pulses generated by sensors or other external devices. These measurements are essential for various automotive applications, including engine control, speed sensing, and position monitoring. The CDD ECAP driver provides a standardized interface for configuring and utilizing the microcontroller's enhanced CAPture (ECAP) hardware, ensuring that application software can interact with this functionality in a consistent manner across different AUTOSAR-compliant systems.
+
+Cdd ECAP driver provides the following features:
+
+- Period, Low, High time measurement
+- Edge detection and notification
+- Edge counting
+- Edge time stamping
+
+```{figure} Assets/images/Cdd_Ecap_Autosar_MCAL.png
+:width: 75%
+:alt: CDD ECAP MCAL AUTOSAR
+:align: center
+
+Cdd Ecap MCAL AUTOSAR
+```
+
+This document details AUTOSAR Cdd Ecap module implementation
+
+|Supported AUTOSAR Release              |**4.3.1**                      |
+|---------------------------------------|-------------------------------|
+| **Supported Configuration Variants**  | **Pre-Compile**               |
+| **Vendor ID**                         | **CDD_ECAP_VENDOR_ID (44)**   |
+| **Module ID**                         | **CDD_ECAP_MODULE_ID (255)**  |
+
+### Functional Overview
+
+F29H85x microcontroller incorporates six independent eCAP modules. These modules are specifically designed to accurately measure the time of arrival of external signals, making them indispensable for applications that require precise timing information. The eCAP peripheral is highly suitable for a wide range of input capture functionalities, such as :
+
+- Speed measurements of rotating machinery (for example, toothed sprockets sensed by way of Hall sensors)
+- Elapsed time measurements between position sensor pulses
+- Period and duty cycle measurements of pulse train signals or pulse width modulation (PWM) signals
+- Decoding current or voltage amplitude derived from duty cycle encoded current/voltage sensors
+
+#### Input capture modes: Single shot capture mode and Continuous capture mode
+
+F29H85x eCAP peripheral offers a variety of input capture modes, allowing it to be adapted to different types of input signals and measurement requirements.
+
+One fundamental mode is the single-shot capture mode. In this mode, the eCAP module can be configured to capture the time-stamps of up to four sequential external events. After the configured number of events (ranging from one to four, as determined by the stop value setting) has been captured, the capture process is automatically halted, and the time-base counter and the contents of the capture registers are frozen until the eCAP module is explicitly re-armed. This mode is particularly useful for capturing a specific sequence of events or for applications where the input signal is not continuous.
+
+Another key operational mode is the continuous capture mode. In this mode, the eCAP module continuously captures the time-stamps of external events into its four 32-bit capture registers. These registers function as a circular buffer: once all four registers have been filled with timestamp values, the next captured event will overwrite the timestamp in the first register (CAP1), and the process continues. This mode is ideal for continuously monitoring a stream of events and for applications where the time difference between consecutive events (e.g., the period of a signal) needs to be measured.
+
+#### Absolute time-stamp capture and difference (delta) mode
+
+The eCAP peripheral also supports different methods for capturing the timestamps.
+In absolute time-stamp capture, the 32-bit time-base counter within the eCAP module runs continuously from zero up to its maximum value and then wraps around. When a configured trigger event (an edge on the input signal) occurs, the current value of this continuously running counter is captured and stored in one of the capture registers. This provides an absolute timestamp of when the event occurred relative to the start of the counter.
+Conversely, in difference (delta) mode time-stamp capture, the 32-bit time-base counter is automatically reset to zero immediately after each successful capture event. In this mode, the value captured into the register represents the time that has elapsed since the previous capture event. This is particularly useful for directly measuring the time interval between consecutive pulses or events without needing to perform a subtraction of absolute timestamps in software.
+
+#### Capture registers and event prescaler
+
+In addition to these capture modes, the eCAP peripheral offers a high degree of flexibility in configuring the trigger events. For each of the four capture registers, the user can independently select the edge polarity of the input signal that will trigger a capture. This means that for different capture events in a sequence, one can configure to trigger on a rising edge, another on a falling edge, or even both edges. This flexibility is essential for analyzing complex input signals and for measuring various signal characteristics like pulse width and period. Furthermore, the eCAP peripheral includes an input capture signal prescaling feature. This prescaler allows the frequency of the clock signal that drives the eCAP's time-base counter to be divided by a programmable integer value ranging from 2 to 62. By adjusting the prescaler, the user can control the resolution of the time-base counter and the maximum time interval that can be measured before the counter overflows. A higher prescaler value results in a lower counter frequency, thus increasing the maximum measurable time but decreasing the resolution, and vice versa.
+
+```{figure} Assets/images/Cdd_Ecap_Block_Diagram.png
+:alt: Cdd Ecap Hardware block diagram
+:align: center
+
+Cdd Ecap Hardware Block Diagram
+```
+
+#### Measurement modes
+
+```{figure} Assets/images/Cdd_Ecap_Waveform_Edge_Counting.png
+:alt: Cdd Ecap Edge Counting Waveform
+:align: center
+
+Cdd Ecap Edge Counting Waveform
+```
+
+```{figure} Assets/images/Cdd_Ecap_Waveform_Timestamping.png
+:alt: Cdd Ecap Timestamping Waveform
+:align: center
+
+Cdd Ecap Timestamping Waveform
+```
+
+```{figure} Assets/images/Cdd_Ecap_Waveform_Edge_Detection.png
+:alt: Cdd Ecap Edge Detection Waveform
+:align: center
+
+Cdd Ecap Edge Detection Waveform
+```
+
+```{figure} Assets/images/Cdd_Ecap_Waveform_Signal_Measurement.png
+:alt: Cdd Ecap Signal Measurement Waveform
+:align: center
+
+Cdd Ecap Signal Measurement Waveform
+```
+
+ECAP configuration for various activation conditions
+
+| Measurement Mode           | When Activation condition = Rising Edge      | When Activation condition = Falling Edge  | When Activation condition = Both Edge       |
+|----------------------------|----------------------------------------------|-------------------------------------------|---------------------------------------------|
+| Edge Counter Mode          |CAP1 - rising, Wrap at 1                      | CAP1 - falling, Wrap at 1                 | CAP1 - falling, CAP2 - rising, Wrap at 2    |
+| Time Stamp Mode            |CAP1 - rising, Wrap at 1                      | CAP1 - falling, Wrap at 1                 | CAP1 - falling, CAP2 - rising, Wrap at 2    |
+| Signal Edge Detect         |CAP1 - rising, Wrap at 1                      | CAP1 - falling, Wrap at 1                 | CAP1 - falling, CAP2 - rising, Wrap at 2    |
+| Signal Measurement Mode    |CAP1 - falling, CAP2 - rising, CAP3 - falling, CAP4 - rising. Same for all activation conditions | | |
+
+### Hardware Features
+
+#### Hardware Features supported
+
+Features Supported at a high level are:
+
+- 4-event time-stamp registers (CAP1-CAP4 each 32 bits) - in Measurement mode - Timestamping
+- 256:1 input multiplexer
+- 32 bit time counter
+- Edge polarity selection for up to four sequenced time-stamp capture events
+- Interrupt on either of the four events
+- Continuous mode capture of time stamps in a four-deep circular buffer
+- Difference (Delta) mode time-stamp capture and Absolute time-stamp capture
+
+#### Not supported Features
+
+- Cdd Ecap driver doesn't support APWM mode (single channel PWM generation from ECAP)
+- Cdd Ecap driver doesn't support ECAP Synchronization (SYNCIN)
+- Cdd Ecap doesn't support Signal monitoring units
+- Cdd Ecap doesn't operate ECAP in Single-shot capture of up to four event time-stamps
+
+#### Non compliance
+
+None
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┗ 📂**Cdd_Ecap**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Ecap.h** : *Contains the API declarations of the Cdd Ecap driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Ecap_Priv.h** : *Contains data structures and Internal function declarations.*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Ecap.c** : *Contains the implementation of the API for Cdd Ecap driver.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Ecap_Irq.c** : *Contains the implementation for Cdd Ecap interrupts handlers.*\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Ecap_Priv.c** : *Contains Functions that support the API for Cdd Ecap driver*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
+ ┃ ┣ 📂Cdd_Xbar\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Fls\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Lin\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┗ 📂Wdg\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Cdd_Ecap_HeaderFile_Structure.png
+:alt: Cdd Ecap Header File Structure
+:align: center
+
+Cdd Ecap Header File Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+None
+
+#### Error handling
+
+##### Development Error Reporting
+
+Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+|Type of Error                                                                |Related Error code                   | Value (Hex)|
+|-----------------------------------------------------------------------------|-------------------------------------|------------|
+|API service called with invalid pointer                                      |CDD_ECAP_E_PARAM_POINTER             |0x0AU       |
+|API service called with invalid channel identifier or channel not configured |CDD_ECAP_E_PARAM_CHANNEL             |0x0BU       |
+|API service called with an invalid or not feasible activation                |CDD_ECAP_E_PARAM_ACTIVATION          |0x0CU       |
+|Init Function Failed                                                         |CDD_ECAP_E_INIT_FAILED               |0x0DU       |
+|API service used with invalid Buffer size                                    |CDD_ECAP_E_PARAM_BUFFER_SIZE         |0x0EU       |
+|API service called with invalid mode                                         |CDD_ECAP_E_PARAM_MODE                |0x0FU       |
+|API service called without module initialization                             |CDD_ECAP_E_UNINIT                    |0x14U       |
+|Cdd_Ecap_StopTimestamp called on channel not started or already stopped      |CDD_ECAP_E_NOT_STARTED               |0x15U       |
+|API service called while a running operation                                 |CDD_ECAP_E_BUSY_OPERATION            |0x16U       |
+|API service Cdd_Ecap_Init called when module already initialized             |CDD_ECAP_E_ALREADY_INITIALIZED       |0x17U       |
+|API service called when notify interval is invalid                           |CDD_ECAP_E_PARAM_NOTIFY_INTERVAL     |0x18U       |
+|API service Cdd_Ecap_GetVersionInfo called and parameter is invalid          |CDD_ECAP_E_PARAM_VINFO               |0x19U       |
+
+### Used resources
+
+#### Interrupt Handling
+
+The Driver doesn’t register any interrupts handler (ISR), it’s expected that consumer of this driver registers the required interrupt handler.
+
+For every Cdd ECAP channel, an ISR requires to be registered. The Interrupt number associated with instance of the ECAP is detailed in TRM (also, please refer the Example application).
+Interrupt category should be selected in the Cdd_Ecap plugin.
+
+Cdd_Ecap driver provides ISRs. The ISRs are implemented in the Cdd_Ecap_Irq.c file.
+
+|Cdd Ecap ChannelInstance         | Interrupt handler             |INT Signal Name                                                                                                                |
+|---------------------------------|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| CDD ECAP Channel 0              | Cdd_Ecap_ch0Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
+| CDD ECAP Channel 1              | Cdd_Ecap_ch1Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
+| CDD ECAP Channel 2              | Cdd_Ecap_ch2Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
+| CDD ECAP Channel 3              | Cdd_Ecap_ch3Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
+| CDD ECAP Channel 4              | Cdd_Ecap_ch4Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
+| CDD ECAP Channel 5              | Cdd_Ecap_ch5Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
+
+```{Note}
+Same Interrupt Category needs to be configured in both Cdd_Ecap and OS Modules.
+```
+
+#### Instance support
+
+|CPU instances| supported |
+|-------------|-----------|
+|CPU 1        | YES       |
+|CPU 2        | NO        |
+|CPU 3        | NO        |
+
+#### Hardware-Software Mapping
+
+Below image shows Cdd Ecap driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.
+
+```{figure} Assets/images/Cdd_Ecap_Hw_Sw_Mapping.png
+:width: 75%
+:alt: Cdd Ecap HW/SW Mapping
+:align: center
+
+Cdd Ecap HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This implementation depends on the DET in order to report development errors. The detection of development errors is configurable (ON / OFF), The switch CDD_ECAP_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+
+##### MCU
+
+MCU Module is required to initialize all the clock to be used by different peripherals
+
+##### OS
+
+The Cdd_Ecap driver uses interrupts and therefore there is a dependency on the OS, which configures the interrupt sources.
+
+##### SchM
+
+If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that Cdd_Ecap module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.
+
+The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter RteExclusiveAreaImplMechanism. This parameter is an input for RTE generator.
+For Cdd_Ecap Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
+
+| Exclusive Area Functions used                 | Cdd_Ecap Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
+|-----------------------------------------------|------------------------------------------|-------|-------|
+|CDD_ECAP_EXCLUSIVE_AREA_0  | Cdd_Ecap_DisableNotificationEcap<br>Cdd_Ecap_EnableNotificationEcap<br>Cdd_Ecap_SetActivationConditionEcap<br>Cdd_Ecap_GetInputStateEcap<br>Cdd_Ecap_EnableEdgeDetectionEcap<br>Cdd_Ecap_DisableEdgeDetectionEcap<br>Cdd_Ecap_StartTimestampEcap<br>Cdd_Ecap_StopTimestampEcap<br>Cdd_Ecap_GetTimestampIndexEcap<br>Cdd_Ecap_ResetEdgeCountEcap<br>Cdd_Ecap_EnableEdgeCountEcap<br>Cdd_Ecap_DisableEdgeCountEcap<br>Cdd_Ecap_GetEdgeNumbersEcap<br>Cdd_Ecap_StartSignalMeasurementEcap<br>Cdd_Ecap_StopSignalMeasurementEcap<br>Cdd_Ecap_GetTimeElapsedEcap<br>Cdd_Ecap_GetDutyCycleValues  | To protect against multiple access for shared resources | **ALL_INTERRUPT_BLOCKING** : All interrupts should be blocked as this API's can be called in the interrupts |
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Cdd Ecap Driver implementation supports single configuration variants, namely Pre-Compile config. The driver expects generated **Cdd_Ecap_Cfg.h** to be present as input file.
+The associated Cdd Ecap driver configuration generated source file is **Cdd_Ecap_Cfg.c**.
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+```{Note}
+Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
+```
+
+#__BEGIN_ARXML_CONFIG_PARAMS
+
+#__END_ARXML_CONFIG_PARAMS
+
+#### Steps To Configure Cdd Ecap Module
+
+1. Open EB Tresos configurator tool, load Cdd_Ecap module. Select the Precompile Config Variant.
+2. Configure the required parameters.
+3. Save the configuration and generate the configuration.
+
+### Examples
+
+The example applications demonstrates usecases of the Cdd Ecap driver APIs. The examples are explained below in detailed.
+
+#### Cdd_Ecap_Capture_Signal
+
+##### Overview of Cdd_Ecap_Capture_Signal
+
+This example configures 4 channels of Cdd ECAP in different modes and captures a PWM signal.
+
+| Cdd Ecap Channel | Measurement Mode           | Input       | ECAP Instance and interrupt used | Notification handler | Activation      | Other                                             |
+|------------------|----------------------------|-------------|----------------------------------|----------------------|-----------------|---------------------------------------------------|
+| Channel 0        | Signal Measurement Mode    |INPUTXBAR7   | ECAP1, Interrupt 78              |                      |                 | Signal Measurement property is Duty Cycle         |
+| Channel 1        | Time Stamp Mode            |INPUTXBAR7   | ECAP2, Interrupt 79              |TimeStampNotify       | Rising Edge     | Buffer type is Circular                           |
+| Channel 2        | Edge Counter Mode          |INPUTXBAR7   | ECAP3, Interrupt 80              |                      | Rising Edge     |                                                   |
+| Channel 3        | Signal Edge Detect         |INPUTXBAR7   | ECAP4, Interrupt 81              |SignalNotify          | Rising Edge     |                                                   |
+
+Input Xbar 7 is configured to use GPIO1 as input
+PWM signal (EPWM1_A) is generated on the GPIO0.
+
+- Cdd_Ecap_Capture_Signal
+  - EcuM_Init()
+    - Initializes clock to 200 MHz using Mcu_Init().
+    - Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+    - Initializes Cdd_Ecap driver using Cdd_Ecap_Init()
+  - Cdd_Ecap_StartSignalMeasurement starts signal measurement on Cdd ECAP Channel 0 using ECAP0. Cdd_Ecap_GetDutyCycleValues and Cdd_Ecap_GetTimeElapsed gets duty cycle values.
+  - Cdd_Ecap_StartTimestamp starts timestamping on Cdd ECAP Channel 1 using ECAP1 and Cdd_Ecap_EnableNotification enables timestamp notification
+  - Cdd_Ecap_EnableEdgeCount starts edge counting on Cdd ECAP Channel 2 using ECAP2
+  - Cdd_Ecap_EnableEdgeDetection starts edge detection on Cdd ECAP Channel 3 using ECAP3 and Cdd_Ecap_EnableNotification enables edge detection notification. Cdd_Ecap_GetInputState gets input state
+  - Cdd_Ecap_DeInit de-initializes Cdd ECAP
+
+#### Setup required to run Cdd_Ecap_Capture_Signal
+
+- Install Code Composer Studio(CCS) latest version
+- Install latest c29 compiler
+- Connect the hardware (Loopback from GPIO0 to GPIO1. On HSEC dock, this is from HSEC49 to HSEC50) and power up
+- Connect the uart set up to check the log on serial console
+
+#### How to run Cdd_Ecap_Capture_Signal
+
+- Open CCS and import Cdd Ecap Example
+- Build project and start debug project
+
+#### Sample Logs of Cdd_Ecap_Capture_Signal
+
+```{EXAMPLE LOGS}
+Executing Cdd_Ecap_Capture_Signal example
+High time of the signal is: 251
+Period of the signal is: 1002
+```
+
+#### File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂**Cdd Ecap**\
+ ┃ ┃ ┣ 📂 **Cdd_Ecap_Capture_Signal**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Ecap_Capture_Signal.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Cdd_Ecap_Capture_Signal_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Cdd_Pwm.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Cdd_Xbar.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Ecap.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Cdd_Pwm.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Cdd_Xbar.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Ecap_Cfg.h** : *Contains the generated pre-compiler configuration header*\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Cdd_Pwm.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Cdd_Xbar.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Ecap_Cfg.c** : *Contains the generated pre-compiler configuration source*\
+ ┃ ┃ ┃ ┃ ┣ 📂swcd\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Cdd_Xbar_BSWMD.arxml\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┗ ┗ 📜**Cdd_Ecap_Capture_Signal.c**: *Example application for Cdd Ecap*\
+ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Cdd_Ipc\
+ ┃ ┣ 📂Cdd_Pwm\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Uart\
+ ┃ ┣ 📂Cdd_Xbar\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Fls\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┗ 📂Wdg\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
