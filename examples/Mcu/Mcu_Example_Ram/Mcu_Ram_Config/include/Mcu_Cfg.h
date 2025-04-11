@@ -49,7 +49,7 @@ extern "C" {
  *********************************************************************************************************************/
 #define MCU_CFG_MAJOR_VERSION               (1U)
 #define MCU_CFG_MINOR_VERSION               (0U)
-#define MCU_CFG_PATCH_VERSION               (0U)
+#define MCU_CFG_PATCH_VERSION               (1U)
 
 
 /*********************************************************************************************************************
@@ -141,7 +141,13 @@ extern "C" {
 
 /*<MCU_CFG_CLOCKUSERCONFIG_LIST>*/
 
-#define McuConf_McuClockSettingConfig_McuClockSettingConfig_0 (0u) /*~ASR~*/
+#define McuConf_McuClockSettingConfig_McuClockSettingConfig_Osc2 (0u) /*~ASR~*/
+
+
+#define McuConf_McuClockSettingConfig_McuClockSettingConfig_Xtal (1u) /*~ASR~*/
+
+
+#define McuConf_McuClockSettingConfig_McuClockSettingConfig_XtalSE (2u) /*~ASR~*/
 
 
 /*</MCU_CFG_CLOCKUSERCONFIG_LIST>*/

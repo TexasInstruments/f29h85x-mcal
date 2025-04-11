@@ -1,0 +1,962 @@
+## CDD XBAR Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|CDD|Complex Device Driver|
+|XBAR|Crossbar|
+|MCAL|Micro Controller Abstraction Layer|
+|CLB|Configurable Logic Block|
+|ePWM|Enhanced Pulse Width Modulation|
+|MINDB|Minimum Dead-band|
+|ICL|Illegal Combo Logic|
+|API|Application Programming Interface|
+|DET|Default Error Tracer|
+|HW |Hardware|
+|SW |Software|
+| AUXSIG | Auxiliary Input |
+
+### Introduction
+
+The CDD Xbar driver is a Complex Device Driver that provides services to connect device inputs, outputs, and internal resources in a variety of configurations.
+
+```{figure} Assets/images/CDD_XBAR_AUTOSAR_MCAL.png
+:alt: CDD XBAR MCAL AUTOSAR
+:align: center
+
+Cdd Xbar MCAL AUTOSAR
+```
+
+This document details AUTOSAR Cdd Xbar module implementation
+
+|Supported AUTOSAR Release|**4.3.1**|
+|------|-------------|
+| **Supported Configuration Variants** | **Pre-Compile**|
+| **Vendor ID**                      |   **CDD_XBAR_VENDOR_ID (44)**|
+| **Module ID**                      |   **CDD_XBAR_MODULE_ID (255)**|
+
+### Functional Overview
+
+The CDD Xbar driver is part of the Complex Device Driver layer(CDD). CDD Xbar is a logical connection circuitry that is used to route signals from a set of inputs to several outputs. Crossbars are named based on their outputs, according to where the Xbar takes signals.
+
+CDD Xbar, for this device, supports six categories of Crossbars:
+
+|Crossbar Type |Description|
+|------|-------------|
+| Input X-Bar | Routes signals from a GPIO/AIO to many different IP blocks such as the ADC, eCAP, ePWM, and external interrupts|
+| Output X-Bar | Routes signals from inside the device to a GPIO|
+| CLB X-Bar | Routes signals to the CLB modules|
+| ePWM X-Bar | Routes signals to the ePWM modules|
+| MINDB X-Bar | Routes various EPWM signals and CLB outputs to the Minimum Dead-band sub-module of the ePWM|
+| ICL X-Bar | Routes various EPWM signals and CLB outputs to the Illegal Combination Logic sub-module of the ePWM|
+
+### Hardware Features
+
+#### Hardware Features supported
+
+Features Supported at a high level are:
+
+* Routing signals from a set of inputs or logic HIGH or logic LOW to several outputs or IP blocks.
+* Inversion of the output signal in case of Output Xbar, CLB Xbar, ePWM Xbar, MINDB Xbar and ICL Xbar.
+* Locking of the input-output configurations of all Xbars.
+* Routing a latched event as the output of an Output Xbar output line.
+* Inversion of the output signal before latching an event in an Output Xbar output line.
+* Forcing the latch of an Output Xbar output line.
+* Stretching the output of an Output Xbar output line to 16 SYSCLK or 32 SYSCLK.
+
+##### Input Xbar
+
+Input Xbar is used to route signals from a GPIO or AIO or logic HIGH or logic LOW to many different IP blocks such as the ADC, eCAP, ePWM, and external interrupts. The input of each Input Xbar instance (INPUTx) can be any GPIO or AIO, while the output of each instance connects to various IP blocks in the device. The logic level HIGH and logic level LOW are also available as inputs to the Input Xbar. The GPIO/AIO selected by the Input Xbar can be configured as either an input or an output. The Input Xbar simply connects the signal on the input buffer to the output of the selected Input Xbar instance. The Input Xbar contains sixteen output lines denoted as INPUTx where x = 1 to 64.
+
+```{figure} Assets/images/Cdd_Xbar_Input_Xbar.png
+:width: 65%
+:alt: Input Xbar architecture
+:align: center
+
+Input Xbar architecture
+```
+
+The Input Xbar provides the following features:
+
+* **Selection of an input** : Any GPIO or AIO configured with the PORT configuration can be selected as input to the INPUTx. It also provides a feature to select LOGIC HIGH or LOGIC low as input to the INPUTx.
+* **Locking of each Input Xbar instances** : The input output configurations of the each Input Xbar instance (INPUTx) can be locked. Once locked, it can be cleared only through a system reset.
+
+```{Note}
+For more details, refer the device's TRM.
+```
+
+##### Output Xbar
+
+The GPIO Output Xbar takes signals from inside the device and brings them out to a GPIO. The Xbar allows the selection of a single input or a logical-OR of many inputs. The Xbar contains sixteen outputs and each contains at least one position on the GPIO mux, denoted as OUTPUTXBARx. The final output is only recognized on the GPIO if the proper OUTPUTXBARx muxing options are selected using the PORT configurations.
+
+```{figure} Assets/images/Cdd_Xbar_Output_Xbar.png
+:width: 75%
+:alt: Output Xbar architecture
+:align: center
+
+Output Xbar architecture
+
+```
+
+The Output Xbar provides the following features:
+
+* **Selection of multiple inputs** : Multiple inputs can be configured as input to an individual OUTPUTXBARx.
+* **Output stretching** : The output of the OUTPUTXBARx can be stretched to stretch length of 16 SYSCLK or 32 SYSCLK.
+* **Latching of output** : The ORed output of the OUTPUTXBARx can be latched and the latched event can be used to drive the final OUTPUTXBARx. It also provides a feature the force the latched event to '1' and clear the latched event.
+* **Inversion before latching** : The ORed output of the OUTPUTXBARx can be inverted before latching.
+* **Inversion at the final output stage** : The output of the OUTPUTXBARx at the final output stage can be inverted.
+* **Status of the ORed output** : It can indicate the status of the ORed output of OUTPUTXBARx.
+* **Locking of Output Xbar** : The input output configurations of the entire Output Xbar can be locked. Once locked, it can be cleared only through a system reset.
+
+```{Note}
+For more details regarding the inputs for each OUTPUTXBARx, refer the device's TRM.
+```
+
+##### ePWM Xbar
+
+The ePWM Xbar brings signals to the ePWM modules. Specifically, the ePWM Xbar is connected to the Digital Compare (DC) submodule of each ePWM module for actions such as tripzones and syncing. The ePWM Xbar has 16 outputs that are routed to each ePWM module. The output lines of ePWM Xbar are denoted as TRIPx where x = 1 to 16. The outputs of ePWM X-BAR from TRIP1 to TRIP 8 are connected to trips inputs 1-8 of each ePWM instance, while TRIP9-TRIP12 and TRIP14-TRIP15 are connected to trips 9-12 and trips 14-15 of each ePWM instance, respectively. Note that TRIP5 and TRIP8 are not connected to any ePWM trip source.
+
+```{figure} Assets/images/Cdd_Xbar_ePWM_Xbar.png
+:width: 75%
+:alt: ePWM Xbar architecture
+:align: center
+
+ePWM Xbar architecture
+```
+
+The ePWM Xbar provides the following features:
+
+* **Selection of multiple inputs** : Multiple inputs can be configured as input to an individual TRIPx.
+* **Inversion at the final output stage** : The output of the TRIPx at the final output stage can be inverted.
+* **Locking of ePWM Xbar** : The input output configurations of the entire ePWM Xbar can be locked. Once locked, it can be cleared only through a system reset.
+
+```{Note}
+* For more details regarding the inputs for each TRIPx, refer the device's TRM.
+```
+
+##### CLB Xbar
+
+The CLB X-BAR brings signals to the CLB modules. The CLB X-BAR has eight outputs that are routed to each CLB module denoted as AUXSIGx where x = 1 to 8. There is one instance of CLB-Xbar per AUXSIG input.
+
+```{figure} Assets/images/Cdd_Xbar_CLB_Xbar.png
+:width: 75%
+:alt: CLB Xbar architecture
+:align: center
+
+CLB Xbar architecture
+```
+
+The CLB Xbar provides the following features:
+
+* **Selection of multiple inputs** : Multiple inputs can be configured as input to an individual AUXSIGx.
+* **Inversion at the final output stage** : The output of the AUXSIGx at the final output stage can be inverted.
+* **Locking of CLB Xbar** : The input output configurations of the entire CLB Xbar can be locked. Once locked, it can be cleared only through a system reset.
+
+```{Note}
+* For more details regarding the inputs for each AUXSIGx refer the device's TRM.
+```
+
+##### MINDB and ICL Xbar
+
+The Illegal Combo Logic (ICL) X-BAR and Minimum Dead-band (MINDB) X-BAR are used to route various EPWM signals and CLB outputs to the Minimum Dead-band and Illegal Combination Logic sub-module of the EPWM. The MINDB Xbar has 16 outputs denoted as MINDBXBARx where x = 1 to 16. The ICL Xbar has 16 outputs denoted as ICLXBARx where x = 1 to 16.
+
+```{figure} Assets/images/Cdd_Xbar_MINDB_ICL_Xbar.png
+:width: 75%
+:alt: MINDB and ICL Xbar architecture
+:align: center
+
+MINDB and ICL Xbar
+```
+
+The MINDB and ICL Xbars provides the following features:
+
+* **Selection of multiple inputs** : Multiple inputs can be configured as input to an individual output lines.
+* **Inversion at the final output stage** : The output of the MINDBXBARx and ICLXBARx at the final output stage can be inverted.
+* **Locking of MINDB and ICL Xbars** : The input output configurations of the entire MINDB Xbar/ICL Xbar can be locked. Once locked, it can be cleared only through a system reset.
+
+```{Note}
+* For more details regarding the inputs for each MINDBXBARx / ICLXBARx, refer the device's TRM.
+```
+
+##### Xbar Input Flags
+
+With the exception of the CMPSS signals, the ePWM Xbar and the Output Xbar have all of the same input signals. Due to the inputs being similar between the ePWM Xbar, CLB Xbar, and Output Xbar, all Xbar modules leverage a single set of input flags to indicate which input signals have been triggered. This allows software to check the input flags when an event occurs. There is a bit allocated for each input signal in one of the XBARFLGx registers. The flag remains set until cleared through the appropriate XBARCLRx register.
+
+```{figure} Assets/images/Cdd_Xbar_Input_Flags.png
+:width: 75%
+:alt: Xbar Input Sources
+:align: center
+
+Xbar Input Sources
+```
+
+#### Not supported Features
+
+* The output stretching, output inversion before locking, selection of latched event as output of the Output Xbar is affected by the locking of the Output Xbar, i.e., once locked these configurations cannot be changed.
+
+#### Non compliance
+
+None
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Adc\
+ ┃ ┣ 📂Can\
+ ┃ ┗ 📂**Cdd_Xbar**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Xbar.h** : *Contains the API declarations of the Cdd Xbar driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar_Priv.h** : *Contains data structures and Internal function declarations.*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Xbar.c** : *Contains the implementation of the API for Cdd Xbar driver.*\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar_Priv.c** : *Contains Functions that support the API for Cdd Xbar driver*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┗ 📂Wdg\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Cdd_Xbar_Header_File_Structure.png
+:alt: Cdd Xbar Header File Structure
+:align: center
+
+Cdd Xbar Header File Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+None
+
+#### Error handling
+
+##### Development Error Reporting
+
+Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+|Type of Error | Related Error code | Value (Hex)|
+|----|-----|-------|
+|API called for reinitialization of already initialized crossbars.|CDD_XBAR_E_INIT_ALREADY|0x01|
+|API called with invalid parameter.|CDD_XBAR_E_PARAM_VALUE|0x02|  
+|API called with invalid parameter pointer.|CDD_XBAR_E_PARAM_POINTER|0x03|
+|API called with invalid operations on a locked crossbar.|CDD_XBAR_E_LOCK|0x04|
+|API called with uninitialized driver.|CDD_XBAR_E_UNINIT|0x05|
+
+### Used resources
+
+#### Interrupt Handling
+
+There are no Interrupts in Cdd Xbar
+
+#### Instance support
+
+|CPU instances| supported |
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+Below image shows Cdd Xbar driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.
+
+```{figure} Assets/images/Cdd_Xbar_Hw_Sw_Maping.png
+:width: 75%
+:alt: Cdd Xbar HW/SW Mapping
+:align: center
+
+Cdd Xbar HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This implementation depends on the DET in order to report development errors. The detection of development errors is configurable (ON / OFF), The switch CDD_XBAR_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+
+##### PORT
+
+PORT Module is required to initialize Pin configurations for Input Xbar inputs(GPIOs, AIOs) and OUTPUTXBARx.
+
+##### MCU
+
+MCU Module is required to initialize all the clock to be used by different peripherals
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Cdd Xbar Driver implementation supports single configuration variants, namely Pre-Compile config. The driver expects generated **Cdd_Xbar_Cfg.h** to be present as input file.
+The associated Cdd Xbar driver configuration generated source file is **Cdd_Xbar_Cfg.c**.
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+```{Note}
+Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
+```
+
+#### CddXbarGeneral
+
+##### CddXbarDevErrorDetect
+
+|**Name**   |CddXbarDevErrorDetect|
+|-----------|------------------|
+|**Parent Container**|CddXbarGeneral|
+|**Description**|Switches the development error detection and notification on or off <br> &bull; **TRUE**: detection and notification is enabled. <br> &bull; **FALSE**: detection and notification is disabled. |
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false |
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+##### CddXbarAPIEnable
+
+|**Name**   |CddXbarAPIEnable|
+|-----------|------------------|
+|**Parent Container**|CddXbarGeneral|
+|**Description**|Enables or Disables the APIs of Cdd Xbar driver. <br> &bull; **TRUE**: All APIs are enabled. <br> &bull; **FALSE**: All APIs are disabled.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|true|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+##### CddXbarVersionInfoApi
+
+|**Name**   |CddXbarVersionInfoApi|
+|-----------|------------------|
+|**Parent Container**|CddXbarGeneral|
+|**Description**|Enables or Disables the Cdd_Xbar_GetVersionInfo API. <br> &bull; **TRUE**: Cdd_Xbar_GetVersionInfo API is enabled. <br> &bull; **FALSE**: Cdd_Xbar_GetVersionInfo API is disabled.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|true|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+##### CddXbarInputFlagApi
+
+|**Name**   |CddXbarInputFlagApi|
+|-----------|------------------|
+|**Parent Container**|CddXbarGeneral|
+|**Description**|Enables or Disables the Cdd_Xbar_InputFlagStatus() and Cdd_Xbar_InputFlagClear() APIs. <br> &bull; **TRUE**: Input flag related APIs are enabled. <br> &bull; **FALSE**: Input flag related APIs are disabled.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|true|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+#### CddXbar Configuration
+
+##### CddXbarInputXbarConfig
+
+###### CddXbarInputXbarInputSourceSelection  
+
+|**Name**   |CddXbarInputXbarInputSourceSelection  |
+|-----------|------------------|
+|**Parent Container**|CddXbarInputXbarConfig|
+|**Description**|Selects GPIO/AIO/LOGIC HIGH/LOGIC LOW as input to the Input XBar|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|GPIO|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarInputXbarInputSource  
+
+|**Name**   |CddXbarInputXbarInputSource  |
+|-----------|------------------|
+|**Parent Container**|CddXbarInputXbarConfig|
+|**Description**|Reference to GPIO/AIO Pin, obtained from the configuration of PORT plugin if GPIO/AIO is selected as the input source for Input Xbar|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|GPIO|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarInputXbarInput  
+
+|**Name**   |CddXbarInputXbarInput  |
+|-----------|------------------|
+|**Parent Container**|CddXbarInputXbarConfig|
+|**Description**|Selection of the Input Xbar(INPUTx) to be configured.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_INPUT1|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarInputXbarInputSelectConfigurationLock  
+
+|**Name**   |CddXbarInputXbarInputSelectConfigurationLock  |
+|-----------|------------------|
+|**Parent Container**|CddXbarInputXbarConfig|
+|**Description**|Lock the current input output configurations of the INPUTx from any further configuration until System Reset. Once locked, cannot be unlocked without reset|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+##### CddXbarOutputXbarConfig
+
+###### CddXbarOutputXbarInstanceConfig
+
+○ CddXbarOutputXbarInput
+
+• CddXbarOutputXbarInputGroup
+
+|**Name**   |CddXbarOutputXbarInputGroup  |
+|-----------|------------------|
+|**Parent Container**|CddXbarOutputXbarInput|
+|**Description**|Selects the input group to be chosen for Output Crossbar as input|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_INPUT_GROUP_0|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+• CddXbarOutputXbarInputLine
+
+|**Name**   |CddXbarOutputXbarInputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarOutputXbarInputLine|
+|**Description**|Selects the input line to be chosen from the selected input group for Output Crossbar as input|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_INPUT_GROUP_0|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarOutputXbarOutputLine
+
+|**Name**   |CddXbarOutputXbarOutputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarOutputXbarConfig|
+|**Description**|Selection of the Output Xbar output line to be configured. |
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_OUTPUT1|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarOutputXbarOutputPulseStretch
+
+|**Name**   |CddXbarOutputXbarOutputPulseStretch  |
+|-----------|------------------|
+|**Parent Container**|CddXbarOutputXbarConfig|
+|**Description**|Selects the stretching of the output signal for the selected output line of the Output Crossbar instance. |
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_SYSTICKS_STRETCH_OFF|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarOutputXbarOutputInversion
+
+|**Name**   |CddXbarOutputXbarOutputInversion  |
+|-----------|------------------|
+|**Parent Container**|CddXbarOutputXbarConfig|
+|**Description**|Selects the inversion of the output signal for the selected output line of the Output Crossbar instance. |
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarOutputXbarOutputLatch
+
+|**Name**   |CddXbarOutputXbarOutputLatch  |
+|-----------|------------------|
+|**Parent Container**|CddXbarOutputXbarConfig|
+|**Description**|Selects the latched event as output of selected output line for Output Crossbar instance. |
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarOutputXbarOutputFlagConfig
+
+○ CddXbarOutputXbarInversionBeforeLatch
+
+|**Name**   |CddXbarOutputXbarInversionBeforeLatch  |
+|-----------|------------------|
+|**Parent Container**|CddXbarOutputXbarOutputFlagConfig|
+|**Description**|Enables or disables the inversion of the output before latching for the selected output line for Output Crossbar instance.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+○ CddXbarOutputXbarOutputLatchInitSts
+
+|**Name**   |CddXbarOutputXbarOutputLatchInitSts  |
+|-----------|------------------|
+|**Parent Container**|CddXbarOutputXbarOutputFlagConfig|
+|**Description**|Configures the initial status of the latched event, it can be forced, latched or can be left in default state. |
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarOutputXbarConfigurationLock
+
+|**Name**   |CddXbarOutputXbarConfigurationLock  |
+|-----------|------------------|
+|**Parent Container**|CddXbarOutputXbarConfig|
+|**Description**|Lock the Output Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+##### CddXbarEpwmXbarConfig
+
+###### CddXbarEpwmXbarInstanceConfig
+
+○ CddXbarEpwmXbarInput
+
+• CddXbarEpwmXbarInputGroup
+
+|**Name**   |CddXbarEpwmXbarInputGroup  |
+|-----------|------------------|
+|**Parent Container**|CddXbarEpwmXbarInput|
+|**Description**|Selects the input group to be chosen for ePWM Crossbar, as input.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_INPUT_GROUP_0|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+• CddXbarEpwmXbarInputLine
+
+|**Name**   |CddXbarEpwmXbarInputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarEpwmXbarInput|
+|**Description**|Selects the input line to be chosen from the selected input group for ePWM Crossbar, as input.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_EPWM_CMPSS1_CTRIPH|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+○ CddXbarEpwmXbarOutputLine
+
+|**Name**   |CddXbarEpwmXbarOutputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarEpwmXbarInstanceConfig|
+|**Description**|Selection of the ePWM Xbar output line to be configured.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_TRIP2|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+○ CddXbarEpwmXbarOutputInversion
+
+|**Name**   |CddXbarEpwmXbarOutputInversion  |
+|-----------|------------------|
+|**Parent Container**|CddXbarEpwmXbarInstanceConfig|
+|**Description**|Selects the inversion of the output signal for the selected output line of the ePWM Crossbar instance.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarEpwmXbarConfigurationLock
+
+|**Name**   |CddXbarEpwmXbarConfigurationLock  |
+|-----------|------------------|
+|**Parent Container**|CddXbarEpwmXbarConfig|
+|**Description**|Lock the ePWM Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+##### CddXbarClbXbarConfig
+
+###### CddXbarClbXbarInstanceConfig
+
+○ CddXbarClbXbarInput
+
+• CddXbarClbXbarInputGroup
+
+|**Name**   |CddXbarClbXbarInputGroup  |
+|-----------|------------------|
+|**Parent Container**|CddXbarClbXbarInput|
+|**Description**|Selects the input group to be chosen for CLB Crossbar, as input.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_INPUT_GROUP_0|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+• CddXbarClbXbarInputLine
+
+|**Name**   |CddXbarClbXbarInputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarClbXbarInput|
+|**Description**|Selects the input line to be chosen from the selected input group for CLB Crossbar, as input.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_CLB_CMPSS1_CTRIPH|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+○ CddXbarClbXbarOutputLine
+
+|**Name**   |CddXbarClbXbarOutputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarClbXbarInstanceConfig|
+|**Description**|Selection of the CLB Xbar output line to be configured.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_AUXSIG1|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+○ CddXbarClbXbarOutputInversion
+
+|**Name**   |CddXbarClbXbarOutputInversion  |
+|-----------|------------------|
+|**Parent Container**|CddXbarClbXbarInstanceConfig|
+|**Description**|Selects the inversion of the output signal for the selected output line of the CLB Crossbar instance.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarClbXbarConfigurationLock
+
+|**Name**   |CddXbarClbXbarConfigurationLock  |
+|-----------|------------------|
+|**Parent Container**|CddXbarClbXbarConfig|
+|**Description**|Lock the CLB Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+##### CddXbarMindbXbarConfig
+
+###### CddXbarMindbXbarInstanceConfig
+
+○ CddXbarMindbXbarInput
+
+• CddXbarMindbXbarInputGroup
+
+|**Name**   |CddXbarMindbXbarInputGroup  |
+|-----------|------------------|
+|**Parent Container**|CddXbarMindbXbarInput|
+|**Description**|Selects the input group to be chosen for MINDB Crossbar, as input.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_INPUT_GROUP_0|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+• CddXbarMindbXbarInputLine
+
+|**Name**   |CddXbarMindbXbarInputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarMindbXbarInput|
+|**Description**|Selects the input line to be chosen from the selected input group for MINDB Crossbar, as input.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_MINDB_EPWM1A_DB_NO_HR|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+○ CddXbarMindbXbarOutputLine
+
+|**Name**   |CddXbarMindbXbarOutputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarMindbXbarInstanceConfig|
+|**Description**|Selection of the MINDB Xbar output line to be configured.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_MINDBXBAR1|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+○ CddXbarMindbXbarOutputInversion
+
+|**Name**   |CddXbarMindbXbarOutputInversion  |
+|-----------|------------------|
+|**Parent Container**|CddXbarMindbXbarInstanceConfig|
+|**Description**|Selects the inversion of the output signal for the selected output line of the MINDB Crossbar instance.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarMindbXbarConfigurationLock
+
+|**Name**   |CddXbarMindbXbarConfigurationLock  |
+|-----------|------------------|
+|**Parent Container**|CddXbarMindbXbarConfig|
+|**Description**|Lock the MINDB Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+##### CddXbarIclXbarConfig
+
+###### CddXbarIclXbarInstanceConfig
+
+○ CddXbarIclXbarInput
+
+• CddXbarIclXbarInputGroup
+
+|**Name**   |CddXbarIclXbarInputGroup  |
+|-----------|------------------|
+|**Parent Container**|CddXbarIclXbarInput|
+|**Description**|Selects the input group to be chosen for MINDB Crossbar, as input.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_INPUT_GROUP_0|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+• CddXbarIclXbarInputLine
+
+|**Name**   |CddXbarIclXbarInputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarIclXbarInput|
+|**Description**|Selects the input line to be chosen from the selected input group for ICL Crossbar, as input.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_ICL_EPWM1A_MINDB|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+○ CddXbarIclXbarOutputLine
+
+|**Name**   |CddXbarIclXbarOutputLine  |
+|-----------|------------------|
+|**Parent Container**|CddXbarIclXbarInstanceConfig|
+|**Description**|Selection of the ICL Xbar output line to be configured.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_XBAR_ICLXBAR1|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+○ CddXbarIclXbarOutputInversion
+
+|**Name**   |CddXbarIclXbarOutputInversion  |
+|-----------|------------------|
+|**Parent Container**|CddXbarIclXbarInstanceConfig|
+|**Description**|Selects the inversion of the output signal for the selected output line of the ICL Crossbar instance.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+###### CddXbarIclXbarConfigurationLock
+
+|**Name**   |CddXbarIclXbarConfigurationLock  |
+|-----------|------------------|
+|**Parent Container**|CddXbarIclXbarConfig|
+|**Description**|Lock the CL Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|Pre-compile time | VARIANT-PRE-COMPILE|
+|Link time |--|
+|**Scope/Dependency**|scope:local|
+
+#### Steps To Configure Port Module
+
+1. Open EB Tresos configurator tool.
+2. Go to Cdd Xbar Container tab and the specific Xbar which needs to be configured.
+3. For Input Xbar, create a new container, select the Input Xbar source to be selected as input which is configured in the PORT configurator, INPUTx to be configured and select the lock configuration if required.
+4. For Output Xbar, create a new container, select the Output XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarOutputXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarOutputXbarInputLine and select the inputs that needs to be configured.
+5. For ePWM Xbar, create a new container, select the ePWM XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarEpwmXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarEpwmXbarInputLine and select the inputs that needs to be configured.
+6. For CLB Xbar, create a new container, select the CLB XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarClbXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarClbXbarInputLine and select the inputs that needs to be configured.
+7. For MINDB Xbar, create a new container, select the MINDB XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarMindbXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarMindbXbarInputLine and select the inputs that needs to be configured.
+8. For ICL Xbar, create a new container, select the ICL XBAR configurations as required. For configuring the inputs, open the created container and go to CddXbarIclXbarInput and create containers for the input group that needs to be selected. Open the created container for a group, go to the CddXbarIclXbarInputLine and select the inputs that needs to be configured.
+9. Save the configuration and generate the configuration.
+
+### Examples
+
+The example application demonstrates use of Cdd Xbar module, the list below identifies key steps performed in the example.
+
+#### Overview
+
+* Cdd_Xbar_GpioToGpio
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init().
+    * Initializes the input pins for Input Xbar and the OUTPUTXBARx using Port_Init().
+    * Initializes the Xbar configurations according to the configurations selected in the configurator.
+  * Cdd_Xbar_GetVersionInfo will get the software version info details.
+  * Cdd_Xbar_SelectInput will select/deselect the inputs for the specific Xbar.
+  * Cdd_Xbar_LockStatus will return the lock status of the specific Xbar.
+  * Cdd_Xbar_Lock will lock the specific Xbar.
+
+#### Setup required to run example
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+#### How to run examples
+
+* Open CCS and import Cdd Xbar Example
+* Build project and start debug project
+
+#### Sample Log
+
+```{EXAMPLE LOGS}
+Sample Application - STARTS !!!
+CDD XBAR MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 255
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+-------------------------------------------- 
+Checking lock status of INPUT XBAR1 
+INPUT XBAR1 is locked 
+-------------------------------------------- 
+Checking lock status of INPUT XBAR2 
+INPUT XBAR2 is not locked 
+Selecting GPIO4 as input to INPUT XBAR2 
+-------------------------------------------- 
+Checking lock status of OUTPUT XBAR 
+Selecting INPUT XBAR2 as input to OUTPUT XBAR2 
+INPUT XBAR2 is selected as input to OUTPUT XBAR2 
+=================================================================================
+PASS: GPIO0(INPUT XBAR1) and GPIO4(INPUT XBAR2) are routed to GPIO2(OUTPUT XBAR1) 
+```
+
+#### File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Adc\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┣ 📂Wdg\
+ ┃ ┣ 📂**Cdd Xbar**\
+ ┃ ┃ ┗ 📂 **Cdd_Xbar_GpioToGpio**\
+ ┃ ┃ ┃ ┣ 📂ccs\
+ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar_GpioToGpio.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Cdd_Xbar_GpioToGpio_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dio.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dio_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar_Cfg.h** : *Contains the generated pre-complier configuration header*\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dio_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar_Cfg.c** : *Contains the generated pre-complier configuration source*\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Xbar_GpioToGpio.h** : *Contains data structures and Internal function declarations*\
+ ┃ ┃ ┗ ┗ 📜**Cdd_Xbar_GpioToGpio.c**: *Example application for Cdd Xbar*\
+ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json

@@ -37,8 +37,7 @@
  *********************************************************************************************************************/
 /** \brief Check module software version information */
 #if ((GPT_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) ||\
-     (GPT_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)) ||\
-     (GPT_SW_PATCH_VERSION != ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
+     (GPT_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Module software version numbers of Gpt_Cfg.c and Gpt.h are inconsistent!"
 #endif
 

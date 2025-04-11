@@ -1,0 +1,2526 @@
+## CDD ADC Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|ADC|Analog to Digital Conversion|
+|API|Application Programming Interface|
+|BSW|Basic Software|
+|ECU|Electronic Control Unit|
+|DET|Default Error Tracer|
+|HW |Hardware|
+|SW |Software|
+|I/O|Input/Output|
+|MCAL|Micro Controller Abstraction Layer|
+|CDD|Complex Device Driver|
+|OS|Operating System|
+|RTE|Runtime Environment|
+|SOC|Start of Conversion|
+|EOC|End of Conversion|
+|S&H|Sample and Hold|
+|SAR|Successive-Approximation-Register|
+|SYSCLK|System Clock|
+|HW Unit|Represents a microcontroller input electronic device that includes all parts necessary to perform an “analogue to digital conversion"|
+|ADC channel |Represents a logical ADC entity bound to one port pin. Multiple ADC entities can be mapped to the same port pin|
+|ADC channel group|A group of ADC channels linked to the same ADC hardware unit (e.g., one Sample & Hold and one A/D converter).The conversion of the whole group is triggered by one trigger source.|
+|ADC result buffer|The user of the ADC Driver has to provide a buffer for every group. This buffer can hold multiple samples of the same channel group if streaming access mode is selected. If single access mode is selected one sample of each group channel is held in the buffer.|
+|Trigger Source|Source event that starts a single conversion or a continuous series of conversions.<br> Software Trigger: Software API call that starts the conversion of one ADC channel group or a continuous series of ADC channel group conversions.<br>Hardware Trigger: ADC internal trigger signal that starts one conversion of an ADC channel group. ADC hardware trigger are generated internally in the ADC hardware, e.g. based on an ADC timer or a trigger edge signal. The trigger hardware is tightly coupled or integrated in the ADC hardware. No software is required to start the ADC channel group conversion after the hardware trigger is detected.|
+|Conversion Mode|One-Shot:The conversion of an ADC channel group is performed once after a trigger and the result is written to the assigned buffer.A trigger can be a software API call or a hardware event.<br>Continuous:The conversions of an ADC channel group are performed continuously after a software API call (start). The conversions themselves are running automatically (hardware/interrupt controlled). The Continuous conversions can be stopped by a software API call (stop).|
+|Sampling Time|Time during which the analogue value is sampled (e.g. loading the capacitor, …)|
+|Conversion Time|Time during which the sampled analogue value is converted into digital representation|
+|Acquisition Time|Acquisition Time = Sampling Time+ Conversion Time|
+|GPT|General Purpose Timer|
+
+### Introduction
+
+The ADC driver is a part of complex device drivers (CDD) which converts the analog input to digital. It provides services to start and stop a group conversion respectively to enable and disable the trigger source for a conversion. Furthermore, it provides services to enable and disable a notification mechanism and routines to query the status and result of the group conversions.
+
+```{figure} Assets/images/Cdd_Adc_Autosar_CDD.png
+:alt: CDD_ADC MCAL AUTOSAR
+:align: center
+
+CDD_ADC MCAL AUTOSAR
+```
+
+This document details AUTOSAR BSW CDD_ADC module implementation
+
+|Supported AUTOSAR Release|**4.3.1**|
+|------|-------------|
+| **Supported Configuration Variants** | **Pre-Compile**|
+| **Vendor ID**                      |   **CDD_ADC_VENDOR_ID (44)**|
+| **Module ID**                      |   **CDD_ADC_MODULE_ID (255)**|
+
+### Functional Overview
+
+The ADC peripheral initializes and controls the internal Analogue Digital Converter Unit(s) of the microcontroller. The ADC peripheral in the device is Successive Approximation (SAR) type of ADC . The ADC peripherals on this device support selectable resolution of either 16 bit or 12 bit.The ADC is composed of a core and a wrapper; the core is composed of the analog circuits which include the channel select MUX, the Sample-and-Hold (S/H) circuit, the successive approximation circuits, voltage reference circuits, and other analog support circuits. The wrapper is composed of the digital circuits that configure and control the ADC. These circuits include the logic for programmable conversions, result registers, interfaces to analog circuits, interfaces to the peripheral buses,post-processing circuits, and interfaces to other on-chip peripherals.
+
+### Hardware Features
+
+#### Hardware Features supported
+
+The ADC module includes the following features:
+
+* Selectable resolution of 12 bits or 16 bits.
+* Ratiometric external reference set by VREFHI and VREFLO pins.
+* Selectable internal reference of 2.5V or 3.3V.
+* Differential signal conversions and Single-ended signal conversions.
+* Input multiplexer with up to 80 channels (single-ended) or 40 channels (differential).
+* External channel mux option to expand available ADC channels.
+* 32 configurable SOCs.
+* 32 individually addressable result registers.
+* Two trigger repeater modules, enabling customizable hardware oversampling and undersampling modes with little or no CPU overhead.
+* Multiple trigger sources -
+  * S/W (with available global synchronization for multiple ADCs) - software immediate start
+  * All ePWMs - ADCSOC A or B
+  * GPIO XINT2
+  * CPU Timers 0/1/2 (from each C29 core present)
+  * ADCINT1/2
+  * ECAP events in capture mode (CEVT1, CEVT2, CEVT3, and CEVT4) and APWM mode (period match,
+compare match, or both)
+* Four flexible PIPE interrupts
+* Configurable interrupt placement
+* Four post-processing blocks(PPB), each with:
+  * Saturating offset calibration
+  * Error from set-point calculation
+  * High, low, and zero-crossing compare, with interrupt and ePWM trip capability
+  * Trigger-to-sample delay capture
+  * Aggregation functions: max, min, sum, and average (binary shift)
+  * Configurable digital filter for high/low/zero-crossing compare
+  * Absolute value function
+  * Delta enable function
+  * Two's complement function
+  * Cycle by cycle enable function
+* Result safety checkers to compare SOC results on same ADC or multiple ADC instances
+
+```{figure} Assets/images/Cdd_Adc_Block_Diagram.png
+:alt: Cdd_Adc Block diagram
+:align: center
+
+Cdd_Adc Block Diagram
+```
+
+```{figure} Assets/images/Cdd_Adc_SafetyChecker_Block_Diagram.png
+:alt: Cdd_Adc Block diagram
+:align: center
+
+Cdd_Adc Result Safety Checker Block Diagram
+```
+
+#### Features not supported by Hardware
+
+* The 1.65V internal reference mode is not supported when the ADC is configured for 16-bit resolution.
+* Temperature sensor sampled in 16-bit mode. It can cause incorrect ADC results.To sample the temperature sensor, the ADC must be in single-ended 12-bit mode.
+
+#### Features Not supported by the driver
+
+* Burst mode
+* PPB external hardware sync input
+* PPB oversampling interrupt
+
+#### Non compliance
+
+None
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂**Cdd_Adc**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Adc.h** : *Contains the API declarations of the Cdd_Adc driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Adc_Priv.h** : *Contains data structures and Internal function declarations.*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Adc.c** : *Contains the implementation of the API for Cdd_Adc driver.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Adc_Irq.c** : *Contains the implementation for Cdd_Adc interrupts handlers.*\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Adc_Priv.c** : *Contains Functions that support the API for Cdd_Adc driver*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Xbar\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Lin\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┗ 📂Port\
+ ┃ ┗ 📂Spi\
+ ┃ ┗ 📂Wdg\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Cdd_Adc_Header_File_Structure.png
+:alt: Cdd_Adc Header File Structure
+:align: center
+
+Cdd_Adc Header File Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+None
+
+#### Error handling
+
+Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+##### Development Errors
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|Init API called when the driver is already initialized|CDD_ADC_E_ALREADY_INITIALIZED|0x0DU|
+|Init API called with non NULL_PTR <br> API called with NULL_PTR (except Init API)|CDD_ADC_E_PARAM_POINTER|0x14U|  
+|API called when driver is not initialized|CDD_ADC_E_UNINIT|0x0AU|
+|API called with invalid group ID|CDD_ADC_E_PARAM_GROUP|0x15U|
+|API called with invalid parameter ID|CDD_ADC_E_INVALID_ID|0x22U|
+|API called for group conversion before setting up the result buffer|CDD_ADC_E_BUFFER_UNINIT|0x1DU|  
+|Cdd_Adc_EnableGroupNotification or Cdd_Adc_DisableGroupNotification API called for a group whose configuration set has no notification available|CDD_ADC_E_NOTIF_CAPABILITY|0x1CU|
+|Incorrect API call for group conversion |CDD_ADC_E_WRONG_TRIGG_SRC|0x1BU|
+|Cdd_Adc_EnableHardwareTrigger or Cdd_Adc_DisableHardwareTrigger API called on a group with conversion mode configured as continuous |CDD_ADC_E_WRONG_CONV_MODE|0x1AU|
+|Cdd_Adc_SetResolution API is called when the hardware is in Internal 3.3V reference mode or called on 12-bit ADC hardware units(ADCC,ADCD & ADCE) and 16bit resolution is requested|CDD_ADC_E_WRONG_RESOLUTION_MODE|0x18U|
+|API called for invalid configuration parameter|CDD_ADC_E_PARAM_CONFIG|0x0EU|
+
+##### Runtime Errors
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|Cdd_Adc_SetResolution API called on a hardware unit whose resolution is same as the requested resolution|CDD_ADC_E_ALREADY_SET|0x21U|
+|API called when group conversion is not on-going|CDD_ADC_E_IDLE|0x0CU|
+|API called during ongoing group conversion|CDD_ADC_E_BUSY|0x0BU|
+|API called when safety checker is IDLE|CDD_ADC_E_CHECKER_IDLE|0x1FU|
+|API called when safety checker is BUSY|CDD_ADC_E_CHECKER_BUSY|0x20U|
+|Cdd_Adc_GetDelayStamp API called for software triggered PPB|CDD_ADC_E_WRONG_TRIGG_SRC|0x1BU|
+
+### Used resources
+
+#### Interrupt Handling
+
+Cdd_Adc driver provides ISRs. The ISRs are implemented in the Cdd_Adc_Irq.c file.
+Interrupt and the category should be selected in the Cdd_Adc plugin.The Interrupt ID associated with the ADC instance is mentioned in the TRM (also, please refer the Example application).
+
+ |Cdd_Adc Instance| Interrupt handler|
+|------------|-----------------|
+|ADCA| Cdd_Adc_ADCA_Int1Isr|
+|ADCA| Cdd_Adc_ADCA_Int2Isr|
+|ADCA| Cdd_Adc_ADCA_Int3Isr|
+|ADCA| Cdd_Adc_ADCA_Int4Isr|
+|ADCA| Cdd_Adc_ADCA_PpbEvtIntIsr|
+|ADCB| Cdd_Adc_ADCB_Int1Isr|
+|ADCB| Cdd_Adc_ADCB_Int2Isr|
+|ADCB| Cdd_Adc_ADCB_Int3Isr|
+|ADCB| Cdd_Adc_ADCB_Int4Isr|
+|ADCB| Cdd_Adc_ADCB_PpbEvtIntIsr|
+|ADCC| Cdd_Adc_ADCC_Int1Isr|
+|ADCC| Cdd_Adc_ADCC_Int2Isr|
+|ADCC| Cdd_Adc_ADCC_Int3Isr|
+|ADCC| Cdd_Adc_ADCC_Int4Isr|
+|ADCC| Cdd_Adc_ADCC_PpbEvtIntIsr|
+|ADCD| Cdd_Adc_ADCD_Int1Isr|
+|ADCD| Cdd_Adc_ADCD_Int2Isr|
+|ADCD| Cdd_Adc_ADCD_Int3Isr|
+|ADCD| Cdd_Adc_ADCD_Int4Isr|
+|ADCD| Cdd_Adc_ADCE_PpbEvtIntIsr|
+|ADCE| Cdd_Adc_ADCE_Int1Isr|
+|ADCE| Cdd_Adc_ADCE_Int2Isr|
+|ADCE| Cdd_Adc_ADCE_Int3Isr|
+|ADCE| Cdd_Adc_ADCE_Int4Isr|
+|ADCE| Cdd_Adc_ADCE_PpbEvtIntIsr|
+
+```{Note}
+Same Interrupt Category needs to be configured in both Cdd_Adc and OS Module.
+Since all the PPBs in an ADC hardware share the same interrupt, the category must match for all the PPB containers under an ADC hardware unit container.
+```
+
+#### Instance support
+
+|CPU instances|supported|
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+Below image shows Cdd_Adc driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Technical Reference Manual.
+
+```{figure} Assets/images/Cdd_Adc_Hw_Sw_Mapping.png
+:alt: Cdd_Adc HW/SW Mapping
+:align: center
+
+Cdd_Adc HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This driver depends on the DET in order to report development and runtime errors.
+The detection of development errors is configurable ON/OFF. The switch CDD_ADC_DEV_ERROR_DETECT will activate or deactivate the detection of development errors. Runtime errors are reported even when CDD_ADC_DEV_ERROR_DETECT is OFF.
+
+##### SchM
+
+If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that CDD ADC module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.
+
+The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter **RteExclusiveAreaImplMechanism**. This parameter is an input for RTE generator.
+
+For CDD_ADC Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
+
+| Exclusive Area Functions used | CDD_ADC Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
+|-------|-------|-------|-------|
+|CDD_ADC_EXCLUSIVE_AREA_0| Cdd_Adc_Init<br>Cdd_Adc_DeInit<br> Cdd_Adc_StartGroupConversion<br>Cdd_Adc_StopGroupConversion<br>Cdd_Adc_ReadGroup<br>Cdd_Adc_EnableHardwareTrigger<br>Cdd_Adc_DisableHardwareTrigger <br>Cdd_Adc_EnableGroupNotification<br>Cdd_Adc_DisableGroupNotification<br>Cdd_Adc_GetGroupStatus<br>Cdd_Adc_GetStreamLastPointer<br>Cdd_Adc_SetupResultBuffer<br>Cdd_Adc_StartResultChecker<br>Cdd_Adc_StopResultChecker<br>Cdd_Adc_ClearCheckerEvt<br>Cdd_Adc_StartGlobalSwTrig<br>Cdd_Adc_StopGlobalSwTrig<br>Cdd_Adc_SetResolution<br>Cdd_Adc_ReadPpbValue<br>Cdd_Adc_ReadPartialPpbValue<br>Cdd_Adc_ReadPpb<br>Cdd_Adc_ClearPpbEvt<br>Cdd_Adc_GetDelayStamp<br>Cdd_Adc_GetTemperatureC<br>Cdd_Adc_GetTemperatureK<br>Cdd_Adc_SetInternalTestNode| To protect against multiple access for shared resources | **OS_RESOURCE** : If the CDD ADC APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If CDD ADC APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+
+##### MCU
+
+MCU Module is required for the ADC clock initialization.
+
+##### Port
+
+The Port module configures the analog port pins used for the ADC driver. Hence, the Port driver has to be initialized prior to use ADC functions and to observe proper conversion results. Otherwise incorrect conversion results will be observed.
+
+##### OS
+
+The Cdd_Adc driver uses interrupts and therefore depends on OS, which configures the interrupts.
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Cdd_Adc Driver implementation supports only Pre-Compile configuration variant. The driver needs the generated configuration header file Cdd_Adc_Cfg.h as an input file to work.
+The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the driver configuration.
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files. If edited manually the driver may behavior might deviate from the expected behavior.
+
+#### CddAdcConfigSet
+
+##### CddAdcEnableTemperatureSensor
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcEnableTemperatureSensor|
+|**Parent Container**|CddAdcConfigSet|
+|**Description**|Enables/Disables the temperature sensor.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|true|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcLockTemperatureSensor
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcLockTemperatureSensor|
+|**Parent Container**|CddAdcConfigSet|
+|**Description**|Locks the temperature sensor configuration register When enabled.The lock can be cleared through system reset(SYSRSn).This is editable only when the temperature sensor is enabled.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|true|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcInternalTestInput
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcInternalTestInput|
+|**Parent Container**|CddAdcConfigSet|
+|**Description**|Selects the input source for the internal test nodes for all the ADC hardware units|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_ADC_TEST_NODE_NO_CONN|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwUnitAnalogRefABVoltageMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwUnitAnalogRefABVoltageMode|
+|**Parent Container**|CddAdcConfigSet|
+|**Description**|This parameter defines the voltage reference mode for ADC A and B hardware instances|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_ADC_REFERENCE_INTERNAL|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwUnitAnalogRefABVoltage
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwUnitAnalogRefABVoltage|
+|**Parent Container**|CddAdcConfigSet|
+|**Description**|This parameter defines the reference voltage for A and B instances of the ADC. This parameter is applicable only when the voltage reference mode is INTERNAL.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_ADC_REFERENCE_2_5V|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwUnitAnalogRefCDEVoltageMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwUnitAnalogRefCDEVoltageMode|
+|**Parent Container**|CddAdcConfigSet|
+|**Description**|This parameter defines the voltage reference mode for C,D and E instances of the ADC|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_ADC_REFERENCE_INTERNAL|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwUnitAnalogRefCDEVoltage
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwUnitAnalogRefCDEVoltage|
+|**Parent Container**|CddAdcConfigSet|
+|**Description**|This parameter defines the reference voltage for C,D and E instances of the ADC.This parameter is applicable only when the voltage reference mode is INTERNAL.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Default value**|CDD_ADC_REFERENCE_3_3V|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### CddAdcHwUnit
+
+##### CddAdcHwInstance
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwInstance|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter describes the ADC HW Unit instance.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADCA <br> CDD_ADCB <br> CDD_ADCC <br> CDD_ADCD <br> CDD_ADCE|
+|**Default value**|CDD_ADCA|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwUnitId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwUnitId|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter indicates the hardware unit position in the configured CddAdcHwUnit container.This is a calculated value it can't be edited.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0 .. 4|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcSocPriorityMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcSocPriorityMode|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter defines the SOC priority of the ADC hardware unit.If the selected priority is 0 then all SOCs are handled in round robin mode,for any other value channels with SOC number below the Priority value are handled in high priority mode and the rest of the SOCs will be handled in round robin mode. By default round robin mode is configured.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0 .. 32|
+|**Default value**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwUnitResolution
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwUnitResolution|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter defines the resolution of the hardware unit assigned to the group(in bits).Only ADCA and ADCB instance support both 12-bit and 16-bit resolution mode.The resolution can be changed when the hardware is IDLE(no conversions are going on). ADCC,ADCD and ADCE instances support only 12-bit resolution and can't be switched to other resolution modes.User has to make sure that 16-bit resolution is not selected for 12-bit ADCs.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_RESOLUTION_12BIT <br> CDD_ADC_RESOLUTION_16BIT|
+|**Default value**|'CDD_ADC_RESOLUTION_12BIT'|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+```{Note}
+Cdd_Adc_SetResolution API is provided to change the resolution of the ADC hardware unit on runtime. This API is applicable to only ADCA and ADCB instances. Since 3.3V internal reference mode is not supported in 16-bit, SetResolution can't be used to switch from 12-bit to 16-bit in 3.3V internal reference mode. It called a DET runtime error will be reported.
+```
+
+##### CddAdcHwUnitSignalMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwUnitSignalMode|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter defines the signal mode of the group.Differential mode is supported only for ADC instances A and B.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_MODE_SINGLE_ENDED <br> CDD_ADC_MODE_DIFFERENTIAL|
+|**Default value**|CDD_ADC_MODE_SINGLE_ENDED|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcClockReference
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcClockReference|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|Reference to a container of the type McuClockReferencePoint, to select an input clock.|
+|**Multiplicity**|1|
+|**Type**|REFERENCE|
+|**Range**|--|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwUnitClockPrescale
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwUnitClockPrescale|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This enum describes the clock prescale factor for the ADC Hardware unit.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|--|
+|**Default value**|CDD_ADC_CLK_DIV_3_5|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcClock
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcClock|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter describes the ADC clock after the clock prescale factor for the ADC Hardware unit.|
+|**Multiplicity**|1|
+|**Type**|FLOAT|
+|**Range**|--|
+|**Default value**|5.0E7|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwExternalMuxSelect
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwExternalMuxSelect|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter determines whether the external mux channel is enabled for the ADC hardware unit.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwExternalMuxPreselectEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwExternalMuxSelect|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter determines whether the external mux preset is enabled for the ADC hardware unit.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcInterruptPulseMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcInterruptPulseMode|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This enumeration defines the interrupt pulse mode of the ADC hardware unit.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_PULSE_END_OF_CONV <br> CDD_ADC_PULSE_END_OF_ACQ_WIN|
+|**Default value**|CDD_ADC_PULSE_END_OF_CONV|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcInterruptCycleoffset
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcInterruptCycleoffset|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter defines the delay from the fall edge of the SOC and the interrupt to be generated in SYSCLK cycles .This is editable only when CddAdcInterruptPulseMode is CDD_ADC_PULSE_END_OF_ACQ_WIN.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0 - 65535|
+|**Default value**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcOpenShortDetectMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcOpenShortDetectMode|
+|**Parent Container**|CddAdcHwUnit|
+|**Description**|This parameter defines the opens/shorts detection circuit mode.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_OSDETECT_MODE_DISABLED <br> CDD_ADC_OSDETECT_MODE_VSSA <br> CDD_ADC_OSDETECT_MODE_VDDA <br> CDD_ADC_OSDETECT_MODE_5BY12_VDDA <br> CDD_ADC_OSDETECT_MODE_7BY12_VDDA <br> CDD_ADC_OSDETECT_MODE_5K_PULLDOWN_TO_VSSA <br> CDD_ADC_OSDETECT_MODE_5K_PULLUP_TO_VDDA <br> CDD_ADC_OSDETECT_MODE_7K_PULLDOWN_TO_VSSA|
+|**Default value**|CDD_ADC_OSDETECT_MODE_DISABLED|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroup
+
+##### CddAdcGroupId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupId|
+|**Parent Container**|CddAdcGroup|
+|**Description**|Numeric ID of the group. This parameter is the symbolic name to be used on the API. This symbolic name allows accessing Channel Group data. This value will be assigned to the symbolic name derived of the CddAdcGroup container shortName.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-3|
+|**Default**|This value is auto-calculated. It defines the containers position in the group container. |
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupPriority
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupPriority|
+|**Parent Container**|CddAdcGroup|
+|**Description**|Priority of the group.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_HIGH_PRIORITY <br> CDD_ADC_ROUND_ROBIN|
+|**Default**|CDD_ADC_ROUND_ROBIN|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupSocMask
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupSocMask|
+|**Parent Container**|CddAdcGroup|
+|**Description**|SOC mask of the Adc hardware unit of the group. This value is calculated and non-editable. To update the parameter run AutoCalc.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0 - (4294967295)|
+|**Default**|-|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupConversionMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupConversionMode|
+|**Parent Container**|CddAdcGroup|
+|**Description**|This parameter defines the type of conversion mode for the group.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_CONV_MODE_CONTINUOUS <br> CDD_ADC_CONV_MODE_ONESHOT|
+|**Default**|CDD_ADC_CONV_MODE_ONESHOT|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupTrigSrcType
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupTrigSrcType|
+|**Parent Container**|CddAdcGroup|
+|**Description**|Type of source event that starts a group conversion.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_TRIGG_SRC_HW <br> CDD_ADC_TRIGG_SRC_SW|
+|**Default**|CDD_ADC_TRIGG_SRC_SW|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupTrigSrc
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupTrigSrc|
+|**Parent Container**|CddAdcGroup|
+|**Description**|Source of the trigger that triggers the start of the conversion of all the channels in the group.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_TRIGGER_CPU1INT0, ....,CDD_ADC_TRIGGER_CPU3INT2|
+|**Default**|CDD_ADC_TRIGGER_SW_ONLY|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcTrigRepeaterReference
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcTrigRepeaterReference|
+|**Parent Container**|CddAdcGroup|
+|**Description**|Reference to the trigger repeater.|
+|**Multiplicity**|1|
+|**Type**|REFERENCE|
+|**Range**|--|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupAccessMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupAccessMode|
+|**Parent Container**|CddAdcGroup|
+|**Description**|This parameter defines the access mode of the group conversion results.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_ACCESS_MODE_SINGLE <br> CDD_ADC_ACCESS_MODE_STREAMING|
+|**Default**|CDD_ADC_ACCESS_MODE_SINGLE|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupHwTrigSignal
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupHwTrigSignal|
+|**Parent Container**|CddAdcGroup|
+|**Description**|Configures on which edge of the hardware trigger signal the driver should react. This device supports only rising edge trigger.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_HW_TRIG_BOTH_EDGES <br> CDD_ADC_HW_TRIG_FALLING_EDGE <br> CDD_ADC_HW_TRIG_RISING_EDGE|
+|**Default**|CDD_ADC_HW_TRIG_RISING_EDGE|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupStreamingBufferMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupStreamingBufferMode|
+|**Parent Container**|CddAdcGroup|
+|**Description**|Configure streaming buffer as &quot;linear buffer&quot; (i.e. the ADC Driver stops the conversion as soon as the stream buffer is full) or as &quot;ring buffer&quot; (wraps around if the end of the stream buffer is reached)..|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_STREAM_BUFFER_CIRCULAR <br> CDD_ADC_STREAM_BUFFER_LINEAR|
+|**Default**|CDD_ADC_STREAM_BUFFER_LINEAR|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupStreamingNumSamples
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupStreamingNumSamples|
+|**Parent Container**|CddAdcGroup|
+|**Description**|Number of ADC values to be acquired per channel in streaming access mode|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-255|
+|**Default**|1|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcInterruptCategory
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcInterruptCategory|
+|**Parent Container**|CddAdcGroup|
+|**Description**|This parameters defines the category of the interrupt|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|ISR_CAT1_INT <br> ISR_CAT1_RTINT <br> ISR_CAT2_INT|
+|**Default**|ISR_CAT1_RTINT|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGroupNotification
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGroupNotification|
+|**Parent Container**|CddAdcGroup|
+|**Description**|Callback function for each group|
+|**Multiplicity**|1|
+|**Type**|FUNCTION-NAME|
+|**Default**|NULL_PTR|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcInterruptSelect
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcInterruptSelect|
+|**Parent Container**|CddAdcGroup|
+|**Description**|This parameter defines to which interrupt the group is linked|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_INT1 <br> CDD_ADC_INT2 <br>CDD_ADC_INT3 <br> CDD_ADC_INT4|
+|**Default**|CDD_ADC_INT1|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcContinueToInterruptMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcContinueToInterruptMode|
+|**Parent Container**|CddAdcGroup|
+|**Description**|This parameters enables/disables the continue to interrupt mode for the specified interrupt|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcChannel
+
+##### CddAdcChannelId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcChannelId|
+|**Parent Container**|CddAdcChannel|
+|**Description**|This parameter defines to the numeric ID of the channel on the ADC hardware unit. Only some channels are brought out on the device.Some of the channels are connected internally. So,while configuring the channel IDs make sure the channels have pin out on the device and are configured in Port.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Default**|0-31|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcSocNumber
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcSocNumber|
+|**Parent Container**|CddAdcChannel|
+|**Description**|This parameter defines the assignment of the channel to the physical ADC  hardware channel.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Default**|0-31|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcSocExternalChannelSelect
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcSocExternalChannelSelect|
+|**Parent Container**|CddAdcChannel|
+|**Description**|This parameter defines the assignment of the external channel based on the digital output pins.This is editable only when CddAdcHwExternalMuxSelect is enabled for the ADC hardware unit. |
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Default**|0-15|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcChannelSampleWindow
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcChannelSampleWindow|
+|**Parent Container**|CddAdcChannel|
+|**Description**|Configuration of sampling time, i.e. the time during which the value is sampled, (in SYSCLK cycles) for each channel, if supported by hardware. Minimum value should be 15 to meet the minimum acquistsition window duration.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|15-511|
+|**Default**|15 when 12-bit resolution is selected and 64 when 16-bit resolution is selected|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcTriggerRepeater
+
+##### CddAdcRepeaterInstance
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcRepeaterInstance|
+|**Parent Container**|CddAdcTriggerRepeater|
+|**Description**|Numeric ID of the trigger repeater instance. This ID should be unique for a hardware unit|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-1|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcRepeaterTriggerSrc
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcRepeaterTriggerSrc|
+|**Parent Container**|CddAdcTriggerRepeater|
+|**Description**| Trigger source of the trigger repeater..|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_TRIGGER_CPU1INT0,.....,CDD_ADC_TRIGGER_CPU3INT2|
+|**Default**|CDD_ADC_TRIGGER_CPU1INT0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcRepeaterMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcRepeaterMode|
+|**Parent Container**|CddAdcTriggerRepeater|
+|**Description**|This parameter configures the trigger repeater mode. In oversampling mode (CddAdcTriggerCount+1) triggers are generated and in undersampling mode (CddAdcTriggerCount+1) triggers are suppressed.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|OVERSAMPLING_MODE <br> OVERSAMPLING_MODE|
+|**Default**|OVERSAMPLING_MODE|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcTriggerCount
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcTriggerCount|
+|**Parent Container**|CddAdcTriggerRepeater|
+|**Description**| This parameter selects the number of triggers. When 0 is selected 1 trigger is generated (pass-through).|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-127|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcTriggerPhaseDelay
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcTriggerPhaseDelay|
+|**Parent Container**|CddAdcTriggerRepeater|
+|**Description**| This parameter defines the number of SYSCLK cycles to delay the selected trigger before passing it onto the re-triggering logic|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-65535|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcTriggerSpreadDelay
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcTriggerSpreadDelay|
+|**Parent Container**|CddAdcTriggerRepeater|
+|**Description**| This parameter defines the minimum number of SYSCLKs to wait before creating the next repeated trigger to the ADC.This parameter has no effect in undersampling mode or when the TriggerCount is set to 0|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-65535|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbConfig
+
+##### CddAdcPpbId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbId |
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| Numeric ID of the PPB number assigned to the channel|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-3|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbChannel
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbChannel |
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|  Reference to the channel|
+|**Multiplicity**|1|
+|**Type**|REFERENCE|
+|**Range**|--|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbSocNumber
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbSocNumber|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|Soc number of the selected channel. This is a calculated value, it can't be edited, Run auto-calc if the reference is changed.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-31|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbCalibrationOffset
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbCalibrationOffset|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|This parameters configures the offset calibration for the ADC channel.For values from 0 to 511,the configured value will be subtracted from the PPB result. For values from 512,(1024 - CddAdcPpbCalibrationOffset) value will be added to the PPB result. In case multiple PPBs point to the same SOC,only the OFFCAL of the lowest PPB ID will be applied.This offset value will be subtracted from the raw conversion result and stores the value in the ADC result register.The addition/subtraction satureated at o on the low ed and either 4095/65536 on the high end for 12-bit and 16-bit respectively.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-1024|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbReferenceOffset
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbReferenceOffset|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|This parameters configures the reference offset value for the ADC channel.In 12-bit mode the reference offset shouldn't exceed 4095 in 12-bit and 65535 in 16-bit mode..|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0-65535|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbDeltaEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbDeltaEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|This parameters configures the bit to enable/disable delta enable.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbEnableTwosComplement
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbEnableTwosComplement|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters configures the bit to enable/disable two's complement.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbAbsoluteEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbAbsoluteEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters configures the bit to enable/disable absolute value calculation. This is done before the two's complement logic, so enabling both CddAdcPpbEnableTwosComplement and CddAdcPpbAbsoluteEnable will always result in a negative PPB value.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbCyclebyCycleEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbCyclebyCycleEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters configures the bit to enable/disable cycle by cycle enable |
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbCompareSource
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbCompareSource|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|  This parameters configures the PPB result type used for the zero-crossing detect logic and threshold compare|
+|**Type**|ENUMERATION|
+|**Range**| CDD_ADC_COMPARE_PPBRESULT <br> CDD_ADC_COMPARE_PPBPSUM <br> CDD_ADC_COMPARE_PPBSUM|
+|**Default**|CDD_ADC_COMPARE_PPBRESULT|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbTripHighLimit
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbTripHighLimit|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| High limit - used for limit checking for all types of PB results |
+|**Type**|INTEGER|
+|**Range**| -8388608 to 8388607|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbExtendedTripLowEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbExtendedTripLowEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters configures the extended trip limit low.This value can be used to compare any PPBRESULT.This is non-editable. It is always enabled. |
+|**Type**|BOOELAN|
+|**Default**|true|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbTripLowLimit
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbTripLowLimit|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| Extended trip low limit - used for limit checking. |
+|**Type**|INTEGER|
+|**Range**| -8388608 to 8388607|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbTripHighEventEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbTripHighEventEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|Enabling this allows the corresponding rising trip high flag in the PPB to activate the event signal to the PWM blocks. |
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbTripLowEventEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbTripLowEventEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|Enabling this allows the corresponding rising trip low flag in the PPB to activate the event signal to the PWM blocks.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbZeroCrossingEventEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbZeroCrossingEventEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|Enabling this allows the corresponding rising zero crossing flag in the PPB to activate the event signal to the PWM blocks. |
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbTripHighInterruptEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbTripHighInterruptEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|Enabling this allows the corresponding rising trip high flag in the PPB to activate the event signal to the PIE.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbTripLowInterruptEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbTripLowInterruptEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|Enabling this allows the corresponding rising trip low flag in the PPB to activate the event signal to the PIE |
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbZeroCrossingInterruptEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbZeroCrossingInterruptEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| Enabling this allows the corresponding rising zero crossing flag in the PPB to activate the event signal to the PIE.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcEventInterruptCategory
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcEventInterruptCategory|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters defines the category of the interrupt..|
+|**Type**|ENUMERATION|
+|**Range**|ISR_CAT1_INT <br> ISR_CAT1_RTINT <br> ISR_CAT2_INT|
+|**Default**|ISR_CAT1_RTINT|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbEventInterruptNotification
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbEventInterruptNotification|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| Callback function for each PPB that generaterd the event interrupt.|
+|**Type**|FUNCTION-NAME|
+|**Range**|--|
+|**Default**|NULL_PTR|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbAccumulationCountLimit
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbAccumulationCountLimit|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters defines the oversampling limit Defines the number of conversion to accumulate before PSUM is automatically loaded into SUM.The minimum allowed value is zero. The maximum value allowed is the StreamingSamples value of the corresonding channel group.If the hardware unit is configured in 16-bit resolution mode with CddAdcPpbAccumulationCountLimit exceeding 128, it results in overflow in PPB partial sum register|
+|**Type**|INTEGER|
+|**Range**|0-1023 for 12-bit ADC, 128 for 16-bit ADC|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbRightShift
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbRightShift|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|The parameter defines the number of bits to right shift partial ppb result(PSUM) before writing to the final PPB result register(SUM).For 0, no right shit.|
+|**Type**|INTEGER|
+|**Range**|0-10|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbTripFilterEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbTripFilterEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters configures the bit to enable/disable trip filter.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcTripFilterConfig
+
+###### CddAdcTripFilterClk
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcTripFilterClk|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters configures the clock prescale for the digital trip filter.|
+|**Type**|INTEGER|
+|**Range**|0-65535|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcTripFilterTreshold
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcTripFilterTreshold|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters configures the  trip filter threshold.|
+|**Type**|INTEGER|
+|**Range**|0-63|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcTripFilterSampleWindow
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcTripFilterSampleWindow|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**| This parameters configures the sample window for the digital trip filter.|
+|**Type**|INTEGER|
+|**Range**|0-63|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcTripFilterLowEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcTripFilterLowEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|This parameters configures the bit to enable/disable considering trip low.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcTripFilterHighEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcTripFilterLowEnable|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|This parameters configures the bit to enable/disable considering trip high.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### CddAdcGlobalSwTrigger
+
+##### CddAdcGlbSwTrigId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGlbSwTrigId|
+|**Parent Container**|CddAdcPpbConfig|
+|**Description**|Numeric ID of the global software trigger.|
+|**Type**|INTEGER|
+|**Range**|0-255|
+|**Default**|Calculated value, position of the container|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwGroup
+
+###### CddAdcHwGroupRef
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwGroupRef|
+|**Parent Container**|CddAdcHwGroup|
+|**Description**|This paramter refers to the group to select the SOC numners for the global software trigger.|
+|**Type**|REFERENCE|
+|**Range**|--|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcHwUnit
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwUnit|
+|**Parent Container**|CddAdcHwGroup|
+|**Description**|This parameter refers to the hardware unit to which the group belongs. By default the value will be CDD_ADCA. For proper value use AutoCalc.|
+|**Type**|ENUMERATION|
+|**Range**|--|
+|**Default**|CDD_ADCA|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcSocMask
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcSocMask|
+|**Parent Container**|CddAdcHwGroup|
+|**Description**|This parameter refers to the hardware unit to which the group belongs. For proper value use AutoCalc.|
+|**Type**|INTEGER|
+|**Range**|0-4294967295|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### CddAdcResultCheckerUnit
+
+##### CddAdcCheckerId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerId|
+|**Parent Container**|CddAdcResultCheckerUnit|
+|**Description**|Numeric ID of the safety result checker.|
+|**Type**|INTEGER|
+|**Range**|0-9|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcCheckerTolerance
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerTolerance|
+|**Parent Container**|CddAdcResultCheckerUnit|
+|**Description**|This paramter configures the tolerance for the difference between CHECKRESULT1 and CHECKRESULT2.|
+|**Type**|INTEGER|
+|**Range**|0-167777216|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcSelResConfig1
+
+###### CddAdcCheckerResultType
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerResultType|
+|**Parent Container**|CddAdcSelResConfig1|
+|**Description**|This parameter defines thw type of result that is being accessed - a raw result or a processed result.|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_SAFETY_CHECKER_INPUT_SOCx <br> CDD_ADC_SAFETY_CHECKER_INPUT_PPBx <br> CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx|
+|**Default**|CDD_ADC_SAFETY_CHECKER_INPUT_SOCx|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcChannelReference
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcChannelReference|
+|**Parent Container**|CddAdcSelResConfig1|
+|**Description**|Reference to the channel whose result is to be compared.This is enabled only when CDD_ADC_SAFETY_CHECKER_INPUT_SOCx is selected.|
+|**Type**|REFERENCE|
+|**Range**|--|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcPpbReference
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbReference|
+|**Parent Container**|CddAdcSelResConfig1|
+|**Description**|Reference to the PPB whose result is to be compared.This is enabled when CDD_ADC_SAFETY_CHECKER_INPUT_PPBx or CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx is selected|
+|**Type**|REFERENCE|
+|**Range**|--|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcSelResConfig2
+
+###### CddAdcCheckerResultType
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerResultType|
+|**Parent Container**|CddAdcSelResConfig2|
+|**Description**|This parameter defines thw type of result that is being accessed - a raw result or a processed result.|
+|**Type**|ENUMERATION|
+|**Range**|CDD_ADC_SAFETY_CHECKER_INPUT_SOCx <br> CDD_ADC_SAFETY_CHECKER_INPUT_PPBx <br> CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx|
+|**Default**|CDD_ADC_SAFETY_CHECKER_INPUT_SOCx|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcChannelReference
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcChannelReference|
+|**Parent Container**|CddAdcSelResConfig2|
+|**Description**|Reference to the channel whose result is to be compared.This is enabled only when CDD_ADC_SAFETY_CHECKER_INPUT_SOCx is selected.|
+|**Type**|REFERENCE|
+|**Range**|--|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcPpbReference
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbReference|
+|**Parent Container**|CddAdcSelResConfig2|
+|**Description**|Reference to the PPB whose result is to be compared.This is enabled when CDD_ADC_SAFETY_CHECKER_INPUT_PPBx or CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx is selected|
+|**Type**|REFERENCE|
+|**Range**|--|
+|**Default**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### CddAdcCheckerIntEvtConfig
+
+##### CddAdcIntEvtId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcIntEvtId |
+|**Parent Container**|CddAdcSelResConfig2|
+|**Description**|Numeric ID of the interrupt event instance.This ID should be unique.|
+|**Type**|INTEGER|
+|**Range**|0-2|
+|**Default**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerIntEvtConfiguration
+
+###### CddAdcSafetyCheckerInstance
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcSafetyCheckerInstance|
+|**Parent Container**|CddAdcCheckerIntEvtConfiguration|
+|**Description**|Reference to the safety checker instance.|
+|**Type**|REFERENCE|
+|**Range**|--|
+|**Default**|-|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerIntSource
+
+###### CddAdcCheckerRes1Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes1Ovf|
+|**Parent Container**|CddAdcCheckerIntSource|
+|**Description**|This paramter enables the result1 overflow as the source of the safety checker interrupt.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerRes2Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes2Ovf|
+|**Parent Container**|CddAdcCheckerIntSource|
+|**Description**|This paramter enables the result2 overflow as the source of the safety checker interrupt.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerOot
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerOot|
+|**Parent Container**|CddAdcCheckerIntSource|
+|**Description**|This paramter enables the out-of-tolerance as the source of the safety checker interrupt.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerEvt1Source
+
+###### CddAdcCheckerRes1Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes1Ovf|
+|**Parent Container**|CddAdcCheckerEvt1Source|
+|**Description**|This paramter enables the result1 overflow as the source of the safety checker event1 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerRes2Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes2Ovf|
+|**Parent Container**|CddAdcCheckerEvt1Source|
+|**Description**|This paramter enables the result2 overflow as the source of the safety checker event1 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerOot
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerOot|
+|**Parent Container**|CddAdcCheckerEvt1Source|
+|**Description**|This paramter enables the out-of-tolerance as the source of the safety checker  event1 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerEvt2Source
+
+###### CddAdcCheckerRes1Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes1Ovf|
+|**Parent Container**|CddAdcCheckerEvt2Source|
+|**Description**|This paramter enables the result1 overflow as the source of the safety checker  event2 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerRes2Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes2Ovf|
+|**Parent Container**|CddAdcCheckerEvt2Source|
+|**Description**|This paramter enables the result2 overflow as the source of the safety checker  event2 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerOot
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerOot|
+|**Parent Container**|CddAdcCheckerEvt2Source|
+|**Description**|This paramter enables the out-of-tolerance as the source of the safety checker  event2 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerEvt3Source
+
+###### CddAdcCheckerRes1Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes1Ovf|
+|**Parent Container**|CddAdcCheckerEvt3Source|
+|**Description**|This paramter enables the result1 overflow as the source of the safety checker  event3 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerRes2Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes2Ovf|
+|**Parent Container**|CddAdcCheckerEvt3Source|
+|**Description**|This paramter enables the result2 overflow as the source of the safety checker  event3 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerOot
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerOot|
+|**Parent Container**|CddAdcCheckerEvt3Source|
+|**Description**|This paramter enables the out-of-tolerance as the source of the safety checker  event3 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerEvt4Source
+
+###### CddAdcCheckerRes1Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes1Ovf|
+|**Parent Container**|CddAdcCheckerEvt4Source|
+|**Description**|This paramter enables the result1 overflow as the source of the safety checker  event4 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerRes2Ovf
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerRes2Ovf|
+|**Parent Container**|CddAdcCheckerEvt4Source|
+|**Description**|This paramter enables the result2 overflow as the source of the safety checker  event4 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+###### CddAdcCheckerOot
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcCheckerOot|
+|**Parent Container**|CddAdcCheckerEvt4Source|
+|**Description**|Description: This paramter enables the out-of-tolerance as the source of the safety checker event4 signal.|
+|**Type**|BOOLEAN|
+|**Default**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### CddAdcGeneral
+
+##### CddAdcDeInitApi
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcDeInitApi|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|Adds / removes the service Cdd_Adc_DeInit() from the code|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ll Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcDevErrorDetect
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcDevErrorDetect|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|Switches the development error detection and notification on or off|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ll Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcEnableStartStopGroupApi
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcEnableStartStopGroupApi|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|Adds / removes the services Cdd_Adc_StartGroupConversion() and Cdd_Adc_StopGroupConversion() from the code|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ll Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcEnableGlobalSoftwareTrigger
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcEnableGlobalSoftwareTrigger|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|Adds / removes the services Cdd_Adc_StartGlobalSwTrig() and Cdd_Adc_StopGlobalSwTrig() from the code|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ll Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcGrpNotifCapability
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcGrpNotifCapability|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|Determines, if the group notification mechanism (the functions to enable and disable the notifications) is available at runtime|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ll Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcHwTriggerApi
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcHwTriggerApi|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|Adds / removes the services Cdd_Adc_EnableHardwareTrigger() and Cdd_Adc_DisableHardwareTrigger() from the code|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ll Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcPpbEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcPpbEnable|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|This parameter enables PPB capability for the module|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ll Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcReadGroupApi
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcReadGroupApi|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|Adds / removes the service Cdd_Adc_ReadGroup() and from the code|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ll Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcSafetyCheckerEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcSafetyCheckerEnable|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|This parameter enables safety checker capability for the module|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcSetResolutionApi
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcSetResolutionApi|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|Adds / removes the service Cdd_Adc_SetResolution() from the code. This enables changing the ADCA & ADCB resolution on runtime.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddAdcVersionInfoApi
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddAdcVersionInfoApi|
+|**Parent Container**|CddAdcGeneral|
+|**Description**|Adds / removes the service Cdd_Adc_GetVersionInfo() from the code|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### Steps To Configure Cdd_Adc Module
+
+1. Open EB Tresos configurator tool, load Cdd_Adc module. Select the Precompile Config Variant.
+2. Configure the required parameters.
+3. Save the configuration and generate the configuration.
+
+### Examples
+
+The example applications demonstrates usecases of the Cdd_Adc driver APIs. The examples are explained below in detailed .
+
+#### Cdd_Adc_Example_GlbSwTrig
+
+##### Overview of Cdd_Adc_Example_GlbSwTrig
+
+* Cdd_Adc_Example_GlbSwTrig
+  * EcuM_Init()
+    * Initialize clock to 200 MHz using Mcu_Init()
+    * Initialize pins in analog mode with Port_Init()
+    * Initialize Cdd_Adc driver using Cdd_Adc_Init()
+  * Start global software trigger Id 0 conversion
+  * Re-trigger the global software conversion
+  * Stop the global software conversion with Cdd_Adc_StopGlobalSwTrig API
+  * Start software group 1 conversion with Cdd_Adc_StartGroupConversion
+  * After the group conversion is done,print the execution successful statement.
+
+##### Setup required to run Cdd_Adc_Example_GlbSwTrig
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+* Provide 0.5V voltage to the pin ADCAIN1 (A1) to observe the trips generating from PPB
+
+##### How to run Cdd_Adc_Example_GlbSwTrig
+
+* Open CCS and Import Cdd_Adc_Example_GlbSwTrig
+* Build project and start debug project
+
+##### Sample Log of Cdd_Adc_Example_GlbSwTrig
+
+```{EXAMPLE LOGS}
+Executing Cdd_Adc_Example_GlbSwTrig example
+Started globalswtrigger 0 conversion
+Completed globalswtrigger 0 conversion
+Re-triggers globalswtrigger 0 conversion
+Completed second round of globalswtrigger 0 conversion
+Started globalswtrigger 1 conversion
+Completed globalswtrigger 1 conversion
+Started globalswtrigger 2 conversion
+Completed globalswtrigger 2 conversion
+Started software triggered group 1 conversion
+Completed software triggered group 1 conversion
+Example executed successfully
+```
+
+#### Cdd_Adc_Example_Ppb_TrigRepeater
+
+##### Overview of Cdd_Adc_Example_Ppb_TrigRepeater
+
+* EcuM_Init()
+  * Initialize clock to 200 MHz using Mcu_Init()
+  * Initialize pins in analog mode with Port_Init()
+  * Initialize Cdd_Adc driver using Cdd_Adc_Init()
+* Verification of Cdd_Adc PPB and trigger repeater features functionalities together
+* Verify group conversions with trigger repeater as the trigger source. CPU1 timer interrupt as the trigger source for the trigger repeater.
+* Verification group conversions in oversampling and undersampling trigger repeater mode.
+* Verification of trigger repeater groups with normal hardware and software triggered groups.
+
+##### Setup required to run Cdd_Adc_Example_Ppb_TrigRepeater
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+##### How to run Cdd_Adc_Example_Ppb_TrigRepeater
+
+* Open CCS and Import Cdd_Adc_Example_Ppb_TrigRepeater
+* Build project and start debug project
+
+##### Sample Log of Cdd_Adc_Example_Ppb_TrigRepeater
+
+```{EXAMPLE LOGS}
+Executing Cdd_Adc_Example_Ppb_TrigRepeater example
+Gpt Interrupt Count in undersampling mode is 5
+Gpt Interrupt Count in oversampling mode is 1
+Cdd_Adc_Example_Ppb_TrigRepeater executed successfully
+```
+
+#### Cdd_Adc_Example_TempSensor
+
+##### Overview Of Cdd_Adc_Example_TempSensor
+
+* Cdd_Adc_Example_TempSensor
+  * EcuM_Init()
+    * Initialize clock to 200 MHz using Mcu_Init()
+    * Initialize pins using Port_Init() to see the print statements on the console
+    * Initialize Cdd_Adc driver using Cdd_Adc_Init()
+  * Verification of Cdd_Adc temperature sensor values
+* Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally. The ADC conversion results can be passed to GetTemperatureC & GetTemperatureC APIs to get the temperature value in Celsius and Kelvin respectively.
+
+##### Setup required to run Cdd_Adc_Example_TempSensor
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest C29 compiler
+* Connect the hardware and power up
+* Connect the uart and set up the baudrate to check the log on serial console
+
+##### How to run Cdd_Adc_Example_TempSensor
+
+* Open CCS and import Cdd_Adc_Example_TempSensor Example
+* Build project and start debug project
+
+##### Sample Log of Cdd_Adc_Example_TempSensor
+
+```{EXAMPLE LOGS}
+Executing Cdd_Adc_Example_TempSensor example
+Temperature in Celsius converted by ADCA is 6
+Temperature in Kelvin converted by ADCA is 279
+Temperature in Celsius converted by ADCC is -9
+Temperature in Kelvin converted by ADCC is 264
+Cdd_Adc_Example_TempSensor Example executed successfully
+```
+
+#### Cdd_Adc_Example_Differential
+
+##### Overview of Cdd_Adc_Example_Differential
+
+* Cdd_Adc_Example_Differential
+  * EcuM_Init()
+    * Initialize clock to 200 MHz using Mcu_Init()
+    * Initialize pins in analog mode with Port_Init()
+    * Initialize Cdd_Adc driver using Cdd_Adc_Init()
+* Delay stamp is captured for the hardware triggered group
+* ADC conversion results can be observed before and after the resolution change by checking the result buffer
+
+##### Setup required to run Cdd_Adc_Example_Differential
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest C29 compiler
+* Connect the hardware and power up
+* Connect the uart and set up the baudrate to check the log on serial console
+* Connect external voltage to VREFHIAB pin and VREFLOAB to GND.
+* Connect available voltage to ADCAIN2,ADCAIN3 pins whose difference is considered as the input for the conversion. Similarly connect voltage to ADCAIN4 and ADCAIN5 pins and observe the ADC conversion results from the buffer.
+* Connect available voltage to ADCBIN4,ADCBIN5 pins whose difference is considered as the input for the conversion. Similarly connect voltage to ADCBIN6 and ADCBIN7 pins and observe the ADC conversion results from the buffer.
+
+##### How to run Cdd_Adc_Example_Differential
+
+* Open CCS and import Cdd_Adc_Example_TempSensor Example
+* Build project and start debug project
+
+##### Sample Log of Cdd_Adc_Example_Differential
+
+```{EXAMPLE LOGS}
+Executing Cdd_Adc_Example_Differential example
+Delay stamp for PPB 2 is 2
+Delay stamp for PPB 2 is 2
+Delay stamp for PPB 2 is 2
+Change the ADCA resolution to 12-bit
+Change the ADCB resolution to 12-bit
+Delay stamp for PPB 2 is 2
+Delay stamp for PPB 2 is 2
+Delay stamp for PPB 2 is 2
+Cdd_Adc_Example_Differential executed successfully
+```
+
+#### Example File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂**Cdd_Adc**\
+ ┃ ┃ ┗ 📂**Cdd_Adc_Example_Ppb_TrigRepeater**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Adc_Example_Ppb_TrigRepeater.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Cdd_Adc_Example_Ppb_TrigRepeater_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Adc.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Gpt.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Adc_Cfg.h** : *Contains the generated pre-compiler configuration header.*</i>*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Gpt_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Adc_Cfg.c** : *Contains the Pre-compile build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Gpt_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Adc_Example_Ppb_TrigRepeater.c** : *Example application for Cdd_Adc.*\
+ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Xbar\
+ ┃ ┣ 📂Device_Support\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┣ 📂Wdg\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json

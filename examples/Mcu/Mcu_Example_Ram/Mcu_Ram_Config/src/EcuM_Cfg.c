@@ -87,7 +87,7 @@ FUNC(void, ECUM_CODE) EcuM_InitList(void)
     Mcu_Init(&Mcu_ModuleConfiguration_0);
 
 #if (STD_ON == MCU_CFG_INIT_CLOCK_API)
-	Mcu_InitClock(McuConf_McuClockSettingConfig_McuClockSettingConfig_0);
+	Mcu_InitClock(McuConf_McuClockSettingConfig_McuClockSettingConfig_Osc2);
 
     while ( MCU_PLL_LOCKED != Mcu_GetPllStatus() ) /* Get PLL status and check */
     {

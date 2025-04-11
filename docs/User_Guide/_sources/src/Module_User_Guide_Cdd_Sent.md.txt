@@ -1,0 +1,640 @@
+## CDD SENT Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|SENT|Single Edge Nibble Transmission|
+|API|Application Programming Interface|
+|BSW|Basic Software|
+|ECU|Electronic Control Unit|
+|DET|Default Error Tracer|
+|HW |Hardware|
+|SW |Software|
+|I/O|Input/Output|
+|MCAL|Micro Controller Abstraction Layer|
+|RTE|Runtime Environment|
+|CDD|Complex Device Driver|
+|MTP|Master Pulse Trigger|
+|GPIO|General Purpose Input Output|
+
+### Introduction
+
+SENT stands for  Single Edge Nibble Transmission. The SENT protocol is unidirectional and uses single wire between two or more points to transmit signals from one or more sensors to a controller. This protocol can transmit high resolution data at a low cost to the system. The SENT module utilizes a Master Trigger Pulse Generator to control and receive data from one or more sensors, using a configurable pulse signal. The received data can be stored directly into memory or a FIFO and read by the CPU or RTDMA.
+
+SENT driver is part of complex device drivers which receive the data from the sensors and send the RX indication, support both fast channel and slow channel.
+
+```{figure} Assets/images/Cdd_Sent_Autosar_MCAL.png
+:alt: CDD_SENT MCAL AUTOSAR
+:align: center
+
+CDD_SENT MCAL AUTOSAR
+```
+
+This document details AUTOSAR BSW CDD_SENT module implementation
+
+|Supported AUTOSAR Release|**4.3.1**|
+|------|-------------|
+| **Supported Configuration Variants** | **Pre-Compile**|
+| **Vendor ID**                      |   **CDD_SENT_VENDOR_ID (44)**|
+| **Module ID**                      |   **CDD_SENT_MODULE_ID (255)**|
+
+### Functional Overview
+
+F29X supports two modes of the SENT :
+
+**Standard SENT**:
+
+* This supports only one sensor per the instance.
+* Sensors will be automatically sends the data, no triggering required from the ECU/coordinator.
+
+**MTP** ( Master Trigger Pulse ):
+
+* This supports up to 4 sensors + broadcast.
+* Sensors sends the data only after master triggers the corresponding pulse of the sensor.
+* For triggering the pulse, there are 10 comparators which can be configured to different pulse widths.
+
+### Hardware Features
+
+#### Hardware Features supported
+
+The SENT module includes the following features:
+
+* Based on SAE J2716 (J2716 January 2010 and J2716 April 2016)
+* Supports 2007 and 2010 CRC checksum calculation
+* Fast channel receiver
+* Slow channel receiver
+* Configurable memory depth
+* 5 SENT channels that can each be set to be triggered by one of 63 trigger sources
+* Nibble sorting to minimize CPU intervention
+* Timeout feature in SENT channel can be re-purposed for watchdog (only usable in continuous receive mode)
+* Time stamp captures for received data frames
+* Receiver and Interrupt Features
+
+```{figure} Assets/images/Cdd_Sent_Block_Diagram.png
+:alt: Cdd_Sent Block diagram
+:align: center
+
+Cdd_Sent Block Diagram
+```
+
+#### Not supported Features
+
+* Master Trigger Pulse Generator (MTPG)
+* FIFO
+
+#### Non compliance
+
+None
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂**Cdd_Sent**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Sent.h** : *Contains the API declarations of the Cdd_Sent driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Priv.h** : *Contains data structures and Internal function declarations.*\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Sent_Reg_Access.h** : *Contains the MACROs for Cdd_Sent register access.*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Sent.c** : *Contains the implementation of the API for Cdd_Sent driver.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Irq.c** : *Contains the implementation for Cdd_Sent interrupts handlers.*\
+ ┃ ┃ ┃ ┗ 📜**Cdd_Sent_Priv.c** : *Contains Functions that support the API for Cdd_Sent driver*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┗ 📂Port\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Cdd_Sent_Header_File_Structure.png
+:alt: Cdd_Sent Header File Structure
+:align: center
+
+Cdd_Sent Header File Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+None
+
+#### Error handling
+
+##### Development Error Reporting
+
+Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|API called with a NULL_PTR|CDD_SENT_E_PARAM_POINTER|0x20U|
+|API service invoked with invalid channel|CDD_SENT_E_PARAM_CHANNEL|0x21U|  
+|API service for initialization called when already initialized|CDD_SENT_E_ALREADY_INITIALIZED|0x22U|
+|API invoked without performing module initialization|CDD_SENT_E_UNINIT|0x23U|
+
+### Used resources
+
+#### Interrupt Handling
+
+Cdd_Sent driver provides ISR. The interrupt vector lines to be used is configurable in Cdd_Sent driver.
+The ISR functionality is implemented in the file Cdd_Sent_Irq.c.
+
+ |Cdd_Sent Instance| Interrupt handler|Interrupt Line|
+|------------|-----------------|----------------|
+|Cdd_Sent 1| Cdd_Sent_1_ISR,|Line 0|
+|Cdd_Sent 2| Cdd_Sent_2_ISR|Line 0|
+|Cdd_Sent 3| Cdd_Sent_3_ISR|Line 0|
+|Cdd_Sent 4| Cdd_Sent_4_ISR|Line 0|
+|Cdd_Sent 5| Cdd_Sent_5_ISR|Line 0|
+|Cdd_Sent 6| Cdd_Sent_6_ISR|Line 0|
+
+```{Note}
+Same Interrupt Category needs to be configured in both Cdd_Sent and OS Modules.
+```
+
+#### Instance support
+
+|CPU instances|supported|
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+Below image shows Cdd_Sent driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.
+
+```{figure} Assets/images/Cdd_Sent_HW_SW_Mapping.png
+:alt: Cdd_Sent HW/SW Mapping
+:align: center
+
+Cdd_Sent HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+This implementation depends on the DET in order to report development errors.
+The detection of development errors is configurable (ON / OFF), The switch CDD_SENT_CFG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+
+##### MCU
+
+MCU Module is required to initialize all the clock to be used by different peripherals.
+
+##### Port
+
+The Port module configures the port pins used for the SENT driver as input. Hence, the Port driver has to be initialized prior to the use of SENT functions. Otherwise
+Cdd_Sent driver functions will exhibit undefined behavior.
+
+##### OS
+
+The Cdd_Sent driver uses interrupts and therefore there is a dependency on the OS, which configures the interrupt sources.
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Cdd_Sent Driver implementation supports one configuration variant Pre-Compile config. The driver expects generated Cdd_Sent_Cfg.h to be present as input file.
+The associated Cdd_Sent driver configuration generated source files are Cdd_Sent_Cfg.c
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+#### CddSentController
+
+##### CddSentInstance
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentInstance|
+|**Parent Container**|CddSentController|
+|**Description**|Selects CddSent HW unit Instance.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|SENT1 <br> SENT2 <br> SENT3 <br> SENT4 <br> SENT5 <br> SENT6|
+|**Default value**|SENT1|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentBaseAddress
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentBaseAddress|
+|**Parent Container**|CddSentController|
+|**Description**|Specifies the CddSent HW unit base address.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0 .. 4294967295|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentHWUnitId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentHWUnitId |
+|**Parent Container**|CddSentController|
+|**Description**|This parameter provides the HW unit ID which is unique in a given CddSent Driver. The value for this parameter starts with 0 and continue without any gaps.|
+|**Multiplicity**|1|
+|**Type**|INTEGER (Symbolic Name generated for this parameter)|
+|**Range**|0 .. 5|
+|**Default value**|--|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: ECU|
+
+##### CddSentClockTick
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentClockTick|
+|**Parent Container**|CddSentController|
+|**Description**|This parameter is for setting the clock tick for the CddSent in Use.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0 .. 600|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: ECU|
+
+##### CddSentInterruptType
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentInteruptType|
+|**Parent Container**|CddSentController|
+|**Description**|Defines the interrupt type.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_SENT_ISR_CAT1_RTINT <br> CDD_SENT_ISR_CAT1_INT <br> CDD_SENT_ISR_CAT2|
+|**Default value**|CDD_SENT_ISR_CAT2|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentCRCType
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentCRCType|
+|**Parent Container**|CddSentController|
+|**Description**|CddSent CRC type selection.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_SENT_CRC_LEGACY_2007 <br> CDD_SENT_CRC_RECOMENDED_2010 <br> CDD_SENT_CRC_NONE|
+|**Default value**|CDD_SENT_CRC_RECOMENDED_2010|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentCRCWidth
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentCRCWidth|
+|**Parent Container**|CddSentController|
+|**Description**|CddSent CRC Width selection.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_SENT_CRC_4_BIT <br> CDD_SENT_CRC_6_BIT <br> CDD_SENT_CRC_8_BIT|
+|**Default value**|CDD_SENT_CRC_4_BIT|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentCRCWithStatus
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentCRCWithStatus|
+|**Parent Container**|CddSentController|
+|**Description**|Enable/Disable CRC with status.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_SENT_CRC_WITH_STATUS <br> CDD_SENT_CRC_WITHOUT_STATUS|
+|**Default value**|CDD_SENT_CRC_WITH_STATUS|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentDataNibblesCount
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentDataNibblesCount|
+|**Parent Container**|CddSentController|
+|**Description**|Number of data nibbles expected.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|CDD_SENT_1_DATA_NIBBLES <br> CDD_SENT_2_DATA_NIBBLES <br> CDD_SENT_3_DATA_NIBBLES <br> CDD_SENT_4_DATA_NIBBLES <br> CDD_SENT_5_DATA_NIBBLES <br> CDD_SENT_6_DATA_NIBBLES <br> CDD_SENT_7_DATA_NIBBLES <br> CDD_SENT_8_DATA_NIBBLES|
+|**Default value**|CDD_SENT_6_DATA_NIBBLES|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentPausePulse
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentPausePulse|
+|**Parent Container**|CddSentController|
+|**Description**|Enable/Disable Pause pulse.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|true|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentEnableTimeStamp
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentEnableTimeStamp|
+|**Parent Container**|CddSentController|
+|**Description**|Enable/disable Time stamping.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentSyncTimeout
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentSyncTimeout|
+|**Parent Container**|CddSentController|
+|**Description**|This parameter is for setting Timeout for receiving the synchronization pulse.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|0 .. 255|
+|**Default value**|0|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: ECU|
+
+##### CddSentAcceptErrorData
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentAcceptErrorData|
+|**Parent Container**|CddSentController|
+|**Description**|Accept error data or not.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentCpuClockRef
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentCpuClockRef|
+|**Parent Container**|CddSentController|
+|**Description**|Reference to the CPU clock configuration, which is set in the MCU driver configuration.|
+|**Multiplicity**|1|
+|**Type**|REFERENCE|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### CddSentChannelObject
+
+##### CddSentChannelType
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentChannelType|
+|**Parent Container**|CddSentChannelObject|
+|**Description**|Selection of channel types.|
+|**Multiplicity**|1|
+|**Type**|ENUMERATION|
+|**Range**|FAST_CHANNEL <br> SHORT_SERIAL_SLOW_CHANNEL <br> ENHANCED_SERIAL_12BIT_SLOW_CHANNEL <br> ENHANCED_SERIAL_16BIT_SLOW_CHANNEL |
+|**Default value**|FAST_CHANNEL|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### CddSentGeneral
+
+##### CddSentDevErrorDetect
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentDevErrorDetect|
+|**Parent Container**|CddSentGeneral|
+|**Description**|Switches the development error detection and notification on or off.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### CddSentVersionInfoApi
+
+|SWS Item||
+|--------|----------------|
+|**Name**|CddSentVersionInfoApi|
+|**Parent Container**|CddSentGeneral|
+|**Description**|Adds / removes the service CddSent_ GetVersionInfo() from the code.|
+|**Multiplicity**|1|
+|**Type**|BOOLEAN|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### Steps To Configure Cdd_Sent Module
+
+1. Open EB Tresos configurator tool, load Cdd_Sent module. Select the Precompile Config Variant.
+2. Configure the required parameters.
+3. Save the configuration and generate the configuration.
+
+### Examples
+
+The example application demonstrates use of Cdd_Sent module, the list below identifies key steps performed in the example.
+
+#### Cdd_Sent_standard
+
+##### Overview Of Cdd_Sent_standard
+
+* Cdd_Sent_standard
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+    * Initializes Cdd_Sent driver using Cdd_Sent_Init()
+  * Verification of Cdd_Sent standard mode feature functionality
+
+##### Setup required to run Cdd_Sent_standard
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest C29 compiler
+* Connect the hardware, sensors and power up
+* Connect the uart set up to check the log on serial console
+
+Below image shows the hardware connections that needs to be done to run the example.
+
+```{figure} Assets/images/Sent_Hardware_Setup.jpg
+:alt: Cdd_Sent HW Setup
+:align: center
+
+Cdd_Sent HW Setup
+```
+
+##### How to run Cdd_Sent_standard
+
+* Open CCS and import Cdd_Sent_standard Example
+* Build project and start debug project
+
+##### Sample Log of Cdd_Sent_standard
+
+```{EXAMPLE LOGS}
+Cdd_Sent Driver Sample Application - Starts!!!
+Cdd_Sent MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 255
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+Timestamp received  from Fast channel : 21589807
+Data received  from Fast channel : 3427036
+Timestamp received  from Fast channel : 21602800
+Data received  from Fast channel : 3427196
+Timestamp received  from Fast channel : 21615830
+Data received  from Fast channel : 3423260
+Timestamp received  from Fast channel : 21628961
+Data received  from Fast channel : 3427516
+Timestamp received  from Fast channel : 21642046
+Data received  from Fast channel : 3423580
+Cdd_Sent_Standard: Sample Application - Completes successfully !!!
+
+```
+
+#### File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂**Cdd_Sent**\
+ ┃ ┃ ┗ 📂**Cdd_Sent_standard**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Sent_Standard.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Cdd_Sent_Standard_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Cfg.h** : *Contains the generated pre-compiler configuration header.*</i>*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Cfg.c** : *Contains the Pre-compile build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Standard.c** : *Example application for Cdd_Sent.*\
+ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json

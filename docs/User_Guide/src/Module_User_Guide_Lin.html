@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.7. LIN Module &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.8. SPI Module" href="Module_User_Guide_Spi.html" />
+    <link rel="prev" title="4.6. WDG Module" href="Module_User_Guide_Wdg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.01.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.1. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.2. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.3. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.4. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.5. CAN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.6. WDG Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.7. LIN Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.7.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.7.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.7.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.7.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.7.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.7.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.7.4.3. Non compliance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.7.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.7.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.7.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.7.6.2. Error Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.7.6.3. Error codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.7.7. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.7.7.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.7.7.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.7.7.3. Hardware-Software Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.7.8. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.7.8.1. Dependent modules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.7.9. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lingeneral">4.7.9.1. LinGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linchannel">4.7.9.2. LinChannel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lindemeventparameterrefs">4.7.9.3. LinDemEventParameterRefs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-lin-module">4.7.9.4. Steps To Configure Lin Module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.7.10. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lin-example-init-sleep-wakeup">4.7.10.1. Lin_Example_Init_Sleep_Wakeup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lin-example-senddata">4.7.10.2. Lin_Example_SendData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lin-example-sleep-wakeup-interrupt">4.7.10.3. Lin_Example_Sleep_Wakeup_Interrupt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.7.10.4. File Structure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.8. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.9. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.10. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.11. CDD XBAR Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
+      <li><span class="section-number">4.7. </span>LIN Module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lin-module">
+<h1><span class="section-number">4.7. </span>LIN Module<a class="headerlink" href="#lin-module" title="Link to this heading"></a></h1>
+<section id="acronyms-and-definitions">
+<h2><span class="section-number">4.7.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AUTOSAR</p></td>
+<td><p>Automotive Open System Architecture</p></td>
+</tr>
+<tr class="row-odd"><td><p>COM</p></td>
+<td><p>Communication</p></td>
+</tr>
+<tr class="row-even"><td><p>ECU</p></td>
+<td><p>Electronic Control Unit</p></td>
+</tr>
+<tr class="row-odd"><td><p>EcuM</p></td>
+<td><p>ECU Manager</p></td>
+</tr>
+<tr class="row-even"><td><p>DEM</p></td>
+<td><p>Diagnostic Event Manager</p></td>
+</tr>
+<tr class="row-odd"><td><p>DET</p></td>
+<td><p>Default Error Tracer</p></td>
+</tr>
+<tr class="row-even"><td><p>ISR</p></td>
+<td><p>Interrupt Service Routine</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN</p></td>
+<td><p>Local Interconnect Network</p></td>
+</tr>
+<tr class="row-even"><td><p>MCAL</p></td>
+<td><p>Micro Controller Abstraction Layer</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCU</p></td>
+<td><p>Micro Controller Unit</p></td>
+</tr>
+<tr class="row-even"><td><p>OS</p></td>
+<td><p>Operating System</p></td>
+</tr>
+<tr class="row-odd"><td><p>PDU</p></td>
+<td><p>Protocol Data Unit</p></td>
+</tr>
+<tr class="row-even"><td><p>PID</p></td>
+<td><p>Protected ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>PLL</p></td>
+<td><p>Phase-Locked Loop</p></td>
+</tr>
+<tr class="row-even"><td><p>RAM</p></td>
+<td><p>Random Access Memory</p></td>
+</tr>
+<tr class="row-odd"><td><p>RX</p></td>
+<td><p>Reception</p></td>
+</tr>
+<tr class="row-even"><td><p>SCI</p></td>
+<td><p>Serial Communication Interface</p></td>
+</tr>
+<tr class="row-odd"><td><p>SDU</p></td>
+<td><p>Service Data Unit</p></td>
+</tr>
+<tr class="row-even"><td><p>SFR</p></td>
+<td><p>Special Function Register</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPAL</p></td>
+<td><p>Standard Peripheral Abstraction Layer</p></td>
+</tr>
+<tr class="row-even"><td><p>SRS</p></td>
+<td><p>Software Requirement Specification</p></td>
+</tr>
+<tr class="row-odd"><td><p>SW</p></td>
+<td><p>Software</p></td>
+</tr>
+<tr class="row-even"><td><p>SWS</p></td>
+<td><p>Software Specification</p></td>
+</tr>
+<tr class="row-odd"><td><p>TP</p></td>
+<td><p>Transport Layer</p></td>
+</tr>
+<tr class="row-even"><td><p>TX</p></td>
+<td><p>Transmission</p></td>
+</tr>
+<tr class="row-odd"><td><p>UART</p></td>
+<td><p>Universal Asynchronous Receiver Transmitter</p></td>
+</tr>
+<tr class="row-even"><td><p>XML</p></td>
+<td><p>Extensible Markup Language</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="introduction">
+<h2><span class="section-number">4.7.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>This document details AUTOSAR BSW LIN module implementation</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Supported AUTOSAR Release</p></th>
+<th class="head"><p><strong>4.3.1</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Supported Configuration Variants</strong></p></td>
+<td><p><strong>Post-build, Pre-Compile</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Vendor ID</strong></p></td>
+<td><p><strong>LIN_VENDOR_ID (44)</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Module ID</strong></p></td>
+<td><p><strong>LIN_MODULE_ID (82)</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p>LIN stands For Local Interconnect Network. The LIN driver is a communication driver and is part of the micro-controller abstraction layer (MCAL).
+It performs the hardware access and offers a hardware independent API to the upper layer.
+The only upper layer, which has access to the LIN driver, is the LIN Interface.</p>
+<p>A LIN driver can support more than one channel/Instance. This means that the LIN driver can handle one or
+more LIN channels as long as they are belonging to the same LIN hardware unit.</p>
+<figure class="align-center" id="id1">
+<img alt="LIN MCAL AUTOSAR" src="../_images/Lin_Autosar_MCAL.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.24 </span><span class="caption-text">Lin MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="functional-overview">
+<h2><span class="section-number">4.7.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<p>As the amount of electrical systems and components continue to grow as automobiles become more intelligent, safe, and comfortable.
+The growth of these components and systems demand a need for communication transceivers, to facilitate their interaction in the most advantageous way possible for manufacturers.
+LIN was developed to manage communication between these components and systems in an efficient and straightforward fashion, where the bandwidth and versatility of CAN was not needed;
+though in most instances, it is a sub-bus to the CAN bus.</p>
+<figure class="align-center" id="id2">
+<img alt="LIN Overview" src="../_images/LIN_Overview.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.25 </span><span class="caption-text">LIN Overview</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The LIN standard is based on the SCI (UART) serial data link format.
+The communication concept is single-commander/multiple-responder with a message identification for multi-cast transmission between any network nodes.</p>
+</section>
+<section id="hardware-features">
+<h2><span class="section-number">4.7.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<section id="hardware-features-supported">
+<h3><span class="section-number">4.7.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Compatibility with LIN 1.3,2.0 and 2.1 protocols</p></li>
+<li><p>Configurable Baud rate up to 20 kbps</p></li>
+<li><p>Two external pins: LINRX and LINTX</p></li>
+<li><p>Multi-buffered receive and transmit units</p></li>
+<li><p>2^31 programmable transmission rates with 7 fractional bits</p></li>
+<li><p>Wake-up on LINRX dominant level from transceiver</p></li>
+<li><p>Identification masks for message filtering</p></li>
+<li><p>Automatic bus idle detection</p></li>
+<li><p>Capability to use Direct Memory Access (DMA) for transmit and receive data</p></li>
+<li><p>Update wake-up/go to sleep</p></li>
+<li><p>Automatic commander header generation</p>
+<ul>
+<li><p>Programmable synchronization break field</p></li>
+<li><p>Synchronization field</p></li>
+<li><p>Identifier field</p></li>
+</ul>
+</li>
+<li><p>Responder Automatic Synchronization</p>
+<ul>
+<li><p>Synchronization break detection</p></li>
+<li><p>Optional baud rate update</p></li>
+<li><p>Synchronization validation</p></li>
+</ul>
+</li>
+<li><p>Automatic wake-up support</p>
+<ul>
+<li><p>Wake-up signal generation</p></li>
+<li><p>Expiration times on wake-up signals</p></li>
+</ul>
+</li>
+<li><p>Error detection</p>
+<ul>
+<li><p>Bit error</p></li>
+<li><p>Bus error</p></li>
+<li><p>No-response error</p></li>
+<li><p>Checksum error</p></li>
+<li><p>Synchronization field error</p></li>
+<li><p>Parity error</p></li>
+</ul>
+</li>
+<li><p>2 interrupt lines with priority encoding for:</p>
+<ul>
+<li><p>Receive</p></li>
+<li><p>Transmit</p></li>
+<li><p>ID, error, and status</p></li>
+</ul>
+</li>
+<li><p>Support for LIN 2.0 checksum</p></li>
+<li><p>Enhanced synchronizer finite state machine (FSM) support for frame processing</p></li>
+<li><p>Enhanced handling of extended frames</p></li>
+<li><p>Enhanced baud rate generator</p></li>
+</ul>
+</section>
+<section id="not-supported-features">
+<h3><span class="section-number">4.7.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Apart from Wake up Interrupt, support for the rest of the available interrupts are disabled by the driver. Wakeup Interrupt support is enabled as per autosar requirement. For errors or status checking, Polling method is being implemented.</p></li>
+<li><p>Current Transmission Abort is not supported by Hardware hence no support for transmission abort by Lin Driver.</p></li>
+<li><p>Timeout is not needed by the hardware as there are no register reads in loop for timeout error to occur hence Production/TimeOut errors reporting is also not Supported.</p></li>
+</ul>
+</section>
+<section id="non-compliance">
+<h3><span class="section-number">4.7.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<p><strong>Below AUTOSAR requirements are partially supported for LIN driver:</strong></p>
+<p><strong>SWS_Lin_00207</strong> : Constants, global data types and functions that are only used by LIN driver internally, are declared in Lin.c.</p>
+<blockquote>
+<div><p>Partial Rejection Reason : <em>Internal Function are also declared in Lin_Priv.h File.</em></p>
+</div></blockquote>
+<p><strong>SWS_Lin_00235 : Icu_DisableNotification/Icu_EnableNotification.</strong></p>
+<blockquote>
+<div><p>Partial Rejection Reason : <em>ICU enable/disable notification is not needed as LIN IP can be accessed directly from Microcontroller/CPU Core</em></p>
+</div></blockquote>
+<p><strong>Below AUTOSAR requirement is rejected for LIN driver:</strong></p>
+<p><strong>SWS_Lin_00074</strong> : The function Lin_GoToSleep shall terminate ongoing frame transmission of prior transmission requests, even if the transmission is unsuccessfully completed.</p>
+<blockquote>
+<div><p>Rejection Reason : <em>Hardware limitation. Transmission Abort is not supported by Lin Hardware.</em></p>
+</div></blockquote>
+</section>
+</section>
+<section id="source-files">
+<h2><span class="section-number">4.7.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┃ ┣ 📂BSW_Stubs<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂hw_include<br />
+┃ ┣ 📂<strong>Lin</strong><br />
+┃ ┃ ┣ 📂<strong>include</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Lin.h</strong> : <em>Contains the APIs of the LIN driver to be used by upper layers.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Lin_Priv.h</strong> : <em>LIN private header file which contains the private functions declarations, etc.</em><br />
+┃ ┃ ┣ 📂<strong>src</strong><br />
+┃ ┃ ┃ ┣ 📜<strong>Lin.c</strong> : <em>Contains the implementation of the APIs for LIN driver.</em><br />
+┃ ┃ ┃ ┣ 📜<strong>Lin_Irq.c</strong> : <em>LIN interrupt source file which contains the implementation for LIN interrupts handlers.</em><br />
+┃ ┃ ┃ ┗ 📜<strong>Lin_Priv.c</strong> : <em>Contains Functions that supports the APIs for LIN driver.</em><br />
+┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┣ 📂Mcal_Lib<br />
+┃ ┣ 📂Mcu<br />
+┃ ┣ 📂Port<br />
+┣ 📂examples<br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+<figure class="align-center" id="id3">
+<img alt="LIN Header File Structure" src="../_images/Lin_Header_File_Structure.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.26 </span><span class="caption-text">Lin Header File Structure</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="module-requirements">
+<h2><span class="section-number">4.7.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<section id="memory-mapping">
+<h3><span class="section-number">4.7.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<p>Will be added in later release</p>
+</section>
+<section id="error-handling">
+<h3><span class="section-number">4.7.6.2. </span>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<section id="development-error-reporting">
+<h4><span class="section-number">4.7.6.2.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<p>Those errors shall be detected and fixed during development phase. In most cases, those errors are software
+errors. The detection of errors that shall only occur during development can be switched off for production
+code. Development errors are reported to the DET using the service Det_ReportError(),when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
+</section>
+</section>
+<section id="error-codes">
+<h3><span class="section-number">4.7.6.3. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of Error</p></th>
+<th class="head"><p>Related Error code</p></th>
+<th class="head"><p>Value (Hex)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>API service used without module initialization</p></td>
+<td><p>LIN_E_UNINIT</p></td>
+<td><p>0x00</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service used with an invalid or inactive channel parameter</p></td>
+<td><p>LIN_E_INVALID_CHANNEL</p></td>
+<td><p>0x02</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called with invalid configuration pointer</p></td>
+<td><p>LIN_E_INVALID_POINTER</p></td>
+<td><p>0x03</p></td>
+</tr>
+<tr class="row-odd"><td><p>Invalid state transition for the current state</p></td>
+<td><p>LIN_E_STATE_TRANSITION</p></td>
+<td><p>0x04</p></td>
+</tr>
+<tr class="row-even"><td><p>API service called with a NULL pointer</p></td>
+<td><p>LIN_E_PARAM_POINTER</p></td>
+<td><p>0x05</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timeout caused by hardware error</p></td>
+<td><p>LIN_E_TIMEOUT</p></td>
+<td><p>Assigned by DEM</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="used-resources">
+<h2><span class="section-number">4.7.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<section id="interrupt-handling">
+<h3><span class="section-number">4.7.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<p>Lin driver provides ISR for wake up detection. The interrupt vector lines to be used is configurable in Lin driver.
+The ISR for Wake up detection is implemented in the file Lin_Irq.c.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Lin Instance</p></th>
+<th class="head"><p>Interrupt handler</p></th>
+<th class="head"><p>Interrupt Line</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Lin A</p></td>
+<td><p>Lin_A_Int0ISR</p></td>
+<td><p>Line 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lin A</p></td>
+<td><p>Lin_A_Int1ISR</p></td>
+<td><p>Line 1</p></td>
+</tr>
+<tr class="row-even"><td><p>Lin B</p></td>
+<td><p>Lin_B_Int0ISR</p></td>
+<td><p>Line 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lin B</p></td>
+<td><p>Lin_B_Int1ISR</p></td>
+<td><p>Line 1</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Same Interrupt Category needs to be configured in both Lin and OS Modules.</p>
+</div>
+</section>
+<section id="instance-support">
+<h3><span class="section-number">4.7.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>CPU instances</p></th>
+<th class="head"><p>Supported</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CPU 1</p></td>
+<td><p>YES</p></td>
+</tr>
+<tr class="row-odd"><td><p>CPU 2</p></td>
+<td><p>NO</p></td>
+</tr>
+<tr class="row-even"><td><p>CPU 3</p></td>
+<td><p>NO</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hardware-software-mapping">
+<h3><span class="section-number">4.7.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<p>Below image shows LIN driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
+<figure class="align-center" id="id4">
+<img alt="LIN HW/SW Mapping" src="../_images/LIN_HW_SW_Mapping.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.27 </span><span class="caption-text">LIN HW/SW Mapping</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="integration-description">
+<h2><span class="section-number">4.7.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<section id="dependent-modules">
+<h3><span class="section-number">4.7.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<section id="det">
+<h4><span class="section-number">4.7.8.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<p>This implementation depends on the DET in order to report development errors
+The detection of development errors is configurable (ON / OFF), The switch LIN_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+In development mode, the Lin module reports development error through the Det_ReportError function of
+module DET.</p>
+</section>
+<section id="port">
+<h4><span class="section-number">4.7.8.1.2. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
+<p>The Port driver configures the port pins used for the LIN driver as input or output. Hence, the Port driver has to be initialized prior to the use of LIN functions. Otherwise, LIN driver functions will exhibit undefined behavior.</p>
+</section>
+<section id="dem">
+<h4><span class="section-number">4.7.8.1.3. </span>DEM<a class="headerlink" href="#dem" title="Link to this heading"></a></h4>
+<p>MCU Production errors are reported to DEM ( Diagnostic Event Manager ) Module.
+The Lin module reports production errors to the Diagnostic Event Manager.</p>
+</section>
+<section id="mcu">
+<h4><span class="section-number">4.7.8.1.4. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<p>The hardware of the internal LIN hardware unit depends on the system clock, pre-scaler(s) and PLL. Hence,
+the length of the LIN bit timing depends on the clock settings made in module MCU. The LIN driver module
+will not take care of setting the registers that configure the clock, pre-scaler(s) and PLL (e.g. switching on/off
+the PLL) in its init functions. The MCU module must do this.</p>
+</section>
+<section id="os">
+<h4><span class="section-number">4.7.8.1.5. </span>OS<a class="headerlink" href="#os" title="Link to this heading"></a></h4>
+<p>The LIN driver uses interrupts and therefore there is a dependency on the OS, which configures the interrupt
+sources.</p>
+</section>
+<section id="ecum">
+<h4><span class="section-number">4.7.8.1.6. </span>EcuM<a class="headerlink" href="#ecum" title="Link to this heading"></a></h4>
+<p>The LIN driver uses WakeUp source configured by EcuM, and report the WakeUp events to EcuM module.</p>
+</section>
+<section id="schm">
+<h4><span class="section-number">4.7.8.1.7. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that LIN module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.</p>
+<p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter <strong>RteExclusiveAreaImplMechanism</strong>. This parameter is an input for RTE generator.
+For LIN Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Exclusive Area Functions used</p></th>
+<th class="head"><p>LIN Function calling Exclusive Area</p></th>
+<th class="head"><p>Need for Exclusive Area</p></th>
+<th class="head"><p>Recommended Exclusive Area Mapping</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LIN_EXCLUSIVE_AREA_0</p></td>
+<td><p>Lin_SendFrame<br>Lin_GoToSleep<br>Lin_GoToSleepInternal<br>Lin_Wakeup<br>Lin_WakeupInternal<br>Lin_GetStatus</p></td>
+<td><p>To protect against multiple access for shared resources</p></td>
+<td><p><strong>OS_RESOURCE</strong> : If the LIN APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br><strong>None</strong>: If LIN APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="configuration">
+<h2><span class="section-number">4.7.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The Lin Driver implementation supports multiple configuration variants, namely Lin Post-Build config and Pre-Compile config. The driver expects generated <strong>Lin_Cfg.h</strong> to be present as input file.
+The associated Lin driver configuration generated source file is <strong>Lin_PBcfg.c</strong> or <strong>Lin_Cfg.c</strong></p>
+<p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
+</div>
+<section id="lingeneral">
+<h3><span class="section-number">4.7.9.1. </span>LinGeneral<a class="headerlink" href="#lingeneral" title="Link to this heading"></a></h3>
+<section id="lindeverrordetect">
+<h4><span class="section-number">4.7.9.1.1. </span>LinDevErrorDetect<a class="headerlink" href="#lindeverrordetect" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00066</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LinDevErrorDetect</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the development error detection and notification on or off</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="linindex">
+<h4><span class="section-number">4.7.9.1.2. </span>LinIndex<a class="headerlink" href="#linindex" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00179</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LinIndex</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="lintimeoutduration">
+<h4><span class="section-number">4.7.9.1.3. </span>LinTimeoutDuration<a class="headerlink" href="#lintimeoutduration" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00093</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LinTimeoutDuration</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the maximum number of loops for blocking function until a timeout is raised in short term wait loops</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="linversioninfoapi">
+<h4><span class="section-number">4.7.9.1.4. </span>LinVersionInfoApi<a class="headerlink" href="#linversioninfoapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00067</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LinVersionInfo</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinGeneral</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the Lin_GetVersionInfo function ON or OFF</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="linchannel">
+<h3><span class="section-number">4.7.9.2. </span>LinChannel<a class="headerlink" href="#linchannel" title="Link to this heading"></a></h3>
+<section id="linchannelbaudrate">
+<h4><span class="section-number">4.7.9.2.1. </span>LinChannelBaudRate<a class="headerlink" href="#linchannelbaudrate" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00180</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LinChannelBaudRate</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies the baud rate of the channel</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>1000 .. 20000</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="linchannelid">
+<h4><span class="section-number">4.7.9.2.2. </span>LinChannelId<a class="headerlink" href="#linchannelid" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00181</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LinChannelId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Identifies the LIN channel. Replaces LIN_CHANNEL_INDEX_NAME from the LIN SWS</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucIntegerParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>0 .. 65535</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="linchannelwakeupsupport">
+<h4><span class="section-number">4.7.9.2.3. </span>LinChannelWakeupSupport<a class="headerlink" href="#linchannelwakeupsupport" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00182</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LinChannelWakeupSupport</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Specifies if the LIN hardware channel supports wake up functionality</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>EcucBooleanParamDef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default value</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="linchannelecumwakeupsource">
+<h4><span class="section-number">4.7.9.2.4. </span>LinChannelEcuMWakeupSource<a class="headerlink" href="#linchannelecumwakeupsource" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00185</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LinChannelEcuMWakeupSource</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter contains a reference to the Wakeup Source for this controller as defined in the   ECU State Manager</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Symbolic name reference to EcuMWakeupSource</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Scope</p></td>
+<td><p>Local</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dependency</p></td>
+<td><p>ECU State Manager Wakeup Sources</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="linclockref">
+<h4><span class="section-number">4.7.9.2.5. </span>LinClockRef<a class="headerlink" href="#linclockref" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00096</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LinClockRef</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinChannel</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to the LIN clock source configuration, which is set in the MCU driver configuration</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Reference to McuClockReferencePoint</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-compile time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-build time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>Scope</p></td>
+<td><p>Local</p></td>
+</tr>
+<tr class="row-even"><td><p>Dependency</p></td>
+<td><p>LIN clock source configuration in MCU driver</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="lindemeventparameterrefs">
+<h3><span class="section-number">4.7.9.3. </span>LinDemEventParameterRefs<a class="headerlink" href="#lindemeventparameterrefs" title="Link to this heading"></a></h3>
+<section id="lin-e-timeout">
+<h4><span class="section-number">4.7.9.3.1. </span>LIN_E_TIMEOUT<a class="headerlink" href="#lin-e-timeout" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SWS Item</p></th>
+<th class="head"><p>ECUC_Lin_00189</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>LIN_E_TIMEOUT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parent Container</strong></p></td>
+<td><p>LinDemEventParameterRefs</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to the DemEventParameter which shall be issued when the error “Timeout caused by hardware error” has occurred. If the reference is not configured the error shall be reported as DET error</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity</strong></p></td>
+<td><p>0..1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type</strong></p></td>
+<td><p>Symbolic name reference to DemEventParameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build Variant Multiplicity</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build Variant Value</strong></p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Multiplicity Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value Configuration Class</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-compile time</p></td>
+<td><p>ALL VARIANTS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Link time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Post-build time</p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Scope / Dependency</strong></p></td>
+<td><p>Local</p></td>
+</tr>
+</tbody>
+</table>
+<p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_LINDriver.pdf">AUTOSAR_SWS_LINDriver section: 10 Configuration specification</a> for configuration parameters details</p>
+</section>
+</section>
+<section id="steps-to-configure-lin-module">
+<h3><span class="section-number">4.7.9.4. </span>Steps To Configure Lin Module<a class="headerlink" href="#steps-to-configure-lin-module" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Open EB Tresos configurator tool and load Port, Mcu, EcuM, Os, Dem and Lin modules.</p></li>
+<li><p>Open PORT module plugin and configure required pins as LINTX, LINRX.</p></li>
+<li><p>Open Mcu and Dem Module to Configure Lin Clock and Dem Error for Mcu and Lin.</p></li>
+<li><p>Open EcuM Module and Configure the Wakeup source for Lin Wakeup.</p></li>
+<li><p>Open LIN module plugin, Select the Config Variant (Pre-compile/Post-Build).</p></li>
+<li><p>In LIN module plugin configure required parameters.</p></li>
+<li><p>Save the configuration and generate the configuration.</p></li>
+</ol>
+</section>
+</section>
+<section id="examples">
+<h2><span class="section-number">4.7.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>The example application demonstrates use of Lin module, the list below identifies key steps performed in the examples.</p>
+<section id="lin-example-init-sleep-wakeup">
+<h3><span class="section-number">4.7.10.1. </span>Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#lin-example-init-sleep-wakeup" title="Link to this heading"></a></h3>
+<section id="overview-of-lin-example-init-sleep-wakeup">
+<h4><span class="section-number">4.7.10.1.1. </span>Overview Of Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#overview-of-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Lin_Example_Init_Sleep_Wakeup</strong></p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes Lin Tx and Rx Pins, and UART Pins using Port_Init()</p></li>
+</ul>
+</li>
+<li><p>Lin_Init will Initializes the Lin Driver on LINA instance.</p></li>
+<li><p>Lin_CheckWakeUp_and_Sleep_Internal</p>
+<ul>
+<li><p>Lin_GoToSleepInternal will move the Lin module to internal sleep.</p></li>
+<li><p>Lin_WakeupInternal will wake up Lin module from internal sleep.</p></li>
+</ul>
+</li>
+<li><p>Lin_CheckWakeUp_and_Sleep</p>
+<ul>
+<li><p>Lin_GoToSleep will send Lin module to sleep by sending Go to sleep command on Lin Bus</p></li>
+<li><p>Lin_Wakeup will move Lin Module to wake up state by sending Wake up command on Lin Bus</p></li>
+</ul>
+</li>
+<li><p>Lin_GetStatus will return the current status of the Lin Driver</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-lin-example-init-sleep-wakeup">
+<h4><span class="section-number">4.7.10.1.2. </span>Setup required to run Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#setup-required-to-run-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest C29 compiler</p></li>
+</ul>
+</section>
+<section id="how-to-run-lin-example-init-sleep-wakeup">
+<h4><span class="section-number">4.7.10.1.3. </span>How to run Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#how-to-run-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and import Lin Example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-log-of-lin-example-init-sleep-wakeup">
+<h4><span class="section-number">4.7.10.1.4. </span>Sample Log of Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#sample-log-of-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>LIN Driver Sample Application: Lin Init Sleep WakeUp - Starts!!!
+
+---------------------------------------------------------------
+
+Test 1: Get Version info for Lin
+API Lin_GetVersionInfo executed successfully
+ LIN MCAL Version Info
+ ---------------------
+ Vendor ID           : 44
+ Module ID           : 82
+ SW Major Version    : 1
+ SW Minor Version    : 0
+ SW Patch Version    : 0
+ 
+---------------------------------------------------------------
+
+Test 2: Initialization of Lin Module
+Initialization of LIN Module is Success !!!
+---------------------------------------------------------------
+
+Test 3: Lin Module : Internal Sleep
+Lin going to internal Sleep is Success !!!
+---------------------------------------------------------------
+
+Test 4: Lin Module : Wakeup from Internal Sleep - Wakeup Internal
+Lin Waking up from Internal Sleep by LinWakeupInternal API is Success !!!
+---------------------------------------------------------------
+
+Test 5: Lin Module : Sleep
+Lin Go to Sleep Command is sent on Lin Bus !!!
+Lin going to Sleep is Success !!!
+---------------------------------------------------------------
+
+Test 6: Lin Module : Wakeup from Sleep - Lin Wakeup
+Lin WakeUp Command is sent on Lin Bus !!!
+Lin Waking up from Sleep by LinWakeup API is Success !!!
+---------------------------------------------------------------
+
+---------------------------------------------------------------
+LIN Example Init Sleep WakeUp Run SUCCESS 
+---------------------------------------------------------------
+</pre></div>
+</div>
+</section>
+</section>
+<section id="lin-example-senddata">
+<h3><span class="section-number">4.7.10.2. </span>Lin_Example_SendData<a class="headerlink" href="#lin-example-senddata" title="Link to this heading"></a></h3>
+<section id="overview-of-lin-example-senddata">
+<h4><span class="section-number">4.7.10.2.1. </span>Overview Of Lin_Example_SendData<a class="headerlink" href="#overview-of-lin-example-senddata" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Lin_Example_SendData</strong></p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes Lin Tx and Rx Pins, and UART Pins using Port_Init()</p></li>
+</ul>
+</li>
+<li><p>Lin_Init and Lin_WakeupInternal Will initialize the Lin Module and will update the channel state to active</p></li>
+<li><p>LinSendFrame_Master_Response will Send header and data to Slave 1.</p></li>
+<li><p>LinSendFrame_Slave_Response will send header and expects data from Slave 1.</p></li>
+<li><p>LinSendFrame_Slave_To_Slave will send header ( Slave 1 will send data to Slave 2 ).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-lin-example-senddata">
+<h4><span class="section-number">4.7.10.2.2. </span>Setup required to run Lin_Example_SendData<a class="headerlink" href="#setup-required-to-run-lin-example-senddata" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest C29 compiler</p></li>
+<li><p>Install PLIN tool to configure as Slaves.</p></li>
+</ul>
+</section>
+<section id="how-to-run-lin-example-senddata">
+<h4><span class="section-number">4.7.10.2.3. </span>How to run Lin_Example_SendData<a class="headerlink" href="#how-to-run-lin-example-senddata" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and import Lin Example</p></li>
+<li><p>Build project and start debug project</p></li>
+<li><p>Data On Lin Bus can be seen on PLIN Tool</p></li>
+</ul>
+</section>
+<section id="sample-log-of-lin-example-senddata">
+<h4><span class="section-number">4.7.10.2.4. </span>Sample Log of Lin_Example_SendData<a class="headerlink" href="#sample-log-of-lin-example-senddata" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>LIN Driver Sample Application: Lin Send Data - Starts!!!
+
+---------------------------------------------------------------
+
+Initialization of LIN Module is Success !!!
+LIN Module Wake Up Internal. Ready to Send data on Lin Bus !!!
+
+---------------------------------------------------------------
+
+Test 1: Lin Send data : LIN Master Response !!!
+
+Started Sending Data on Lin Bus For ID : 0x47
+Data Sent : 0x11
+Started Sending Data on Lin Bus For ID : 0x8
+Data Sent : 0x34
+Started Sending Data on Lin Bus For ID : 0x49
+Data Sent : 0x56
+Started Sending Data on Lin Bus For ID : 0xca
+Data Sent : 0x78
+Started Sending Data on Lin Bus For ID : 0x8b
+Data Sent : 0x9a
+Started Sending Data on Lin Bus For ID : 0x4c
+Data Sent : 0xab
+Started Sending Data on Lin Bus For ID : 0xd
+Data Sent : 0xcd
+Started Sending Data on Lin Bus For ID : 0x8e
+Data Sent : 0xef
+Finished Sending Data on Lin Bus
+Lin Send data : LIN Master Response PASSED!!
+---------------------------------------------------------------
+
+---------------------------------------------------------------
+
+Test 2: Lin Send data : LIN Slave Response !!!
+
+Started Sending Header on Lin Bus For ID : 0x20
+Waiting For Slave to send the data...
+Started receiving Data from Slave...
+Data Received : 0xa5
+Data Received : 0x55
+Data Received : 0xaa
+Data Received : 0x55
+Data Received : 0xaa
+Data Received : 0x55
+Data Received : 0xaa
+Data Received : 0x55
+Finished Receiving Data
+Lin Send data : LIN Slave Response PASSED!!
+---------------------------------------------------------------
+
+---------------------------------------------------------------
+
+Test 3: Lin Send data : LIN Slave To Slave !!!
+
+Started Sending Header on Lin Bus For ID : 0xf0
+Sent Header on Bus for Slave 1 to send data to Slave 2
+Lin Send data : LIN Slave To Slave PASSED!!
+---------------------------------------------------------------
+
+---------------------------------------------------------------
+LIN Send Data Application - Master_Response, Slave_Response, Slave_To_Slave PASSED
+---------------------------------------------------------------
+
+</pre></div>
+</div>
+</section>
+</section>
+<section id="lin-example-sleep-wakeup-interrupt">
+<h3><span class="section-number">4.7.10.3. </span>Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h3>
+<section id="overview-of-lin-example-sleep-wakeup-interrupt">
+<h4><span class="section-number">4.7.10.3.1. </span>Overview Of Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#overview-of-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Lin_Example_Sleep_Wakeup_Interrupt</strong></p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes Lin Tx and Rx Pins, and UART Pins using Port_Init()</p></li>
+</ul>
+</li>
+<li><p>Lin_Init will initialize the Lin Module</p></li>
+<li><p>Lin_CheckWakeUp_and_Sleep</p>
+<ul>
+<li><p>Lin_GoToSleep will send go to sleep command to Lin Bus. Lin state is SLEEP.</p></li>
+<li><p>Waits for Wake Up pulse for WakeUp Interrupt to trigger. ( Need to send wakeup pulse on LIN BUS )</p></li>
+<li><p>Lin_CheckWakeup will check if wake up request has been received.</p></li>
+</ul>
+</li>
+<li><p>Lin_GetStatus will check if after wake up channel state is again Operational i.e. Wake Up success.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-lin-example-sleep-wakeup-interrupt">
+<h4><span class="section-number">4.7.10.3.2. </span>Setup required to run Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#setup-required-to-run-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest C29 compiler</p></li>
+<li><p>Install PLIN tool to configure as Slave.</p></li>
+</ul>
+</section>
+<section id="how-to-run-lin-example-sleep-wakeup-interrupt">
+<h4><span class="section-number">4.7.10.3.3. </span>How to run Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#how-to-run-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and import Lin Example</p></li>
+<li><p>Build project and start debug project</p></li>
+<li><p>Send wakeup pulse from PLIN Tool when lin is in sleep</p></li>
+</ul>
+</section>
+<section id="sample-log-of-lin-example-sleep-wakeup-interrupt">
+<h4><span class="section-number">4.7.10.3.4. </span>Sample Log of Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#sample-log-of-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
+<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>LIN Driver Sample Application: Lin Sleep WakeUp Interrupt - Starts!!!
+
+---------------------------------------------------------------
+
+Initialization of LIN Module is Success !!!
+
+LIN Module Going to Sleep. Sending Go to Sleep Command On Bus..
+LIN Module Successfully Went to Sleep Mode. 
+
+---------------------------------------------------------------
+
+Trigger WakeUp Pulse on Lin Bus to Wakeup Lin Module
+Waiting for WAKE UP INTERRUPT on Bus...
+LinIf_CheckWakeup Detected WakeUp Pulse on Lin Bus !!!
+Lin Module Wake Up from Sleep by WakeUp Interrupt is Success !!!
+
+---------------------------------------------------------------
+LIN  Application - Wake Up Interrupt PASSED !!!
+---------------------------------------------------------------
+
+</pre></div>
+</div>
+</section>
+</section>
+<section id="file-structure">
+<h3><span class="section-number">4.7.10.4. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<p>📦f29h85x_mcal<br />
+┣ 📂build<br />
+┣ 📂docs<br />
+┣ 📂drivers<br />
+┣ 📂examples<br />
+┃ ┣ 📂AppUtils<br />
+┃ ┣ 📂Can<br />
+┃ ┣ 📂DeviceSupport<br />
+┃ ┣ 📂Dio<br />
+┃ ┣ 📂Gpt<br />
+┃ ┣ 📂<strong>Lin</strong><br />
+┃ ┃ ┣ 📂<strong>Lin_Example_Init_Sleep_Wakeup</strong><br />
+┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>Lin_Example_Init_Sleep_Wakeup.projectspec</strong><br />
+┃ ┃ ┃ ┣ 📂Lin_Example_Init_Sleep_Wakeup_Config<br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Lin.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm<br />
+┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Lin_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Lin_PBcfg.c</strong> : <em>Contains the Post build configuration parameters</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┗ 📜<strong>Lin_Example_Init_Sleep_Wakeup.c</strong> : <em>Int Sleep Wakeup Example application for Lin</em><br />
+┃ ┃ ┣ 📂<strong>Lin_Example_SendData</strong><br />
+┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>Lin_Example_SendData.projectspec</strong><br />
+┃ ┃ ┃ ┣ 📂Lin_Example_SendData_Config<br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Lin.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm<br />
+┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Lin_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Lin_PBcfg.c</strong> : <em>Contains the Post build configuration parameters</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┗ 📜<strong>Lin_Example_SendData.c</strong> : <em>Send Data Example application for Lin</em><br />
+┃ ┃ ┗ 📂<strong>Lin_Example_Sleep_Wakeup_Interrupt</strong><br />
+┃ ┃ ┃ ┣ 📂CCS<br />
+┃ ┃ ┃ ┃ ┗ 📜<strong>Lin_Example_Sleep_Wakeup_Interrupt.projectspec</strong><br />
+┃ ┃ ┃ ┣ 📂Lin_Example_Sleep_Wakeup_Interrupt_Config<br />
+┃ ┃ ┃ ┃ ┣ 📂config<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Lin.xdm</strong> : <em>Generated EB Tresos config file in .xdm format</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm<br />
+┃ ┃ ┃ ┃ ┣ 📂include<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Lin_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
+┃ ┃ ┃ ┃ ┣ 📂src<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Lin_PBcfg.c</strong> : <em>Contains the Post build configuration parameters</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c<br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c<br />
+┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┣ 📜CMakeLists.txt<br />
+┃ ┃ ┃ ┗ 📜<strong>Lin_Example_Sleep_Wakeup_Interrupt.c</strong> : <em>Wakeup Interrupt Example application for Lin</em><br />
+┣ 📂plugins<br />
+┣ 📜CMakeLists.txt<br />
+┗ 📜CMakePresets.json</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Module_User_Guide_Wdg.html" class="btn btn-neutral float-left" title="4.6. WDG Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Spi.html" class="btn btn-neutral float-right" title="4.8. SPI Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Dec 18, 2024.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

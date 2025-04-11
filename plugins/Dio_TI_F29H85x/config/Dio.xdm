@@ -106,8 +106,7 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="UUID"
-                                value="as:uuid()"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                               <a:da name="REF"
                                 value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Port/PortConfigSet/PortContainer/PortPin"/>
                             </v:ref>
@@ -125,7 +124,7 @@
                           <a:a name="UUID" 
                                value="ea8f0883-a964-4008-bd9b-ad81b550d426"/>
                           <a:da name="EDITABLE" value="false"/>
-                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(node:value(concat(node:path(node:ref(../DioPinNumRef)), '/PortPinId')), 0)"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> node:value(concat(node:path(node:ref(../DioPinNumRef)), '/PortPinId'))&quot; , num:i(0))"/>
                           <a:da name="INVALID" type="Range">
                                 <a:tst expr="&lt;=255"/>
                                 <a:tst expr="&gt;=0"/>

@@ -43,7 +43,7 @@ extern "C" {
 /** \brief Gpt driver configuration versions */
 #define GPT_CFG_MAJOR_VERSION               (1U)
 #define GPT_CFG_MINOR_VERSION               (0U)
-#define GPT_CFG_PATCH_VERSION               (0U)
+#define GPT_CFG_PATCH_VERSION               (1U)
 
 /** \brief GPT instance Id. */
 /*

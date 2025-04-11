@@ -274,10 +274,66 @@ typedef struct
     McalLib_NmiStatus           NmiStatus;              /* NMI status */
 } McalLib_BromStatus;
 
+typedef struct
+{
+    uint32    DevCalI2vR130C;   /* I2V R1 30C */
+    uint32    DevCalI2vR230C;   /* I2V R2 30C */
+    uint32    DevCalI2vR330C;   /* I2V R3 30C */
+    uint32    DevCalI2vR1N40C;  /* I2V R1 N40C */
+    uint32    DevCalI2vR2N40C;  /* I2V R2 N40C */
+    uint32    DevCalI2vR3N40C;  /* I2V R3 N40C */
+    uint32    DevCalI2vR1125C;  /* I2V R1 125C */
+    uint32    DevCalI2vR2125C;  /* I2V R2 125C */
+    uint32    DevCalI2vR3125C;  /* I2V R3 125C */
+    uint32    Rsvd11Mp1;        /* Reserved 11 MP1 */
+    uint32    DfwtRevMp1;       /* Dfwtrev MP1 */
+    uint32    BoardIdMp1;       /* BoardId MP1 */
+    uint32    ChkSumLsbMp1;     /* Chksumlsb MP1 */
+    uint32    Rsvd14Mp3;        /* Reserved 14 MP3 */
+    uint32    DfwtRevMp3;       /* Dfwtrev MP1 */
+    uint32    BoardIdMp3;       /* BoardId MP3 */
+    uint32    ChkSumLsbMp3;     /* Chksumlsb MP3 */
+    uint32    BootRomRsvd0;     /* Bootrom reserved 0 */
+    uint32    BootRomRsvd2;     /* Bootrom reserved 2 */
+    uint32    BootRomRsvd4;     /* Bootrom reserved 4 */
+    uint32    DfwtRevFt;        /* Dfwtrev FT */
+    uint32    PmmConfigDebug0;  /* PMM Config Debug 0 */
+    uint32    PmmConfigDebug1;  /* PMM Config Debug 1 */
+    uint32    AnaRefTrimA1P65;  /* ANAREFTRIMA1P65 */
+    uint32    AnaRefTrimA2P5;   /* ANAREFTRIMA2P5 */
+    uint32    AnaRefTrimC1P65;  /* ANAREFTRIMC1P65 */
+    uint32    AnaRefTrimC2P5;   /* ANAREFTRIMC2P5 */
+    uint32    AdcAoffTrim;      /* ADCA OFF TRIM */
+    uint32    AdcAoffTrim2;     /* ADCA OFF TRIM 2 */
+    uint32    AdcAoffTrim3;     /* ADCA OFF TRIM 3 */
+    uint32    AdcBoffTrim;      /* ADCA OFF TRIM 3*/
+    uint32    AdcBoffTrim2;     /* ADCA OFF TRIM 3 */
+    uint32    AdcBoffTrim3;     /* ADCB OFF TRIM 3 */
+    uint32    AdcCoffTrim;      /* ADCC OFF TRIM 3 */
+    uint32    AdcDoffTrim;      /* ADCD OFF TRIM 3 */
+    uint32    AdcEoffTrim;      /* ADCE OFF TRIM 3 */
+    uint32    AdcAInlTrim[6U];  /* ADCA INL TRIM 1-6 */
+    uint32    AdcBInlTrim[6U];  /* ADCB INL TRIM 1-6 */
+    uint32    AdcCInlTrim[3U];  /* ADCC INL TRIM 1-6 */
+    uint32    AdcDInlTrim[3U];  /* ADCD INL TRIM 1-6 */
+    uint32    AdcEInlTrim[3U];  /* ADCE INL TRIM 1-6 */
+    uint32    DacAOffTrim;      /* DACA OFF TRIM */
+    uint32    DacCOffTrim;      /* DACC OFF TRIM */
+    uint32    Hole0;            /* Hole 0 */
+    uint32    Hole1;            /* Hole 1 */
+    uint32    Hole2;            /* Hole 2 */
+    uint32    DevCalTsGainExtref;       /* DEVCAL TS Gain Extref */
+    uint32    DevCalTsOffsetExtref;     /* DEVCAL TS Offset Extref */
+    uint32    DevCalTsGainIntref;       /* DEVCAL TS Gain Intref */
+    uint32    DevCalTsOffsetIntref;     /* DEVCAL TS Offset Intref */
+    uint32    DevCalRev;                /* DEVCAL Revision */
+} McalLib_DevCalData;
 
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
+
+extern const McalLib_DevCalData McalLib_DeviceCalibrationData;
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes

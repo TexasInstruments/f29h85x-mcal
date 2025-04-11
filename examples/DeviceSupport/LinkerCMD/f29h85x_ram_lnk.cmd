@@ -24,17 +24,17 @@ SECTIONS
 {
     codestart     : {} > 0x20100010
 
-    .text         : {} > SRAM_LPAx
+    .text         : {} >> SRAM_LPAx | SRAM_CPAx
     .TI.ramfunc   : {} > SRAM_LPAx
-    .cinit        : {} > SRAM_LDAx
-    .const        : {} > SRAM_LDAx
-    .rodata       : {} > SRAM_LDAx
-    .init_array   : {} > SRAM_LDAx
+    .cinit        : {} >> SRAM_LDAx | SRAM_CDAx
+    .const        : {} >> SRAM_LDAx | SRAM_CDAx
+    .rodata       : {} >> SRAM_LDAx | SRAM_CDAx
+    .init_array   : {} >> SRAM_LDAx | SRAM_CDAx
 
-    .data         : {} > SRAM_LDAx
-    .bss          : {} > SRAM_LDAx
-    .stack        : {} > SRAM_LDAx
-    .sysmem       : {} > SRAM_LDAx
-    .cio          : {} > SRAM_LDAx
+    .data         : {} >> SRAM_LDAx | SRAM_CDAx
+    .bss          : {} >> SRAM_LDAx | SRAM_CDAx
+    .stack        : {} >> SRAM_LDAx | SRAM_CDAx
+    .sysmem       : {} >  SRAM_LDAx
+    .cio          : {} >  SRAM_LDAx
 
 }

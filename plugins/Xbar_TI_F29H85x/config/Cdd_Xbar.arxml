@@ -1,0 +1,1186 @@
+<?xml version='1.0'?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="6c62cecd-1795-48ca-aed9-068d361ac049">
+      <SHORT-NAME>TI_F29H85x</SHORT-NAME>
+      <ELEMENTS>
+        <ECUC-DEFINITION-COLLECTION UUID="e2b3bd6a-af87-4cce-8705-876f321f3906">
+          <SHORT-NAME>ecuParameterDefinition</SHORT-NAME>
+          <MODULE-REFS>
+            <MODULE-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Cdd_Xbar</MODULE-REF>
+          </MODULE-REFS>
+        </ECUC-DEFINITION-COLLECTION>
+        <ECUC-MODULE-DEF UUID="c4dfed88-b59d-4f4f-b450-9370ba276103">
+          <SHORT-NAME>Cdd_Xbar</SHORT-NAME>
+          <DESC>
+            <L-2 L="EN">CDD XBAR module configuration enables to configure all types of crossbars.</L-2>
+          </DESC>
+          <ADMIN-DATA>
+            <DOC-REVISIONS>
+              <DOC-REVISION>
+                <REVISION-LABEL>4.3.1</REVISION-LABEL>
+                <ISSUED-BY>AUTOSAR</ISSUED-BY>
+              </DOC-REVISION>
+            </DOC-REVISIONS>
+          </ADMIN-DATA>
+          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+          <POST-BUILD-VARIANT-SUPPORT>false</POST-BUILD-VARIANT-SUPPORT>
+          <REFINED-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/AUTOSAR/EcucDefs/Cdd</REFINED-MODULE-DEF-REF>
+          <SUPPORTED-CONFIG-VARIANTS>
+            <SUPPORTED-CONFIG-VARIANT>VARIANT-PRE-COMPILE</SUPPORTED-CONFIG-VARIANT>
+          </SUPPORTED-CONFIG-VARIANTS>
+          <CONTAINERS>
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f44d20f5-14eb-42a8-9c7d-3a14df25f3ad">
+              <SHORT-NAME>CddXbarConfiguration</SHORT-NAME>
+              <DESC>
+                <L-2 L="EN">This container contains the configuration parameters and sub containers of the CDD XBar module.</L-2>
+              </DESC>
+              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+              <SUB-CONTAINERS>
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="e5917503-e490-43c5-92fb-70737ea928dd">
+                  <SHORT-NAME>CddXbarInputXbarConfig</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Configuration for Input Crossbar</L-2>
+                  </DESC>
+                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <SUB-CONTAINERS>
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="817f2874-3ca1-4b34-b2d6-7a41a687ceee">
+                      <SHORT-NAME>CddXbarInputXbarInstanceConfig</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Configuration for Input Crossbar instance, one per output line available</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig: MAX(XPath: ecu:get(&apos;Input_Xbar_SelectCount&apos;)-1)-->
+                      <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                      <!-- @CalculatedEnd -->
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <PARAMETERS>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="0a0b3d77-d82e-45db-99e3-ca35d208baeb">
+                          <SHORT-NAME>CddXbarInputXbarInputSourceSelection</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Selects GPIO/AIO or LOGIC HIGH or LOGIC LOW as input to the input xbar.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/CddXbarInputXbarInputSourceSelection: DEFAULT(XPath: ecu:list(&apos;Input_Xbar_Input_Sources&apos;)[1])-->
+                          <LITERALS>
+                            <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/CddXbarInputXbarInputSourceSelection: RANGE(XPath: ecu:list(&apos;Input_Xbar_Input_Sources&apos;))-->
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="59524a01-e7ab-422f-90a7-46e751a7f996">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <!-- @CalculatedEnd -->
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="cbd406f6-7fb4-41f5-acaa-f3102d60177b">
+                          <SHORT-NAME>CddXbarInputXbarInput</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Input number of input crossbar.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/CddXbarInputXbarInput: DEFAULT(XPath: ecu:list(&apos;Input_Xbar_Inputs&apos;)[1])-->
+                          <LITERALS>
+                            <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/CddXbarInputXbarInput: RANGE(XPath: ecu:list(&apos;Input_Xbar_Inputs&apos;))-->
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="9d8739a1-a62b-4b85-b315-58935082905e">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <!-- @CalculatedEnd -->
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="77a6df86-4a1d-4a4d-9adb-297c6ce9e96f">
+                          <SHORT-NAME>CddXbarInputXbarInputSelectConfigurationLock</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Option to lock the current Input Group for any further configuration on Input Crossbar until System Reset. Once locked, cannot be unlocked without reset.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                      </PARAMETERS>
+                      <REFERENCES>
+                        <ECUC-REFERENCE-DEF UUID="9174da97-5ff9-4a62-9635-b1ce09c65ceb">
+                          <SHORT-NAME>CddXbarInputXbarInputSource</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Reference to GPIO/AIO Pin, obtained from the configuration of PORT plugin.</L-2>
+                          </DESC>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/CddXbarInputXbarInputSource: ENABLE(XPath: (../CddXbarInputXbarInputSourceSelection=&apos;CDD_XBAR_GPIO_AIO&apos;))-->
+                          <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                          <!-- @CalculatedEnd -->
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin</DESTINATION-REF>
+                        </ECUC-REFERENCE-DEF>
+                      </REFERENCES>
+                    </ECUC-PARAM-CONF-CONTAINER-DEF>
+                  </SUB-CONTAINERS>
+                </ECUC-PARAM-CONF-CONTAINER-DEF>
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="cce1197c-dd45-449b-94b1-6448ccf5e0f6">
+                  <SHORT-NAME>CddXbarOutputXbarConfig</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Configuration for Output Crossbar</L-2>
+                  </DESC>
+                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <PARAMETERS>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="f8e9f21b-3a68-492f-870a-8b28c4c21950">
+                      <SHORT-NAME>CddXbarOutputXbarConfigurationLock</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Option to lock the Output crossbar instance for any further input and output inversion configuration until System Reset. Cannot be unlocked once locked unless reset.</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                  </PARAMETERS>
+                  <SUB-CONTAINERS>
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="0f3add26-8267-45ae-8fad-7fd6f96529bb">
+                      <SHORT-NAME>CddXbarOutputXbarInstanceConfig</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Configuration for Output Crossbar Instance, one per output line available</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig: MAX(XPath: ecu:get(&apos;Output_Xbar_OutputLineCount&apos;)-1)-->
+                      <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                      <!-- @CalculatedEnd -->
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <PARAMETERS>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="366f4737-bf27-4444-b35a-d65fe1deacbf">
+                          <SHORT-NAME>CddXbarOutputXbarOutputLine</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Number of Output Line instance to be set for Output Crossbar.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarOutputLine: DEFAULT(XPath: ecu:list(&apos;Output_Xbar_Output_Lines&apos;)[1])-->
+                          <LITERALS>
+                            <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarOutputLine: RANGE(XPath: ecu:list(&apos;Output_Xbar_Output_Lines&apos;))-->
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="80e23b95-b245-4f1d-a443-2222e3b996ff">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <!-- @CalculatedEnd -->
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="671bc0c2-a915-4a7f-9ed8-464d8d20a515">
+                          <SHORT-NAME>CddXbarOutputXbarOutputPulseStretch</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Output Line pulse stretch in Sys Clock ticks for Output Crossbar.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarOutputPulseStretch: DEFAULT(XPath: ecu:list(&apos;Output_Xbar_Stretch&apos;)[1])-->
+                          <LITERALS>
+                            <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarOutputPulseStretch: RANGE(XPath: ecu:list(&apos;Output_Xbar_Stretch&apos;))-->
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="710dfcb6-45d6-4b57-94c8-5f9d824bc53b">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <!-- @CalculatedEnd -->
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="e5aa9e00-1007-484c-94ba-6f1b16692907">
+                          <SHORT-NAME>CddXbarOutputXbarOutputInversion</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Option to invert the output signal for the selected output line of the Output Crossbar instance.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="ac11f123-aad1-4880-809c-1d77b275d94f">
+                          <SHORT-NAME>CddXbarOutputXbarOutputLatch</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Option to select latch as output of selected output line for Output Crossbar instance.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                      </PARAMETERS>
+                      <SUB-CONTAINERS>
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f13eb656-62e9-47de-9f2f-c27d6ad08905">
+                          <SHORT-NAME>CddXbarOutputXbarInput</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configuration for Output Crossbar Instance inputs</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarInput: MAX(XPath: count(ecu:list(&apos;Output_Xbar_InputGroups&apos;)))-->
+                          <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                          <!-- @CalculatedEnd -->
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <PARAMETERS>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="63d5954c-3dc8-4b20-8096-6aa7ae47897a">
+                              <SHORT-NAME>CddXbarOutputXbarInputGroup</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Group to be chosen for Output Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarInput/CddXbarOutputXbarInputGroup: DEFAULT(XPath: ecu:list(&apos;Output_Xbar_InputGroups&apos;)[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarInput/CddXbarOutputXbarInputGroup: RANGE(XPath: ecu:list(&apos;Output_Xbar_InputGroups&apos;))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="d7dfbbb0-5b5a-4c15-814e-accef52cd2cd">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="36d8d1f3-1eb4-45ba-bfc6-d83da52cadc0">
+                              <SHORT-NAME>CddXbarOutputXbarInputLine</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Line from the Group selected to be chosen for Output Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarInput/CddXbarOutputXbarInput/CddXbarOutputXbarInputLine: MAX(XPath: ecu:get(&apos;Xbar_InputGroup_InputLines&apos;))-->
+                              <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                              <!-- @CalculatedEnd -->
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarInput/CddXbarOutputXbarInputLine: DEFAULT(XPath: ecu:list(concat(&apos;Output_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarOutputXbarInputGroup))[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarInput/CddXbarOutputXbarInputLine: RANGE(XPath: ecu:list(concat(&apos;Output_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarOutputXbarInputGroup)))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="45ff222f-93fa-460d-8610-848bb1823fcb">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                          </PARAMETERS>
+                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="0d43a2e1-0ecb-4847-9bfe-77289ba63c58">
+                          <SHORT-NAME>CddXbarOutputXbarOutputFlagConfig</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configuration for output crossbar output latch</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <PARAMETERS>
+                            <ECUC-BOOLEAN-PARAM-DEF UUID="245dddbe-38db-4658-978c-3490ad4826dd">
+                              <SHORT-NAME>CddXbarOutputXbarInversionBeforeLatch</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Option to invert the signal before latching for the selected output line for Output Crossbar instance.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                            </ECUC-BOOLEAN-PARAM-DEF>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="c4e9f4d1-707a-4d1c-9a29-14b6be49991d">
+                              <SHORT-NAME>CddXbarOutputXbarOutputLatchInitSts</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="FOR-ALL">Force or clear the output latch of individual output line for Output Crossbar during initialization</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarOutputFlagConfig/CddXbarOutputXbarOutputLatchInitSts: DEFAULT(XPath: ecu:list(&apos;Cdd_Xbar_OutFlagInit&apos;)[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/CddXbarOutputXbarOutputFlagConfig/CddXbarOutputXbarOutputLatchInitSts: RANGE(XPath: ecu:list(&apos;Cdd_Xbar_OutFlagInit&apos;))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="15eff23b-8166-4225-b6fd-e4c91250a95a">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                          </PARAMETERS>
+                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                      </SUB-CONTAINERS>
+                    </ECUC-PARAM-CONF-CONTAINER-DEF>
+                  </SUB-CONTAINERS>
+                </ECUC-PARAM-CONF-CONTAINER-DEF>
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ca602813-81c1-4126-a212-0da7d014f49d">
+                  <SHORT-NAME>CddXbarEpwmXbarConfig</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Configuration for EPWM Crossbar</L-2>
+                  </DESC>
+                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <PARAMETERS>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="0a4f3844-363b-4f91-8035-482772e16988">
+                      <SHORT-NAME>CddXbarEpwmXbarConfigurationLock</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Option to lock the EPWM crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset.</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                  </PARAMETERS>
+                  <SUB-CONTAINERS>
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="9014a8b5-5dba-4806-bbdc-6304997202ee">
+                      <SHORT-NAME>CddXbarEpwmXbarInstanceConfig</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Configuration for EPWM Crossbar Instance, one per output line available</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig: MAX(XPath: ecu:get(&apos;EPWM_Xbar_OutputLineCount&apos;)-1)-->
+                      <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                      <!-- @CalculatedEnd -->
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <PARAMETERS>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="cd065e59-04b6-411a-a375-b120e98d4b7b">
+                          <SHORT-NAME>CddXbarEpwmXbarOutputLine</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Number of Output Line instance to be set for EPWM Crossbar. TRIP1 is reserved.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarOutputLine: DEFAULT(XPath: ecu:list(&apos;EPWM_Xbar_Output_Lines&apos;)[1])-->
+                          <LITERALS>
+                            <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarOutputLine: RANGE(XPath: ecu:list(&apos;EPWM_Xbar_Output_Lines&apos;))-->
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="f1c1843c-e8ad-4cc3-913c-0451c8b94edb">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <!-- @CalculatedEnd -->
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="c5251d9d-c492-403e-b84e-f59c4de0a09c">
+                          <SHORT-NAME>CddXbarEpwmXbarOutputInversion</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Option to invert the output signal for the selected output line of the EPWM Crossbar instance.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                      </PARAMETERS>
+                      <SUB-CONTAINERS>
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="7fa9f107-93ef-4f6f-95d5-29187901a7dd">
+                          <SHORT-NAME>CddXbarEpwmXbarInput</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configuration for EPWM Crossbar Instance inputs</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarInput: MAX(XPath: count(ecu:list(&apos;Epwm_Xbar_InputGroups&apos;)))-->
+                          <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                          <!-- @CalculatedEnd -->
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <PARAMETERS>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="875913af-ffe6-4f14-8e86-77a6534ec40b">
+                              <SHORT-NAME>CddXbarEpwmXbarInputGroup</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Group to be chosen for EPWM Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarInput/CddXbarEpwmXbarInputGroup: DEFAULT(XPath: ecu:list(&apos;Epwm_Xbar_InputGroups&apos;)[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarInput/CddXbarEpwmXbarInputGroup: RANGE(XPath: ecu:list(&apos;Epwm_Xbar_InputGroups&apos;))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="8a383b91-83c8-436c-98b2-3c6ae3705ce8">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="6b175282-0a5b-4acc-91e5-3bbc37d2efba">
+                              <SHORT-NAME>CddXbarEpwmXbarInputLine</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Line from the Group selected to be chosen for EPWM Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarInput/CddXbarEpwmXbarInput/CddXbarEpwmXbarInputLine: MAX(XPath: ecu:get(&apos;Xbar_InputGroup_InputLines&apos;))-->
+                              <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                              <!-- @CalculatedEnd -->
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarInput/CddXbarEpwmXbarInputLine: DEFAULT(XPath: ecu:list(concat(&apos;Epwm_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarEpwmXbarInputGroup))[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/CddXbarEpwmXbarInput/CddXbarEpwmXbarInputLine: RANGE(XPath: ecu:list(concat(&apos;Epwm_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarEpwmXbarInputGroup)))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="56a101de-fe1b-41b2-a8ba-ec03d7c0e3e2">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                          </PARAMETERS>
+                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                      </SUB-CONTAINERS>
+                    </ECUC-PARAM-CONF-CONTAINER-DEF>
+                  </SUB-CONTAINERS>
+                </ECUC-PARAM-CONF-CONTAINER-DEF>
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="5fa10fa9-c9b6-4451-b3bd-8a3b92e013fd">
+                  <SHORT-NAME>CddXbarClbXbarConfig</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Configuration for CLB Crossbar</L-2>
+                  </DESC>
+                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <PARAMETERS>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="1769f226-63ba-41b2-b2ce-8db9cec682c2">
+                      <SHORT-NAME>CddXbarClbXbarConfigurationLock</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Option to lock the CLB crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset.</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                  </PARAMETERS>
+                  <SUB-CONTAINERS>
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="309f9d09-9a8a-48cb-a2ec-2cd045b0124b">
+                      <SHORT-NAME>CddXbarClbXbarInstanceConfig</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Configuration for CLB Crossbar Instance, one per output line available</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig: MAX(XPath: ecu:get(&apos;CLB_Xbar_OutputLineCount&apos;)-1)-->
+                      <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                      <!-- @CalculatedEnd -->
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <PARAMETERS>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="7d9200ac-434e-4749-8453-dab93c8f470e">
+                          <SHORT-NAME>CddXbarClbXbarOutputLine</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Number of Output Line instance to be set for CLB Crossbar.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarOutputLine: DEFAULT(XPath: ecu:list(&apos;CLB_Xbar_Output_Lines&apos;)[1])-->
+                          <LITERALS>
+                            <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarOutputLine: RANGE(XPath: ecu:list(&apos;CLB_Xbar_Output_Lines&apos;))-->
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="cb78e83c-73c6-4dbc-b70f-7ca3207b52c6">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <!-- @CalculatedEnd -->
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="70618708-706a-4861-bac6-e2752163ce0c">
+                          <SHORT-NAME>CddXbarClbXbarOutputInversion</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Option to invert the output signal for the selected output line of the CLB Crossbar instance.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                      </PARAMETERS>
+                      <SUB-CONTAINERS>
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f360b89c-4157-4eaa-bac3-f53ae2858e19">
+                          <SHORT-NAME>CddXbarClbXbarInput</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configuration for CLB Crossbar Instance inputs</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarInput: MAX(XPath: count(ecu:list(&apos;Clb_Xbar_InputGroups&apos;)))-->
+                          <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                          <!-- @CalculatedEnd -->
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <PARAMETERS>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="471ea497-c887-4f89-b2b5-e60076367fc9">
+                              <SHORT-NAME>CddXbarClbXbarInputGroup</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Group to be chosen for CLB Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarInput/CddXbarClbXbarInputGroup: DEFAULT(XPath: ecu:list(&apos;Clb_Xbar_InputGroups&apos;)[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarInput/CddXbarClbXbarInputGroup: RANGE(XPath: ecu:list(&apos;Clb_Xbar_InputGroups&apos;))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="cc337d50-f63d-4fd8-9eba-4b309739e2ac">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="c8622938-42b8-4490-8404-4618963de39c">
+                              <SHORT-NAME>CddXbarClbXbarInputLine</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Line from the Group selected to be chosen for CLB Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarInput/CddXbarClbXbarInput/CddXbarClbXbarInputLine: MAX(XPath: ecu:get(&apos;Xbar_InputGroup_InputLines&apos;))-->
+                              <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                              <!-- @CalculatedEnd -->
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarInput/CddXbarClbXbarInputLine: DEFAULT(XPath: ecu:list(concat(&apos;Clb_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarClbXbarInputGroup))[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/CddXbarClbXbarInput/CddXbarClbXbarInputLine: RANGE(XPath: ecu:list(concat(&apos;Clb_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarClbXbarInputGroup)))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="6c396d46-fc1b-4b45-b156-6ecb2fb43bff">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                          </PARAMETERS>
+                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                      </SUB-CONTAINERS>
+                    </ECUC-PARAM-CONF-CONTAINER-DEF>
+                  </SUB-CONTAINERS>
+                </ECUC-PARAM-CONF-CONTAINER-DEF>
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="53bd5e0e-389f-40e3-be77-c4dcd558fe11">
+                  <SHORT-NAME>CddXbarMindbXbarConfig</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Configuration for MINDB Crossbar</L-2>
+                  </DESC>
+                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <PARAMETERS>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="42810dc1-04bf-431a-9a14-7ad4508ef1f7">
+                      <SHORT-NAME>CddXbarMindbXbarConfigurationLock</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Option to lock the MINDB crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset.</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                  </PARAMETERS>
+                  <SUB-CONTAINERS>
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="06260b75-fe26-4f8f-abaf-92246850919c">
+                      <SHORT-NAME>CddXbarMindbXbarInstanceConfig</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Configuration for MINDB Crossbar Instance, one per output line available</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig: MAX(XPath: ecu:get(&apos;MinDB_Xbar_OutputLineCount&apos;)-1)-->
+                      <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                      <!-- @CalculatedEnd -->
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <PARAMETERS>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="e764d01f-2a2c-41e4-b571-026b8e3b814a">
+                          <SHORT-NAME>CddXbarMindbXbarOutputLine</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Number of Output Line instance to be set for MINDB Crossbar.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarOutputLine: DEFAULT(XPath: ecu:list(&apos;MINDB_Xbar_Output_Lines&apos;)[1])-->
+                          <LITERALS>
+                            <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarOutputLine: RANGE(XPath: ecu:list(&apos;MINDB_Xbar_Output_Lines&apos;))-->
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="5a6eb0b3-1a8e-4257-b48c-8fb2653e6569">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <!-- @CalculatedEnd -->
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="0cab6078-8c5d-4095-8f18-2768f0cf992d">
+                          <SHORT-NAME>CddXbarMindbXbarOutputInversion</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Option to invert the output signal for the selected output line of the MINDB Crossbar instance.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                      </PARAMETERS>
+                      <SUB-CONTAINERS>
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c4677b5c-d419-4aba-be99-bd1a41d9cc84">
+                          <SHORT-NAME>CddXbarMindbXbarInput</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configuration for MINDB Crossbar Instance inputs</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarInput: MAX(XPath: count(ecu:list(&apos;Mindb_Xbar_InputGroups&apos;)))-->
+                          <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                          <!-- @CalculatedEnd -->
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <PARAMETERS>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="cb02d039-626f-42e5-8964-c48fbb8cb645">
+                              <SHORT-NAME>CddXbarMindbXbarInputGroup</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Group to be chosen for MINDB Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarInput/CddXbarMindbXbarInputGroup: DEFAULT(XPath: ecu:list(&apos;Mindb_Xbar_InputGroups&apos;)[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarInput/CddXbarMindbXbarInputGroup: RANGE(XPath: ecu:list(&apos;Mindb_Xbar_InputGroups&apos;))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="32bc19dc-cfb7-455b-88f4-ebaabbc28058">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="b05613da-5766-40e3-88df-896cc03ee850">
+                              <SHORT-NAME>CddXbarMindbXbarInputLine</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Line from the Group selected to be chosen for MINDB Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarInput/CddXbarMindbXbarInput/CddXbarMindbXbarInputLine: MAX(XPath: ecu:get(&apos;Xbar_InputGroup_InputLines&apos;))-->
+                              <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                              <!-- @CalculatedEnd -->
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarInput/CddXbarMindbXbarInputLine: DEFAULT(XPath: ecu:list(concat(&apos;Mindb_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarMindbXbarInputGroup))[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/CddXbarMindbXbarInput/CddXbarMindbXbarInputLine: RANGE(XPath: ecu:list(concat(&apos;Mindb_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarMindbXbarInputGroup)))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="a4f0c571-a16e-4d77-b228-c5428d302b1c">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                          </PARAMETERS>
+                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                      </SUB-CONTAINERS>
+                    </ECUC-PARAM-CONF-CONTAINER-DEF>
+                  </SUB-CONTAINERS>
+                </ECUC-PARAM-CONF-CONTAINER-DEF>
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="05573a2d-a516-4b20-bd12-af8e5cd569e9">
+                  <SHORT-NAME>CddXbarIclXbarConfig</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Configuration for ICL Crossbar</L-2>
+                  </DESC>
+                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <PARAMETERS>
+                    <ECUC-BOOLEAN-PARAM-DEF UUID="b68cf42b-22fd-4e24-a357-6149f41de795">
+                      <SHORT-NAME>CddXbarIclXbarConfigurationLock</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Option to lock the ICL crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset.</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                  </PARAMETERS>
+                  <SUB-CONTAINERS>
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="d78de283-1d93-4ccc-9986-47cc6372df59">
+                      <SHORT-NAME>CddXbarIclXbarInstanceConfig</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Configuration for ICL Crossbar Instance, one per output line available</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig: MAX(XPath: ecu:get(&apos;ICL_Xbar_OutputLineCount&apos;)-1)-->
+                      <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                      <!-- @CalculatedEnd -->
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <PARAMETERS>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="a133e78c-b600-4be9-b0ed-ccb348f2aec3">
+                          <SHORT-NAME>CddXbarIclXbarOutputLine</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Number of Output Line instance to be set for ICL Crossbar.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarOutputLine: DEFAULT(XPath: ecu:list(&apos;ICL_Xbar_Output_Lines&apos;)[1])-->
+                          <LITERALS>
+                            <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarOutputLine: RANGE(XPath: ecu:list(&apos;ICL_Xbar_Output_Lines&apos;))-->
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="4b7a5ff6-13a6-4b7b-92dc-5e72ff583f36">
+                              <SHORT-NAME>undefined</SHORT-NAME>
+                              <ORIGIN>unknown</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <!-- @CalculatedEnd -->
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="afc23d14-5910-44a1-aebd-7cec8086c87d">
+                          <SHORT-NAME>CddXbarIclXbarOutputInversion</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Option to invert the output signal for the selected output line of the ICL Crossbar instance.</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                      </PARAMETERS>
+                      <SUB-CONTAINERS>
+                        <ECUC-PARAM-CONF-CONTAINER-DEF UUID="9922035d-205c-4e16-9355-b8f433668d23">
+                          <SHORT-NAME>CddXbarIclXbarInput</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Configuration for ICL Crossbar Instance inputs</L-2>
+                          </DESC>
+                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                          <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarInput: MAX(XPath: count(ecu:list(&apos;Icl_Xbar_InputGroups&apos;)))-->
+                          <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                          <!-- @CalculatedEnd -->
+                          <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                          <PARAMETERS>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="a31a3c20-b65e-41e8-8ec3-2111e261b05a">
+                              <SHORT-NAME>CddXbarIclXbarInputGroup</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Group to be chosen for ICL Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarInput/CddXbarIclXbarInputGroup: DEFAULT(XPath: ecu:list(&apos;Icl_Xbar_InputGroups&apos;)[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarInput/CddXbarIclXbarInputGroup: RANGE(XPath: ecu:list(&apos;Icl_Xbar_InputGroups&apos;))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="4bf120c0-db6b-4bd9-bb49-f7550752d77f">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                            <ECUC-ENUMERATION-PARAM-DEF UUID="2f315ce2-98bf-452b-b2ec-5de0746ecca4">
+                              <SHORT-NAME>CddXbarIclXbarInputLine</SHORT-NAME>
+                              <DESC>
+                                <L-2 L="EN">Number of Input Line from the Group selected to be chosen for ICL Crossbar.</L-2>
+                              </DESC>
+                              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                              <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Cdd_Xbar/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarInput/CddXbarIclXbarInput/CddXbarIclXbarInputLine: MAX(XPath: ecu:get(&apos;Xbar_InputGroup_InputLines&apos;))-->
+                              <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                              <!-- @CalculatedEnd -->
+                              <SCOPE>LOCAL</SCOPE>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                              <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                              <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
+                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                              <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarInput/CddXbarIclXbarInputLine: DEFAULT(XPath: ecu:list(concat(&apos;Icl_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarIclXbarInputGroup))[1])-->
+                              <LITERALS>
+                                <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/CddXbarIclXbarInput/CddXbarIclXbarInputLine: RANGE(XPath: ecu:list(concat(&apos;Icl_Xbar_Input_Lines&apos;, &apos;.&apos;, ../../CddXbarIclXbarInputGroup)))-->
+                                <ECUC-ENUMERATION-LITERAL-DEF UUID="d84b63cb-8305-4f7a-9c4d-81c0534ccec3">
+                                  <SHORT-NAME>undefined</SHORT-NAME>
+                                  <ORIGIN>unknown</ORIGIN>
+                                </ECUC-ENUMERATION-LITERAL-DEF>
+                                <!-- @CalculatedEnd -->
+                              </LITERALS>
+                            </ECUC-ENUMERATION-PARAM-DEF>
+                          </PARAMETERS>
+                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                      </SUB-CONTAINERS>
+                    </ECUC-PARAM-CONF-CONTAINER-DEF>
+                  </SUB-CONTAINERS>
+                </ECUC-PARAM-CONF-CONTAINER-DEF>
+              </SUB-CONTAINERS>
+            </ECUC-PARAM-CONF-CONTAINER-DEF>
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="05dd9d6b-ea1f-4ae7-bbee-2f6df739fb21">
+              <SHORT-NAME>CddXbarGeneral</SHORT-NAME>
+              <DESC>
+                <L-2 L="EN">Contains the general configuration parameters of the module.</L-2>
+              </DESC>
+              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+              <PARAMETERS>
+                <ECUC-BOOLEAN-PARAM-DEF UUID="c2df6b07-61cf-4bc4-bf0d-f180de742112">
+                  <SHORT-NAME>CddXbarDevErrorDetect</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Switches the Development Error Detection and Reporting ON or OFF for this module.</L-2>
+                  </DESC>
+                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <SCOPE>LOCAL</SCOPE>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                  <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                </ECUC-BOOLEAN-PARAM-DEF>
+                <ECUC-BOOLEAN-PARAM-DEF UUID="3f999525-513a-4d5d-8737-d9fb9e489bb5">
+                  <SHORT-NAME>CddXbarAPIEnable</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Enables or Disables the APIs of this module.</L-2>
+                  </DESC>
+                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <SCOPE>LOCAL</SCOPE>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                  <DEFAULT-VALUE>true</DEFAULT-VALUE>
+                </ECUC-BOOLEAN-PARAM-DEF>
+                <ECUC-BOOLEAN-PARAM-DEF UUID="878c3ea1-4f4b-4c53-9e66-cf70b3eca938">
+                  <SHORT-NAME>CddXbarVersionInfoApi</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Switches the Cdd_Xbar_GetVersionInfo function ON or OFF.</L-2>
+                  </DESC>
+                  <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarGeneral/CddXbarVersionInfoApi: ENABLE(XPath: (../CddXbarAPIEnable=&apos;true&apos;))-->
+                  <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                  <!-- @CalculatedEnd -->
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <SCOPE>LOCAL</SCOPE>
+                  <MULTIPLICITY-CONFIG-CLASSES>
+                    <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                  </MULTIPLICITY-CONFIG-CLASSES>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                  <DEFAULT-VALUE>true</DEFAULT-VALUE>
+                </ECUC-BOOLEAN-PARAM-DEF>
+                <ECUC-BOOLEAN-PARAM-DEF UUID="4001fea1-888b-433c-8ef5-3d4a41796a81">
+                  <SHORT-NAME>CddXbarInputFlagApi</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Switches Cdd_Xbar_InputFlagStatus() and Cdd_Xbar_InputFlagClear() ON or OFF.</L-2>
+                  </DESC>
+                  <!-- @Calculated /TI_F29H85x/Cdd_Xbar/CddXbarGeneral/CddXbarInputFlagApi: ENABLE(XPath: (../CddXbarAPIEnable=&apos;true&apos;))-->
+                  <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                  <!-- @CalculatedEnd -->
+                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <SCOPE>LOCAL</SCOPE>
+                  <MULTIPLICITY-CONFIG-CLASSES>
+                    <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                  </MULTIPLICITY-CONFIG-CLASSES>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                  <DEFAULT-VALUE>true</DEFAULT-VALUE>
+                </ECUC-BOOLEAN-PARAM-DEF>
+              </PARAMETERS>
+            </ECUC-PARAM-CONF-CONTAINER-DEF>
+          </CONTAINERS>
+        </ECUC-MODULE-DEF>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

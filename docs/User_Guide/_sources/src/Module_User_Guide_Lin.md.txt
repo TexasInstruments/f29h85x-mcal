@@ -1,0 +1,817 @@
+## LIN Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|COM|Communication|
+|ECU|Electronic Control Unit|
+|EcuM|ECU Manager|
+|DEM|Diagnostic Event Manager|
+|DET|Default Error Tracer|
+|ISR|Interrupt Service Routine|
+|LIN|Local Interconnect Network|
+|MCAL|Micro Controller Abstraction Layer|
+|MCU|Micro Controller Unit|
+|OS|Operating System|
+|PDU|Protocol Data Unit|
+|PID|Protected ID|
+|PLL|Phase-Locked Loop|
+|RAM|Random Access Memory|
+|RX|Reception|
+|SCI|Serial Communication Interface|
+|SDU|Service Data Unit|
+|SFR|Special Function Register|
+|SPAL|Standard Peripheral Abstraction Layer|
+|SRS|Software Requirement Specification|
+|SW|Software|
+|SWS|Software Specification|
+|TP|Transport Layer|
+|TX|Transmission|
+|UART|Universal Asynchronous Receiver Transmitter|
+|XML|Extensible Markup Language|
+
+### Introduction
+
+This document details AUTOSAR BSW LIN module implementation
+
+|Supported AUTOSAR Release|**4.3.1**|
+|------|-------------|
+|**Supported Configuration Variants**  | **Post-build, Pre-Compile**|
+|**Vendor ID**                         | **LIN_VENDOR_ID (44)**|
+|**Module ID**                         | **LIN_MODULE_ID (82)**|
+
+LIN stands For Local Interconnect Network. The LIN driver is a communication driver and is part of the micro-controller abstraction layer (MCAL).
+It performs the hardware access and offers a hardware independent API to the upper layer.
+The only upper layer, which has access to the LIN driver, is the LIN Interface.
+
+A LIN driver can support more than one channel/Instance. This means that the LIN driver can handle one or
+more LIN channels as long as they are belonging to the same LIN hardware unit.
+
+```{figure} Assets/images/Lin_Autosar_MCAL.png
+:alt: LIN MCAL AUTOSAR
+:align: center
+
+Lin MCAL AUTOSAR
+```
+
+### Functional Overview
+
+As the amount of electrical systems and components continue to grow as automobiles become more intelligent, safe, and comfortable.
+The growth of these components and systems demand a need for communication transceivers, to facilitate their interaction in the most advantageous way possible for manufacturers.
+LIN was developed to manage communication between these components and systems in an efficient and straightforward fashion, where the bandwidth and versatility of CAN was not needed;
+though in most instances, it is a sub-bus to the CAN bus.
+
+```{figure} Assets/images/LIN_Overview.png
+:alt: LIN Overview
+:align: center
+
+LIN Overview
+```
+
+The LIN standard is based on the SCI (UART) serial data link format.
+The communication concept is single-commander/multiple-responder with a message identification for multi-cast transmission between any network nodes.
+
+### Hardware Features
+
+#### Hardware Features supported
+
+* Compatibility with LIN 1.3,2.0 and 2.1 protocols
+* Configurable Baud rate up to 20 kbps
+* Two external pins: LINRX and LINTX
+* Multi-buffered receive and transmit units
+* 2^31 programmable transmission rates with 7 fractional bits
+* Wake-up on LINRX dominant level from transceiver
+* Identification masks for message filtering
+* Automatic bus idle detection
+* Capability to use Direct Memory Access (DMA) for transmit and receive data
+* Update wake-up/go to sleep
+* Automatic commander header generation
+  * Programmable synchronization break field
+  * Synchronization field
+  * Identifier field
+* Responder Automatic Synchronization
+  * Synchronization break detection
+  * Optional baud rate update
+  * Synchronization validation
+* Automatic wake-up support
+  * Wake-up signal generation
+  * Expiration times on wake-up signals
+* Error detection
+  * Bit error
+  * Bus error
+  * No-response error
+  * Checksum error
+  * Synchronization field error
+  * Parity error
+* 2 interrupt lines with priority encoding for:
+  * Receive
+  * Transmit
+  * ID, error, and status
+* Support for LIN 2.0 checksum
+* Enhanced synchronizer finite state machine (FSM) support for frame processing
+* Enhanced handling of extended frames
+* Enhanced baud rate generator
+
+#### Not supported Features
+
+* Apart from Wake up Interrupt, support for the rest of the available interrupts are disabled by the driver. Wakeup Interrupt support is enabled as per autosar requirement. For errors or status checking, Polling method is being implemented.
+* Current Transmission Abort is not supported by Hardware hence no support for transmission abort by Lin Driver.
+* Timeout is not needed by the hardware as there are no register reads in loop for timeout error to occur hence Production/TimeOut errors reporting is also not Supported.
+
+#### Non compliance
+
+**Below AUTOSAR requirements are partially supported for LIN driver:**
+
+**SWS_Lin_00207** : Constants, global data types and functions that are only used by LIN driver internally, are declared in Lin.c.
+> Partial Rejection Reason : *Internal Function are also declared in Lin_Priv.h File.*
+
+**SWS_Lin_00235 : Icu_DisableNotification/Icu_EnableNotification.**
+> Partial Rejection Reason : *ICU enable/disable notification is not needed as LIN IP can be accessed directly from Microcontroller/CPU Core*
+
+**Below AUTOSAR requirement is rejected for LIN driver:**
+
+**SWS_Lin_00074** : The function Lin_GoToSleep shall terminate ongoing frame transmission of prior transmission requests, even if the transmission is unsuccessfully completed.
+> Rejection Reason : *Hardware limitation. Transmission Abort is not supported by Lin Hardware.*
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂**Lin**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Lin.h** : *Contains the APIs of the LIN driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┗ 📜**Lin_Priv.h** : *LIN private header file which contains the private functions declarations, etc.*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Lin.c** : *Contains the implementation of the APIs for LIN driver.*\
+ ┃ ┃ ┃ ┣ 📜**Lin_Irq.c** : *LIN interrupt source file which contains the implementation for LIN interrupts handlers.*\
+ ┃ ┃ ┃ ┗ 📜**Lin_Priv.c** : *Contains Functions that supports the APIs for LIN driver.*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+ ```{figure} Assets/images/Lin_Header_File_Structure.png
+:alt: LIN Header File Structure
+:align: center
+
+Lin Header File Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Error Handling
+
+##### Development Error Reporting
+
+Those errors shall be detected and fixed during development phase. In most cases, those errors are software
+errors. The detection of errors that shall only occur during development can be switched off for production
+code. Development errors are reported to the DET using the service Det_ReportError(),when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|API service used without module initialization|LIN_E_UNINIT|0x00|
+|API service used with an invalid or inactive channel parameter|LIN_E_INVALID_CHANNEL|0x02|
+|API service called with invalid configuration pointer|LIN_E_INVALID_POINTER|0x03|
+|Invalid state transition for the current state |LIN_E_STATE_TRANSITION|0x04|
+|API service called with a NULL pointer |LIN_E_PARAM_POINTER|0x05|
+|Timeout caused by hardware error|LIN_E_TIMEOUT|Assigned by DEM|
+
+### Used resources
+
+#### Interrupt Handling
+
+Lin driver provides ISR for wake up detection. The interrupt vector lines to be used is configurable in Lin driver.
+ The ISR for Wake up detection is implemented in the file Lin_Irq.c.
+
+ |Lin Instance| Interrupt handler|Interrupt Line|
+|------------|-----------------|----------------|
+|Lin A| Lin_A_Int0ISR|Line 0|
+|Lin A| Lin_A_Int1ISR|Line 1|
+|Lin B| Lin_B_Int0ISR|Line 0|
+|Lin B| Lin_B_Int1ISR|Line 1|
+
+```{Note}
+Same Interrupt Category needs to be configured in both Lin and OS Modules.
+```
+
+#### Instance support
+
+|CPU instances|Supported|
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+Below image shows LIN driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.
+
+```{figure} Assets/images/LIN_HW_SW_Mapping.png
+:alt: LIN HW/SW Mapping
+:align: center
+
+LIN HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This implementation depends on the DET in order to report development errors
+The detection of development errors is configurable (ON / OFF), The switch LIN_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+In development mode, the Lin module reports development error through the Det_ReportError function of
+module DET.
+
+##### PORT
+
+The Port driver configures the port pins used for the LIN driver as input or output. Hence, the Port driver has to be initialized prior to the use of LIN functions. Otherwise, LIN driver functions will exhibit undefined behavior.
+
+##### DEM
+
+MCU Production errors are reported to DEM ( Diagnostic Event Manager ) Module.
+The Lin module reports production errors to the Diagnostic Event Manager.
+
+##### MCU
+
+The hardware of the internal LIN hardware unit depends on the system clock, pre-scaler(s) and PLL. Hence,
+the length of the LIN bit timing depends on the clock settings made in module MCU. The LIN driver module
+will not take care of setting the registers that configure the clock, pre-scaler(s) and PLL (e.g. switching on/off
+the PLL) in its init functions. The MCU module must do this.
+
+##### OS
+
+The LIN driver uses interrupts and therefore there is a dependency on the OS, which configures the interrupt
+sources.
+
+##### EcuM
+
+The LIN driver uses WakeUp source configured by EcuM, and report the WakeUp events to EcuM module.
+
+##### SchM
+
+If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that LIN module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.
+
+The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter **RteExclusiveAreaImplMechanism**. This parameter is an input for RTE generator.
+For LIN Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
+
+| Exclusive Area Functions used | LIN Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
+|-------|-------|-------|-------|
+|LIN_EXCLUSIVE_AREA_0| Lin_SendFrame<br>Lin_GoToSleep<br>Lin_GoToSleepInternal<br>Lin_Wakeup<br>Lin_WakeupInternal<br>Lin_GetStatus | To protect against multiple access for shared resources | **OS_RESOURCE** : If the LIN APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If LIN APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+
+### Configuration
+
+The Lin Driver implementation supports multiple configuration variants, namely Lin Post-Build config and Pre-Compile config. The driver expects generated **Lin_Cfg.h** to be present as input file.
+The associated Lin driver configuration generated source file is **Lin_PBcfg.c** or **Lin_Cfg.c**
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+```{Note}
+Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
+```
+
+#### LinGeneral
+
+##### LinDevErrorDetect
+
+|SWS Item|ECUC_Lin_00066|
+|--------|----------------|
+|**Name**|LinDevErrorDetect|
+|**Parent Container**|LinGeneral|
+|**Description**|Switches the development error detection and notification on or off|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|False|
+|**Post-Build Variant Value**|False|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|Local|
+
+##### LinIndex
+
+|SWS Item|ECUC_Lin_00179|
+|--------|----------------|
+|**Name**|LinIndex|
+|**Parent Container**|LinGeneral|
+|**Description**|Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 255|
+|**Default value**||
+|**Post-Build Variant Value**|False|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|Local|
+
+##### LinTimeoutDuration
+
+|SWS Item|ECUC_Lin_00093|
+|--------|----------------|
+|**Name**|LinTimeoutDuration|
+|**Parent Container**|LinGeneral|
+|**Description**|Specifies the maximum number of loops for blocking function until a timeout is raised in short term wait loops|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 65535|
+|**Default value**||
+|**Post-Build Variant Value**|False|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|Local|
+
+##### LinVersionInfoApi
+
+|SWS Item|ECUC_Lin_00067|
+|--------|----------------|
+|**Name**|LinVersionInfo|
+|**Parent Container**|LinGeneral|
+|**Description**|Switches the Lin_GetVersionInfo function ON or OFF|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|False|
+|**Post-Build Variant Value**|False|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|Local|
+
+#### LinChannel
+
+##### LinChannelBaudRate
+
+|SWS Item|ECUC_Lin_00180|
+|--------|----------------|
+|**Name**|LinChannelBaudRate|
+|**Parent Container**|LinChannel|
+|**Description**|Specifies the baud rate of the channel|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|1000 .. 20000|
+|**Default value**||
+|**Post-Build Variant Value**|True|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### LinChannelId
+
+|SWS Item|ECUC_Lin_00181|
+|--------|----------------|
+|**Name**|LinChannelId|
+|**Parent Container**|LinChannel|
+|**Description**|Identifies the LIN channel. Replaces LIN_CHANNEL_INDEX_NAME from the LIN SWS|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 65535|
+|**Default value**||
+|**Post-Build Variant Value**|False|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|Local|
+
+##### LinChannelWakeupSupport
+
+|SWS Item|ECUC_Lin_00182|
+|--------|----------------|
+|**Name**|LinChannelWakeupSupport|
+|**Parent Container**|LinChannel|
+|**Description**|Specifies if the LIN hardware channel supports wake up functionality|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**||
+|**Post-Build Variant Value**|False|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|Local|
+
+##### LinChannelEcuMWakeupSource
+
+|SWS Item|ECUC_Lin_00185|
+|--------|----------------|
+|**Name**|LinChannelEcuMWakeupSource|
+|**Parent Container**|LinChannel|
+|**Description**|This parameter contains a reference to the Wakeup Source for this controller as defined in the   ECU State Manager|
+|**Multiplicity**|0..1|
+|**Type**|Symbolic name reference to EcuMWakeupSource|
+|**Post-Build Variant Multiplicity**|False|
+|**Post-Build Variant Value**|False|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**||
+|Scope|Local|
+|Dependency|ECU State Manager Wakeup Sources|
+
+##### LinClockRef
+
+|SWS Item|ECUC_Lin_00096|
+|--------|----------------|
+|**Name**|LinClockRef|
+|**Parent Container**|LinChannel|
+|**Description**|Reference to the LIN clock source configuration, which is set in the MCU driver configuration|
+|**Multiplicity**|1|
+|**Type**|Reference to McuClockReferencePoint|
+|**Post-Build Variant Value**|True|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|--|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**||
+|Scope|Local|
+|Dependency|LIN clock source configuration in MCU driver|
+
+#### LinDemEventParameterRefs
+
+##### LIN_E_TIMEOUT
+
+|SWS Item|ECUC_Lin_00189|
+|--------|----------------|
+|**Name**|LIN_E_TIMEOUT|
+|**Parent Container**|LinDemEventParameterRefs|
+|**Description**|Reference to the DemEventParameter which shall be issued when the error "Timeout caused by hardware error" has occurred. If the reference is not configured the error shall be reported as DET error|
+|**Multiplicity**|0..1|
+|**Type**|Symbolic name reference to DemEventParameter|
+|**Post-Build Variant Multiplicity**|False|
+|**Post-Build Variant Value**|False|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|Local|
+
+Refer [AUTOSAR_SWS_LINDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_LINDriver.pdf) for configuration parameters details
+
+#### Steps To Configure Lin Module
+
+1. Open EB Tresos configurator tool and load Port, Mcu, EcuM, Os, Dem and Lin modules.
+2. Open PORT module plugin and configure required pins as LINTX, LINRX.
+3. Open Mcu and Dem Module to Configure Lin Clock and Dem Error for Mcu and Lin.
+4. Open EcuM Module and Configure the Wakeup source for Lin Wakeup.
+5. Open LIN module plugin, Select the Config Variant (Pre-compile/Post-Build).
+6. In LIN module plugin configure required parameters.
+7. Save the configuration and generate the configuration.
+
+### Examples
+
+The example application demonstrates use of Lin module, the list below identifies key steps performed in the examples.
+
+#### Lin_Example_Init_Sleep_Wakeup
+
+##### Overview Of Lin_Example_Init_Sleep_Wakeup
+
+* **Lin_Example_Init_Sleep_Wakeup**
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes Lin Tx and Rx Pins, and UART Pins using Port_Init()
+  * Lin_Init will Initializes the Lin Driver on LINA instance.
+  * Lin_CheckWakeUp_and_Sleep_Internal
+    * Lin_GoToSleepInternal will move the Lin module to internal sleep.
+    * Lin_WakeupInternal will wake up Lin module from internal sleep.
+  * Lin_CheckWakeUp_and_Sleep
+    * Lin_GoToSleep will send Lin module to sleep by sending Go to sleep command on Lin Bus
+    * Lin_Wakeup will move Lin Module to wake up state by sending Wake up command on Lin Bus
+  * Lin_GetStatus will return the current status of the Lin Driver
+
+##### Setup required to run Lin_Example_Init_Sleep_Wakeup
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest C29 compiler
+
+##### How to run Lin_Example_Init_Sleep_Wakeup
+
+* Open CCS and import Lin Example
+* Build project and start debug project
+
+##### Sample Log of Lin_Example_Init_Sleep_Wakeup
+
+```{EXAMPLE LOGS}
+LIN Driver Sample Application: Lin Init Sleep WakeUp - Starts!!!
+
+---------------------------------------------------------------
+
+Test 1: Get Version info for Lin
+API Lin_GetVersionInfo executed successfully
+ LIN MCAL Version Info
+ ---------------------
+ Vendor ID           : 44
+ Module ID           : 82
+ SW Major Version    : 1
+ SW Minor Version    : 0
+ SW Patch Version    : 0
+ 
+---------------------------------------------------------------
+
+Test 2: Initialization of Lin Module
+Initialization of LIN Module is Success !!!
+---------------------------------------------------------------
+
+Test 3: Lin Module : Internal Sleep
+Lin going to internal Sleep is Success !!!
+---------------------------------------------------------------
+
+Test 4: Lin Module : Wakeup from Internal Sleep - Wakeup Internal
+Lin Waking up from Internal Sleep by LinWakeupInternal API is Success !!!
+---------------------------------------------------------------
+
+Test 5: Lin Module : Sleep
+Lin Go to Sleep Command is sent on Lin Bus !!!
+Lin going to Sleep is Success !!!
+---------------------------------------------------------------
+
+Test 6: Lin Module : Wakeup from Sleep - Lin Wakeup
+Lin WakeUp Command is sent on Lin Bus !!!
+Lin Waking up from Sleep by LinWakeup API is Success !!!
+---------------------------------------------------------------
+
+---------------------------------------------------------------
+LIN Example Init Sleep WakeUp Run SUCCESS 
+---------------------------------------------------------------
+```
+
+#### Lin_Example_SendData
+
+##### Overview Of Lin_Example_SendData
+
+* **Lin_Example_SendData**
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes Lin Tx and Rx Pins, and UART Pins using Port_Init()
+  * Lin_Init and Lin_WakeupInternal Will initialize the Lin Module and will update the channel state to active
+  * LinSendFrame_Master_Response will Send header and data to Slave 1.
+  * LinSendFrame_Slave_Response will send header and expects data from Slave 1.
+  * LinSendFrame_Slave_To_Slave will send header ( Slave 1 will send data to Slave 2 ).
+
+##### Setup required to run Lin_Example_SendData
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest C29 compiler
+* Install PLIN tool to configure as Slaves.
+
+##### How to run Lin_Example_SendData
+
+* Open CCS and import Lin Example
+* Build project and start debug project
+* Data On Lin Bus can be seen on PLIN Tool
+
+##### Sample Log of Lin_Example_SendData
+
+```{EXAMPLE LOGS}
+LIN Driver Sample Application: Lin Send Data - Starts!!!
+
+---------------------------------------------------------------
+
+Initialization of LIN Module is Success !!!
+LIN Module Wake Up Internal. Ready to Send data on Lin Bus !!!
+
+---------------------------------------------------------------
+
+Test 1: Lin Send data : LIN Master Response !!!
+
+Started Sending Data on Lin Bus For ID : 0x47
+Data Sent : 0x11
+Started Sending Data on Lin Bus For ID : 0x8
+Data Sent : 0x34
+Started Sending Data on Lin Bus For ID : 0x49
+Data Sent : 0x56
+Started Sending Data on Lin Bus For ID : 0xca
+Data Sent : 0x78
+Started Sending Data on Lin Bus For ID : 0x8b
+Data Sent : 0x9a
+Started Sending Data on Lin Bus For ID : 0x4c
+Data Sent : 0xab
+Started Sending Data on Lin Bus For ID : 0xd
+Data Sent : 0xcd
+Started Sending Data on Lin Bus For ID : 0x8e
+Data Sent : 0xef
+Finished Sending Data on Lin Bus
+Lin Send data : LIN Master Response PASSED!!
+---------------------------------------------------------------
+
+---------------------------------------------------------------
+
+Test 2: Lin Send data : LIN Slave Response !!!
+
+Started Sending Header on Lin Bus For ID : 0x20
+Waiting For Slave to send the data...
+Started receiving Data from Slave...
+Data Received : 0xa5
+Data Received : 0x55
+Data Received : 0xaa
+Data Received : 0x55
+Data Received : 0xaa
+Data Received : 0x55
+Data Received : 0xaa
+Data Received : 0x55
+Finished Receiving Data
+Lin Send data : LIN Slave Response PASSED!!
+---------------------------------------------------------------
+
+---------------------------------------------------------------
+
+Test 3: Lin Send data : LIN Slave To Slave !!!
+
+Started Sending Header on Lin Bus For ID : 0xf0
+Sent Header on Bus for Slave 1 to send data to Slave 2
+Lin Send data : LIN Slave To Slave PASSED!!
+---------------------------------------------------------------
+
+---------------------------------------------------------------
+LIN Send Data Application - Master_Response, Slave_Response, Slave_To_Slave PASSED
+---------------------------------------------------------------
+
+```
+
+#### Lin_Example_Sleep_Wakeup_Interrupt
+
+##### Overview Of Lin_Example_Sleep_Wakeup_Interrupt
+
+* **Lin_Example_Sleep_Wakeup_Interrupt**
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes Lin Tx and Rx Pins, and UART Pins using Port_Init()
+  * Lin_Init will initialize the Lin Module
+  * Lin_CheckWakeUp_and_Sleep
+    * Lin_GoToSleep will send go to sleep command to Lin Bus. Lin state is SLEEP.
+    * Waits for Wake Up pulse for WakeUp Interrupt to trigger. ( Need to send wakeup pulse on LIN BUS )
+    * Lin_CheckWakeup will check if wake up request has been received.
+  * Lin_GetStatus will check if after wake up channel state is again Operational i.e. Wake Up success.
+
+##### Setup required to run Lin_Example_Sleep_Wakeup_Interrupt
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest C29 compiler
+* Install PLIN tool to configure as Slave.
+
+##### How to run Lin_Example_Sleep_Wakeup_Interrupt
+
+* Open CCS and import Lin Example
+* Build project and start debug project
+* Send wakeup pulse from PLIN Tool when lin is in sleep
+
+##### Sample Log of Lin_Example_Sleep_Wakeup_Interrupt
+
+```{EXAMPLE LOGS}
+LIN Driver Sample Application: Lin Sleep WakeUp Interrupt - Starts!!!
+
+---------------------------------------------------------------
+
+Initialization of LIN Module is Success !!!
+
+LIN Module Going to Sleep. Sending Go to Sleep Command On Bus..
+LIN Module Successfully Went to Sleep Mode. 
+
+---------------------------------------------------------------
+
+Trigger WakeUp Pulse on Lin Bus to Wakeup Lin Module
+Waiting for WAKE UP INTERRUPT on Bus...
+LinIf_CheckWakeup Detected WakeUp Pulse on Lin Bus !!!
+Lin Module Wake Up from Sleep by WakeUp Interrupt is Success !!!
+
+---------------------------------------------------------------
+LIN  Application - Wake Up Interrupt PASSED !!!
+---------------------------------------------------------------
+
+```
+
+#### File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂**Lin**\
+ ┃ ┃ ┣ 📂**Lin_Example_Init_Sleep_Wakeup**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Lin_Example_Init_Sleep_Wakeup.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Lin_Example_Init_Sleep_Wakeup_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_Cfg.h** : *Contains the generated pre-complier configuration header*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_PBcfg.c** : *Contains the Post build configuration parameters*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┗ 📜**Lin_Example_Init_Sleep_Wakeup.c** : *Int Sleep Wakeup Example application for Lin*\
+ ┃ ┃ ┣ 📂**Lin_Example_SendData**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Lin_Example_SendData.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Lin_Example_SendData_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_Cfg.h** : *Contains the generated pre-complier configuration header*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_PBcfg.c** : *Contains the Post build configuration parameters*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┗ 📜**Lin_Example_SendData.c** : *Send Data Example application for Lin*\
+ ┃ ┃ ┗ 📂**Lin_Example_Sleep_Wakeup_Interrupt**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Lin_Example_Sleep_Wakeup_Interrupt.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Lin_Example_Sleep_Wakeup_Interrupt_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_Cfg.h** : *Contains the generated pre-complier configuration header*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_PBcfg.c** : *Contains the Post build configuration parameters*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┗ 📜**Lin_Example_Sleep_Wakeup_Interrupt.c** : *Wakeup Interrupt Example application for Lin*\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json

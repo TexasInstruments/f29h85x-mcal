@@ -1,0 +1,36 @@
+---
+title: Spi_ChannelObjType
+summary: SPI Channel object structure. 
+
+---
+
+# Spi_ChannelObjType
+
+**Module:** **[Spi API GUIDE Header file](../Modules/group___s_p_i.md)**
+
+
+
+SPI Channel object structure. 
+
+
+`#include <Spi_Priv.h>`
+
+## Structure Members
+
+|  Member Type   | Member name    | Brief |
+| -------------- | -------------- | ----- |
+|  const [Spi_ChannelConfigType](Classes/struct_spi___channel_config_type.md) * | chCfg |  SPI channel config passed during init.  |
+|  const [Spi_DataBufferType](Modules/group___s_p_i.md#typedef-spi-databuffertype) * | txBufPtr |  TX buffer pointer given by user. This should be persistent.  |
+|  [Spi_DataBufferType](Modules/group___s_p_i.md#typedef-spi-databuffertype) * | rxBufPtr |  RX buffer pointer given by user. This should be persistent.  |
+|  [Spi_DataBufferType](Modules/group___s_p_i.md#typedef-spi-databuffertype)[SPI_IB_MAX_LENGTH] | txIb |  Internal TX buffer.  |
+|  [Spi_DataBufferType](Modules/group___s_p_i.md#typedef-spi-databuffertype)[SPI_IB_MAX_LENGTH] | rxIb |  Internal RX buffer.  |
+|  const uint8 * | curTxBufPtr |  Current TX buffer pointer.  |
+|  uint8 * | curRxBufPtr |  Current RX buffer pointer.  |
+|  [Spi_NumberOfDataType](Modules/group___s_p_i.md#typedef-spi-numberofdatatype) | numWordsTxRx |  Number of words to transfer.  |
+|  [Spi_NumberOfDataType](Modules/group___s_p_i.md#typedef-spi-numberofdatatype) | curTxWords |  Number of words transmitted. We need separate counters for TX/RX because when FIFO in enabled, TX writes happen in advance where as RX will happen on actual received data.  |
+|  [Spi_NumberOfDataType](Modules/group___s_p_i.md#typedef-spi-numberofdatatype) | curRxWords |  Number of words received.  |
+|  [Spi_BufferWidthType](Modules/group___s_p_i.md#enum-spi-bufferwidthtype) | bufWidth |  Width of buffer in bytes-used for accessing the TX/RX buffer. When dataWidth < 9, bufWidth = uint8 (1 bytes) When dataWidth >= 9 && < 17, bufWidth = uint16 (2 bytes)  |
+|  uint16 | effTxFifoDepth |  Effective TX FIFO depth in words - depends on dataWidth.  |
+|  uint16 | dataWidthBitMask |  Data width mask depending on SPI word size.  |
+
+-------------------------------

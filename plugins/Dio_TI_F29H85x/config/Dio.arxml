@@ -6,13 +6,13 @@
     <AR-PACKAGE UUID="260c5244-3b80-4d21-a655-786ae20128ad">
       <SHORT-NAME>TI_F29H85x</SHORT-NAME>
       <ELEMENTS>
-        <ECUC-DEFINITION-COLLECTION UUID="98307004-439c-4d1c-98bd-7eaa4c1911d4">
+        <ECUC-DEFINITION-COLLECTION>
           <SHORT-NAME>myEcuParameterDefinition</SHORT-NAME>
           <MODULE-REFS>
             <MODULE-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Dio</MODULE-REF>
           </MODULE-REFS>
         </ECUC-DEFINITION-COLLECTION>
-        <ECUC-MODULE-DEF UUID="4354e732-9227-4bc7-8d3e-2ad2daf1e365">
+        <ECUC-MODULE-DEF UUID="63b0882a-08b6-44e1-9738-3f24a9067e02">
           <SHORT-NAME>Dio</SHORT-NAME>
           <DESC>
             <L-2 L="EN">Configuration of the Dio (Digital IO) module.</L-2>
@@ -25,8 +25,6 @@
               </DOC-REVISION>
             </DOC-REVISIONS>
           </ADMIN-DATA>
-          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
           <POST-BUILD-VARIANT-SUPPORT>false</POST-BUILD-VARIANT-SUPPORT>
           <REFINED-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/AUTOSAR/EcucDefs/Dio</REFINED-MODULE-DEF-REF>
           <SUPPORTED-CONFIG-VARIANTS>
@@ -34,15 +32,13 @@
             <SUPPORTED-CONFIG-VARIANT>VARIANT-PRE-COMPILE</SUPPORTED-CONFIG-VARIANT>
           </SUPPORTED-CONFIG-VARIANTS>
           <CONTAINERS>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="666d8c93-dcca-4111-919d-0598fb77ebeb">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="2fa2864b-36cf-4517-8684-28672f78eec9">
               <SHORT-NAME>DioConfig</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">This container contains the configuration parameters and sub containers of the AUTOSAR DIO module.</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <SUB-CONTAINERS>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="d30fb46c-e148-4617-a486-3ea45ebc5dc7">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="88f8f3e8-6636-448d-a312-d8bc4cd9f5bf">
                   <SHORT-NAME>DioPort</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Configuration of individual DIO ports, consisting of channels and possible channel groups.</L-2>
@@ -51,13 +47,11 @@
                   <UPPER-MULTIPLICITY>8</UPPER-MULTIPLICITY>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-INTEGER-PARAM-DEF UUID="f4440a89-ad7a-494c-9a49-0d5b8528401a">
+                    <ECUC-INTEGER-PARAM-DEF UUID="5b529666-58df-44e7-a9aa-e767ae7b1662">
                       <SHORT-NAME>DioPortId</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Numeric identifier of the DIO port. Not all MCU ports may be used for DIO, thus there may be &quot;gaps&quot; in the list of all IDs. This value will be</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>ECU</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -78,7 +72,7 @@
                     </ECUC-INTEGER-PARAM-DEF>
                   </PARAMETERS>
                   <SUB-CONTAINERS>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="a33a0f4f-d148-410c-8ccc-ba757965c5cb">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="f7ecbb67-8516-46c4-a9fa-248c0fae50a0">
                       <SHORT-NAME>DioChannel</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Configuration of an individual DIO channel.</L-2>
@@ -87,13 +81,11 @@
                       <UPPER-MULTIPLICITY>256</UPPER-MULTIPLICITY>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-INTEGER-PARAM-DEF UUID="c4d94bea-5384-4eb8-b366-ce8e68ea85d8">
+                        <ECUC-INTEGER-PARAM-DEF UUID="ea8f0883-a964-4008-bd9b-ad81b550d426">
                           <SHORT-NAME>DioChannelId</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Channel Id of the DIO channel. This value will be assigned to the symbolic names.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -108,19 +100,17 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>true</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Dio/DioConfig/DioPort/DioChannel/DioChannelId: DEFAULT(XPath: node:fallback(node:value(concat(node:path(node:ref(../DioPinNumRef)), &apos;/PortPinId&apos;)), 0))-->
+                          <DEFAULT-VALUE>0</DEFAULT-VALUE>
                           <MAX>255</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
                       </PARAMETERS>
                       <REFERENCES>
-                        <ECUC-REFERENCE-DEF UUID="3ba30424-3a2b-4854-b113-1b5e1d5731e1">
+                        <ECUC-REFERENCE-DEF UUID="8610ba96-3078-4f82-afa7-f2b8d02bd923">
                           <SHORT-NAME>DioPinNumRef</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Reference to the Port Pin configuration, which is set in the PORT driver configuration</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -138,7 +128,7 @@
                         </ECUC-REFERENCE-DEF>
                       </REFERENCES>
                     </ECUC-PARAM-CONF-CONTAINER-DEF>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="6fcfc0ad-443a-409c-9d37-dcce1a69a44a">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="39bc61ee-b271-4c43-91b4-43f7055f90b7">
                       <SHORT-NAME>DioChannelGroup</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Definition and configuration of DIO channel groups. A channel group represents several adjoining DIO channels represented by a logical group.</L-2>
@@ -147,13 +137,11 @@
                       <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-STRING-PARAM-DEF UUID="820f2f62-c943-470e-a052-cb3fb4e6e6b9">
+                        <ECUC-STRING-PARAM-DEF UUID="790b3dab-38d3-4451-afd3-cbab9a2d3105">
                           <SHORT-NAME>DioChannelGroupIdentification</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">The DIO channel group is identified in DIO API by a pointer to a data structure (of type Dio_ChannelGroupType). That data structure contains the channel group information.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>ECU</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -174,13 +162,11 @@
                             </ECUC-STRING-PARAM-DEF-CONDITIONAL>
                           </ECUC-STRING-PARAM-DEF-VARIANTS>
                         </ECUC-STRING-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="4fc5b273-6388-44be-a254-372837d37ca0">
+                        <ECUC-INTEGER-PARAM-DEF UUID="2802ab90-2f30-4693-9038-2b19821fddae">
                           <SHORT-NAME>DioPortMask</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">This shall be the mask which defines the positions of the channel</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -199,13 +185,11 @@
                           <MAX>4294967295</MAX>
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="e90cf044-056c-4b31-b6f9-4e346bfeba43">
+                        <ECUC-INTEGER-PARAM-DEF UUID="f2bf9557-3115-41c0-b0ef-88f0e48451cb">
                           <SHORT-NAME>DioPortOffset</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">The position of the Channel Group on the port, counted</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -230,21 +214,17 @@
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
               </SUB-CONTAINERS>
             </ECUC-PARAM-CONF-CONTAINER-DEF>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="719a70dc-95f3-43f6-9e9b-a7ee6a5f6bab">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="4c57a2ab-f2de-470b-8ca5-8046d0f1587a">
               <SHORT-NAME>DioGeneral</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">General DIO module configuration parameters.</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <PARAMETERS>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="31306b19-e437-4da6-890f-00ac5b12917f">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="88263cf6-e488-42dc-98c5-c56b8daa2fbd">
                   <SHORT-NAME>DioDevErrorDetect</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Switches the development error detection and notification on or off.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -261,13 +241,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="3e31deda-7c5d-40e3-a3b6-ff77913975f6">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="9a2fd4dc-59e3-487f-a352-d8afda0bb38a">
                   <SHORT-NAME>DioFlipChannelApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Adds / removes the service Dio_FlipChannel() from the code.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -284,13 +262,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>true</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="a1347e0f-550a-4a79-99ee-dccb60d475ed">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="f8da915f-bf8a-4b35-8bb2-1cfd9ecb5bf3">
                   <SHORT-NAME>DioVersionInfoApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Adds / removes the service Dio_ GetVersionInfo() from the code.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>

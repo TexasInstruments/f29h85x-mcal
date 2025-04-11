@@ -1,0 +1,736 @@
+## WDG Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|RTE|Runtime Environment|
+|BSW|Basic Software|
+|MCU|Micro-Controller Unit|
+|MCAL|Micro-Controller Abstraction Layer|
+|API|Application Programming Interface|
+|DET|Default Error Tracer|
+|DEM|Diagnostics Event Manager|
+|HW |Hardware|
+|SW |Software|
+|I/O|Input/Output|
+|WDG|Watchdog|
+
+### Introduction
+
+The Wdg module provides services for initialization, changing the operation mode and setting the trigger condition (timeout).
+
+```{figure} Assets/images/Wdg_Autosar_MCAL.png
+:alt: WDG MCAL AUTOSAR
+:align: center
+
+WDG MCAL AUTOSAR
+```
+
+This document details AUTOSAR BSW WDG module implementation
+
+|Supported AUTOSAR Release|**: 4.3.1**|
+|-------------------------|-----------|
+| **Supported Configuration Variants** | **: Pre-Compile, Link-Time & Post Build**|
+| **Vendor ID**                      |   **: WDG_VENDOR_ID (44)**|
+| **Module ID**                      |   **: WDG_MODULE_ID (102)**|
+
+### Functional Overview
+
+The watchdog module generates an output pulse 512 watchdog-clocks (WDCLKs) wide whenever the 8-bit watchdog up counter has reached the maximum value. The watchdog clock source is INTOSC1 which is 10 MHz clock. Software must periodically write a 0x55 + 0xAA sequence into the watchdog key register to reset the watchdog counter. The counter can also be disabled.
+
+```{figure} Assets/images/Wdg_Timer_Module.png
+:alt: WDG MCAL AUTOSAR
+:align: center
+
+WDG TIMER MODULE
+```
+
+### Hardware Features
+
+#### Hardware Features supported
+
+The main features includes Servicing the Watchdog Timer,  Minimum Window Check, Watchdog Reset or Watchdog Interrupt Mode and Watchdog Operation in Low-Power Modes. Details are explained in below sections.
+
+##### Servicing the Watchdog Timer
+
+The watchdog counter (WDCNTR) is reset when the proper sequence is written to the WDKEY register before the 8-bit watchdog counter overflows. The WDCNTR is reset-enabled when a value of 0x55 is written to the WDKEY. When the next value written to the WDKEY register is 0xAA, then the WDCNTR is reset. Any value written to the WDKEY other than 0x55 or 0xAA causes no action. Any sequence of 0x55 and 0xAA values can be written to the WDKEY without causing a system reset; only a write of 0x55 followed by a write of 0xAA to the WDKEY resets the WDCNTR.
+
+##### Minimum Window Check
+
+To complement the timeout mechanism, the watchdog also contains an optional "windowing" feature that requires a minimum delay between counter resets.
+To set the window minimum, write the desired minimum watchdog count to the WDWCR register. This value takes effect after the next WDKEY sequence. From then on, any attempt to service the watchdog when WDCNTR is less than WDWCR triggers a watchdog interrupt or reset. When WDCNTR is greater than or equal to WDWCR, the watchdog can be serviced normally.
+
+##### Watchdog Reset or Watchdog Interrupt Mode
+
+The watchdog can be configured in the SCSR register to either reset the device (WDRST) or assert an interrupt (WDINT), if the watchdog counter reaches the maximum value.
+
+**Reset mode**: If the watchdog is configured to reset the device, then the WDRST signal pulls the device reset (XRS) pin low for 512 OSCCLK cycles when the watchdog counter reaches the maximum value.
+
+**Interrupt mode**: When the watchdog counter expires, the watchdog asserts an interrupt by driving the WDINT signal low for 512 OSCCLK cycles. WDINT is mapped to the PIPE module to assert appropriate CPU interrupt line as configured.
+
+##### Watchdog Operation in Low-Power Modes
+
+**IDLE mode**: In IDLE mode, the watchdog interrupt (WDINT) signal can generate an interrupt to the CPU to take the CPU out of IDLE mode.
+
+**STANDBY mode**:In STANDBY mode, clocks to the peripherals are turned off based on LPMCR, PCLKCRx and STANDBYEN registers. The CPU clock is gated when entering STANDBY mode based on LPMCR.LPM configuration but the watchdog remains functional since the module runs off the internal oscillator clock (INTOSC1). The WDINTsignal is applied to the Low Power Modes (LPM) block, so that the LPM block can be used to wake the CPU from STANDBY low-power mode.
+
+#### Not supported Features
+
+None
+
+#### Non compliance
+
+Below AUTOSAR design requirements are not supported for Wdg Driver:
+
+**SWS_Wdg_00136** : *The function SetTriggerCondition shall reset the watchdog timeout counter according to the timeout value passed.*
+>Rejection Reason : When user request non zero timeout value in Wdg_SetTriggerCondition API, it will be ignored. Due to hardware limitation, it is not possible to set the hardware watchdog counter value based on user provided timeout. Timeout value will always remain as per statically configured slow and fast mode timeout values.
+
+**SWS_Wdg_00034** : *General design rule: configure Start address of trigger routine*
+>Rejection Reason : Trigger routine information is not provided by hardware and not needed by the system.
+
+**SWS_Wdg_00076** : *External Watchdog Driver*
+>Rejection Reason : Internal watchdog is only supported, external watchdog support is not part of the current implementation.
+
+For more details, Refer [AUTOSAR_SWS_WdgDriver](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_WatchdogDriver.pdf)
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┗ 📂**Wdg**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Wdg_Priv.h** : *Contains data structures and Internal function declarations.*\
+ ┃ ┃ ┃ ┗ 📜**Wdg.h** : *Contains the API declarations of the Wdg driver to be used by upper layers.*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Wdg_Priv.c** : *Contains Functions that support the API for Wdg driver*\
+ ┃ ┃ ┃ ┗ 📜**Wdg.c** : *Contains the implementation of the API for Wdg driver.*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Wdg_Header_File_Structure.png
+:alt: Wdg Header File Structure
+:align: center
+
+Wdg Header File Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+None
+
+#### Error handling
+
+##### Development Error Reporting
+
+Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+##### Extended Production Error Reporting
+
+Extended production errors are reported to the DEM using the service Dem_SetEventStatus(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+#### Error codes
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|API service used in wrong context: |WDG_E_DRIVER_STATE|0x10|
+|API service called with wrong / inconsistent parameter(s): |WDG_E_PARAM_MODE|0x11|  
+|API service called with wrong / inconsistent parameter(s): |WDG_E_PARAM_CONFIG|0x12|
+|The passed timeout value is higher than the maximum timeout value: |WDG_E_PARAM_TIMEOUT|0x13|
+|API is called with wrong pointer value|WDG_E_PARAM_POINTER|0x14|
+|Invalid configuration set selection|WDG_E_INIT_FAILED|0x15|
+
+### Used resources
+
+#### Interrupt Handling
+
+#### Instance support
+
+|CPU instances|supported|
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+Below image shows Wdg driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29 Reference Manual.
+
+```{figure} Assets/images/Wdg_HW_SW_Mapping.png
+:alt: Wdg HW/SW Mapping
+:align: center
+
+Wdg HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This implementation depends on the DET in order to report development errors. The detection of development errors is configurable (ON / OFF), The switch WDG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+
+##### DEM
+
+This implementation depends on the DEM in order to report Extended production errors and can be turned OFF. The switch WDG_DEM_ENABLE will activate or deactivate the detection of all extended production errors.
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Wdg Driver implementation supports multiple configuration variants, namely Wdg Post-Build config and Pre-Compile config. The driver expects generated **Wdg_Cfg.h** to be present as input file.
+The associated Wdg driver configuration generated source files are **Wdg_Cfg.c** or **Wdg_Lcfg.c** or **Wdg_PBcfg.c**
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+#### WdgDemEventParameterRefs
+
+##### WDG_E_DISABLE_REJECTED
+
+|SWS Item|ECUC_Wdg_00150|
+|--------|----------------|
+|**Name**| WDG_E_DISABLE_REJECTED|
+|**Parent Container**|WdgDemEventParameterRefs|
+|**Description**|Reference to the DemEventParameter which shall be issued when the error "Initialization or mode switch failed because it would disable the watchdog" has occurred.|
+|**Multiplicity**|0 .. 1|
+|**Type**|Symbolic name reference to [ DemEventParameter ]|
+|**Post-Build Variant Multiplicity**|false|
+|**Post-Build Variant Value**|false|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### WDG_E_MODE_FAILED
+
+|SWS Item|ECUC_Wdg_00149|
+|--------|----------------|
+|**Name**|WDG_E_MODE_FAILED|
+|**Parent Container**|WdgDemEventParameterRefs|
+|**Description**|Reference to the DemEventParameter which shall be issued when the error "Setting a watchdog mode failed (during initialization or mode switch)" has occurred.|
+|**Multiplicity**|0 .. 1|
+|**Type**|Symbolic name reference to [ DemEventParameter ]|
+|**Post-Build Variant Multiplicity**|false|
+|**Post-Build Variant Value**|false|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### WdgGeneral
+
+##### WdgDevErrorDetect
+
+|SWS Item|ECUC_Wdg_00115|
+|--------|----------------|
+|**Name**|WdgDevErrorDetect|
+|**Parent Container**|WdgGeneral|
+|**Description**|Switches the development error detection and notification on or off.<br> true: detection and notification is enabled.<br> false: detection and notification is disabled.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### WdgDisableAllowed
+
+|SWS Item|ECUC_Wdg_00116|
+|--------|----------------|
+|**Name**|WdgDisableAllowed|
+|**Parent Container**|WdgGeneral|
+|**Description**|Compile switch to allow / forbid disabling the watchdog driver during runtime.<br> True: Disabling the watchdog driver at runtime is allowed.<br> False: Disabling the watchdog driver at runtime is not allowed.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local<br>dependency: Safety relevant compile switch, this has to be in accordance with the corresponding settings for the watchdog manager.|
+
+##### WdgIndex
+
+|SWS Item|ECUC_Wdg_00117|
+|--------|----------------|
+|**Name**|WdgIndex|
+|**Parent Container**|WdgGeneral|
+|**Description**|Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 255|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### WdgInitialTimeout
+
+|SWS Item|ECUC_Wdg_00130|
+|--------|----------------|
+|**Name**|WdgInitialTimeout|
+|**Parent Container**|WdgGeneral|
+|**Description**|The initial timeout (sec) for the trigger condition to be initialized during Init function. It shall be not larger than WdgMaxTimeout.|
+|**Multiplicity**|1|
+|**Type**|EcucFloatParamDef|
+|**Range**|0 .. 65.535|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### WdgMaxTimeout
+
+|SWS Item|ECUC_Wdg_00131|
+|--------|----------------|
+|**Name**|WdgMaxTimeout|
+|**Parent Container**|WdgGeneral|
+|**Description**|The maximum timeout (sec) to which the watchdog trigger condition can be initialized.|
+|**Multiplicity**|1|
+|**Type**|EcucFloatParamDef|
+|**Range**|0 .. 65.535|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### WdgRunArea
+
+|SWS Item|ECUC_Wdg_00147|
+|--------|----------------|
+|**Name**|WdgRunArea|
+|**Parent Container**|WdgGeneral|
+|**Description**|Represents the watchdog driver execution area is either from ROM(Flash) or RAM as required with the particular microcontroller.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**||
+|RAM|Watchdog driver to be executed out of RAM area|
+|ROM|Watchdog driver to be executed out of ROM area|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### WdgTriggerLocation
+
+|SWS Item|ECUC_Wdg_00118|
+|--------|----------------|
+|**Name**|WdgTriggerLocation|
+|**Parent Container**|WdgGeneral|
+|**Description**|Location (memory address) of the watchdog trigger routine.|
+|**Multiplicity**|1|
+|**Type**|EcucFunctionNameDef|
+|**Default value**|--|
+|**maxLength**|--|
+|**minLength**|--|
+|**regularExpression**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All Variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local<br>dependency: Only relevant if provided by hardware and needed by the system.|
+
+##### WdgVersionInfoApi
+
+|SWS Item|ECUC_Wdg_00119|
+|--------|----------------|
+|**Name**|WdgVersionInfoApi|
+|**Parent Container**|WdgGeneral|
+|**Description**|Compile switch to enable / disable the version information API<br> True: API enabled<br> False: API disabled|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|All variants|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+#### WdgPublishedInformation
+
+##### WdgTriggerMode
+
+|SWS Item|ECUC_Wdg_00127|
+|--------|----------------|
+|**Name**|WdgTriggerMode|
+|**Parent Container**|WdgPublishedInformation|
+|**Description**|Watchdog trigger mode (toggle/window/both)|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**||
+|WDG_BOTH|--|
+|WDG_TOGGLE|--|
+|WDG_WINDOW|--|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|**Published Information**|All Variants|
+|**Scope / Dependency**|scope: local|
+
+#### WdgSettingsConfig
+
+##### WdgDefaultMode
+
+|SWS Item|ECUC_Wdg_00120|
+|--------|----------------|
+|**Name**|WdgDefaultMode|
+|**Parent Container**|WdgSettingsConfig|
+|**Description**|Default mode for watchdog driver initialization.<br>ImplementationType: WdgIf_ModeType|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**||
+|WDGIF_FAST_MODE|Default watchdog mode is "fast"|
+|WDGIF_OFF_MODE|Default watchdog mode is "off"|
+|WDGIF_SLOW_MODE|Default watchdog mode is "slow"|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local<br>dependency: "Off" mode only possible if disabling the watchdog driver is allowed.|
+
+#### WdgExternalConfiguration
+
+##### WdgExternalContainerRef
+
+|SWS Item|ECUC_Wdg_00113|
+|--------|----------------|
+|**Name**|WdgExternalContainerRef|
+|**Parent Container**|WdgExternalConfiguration|
+|**Description**|Reference to either<br>a DioChannelGroup container in case the hardware watchdog is connected via DIO pins<br> an SpiSequenceConfiguration container in case the watchdog hardware is accessed via SPI.|
+|**Multiplicity**|0..1|
+|**Type**|Choice reference to [ DioChannelGroup , SpiSequence ]|
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local<br>dependency: See DIO resp. SPI SWS|
+
+#### WdgSettingsFast
+
+#### WdgSettingsOff
+
+#### WdgSettingsSlow
+
+##### WdgPredivider
+
+|SWS Item||
+|--------|----------------|
+|**Name**|WdgPredivider|
+|**Parent Container**|WdgSettingsFast|
+|**Description**|Wdg_PreDivider  determines the watchdog clock pre-divider, which is the first of the two dividers between INTOSC1 and the watchdog counter clock (WDCLK)|
+|**Multiplicity**||
+|**Type**|ENUMERATION|
+|**Range**||
+||WDG_PREDIV_2|
+||WDG_PREDIV_4|
+||WDG_PREDIV_8|
+||WDG_PREDIV_16|
+||WDG_PREDIV_32|
+||WDG_PREDIV_64|
+||WDG_PREDIV_128|
+||WDG_PREDIV_256|
+||WDG_PREDIV_512|
+||WDG_PREDIV_1024|
+||WDG_PREDIV_2048|
+||WDG_PREDIV_4096|
+|**Default value**|WDG_PREDIV_512|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### WdgPrescaler
+
+|SWS Item||
+|--------|----------------|
+|**Name**|WdgPrescaler|
+|**Parent Container**|WdgSettingsFast|
+|**Description**|Wdg_PreScaler determines the watchdog clock prescaler, which is the second of the two dividers between INTOSC1 and the watchdog counter clock (WDCLK)|
+|**Multiplicity**||
+|**Type**|ENUMERATION|
+|**Range**||
+||WDG_PRESCALE_1|
+||WDG_PRESCALE_2|
+||WDG_PRESCALE_4|
+||WDG_PRESCALE_8|
+||WDG_PRESCALE_16|
+||WDG_PRESCALE_32|
+||WDG_PRESCALE_64|
+|**Default value**|WDG_PRESCALE_1|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+```{Note}
+ The watchdog reset or interrupt pulse is 512 INTOSC1 cycles long, so the counter period must be longer. To guarantee this, the product 
+ of the prescaler and pre-divider must be greater than or equal to four.
+ ```
+
+##### WdgTimeout
+
+|SWS Item||
+|--------|----------------|
+|**Name**|WdgTimeout|
+|**Parent Container**|WdgSettingsFast|
+|**Description**|This is the maximum timeout value in milliseconds.|
+|**Multiplicity**||
+|**Type**|FLOAT|
+|**Range**|0.0 .. 6685.0|
+|**Default value**|13.05|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+```{Note}
+ The timeout value is in Milliseconds.
+ ```
+
+##### WdgReaction
+
+|SWS Item||
+|--------|----------------|
+|**Name**|WdgReaction|
+|**Parent Container**|WdgSettingsFast|
+|**Description**|Watchdog reaction for timer expiration or incorrect service.|
+|**Multiplicity**||
+|**Type**|ENUMERATION|
+|**Range**||
+||WDG_GENERATE_RESET|
+||WDG_GENERATE_INTERRUPT|
+|**Default value**|WDG_GENERATE_INTERRUPT|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### WdgThresholdValue
+
+|SWS Item||
+|--------|----------------|
+|**Name**|WdgThresholdValue|
+|**Parent Container**|WdgSettingsFast|
+|**Description**|Watchdog Threshold. It specifies lower limit of the watchdog counter reset  window.|
+|**Multiplicity**||
+|**Type**|INTEGER|
+|**Range**|0 .. 255|
+|**Default value**|255|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+Refer [AUTOSAR_SWS_WDGDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_WatchdogDriver.pdf) for configuration parameters details
+
+#### Steps To Configure Wdg Module
+
+1. Open EB Tresos configurator tool, load Wdg and Dem modules. Select the Config Variant ( Precompile/Post-Build/Link-Time)
+2. Open DEM module plugin and register DEM event "WDG_E_DISABLE_REJECTED" & "WDG_E_MODE_FAILED" to report extended production errors
+3. Open WDG module plugin and make sure that required parameters and mode settings are configured correctly
+4. Make sure that fastmode, slowmode configuration settings are provided
+5. Save the configuration and generate the configuration.
+
+### Examples
+
+The example application demonstrates use of Wdg module, the list below identifies key steps performed the example.
+
+#### Wdg_Example_Service
+
+##### Overview of Wdg_Example_Service
+
+* Wdg_Example_Service
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outpus and GPIO Inputs using Port_Init()
+  * Verify the wdg servicing without expiry on configired timeouts
+
+##### Setup required to run Wdg_Example_Service
+
+* Install Code Composer Studio latest version
+* Install latest C29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+##### How to run Wdg_Example_Service
+
+* Open CCS and Import Wdg_Example_Service example
+* Build project and start debug project
+
+##### Sample Log of Wdg_Example_Service
+
+```{EXAMPLE LOGS}
+    App_Utils Initialization is completed !!!
+    Sample Application to test Wdg Interrupt & Servicing - STARTS !!!
+    Wdg GetVersionInfo API - STARTS !!!
+    WDG MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 102
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Wdg GetVersionInfo API - ENDS !!!
+    Wdg Initialization - STARTS !!!
+    Wdg Initialization - ENDS !!!
+    Wdg Max timeout duration in milliseconds is : 3342 !!!
+    Wdg servicing is called in loop, So interrupts will not be generated !!!    
+```
+
+#### Wdg_Example_Interrupt
+
+##### Overview of Wdg_Example_Interrupt
+
+* Wdg_Example_Interrupt
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+  * Verify the wdg interrupts generation on timeout
+
+##### Setup required to run Wdg_Example_Interrupt
+
+* Install Code Composer Studio latest version
+* Install latest C29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+##### How to run Wdg_Example_Interrupt
+
+* Open CCS and Import Wdg_Example_Interrupt example
+* Build project and start debug project
+
+##### Sample Log of Wdg_Example_Interrupt
+
+```{EXAMPLE LOGS}
+    App_Utils Initialization is completed !!!
+    Sample Application to test Wdg Interrupt & Servicing - STARTS !!!
+    Wdg GetVersionInfo API - STARTS !!!
+    WDG MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 102
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Wdg GetVersionInfo API - ENDS !!!
+    Wdg Initialization - STARTS !!!
+    Wdg Initialization - ENDS !!!
+    Wdg Max timeout duration in milliseconds is : 3342 !!!
+    Wdg Interrupt is generated after timeout!!!
+    Wdg Example Interrupt: Sample Application - Completes successfully !!! 
+```
+
+#### File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂**Wdg**\
+ ┃ ┃ ┗ 📂 **📂Wdg_Example_Service**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**📜Wdg_Example_Service.projectspec**\
+ ┃ ┃ ┃ ┣ 📂📜Wdg_Service_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Wdg.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Wdg_Cfg.h** : *Contains the generated pre-complier configuration header.*\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Wdg_PBcfg.c** : *Contains the Post build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┗ ┗ 📜**Wdg_Example_Service.c** : *Example application for Wdg*\
+ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{Note}
+ Either Wdg_PBcfg.c OR Wdg_Lcfg.c OR Wdg_Cfg.c will be present based on selected config variant by user
+ ```

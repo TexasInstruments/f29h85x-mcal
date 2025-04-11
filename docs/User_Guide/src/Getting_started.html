@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.00.00
+                01.01.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -84,7 +84,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#software-dependencies">3.9.2. Software Dependencies</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#ide-ccs-theia">3.9.2.1. IDE (CCS Theia)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ide-ccs">3.9.2.1. IDE (CCS)</a></li>
 </ul>
 </li>
 </ul>
@@ -103,7 +103,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#code-composer-studio-ccs">3.11.2. Code Composer Studio (CCS)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#importing-projects-into-ccs">3.11.2.1. Importing projects into CCS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#building-and-debugging-projects-in-ccs">3.11.2.2. Building and Debugging projects in CCS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#loading-generated-executable-file-using-ccs">3.11.2.2. Loading generated executable file using CCS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-and-debugging-projects-in-ccs">3.11.2.3. Building and Debugging projects in CCS</a></li>
 </ul>
 </li>
 </ul>
@@ -113,6 +114,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#boot-modes">3.13. Boot Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loading-example-configs-to-eb-tresos">3.14. Loading example configs to EB tresos</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a></li>
@@ -288,7 +290,7 @@
 </section>
 <section id="compiler-and-linker-settings">
 <h2><span class="section-number">3.5. </span>Compiler and Linker Settings<a class="headerlink" href="#compiler-and-linker-settings" title="Link to this heading"></a></h2>
-<p>C29 compiler version to be used is <strong>ti-cgt-c29_0.1.0.STS</strong></p>
+<p>C29 compiler version to be used is <strong>ti-cgt-c29_1.0.0.STS</strong></p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Compiler Option</p></th>
@@ -320,11 +322,8 @@
 <tr class="row-odd"><td><p>-cl-single-precision-constant</p></td>
 <td><p>Option with the c29clang compiler to treat double precision floating-point constants as single precision constants</p></td>
 </tr>
-<tr class="row-even"><td><p>Build Type</p></td>
-<td><p>User-option to select the build type : <strong>Debug/Release</strong>. To configure this option refer section <a class="reference internal" href="#build-system"><span class="xref myst">Build system</span></a></p></td>
-</tr>
-<tr class="row-odd"><td><p>Build Configuration</p></td>
-<td><p>User-option to select the build configuration: <strong>RAM/FLASH</strong>. To configure this option refer section <a class="reference internal" href="#build-system"><span class="xref myst">Build system</span></a></p></td>
+<tr class="row-even"><td><p>-Werror</p></td>
+<td><p>Treat detected warnings in the specified category as errors.</p></td>
 </tr>
 </tbody>
 </table>
@@ -367,7 +366,7 @@
 </tr>
 </tbody>
 </table>
-<p><a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/indexC29.html">Refer this link to get more information on C29 Compiler options</a></p>
+<p><a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel1_0_0_LTS/indexC29.html">Refer this link to get more information on C29 Compiler options</a></p>
 </section>
 <section id="modules-supported">
 <h2><span class="section-number">3.6. </span>Modules Supported<a class="headerlink" href="#modules-supported" title="Link to this heading"></a></h2>
@@ -407,6 +406,42 @@
 </tr>
 <tr class="row-even"><td><p>Can</p></td>
 <td><p>Driver for CAN module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Wdg</p></td>
+<td><p>Driver for Wdg module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Lin</p></td>
+<td><p>Driver for Lin module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Spi</p></td>
+<td><p>Driver for Spi module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_Adc</p></td>
+<td><p>Driver for Cdd_Adc module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Sent</p></td>
+<td><p>Driver for Cdd_Sent module</p></td>
+<td><p>F29H85x</p></td>
+<td><p>CPU 1 / CPU 2 / CPU 3</p></td>
+<td><p>CPU 1 / CPU 2</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_Xbar</p></td>
+<td><p>Driver for Cdd_Xbar module</p></td>
 <td><p>F29H85x</p></td>
 <td><p>CPU 1 / CPU 2 / CPU 3</p></td>
 <td><p>CPU 1 / CPU 2</p></td>
@@ -471,7 +506,7 @@
 <h3><span class="section-number">3.9.1. </span>Hardware Dependencies<a class="headerlink" href="#hardware-dependencies" title="Link to this heading"></a></h3>
 <section id="emulator">
 <h4><span class="section-number">3.9.1.1. </span>Emulator<a class="headerlink" href="#emulator" title="Link to this heading"></a></h4>
-<p>F29x EVMs includes an <strong>XDS110 USB</strong> emulator which could be used with CCS Theia.</p>
+<p>F29x EVMs includes an <strong>XDS110 USB</strong> emulator which could be used with CCS.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Please refer to ti.com or contact your FAE for documents describing the EVM.</p>
@@ -480,14 +515,14 @@
 </section>
 <section id="software-dependencies">
 <h3><span class="section-number">3.9.2. </span>Software Dependencies<a class="headerlink" href="#software-dependencies" title="Link to this heading"></a></h3>
-<section id="ide-ccs-theia">
-<h4><span class="section-number">3.9.2.1. </span>IDE (CCS Theia)<a class="headerlink" href="#ide-ccs-theia" title="Link to this heading"></a></h4>
+<section id="ide-ccs">
+<h4><span class="section-number">3.9.2.1. </span>IDE (CCS)<a class="headerlink" href="#ide-ccs" title="Link to this heading"></a></h4>
 <p>Code Composer Studio is an integrated development environment (IDE) that supports TI’s Micro-controller and Embedded Processors portfolio.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Please refer release notes for CCS Theia Studio version details.</p>
+<p>Please refer release notes for CCS version details.</p>
 </div>
-<p><a class="reference external" href="https://www.ti.com/drr/opn/C2000-F29-3P">Refer this link to get access for CCS Theia</a></p>
+<p>You can downloaded CCS from <a class="reference external" href="https://www.ti.com/tool/CCSTUDIO#downloads">ti.com</a></p>
 </section>
 </section>
 </section>
@@ -502,6 +537,9 @@
 ┣ 📂<strong>examples</strong><br />
 ┃ ┣ 📂AppUtils<br />
 ┃ ┣ 📂Can<br />
+┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Xbar<br />
 ┃ ┣ 📂<strong>DeviceSupport</strong><br />
 ┃ ┃ ┣ 📂include<br />
 ┃ ┃ ┣ 📂LinkerCMD<br />
@@ -513,15 +551,18 @@
 ┃ ┃ ┗ 📜makefile.defs<br />
 ┃ ┣ 📂Dio<br />
 ┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcu<br />
 ┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┗ 📂Wdg<br />
 ┣ 📂plugins<br />
 ┣ 📜<strong>CMakeLists.txt</strong> : <em>Top-level CMake file</em><br />
 ┗ 📜CMakePresets.json</p>
 <ul class="simple">
 <li><p><strong>codestartbranch.asm:</strong> Defines the code start point, it disables watchdog and calls the _c_int00 function.
 The _c_int00 function is the startup/boot routine responsible for setting up the C environment.
-Refer <a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/compiler_manual/program_loading_and_running/run-time-initialization-slau1316977.html#the-c-int00-function">compiler user guide</a> to know more details about _c_int00 function.</p></li>
+Refer <a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel1_0_0_LTS/compiler_manual/program_loading_and_running/run-time-initialization-slau1316977.html#the-c-int00-function">compiler user guide</a> to know more details about _c_int00 function.</p></li>
 <li><p><strong>DeviceSupport.c:</strong> Defines DeviceSupport_Init function that initializes the required flash wait states(only for FLASH build configuration).</p></li>
 </ul>
 <div class="admonition attention">
@@ -541,11 +582,17 @@ Refer <a class="reference external" href="https://software-dl.ti.com/codegen/doc
 ┃ ┃ ┣ 📜<strong>AppUtils.h</strong><br />
 ┃ ┃ ┗ 📜CMakeLists.txt<br />
 ┃ ┣ 📂Can<br />
+┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Xbar<br />
 ┃ ┣ 📂DeviceSupport<br />
 ┃ ┣ 📂Dio<br />
 ┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcu<br />
 ┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┗ 📂Wdg<br />
 ┣ 📂plugins<br />
 ┣ 📜<strong>CMakeLists.txt</strong> : <em>Top-level CMake file</em><br />
 ┗ 📜CMakePresets.json</p>
@@ -609,12 +656,18 @@ It can generate native build files for different platforms and compilers, such a
 ┃ ┃ ┃ ┣ 📜Can_Irq.c<br />
 ┃ ┃ ┃ ┗ 📜Can_Priv.c<br />
 ┃ ┃ ┗ 📜CMakeLists.txt : <em>CAN driver CMake file</em><br />
+┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Xbar<br />
 ┃ ┣ 📂Dio<br />
 ┃ ┣ 📂Gpt<br />
 ┃ ┣ 📂hw_include<br />
+┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcal_Lib<br />
 ┃ ┣ 📂Mcu<br />
-┃ ┗ 📂Port<br />
+┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┗ 📂Wdg<br />
 ┣ 📂<strong>examples</strong><br />
 ┃ ┣ 📂AppUtils<br />
 ┃ ┣ 📂Can<br />
@@ -643,11 +696,17 @@ It can generate native build files for different platforms and compilers, such a
 ┃ ┃ ┃ ┗ 📜<strong>CMakeLists.txt</strong> : <em>Can_Example_Classic CAN example CMake file</em><br />
 ┃ ┃ ┣ 📂Can_Example_Icom<br />
 ┃ ┃ ┗ 📂Can_Example_loopback<br />
+┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Xbar<br />
 ┃ ┣ 📂DeviceSupport<br />
 ┃ ┣ 📂Dio<br />
 ┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcu<br />
 ┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┣ 📂Wdg<br />
 ┃ ┗ 📜<strong>CMakeLists.txt</strong> : <em>Examples CMake file</em><br />
 ┣ 📜<strong>CMakeLists.txt</strong> : <em>Root-Level CMake file</em><br />
 ┗ 📜<strong>CMakePresets.json</strong> : <em>CMake preset json file</em></p>
@@ -775,7 +834,7 @@ It can generate native build files for different platforms and compilers, such a
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For more information on CMake support by the C29Clang compiler you can refer <a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/getting_started_guide/building_simple_application.html?highlight=cmake#compile-and-link-using-build-automation-tools">compiler documentation</a></p>
+<p>For more information on CMake support by the C29Clang compiler you can refer <a class="reference external" href="https://software-dl.ti.com/codegen/docs/c29clang/rel1_0_0_LTS/getting_started_guide/building_simple_application.html#compile-and-link-using-build-automation-tools">compiler documentation</a></p>
 </div>
 </section>
 </section>
@@ -798,11 +857,17 @@ It can generate native build files for different platforms and compilers, such a
 ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
 ┃ ┃ ┣ 📂Can_Example_Icom<br />
 ┃ ┃ ┗ 📂Can_Example_loopback<br />
+┃ ┣ 📂Cdd_Adc<br />
+┃ ┣ 📂Cdd_Sent<br />
+┃ ┣ 📂Cdd_Xbar<br />
 ┃ ┣ 📂DeviceSupport<br />
 ┃ ┣ 📂Dio<br />
 ┃ ┣ 📂Gpt<br />
+┃ ┣ 📂Lin<br />
 ┃ ┣ 📂Mcu<br />
 ┃ ┣ 📂Port<br />
+┃ ┣ 📂Spi<br />
+┃ ┣ 📂Wdg<br />
 ┃ ┗ 📜CMakeLists.txt<br />
 ┣ 📜CMakeLists.txt<br />
 ┗ 📜CMakePresets.json</p>
@@ -833,16 +898,61 @@ It can generate native build files for different platforms and compilers, such a
 </figure>
 </li>
 </ol>
+</section>
+<section id="loading-generated-executable-file-using-ccs">
+<h4><span class="section-number">3.11.2.2. </span>Loading generated executable file using CCS<a class="headerlink" href="#loading-generated-executable-file-using-ccs" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Import any example project to CCS, right click on the ccxml file and ‘Start project-less Debug’.</p>
+<figure class="align-center" id="id15">
+<img alt="CCS Loading Executable Step1" src="../_images/CCS_Loading_Executable_Step1.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.15 </span><span class="caption-text">CCS Loading Executable Step1</span><a class="headerlink" href="#id15" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Right click on the C29xx_CPU1 THREAD and ‘Connect Target’.</p>
+<figure class="align-center" id="id16">
+<img alt="CCS Loading Executable Step2" src="../_images/CCS_Loading_Executable_Step2.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.16 </span><span class="caption-text">CCS Loading Executable Step2</span><a class="headerlink" href="#id16" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Go to Run - Load - Load Program.</p>
+<figure class="align-center" id="id17">
+<img alt="CCS Loading Executable Step3" src="../_images/CCS_Loading_Executable_Step3.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.17 </span><span class="caption-text">CCS Loading Executable Step3</span><a class="headerlink" href="#id17" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Browse to the folder containing the generated executable, select the desired executable to be loaded and click on OK.</p>
+<figure class="align-center" id="id18">
+<img alt="CCS Loading Executable Step4" src="../_images/CCS_Loading_Executable_Step4.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.18 </span><span class="caption-text">CCS Loading Executable Step4</span><a class="headerlink" href="#id18" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+<li><p>Once the executable is loaded you can continue to run and debug the project.</p>
+<figure class="align-center" id="id19">
+<img alt="CCS Executable Loaded" src="../_images/CCS_Loading_Executable_Step5.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.19 </span><span class="caption-text">CCS Executable Loaded</span><a class="headerlink" href="#id19" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</li>
+</ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For more information on projectspec and their use in CCS <a class="reference external" href="https://software-dl.ti.com/ccs/esd/documents/ccs_projectspecs.html">refer documentation</a>.</p>
+<p>For more information on projectspec and it’s use in CCS <a class="reference external" href="https://software-dl.ti.com/ccs/esd/documents/ccs_projectspecs.html">refer documentation</a>.</p>
 </div>
 </section>
 <section id="building-and-debugging-projects-in-ccs">
-<h4><span class="section-number">3.11.2.2. </span>Building and Debugging projects in CCS<a class="headerlink" href="#building-and-debugging-projects-in-ccs" title="Link to this heading"></a></h4>
+<h4><span class="section-number">3.11.2.3. </span>Building and Debugging projects in CCS<a class="headerlink" href="#building-and-debugging-projects-in-ccs" title="Link to this heading"></a></h4>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For information on how to build and debug any project in CCS <a class="reference external" href="https://software-dl.ti.com/ccs/esd/documents/users_guide_ccs_theia/index_project-management.html">refer documentation</a>.</p>
+<p>For information on how to build and debug any project in CCS <a class="reference external" href="https://software-dl.ti.com/ccs/esd/documents/users_guide_ccs/index_project-management.html">refer documentation</a>.</p>
 </div>
 </section>
 </section>
@@ -862,12 +972,45 @@ It can generate native build files for different platforms and compilers, such a
 <li><p>Multi-zone security in hardware</p></li>
 <li><p>Enhanced debug and trace capabilities</p></li>
 </ul>
-<p><a class="reference external" href="https://www.ti.com/drr/opn/C2000-F29-3P">Refer this link to get access for TRM details</a></p>
+<p>You can downloaded TRM from <a class="reference external" href="https://www.ti.com/product/F29H859TU-Q1">ti.com</a></p>
 </section>
 </section>
 <section id="boot-modes">
 <h2><span class="section-number">3.13. </span>Boot Modes<a class="headerlink" href="#boot-modes" title="Link to this heading"></a></h2>
 <p>Will be added in later release.</p>
+</section>
+<section id="loading-example-configs-to-eb-tresos">
+<h2><span class="section-number">3.14. </span>Loading example configs to EB tresos<a class="headerlink" href="#loading-example-configs-to-eb-tresos" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Create and load the plugins required for the example by following the steps in <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#create-an-eb-project"><span class="std std-ref">Create an EB project</span></a> and <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#load-plugins"><span class="std std-ref">Load plugins</span></a> and close the EB tresos.</p></li>
+</ul>
+<figure class="align-center" id="id20">
+<img alt="EB Tresos Example Project Created" src="../_images/EB_Tresos_Example_Step1.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.20 </span><span class="caption-text">EB Tresos Example Project Created</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Copy the ECU Parameter definition files(.xdm) of the specific example.</p></li>
+</ul>
+<figure class="align-center" id="id21">
+<img alt="MCAL Example ECU Parameter definition files" src="../_images/EB_Tresos_Example_Step2.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.21 </span><span class="caption-text">MCAL Example ECU Parameter definition files</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Go to the EB tresos project workspace and replace the generated ECU Parameter definition files (.xdm) with the ECU Parameter definition files of your specific example.</p></li>
+</ul>
+<figure class="align-center" id="id22">
+<img alt="EB Tresos ECU Parameter definition files" src="../_images/EB_Tresos_Example_Step3.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.22 </span><span class="caption-text">EB Tresos ECU Parameter definition files</span><a class="headerlink" href="#id22" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Launch the EB Tresos tool again to see the example configurations.</p></li>
+</ul>
 </section>
 </section>
 
@@ -883,7 +1026,7 @@ It can generate native build files for different platforms and compilers, such a
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Oct 22, 2024.
+          <span class="lastupdated" >Last updated on Dec 18, 2024.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

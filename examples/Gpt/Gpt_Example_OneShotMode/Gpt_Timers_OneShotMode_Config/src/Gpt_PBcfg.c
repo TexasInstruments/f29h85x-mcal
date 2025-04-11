@@ -36,8 +36,7 @@
  *********************************************************************************************************************/
 /** \brief Check module software version information */
 #if ((GPT_SW_MAJOR_VERSION != (1U)) ||\
-     (GPT_SW_MINOR_VERSION != (0U)) ||\
-     (GPT_SW_PATCH_VERSION != (0U)))
+     (GPT_SW_MINOR_VERSION != (0U)))
     #error "Module software version numbers of Gpt_Cfg.c and Gpt.h are inconsistent!"
 #endif
 
