@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.5. CAN &mdash; Documentation for F29H85x</title>
+  <title>5.1. CAN &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="5.6. WDG" href="group___w_d_g.html" />
-    <link rel="prev" title="5.4. PORT" href="group___p_o_r_t.html" /> 
+    <link rel="next" title="5.2. DIO" href="group___d_i_o.html" />
+    <link rel="prev" title="5. API guide" href="../api_guide.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.01.00
+                01.02.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -64,81 +64,105 @@
 <li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">4. Module User Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="group___m_c_u.html">5.1. MCU</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.1. CAN</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">5.1.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-processingtype">5.1.1.1. enum Can_ProcessingType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-returntype">5.1.1.2. enum Can_ReturnType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-handletype">5.1.1.3. enum Can_HandleType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-controllerinstance">5.1.1.4. enum Can_ControllerInstance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-mailboxdirectiontype">5.1.1.5. enum Can_MailboxDirectionType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-icom-signal-operation-type">5.1.1.6. enum Can_Icom_signal_operation_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-drvstate">5.1.1.7. enum Can_DrvState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-controlleroperationmode">5.1.1.8. enum Can_ControllerOperationMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-clockstopackmode">5.1.1.9. enum Can_ClockStopAckMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-mailboxelemsizetype">5.1.1.10. enum Can_MailboxElemSizeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-memtype">5.1.1.11. enum Can_MemType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-rxfifonumtype">5.1.1.12. enum Can_RxFifoNumType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-eventpin">5.1.1.13. enum Can_EventPin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-can-standardfiltertype">5.1.1.14. enum Can_StandardFilterType</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">5.1.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">5.1.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">5.1.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-getversioninfo">5.1.4.1. function Can_GetVersionInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-init">5.1.4.2. function Can_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-deinit">5.1.4.3. function Can_DeInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-setbaudrate">5.1.4.4. function Can_SetBaudrate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-setcontrollermode">5.1.4.5. function Can_SetControllerMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-disablecontrollerinterrupts">5.1.4.6. function Can_DisableControllerInterrupts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-enablecontrollerinterrupts">5.1.4.7. function Can_EnableControllerInterrupts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-checkwakeup">5.1.4.8. function Can_CheckWakeup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-getcontrollererrorstate">5.1.4.9. function Can_GetControllerErrorState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-getcontrollermode">5.1.4.10. function Can_GetControllerMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-write">5.1.4.11. function Can_Write</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-write">5.1.4.12. function Can_MainFunction_Write</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-read">5.1.4.13. function Can_MainFunction_Read</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-busoff">5.1.4.14. function Can_MainFunction_BusOff</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-wakeup">5.1.4.15. function Can_MainFunction_Wakeup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-mode">5.1.4.16. function Can_MainFunction_Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-seticomconfiguration">5.1.4.17. function Can_SetIcomConfiguration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-periodicreadback">5.1.4.18. function Can_PeriodicReadback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-resetdrvobjpriv">5.1.4.19. function Can_ResetDrvObjPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-initdrvobjpriv">5.1.4.20. function Can_InitDrvObjPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitconfigpriv">5.1.4.21. function Can_HwUnitConfigPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-msgramconfigpriv">5.1.4.22. function Can_MsgRamConfigPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwsetbaudratepriv">5.1.4.23. function Can_HWSetBaudRatePriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-disableinterruptspriv">5.1.4.24. function Can_DisableInterruptsPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-enableinterruptspriv">5.1.4.25. function Can_EnableInterruptsPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwdeinitpriv">5.1.4.26. function Can_HwDeInitPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-getprotocolstatuspriv">5.1.4.27. function Can_GetProtocolStatusPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwcheckwakeuppriv">5.1.4.28. function Can_HWCheckWakeupPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitstartpriv">5.1.4.29. function Can_HwUnitStartPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitstoppriv">5.1.4.30. function Can_HwUnitStopPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitsleeppriv">5.1.4.31. function Can_HwUnitSleepPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitwakeuppriv">5.1.4.32. function Can_HwUnitWakeupPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-getfreetxmsgobjpriv">5.1.4.33. function Can_GetFreeTxMsgObjPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-writetxmailboxpriv">5.1.4.34. function Can_WriteTxMailboxPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunittxdonepollingpriv">5.1.4.35. function Can_HwUnitTxDonePollingPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-readrxmailboxpriv">5.1.4.36. function Can_ReadRxMailboxPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-busoffprocesspriv">5.1.4.37. function Can_BusOffProcessPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-wakeupprocesspriv">5.1.4.38. function Can_WakeupProcessPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-modeprocesspriv">5.1.4.39. function Can_ModeProcessPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-processline0isr">5.1.4.40. function Can_ProcessLine0ISR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-processline1isr">5.1.4.41. function Can_ProcessLine1ISR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-processwakeupisr">5.1.4.42. function Can_ProcessWakeUpISR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-pollingcheck">5.1.4.43. function Can_PollingCheck</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-interruptcountercheckpriv">5.1.4.44. function Can_InterruptCounterCheckPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwmsgramconfigpriv">5.1.4.45. function Can_HwMsgRamConfigPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-addpdgvalfindstddtlen">5.1.4.46. function Can_AddPdgValFindStdDtlen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-callrxindication">5.1.4.47. function Can_CallRxIndication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-cansetbaudratepriv">5.1.4.48. function Can_CanSetBaudRatePriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-validateicomconfigpriv">5.1.4.49. function Can_ValidateIcomConfigPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-checktxdelaycompenablepriv">5.1.4.50. function Can_CheckTxDelayCompEnablePriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-writerxfifoackpriv">5.1.4.51. function Can_WriteRxFIFOAckPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-icomsignalop">5.1.4.52. function Can_IcomSignalOp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunittxconfirmationpriv">5.1.4.53. function Can_HwUnitTxConfirmationPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-checkctrltypeactstmaildir">5.1.4.54. function Can_CheckCtrltypeActstMaildir</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-checkcontrollertype">5.1.4.55. function Can_CheckControllerType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-writemsgrampriv">5.1.4.56. function Can_WriteMsgRamPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-readmsgrampriv">5.1.4.57. function Can_ReadMsgRamPriv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-periodicreadbackprv">5.1.4.58. function Can_PeriodicReadbackPrv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-can-eccloadregister">5.1.4.59. function Can_EccLoadRegister</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="group___d_i_o.html">5.2. DIO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___g_p_t.html">5.3. GPT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___p_o_r_t.html">5.4. PORT</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.5. CAN</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#types">5.5.1. Types</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-processingtype">5.5.1.1. enum Can_ProcessingType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-returntype">5.5.1.2. enum Can_ReturnType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-handletype">5.5.1.3. enum Can_HandleType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-controllerinstance">5.5.1.4. enum Can_ControllerInstance</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-mailboxdirectiontype">5.5.1.5. enum Can_MailboxDirectionType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-icom-signal-operation-type">5.5.1.6. enum Can_Icom_signal_operation_type</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-drvstate">5.5.1.7. enum Can_DrvState</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-controlleroperationmode">5.5.1.8. enum Can_ControllerOperationMode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-clockstopackmode">5.5.1.9. enum Can_ClockStopAckMode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-mailboxelemsizetype">5.5.1.10. enum Can_MailboxElemSizeType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-memtype">5.5.1.11. enum Can_MemType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-can-rxfifonumtype">5.5.1.12. enum Can_RxFifoNumType</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#structures">5.5.2. Structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#defines">5.5.3. Defines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functions">5.5.4. Functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-getversioninfo">5.5.4.1. function Can_GetVersionInfo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-init">5.5.4.2. function Can_Init</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-deinit">5.5.4.3. function Can_DeInit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-setbaudrate">5.5.4.4. function Can_SetBaudrate</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-setcontrollermode">5.5.4.5. function Can_SetControllerMode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-disablecontrollerinterrupts">5.5.4.6. function Can_DisableControllerInterrupts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-enablecontrollerinterrupts">5.5.4.7. function Can_EnableControllerInterrupts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-checkwakeup">5.5.4.8. function Can_CheckWakeup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-getcontrollererrorstate">5.5.4.9. function Can_GetControllerErrorState</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-getcontrollermode">5.5.4.10. function Can_GetControllerMode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-write">5.5.4.11. function Can_Write</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-write">5.5.4.12. function Can_MainFunction_Write</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-read">5.5.4.13. function Can_MainFunction_Read</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-busoff">5.5.4.14. function Can_MainFunction_BusOff</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-wakeup">5.5.4.15. function Can_MainFunction_Wakeup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-mainfunction-mode">5.5.4.16. function Can_MainFunction_Mode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-seticomconfiguration">5.5.4.17. function Can_SetIcomConfiguration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-resetdrvobjpriv">5.5.4.18. function Can_ResetDrvObjPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-initdrvobjpriv">5.5.4.19. function Can_InitDrvObjPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitconfigpriv">5.5.4.20. function Can_HwUnitConfigPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-hwsetbaudratepriv">5.5.4.21. function Can_HWSetBaudRatePriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-disableinterruptspriv">5.5.4.22. function Can_DisableInterruptsPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-enableinterruptspriv">5.5.4.23. function Can_EnableInterruptsPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-hwdeinitpriv">5.5.4.24. function Can_HwDeInitPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-getprotocolstatuspriv">5.5.4.25. function Can_GetProtocolStatusPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-hwcheckwakeuppriv">5.5.4.26. function Can_HWCheckWakeupPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitstartpriv">5.5.4.27. function Can_HwUnitStartPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitstoppriv">5.5.4.28. function Can_HwUnitStopPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitsleeppriv">5.5.4.29. function Can_HwUnitSleepPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunitwakeuppriv">5.5.4.30. function Can_HwUnitWakeupPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-getfreetxmsgobjpriv">5.5.4.31. function Can_GetFreeTxMsgObjPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-writetxmailboxpriv">5.5.4.32. function Can_WriteTxMailboxPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-hwunittxdonepollingpriv">5.5.4.33. function Can_HwUnitTxDonePollingPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-readrxmailboxpriv">5.5.4.34. function Can_ReadRxMailboxPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-busoffprocesspriv">5.5.4.35. function Can_BusOffProcessPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-wakeupprocesspriv">5.5.4.36. function Can_WakeupProcessPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-modeprocesspriv">5.5.4.37. function Can_ModeProcessPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-processisr">5.5.4.38. function Can_ProcessISR</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-regmfreadraw32">5.5.4.39. function Can_RegMFReadRaw32</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-regmfwriteraw32">5.5.4.40. function Can_RegMFWriteRaw32</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-regreadraw32">5.5.4.41. function Can_RegReadRaw32</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-can-regwriteraw32">5.5.4.42. function Can_RegWriteRaw32</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="group___w_d_g.html">5.6. WDG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___l_i_n.html">5.7. LIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___f_l_s.html">5.3. FLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___g_p_t.html">5.4. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___l_i_n.html">5.5. LIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___m_c_u.html">5.6. MCU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___p_o_r_t.html">5.7. PORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="group___s_p_i.html">5.8. SPI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___a_d_c.html">5.9. CDD_ADC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___s_e_n_t.html">5.10. CDD_SENT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___x_b_a_r.html">5.11. CDD_XBAR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___w_d_g.html">5.9. WDG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___a_d_c.html">5.10. CDD_ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___e_c_a_p.html">5.11. CDD_ECAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___i_p_c.html">5.12. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___p_w_m.html">5.13. CDD_PWM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___u_a_r_t.html">5.14. CDD_UART</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___s_e_n_t.html">5.15. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___x_b_a_r.html">5.16. CDD_XBAR</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
@@ -159,7 +183,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../api_guide.html"><span class="section-number">5. </span>API guide</a> &raquo;</li>
-      <li><span class="section-number">5.5. </span>CAN</li>
+      <li><span class="section-number">5.1. </span>CAN</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -169,9 +193,9 @@
            <div itemprop="articleBody">
              
   <section id="can">
-<h1><span class="section-number">5.5. </span>CAN<a class="headerlink" href="#can" title="Link to this heading"></a></h1>
+<h1><span class="section-number">5.1. </span>CAN<a class="headerlink" href="#can" title="Link to this heading"></a></h1>
 <section id="types">
-<h2><span class="section-number">5.5.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.1.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Base type</p></th>
@@ -228,10 +252,18 @@
 <td><p><strong><a class="reference internal" href="#enum-can-rxfifonumtype"><span class="std std-ref">Can_RxFifoNumType</span></a></strong></p></td>
 <td><p>Enum to represent the MCAN Rx FIFO number.</p></td>
 </tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-can-eventpin"><span class="std std-ref">Can_EventPin</span></a></strong></p></td>
+<td><p>Enum for the event pin.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-can-standardfiltertype"><span class="std std-ref">Can_StandardFilterType</span></a></strong></p></td>
+<td><p>Enum for the Can standard filter selection.</p></td>
+</tr>
 </tbody>
 </table>
 <section id="enum-can-processingtype">
-<h3><span class="section-number">5.5.1.1. </span>enum Can_ProcessingType<a class="headerlink" href="#enum-can-processingtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.1. </span>enum Can_ProcessingType<a class="headerlink" href="#enum-can-processingtype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -258,7 +290,7 @@
 Can Tx/Rx Processing.</p>
 </section>
 <section id="enum-can-returntype">
-<h3><span class="section-number">5.5.1.2. </span>enum Can_ReturnType<a class="headerlink" href="#enum-can-returntype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.2. </span>enum Can_ReturnType<a class="headerlink" href="#enum-can-returntype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -277,7 +309,7 @@ Can Tx/Rx Processing.</p>
 Values that can be returned by CAN Driver APIs.</p>
 </section>
 <section id="enum-can-handletype">
-<h3><span class="section-number">5.5.1.3. </span>enum Can_HandleType<a class="headerlink" href="#enum-can-handletype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.3. </span>enum Can_HandleType<a class="headerlink" href="#enum-can-handletype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -300,7 +332,7 @@ Values that can be returned by CAN Driver APIs.</p>
 Can Handle Type FULL/BASIC.</p>
 </section>
 <section id="enum-can-controllerinstance">
-<h3><span class="section-number">5.5.1.4. </span>enum Can_ControllerInstance<a class="headerlink" href="#enum-can-controllerinstance" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.4. </span>enum Can_ControllerInstance<a class="headerlink" href="#enum-can-controllerinstance" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -339,7 +371,7 @@ Can Handle Type FULL/BASIC.</p>
 Can Controller Instance ID.</p>
 </section>
 <section id="enum-can-mailboxdirectiontype">
-<h3><span class="section-number">5.5.1.5. </span>enum Can_MailboxDirectionType<a class="headerlink" href="#enum-can-mailboxdirectiontype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.5. </span>enum Can_MailboxDirectionType<a class="headerlink" href="#enum-can-mailboxdirectiontype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -362,7 +394,7 @@ Can Controller Instance ID.</p>
 Can Mailbox direction enum.</p>
 </section>
 <section id="enum-can-icom-signal-operation-type">
-<h3><span class="section-number">5.5.1.6. </span>enum Can_Icom_signal_operation_type<a class="headerlink" href="#enum-can-icom-signal-operation-type" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.6. </span>enum Can_Icom_signal_operation_type<a class="headerlink" href="#enum-can-icom-signal-operation-type" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -397,7 +429,7 @@ Can Mailbox direction enum.</p>
 Icom signal operation type.</p>
 </section>
 <section id="enum-can-drvstate">
-<h3><span class="section-number">5.5.1.7. </span>enum Can_DrvState<a class="headerlink" href="#enum-can-drvstate" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.7. </span>enum Can_DrvState<a class="headerlink" href="#enum-can-drvstate" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -420,7 +452,7 @@ Icom signal operation type.</p>
 Can Driver state.</p>
 </section>
 <section id="enum-can-controlleroperationmode">
-<h3><span class="section-number">5.5.1.8. </span>enum Can_ControllerOperationMode<a class="headerlink" href="#enum-can-controlleroperationmode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.8. </span>enum Can_ControllerOperationMode<a class="headerlink" href="#enum-can-controlleroperationmode" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -443,7 +475,7 @@ Can Driver state.</p>
 Enum to represent the MCAN mode of operation.</p>
 </section>
 <section id="enum-can-clockstopackmode">
-<h3><span class="section-number">5.5.1.9. </span>enum Can_ClockStopAckMode<a class="headerlink" href="#enum-can-clockstopackmode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.9. </span>enum Can_ClockStopAckMode<a class="headerlink" href="#enum-can-clockstopackmode" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -466,7 +498,7 @@ Enum to represent the MCAN mode of operation.</p>
 Enum to represent the MCAN mode of operation.</p>
 </section>
 <section id="enum-can-mailboxelemsizetype">
-<h3><span class="section-number">5.5.1.10. </span>enum Can_MailboxElemSizeType<a class="headerlink" href="#enum-can-mailboxelemsizetype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.10. </span>enum Can_MailboxElemSizeType<a class="headerlink" href="#enum-can-mailboxelemsizetype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -513,7 +545,7 @@ Enum to represent the MCAN mode of operation.</p>
 Enum to represent FIFO/Buffer element Size.</p>
 </section>
 <section id="enum-can-memtype">
-<h3><span class="section-number">5.5.1.11. </span>enum Can_MemType<a class="headerlink" href="#enum-can-memtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.11. </span>enum Can_MemType<a class="headerlink" href="#enum-can-memtype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -536,7 +568,7 @@ Enum to represent FIFO/Buffer element Size.</p>
 Enum to represent the CAN Message RAM type.</p>
 </section>
 <section id="enum-can-rxfifonumtype">
-<h3><span class="section-number">5.5.1.12. </span>enum Can_RxFifoNumType<a class="headerlink" href="#enum-can-rxfifonumtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.1.12. </span>enum Can_RxFifoNumType<a class="headerlink" href="#enum-can-rxfifonumtype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -558,9 +590,67 @@ Enum to represent the CAN Message RAM type.</p>
 <p><strong>Brief</strong>:
 Enum to represent the MCAN Rx FIFO number.</p>
 </section>
+<section id="enum-can-eventpin">
+<h3><span class="section-number">5.1.1.13. </span>enum Can_EventPin<a class="headerlink" href="#enum-can-eventpin" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CAN_EVENT_PIN_0</p></td>
+<td><p>0x0U</p></td>
+<td><p>EVENT PIN0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CAN_EVENT_PIN_1</p></td>
+<td><p>0x1U</p></td>
+<td><p>EVENT PIN1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CAN_EVENT_PIN_NONE</p></td>
+<td><p>0x2U</p></td>
+<td><p>EVENT NONE.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enum for the event pin.</p>
+</section>
+<section id="enum-can-standardfiltertype">
+<h3><span class="section-number">5.1.1.14. </span>enum Can_StandardFilterType<a class="headerlink" href="#enum-can-standardfiltertype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CAN_RANGE_FILTER</p></td>
+<td><p>0x0U</p></td>
+<td><p>Range filter from SFID1 to SFID2 (SFID2 ≥ SFID1)</p></td>
+</tr>
+<tr class="row-odd"><td><p>CAN_DUAL_ID_FILTER</p></td>
+<td><p>0x1U</p></td>
+<td><p>Dual ID filter for SFID1 or SFID2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CAN_CLASSIC_FILTER</p></td>
+<td><p>0x2U</p></td>
+<td><p>Classic filter: SFID1 = filter; SFID2 = mask.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CAN_FILTER_DISABLED</p></td>
+<td><p>0x03</p></td>
+<td><p>Filter element disabled.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enum for the Can standard filter selection.</p>
+</section>
 </section>
 <section id="structures">
-<h2><span class="section-number">5.5.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.1.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Name</p></th>
@@ -601,47 +691,50 @@ Enum to represent the MCAN Rx FIFO number.</p>
 <tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___config_type.html"><span class="std std-doc">Can_ConfigType</span></a></strong></p></td>
 <td><p>External data structure containing the overall initialization data for the CAN driver and SFR settings affecting all controllers.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___can_if_indication_type.html"><span class="std std-doc">Can_CanIfIndicationType</span></a></strong></p></td>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___periodic_read_back_data_type.html"><span class="std std-doc">Can_PeriodicReadBackDataType</span></a></strong></p></td>
+<td><p>Can periodic readback register definition.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___can_if_indication_type.html"><span class="std std-doc">Can_CanIfIndicationType</span></a></strong></p></td>
 <td><p>Can State Transition indication done to CanIf module.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___msg_r_a_m_config_params.html"><span class="std std-doc">Can_MsgRAMConfigParams</span></a></strong></p></td>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___msg_r_a_m_config_params.html"><span class="std std-doc">Can_MsgRAMConfigParams</span></a></strong></p></td>
 <td><p>Structure for MCAN Message RAM Configuration Parameters Message RAM can contain following sections: Standard ID filters, Extended ID filters, TX FIFO(or TX Q), TX Buffers, TX EventFIFO, RX FIFO0, RX FIFO1, RX Buffer. Note: If particular section in the RAM is not used then it’s size should be initialized to ‘0’ (Number of buffers in case of Tx/Rx buffer).</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___std_msg_i_d_filter_element.html"><span class="std std-doc">Can_StdMsgIDFilterElement</span></a></strong></p></td>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___std_msg_i_d_filter_element.html"><span class="std std-doc">Can_StdMsgIDFilterElement</span></a></strong></p></td>
 <td><p>Structure for MCAN Standard Message ID Filter Element.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___ext_msg_i_d_filter_element.html"><span class="std std-doc">Can_ExtMsgIDFilterElement</span></a></strong></p></td>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___ext_msg_i_d_filter_element.html"><span class="std std-doc">Can_ExtMsgIDFilterElement</span></a></strong></p></td>
 <td><p>Structure for MCAN Extended Message ID Filter Element.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___fd_msg_r_a_m_config_obj_type.html"><span class="std std-doc">Can_FdMsgRAMConfigObjType</span></a></strong></p></td>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___fd_msg_r_a_m_config_obj_type.html"><span class="std std-doc">Can_FdMsgRAMConfigObjType</span></a></strong></p></td>
 <td><p>Can FD controller Message RAM Configuration object structure.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___controller_obj_type.html"><span class="std std-doc">Can_ControllerObjType</span></a></strong></p></td>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___controller_obj_type.html"><span class="std std-doc">Can_ControllerObjType</span></a></strong></p></td>
 <td><p>Can controller object structure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___mailbox_obj_type.html"><span class="std std-doc">Can_MailboxObjType</span></a></strong></p></td>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___mailbox_obj_type.html"><span class="std std-doc">Can_MailboxObjType</span></a></strong></p></td>
 <td><p>Can Mailbox type strucuture.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___driver_obj_type.html"><span class="std std-doc">Can_DriverObjType</span></a></strong></p></td>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___driver_obj_type.html"><span class="std std-doc">Can_DriverObjType</span></a></strong></p></td>
 <td><p>Can Driver object type structure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___tx_buf_element_type.html"><span class="std std-doc">Can_TxBufElementType</span></a></strong></p></td>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___tx_buf_element_type.html"><span class="std std-doc">Can_TxBufElementType</span></a></strong></p></td>
 <td><p>Structure for CAN Tx Buffer element.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___rx_buf_element_type.html"><span class="std std-doc">Can_RxBufElementType</span></a></strong></p></td>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___rx_buf_element_type.html"><span class="std std-doc">Can_RxBufElementType</span></a></strong></p></td>
 <td><p>Structure for CAN Rx Buffer element.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___rx_f_i_f_o_status_type.html"><span class="std std-doc">Can_RxFIFOStatusType</span></a></strong></p></td>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___rx_f_i_f_o_status_type.html"><span class="std std-doc">Can_RxFIFOStatusType</span></a></strong></p></td>
 <td><p>Structure for CAN Rx FIFO Status.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_can___rx_new_data_status_type.html"><span class="std std-doc">Can_RxNewDataStatusType</span></a></strong></p></td>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_can___rx_new_data_status_type.html"><span class="std std-doc">Can_RxNewDataStatusType</span></a></strong></p></td>
 <td><p>Structure for Can new data flag for Rx buffer.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="defines">
-<h2><span class="section-number">5.5.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.1.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Name</p></th>
@@ -650,7 +743,7 @@ Enum to represent the MCAN Rx FIFO number.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>CAN_SW_MAJOR_VERSION</p></td>
-<td><p>Defines for CAN Driver version used for compatibility checks.</p></td>
+<td><p>Driver Implementation Major Version.</p></td>
 </tr>
 <tr class="row-odd"><td><p>CAN_SW_MINOR_VERSION</p></td>
 <td><p>Driver Implementation Minor Version.</p></td>
@@ -659,7 +752,7 @@ Enum to represent the MCAN Rx FIFO number.</p>
 <td><p>Driver Implementation Patch Version.</p></td>
 </tr>
 <tr class="row-odd"><td><p>CAN_AR_RELEASE_MAJOR_VERSION</p></td>
-<td><p>Defines for CAN Driver AUTOSAR version used for compatibility checks.</p></td>
+<td><p>AUTOSAR Major version specification implemented by CAN Driver.</p></td>
 </tr>
 <tr class="row-even"><td><p>CAN_AR_RELEASE_MINOR_VERSION</p></td>
 <td><p>AUTOSAR Minor version specification implemented by CAN Driver.</p></td>
@@ -736,152 +829,137 @@ Enum to represent the MCAN Rx FIFO number.</p>
 <tr class="row-even"><td><p>CAN_SID_ICOMCONFIG</p></td>
 <td><p>Service ID - Can_SetIcomConfiguration().</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_E_PARAM_POINTER</p></td>
+<tr class="row-odd"><td><p>CAN_SID_READBACK</p></td>
+<td><p>Service ID - Can_PeriodicReadback().</p></td>
+</tr>
+<tr class="row-even"><td><p>CAN_E_PARAM_POINTER</p></td>
 <td><p>Error codes returned by Can functions - Development Errors.</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_E_PARAM_HANDLE</p></td>
+<tr class="row-odd"><td><p>CAN_E_PARAM_HANDLE</p></td>
 <td><p>Invalid Controller Handle.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_E_PARAM_DATA_LENGTH</p></td>
+<tr class="row-even"><td><p>CAN_E_PARAM_DATA_LENGTH</p></td>
 <td><p>Invalid length of msg.</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_E_PARAM_CONTROLLER</p></td>
+<tr class="row-odd"><td><p>CAN_E_PARAM_CONTROLLER</p></td>
 <td><p>Invalid controller id.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_E_UNINIT</p></td>
+<tr class="row-even"><td><p>CAN_E_UNINIT</p></td>
 <td><p>Error due to API invoked without performing Can_Init().</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_E_TRANSITION</p></td>
+<tr class="row-odd"><td><p>CAN_E_TRANSITION</p></td>
 <td><p>Error during Controller state transition.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_E_PARAM_BAUDRATE</p></td>
+<tr class="row-even"><td><p>CAN_E_PARAM_BAUDRATE</p></td>
 <td><p>Invalid Baudrate configuration.</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_E_ICOM_CONFIG_INVALID</p></td>
+<tr class="row-odd"><td><p>CAN_E_ICOM_CONFIG_INVALID</p></td>
 <td><p>Invalid ICOM configuration Id.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_E_DATALOST</p></td>
+<tr class="row-even"><td><p>CAN_E_DATALOST</p></td>
 <td><p>Error codes returned by Can functions - Run Time Errors.</p></td>
 </tr>
-<tr class="row-even"><td><p>ICOM_CONFIG_DISABLE</p></td>
+<tr class="row-odd"><td><p>ICOM_CONFIG_DISABLE</p></td>
 <td><p>Icom config disable.</p></td>
 </tr>
-<tr class="row-odd"><td><p>EXTENDED_ID</p></td>
+<tr class="row-even"><td><p>EXTENDED_ID</p></td>
 <td><p>Extended id.</p></td>
 </tr>
-<tr class="row-even"><td><p>STANDARD_ID</p></td>
+<tr class="row-odd"><td><p>STANDARD_ID</p></td>
 <td><p>Standard id.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MIXED_ID</p></td>
+<tr class="row-even"><td><p>MIXED_ID</p></td>
 <td><p>Mixed id.</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_CLASSIC_PAYLOAD_MAX_BYTES</p></td>
+<tr class="row-odd"><td><p>CAN_CLASSIC_PAYLOAD_MAX_BYTES</p></td>
 <td><p>Can classic payload max bytes.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_FD_PAYLOAD_MAX_BYTES</p></td>
+<tr class="row-even"><td><p>CAN_FD_PAYLOAD_MAX_BYTES</p></td>
 <td><p>Can FD payload max bytes.</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_MAX_CONTROLLER_SUPPORTED</p></td>
+<tr class="row-odd"><td><p>CAN_MAX_CONTROLLER_SUPPORTED</p></td>
 <td><p>Can max controller supported.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_TDCR_TDCF_MAX</p></td>
+<tr class="row-even"><td><p>CAN_TDCR_TDCF_MAX</p></td>
 <td><p>Can TDCR and TDCF max</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_TDCR_TDCO_MAX</p></td>
+<tr class="row-odd"><td><p>CAN_TDCR_TDCO_MAX</p></td>
 <td><p>Can TDCR and TDCO max</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_ID_STD</p></td>
+<tr class="row-even"><td><p>CAN_ID_STD</p></td>
 <td><p>Can id STD</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_ID_XTD</p></td>
+<tr class="row-odd"><td><p>CAN_ID_XTD</p></td>
 <td><p>Can id XTD</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_ID_MIXED</p></td>
+<tr class="row-even"><td><p>CAN_ID_MIXED</p></td>
 <td><p>Can id MIXED</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_XTD_MSGID_MASK</p></td>
+<tr class="row-odd"><td><p>CAN_XTD_MSGID_MASK</p></td>
 <td><p>Can XID MSGID mask</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_STD_MSGID_MASK</p></td>
+<tr class="row-even"><td><p>CAN_STD_MSGID_MASK</p></td>
 <td><p>Can STD MSGID mask</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_STD_MSGID_SHIFT</p></td>
+<tr class="row-odd"><td><p>CAN_STD_MSGID_SHIFT</p></td>
 <td><p>Can STD MSGID shift</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_ID_CAN_CONTROLLER_TYPE_MASK</p></td>
+<tr class="row-even"><td><p>CAN_ID_CAN_CONTROLLER_TYPE_MASK</p></td>
 <td><p>Can id can controller type mask</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_MSG_TYPE_MASK</p></td>
+<tr class="row-odd"><td><p>CAN_MSG_TYPE_MASK</p></td>
 <td><p>Can msg type mask</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_MSG_ID_TYPE_EXT</p></td>
+<tr class="row-even"><td><p>CAN_MSG_ID_TYPE_EXT</p></td>
 <td><p>Can msg type mask</p></td>
 </tr>
-<tr class="row-even"><td><p>CAN_MSG_TYPE_CLASSIC_CAN</p></td>
+<tr class="row-odd"><td><p>CAN_MSG_TYPE_CLASSIC_CAN</p></td>
 <td><p>Can msg type classic can</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_MSG_TYPE_CAN_FD</p></td>
+<tr class="row-even"><td><p>CAN_MSG_TYPE_CAN_FD</p></td>
 <td><p>Can msg type can id</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAN_MSG_RAM_STD_ELEM_SIZE</p></td>
+<tr class="row-odd"><td><p>MCAN_MSG_RAM_STD_ELEM_SIZE</p></td>
 <td><p>Standard ID Filter Element Size.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAN_MSG_RAM_EXT_ELEM_SIZE</p></td>
+<tr class="row-even"><td><p>MCAN_MSG_RAM_EXT_ELEM_SIZE</p></td>
 <td><p>Extended ID Filter Element Size.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAN_MSG_RAM_TX_RX_ELEM_SIZE</p></td>
+<tr class="row-odd"><td><p>MCAN_MSG_RAM_TX_RX_ELEM_SIZE</p></td>
 <td><p>Tx/Rx Mailbox Size.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAN_TX_BUFFER_MAX_NUM</p></td>
+<tr class="row-even"><td><p>MCAN_TX_BUFFER_MAX_NUM</p></td>
 <td><p>MCAN IP TX buffer max number.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAN_RX_BUFFER_MAX_NUM</p></td>
+<tr class="row-odd"><td><p>MCAN_RX_BUFFER_MAX_NUM</p></td>
 <td><p>MCAN IP RX buffer max number.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAN_RX_FIFO_0_MAX_NUM</p></td>
+<tr class="row-even"><td><p>MCAN_RX_FIFO_0_MAX_NUM</p></td>
 <td><p>MCAN rx FIFO_0 max number.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAN_RX_FIFO_1_MAX_NUM</p></td>
+<tr class="row-odd"><td><p>MCAN_RX_FIFO_1_MAX_NUM</p></td>
 <td><p>MCAN rx FIFO_1 max number.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAN_TX_MB_MAX_NUM</p></td>
+<tr class="row-even"><td><p>MCAN_TX_MB_MAX_NUM</p></td>
 <td><p>MCAN TX_MB max number.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAN_RX_MB_MAX_NUM</p></td>
+<tr class="row-odd"><td><p>MCAN_RX_MB_MAX_NUM</p></td>
 <td><p>MCAN RX_MB max number.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CAN_INTR_MASK_ALL</p></td>
+<tr class="row-even"><td><p>CAN_INTR_MASK_ALL</p></td>
 <td><p>Macro defines mask for all the interrupts status for MCAN.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAN_INT_LINE_0</p></td>
+<tr class="row-odd"><td><p>MCAN_INT_LINE_0</p></td>
 <td><p>MCAN Interrupt line 0.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCAN_INT_LINE_1</p></td>
+<tr class="row-even"><td><p>MCAN_INT_LINE_1</p></td>
 <td><p>MCAN Interrupt line 0.</p></td>
-</tr>
-<tr class="row-even"><td><p>CAN_REG_MF_READ32 (regAddr, REG_FIELD)</p></td>
-<td><p>This macro calls read field API for 32 bit register. It also frames the mask and shift from register field macro.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CAN_REG_MF_WRITE32 (regAddr, REG_FIELD, fieldVal)</p></td>
-<td><p>This macro calls read-modify-write API for 32 bit register. It also frames the mask and shift from register field macro.</p></td>
-</tr>
-<tr class="row-even"><td><p>CAN_REG_READ32 (regAddr)</p></td>
-<td><p>This macro reads a 32-bit value from a hardware register and returns the value.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CAN_REG_WRITE32 (regAddr, value)</p></td>
-<td><p>This macro writes a 32-bit value to a hardware register.</p></td>
-</tr>
-<tr class="row-even"><td><p>CAN_FIELD_SET32 (regVal, REG_FIELD, fieldVal)</p></td>
-<td><p>Macro to write a specific field value. This macro first clears the specified field value and then performs “OR” of the field value which is shifted and masked. This will set the field value at its desired position.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CAN_FIELD_GET (regVal, REG_FIELD)</p></td>
-<td><p>Macro to extract a field value. This macro extracts the field value from a 32-bit variable (which contains the register value). This macro does not read from actual register address, and only extracts the field from a variable.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="functions">
-<h2><span class="section-number">5.5.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.1.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Return type</p></th>
@@ -895,7 +973,7 @@ Enum to represent the MCAN Rx FIFO number.</p>
 <td><p>Function returns the version information of this module.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-can-init"><span class="std std-ref">Can_Init</span></a></strong>(const <a class="reference internal" href="#Classes/struct_can___config_type.md"><span class="xref myst">Can_ConfigType</span></a> * ConfigPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-init"><span class="std std-ref">Can_Init</span></a></strong>(const <a class="reference internal" href="#Classes/struct_can___config_type.md"><span class="xref myst">Can_ConfigType</span></a> * Config_Ptr)</p></td>
 <td><p>This function initializes the configuration.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
@@ -959,18 +1037,26 @@ Enum to represent the MCAN Rx FIFO number.</p>
 <td><p>This service shall change the Icom Configuration of a CAN controller to the requested one.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-periodicreadback"><span class="std std-ref">Can_PeriodicReadback</span></a></strong>(uint8 Controller, <a class="reference internal" href="#Classes/struct_can___periodic_read_back_data_type.md"><span class="xref myst">Can_PeriodicReadBackDataType</span></a> * ReadBackRegisterdata)</p></td>
+<td><p>This service shall read all the statically configured registers.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-can-resetdrvobjpriv"><span class="std std-ref">Can_ResetDrvObjPriv</span></a></strong>(<a class="reference internal" href="#Classes/struct_can___driver_obj_type.md"><span class="xref myst">Can_DriverObjType</span></a> * drvObj)</p></td>
 <td><p>This function will reset default Config structure.</p></td>
 </tr>
-<tr class="row-even"><td><p>void</p></td>
+<tr class="row-odd"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-can-initdrvobjpriv"><span class="std std-ref">Can_InitDrvObjPriv</span></a></strong>(<a class="reference internal" href="#Classes/struct_can___driver_obj_type.md"><span class="xref myst">Can_DriverObjType</span></a> * drvObj, const <a class="reference internal" href="#Classes/struct_can___config_type.md"><span class="xref myst">Can_ConfigType</span></a> * ConfigPtr)</p></td>
 <td><p>This function will initialize Driver Config structure.</p></td>
 </tr>
-<tr class="row-odd"><td><p>void</p></td>
+<tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-can-hwunitconfigpriv"><span class="std std-ref">Can_HwUnitConfigPriv</span></a></strong>(<a class="reference internal" href="#Classes/struct_can___controller_obj_type.md"><span class="xref myst">Can_ControllerObjType</span></a> * canController, const <a class="reference internal" href="#Classes/struct_can___mailbox_obj_type.md"><span class="xref myst">Can_MailboxObjType</span></a> * canMailbox, uint8 maxMbCnt, uint8 * canHtrhMbMap)</p></td>
 <td><p>This function will initialize Can HW Unit.</p></td>
 </tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-msgramconfigpriv"><span class="std std-ref">Can_MsgRamConfigPriv</span></a></strong>(uint32 baseAddr, <a class="reference internal" href="#Classes/struct_can___fd_msg_r_a_m_config_obj_type.md"><span class="xref myst">Can_FdMsgRAMConfigObjType</span></a> * canFDMsgRamConfig)</p></td>
+<td><p>This API will configure the Message RAM.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-can-hwsetbaudratepriv"><span class="std std-ref">Can_HWSetBaudRatePriv</span></a></strong>(uint32 baseAddr, const <a class="reference internal" href="#Classes/struct_can___baud_config_type.md"><span class="xref myst">Can_BaudConfigType</span></a> * baudConfig)</p></td>
 <td><p>This API will configure a bit timings for MCAN module.</p></td>
 </tr>
@@ -1039,29 +1125,89 @@ Enum to represent the MCAN Rx FIFO number.</p>
 <td><p>This function will inform CanIf if any mode changes are detected.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-can-processisr"><span class="std std-ref">Can_ProcessISR</span></a></strong>(<a class="reference internal" href="#Modules/group___c_a_n.md#enum-can-controllerinstance"><span class="xref myst">Can_ControllerInstance</span></a> canInstance, uint32 lineSelect)</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-processline0isr"><span class="std std-ref">Can_ProcessLine0ISR</span></a></strong>(<a class="reference internal" href="#Modules/group___c_a_n.md#enum-can-controllerinstance"><span class="xref myst">Can_ControllerInstance</span></a> canInstance, uint32 lineSelect)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>uint32</p></td>
-<td><p><strong><a class="reference internal" href="#function-can-regmfreadraw32"><span class="std std-ref">Can_RegMFReadRaw32</span></a></strong>(uint32 addr, uint32 mask, uint32 shift)</p></td>
-<td><p>This function reads a 32 bit register, masks specific set of bits and the left shifted value.</p></td>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-processline1isr"><span class="std std-ref">Can_ProcessLine1ISR</span></a></strong>(<a class="reference internal" href="#Modules/group___c_a_n.md#enum-can-controllerinstance"><span class="xref myst">Can_ControllerInstance</span></a> canInstance, uint32 lineSelect)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-can-regmfwriteraw32"><span class="std std-ref">Can_RegMFWriteRaw32</span></a></strong>(uint32 addr, uint32 mask, uint32 shift, uint32 value)</p></td>
-<td><p>This function writes a 32 bit register masking specific set of bits and the left shifted value.</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-processwakeupisr"><span class="std std-ref">Can_ProcessWakeUpISR</span></a></strong>(<a class="reference internal" href="#Modules/group___c_a_n.md#enum-can-controllerinstance"><span class="xref myst">Can_ControllerInstance</span></a> instance)</p></td>
+<td><p>Can_ProcessWakeUpISR: Invoked by the respective CAN controller ISR.</p></td>
 </tr>
-<tr class="row-even"><td><p>uint32</p></td>
-<td><p><strong><a class="reference internal" href="#function-can-regreadraw32"><span class="std std-ref">Can_RegReadRaw32</span></a></strong>(uint32 addr)</p></td>
-<td><p>This function reads a 32 bit register.</p></td>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-pollingcheck"><span class="std std-ref">Can_PollingCheck</span></a></strong>(<a class="reference internal" href="#Classes/struct_can___driver_obj_type.md"><span class="xref myst">Can_DriverObjType</span></a> * drvObj, uint8 Controller)</p></td>
+<td><p>This service disables all interrupts.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-can-regwriteraw32"><span class="std std-ref">Can_RegWriteRaw32</span></a></strong>(uint32 addr, uint32 value)</p></td>
-<td><p>This function writes a 32 bit register.</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-interruptcountercheckpriv"><span class="std std-ref">Can_InterruptCounterCheckPriv</span></a></strong>(<a class="reference internal" href="#Classes/struct_can___driver_obj_type.md"><span class="xref myst">Can_DriverObjType</span></a> * drvObj, uint8 Controller)</p></td>
+<td><p>This service enables all allowed interrupts.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-hwmsgramconfigpriv"><span class="std std-ref">Can_HwMsgRamConfigPriv</span></a></strong>(uint32 baseAddr, const <a class="reference internal" href="#Classes/struct_can___msg_r_a_m_config_params.md"><span class="xref myst">Can_MsgRAMConfigParams</span></a> * msgRAMConfigParams)</p></td>
+<td><p>This API will configure the Message RAM.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-addpdgvalfindstddtlen"><span class="std std-ref">Can_AddPdgValFindStdDtlen</span></a></strong>(const Can_PduType * pduInfo, <a class="reference internal" href="#Classes/struct_can___tx_buf_element_type.md"><span class="xref myst">Can_TxBufElementType</span></a> * elemPtr, const <a class="reference internal" href="#Classes/struct_can___mailbox_type.md"><span class="xref myst">Can_MailboxType</span></a> * mailboxCfg)</p></td>
+<td><p>This function will add padding value to unused to data in payload and find standard data length .</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-callrxindication"><span class="std std-ref">Can_CallRxIndication</span></a></strong>(const boolean RxIndicationStatus, const uint8 htrh, const uint32 canIdentifier, const uint8 canDataLength, <a class="reference internal" href="#Classes/struct_can___controller_obj_type.md"><span class="xref myst">Can_ControllerObjType</span></a> * controllerObj)</p></td>
+<td><p>This function will Call Receive Indication .</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-cansetbaudratepriv"><span class="std std-ref">Can_CanSetBaudRatePriv</span></a></strong>(uint32 baseAddr, const <a class="reference internal" href="#Classes/struct_can___baud_config_type.md"><span class="xref myst">Can_BaudConfigType</span></a> * baudConfig)</p></td>
+<td><p>This function will configure a bit timings for MCAN module.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-validateicomconfigpriv"><span class="std std-ref">Can_ValidateIcomConfigPriv</span></a></strong>(uint16 loopCnt, const <a class="reference internal" href="#Classes/struct_can___icom_config_type.md"><span class="xref myst">Can_IcomConfigType</span></a> * icomConfigPtr, uint64 sduData, uint16 rxMessageConfigId)</p></td>
+<td><p>This function will validate the icom configuration critiria based on rx message configs.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-checktxdelaycompenablepriv"><span class="std std-ref">Can_CheckTxDelayCompEnablePriv</span></a></strong>(uint32 baseAddress, const <a class="reference internal" href="#Classes/struct_can___baud_config_type.md"><span class="xref myst">Can_BaudConfigType</span></a> * baudConfig)</p></td>
+<td><p>This function will Configure Transceiver Delay Compensation.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-writerxfifoackpriv"><span class="std std-ref">Can_WriteRxFIFOAckPriv</span></a></strong>(uint32 baseAddr, uint32 idx)</p></td>
+<td><p>This API will write acknowledgment for read of Rx FIFO.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-icomsignalop"><span class="std std-ref">Can_IcomSignalOp</span></a></strong>(const <a class="reference internal" href="#Classes/struct_can___icom_signal_config_type.md"><span class="xref myst">Can_IcomSignalConfigType</span></a> * signalData, uint64 sduData)</p></td>
+<td><p>This function will validate the icom configuration critiria based on rx message configs.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-hwunittxconfirmationpriv"><span class="std std-ref">Can_HwUnitTxConfirmationPriv</span></a></strong>(uint32 loopCnt, uint32 buffNum, uint8 htrh, <a class="reference internal" href="#Classes/struct_can___controller_obj_type.md"><span class="xref myst">Can_ControllerObjType</span></a> * canController, const <a class="reference internal" href="#Classes/struct_can___mailbox_obj_type.md"><span class="xref myst">Can_MailboxObjType</span></a> * canMailbox)</p></td>
+<td><p>This API will Call Tx Confirmation.</p></td>
+</tr>
+<tr class="row-odd"><td><p>uint8</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-checkctrltypeactstmaildir"><span class="std std-ref">Can_CheckCtrltypeActstMaildir</span></a></strong>(uint8 maxMbCnt, <a class="reference internal" href="#Classes/struct_can___controller_obj_type.md"><span class="xref myst">Can_ControllerObjType</span></a> * controllerObj, const <a class="reference internal" href="#Classes/struct_can___mailbox_obj_type.md"><span class="xref myst">Can_MailboxObjType</span></a> * canMailbox, uint8 elemxtd, uint32 canIdentifier)</p></td>
+<td><p>This function will Check for Controller type and Active state as well as MailBox Direction.</p></td>
+</tr>
+<tr class="row-even"><td><p>uint8</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-checkcontrollertype"><span class="std std-ref">Can_CheckControllerType</span></a></strong>(uint8 maxMbCount, <a class="reference internal" href="#Classes/struct_can___rx_buf_element_type.md"><span class="xref myst">Can_RxBufElementType</span></a> * elm, <a class="reference internal" href="#Classes/struct_can___controller_obj_type.md"><span class="xref myst">Can_ControllerObjType</span></a> * controllerObject, const <a class="reference internal" href="#Classes/struct_can___mailbox_obj_type.md"><span class="xref myst">Can_MailboxObjType</span></a> * canMailboxObject)</p></td>
+<td><p>This function will Check for Controller type and Active state as well as MailBox Direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-writemsgrampriv"><span class="std std-ref">Can_WriteMsgRamPriv</span></a></strong>(uint32 baseAddr, uint32 bufNum, const <a class="reference internal" href="#Classes/struct_can___tx_buf_element_type.md"><span class="xref myst">Can_TxBufElementType</span></a> * elem, const Can_PduType * pdu_Info, const <a class="reference internal" href="#Classes/struct_can___mailbox_type.md"><span class="xref myst">Can_MailboxType</span></a> * mailBoxConfig)</p></td>
+<td><p>This API will update data in the Message RAM.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-readmsgrampriv"><span class="std std-ref">Can_ReadMsgRamPriv</span></a></strong>(uint32 baseAddr, uint32 memType, uint32 bufNum, <a class="reference internal" href="#Classes/struct_can___rx_buf_element_type.md"><span class="xref myst">Can_RxBufElementType</span></a> * elem)</p></td>
+<td><p>This API will read data from Message Ram of Can Hw Unit.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-periodicreadbackprv"><span class="std std-ref">Can_PeriodicReadbackPrv</span></a></strong>(uint8 Controller, <a class="reference internal" href="#Classes/struct_can___periodic_read_back_data_type.md"><span class="xref myst">Can_PeriodicReadBackDataType</span></a> * ReadBackRegisterdata)</p></td>
+<td><p>This service shall read all the statically configured registers.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-can-eccloadregister"><span class="std std-ref">Can_EccLoadRegister</span></a></strong>(uint32 baseAddr, uint32 regOffset)</p></td>
+<td><p>This service shall load the specific ECC register based on the parameters.</p></td>
 </tr>
 </tbody>
 </table>
 <section id="function-can-getversioninfo">
-<h3><span class="section-number">5.5.4.1. </span>function Can_GetVersionInfo<a class="headerlink" href="#function-can-getversioninfo" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.1. </span>function Can_GetVersionInfo<a class="headerlink" href="#function-can-getversioninfo" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_GetVersionInfo</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Std_VersionInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">versioninfo</span>
 <span class="p">)</span>
@@ -1084,9 +1230,9 @@ Function returns the version information of this module.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-init">
-<h3><span class="section-number">5.5.4.2. </span>function Can_Init<a class="headerlink" href="#function-can-init" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.2. </span>function Can_Init<a class="headerlink" href="#function-can-init" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_Init</span><span class="p">(</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ConfigPtr</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Config_Ptr</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -1107,7 +1253,7 @@ This function initializes the configuration.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-deinit">
-<h3><span class="section-number">5.5.4.3. </span>function Can_DeInit<a class="headerlink" href="#function-can-deinit" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.3. </span>function Can_DeInit<a class="headerlink" href="#function-can-deinit" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_DeInit</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1125,7 +1271,7 @@ This function deinitializes the module.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-setbaudrate">
-<h3><span class="section-number">5.5.4.4. </span>function Can_SetBaudrate<a class="headerlink" href="#function-can-setbaudrate" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.4. </span>function Can_SetBaudrate<a class="headerlink" href="#function-can-setbaudrate" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_SetBaudrate</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span><span class="p">,</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">uint16</span><span class="w"> </span><span class="n">BaudRateConfigID</span>
@@ -1152,7 +1298,7 @@ This service shall set the baud rate configuration of the CAN Controller.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-setcontrollermode">
-<h3><span class="section-number">5.5.4.5. </span>function Can_SetControllerMode<a class="headerlink" href="#function-can-setcontrollermode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.5. </span>function Can_SetControllerMode<a class="headerlink" href="#function-can-setcontrollermode" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_SetControllerMode</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Can_ControllerStateType</span><span class="w"> </span><span class="n">Transition</span>
@@ -1179,7 +1325,7 @@ This service performs software triggered state transitions of the CAN controller
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-disablecontrollerinterrupts">
-<h3><span class="section-number">5.5.4.6. </span>function Can_DisableControllerInterrupts<a class="headerlink" href="#function-can-disablecontrollerinterrupts" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.6. </span>function Can_DisableControllerInterrupts<a class="headerlink" href="#function-can-disablecontrollerinterrupts" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_DisableControllerInterrupts</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span>
 <span class="p">)</span>
@@ -1202,7 +1348,7 @@ This service disables all interrupts.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-enablecontrollerinterrupts">
-<h3><span class="section-number">5.5.4.7. </span>function Can_EnableControllerInterrupts<a class="headerlink" href="#function-can-enablecontrollerinterrupts" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.7. </span>function Can_EnableControllerInterrupts<a class="headerlink" href="#function-can-enablecontrollerinterrupts" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_EnableControllerInterrupts</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span>
 <span class="p">)</span>
@@ -1225,7 +1371,7 @@ This service enables all allowed interrupts.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-checkwakeup">
-<h3><span class="section-number">5.5.4.8. </span>function Can_CheckWakeup<a class="headerlink" href="#function-can-checkwakeup" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.8. </span>function Can_CheckWakeup<a class="headerlink" href="#function-can-checkwakeup" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_CheckWakeup</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span>
 <span class="p">)</span>
@@ -1250,7 +1396,7 @@ This service checks if a wakeup has occurred for the given controller.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-getcontrollererrorstate">
-<h3><span class="section-number">5.5.4.9. </span>function Can_GetControllerErrorState<a class="headerlink" href="#function-can-getcontrollererrorstate" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.9. </span>function Can_GetControllerErrorState<a class="headerlink" href="#function-can-getcontrollererrorstate" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_GetControllerErrorState</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Can_ErrorStateType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ErrorStatePtr</span>
@@ -1277,7 +1423,7 @@ This service obtains the error state of the CAN controller.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-getcontrollermode">
-<h3><span class="section-number">5.5.4.10. </span>function Can_GetControllerMode<a class="headerlink" href="#function-can-getcontrollermode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.10. </span>function Can_GetControllerMode<a class="headerlink" href="#function-can-getcontrollermode" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_GetControllerMode</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Can_ControllerStateType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ControllerModePtr</span>
@@ -1304,7 +1450,7 @@ This service reports about the current status of the requested CAN controller.</
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-write">
-<h3><span class="section-number">5.5.4.11. </span>function Can_Write<a class="headerlink" href="#function-can-write" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.11. </span>function Can_Write<a class="headerlink" href="#function-can-write" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_Write</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Hth</span><span class="p">,</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_PduType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PduInfo</span>
@@ -1333,7 +1479,7 @@ This service is called by CanIf to pass a CAN message to CanDrv for transmission
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-mainfunction-write">
-<h3><span class="section-number">5.5.4.12. </span>function Can_MainFunction_Write<a class="headerlink" href="#function-can-mainfunction-write" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.12. </span>function Can_MainFunction_Write<a class="headerlink" href="#function-can-mainfunction-write" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_MainFunction_Write</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">RWFuncID</span>
 <span class="p">)</span>
@@ -1356,7 +1502,7 @@ This service performs the polling of TX confirmation when CAN_TX_PROCESSING is s
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-mainfunction-read">
-<h3><span class="section-number">5.5.4.13. </span>function Can_MainFunction_Read<a class="headerlink" href="#function-can-mainfunction-read" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.13. </span>function Can_MainFunction_Read<a class="headerlink" href="#function-can-mainfunction-read" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_MainFunction_Read</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">RWFuncID</span>
 <span class="p">)</span>
@@ -1379,7 +1525,7 @@ This service performs the polling of RX indications when CAN_RX_PROCESSING is se
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-mainfunction-busoff">
-<h3><span class="section-number">5.5.4.14. </span>function Can_MainFunction_BusOff<a class="headerlink" href="#function-can-mainfunction-busoff" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.14. </span>function Can_MainFunction_BusOff<a class="headerlink" href="#function-can-mainfunction-busoff" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_MainFunction_BusOff</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1398,7 +1544,7 @@ This service performs the polling of bus-off events that are configured statical
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-mainfunction-wakeup">
-<h3><span class="section-number">5.5.4.15. </span>function Can_MainFunction_Wakeup<a class="headerlink" href="#function-can-mainfunction-wakeup" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.15. </span>function Can_MainFunction_Wakeup<a class="headerlink" href="#function-can-mainfunction-wakeup" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_MainFunction_Wakeup</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1417,7 +1563,7 @@ This function performs the polling of wake-up events that are configured statica
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-mainfunction-mode">
-<h3><span class="section-number">5.5.4.16. </span>function Can_MainFunction_Mode<a class="headerlink" href="#function-can-mainfunction-mode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.16. </span>function Can_MainFunction_Mode<a class="headerlink" href="#function-can-mainfunction-mode" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_MainFunction_Mode</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1436,7 +1582,7 @@ This function performs the polling of CAN controller mode transitions.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-seticomconfiguration">
-<h3><span class="section-number">5.5.4.17. </span>function Can_SetIcomConfiguration<a class="headerlink" href="#function-can-seticomconfiguration" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.17. </span>function Can_SetIcomConfiguration<a class="headerlink" href="#function-can-seticomconfiguration" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_SetIcomConfiguration</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span><span class="p">,</span>
 <span class="w">    </span><span class="n">IcomConfigIdType</span><span class="w"> </span><span class="n">ConfigurationId</span>
@@ -1461,8 +1607,32 @@ This service shall change the Icom Configuration of a CAN controller to the requ
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
+<section id="function-can-periodicreadback">
+<h3><span class="section-number">5.1.4.18. </span>function Can_PeriodicReadback<a class="headerlink" href="#function-can-periodicreadback" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_PeriodicReadback</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_PeriodicReadBackDataType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ReadBackRegisterdata</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This service shall read all the statically configured registers.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Controller</strong> CAN controller for which the configured registers shall be read</p></li>
+<li><p><strong>ReadBackRegisterdata</strong> pointer for the read back registers</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
 <section id="function-can-resetdrvobjpriv">
-<h3><span class="section-number">5.5.4.18. </span>function Can_ResetDrvObjPriv<a class="headerlink" href="#function-can-resetdrvobjpriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.19. </span>function Can_ResetDrvObjPriv<a class="headerlink" href="#function-can-resetdrvobjpriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_ResetDrvObjPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_DriverObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drvObj</span>
 <span class="p">)</span>
@@ -1484,7 +1654,7 @@ This function will reset default Config structure.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-initdrvobjpriv">
-<h3><span class="section-number">5.5.4.19. </span>function Can_InitDrvObjPriv<a class="headerlink" href="#function-can-initdrvobjpriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.20. </span>function Can_InitDrvObjPriv<a class="headerlink" href="#function-can-initdrvobjpriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_InitDrvObjPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_DriverObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drvObj</span><span class="p">,</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ConfigPtr</span>
@@ -1508,7 +1678,7 @@ This function will initialize Driver Config structure.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-hwunitconfigpriv">
-<h3><span class="section-number">5.5.4.20. </span>function Can_HwUnitConfigPriv<a class="headerlink" href="#function-can-hwunitconfigpriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.21. </span>function Can_HwUnitConfigPriv<a class="headerlink" href="#function-can-hwunitconfigpriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_HwUnitConfigPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canController</span><span class="p">,</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canMailbox</span><span class="p">,</span>
@@ -1535,9 +1705,33 @@ This function will initialize Can HW Unit.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
+<section id="function-can-msgramconfigpriv">
+<h3><span class="section-number">5.1.4.22. </span>function Can_MsgRamConfigPriv<a class="headerlink" href="#function-can-msgramconfigpriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_MsgRamConfigPriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">baseAddr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_FdMsgRAMConfigObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canFDMsgRamConfig</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This API will configure the Message RAM.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>baseAddr</strong> Base Address of controller.</p></li>
+<li><p><strong>canFDMsgRamConfig</strong> Message RAM Configuration parameters.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
 <section id="function-can-hwsetbaudratepriv">
-<h3><span class="section-number">5.5.4.21. </span>function Can_HWSetBaudRatePriv<a class="headerlink" href="#function-can-hwsetbaudratepriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_HWSetBaudRatePriv</span><span class="p">(</span>
+<h3><span class="section-number">5.1.4.23. </span>function Can_HWSetBaudRatePriv<a class="headerlink" href="#function-can-hwsetbaudratepriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_HWSetBaudRatePriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">baseAddr</span><span class="p">,</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_BaudConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">baudConfig</span>
 <span class="p">)</span>
@@ -1552,17 +1746,15 @@ This API will configure a bit timings for MCAN module.</p>
 </ul>
 <p><strong>Returns</strong>:</p>
 <ul class="simple">
-<li><p><strong>E_OK</strong> - If baud rate config is successful.
-<br></p></li>
-<li><p><strong>E_NOT_OK</strong> - If baud rate config is unsuccessful.
+<li><p><strong>None</strong>
 <br></p></li>
 </ul>
-<p><strong>Return</strong>: The status of whether the Baud Rate configuration is successful</p>
+<p><strong>Return</strong>: None</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-disableinterruptspriv">
-<h3><span class="section-number">5.5.4.22. </span>function Can_DisableInterruptsPriv<a class="headerlink" href="#function-can-disableinterruptspriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.24. </span>function Can_DisableInterruptsPriv<a class="headerlink" href="#function-can-disableinterruptspriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_DisableInterruptsPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_ControllerType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">configParam</span>
 <span class="p">)</span>
@@ -1584,7 +1776,7 @@ This function will disable MCAN interrupts as per config.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-enableinterruptspriv">
-<h3><span class="section-number">5.5.4.23. </span>function Can_EnableInterruptsPriv<a class="headerlink" href="#function-can-enableinterruptspriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.25. </span>function Can_EnableInterruptsPriv<a class="headerlink" href="#function-can-enableinterruptspriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_EnableInterruptsPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_ControllerType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">configParam</span>
 <span class="p">)</span>
@@ -1606,7 +1798,7 @@ This function will enable MCAN interrupts as per config.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-hwdeinitpriv">
-<h3><span class="section-number">5.5.4.24. </span>function Can_HwDeInitPriv<a class="headerlink" href="#function-can-hwdeinitpriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.26. </span>function Can_HwDeInitPriv<a class="headerlink" href="#function-can-hwdeinitpriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_HwDeInitPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_ControllerType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">configParam</span>
 <span class="p">)</span>
@@ -1628,7 +1820,7 @@ This function will de-initialize Can HW Unit.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-getprotocolstatuspriv">
-<h3><span class="section-number">5.5.4.25. </span>function Can_GetProtocolStatusPriv<a class="headerlink" href="#function-can-getprotocolstatuspriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.27. </span>function Can_GetProtocolStatusPriv<a class="headerlink" href="#function-can-getprotocolstatuspriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Can_ErrorStateType</span><span class="w"> </span><span class="n">Can_GetProtocolStatusPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canController</span>
 <span class="p">)</span>
@@ -1654,7 +1846,7 @@ This function will fetch Protocol Errors detected by CAN HW Unit.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-hwcheckwakeuppriv">
-<h3><span class="section-number">5.5.4.26. </span>function Can_HWCheckWakeupPriv<a class="headerlink" href="#function-can-hwcheckwakeuppriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.28. </span>function Can_HWCheckWakeupPriv<a class="headerlink" href="#function-can-hwcheckwakeuppriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_HWCheckWakeupPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_ControllerType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">configParam</span>
 <span class="p">)</span>
@@ -1678,7 +1870,7 @@ This function will fetch Wakeup Status for CAN HW Unit.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-hwunitstartpriv">
-<h3><span class="section-number">5.5.4.27. </span>function Can_HwUnitStartPriv<a class="headerlink" href="#function-can-hwunitstartpriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.29. </span>function Can_HwUnitStartPriv<a class="headerlink" href="#function-can-hwunitstartpriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_HwUnitStartPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Can_CanIfIndicationType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canIfIndication</span>
@@ -1705,7 +1897,7 @@ This function will start Can HW Unit.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-hwunitstoppriv">
-<h3><span class="section-number">5.5.4.28. </span>function Can_HwUnitStopPriv<a class="headerlink" href="#function-can-hwunitstoppriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.30. </span>function Can_HwUnitStopPriv<a class="headerlink" href="#function-can-hwunitstoppriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_HwUnitStopPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Can_CanIfIndicationType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canIfIndication</span>
@@ -1730,7 +1922,7 @@ This function will stop Can HW Unit.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-hwunitsleeppriv">
-<h3><span class="section-number">5.5.4.29. </span>function Can_HwUnitSleepPriv<a class="headerlink" href="#function-can-hwunitsleeppriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.31. </span>function Can_HwUnitSleepPriv<a class="headerlink" href="#function-can-hwunitsleeppriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_HwUnitSleepPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Can_CanIfIndicationType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canIfIndication</span>
@@ -1757,7 +1949,7 @@ This function will sleep Can HW Unit.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-hwunitwakeuppriv">
-<h3><span class="section-number">5.5.4.30. </span>function Can_HwUnitWakeupPriv<a class="headerlink" href="#function-can-hwunitwakeuppriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.32. </span>function Can_HwUnitWakeupPriv<a class="headerlink" href="#function-can-hwunitwakeuppriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_HwUnitWakeupPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Can_CanIfIndicationType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canIfIndication</span>
@@ -1784,7 +1976,7 @@ This function will wakeup Can HW Unit.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-getfreetxmsgobjpriv">
-<h3><span class="section-number">5.5.4.31. </span>function Can_GetFreeTxMsgObjPriv<a class="headerlink" href="#function-can-getfreetxmsgobjpriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.33. </span>function Can_GetFreeTxMsgObjPriv<a class="headerlink" href="#function-can-getfreetxmsgobjpriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_GetFreeTxMsgObjPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mailboxCfg</span><span class="p">,</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canController</span><span class="p">,</span>
@@ -1816,7 +2008,7 @@ This function will check if desired Tx mailbox is free.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-writetxmailboxpriv">
-<h3><span class="section-number">5.5.4.32. </span>function Can_WriteTxMailboxPriv<a class="headerlink" href="#function-can-writetxmailboxpriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.34. </span>function Can_WriteTxMailboxPriv<a class="headerlink" href="#function-can-writetxmailboxpriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_WriteTxMailboxPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mailboxCfg</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span><span class="p">,</span>
@@ -1846,7 +2038,7 @@ This function will write into the Transmit Mailbox.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-hwunittxdonepollingpriv">
-<h3><span class="section-number">5.5.4.33. </span>function Can_HwUnitTxDonePollingPriv<a class="headerlink" href="#function-can-hwunittxdonepollingpriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.35. </span>function Can_HwUnitTxDonePollingPriv<a class="headerlink" href="#function-can-hwunittxdonepollingpriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_HwUnitTxDonePollingPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canController</span><span class="p">,</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canMailbox</span><span class="p">,</span>
@@ -1872,7 +2064,7 @@ This function will poll for Tx confirmation.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-readrxmailboxpriv">
-<h3><span class="section-number">5.5.4.34. </span>function Can_ReadRxMailboxPriv<a class="headerlink" href="#function-can-readrxmailboxpriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.36. </span>function Can_ReadRxMailboxPriv<a class="headerlink" href="#function-can-readrxmailboxpriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_ReadRxMailboxPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span><span class="p">,</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canMailbox</span><span class="p">,</span>
@@ -1898,7 +2090,7 @@ This function will read Rx messages from Mailbox.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-busoffprocesspriv">
-<h3><span class="section-number">5.5.4.35. </span>function Can_BusOffProcessPriv<a class="headerlink" href="#function-can-busoffprocesspriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.37. </span>function Can_BusOffProcessPriv<a class="headerlink" href="#function-can-busoffprocesspriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_BusOffProcessPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span>
 <span class="p">)</span>
@@ -1920,7 +2112,7 @@ This function will inform CanIf if bus off is detected.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-wakeupprocesspriv">
-<h3><span class="section-number">5.5.4.36. </span>function Can_WakeupProcessPriv<a class="headerlink" href="#function-can-wakeupprocesspriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.38. </span>function Can_WakeupProcessPriv<a class="headerlink" href="#function-can-wakeupprocesspriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_WakeupProcessPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span>
 <span class="p">)</span>
@@ -1942,7 +2134,7 @@ This function will inform EcuM if Wakeup is detected.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-can-modeprocesspriv">
-<h3><span class="section-number">5.5.4.37. </span>function Can_ModeProcessPriv<a class="headerlink" href="#function-can-modeprocesspriv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.1.4.39. </span>function Can_ModeProcessPriv<a class="headerlink" href="#function-can-modeprocesspriv" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_ModeProcessPriv</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span><span class="p">,</span>
 <span class="w">    </span><span class="n">Can_CanIfIndicationType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">indication</span>
@@ -1965,59 +2157,37 @@ This function will inform CanIf if any mode changes are detected.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
-<section id="function-can-processisr">
-<h3><span class="section-number">5.5.4.38. </span>function Can_ProcessISR<a class="headerlink" href="#function-can-processisr" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_ProcessISR</span><span class="p">(</span>
+<section id="function-can-processline0isr">
+<h3><span class="section-number">5.1.4.40. </span>function Can_ProcessLine0ISR<a class="headerlink" href="#function-can-processline0isr" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_ProcessLine0ISR</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Can_ControllerInstance</span><span class="w"> </span><span class="n">canInstance</span><span class="p">,</span>
 <span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">lineSelect</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="function-can-regmfreadraw32">
-<h3><span class="section-number">5.5.4.39. </span>function Can_RegMFReadRaw32<a class="headerlink" href="#function-can-regmfreadraw32" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Can_RegMFReadRaw32</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">shift</span>
+<section id="function-can-processline1isr">
+<h3><span class="section-number">5.1.4.41. </span>function Can_ProcessLine1ISR<a class="headerlink" href="#function-can-processline1isr" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_ProcessLine1ISR</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Can_ControllerInstance</span><span class="w"> </span><span class="n">canInstance</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">lineSelect</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Brief</strong>:
-This function reads a 32 bit register, masks specific set of bits and the left shifted value.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>addr</strong> Address of the memory mapped hardware register.</p></li>
-<li><p><strong>mask</strong> Mask for the bit field.</p></li>
-<li><p><strong>shift</strong> Bit field shift from LSB.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>Value</strong> of the type uint32.
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Bit-field value (absolute value - shifted to LSB position).</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
 </section>
-<section id="function-can-regmfwriteraw32">
-<h3><span class="section-number">5.5.4.40. </span>function Can_RegMFWriteRaw32<a class="headerlink" href="#function-can-regmfwriteraw32" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Can_RegMFWriteRaw32</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">shift</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">value</span>
+<section id="function-can-processwakeupisr">
+<h3><span class="section-number">5.1.4.42. </span>function Can_ProcessWakeUpISR<a class="headerlink" href="#function-can-processwakeupisr" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_ProcessWakeUpISR</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Can_ControllerInstance</span><span class="w"> </span><span class="n">instance</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Brief</strong>:
-This function writes a 32 bit register masking specific set of bits and the left shifted value.</p>
+Can_ProcessWakeUpISR: Invoked by the respective CAN controller ISR.</p>
+<p>This Interrupt function is invoked when CAN wakeup event occur for a controller, inside the respective Controller ISR, when the interrupts for the controller are enabled.</p>
 <p><strong>Parameters</strong>:</p>
 <ul class="simple">
-<li><p><strong>addr</strong> Address of the memory mapped hardware register.</p></li>
-<li><p><strong>mask</strong> Mask for the bit field.</p></li>
-<li><p><strong>shift</strong> Bit field shift from LSB.</p></li>
-<li><p><strong>value</strong> Value to write in the memory mapped hardware register.</p></li>
+<li><p><strong>instance</strong> the Can Controller Instance ID</p></li>
 </ul>
 <p><strong>Returns</strong>:</p>
 <ul class="simple">
@@ -2028,42 +2198,446 @@ This function writes a 32 bit register masking specific set of bits and the left
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
-<section id="function-can-regreadraw32">
-<h3><span class="section-number">5.5.4.41. </span>function Can_RegReadRaw32<a class="headerlink" href="#function-can-regreadraw32" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Can_RegReadRaw32</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">addr</span>
+<section id="function-can-pollingcheck">
+<h3><span class="section-number">5.1.4.43. </span>function Can_PollingCheck<a class="headerlink" href="#function-can-pollingcheck" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_PollingCheck</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Can_DriverObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drvObj</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Brief</strong>:
-This function reads a 32 bit register.</p>
+This service disables all interrupts.</p>
+<p>This function checks if there is a DET Error and then disables all the interrupts for the controller.</p>
 <p><strong>Parameters</strong>:</p>
 <ul class="simple">
-<li><p><strong>addr</strong> Address of the memory mapped hardware register.</p></li>
+<li><p><strong>drvObj</strong> Pointer to Can controller Config structure.</p></li>
+<li><p><strong>Controller</strong> CAN controller for which interrupts shall be re-enabled.</p></li>
 </ul>
 <p><strong>Returns</strong>:</p>
 <ul class="simple">
-<li><p><strong>Value</strong> of the type uint32.
+<li><p><strong>None</strong>
 <br></p></li>
 </ul>
-<p><strong>Return</strong>: Bit-field value (absolute value - shifted to LSB position).</p>
+<p><strong>Return</strong>: None</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
-<section id="function-can-regwriteraw32">
-<h3><span class="section-number">5.5.4.42. </span>function Can_RegWriteRaw32<a class="headerlink" href="#function-can-regwriteraw32" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Can_RegWriteRaw32</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">value</span>
+<section id="function-can-interruptcountercheckpriv">
+<h3><span class="section-number">5.1.4.44. </span>function Can_InterruptCounterCheckPriv<a class="headerlink" href="#function-can-interruptcountercheckpriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_InterruptCounterCheckPriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Can_DriverObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">drvObj</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Brief</strong>:
-This function writes a 32 bit register.</p>
+This service enables all allowed interrupts.</p>
+<p>This function checks the total number of interrupts and enables all the interrupts allowed for the controller.</p>
 <p><strong>Parameters</strong>:</p>
 <ul class="simple">
-<li><p><strong>addr</strong> Address of the memory mapped hardware register.</p></li>
-<li><p><strong>value</strong> Value to write in the 32-bit register.</p></li>
+<li><p><strong>drvObj</strong> Pointer to Can controller Config structure.</p></li>
+<li><p><strong>Controller</strong> CAN controller for which interrupts shall be re-enabled.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-hwmsgramconfigpriv">
+<h3><span class="section-number">5.1.4.45. </span>function Can_HwMsgRamConfigPriv<a class="headerlink" href="#function-can-hwmsgramconfigpriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_HwMsgRamConfigPriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">baseAddr</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MsgRAMConfigParams</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">msgRAMConfigParams</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This API will configure the Message RAM.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>baseAddr</strong> Base Address of controller.</p></li>
+<li><p><strong>msgRAMConfigParams</strong> Message RAM Configuration parameters.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-addpdgvalfindstddtlen">
+<h3><span class="section-number">5.1.4.46. </span>function Can_AddPdgValFindStdDtlen<a class="headerlink" href="#function-can-addpdgvalfindstddtlen" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_AddPdgValFindStdDtlen</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_PduType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pduInfo</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_TxBufElementType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">elemPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mailboxCfg</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function will add padding value to unused to data in payload and find standard data length .</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>pduInfo</strong> Base Address of controller.</p></li>
+<li><p><strong>elemPtr</strong> Pointer to location to store value read.</p></li>
+<li><p><strong>mailboxCfg</strong> Mailbox Configuration parameters.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-callrxindication">
+<h3><span class="section-number">5.1.4.47. </span>function Can_CallRxIndication<a class="headerlink" href="#function-can-callrxindication" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_CallRxIndication</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">boolean</span><span class="w"> </span><span class="n">RxIndicationStatus</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">htrh</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">canIdentifier</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">canDataLength</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function will Call Receive Indication .</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>RxIndicationStatus</strong> Receive indication status.</p></li>
+<li><p><strong>controllerObj</strong> Pointer to Can controller config parameters.</p></li>
+<li><p><strong>canIdentifier</strong> Holds Can Identifier value.</p></li>
+<li><p><strong>htrh</strong> Handle ID of HTH.</p></li>
+<li><p><strong>canDataLength</strong> Frame length of msg.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-cansetbaudratepriv">
+<h3><span class="section-number">5.1.4.48. </span>function Can_CanSetBaudRatePriv<a class="headerlink" href="#function-can-cansetbaudratepriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_CanSetBaudRatePriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">baseAddr</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_BaudConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">baudConfig</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function will configure a bit timings for MCAN module.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>baseAddr</strong> Base Address of controller.</p></li>
+<li><p><strong>baudConfig</strong> Configuration parameters for MCAN bit timing.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-validateicomconfigpriv">
+<h3><span class="section-number">5.1.4.49. </span>function Can_ValidateIcomConfigPriv<a class="headerlink" href="#function-can-validateicomconfigpriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_ValidateIcomConfigPriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">loopCnt</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_IcomConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">icomConfigPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">sduData</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">rxMessageConfigId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function will validate the icom configuration critiria based on rx message configs.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>loopCnt</strong> Signal Count.</p></li>
+<li><p><strong>icomConfigPtr</strong> Pointer to Icom data structure containing the overall ICOM configuration data.</p></li>
+<li><p><strong>sduData</strong> Hold sdu data.</p></li>
+<li><p><strong>rxMessageConfigId</strong> Indidicates Receive Message Id.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> - If icom configuration matched.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> - If icom configuration not matched.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: The status of whether the icom configuration critiria matched or not</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-checktxdelaycompenablepriv">
+<h3><span class="section-number">5.1.4.50. </span>function Can_CheckTxDelayCompEnablePriv<a class="headerlink" href="#function-can-checktxdelaycompenablepriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_CheckTxDelayCompEnablePriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">baseAddress</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_BaudConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">baudConfig</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function will Configure Transceiver Delay Compensation.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>baseAddr</strong> Base Address of controller.</p></li>
+<li><p><strong>baudConfig</strong> Configuration parameters for MCAN bit timing.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-writerxfifoackpriv">
+<h3><span class="section-number">5.1.4.51. </span>function Can_WriteRxFIFOAckPriv<a class="headerlink" href="#function-can-writerxfifoackpriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_WriteRxFIFOAckPriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">baseAddr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">idx</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This API will write acknowledgment for read of Rx FIFO.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>baseAddr</strong> Base Address of controller.</p></li>
+<li><p><strong>idx</strong> FIFO element ID.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-icomsignalop">
+<h3><span class="section-number">5.1.4.52. </span>function Can_IcomSignalOp<a class="headerlink" href="#function-can-icomsignalop" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Can_IcomSignalOp</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_IcomSignalConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">signalData</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint64</span><span class="w"> </span><span class="n">sduData</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function will validate the icom configuration critiria based on rx message configs.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>signalData</strong> Hold Icom signal config data</p></li>
+<li><p><strong>sduData</strong> Hold sdu data.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> - If icom Signal Operation configuration matched.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> - If icom Signal Operation configuration not matched.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: The status of whether the icom configuration critiria matched or not</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-hwunittxconfirmationpriv">
+<h3><span class="section-number">5.1.4.53. </span>function Can_HwUnitTxConfirmationPriv<a class="headerlink" href="#function-can-hwunittxconfirmationpriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_HwUnitTxConfirmationPriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">loopCnt</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">buffNum</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">htrh</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canController</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canMailbox</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This API will Call Tx Confirmation.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>loopCnt</strong> Tx number of buffer elements.</p></li>
+<li><p><strong>buffNum</strong> Tx number of buffer and FIFO elements.</p></li>
+<li><p><strong>canController</strong> Pointer to Can controller config parameters.</p></li>
+<li><p><strong>canMailbox</strong> Message RAM Configuration parameters.</p></li>
+<li><p><strong>htrh</strong> Handle ID of HTH.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-checkctrltypeactstmaildir">
+<h3><span class="section-number">5.1.4.54. </span>function Can_CheckCtrltypeActstMaildir<a class="headerlink" href="#function-can-checkctrltypeactstmaildir" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">uint8</span><span class="w"> </span><span class="n">Can_CheckCtrltypeActstMaildir</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">maxMbCnt</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObj</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canMailbox</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">elemxtd</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">canIdentifier</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function will Check for Controller type and Active state as well as MailBox Direction.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>maxMbCnt</strong> Maximum number of Mailbox to be configured.</p></li>
+<li><p><strong>controllerObj</strong> Pointer to Can controller config parameters.</p></li>
+<li><p><strong>canMailbox</strong> Message RAM Configuration parameters..</p></li>
+<li><p><strong>elemxtd</strong> Extended Identifier of CAN Rx Buffer element</p></li>
+<li><p><strong>canIdentifier</strong> Holds Can Identifier value</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>returns</strong> the value of type uint8
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns the value of uint8</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-checkcontrollertype">
+<h3><span class="section-number">5.1.4.55. </span>function Can_CheckControllerType<a class="headerlink" href="#function-can-checkcontrollertype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">uint8</span><span class="w"> </span><span class="n">Can_CheckControllerType</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">maxMbCount</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_RxBufElementType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">elm</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_ControllerObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">controllerObject</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">canMailboxObject</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function will Check for Controller type and Active state as well as MailBox Direction.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>maxMbCount</strong> Maximum number of Mailbox to be configured.</p></li>
+<li><p><strong>elm</strong> Pointer to location to store value read.</p></li>
+<li><p><strong>controllerObject</strong> Pointer to Can controller config parameters.</p></li>
+<li><p><strong>canMailboxObject</strong> Message RAM Configuration parameters.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>returns</strong> the value of type uint8
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns htrh value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-writemsgrampriv">
+<h3><span class="section-number">5.1.4.56. </span>function Can_WriteMsgRamPriv<a class="headerlink" href="#function-can-writemsgrampriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_WriteMsgRamPriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">baseAddr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">bufNum</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_TxBufElementType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">elem</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_PduType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pdu_Info</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Can_MailboxType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mailBoxConfig</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This API will update data in the Message RAM.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>baseAddr</strong> Base Address of controller.</p></li>
+<li><p><strong>buffNum</strong> Transmit Buffer number.</p></li>
+<li><p><strong>elem</strong> Pointer to the data to be written in Message RAM.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: Can module must be initialized</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-readmsgrampriv">
+<h3><span class="section-number">5.1.4.57. </span>function Can_ReadMsgRamPriv<a class="headerlink" href="#function-can-readmsgrampriv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_ReadMsgRamPriv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">baseAddr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">memType</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">bufNum</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_RxBufElementType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">elem</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This API will read data from Message Ram of Can Hw Unit.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>baseAddr</strong> Base Address of controller.</p></li>
+<li><p><strong>memType</strong> Base Address of controller.</p></li>
+<li><p><strong>bufNum</strong> Transmit Buffer number.</p></li>
+<li><p><strong>elem</strong> Pointer to location to store value read.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-periodicreadbackprv">
+<h3><span class="section-number">5.1.4.58. </span>function Can_PeriodicReadbackPrv<a class="headerlink" href="#function-can-periodicreadbackprv" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_PeriodicReadbackPrv</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Controller</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Can_PeriodicReadBackDataType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ReadBackRegisterdata</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This service shall read all the statically configured registers.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Controller</strong> CAN controller for which the configured registers shall be read</p></li>
+<li><p><strong>ReadBackRegisterdata</strong> pointer for the read back registers</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-can-eccloadregister">
+<h3><span class="section-number">5.1.4.59. </span>function Can_EccLoadRegister<a class="headerlink" href="#function-can-eccloadregister" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Can_EccLoadRegister</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">baseAddr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">regOffset</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This service shall load the specific ECC register based on the parameters.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>baseAddr</strong> CAN controller base address.</p></li>
+<li><p><strong>regOffset</strong> regOffset for the register to load.</p></li>
 </ul>
 <p><strong>Returns</strong>:</p>
 <ul class="simple">
@@ -2082,15 +2656,15 @@ This function writes a 32 bit register.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="group___p_o_r_t.html" class="btn btn-neutral float-left" title="5.4. PORT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="group___w_d_g.html" class="btn btn-neutral float-right" title="5.6. WDG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../api_guide.html" class="btn btn-neutral float-left" title="5. API guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group___d_i_o.html" class="btn btn-neutral float-right" title="5.2. DIO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Dec 18, 2024.
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Apr 11, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -2104,7 +2678,50 @@ This function writes a 32 bit register.</p>
       </div>
     </section>
   </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.02.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
   <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = '';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

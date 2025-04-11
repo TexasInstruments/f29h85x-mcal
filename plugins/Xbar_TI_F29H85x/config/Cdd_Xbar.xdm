@@ -1,12 +1,13 @@
 <?xml version='1.0'?>
-<datamodel version="6.0" 
-           xmlns="http://www.tresos.de/_projects/DataModel2/14/root.xsd" 
-           xmlns:a="http://www.tresos.de/_projects/DataModel2/14/attribute.xsd" 
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
            xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
            xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
 
   <d:ctr type="AUTOSAR" factory="autosar" 
          xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
          xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
          xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
          xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
@@ -14,859 +15,871 @@
          xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
     <d:lst type="TOP-LEVEL-PACKAGES">
       <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
-        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-        <d:lst type="ELEMENTS">
-          <d:chc name="Cdd_Xbar" type="AR-ELEMENT" value="MODULE-DEF">
-            <v:ctr type="MODULE-DEF">
-              <a:a name="ADMIN-DATA" type="ADMIN-DATA">
-              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                <ad:ADMIN-DATA>
-                  <ad:DOC-REVISIONS>
-                    <ad:DOC-REVISION>
-                      <ad:REVISION-LABEL>4.3.1</ad:REVISION-LABEL>
-                      <ad:ISSUED-BY>AUTOSAR</ad:ISSUED-BY>
-                    </ad:DOC-REVISION>
-                  </ad:DOC-REVISIONS>
-                </ad:ADMIN-DATA>
-              </a:a>
-              <a:a name="DESC" 
-                   value="EN: CDD XBAR module configuration enables to configure all types of crossbars." />
-              <a:a name="LOWER-MULTIPLICITY" value="0"/>
-              <a:a name="POSTBUILDVARIANTSUPPORT" value="false"/>
-              <a:a name="RELEASE" type="XPath" expr="concat('asc:', substring-after($moduleReleaseVer, 'AUTOSAR '))"/>
-              <a:a name="UPPER-MULTIPLICITY" value="1"/>
-              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-              <v:var name="IMPLEMENTATION_CONFIG_VARIANT" 
-                     type="ENUMERATION">
-                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                     type="IMPLEMENTATIONCONFIGCLASS">
-                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                </a:a>
-                <a:a name="LABEL" value="Config Variant"/>
-                <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                <a:da name="DEFAULT" value="VariantPreCompile"/>
-                <a:da name="RANGE">
-                  <a:v>VariantPreCompile</a:v>
-                </a:da>
-              </v:var>
-              <v:ctr name="CddXbarConfiguration" type="IDENTIFIABLE">
-                <a:a name="DESC" 
-                      value="EN: This container contains the configuration parameters and sub containers of the CDD XBar module."/>
-                <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                <v:ctr name="CddXbarInputXbarConfig" type="IDENTIFIABLE">
-                  <a:a name="DESC" value="EN: Configuration for Input Crossbar"/>
+      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+        <d:lst type="TOP-LEVEL-PACKAGES">
+          <d:ctr name="Cdd_Xbar" type="AR-PACKAGE">
+          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+            <d:lst type="ELEMENTS">
+              <d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-DEF">
+                <v:ctr type="MODULE-DEF">
+                  <a:a name="ADMIN-DATA" type="ADMIN-DATA">
+                    <ad:ADMIN-DATA>
+                      <ad:DOC-REVISIONS>
+                        <ad:DOC-REVISION>
+                          <ad:REVISION-LABEL>4.3.1</ad:REVISION-LABEL>
+                          <ad:ISSUED-BY>AUTOSAR</ad:ISSUED-BY>
+                        </ad:DOC-REVISION>
+                      </ad:DOC-REVISIONS>
+                    </ad:ADMIN-DATA>
+                  </a:a>
+                  <a:a name="DESC" 
+                       value="EN: Configuration of the CddXbar module."/>
+                  <a:a name="LOWER-MULTIPLICITY" value="1"/>
+                  <a:a name="POSTBUILDVARIANTSUPPORT" value="false"/>
+                  <a:a name="RELEASE" value="asc:4.3.1"/>
+                  <a:a name="UPPER-MULTIPLICITY" value="1"/>
                   <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <!-- Design: MCAL-25701 -->
-                  <v:lst name="CddXbarInputXbarInstanceConfig" type="MAP">
-                    <a:da name="MIN" value="0"/>
-                    <a:da name="MAX" type="XPath" expr="ecu:get('Input_Xbar_SelectCount')-1"/>
-                    <v:ctr name="CddXbarInputXbarInstanceConfig" type="IDENTIFIABLE">
-                      <a:a name="DESC" value="EN: Configuration for Input Crossbar instance, one per output line available"/>
+                  <a:a name="API-SERVICE-PREFIX" value="Cdd_Xbar"/>
+                  <v:var name="IMPLEMENTATION_CONFIG_VARIANT" 
+                         type="ENUMERATION">
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                         type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="LABEL" value="Config Variant"/>
+                    <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                    <a:da name="DEFAULT" value="VariantPreCompile"/>
+                    <a:da name="RANGE">
+                      <a:v>VariantPreCompile</a:v>
+                    </a:da>
+                  </v:var>
+                  <v:ctr name="CddXbarConfiguration" type="IDENTIFIABLE">
+                      <a:a name="DESC" 
+                          value="EN: This container contains the configuration parameters and sub containers of the CDD XBar module."/>
                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <v:var name="CddXbarInputXbarInputSourceSelection" type="ENUMERATION">
-                        <a:a name="DESC" 
-                              value="EN:Selects GPIO/AIO or LOGIC HIGH or LOGIC LOW as input to the input xbar."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:da name="EDITABLE" value="true"/>
-                        <a:da name="DEFAULT" type="XPath" expr="ecu:list('Input_Xbar_Input_Sources')[1]"/>
-                        <a:da name="RANGE" type="XPath" expr="ecu:list('Input_Xbar_Input_Sources')"/>
-                      </v:var>
-                      <!-- Design: MCAL-25721 -->
-                      <v:ref name="CddXbarInputXbarInputSource" type="REFERENCE">
-                        <a:a name="DESC"
-                              value="EN: Reference to GPIO/AIO Pin, obtained from the configuration of PORT plugin."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS"
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:da name="ENABLE" type="XPath" expr="(../CddXbarInputXbarInputSourceSelection='CDD_XBAR_GPIO_AIO')"/>
-                        <a:da name="REF"
-                              value="ASPathDataOfSchema:/TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin"/>
-                        <a:da name="REF-TYPE" value="ASPath"/>
-                      </v:ref>
-                      <!-- Design: MCAL-25720 -->
-                      <v:var name="CddXbarInputXbarInput" type="ENUMERATION">
-                        <a:a name="DESC" 
-                              value="EN:Input number of input crossbar."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:da name="EDITABLE" value="true"/>
-                        <a:da name="DEFAULT" type="XPath" expr="ecu:list('Input_Xbar_Inputs')[1]"/>
-                        <a:da name="RANGE" type="XPath" expr="ecu:list('Input_Xbar_Inputs')"/>
-                        <a:da name="INVALID" type="XPath" 
-                              expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Select value only once for Input Crossbar.">
-                       </a:da>
-                      </v:var>
-                      <!-- Design: MCAL-25707 -->
-                      <v:var name="CddXbarInputXbarInputSelectConfigurationLock" type="BOOLEAN">
-                       <a:a name="DESC" 
-                              value="EN: Option to lock the current Input Group for any further configuration on Input Crossbar until System Reset. Once locked, cannot be unlocked without reset."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:a name="DEFAULT" value="false"/>
-                        <a:a name="ENABLE" value="true"/>
-                        <a:a name="TOOLTIP" value="Locks further configuration for Input Crossbar, once locked will remain the same unless reset."/>
-                      </v:var>
-                    </v:ctr>
-                  </v:lst>
-                </v:ctr>
-                <!-- Design: MCAL-25702 -->
-                <v:ctr name="CddXbarOutputXbarConfig" type="IDENTIFIABLE">
-                  <a:a name="DESC" value="EN: Configuration for Output Crossbar"/>
-                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <v:lst name="CddXbarOutputXbarInstanceConfig" type="MAP">
-                    <a:da name="MIN" value="0"/>
-                    <a:da name="MAX" type="XPath" expr="ecu:get('Output_Xbar_OutputLineCount')-1"/>
-                    <v:ctr name="CddXbarOutputXbarInstanceConfig" type="IDENTIFIABLE">
-                      <a:a name="DESC" value="EN: Configuration for Output Crossbar Instance, one per output line available"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <v:lst name="CddXbarOutputXbarInput" type="MAP">
-                        <a:da name="MIN" value="1"/>
-                        <a:da name="MAX" type="XPath" expr="count(ecu:list('Output_Xbar_InputGroups'))"/>
-                        <v:ctr name="CddXbarOutputXbarInput" type="IDENTIFIABLE">
-                          <a:a name="DESC" value="EN: Configuration for Output Crossbar Instance inputs"/>
+                      <v:ctr name="CddXbarInputXbarConfig" type="IDENTIFIABLE">
+                          <a:a name="DESC" value="EN: Configuration for Input Crossbar"/>
                           <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                          <!-- Design: MCAL-25723 -->
-                          <v:var name="CddXbarOutputXbarInputGroup" type="ENUMERATION">
-                            <a:a name="DESC" 
-                                  value="EN: Number of Input Group to be chosen for Output Crossbar."/>
-                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                  type="IMPLEMENTATIONCONFIGCLASS">
-                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                            </a:a>
-                            <a:a name="ORIGIN" value="Texas Instruments"/>
-                            <a:a name="SCOPE" value="LOCAL"/>
-                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="OPTIONAL" value="false"/>
-                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                            <a:da name="EDITABLE" value="true"/>
-                            <a:da name="DEFAULT" type="XPath" expr="ecu:list('Output_Xbar_InputGroups')[1]"/>
-                            <a:da name="RANGE" type="XPath" expr="ecu:list('Output_Xbar_InputGroups')"/>
-                            <a:da name="INVALID" type="XPath" 
-                                  expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of Output Crossbar.">
-                            </a:da>
-                          </v:var>
-                          <!-- Design: MCAL-25724 -->
-                          <v:lst name="CddXbarOutputXbarInputLine">
-                            <a:da name="MIN" value="1"/>
-                            <a:da name="MAX" type="XPath" expr="ecu:get('Xbar_InputGroup_InputLines')"/>
-                            <v:var name="CddXbarOutputXbarInputLine" type="ENUMERATION">
-                              <a:a name="DESC" 
-                                    value="EN: Number of Input Line from the Group selected to be chosen for Output Crossbar."/>
-                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                    type="IMPLEMENTATIONCONFIGCLASS">
-                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                              </a:a>
-                              <a:a name="ORIGIN" value="Texas Instruments"/>
-                              <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                              <a:a name="OPTIONAL" value="false"/>
-                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                              <a:da name="ENABLE" value="true"/>
-                              <a:da name="DEFAULT" type="XPath" expr="ecu:list(concat('Output_Xbar_Input_Lines', '.', ../../CddXbarOutputXbarInputGroup))[1]"/>
-                              <a:da name="RANGE" type="XPath" expr="ecu:list(concat('Output_Xbar_Input_Lines', '.', ../../CddXbarOutputXbarInputGroup))"/>
-                              <a:da name="INVALID" type="XPath" 
-                                    expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of Output Crossbar.">
-                              </a:da>
-                            </v:var>
+                          <!-- Design: MCAL-25701 -->
+                          <v:lst name="CddXbarInputXbarInstanceConfig" type="MAP">
+                              <a:da name="MIN" value="0"/>
+                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Input_Xbar_SelectCount')&quot;,num:i(64))"/>
+                              <v:ctr name="CddXbarInputXbarInstanceConfig" type="IDENTIFIABLE">
+                                  <a:a name="DESC" value="EN: Configuration for Input Crossbar instance, one per output line available"/>
+                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                  <v:var name="CddXbarInputXbarInputSourceSelection" type="ENUMERATION">
+                                      <a:a name="DESC" 
+                                          value="EN:Selects GPIO/AIO or LOGIC HIGH or LOGIC LOW as input to the input xbar."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:da name="EDITABLE" value="true"/>
+                                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Input_Xbar_Input_Sources')[1]&quot;,'CDD_XBAR_GPIO_AIO')"/>
+                                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Input_Xbar_Input_Sources')&quot;,'CDD_XBAR_GPIO_AIO')"/>
+                                  </v:var>
+                                  <!-- Design: MCAL-25721 -->
+                                  <v:ref name="CddXbarInputXbarInputSource" type="REFERENCE">
+                                      <a:a name="DESC"
+                                          value="EN: Reference to GPIO/AIO Pin, obtained from the configuration of PORT plugin."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:da name="ENABLE" type="XPath" expr="(../CddXbarInputXbarInputSourceSelection='CDD_XBAR_GPIO_AIO')"/>
+                                      <a:da name="REF"
+                                          value="ASPathDataOfSchema:/TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin"/>
+                                      <a:da name="REF-TYPE" value="ASPath"/>
+                                  </v:ref>
+                                  <!-- Design: MCAL-25720 -->
+                                  <v:var name="CddXbarInputXbarInput" type="ENUMERATION">
+                                      <a:a name="DESC" 
+                                           value="EN:Input number of input crossbar."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                           type="IMPLEMENTATIONCONFIGCLASS">
+                                           <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:da name="EDITABLE" value="true"/>
+                                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Input_Xbar_Inputs')[1]&quot;,'CDD_XBAR_INPUT1')"/>
+                                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Input_Xbar_Inputs')&quot;,'CDD_XBAR_INPUT1')"/>
+                                      <a:da name="INVALID" type="XPath" 
+                                          expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Select value only once for Input Crossbar.">
+                                      </a:da>
+                                  </v:var>
+                                  <!-- Design: MCAL-25707 -->
+                                  <v:var name="CddXbarInputXbarInputSelectConfigurationLock" type="BOOLEAN">
+                                      <a:a name="DESC" 
+                                          value="EN: Option to lock the current Input Group for any further configuration on Input Crossbar until System Reset. Once locked, cannot be unlocked without reset."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:a name="DEFAULT" value="false"/>
+                                      <a:a name="ENABLE" value="true"/>
+                                      <a:a name="TOOLTIP" value="Locks further configuration for Input Crossbar, once locked will remain the same unless reset."/>
+                                  </v:var>
+                              </v:ctr>
                           </v:lst>
-                        </v:ctr>
-                      </v:lst>
-                      <!-- Design: MCAL-25722 -->
-                      <v:var name="CddXbarOutputXbarOutputLine" type="ENUMERATION">
-                        <a:a name="DESC" 
-                              value="EN: Number of Output Line instance to be set for Output Crossbar."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <a:da name="EDITABLE" value="true"/>
-                      <a:da name="DEFAULT" type="XPath" expr="ecu:list('Output_Xbar_Output_Lines')[1]"/>
-                      <a:da name="RANGE" type="XPath" expr="ecu:list('Output_Xbar_Output_Lines')"/>
-                      <a:da name="INVALID" type="XPath" 
-                            expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for Output Crossbar.">
-                      </a:da>
-                      </v:var>
-                      <!-- Design: MCAL-25719 -->
-                      <v:var name="CddXbarOutputXbarOutputPulseStretch" type="ENUMERATION">
-                        <a:a name="DESC" 
-                              value="EN: Output Line pulse stretch in Sys Clock ticks for Output Crossbar."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:da name="EDITABLE" value="true"/>
-                        <a:da name="DEFAULT" type="XPath" expr="ecu:list('Output_Xbar_Stretch')[1]"/>
-                        <a:da name="RANGE" type="XPath" expr="ecu:list('Output_Xbar_Stretch')"/>
-                      </v:var>
-                      <!-- Design: MCAL-25713 -->
-                      <v:var name="CddXbarOutputXbarOutputInversion" type="BOOLEAN">
-                        <a:a name="DESC" 
-                              value="EN: Option to invert the output signal for the selected output line of the Output Crossbar instance."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:a name="DEFAULT" value="false"/>
-                        <a:a name="ENABLE" value="true"/>
-                      </v:var>
-                      <!-- Design: MCAL-25718 -->
-                      <v:var name="CddXbarOutputXbarOutputLatch" type="BOOLEAN">
-                        <a:a name="DESC" 
-                              value="EN: Option to select latch as output of selected output line for Output Crossbar instance."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:a name="DEFAULT" value="false"/>
-                        <a:a name="ENABLE" value="true"/>
-                      </v:var>
-                      <v:ctr name="CddXbarOutputXbarOutputFlagConfig" type="IDENTIFIABLE">
-                        <a:a name="DESC" value="EN: Configuration for output crossbar output latch"/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                        
-                      </a:a>   
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:da name="EDITABLE" type="XPath" expr="(../CddXbarOutputXbarOutputLatch='true')" />        
-                        <!-- Design: MCAL-xxxxx -->
-                        <v:var name="CddXbarOutputXbarInversionBeforeLatch" type="BOOLEAN">
-                          <a:a name="DESC" 
-                                value="EN: Option to invert the signal before latching for the selected output line for Output Crossbar instance."/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                          </a:a>
-                          <a:a name="ORIGIN" value="Texas Instruments"/>
-                          <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="OPTIONAL" value="false"/>
-                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                          <a:a name="DEFAULT" value="false"/>
-                          <a:a name="ENABLE" value="true"/>
-                        </v:var>
-                        <!-- Design: MCAL-xxxxx -->
-                        <v:var name="CddXbarOutputXbarOutputLatchInitSts" type="ENUMERATION">
-                          <a:a name="DESC" 
-                                value="Force or clear the output latch of individual output line for Output Crossbar during initialization"/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                type="IMPLEMENTATIONCONFIGCLASS">
-                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                          </a:a>
-                          <a:a name="ORIGIN" value="Texas Instruments"/>
-                          <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="OPTIONAL" value="false"/>
-                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                          <a:da name="DEFAULT" type="XPath" expr="ecu:list('Cdd_Xbar_OutFlagInit')[1]"/>
-                          <a:da name="RANGE" type="XPath" expr="ecu:list('Cdd_Xbar_OutFlagInit')"/>
-                        </v:var>
                       </v:ctr>
-                    </v:ctr>
-                  </v:lst>
-                  <!-- Design: MCAL-25708 -->
-                  <v:var name="CddXbarOutputXbarConfigurationLock" type="BOOLEAN">
-                    <a:a name="DESC" 
-                          value="EN: Option to lock the Output crossbar instance for any further input and output inversion configuration until System Reset. Cannot be unlocked once locked unless reset."/>
-                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                          type="IMPLEMENTATIONCONFIGCLASS">
-                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                    </a:a>
-                    <a:a name="ORIGIN" value="Texas Instruments"/>
-                    <a:a name="SCOPE" value="LOCAL"/>
-                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                    <a:a name="OPTIONAL" value="false"/>
-                    <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                    <a:a name="DEFAULT" value="false"/>
-                    <a:a name="ENABLE" value="true"/>
-                    <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for Output Crossbar, once locked will remain the same unless system reset."/>
-                  </v:var>
-                </v:ctr>
-                <!-- Design: MCAL-25703 -->
-                <v:ctr name="CddXbarEpwmXbarConfig" type="IDENTIFIABLE">
-                  <a:a name="DESC" value="EN: Configuration for EPWM Crossbar"/>
-                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <v:lst name="CddXbarEpwmXbarInstanceConfig" type="MAP">
-                    <a:da name="MIN" value="0"/>
-                    <a:da name="MAX" type="XPath" expr="ecu:get('EPWM_Xbar_OutputLineCount')-1"/>
-                    <v:ctr name="CddXbarEpwmXbarInstanceConfig" type="IDENTIFIABLE">
-                      <a:a name="DESC" value="EN: Configuration for EPWM Crossbar Instance, one per output line available"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <v:lst name="CddXbarEpwmXbarInput" type="MAP">
-                        <a:da name="MIN" value="1"/>
-                        <a:da name="MAX" type="XPath" expr="count(ecu:list('Epwm_Xbar_InputGroups'))"/>
-                        <v:ctr name="CddXbarEpwmXbarInput" type="IDENTIFIABLE">
-                          <a:a name="DESC" value="EN: Configuration for EPWM Crossbar Instance inputs"/>
+                      <!-- Design: MCAL-25702 -->
+                      <v:ctr name="CddXbarOutputXbarConfig" type="IDENTIFIABLE">
+                          <a:a name="DESC" value="EN: Configuration for Output Crossbar"/>
                           <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                          <!-- Design: MCAL-25725 -->
-                          <v:var name="CddXbarEpwmXbarInputGroup" type="ENUMERATION">
-                            <a:a name="DESC" 
-                                  value="EN: Number of Input Group to be chosen for EPWM Crossbar."/>
-                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                  type="IMPLEMENTATIONCONFIGCLASS">
-                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                            </a:a>
-                            <a:a name="ORIGIN" value="Texas Instruments"/>
-                            <a:a name="SCOPE" value="LOCAL"/>
-                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="OPTIONAL" value="false"/>
-                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                            <a:da name="EDITABLE" value="true"/>
-                            <a:da name="ENABLE" value="true"/>
-                            <a:da name="DEFAULT" type="XPath" expr="ecu:list('Epwm_Xbar_InputGroups')[1]"/>
-                            <a:da name="RANGE" type="XPath" expr="ecu:list('Epwm_Xbar_InputGroups')"/>
-                            <a:da name="INVALID" type="XPath" 
-                                  expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of EPWM Crossbar.">
-                            </a:da>
-                          </v:var>
-                          <!-- Design: MCAL-25726 -->
-                          <v:lst name="CddXbarEpwmXbarInputLine" type="">
-                            <a:da name="MIN" value="1"/>
-                            <a:da name="MAX" type="XPath" expr="ecu:get('Xbar_InputGroup_InputLines')"/>
-                            <v:var name="CddXbarEpwmXbarInputLine" type="ENUMERATION">
+                          <v:lst name="CddXbarOutputXbarInstanceConfig" type="MAP">
+                              <a:da name="MIN" value="0"/>
+                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Output_Xbar_OutputLineCount')&quot;,num:i(16))"/>
+                              <v:ctr name="CddXbarOutputXbarInstanceConfig" type="IDENTIFIABLE">
+                                  <a:a name="DESC" value="EN: Configuration for Output Crossbar Instance, one per output line available"/>
+                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                  <v:lst name="CddXbarOutputXbarInput" type="MAP">
+                                      <a:da name="MIN" value="1"/>
+                                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->count(ecu:list('Output_Xbar_InputGroups'))&quot;,num:i(10))"/>
+                                      <v:ctr name="CddXbarOutputXbarInput" type="IDENTIFIABLE">
+                                          <a:a name="DESC" value="EN: Configuration for Output Crossbar Instance inputs"/>
+                                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                          <!-- Design: MCAL-25723 -->
+                                          <v:var name="CddXbarOutputXbarInputGroup" type="ENUMERATION">
+                                              <a:a name="DESC" 
+                                                  value="EN: Number of Input Group to be chosen for Output Crossbar."/>
+                                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                              </a:a>
+                                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                                              <a:a name="SCOPE" value="LOCAL"/>
+                                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                              <a:a name="OPTIONAL" value="false"/>
+                                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                              <a:da name="EDITABLE" value="true"/>
+                                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Output_Xbar_InputGroups')[1]&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Output_Xbar_InputGroups')&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                              <a:da name="INVALID" type="XPath" 
+                                                  expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of Output Crossbar.">
+                                              </a:da>
+                                          </v:var>
+                                          <!-- Design: MCAL-25724 -->
+                                          <v:lst name="CddXbarOutputXbarInputLine">
+                                              <a:da name="MIN" value="1"/>
+                                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Xbar_InputGroup_InputLines')&quot;,num:i(32))"/>
+                                              <v:var name="CddXbarOutputXbarInputLine" type="ENUMERATION">
+                                                  <a:a name="DESC" 
+                                                      value="EN: Number of Input Line from the Group selected to be chosen for Output Crossbar."/>
+                                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                      type="IMPLEMENTATIONCONFIGCLASS">
+                                                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                                  </a:a>
+                                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                                  <a:a name="SCOPE" value="LOCAL"/>
+                                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                                  <a:a name="OPTIONAL" value="false"/>
+                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:da name="ENABLE" value="true"/>
+                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Output_Xbar_Input_Lines', '.', ../../CddXbarOutputXbarInputGroup))[1]&quot;,'CDD_XBAR_OUT_CMPSS1_CTRIPOUTH')"/>
+                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Output_Xbar_Input_Lines', '.', ../../CddXbarOutputXbarInputGroup))&quot;,'CDD_XBAR_OUT_CMPSS1_CTRIPOUTH')"/>
+                                                  <a:da name="INVALID" type="XPath" 
+                                                      expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of Output Crossbar.">
+                                                  </a:da>
+                                              </v:var>
+                                          </v:lst>
+                                      </v:ctr>
+                                  </v:lst>
+                                  <!-- Design: MCAL-25722 -->
+                                  <v:var name="CddXbarOutputXbarOutputLine" type="ENUMERATION">
+                                      <a:a name="DESC" 
+                                          value="EN: Number of Output Line instance to be set for Output Crossbar."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:da name="EDITABLE" value="true"/>
+                                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Output_Xbar_Output_Lines')[1]&quot;,'CDD_XBAR_OUTPUT1')"/>
+                                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Output_Xbar_Output_Lines')&quot;,'CDD_XBAR_OUTPUT1')"/>
+                                      <a:da name="INVALID" type="XPath" 
+                                          expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for Output Crossbar.">
+                                      </a:da>
+                                  </v:var>
+                                  <!-- Design: MCAL-25719 -->
+                                  <v:var name="CddXbarOutputXbarOutputPulseStretch" type="ENUMERATION">
+                                      <a:a name="DESC" 
+                                          value="EN: Output Line pulse stretch in Sys Clock ticks for Output Crossbar."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:da name="EDITABLE" value="true"/>
+                                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Output_Xbar_Stretch')[1]&quot;,'CDD_XBAR_SYSTICKS_STRETCH_OFF')"/>
+                                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Output_Xbar_Stretch')&quot;,'CDD_XBAR_SYSTICKS_STRETCH_OFF')"/>
+                                  </v:var>
+                                  <!-- Design: MCAL-25713 -->
+                                  <v:var name="CddXbarOutputXbarOutputInversion" type="BOOLEAN">
+                                      <a:a name="DESC" 
+                                         value="EN: Option to invert the output signal for the selected output line of the Output Crossbar instance."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:a name="DEFAULT" value="false"/>
+                                      <a:a name="ENABLE" value="true"/>
+                                  </v:var>
+                                  <!-- Design: MCAL-25718 -->
+                                  <v:var name="CddXbarOutputXbarOutputLatch" type="BOOLEAN">
+                                      <a:a name="DESC" 
+                                          value="EN: Option to select latch as output of selected output line for Output Crossbar instance."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:a name="DEFAULT" value="false"/>
+                                      <a:a name="ENABLE" value="true"/>
+                                  </v:var>
+                                  <v:ctr name="CddXbarOutputXbarOutputFlagConfig" type="IDENTIFIABLE">
+                                      <a:a name="DESC" value="EN: Configuration for output crossbar output latch"/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>                        
+                                      </a:a>   
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:da name="EDITABLE" type="XPath" expr="(../CddXbarOutputXbarOutputLatch='true')" />        
+                                      <!-- Design: MCAL-25814 -->
+                                      <v:var name="CddXbarOutputXbarInversionBeforeLatch" type="BOOLEAN">
+                                          <a:a name="DESC" 
+                                              value="EN: Option to invert the signal before latching for the selected output line for Output Crossbar instance."/>
+                                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                              type="IMPLEMENTATIONCONFIGCLASS">
+                                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                          </a:a>
+                                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                                          <a:a name="SCOPE" value="LOCAL"/>
+                                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                          <a:a name="OPTIONAL" value="false"/>
+                                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                          <a:a name="DEFAULT" value="false"/>
+                                          <a:a name="ENABLE" value="true"/>
+                                      </v:var>
+                                      <!-- Design: MCAL-25813 -->
+                                      <v:var name="CddXbarOutputXbarOutputLatchInitSts" type="ENUMERATION">
+                                          <a:a name="DESC" 
+                                              value="Force or clear the output latch of individual output line for Output Crossbar during initialization"/>
+                                         <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                              type="IMPLEMENTATIONCONFIGCLASS">
+                                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                          </a:a>
+                                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                                          <a:a name="SCOPE" value="LOCAL"/>
+                                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                          <a:a name="OPTIONAL" value="false"/>
+                                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Xbar_OutFlagInit')[1]&quot;,'CDD_XBAR_OUTPUTDEFAULT')"/>
+                                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Xbar_OutFlagInit')&quot;,'CDD_XBAR_OUTPUTDEFAULT')"/>
+                                      </v:var>
+                                  </v:ctr>
+                              </v:ctr>
+                          </v:lst>
+                          <!-- Design: MCAL-25708 -->
+                          <v:var name="CddXbarOutputXbarConfigurationLock" type="BOOLEAN">
                               <a:a name="DESC" 
-                                    value="EN: Number of Input Line from the Group selected to be chosen for EPWM Crossbar."/>
+                                  value="EN: Option to lock the Output crossbar instance for any further input and output inversion configuration until System Reset. Cannot be unlocked once locked unless reset."/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                    type="IMPLEMENTATIONCONFIGCLASS">
-                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="OPTIONAL" value="false"/>
                               <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                              <a:da name="ENABLE" value="true"/>
-                              <a:da name="DEFAULT" type="XPath" expr="ecu:list(concat('Epwm_Xbar_Input_Lines', '.', ../../CddXbarEpwmXbarInputGroup))[1]"/>
-                              <a:da name="RANGE" type="XPath" expr="ecu:list(concat('Epwm_Xbar_Input_Lines', '.', ../../CddXbarEpwmXbarInputGroup))"/>
-                              <a:da name="INVALID" type="XPath" 
-                                    expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of EPWM Crossbar.">
-                              </a:da>
-                            </v:var>
-                          </v:lst>
-                        </v:ctr>
-                      </v:lst>
-                      <!-- Design: MCAL-25822 -->
-                      <v:var name="CddXbarEpwmXbarOutputLine" type="ENUMERATION">
-                        <a:a name="DESC" 
-                              value="EN: Number of Output Line instance to be set for EPWM Crossbar. TRIP1 is reserved."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <a:da name="EDITABLE" value="true"/>
-                      <a:da name="DEFAULT" type="XPath" expr="ecu:list('EPWM_Xbar_Output_Lines')[1]"/>
-                      <a:da name="RANGE" type="XPath" expr="ecu:list('EPWM_Xbar_Output_Lines')"/>
-                      <a:da name="INVALID" type="XPath" 
-                            expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for EPWM Crossbar.">
-                      </a:da>
-                      </v:var>
-                      <!-- Design: MCAL-25714 -->
-                      <v:var name="CddXbarEpwmXbarOutputInversion" type="BOOLEAN">
-                        <a:a name="DESC" 
-                              value="EN: Option to invert the output signal for the selected output line of the EPWM Crossbar instance."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:a name="DEFAULT" value="false"/>
-                        <a:a name="ENABLE" value="true"/>
-                      </v:var>
-                    </v:ctr>
-                  </v:lst>
-                  <!-- Design: MCAL-25709 -->
-                  <v:var name="CddXbarEpwmXbarConfigurationLock" type="BOOLEAN">
-                    <a:a name="DESC" 
-                          value="EN: Option to lock the EPWM crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset."/>
-                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                          type="IMPLEMENTATIONCONFIGCLASS">
-                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                    </a:a>
-                    <a:a name="ORIGIN" value="Texas Instruments"/>
-                    <a:a name="SCOPE" value="LOCAL"/>
-                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                    <a:a name="OPTIONAL" value="false"/>
-                    <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                    <a:a name="DEFAULT" value="false"/>
-                    <a:a name="ENABLE" value="true"/>
-                    <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for EPWM Crossbar, once locked will remain the same unless system reset."/>
-                  </v:var>
-                </v:ctr>
-                <!-- Design: MCAL-25704 -->
-                <v:ctr name="CddXbarClbXbarConfig" type="IDENTIFIABLE">
-                  <a:a name="DESC" value="EN: Configuration for CLB Crossbar"/>
-                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <v:lst name="CddXbarClbXbarInstanceConfig" type="MAP">
-                    <a:da name="MIN" value="0"/>
-                    <a:da name="MAX" type="XPath" expr="ecu:get('CLB_Xbar_OutputLineCount')-1"/>
-                    <v:ctr name="CddXbarClbXbarInstanceConfig" type="IDENTIFIABLE">
-                      <a:a name="DESC" value="EN: Configuration for CLB Crossbar Instance, one per output line available"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <v:lst name="CddXbarClbXbarInput" type="MAP">
-                        <a:da name="MIN" value="1"/>
-                        <a:da name="MAX" type="XPath" expr="count(ecu:list('Clb_Xbar_InputGroups'))"/>
-                        <v:ctr name="CddXbarClbXbarInput" type="IDENTIFIABLE">
-                          <a:a name="DESC" value="EN: Configuration for CLB Crossbar Instance inputs"/>
-                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                          <!-- Design: MCAL-25727 -->
-                          <v:var name="CddXbarClbXbarInputGroup" type="ENUMERATION">
-                            <a:a name="DESC" 
-                                  value="EN: Number of Input Group to be chosen for CLB Crossbar."/>
-                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                  type="IMPLEMENTATIONCONFIGCLASS">
-                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                            </a:a>
-                            <a:a name="ORIGIN" value="Texas Instruments"/>
-                            <a:a name="SCOPE" value="LOCAL"/>
-                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="OPTIONAL" value="false"/>
-                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                            <a:da name="EDITABLE" value="true"/>
-                            <a:da name="ENABLE" value="true"/>
-                            <a:da name="DEFAULT" type="XPath" expr="ecu:list('Clb_Xbar_InputGroups')[1]"/>
-                            <a:da name="RANGE" type="XPath" expr="ecu:list('Clb_Xbar_InputGroups')"/>
-                            <a:da name="INVALID" type="XPath" 
-                                  expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of CLB Crossbar.">
-                            </a:da>
+                              <a:a name="DEFAULT" value="false"/>
+                              <a:a name="ENABLE" value="true"/>
+                              <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for Output Crossbar, once locked will remain the same unless system reset."/>
                           </v:var>
-                          <!-- Design: MCAL-25728 -->
-                          <v:lst name="CddXbarClbXbarInputLine" type="">
-                            <a:da name="MIN" value="1"/>
-                            <a:da name="MAX" type="XPath" expr="ecu:get('Xbar_InputGroup_InputLines')"/>
-                            <v:var name="CddXbarClbXbarInputLine" type="ENUMERATION">
+                      </v:ctr>
+                      <!-- Design: MCAL-25703 -->
+                      <v:ctr name="CddXbarEpwmXbarConfig" type="IDENTIFIABLE">
+                          <a:a name="DESC" value="EN: Configuration for EPWM Crossbar"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <v:lst name="CddXbarEpwmXbarInstanceConfig" type="MAP">
+                              <a:da name="MIN" value="0"/>
+                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('EPWM_Xbar_OutputLineCount')&quot;,num:i(16))"/>
+                              <v:ctr name="CddXbarEpwmXbarInstanceConfig" type="IDENTIFIABLE">
+                                  <a:a name="DESC" value="EN: Configuration for EPWM Crossbar Instance, one per output line available"/>
+                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                  <v:lst name="CddXbarEpwmXbarInput" type="MAP">
+                                      <a:da name="MIN" value="1"/>
+                                  <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->count(ecu:list('Epwm_Xbar_InputGroups'))&quot;,num:i(10))"/>
+                                  <v:ctr name="CddXbarEpwmXbarInput" type="IDENTIFIABLE">
+                                      <a:a name="DESC" value="EN: Configuration for EPWM Crossbar Instance inputs"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <!-- Design: MCAL-25725 -->
+                                      <v:var name="CddXbarEpwmXbarInputGroup" type="ENUMERATION">
+                                          <a:a name="DESC" 
+                                              value="EN: Number of Input Group to be chosen for EPWM Crossbar."/>
+                                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                              type="IMPLEMENTATIONCONFIGCLASS">
+                                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                          </a:a>
+                                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                                          <a:a name="SCOPE" value="LOCAL"/>
+                                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                          <a:a name="OPTIONAL" value="false"/>
+                                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                          <a:da name="EDITABLE" value="true"/>
+                                          <a:da name="ENABLE" value="true"/>
+                                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Epwm_Xbar_InputGroups')[1]&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Epwm_Xbar_InputGroups')&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                          <a:da name="INVALID" type="XPath" 
+                                              expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of EPWM Crossbar.">
+                                          </a:da>
+                                      </v:var>
+                                      <!-- Design: MCAL-25726 -->
+                                      <v:lst name="CddXbarEpwmXbarInputLine" type="">
+                                          <a:da name="MIN" value="1"/>
+                                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Xbar_InputGroup_InputLines')&quot;,num:i(32))"/>
+                                          <v:var name="CddXbarEpwmXbarInputLine" type="ENUMERATION">
+                                              <a:a name="DESC" 
+                                                  value="EN: Number of Input Line from the Group selected to be chosen for EPWM Crossbar."/>
+                                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                              </a:a>
+                                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                                              <a:a name="SCOPE" value="LOCAL"/>
+                                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                              <a:a name="OPTIONAL" value="false"/>
+                                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                              <a:da name="ENABLE" value="true"/>
+                                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Epwm_Xbar_Input_Lines', '.', ../../CddXbarEpwmXbarInputGroup))[1]&quot;,'CDD_XBAR_EPWM_CMPSS1_CTRIPH')"/>
+                                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Epwm_Xbar_Input_Lines', '.', ../../CddXbarEpwmXbarInputGroup))&quot;,'CDD_XBAR_EPWM_CMPSS1_CTRIPH')"/>
+                                              <a:da name="INVALID" type="XPath" 
+                                                  expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of EPWM Crossbar.">
+                                              </a:da>
+                                          </v:var>
+                                      </v:lst>
+                                  </v:ctr>
+                                  </v:lst>
+                                  <!-- Design: MCAL-25822 -->
+                                  <v:var name="CddXbarEpwmXbarOutputLine" type="ENUMERATION">
+                                      <a:a name="DESC" 
+                                          value="EN: Number of Output Line instance to be set for EPWM Crossbar. TRIP1 is reserved."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:da name="EDITABLE" value="true"/>
+                                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('EPWM_Xbar_Output_Lines')[1]&quot;,'CDD_XBAR_TRIP2')"/>
+                                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('EPWM_Xbar_Output_Lines')&quot;,'CDD_XBAR_TRIP2')"/>
+                                      <a:da name="INVALID" type="XPath" 
+                                          expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for EPWM Crossbar.">
+                                      </a:da>
+                                  </v:var>
+                                  <!-- Design: MCAL-25714 -->
+                                  <v:var name="CddXbarEpwmXbarOutputInversion" type="BOOLEAN">
+                                      <a:a name="DESC" 
+                                          value="EN: Option to invert the output signal for the selected output line of the EPWM Crossbar instance."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:a name="DEFAULT" value="false"/>
+                                      <a:a name="ENABLE" value="true"/>
+                                  </v:var>
+                              </v:ctr>
+                          </v:lst>
+                          <!-- Design: MCAL-25709 -->
+                          <v:var name="CddXbarEpwmXbarConfigurationLock" type="BOOLEAN">
                               <a:a name="DESC" 
-                                    value="EN: Number of Input Line from the Group selected to be chosen for CLB Crossbar."/>
+                                  value="EN: Option to lock the EPWM crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset."/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                    type="IMPLEMENTATIONCONFIGCLASS">
-                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="OPTIONAL" value="false"/>
                               <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                              <a:da name="ENABLE" value="true"/>
-                              <a:da name="DEFAULT" type="XPath" expr="ecu:list(concat('Clb_Xbar_Input_Lines', '.', ../../CddXbarClbXbarInputGroup))[1]"/>
-                              <a:da name="RANGE" type="XPath" expr="ecu:list(concat('Clb_Xbar_Input_Lines', '.', ../../CddXbarClbXbarInputGroup))"/>
-                              <a:da name="INVALID" type="XPath" 
-                                    expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of CLB Crossbar.">
-                              </a:da>
-                            </v:var>
-                          </v:lst>
-                        </v:ctr>
-                      </v:lst>
-                      <!-- Design: MCAL-25823 -->
-                      <v:var name="CddXbarClbXbarOutputLine" type="ENUMERATION">
-                        <a:a name="DESC" 
-                              value="EN: Number of Output Line instance to be set for CLB Crossbar."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <a:da name="EDITABLE" value="true"/>
-                      <a:da name="DEFAULT" type="XPath" expr="ecu:list('CLB_Xbar_Output_Lines')[1]"/>
-                      <a:da name="RANGE" type="XPath" expr="ecu:list('CLB_Xbar_Output_Lines')"/>
-                      <a:da name="INVALID" type="XPath" 
-                            expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for CLB Crossbar.">
-                      </a:da>
-                      </v:var>
-                      <!-- Design: MCAL-25715 -->
-                      <v:var name="CddXbarClbXbarOutputInversion" type="BOOLEAN">
-                        <a:a name="DESC" 
-                              value="EN: Option to invert the output signal for the selected output line of the CLB Crossbar instance."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:a name="DEFAULT" value="false"/>
-                        <a:a name="ENABLE" value="true"/>
-                      </v:var>
-                    </v:ctr>
-                  </v:lst>
-                  <!-- Design: MCAL-25710 -->
-                  <v:var name="CddXbarClbXbarConfigurationLock" type="BOOLEAN">
-                    <a:a name="DESC" 
-                          value="EN: Option to lock the CLB crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset."/>
-                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                          type="IMPLEMENTATIONCONFIGCLASS">
-                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                    </a:a>
-                    <a:a name="ORIGIN" value="Texas Instruments"/>
-                    <a:a name="SCOPE" value="LOCAL"/>
-                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                    <a:a name="OPTIONAL" value="false"/>
-                    <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                    <a:a name="DEFAULT" value="false"/>
-                    <a:a name="ENABLE" value="true"/>
-                    <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for CLB Crossbar, once locked will remain the same unless system reset."/>
-                  </v:var>
-                </v:ctr>
-                <!-- Design: MCAL-25706 -->
-                <v:ctr name="CddXbarMindbXbarConfig" type="IDENTIFIABLE">
-                  <a:a name="DESC" value="EN: Configuration for MINDB Crossbar"/>
-                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <v:lst name="CddXbarMindbXbarInstanceConfig" type="MAP">
-                    <a:da name="MIN" value="0"/>
-                    <a:da name="MAX" type="XPath" expr="ecu:get('MinDB_Xbar_OutputLineCount')-1"/>
-                    <v:ctr name="CddXbarMindbXbarInstanceConfig" type="IDENTIFIABLE">
-                      <a:a name="DESC" value="EN: Configuration for MINDB Crossbar Instance, one per output line available"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <v:lst name="CddXbarMindbXbarInput" type="MAP">
-                        <a:da name="MIN" value="1"/>
-                        <a:da name="MAX" type="XPath" expr="count(ecu:list('Mindb_Xbar_InputGroups'))"/>
-                        <v:ctr name="CddXbarMindbXbarInput" type="IDENTIFIABLE">
-                          <a:a name="DESC" value="EN: Configuration for MINDB Crossbar Instance inputs"/>
-                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                          <!-- Design: MCAL-25729 -->
-                          <v:var name="CddXbarMindbXbarInputGroup" type="ENUMERATION">
-                            <a:a name="DESC" 
-                                  value="EN: Number of Input Group to be chosen for MINDB Crossbar."/>
-                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                  type="IMPLEMENTATIONCONFIGCLASS">
-                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                            </a:a>
-                            <a:a name="ORIGIN" value="Texas Instruments"/>
-                            <a:a name="SCOPE" value="LOCAL"/>
-                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="OPTIONAL" value="false"/>
-                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                            <a:da name="EDITABLE" value="true"/>
-                            <a:da name="ENABLE" value="true"/>
-                            <a:da name="DEFAULT" type="XPath" expr="ecu:list('Mindb_Xbar_InputGroups')[1]"/>
-                            <a:da name="RANGE" type="XPath" expr="ecu:list('Mindb_Xbar_InputGroups')"/>
-                            <a:da name="INVALID" type="XPath" 
-                                  expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of MinDB Crossbar.">
-                            </a:da>
+                              <a:a name="DEFAULT" value="false"/>
+                              <a:a name="ENABLE" value="true"/>
+                              <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for EPWM Crossbar, once locked will remain the same unless system reset."/>
                           </v:var>
-                          <!-- Design: MCAL-25730 -->
-                          <v:lst name="CddXbarMindbXbarInputLine" type="">
-                            <a:da name="MIN" value="1"/>
-                            <a:da name="MAX" type="XPath" expr="ecu:get('Xbar_InputGroup_InputLines')"/>
-                            <v:var name="CddXbarMindbXbarInputLine" type="ENUMERATION">
+                      </v:ctr>
+                      <!-- Design: MCAL-25704 -->
+                      <v:ctr name="CddXbarClbXbarConfig" type="IDENTIFIABLE">
+                          <a:a name="DESC" value="EN: Configuration for CLB Crossbar"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <v:lst name="CddXbarClbXbarInstanceConfig" type="MAP">
+                              <a:da name="MIN" value="0"/>
+                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('CLB_Xbar_OutputLineCount')&quot;,num:i(8))"/>
+                              <v:ctr name="CddXbarClbXbarInstanceConfig" type="IDENTIFIABLE">
+                                  <a:a name="DESC" value="EN: Configuration for CLB Crossbar Instance, one per output line available"/>
+                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                  <v:lst name="CddXbarClbXbarInput" type="MAP">
+                                      <a:da name="MIN" value="1"/>
+                                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->count(ecu:list('Clb_Xbar_InputGroups'))&quot;,num:i(8))"/>
+                                      <v:ctr name="CddXbarClbXbarInput" type="IDENTIFIABLE">
+                                          <a:a name="DESC" value="EN: Configuration for CLB Crossbar Instance inputs"/>
+                                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                          <!-- Design: MCAL-25727 -->
+                                          <v:var name="CddXbarClbXbarInputGroup" type="ENUMERATION">
+                                              <a:a name="DESC" 
+                                                  value="EN: Number of Input Group to be chosen for CLB Crossbar."/>
+                                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                              </a:a>
+                                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                                              <a:a name="SCOPE" value="LOCAL"/>
+                                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                              <a:a name="OPTIONAL" value="false"/>
+                                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                              <a:da name="EDITABLE" value="true"/>
+                                              <a:da name="ENABLE" value="true"/>
+                                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Clb_Xbar_InputGroups')[1]&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Clb_Xbar_InputGroups')&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                              <a:da name="INVALID" type="XPath" 
+                                                expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of CLB Crossbar.">
+                                              </a:da>
+                                          </v:var>
+                                          <!-- Design: MCAL-25728 -->
+                                          <v:lst name="CddXbarClbXbarInputLine" type="">
+                                              <a:da name="MIN" value="1"/>
+                                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Xbar_InputGroup_InputLines')&quot;,num:i(32))"/>
+                                              <v:var name="CddXbarClbXbarInputLine" type="ENUMERATION">
+                                                  <a:a name="DESC" 
+                                                      value="EN: Number of Input Line from the Group selected to be chosen for CLB Crossbar."/>
+                                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                      type="IMPLEMENTATIONCONFIGCLASS">
+                                                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                                  </a:a>
+                                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                                  <a:a name="SCOPE" value="LOCAL"/>
+                                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                                  <a:a name="OPTIONAL" value="false"/>
+                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:da name="ENABLE" value="true"/>
+                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Clb_Xbar_Input_Lines', '.', ../../CddXbarClbXbarInputGroup))[1]&quot;,'CDD_XBAR_CLB_CMPSS1_CTRIPH')"/>
+                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Clb_Xbar_Input_Lines', '.', ../../CddXbarClbXbarInputGroup))&quot;,'CDD_XBAR_CLB_CMPSS1_CTRIPH')"/>
+                                                  <a:da name="INVALID" type="XPath" 
+                                                      expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of CLB Crossbar.">
+                                                  </a:da>
+                                              </v:var>
+                                          </v:lst>
+                                      </v:ctr>
+                                  </v:lst>
+                                  <!-- Design: MCAL-25823 -->
+                                  <v:var name="CddXbarClbXbarOutputLine" type="ENUMERATION">
+                                      <a:a name="DESC" 
+                                          value="EN: Number of Output Line instance to be set for CLB Crossbar."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                           type="IMPLEMENTATIONCONFIGCLASS">
+                                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:da name="EDITABLE" value="true"/>
+                                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('CLB_Xbar_Output_Lines')[1]&quot;,'CDD_XBAR_AUXSIG1')"/>
+                                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('CLB_Xbar_Output_Lines')&quot;,'CDD_XBAR_AUXSIG1')"/>
+                                      <a:da name="INVALID" type="XPath" 
+                                          expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for CLB Crossbar.">
+                                      </a:da>
+                                  </v:var>
+                                  <!-- Design: MCAL-25715 -->
+                                  <v:var name="CddXbarClbXbarOutputInversion" type="BOOLEAN">
+                                      <a:a name="DESC" 
+                                          value="EN: Option to invert the output signal for the selected output line of the CLB Crossbar instance."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:a name="DEFAULT" value="false"/>
+                                      <a:a name="ENABLE" value="true"/>
+                                  </v:var>
+                              </v:ctr>
+                          </v:lst>
+                          <!-- Design: MCAL-25710 -->
+                          <v:var name="CddXbarClbXbarConfigurationLock" type="BOOLEAN">
                               <a:a name="DESC" 
-                                    value="EN: Number of Input Line from the Group selected to be chosen for MINDB Crossbar."/>
+                                  value="EN: Option to lock the CLB crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset."/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                    type="IMPLEMENTATIONCONFIGCLASS">
-                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="OPTIONAL" value="false"/>
                               <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                              <a:da name="ENABLE" value="true"/>
-                              <a:da name="DEFAULT" type="XPath" expr="ecu:list(concat('Mindb_Xbar_Input_Lines', '.', ../../CddXbarMindbXbarInputGroup))[1]"/>
-                              <a:da name="RANGE" type="XPath" expr="ecu:list(concat('Mindb_Xbar_Input_Lines', '.', ../../CddXbarMindbXbarInputGroup))"/>
-                              <a:da name="INVALID" type="XPath" 
-                                    expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of MinDB Crossbar.">
-                              </a:da>
-                            </v:var>
-                          </v:lst>
-                        </v:ctr>
-                      </v:lst>
-                      <!-- Design: MCAL-25824 -->
-                      <v:var name="CddXbarMindbXbarOutputLine" type="ENUMERATION">
-                        <a:a name="DESC" 
-                              value="EN: Number of Output Line instance to be set for MINDB Crossbar."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <a:da name="EDITABLE" value="true"/>
-                      <a:da name="DEFAULT" type="XPath" expr="ecu:list('MINDB_Xbar_Output_Lines')[1]"/>
-                      <a:da name="RANGE" type="XPath" expr="ecu:list('MINDB_Xbar_Output_Lines')"/>
-                      <a:da name="INVALID" type="XPath" 
-                            expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for MINDB Crossbar.">
-                      </a:da>
-                      </v:var>
-                      <!-- Design: MCAL-25716 -->
-                      <v:var name="CddXbarMindbXbarOutputInversion" type="BOOLEAN">
-                        <a:a name="DESC" 
-                              value="EN: Option to invert the output signal for the selected output line of the MINDB Crossbar instance."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:a name="DEFAULT" value="false"/>
-                        <a:a name="ENABLE" value="true"/>
-                      </v:var>
-                    </v:ctr>
-                  </v:lst>
-                  <!-- Design: MCAL-25711 -->
-                  <v:var name="CddXbarMindbXbarConfigurationLock" type="BOOLEAN">
-                    <a:a name="DESC" 
-                          value="EN: Option to lock the MINDB crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset."/>
-                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                          type="IMPLEMENTATIONCONFIGCLASS">
-                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                    </a:a>
-                    <a:a name="ORIGIN" value="Texas Instruments"/>
-                    <a:a name="SCOPE" value="LOCAL"/>
-                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                    <a:a name="OPTIONAL" value="false"/>
-                    <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                    <a:a name="DEFAULT" value="false"/>
-                    <a:a name="ENABLE" value="true"/>
-                    <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for MINDB Crossbar, once locked will remain the same unless system reset."/>
-                  </v:var>
-                </v:ctr>
-                <!-- Design: MCAL-25705 -->
-                <v:ctr name="CddXbarIclXbarConfig" type="IDENTIFIABLE">
-                  <a:a name="DESC" value="EN: Configuration for ICL Crossbar"/>
-                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <v:lst name="CddXbarIclXbarInstanceConfig" type="MAP">
-                    <a:da name="MIN" value="0"/>
-                    <a:da name="MAX" type="XPath" expr="ecu:get('ICL_Xbar_OutputLineCount')-1"/>
-                    <v:ctr name="CddXbarIclXbarInstanceConfig" type="IDENTIFIABLE">
-                      <a:a name="DESC" value="EN: Configuration for ICL Crossbar Instance, one per output line available"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <v:lst name="CddXbarIclXbarInput" type="MAP">
-                        <a:da name="MIN" value="1"/>
-                        <a:da name="MAX" type="XPath" expr="count(ecu:list('Icl_Xbar_InputGroups'))"/>
-                        <v:ctr name="CddXbarIclXbarInput" type="IDENTIFIABLE">
-                          <a:a name="DESC" value="EN: Configuration for ICL Crossbar Instance inputs"/>
-                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                          <!-- Design: MCAL-25731 -->
-                          <v:var name="CddXbarIclXbarInputGroup" type="ENUMERATION">
-                            <a:a name="DESC" 
-                                  value="EN: Number of Input Group to be chosen for ICL Crossbar."/>
-                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                  type="IMPLEMENTATIONCONFIGCLASS">
-                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                            </a:a>
-                            <a:a name="ORIGIN" value="Texas Instruments"/>
-                            <a:a name="SCOPE" value="LOCAL"/>
-                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="OPTIONAL" value="false"/>
-                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                            <a:da name="EDITABLE" value="true"/>
-                            <a:da name="ENABLE" value="true"/>
-                            <a:da name="DEFAULT" type="XPath" expr="ecu:list('Icl_Xbar_InputGroups')[1]"/>
-                            <a:da name="RANGE" type="XPath" expr="ecu:list('Icl_Xbar_InputGroups')"/>
-                            <a:da name="INVALID" type="XPath" 
-                                  expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of ICL Crossbar.">
-                            </a:da>
+                              <a:a name="DEFAULT" value="false"/>
+                              <a:a name="ENABLE" value="true"/>
+                              <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for CLB Crossbar, once locked will remain the same unless system reset."/>
                           </v:var>
-                          <!-- Design: MCAL-25732 -->
-                          <v:lst name="CddXbarIclXbarInputLine" type="">
-                            <a:da name="MIN" value="1"/>
-                            <a:da name="MAX" type="XPath" expr="ecu:get('Xbar_InputGroup_InputLines')"/>
-                            <v:var name="CddXbarIclXbarInputLine" type="ENUMERATION">
+                      </v:ctr>
+                      <!-- Design: MCAL-25706 -->
+                      <v:ctr name="CddXbarMindbXbarConfig" type="IDENTIFIABLE">
+                          <a:a name="DESC" value="EN: Configuration for MINDB Crossbar"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <v:lst name="CddXbarMindbXbarInstanceConfig" type="MAP">
+                              <a:da name="MIN" value="0"/>
+                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('MinDB_Xbar_OutputLineCount')&quot;,num:i(16))"/>
+                              <v:ctr name="CddXbarMindbXbarInstanceConfig" type="IDENTIFIABLE">
+                                  <a:a name="DESC" value="EN: Configuration for MINDB Crossbar Instance, one per output line available"/>
+                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                  <v:lst name="CddXbarMindbXbarInput" type="MAP">
+                                      <a:da name="MIN" value="1"/>
+                                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->count(ecu:list('Mindb_Xbar_InputGroups'))&quot;,num:i(3))"/>
+                                      <v:ctr name="CddXbarMindbXbarInput" type="IDENTIFIABLE">
+                                          <a:a name="DESC" value="EN: Configuration for MINDB Crossbar Instance inputs"/>
+                                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                          <!-- Design: MCAL-25729 -->
+                                          <v:var name="CddXbarMindbXbarInputGroup" type="ENUMERATION">
+                                              <a:a name="DESC" 
+                                                  value="EN: Number of Input Group to be chosen for MINDB Crossbar."/>
+                                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                              </a:a>
+                                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                                              <a:a name="SCOPE" value="LOCAL"/>
+                                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                              <a:a name="OPTIONAL" value="false"/>
+                                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                              <a:da name="EDITABLE" value="true"/>
+                                              <a:da name="ENABLE" value="true"/>
+                                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Mindb_Xbar_InputGroups')[1]&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Mindb_Xbar_InputGroups')&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                              <a:da name="INVALID" type="XPath" 
+                                                  expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of MinDB Crossbar.">
+                                              </a:da>
+                                          </v:var>
+                                          <!-- Design: MCAL-25730 -->
+                                          <v:lst name="CddXbarMindbXbarInputLine" type="">
+                                              <a:da name="MIN" value="1"/>
+                                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Xbar_InputGroup_InputLines')&quot;,num:i(32))"/>
+                                              <v:var name="CddXbarMindbXbarInputLine" type="ENUMERATION">
+                                                  <a:a name="DESC" 
+                                                      value="EN: Number of Input Line from the Group selected to be chosen for MINDB Crossbar."/>
+                                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                      type="IMPLEMENTATIONCONFIGCLASS">
+                                                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                                  </a:a>
+                                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                                  <a:a name="SCOPE" value="LOCAL"/>
+                                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                                  <a:a name="OPTIONAL" value="false"/>
+                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:da name="ENABLE" value="true"/>
+                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Mindb_Xbar_Input_Lines', '.', ../../CddXbarMindbXbarInputGroup))[1]&quot;,'CDD_XBAR_MINDB_EPWM1A_DB_NO_HR')"/>
+                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Mindb_Xbar_Input_Lines', '.', ../../CddXbarMindbXbarInputGroup))&quot;,'CDD_XBAR_MINDB_EPWM1A_DB_NO_HR')"/>
+                                                  <a:da name="INVALID" type="XPath" 
+                                                      expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of MinDB Crossbar.">
+                                                  </a:da>
+                                              </v:var>
+                                          </v:lst>
+                                      </v:ctr>
+                                  </v:lst>
+                                  <!-- Design: MCAL-25824 -->
+                                  <v:var name="CddXbarMindbXbarOutputLine" type="ENUMERATION">
+                                      <a:a name="DESC" 
+                                          value="EN: Number of Output Line instance to be set for MINDB Crossbar."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:da name="EDITABLE" value="true"/>
+                                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('MINDB_Xbar_Output_Lines')[1]&quot;,'CDD_XBAR_MINDBXBAR1')"/>
+                                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('MINDB_Xbar_Output_Lines')&quot;,'CDD_XBAR_MINDBXBAR1')"/>
+                                      <a:da name="INVALID" type="XPath" 
+                                          expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for MINDB Crossbar.">
+                                      </a:da>
+                                  </v:var>
+                                  <!-- Design: MCAL-25716 -->
+                                  <v:var name="CddXbarMindbXbarOutputInversion" type="BOOLEAN">
+                                      <a:a name="DESC" 
+                                          value="EN: Option to invert the output signal for the selected output line of the MINDB Crossbar instance."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:a name="DEFAULT" value="false"/>
+                                      <a:a name="ENABLE" value="true"/>
+                                  </v:var>
+                              </v:ctr>
+                          </v:lst>
+                          <!-- Design: MCAL-25711 -->
+                          <v:var name="CddXbarMindbXbarConfigurationLock" type="BOOLEAN">
                               <a:a name="DESC" 
-                                    value="EN: Number of Input Line from the Group selected to be chosen for ICL Crossbar."/>
+                                  value="EN: Option to lock the MINDB crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset."/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                    type="IMPLEMENTATIONCONFIGCLASS">
-                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="OPTIONAL" value="false"/>
                               <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                              <a:da name="ENABLE" value="true"/>
-                              <a:da name="DEFAULT" type="XPath" expr="ecu:list(concat('Icl_Xbar_Input_Lines', '.', ../../CddXbarIclXbarInputGroup))[1]"/>
-                              <a:da name="RANGE" type="XPath" expr="ecu:list(concat('Icl_Xbar_Input_Lines', '.', ../../CddXbarIclXbarInputGroup))"/>
-                              <a:da name="INVALID" type="XPath" 
-                                    expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of ICL Crossbar.">
-                              </a:da>
-                            </v:var>
+                              <a:a name="DEFAULT" value="false"/>
+                              <a:a name="ENABLE" value="true"/>
+                              <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for MINDB Crossbar, once locked will remain the same unless system reset."/>
+                          </v:var>
+                      </v:ctr>
+                      <!-- Design: MCAL-25705 -->
+                      <v:ctr name="CddXbarIclXbarConfig" type="IDENTIFIABLE">
+                          <a:a name="DESC" value="EN: Configuration for ICL Crossbar"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <v:lst name="CddXbarIclXbarInstanceConfig" type="MAP">
+                              <a:da name="MIN" value="0"/>
+                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('ICL_Xbar_OutputLineCount')&quot;,num:i(16))"/>
+                              <v:ctr name="CddXbarIclXbarInstanceConfig" type="IDENTIFIABLE">
+                                  <a:a name="DESC" value="EN: Configuration for ICL Crossbar Instance, one per output line available"/>
+                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                  <v:lst name="CddXbarIclXbarInput" type="MAP">
+                                      <a:da name="MIN" value="1"/>
+                                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->count(ecu:list('Icl_Xbar_InputGroups'))&quot;,num:i(3))"/>
+                                      <v:ctr name="CddXbarIclXbarInput" type="IDENTIFIABLE">
+                                          <a:a name="DESC" value="EN: Configuration for ICL Crossbar Instance inputs"/>
+                                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                          <!-- Design: MCAL-25731 -->
+                                          <v:var name="CddXbarIclXbarInputGroup" type="ENUMERATION">
+                                              <a:a name="DESC" 
+                                                  value="EN: Number of Input Group to be chosen for ICL Crossbar."/>
+                                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                              </a:a>
+                                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                                              <a:a name="SCOPE" value="LOCAL"/>
+                                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                              <a:a name="OPTIONAL" value="false"/>
+                                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                              <a:da name="EDITABLE" value="true"/>
+                                              <a:da name="ENABLE" value="true"/>
+                                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Icl_Xbar_InputGroups')[1]&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Icl_Xbar_InputGroups')&quot;,'CDD_XBAR_INPUT_GROUP_0')"/>
+                                              <a:da name="INVALID" type="XPath" 
+                                                  expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Group value only once for Input configuration of ICL Crossbar.">
+                                              </a:da>
+                                          </v:var>
+                                          <!-- Design: MCAL-25732 -->
+                                          <v:lst name="CddXbarIclXbarInputLine" type="">
+                                              <a:da name="MIN" value="1"/>
+                                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Xbar_InputGroup_InputLines')&quot;,num:i(32))"/>
+                                              <v:var name="CddXbarIclXbarInputLine" type="ENUMERATION">
+                                                  <a:a name="DESC" 
+                                                      value="EN: Number of Input Line from the Group selected to be chosen for ICL Crossbar."/>
+                                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                      type="IMPLEMENTATIONCONFIGCLASS">
+                                                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                                  </a:a>
+                                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                                  <a:a name="SCOPE" value="LOCAL"/>
+                                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                                  <a:a name="OPTIONAL" value="false"/>
+                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:da name="ENABLE" value="true"/>
+                                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Icl_Xbar_Input_Lines', '.', ../../CddXbarIclXbarInputGroup))[1]&quot;,'CDD_XBAR_ICL_EPWM1A_MINDB')"/>
+                                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Icl_Xbar_Input_Lines', '.', ../../CddXbarIclXbarInputGroup))&quot;,'CDD_XBAR_ICL_EPWM1A_MINDB')"/>
+                                                  <a:da name="INVALID" type="XPath" 
+                                                      expr="text:uniq(../*[@name=node:name(.)], node:value(.))" false="Please make sure to select an Input Line value only once for Input configuration of ICL Crossbar.">
+                                                  </a:da>
+                                              </v:var>
+                                          </v:lst>
+                                      </v:ctr>
+                                  </v:lst>
+                                  <!-- Design: MCAL-25825 -->
+                                  <v:var name="CddXbarIclXbarOutputLine" type="ENUMERATION">
+                                    <a:a name="DESC" 
+                                        value="EN: Number of Output Line instance to be set for ICL Crossbar."/>
+                                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                        type="IMPLEMENTATIONCONFIGCLASS">
+                                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                    </a:a>
+                                    <a:a name="ORIGIN" value="Texas Instruments"/>
+                                    <a:a name="SCOPE" value="LOCAL"/>
+                                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                    <a:a name="OPTIONAL" value="false"/>
+                                    <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                    <a:da name="EDITABLE" value="true"/>
+                                    <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ICL_Xbar_Output_Lines')[1]&quot;,'CDD_XBAR_ICLXBAR1')"/>
+                                    <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ICL_Xbar_Output_Lines')&quot;,'CDD_XBAR_ICLXBAR1')"/>
+                                    <a:da name="INVALID" type="XPath" 
+                                        expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for ICL Crossbar.">
+                                    </a:da>
+                                  </v:var>
+                                  <!-- Design: MCAL-25717 -->
+                                  <v:var name="CddXbarIclXbarOutputInversion" type="BOOLEAN">
+                                      <a:a name="DESC" 
+                                          value="EN: Option to invert the output signal for the selected output line of the ICL Crossbar instance."/>
+                                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                          type="IMPLEMENTATIONCONFIGCLASS">
+                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                      </a:a>
+                                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                                      <a:a name="SCOPE" value="LOCAL"/>
+                                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                      <a:a name="OPTIONAL" value="false"/>
+                                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                      <a:a name="DEFAULT" value="false"/>
+                                      <a:a name="ENABLE" value="true"/>
+                                  </v:var>
+                              </v:ctr>
                           </v:lst>
-                        </v:ctr>
-                      </v:lst>
-                      <!-- Design: MCAL-25825 -->
-                      <v:var name="CddXbarIclXbarOutputLine" type="ENUMERATION">
-                        <a:a name="DESC" 
-                              value="EN: Number of Output Line instance to be set for ICL Crossbar."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                      <a:da name="EDITABLE" value="true"/>
-                      <a:da name="DEFAULT" type="XPath" expr="ecu:list('ICL_Xbar_Output_Lines')[1]"/>
-                      <a:da name="RANGE" type="XPath" expr="ecu:list('ICL_Xbar_Output_Lines')"/>
-                      <a:da name="INVALID" type="XPath" 
-                            expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select an output line value only once for ICL Crossbar.">
-                      </a:da>
+                          <!-- Design: MCAL-25712 -->
+                          <v:var name="CddXbarIclXbarConfigurationLock" type="BOOLEAN">
+                              <a:a name="DESC" 
+                                  value="EN: Option to lock the ICL crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="OPTIONAL" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:a name="DEFAULT" value="false"/>
+                              <a:a name="ENABLE" value="true"/>
+                              <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for ICL Crossbar, once locked will remain the same unless system reset."/>
+                          </v:var>
+                      </v:ctr>
+                  </v:ctr>
+                  <v:ctr name="CddXbarGeneral" type="IDENTIFIABLE">
+                      <a:a name="DESC" 
+                          value="EN: Contains the general configuration parameters of the module."/>
+                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="ENABLE" value="true"/>
+                      <!-- Design: MCAL-28133 -->
+                      <v:var name="CddXbarDevErrorDetect" type="BOOLEAN">
+                          <a:a name="DESC" value="EN: Switches the Development Error Detection and Reporting ON or OFF for this module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="DEFAULT" value="false"/>
                       </v:var>
-                      <!-- Design: MCAL-25717 -->
-                      <v:var name="CddXbarIclXbarOutputInversion" type="BOOLEAN">
-                        <a:a name="DESC" 
-                              value="EN: Option to invert the output signal for the selected output line of the ICL Crossbar instance."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                              type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="OPTIONAL" value="false"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                        <a:a name="DEFAULT" value="false"/>
-                        <a:a name="ENABLE" value="true"/>
+                      <v:var name="CddXbarAPIEnable" type="BOOLEAN">
+                          <a:a name="DESC" value="EN: Enables or Disables the APIs of this module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="DEFAULT" value="true"/>
                       </v:var>
-                    </v:ctr>
-                  </v:lst>
-                  <!-- Design: MCAL-25712 -->
-                  <v:var name="CddXbarIclXbarConfigurationLock" type="BOOLEAN">
-                    <a:a name="DESC" 
-                          value="EN: Option to lock the ICL crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset."/>
-                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                          type="IMPLEMENTATIONCONFIGCLASS">
-                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                    </a:a>
-                    <a:a name="ORIGIN" value="Texas Instruments"/>
-                    <a:a name="SCOPE" value="LOCAL"/>
-                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                    <a:a name="OPTIONAL" value="false"/>
-                    <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                    <a:a name="DEFAULT" value="false"/>
-                    <a:a name="ENABLE" value="true"/>
-                    <a:a name="TOOLTIP" value="Locks further Input selection and Output Inversion configuration for ICL Crossbar, once locked will remain the same unless system reset."/>
-                  </v:var>
+                      <!-- Design: MCAL-28134 -->
+                      <v:var name="CddXbarVersionInfoApi" type="BOOLEAN">
+                          <a:a name="DESC" value="EN: Switches the Cdd_Xbar_GetVersionInfo function ON or OFF."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="ENABLE" type="XPath" expr="(../CddXbarAPIEnable='true')"/>
+                          <a:da name="DEFAULT" value="true"/>
+                      </v:var>
+                      <!-- Design: MCAL-28135 -->
+                      <v:var name="CddXbarInputFlagApi" type="BOOLEAN">
+                          <a:a name="DESC" value="EN: Switches Cdd_Xbar_InputFlagStatus() and Cdd_Xbar_InputFlagClear() ON or OFF."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="ENABLE" type="XPath" expr="(../CddXbarAPIEnable='true')"/>
+                          <a:da name="DEFAULT" value="true"/>
+                      </v:var>
+                  </v:ctr>
+                  <d:ref type="REFINED_MODULE_DEF" 
+                         value="ASPath:/AUTOSAR/EcucDefs/Cdd"/>
                 </v:ctr>
-              </v:ctr>
-              <v:ctr name="CddXbarGeneral" type="IDENTIFIABLE">
-                <a:a name="DESC" 
-                      value="EN: Contains the general configuration parameters of the module."/>
-                <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                <a:da name="ENABLE" value="true"/>
-                <v:var name="CddXbarDevErrorDetect" type="BOOLEAN">
-                  <a:a name="DESC" value="EN: Switches the Development Error Detection and Reporting ON or OFF for this module."/>
-                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                    <icc:v class="PreCompile">VariantPreCompile</icc:v>
-                  </a:a>
-                  <a:a name="ORIGIN" value="Texas Instruments"/>
-                  <a:a name="SCOPE" value="LOCAL"/>
-                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+              </d:chc>
+              <d:chc name="myEcuParameterDefinition" type="AR-ELEMENT" 
+                     value="ECU_PARAMETER_DEFINITION">
+                <d:ctr type="AR-ELEMENT">
+                  <a:a name="DEF" 
+                       value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
                   <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <a:da name="DEFAULT" value="false"/>
-                </v:var>
-                <v:var name="CddXbarAPIEnable" type="BOOLEAN">
-                  <a:a name="DESC" value="EN: Enables or Disables the APIs of this module."/>
-                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                    <icc:v class="PreCompile">VariantPreCompile</icc:v>
-                  </a:a>
-                  <a:a name="ORIGIN" value="Texas Instruments"/>
-                  <a:a name="SCOPE" value="LOCAL"/>
-                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <a:da name="DEFAULT" value="true"/>
-                </v:var>
-                <v:var name="CddXbarVersionInfoApi" type="BOOLEAN">
-                  <a:a name="DESC" value="EN: Switches the Cdd_Xbar_GetVersionInfo function ON or OFF."/>
-                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                    <icc:v class="PreCompile">VariantPreCompile</icc:v>
-                  </a:a>
-                  <a:a name="ORIGIN" value="Texas Instruments"/>
-                  <a:a name="SCOPE" value="LOCAL"/>
-                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <a:da name="ENABLE" type="XPath" expr="(../CddXbarAPIEnable='true')"/>
-                  <a:da name="DEFAULT" value="true"/>
-                </v:var>
-                <v:var name="CddXbarInputFlagApi" type="BOOLEAN">
-                  <a:a name="DESC" value="EN: Switches Cdd_Xbar_InputFlagStatus() and Cdd_Xbar_InputFlagClear() ON or OFF."/>
-                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                    <icc:v class="PreCompile">VariantPreCompile</icc:v>
-                  </a:a>
-                  <a:a name="ORIGIN" value="Texas Instruments"/>
-                  <a:a name="SCOPE" value="LOCAL"/>
-                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <a:da name="ENABLE" type="XPath" expr="(../CddXbarAPIEnable='true')"/>
-                  <a:da name="DEFAULT" value="true"/>
-                </v:var>
-              </v:ctr>
-              <d:ref type="REFINED_MODULE_DEF" value="ASPath:/AUTOSAR/EcucDefs/Cdd"/>
-            </v:ctr>
-          </d:chc>
-          <d:chc name="ecuParameterDefinition" type="AR-ELEMENT" 
-                  value="ECU_PARAMETER_DEFINITION">
-            <d:ctr type="AR-ELEMENT">
-              <a:a name="DEF" 
-                    value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
-              <d:lst name="MODULE_REF">
-                <d:ref type="MODULE_REF" value="ASPath:/TI_F29H85x/Cdd_Xbar"/>
-              </d:lst>
-            </d:ctr>
-          </d:chc>
+                  <d:lst name="MODULE_REF">
+                    <d:ref type="MODULE_REF" 
+                           value="ASPath:/TI_F29H85x/Cdd_Xbar/Cdd"/>
+                  </d:lst>
+                </d:ctr>
+              </d:chc>
+            </d:lst>
+          </d:ctr>
         </d:lst>
       </d:ctr>
     </d:lst>

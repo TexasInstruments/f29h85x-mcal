@@ -141,13 +141,8 @@
                         <a:tst expr="&gt;=0"/>
                       </a:da>
                           <a:a name="DEFAULT_RADIX" value="HEX"/>
-                          <a:da name="DEFAULT" type="XPath"> 
-                            <a:tst expr="(contains(node:value(../CanControllerInstance), 'MCAN1'))" true='0x60020000' />
-                            <a:tst expr="(contains(node:value(../CanControllerInstance), 'MCAN2'))" true='0x60028000' />
-                            <a:tst expr="(contains(node:value(../CanControllerInstance), 'MCAN3'))" true='0x60030000' />
-                            <a:tst expr="(contains(node:value(../CanControllerInstance), 'MCAN4'))" true='0x60038000' />
-                            <a:tst expr="(contains(node:value(../CanControllerInstance), 'MCAN5'))" true='0x60040000' />
-                            <a:tst expr="(contains(node:value(../CanControllerInstance), 'MCAN6'))" true='0x60048000' />
+                          <a:da name="DEFAULT" type="XPath">
+                              <a:tst expr="node:fallback(&quot;->(num:inttohex((substring-after(node:value(../CanControllerInstance),'MCAN') - 1 )*32768+1610743808))&quot;,num:i(0))"   />
                           </a:da>
                           <a:da name="READONLY" value="true"/>
                     </v:var>
@@ -273,7 +268,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" value="as:uuid()"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                             <a:da name="DEFAULT" value="CAN_ISR_CAT1_RTINT"/>
                             <a:da name="RANGE">
                                 <a:v>CAN_ISR_CAT1_RTINT</a:v>
@@ -335,6 +330,7 @@
                                 type="IDENTIFIABLE">
                           <a:a name="DESC" 
                                 value="EN: This container contains CAN Controller specific configuration parameters."/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                           <v:var name="CanFDMode" type="BOOLEAN">
                             <a:a name="DESC" 
                                 value="EN: Enable Flexible Datarate Operation."/>
@@ -345,7 +341,7 @@
                             </a:a>
                             <a:a name="ORIGIN" value="Texas Instruments"/>
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="UUID" value="as:uuid()"/>
+                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                             <a:da name="DEFAULT" value="false"/>
                           </v:var>
                           <v:var name="CanLoopbackMode" type="BOOLEAN">
@@ -358,7 +354,7 @@
                             </a:a>
                             <a:a name="ORIGIN" value="Texas Instruments"/>
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="UUID" value="as:uuid()"/>
+                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                             <a:da name="DEFAULT" value="false"/>
                           </v:var>
                           <v:var name="CanTransmitPause" type="BOOLEAN">
@@ -371,7 +367,7 @@
                             </a:a>
                             <a:a name="ORIGIN" value="Texas Instruments"/>
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="UUID" value="as:uuid()"/>
+                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                             <a:da name="DEFAULT" value="false"/>
                           </v:var>
                           <v:var name="CanDisableAutomaticRetransmission" type="BOOLEAN">
@@ -384,7 +380,7 @@
                             </a:a>
                             <a:a name="ORIGIN" value="Texas Instruments"/>
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="UUID" value="as:uuid()"/>
+                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                             <a:da name="DEFAULT" value="false"/>
                           </v:var>
                         </v:ctr>
@@ -521,10 +517,9 @@
                                type="IDENTIFIABLE">
                           <a:a name="DESC" 
                                value="EN: This optional container contains bit timing related configuration parameters of the CAN controller(s) for payload and CRC of a CAN FD frame. If this container exists the controller supports CAN FD frames."/>
-                          <a:a name="OPTIONAL" value="true"/>
                           <a:a name="UUID" 
                                value="967db68b-2145-4757-8b81-91fc1105dec1"/>
-                          <a:da name="ENABLE" value="false"/>
+                          <a:da name="ENABLE" type="XPath" expr="(../../../CanControllerConfig/CanFDMode='true')"/>
                           <v:var name="CanControllerFdBaudRate" type="INTEGER">
                             <a:a name="DESC" 
                                  value="EN: Specifies the data segment baud rate of the controller in kbps."/>
@@ -645,8 +640,7 @@
                             <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                             <a:a name="SCOPE" value="LOCAL"/>
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                            <a:a name="UUID" 
-                                 value="879973f2-9d4c-4624-adf0-d64b7294d06f"/>
+                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                             <a:da name="ENABLE" value="false"/>
                             <a:da name="INVALID" type="Range">
                               <a:tst expr="&lt;=400"/>
@@ -654,21 +648,24 @@
                             </a:da>
                             <a:da name="DEFAULT" value="0"/>
                           </v:var>
-                          <v:var 
-							 name="CanControllerTrcvDelayCompensationFilter" 
-							 type="INTEGER">
-							<a:a name="DESC" 
-								 value="EN: Specifies the Transceiver Delay Compensation Filter in ns. If not specified Transceiver Delay Compensation is disabled."/>
-							<a:a name="ORIGIN" value="Texas Instruments"/>
-							<a:a name="SCOPE" value="LOCAL"/>
-							<a:a name="SYMBOLICNAMEVALUE" value="false"/>
-							<a:a name="UUID" value="as:uuid()"/>
-							<a:da name="INVALID" type="Range">
-							  <a:tst expr="&lt;=400"/>
-							  <a:tst expr="&gt;=0"/>
-							</a:da>
-                                   <a:da name="DEFAULT" value="0"/>
-						  </v:var>
+                          <v:var name="CanControllerTrcvDelayCompensationFilter" type="INTEGER">
+                              <a:a name="DESC" 
+                                        value="EN: Specifies the Transceiver Delay Compensation Filter in ns. If not specified Transceiver Delay Compensation is disabled."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                   <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                              <a:da name="INVALID" type="Range">
+                                   <a:tst expr="&lt;=400"/>
+                                   <a:tst expr="&gt;=0"/>
+                              </a:da>
+                              <a:da name="DEFAULT" value="0"/>
+					 </v:var>
                           <v:var name="CanControllerTxBitRateSwitch" 
                                  type="BOOLEAN">
                             <a:a name="DESC" 
@@ -688,6 +685,7 @@
                           </v:var>
                         </v:ctr>
                       </v:ctr>
+                    
                     </v:lst>
 					<v:ctr name="CanTTController" type="IDENTIFIABLE">
                       <a:da name="ENABLE" value="false"/>
@@ -1102,9 +1100,11 @@
                     <v:var name="CanHardwareObjectUsesPolling" type="BOOLEAN">
                       <a:a name="DESC" 
                            value="EN: Enables polling of this hardware object."/>
-						                         <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                            type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
                       <a:a name="OPTIONAL" value="true"/>
@@ -1203,7 +1203,9 @@
                            value="EN: This parameter defines if or if not Can supports the trigger-transmit API for this handle."/>
                       <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                            type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
                       <a:a name="OPTIONAL" value="true"/>
@@ -1296,6 +1298,51 @@
                             <a:tst expr="&gt;=0"/>
                           </a:da>
                           <a:da name="DEFAULT" value="0"/>
+                        </v:var>
+                        <v:var name="CanStandardFilterType" 
+                               type="ENUMERATION">
+                          <a:a name="DESC" 
+                               value="EN: Defines the type of the Standard Filter "/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                               type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="EDITABLE" type="XPath" expr="(../../../CanHwObjectCount != 1)" />
+                          <a:da name="RANGE">
+                            <a:v>CAN_RANGE_FILTER</a:v>
+                            <a:v>CAN_DUAL_ID_FILTER</a:v>
+                            <a:v>CAN_CLASSIC_FILTER</a:v>
+                            <a:v>CAN_FILTER_DISABLED</a:v>
+                          </a:da>
+                          <a:da name="DEFAULT" value="CAN_CLASSIC_FILTER"/>
+                        </v:var>
+                        <v:var name="CanEventPin" 
+                               type="ENUMERATION">
+                          <a:a name="DESC" 
+                               value="EN: Defines the type of the Event pin "/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                               type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:da name="EDITABLE" type="XPath" expr="(../../../CanHwObjectCount = 1)" />
+                          <a:da name="RANGE">
+                            <a:v>CAN_EVENT_PIN_0</a:v>
+                            <a:v>CAN_EVENT_PIN_1</a:v>
+                            <a:v>CAN_EVENT_PIN_NONE</a:v>
+                          </a:da>
+                          <a:da name="DEFAULT" value="CAN_EVENT_PIN_NONE"/>
                         </v:var>
                       </v:ctr>
                     </v:lst>
@@ -1834,6 +1881,20 @@
                   <a:a name="UUID" value="f4a8e80b-da25-4f46-979e-049b9eaeb22b"/>
                   <a:da name="DEFAULT" value="false"/>
                 </v:var>
+                <v:var name="CanECCSupport" type="BOOLEAN">
+                  <a:a name="DESC" 
+                       value="EN: Enable SRAM ECC configuration."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:da name="DEFAULT" value="false"/>
+                </v:var>
                 <v:var name="CanSetBaudrateApi" type="BOOLEAN">
                   <a:a name="DESC" 
                        value="EN: The support of the Can_SetBaudrate API is optional."/>
@@ -2017,7 +2078,27 @@
                       <a:a name="OPTIONAL" value="true"/>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="UUID" value="as:uuid()"/>
+                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:da name="ENABLE" value="false"/>
+                      <a:da name="REF"
+                            value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Dem/DemConfigSet/DemEventParameter"/>
+					  <a:da name="INVALID" type="XPath" expr="node:refexists(node:value(.))" false="Dem event should be assigned and it should not be empty and invalid"/>
+                    </v:ref>
+                    <v:ref name="CAN_E_SAFTEY_BEU_ERROR"
+                           type="SYMBOLIC-NAME-REFERENCE">
+                      <a:a name="DESC"
+                           value="EN: Reference to configured DEM event to report &quot;Can hardware ECC BEW errors&quot;."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="OPTIONAL" value="true"/>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SCOPE" value="LOCAL"/>
+                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <a:da name="ENABLE" value="false"/>
                       <a:da name="REF"
                             value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Dem/DemConfigSet/DemEventParameter"/>

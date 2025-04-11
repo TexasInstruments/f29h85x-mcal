@@ -70,13 +70,14 @@ if (NOT TARGET DeviceSupport)
 endif()
 
 add_link_options(-Wl,--stack_size=0x1000)
+add_link_options(-Wl,--heap_size=0x1000)
 add_link_options(-Wl,--xml_link_info=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_linkInfo.xml)
 add_link_options(-Wl,-m=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map)
 
 if(BUILD_CONFIGURATION MATCHES "RAM")
-    add_link_options(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_ram_lnk.cmd)
+    add_link_options(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_ram_lnk_cpu1.cmd)
 else()
-    add_link_options(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_flash_lnk.cmd)
+    add_link_options(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_flash_lnk_cpu1.cmd)
 endif()
 
 # This command is used to move the .out file

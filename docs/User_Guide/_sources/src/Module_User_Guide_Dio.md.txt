@@ -176,7 +176,7 @@ There are no Interrupts in Dio
 
 Below image shows Dio driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.
 
-```{figure} Assets/images/Dio_HW_SW_Mapping.png
+```{figure} Assets/images/Dio_Hw_Sw_Mapping.png
 :alt: Dio HW/SW Mapping
 :align: center
 
@@ -211,171 +211,133 @@ to be present as input file. The associated dio driver configuration generated f
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
+
+
+#### DioConfig
+This container contains the configuration parameters and sub containers of the AUTOSAR DIO module.
+
+##### DioPort
+Configuration of individual DIO ports, consisting of channels and possible channel groups.
+
+###### DioPortId
+
+| Item ||
+|--------|---------------|
+| **Name** | DioPortId |
+| **Description** | Numeric identifier of the DIO port. Not all MCU ports may be used for DIO, thus there may be "gaps" in the list of all IDs. This value will be |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 7 |
+| **Min-value** | 0 |
+
+##### DioChannel
+Configuration of an individual DIO channel.
+
+###### DioChannelId
+
+| Item ||
+|--------|---------------|
+| **Name** | DioChannelId |
+| **Description** | Channel Id of the DIO channel. This value will be assigned to the symbolic names. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 255 |
+| **Min-value** | 0 |
+
+###### DioPinNumRef
+
+| Item ||
+|--------|---------------|
+| **Name** | DioPinNumRef |
+| **Description** | Reference to the Port Pin configuration, which is set in the PORT driver configuration |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+##### DioChannelGroup
+Definition and configuration of DIO channel groups. A channel group represents several adjoining DIO channels represented by a logical group.
+
+###### DioChannelGroupIdentification
+
+| Item ||
+|--------|---------------|
+| **Name** | DioChannelGroupIdentification |
+| **Description** | The DIO channel group is identified in DIO API by a pointer to a data structure (of type Dio_ChannelGroupType). That data structure contains the channel group information. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | Dio_ChannelGroup |
+
+###### DioPortMask
+
+| Item ||
+|--------|---------------|
+| **Name** | DioPortMask |
+| **Description** | This shall be the mask which defines the positions of the channel |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 4294967295 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
+
+###### DioPortOffset
+
+| Item ||
+|--------|---------------|
+| **Name** | DioPortOffset |
+| **Description** | The position of the Channel Group on the port, counted |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 31 |
+| **Min-value** | 0 |
+
 #### DioGeneral
+General DIO module configuration parameters.
 
 ##### DioDevErrorDetect
 
-|SWS Item|ECUC_Dio_00141:|
+| Item ||
 |--------|---------------|
-|**Name**|DioDevErrorDetect|
-|**Description**| Switches the development error detection and notification on or off.<br>&bull; **TRUE**: detection and notification is enabled.<br> &bull; **FALSE**: detection and notification is disabled.|
-|**Multiplicity**|1|
-|**Type**| EcucBooleanParamDef |
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value configuration class**|--|
-|Pre-compile time| All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope/Dependency**|scope: local|
+| **Name** | DioDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### DioFlipChannelApi
 
-|SWS Item|ECUC_Dio_00153:|
-|--------|---------------|
-|**Name**| DioFlipChannelApi|
-|**Parent Container**| DioGeneral|
-|**Description**| Adds / removes the service Dio_FlipChannel() from the code.<br>&bull; **TRUE** : Enabled - Function Dio_FlipChannel() is available.<br> &bull; **FALSE** : Disabled - Function Dio_FlipChannel() is not available|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|true|
-|**Post-Build Variant Value**| false|
-|**Value Configuration Class**|--|
-|Pre-compile time| All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**| scope: local|
-
-##### DioVersionInfoApi
-
-|SWS Item|ECUC_Dio_00143 : |
-|--------|----------------|
-|**Name**|DioVersionInfoApi|
-|**Parent Container**|DioGeneral|
-|**Description**|Adds / removes the service Dio_GetVersionInfo() from the code.<br>&bull; **TRUE** : Enabled - Function Dio_GetVersionInfo() is available.<br> &bull; **FALSE** : Disabled - Function Dio_GetVersionInfo() is not available|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|false|
-|**Post-Build Variant Value**|false |
-|**Value Configuration Class**|--|
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### DioPort
-
-##### DioPortId
-
-|SWS Item|ECUC_Dio_00145 : |
-|--------|-----------------|
-|**Name**|DioPortId|
-|**Parent Container**|DioPort|
-|**Description**|Numeric identifier of the DIO port. Not all MCU ports may be used for DIO, thus there may be "gaps" in the list of all IDs. This value will be assigned to the DIO port symbolic name (i.e. the SHORT-NAME of the DioPort container).|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef (Symbolic Name generated for this parameter)|
-|**Range**|0 .. 4294967295|
-|**Default value**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**|--|
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: ECU|
-
-#### DioChannel
-
-##### DioChannelId
-
-| **SWS Item** | ECUC_Dio_00147: |
-|---|---|
-| **Name** | DioChannelId |
-| **Parent Container** | DioChannel |
-| **Description** | Channel Id of the DIO channel. This value will be assigned to the symbolic names. |
-| **Multiplicity** | 1 |
-| **Type** | EcucIntegerParamDef (Symbolic Name generated for this parameter) |
-| **Range** | 0.. 4294967295 |
-| **Default value** | -- |
-| **Post-Build Variant Value** | false |
-| **Value Configuration Class** |--|
-| Pre-compile time | All Variants |
-| Link time | -- |
-| Post-build time | -- |
-| **Scope / Dependency** | scope: ECU |
-
-##### DioPinNumRef
-
 | Item ||
-|--------|----------------|
-| **Name** | DioPinNumRef |
-| **Parent Container** | DioChannel |
-| **Description** | Reference to the Port Pin configuration, which is set in the PORT driver configuration |
-| **Type** | Reference |
-| **Post-Build Variant Value** | false |
-| **Value Configuration Class** |--|
-| Pre-compile time | VARIANT-PRE-COMPILE |
-| Link time | -- |
-| Post-build time | -- |
-| **Scope / Dependency** | scope: local |
-
-#### DioChannelGroup
-
-##### DioChannelGroupIdentification
-
-| **SWS Item** | ECUC_Dio_00149: |
-|---|---|
-| **Name** | DioChannelGroupIdentification |
-| **Parent Container** | DioChannelGroup |
-| **Description** | The DIO channel group is identified in DIO API by a pointer to a data structure (of type Dio_ChannelGroupType). That data structure contains the channel group information. This parameter contains the code fragment that has to be inserted in the API call of the calling module to get the address of the variable in memory which holds the channel group information. Example values are "&MyDioGroup1" or "&MyDioGroupArray[0]". |
-| **Multiplicity** | 1 |
-| **Type** | EcucStringParamDef (Symbolic Name generated for this parameter) |
-| **Default value** | -- |
-| **maxLength** | -- |
-| **minLength** | -- |
-| **regularExpression** | -- |
-| **Post-Build Variant Value** | false |
-| **Value Configuration Class** |--|
-| Pre-compile time | All Variants |
-| Link time | -- |
-| Post-build time | -- |
-| **Scope / Dependency** | scope: ECU |
-
-##### DioPortMask
-
-| **SWS Item** | ECUC_Dio_00150: |
-|---|---|
-| **Name** | DioPortMask |
-| **Parent Container** | DioChannelGroup |
-| **Description** | This shall be the mask which defines the positions of the channel group. The channels shall consist of adjoining bits in the same port. The data type depends on the port width. |
-| **Multiplicity** | 1 |
-| **Type** | EcucIntegerParamDef |
-| **Range** | 0.. 4294967295 |
-| **Default value** | 4294967295 |
-| **Post-Build Variant Value** | false |
-| **Value Configuration Class** |--|
-| Pre-compile time | VARIANT-PRE-COMPILE |
-| Link time |VARIANT-LINK-TIME |
-| Post-build time | -- |
-| **Scope/Dependency** | scope: local |
-
-##### DioPortOffset
-
-| **SWS Item** | ECUC_Dio_00151: |
-|---|---|
-| **Name** | DioPortOffset |
-| **Parent Container** | DioChannelGroup |
-| **Description** | The position of the Channel Group on the port, counted from the LSB. This value can be derived from DioPortMask. calculationFormula = Position of the first bit of DioPortMask which is set to '1' counted from LSB |
-| **Multiplicity** | 1 |
-| **Type** | EcucIntegerParamDef |
-| **Range** | 0.. 31 |
-| **Default value** | 0 |
-| **Post-Build Variant Value** | false |
-| **Value Configuration Class** |--|
-| Pre-compile time | VARIANT-PRE-COMPILE |
-| Link time | VARIANT-LINK-TIME |
-| Post-build time | -- |
-| **Scope/Dependency** | scope: local |
-
+|--------|---------------|
+| **Name** | DioFlipChannelApi |
+| **Description** | Adds / removes the service Dio_FlipChannel() from the code. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 #### Steps To Configure Dio Module
 
 1. Open EB Tresos configurator tool and load Port and Dio modules

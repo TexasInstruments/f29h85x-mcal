@@ -70,7 +70,7 @@ Features Supported at a high level are:
 
 Input Xbar is used to route signals from a GPIO or AIO or logic HIGH or logic LOW to many different IP blocks such as the ADC, eCAP, ePWM, and external interrupts. The input of each Input Xbar instance (INPUTx) can be any GPIO or AIO, while the output of each instance connects to various IP blocks in the device. The logic level HIGH and logic level LOW are also available as inputs to the Input Xbar. The GPIO/AIO selected by the Input Xbar can be configured as either an input or an output. The Input Xbar simply connects the signal on the input buffer to the output of the selected Input Xbar instance. The Input Xbar contains sixteen output lines denoted as INPUTx where x = 1 to 64.
 
-```{figure} Assets/images/Cdd_Xbar_Input_Xbar.png
+```{figure} Assets/images/Cdd_Xbar_Input_XBAR.png
 :width: 65%
 :alt: Input Xbar architecture
 :align: center
@@ -91,7 +91,7 @@ For more details, refer the device's TRM.
 
 The GPIO Output Xbar takes signals from inside the device and brings them out to a GPIO. The Xbar allows the selection of a single input or a logical-OR of many inputs. The Xbar contains sixteen outputs and each contains at least one position on the GPIO mux, denoted as OUTPUTXBARx. The final output is only recognized on the GPIO if the proper OUTPUTXBARx muxing options are selected using the PORT configurations.
 
-```{figure} Assets/images/Cdd_Xbar_Output_Xbar.png
+```{figure} Assets/images/Cdd_Xbar_Output_XBAR.png
 :width: 75%
 :alt: Output Xbar architecture
 :align: center
@@ -118,7 +118,7 @@ For more details regarding the inputs for each OUTPUTXBARx, refer the device's T
 
 The ePWM Xbar brings signals to the ePWM modules. Specifically, the ePWM Xbar is connected to the Digital Compare (DC) submodule of each ePWM module for actions such as tripzones and syncing. The ePWM Xbar has 16 outputs that are routed to each ePWM module. The output lines of ePWM Xbar are denoted as TRIPx where x = 1 to 16. The outputs of ePWM X-BAR from TRIP1 to TRIP 8 are connected to trips inputs 1-8 of each ePWM instance, while TRIP9-TRIP12 and TRIP14-TRIP15 are connected to trips 9-12 and trips 14-15 of each ePWM instance, respectively. Note that TRIP5 and TRIP8 are not connected to any ePWM trip source.
 
-```{figure} Assets/images/Cdd_Xbar_ePWM_Xbar.png
+```{figure} Assets/images/Cdd_Xbar_ePWM_XBAR.png
 :width: 75%
 :alt: ePWM Xbar architecture
 :align: center
@@ -140,7 +140,7 @@ The ePWM Xbar provides the following features:
 
 The CLB X-BAR brings signals to the CLB modules. The CLB X-BAR has eight outputs that are routed to each CLB module denoted as AUXSIGx where x = 1 to 8. There is one instance of CLB-Xbar per AUXSIG input.
 
-```{figure} Assets/images/Cdd_Xbar_CLB_Xbar.png
+```{figure} Assets/images/Cdd_Xbar_CLB_XBAR.png
 :width: 75%
 :alt: CLB Xbar architecture
 :align: center
@@ -162,7 +162,7 @@ The CLB Xbar provides the following features:
 
 The Illegal Combo Logic (ICL) X-BAR and Minimum Dead-band (MINDB) X-BAR are used to route various EPWM signals and CLB outputs to the Minimum Dead-band and Illegal Combination Logic sub-module of the EPWM. The MINDB Xbar has 16 outputs denoted as MINDBXBARx where x = 1 to 16. The ICL Xbar has 16 outputs denoted as ICLXBARx where x = 1 to 16.
 
-```{figure} Assets/images/Cdd_Xbar_MINDB_ICL_Xbar.png
+```{figure} Assets/images/Cdd_Xbar_MINDB_ICL_XBAR.png
 :width: 75%
 :alt: MINDB and ICL Xbar architecture
 :align: center
@@ -318,6 +318,32 @@ The generated configuration files should not be modified manually. The config to
 
 ```{Note}
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
+```
+
+#### Migration Guide to v2.0.0 from v1.0.0
+
+To align with AUTOSAR CDD naming convention, we have named Module Name as Cdd and apiServicePrefix as Cdd_Xbar. This results in change in schema as described below.
+
+To make v1.0.0 Xbar schema(generated .xdm file) compatable with v2.0.0 below changes are required:
+
+1. Change 'AR-ELEMENT' name from Cdd_Xbar to Cdd.
+2. Update MODULE-CONFIGURATION path from 'ASPath:/TI_F29H85x/Cdd_Xbar' to 'ASPath:/TI_F29H85x/Cdd_Xbar/Cdd'.
+
+```Earlier schema:
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Xbar" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd_Xbar" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar"/>
+
+Modified new schema:
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Xbar" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar/Cdd"/>
 ```
 
 #### CddXbarGeneral
@@ -839,7 +865,7 @@ Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Treso
 |Link time |--|
 |**Scope/Dependency**|scope:local|
 
-#### Steps To Configure Port Module
+#### Steps To Configure Cdd Xbar Module
 
 1. Open EB Tresos configurator tool.
 2. Go to Cdd Xbar Container tab and the specific Xbar which needs to be configured.

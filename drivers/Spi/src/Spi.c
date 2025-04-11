@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -19,17 +19,24 @@
  *
  *  Description:  This file contains Spi MCAL driver API function definitions
  *********************************************************************************************************************/
+/*
+ *Design: MCAL-24853, MCAL-24851, MCAL-24852
+ */
 
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
+/* Design: MCAL-24856 */
 #include "Spi.h"
 #include "Spi_Priv.h"
 #include "SchM_Spi.h"
+/* Design: MCAL-25085 */
 #include "Det.h"
+/* Design: MCAL-24948, MCAL-25086 */
 #if(SPI_E_HARDWARE_ERROR != SPI_DEM_NO_EVENT)
 #include "Dem.h"
 #endif
+/* Design: MCAL-24855 */
 #if(SPI_CS_VIA_GPIO == STD_ON)
 #include "Dio.h"
 #endif
@@ -37,6 +44,13 @@
  * Version Check (if required)
  *********************************************************************************************************************/
 
+#if ((SPI_SW_MAJOR_VERSION != (1U)) || (SPI_SW_MINOR_VERSION != (1U)))
+    #error "Version numbers of Spi.c and Spi.h are inconsistent!"
+#endif
+
+#if ((SPI_CFG_MAJOR_VERSION != (1U)) || (SPI_CFG_MINOR_VERSION != (1U)))
+    #error "Version numbers of Spi.c and Spi_Cfg.h are inconsistent!"
+#endif
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
@@ -58,7 +72,7 @@
  *********************************************************************************************************************/
 #define SPI_START_SEC_VAR_INIT_UNSPECIFIED
 #include "Spi_MemMap.h"
-
+/* Design : MCAL-24958 */
 /** \brief SPI driver status */
 volatile VAR(Spi_StatusType, SPI_VAR_INIT) Spi_DrvStatus = SPI_UNINIT;
 #define SPI_STOP_SEC_VAR_INIT_UNSPECIFIED
@@ -67,6 +81,7 @@ volatile VAR(Spi_StatusType, SPI_VAR_INIT) Spi_DrvStatus = SPI_UNINIT;
 #define SPI_START_SEC_VAR_NO_INIT_UNSPECIFIED
 #include "Spi_MemMap.h"
 /** \brief SPI driver object */
+/* Design : MCAL-25183 */
 VAR(Spi_DriverObjType, SPI_VAR_NO_INIT) Spi_DrvObj;
 #define SPI_STOP_SEC_VAR_NO_INIT_UNSPECIFIED
 #include "Spi_MemMap.h"
@@ -174,12 +189,12 @@ static FUNC(Std_ReturnType, SPI_CODE) Spi_DetRTErrorCheckSyncTransmit(Spi_SeqObj
 #define SPI_START_SEC_CODE
 #include "Spi_MemMap.h"
 /*
- * Design : MCAL-24992, MCAL-24996, MCAL-24994, MCAL-24993
- * Design : MCAL-24995, MCAL-24991, MCAL-24887 
+ * Design : MCAL-24992, MCAL-24996, MCAL-24994, MCAL-24993, MCAL-24947
+ * Design : MCAL-24995, MCAL-24991, MCAL-24887, MCAL-24937, MCAL-24938
+ * Design : MCAL-24944 
  */
 FUNC(void, SPI_CODE) Spi_Init(P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) CfgPtr)
 {
-    uint8   index;
     P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) ConfigPtr = NULL_PTR;
     #if (STD_ON == SPI_DEV_ERROR_DETECT)
     Std_ReturnType retVal = E_NOT_OK;
@@ -213,16 +228,7 @@ FUNC(void, SPI_CODE) Spi_Init(P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA
             if (((Std_ReturnType) E_OK) == retVal)
     #endif  /* #if (STD_ON == SPI_DEV_ERROR_DETECT) */
             {
-                Spi_ResetDrvObj(&Spi_DrvObj);
-                Spi_CopyConfig(&Spi_DrvObj, ConfigPtr);
-
-                /* Init HW once all config is copied */
-                for (index = ((uint8)0U); index < SPI_MAX_HW_UNIT; index++)
-                {
-                    Spi_HwUnitInit(&Spi_DrvObj.hwUnitObj[index]);
-                    /* Initialize driver status and object */
-                    Spi_DrvStatus = SPI_IDLE;
-                }
+                Spi_PrivInit(&Spi_DrvObj,ConfigPtr);
             }
         }
     }
@@ -230,13 +236,13 @@ FUNC(void, SPI_CODE) Spi_Init(P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA
 }
 /*
  * Design : MCAL-24998, MCAL-24999, MCAL-25000, MCAL-25001,
- * Design : MCAL-25002, MCAL-25003, MCAL-25004,  MCAL-24997
+ * Design : MCAL-25002, MCAL-25003, MCAL-25004,  MCAL-24997, MCAL-24946
  */
 
 FUNC(Std_ReturnType, SPI_CODE) Spi_DeInit(void)
 {
-    uint8    index;
-    Std_ReturnType retVal = (Std_ReturnType) E_NOT_OK;
+    VAR(uint8, AUTOMATIC) index;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
 
   #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if (SPI_UNINIT == Spi_DrvStatus)
@@ -267,7 +273,7 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_DeInit(void)
 }
 
 /*
- * Design : MCAL-25047, MCAL-25048, MCAL-25049
+ * Design : MCAL-25047, MCAL-25048, MCAL-25049, MCAL-24960, MCAL-24956, MCAL-24961, MCAL-24959
  */
 FUNC(Spi_StatusType, SPI_CODE) Spi_GetStatus(void)
 {
@@ -275,13 +281,14 @@ FUNC(Spi_StatusType, SPI_CODE) Spi_GetStatus(void)
 }
 
 /*
- * Design : MCAL-25050, MCAL-25051, MCAL-25052, MCAL-25053, 
+ * Design : MCAL-25050, MCAL-25051, MCAL-25052, MCAL-25053, MCAL-24938, MCAL-24939, MCAL-24967
+ * Design : MCAL-24946
  */
 
 
 FUNC(Spi_JobResultType, SPI_CODE) Spi_GetJobResult(VAR(Spi_JobType, AUTOMATIC) Job)
 {
-    Spi_JobResultType jobResult = SPI_JOB_FAILED;
+    VAR(Spi_JobResultType, AUTOMATIC) jobResult = SPI_JOB_FAILED;
 #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if (SPI_UNINIT == Spi_DrvStatus)
     {
@@ -301,12 +308,13 @@ FUNC(Spi_JobResultType, SPI_CODE) Spi_GetJobResult(VAR(Spi_JobType, AUTOMATIC) J
 }
 
 /*
- * Design : MCAL-25054, MCAL-25055, MCAL-25056,  
+ * Design : MCAL-25054, MCAL-25055, MCAL-25056, MCAL-24938, MCAL-24939, MCAL-24972
+ * Design : MCAL-24946
  */
 
 FUNC(Spi_SeqResultType, SPI_CODE) Spi_GetSequenceResult(VAR(Spi_SequenceType, AUTOMATIC) Sequence)
 {
-    Spi_SeqResultType seqResult = SPI_SEQ_FAILED;
+    VAR(Spi_SeqResultType, AUTOMATIC) seqResult = SPI_SEQ_FAILED;
 #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if (SPI_UNINIT == Spi_DrvStatus)
     {
@@ -352,14 +360,15 @@ FUNC(void, SPI_CODE) Spi_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, SP
 #endif  /* #if (STD_ON == SPI_VERSION_INFO_API) */
 
 /*
- * Design : MCAL-25067, MCAL-25068, MCAL-25069, MCAL-25070, MCAL-25071
+ * Design : MCAL-25067, MCAL-25068, MCAL-25069, MCAL-25070, MCAL-25071, MCAL-24962, MCAL-24963
+ * Design : MCAL-24943, MCAL-24957, MCAL-24942
  */
 
 #if (STD_ON == SPI_HW_STATUS_API)
 FUNC(Spi_StatusType, SPI_CODE) Spi_GetHWUnitStatus(VAR(Spi_HWUnitType, AUTOMATIC) HWUnit)
 {
-    Spi_HwUnitObjType *hwUnitObj;
-    Spi_StatusType     hwUnitStatus = SPI_UNINIT;
+    P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj;
+    VAR(Spi_StatusType, AUTOMATIC) hwUnitStatus = SPI_UNINIT;
     #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if (SPI_UNINIT == Spi_DrvStatus)
     {
@@ -376,7 +385,7 @@ FUNC(Spi_StatusType, SPI_CODE) Spi_GetHWUnitStatus(VAR(Spi_HWUnitType, AUTOMATIC
         SchM_Enter_Spi_SPI_EXCLUSIVE_AREA_0();
         /* HW unit ID may not be the index, so search for 
 		                                           matching HW unit */
-        hwUnitObj = Spi_GetHwUnitObj(HWUnit);
+        hwUnitObj = Spi_GetHwUnitObj(HWUnit,&Spi_DrvObj);
         hwUnitStatus = Spi_PrivGetHWStatus(hwUnitObj);
         SchM_Exit_Spi_SPI_EXCLUSIVE_AREA_0();
     }
@@ -385,8 +394,8 @@ FUNC(Spi_StatusType, SPI_CODE) Spi_GetHWUnitStatus(VAR(Spi_HWUnitType, AUTOMATIC
 #endif  /* #if (STD_ON == SPI_HW_STATUS_API) */
 
 /*
- * Design : MCAL-25006, MCAL-25007, MCAL-25008, MCAL-25009,
- * Design : MCAL-25010, MCAL-25011,  MCAL-25005,  MCAL-25012, MCAL-24878, 
+ * Design : MCAL-25006, MCAL-25007, MCAL-25008, MCAL-25009 ,MCAL-24937, MCAL-24880
+ * Design : MCAL-25010, MCAL-25011, MCAL-25005, MCAL-25012, MCAL-24878, MCAL-24946
  */
 
 #if ((SPI_CHANNEL_BUFFERS == SPI_IB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
@@ -394,8 +403,8 @@ FUNC(Spi_StatusType, SPI_CODE) Spi_GetHWUnitStatus(VAR(Spi_HWUnitType, AUTOMATIC
 FUNC(Std_ReturnType, SPI_CODE) Spi_WriteIB(VAR(Spi_ChannelType, AUTOMATIC) Channel,\
                 P2CONST(Spi_DataBufferType, AUTOMATIC, SPI_APPL_DATA)  DataBufferPtr)
 {   
-    Std_ReturnType      retVal = (Std_ReturnType) E_NOT_OK;
-    Spi_ChannelObjType *chObj;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
+    P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj;
 
     #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if (SPI_UNINIT == Spi_DrvStatus)
@@ -433,13 +442,13 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_WriteIB(VAR(Spi_ChannelType, AUTOMATIC) Chann
 
 /*
  * Design : MCAL-25031, MCAL-25032, MCAL-25033, MCAL-25034, MCAL-25035
- * Design : MCAL-25037, MCAL-24879 
+ * Design : MCAL-25037, MCAL-24879, MCAL-24937, MCAL-24946, MCAL-25036, MCAL-25093
  */
 FUNC(Std_ReturnType, SPI_CODE) Spi_ReadIB(VAR(Spi_ChannelType, AUTOMATIC) Channel,\
            P2VAR(Spi_DataBufferType, AUTOMATIC, SPI_APPL_DATA) DataBufferPointer)
 {
-    Std_ReturnType      retVal = (Std_ReturnType) E_NOT_OK;
-    Spi_ChannelObjType *chObj;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
+    P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj;
 #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if (SPI_UNINIT == Spi_DrvStatus)
     {
@@ -470,8 +479,9 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_ReadIB(VAR(Spi_ChannelType, AUTOMATIC) Channe
 #endif /* ((SPI_CHANNEL_BUFFERS == SPI_IB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB)) */
 
 /*
- * Design : MCAL-25038, MCAL-25039, MCAL-25040, MCAL-25041, MCAL-25042, 
- * Design : MCAL-25045, MCAL-25046, MCAL-24945, MCAL-25043, MCAL-25044
+ * Design : MCAL-25038, MCAL-25039, MCAL-25040, MCAL-25041, MCAL-25042, MCAL-24940, MCAL-24884
+ * Design : MCAL-25045, MCAL-25046, MCAL-24945, MCAL-25043, MCAL-25044, MCAL-24937, MCAL-24882
+ * Design : MCAL-24941, MCAL-24946, MCAL-25098, MCAL-25101, MCAL-25100
  */
 #if ((SPI_CHANNEL_BUFFERS == SPI_EB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
 FUNC(Std_ReturnType, SPI_CODE) Spi_SetupEB(VAR(Spi_ChannelType, AUTOMATIC) Channel,\
@@ -480,8 +490,8 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_SetupEB(VAR(Spi_ChannelType, AUTOMATIC) Chann
         VAR(Spi_NumberOfDataType, AUTOMATIC) Length)
 
 {
-    Std_ReturnType      retVal = (Std_ReturnType) E_NOT_OK;
-    Spi_ChannelObjType *chObj;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
+    P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj;
 #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if (SPI_UNINIT == Spi_DrvStatus)
     {
@@ -519,12 +529,13 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_SetupEB(VAR(Spi_ChannelType, AUTOMATIC) Chann
 /*
  * Design : MCAL-25014, MCAL-25015, MCAL-25016, MCAL-25017, MCAL-25018, MCAL-25028
  * Design : MCAL-25019, MCAL-25020, MCAL-25021, MCAL-25022, MCAL-25023, MCAL-24892
- * Design : MCAL-25024, MCAL-25025, MCAL-25027, MCAL-25029, MCAL-25026
+ * Design : MCAL-25024, MCAL-25025, MCAL-25027, MCAL-25029, MCAL-25026, MCAL-24938
+ * Design : MCAL-25013, MCAL-24899, MCAL-24939, MCAL-25085, MCAL-24946, MCAL-25030
  */
 #if ((SPI_SCALABILITY == SPI_LEVEL_1) || (SPI_SCALABILITY == SPI_LEVEL_2))
 FUNC(Std_ReturnType, SPI_CODE) Spi_AsyncTransmit(VAR(Spi_SequenceType, AUTOMATIC) Sequence)
 {
-    Std_ReturnType retVal = (Std_ReturnType) E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
     #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if((Std_ReturnType)E_OK == Spi_DetCheckAsyncTransmit(Sequence))
     #endif  /* #if (STD_ON == SPI_DEV_ERROR_DETECT) */
@@ -537,7 +548,7 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_AsyncTransmit(VAR(Spi_SequenceType, AUTOMATIC
        else
         {
             /* Call the start sequence API */
-            retVal = Spi_StartSeqAsync(&(Spi_DrvObj.seqObj
+            retVal = Spi_StartSeqAsync(&Spi_DrvObj,&(Spi_DrvObj.seqObj
                                                         [Sequence])); 
             if (((Std_ReturnType) E_NOT_OK) == retVal)
             {
@@ -553,7 +564,7 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_AsyncTransmit(VAR(Spi_SequenceType, AUTOMATIC
          *(SPI_SCALABILITY == SPI_LEVEL_2)) */
 
 /*
- * Design : MCAL-25072, MCAL-25073 
+ * Design : MCAL-25072, MCAL-25073, MCAL-24938, MCAL-24939, MCAL-25076, MCAL-25074
  */
 
 #if (STD_ON == SPI_CANCEL_API)
@@ -571,7 +582,7 @@ FUNC(void, SPI_CODE) Spi_Cancel(VAR(Spi_SequenceType, AUTOMATIC) Sequence)
     else
     #endif  /* #if (STD_ON == SPI_DEV_ERROR_DETECT) */
     {
-        Spi_CancelSequence(&Spi_DrvObj.seqObj[Sequence]); 
+        Spi_CancelSequence(&Spi_DrvObj,&Spi_DrvObj.seqObj[Sequence]); 
     }
 
     return;
@@ -579,14 +590,14 @@ FUNC(void, SPI_CODE) Spi_Cancel(VAR(Spi_SequenceType, AUTOMATIC) Sequence)
 #endif
 
 /*
- * Design : MCAL-25058, MCAL-25059, MCAL-25060, MCAL-25061, MCAL-25062, MCAL-25063
- * Design : MCAL-25064, MCAL-25065, MCAL-25066, MCAL-24885, MCAL-24888
+ * Design : MCAL-25058, MCAL-25059, MCAL-25060, MCAL-25061, MCAL-25062, MCAL-25063, MCAL-24946
+ * Design : MCAL-25064, MCAL-25065, MCAL-25066, MCAL-24885, MCAL-24888, MCAL-24938, MCAL-24939
  */
 
 #if ((SPI_SCALABILITY == SPI_LEVEL_0) || (SPI_SCALABILITY ==  SPI_LEVEL_2))
 FUNC(Std_ReturnType, SPI_CODE) Spi_SyncTransmit(VAR(Spi_SequenceType, AUTOMATIC) Sequence)
 {
-    Std_ReturnType   retVal = (Std_ReturnType) E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
     #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if((Std_ReturnType)E_OK == Spi_DetCheckSyncTransmit(Sequence))
     #endif  /* #if (STD_ON == SPI_DEV_ERROR_DETECT) */
@@ -599,7 +610,7 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_SyncTransmit(VAR(Spi_SequenceType, AUTOMATIC)
         }else
         {
             /* Call the start sequence API */
-            retVal = Spi_StartSeqSync(seqObjTmp);
+            retVal = Spi_StartSeqSync(&Spi_DrvObj,seqObjTmp);
 
         }
         SchM_Exit_Spi_SPI_EXCLUSIVE_AREA_0();
@@ -610,12 +621,13 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_SyncTransmit(VAR(Spi_SequenceType, AUTOMATIC)
 #endif /* ((SPI_SCALABILITY == SPI_LEVEL_0) || (SPI_SCALABILITY ==  SPI_LEVEL_2)) */
 
 /*
- * Design : MCAL-25077, MCAL-25078, MCAL-25079, MCAL-25080, MCAL-25081, MCAL-25083, MCAL-25084, MCAL-25082 
+ * Design : MCAL-25077, MCAL-25078, MCAL-25079, MCAL-25080, MCAL-25081, MCAL-25083, MCAL-25084, 
+ * Design : MCAL-24918, MCAL-25082, MCAL-24939, MCAL-24946
  */
 #if (SPI_SCALABILITY == SPI_LEVEL_2)
 FUNC(Std_ReturnType, SPI_CODE) Spi_SetAsyncMode(VAR(Spi_AsyncModeType, AUTOMATIC) Mode)
 {
-    Std_ReturnType retVal = (Std_ReturnType) E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
     #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if (SPI_UNINIT == Spi_DrvStatus)
     {
@@ -637,12 +649,12 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_SetAsyncMode(VAR(Spi_AsyncModeType, AUTOMATIC
 }
 #endif  /* #if (SPI_SCALABILITY == SPI_LEVEL_2) */
 
-
+/* Design: MCAL-24917 */
 FUNC(void, SPI_CODE) Spi_MainFunction_Handling(void)
 {
-    uint32 hwUnitIdx;
-    Spi_HwUnitObjType *hwUnitObj;
-    Spi_HWUnitType hwUnitId;
+    VAR(uint32, AUTOMATIC) hwUnitIdx;
+    P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj;
+    VAR(Spi_HWUnitType, AUTOMATIC) hwUnitId;
 
   #if (STD_ON == SPI_DEV_ERROR_DETECT)
     if (SPI_UNINIT == Spi_DrvStatus)
@@ -675,10 +687,11 @@ FUNC(void, SPI_CODE) Spi_MainFunction_Handling(void)
  *  Local Functions Definition
  *********************************************************************************************************************/
 #if (STD_ON == SPI_DEV_ERROR_DETECT)
+/* Design: MCAL-28351 */
 static FUNC(Std_ReturnType, SPI_CODE) Spi_CheckConfig(const Spi_ConfigType *cfgPtr)
 {
-    uint32         index;
-    Std_ReturnType retVal = (Std_ReturnType) E_OK;
+    VAR(uint32, AUTOMATIC) index;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_OK;
 
     for (index = ((uint32) 0U); index < cfgPtr->maxChannels; index++)
     {
@@ -723,9 +736,10 @@ static FUNC(Std_ReturnType, SPI_CODE) Spi_CheckConfig(const Spi_ConfigType *cfgP
     return (retVal);
 }
 #if ((SPI_SCALABILITY == SPI_LEVEL_1) || (SPI_SCALABILITY == SPI_LEVEL_2))
+/* Design: MCAL-28352 */
 static FUNC(Std_ReturnType, SPI_CODE) Spi_DetCheckAsyncTransmit(Spi_SequenceType Sequence)
 {
-    Std_ReturnType retVal =E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
     if (SPI_UNINIT == Spi_DrvStatus)
     {
        (void) Det_ReportError(SPI_MODULE_ID, SPI_INSTANCE_ID, SPI_SID_ASYNC_TRANSMIT, SPI_E_UNINIT);	
@@ -742,9 +756,10 @@ static FUNC(Std_ReturnType, SPI_CODE) Spi_DetCheckAsyncTransmit(Spi_SequenceType
 }
 #endif /* #if ((SPI_SCALABILITY == SPI_LEVEL_1) || (SPI_SCALABILITY == SPI_LEVEL_2)) */
 #if ((SPI_SCALABILITY == SPI_LEVEL_0) || (SPI_SCALABILITY ==  SPI_LEVEL_2))
+/* Design: MCAL-28353 */
 static FUNC(Std_ReturnType, SPI_CODE) Spi_DetCheckSyncTransmit(Spi_SequenceType Sequence)
 {
-    Std_ReturnType retVal =E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
     if (SPI_UNINIT == Spi_DrvStatus)
     {
        (void) Det_ReportError(SPI_MODULE_ID, SPI_INSTANCE_ID, SPI_SID_SYNC_TRANSMIT, SPI_E_UNINIT);
@@ -760,9 +775,10 @@ static FUNC(Std_ReturnType, SPI_CODE) Spi_DetCheckSyncTransmit(Spi_SequenceType 
     return retVal;
 }
 #endif /* #if ((SPI_SCALABILITY == SPI_LEVEL_0) || (SPI_SCALABILITY ==  SPI_LEVEL_2)) */
+/* Design: MCAL-28354 */
 static FUNC(Std_ReturnType, SPI_CODE) Spi_DetCheckInitPtrObj(P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) ConfigPtr)
 {
-    Std_ReturnType retVal =E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
     if (SPI_UNINIT != Spi_DrvStatus)
     {
        (void)Det_ReportError(SPI_MODULE_ID, SPI_INSTANCE_ID, SPI_SID_INIT, SPI_E_ALREADY_INITIALIZED);
@@ -779,9 +795,10 @@ static FUNC(Std_ReturnType, SPI_CODE) Spi_DetCheckInitPtrObj(P2CONST(Spi_ConfigT
     return retVal;
 }
 
+/* Design: MCAL-28355 */
 static FUNC(Std_ReturnType, SPI_CODE) Spi_DetCheckInitJobCfg(P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) ConfigPtr)
 {
-    Std_ReturnType retVal =E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_NOT_OK;
     if ((ConfigPtr->maxJobs > SPI_MAX_JOBS) || (ConfigPtr->maxExtDevCfg > SPI_MAX_EXT_DEV) )
     {
        (void) Det_ReportError(SPI_MODULE_ID, SPI_INSTANCE_ID, SPI_SID_INIT, SPI_E_PARAM_JOB);
@@ -803,14 +820,14 @@ static FUNC(Std_ReturnType, SPI_CODE) Spi_DetCheckInitJobCfg(P2CONST(Spi_ConfigT
 }
 #endif  /* #if (STD_ON == SPI_DEV_ERROR_DETECT) */
 /*
- * Design : MCAL-24931
+ * Design : MCAL-24931, MCAL-25085, MCAL-28356
  */
 #if ((SPI_SCALABILITY == SPI_LEVEL_0) || (SPI_SCALABILITY ==  SPI_LEVEL_2))
 static FUNC(Std_ReturnType, SPI_CODE) Spi_DetRTErrorCheckSyncTransmit(Spi_SeqObjType *seqObj)
 {
-    Std_ReturnType retVal =E_OK;
-    Spi_SequenceType SequenceId = seqObj->seqCfg->seqId;
-    uint32 i;
+    VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType) E_OK;
+    VAR(Spi_SequenceType, AUTOMATIC) SequenceId = seqObj->seqCfg->seqId;
+    VAR(uint32, AUTOMATIC) i;
     #if (STD_ON == SPI_SUPPORT_CONCURRENT_SYNC_TRANSMIT)
     Spi_JobObjType      *jobObj;
     Spi_JobType          jobId;

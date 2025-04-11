@@ -1,0 +1,52 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="EcuM" type="AR-PACKAGE">
+        <d:lst type="ELEMENTS">
+          <d:chc name="EcuM" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+            <d:ctr type="MODULE-CONFIGURATION">
+              <a:a name="DEF" value="ASPath:/AUTOSAR/EcucDefs/EcuM"/>
+              <d:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION" 
+                     value="VariantPreCompile">
+                <a:a name="IMPORTER_INFO" value="@DEF"/>
+              </d:var>
+              <d:ctr name="EcuMConfiguration" type="IDENTIFIABLE">
+                <d:ctr name="EcuMCommonConfiguration" type="IDENTIFIABLE">
+                  <d:lst name="EcuMDriverInitList" type="MAP">
+                    <d:ctr name="EcuMDriverInitList_0" type="IDENTIFIABLE">
+                      <d:var name="ModuleHeaderFileName" type="STRING" 
+                             value="Mcu"/>
+                      <d:var name="ModuleFunction" type="MULTILINE-STRING" 
+                             value="Mcu_Init(&amp;Mcu_ModuleConfiguration_0);&#10;&#10;#if (STD_ON == MCU_CFG_INIT_CLOCK_API)&#10;&#9;Mcu_InitClock(McuConf_McuClockSettingConfig_McuClockSettingConfig_Osc2);&#10;&#10;    while ( MCU_PLL_LOCKED != Mcu_GetPllStatus() ) /* Get PLL status and check */&#10;    {&#10;    /* Wait until all enabled PLLs are locked */&#10;    }&#10;&#10;#if(STD_OFF == MCU_CFG_NO_PLL)&#10;&#9;Mcu_DistributePllClock();&#10;#endif&#10;#endif"/>
+                    </d:ctr>
+                    <d:ctr name="EcuMDriverInitList_1" type="IDENTIFIABLE">
+                      <d:var name="ModuleHeaderFileName" type="STRING" 
+                             value="Port"/>
+                      <d:var name="ModuleFunction" type="MULTILINE-STRING" 
+                             value="Port_Init(&amp;Port_PortConfigSet);"/>
+                    </d:ctr>
+                  </d:lst>
+                  <d:lst name="EcuMWakeupSource" type="MAP"/>
+                </d:ctr>
+              </d:ctr>
+            </d:ctr>
+          </d:chc>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

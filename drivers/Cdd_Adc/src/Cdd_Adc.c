@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -39,11 +39,11 @@
 
 /* vendor specific version information check */
 
-#if ((CDD_ADC_SW_MAJOR_VERSION != (1U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_SW_MAJOR_VERSION != (2U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
     #error "Version numbers of Cdd_Adc.c and Cdd_Adc.h are not matching!"
 #endif
 
-#if ((CDD_ADC_CFG_MAJOR_VERSION != (1U)) || (CDD_ADC_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_CFG_MAJOR_VERSION != (2U)) || (CDD_ADC_CFG_MINOR_VERSION != (0U)))
     #error "Version numbers of Cdd_Adc.c and Cdd_Adc_Cfg.h are not matching!"
 #endif
 
@@ -120,7 +120,6 @@ FUNC(void,CDD_ADC_CODE) Cdd_Adc_Init(P2CONST(Cdd_Adc_ConfigType,AUTOMATIC, CDD_A
     else
 #endif
     {
-        SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
         Cdd_Adc_CfgPtr = &CDD_ADC_CONFIG_PC;
         Cdd_Adc_SetDrvObj(&Cdd_Adc_DrvObj,Cdd_Adc_CfgPtr);
         /* Initialize the driver object */
@@ -128,7 +127,6 @@ FUNC(void,CDD_ADC_CODE) Cdd_Adc_Init(P2CONST(Cdd_Adc_ConfigType,AUTOMATIC, CDD_A
         /* Initialize the ADC HW Unit */
         Cdd_Adc_HwUnitInit();
         Cdd_Adc_IsInitialized = TRUE;   /* Update the initialized flag to true */
-        SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
     return;
 }
@@ -217,11 +215,9 @@ FUNC(void,CDD_ADC_CODE) Cdd_Adc_DeInit(void)
     else
 #endif
     {
-        SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
         /* Deinitialize the ADC HW Unit */
         Cdd_Adc_HwUnitDeinit();
         Cdd_Adc_IsInitialized = FALSE;
-        SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
     return;
 }
@@ -789,7 +785,7 @@ Cdd_Adc_SetResolution(VAR(Cdd_Adc_HwUnitInstanceType,AUTOMATIC)HwUnit,VAR(Cdd_Ad
             SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
             /* Report Det runtime error if any of the group is in IDLE state */
             for(group = Cdd_Adc_CfgPtr->hwunitcfg[HwUnit].startgroupnum;\
-                (group <= Cdd_Adc_CfgPtr->hwunitcfg[HwUnit].lastgroupnum);group++)
+                ((group <= Cdd_Adc_CfgPtr->hwunitcfg[HwUnit].lastgroupnum) && (group < CDD_ADC_GROUP_CNT));group++)
             {
                 if(Cdd_Adc_DrvObj.group_obj[group].grp_status != CDD_ADC_IDLE)
                 {
@@ -855,7 +851,7 @@ FUNC(void,CDD_ADC_CODE) Cdd_Adc_StartResultChecker(VAR(Cdd_Adc_CheckerType,AUTOM
         {
             SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
             /* Enable the specified result safety checker tile */                        
-            Cdd_Adc_ConfigureCheckerTile(base_addr,ENABLE);
+            Cdd_Adc_ConfigureCheckerTile(base_addr,TRUE);
             /* Force Software sync */
             Cdd_Adc_ForceSafetyCheckerSync(base_addr);
             SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -905,6 +901,7 @@ FUNC(void,CDD_ADC_CODE)
 Cdd_Adc_ReadCheckerStatus(VAR(Cdd_Adc_CheckerIntEvtType,AUTOMATIC) IntEvt,\
         P2VAR(Cdd_Adc_CheckFlagStatusType,AUTOMATIC,CDD_ADC_DATA) CheckerFlag)
 {
+    uint16 status;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     if (FALSE == Cdd_Adc_IsInitialized)
     {
@@ -926,8 +923,9 @@ Cdd_Adc_ReadCheckerStatus(VAR(Cdd_Adc_CheckerIntEvtType,AUTOMATIC) IntEvt,\
     else
 #endif
     {
+        status = Cdd_Adc_GetSafetyCheckIntStatus(Cdd_Adc_CfgPtr->checkercfg.checkerintevtcfg[IntEvt].base_addr);
         /* Check if the interrupt flag is set */
-        if(Cdd_Adc_GetSafetyCheckIntStatus(Cdd_Adc_CfgPtr->checkercfg.checkerintevtcfg[IntEvt].base_addr))
+        if(TRUE == ((uint8)status))
         {
             /* This functions returns the interrupt source event flag for each safety checker */
             Cdd_Adc_CheckerIsr(IntEvt,CheckerFlag);
@@ -956,7 +954,7 @@ FUNC(void,CDD_ADC_CODE) Cdd_Adc_ClearCheckerEvt(VAR(Cdd_Adc_CheckerIntEvtType,AU
         (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,CDD_ADC_SID_CLEAR_CHECKER_EVT,\
                                 CDD_ADC_E_INVALID_ID);
     }
-    else if(Event_Id >= CDD_ADC_CHECKER_EVT_CNT)
+    else if((uint8)Event_Id >= CDD_ADC_CHECKER_EVT_CNT)
     {
          /* Report DET error if the event ID doesn't exist*/
         (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,CDD_ADC_SID_CLEAR_CHECKER_EVT,\
@@ -1128,7 +1126,7 @@ FUNC(uint16,CDD_ADC_CODE) Cdd_Adc_GetDelayStamp(VAR(Cdd_Adc_PpbType,AUTOMATIC) P
 #endif
 
 #if(STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE) 
-FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitType,AUTOMATIC) HwUnit,\
+FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType,AUTOMATIC) HwUnit,\
         VAR(Cdd_Adc_ValueGroupType,AUTOMATIC) TempResult)
 {
     sint16 temp_value = 0;
@@ -1164,7 +1162,7 @@ FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitType,AUTOMAT
     return temp_value;
 }
 
-FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitType,AUTOMATIC) HwUnit,\
+FUNC(sint16,CDD_ADC_CODE) Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType,AUTOMATIC) HwUnit,\
         VAR(Cdd_Adc_ValueGroupType,AUTOMATIC) TempResult)
 {
     sint16 temp_value = 0;

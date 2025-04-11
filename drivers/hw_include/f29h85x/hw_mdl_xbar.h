@@ -16,14 +16,14 @@
 // The following are defines for the MDL_XBAR register offsets
 //
 //*************************************************************************************************
-#define MDL_XBAR_O_MDLXBAROUTINVERT   0x30U                   // Output Signal Invert Select
-#define MDL_XBAR_O_MDLXBARLOCK        0x80U                   // Configuration Lock register
-#define MDL_XBAR_O_MDLXBARG0SEL(i)    (0x100U + ((i) * 64))   // (0 <= i < 16) MDLXBAR G0 Input
-                                                              // Select
-#define MDL_XBAR_O_MDLXBARG1SEL(i)    (0x104U + ((i) * 64))   // (0 <= i < 16) MDLXBAR G1 Input
-                                                              // Select
-#define MDL_XBAR_O_MDLXBARG2SEL(i)    (0x108U + ((i) * 64))   // (0 <= i < 16) MDLXBAR G2 Input
-                                                              // Select
+#define MDL_XBAR_O_MDLXBAROUTINVERT   0x30U                    // Output Signal Invert Select
+#define MDL_XBAR_O_MDLXBARLOCK        0x80U                    // Configuration Lock register
+#define MDL_XBAR_O_MDLXBARG0SEL(i)    (0x100U + ((i) * 64U))   // (0 <= i < 16) MDLXBAR G0 Input
+                                                               // Select
+#define MDL_XBAR_O_MDLXBARG1SEL(i)    (0x104U + ((i) * 64U))   // (0 <= i < 16) MDLXBAR G1 Input
+                                                               // Select
+#define MDL_XBAR_O_MDLXBARG2SEL(i)    (0x108U + ((i) * 64U))   // (0 <= i < 16) MDLXBAR G2 Input
+                                                               // Select
 
 
 //*************************************************************************************************

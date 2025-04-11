@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
  * Local Object Definitions
  *********************************************************************************************************************/
 uint8  CanIf_Rx_Data[64U];
-
+uint8  PduR_RxIndicationCount;
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
@@ -68,8 +68,14 @@ uint8  CanIf_Rx_Data[64U];
 
 Std_ReturnType PduR_Cdd_Sent_RxIndication(PduIdType id, const PduInfoType *PduInfoPtr)
 {
+   PduR_RxIndicationCount++;
    return E_OK;
+}
 
+Std_ReturnType PduR_Cdd_Ipc_RxIndication(PduIdType id, const PduInfoType *PduInfoPtr)
+{
+   PduR_RxIndicationCount++;
+   return E_OK;
 }
 /*********************************************************************************************************************
  *  Local Functions Definition

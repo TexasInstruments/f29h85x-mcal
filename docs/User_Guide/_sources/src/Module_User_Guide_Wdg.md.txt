@@ -160,6 +160,16 @@ Extended production errors are reported to the DEM using the service Dem_SetEven
 |API is called with wrong pointer value|WDG_E_PARAM_POINTER|0x14|
 |Invalid configuration set selection|WDG_E_INIT_FAILED|0x15|
 
+### Safety Mechanism
+
+|TI Diagnostic Unique Identifier| Summary | Description |
+|------------|-----------------|----------------|
+|CLK6| Internal Watchdog | Error detection are notified to user and Reported to DET & DEM  |
+
+```{NOTE}
+More details of Safety Mechanisms can be found in Safety Manual.
+```
+
 ### Used resources
 
 #### Interrupt Handling
@@ -206,388 +216,147 @@ The associated Wdg driver configuration generated source files are **Wdg_Cfg.c**
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
+
+
 #### WdgDemEventParameterRefs
 
-##### WDG_E_DISABLE_REJECTED
-
-|SWS Item|ECUC_Wdg_00150|
-|--------|----------------|
-|**Name**| WDG_E_DISABLE_REJECTED|
-|**Parent Container**|WdgDemEventParameterRefs|
-|**Description**|Reference to the DemEventParameter which shall be issued when the error "Initialization or mode switch failed because it would disable the watchdog" has occurred.|
-|**Multiplicity**|0 .. 1|
-|**Type**|Symbolic name reference to [ DemEventParameter ]|
-|**Post-Build Variant Multiplicity**|false|
-|**Post-Build Variant Value**|false|
-|**Multiplicity Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### WDG_E_MODE_FAILED
-
-|SWS Item|ECUC_Wdg_00149|
-|--------|----------------|
-|**Name**|WDG_E_MODE_FAILED|
-|**Parent Container**|WdgDemEventParameterRefs|
-|**Description**|Reference to the DemEventParameter which shall be issued when the error "Setting a watchdog mode failed (during initialization or mode switch)" has occurred.|
-|**Multiplicity**|0 .. 1|
-|**Type**|Symbolic name reference to [ DemEventParameter ]|
-|**Post-Build Variant Multiplicity**|false|
-|**Post-Build Variant Value**|false|
-|**Multiplicity Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | WdgDemEventParameterRefs |
+| **Description** | Reference to the DemEventParameter which shall be issued when the error "Setting a watchdog mode failed (during initialization or mode switch)" has occurred. |
+| **Post-build-variant-multiplicity** | false |
+| **Multiplicity-Configuration-Class** | -- |
+| Link Time | VARIANT-LINK-TIME |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 #### WdgGeneral
+All general parameters of the watchdog driver are collected here.
 
 ##### WdgDevErrorDetect
 
-|SWS Item|ECUC_Wdg_00115|
-|--------|----------------|
-|**Name**|WdgDevErrorDetect|
-|**Parent Container**|WdgGeneral|
-|**Description**|Switches the development error detection and notification on or off.<br> true: detection and notification is enabled.<br> false: detection and notification is disabled.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | WdgDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### WdgDisableAllowed
 
-|SWS Item|ECUC_Wdg_00116|
-|--------|----------------|
-|**Name**|WdgDisableAllowed|
-|**Parent Container**|WdgGeneral|
-|**Description**|Compile switch to allow / forbid disabling the watchdog driver during runtime.<br> True: Disabling the watchdog driver at runtime is allowed.<br> False: Disabling the watchdog driver at runtime is not allowed.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local<br>dependency: Safety relevant compile switch, this has to be in accordance with the corresponding settings for the watchdog manager.|
+| Item ||
+|--------|---------------|
+| **Name** | WdgDisableAllowed |
+| **Description** | Compile switch to allow / forbid disabling the watchdog driver during runtime. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### WdgIndex
 
-|SWS Item|ECUC_Wdg_00117|
-|--------|----------------|
-|**Name**|WdgIndex|
-|**Parent Container**|WdgGeneral|
-|**Description**|Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0.|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 255|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | WdgIndex |
+| **Description** | Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 255 |
+| **Min-value** | 0 |
 
 ##### WdgInitialTimeout
 
-|SWS Item|ECUC_Wdg_00130|
-|--------|----------------|
-|**Name**|WdgInitialTimeout|
-|**Parent Container**|WdgGeneral|
-|**Description**|The initial timeout (sec) for the trigger condition to be initialized during Init function. It shall be not larger than WdgMaxTimeout.|
-|**Multiplicity**|1|
-|**Type**|EcucFloatParamDef|
-|**Range**|0 .. 65.535|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | WdgInitialTimeout |
+| **Description** | This is read only parameter just to display the initial timeout value based on the default mode. The initial timeout (sec) for the trigger condition to be initialized during Init function. It shall be not larger than WdgMaxTimeout. (click on auto calculate before generating) |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0.1 |
+| **Max-value** | 0.1 |
+| **Min-value** | 0.0 |
 
 ##### WdgMaxTimeout
 
-|SWS Item|ECUC_Wdg_00131|
-|--------|----------------|
-|**Name**|WdgMaxTimeout|
-|**Parent Container**|WdgGeneral|
-|**Description**|The maximum timeout (sec) to which the watchdog trigger condition can be initialized.|
-|**Multiplicity**|1|
-|**Type**|EcucFloatParamDef|
-|**Range**|0 .. 65.535|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | WdgMaxTimeout |
+| **Description** | This is read only parameter just to display the maximum timeout value based on the default mode. The maximum timeout (sec) to which the watchdog trigger condition can be initialized.Set the fast/slow mode timeout settings. (click on auto calculate before generating) |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 6.6 |
+| **Max-value** | 6.6 |
+| **Min-value** | 0.0 |
 
 ##### WdgRunArea
 
-|SWS Item|ECUC_Wdg_00147|
-|--------|----------------|
-|**Name**|WdgRunArea|
-|**Parent Container**|WdgGeneral|
-|**Description**|Represents the watchdog driver execution area is either from ROM(Flash) or RAM as required with the particular microcontroller.|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**||
-|RAM|Watchdog driver to be executed out of RAM area|
-|ROM|Watchdog driver to be executed out of ROM area|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | WdgRunArea |
+| **Description** | Represents the watchdog driver execution area is either from ROM(Flash) or RAM as required with the particular microcontroller. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | RAM |
+| **Range** | RAM<br>ROM |
 
 ##### WdgTriggerLocation
 
-|SWS Item|ECUC_Wdg_00118|
-|--------|----------------|
-|**Name**|WdgTriggerLocation|
-|**Parent Container**|WdgGeneral|
-|**Description**|Location (memory address) of the watchdog trigger routine.|
-|**Multiplicity**|1|
-|**Type**|EcucFunctionNameDef|
-|**Default value**|--|
-|**maxLength**|--|
-|**minLength**|--|
-|**regularExpression**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local<br>dependency: Only relevant if provided by hardware and needed by the system.|
+| Item ||
+|--------|---------------|
+| **Name** | WdgTriggerLocation |
+| **Description** | Location (memory address) of the watchdog trigger routine. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
 
 ##### WdgVersionInfoApi
 
-|SWS Item|ECUC_Wdg_00119|
-|--------|----------------|
-|**Name**|WdgVersionInfoApi|
-|**Parent Container**|WdgGeneral|
-|**Description**|Compile switch to enable / disable the version information API<br> True: API enabled<br> False: API disabled|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### WdgPublishedInformation
-
-##### WdgTriggerMode
-
-|SWS Item|ECUC_Wdg_00127|
-|--------|----------------|
-|**Name**|WdgTriggerMode|
-|**Parent Container**|WdgPublishedInformation|
-|**Description**|Watchdog trigger mode (toggle/window/both)|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**||
-|WDG_BOTH|--|
-|WDG_TOGGLE|--|
-|WDG_WINDOW|--|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|**Published Information**|All Variants|
-|**Scope / Dependency**|scope: local|
-
-#### WdgSettingsConfig
-
-##### WdgDefaultMode
-
-|SWS Item|ECUC_Wdg_00120|
-|--------|----------------|
-|**Name**|WdgDefaultMode|
-|**Parent Container**|WdgSettingsConfig|
-|**Description**|Default mode for watchdog driver initialization.<br>ImplementationType: WdgIf_ModeType|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**||
-|WDGIF_FAST_MODE|Default watchdog mode is "fast"|
-|WDGIF_OFF_MODE|Default watchdog mode is "off"|
-|WDGIF_SLOW_MODE|Default watchdog mode is "slow"|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|VARIANT-LINK-TIME|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local<br>dependency: "Off" mode only possible if disabling the watchdog driver is allowed.|
-
-#### WdgExternalConfiguration
-
-##### WdgExternalContainerRef
-
-|SWS Item|ECUC_Wdg_00113|
-|--------|----------------|
-|**Name**|WdgExternalContainerRef|
-|**Parent Container**|WdgExternalConfiguration|
-|**Description**|Reference to either<br>a DioChannelGroup container in case the hardware watchdog is connected via DIO pins<br> an SpiSequenceConfiguration container in case the watchdog hardware is accessed via SPI.|
-|**Multiplicity**|0..1|
-|**Type**|Choice reference to [ DioChannelGroup , SpiSequence ]|
-|**Post-Build Variant Multiplicity**|true|
-|**Post-Build Variant Value**|true|
-|**Multiplicity Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|VARIANT-LINK-TIME|
-|Post-build time|VARIANT-POST-BUILD|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|VARIANT-LINK-TIME|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local<br>dependency: See DIO resp. SPI SWS|
-
-#### WdgSettingsFast
-
-#### WdgSettingsOff
-
-#### WdgSettingsSlow
-
-##### WdgPredivider
-
-|SWS Item||
-|--------|----------------|
-|**Name**|WdgPredivider|
-|**Parent Container**|WdgSettingsFast|
-|**Description**|Wdg_PreDivider  determines the watchdog clock pre-divider, which is the first of the two dividers between INTOSC1 and the watchdog counter clock (WDCLK)|
-|**Multiplicity**||
-|**Type**|ENUMERATION|
-|**Range**||
-||WDG_PREDIV_2|
-||WDG_PREDIV_4|
-||WDG_PREDIV_8|
-||WDG_PREDIV_16|
-||WDG_PREDIV_32|
-||WDG_PREDIV_64|
-||WDG_PREDIV_128|
-||WDG_PREDIV_256|
-||WDG_PREDIV_512|
-||WDG_PREDIV_1024|
-||WDG_PREDIV_2048|
-||WDG_PREDIV_4096|
-|**Default value**|WDG_PREDIV_512|
-|**Post-Build Variant Value**||
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|VARIANT-LINK-TIME|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-##### WdgPrescaler
-
-|SWS Item||
-|--------|----------------|
-|**Name**|WdgPrescaler|
-|**Parent Container**|WdgSettingsFast|
-|**Description**|Wdg_PreScaler determines the watchdog clock prescaler, which is the second of the two dividers between INTOSC1 and the watchdog counter clock (WDCLK)|
-|**Multiplicity**||
-|**Type**|ENUMERATION|
-|**Range**||
-||WDG_PRESCALE_1|
-||WDG_PRESCALE_2|
-||WDG_PRESCALE_4|
-||WDG_PRESCALE_8|
-||WDG_PRESCALE_16|
-||WDG_PRESCALE_32|
-||WDG_PRESCALE_64|
-|**Default value**|WDG_PRESCALE_1|
-|**Post-Build Variant Value**||
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|VARIANT-LINK-TIME|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-```{Note}
- The watchdog reset or interrupt pulse is 512 INTOSC1 cycles long, so the counter period must be longer. To guarantee this, the product 
- of the prescaler and pre-divider must be greater than or equal to four.
- ```
-
-##### WdgTimeout
-
-|SWS Item||
-|--------|----------------|
-|**Name**|WdgTimeout|
-|**Parent Container**|WdgSettingsFast|
-|**Description**|This is the maximum timeout value in milliseconds.|
-|**Multiplicity**||
-|**Type**|FLOAT|
-|**Range**|0.0 .. 6685.0|
-|**Default value**|13.05|
-|**Post-Build Variant Value**||
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|VARIANT-LINK-TIME|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-```{Note}
- The timeout value is in Milliseconds.
- ```
-
-##### WdgReaction
-
-|SWS Item||
-|--------|----------------|
-|**Name**|WdgReaction|
-|**Parent Container**|WdgSettingsFast|
-|**Description**|Watchdog reaction for timer expiration or incorrect service.|
-|**Multiplicity**||
-|**Type**|ENUMERATION|
-|**Range**||
-||WDG_GENERATE_RESET|
-||WDG_GENERATE_INTERRUPT|
-|**Default value**|WDG_GENERATE_INTERRUPT|
-|**Post-Build Variant Value**||
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|VARIANT-LINK-TIME|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-##### WdgThresholdValue
-
-|SWS Item||
-|--------|----------------|
-|**Name**|WdgThresholdValue|
-|**Parent Container**|WdgSettingsFast|
-|**Description**|Watchdog Threshold. It specifies lower limit of the watchdog counter reset  window.|
-|**Multiplicity**||
-|**Type**|INTEGER|
-|**Range**|0 .. 255|
-|**Default value**|255|
-|**Post-Build Variant Value**||
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|VARIANT-LINK-TIME|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
+| Item ||
+|--------|---------------|
+| **Name** | WdgVersionInfoApi |
+| **Description** | Compile switch to enable / disable the version information API |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Link-Time | VARIANT-LINK-TIME |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 Refer [AUTOSAR_SWS_WDGDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_WatchdogDriver.pdf) for configuration parameters details
 
 #### Steps To Configure Wdg Module

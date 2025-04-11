@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5.1. MCU &mdash; Documentation for F29H85x</title>
+  <title>5.6. MCU &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="5.2. DIO" href="group___d_i_o.html" />
-    <link rel="prev" title="5. API guide" href="../api_guide.html" /> 
+    <link rel="next" title="5.7. PORT" href="group___p_o_r_t.html" />
+    <link rel="prev" title="5.5. LIN" href="group___l_i_n.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.01.00
+                01.02.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -64,71 +64,69 @@
 <li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">4. Module User Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">5.1. MCU</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#types">5.1.1. Types</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-pllstatustype">5.1.1.1. enum Mcu_PllStatusType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-resettype">5.1.1.2. enum Mcu_ResetType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-ramstatetype">5.1.1.3. enum Mcu_RamStateType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-clksourceidtype">5.1.1.4. enum Mcu_ClkSourceIdType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-cputimerclksrc">5.1.1.5. enum Mcu_CpuTimerClkSrc</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-mcanclksrc">5.1.1.6. enum Mcu_MCanClkSrc</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-mcanclkdivider">5.1.1.7. enum Mcu_MCANClkDivider</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-mcaninstance">5.1.1.8. enum Mcu_MCANInstance</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-externalclockoutclksrc">5.1.1.9. enum Mcu_ExternalClockOutClkSrc</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-externalclockoutdiv">5.1.1.10. enum Mcu_ExternalClockOutDiv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-ethercatclockdiv">5.1.1.11. enum Mcu_EthercatClockDiv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-ethercatphyclk">5.1.1.12. enum Mcu_EthercatPhyClk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-hsmclockdiv">5.1.1.13. enum Mcu_HsmClockDiv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-epwmclkdivider">5.1.1.14. enum Mcu_EPWMClkDivider</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-emifclkdivider">5.1.1.15. enum Mcu_EMIFClkDivider</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-linclkdivider">5.1.1.16. enum Mcu_LINClkDivider</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-lininstance">5.1.1.17. enum Mcu_LINInstance</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-lowpowermodetype">5.1.1.18. enum Mcu_LowPowerModeType</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#structures">5.1.2. Structures</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#defines">5.1.3. Defines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functions">5.1.4. Functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getversioninfo">5.1.4.1. function Mcu_GetVersionInfo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-init">5.1.4.2. function Mcu_Init</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-initramsection">5.1.4.3. function Mcu_InitRamSection</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-initclock">5.1.4.4. function Mcu_InitClock</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getpllstatus">5.1.4.5. function Mcu_GetPllStatus</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetreason">5.1.4.6. function Mcu_GetResetReason</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetrawvalue">5.1.4.7. function Mcu_GetResetRawValue</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-performreset">5.1.4.8. function Mcu_PerformReset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-setmode">5.1.4.9. function Mcu_SetMode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getramstate">5.1.4.10. function Mcu_GetRamState</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-setclock">5.1.4.11. function Mcu_SetClock</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-enablepll">5.1.4.12. function Mcu_EnablePll</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-isplllocked">5.1.4.13. function Mcu_IsPllLocked</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetcause">5.1.4.14. function Mcu_GetResetCause</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-convertresetreason">5.1.4.15. function Mcu_ConvertResetReason</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-clearreset">5.1.4.16. function Mcu_ClearReset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-performcontrollerreset">5.1.4.17. function Mcu_PerformControllerReset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-enterlowpowermode">5.1.4.18. function Mcu_EnterLowPowerMode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-ismcdclockfailuredetected">5.1.4.19. function Mcu_IsMCDClockFailureDetected</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-resetmcd">5.1.4.20. function Mcu_ResetMCD</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-setpllsysclk">5.1.4.21. function Mcu_SetPLLSysClk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-enteridlemode">5.1.4.22. function Mcu_EnterIdleMode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-enterstandbymode">5.1.4.23. function Mcu_EnterStandbyMode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-setstandbyqualificationperiod">5.1.4.24. function Mcu_SetStandbyQualificationPeriod</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-enablewatchdogstandbywakeup">5.1.4.25. function Mcu_EnableWatchdogStandbyWakeup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-disablewatchdogstandbywakeup">5.1.4.26. function Mcu_DisableWatchdogStandbyWakeup</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_a_n.html">5.1. CAN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="group___d_i_o.html">5.2. DIO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___g_p_t.html">5.3. GPT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___p_o_r_t.html">5.4. PORT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___c_a_n.html">5.5. CAN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___w_d_g.html">5.6. WDG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___l_i_n.html">5.7. LIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___f_l_s.html">5.3. FLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___g_p_t.html">5.4. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___l_i_n.html">5.5. LIN</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.6. MCU</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">5.6.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-pllstatustype">5.6.1.1. enum Mcu_PllStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-resettype">5.6.1.2. enum Mcu_ResetType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-ramstatetype">5.6.1.3. enum Mcu_RamStateType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-clksourceidtype">5.6.1.4. enum Mcu_ClkSourceIdType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-cputimerclksrc">5.6.1.5. enum Mcu_CpuTimerClkSrc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-mcanclksrc">5.6.1.6. enum Mcu_MCanClkSrc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-mcanclkdivider">5.6.1.7. enum Mcu_MCANClkDivider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-mcaninstance">5.6.1.8. enum Mcu_MCANInstance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-externalclockoutclksrc">5.6.1.9. enum Mcu_ExternalClockOutClkSrc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-externalclockoutdiv">5.6.1.10. enum Mcu_ExternalClockOutDiv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-ethercatclockdiv">5.6.1.11. enum Mcu_EthercatClockDiv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-ethercatphyclk">5.6.1.12. enum Mcu_EthercatPhyClk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-hsmclockdiv">5.6.1.13. enum Mcu_HsmClockDiv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-epwmclkdivider">5.6.1.14. enum Mcu_EPWMClkDivider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-emifclkdivider">5.6.1.15. enum Mcu_EMIFClkDivider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-linclkdivider">5.6.1.16. enum Mcu_LINClkDivider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-lininstance">5.6.1.17. enum Mcu_LINInstance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-mcu-lowpowermodetype">5.6.1.18. enum Mcu_LowPowerModeType</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">5.6.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">5.6.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">5.6.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getversioninfo">5.6.4.1. function Mcu_GetVersionInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-init">5.6.4.2. function Mcu_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-initramsection">5.6.4.3. function Mcu_InitRamSection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-initclock">5.6.4.4. function Mcu_InitClock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getpllstatus">5.6.4.5. function Mcu_GetPllStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetreason">5.6.4.6. function Mcu_GetResetReason</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetrawvalue">5.6.4.7. function Mcu_GetResetRawValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-performreset">5.6.4.8. function Mcu_PerformReset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-setmode">5.6.4.9. function Mcu_SetMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getramstate">5.6.4.10. function Mcu_GetRamState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-setclock">5.6.4.11. function Mcu_SetClock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-enablepll">5.6.4.12. function Mcu_EnablePll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-isplllocked">5.6.4.13. function Mcu_IsPllLocked</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetcause">5.6.4.14. function Mcu_GetResetCause</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-convertresetreason">5.6.4.15. function Mcu_ConvertResetReason</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-clearreset">5.6.4.16. function Mcu_ClearReset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-performcontrollerreset">5.6.4.17. function Mcu_PerformControllerReset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-enterlowpowermode">5.6.4.18. function Mcu_EnterLowPowerMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-fillramsection">5.6.4.19. function Mcu_FillRamSection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group___p_o_r_t.html">5.7. PORT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="group___s_p_i.html">5.8. SPI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___a_d_c.html">5.9. CDD_ADC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___s_e_n_t.html">5.10. CDD_SENT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___x_b_a_r.html">5.11. CDD_XBAR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___w_d_g.html">5.9. WDG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___a_d_c.html">5.10. CDD_ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___e_c_a_p.html">5.11. CDD_ECAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___i_p_c.html">5.12. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___p_w_m.html">5.13. CDD_PWM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___u_a_r_t.html">5.14. CDD_UART</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___s_e_n_t.html">5.15. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___x_b_a_r.html">5.16. CDD_XBAR</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
@@ -149,7 +147,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../api_guide.html"><span class="section-number">5. </span>API guide</a> &raquo;</li>
-      <li><span class="section-number">5.1. </span>MCU</li>
+      <li><span class="section-number">5.6. </span>MCU</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -159,9 +157,9 @@
            <div itemprop="articleBody">
              
   <section id="mcu">
-<h1><span class="section-number">5.1. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h1>
+<h1><span class="section-number">5.6. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h1>
 <section id="types">
-<h2><span class="section-number">5.1.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.6.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Base type</p></th>
@@ -266,26 +264,30 @@
 <td><p><strong><a class="reference internal" href="#typedef-mcu-peripheralclkregconfigptrtype"><span class="std std-ref">Mcu_PeripheralClkRegConfigPtrType</span></a></strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>typedef const <a class="reference internal" href="#Classes/struct_mcu___m_can_clk_config_type.md"><span class="xref myst">Mcu_MCanClkConfigType</span></a> *</p></td>
+<tr class="row-even"><td><p>typedef const <a class="reference internal" href="#Classes/struct_mcu___peripheral_reset_reg_config_type.md"><span class="xref myst">Mcu_PeripheralResetRegConfigType</span></a> *</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-mcu-peripheralresetregconfigptrtype"><span class="std std-ref">Mcu_PeripheralResetRegConfigPtrType</span></a></strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef const <a class="reference internal" href="#Classes/struct_mcu___m_can_clk_config_type.md"><span class="xref myst">Mcu_MCanClkConfigType</span></a> *</p></td>
 <td><p><strong><a class="reference internal" href="#typedef-mcu-mcanclkconfigptrtype"><span class="std std-ref">Mcu_MCanClkConfigPtrType</span></a></strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>typedef const <a class="reference internal" href="#Classes/struct_mcu___lin_clk_config_type.md"><span class="xref myst">Mcu_LinClkConfigType</span></a> *</p></td>
+<tr class="row-even"><td><p>typedef const <a class="reference internal" href="#Classes/struct_mcu___lin_clk_config_type.md"><span class="xref myst">Mcu_LinClkConfigType</span></a> *</p></td>
 <td><p><strong><a class="reference internal" href="#typedef-mcu-linclkconfigptrtype"><span class="std std-ref">Mcu_LinClkConfigPtrType</span></a></strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>typedef const <a class="reference internal" href="#Classes/struct_mcu___clock_config_type.md"><span class="xref myst">Mcu_ClockConfigType</span></a> *</p></td>
+<tr class="row-odd"><td><p>typedef const <a class="reference internal" href="#Classes/struct_mcu___clock_config_type.md"><span class="xref myst">Mcu_ClockConfigType</span></a> *</p></td>
 <td><p><strong><a class="reference internal" href="#typedef-mcu-clockconfigptrtype"><span class="std std-ref">Mcu_ClockConfigPtrType</span></a></strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>typedef const <a class="reference internal" href="#Classes/struct_mcu___mode_config_type.md"><span class="xref myst">Mcu_ModeConfigType</span></a> *</p></td>
+<tr class="row-even"><td><p>typedef const <a class="reference internal" href="#Classes/struct_mcu___mode_config_type.md"><span class="xref myst">Mcu_ModeConfigType</span></a> *</p></td>
 <td><p><strong><a class="reference internal" href="#typedef-mcu-modeconfigptrtype"><span class="std std-ref">Mcu_ModeConfigPtrType</span></a></strong></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <section id="enum-mcu-pllstatustype">
-<h3><span class="section-number">5.1.1.1. </span>enum Mcu_PllStatusType<a class="headerlink" href="#enum-mcu-pllstatustype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.1. </span>enum Mcu_PllStatusType<a class="headerlink" href="#enum-mcu-pllstatustype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -312,7 +314,7 @@
 This is a status value returned by the function Mcu_GetPllStatus of the MCU module.</p>
 </section>
 <section id="enum-mcu-resettype">
-<h3><span class="section-number">5.1.1.2. </span>enum Mcu_ResetType<a class="headerlink" href="#enum-mcu-resettype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.2. </span>enum Mcu_ResetType<a class="headerlink" href="#enum-mcu-resettype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -355,7 +357,7 @@ This is a status value returned by the function Mcu_GetPllStatus of the MCU modu
 This is the type of the reset enumerator containing the subset of reset types.</p>
 </section>
 <section id="enum-mcu-ramstatetype">
-<h3><span class="section-number">5.1.1.3. </span>enum Mcu_RamStateType<a class="headerlink" href="#enum-mcu-ramstatetype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.3. </span>enum Mcu_RamStateType<a class="headerlink" href="#enum-mcu-ramstatetype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -378,7 +380,7 @@ This is the type of the reset enumerator containing the subset of reset types.</
 This is a status value returned by the function Mcu_GetRamState of the MCU module.</p>
 </section>
 <section id="enum-mcu-clksourceidtype">
-<h3><span class="section-number">5.1.1.4. </span>enum Mcu_ClkSourceIdType<a class="headerlink" href="#enum-mcu-clksourceidtype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.4. </span>enum Mcu_ClkSourceIdType<a class="headerlink" href="#enum-mcu-clksourceidtype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -409,7 +411,7 @@ This is a status value returned by the function Mcu_GetRamState of the MCU modul
 Type of the clock sources.</p>
 </section>
 <section id="enum-mcu-cputimerclksrc">
-<h3><span class="section-number">5.1.1.5. </span>enum Mcu_CpuTimerClkSrc<a class="headerlink" href="#enum-mcu-cputimerclksrc" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.5. </span>enum Mcu_CpuTimerClkSrc<a class="headerlink" href="#enum-mcu-cputimerclksrc" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -444,7 +446,7 @@ Type of the clock sources.</p>
 The following are clock sources available for Cpu Timer module.</p>
 </section>
 <section id="enum-mcu-mcanclksrc">
-<h3><span class="section-number">5.1.1.6. </span>enum Mcu_MCanClkSrc<a class="headerlink" href="#enum-mcu-mcanclksrc" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.6. </span>enum Mcu_MCanClkSrc<a class="headerlink" href="#enum-mcu-mcanclksrc" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -475,7 +477,7 @@ The following are clock sources available for Cpu Timer module.</p>
 The following are clock sources available for MCAN module.</p>
 </section>
 <section id="enum-mcu-mcanclkdivider">
-<h3><span class="section-number">5.1.1.7. </span>enum Mcu_MCANClkDivider<a class="headerlink" href="#enum-mcu-mcanclkdivider" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.7. </span>enum Mcu_MCANClkDivider<a class="headerlink" href="#enum-mcu-mcanclkdivider" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -570,7 +572,7 @@ The following are clock sources available for MCAN module.</p>
 The following are dividers available for MCAN module.</p>
 </section>
 <section id="enum-mcu-mcaninstance">
-<h3><span class="section-number">5.1.1.8. </span>enum Mcu_MCANInstance<a class="headerlink" href="#enum-mcu-mcaninstance" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.8. </span>enum Mcu_MCANInstance<a class="headerlink" href="#enum-mcu-mcaninstance" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -609,7 +611,7 @@ The following are dividers available for MCAN module.</p>
 The following are instances available for MCAN module.</p>
 </section>
 <section id="enum-mcu-externalclockoutclksrc">
-<h3><span class="section-number">5.1.1.9. </span>enum Mcu_ExternalClockOutClkSrc<a class="headerlink" href="#enum-mcu-externalclockoutclksrc" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.9. </span>enum Mcu_ExternalClockOutClkSrc<a class="headerlink" href="#enum-mcu-externalclockoutclksrc" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -652,7 +654,7 @@ The following are instances available for MCAN module.</p>
 The following are clock sources available for XCLKOUT module.</p>
 </section>
 <section id="enum-mcu-externalclockoutdiv">
-<h3><span class="section-number">5.1.1.10. </span>enum Mcu_ExternalClockOutDiv<a class="headerlink" href="#enum-mcu-externalclockoutdiv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.10. </span>enum Mcu_ExternalClockOutDiv<a class="headerlink" href="#enum-mcu-externalclockoutdiv" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -683,7 +685,7 @@ The following are clock sources available for XCLKOUT module.</p>
 The following are dividers available for XCLKOUT.</p>
 </section>
 <section id="enum-mcu-ethercatclockdiv">
-<h3><span class="section-number">5.1.1.11. </span>enum Mcu_EthercatClockDiv<a class="headerlink" href="#enum-mcu-ethercatclockdiv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.11. </span>enum Mcu_EthercatClockDiv<a class="headerlink" href="#enum-mcu-ethercatclockdiv" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -730,7 +732,7 @@ The following are dividers available for XCLKOUT.</p>
 The following are dividers available for Ethercat clock.</p>
 </section>
 <section id="enum-mcu-ethercatphyclk">
-<h3><span class="section-number">5.1.1.12. </span>enum Mcu_EthercatPhyClk<a class="headerlink" href="#enum-mcu-ethercatphyclk" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.12. </span>enum Mcu_EthercatPhyClk<a class="headerlink" href="#enum-mcu-ethercatphyclk" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -753,7 +755,7 @@ The following are dividers available for Ethercat clock.</p>
 The following are values available to set enable/disable for EthcatPhyClock.</p>
 </section>
 <section id="enum-mcu-hsmclockdiv">
-<h3><span class="section-number">5.1.1.13. </span>enum Mcu_HsmClockDiv<a class="headerlink" href="#enum-mcu-hsmclockdiv" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.13. </span>enum Mcu_HsmClockDiv<a class="headerlink" href="#enum-mcu-hsmclockdiv" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -788,7 +790,7 @@ The following are values available to set enable/disable for EthcatPhyClock.</p>
 The following are dividers available for HSM clock.</p>
 </section>
 <section id="enum-mcu-epwmclkdivider">
-<h3><span class="section-number">5.1.1.14. </span>enum Mcu_EPWMClkDivider<a class="headerlink" href="#enum-mcu-epwmclkdivider" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.14. </span>enum Mcu_EPWMClkDivider<a class="headerlink" href="#enum-mcu-epwmclkdivider" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -811,7 +813,7 @@ The following are dividers available for HSM clock.</p>
 The following are dividers available for EPWM clock.</p>
 </section>
 <section id="enum-mcu-emifclkdivider">
-<h3><span class="section-number">5.1.1.15. </span>enum Mcu_EMIFClkDivider<a class="headerlink" href="#enum-mcu-emifclkdivider" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.15. </span>enum Mcu_EMIFClkDivider<a class="headerlink" href="#enum-mcu-emifclkdivider" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -838,7 +840,7 @@ The following are dividers available for EPWM clock.</p>
 The following are dividers available for EMIF clock.</p>
 </section>
 <section id="enum-mcu-linclkdivider">
-<h3><span class="section-number">5.1.1.16. </span>enum Mcu_LINClkDivider<a class="headerlink" href="#enum-mcu-linclkdivider" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.16. </span>enum Mcu_LINClkDivider<a class="headerlink" href="#enum-mcu-linclkdivider" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -865,7 +867,7 @@ The following are dividers available for EMIF clock.</p>
 The following are dividers available for LIN clock.</p>
 </section>
 <section id="enum-mcu-lininstance">
-<h3><span class="section-number">5.1.1.17. </span>enum Mcu_LINInstance<a class="headerlink" href="#enum-mcu-lininstance" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.17. </span>enum Mcu_LINInstance<a class="headerlink" href="#enum-mcu-lininstance" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -888,7 +890,7 @@ The following are dividers available for LIN clock.</p>
 The following are instances available for LIN module.</p>
 </section>
 <section id="enum-mcu-lowpowermodetype">
-<h3><span class="section-number">5.1.1.18. </span>enum Mcu_LowPowerModeType<a class="headerlink" href="#enum-mcu-lowpowermodetype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.1.18. </span>enum Mcu_LowPowerModeType<a class="headerlink" href="#enum-mcu-lowpowermodetype" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Enumerator</p></th>
@@ -916,7 +918,7 @@ List of low power modes.</p>
 </section>
 </section>
 <section id="structures">
-<h2><span class="section-number">5.1.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.6.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Name</p></th>
@@ -948,17 +950,20 @@ List of low power modes.</p>
 <tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_mcu___peripheral_clk_reg_config_type.html"><span class="std std-doc">Mcu_PeripheralClkRegConfigType</span></a></strong></p></td>
 <td><p>Structure for peripheral clock register setting.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_mcu___clock_config_type.html"><span class="std std-doc">Mcu_ClockConfigType</span></a></strong></p></td>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_mcu___peripheral_reset_reg_config_type.html"><span class="std std-doc">Mcu_PeripheralResetRegConfigType</span></a></strong></p></td>
+<td><p>Structure for peripheral Reset register setting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_mcu___clock_config_type.html"><span class="std std-doc">Mcu_ClockConfigType</span></a></strong></p></td>
 <td><p>Structure for device clock setting.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_mcu___mode_config_type.html"><span class="std std-doc">Mcu_ModeConfigType</span></a></strong></p></td>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_mcu___mode_config_type.html"><span class="std std-doc">Mcu_ModeConfigType</span></a></strong></p></td>
 <td><p>Structure for Mcu low power mode configuration type.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="defines">
-<h2><span class="section-number">5.1.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.6.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Name</p></th>
@@ -1119,11 +1124,14 @@ List of low power modes.</p>
 <tr class="row-even"><td><p>MCU_STANDBY_QUALPERIOD_MIN</p></td>
 <td><p>Minimum Standby Qualification period supported.</p></td>
 </tr>
+<tr class="row-odd"><td><p>SYSCTL_SYNCBUSY_TIMEOUT_CYCLES</p></td>
+<td><p>Timeout cycles.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
 <section id="functions">
-<h2><span class="section-number">5.1.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">5.6.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Return type</p></th>
@@ -1204,42 +1212,14 @@ List of low power modes.</p>
 <td><p><strong><a class="reference internal" href="#function-mcu-enterlowpowermode"><span class="std std-ref">Mcu_EnterLowPowerMode</span></a></strong>(<a class="reference internal" href="#Classes/struct_mcu___mode_config_type.md"><span class="xref myst">Mcu_ModeConfigPtrType</span></a> ModeConfigPtr)</p></td>
 <td><p>Set &amp; enter the Low Power Mode.</p></td>
 </tr>
-<tr class="row-even"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-mcu-ismcdclockfailuredetected"><span class="std std-ref">Mcu_IsMCDClockFailureDetected</span></a></strong>(void )</p></td>
-<td><p>Get the missing clock detection Failure Status.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-mcu-resetmcd"><span class="std std-ref">Mcu_ResetMCD</span></a></strong>(void )</p></td>
-<td><p>Reset the missing clock detection logic after clock failure.</p></td>
-</tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-mcu-setpllsysclk"><span class="std std-ref">Mcu_SetPLLSysClk</span></a></strong>(uint16 divider)</p></td>
-<td><p>Sets up PLLSYSCLK divider.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-mcu-enteridlemode"><span class="std std-ref">Mcu_EnterIdleMode</span></a></strong>(void )</p></td>
-<td><p>Enters IDLE mode.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-mcu-enterstandbymode"><span class="std std-ref">Mcu_EnterStandbyMode</span></a></strong>(void )</p></td>
-<td><p>Enters STANDBY mode.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-mcu-setstandbyqualificationperiod"><span class="std std-ref">Mcu_SetStandbyQualificationPeriod</span></a></strong>(uint16 cycles)</p></td>
-<td><p>Sets the number of cycles to qualify an input on waking from STANDBY mode.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-mcu-enablewatchdogstandbywakeup"><span class="std std-ref">Mcu_EnableWatchdogStandbyWakeup</span></a></strong>(void )</p></td>
-<td><p>Enable the device to wake from STANDBY mode upon a watchdog interrupt.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-mcu-disablewatchdogstandbywakeup"><span class="std std-ref">Mcu_DisableWatchdogStandbyWakeup</span></a></strong>(void )</p></td>
-<td><p>Disable the device from waking from STANDBY mode upon a watchdog interrupt.</p></td>
+<td><p><strong><a class="reference internal" href="#function-mcu-fillramsection"><span class="std std-ref">Mcu_FillRamSection</span></a></strong>(<a class="reference internal" href="#Classes/struct_mcu___ram_section_config_type.md"><span class="xref myst">Mcu_RamConfigPtrType</span></a> RamSectionConfigPtr)</p></td>
+<td><p>Mcu_FillRamSection - This API will fill the ram sections with configured data.</p></td>
 </tr>
 </tbody>
 </table>
 <section id="function-mcu-getversioninfo">
-<h3><span class="section-number">5.1.4.1. </span>function Mcu_GetVersionInfo<a class="headerlink" href="#function-mcu-getversioninfo" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.1. </span>function Mcu_GetVersionInfo<a class="headerlink" href="#function-mcu-getversioninfo" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_GetVersionInfo</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Std_VersionInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">versioninfo</span>
 <span class="p">)</span>
@@ -1261,7 +1241,7 @@ This service provides the version information of MCU module.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-init">
-<h3><span class="section-number">5.1.4.2. </span>function Mcu_Init<a class="headerlink" href="#function-mcu-init" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.2. </span>function Mcu_Init<a class="headerlink" href="#function-mcu-init" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_Init</span><span class="p">(</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Mcu_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">CfgPtr</span>
 <span class="p">)</span>
@@ -1284,7 +1264,7 @@ This service initializes the MCU driver.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-initramsection">
-<h3><span class="section-number">5.1.4.3. </span>function Mcu_InitRamSection<a class="headerlink" href="#function-mcu-initramsection" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.3. </span>function Mcu_InitRamSection<a class="headerlink" href="#function-mcu-initramsection" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Mcu_InitRamSection</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Mcu_RamSectionType</span><span class="w"> </span><span class="n">RamSection</span>
 <span class="p">)</span>
@@ -1309,7 +1289,7 @@ This service initializes the RAM section wise with default values supplied in co
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-initclock">
-<h3><span class="section-number">5.1.4.4. </span>function Mcu_InitClock<a class="headerlink" href="#function-mcu-initclock" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.4. </span>function Mcu_InitClock<a class="headerlink" href="#function-mcu-initclock" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Mcu_InitClock</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Mcu_ClockType</span><span class="w"> </span><span class="n">ClockSetting</span>
 <span class="p">)</span>
@@ -1334,7 +1314,7 @@ This service initializes the PLL and other MCU specific clock options.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-getpllstatus">
-<h3><span class="section-number">5.1.4.5. </span>function Mcu_GetPllStatus<a class="headerlink" href="#function-mcu-getpllstatus" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.5. </span>function Mcu_GetPllStatus<a class="headerlink" href="#function-mcu-getpllstatus" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Mcu_PllStatusType</span><span class="w"> </span><span class="n">Mcu_GetPllStatus</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1357,7 +1337,7 @@ This service provides the lock status of the PLL.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-getresetreason">
-<h3><span class="section-number">5.1.4.6. </span>function Mcu_GetResetReason<a class="headerlink" href="#function-mcu-getresetreason" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.6. </span>function Mcu_GetResetReason<a class="headerlink" href="#function-mcu-getresetreason" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Mcu_ResetType</span><span class="w"> </span><span class="n">Mcu_GetResetReason</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1388,7 +1368,7 @@ The service reads the reset reason from the hardware.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-getresetrawvalue">
-<h3><span class="section-number">5.1.4.7. </span>function Mcu_GetResetRawValue<a class="headerlink" href="#function-mcu-getresetrawvalue" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.7. </span>function Mcu_GetResetRawValue<a class="headerlink" href="#function-mcu-getresetrawvalue" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Mcu_RawResetType</span><span class="w"> </span><span class="n">Mcu_GetResetRawValue</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1407,7 +1387,7 @@ The service reads the raw reset value from the hardware register.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-performreset">
-<h3><span class="section-number">5.1.4.8. </span>function Mcu_PerformReset<a class="headerlink" href="#function-mcu-performreset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.8. </span>function Mcu_PerformReset<a class="headerlink" href="#function-mcu-performreset" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_PerformReset</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1426,7 +1406,7 @@ The service performs a microcontroller reset.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-setmode">
-<h3><span class="section-number">5.1.4.9. </span>function Mcu_SetMode<a class="headerlink" href="#function-mcu-setmode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.9. </span>function Mcu_SetMode<a class="headerlink" href="#function-mcu-setmode" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_SetMode</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Mcu_ModeType</span><span class="w"> </span><span class="n">McuMode</span>
 <span class="p">)</span>
@@ -1449,7 +1429,7 @@ The service activates low power modes.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-getramstate">
-<h3><span class="section-number">5.1.4.10. </span>function Mcu_GetRamState<a class="headerlink" href="#function-mcu-getramstate" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.10. </span>function Mcu_GetRamState<a class="headerlink" href="#function-mcu-getramstate" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Mcu_RamStateType</span><span class="w"> </span><span class="n">Mcu_GetRamState</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1470,7 +1450,7 @@ This service provides the actual status of the microcontroller Ram.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-setclock">
-<h3><span class="section-number">5.1.4.11. </span>function Mcu_SetClock<a class="headerlink" href="#function-mcu-setclock" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.11. </span>function Mcu_SetClock<a class="headerlink" href="#function-mcu-setclock" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Mcu_SetClock</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Mcu_ClockConfigPtrType</span><span class="w"> </span><span class="n">ClockConfigPtr</span>
 <span class="p">)</span>
@@ -1495,7 +1475,7 @@ Set the Oscillator source, Multiplier and divider to derive the clock.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-enablepll">
-<h3><span class="section-number">5.1.4.12. </span>function Mcu_EnablePll<a class="headerlink" href="#function-mcu-enablepll" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.12. </span>function Mcu_EnablePll<a class="headerlink" href="#function-mcu-enablepll" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_EnablePll</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1513,7 +1493,7 @@ Sets up the SysPLL divider &amp; enables the PLL.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-isplllocked">
-<h3><span class="section-number">5.1.4.13. </span>function Mcu_IsPllLocked<a class="headerlink" href="#function-mcu-isplllocked" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.13. </span>function Mcu_IsPllLocked<a class="headerlink" href="#function-mcu-isplllocked" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">uint16</span><span class="w"> </span><span class="n">Mcu_IsPllLocked</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1533,7 +1513,7 @@ Checks if the PLL is locked successfully.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-getresetcause">
-<h3><span class="section-number">5.1.4.14. </span>function Mcu_GetResetCause<a class="headerlink" href="#function-mcu-getresetcause" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.14. </span>function Mcu_GetResetCause<a class="headerlink" href="#function-mcu-getresetcause" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Mcu_RawResetType</span><span class="w"> </span><span class="n">Mcu_GetResetCause</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1552,7 +1532,7 @@ Gets the reason for a reset.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-convertresetreason">
-<h3><span class="section-number">5.1.4.15. </span>function Mcu_ConvertResetReason<a class="headerlink" href="#function-mcu-convertresetreason" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.15. </span>function Mcu_ConvertResetReason<a class="headerlink" href="#function-mcu-convertresetreason" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Mcu_ResetType</span><span class="w"> </span><span class="n">Mcu_ConvertResetReason</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Mcu_RawResetType</span><span class="w"> </span><span class="n">RawResetType</span>
 <span class="p">)</span>
@@ -1574,7 +1554,7 @@ Converts the controller specific reset reason to AUTOSAR format.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-clearreset">
-<h3><span class="section-number">5.1.4.16. </span>function Mcu_ClearReset<a class="headerlink" href="#function-mcu-clearreset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.16. </span>function Mcu_ClearReset<a class="headerlink" href="#function-mcu-clearreset" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_ClearReset</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Mcu_RawResetType</span><span class="w"> </span><span class="n">RawResetType</span>
 <span class="p">)</span>
@@ -1596,7 +1576,7 @@ Clears the Reset Cause register.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-performcontrollerreset">
-<h3><span class="section-number">5.1.4.17. </span>function Mcu_PerformControllerReset<a class="headerlink" href="#function-mcu-performcontrollerreset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.17. </span>function Mcu_PerformControllerReset<a class="headerlink" href="#function-mcu-performcontrollerreset" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_PerformControllerReset</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1614,7 +1594,7 @@ Perform simulation of external reset.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-enterlowpowermode">
-<h3><span class="section-number">5.1.4.18. </span>function Mcu_EnterLowPowerMode<a class="headerlink" href="#function-mcu-enterlowpowermode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.18. </span>function Mcu_EnterLowPowerMode<a class="headerlink" href="#function-mcu-enterlowpowermode" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_EnterLowPowerMode</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Mcu_ModeConfigPtrType</span><span class="w"> </span><span class="n">ModeConfigPtr</span>
 <span class="p">)</span>
@@ -1635,160 +1615,20 @@ Set &amp; enter the Low Power Mode.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
-<section id="function-mcu-ismcdclockfailuredetected">
-<h3><span class="section-number">5.1.4.19. </span>function Mcu_IsMCDClockFailureDetected<a class="headerlink" href="#function-mcu-ismcdclockfailuredetected" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="n">boolean</span><span class="w"> </span><span class="n">Mcu_IsMCDClockFailureDetected</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<section id="function-mcu-fillramsection">
+<h3><span class="section-number">5.6.4.19. </span>function Mcu_FillRamSection<a class="headerlink" href="#function-mcu-fillramsection" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_FillRamSection</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Mcu_RamConfigPtrType</span><span class="w"> </span><span class="n">RamSectionConfigPtr</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Brief</strong>:
-Get the missing clock detection Failure Status.</p>
-<p>A failure means the oscillator clock is missing</p>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>TRUE</strong> if a failure is detected
-<br></p></li>
-<li><p><strong>FALSE</strong> if a failure isn’t detected
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: boolean type</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-mcu-resetmcd">
-<h3><span class="section-number">5.1.4.20. </span>function Mcu_ResetMCD<a class="headerlink" href="#function-mcu-resetmcd" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_ResetMCD</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Reset the missing clock detection logic after clock failure.</p>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-mcu-setpllsysclk">
-<h3><span class="section-number">5.1.4.21. </span>function Mcu_SetPLLSysClk<a class="headerlink" href="#function-mcu-setpllsysclk" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_SetPLLSysClk</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">divider</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Sets up PLLSYSCLK divider.</p>
-<p>This function sets up the PLLSYSCLK divider. There is only one divider that scales PLLSYSCLK to generate the system clock.</p>
-<p>The divider parameter can have one value from the set below: 0x0 = /1 0x1 = /2 0x2 = /4 (default on reset) 0x3 = /6 0x4 = /8 …… 0x3F =/126</p>
+Mcu_FillRamSection - This API will fill the ram sections with configured data.</p>
 <p><strong>Parameters</strong>:</p>
 <ul class="simple">
-<li><p><strong>divider</strong> is the value that configures the divider.</p></li>
+<li><p><strong>RamSectionConfigPtr</strong> Pointer to Ram section configuration set.</p></li>
+<li><p><strong>None</strong></p></li>
 </ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-mcu-enteridlemode">
-<h3><span class="section-number">5.1.4.22. </span>function Mcu_EnterIdleMode<a class="headerlink" href="#function-mcu-enteridlemode" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_EnterIdleMode</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Enters IDLE mode.</p>
-<p>This function puts the device into IDLE mode. The CPU clock is gated while all peripheral clocks are left running. Any enabled interrupt will wake the CPU up from IDLE mode.</p>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-mcu-enterstandbymode">
-<h3><span class="section-number">5.1.4.23. </span>function Mcu_EnterStandbyMode<a class="headerlink" href="#function-mcu-enterstandbymode" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_EnterStandbyMode</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Enters STANDBY mode.</p>
-<p>This function puts the device into STANDBY mode. This will gate both the CPU clock and any peripheral clocks derived from SYSCLK. The watchdog is left active, and an NMI or an optional watchdog interrupt will wake the CPU subsystem from STANDBY mode.</p>
-<p>GPIOs may be configured to wake the CPU subsystem.</p>
-<p>The CPU will receive an interrupt (WAKEINT) on wakeup.</p>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-mcu-setstandbyqualificationperiod">
-<h3><span class="section-number">5.1.4.24. </span>function Mcu_SetStandbyQualificationPeriod<a class="headerlink" href="#function-mcu-setstandbyqualificationperiod" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_SetStandbyQualificationPeriod</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">cycles</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Sets the number of cycles to qualify an input on waking from STANDBY mode.</p>
-<p>This function sets the number of OSCCLK clock cycles used to qualify the selected inputs when waking from STANDBY mode. The cycles parameter should be between 2 and 65 cycles inclusive.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>cycles</strong> is the number of OSCCLK cycles.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-mcu-enablewatchdogstandbywakeup">
-<h3><span class="section-number">5.1.4.25. </span>function Mcu_EnableWatchdogStandbyWakeup<a class="headerlink" href="#function-mcu-enablewatchdogstandbywakeup" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_EnableWatchdogStandbyWakeup</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Enable the device to wake from STANDBY mode upon a watchdog interrupt.</p>
-<p>In order to use this option, Need to configure the watchdog to generate an interrupt.</p>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-mcu-disablewatchdogstandbywakeup">
-<h3><span class="section-number">5.1.4.26. </span>function Mcu_DisableWatchdogStandbyWakeup<a class="headerlink" href="#function-mcu-disablewatchdogstandbywakeup" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_DisableWatchdogStandbyWakeup</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Disable the device from waking from STANDBY mode upon a watchdog interrupt.</p>
 <p><strong>Returns</strong>:</p>
 <ul class="simple">
 <li><p><strong>None</strong>
@@ -1806,15 +1646,15 @@ Disable the device from waking from STANDBY mode upon a watchdog interrupt.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../api_guide.html" class="btn btn-neutral float-left" title="5. API guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="group___d_i_o.html" class="btn btn-neutral float-right" title="5.2. DIO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="group___l_i_n.html" class="btn btn-neutral float-left" title="5.5. LIN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group___p_o_r_t.html" class="btn btn-neutral float-right" title="5.7. PORT" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Dec 18, 2024.
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Apr 11, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1828,7 +1668,50 @@ Disable the device from waking from STANDBY mode upon a watchdog interrupt.</p>
       </div>
     </section>
   </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.02.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
   <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = '';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });

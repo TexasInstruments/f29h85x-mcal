@@ -1,0 +1,112 @@
+/*********************************************************************************************************************
+ *  COPYRIGHT
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  \verbatim
+ *
+ *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *
+ *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
+ *                 is strictly prohibited.  This product  is  protected  under  copyright  law
+ *                 and  trade  secret law as an  unpublished work.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
+ *
+ *  \endverbatim
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  FILE DESCRIPTION
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  \file       Fls_Cbk.h
+ *  Generator:  None
+ *
+ *  \brief Description:  call back functions for job done and job error
+ *********************************************************************************************************************/
+
+#ifndef FLS_CBK_H_
+#define FLS_CBK_H_
+
+/**
+ *  \addtogroup FLS FLS Configuration
+ *  @{
+ */
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+/*********************************************************************************************************************
+ * Header Files
+ *********************************************************************************************************************/
+#include "Std_Types.h"
+
+
+/*********************************************************************************************************************
+ * Version Check (if required)
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Exported Preprocessor #define Constants
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Exported Preprocessor #define Macros
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Exported Type Declarations
+ *********************************************************************************************************************/
+
+/** \brief Typedef for job end notification function pointer */
+/** Requirements : SWS_FLS_00192 */
+typedef P2FUNC (void, FLS_APPL_CODE, Fls_JobEndNotifyType)(void);
+
+/** \brief Typedef for job error notification function pointer */
+/** Requirements : SWS_FLS_00193 */
+typedef P2FUNC (void, FLS_APPL_CODE, Fls_JobErrorNotifyType)(void);
+
+/*********************************************************************************************************************
+ * Exported Object Declarations
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Exported Function Prototypes
+ *********************************************************************************************************************/
+[!AUTOSPACING!]
+[!VAR "notifyFxnList" = "' '"!][!//
+[!LOOP "as:modconf('Fls')[1]/FlsConfigSet"!][!//
+[!IF "(node:exists(FlsJobEndNotification))"!][!//
+[!IF "FlsJobEndNotification !='NULL_PTR' and FlsJobEndNotification !=''"!][!//
+[!IF "not(node:containsValue(text:split($notifyFxnList),FlsJobEndNotification))"!][!//
+[!"concat('extern void ',node:value(FlsJobEndNotification),'(void);')"!]
+[!VAR "notifyFxnList" = "concat($notifyFxnList,' ',notifyFxnList)"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+
+[!VAR "notifyFxnList" = "' '"!][!//
+[!LOOP "as:modconf('Fls')[1]/FlsConfigSet"!][!//
+[!IF "(node:exists(FlsJobErrorNotification))"!][!//
+[!IF "FlsJobErrorNotification !='NULL_PTR' and FlsJobErrorNotification !=''"!][!//
+[!IF "not(node:containsValue(text:split($notifyFxnList),FlsJobErrorNotification))"!][!//
+[!"concat('extern void ',node:value(FlsJobErrorNotification),'(void);')"!]
+[!VAR "notifyFxnList" = "concat($notifyFxnList,' ',notifyFxnList)"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+
+/*********************************************************************************************************************
+ *  Exported Inline Function Definitions and Function-Like Macros
+ *********************************************************************************************************************/
+
+#ifdef __cplusplus
+}
+#endif
+
+/**  @} */
+
+#endif  /** #ifndef FLS_CBK_H_ */
+
+/*********************************************************************************************************************
+ *  End of File: FLS_CBK_H_
+ *********************************************************************************************************************/

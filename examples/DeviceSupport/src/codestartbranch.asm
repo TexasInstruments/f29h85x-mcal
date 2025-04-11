@@ -11,7 +11,7 @@ reset_vector:
 
     .section   codestart, "ax"
     .global    code_start
-    .extern    _c_int00_noargs
+    .extern    _c_int00
 
 code_start:
     ENTRY1.PROT
@@ -21,4 +21,4 @@ code_start:
     MV D0, 0x68
     ST.W0 @0x30208C52, D0
 
-    LB @(_c_int00_noargs)
+    LB @(_c_int00)

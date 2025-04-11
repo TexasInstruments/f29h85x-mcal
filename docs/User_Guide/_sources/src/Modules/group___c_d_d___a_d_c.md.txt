@@ -16,7 +16,6 @@ title: Cdd_Adc API GUIDE Header file
 |enum| **[Cdd_Adc_StreamBufferModeType](../Modules/group___c_d_d___a_d_c.md#enum-cdd-adc-streambuffermodetype)** | Stream buffer mode type.  | 
 |enum| **[Cdd_Adc_GroupAccessModeType](../Modules/group___c_d_d___a_d_c.md#enum-cdd-adc-groupaccessmodetype)** | Group access mode type.  | 
 |enum| **[Cdd_Adc_GroupConvModeType](../Modules/group___c_d_d___a_d_c.md#enum-cdd-adc-groupconvmodetype)** | Group conversion mode type.  | 
-|enum| **[Cdd_Adc_EnableDisableType](../Modules/group___c_d_d___a_d_c.md#enum-cdd-adc-enabledisabletype)** | Enable/Disable type.  | 
 |enum| **[Cdd_Adc_GroupTriggerType](../Modules/group___c_d_d___a_d_c.md#enum-cdd-adc-grouptriggertype)** | Group trigger type.  | 
 |enum| **[Cdd_Adc_IntTriggerType](../Modules/group___c_d_d___a_d_c.md#enum-cdd-adc-inttriggertype)** | Interrupt trigger type.  | 
 |enum| **[Cdd_Adc_OffsetTrimType](../Modules/group___c_d_d___a_d_c.md#enum-cdd-adc-offsettrimtype)** | Offset trim type.  | 
@@ -125,20 +124,6 @@ Group access mode type.
 
 **Brief**: 
 Group conversion mode type. 
-
-
-
-### enum Cdd_Adc_EnableDisableType
-| Enumerator | Value | Description |
-| ---------- | ----- | ----------- |
-| DISABLE | 0U| Value that can be passed to disable a particular mode.   |
-| ENABLE | 1U| Value that can be passed to enable a particular mode.   |
-
-
-
-
-**Brief**: 
-Enable/Disable type. 
 
 
 
@@ -360,9 +345,9 @@ Offset trim type.
 | Enumerator | Value | Description |
 | ---------- | ----- | ----------- |
 | CDD_ADC_SAFETY_CHECKER_INPUT_DISABLE | 0x0U|   |
-| CDD_ADC_SAFETY_CHECKER_INPUT_SOCx | 0x1U|   |
-| CDD_ADC_SAFETY_CHECKER_INPUT_PPBx | 0x2U|   |
-| CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx | 0x3U|   |
+| CDD_ADC_SAFETY_CHECKER_INPUT_SOC | 0x1U|   |
+| CDD_ADC_SAFETY_CHECKER_INPUT_PPB | 0x2U|   |
+| CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM | 0x3U|   |
 
 
 
@@ -804,8 +789,8 @@ Offset trim type.
 | void | **[Cdd_Adc_ClearPpbEvt](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-clearppbevt)**([Cdd_Adc_PpbType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-ppbtype) PpbId)| service to clear the PPB event flags  |
 | uint16 | **[Cdd_Adc_GetDelayStamp](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-getdelaystamp)**([Cdd_Adc_PpbType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-ppbtype) PpbId)| service to get the delay between the the SOC trigger and the actual start of the SOC acquisition  |
 | Std_ReturnType | **[Cdd_Adc_SetResolution](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-setresolution)**([Cdd_Adc_HwUnitInstanceType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-hwunitinstancetype) HwUnit, Cdd_Adc_ResolutionType Resolution)| service to set the resolution of the ADC hardware unit.  |
-| sint16 | **[Cdd_Adc_GetTemperatureC](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-gettemperaturec)**(Cdd_Adc_HwUnitType HwUnit, [Cdd_Adc_ValueGroupType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-valuegrouptype) TempResult)| service to convert the ADC conversion value to Celsius.  |
-| sint16 | **[Cdd_Adc_GetTemperatureK](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-gettemperaturek)**(Cdd_Adc_HwUnitType HwUnit, [Cdd_Adc_ValueGroupType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-valuegrouptype) TempResult)| service to convert the ADC conversion value to Kelvin.  |
+| sint16 | **[Cdd_Adc_GetTemperatureC](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-gettemperaturec)**([Cdd_Adc_HwUnitInstanceType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-valuegrouptype) TempResult)| service to convert the ADC conversion value to Celsius.  |
+| sint16 | **[Cdd_Adc_GetTemperatureK](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-gettemperaturek)**([Cdd_Adc_HwUnitInstanceType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-hwunitinstancetype) HwUnit, [Cdd_Adc_ValueGroupType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-valuegrouptype) TempResult)| service to convert the ADC conversion value to Kelvin.  |
 | void | **[Cdd_Adc_SetInternalTestNode](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-setinternaltestnode)**(Cdd_Adc_InternalTestNodeType TestNode)| service to set the internal test node  |
 | void | **[Cdd_Adc_SetDrvObj](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-setdrvobj)**([Cdd_Adc_DriverObjType](Classes/struct_cdd___adc___driver_obj_type.md) * DrvObj, const [Cdd_Adc_ConfigType](Classes/struct_cdd___adc___config_type.md) * CfgPtr)| Sets the driver object.  |
 | void | **[Cdd_Adc_DrvObjInit](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-drvobjinit)**(void )| Initializes the driver object.  |
@@ -836,7 +821,7 @@ Offset trim type.
 | uint16 | **[Cdd_Adc_ReadPpbCount](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-readppbcount)**(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)| Reads the oversampled final count from the PPB.  |
 | uint16 | **[Cdd_Adc_ReadPpbMaxIndex](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-readppbmaxindex)**(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)| Reads the index of the result with maximum value from the PPB.  |
 | uint16 | **[Cdd_Adc_ReadPpbMinIndex](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-readppbminindex)**(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)| Reads the index of the result with minimum value from the PPB.  |
-| void | **[Cdd_Adc_ConfigureCheckerTile](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-configurecheckertile)**(uint32 ScBase, [Cdd_Adc_EnableDisableType](Modules/group___c_d_d___a_d_c.md#enum-cdd-adc-enabledisabletype) Mode)| Enables/Disables the result safety checker module.  |
+| void | **[Cdd_Adc_ConfigureCheckerTile](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-configurecheckertile)**(uint32 ScBase, boolean Mode)| Enables/Disables the result safety checker module.  |
 | void | **[Cdd_Adc_StopChecker](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-stopchecker)**([Cdd_Adc_CheckerType](Modules/group___c_d_d___a_d_c.md#typedef-cdd-adc-checkertype) CheckerId)| Stops and clears the safety checker flags of the result safety checker module.  |
 | boolean | **[Cdd_Adc_GetCheckerStatus](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-getcheckerstatus)**(uint32 ScBase)| Forces the software sync for the safety checker module.  |
 | void | **[Cdd_Adc_ForceSafetyCheckerSync](../Modules/group___c_d_d___a_d_c.md#function-cdd-adc-forcesafetycheckersync)**(uint32 ScBase)| Forces the software sync for the safety checker module.  |
@@ -1664,7 +1649,7 @@ This service to set the resolution of the specified ADC hardware unit.
 
 ```
 sint16 Cdd_Adc_GetTemperatureC(
-    Cdd_Adc_HwUnitType HwUnit,
+    Cdd_Adc_HwUnitInstanceType HwUnit,
     Cdd_Adc_ValueGroupType TempResult
 )
 ```
@@ -1701,7 +1686,7 @@ This service to convert the ADC conversion value to Celsius.
 
 ```
 sint16 Cdd_Adc_GetTemperatureK(
-    Cdd_Adc_HwUnitType HwUnit,
+    Cdd_Adc_HwUnitInstanceType HwUnit,
     Cdd_Adc_ValueGroupType TempResult
 )
 ```
@@ -2829,7 +2814,7 @@ his function returns the index of the processed conversion's minimum value of th
 ```
 void Cdd_Adc_ConfigureCheckerTile(
     uint32 ScBase,
-    Cdd_Adc_EnableDisableType Mode
+    boolean Mode
 )
 ```
 

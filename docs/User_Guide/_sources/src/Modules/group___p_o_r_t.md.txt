@@ -160,6 +160,7 @@ Values that can be passed to set the mode in which Pin should operate.
 | PORT_SID_REFRESH_PORT_DIR   | Service ID - Port_RefreshPortDirection()  |
 | PORT_SID_GET_VERSION_INFO   | Service ID - Port_GetVersionInfo().  |
 | PORT_SID_SET_PIN_MODE   | Service ID - Port_SetPinMode().  |
+| PORT_SID_COMMIT_CONFIGURATION   | Service ID - Port_CommitConfiguration().  |
 | PORT_IS_PIN_CONFIGURABLE (x)  | Pin configuration check.  |
 | PORT_IS_ANALOG_MODE_SUPPORTED (x)  | Pin Analog Support check.  |
 | PORT_IS_PIN_AGPIO (x)  | AGPIO Pin check.  |
@@ -167,9 +168,10 @@ Values that can be passed to set the mode in which Pin should operate.
 | PORT_IS_PIN_GPIO (x)  | GPIO Pin check.  |
 | PORT_WIDTH   | Port Width : 32.  |
 | PORT_WIDTH_HALF   | Half of Port Width.  |
-| PORT_WIDTH_QUARTER   | Quater of Port Width.  |
+| PORT_WIDTH_QUARTER   | Quarter of Port Width.  |
 | ONE_BIT_MASK   | One bit mask value.  |
 | TWO_BIT_MASK   | Two bit mask value.  |
+| AGPIO_PINS_START_VALUE   | AGPIO Pin start Value.  |
 | PORT_CTRL_REGS_STEP   | Port Control register step size.  |
 | PORT_DATA_REGS_STEP   | Port Data register step size.  |
 | PORT_DATA_READ_REGS_STEP   | Port Data read register step size.  |
@@ -201,6 +203,7 @@ Values that can be passed to set the mode in which Pin should operate.
 | void | **[Port_RefreshPortDirection](../Modules/group___p_o_r_t.md#function-port-refreshportdirection)**(void )| Refreshes port direction.  |
 | void | **[Port_GetVersionInfo](../Modules/group___p_o_r_t.md#function-port-getversioninfo)**(Std_VersionInfoType * versioninfo)| Service to get the version information of the module.  |
 | void | **[Port_SetPinMode](../Modules/group___p_o_r_t.md#function-port-setpinmode)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) Pin, [Port_PinModeType](Modules/group___p_o_r_t.md#typedef-port-pinmodetype) Mode)| Sets the port pin mode.  |
+| void | **[Port_CommitConfiguration](../Modules/group___p_o_r_t.md#function-port-commitconfiguration)**(void )| Commits the locked Critical Configuration registers for the current Configuration.  |
 | Std_ReturnType | **[Port_SetCntSpConfig](../Modules/group___p_o_r_t.md#function-port-setcntspconfig)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfigPtr)| Sets the pad/pull configuration for the specified pin.  |
 | Std_ReturnType | **[Port_SetPinLevel](../Modules/group___p_o_r_t.md#function-port-setpinlevel)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfigPtr, [Port_PinLevelValueType](Modules/group___p_o_r_t.md#enum-port-pinlevelvaluetype) PinLevel)| Writes the level value to the specified pin.  |
 | Std_ReturnType | **[Port_EnableLPMWakeUpPin](../Modules/group___p_o_r_t.md#function-port-enablelpmwakeuppin)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfig)| Set pins as Low Power wakeup modes GPIO pins.  |
@@ -208,6 +211,9 @@ Values that can be passed to set the mode in which Pin should operate.
 | Std_ReturnType | **[Port_SetDirectionMode](../Modules/group___p_o_r_t.md#function-port-setdirectionmode)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfigPtr, [Port_PinDirectionType](Modules/group___p_o_r_t.md#enum-port-pindirectiontype) PinDirection)| Sets the direction of the specified pin.  |
 | Std_ReturnType | **[Port_IsPinNumberValid](../Modules/group___p_o_r_t.md#function-port-ispinnumbervalid)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) PinNumber)| Checks if the provided pin number is Valid or Not.  |
 | Std_ReturnType | **[Port_ValidateSetPinMode](../Modules/group___p_o_r_t.md#function-port-validatesetpinmode)**([Port_PinModeType](Modules/group___p_o_r_t.md#typedef-port-pinmodetype) Mode, const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * pinConfig, uint8 * errorIdPtr)| Validates the pin Mode provided.  |
+| void | **[Port_LockConfiguration](../Modules/group___p_o_r_t.md#function-port-lockconfiguration)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * pinConfig)| Locks the Critical Configuration registers for the passed Pin.  |
+| void | **[Port_UnlockConfiguration](../Modules/group___p_o_r_t.md#function-port-unlockconfiguration)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * pinConfig)| Unlocks the Critical Configuration registers for the passed Pin.  |
+| void | **[Port_CommitConfigurationProcess](../Modules/group___p_o_r_t.md#function-port-commitconfigurationprocess)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) pinNumber)| Locks and Commit the Critical Configuration registers for the passed Pin.  |
 
 
 
@@ -385,6 +391,43 @@ This function is used to change the Mode of the pin during runtime.
 
 **Postcondition**: None 
 
+### function Port_CommitConfiguration
+
+```
+void Port_CommitConfiguration(
+    void 
+)
+```
+
+
+**Brief**: 
+Commits the locked Critical Configuration registers for the current Configuration. 
+
+This function Commits the locked Critical Configuration registers for the current Configuration
+
+
+**Parameters**: 
+
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: Port_Init should be called before calling this function 
+
+**Postcondition**: None 
+
 ### function Port_SetCntSpConfig
 
 ```
@@ -404,16 +447,21 @@ This function sets the controller specific parameters for the specified pin. The
 
   
 * **PinConfigPtr** is the pointer to the pin config structure. 
+  
+* **returnvalue** 
 
 
 **Returns**: 
 
   
-* **None** 
+* **E_OK** if pad configuration is success 
+<br> 
+  
+* **E_NOT_OK** if pad configuration Fails 
 <br> 
 
 
-**Return**: None 
+**Return**: returnValue 
 
 **Precondition**: None 
 
@@ -670,6 +718,117 @@ This function checks with the Pin mode provided for the particular pin config is
 
 
 **Return**: retVal 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_LockConfiguration
+
+```
+void Port_LockConfiguration(
+    const Port_PinConfigType * pinConfig
+)
+```
+
+
+**Brief**: 
+Locks the Critical Configuration registers for the passed Pin. 
+
+This function Locks the Critical Configuration registers for the passed Pin
+
+
+**Parameters**: 
+
+  
+* **pinConfig** is the Pointer having pin config 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_UnlockConfiguration
+
+```
+void Port_UnlockConfiguration(
+    const Port_PinConfigType * pinConfig
+)
+```
+
+
+**Brief**: 
+Unlocks the Critical Configuration registers for the passed Pin. 
+
+This function Unlocks the Critical Configuration registers for the passed Pin
+
+
+**Parameters**: 
+
+  
+* **pinConfig** is the Pointer having pin config 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Port_CommitConfigurationProcess
+
+```
+void Port_CommitConfigurationProcess(
+    Port_PinType pinNumber
+)
+```
+
+
+**Brief**: 
+Locks and Commit the Critical Configuration registers for the passed Pin. 
+
+This function Locks and Commit the Critical Configuration registers for the passed Pin
+
+
+**Parameters**: 
+
+  
+* **pinNumber** Pin Number 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
 
 **Precondition**: None 
 

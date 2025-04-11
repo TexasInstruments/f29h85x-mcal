@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ extern "C" {
  * Header Files
  *********************************************************************************************************************/
 #include "hw_mcanss.h"
-#include "Can_Reg_Access.h"
+#include "hw_mcan.h"
 #include "Os.h"
 
 /*********************************************************************************************************************
@@ -478,6 +478,8 @@ typedef struct Can_DriverObjType_s
     Can_MailboxObjType canRxMailbox[KMAX_MAILBOXES];
     /** \brief MaxCount of Controller in Controller List */
     uint8 canMaxControllerCount;
+    /** \brief Mail box to Tx mailbox mapping */
+    PduIdType canMailToTxMailMapping[KMAX_MAILBOXES];
     /** \brief MaxMbCount in MB list in all controller */
     uint8 maxMbCnt;
     /** \brief MaxMbCount in MB list in all controller */
@@ -616,7 +618,6 @@ typedef struct Can_RxNewDataStatusType_s
     uint32 statusHigh;
 } Can_RxNewDataStatusType;
 
-
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
@@ -679,18 +680,30 @@ void Can_HwUnitConfigPriv(Can_ControllerObjType *canController, \
                       uint8 maxMbCnt, \
                       uint8* canHtrhMbMap);
 
+/** \brief This API will configure the Message RAM.
+ *
+ * \param[in] baseAddr Base Address of controller.
+ * \param[in] canFDMsgRamConfig Message RAM Configuration parameters.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_MsgRamConfigPriv(uint32 baseAddr,
+                            P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) canFDMsgRamConfig);
+
 /** \brief This API will configure a bit timings for MCAN module.
  * 
  * \param[in] baseAddr Base Address of the MCAN Registers.
  * \param[in] baudConfig Configuration parameters for MCAN bit timing.
  * \pre None
  * \post None
- * \return The status of whether the Baud Rate configuration is successful
- * \retval E_OK - If baud rate config is successful.
- * \retval E_NOT_OK - If baud rate config is unsuccessful.
+ * \return None
+ * \retval None
  *
  *****************************************************************************/
-Std_ReturnType Can_HWSetBaudRatePriv(uint32 baseAddr, const Can_BaudConfigType* baudConfig);
+void Can_HWSetBaudRatePriv(uint32 baseAddr, const Can_BaudConfigType* baudConfig);
 
 /** \brief This function will disable MCAN interrupts as per config.
  * 
@@ -767,7 +780,6 @@ Std_ReturnType Can_HWCheckWakeupPriv(const Can_ControllerType* configParam);
  *
  *****************************************************************************/
 Std_ReturnType Can_HwUnitStartPriv(Can_ControllerObjType* controllerObj, Can_CanIfIndicationType* canIfIndication);
-
 
 /** \brief This function will stop Can HW Unit.
  * 
@@ -918,9 +930,9 @@ void Can_ModeProcessPriv(Can_ControllerObjType *controllerObj, Can_CanIfIndicati
 
 
 /*********************************************************************************************************************
- ** \brief Can_ProcessISR: Invoked by the respective CAN controller ISR.
+ ** \brief Can_ProcessLine0ISR: Invoked by the respective CAN controller ISR.
  *
- * This Interrupt function is invoked when CAN Tx/Rx/Bus-Off interrupts occur for a controller, inside the 
+ * This Interrupt function is invoked when CAN Tx/Bus-Off interrupts occur for a controller, inside the 
  * respective Controller ISR, when the interrupts for the controller are enabled.
  *
  *
@@ -932,7 +944,327 @@ void Can_ModeProcessPriv(Can_ControllerObjType *controllerObj, Can_CanIfIndicati
  * \retval None
  *
  *********************************************************************************************************************/
-void Can_ProcessISR(Can_ControllerInstance canInstance, uint32 lineSelect);                           
+void Can_ProcessLine0ISR(Can_ControllerInstance canInstance, uint32 lineSelect);
+
+/*********************************************************************************************************************
+ ** \brief Can_ProcessLine1ISR: Invoked by the respective CAN controller ISR.
+ *
+ * This Interrupt function is invoked when CAN Rx interrupts occur for a controller, inside the 
+ * respective Controller ISR, when the interrupts for the controller are enabled.
+ *
+ *
+ * \param[in] canInstance the Can Controller Instance ID
+ * \param[in] lineSelect the interrupt line for Can Controller Instance
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+void Can_ProcessLine1ISR(Can_ControllerInstance canInstance, uint32 lineSelect);
+
+
+/** \brief Can_ProcessWakeUpISR: Invoked by the respective CAN controller ISR.
+ *
+ * This Interrupt function is invoked when CAN wakeup event occur for a controller, inside the
+ * respective Controller ISR, when the interrupts for the controller are enabled.
+ *
+ * \param[in] instance the Can Controller Instance ID
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_ProcessWakeUpISR(Can_ControllerInstance instance);
+
+
+/** \brief This service disables all interrupts.
+ *
+ * This function checks if there is a DET Error and then disables all the
+ * interrupts for the controller.
+ * \param[in] drvObj Pointer to Can controller Config structure.
+ * \param[in] Controller CAN controller for which interrupts shall be re-enabled.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_PollingCheck(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj,uint8 Controller);
+
+/** \brief This service enables all allowed interrupts.
+ *
+ * This function checks the total number of interrupts and enables all the
+ * interrupts allowed for the controller.
+ * \param[in] drvObj Pointer to Can controller Config structure.
+ * \param[in] Controller CAN controller for which interrupts shall be re-enabled.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_InterruptCounterCheckPriv(P2VAR(Can_DriverObjType, \
+                            AUTOMATIC, CAN_APPL_DATA) drvObj,uint8 Controller);
+
+/** \brief This API will configure the Message RAM.
+ *
+ * \param[in] baseAddr Base Address of controller.
+ * \param[in] msgRAMConfigParams Message RAM Configuration parameters.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_HwMsgRamConfigPriv(uint32 baseAddr,
+                   P2CONST(Can_MsgRAMConfigParams, AUTOMATIC, CAN_CONST) msgRAMConfigParams);
+
+/** \brief This function will add padding value to unused to data in payload and find standard data length .
+ *
+ * \param[in] pduInfo Base Address of controller.
+ * \param[in] elemPtr Pointer to location to store value read.
+ * \param[in] mailboxCfg Mailbox Configuration parameters.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_AddPdgValFindStdDtlen(P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfo,\
+                                P2VAR(Can_TxBufElementType, AUTOMATIC,CAN_APPL_DATA) elemPtr,\
+                                P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCfg);
+
+
+/** \brief This function will Call Receive Indication  .
+ *
+ * \param[in] RxIndicationStatus Receive indication status.
+ * \param[in] controllerObj Pointer to Can controller config parameters.
+ * \param[in] canIdentifier Holds Can Identifier value.
+ * \param[in] htrh Handle ID of HTH.
+ * \param[in] canDataLength Frame length of msg.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_CallRxIndication(
+                            CONST(boolean, AUTOMATIC)RxIndicationStatus, CONST(uint8, AUTOMATIC) htrh,\
+                            CONST(uint32, AUTOMATIC)canIdentifier, CONST(uint8, AUTOMATIC) canDataLength,\
+                            P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj);
+
+/** \brief This function will configure a bit timings for MCAN module.
+ *
+ * \param[in] baseAddr Base Address of controller.
+ * \param[in] baudConfig Configuration parameters for MCAN bit timing.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_CanSetBaudRatePriv(uint32 baseAddr,\
+                                    P2CONST(Can_BaudConfigType, AUTOMATIC, CAN_CONST) baudConfig);
+
+
+#if (CAN_CFG_ICOM_SUPPORT == STD_ON)
+/** \brief This function will validate the icom configuration critiria based on rx message configs.
+ *
+ * \param[in] loopCnt Signal Count.
+ * \param[in] icomConfigPtr Pointer to Icom data structure containing the overall ICOM configuration data.
+ * \param[in] sduData Hold sdu data.
+ * \param[in] rxMessageConfigId Indidicates Receive Message Id.
+ * \pre None
+ * \post None
+ * \return The status of whether the icom configuration critiria matched or not
+ * \retval E_OK - If icom configuration matched.
+ * \retval E_NOT_OK - If icom configuration not matched.
+ *
+ *****************************************************************************/
+FUNC(Std_ReturnType, CAN_CODE) Can_ValidateIcomConfigPriv(uint16 loopCnt,
+                                    P2CONST(Can_IcomConfigType, AUTOMATIC, CAN_CONST)icomConfigPtr,
+                                    uint64 sduData, uint16 rxMessageConfigId);
+#endif
+
+/** \brief This function will Configure Transceiver Delay Compensation.
+ *
+ * \param[in] baseAddr Base Address of controller.
+ * \param[in] baudConfig Configuration parameters for MCAN bit timing.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_CheckTxDelayCompEnablePriv(uint32 baseAddress,
+                            P2CONST(Can_BaudConfigType, AUTOMATIC, CAN_CONST) baudConfig);
+
+
+/** \brief This API will write acknowledgment for read of Rx FIFO.
+ *
+ * \param[in] baseAddr Base Address of controller.
+ * \param[in] idx FIFO element ID.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_WriteRxFIFOAckPriv(uint32 baseAddr, \
+                        uint32 idx);
+
+
+#if (CAN_CFG_ICOM_SUPPORT == STD_ON)
+/** \brief This function will validate the icom configuration critiria based on rx message configs.
+ *
+ * \param[in] signalData Hold Icom signal config data
+ * \param[in] sduData Hold sdu data.
+ * \pre None
+ * \post None
+ * \return The status of whether the icom configuration critiria matched or not
+ * \retval E_OK - If icom Signal Operation configuration matched.
+ * \retval E_NOT_OK - If icom Signal Operation configuration not matched.
+ *
+ *****************************************************************************/
+FUNC(Std_ReturnType, CAN_CODE) Can_IcomSignalOp(
+                                    P2CONST(Can_IcomSignalConfigType, AUTOMATIC, CAN_CONST) signalData,
+                                    uint64 sduData);
+#endif
+
+#if (CAN_CFG_DEV_ERROR_DETECT == STD_ON)
+/** \brief This function will check for NULL pointers for Controller Config structure.
+ *
+ * \param[in] ConfigPtr Pointer to post-build configuration data.
+ * \pre None
+ * \post None
+ * \return The status whether Controller config pointers are properly initialized.
+ * \retval E_OK - If all pointers are initialized properly.
+ * \retval E_NOT_OK - If there are NULL pointers present.
+ *
+ *****************************************************************************/
+FUNC(Std_ReturnType, CAN_CODE) Can_CheckControllerConfigPriv(P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) ConfigPtr);
+#endif
+
+/** \brief This API will Call Tx Confirmation.
+ *
+ * \param[in] loopCnt Tx number of buffer elements.
+ * \param[in] buffNum Tx number of buffer and FIFO elements.
+ * \param[in] canController Pointer to Can controller config parameters.
+ * \param[in] canMailbox Message RAM Configuration parameters.
+ * \param[in] htrh Handle ID of HTH.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_HwUnitTxConfirmationPriv(uint32 loopCnt,
+                            uint32 buffNum,
+                            uint8 htrh,
+                            P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
+                            P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox);
+
+
+/** \brief This function will Check for Controller type and Active state as well as MailBox Direction.
+ *
+ * \param[in] maxMbCnt Maximum number of Mailbox to be configured.
+ * \param[in] controllerObj Pointer to Can controller config parameters.
+ * \param[in] canMailbox Message RAM Configuration parameters..
+ * \param[in] elemxtd Extended Identifier of CAN Rx Buffer element
+ * \param[in] canIdentifier Holds Can Identifier value
+ * \pre None
+ * \post None
+ * \return returns the value of uint8
+ * \retval returns the value of type uint8
+ *
+ *****************************************************************************/
+FUNC(uint8, CAN_CODE) Can_CheckCtrltypeActstMaildir(uint8 maxMbCnt,
+                            P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
+                            P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox,
+                            uint8 elemxtd,
+                            VAR(uint32, AUTOMATIC) canIdentifier);
+
+/** \brief This function will Check for Controller type and Active state as well as MailBox Direction.
+ *
+ * \param[in] maxMbCount Maximum number of Mailbox to be configured.
+ * \param[in] elm Pointer to location to store value read.
+ * \param[in] controllerObject Pointer to Can controller config parameters.
+ * \param[in] canMailboxObject Message RAM Configuration parameters.
+ * \pre None
+ * \post None
+ * \return returns htrh value
+ * \retval returns the value of type uint8
+ *
+ *****************************************************************************/
+FUNC(uint8, CAN_CODE) Can_CheckControllerType(uint8 maxMbCount,
+                            P2VAR(Can_RxBufElementType, AUTOMATIC, CAN_APPL_DATA) elm,
+                            P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObject,
+                            P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailboxObject);
+
+
+/** \brief This API will update data in the Message RAM.
+ *
+ * \param[in] baseAddr Base Address of controller. 
+ * \param[in] buffNum Transmit Buffer number.
+ * \param[in] elem Pointer to the data to be written in Message RAM.
+ * \pre Can module must be initialized
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_WriteMsgRamPriv(uint32 baseAddr, 
+                uint32 bufNum,
+                P2CONST(Can_TxBufElementType, AUTOMATIC, CAN_CONST) elem, 
+                P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pdu_Info, 
+                P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailBoxConfig);
+
+
+/** \brief This API will read data from Message Ram of Can Hw Unit.
+ *
+ * \param[in] baseAddr Base Address of controller.
+ * \param[in] memType Base Address of controller.  
+ * \param[in] bufNum Transmit Buffer number.
+ * \param[in] elem Pointer to location to store value read.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_ReadMsgRamPriv(uint32 baseAddr,
+               uint32 memType,
+               uint32 bufNum,
+               P2VAR(Can_RxBufElementType, AUTOMATIC, CAN_APPL_DATA) elem);
+
+
+/** \brief This service shall read all the statically configured registers 
+ *
+ * \param[in] Controller CAN controller for which the configured registers shall be read
+ * \param[out] ReadBackRegisterdata pointer for the read back registers
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE)
+Can_PeriodicReadbackPrv(uint8 Controller,
+        P2VAR(Can_PeriodicReadBackDataType, AUTOMATIC, CAN_APPL_DATA) ReadBackRegisterdata);
+
+/** \brief This service shall load the specific ECC register based on the parameters.
+ *
+ * \param[in] baseAddr CAN controller base address.
+ * \param[in] regOffset regOffset for the register to load.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CAN_CODE) Can_EccLoadRegister(uint32 baseAddr, uint32 regOffset);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

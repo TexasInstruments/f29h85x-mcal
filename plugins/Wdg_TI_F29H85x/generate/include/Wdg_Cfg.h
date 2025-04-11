@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ extern "C" {
 #define WDG_VARIANT_POST_BUILD        [!IF "as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 #define WDG_VARIANT_LINK_TIME         [!IF "as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-[!IF "as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
+[!IF "as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile' or as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!]
 /*********************************************************************************************************************
  * \brief Pre Compile config macro name.
  *********************************************************************************************************************/

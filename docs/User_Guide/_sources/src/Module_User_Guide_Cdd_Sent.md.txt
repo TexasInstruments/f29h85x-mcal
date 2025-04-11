@@ -55,6 +55,10 @@ F29X supports two modes of the SENT :
 * Sensors sends the data only after master triggers the corresponding pulse of the sensor.
 * For triggering the pulse, there are 10 comparators which can be configured to different pulse widths.
 
+**Sent Integration with AUTOSAR Communication stack**
+Sent is communication protocol implemented in the Cdd Sent driver. Similar to other communication protocols such as Can/Lin/Flexray, Sent can also be integrated with AUTOSAR communication stack.
+Cdd Sent is a driver. This driver can directly act as a lower layer module for PduR without needing an interface layer in between. Integration of Cdd Sent driver with AUTOSAR com stack is optional and can be enabled by configuration parameter CddSentIntegrationWithAsrComStackEnable. When it is enabled, Cdd Sent driver is responsible to call the receive indication to PduR and PduR is responsible to call transmit function to Cdd Sent. In order to achieve this, correct handle Ids should be configured in both Cdd Sent and PduR. Please refer to the explanation of Cdd_Sent_Transmit() and PduR_Cdd_Sent_RxIndication() in Cdd Sent driver.
+
 ### Hardware Features
 
 #### Hardware Features supported
@@ -65,12 +69,28 @@ The SENT module includes the following features:
 * Supports 2007 and 2010 CRC checksum calculation
 * Fast channel receiver
 * Slow channel receiver
+  1. Short serial message (8-bit data and 4-bit message ID)
+  2. Enhanced serial 12-bit message (12-bit data and 8-bit message ID)
+  3. Enhanced serial 12-bit message (12-bit data and 8-bit message ID)
+* Master Trigger Pulse Generator (MTPG) enables multiple sensors for the same SENT bus
+* Receiver and Interrupt Features
+  1. Programmable glitch filter on input (with bypass mode available)
+  2. Automatic detection of CRC error and framing error on Fast Channel Data
+  3. Automatic detection of CRC error and format error on Slow Channel Data
+  4. Option to save data received with error
+  5. Configurable number of data nibbles to receive (1 - 8)
+  6. FIFO support for received data frames
+* Error Detection Supported:
+  1. Timeout
+  2. Calibration
+  3. FIFO Overflow/Underflow
+  4. Frequency Drift
+  5. Overflow Trigger Request
+  6. Time stamp captures for received
 * Configurable memory depth
+* Time stamp captures for received data frames
 * 5 SENT channels that can each be set to be triggered by one of 63 trigger sources
 * Nibble sorting to minimize CPU intervention
-* Timeout feature in SENT channel can be re-purposed for watchdog (only usable in continuous receive mode)
-* Time stamp captures for received data frames
-* Receiver and Interrupt Features
 
 ```{figure} Assets/images/Cdd_Sent_Block_Diagram.png
 :alt: Cdd_Sent Block diagram
@@ -81,8 +101,7 @@ Cdd_Sent Block Diagram
 
 #### Not supported Features
 
-* Master Trigger Pulse Generator (MTPG)
-* FIFO
+* DMA
 
 #### Non compliance
 
@@ -140,6 +159,11 @@ None
 
 Development errors are reported to the DET using the service Det_ReportError(), when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
 
+##### Extended Production Error Reporting
+
+Extended production errors are reported to the DEM using the service Dem_SetEventStatus(),
+when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
 #### Error codes
 
 |Type of Error|Related Error code|Value (Hex)|
@@ -149,6 +173,26 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 |API service for initialization called when already initialized|CDD_SENT_E_ALREADY_INITIALIZED|0x22U|
 |API invoked without performing module initialization|CDD_SENT_E_UNINIT|0x23U|
 
+### Safety Mechanism
+
+|TI Diagnostic Unique Identifier| Summary | Description |
+|------------|-----------------|----------------|
+|SENT4|FIFO Data Overflow Detection| Error detection are notified to user and Reported to DEM |
+|SENT5|FIFO Data Underflow Detection| Error detection are notified to user and Reported to DEM |
+|SENT6|SENT CRC Framing Checks|Error detection are notified to user and Reported to DEM |
+|SENT7|SENT Fast Channel Framing Checks|Error detection are notified to user and Reported to DEM |
+|SENT8|SENT Slow Channel Framing Checks|Error detection are notified to user and Reported to DEM |
+|SENT9|SENT Standard Frame Watchdog|Error detection are notified to user and Reported to DEM |
+|SENT10|SENT Synchronous Frame Watchdog|Error detection are notified to user and Reported to DEM |
+|SENT11|SENT Synchronization Pulse Length Error Detection|Error detection are notified to user and Reported to DEM |
+|SENT12|SENT Frequency Drift Error Detection|Error detection are notified to user and Reported to DEM |
+|SENT13|SENT Synchronous Channel Overflow Trigger Detection|Error detection are notified to user and Reported to DEM |
+|SENT15|SENT Frame Glitch Filter|Error detection are notified to user and Reported to DEM |
+
+```{NOTE}
+More details of Safety Mechanisms can be found in Safety Manual.
+```
+
 ### Used resources
 
 #### Interrupt Handling
@@ -156,7 +200,7 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 Cdd_Sent driver provides ISR. The interrupt vector lines to be used is configurable in Cdd_Sent driver.
 The ISR functionality is implemented in the file Cdd_Sent_Irq.c.
 
- |Cdd_Sent Instance| Interrupt handler|Interrupt Line|
+|Cdd_Sent Instance| Interrupt handler|Interrupt Line|
 |------------|-----------------|----------------|
 |Cdd_Sent 1| Cdd_Sent_1_ISR,|Line 0|
 |Cdd_Sent 2| Cdd_Sent_2_ISR|Line 0|
@@ -181,7 +225,7 @@ Same Interrupt Category needs to be configured in both Cdd_Sent and OS Modules.
 
 Below image shows Cdd_Sent driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.
 
-```{figure} Assets/images/Cdd_Sent_HW_SW_Mapping.png
+```{figure} Assets/images/Cdd_Sent_Hw_Sw_Mapping.png
 :alt: Cdd_Sent HW/SW Mapping
 :align: center
 
@@ -192,8 +236,25 @@ Cdd_Sent HW/SW Mapping
 
 #### Dependent modules
 
+##### PduR
+
+The PDU Router module provides services for routing of routing Protocol Data Units(I-PDUs) between various communication modules, ensuring seamless data transfer across different communication protocols.When the Cdd_Sent module receives sensor data, it encapsulates the data into PDUs and sends them to the PduR with PDU id's. The PduR then routes these PDUs to the appropriate higher-layer modules. User need to configure configure PDUs in ECUC. Cdd_Sent will generate symbolic names for those PDUs in Cdd_Sent module.
+
+```{Note}
+ * Symbolic names are used to call PduR receive indication.
+ * Symbolic name template follows : "PduRConf_PduRSrcPdu_PduRSrcPdu_{PduName}"
+   * PduName is the symbolic name configured in EcuC->Pdu Container.
+   * PduRSrcPdu_PduName must be the name of source PDU configuration container in PduR routing table.[As a result PduR will generate symbolic name “PduRConf_PduRSrcPdu_PduRSrcPdu_PduName”]
+```
+
+##### DET
+
 This implementation depends on the DET in order to report development errors.
 The detection of development errors is configurable (ON / OFF), The switch CDD_SENT_CFG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+
+##### DEM
+
+This implementation depends on the DEM in order to report Extended production errors and can be turned OFF. The switch CDD_SENT_CFG_DEM_ENABLE will activate or deactivate the detection of all extended production errors. If hardware failure notification is enabled in the configuration set and a hardware source failure error occurs, the error code CDD_E_HARDWARE_ERROR shall be reported.
 
 ##### MCU
 
@@ -219,311 +280,832 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
-#### CddSentController
+#### Migration Guide to v2.0.0 from v1.0.0
+To align with AUTOSAR CDD naming convention, we have named Module Name as Cdd and apiServicePrefix as Cdd_Sent. This results in change in schema as described below.
 
-##### CddSentInstance
+To make v1.0.0 Sent schema(generated .xdm file) compatable with v2.0.0 below changes are required:
+1. Change 'AR-ELEMENT' name from Cdd_Sent to Cdd.
+2. Update MODULE-CONFIGURATION path from 'ASPath:/TI_F29H85x/Cdd_Sent' to 'ASPath:/TI_F29H85x/Cdd_Sent/Cdd'.
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentInstance|
-|**Parent Container**|CddSentController|
-|**Description**|Selects CddSent HW unit Instance.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|SENT1 <br> SENT2 <br> SENT3 <br> SENT4 <br> SENT5 <br> SENT6|
-|**Default value**|SENT1|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+```Earlier schema:
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Sent" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd_Sent" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent"/>
 
-##### CddSentBaseAddress
+Modified new schema:
+<d:lst type="TOP-LEVEL-PACKAGES">
+<d:ctr name="Cdd_Sent" type="AR-PACKAGE">
+<d:lst type="ELEMENTS">
+<d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+<d:ctr type="MODULE-CONFIGURATION">
+<a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent/Cdd"/>
+```
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentBaseAddress|
-|**Parent Container**|CddSentController|
-|**Description**|Specifies the CddSent HW unit base address.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0 .. 4294967295|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
 
-##### CddSentHWUnitId
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentHWUnitId |
-|**Parent Container**|CddSentController|
-|**Description**|This parameter provides the HW unit ID which is unique in a given CddSent Driver. The value for this parameter starts with 0 and continue without any gaps.|
-|**Multiplicity**|1|
-|**Type**|INTEGER (Symbolic Name generated for this parameter)|
-|**Range**|0 .. 5|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: ECU|
+#### CddSentConfig
+This container contains the configuration parameters and sub containers of the CddSent module.
 
-##### CddSentClockTick
+##### CddSentController
+This container contains the configuration parameters of the CddSent HW units.
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentClockTick|
-|**Parent Container**|CddSentController|
-|**Description**|This parameter is for setting the clock tick for the CddSent in Use.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0 .. 600|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: ECU|
+###### CddSentInstance
 
-##### CddSentInterruptType
+| Item ||
+|--------|---------------|
+| **Name** | CddSentInstance |
+| **Description** | Selects CddSent HW unit Instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | SENT1 |
+| **Range** | SENT1<br>SENT2<br>SENT3<br>SENT4<br>SENT5<br>SENT6 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentInteruptType|
-|**Parent Container**|CddSentController|
-|**Description**|Defines the interrupt type.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_SENT_ISR_CAT1_RTINT <br> CDD_SENT_ISR_CAT1_INT <br> CDD_SENT_ISR_CAT2|
-|**Default value**|CDD_SENT_ISR_CAT2|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddSentBaseAddress
 
-##### CddSentCRCType
+| Item ||
+|--------|---------------|
+| **Name** | CddSentBaseAddress |
+| **Description** | Specifies the CddSent HW unit base address. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentCRCType|
-|**Parent Container**|CddSentController|
-|**Description**|CddSent CRC type selection.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_SENT_CRC_LEGACY_2007 <br> CDD_SENT_CRC_RECOMENDED_2010 <br> CDD_SENT_CRC_NONE|
-|**Default value**|CDD_SENT_CRC_RECOMENDED_2010|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddSentHWUnitId
 
-##### CddSentCRCWidth
+| Item ||
+|--------|---------------|
+| **Name** | CddSentHWUnitId |
+| **Description** | This parameter provides the HW unit ID which is unique in a given CddSent Driver. The value for this parameter starts with 0 and continue without any gaps. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 5 |
+| **Min-value** | 0 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentCRCWidth|
-|**Parent Container**|CddSentController|
-|**Description**|CddSent CRC Width selection.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_SENT_CRC_4_BIT <br> CDD_SENT_CRC_6_BIT <br> CDD_SENT_CRC_8_BIT|
-|**Default value**|CDD_SENT_CRC_4_BIT|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddSentClockTick
 
-##### CddSentCRCWithStatus
+| Item ||
+|--------|---------------|
+| **Name** | CddSentClockTick |
+| **Description** | This parameter is for setting the clock tick for the CddSent in Use |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 600 |
+| **Min-value** | 0 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentCRCWithStatus|
-|**Parent Container**|CddSentController|
-|**Description**|Enable/Disable CRC with status.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_SENT_CRC_WITH_STATUS <br> CDD_SENT_CRC_WITHOUT_STATUS|
-|**Default value**|CDD_SENT_CRC_WITH_STATUS|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddSentInteruptType
 
-##### CddSentDataNibblesCount
+| Item ||
+|--------|---------------|
+| **Name** | CddSentInteruptType |
+| **Description** | Defines the interrupt type. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_SENT_ISR_CAT2 |
+| **Range** | CDD_SENT_ISR_CAT1_RTINT<br>CDD_SENT_ISR_CAT1_INT<br>CDD_SENT_ISR_CAT2 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentDataNibblesCount|
-|**Parent Container**|CddSentController|
-|**Description**|Number of data nibbles expected.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_SENT_1_DATA_NIBBLES <br> CDD_SENT_2_DATA_NIBBLES <br> CDD_SENT_3_DATA_NIBBLES <br> CDD_SENT_4_DATA_NIBBLES <br> CDD_SENT_5_DATA_NIBBLES <br> CDD_SENT_6_DATA_NIBBLES <br> CDD_SENT_7_DATA_NIBBLES <br> CDD_SENT_8_DATA_NIBBLES|
-|**Default value**|CDD_SENT_6_DATA_NIBBLES|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddSentCRCType
 
-##### CddSentPausePulse
+| Item ||
+|--------|---------------|
+| **Name** | CddSentCRCType |
+| **Description** | CddSent CRC type selection. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_SENT_CRC_RECOMENDED_2010 |
+| **Range** | CDD_SENT_CRC_LEGACY_2007<br>CDD_SENT_CRC_RECOMENDED_2010<br>CDD_SENT_CRC_NONE |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentPausePulse|
-|**Parent Container**|CddSentController|
-|**Description**|Enable/Disable Pause pulse.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddSentCRCWidth
 
-##### CddSentEnableTimeStamp
+| Item ||
+|--------|---------------|
+| **Name** | CddSentCRCWidth |
+| **Description** | CddSent CRC Width selection. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_SENT_CRC_4_BIT |
+| **Range** | CDD_SENT_CRC_4_BIT<br>CDD_SENT_CRC_6_BIT<br>CDD_SENT_CRC_8_BIT |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentEnableTimeStamp|
-|**Parent Container**|CddSentController|
-|**Description**|Enable/disable Time stamping.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddSentCRCWithStatus
 
-##### CddSentSyncTimeout
+| Item ||
+|--------|---------------|
+| **Name** | CddSentCRCWithStatus |
+| **Description** | Enable/Disable CRC with status.. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_SENT_CRC_WITH_STATUS |
+| **Range** | CDD_SENT_CRC_WITH_STATUS<br>CDD_SENT_CRC_WITHOUT_STATUS |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentSyncTimeout|
-|**Parent Container**|CddSentController|
-|**Description**|This parameter is for setting Timeout for receiving the synchronization pulse.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0 .. 255|
-|**Default value**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: ECU|
+###### CddSentDataNibblesCount
 
-##### CddSentAcceptErrorData
+| Item ||
+|--------|---------------|
+| **Name** | CddSentDataNibblesCount |
+| **Description** | number of data nibbles expected |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_SENT_6_DATA_NIBBLES |
+| **Range** | CDD_SENT_1_DATA_NIBBLES<br>CDD_SENT_2_DATA_NIBBLES<br>CDD_SENT_3_DATA_NIBBLES<br>CDD_SENT_4_DATA_NIBBLES<br>CDD_SENT_5_DATA_NIBBLES<br>CDD_SENT_6_DATA_NIBBLES<br>CDD_SENT_7_DATA_NIBBLES<br>CDD_SENT_8_DATA_NIBBLES |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentAcceptErrorData|
-|**Parent Container**|CddSentController|
-|**Description**|Accept error data or not.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddSentFIFOTriggerLevel
 
-##### CddSentCpuClockRef
+| Item ||
+|--------|---------------|
+| **Name** | CddSentFIFOTriggerLevel |
+| **Description** | FIFO trigger level expected |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_SENT_TRIGLEV6 |
+| **Range** | CDD_SENT_TRIGDISABLE<br>CDD_SENT_TRIGLEV3<br>CDD_SENT_TRIGLEV4<br>CDD_SENT_TRIGLEV5<br>CDD_SENT_TRIGLEV6<br>CDD_SENT_TRIGLEV7<br>CDD_SENT_TRIGLEV8<br>CDD_SENT_TRIGLEV9<br>CDD_SENT_TRIGLEV10<br>CDD_SENT_TRIGLEV11<br>CDD_SENT_TRIGLEV12<br>CDD_SENT_TRIGLEV13<br>CDD_SENT_TRIGLEV14<br>CDD_SENT_TRIGLEV15<br>CDD_SENT_TRIGLEV16 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentCpuClockRef|
-|**Parent Container**|CddSentController|
-|**Description**|Reference to the CPU clock configuration, which is set in the MCU driver configuration.|
-|**Multiplicity**|1|
-|**Type**|REFERENCE|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddSentUserCallbackFunction
 
-#### CddSentChannelObject
+| Item ||
+|--------|---------------|
+| **Name** | CddSentUserCallbackFunction |
+| **Description** | Call back function for the data |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
 
-##### CddSentChannelType
+###### CddSentUserErrorCallbackFunction
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentChannelType|
-|**Parent Container**|CddSentChannelObject|
-|**Description**|Selection of channel types.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|FAST_CHANNEL <br> SHORT_SERIAL_SLOW_CHANNEL <br> ENHANCED_SERIAL_12BIT_SLOW_CHANNEL <br> ENHANCED_SERIAL_16BIT_SLOW_CHANNEL |
-|**Default value**|FAST_CHANNEL|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddSentUserErrorCallbackFunction |
+| **Description** | Call back function for the data |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+###### CddSentSyncTimeout
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentSyncTimeout |
+| **Description** | This parameter is for setting Timeout for receiving the synchronization pulse |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 255 |
+| **Min-value** | 0 |
+
+###### CddSentGlitchFilter
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentGlitchFilter |
+| **Description** | This parameter is for number of SYSCLKS that the received serial data input is filtered by |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 5 |
+| **Max-value** | 255 |
+| **Min-value** | 0 |
+
+###### CddSentMTP
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTP |
+| **Description** | Enable/disable MTP functionality. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddSentGlobalWaitTime
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentGlobalWaitTime |
+| **Description** | This parameter is for delay time  between the last frame received to the new master trigger pulse to be generated |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 256 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
+
+###### CddSentAcceptErrorData
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentAcceptErrorData |
+| **Description** | Accept error data or not. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddSentEnableTimeStamp
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentEnableTimeStamp |
+| **Description** | Enable/disable Time stamping. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+###### CddSentCpuClockRef
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentCpuClockRef |
+| **Description** | Reference to the CPU clock configuration, which is set in the MCU driver configuration |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+##### CddSentChannelObject
+This container contains the configuration parameters of the CddSent channel object
+
+###### CddSentSensorType
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentSensorType |
+| **Description** | selection of sensor types |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_SENT_CHANNEL_STANDARD_SENSOR |
+| **Range** | CDD_SENT_CHANNEL_STANDARD_SENSOR<br>CDD_SENT_CHANNEL_SENSOR_1<br>CDD_SENT_CHANNEL_SENSOR_2<br>CDD_SENT_CHANNEL_SENSOR_3<br>CDD_SENT_CHANNEL_SENSOR_4 |
+
+###### CddSentChannelType
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentChannelType |
+| **Description** | selection of channel types |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_SENT_CHANNEL_STANDARD_SENSOR_FAST_CHANNEL |
+| **Range** | CDD_SENT_CHANNEL_STANDARD_SENSOR_FAST_CHANNEL<br>CDD_SENT_CHANNEL_SENSOR_1_FAST_CHANNEL<br>CDD_SENT_CHANNEL_SENSOR_2_FAST_CHANNEL<br>CDD_SENT_CHANNEL_SENSOR_3_FAST_CHANNEL<br>CDD_SENT_CHANNEL_SENSOR_4_FAST_CHANNEL<br>SHORT_SERIAL_ENHANCED_SERIAL_12BIT_SLOW_CHANNEL<br>ENHANCED_SERIAL_16BIT_SLOW_CHANNEL |
+
+###### CddSentChannelObjectID
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentChannelObjectID |
+| **Description** | This parameter will be used when CddSentIntegrationWithAsrComStackEnable is disabled. This channel object identifier will be used in configured receive callback function to  address the received object from respective sensor.  |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 9223372036854775807 |
+| **Min-value** | -9223372036854775808 |
+
+###### CddSentMessageID
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMessageID |
+| **Description** | This parameter is the message id |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 255 |
+| **Min-value** | 1 |
+
+###### CddSentPduID
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentPduID |
+| **Description** | This parameter will be used when CddSentIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in receive function callback to PduR to address the received Pdu from respective sensor.  |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+##### CddSentExternalDeviceConfig
+This container contains the configuration parameters of the CddSent MTP triggers.
+
+###### CddSentMTPSensorType
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorType |
+| **Description** | selection of channel types |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_SENT_CHANNEL_SENSOR_1 |
+| **Range** | CDD_SENT_CHANNEL_BROADCAST<br>CDD_SENT_CHANNEL_SENSOR_1<br>CDD_SENT_CHANNEL_SENSOR_2<br>CDD_SENT_CHANNEL_SENSOR_3<br>CDD_SENT_CHANNEL_SENSOR_4 |
+
+###### CddSentSensorTriggerSource
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentSensorTriggerSource |
+| **Description** | selection of channel types |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | DISABLE |
+
+###### CddSentMTPSensorEnable
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorEnable |
+| **Description** | Accept PArticular MTP channel. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddSentMTPSensorCompare1
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare1 |
+| **Description** | The time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled. No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorCompare2
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare2 |
+| **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare1, No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorCompare3
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare3 |
+| **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare2, No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorCompare4
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare4 |
+| **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare3, No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorCompare5
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare5 |
+| **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare4, No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorCompare6
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare6 |
+| **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare5, No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorCompare7
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare7 |
+| **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare6, No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorCompare8
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare8 |
+| **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare7, No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorCompare9
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare9 |
+| **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare8, No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorCompare10
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorCompare10 |
+| **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare9, No toggle if TOGGLETIME = 0. |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorPeriod
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorPeriod |
+| **Description** | the total time (inclock tick unit) mater trigger pulse output waveform is active. The CddSentMTPSensorPeriod must be larger than all Channel CddSentMTPSensorCompare10 value. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1023 |
+| **Min-value** | 0 |
+
+###### CddSentMTPSensorTimeout
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorTimeout |
+| **Description** | The parameter CddSentMTPSensorTimeout indicates a time to initiate an interrupt if the sent receiver has not received responce |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
+
+###### CddSentExternalDeviceID
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentExternalDeviceID |
+| **Description** | This parameter will be used when CddSentIntegrationWithAsrComStackEnable is disabled. This device identifier will be used in transmit function to address the respective sensor.  |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 9223372036854775807 |
+| **Min-value** | -9223372036854775808 |
+
+###### CddSentMTPSensorPduID
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentMTPSensorPduID |
+| **Description** | This parameter will be used when CddSentIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in transmit function to address the respective sensor.  |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+##### CddSentFIFOInterrupts
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentFIFOInterrupts |
+| **Description** | The CPU reads the receiver FIFO when it is empty |
+| **Post-build-variant-multiplicity** | false |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddSentSlowChannelInterrupts
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentSlowChannelInterrupts |
+| **Description** | If there is a format error in slow channel data |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddSentFastChannelCRCErrorInterrupts
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentFastChannelCRCErrorInterrupts |
+| **Description** | When there is a CRC error in sensor 4 fast channel data |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddSentFastChannelFrameErrorInterrupts
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentFastChannelFrameErrorInterrupts |
+| **Description** | When there is a frame error (Invalif nibble) in sensor 4 fast channel data |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddSentTimeoutErrorInterrupts
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentTimeoutErrorInterrupts |
+| **Description** | No responce from sensor 4 in timeout specified |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddSentOverflowErrorInterrupts
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentOverflowErrorInterrupts |
+| **Description** | When the sensor 4 channel trigger pulse genarator recieves a trigger reuest while it is busy |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddSentSyncErrorInterrupts
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentSyncErrorInterrupts |
+| **Description** | The ratio of the calibration pulse to the message length varies by greater than 1/64 or less than -1/64 from one message to another |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+#### CddComStackContribution
+Contribution of COM Stack modules.
+
+##### CddPduRLowerLayerContribution
+Parameters that are necessary for the configuration of a Complex Driver that serves as the LowerLayer of the Pdu Router module.
+
+##### CddPduRLowerLayerRxPdu
+This container specifies Rx PDUs that are exchanged between the CDD and the standardized BSW module.
+
+###### CddPduRApiType
+
+| Item ||
+|--------|---------------|
+| **Name** | CddPduRApiType |
+| **Description** | This parameter configures the type of the CDD interface (IF/TP) |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Default-value** | IF |
+| **Range** | IF |
+
+###### CddPduRLowerLayerHandleId
+
+| Item ||
+|--------|---------------|
+| **Name** | CddPduRLowerLayerHandleId |
+| **Description** | ECU wide unique, symbolic handle for the Pdu. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Default-value** | 0 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
+
+###### CddSentPduRHandle
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentPduRHandle |
+| **Description** | CddSentPduRHandle is a symbolic name of the Pdu with which Cdd_Sent module invokes the receive indication for upper layer. User can modify this parameter to match with the symbolic name used by upper layer. |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL |
+
+###### CddPduRLowerLayerPduRef
+
+| Item ||
+|--------|---------------|
+| **Name** | CddPduRLowerLayerPduRef |
+| **Description** | Reference to the "global" Pdu structure to allow harmonization of handle IDs in the COM-Stack. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+
+##### CddPduRLowerLayerTxPdu
+This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module.
+
+###### CddPduRApiType
+
+| Item ||
+|--------|---------------|
+| **Name** | CddPduRApiType |
+| **Description** | This parameter configures the type of the CDD interface (IF/TP) |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Default-value** | IF |
+| **Range** | IF |
+
+###### CddPduRLowerLayerHandleId
+
+| Item ||
+|--------|---------------|
+| **Name** | CddPduRLowerLayerHandleId |
+| **Description** | ECU wide unique, symbolic handle for the Pdu. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Default-value** | 0 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
+
+###### CddPduRLowerLayerPduRef
+
+| Item ||
+|--------|---------------|
+| **Name** | CddPduRLowerLayerPduRef |
+| **Description** | Reference to the "global" Pdu structure to allow harmonization of handle IDs in the COM-Stack. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
 
 #### CddSentGeneral
+Contains the general configuration parameters of the module.
+
+##### CddInstanceId
+
+| Item ||
+|--------|---------------|
+| **Name** | CddInstanceId |
+| **Description** | Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 255 |
+| **Min-value** | 0 |
 
 ##### CddSentDevErrorDetect
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentDevErrorDetect|
-|**Parent Container**|CddSentGeneral|
-|**Description**|Switches the development error detection and notification on or off.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddSentDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### CddSentVersionInfoApi
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddSentVersionInfoApi|
-|**Parent Container**|CddSentGeneral|
-|**Description**|Adds / removes the service CddSent_ GetVersionInfo() from the code.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddSentVersionInfoApi |
+| **Description** | Adds / removes the service CddSent_ GetVersionInfo() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddSentIntegrationWithAsrComStackEnable
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentIntegrationWithAsrComStackEnable |
+| **Description** | This parameter is used to enable the integration of Cdd Sent module with Autosar Com Stack.                                   0: Cdd Sent module is not integrated with Autosar Com stack. Transmission and Reception  will be handled via Application Cdd or wrapper.                                    1: Cdd Sent module is integrated as lower module to PduR in Autosar Com stack. Transmission and Reception  will be handled via Com Stack i.e. to and from PduR.                                    |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+```{Note}
+  For non-zero TOGGLETIME, it has to be larger than previous compare register.
+```
 
 #### Steps To Configure Cdd_Sent Module
 
@@ -592,6 +1174,36 @@ Cdd_Sent_Standard: Sample Application - Completes successfully !!!
 
 ```
 
+##### How to run Cdd_Sent_MtpMode
+
+* Open CCS and import Cdd_Sent_MtpMode Example
+* Build project and start debug project
+
+##### Sample Log of Cdd_Sent_MtpMode
+
+```{EXAMPLE LOGS}
+Cdd_Sent Driver Sample Application - Starts!!!
+Cdd_Sent MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 255
+SW Major Version    : 1
+SW Minor Version    : 0
+SW Patch Version    : 0
+Initilizing Cdd_Sent Driver
+Cdd Sent Drive initilized
+Trigger sensor with Sent Handle ID
+Sensor Id received  from Fast channel : 0
+Data received  from Fast channel : 4238653
+trigger successfully
+Trigger sensor with Sent Handle ID
+Sensor trigger successfully
+Id received  from Fast channel : 0
+Data received  from Fast channel : 4492088
+Cdd_Sent_MtpMode: Sample Application - Completes successfully !!!
+
+```
+
 #### File Structure
 
 📦f29h85x_mcal\
@@ -601,11 +1213,12 @@ Cdd_Sent_Standard: Sample Application - Completes successfully !!!
  ┣ 📂examples\
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
+ ┃ ┣ 📂Cdd_Adc\
  ┃ ┣ 📂**Cdd_Sent**\
- ┃ ┃ ┗ 📂**Cdd_Sent_standard**\
+ ┃ ┃ ┣ 📂**Cdd_Sent_MtpMode**\
  ┃ ┃ ┃ ┣ 📂CCS\
- ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Sent_Standard.projectspec**\
- ┃ ┃ ┃ ┣ 📂Cdd_Sent_Standard_Config\
+ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Sent_MtpMode.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Cdd_Sent_MtpMode_Config\
  ┃ ┃ ┃ ┃ ┣ 📂config\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent.xdm** : *Generated EB Tresos config file in .xdm format*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
@@ -614,7 +1227,8 @@ Cdd_Sent_Standard: Sample Application - Completes successfully !!!
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
  ┃ ┃ ┃ ┃ ┣ 📂include\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Cfg.h** : *Contains the generated pre-compiler configuration header.*</i>*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Cbk.h** : *Contains the exported function prototypes*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Cfg.h** : *Contains the generated pre-compiler configuration header*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
@@ -628,13 +1242,46 @@ Cdd_Sent_Standard: Sample Application - Completes successfully !!!
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
  ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
- ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Standard.c** : *Example application for Cdd_Sent.*\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_MtpMode.c** : * MTP Mode Example application for Cdd_Sent.*\
  ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┗ 📂**Cdd_Sent_standard**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Sent_Standard.projectspec**\
+ ┃ ┃ ┃ ┣ 📂Cdd_Sent_Standard_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+  ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Cbk.h** : *Contains the exported function prototypes*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Cfg.h** : *Contains the generated pre-compiler configuration header*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Cfg.c** : *Contains the Pre-compile build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Cdd_Sent_Standard.c** : * Standard Mode Example application for Cdd_Sent.*\
+ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
  ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┣ 📂Wdg\
  ┣ 📂plugins\
  ┣ 📜CMakeLists.txt\
  ┗ 📜CMakePresets.json

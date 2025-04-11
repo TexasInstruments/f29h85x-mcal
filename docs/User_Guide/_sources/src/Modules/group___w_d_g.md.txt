@@ -128,6 +128,7 @@ Wdg_PreScaler determines the watchdog clock prescaler, which is the second of th
 | WDG_ENRSTKEY   | Keys for WDKEY field. This key is to enable reset.  |
 | WDG_RSTKEY   | Keys for WDKEY field. This key is to reset .  |
 | WDG_CHKBITS_RESET   | Reset pattern for WDCR register's WDCHK field.  |
+| WDG_MAX_8BIT_CNTR_VALUE   | Maximum 8 bit counter value.  |
 
 ## Functions
 
@@ -143,6 +144,9 @@ Wdg_PreScaler determines the watchdog clock prescaler, which is the second of th
 | void | **[Wdg_DisableWatchdog](../Modules/group___w_d_g.md#function-wdg-disablewatchdog)**(void )| Disables the watchdog.  |
 | void | **[Wdg_ServiceWatchdog](../Modules/group___w_d_g.md#function-wdg-servicewatchdog)**(void )| Services the watchdog.  |
 | void | **[Wdg_GenerateImmediateEvent](../Modules/group___w_d_g.md#function-wdg-generateimmediateevent)**(void )| Generates the immediate watchdog reset/interrupt.  |
+| uint16 | **[Wdg_GetWatchdogCounterValue](../Modules/group___w_d_g.md#function-wdg-getwatchdogcountervalue)**(void )| Gets the watchdog counter value.  |
+| uint16 | **[Wdg_GetMaxTimeout](../Modules/group___w_d_g.md#function-wdg-getmaxtimeout)**(const [Wdg_DriverObjType](Classes/struct_wdg___driver_obj_type.md) * Wdg_DrvObjPtr)| Gets the watchdog Maximum Timeout value.  |
+| void | **[Wdg_SetTriggerConditionPriv](../Modules/group___w_d_g.md#function-wdg-settriggerconditionpriv)**(uint16 Time_out)| Sets the timeout value for the trigger counter.  |
 
 
 
@@ -459,6 +463,99 @@ This function generates the immediate watchdog event
 
 
 **Return**: None 
+
+**Postcondition**: None 
+
+### function Wdg_GetWatchdogCounterValue
+
+```
+uint16 Wdg_GetWatchdogCounterValue(
+    void 
+)
+```
+
+
+**Brief**: 
+Gets the watchdog counter value. 
+
+**Parameters**: 
+
+  
+* **None** 
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **Wdg** counter value 
+<br> 
+
+
+**Return**: Returns the current value of the 8-bit watchdog counter. 
+
+**Postcondition**: None 
+
+### function Wdg_GetMaxTimeout
+
+```
+uint16 Wdg_GetMaxTimeout(
+    const Wdg_DriverObjType * Wdg_DrvObjPtr
+)
+```
+
+
+**Brief**: 
+Gets the watchdog Maximum Timeout value. 
+
+**Parameters**: 
+
+  
+* **Wdg_DrvObjPtr** pointer to the Watchdog Driver Object which is initialised in Wdg.c 
+  
+* **None** 
+
+
+**Returns**: 
+
+  
+* **Wdg** Maximum Timeout value 
+<br> 
+
+
+**Return**: Returns the Watchdog Maximum Timeout Value. 
+
+**Postcondition**: None 
+
+### function Wdg_SetTriggerConditionPriv
+
+```
+void Wdg_SetTriggerConditionPriv(
+    uint16 Time_out
+)
+```
+
+
+**Brief**: 
+Sets the timeout value for the trigger counter. 
+
+**Parameters**: 
+
+  
+* **Time_out** Time_out value (milliseconds) for setting the trigger counter 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
 
 **Postcondition**: None 
 

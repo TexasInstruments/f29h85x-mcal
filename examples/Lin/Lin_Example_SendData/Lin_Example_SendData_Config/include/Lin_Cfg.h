@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ extern "C" {
 /** \brief Lin configuration Major Version. */
 #define LIN_CFG_MAJOR_VERSION    (1U)
 /** \brief Lin configuration Minor Version. */
-#define LIN_CFG_MINOR_VERSION    (0U)
+#define LIN_CFG_MINOR_VERSION    (1U)
 /** \brief Lin configuration Patch Version. */
 #define LIN_CFG_PATCH_VERSION    (0U)
 
@@ -79,7 +79,9 @@ extern "C" {
  */
 #define LIN_DEM_ENABLE    (STD_ON)
 
-
+/*
+ * Design: MCAL-25586, MCAL-25588, MCAL-25589
+ */
 /** \brief LIN DEM Event Configuration: LIN Timeout */
 #define LIN_E_TIMEOUT  					(DemConf_DemEventParameter_LIN_E_TIMEOUT)
 
@@ -87,6 +89,9 @@ extern "C" {
 
 /** \brief LIN DEM Event Configuration: LIN Timeout Duration*/
 #define LIN_TIMEOUT_DURATION            65535U
+
+/** \brief LIN Delay to Mcal Lib */
+#define LIN_MCAL_LIB_DELAY              203U
 
 /*****************************************************************************
  *
@@ -107,6 +112,9 @@ extern "C" {
  * \brief Lin Instance to Channel ID mapping.
  *
  *****************************************************************************/
+/*
+ * Design: MCAL-25663
+ */
 #define LIN_INSTANCE_B                    0
 
 /*****************************************************************************
@@ -128,6 +136,9 @@ extern "C" {
  * \brief Lin Channel ISR Type Selection.
  *
  *****************************************************************************/
+/*
+ * Design: MCAL-25665
+ */
 #define LIN_INSTANCE_B_ISR_TYPE           LIN_ISR_CAT1_RTINT
 
 
@@ -149,7 +160,7 @@ extern "C" {
 
 /** \brief Enum of Lin Interrupt line number, 0 or 1. */
 /* 
-*Design: MCAL-25691  
+*Design: MCAL-25666, MCAL-25691  
 */
 typedef enum
 {
@@ -161,7 +172,7 @@ typedef enum
 
 /** \brief Enum of Lin Loopbackmode, Internal/External/Disabled Type selection. */
 /* 
-*Design: MCAL-25692  
+*Design: MCAL-25692, MCAL-25664
 */
 typedef enum Lin_LoopbackModeTag
 {
@@ -193,7 +204,7 @@ typedef struct Lin_ControllerTag
 
 /** \brief Lin Controller BaudRate Configuration.*/
 /* 
- *Design: MCAL-25694  
+ *Design: MCAL-25659,MCAL-25667,MCAL-25668,MCAL-25694
  */
 typedef struct Lin_BaudrateConfigTag
 { 
@@ -211,6 +222,9 @@ typedef struct Lin_BaudrateConfigTag
  * Exported Object Declarations
  *********************************************************************************************************************/
 /** \brief LIN Configuration struct declaration */
+/* 
+ *Design: MCAL-25660
+ */
 extern const struct Lin_ConfigTag Lin_LinGlobalConfig;
 
 /*********************************************************************************************************************

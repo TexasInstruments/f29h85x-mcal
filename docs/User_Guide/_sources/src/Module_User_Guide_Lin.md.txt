@@ -130,6 +130,9 @@ The communication concept is single-commander/multiple-responder with a message 
 **SWS_Lin_00235 : Icu_DisableNotification/Icu_EnableNotification.**
 > Partial Rejection Reason : *ICU enable/disable notification is not needed as LIN IP can be accessed directly from Microcontroller/CPU Core*
 
+**SWS_BSW_00042** : Detection of Development Errors: The detection and reporting of Development errors shall be performed only if the configuration parameter for detection of Development errors is set
+>Partial Non Compliance Reason : Few Null pointer input parameter checks are needed irrespective of Development errors is set, to handle MISRA requirement.
+
 **Below AUTOSAR requirement is rejected for LIN driver:**
 
 **SWS_Lin_00074** : The function Lin_GoToSleep shall terminate ongoing frame transmission of prior transmission requests, even if the transmission is unsuccessfully completed.
@@ -194,6 +197,23 @@ code. Development errors are reported to the DET using the service Det_ReportErr
 |Invalid state transition for the current state |LIN_E_STATE_TRANSITION|0x04|
 |API service called with a NULL pointer |LIN_E_PARAM_POINTER|0x05|
 |Timeout caused by hardware error|LIN_E_TIMEOUT|Assigned by DEM|
+
+### Safety Mechanism
+
+|TI Diagnostic Unique Identifier| Summary | Description |
+|----|-----|-------|
+|LIN6|Data Parity Error Detection|Data Parity error should be detected while reception of data and LIN_RX_ERROR will be returned by Lin_GetStatus API|
+|LIN7|Overrun Error Detection|Overrun Error should be detected while reception of data and LIN_RX_ERROR will be returned by Lin_GetStatus API|
+|LIN8|Frame Error Detection|Frame Error should be detected while reception of data and LIN_RX_ERROR will be returned by Lin_GetStatus API|
+|LIN9|LIN Physical Bus Error Detection|Physical Bus Error should be detected while transmission of data and LIN_TX_HEADER_ERROR will be returned by Lin_GetStatus API|
+|LIN10|LIN No-Response Error Detection|No-Response Error should be detected while reception of data and LIN_RX_NO_RESPONSE will be returned by Lin_GetStatus API|
+|LIN11|Bit Error Detection|Bit Error error should be detected while transmission of data and LIN_TX_ERROR will be returned by Lin_GetStatus API|
+|LIN12|LIN Checksum Error Detection|Checksum Error should be detected while reception of data and LIN_RX_ERROR will be returned by Lin_GetStatus API|
+|LIN13|LIN ID Parity Error Detection|LIN ID Parity Error should be detected while reception of data and LIN_RX_ERROR will be returned by Lin_GetStatus API|
+
+```{NOTE}
+More details of Safety Mechanisms can be found in Safety Manual.
+```
 
 ### Used resources
 
@@ -290,197 +310,241 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#### LinGeneral
+#### Configuration Precautions
 
-##### LinDevErrorDetect
+User should pass the configuration input only from EB Tresos tool. Manual changes in input config files might lead to unexpected behavior.
 
-|SWS Item|ECUC_Lin_00066|
-|--------|----------------|
-|**Name**|LinDevErrorDetect|
-|**Parent Container**|LinGeneral|
-|**Description**|Switches the development error detection and notification on or off|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|False|
-|**Post-Build Variant Value**|False|
-|**Value Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|Local|
+```{NOTE}
+More details related to Configuration precautions can be found in Safety Manual.
+```
 
-##### LinIndex
 
-|SWS Item|ECUC_Lin_00179|
-|--------|----------------|
-|**Name**|LinIndex|
-|**Parent Container**|LinGeneral|
-|**Description**|Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 255|
-|**Default value**||
-|**Post-Build Variant Value**|False|
-|**Value Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|Local|
-
-##### LinTimeoutDuration
-
-|SWS Item|ECUC_Lin_00093|
-|--------|----------------|
-|**Name**|LinTimeoutDuration|
-|**Parent Container**|LinGeneral|
-|**Description**|Specifies the maximum number of loops for blocking function until a timeout is raised in short term wait loops|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 65535|
-|**Default value**||
-|**Post-Build Variant Value**|False|
-|**Value Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|Local|
-
-##### LinVersionInfoApi
-
-|SWS Item|ECUC_Lin_00067|
-|--------|----------------|
-|**Name**|LinVersionInfo|
-|**Parent Container**|LinGeneral|
-|**Description**|Switches the Lin_GetVersionInfo function ON or OFF|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|False|
-|**Post-Build Variant Value**|False|
-|**Value Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|Local|
-
-#### LinChannel
-
-##### LinChannelBaudRate
-
-|SWS Item|ECUC_Lin_00180|
-|--------|----------------|
-|**Name**|LinChannelBaudRate|
-|**Parent Container**|LinChannel|
-|**Description**|Specifies the baud rate of the channel|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|1000 .. 20000|
-|**Default value**||
-|**Post-Build Variant Value**|True|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|Local|
-
-##### LinChannelId
-
-|SWS Item|ECUC_Lin_00181|
-|--------|----------------|
-|**Name**|LinChannelId|
-|**Parent Container**|LinChannel|
-|**Description**|Identifies the LIN channel. Replaces LIN_CHANNEL_INDEX_NAME from the LIN SWS|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 65535|
-|**Default value**||
-|**Post-Build Variant Value**|False|
-|**Value Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|Local|
-
-##### LinChannelWakeupSupport
-
-|SWS Item|ECUC_Lin_00182|
-|--------|----------------|
-|**Name**|LinChannelWakeupSupport|
-|**Parent Container**|LinChannel|
-|**Description**|Specifies if the LIN hardware channel supports wake up functionality|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**||
-|**Post-Build Variant Value**|False|
-|**Value Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|Local|
-
-##### LinChannelEcuMWakeupSource
-
-|SWS Item|ECUC_Lin_00185|
-|--------|----------------|
-|**Name**|LinChannelEcuMWakeupSource|
-|**Parent Container**|LinChannel|
-|**Description**|This parameter contains a reference to the Wakeup Source for this controller as defined in the   ECU State Manager|
-|**Multiplicity**|0..1|
-|**Type**|Symbolic name reference to EcuMWakeupSource|
-|**Post-Build Variant Multiplicity**|False|
-|**Post-Build Variant Value**|False|
-|**Multiplicity Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Value Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-|Scope|Local|
-|Dependency|ECU State Manager Wakeup Sources|
-
-##### LinClockRef
-
-|SWS Item|ECUC_Lin_00096|
-|--------|----------------|
-|**Name**|LinClockRef|
-|**Parent Container**|LinChannel|
-|**Description**|Reference to the LIN clock source configuration, which is set in the MCU driver configuration|
-|**Multiplicity**|1|
-|**Type**|Reference to McuClockReferencePoint|
-|**Post-Build Variant Value**|True|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**||
-|Scope|Local|
-|Dependency|LIN clock source configuration in MCU driver|
 
 #### LinDemEventParameterRefs
 
-##### LIN_E_TIMEOUT
+| Item ||
+|--------|---------------|
+| **Name** | LinDemEventParameterRefs |
+| **Description** | Reference to the DemEventParameter which shall be issued when the error "Timeout caused by hardware error" has occurred. If the reference is not configured the error shall be reported as DET error. |
+| **Post-build-variant-multiplicity** | false |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-|SWS Item|ECUC_Lin_00189|
-|--------|----------------|
-|**Name**|LIN_E_TIMEOUT|
-|**Parent Container**|LinDemEventParameterRefs|
-|**Description**|Reference to the DemEventParameter which shall be issued when the error "Timeout caused by hardware error" has occurred. If the reference is not configured the error shall be reported as DET error|
-|**Multiplicity**|0..1|
-|**Type**|Symbolic name reference to DemEventParameter|
-|**Post-Build Variant Multiplicity**|False|
-|**Post-Build Variant Value**|False|
-|**Multiplicity Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Value Configuration Class**||
-|Pre-compile time|ALL VARIANTS|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|Local|
+#### LinGeneral
+This container contains the parameters related to each LIN Driver Unit.
 
+##### LinIndex
+
+| Item ||
+|--------|---------------|
+| **Name** | LinIndex |
+| **Description** | Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1 |
+| **Min-value** | 0 |
+
+##### LinTimeoutDuration
+
+| Item ||
+|--------|---------------|
+| **Name** | LinTimeoutDuration |
+| **Description** | Specifies the maximum number of loops for blocking function until a timeout is raised in short term wait loops |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 65535 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
+
+##### LinDevErrorDetect
+
+| Item ||
+|--------|---------------|
+| **Name** | LinDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### LinVersionInfoApi
+
+| Item ||
+|--------|---------------|
+| **Name** | LinVersionInfoApi |
+| **Description** | Reference to the SYSTEM clock source configuration, which is set in the MCU driver configuration. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+#### LinGlobalConfig
+This container contains the global configuration parameter of the Lin driver.
+
+##### LinChannel
+This container contains the configuration (parameters) of the LIN Controller(s).
+
+###### LinChannelBaudRate
+
+| Item ||
+|--------|---------------|
+| **Name** | LinChannelBaudRate |
+| **Description** | Specifies the baud rate of the LIN channel |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1000 |
+| **Max-value** | 20000 |
+| **Min-value** | 1000 |
+
+###### LinChannelId
+
+| Item ||
+|--------|---------------|
+| **Name** | LinChannelId |
+| **Description** | Identifies the LIN channel. Replaces LIN_CHANNEL_INDEX_NAME from the LIN SWS. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1 |
+| **Min-value** | 0 |
+
+###### LinInstance
+
+| Item ||
+|--------|---------------|
+| **Name** | LinInstance |
+| **Description** | Selects Lin Instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | LIN_INSTANCE_A |
+| **Range** | LIN_INSTANCE_A<br>LIN_INSTANCE_B |
+
+###### LinLoopbackMode
+
+| Item ||
+|--------|---------------|
+| **Name** | LinLoopbackMode |
+| **Description** | Select loopback mode to be used for this Lin instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | LIN_LOOPBACK_DISABLED |
+| **Range** | LIN_LOOPBACK_DISABLED<br>LIN_LOOPBACK_INTERNAL<br>LIN_LOOPBACK_EXTERNAL |
+
+###### LinChannelWakeupSupport
+
+| Item ||
+|--------|---------------|
+| **Name** | LinChannelWakeupSupport |
+| **Description** | Specifies if the LIN hardware channel supports wake up functionality |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | False |
+
+###### LinISRType
+
+| Item ||
+|--------|---------------|
+| **Name** | LinISRType |
+| **Description** | Select ISR type to be used for this Lin instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | LIN_ISR_CAT2 |
+| **Range** | LIN_ISR_CAT1_RTINT<br>LIN_ISR_CAT1_INT<br>LIN_ISR_CAT2 |
+
+###### LinInterruptLineSelect
+
+| Item ||
+|--------|---------------|
+| **Name** | LinInterruptLineSelect |
+| **Description** | Select interrupt line to be used for this Lin instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | LIN_INTERRUPT_LINE_NUM_0 |
+| **Range** | LIN_INTERRUPT_LINE_NUM_0<br>LIN_INTERRUPT_LINE_NUM_1 |
+
+###### LinChannelEcuMWakeupSource
+
+| Item ||
+|--------|---------------|
+| **Name** | LinChannelEcuMWakeupSource |
+| **Description** | This parameter contains a reference to the Wakeup Source for this controller as defined in the ECU State Manager. |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+###### LinClockRef
+
+| Item ||
+|--------|---------------|
+| **Name** | LinClockRef |
+| **Description** | Reference to the LIN clock source configuration, which is set in the MCU driver configuration. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+##### LinBaudrateConfig
+This container contains the baudrate configuration parameter of the Lin driver.
+
+###### LinChannelPrescalar
+
+| Item ||
+|--------|---------------|
+| **Name** | LinChannelPrescalar |
+| **Description** | Prescalar to derive LINCLK from VCLK |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0.0 |
+| **Max-value** | 1.6777215E7 |
+| **Min-value** | 0.0 |
 Refer [AUTOSAR_SWS_LINDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_LINDriver.pdf) for configuration parameters details
 
 #### Steps To Configure Lin Module
@@ -742,7 +806,7 @@ LIN  Application - Wake Up Interrupt PASSED !!!
  ┃ ┃ ┃ ┃ ┣ 📂include\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_Cfg.h** : *Contains the generated pre-complier configuration header*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_Cfg.h** : *Contains the generated pre-compiler configuration header*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
@@ -770,7 +834,7 @@ LIN  Application - Wake Up Interrupt PASSED !!!
  ┃ ┃ ┃ ┃ ┣ 📂include\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_Cfg.h** : *Contains the generated pre-complier configuration header*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_Cfg.h** : *Contains the generated pre-compiler configuration header*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
@@ -798,7 +862,7 @@ LIN  Application - Wake Up Interrupt PASSED !!!
  ┃ ┃ ┃ ┃ ┣ 📂include\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_Cfg.h** : *Contains the generated pre-complier configuration header*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Lin_Cfg.h** : *Contains the generated pre-compiler configuration header*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\

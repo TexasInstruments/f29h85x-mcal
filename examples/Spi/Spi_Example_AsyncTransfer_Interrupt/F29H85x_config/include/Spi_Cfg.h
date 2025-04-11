@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ extern "C" {
 /** \brief Spi configuration Major Version */
 #define SPI_CFG_MAJOR_VERSION           (1U)
 /** \brief Spi configuration Minor Version */
-#define SPI_CFG_MINOR_VERSION           (0U)
+#define SPI_CFG_MINOR_VERSION           (1U)
 /** \brief Spi configuration Patch Version */
 #define SPI_CFG_PATCH_VERSION           (0U)
 
@@ -92,7 +92,7 @@ extern "C" {
 #define SPI_FIFO_RX_FIFO_DEPTH ((uint8)0x10U)
 
 /*
- * Design : MCAL-24875, MCAL-24876, MCAL-25161, MCAL-25107
+ * Design : MCAL-24875, MCAL-24876, MCAL-25161, MCAL-25107, MCAL-24899, MCAL-24889
  */
 /** \brief Buffer mode - Internal or External or Both */
 #define SPI_CHANNEL_BUFFERS          (SPI_IB_EB)
@@ -126,7 +126,7 @@ extern "C" {
 #define SPI_SUPPORT_CONCURRENT_SYNC_TRANSMIT    (STD_OFF)
 
 /*
- * Design : MCAL-24858, MCAL-24859, MCAL-24914, MCAL-24915, MCAL-25111
+ * Design : MCAL-24858, MCAL-24859, MCAL-24914, MCAL-24915, MCAL-25111, MCAL-24889
  */
 /** \brief Scalability level */
 #define SPI_SCALABILITY            (SPI_LEVEL_2)
@@ -171,6 +171,18 @@ extern "C" {
  */
 #define SPI_MAX_SEQ                 ((uint16)(2U))
 
+/** \brief SPI timeout - used in SPI synchronous transmission.
+ *  Specifies the maximum time for blocking function until a timeout is detected.
+ * Units is clock cycles
+ */
+
+/*
+ * Design: MCAL-28863
+ */
+
+
+#define SPI_CFG_TIMEOUT_CLOCK_CYCLES    ((uint64)(100000U))
+
 /** \brief Maximum channels allowed per job */
 /*
  * Design : MCAL-25163, MCAL-25155
@@ -179,9 +191,9 @@ extern "C" {
 
 /** \brief Maximum jobs allowed per sequence */
 /*
- * Design : MCAL-25164,  MCAL-25156
+ * Design : MCAL-25164
  */
-#define SPI_MAX_JOBS_PER_SEQ       ((uint8)3U)
+#define SPI_MAX_JOBS_PER_SEQ       ((uint8)2U)
 
 /**
  *  \brief Maximum HW unit - This should match the sum for the below units ISR
@@ -233,7 +245,7 @@ extern "C" {
 /** \brief Symbolic Name Channel Id  - 2 SpiChannel_2 */
 #define SpiConf_SpiChannel_SpiChannel_2  ((Spi_ChannelType)  2U)  /*~ASR~*/
 /*
- * Design : MCAL-25138, MCAL-25140,  MCAL-25158
+ * Design : MCAL-25138, MCAL-25140
  */
 
 /** \brief Symbolic Name Job Id - 0 SpiJob_0 */
@@ -280,6 +292,7 @@ extern "C" {
 /** \brief Symbolic Name for the SPI Dem no event */
 #define DemConf_DemEventParameter_SPI_DEM_NO_EVENT (0xFFFFU)                /*~ASR~*/
 /** \brief Symbolic Name for the SPI Dem no event */
+/* Design: MCAL-24857 */
 #define SPI_DEM_NO_EVENT DemConf_DemEventParameter_SPI_DEM_NO_EVENT 
 
 
@@ -311,7 +324,7 @@ extern "C" {
 
 /** \brief Type of application data buffer elements */
 /* 
- * Design :MCAL-24975  
+ * Design :MCAL-24975, MCAL-24976  
  */
 typedef uint8 Spi_DataBufferType;
 /** \brief GPIO ID type */
@@ -406,7 +419,7 @@ typedef enum
  *  SPI Handler/Driver
  */
 /*
- * Design :MCAL-24973,MCAL-24974,MCAL-24971,MCAL-24969,MCAL-24970 
+ * Design :MCAL-24973,MCAL-24974,MCAL-24971,MCAL-24969,MCAL-24970,MCAL-24968 
  */
 typedef enum
 {
@@ -442,7 +455,7 @@ typedef enum
  *   handled asynchronously in LEVEL 2
  */
 /*
- * Design : MCAL-24986,MCAL-24986,MCAL-24988,MCAL-24989,MCAL-24990 
+ * Design : MCAL-24986,MCAL-24986,MCAL-24988,MCAL-24989,MCAL-24990,MCAL-24987 
  */
 typedef enum
 {
@@ -496,17 +509,13 @@ typedef enum
  */
 typedef enum
 {
-    /** \brief SPI Clock Phase = 0 (rising edge latch),
-	 *                                   Polarity = 0 (Active HIGH) */
+    /** \brief SPI Clock Phase = 0  Polarity = 0 */
     SPI_CLK_MODE_0 = 0x00U,
-    /** \brief SPI Clock Phase = 1 (falling edge latch),
-	 *                                   Polarity = 0 (Active HIGH) */
+    /** \brief SPI Clock Phase = 1 Polarity = 0  */
     SPI_CLK_MODE_1 = 0x01U,
-    /** \brief SPI Clock Phase = 0 (rising edge latch),
-	 *                                    Polarity = 1 (Active LOW) */
+    /** \brief SPI Clock Phase = 0 Polarity = 1  */
     SPI_CLK_MODE_2 = 0x02U,
-    /** \brief SPI Clock Phase = 1 (falling edge latch),
-	 *                                    Polarity = 1 (Active LOW) */
+    /** \brief SPI Clock Phase = 1 Polarity = 1  */
     SPI_CLK_MODE_3 = 0x03U,
 } Spi_ClkMode;
 
@@ -514,7 +523,7 @@ typedef enum
  *  \brief SPI Job Priority.
  */
 /*
- * Design : MCAL-25168
+ * Design : MCAL-25168, MCAL-24896
  */
 typedef enum
 {
@@ -528,6 +537,7 @@ typedef enum
     SPI_JOB_PRIORITY_3
 } Spi_JobPriorityType;
 
+/* Design : MCAL-25167 */
 /**
  *  \brief Spi_DataDelayType defines the number of SPI serial clock cycles delay between each word in FIFO mode
  */
@@ -637,7 +647,7 @@ typedef struct
  *Design : MCAL-24905, MCAL-24906, MCAL-24908, MCAL-24910, MCAL-24911,MCAL-24907
  *Design : MCAL-24909, MCAL-24913, MCAL-25174, 
  */
-/* Design : MCAL-25090,MCAL-25091,MCAL-25088,MCAL-25089 */
+/* Design : MCAL-25090,MCAL-25091,MCAL-25088,MCAL-25089, MCAL-24899 */
 typedef struct
 {
     /** \brief Sequence ID */

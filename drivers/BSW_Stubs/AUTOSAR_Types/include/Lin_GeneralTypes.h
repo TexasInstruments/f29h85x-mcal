@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -22,6 +22,9 @@
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
+/*
+ * Design: MCAL-25591, MCAL-25592
+ */
 #ifndef LIN_GENERALTYPES_H
 #define LIN_GENERALTYPES_H
 

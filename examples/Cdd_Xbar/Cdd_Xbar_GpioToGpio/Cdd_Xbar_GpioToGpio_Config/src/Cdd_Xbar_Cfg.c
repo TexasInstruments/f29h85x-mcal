@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited. This product is protected under copyright law and
  *                 trade secret law as an unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -34,11 +34,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_XBAR_SW_MAJOR_VERSION != (1U)) || (CDD_XBAR_SW_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_SW_MAJOR_VERSION != (2U)) || (CDD_XBAR_SW_MINOR_VERSION != (0U)))
     #error "Version numbers of Cdd_Xbar.c and Cdd_Xbar.h are inconsistent!"
 #endif
 
-#if ((CDD_XBAR_CFG_MAJOR_VERSION != (1U)) || (CDD_XBAR_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_CFG_MAJOR_VERSION != (2U)) || (CDD_XBAR_CFG_MINOR_VERSION != (0U)))
     #error "Version numbers of Cdd_Xbar_Cfg.c and Cdd_Xbar_Cfg.h are inconsistent!"
 #endif
 
@@ -104,8 +104,8 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Configuration =
             .outputStretchPulse = CDD_XBAR_SYSTICKS_STRETCH_OFF,    /* Design: MCAL-25719 */
             .outputInversion = FALSE,    /* Design: MCAL-25713 */
             .outputLatch = FALSE,    /* Design: MCAL-25718 */
-            .outputInversionBeforeLatch = FALSE,    /* Design: MCAL-xxxxx */
-            .outputFlag = CDD_XBAR_OUTPUTDEFAULT,    /* Design: MCAL-xxxxx */
+            .outputInversionBeforeLatch = FALSE,    /* Design: MCAL-25814 */
+            .outputFlag = CDD_XBAR_OUTPUTDEFAULT,    /* Design: MCAL-25813 */
         },
     },
   /* Design: MCAL-25709 */

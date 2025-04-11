@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-[!SELECT "as:modconf('Cdd_Xbar')[1]"!]
+[!SELECT "as:modconf('Cdd_Xbar/Cdd')[1]"!]
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
   <AR-PACKAGES>
     <AR-PACKAGE UUID="4cc3ffbe-8526-4003-b94e-d8976469aa76">
@@ -18,9 +18,17 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_Init</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*)) != 0)
+"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SelectInput</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*)) != 0)"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_OutLatchSelect</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -54,18 +62,27 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_OutStretchPulseCheck</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
+[!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*)) != 0)
+"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SelectOutputInversion</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_CheckOutputInversion</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_Lock</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_LockStatus</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
 [!IF "CddXbarGeneral/CddXbarInputFlagApi = 'true'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_InputFlagClear</BSW-MODULE-ENTRY-REF>
@@ -125,6 +142,13 @@
 [!ENDIF!][!//
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_Init</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
+[!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*)) != 0)
+"!][!//
                 <BSW-CALLED-ENTITY UUID="8c572f07-f834-430c-945f-465ea0408a7a">
                   <SHORT-NAME>Cdd_Xbar_SelectInput</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
@@ -139,6 +163,7 @@
 [!ENDIF!][!//
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_SelectInput</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
+[!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*)) != 0)"!][!//
                 <BSW-CALLED-ENTITY UUID="b47338a4-e7c4-4bdd-8afb-c87e3d0c3754">
                   <SHORT-NAME>Cdd_Xbar_OutLatchSelect</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
@@ -293,6 +318,13 @@
 [!ENDIF!][!//
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_OutStretchPulseCheck</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
+[!ENDIF!][!//
+[!IF "(num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*)) != 0) or
+      (num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*)) != 0)
+"!][!//
                 <BSW-CALLED-ENTITY UUID="eb218d94-f4d1-4eb5-9cec-c3727a55661c">
                   <SHORT-NAME>Cdd_Xbar_SelectOutputInversion</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
@@ -321,6 +353,7 @@
 [!ENDIF!][!//
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_CheckOutputInversion</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
+[!ENDIF!][!//
                 <BSW-CALLED-ENTITY UUID="fb0ba3e3-9769-4d50-a361-50e7c9738927">
                   <SHORT-NAME>Cdd_Xbar_Lock</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
@@ -349,6 +382,7 @@
 [!ENDIF!][!//
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Xbar_TI_F29H85x/BSWModuleEntry/Cdd_Xbar_LockStatus</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
+[!ENDIF!][!//
 [!IF "CddXbarGeneral/CddXbarInputFlagApi = 'true'"!][!//
                 <BSW-CALLED-ENTITY UUID="05f5e7f5-82a6-4a01-91af-f9a55fa965b8">
                   <SHORT-NAME>Cdd_Xbar_InputFlagClear</SHORT-NAME>
@@ -435,7 +469,7 @@
           </LINKERS>
           <PROGRAMMING-LANGUAGE>C</PROGRAMMING-LANGUAGE>
           <RESOURCE-CONSUMPTION UUID="43339566-64e1-4b7b-8ae2-3b50c2d7c8d9">
-            <SHORT-NAME>MemoryMappedSections</SHORT-NAME>
+            <SHORT-NAME>ResourceConsumption</SHORT-NAME>
             <MEMORY-SECTIONS>
               <MEMORY-SECTION UUID="ca9c16fb-ec2e-4bd3-b6c1-05669f4609ca">
                 <SHORT-NAME>CDD_XBAR_CODE</SHORT-NAME>
@@ -468,7 +502,7 @@
           <AR-RELEASE-VERSION>[!"substring-after($moduleReleaseVer, 'AUTOSAR ')"!]</AR-RELEASE-VERSION>
           <BEHAVIOR-REF DEST="BSW-INTERNAL-BEHAVIOR">/Cdd_Xbar_TI_F29H85x/Cdd_Xbar/Cdd_Xbar_Behavior</BEHAVIOR-REF>
           <VENDOR-SPECIFIC-MODULE-DEF-REFS>
-            <VENDOR-SPECIFIC-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Cdd_Xbar</VENDOR-SPECIFIC-MODULE-DEF-REF>
+            <VENDOR-SPECIFIC-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Cdd_Xbar/Cdd</VENDOR-SPECIFIC-MODULE-DEF-REF>
           </VENDOR-SPECIFIC-MODULE-DEF-REFS>
         </BSW-IMPLEMENTATION>
       </ELEMENTS>

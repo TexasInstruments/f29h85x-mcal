@@ -79,6 +79,7 @@
                         value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Dem/DemConfigSet/DemEventParameter"/>
                 </v:ref>
               </v:ctr>
+              <!-- Design : MCAL-25148 -->
               <v:ctr name="SpiDriver" type="IDENTIFIABLE">
                 <a:a name="DESC" 
                      value="EN: This container contains the configuration parameters and sub containers of the AUTOSAR Spi module."/>
@@ -149,6 +150,42 @@
                   <a:a name="EDITABLE" value="FALSE"/>
                   <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> (num:i(count(../SpiSequence/*))) &quot;, num:i(0))"/>
                 </v:var>
+                <v:var name="SpiSequenceTimeOut" type="FLOAT">
+                  <a:a name="DESC" 
+                       value="EN: TimeOut value for sync transmission in seconds, if sync transmission didn't happen within this time frame transmission will be aborted and DET runtime error is reported with SPI_E_SEQ_TIMEOUT error code"/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="Link">VariantLinkTime</icc:v>
+                    <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="OPTIONAL" value="false"/>
+                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                  <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                  <a:da name="INVALID" type="Range">
+                        <a:tst expr="&lt;=10"/>
+                        <a:tst expr="&gt;=1.0E-6"/>
+                      </a:da>
+                  <a:da name="DEFAULT" value="0.00005"/>
+                </v:var>
+                <v:ref name="SpiCounterClockRef" type="REFERENCE">
+                  <a:a name="DESC" 
+                       value="EN: This parameter contains a reference to the sysClock to calculate clock cycles for IPC free run counter, which is used by the SPI driver."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      <icc:v vclass="Link">VariantLinkTime</icc:v>
+                      <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                  <a:da name="REF"
+                                value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
+                </v:ref>
                 <v:lst name="SpiChannel" type="MAP">
                   <a:da name="MIN" value="1"/>
                   <v:ctr name="SpiChannel" type="IDENTIFIABLE">
@@ -299,7 +336,7 @@
                     </v:var>
                     <v:var name="SpiTransferStart" type="ENUMERATION">
                       <a:a name="DESC" 
-                           value="EN: This parameter defines the first starting bit for transmission. In c29x only MSB is supported"/>
+                           value="EN: This parameter defines the first starting bit for transmission."/>
                       <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                            type="IMPLEMENTATIONCONFIGCLASS">
                         <icc:v vclass="Link">VariantLinkTime</icc:v>
@@ -328,7 +365,7 @@
                          value="EN: All data needed to configure one SPI-Job, amongst others the connection between the internal SPI unit and the special settings for an external device is done."/>
                     <a:a name="UUID" 
                          value="a726cd50-7532-44c6-b476-297418e195fd"/>
-                    <!-- MCAL-25133 -->
+                    <!-- Design: MCAL-25133 -->
                     <v:var name="SpiHwUnitSynchronous" type="ENUMERATION">
                       <a:a name="DESC">
                         <a:v>EN: If SpiHwUnitSynchronous is set to &quot;SYNCHRONOUS&quot;, the SpiJob uses its containing SpiDriver in a synchronous manner. If it is set to &quot;ASYNCHRONOUS&quot;, it uses the driver in an asynchronous way. If the parameter is not set, the SpiChannel uses the driver also in an asynchronous way.</a:v>
@@ -602,6 +639,7 @@
                          value="EN: The communication settings of an external device. Closely linked to SpiJob."/>
                     <a:a name="UUID" 
                              value="97304041-3f02-4718-aacb-9898d33dd244"/>
+                        <!-- Design : MCAL-25156 -->
                         <v:var name="SpiExternalDeviceId" type="INTEGER">
                           <a:a name="DESC"
                               value="EN: The index of the corresponding external device config associated with job. "/>
@@ -626,6 +664,7 @@
                             <a:tst expr="&gt;=0"/>
                           </a:da>
                         </v:var>
+                        <!-- Design: MCAL-25155 -->
                         <v:ref name="SpiSysClockRef" type="REFERENCE">
                           <a:a name="DESC"
                                value="EN: Reference to the SPI clock source configuration, which is set in the MCU driver configuration."/>
@@ -642,7 +681,7 @@
                           <a:da name="REF"
                                 value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
                         </v:ref>
-                        <!-- MCAL-25139 -->
+                        <!-- Design: MCAL-25139 -->
                     <v:var name="SpiBaudrate" type="FLOAT">
                       <a:a name="DESC" 
                            value="EN: This parameter is the communication baudrate in bits per second (bps), Range is SYSCLK/128  to SYSCLK/4"/>
@@ -664,6 +703,7 @@
                             <a:tst expr="&gt;=node:fallback(&quot;->num:i(node:value(concat(node:path(node:ref(../SpiSysClockRef)), '/McuClockReferencePointFrequency'))) div 128&quot;,0)" false="SPI Baurdrate baurdrate &lt; sysclk / 4 and &gt; sysclk / 128"/>
                       </a:da>
                     </v:var>
+                    <!-- Design : MCAL-28104 -->
                     <v:var name="SpiclkDivider" type="INTEGER">
                       <a:a name="DESC"
                             value="EN: This parameter is the SPIBRR value"/>
@@ -686,6 +726,7 @@
                         <a:tst expr="&gt;=0"/>
                       </a:da>
                     </v:var>
+                    <!-- Design: MCAL-25157 -->
                     <v:ref name="SpiCsGpioRef" type="REFERENCE">
                       <a:a name="DESC"
                         value="EN: Reference to the Dio channel configuration to get symbolic name from Dio, which is set in the DIO driver configuration"/>
@@ -770,7 +811,7 @@
                         <a:v>CS_VIA_PERIPHERAL_ENGINE</a:v>
                       </a:da>
                     </v:var>
-                    <!-- MCAL-25143 -->
+                    <!-- Design: MCAL-25143 -->
                     <v:var name="SpiDataShiftEdge" type="ENUMERATION">
                       <a:a name="DESC" 
                            value="EN: This parameter defines the SPI data shift edge."/>
@@ -855,6 +896,7 @@
                       </a:da>
                       <a:da name="DEFAULT" value="LOW"/>
                     </v:var>
+                    <!-- Design: MCAL-25159 -->
                     <v:var name="SpiDataWordDelay" type="INTEGER">
                       <a:a name="DESC"
                             value="EN: This parameter defines the SPI delay between every transfer from FIFO transmit buffer to transmit shift register, work only in FIFO mode"/>
@@ -906,6 +948,7 @@
                       <v:ctr name="SpiHwUnitConfig" type="IDENTIFIABLE">
                       <a:a name="DESC" value="EN: HW Unit configurations"/>
                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <!-- Design : MCAL-28105 -->
                       <v:var name="SpiHwUnitType" type="ENUMERATION">
                         <a:a name="DESC" value="EN: SPI HW unit to use."/>
                         <a:a name="IMPLEMENTATIONCONFIGCLASS"
@@ -928,6 +971,7 @@
                         </a:da>
                         <a:da name="INVALID" type="XPath" expr="text:uniq((../../..//*[@name='SpiHwUnitType']),node:value(.))" false="SpiHwUnitType must be unique across SpiHwUnitConfig."/>
                       </v:var>
+                      <!-- Design : MCAL-28106 -->
                       <v:var name="SpiHighSpeedMode" type="BOOLEAN">
                         <a:a name="TOOLTIP" value="Enables High speed mode for SPI instance, make sure supported HS pins are selected for this SPI in port, check TRM and data sheet for suported HS pins details"/>
                         <a:a name="DESC" value="EN: Enables High speed mode for SPI instance, Note: Since only selected pins support HS mode, to enable high speed communication apropriate HS pins shall be configured for SPI in port configration, please check c29x TRM and data sheet for HS mode supported pins"/>
@@ -944,6 +988,7 @@
                         <a:da name="DEFAULT" value="false"/>
                         <a:a name="OPTIONAL" value="false"/>
                       </v:var>
+                      <!-- Design: MCAL-25169 -->
                       <v:var name="SpiLoopBackMode" type="BOOLEAN">
                         <a:a name="TOOLTIP" value="Enables Loop Back mode for SPI instance"/>
                         <a:a name="DESC" value="EN: Enables Loop Back mode for SPI instance"/>
@@ -960,6 +1005,7 @@
                         <a:da name="DEFAULT" value="false"/>
                         <a:a name="OPTIONAL" value="false"/>
                       </v:var>
+                      <!-- Design: MCAL-25160 -->
                       <v:var name="SpiFifoModeEnable" type="BOOLEAN">
                         <a:a name="DESC" value="EN: Enables FIFO mode for SPI instance"/>
                         <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
@@ -975,6 +1021,7 @@
                         <a:da name="DEFAULT" value="true"/>
                         <a:a name="OPTIONAL" value="false"/>
                       </v:var>
+                      <!-- Design: MCAL-25154 -->
                       <v:var name="SpiIrqType" type="ENUMERATION">
                         <a:a name="DESC"
                           value="EN: Type of Isr function: CAT1 realtime interrupt or CAT1 : interrupt void func(void) or CAT2 : ISR(func)"/>
@@ -1035,6 +1082,7 @@
                     <a:tst expr="&gt;=0"/>
                   </a:da>
                     </v:var>
+                    <!-- Design : MCAL-28107 -->
                     <v:var name="SpiChannelInternalBufferMaxLength" type="INTEGER">
                       <a:a name="DESC"
                         value="EN: Internal Buffer length in bytes - applicable for SpiChannelBuffer type - SPI_IB. This is the maximum length that can be allocated by each channel and it is fixed.Can vary buffer length per channel by configuring SpiIbNBuffers and SpiDataWidth. Refer MCAL-24874 and MCAL-25127"/>
@@ -1086,7 +1134,7 @@
                   <a:a name="UUID" value="7e96e8e0-dd85-45da-bc52-f5434dda48f3"/>
 	      	  <a:da name="DEFAULT" value="false"/>
                 </v:var>
-                <!-- MCAL-25110 -->
+                <!-- Design: MCAL-25110 -->
                 <v:var name="SpiInterruptibleSeqAllowed" type="BOOLEAN">
                   <a:a name="DESC" 
                        value="EN: Switches the Interruptible Sequences handling functionality ON or OFF."/>
@@ -1121,7 +1169,7 @@
                     <a:tst expr="&gt;=0"/>
                   </a:da>
                 </v:var>
-                <!-- MCAL-25112 -->
+                <!-- Design: MCAL-25112 -->
                 <v:var name="SpiMainFunctionPeriod" type="FLOAT">
                   <a:a name="DESC" 
                        value="EN: This parameter defines the cycle time of the function Spi_MainFunction_Handling in seconds. The parameter is not used by the driver it self, but it is used by upper layer."/>
@@ -1197,7 +1245,7 @@
                   <a:da name="DEFAULT" value="false"/>
                 </v:var>
               </v:ctr>
-              <!-- MCAL-25152 -->
+              <!-- Design: MCAL-25152 -->
               <v:ctr name="SpiPublishedInformation" type="IDENTIFIABLE">
                 <a:a name="DESC" 
                      value="EN: Container holding all SPI specific published information parameters"/>

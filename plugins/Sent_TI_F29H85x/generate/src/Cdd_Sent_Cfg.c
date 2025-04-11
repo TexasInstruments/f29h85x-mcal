@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -19,7 +19,9 @@
  *
  *  Description:  This file contains generated pre-compile configuration data.
  *********************************************************************************************************************/
-
+ /*
+ * Design: MCAL-28610
+ */
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -33,11 +35,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_SENT_SW_MAJOR_VERSION != (1U)) || (CDD_SENT_SW_MINOR_VERSION != (0U)))
+#if ((CDD_SENT_SW_MAJOR_VERSION != (2U)) || (CDD_SENT_SW_MINOR_VERSION != (0U)))
     #error "Version numbers of Cdd_Sent_cfg.c and Cdd_Sent.h are inconsistent!"
 #endif
 
-#if ((CDD_SENT_CFG_MAJOR_VERSION != (1U)) || (CDD_SENT_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_SENT_CFG_MAJOR_VERSION != (2U)) || (CDD_SENT_CFG_MINOR_VERSION != (0U)))
     #error "Version numbers of Cdd_Sent_cfg.c and Cdd_Sent_Cfg.h are inconsistent!"
 #endif
 
@@ -59,29 +61,88 @@
 #define CDD_SENT_START_SEC_CONFIG_DATA
 #include "Cdd_Sent_MemMap.h"
 
+/*
+ * Design: MCAL-28716, MCAL-28717, MCAL-28718, MCAL-28719, MCAL-28720, MCAL-28721,
+ * Design: MCAL-28722, MCAL-28723, MCAL-28724, MCAL-28725, MCAL-28726, MCAL-28727,
+ * Design: MCAL-28728, MCAL-28729, MCAL-28730, MCAL-28709,
+ */
+/* MTP Config structures*/
+[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
+[!LOOP "CddSentExternalDeviceConfig/*"!][!//
+
+CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!] =
+{
+    .CddSentMTPSensorType  = (Cdd_SentSensorType )[!"CddSentMTPSensorType"!],
+    .CddSentTriggerSource = (Cdd_SentTriggerSource )CDD_SENT_TRIGGER_[!"CddSentSensorTriggerSource"!],
+    .CddSentMTPSensorEnable = (boolean )[!IF "CddSentMTPSensorEnable  ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],[!//
+[!IF "CddSentMTPSensorType !='CDD_SENT_CHANNEL_BROADCAST'"!]
+    .CddSentMTPSensorTimeout  = (uint32 )[!"CddSentMTPSensorTimeout"!]U,[!//
+[!ENDIF!]  
+	.CddSentMTPSensorPeriod = (uint16 )[!"CddSentMTPSensorPeriod"!]U,
+    .CddSentMTPSensorCompare1 = (uint16 )[!"CddSentMTPSensorCompare1"!]U,
+    .CddSentMTPSensorCompare2 = (uint16 )[!"CddSentMTPSensorCompare2"!]U,
+    .CddSentMTPSensorCompare3 = (uint16 )[!"CddSentMTPSensorCompare3"!]U,
+    .CddSentMTPSensorCompare4 = (uint16 )[!"CddSentMTPSensorCompare4"!]U,
+    .CddSentMTPSensorCompare5 = (uint16 )[!"CddSentMTPSensorCompare5"!]U,
+    .CddSentMTPSensorCompare6 = (uint16 )[!"CddSentMTPSensorCompare6"!]U,
+    .CddSentMTPSensorCompare7 = (uint16 )[!"CddSentMTPSensorCompare7"!]U,
+    .CddSentMTPSensorCompare8 = (uint16 )[!"CddSentMTPSensorCompare8"!]U,
+    .CddSentMTPSensorCompare9 = (uint16 )[!"CddSentMTPSensorCompare9"!]U,[!//
+[!IF "CddSentMTPSensorType !='CDD_SENT_CHANNEL_BROADCAST'"!]  
+    .CddSentMTPSensorCompare10 = (uint16 )[!"CddSentMTPSensorCompare10"!]U,[!//
+[!ENDIF!][!//  
+[!IF "CddSentMTPSensorType  !='CDD_SENT_CHANNEL_BROADCAST'"!][!//
+[!IF "contains(node:value(../../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable), 'true')"!][!//
+[!VAR "PduID"="substring-after(node:value(CddSentMTPSensorPduID), '/CddPduRLowerLayerContribution/')"!][!//
+    .CddSentMTPSensorPduID = Cdd_SentConf_CddPduRLowerLayerTxPdu_[!"$PduID"!],[!//
+[!ELSE!][!//
+    .CddSentMTPSensorPduID = Cdd_SentConf_CddSentExternalDeviceConfig_[!"@name"!],[!//
+[!ENDIF!]
+[!ENDIF!]
+};
+[!ENDLOOP!][!ENDLOOP!][!ENDLOOP!][!//
+
+[!VAR "NumChannels" = "num:i(count(as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*/CddSentExternalDeviceConfig/*))"!][!//
+/* List of MTP Config structures per instance */
+[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
+
+CONST(Cdd_Sent_MTPConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_CddSentController_List[[!"$NumChannels"!]] =
+{
+[!LOOP "CddSentExternalDeviceConfig/*"!][!//
+    [[!"@index"!]] = &[!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!],
+[!ENDLOOP!]
+};
+[!ENDLOOP!][!ENDLOOP!][!//
+
+/*
+ * Design: MCAL-28708, MCAL-28710, MCAL-28712, MCAL-28713,MCAL-28734,MCAL-28732
+ */
 /* Channel Config structures*/
-[!LOOP "as:modconf('Cdd_Sent')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
+[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
 [!LOOP "CddSentChannelObject/*"!][!//
 
 CONST(Cdd_Sent_ChannelConfigType, CDD_SENT_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!] =
 {
-    .Cdd_SentSensorType = (Cdd_SentSensorType )[!"CddSentSensorType"!],
-    .Cdd_SentChannelType = (Cdd_SentChannelType )[!"CddSentChannelType"!],
-    .EnableTimeStamp  = (boolean )[!IF "CddSentChannelType  ='FAST_CHANNEL'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
-    .Cdd_Sent_channelID = (uint32 )[!"CddSentChannelID"!]U,
-    [!IF "CddSentChannelType !='FAST_CHANNEL'"!]
-    .Cdd_Sent_MessageID = (uint32 )[!"CddSentMessageID"!]U
-    [!ENDIF!]
-
+    .CddSentSensorType = (Cdd_SentSensorType )[!"CddSentSensorType"!],
+    .CddSentChannelType = (Cdd_SentChannelType )[!"CddSentChannelType"!],
+[!IF "contains(node:value(../../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable), 'true')"!][!//
+[!VAR "PduID"="node:value(node:ref(CddSentPduID)/CddSentPduRHandle)"!][!//
+    .CddSentPduID = [!"$PduID"!],[!//
+[!ELSE!][!//
+    .CddSentPduID = Cdd_SentConf_CddSentChannelObject_[!"@name"!],[!//
+[!ENDIF!]
+[!IF "not(contains(node:value(CddSentChannelType), 'FAST_CHANNEL'))"!][!//
+    .CddSentMessageID = (uint32 )[!"CddSentMessageID"!]U[!//
+[!ENDIF!]
 };
 [!ENDLOOP!][!ENDLOOP!][!ENDLOOP!][!//
 
-[!VAR "Index" = "0"!][!VAR "NumChannels" = "num:i(count(as:modconf('Cdd_Sent')[1]/CddSentConfig/CddSentController/*/CddSentChannelObject/*))"!]
+[!VAR "Index" = "0"!][!VAR "NumChannels" = "num:i(count(as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*/CddSentChannelObject/*))"!]
 
-/* List of Channel Config structures per instance */
-[!LOOP "as:modconf('Cdd_Sent')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
+/* Cdd_Sent HW unit structure defined here for all config sets */
+[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
 
-CONST(Cdd_Sent_ChannelConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_[!"@name"!]_List[[!"$NumChannels"!]] =
+CONST(Cdd_Sent_ChannelConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_CddSentChannelObject_List[[!"$NumChannels"!]] =
 {
 [!LOOP "CddSentChannelObject/*"!][!//
     [[!"@index"!]] = &[!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!],
@@ -91,66 +152,46 @@ CONST(Cdd_Sent_ChannelConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_[!"@n
 /* CddSent HW unit structure defined here for all config sets */
 
 /*
- * Design: MCAL-xxxxx
+ * Design: MCAL-28688, MCAL-28689, MCAL-28690, MCAL-28691, MCAL-28692, MCAL-28693,
+ * Design: MCAL-28694, MCAL-28695, MCAL-28696, MCAL-28697, MCAL-28698, MCAL-28699,
+ * Design: MCAL-28700, MCAL-28701, MCAL-28704, MCAL-28705, MCAL-28706, MCAL-28707,
+ * Design: MCAL-28715, MCAL-28711
  */
-[!LOOP "as:modconf('Cdd_Sent')[1]/CddSentConfig/CddSentController/*"!][!//
+[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*"!][!//
 
 /* CddSent HW unit structure for [!"../../@name"!]_[!"@name"!]*/
 CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 {
-    .Cdd_SentHWUnitId = (uint8 )[!"CddSentHWUnitId"!]U,
-    .Cdd_SentInstance = (Cdd_SentInstance )CDD_SENT_INSTANCE_[!"CddSentInstance"!],[!//
-[!VAR "Fast_Enabled" = "0"!][!//
-[!LOOP "CddSentChannelObject/*"!][!//
-[!IF "CddSentChannelType ='FAST_CHANNEL'"!][!//
-[!IF "CddSentSensorType ='CDD_SENT_CHANNEL_SENSOR_1'"!][!//
-[!VAR "Fast_Enabled" = "1"!][!//
-[!ELSEIF "CddSentSensorType ='CDD_SENT_CHANNEL_SENSOR_2'"!][!//
-[!VAR "Fast_Enabled" = "2"!][!//
-[!ELSEIF "CddSentSensorType ='CDD_SENT_CHANNEL_SENSOR_3'"!][!//
-[!VAR "Fast_Enabled" = "3"!][!//
-[!ELSEIF "CddSentSensorType ='CDD_SENT_CHANNEL_SENSOR_4'"!][!//
-[!VAR "Fast_Enabled" = "4"!][!//
-[!BREAK!][!//
+    .CddSentHWUnitId = (uint8 )[!"CddSentHWUnitId"!]U,
+    .CddSentInstance = (Cdd_SentInstance )CDD_SENT_INSTANCE_[!"CddSentInstance"!],
+    .CddSentBaseAddress = (uint32 )[!"num:inttohex(CddSentBaseAddress)"!]U,
+    .CddSentClockTick  = (uint32 )[!"CddSentClockTick"!]U,
+    .CddSentCRCType  = (Cdd_SentCRCType )[!"CddSentCRCType"!],
+    .CddSentCRCWidth   = (Cdd_SentCRCWidth  )[!"CddSentCRCWidth "!],
+    .CddSentCRCWithStatus  = (Cdd_SentCRCWithStatus )[!"CddSentCRCWithStatus"!],
+    .CddSentDataNibblesCount  = (Cdd_SentDataNibblesCount )[!"CddSentDataNibblesCount"!],
+[!IF "CddSentMTP !='true'"!][!//
+    .CddSentFIFOTriggerLevel  = (Cdd_SentTriggerLevel )[!"CddSentFIFOTriggerLevel"!],
 [!ENDIF!][!//
-[!ENDIF!][!//
-[!ENDLOOP!]
-    .Enable_Fast_Interrupt = (uint32)[!IF "$Fast_Enabled  ='1.0'"!]SENT_REINT_RFAST_S1DV_E,
-[!ELSEIF "$Fast_Enabled  ='2.0'"!]SENT_REINT_RFAST_S2DV_E,
-[!ELSEIF "$Fast_Enabled  ='3.0'"!]SENT_REINT_RFAST_S3DV_E,
-[!ELSEIF "$Fast_Enabled  ='4.0'"!]SENT_REINT_RFAST_S4DV_E,
-[!ELSE!]0,[!ENDIF!][!//
-[!VAR "Slow_Enabled" = "0"!][!//
-[!LOOP "CddSentChannelObject/*"!][!//
-[!IF "CddSentChannelType ='SHORT_SERIAL_SLOW_CHANNEL'"!][!//
-[!VAR "Slow_Enabled" = "1"!][!//
-[!ELSEIF "CddSentChannelType = 'ENHANCED_SERIAL_12BIT_SLOW_CHANNEL'"!][!//
-[!VAR "Slow_Enabled" = "1"!][!//
-[!ELSEIF "CddSentChannelType = 'ENHANCED_SERIAL_16BIT_SLOW_CHANNEL'"!][!//
-[!VAR "Slow_Enabled" = "1"!][!//
-[!BREAK!][!//
-[!ENDIF!][!//
-[!ENDLOOP!][!//
-    .Enable_Slow_Interrupt = (uint32 )[!IF "$Slow_Enabled  ='1.0'"!]SENT_REINT_RSLOW_DV_E[!ELSE!]0[!ENDIF!],
-    .Cdd_SentBaseAddress = (uint32 )[!"num:inttohex(CddSentBaseAddress)"!]U,
-    .Cdd_SentClockTick  = (uint32 )[!"CddSentClockTick"!]U,
-    .Cdd_SentCRCType  = (Cdd_SentCRCType )[!"CddSentCRCType"!],
-    .Cdd_SentCRCWidth   = (Cdd_SentCRCWidth  )[!"CddSentCRCWidth "!],
-    .Cdd_SentCRCWithStatus  = (Cdd_SentCRCWithStatus )[!"CddSentCRCWithStatus"!],
-    .Cdd_SentDataNibblesCount  = (Cdd_SentDataNibblesCount )[!"CddSentDataNibblesCount"!],
-    .FIFOTriggerLevel  = (Cdd_SentTriggerLevel )[!"CddSentFIFOTriggerLevel"!],
-    .Cdd_SentPausePulse  = (boolean )[!IF "CddSentPausePulse  ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
-    .SyncTimeout  = (uint32 )[!"CddSentSyncTimeout"!]U,
-    .AcceptErrorData  = (boolean )[!IF "CddSentAcceptErrorData  ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
-    .GlitchFilter  = (uint8 )[!"CddSentGlitchFilter"!]U,
-    .Cdd_SentChannelCount = (uint8 )[!"num:i(count(CddSentChannelObject/*))"!],
-    .Cdd_SentChannelConfigList = (Cdd_Sent_ChannelConfigType** )[!"../../@name"!]_[!"@name"!]_List,
-    .Cdd_SentUserCallbackFunction  = (Cdd_Sent_NotifyType) [!IF "(node:empty(CddSentUserCallbackFunction))"!]NULL_PTR[!ELSE!][!"(node:value(CddSentUserCallbackFunction))"!][!ENDIF!]
+    .CddSentSyncTimeout   = (uint32 )[!"CddSentSyncTimeout"!]U,
+    .CddSentAcceptErrorData    = (boolean )[!IF "CddSentAcceptErrorData  ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .CddSentEnableTimeStamp  = (boolean )[!IF "CddSentEnableTimeStamp ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .CddSentGlitchFilter   = (uint8 )[!"CddSentGlitchFilter"!]U,
+    .CddSentMTP  = (boolean )[!IF "CddSentMTP  ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .CddSentMTPChannelCount = (uint8 )[!"num:i(count(CddSentExternalDeviceConfig/*))"!],
+    .CddSentMTPConfigList = (Cdd_Sent_MTPConfigType** )[!"../../@name"!]_CddSentController_List,[!//
+    [!IF "CddSentMTP !='false'"!]
+    .CddSentGlobalWaitTime   = (uint16 )[!"CddSentGlobalWaitTime"!]U,[!//
+    [!ENDIF!]
+    .CddSentChannelCount = (uint8 )[!"num:i(count(CddSentChannelObject/*))"!],
+    .CddSentChannelConfigList = (Cdd_Sent_ChannelConfigType** )[!"../../@name"!]_CddSentChannelObject_List,
+    .CddSentUserCallbackFunction  = (Cdd_Sent_NotifyType) [!IF "(node:empty(CddSentUserCallbackFunction))"!]NULL_PTR[!ELSE!][!"(node:value(CddSentUserCallbackFunction))"!][!ENDIF!],
+    .CddSentUserErrorCallbackFunction   = (Cdd_Sent_ErrorNotifyType) [!IF "(node:empty(CddSentUserErrorCallbackFunction))"!]NULL_PTR[!ELSE!][!"(node:value(CddSentUserErrorCallbackFunction))"!][!ENDIF!]
 };
 [!ENDLOOP!][!//
 
 /*List of the CddSent HW unit structures */
-[!LOOP "as:modconf('Cdd_Sent')[1]/CddSentConfig"!][!//
+[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!//
 
 CONST(Cdd_Sent_ConfigType, CDD_SENT_CONFIG_DATA) [!"@name"!]_Cdd_SentController_List=
 {

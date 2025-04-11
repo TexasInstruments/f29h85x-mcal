@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -17,15 +17,13 @@
  *  File:         SchM_Can.c
  *  Generator:    None
  *
- *  Description:  This file contains CAN SchM API definitions
+ *  Description:  This file contains Can SchM API definitions
  *********************************************************************************************************************/
-
 
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
 #include "SchM_Can.h"
-
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -46,6 +44,7 @@
 /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
+    
 volatile uint8 Can_Exclusive_Count0 = 0U;
 volatile uint8 Can_Exclusive_Count1 = 0U;
 /*********************************************************************************************************************
@@ -68,29 +67,30 @@ volatile uint8 Can_Exclusive_Count1 = 0U;
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
-
-
+    
 void  SchM_Enter_Can_CAN_EXCLUSIVE_AREA_0(void)
 {
     MCAL_LIB_DINT;
     Can_Exclusive_Count0++;
 }
-
 void  SchM_Exit_Can_CAN_EXCLUSIVE_AREA_0(void)
 {
     MCAL_LIB_EINT;
     Can_Exclusive_Count0--;
 }
-
+                
 void  SchM_Enter_Can_CAN_EXCLUSIVE_AREA_1(void)
 {
     MCAL_LIB_DINT;
     Can_Exclusive_Count1++;
 }
-
 void  SchM_Exit_Can_CAN_EXCLUSIVE_AREA_1(void)
 {
     MCAL_LIB_EINT;
     Can_Exclusive_Count1--;
 }
-
+                
+/*********************************************************************************************************************
+*  End of File: SchM_Can.c
+*********************************************************************************************************************/
+    

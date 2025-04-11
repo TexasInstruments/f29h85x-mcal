@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -65,11 +65,11 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_ConfigSet =
         
         [0] =
         {
-            .int_id = (Os_IntIdType)179U,
+            .int_id = (Os_IntIdType)182U,
             .int_priority = (Os_IntPriorityType)255U,
             .int_category = (Os_IntCategoryType)CATEGORY_1,
-            .int_funcptr = (Os_IsrFuncPtrType)Cdd_Sent_1_ISR,
-            .isr_funcptr = (Os_IsrFuncPtrType)Cdd_Sent_1_ISR,
+            .int_funcptr = (Os_IsrFuncPtrType)Cdd_Sent_4_ISR,
+            .isr_funcptr = (Os_IsrFuncPtrType)Cdd_Sent_4_ISR,
         }
     },
 

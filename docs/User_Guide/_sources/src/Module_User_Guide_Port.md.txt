@@ -123,9 +123,15 @@ Refer Device Data Sheet for details about reserved/non-configurable pins for the
 
 #### Non compliance
 
-Below AUTOSAR design requirement is not supported for Port Driver :\
+Below AUTOSAR design requirements are not supported/partially supported for Port Driver :\
 **SWS_Port_00205** : *Port_Lcfg.c shall include Port_MemMap.h and Port.h*
 >Rejection Reason : Port Driver doesn't have any Link Time configuration input file, it only supports Pre-Compile and Port-Build configurations.
+
+**ECUC_Port_00127** : *Pin Id of the port pin. Range : 1 .. 65535*
+>Partial Non Compliance Reason : In current implementation, Pin Id range starts from 0 instead of 1 as mapping of Pin Id to GPIOs starts from 0. Therefore Port Pin Id Range is 0 to Number of Pins in Pin package. i.e for 256 pin package , range will be 0-255.
+
+**SWS_BSW_00042** : Detection of Development Errors: The detection and reporting of Development errors shall be performed only if the configuration parameter for detection of Development errors is set
+>Partial Non Compliance Reason : Few Null pointer input parameter checks are needed irrespective of Development errors is set, to handle MISRA requirement.
 
 For more details, Refer [AUTOSAR_SWS_PortDriver : Section: 5.1.2 : Header File Structure](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf)
 
@@ -190,6 +196,18 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 |API Port_SetPinMode service called when mode is unchangeable.|PORT_E_MODE_UNCHANGEABLE|0x0E|
 |API service called without module initialization.|PORT_E_UNINIT|0x0F|
 |API called with a Null Pointer.|PORT_E_PARAM_POINTER|0x10|
+
+### Safety Mechanism
+
+|TI Diagnostic Unique Identifier| Summary | Description |
+|----|-----|-------|
+|GPIO1|Lock Mechanism for Control Registers|Port Pins Pad control register configuration can be locked and locked configurations can be committed. If user calls Port_Init or Port_SetPinMode APIs after committing the locked configuration, it will result in DET error PORT_E_INIT_FAILED or PORT_PIN_MODE_UNCHANGEABLE respectively|
+
+
+```{NOTE}
+Locked Configurations can be committed by user during runtime. After committing the configurations, user won't be able to change the configurations during runtime. To change the configuration after committing, hard reset will be required.
+More details of Safety Mechanisms can be found in Safety Manual.
+```
 
 ### Used resources
 
@@ -258,430 +276,434 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
+#### Configuration Precautions
+
+* For any peripheral pin configuration, make sure to set correct pad configurations or else it will result in unexpected behavior of the module.
+* Similarly in case of Pin Mode Changeable support, make sure to set proper pad configurations for the supported pins.
+
+```{NOTE}
+More details related to Configuration precautions can be found in Safety Manual.
+```
+
+
+
+#### PortConfigSet
+This container contains the configuration parameters and sub containers of the AUTOSAR Port module.
+
+##### PortContainer
+Container collecting the PortPins.
+
+###### PortNumberOfPortPins
+
+| Item ||
+|--------|---------------|
+| **Name** | PortNumberOfPortPins |
+| **Description** | The number of specified PortPins in this PortContainer. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 1 |
+| **Min-value** | 1 |
+
+##### PortPin
+Configuration of the individual port pins.
+
+###### PortPinPeripheral
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinPeripheral |
+| **Description** | Available Peripherals for the pin package |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | GPIO |
+
+###### PortPinPeripheralInstance
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinPeripheralInstance |
+| **Description** | Available instances for the Peripheral selected |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | GPIO0 |
+
+###### PortPinPeripheralSignal
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinPeripheralSignal |
+| **Description** | Select specific type of peripheral signal pin of interest |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | GPIO0 |
+
+###### PortPhysicalPinId
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPhysicalPinId |
+| **Description** | Identifying The physical Pin Number on the selected Pin Package. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | A8 |
+
+###### PortPinName
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinName |
+| **Description** | Device Pin Name for reference. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | GPIO0 |
+
+###### PortPinId
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinId |
+| **Description** | Pin Id of the port pin. This value will be assigned to the symbolic name derived from the port pin container short name. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1 |
+
+###### PortIsPinConfigurable
+
+| Item ||
+|--------|---------------|
+| **Name** | PortIsPinConfigurable |
+| **Description** | Whether configuration is supported for this pin. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+###### PortIsAnalogModeSupported
+
+| Item ||
+|--------|---------------|
+| **Name** | PortIsAnalogModeSupported |
+| **Description** | Whether analog mode is supported for this pin. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### PortIsAGPIO
+
+| Item ||
+|--------|---------------|
+| **Name** | PortIsAGPIO |
+| **Description** | Whether this pin is AGPIO. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+###### PortIsAIO
+
+| Item ||
+|--------|---------------|
+| **Name** | PortIsAIO |
+| **Description** | Whether this pin is AIO. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+###### PortIsGPIO
+
+| Item ||
+|--------|---------------|
+| **Name** | PortIsGPIO |
+| **Description** | Whether this pin is GPIO. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+###### PortAnalogMode
+
+| Item ||
+|--------|---------------|
+| **Name** | PortAnalogMode |
+| **Description** | Select whether the pin operates in Analog Mode. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | PORT_ANALOG_ENABLED |
+| **Range** | PORT_ANALOG_DISABLED<br>PORT_ANALOG_ENABLED |
+
+###### PortPinInitialMode
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinInitialMode |
+| **Description** | Port pin mode from mode list for use with Port_Init() function. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | PORT_MUXMODE_NA |
+| **Range** | PORT_MUXMODE_NA |
+
+###### PortPinDirection
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinDirection |
+| **Description** | The initial direction of the pin (IN or OUT). If the direction is not changeable, the value configured here is fixed. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | PORT_PIN_IN |
+| **Range** | PORT_PIN_NA |
+
+###### PortPinDirectionChangeable
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinDirectionChangeable |
+| **Description** | Parameter to indicate if the direction is changeable on a port pin during runtime. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | False |
+
+###### PortPinPadConfig
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinPadConfig |
+| **Description** | Enable Push-Pull or Open Drain functionality. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | PORT_PIN_TYPE_STD |
+| **Range** | PORT_PIN_TYPE_STD<br>PORT_PIN_TYPE_OPEN_DRAIN<br>PORT_PIN_TYPE_NA |
+
+###### PortPinPullUpConfig
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinPullUpConfig |
+| **Description** | Enable Pull Up. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### PortPinQualificationMode
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinQualificationMode |
+| **Description** | Synchronization mode of the peripheral signals. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | PORT_QUAL_SYNC |
+| **Range** | PORT_QUAL_SYNC<br>PORT_QUAL_3SAMPLE<br>PORT_QUAL_6SAMPLE<br>PORT_QUAL_ASYNC<br>PORT_QUAL_NA |
+
+###### PortPinQualificationPeriod
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinQualificationPeriod |
+| **Description** | Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs                                 For Instance:                                 Qualification sampling period for GPIO0 to GPIO7:                                  0x00,QUALPRDx = PLLSYSCLK                                  0x01,QUALPRDx = PLLSYSCLK/2                                 0x02,QUALPRDx = PLLSYSCLK/4                                 ....                                 0xFF,QUALPRDx = PLLSYSCLK/510                                 Reset type: SYSRSn |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 9223372036854775807 |
+| **Min-value** | -9223372036854775808 |
+
+###### PortPinLevelValue
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinLevelValue |
+| **Description** | Port Pin Level value from Port pin list. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | PORT_PIN_LEVEL_LOW |
+| **Range** | PORT_PIN_LEVEL_HIGH<br>PORT_PIN_LEVEL_LOW<br>PORT_PIN_LEVEL_NA |
+
+###### PortPinCoreSelect
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinCoreSelect |
+| **Description** | Selection of core to which pin is to be mapped. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | PORT_CORE_CPU1 |
+| **Range** | PORT_CORE_CPU1<br>PORT_CORE_CPU2<br>PORT_CORE_CPU3 |
+
+###### PortEnableWakeUpPinLPM
+
+| Item ||
+|--------|---------------|
+| **Name** | PortEnableWakeUpPinLPM |
+| **Description** | Use/Don't use the GPIO Pin as a wakeup source for the low power modes - standby/halt. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### PortPinMode
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinMode |
+| **Description** | Port pin mode from mode list. |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | PORT_MUXMODE_NA |
+| **Range** | PORT_MUXMODE_NA |
+
+###### PortPinModeChangeable
+
+| Item ||
+|--------|---------------|
+| **Name** | PortPinModeChangeable |
+| **Description** | Parameter to indicate if the mode is changeable on a port pin during runtime. True: Port Pin mode changeable allowed. False: Port Pin mode changeable not permitted. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
 #### PortGeneral
+Module wide configuration parameters of the PORT driver.
 
 ##### PortDevErrorDetect
 
-|SWS Item |ECUC_Port_00123|
-|---------|---------------|
-|**Name**   |PortDevErrorDetect|
-|**Parent Container**|PortGeneral|
-|**Description**|-Switches the development error detection and notification on or off <br> &bull; **TRUE**: detection and notification is enabled. <br> &bull; **FALSE**: detection and notification is disabled.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|false|
-|**Post-Build Variant value**|false|
-|Pre-compile time | All Variants|
-|Link time |--|
-|Post-build time|--|
-|**Scope/Dependency**|scope:local|
+| Item ||
+|--------|---------------|
+| **Name** | PortDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### PortSetPinDirectionApi
 
-|SWS Item |ECUC_Port_00131|
-|---------|---------------|
-|**Name**   |PortSetPinDirectionApi|
-|**Parent Container**|PortGeneral|
-|**Description**|Pre-processor switch to enable or disable the use of the function Port_setPinDirection().<br>&bull; **TRUE** : Enabled - Function Port_SetPinDirection() is available <br>&bull; **FALSE** : Disabled - Function Port_SetPinDirection() is not available.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant value**|false|
-|Pre-compile time | All Variants|
-|Link time |--|
-|Post-build time|--|
-|**Scope/Dependency**|scope:local|
+| Item ||
+|--------|---------------|
+| **Name** | PortSetPinDirectionApi |
+| **Description** | Pre-processor switch to enable / disable the use of the function Port_SetPinDirection(). |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### PortSetPinModeApi
 
-|SWS Item|ECUC_Port_00132|
-|--------|----------------|
-|**Name**|PortSetPinModeApi|
-|**Parent Container**|PortGeneral|
-|**Description**|Pre-processor switch to enable / disable the use of the function Port_SetPinMode().<br> &bull; **TRUE** : Enabled - Function Port_SetPinMode() is available. <br> &bull; **FALSE** : Disabled - Function Port_SetPinMode() is not available|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope:local|
+| Item ||
+|--------|---------------|
+| **Name** | PortSetPinModeApi |
+| **Description** | Pre-processor switch to enable / disable the use of the function Port_SetPinMode(). |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### PortVersionInfoApi
 
-|SWS Item|ECUC_Port_00133|
-|--------|----------------|
-|**Name**|PortVersionInfoApi|
-|**Parent Container**|PortGeneral|
-|**Description**|Pre-processor switch to enable / disable the API to read out the modules version information.<br>&bull; **TRUE** : Version info API enabled<br>&bull; **FALSE** : Version info API disabled|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope:local|
+| Item ||
+|--------|---------------|
+| **Name** | PortVersionInfoApi |
+| **Description** | Pre-processor switch to enable / disable the API to read out the modules version information. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### PortDeviceVariant
+##### PortLockConfiguration
 
-|Item||
-|----|----|
-|**Name**|PortDeviceVariant|
-|**Parent Container**|PortGeneral|
-|**Description**|Select package variant for F29H85x|
-|**Multiplicity**|1|
-|**type**|EcucEnumerationParamDef|
-|**Range**|--|
-|**Default**|--|
-|Pre-compile time|All Variants|
-|Post-build time|--|
-|**Scope / Dependency**|scope:local|
-
-#### Port Container
-
-##### PortNumberOfPortPins
-
-|SWS Item |ECUC_Port_00124|
-|---------|---------------|
-|**Name**   |PortNumberOfPortPins|
-|**Parent Container**|PortContainer|
-|**Description**|The number of specified PortPins in this PortContainer|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|1.. 65535|
-|**Default value**|..|
-|**Post-Build Variant value**|false|
-|Pre-compile time | All Variants|
-|Link time |--|
-|Post-build time| --|
-|**Scope/Dependency**|scope:local|
-
-#### PortPin
-
-##### PortPinPeripheral
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPinPeripheral|
-|**Parent Container**|PortPin|
-|**Description**|Available Peripherals for the pin package|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Default value**||
-|**Post-Build Variant Value**||
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPinPeripheralInstance
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPinPeripheralInstance|
-|**Parent Container**|PortPin|
-|**Description**|Available instances for the Peripheral selected.|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Default value**||
-|**Post-Build Variant Value**||
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPinPeripheralSignal
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPinPeripheralSignal|
-|**Parent Container**|PortPin|
-|**Description**|Select specific type of peripheral signal pin of interest.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**||
-|**Post-Build Variant Value**||
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPhysicalPinId
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPhysicalPinId|
-|**Parent Container**|PortPin|
-|**Description**| Identifying The physical Pin Number on the selected Pin Package.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**||
-|**Post-Build Variant Value**||
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPinName
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPinName|
-|**Parent Container**|PortPin|
-|**Description**| Device Pin Name for reference.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**||
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPinDirection
-
-|SWS Item|ECUC_Port_00125|
-|--------|----------------|
-|**Name**|PortPinDirection|
-|**Parent Container**|PortPin|
-|**Description**|The initial direction of the pin (IN or OUT). If the direction is not changeable, the value configured here is fixed. The direction must match the pin mode. E.g. a pin used for an ADC must be configured to be an in port. Implementation Type: Port_PinDirectionType|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**||
-|PORT_PIN_IN|Port Pin direction set as input|
-|PORT_PIN_OUT|Port Pin direction set as output|
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope:local|
-
-##### PortPinDirectionChangeable
-
-|SWS Item|ECUC_Port_00126|
-|--------|----------------|
-|**Name**|PortPinDirectionChangeable|
-|**Parent Container**|PortPin|
-|**Description**|Parameter to indicate if the direction is changeable on a port pin during runtime <br>&bull; **TRUE** : Port Pin direction changeable enabled.<br>&bull; **FALSE** : Port Pin direction changeable disabled .|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope:local|
-
-##### PortPinId
-
-|SWS Item|ECUC_Port_00127|
-|--------|----------------|
-|**Name**|PortPinId|
-|**Parent Container**|PortPin|
-|**Description**|Pin Id of the port pin. This value will be assigned to the symbolic name derived from the port pin container short name.|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef (Symbolic Name generated for this parameter)|
-|**Range**|1..65535|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope:local|
-
-##### PortPinInitialMode
-
-|SWS Item|ECUC_Port_00128|
-|--------|----------------|
-|**Name**|PortPinInitialMode|
-|**Parent Container**|PortPin|
-|**Description**|Port pin mode from mode list for use with Port_Init() function.|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**||
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope:local|
-
-##### PortPinLevelValue
-
-|SWS Item|ECUC_Port_00129|
-|--------|----------------|
-|**Name**|PortPinLevelValue|
-|**Parent Container**|PortPin|
-|**Description**|Port Pin Level value from Port pin list.|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**||
-|PORT_PIN_LEVEL_HIGH|Port Pin level is High|
-|PORT_PIN_LEVEL_LOW|Port Pin level is LOW|
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope:local|
-
-##### PortPinMode
-
-|SWS Item|ECUC_Mcu_00130|
-|--------|----------------|
-|**Name**|PortPinMode|
-|**Parent Container**|PortPin|
-|**Description**|Port pin mode from mode list. <br>NOTE: that more than one mode is allowed by default. That way it is e.g. possible to combine DIO with another mode such as ICU..|
-|**Multiplicity**|1..*|
-|**Type**|EcucEnumerationParamDef|
-|**Range**||
-|**Post-Build Variant Multiplicity**|true|
-|**Post-Build Variant Value**|true|
-|**Multiplicity Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope:local|
-
-##### PortPinModeChangeable
-
-|SWS Item|ECUC_Port_00134|
-|--------|----------------|
-|**Name**|PortPinModeChangeable|
-|**Parent Container**|PortPin|
-|**Description**| Parameter to indicate if the mode is changeable on a port pin during runtime<br>&bull; **TRUE** : Port Pin mode changeable allowed<br> &bull; **FALSE** : Port Pin mode changeable not permitted.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortAnalogMode
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortAnalogMode|
-|**Parent Container**|PortPin|
-|**Description**|Select whether the pin operates in Analog Mode.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**||
-|**Range**|PORT_ANALOG_DISABLED<br>PORT_ANALOG_ENABLED|
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPinPadConfig
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPinPadConfig|
-|**Parent Container**|PortPin|
-|**Description**|Enable Push-Pull or Open Drain functionality.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**||
-|**Range**|PORT_PIN_TYPE_STD<br>PORT_PIN_TYPE_OPEN_DRAIN<br>PORT_PIN_TYPE_NA|
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPinPullUpConfig
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPinPullUpConfig|
-|**Parent Container**|PortPin|
-|**Description**|Enable Pull Up.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPinQualificationMode
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPinQualificationMode|
-|**Parent Container**|PortPin|
-|**Description**|Synchronization mode of the peripheral signals.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|PORT_QUAL_SYNC|
-||PORT_QUAL_3SAMPLE|
-||PORT_QUAL_6SAMPLE|
-||PORT_QUAL_ASYNC|
-||PORT_QUAL_NA|
-|**Default value**||
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPinQualificationPeriod
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPinQualificationPeriod|
-|**Parent Container**|PortPin|
-|**Description**|Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Default value**|1|
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortPinCoreSelect
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortPinCoreSelect|
-|**Parent Container**|PortPin|
-|**Description**|Selection of core to which pin is to be mapped.|
-|**Multiplicity**|1|
-|**Type**|Enumeration|
-|**Default value**|PORT_CORE_CPU1|
-|**Range**|PORT_CORE_CPU1<br>PORT_CORE_CPU2<br>PORT_CORE_CPU3|
-|**Post-Build Variant Value**|true|
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
-##### PortEnableWakeUpPinLPM
-
-|SWS Item||
-|--------|----------------|
-|**Name**|PortEnableWakeUpPinLPM|
-|**Parent Container**|PortPin|
-|**Description**|Use/Don't use the GPIO Pin as a wake up source for the low power modes - standby/halt.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**||
-|Pre-compile time|VARIANT-PRE-COMPILE |
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD |
-|**Scope / Dependency**|scope:local|
-
+| Item ||
+|--------|---------------|
+| **Name** | PortLockConfiguration |
+| **Description** | Lock All pins configuration. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 Refer [AUTOSAR_SWS_PortDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf) for more configuration parameters details
 
 ```{NOTE}
@@ -799,7 +821,7 @@ Result - PASS!!
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┗ 📜**Port_Cfg.h** : *Contains the generated pre-complier configuration header.*</i>*\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Port_Cfg.h** : *Contains the generated pre-compiler configuration header.*</i>*\
  ┃ ┃ ┃ ┃ ┣ 📂src\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\

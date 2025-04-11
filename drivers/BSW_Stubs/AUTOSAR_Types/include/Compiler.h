@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -48,8 +48,8 @@ extern "C" {
 
 #define NULL_PTR                    ((void *)0x0)   /* Void pointer to zero definition */
 
-#define INLINE                      __inline        /* Abstraction of the keyword inline */
-#define LOCAL_INLINE                static __inline /* Abstraction of keyword inline with static scope. */
+#define INLINE                      inline        /* Abstraction of the keyword inline */
+#define LOCAL_INLINE                static inline /* Abstraction of keyword inline with static scope. */
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -169,7 +169,7 @@ extern "C" {
  * \param[in] fctname   function name respectively name of the defined type
  *
  *********************************************************************************************************************/
-#define CONSTP2FUNC(rettype, ptrclass, fctname)         rettype (* cpnst fctname)
+#define CONSTP2FUNC(rettype, ptrclass, fctname)         rettype (* const fctname)
 
 /** \brief CONST identification information
  *

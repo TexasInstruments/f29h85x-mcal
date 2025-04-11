@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -85,8 +85,10 @@ extern "C" {
  * Design: MCAL-25661, MCAL-25662
  */
 #define LIN_DEM_ENABLE    [!IF "node:refexists(as:modconf('Lin')[1]/LinDemEventParameterRefs/LIN_E_TIMEOUT)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
-
 [!IF "node:refexists(as:modconf('Lin')[1]/LinDemEventParameterRefs/LIN_E_TIMEOUT)"!]
+/*
+ * Design: MCAL-25586, MCAL-25588, MCAL-25589
+ */
 /** \brief LIN DEM Event Configuration: LIN Timeout */
 #define LIN_E_TIMEOUT  					(DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Lin')[1]/LinDemEventParameterRefs/LIN_E_TIMEOUT))"!])
 
@@ -94,6 +96,11 @@ extern "C" {
 
 /** \brief LIN DEM Event Configuration: LIN Timeout Duration*/
 #define LIN_TIMEOUT_DURATION            [!"as:modconf('Lin')[1]/LinGeneral/LinTimeoutDuration"!]U
+
+[!VAR "SysClock"="num:i(node:ref(as:modconf('Lin')[1]/LinGeneral/SysClockRef)/McuClockReferencePointFrequency)"!][!//
+[!VAR "SysClock"="num:i(num:div((num:div(1,65535)), num:div(15,$SysClock)))"!][!//
+/** \brief LIN Delay to Mcal Lib */
+#define LIN_MCAL_LIB_DELAY              [!"num:i($SysClock)"!]U
 
 /*****************************************************************************
  *
@@ -114,6 +121,9 @@ extern "C" {
  * \brief Lin Instance to Channel ID mapping.
  *
  *****************************************************************************/
+/*
+ * Design: MCAL-25663
+ */
 [!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!//
 #define [!"LinInstance"!]                    [!"LinChannelId"!]
 [!ENDLOOP!][!//
@@ -141,6 +151,9 @@ extern "C" {
  * \brief Lin Channel ISR Type Selection.
  *
  *****************************************************************************/
+/*
+ * Design: MCAL-25665
+ */
 [!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!//
 #define [!"LinInstance"!]_ISR_TYPE           [!"LinISRType"!]
 [!ENDLOOP!][!//
@@ -164,7 +177,7 @@ extern "C" {
 
 /** \brief Enum of Lin Interrupt line number, 0 or 1. */
 /* 
-*Design: MCAL-25691  
+*Design: MCAL-25666, MCAL-25691  
 */
 typedef enum
 {
@@ -176,7 +189,7 @@ typedef enum
 
 /** \brief Enum of Lin Loopbackmode, Internal/External/Disabled Type selection. */
 /* 
-*Design: MCAL-25692  
+*Design: MCAL-25692, MCAL-25664
 */
 typedef enum Lin_LoopbackModeTag
 {
@@ -208,7 +221,7 @@ typedef struct Lin_ControllerTag
 
 /** \brief Lin Controller BaudRate Configuration.*/
 /* 
- *Design: MCAL-25694  
+ *Design: MCAL-25659,MCAL-25667,MCAL-25668,MCAL-25694
  */
 typedef struct Lin_BaudrateConfigTag
 { 
@@ -226,6 +239,9 @@ typedef struct Lin_BaudrateConfigTag
  * Exported Object Declarations
  *********************************************************************************************************************/
 /** \brief LIN Configuration struct declaration */
+/* 
+ *Design: MCAL-25660
+ */
 extern const struct Lin_ConfigTag Lin_LinGlobalConfig;
 
 /*********************************************************************************************************************

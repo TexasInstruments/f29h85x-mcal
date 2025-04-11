@@ -15,90 +15,172 @@
 |Maximum packets Transmission per second in Interrupt|9010|8389|Classic CAN : 8 byte : 1 Mbps|
 |Maximum packets Transmission per second in Interrupt|7270|5853|CAN FD : 64 byte : 5 Mbps|
 
+### CDD SENT Driver
+
+|Performance Test|Theoretical value|Measured value|Remarks|
+|------|------|------|-------|
+|STANDARD MODE interrupt execution time|NA|2 us|In STANDARD MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
+|MTP MODE interrupt execution time|NA|2 us|In MTP MODE, the total time it takes for the Cdd_Sent module to process sensor data, send the data to the PDU router.|
+|MTP MODE trigger transmit time|NA|8154 us|In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the responce, process sensor data, send the data to the PDU router.|
+
+### LIN Driver
+
+|Performance Test|Theoretical value|Measured value|Remarks|
+|------|------|------|-------|
+|Lin Master Response Performance |758784 us|868807 us|Total time taken to send 8 Bytes of data 128 times ~ 1MB |
+|Lin Slave Response Performance |5928 us|7270 us|Total time taken to receive 8 Bytes of data|
+
+### SPI Driver
+
+|Performance Test|Theoretical value in micro seconds|Measured value in micro seconds|Remarks|
+|------|------|------|-------|
+| Transmit 112000 words with 8 bit data width | 179200 |179209|BaudRate 5MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width | 179200 |179211|BaudRate 5MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 358400 |358409|BaudRate 5MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width | 89600 |89608|BaudRate 10MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width | 89600 |89608|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 179200 |179208|BaudRate 10MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 179200 |179209|BaudRate 10MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |23770|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |29425|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 35840 |36553|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 16 bit data width| 35840 |39701|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width | 89600 |89607|BaudRate 5MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Sync Transmit|
+| Transmit 56000 words with 16 bit data width| 179200 |179206|BaudRate 5MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Sync Transmit|
+| Transmit 56000 words with 16 bit data width| 89600 |89606|BaudRate 10MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |11886|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |14723|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |18277|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |19883|BaudRate 50MHz, Async Transmit|
+
 ## Memory Footprints
 
-### MCU
+### CAN
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Mcu_Example_Clock   |   33340    |       0    |    4632    |
- | Mcu_Example_PowerMode   |   33872    |       0    |    4633    |
- | Mcu_Example_Ram   |   33618    |       0    |    4641    |
- | Mcu_Example_Reset   |   33636    |       0    |    4629    |
+| Can_Example_Classic_FD   | 53485    | 0    | 8576    |
+ | Can_Example_Icom   | 53629    | 0    | 8848    |
+ | Can_Example_loopback   | 51933    | 0    | 8512    |
+ | Can_Example_Wakeup   | 52933    | 0    | 8596    |
  
 ### DIO
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Dio_Example_Read_Write_All   |   36414    |       0    |    4652    |
+| Dio_Example_Read_Write_All   | 42885    | 0    | 4656    |
+ 
+### FLS
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Fls_App_Example   | 54741    | 0    | 13033    |
  
 ### GPT
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Gpt_Example_Timers   |   38842    |       0    |    4724    |
- | Gpt_Example_OneShotMode   |   39468    |       0    |    4720    |
- | Gpt_Example_MixedMode   |   37946    |       0    |    4700    |
- | Gpt_Example_InterruptTimeout   |   38452    |       0    |    4696    |
- | Gpt_Example_ContinuousMode   |   39392    |       0    |    4716    |
- 
-### PORT
-
-| Examples   | .text  |  .data  |  .bss  |
-| ------------ | ----------| -------- | ---------- |
-| Port_Example_Init   |   35398    |       0    |    4638    |
- 
-### CAN
-
-| Examples   | .text  |  .data  |  .bss  |
-| ------------ | ----------| -------- | ---------- |
-| Can_Example_Classic   |   44781    |       0    |    8508    |
- | Can_Example_Icom   |   45788    |       0    |    8520    |
- | Can_Example_loopback   |   44510    |       0    |    8448    |
- 
-### WDG
-
-| Examples   | .text  |  .data  |  .bss  |
-| ------------ | ----------| -------- | ---------- |
-| Wdg_Example_Interrupt   |   34466    |       0    |    4700    |
- | Wdg_Example_Service   |   34724    |       0    |    4700    |
+| Gpt_Example_Timers   | 45445    | 0    | 4732    |
+ | Gpt_Example_OneShotMode   | 46077    | 0    | 4720    |
+ | Gpt_Example_MixedMode   | 44557    | 0    | 4704    |
+ | Gpt_Example_InterruptTimeout   | 45957    | 0    | 4708    |
+ | Gpt_Example_ContinuousMode   | 46021    | 0    | 4720    |
  
 ### LIN
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Lin_Example_Init_Sleep_Wakeup   |   38202    |       0    |    4685    |
- | Lin_Example_SendData   |   38098    |       0    |    4708    |
- | Lin_Example_Sleep_Wakeup_Interrupt   |   36994    |       0    |    4684    |
+| Lin_Example_Init_Sleep_Wakeup   | 44765    | 0    | 4681    |
+ | Lin_Example_SendData   | 44661    | 0    | 4704    |
+ | Lin_Example_Sleep_Wakeup_Interrupt   | 43597    | 0    | 4692    |
+ 
+### MCU
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Mcu_Example_Clock   | 39829    | 0    | 4636    |
+ | Mcu_Example_PowerMode   | 40165    | 0    | 4637    |
+ | Mcu_Example_Ram   | 39933    | 0    | 4645    |
+ | Mcu_Example_Reset   | 39861    | 0    | 4641    |
+ 
+### PORT
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Port_Example_Init   | 41773    | 0    | 4646    |
  
 ### SPI
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Spi_Example_Sync_AsyncTransfer   |   45264    |       0    |    5676    |
- | Spi_Example_AsyncTransfer_Interrupt   |   43388    |       0    |    5568    |
- | Spi_Example_SyncTransfer   |   41244    |       0    |    5404    |
+| Spi_Example_Sync_AsyncTransfer   | 53413    | 0    | 5692    |
+ | Spi_Example_AsyncTransfer_Interrupt   | 51189    | 0    | 5580    |
+ | Spi_Example_SyncTransfer   | 53933    | 0    | 5420    |
+ | Spi_Example_External_Loopback   | 53821    | 0    | 5224    |
+ 
+### WDG
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Wdg_Example_Interrupt   | 41565    | 0    | 4700    |
+ | Wdg_Example_Service   | 41797    | 0    | 4700    |
  
 ### CDD ADC
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Cdd_Adc_Example_Differential   |   47108    |       0    |    5024    |
- | Cdd_Adc_Example_GlbSwTrig   |   48916    |       0    |    5580    |
- | Cdd_Adc_Example_Ppb_TrigRepeater   |   48876    |       0    |    7300    |
- | Cdd_Adc_Example_TempSensor   |   41572    |       0    |    4808    |
+| Cdd_Adc_Example_Differential   | 56821    | 0    | 5024    |
+ | Cdd_Adc_Example_GlbSwTrig   | 58349    | 0    | 5580    |
+ | Cdd_Adc_Example_Ppb_TrigRepeater   | 58493    | 0    | 7304    |
+ | Cdd_Adc_Example_TempSensor   | 50333    | 0    | 4816    |
+ 
+### CDD ECAP
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Cdd_Ecap_Capture_Signal   | 48277    | 0    | 5220    |
+ 
+### CDD IPC
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Cdd_Ipc_Example_Polling_C29x1   | 56765    | 0    | 4660    |
+ | Cdd_Ipc_Example_Interrupt_C29x1   | 56405    | 0    | 4660    |
+ 
+### CDD PWM
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Cdd_Pwm_Example_UpCountMode   | 47397    | 0    | 66292    |
  
 ### CDD SENT
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Cdd_Sent_Standard   |   35376    |       0    |    4664    |
+| Cdd_Sent_Standard   | 44597    | 0    | 4740    |
+ | Cdd_Sent_MtpMode   | 45085    | 0    | 4744    |
+ 
+### CDD UART
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Cdd_Uart_Example_Loopback   | 44437    | 0    | 4700    |
+ | Cdd_Uart_Example_Read_Interrupt   | 43445    | 0    | 4700    |
+ | Cdd_Uart_Example_Write_Interrupt   | 43797    | 0    | 4700    |
+ | Cdd_Uart_Example_Write_Polling   | 42965    | 0    | 4700    |
  
 ### CDD XBAR
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Cdd_Xbar_GpioToGpio   |   37410    |       0    |    4696    |
+| Cdd_Xbar_GpioToGpio   | 44093    | 0    | 4692    |
  
-
-    
+```{NOTE}
+The performance of drivers are dependent on it's configuration. In these cases, the drivers are configured to achieve maximum performance. Functional Safety mechanisms are also disabled.
+```

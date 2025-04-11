@@ -6,13 +6,13 @@
     <AR-PACKAGE UUID="560c5244-3b90-4d01-a653-786ae20128ad">
       <SHORT-NAME>TI_F29H85x</SHORT-NAME>
       <ELEMENTS>
-        <ECUC-DEFINITION-COLLECTION UUID="241b33a3-56b7-4268-a023-4d7bdc0769b9">
+        <ECUC-DEFINITION-COLLECTION>
           <SHORT-NAME>myEcuParameterDefinition</SHORT-NAME>
           <MODULE-REFS>
             <MODULE-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Port</MODULE-REF>
           </MODULE-REFS>
         </ECUC-DEFINITION-COLLECTION>
-        <ECUC-MODULE-DEF UUID="b17e3a15-535e-4d47-aabe-83d7447c1e0c">
+        <ECUC-MODULE-DEF UUID="f69a46c0-6016-49bf-9f5c-0eaa39dc25bd">
           <SHORT-NAME>Port</SHORT-NAME>
           <DESC>
             <L-2 L="EN">Configuration of the Port module.</L-2>
@@ -25,8 +25,6 @@
               </DOC-REVISION>
             </DOC-REVISIONS>
           </ADMIN-DATA>
-          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
           <POST-BUILD-VARIANT-SUPPORT>true</POST-BUILD-VARIANT-SUPPORT>
           <REFINED-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/AUTOSAR/EcucDefs/Port</REFINED-MODULE-DEF-REF>
           <SUPPORTED-CONFIG-VARIANTS>
@@ -34,15 +32,13 @@
             <SUPPORTED-CONFIG-VARIANT>VARIANT-PRE-COMPILE</SUPPORTED-CONFIG-VARIANT>
           </SUPPORTED-CONFIG-VARIANTS>
           <CONTAINERS>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="a00bc1bd-fe2e-4622-9456-88fdeff4acf7">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="4de58872-fa90-47b6-b507-0a156c1b73fc">
               <SHORT-NAME>PortConfigSet</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">This container contains the configuration parameters and sub containers of the AUTOSAR Port module.</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <SUB-CONTAINERS>
-                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="b4f46b4e-4f5e-4ae2-890c-a4e348e6801c">
+                <ECUC-PARAM-CONF-CONTAINER-DEF UUID="8cfd4b53-2a5b-4ecd-aee3-a32234141c92">
                   <SHORT-NAME>PortContainer</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Container collecting the PortPins.</L-2>
@@ -51,13 +47,11 @@
                   <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-INTEGER-PARAM-DEF UUID="9e3818e0-b3db-4a6d-87ec-2ccdd0507e31">
+                    <ECUC-INTEGER-PARAM-DEF UUID="baf42744-ebe2-47e8-8852-be93b118c53d">
                       <SHORT-NAME>PortNumberOfPortPins</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">The number of specified PortPins in this PortContainer.</L-2>
                       </DESC>
-                      <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -72,14 +66,13 @@
                         </ECUC-VALUE-CONFIGURATION-CLASS>
                       </VALUE-CONFIG-CLASSES>
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                      <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortNumberOfPortPins: DEFAULT(XPath: node:fallback(num:i(count(../PortPin/*)),0))-->
-                      <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortNumberOfPortPins: INVALID(Range: &lt;=ecu:get(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),&apos;.numberOfPins&apos;)), &gt;=1)-->
+                      <DEFAULT-VALUE>1</DEFAULT-VALUE>
+                      <MAX>1</MAX>
                       <MIN>1</MIN>
-                      <!-- @CalculatedEnd -->
                     </ECUC-INTEGER-PARAM-DEF>
                   </PARAMETERS>
                   <SUB-CONTAINERS>
-                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="da26eea0-b85f-4cdd-95e0-1f2807a27f0d">
+                    <ECUC-PARAM-CONF-CONTAINER-DEF UUID="3a529fe1-9df9-4dbd-87f2-e660063c6640">
                       <SHORT-NAME>PortPin</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Configuration of the individual port pins.</L-2>
@@ -88,13 +81,11 @@
                       <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="9d037272-241d-4992-ac1b-d9c9ee605e2d">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="7e839075-04ec-4f0f-947c-8515b5d7e620">
                           <SHORT-NAME>PortPinPeripheral</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Available Peripherals for the pin package</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -109,22 +100,19 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>GPIO</DEFAULT-VALUE>
                           <LITERALS>
-                            <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinPeripheral: RANGE(XPath: ecu:list(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),&apos;.AllMuxModes&apos;)))-->
-                            <ECUC-ENUMERATION-LITERAL-DEF UUID="612d4fa1-9bca-4cee-897a-1815509ef1d4">
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="c31deeca-d857-45cb-a46c-4c90a022d997">
                               <SHORT-NAME>undefined</SHORT-NAME>
                               <ORIGIN>unknown</ORIGIN>
                             </ECUC-ENUMERATION-LITERAL-DEF>
-                            <!-- @CalculatedEnd -->
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="c948ae46-cb9f-4e05-9287-b700a1916d20">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="879779be-9ac9-4026-8f44-b5da350243e7">
                           <SHORT-NAME>PortPinPeripheralInstance</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Available instances for the Peripheral selected</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -139,22 +127,19 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>GPIO0</DEFAULT-VALUE>
                           <LITERALS>
-                            <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinPeripheralInstance: RANGE(XPath: ecu:list(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_&apos;,node:value(../PortPinPeripheral)),&apos;.MuxModeSignal&apos;))))-->
-                            <ECUC-ENUMERATION-LITERAL-DEF UUID="8ffed7c7-0eda-4f13-a191-abbb0d136cbc">
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="035310d0-cba4-4cf2-95a0-c158ad6cf5a8">
                               <SHORT-NAME>undefined</SHORT-NAME>
                               <ORIGIN>unknown</ORIGIN>
                             </ECUC-ENUMERATION-LITERAL-DEF>
-                            <!-- @CalculatedEnd -->
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="5ca06dfc-7311-473b-a71e-ad8d8645b274">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="dc8f9917-fd69-42c4-ba2c-061f6ef317e8">
                           <SHORT-NAME>PortPinPeripheralSignal</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Select specific type of peripheral signal pin of interest</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -169,22 +154,19 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>GPIO0</DEFAULT-VALUE>
                           <LITERALS>
-                            <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinPeripheralSignal: RANGE(XPath: ecu:list(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_&apos;,node:value(../PortPinPeripheralInstance)),&apos;.MuxModeSignalType&apos;))))-->
-                            <ECUC-ENUMERATION-LITERAL-DEF UUID="18f5ae0d-4f7f-44a0-8a14-ffa3a22bd60e">
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="ee736a05-7c1c-4213-ae0a-60427f2df658">
                               <SHORT-NAME>undefined</SHORT-NAME>
                               <ORIGIN>unknown</ORIGIN>
                             </ECUC-ENUMERATION-LITERAL-DEF>
-                            <!-- @CalculatedEnd -->
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="bf0db832-d550-4027-8809-6722f078377d">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="6bf5ac7a-dc8d-448b-b5bf-5652691c6857">
                           <SHORT-NAME>PortPhysicalPinId</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Identifying The physical Pin Number on the selected Pin Package.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -199,22 +181,19 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>A8</DEFAULT-VALUE>
                           <LITERALS>
-                            <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPhysicalPinId: RANGE(XPath: ecu:list(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_&apos;,node:value(../PortPinPeripheralSignal)),&apos;.PhysicalPinNumber&apos;))))-->
-                            <ECUC-ENUMERATION-LITERAL-DEF UUID="f3816a4e-9bfd-4dae-8da1-17746ba3151f">
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="47371f69-6eb0-4125-9487-10f4cdeca42b">
                               <SHORT-NAME>undefined</SHORT-NAME>
                               <ORIGIN>unknown</ORIGIN>
                             </ECUC-ENUMERATION-LITERAL-DEF>
-                            <!-- @CalculatedEnd -->
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="80ae1536-7106-407f-ba87-c4f3ae91e985">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="e9d5552e-7353-4e73-94f7-6318f0cc6ca1">
                           <SHORT-NAME>PortPinName</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Device Pin Name for reference.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -229,23 +208,19 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinName: DEFAULT(XPath: ecu:get(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.pinName&apos;))))-->
+                          <DEFAULT-VALUE>GPIO0</DEFAULT-VALUE>
                           <LITERALS>
-                            <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinName: RANGE(XPath: ecu:get(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.pinName&apos;))))-->
-                            <ECUC-ENUMERATION-LITERAL-DEF UUID="333c2b59-5634-40eb-bf33-c4fde956702c">
+                            <ECUC-ENUMERATION-LITERAL-DEF UUID="ce97cf23-929b-4e2e-8290-bd6bbdd34258">
                               <SHORT-NAME>undefined</SHORT-NAME>
                               <ORIGIN>unknown</ORIGIN>
                             </ECUC-ENUMERATION-LITERAL-DEF>
-                            <!-- @CalculatedEnd -->
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="587568bd-8d5d-40b1-9b0d-b61e13e6a462">
+                        <ECUC-INTEGER-PARAM-DEF UUID="0d2b90af-1985-459b-9230-9934d447670f">
                           <SHORT-NAME>PortPinId</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Pin Id of the port pin. This value will be assigned to the symbolic name derived from the port pin container short name.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -260,15 +235,14 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>true</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinId: DEFAULT(XPath: ecu:get(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.pinNumber&apos;))))-->
+                          <DEFAULT-VALUE>0</DEFAULT-VALUE>
+                          <MAX>1</MAX>
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="3274e378-5a12-4f6f-b8db-44003f416eab">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="89283e55-ac5a-4f1b-9d53-4e8bf67fbe2e">
                           <SHORT-NAME>PortIsPinConfigurable</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Whether configuration is supported for this pin.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -283,262 +257,13 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortIsPinConfigurable: DEFAULT(XPath: ecu:get(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.isConfigurable&apos;))))-->
+                          <DEFAULT-VALUE>true</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="cb8b8353-7c50-44e5-8d70-73ca6d0d42f2">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="3fa70517-3dbe-41c0-8254-eee27e54d7d1">
                           <SHORT-NAME>PortIsAnalogModeSupported</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Whether analog mode is supported for this pin.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortIsAnalogModeSupported: DEFAULT(XPath: ecu:get(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.isAnalogModeSupported&apos;))))-->
-                        </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="734941b5-a6ed-4409-b1d2-0546ebd51047">
-                          <SHORT-NAME>PortIsAGPIO</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Whether this pin is AGPIO.</L-2>
-                          </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortIsAGPIO: DEFAULT(XPath: ecu:get(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.isAGPIO&apos;))))-->
-                        </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="f50d84b8-2560-4c96-89f7-76153b84277e">
-                          <SHORT-NAME>PortIsAIO</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Whether this pin is AIO.</L-2>
-                          </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortIsAIO: DEFAULT(XPath: ecu:get(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.isAIO&apos;))))-->
-                        </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="179cbcb1-1efe-4df0-a8c4-8e39115f08a7">
-                          <SHORT-NAME>PortIsGPIO</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Whether this pin is GPIO.</L-2>
-                          </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortIsGPIO: DEFAULT(XPath: ecu:get(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.isGPIO&apos;))))-->
-                        </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="b73bcef7-db0b-45ee-9f9f-ea8502b86c9b">
-                          <SHORT-NAME>PortAnalogMode</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Select whether the pin operates in Analog Mode.</L-2>
-                          </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortAnalogMode: DEFAULT(XPath: (../PortIsAnalogModeSupported) and (../PortPinPeripheral = &apos;ANALOG&apos;))-->
-                          <LITERALS>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>PORT_ANALOG_DISABLED</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>PORT_ANALOG_ENABLED</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                          </LITERALS>
-                        </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="a4c648d0-9860-4464-9391-5e4822d4e5d3">
-                          <SHORT-NAME>PortPinInitialMode</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Port pin mode from mode list for use with Port_Init() function.</L-2>
-                          </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>AUTOSAR_ECUC</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinInitialMode: DEFAULT(XPath: node:fallback(&apos;PORT_MUXMODE_NA&apos;,&apos;PORT_MUXMODE_NA&apos;))-->
-                          <LITERALS>
-                            <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinInitialMode: RANGE(XPath: node:fallback(ecu:list(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.muxMode&apos;))),&apos;PORT_MUXMODE_NA&apos;))-->
-                            <ECUC-ENUMERATION-LITERAL-DEF UUID="5bf1b05a-6177-4014-ac4f-d1b3d82b8760">
-                              <SHORT-NAME>undefined</SHORT-NAME>
-                              <ORIGIN>unknown</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <!-- @CalculatedEnd -->
-                          </LITERALS>
-                        </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="4e4ffe86-563d-47b4-a221-c8f5bdd11656">
-                          <SHORT-NAME>PortPinDirection</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">The initial direction of the pin (IN or OUT). If the direction is not changeable, the value configured here is fixed.</L-2>
-                          </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>AUTOSAR_ECUC</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinDirection: DEFAULT(XPath: ((../PortIsPinConfigurable=&apos;true&apos;) and ((contains(node:value(../PortPinInitialMode), &apos;GPIO&apos;)) or (contains(node:value(../PortPinInitialMode), &apos;AIO&apos;))) and (((../PortIsAnalogModeSupported=&apos;false&apos;)) or ((../PortIsAnalogModeSupported=&apos;true&apos;) and (../PortAnalogMode=&apos;PORT_ANALOG_DISABLED&apos;)))))-->
-                          <LITERALS>
-                            <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinDirection: RANGE(XPath: ecu:list(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.supportedDirection&apos;))))-->
-                            <ECUC-ENUMERATION-LITERAL-DEF UUID="925ff967-d3cd-4e71-af6b-56f6f7c7dfd4">
-                              <SHORT-NAME>undefined</SHORT-NAME>
-                              <ORIGIN>unknown</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <!-- @CalculatedEnd -->
-                          </LITERALS>
-                        </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="332da8a8-77b3-4da1-8ae0-3e3269645ab8">
-                          <SHORT-NAME>PortPinDirectionChangeable</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Parameter to indicate if the direction is changeable on a port pin during runtime.</L-2>
-                          </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>AUTOSAR_ECUC</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <DEFAULT-VALUE>False</DEFAULT-VALUE>
-                        </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="dfdcd1a5-2385-404b-875f-2beee26dffe0">
-                          <SHORT-NAME>PortPinPadConfig</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Enable Push-Pull or Open Drain functionality.</L-2>
-                          </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinPadConfig: DEFAULT(XPath: ((../PortIsPinConfigurable=&apos;true&apos;) and (((../PortIsAnalogModeSupported=&apos;false&apos;)) or ((../PortIsAnalogModeSupported=&apos;true&apos;) and (../PortAnalogMode=&apos;PORT_ANALOG_DISABLED&apos;)))))-->
-                          <LITERALS>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>PORT_PIN_TYPE_STD</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>PORT_PIN_TYPE_OPEN_DRAIN</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>PORT_PIN_TYPE_NA</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                          </LITERALS>
-                        </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="df4a919b-ca44-46ad-9f62-861992d2e0ac">
-                          <SHORT-NAME>PortPinPullUpConfig</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Enable Pull Up.</L-2>
-                          </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -555,13 +280,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="a1fc9d04-4b89-430a-9b7a-215309782a49">
-                          <SHORT-NAME>PortPinQualificationMode</SHORT-NAME>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="048aee77-3868-43b8-83c2-4edf945ede6d">
+                          <SHORT-NAME>PortIsAGPIO</SHORT-NAME>
                           <DESC>
-                            <L-2 L="EN">Synchronization mode of the peripheral signals.</L-2>
+                            <L-2 L="EN">Whether this pin is AGPIO.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -576,7 +299,232 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinQualificationMode: DEFAULT(XPath: ((../PortIsPinConfigurable=&apos;true&apos;) and (((../PortIsAnalogModeSupported=&apos;false&apos;)) or ((../PortIsAnalogModeSupported=&apos;true&apos;) and (../PortAnalogMode=&apos;PORT_ANALOG_DISABLED&apos;)))))-->
+                          <DEFAULT-VALUE>true</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="12277c0b-f02e-4f20-8531-a939863be764">
+                          <SHORT-NAME>PortIsAIO</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Whether this pin is AIO.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>true</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="a0c30b41-128b-4d56-946e-a65b94b6ceaa">
+                          <SHORT-NAME>PortIsGPIO</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Whether this pin is GPIO.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>true</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="64c50e21-cb96-43c5-903c-456975784cfd">
+                          <SHORT-NAME>PortAnalogMode</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Select whether the pin operates in Analog Mode.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>PORT_ANALOG_ENABLED</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>PORT_ANALOG_DISABLED</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>PORT_ANALOG_ENABLED</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="d31ccffe-6df7-47f0-82f9-f8e43cfb691c">
+                          <SHORT-NAME>PortPinInitialMode</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Port pin mode from mode list for use with Port_Init() function.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>AUTOSAR_ECUC</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>PORT_MUXMODE_NA</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>PORT_MUXMODE_NA</SHORT-NAME>
+                              <ORIGIN>AUTOSAR_ECUC</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="0d7a1769-4d06-4e74-908f-4c1413257af2">
+                          <SHORT-NAME>PortPinDirection</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">The initial direction of the pin (IN or OUT). If the direction is not changeable, the value configured here is fixed.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>AUTOSAR_ECUC</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>PORT_PIN_IN</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>PORT_PIN_NA</SHORT-NAME>
+                              <ORIGIN>AUTOSAR_ECUC</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="57269840-87bb-47f7-a4a5-6ef1d538169b">
+                          <SHORT-NAME>PortPinDirectionChangeable</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Parameter to indicate if the direction is changeable on a port pin during runtime.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>AUTOSAR_ECUC</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>False</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="d89c2ec3-7628-4223-bcd9-d3634eaecd03">
+                          <SHORT-NAME>PortPinPadConfig</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Enable Push-Pull or Open Drain functionality.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>PORT_PIN_TYPE_STD</DEFAULT-VALUE>
+                          <LITERALS>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>PORT_PIN_TYPE_STD</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>PORT_PIN_TYPE_OPEN_DRAIN</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>PORT_PIN_TYPE_NA</SHORT-NAME>
+                              <ORIGIN>Texas Instruments</ORIGIN>
+                            </ECUC-ENUMERATION-LITERAL-DEF>
+                          </LITERALS>
+                        </ECUC-ENUMERATION-PARAM-DEF>
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="98d3791f-78d7-46ae-a147-b80e944c219b">
+                          <SHORT-NAME>PortPinPullUpConfig</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Enable Pull Up.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                        </ECUC-BOOLEAN-PARAM-DEF>
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="27c60ac6-eed2-4eaa-b779-2c0b77a125e2">
+                          <SHORT-NAME>PortPinQualificationMode</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Synchronization mode of the peripheral signals.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                          <DEFAULT-VALUE>PORT_QUAL_SYNC</DEFAULT-VALUE>
                           <LITERALS>
                             <ECUC-ENUMERATION-LITERAL-DEF>
                               <SHORT-NAME>PORT_QUAL_SYNC</SHORT-NAME>
@@ -600,13 +548,11 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="4e46aa94-7121-4c51-814f-81acb5db1952">
+                        <ECUC-INTEGER-PARAM-DEF UUID="4ebf75fb-a801-4927-863b-4f9f4d37d536">
                           <SHORT-NAME>PortPinQualificationPeriod</SHORT-NAME>
                           <DESC>
-                            <L-2 L="EN">Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs          For Instance:          Qualification sampling period for GPIO0 to GPIO7:           0x00,QUALPRDx = PLLSYSCLK           0x01,QUALPRDx = PLLSYSCLK/2          0x02,QUALPRDx = PLLSYSCLK/4          ....          0xFF,QUALPRDx = PLLSYSCLK/510          Reset type: SYSRSn</L-2>
+                            <L-2 L="EN">Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs                                 For Instance:                                 Qualification sampling period for GPIO0 to GPIO7:                                  0x00,QUALPRDx = PLLSYSCLK                                  0x01,QUALPRDx = PLLSYSCLK/2                                 0x02,QUALPRDx = PLLSYSCLK/4                                 ....                                 0xFF,QUALPRDx = PLLSYSCLK/510                                 Reset type: SYSRSn</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -622,18 +568,16 @@
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>1</DEFAULT-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinQualificationPeriod: INVALID(XPath: (node:value(.)=1) or (node:value(.) mod 2 = 0 and node:value(.) &lt;= 510 and node:value(.) &gt; 1))-->
+                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinQualificationPeriod: INVALID(XPath: (node:value(.)=1) or (node:value(.) mod 2 = 0 and node:value(.) &lt;= 510 and node:value(.) &gt;= 1))-->
                           <MAX>9223372036854775807</MAX>
                           <MIN>-9223372036854775808</MIN>
                           <!-- @CalculatedEnd -->
                         </ECUC-INTEGER-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="878a2462-e42a-4066-a8fc-2941858a8e86">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="dafb264d-8c84-443e-87b0-4c6cb32a456f">
                           <SHORT-NAME>PortPinLevelValue</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Port Pin Level value from Port pin list.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -648,7 +592,7 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinLevelValue: DEFAULT(XPath: ((../PortIsPinConfigurable=&apos;true&apos;) and (contains(node:value(../PortPinInitialMode), &apos;GPIO&apos;)) and (../PortPinDirection=&apos;PORT_PIN_OUT&apos;) and (((../PortIsAnalogModeSupported=&apos;false&apos;)) or ((../PortIsAnalogModeSupported=&apos;true&apos;) and (../PortAnalogMode=&apos;PORT_ANALOG_DISABLED&apos;)))))-->
+                          <DEFAULT-VALUE>PORT_PIN_LEVEL_LOW</DEFAULT-VALUE>
                           <LITERALS>
                             <ECUC-ENUMERATION-LITERAL-DEF>
                               <SHORT-NAME>PORT_PIN_LEVEL_HIGH</SHORT-NAME>
@@ -664,13 +608,11 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="a2be47c5-e37d-483c-a7ef-957cb4d05e4c">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="129082b4-0d2e-453e-bfdc-41d5fdb35f06">
                           <SHORT-NAME>PortPinCoreSelect</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Selection of core to which pin is to be mapped.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -701,13 +643,11 @@
                             </ECUC-ENUMERATION-LITERAL-DEF>
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="5bd3f55c-650e-4f23-8ef2-3435c481604b">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="625cfed2-b096-4633-b81f-1ecb33c2714e">
                           <SHORT-NAME>PortEnableWakeUpPinLPM</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Use/Don&apos;t use the GPIO Pin as a wakeup source for the low power modes - standby/halt.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
@@ -723,15 +663,11 @@
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                           <DEFAULT-VALUE>false</DEFAULT-VALUE>
                         </ECUC-BOOLEAN-PARAM-DEF>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="46930e53-6b09-4758-99ba-80f941f16a10">
+                        <ECUC-ENUMERATION-PARAM-DEF UUID="a57b4cd0-ed21-4453-bb9b-1e7aa5cb2235">
                           <SHORT-NAME>PortPinMode</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Port pin mode from mode list.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <!-- @Calculated /AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Port/PortConfigSet/PortContainer/PortContainer/PortPin/PortPin/PortPinMode: MAX(XPath: count(ecu:list(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../PortPhysicalPinId)),&apos;.muxMode&apos;)))))-->
-                          <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
-                          <!-- @CalculatedEnd -->
                           <SCOPE>LOCAL</SCOPE>
                           <MULTIPLICITY-CONFIG-CLASSES>
                             <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
@@ -744,7 +680,6 @@
                             </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
                           </MULTIPLICITY-CONFIG-CLASSES>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
-                          <POST-BUILD-VARIANT-MULTIPLICITY>true</POST-BUILD-VARIANT-MULTIPLICITY>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
                           <VALUE-CONFIG-CLASSES>
                             <ECUC-VALUE-CONFIGURATION-CLASS>
@@ -757,23 +692,19 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinMode: DEFAULT(XPath: ../../PortPinInitialMode)-->
+                          <DEFAULT-VALUE>PORT_MUXMODE_NA</DEFAULT-VALUE>
                           <LITERALS>
-                            <!-- @Calculated /TI_F29H85x/Port/PortConfigSet/PortContainer/PortPin/PortPinMode: RANGE(XPath: ecu:list(concat(concat(&apos;Port_&apos;,node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat(&apos;_PackagePin_&apos;,node:value(../../PortPhysicalPinId)),&apos;.muxMode&apos;))))-->
-                            <ECUC-ENUMERATION-LITERAL-DEF UUID="129de28f-d59c-43e2-9027-85952b3c92ce">
-                              <SHORT-NAME>undefined</SHORT-NAME>
-                              <ORIGIN>unknown</ORIGIN>
+                            <ECUC-ENUMERATION-LITERAL-DEF>
+                              <SHORT-NAME>PORT_MUXMODE_NA</SHORT-NAME>
+                              <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                             </ECUC-ENUMERATION-LITERAL-DEF>
-                            <!-- @CalculatedEnd -->
                           </LITERALS>
                         </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-BOOLEAN-PARAM-DEF UUID="d0251f9c-d580-472f-b34e-336aa69495d6">
+                        <ECUC-BOOLEAN-PARAM-DEF UUID="1a065d60-79aa-4e14-bc6a-1bff6ab8d55f">
                           <SHORT-NAME>PortPinModeChangeable</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Parameter to indicate if the mode is changeable on a port pin during runtime. True: Port Pin mode changeable allowed. False: Port Pin mode changeable not permitted.</L-2>
                           </DESC>
-                          <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                          <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                           <POST-BUILD-VARIANT-VALUE>true</POST-BUILD-VARIANT-VALUE>
@@ -796,21 +727,17 @@
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
               </SUB-CONTAINERS>
             </ECUC-PARAM-CONF-CONTAINER-DEF>
-            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="573daa9a-cdf5-43ad-b35c-9f666bf6975a">
+            <ECUC-PARAM-CONF-CONTAINER-DEF UUID="8ceebdd2-b63d-43e5-a10a-64bc546c75b3">
               <SHORT-NAME>PortGeneral</SHORT-NAME>
               <DESC>
                 <L-2 L="EN">Module wide configuration parameters of the PORT driver.</L-2>
               </DESC>
-              <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
               <PARAMETERS>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="721348d8-89b6-46af-bd31-d55f7b0f3004">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="1aed1fcb-682d-4559-81c9-d441b91aeb61">
                   <SHORT-NAME>PortDevErrorDetect</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Switches the development error detection and notification on or off.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -827,13 +754,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="532df2a9-d0f2-4980-a3ea-48539b9214b5">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="e252ae79-3ec7-47b3-aec4-b3ade947386a">
                   <SHORT-NAME>PortSetPinDirectionApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Pre-processor switch to enable / disable the use of the function Port_SetPinDirection().</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -850,13 +775,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>true</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="a9cb7267-c0ef-4391-803e-72db1f13013d">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="4cf46ff3-2793-43cc-b2e7-ab539b82d676">
                   <SHORT-NAME>PortSetPinModeApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Pre-processor switch to enable / disable the use of the function Port_SetPinMode().</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -873,13 +796,11 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>true</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-BOOLEAN-PARAM-DEF UUID="48596f2f-e68e-462d-a8b9-362aedd51d26">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="91dfe1b2-9c3c-493f-9fd9-a9bcd9b067bc">
                   <SHORT-NAME>PortVersionInfoApi</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Pre-processor switch to enable / disable the API to read out the modules version information.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -896,13 +817,31 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-ENUMERATION-PARAM-DEF UUID="8b09b731-3955-411c-800a-58eb532f6d0d">
+                <ECUC-BOOLEAN-PARAM-DEF UUID="123589cf-fca2-4808-8e89-b557bdb6940d">
+                  <SHORT-NAME>PortLockConfiguration</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Lock All pins configuration.</L-2>
+                  </DESC>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                  <DEFAULT-VALUE>false</DEFAULT-VALUE>
+                </ECUC-BOOLEAN-PARAM-DEF>
+                <ECUC-ENUMERATION-PARAM-DEF UUID="031fe287-c4a3-4953-974d-8834be2691eb">
                   <SHORT-NAME>PortDeviceVariant</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Select package variant for F29H85x.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                   <SCOPE>LOCAL</SCOPE>
                   <ORIGIN>Texas Instruments</ORIGIN>
                   <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -917,14 +856,12 @@
                     </ECUC-VALUE-CONFIGURATION-CLASS>
                   </VALUE-CONFIG-CLASSES>
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                  <!-- @Calculated /TI_F29H85x/Port/PortGeneral/PortDeviceVariant: DEFAULT(XPath: node:fallback(&apos;F29H85x_256ZEX&apos;,&apos;F29H85x_256ZEX&apos;))-->
+                  <DEFAULT-VALUE>F29H85x_256ZEX</DEFAULT-VALUE>
                   <LITERALS>
-                    <!-- @Calculated /TI_F29H85x/Port/PortGeneral/PortDeviceVariant: RANGE(XPath: node:fallback(ecu:parameters(&apos;subderivate&apos;),&apos;F29H85x_256ZEX&apos;))-->
-                    <ECUC-ENUMERATION-LITERAL-DEF UUID="c4e7898f-1c88-432a-a130-01aa319c1629">
+                    <ECUC-ENUMERATION-LITERAL-DEF UUID="f4347134-abe4-4d3b-ae1b-98d4e2eb4dba">
                       <SHORT-NAME>undefined</SHORT-NAME>
                       <ORIGIN>unknown</ORIGIN>
                     </ECUC-ENUMERATION-LITERAL-DEF>
-                    <!-- @CalculatedEnd -->
                   </LITERALS>
                 </ECUC-ENUMERATION-PARAM-DEF>
               </PARAMETERS>

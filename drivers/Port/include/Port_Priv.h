@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -65,12 +65,14 @@ extern "C" {
 #define PORT_WIDTH                              (32U)
 /** \brief Half of Port Width */
 #define PORT_WIDTH_HALF                         (16U)
-/** \brief Quater of Port Width */
+/** \brief Quarter of Port Width */
 #define PORT_WIDTH_QUARTER                      (8U)
 /** \brief One bit mask value */
 #define ONE_BIT_MASK                            (1U)
 /** \brief Two bit mask value */
 #define TWO_BIT_MASK                            (0x3U)
+/** \brief AGPIO Pin start Value */
+#define AGPIO_PINS_START_VALUE                  (224U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -146,6 +148,7 @@ extern "C" {
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
+
 /** \brief Sets the pad/pull configuration for the specified pin.
  *
  * This function sets the controller specific parameters for the specified pin. 
@@ -153,10 +156,12 @@ extern "C" {
  * specified by passing 34 as \e PinNumber.
  *
  * \param[in] PinConfigPtr is the pointer to the pin config structure.
+ * \param[out] returnvalue
  * \pre None
  * \post None
- * \return None
- * \retval None
+ * \return returnValue
+ * \retval E_OK if pad configuration is success
+ * \retval E_NOT_OK if pad configuration Fails
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, PORT_CODE) \
@@ -182,7 +187,7 @@ Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) Pin
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, PORT_CODE) \
- Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) \
+Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) \
                                                             PinConfigPtr, Port_PinLevelValueType PinLevel);
 
 
@@ -289,6 +294,51 @@ FUNC(Std_ReturnType, PORT_CODE) Port_IsPinNumberValid(Port_PinType PinNumber);
 FUNC(Std_ReturnType, PORT_CODE) Port_ValidateSetPinMode(Port_PinModeType Mode, \
                                         P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA)  pinConfig,\
                                         P2VAR(uint8, AUTOMATIC, PORT_APPL_DATA) errorIdPtr);
+
+
+/** \brief Locks the Critical Configuration registers for the passed Pin.
+ * 
+ * This function Locks the Critical Configuration registers for the passed Pin
+ *
+ * \param[in] pinConfig is the Pointer having pin config
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * \retval None
+ *
+ ****************************************************************************/
+FUNC(void, PORT_CODE) Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig);
+
+
+/** \brief Unlocks the Critical Configuration registers for the passed Pin.
+ * 
+ * This function Unlocks the Critical Configuration registers for the passed Pin
+ *
+ * \param[in] pinConfig is the Pointer having pin config
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * \retval None
+ *
+ ****************************************************************************/
+FUNC(void, PORT_CODE) Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig);
+
+
+/** \brief Locks and Commit the Critical Configuration registers for the passed Pin.
+ * 
+ * This function Locks and Commit the Critical Configuration registers for the passed Pin
+ *
+ * \param[in] pinNumber Pin Number
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ * \retval None
+ *
+ ****************************************************************************/
+FUNC(void, PORT_CODE) Port_CommitConfigurationProcess(Port_PinType pinNumber);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

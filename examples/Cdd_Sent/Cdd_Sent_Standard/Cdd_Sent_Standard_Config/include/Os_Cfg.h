@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ extern "C" {
  *  Exported Function Prototypes
  *********************************************************************************************************************/
 /* Category 1 RTINT ISR function prototype. */
-MCAL_LIB_INT_ISR(Cdd_Sent_1_ISR); 
+MCAL_LIB_INT_ISR(Cdd_Sent_4_ISR); 
 
 
 /*********************************************************************************************************************

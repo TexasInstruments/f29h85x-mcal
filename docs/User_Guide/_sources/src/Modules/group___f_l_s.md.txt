@@ -1,0 +1,1309 @@
+---
+title: Fls API GUIDE Header file
+
+---
+
+# FLS
+
+ [More...](#detailed-description)
+
+## Types
+
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|enum| **[Fls_EraseType](../Modules/group___f_l_s.md#enum-fls-erasetype)** 
+|enum| **[Fls_FapiStatusTag](../Modules/group___f_l_s.md#enum-fls-fapistatustag)** | This is the master type containing all possible returned status codes.  | 
+|enum| **[Fls_FlashStateCmdTag](../Modules/group___f_l_s.md#enum-fls-flashstatecmdtag)** | This contains all the possible Flash State Machine commands.  | 
+|enum| **[Fls_FapiRegionValueType](../Modules/group___f_l_s.md#enum-fls-fapiregionvaluetype)** 
+|enum| **[Fls_FlashFRIType](../Modules/group___f_l_s.md#enum-fls-flashfritype)** | Enumeration of FRI register addresses for use with Flash_configFRI()  | 
+|enum| **[Fls_JobType](../Modules/group___f_l_s.md#enum-fls-jobtype)** 
+|enum| **[Fls_InternalStateType](../Modules/group___f_l_s.md#enum-fls-internalstatetype)** 
+|typedef uint32  | **[Fls_AddressType](../Modules/group___f_l_s.md#typedef-fls-addresstype)** | Type of address type.  | 
+|typedef uint32  | **[Fls_LengthType](../Modules/group___f_l_s.md#typedef-fls-lengthtype)** 
+|typedef uint32  | **[Fls_FapiFlashStatus](../Modules/group___f_l_s.md#typedef-fls-fapiflashstatus)** 
+
+
+
+### enum Fls_EraseType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| FLS_SECTOR_ERASE | 0U|   |
+| FLS_BANK_ERASE | |   |
+
+
+
+
+ENUM for erase type names 
+
+
+
+
+### enum Fls_FapiStatusTag
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+
+
+
+
+**Brief**: 
+This is the master type containing all possible returned status codes. 
+
+
+
+### enum Fls_FlashStateCmdTag
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+
+
+
+
+**Brief**: 
+This contains all the possible Flash State Machine commands. 
+
+
+
+### enum Fls_FapiRegionValueType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| FLS_FAPI_SINGLEVALUE | 0U|   |
+| FLS_FAPI_MULTIPLEVALUE | |   |
+| FLS_FAPI_MULTIPLEVALUEECC | |   |
+
+
+
+
+
+
+### enum Fls_FlashFRIType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| FLS_FLASH_FRI1 |  (uint8)(0U)|   |
+| FLS_FLASH_FRI2 |  (uint8)(1U)|   |
+| FLS_FLASH_FRI3 |  (uint8)(2U)|   |
+| FLS_FLASH_FRI4 |  (uint8)(3U)|   |
+
+
+
+
+**Brief**: 
+Enumeration of FRI register addresses for use with Flash_configFRI() 
+
+
+
+### enum Fls_JobType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| FLS_JOB_NONE | 0U|   |
+| FLS_JOB_COMPARE | |   |
+| FLS_JOB_ERASE | |   |
+| FLS_JOB_READ | |   |
+| FLS_JOB_WRITE | |   |
+| FLS_JOB_BLANKCHECK | |   |
+
+
+
+
+ENUM for job type names 
+
+
+
+
+### enum Fls_InternalStateType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| FLS_INTERNAL_JOB_WAIT | 0U|   |
+| FLS_INTERNAL_JOB_FAIL | |   |
+| FLS_INTERNAL_JOB_DONE | |   |
+| FLS_INTERNAL_JOB_READY | |   |
+| FLS_INTERNAL_JOB_BUSY | |   |
+
+
+
+
+ENUM for Internal State type names 
+
+
+
+
+
+
+
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Fls_SectorType](../Classes/struct_fls___sector_type.md)** | FLS Module Flashable Sectors and pages.  |
+| **[Fls_ConfigType](../Classes/struct_fls___config_type.md)** |  |
+| **[Fls_FlashStatusWordTag](../Classes/struct_fls___flash_status_word_tag.md)** |  |
+| **[Fls_DriverObjType](../Classes/struct_fls___driver_obj_type.md)** |  |
+
+
+
+
+## Defines
+
+| Name           |  Brief     |
+| -------------- | ---------- |
+| FLS_SW_MAJOR_VERSION   | Defines for FLS Driver version used for compatibility checks.  |
+| FLS_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| FLS_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| FLS_AR_RELEASE_MAJOR_VERSION   | Defines for FLS Driver AUTOSAR version used for compatibility checks.  |
+| FLS_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by FLS Driver.  |
+| FLS_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by FLS Driver.  |
+| FLS_VENDOR_ID   | FLS Driver ID Info.  |
+| FLS_MODULE_ID   | FLS Driver Module ID.  |
+| FLS_INSTANCE_ID   | FLS Driver Instance ID.  |
+| FLS_BASE_ADDRESS_REQ   |  |
+| FLS_WRITE_ADDRESS_ALIGNMENT   |  |
+| FLS_E_PARAM_CONFIG   | FLS Error Codes returned by FLS functions.  |
+| FLS_E_PARAM_ADDRESS   | API service called with wrong parameter.  |
+| FLS_E_PARAM_LENGTH   | API service called with wrong parameter.  |
+| FLS_E_PARAM_DATA   | API service called with wrong parameter.  |
+| FLS_E_UNINIT   | API service used without module initiali-zation.  |
+| FLS_E_BUSY   | APIs called when module is busy.  |
+| FLS_E_PARAM_POINTER   | APIs called with a Null Pointer.  |
+| FLS_E_PARAM_ALIGNMENT   | API service called with wrong parameter.  |
+| FLS_E_VERIFY_ERASE_FAILED   | Runtime Errors WITH HW.  |
+| FLS_E_VERIFY_WRITE_FAILED   | APIs serice Write Verification (Compare) failed.  |
+| FLS_E_TIMEOUT   | APIs Timeout Exceeded.  |
+| FLS_E_ERASE_FAILED   | TRANSIENT FAULTS WITH HW.  |
+| FLS_E_WRITE_FAILED   | Flash Write Failed in HW.  |
+| FLS_E_READ_FAILED   | Flash Read Failed in HW.  |
+| FLS_E_COMPARE_FAILED   | Flash Compare Failediin HW.  |
+| FLS_E_UNEXPECTED_FLASH_ID   | Expected HW ID not matched.  |
+| FLS_E_BLANK_CHECK_FAILED   | Flash Blank Check Failediin HW.  |
+| FLS_SID_INIT   | The Service Id is one of the argument to Det_ReportError function and is used to identify the source of the error.  |
+| FLS_SID_ERASE   | FLS_Erase() API Service ID.  |
+| FLS_SID_WRITE   | FLS_Write() API Service ID.  |
+| FLS_SID_CANCEL   | FLS_Cancel() API Service ID.  |
+| FLS_SID_GET_STATUS   | FLS_GetStatus() API Service ID.  |
+| FLS_SID_GET_JOB_RESULT   | Fls_GetJobResult() API Service ID.  |
+| FLS_SID_READ   | FLS_Read() API Service ID.  |
+| FLS_SID_COMPARE   | FLS_Compare() API Service ID.  |
+| FLS_SID_SET_MODE   | FLS_SetMode() API Service ID.  |
+| FLS_SID_GET_VERSION_INFO   | Fls_GetVersionInfo() API Service ID.  |
+| FLS_SID_BLANK_CHECK   | FLS_BlankCheck() API Service ID.  |
+| FLS_SID_MAIN_FUNCTION   | FLS_MainFunction() API Service ID.  |
+| FLS_SSUGEN_BASE   | SSU registers.  |
+| FLS_SSU_O_FLSEMREQ   |  |
+| FLS_SSU_O_FLSEMSTAT   |  |
+| FLS_SSU_O_FLSEMCLR   |  |
+| FLS_SSU_FLSEMSTAT_CPU_M   |  |
+| FLS_SSU_FLSEMSTAT_CPU_S   |  |
+| FLS_SSU_FLSEMSTAT_ASSIGNED   |  |
+| FLS_SSU_FLSEMSTAT_MATCH   |  |
+| FLS_SSU_O_BEPROT_BANK   | The following are defines for the bit fields in the BEPROT_BANK register.  |
+| FLS_SSU_O_BEPROT_STAT   |  |
+| FLS_SSU_BEPROT_BANK_BANKID_S   |  |
+| FLS_SSU_BEPROT_BANK_BANKID_M   |  |
+| FLS_SSU_BEPROT_BANK_FLCID_S   |  |
+| FLS_SSU_BEPROT_BANK_FLCID_M   |  |
+| FLS_FLASH_FLC1_CMD_REGS_BASE   | FRI register offsets and bit fields.  |
+| FLS_FRI1_CTL_BASE   |  |
+| FLS_ANALOGSUBSYS_BASE   |  |
+| FLS_FRI_O_FRDCNTL   |  |
+| FLS_FRI_O_1_INTF_CTRL   |  |
+| FLS_FRI_FRDCNTL_RWAIT_S   |  |
+| FLS_FRI_FRDCNTL_RWAIT_M   |  |
+| FLS_FLASH_DELAY_CONFIG   |  |
+| FLS_FLASH_READINTERFACE_BASE   | FMC memory map defines.  |
+| FLS_FLASH_FAPI_FLASHNW_FC1_BASE   |  |
+| FLS_C29FLASHBANKFR4RP0STARTADDRESS   | FR-4 RP0 data flash.  |
+| FLS_C29FLASHBANKFR4RP0ENDADDRESS   |  |
+| FLS_C29FLASHBANKFR4RP0ENDADDRESSPLUS1   |  |
+| FLS_C29FLASHBANKFR4RP0ECCSTARTADDRESS   | FR-4 RP0 ECC data flash.  |
+| FLS_C29FLASHBANKFR4RP0ECCENDADDRESS   |  |
+| FLS_C29FLASHBANKFR4RP0ECCENDADDRESSPLUS1   |  |
+| FLS_C29FLASHBANKFR4RP0BANKMGMTSTARTADDRESS   | C29 banks : Non-Main Array.  |
+| FLS_C29FLASHBANKFR4RP0BANKMGMTENDADDRESS   |  |
+| FLS_C29FLASHBANKFR4RP0BANKMGMTENDADDRESSPLUS1   |  |
+| FLS_C29FLASHBANKFR4RP0BANKMGMTECCSTARTADDRESS   | HSM C29 banks : Non-Main Array ECC.  |
+| FLS_C29FLASHBANKFR4RP0BANKMGMTECCENDADDRESS   |  |
+| FLS_C29FLASHBANKFR4RP0BANKMGMTECCENDADDRESSPLUS1   |  |
+| FLS_FLASH_PREFETCH_ENABLE   | Macros for FRI options to use with the Flash_configFRI() function. Includes macros for enabling and disabling prefetch, data cache, code cache and data preread.  |
+| FLS_FLASH_PREFETCH_DISABLE   |  |
+| FLS_FLASH_DATACACHE_ENABLE   |  |
+| FLS_FLASH_DATACACHE_DISABLE   |  |
+| FLS_FLASH_CODECACHE_ENABLE   |  |
+| FLS_FLASH_CODECACHE_DISABLE   |  |
+| FLS_FLASH_DATAPREREAD_ENABLE   |  |
+| FLS_FLASH_DATAPREREAD_DISABLE   |  |
+| FLS_FRI_REG_STEP   | Macro to define the offset between options for different FRIs. For example, FRI_O_2_INTF_CTRL - FRI_O_1_INTF_CTRL = 0x10U.  |
+| FLS_ASYSCTL_O_FLASHTRIMCOMMIT   | Internal macros used for committing trim registers. Not intended for application use.  |
+| FLS_ASYSCTL_FLC1TRIMCOMMITREAD   |  |
+| FLS_ASYSCTL_FLC1TRIMCOMMITOTHER   |  |
+| FLS_FLASH_O_REVISION   | The following are defines for the FLASH register offsets.  |
+| FLS_FLASH_O_FRDCNTL   |  |
+| FLS_FLASH_O_FLCLKCTL   |  |
+| FLS_FLASH_FLCLKCTL_KDIV_S   | The following are defines for the bit fields in the FLCLKCTL register.  |
+| FLS_FLASH_FLCLKCTL_KDIV_M   |  |
+| FLS_FLASH_NW_O_CMDEXEC   | The following are defines for the FLS_FLASH_NOWRAPPER register offsets.  |
+| FLS_FLASH_NW_O_CMDTYPE   |  |
+| FLS_FLASH_NW_O_CMDCTL   |  |
+| FLS_FLASH_NW_O_CMDADDR   |  |
+| FLS_FLASH_NW_O_CMDBYTEN   |  |
+| FLS_FLASH_NW_O_CMDDATAINDEX   |  |
+| FLS_FLASH_NW_O_CMDDATA0   |  |
+| FLS_FLASH_NW_O_CMDWEPROTA   |  |
+| FLS_FLASH_NW_O_CMDWEPROTB   |  |
+| FLS_FLASH_NW_O_CMDWEPROTNM   |  |
+| FLS_FLASH_NW_O_CFGCMD   |  |
+| FLS_FLASH_NW_O_STATCMD   |  |
+| FLS_FLASH_NW_CMDTYPE_CMD_S   | The following are defines for the bit fields in the CMDTYPE register.  |
+| FLS_FLASH_NW_CMDTYPE_CMD_M   |  |
+| FLS_FLASH_NW_CMDTYPE_SECTOR_ERASE   | Configure for sector erase: Command is erase (2), Size is sector (4)  |
+| FLS_FLASH_NW_CMDTYPE_BANK_ERASE   | Configure for Bank erase: Command is erase (2), Size is Bank (5)  |
+| FLS_FLASH_NW_CMDTYPE_PROG_ONEWD   | Configure for 4*128 word program: Command is program (1), Size is FOURWORD (2)  |
+| FLS_FLASH_NW_CMDCTL_ECCGENOVR   |  |
+| FLS_FLASH_NW_CMDCTL_ECCGENOVR_S   |  |
+| FLS_FLASH_NW_CMDCTL_DATAVEREN   |  |
+| FLS_FLASH_NW_CMDCTL_DATAVEREN_S   |  |
+| FLS_FLASH_NW_CFGCMD_WAITSTATE_S   | The following are defines for the bit fields in the CFGCMD register.  |
+| FLS_FLASH_NW_CFGCMD_WAITSTATE_M   |  |
+| FLS_FLASH_NW_CMDBYTEN_VAL_S   | The following are defines for the bit fields in the CMDBYTEN register.  |
+| FLS_FLASH_NW_CMDBYTEN_VAL_M   |  |
+| FLS_FLASH_NW_CMDBYTEN_ECC0VAL_S   |  |
+| FLS_FLASH_NW_CMDBYTEN_ECC0VAL_M   |  |
+| FLS_FLASH_NW_CMDBYTEN_ECC1VAL_S   |  |
+| FLS_FLASH_NW_CMDBYTEN_ECC1VAL_M   |  |
+| FLS_FLASH_NW_CMDWEPROTNM_VAL_S   | The following are defines for the bit fields in the CMDWEPROTNM register.  |
+| FLS_FLASH_NW_CMDWEPROTNM_VAL_M   |  |
+| FLS_FLASH_NW_CMDWEPROTNM_READBACK_VAL   | Readback val to protect non-main region sector 0 erase.  |
+| FLS_FLASH_NW_STATCMD_CMDDONE   |  |
+| FLS_FLASH_NW_STATCMD_CMDPASS   |  |
+| FLS_FLASH_NW_STATCMD_CMDINPROGRESS   |  |
+| FLS_FLASH_NW_STATCMD_FAILWEPROT   |  |
+| FLS_FLASH_NW_STATCMD_FAILVERIFY   |  |
+| FLS_FLASH_NW_STATCMD_FAILMISC   |  |
+| FLS_FLASH_NW_STATCMD_FAILILLADDR   |  |
+| FLS_FLASH_NW_STATCMD_FAILMODE   |  |
+| FLS_FLASH_NW_STATCMD_FAILINVDATA   |  |
+| E_COMPARE_MISMATCH   |  |
+| E_BLANKCHECK_MISMATCH   |  |
+| FLS_S_EDEFAULT   |  |
+| FLS_S_ERASE_PRECHECK   |  |
+| FLS_DO_SECTOR_UNLOCK   |  |
+| FLS_DO_ERASE_JOB   |  |
+| FLS_S_ERASE_POSTCHECK   |  |
+| FLS_ERASE_FSM_READY_CHECK   |  |
+| FLS_ERASE_FSM_ISSUE_CMD   |  |
+| FLS_ERASE_FSM_STATUS_CHECK   |  |
+| FLS_STATUS_CLEAR_CHECK   |  |
+| FLS_ERASE_CMD_CHECK   |  |
+| FLS_WRITE_FSM_READY_CHECK   |  |
+| FLS_WRITE_FSM_ISSUE_CMD   |  |
+| FLS_WRITE_FSM_STATUS_CHECK   |  |
+| FLS_WRITE_CMD_CHECK   |  |
+| FLS_S_WDEFAULT   |  |
+| FLS_S_WRITE_PRECHECK   |  |
+| FLS_DO_WRITE_JOB   |  |
+| FLS_S_WRITE_POSTCHECK   |  |
+| FLS_CONV_TO_MHZ   |  |
+
+## Functions
+
+| Return type    | Function Name           |      Brief        |
+| -------------- | ----------------------- | ----------------- |
+| void | **[Fls_Init](../Modules/group___f_l_s.md#function-fls-init)**(const Fls_ConfigType * ConfigPtr)| Initializes the Flash Driver.  |
+| Std_ReturnType | **[Fls_Erase](../Modules/group___f_l_s.md#function-fls-erase)**([Fls_AddressType](Modules/group___f_l_s.md#typedef-fls-addresstype) TargetAddress, Fls_LengthType Length)| Erases flash sector(s).  |
+| Std_ReturnType | **[Fls_Write](../Modules/group___f_l_s.md#function-fls-write)**([Fls_AddressType](Modules/group___f_l_s.md#typedef-fls-addresstype) TargetAddress, const uint8 * SourceAddressPtr, Fls_LengthType Length)| Writes one or more complete flash pages.  |
+| Std_ReturnType | **[Fls_Read](../Modules/group___f_l_s.md#function-fls-read)**([Fls_AddressType](Modules/group___f_l_s.md#typedef-fls-addresstype) SourceAddress, uint8 * TargetAddressPtr, Fls_LengthType Length)| Reads from flash memory..  |
+| Std_ReturnType | **[Fls_Compare](../Modules/group___f_l_s.md#function-fls-compare)**([Fls_AddressType](Modules/group___f_l_s.md#typedef-fls-addresstype) SourceAddress, const uint8 * TargetAddressPtr, Fls_LengthType Length)| Compares the contents of an area of flash memory with that of an application data buffer.  |
+| Std_ReturnType | **[Fls_BlankCheck](../Modules/group___f_l_s.md#function-fls-blankcheck)**([Fls_AddressType](Modules/group___f_l_s.md#typedef-fls-addresstype) Address, Fls_LengthType Length)| The function Fls_BlankCheck shall verify, whether a given memory area has been erased but not (yet) programmed.  |
+| MemIf_StatusType | **[Fls_GetStatus](../Modules/group___f_l_s.md#function-fls-getstatus)**(void )| Returns the driver state.  |
+| Std_ReturnType | **[Fls_GetVersionInfo](../Modules/group___f_l_s.md#function-fls-getversioninfo)**(Std_VersionInfoType * versioninfo)| This service returns the version information of this module.  |
+| MemIf_JobResultType | **[Fls_GetJobResult](../Modules/group___f_l_s.md#function-fls-getjobresult)**(void )| Returns the result of the last job.  |
+| void | **[Fls_MainFunction](../Modules/group___f_l_s.md#function-fls-mainfunction)**(void )| Performs the processing of jobs.  |
+| void | **[Fls_Cancel](../Modules/group___f_l_s.md#function-fls-cancel)**(void )| Cancels an ongoing job.  |
+| void | **[Fls_SetMode](../Modules/group___f_l_s.md#function-fls-setmode)**(MemIf_ModeType Mode)| Sets the flash driver's operation mode.  |
+| uint32 | **[Fls_SetEraseType](../Modules/group___f_l_s.md#function-fls-seterasetype)**([Fls_EraseType](Modules/group___f_l_s.md#enum-fls-erasetype) erasetype)| Sets the parameters for required erase type.  |
+| struct [Fls_FlashStatusWordTag](Classes/struct_fls___flash_status_word_tag.md) | **[__attribute__](../Modules/group___f_l_s.md#function---attribute--)**((packed) )| This is the master type containing all possible returned status codes.  |
+| Fls_FapiFlashStatus | **[Fls_Fapi_getFsmStatus](../Modules/group___f_l_s.md#function-fls-fapi-getfsmstatus)**(void )|  |
+| Fls_FapiStatusType | **[Fls_Fapi_checkFsmForReady](../Modules/group___f_l_s.md#function-fls-fapi-checkfsmforready)**(void )|  |
+| Fls_FapiStatusType | **[Fls_Fapi_setupBankSectorEnable](../Modules/group___f_l_s.md#function-fls-fapi-setupbanksectorenable)**(uint32 reg_address, uint32 value)|  |
+| Fls_FapiStatusType | **[Fls_Fapi_issueAsyncCommandWithAddress](../Modules/group___f_l_s.md#function-fls-fapi-issueasynccommandwithaddress)**(Fls_FlashStateCmdType oCommand, uint32 * pu32StartAddress)|  |
+| Fls_FapiStatusType | **[Fls_Fapi_issueAsyncCommand](../Modules/group___f_l_s.md#function-fls-fapi-issueasynccommand)**(Fls_FlashStateCmdType oCommand)|  |
+| Fls_FapiStatusType | **[Fls_Fapi_issueBankEraseCommand](../Modules/group___f_l_s.md#function-fls-fapi-issuebankerasecommand)**(uint32 * pu32StartAddress)|  |
+| Fls_FapiStatusType | **[Fls_Fapi_initializeAPI](../Modules/group___f_l_s.md#function-fls-fapi-initializeapi)**(uint32 u32HclkFrequency)|  |
+| Fls_FapiStatusType | **[Fls_Fapi_doBlankCheck](../Modules/group___f_l_s.md#function-fls-fapi-doblankcheck)**(uint32 * pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType * poFlashStatusWord)|  |
+| Fls_FapiStatusType | **[Fls_Fapi_doVerify](../Modules/group___f_l_s.md#function-fls-fapi-doverify)**(uint32 * pu32StartAddress, uint32 u32Length, uint32 * pu32CheckValueBuffer, Fls_FlashStatusWordType * poFlashStatusWord)|  |
+| Fls_FapiStatusType | **[Fls_Fapi_doVerifyByByte](../Modules/group___f_l_s.md#function-fls-fapi-doverifybybyte)**(uint8 * pu8StartAddress, uint32 u32Length, uint8 * pu8CheckValueBuffer, Fls_FlashStatusWordType * poFlashStatusWord)|  |
+| Fls_FapiStatusType | **[Fls_Fapi_issueProgrammingCommand](../Modules/group___f_l_s.md#function-fls-fapi-issueprogrammingcommand)**(uint32 * pu32StartAddress, uint8 * pu8DataBuffer, uint8 u8DataBufferSizeInBytes)|  |
+| void | **[Fls_Update_WaitStates](../Modules/group___f_l_s.md#function-fls-update-waitstates)**(uint16 waitstates)|  |
+| void | **[Fls_SSU_claimFlashSemaphore](../Modules/group___f_l_s.md#function-fls-ssu-claimflashsemaphore)**(void )|  |
+| void | **[Fls_SSU_releaseFlashSemaphore](../Modules/group___f_l_s.md#function-fls-ssu-releaseflashsemaphore)**(void )|  |
+| void | **[Fls_processJobs](../Modules/group___f_l_s.md#function-fls-processjobs)**([Fls_JobType](Modules/group___f_l_s.md#enum-fls-jobtype) job)|  |
+| void | **[Fls_resetDrvObj](../Modules/group___f_l_s.md#function-fls-resetdrvobj)**([Fls_DriverObjType](Classes/struct_fls___driver_obj_type.md) * drvObj)|  |
+| void | **[Fls_copyConfig](../Modules/group___f_l_s.md#function-fls-copyconfig)**([Fls_DriverObjType](Classes/struct_fls___driver_obj_type.md) * drvObj, const Fls_ConfigType * cfgPtr)|  |
+
+
+
+### function Fls_Init
+
+```
+void Fls_Init(
+    const Fls_ConfigType * ConfigPtr
+)
+```
+
+
+**Brief**: 
+Initializes the Flash Driver. 
+
+
+
+```
+*  Service name        : Fls_Init
+*  Syntax              : void Fls_Init( const Fls_ConfigType* ConfigPtr )
+*  Mode                : Supervisor Mode (Privileged Mode)
+*  Service ID[hex]     : 0x00
+*  Sync/Async          : Synchronous
+*  Reentrancy          : Non Reentrant
+*  Parameters (in)     : ConfigPtr - Pointer to flash driver configuration set
+*  Parameters (inout)  : None
+*  Parameters (out)    : None
+*  Return value        : None
+*  Description         : Initializes the Flash Driver
+*  ```
+
+Function Name: Fls_Init
+
+The function Fls_Init shall initialize the FLS module and all flash memory relevant registers (hardware) with parameters provided in the given configuration set SWS_Fls_00249 
+
+
+(STD_ON == FLS_POST_BUILD_VARIANT)
+
+SWS_Fls_00015
+
+if (STD_ON == FLS_DEV_ERROR_DETECT)
+
+SWS_Fls_00191
+
+SWS_Fls_00086
+
+Instantiate a Driver Obj to be used by module
+
+Copy the input config parameters to Driver Object
+
+At 200MHz, execution wait-states for external oscillator is 3
+
+function to calculate waitstates
+
+Initialize the Flash API by providing the Flash register base address and operating frequency(in MHz). This function is required to initialize the Flash API based on System frequency before any other Flash API operation can be performed. This function must also be called whenever System frequency or RWAIT is changed.
+
+Check Flash API documentation for possible errors
+
+SWS_Fls_00323
+
+Check the maximum write size
+
+SWS_Fls_00324
+
+The job has been finished successfully
+
+
+### function Fls_Erase
+
+```
+Std_ReturnType Fls_Erase(
+    Fls_AddressType TargetAddress,
+    Fls_LengthType Length
+)
+```
+
+
+**Brief**: 
+Erases flash sector(s). 
+
+
+
+```
+*  Service name        : Fls_Erase
+*  Syntax              : Std_ReturnType Fls_Erase(Fls_AddressType TargetAddress
+*                        ,Fls_LengthType Length)
+*  Mode                : Supervisor Mode (Privileged Mode)
+*  Service ID[hex]     : 0x01
+*  Sync/Async          : Asynchronous
+*  Reentrancy          : Non Reentrant
+*  Parameters (in)     : TargetAddress - Target address in flash memory.
+*                        This address offset will be added to the flash memory
+*                        base address.
+*                        Length - Number of bytes to erase
+*  Parameters (inout)  : None
+*  Parameters (out)    : None
+*  Return value        : Std_ReturnType -
+*                        E_OK: erase command has been accepted
+*                        E_NOT_OK: erase command has not been accepted
+*  Description         : Erases flash sector(s).
+*  ```
+
+Function Name: Fls_Erase
+
+The function Fls_Erase shall erase one or more complete flash sectors. SWS_Fls_00250 
+
+
+TargetAddress is the offset relative to the FLS base address which is 0x10c00000 for F29H85x device
+
+The offset should be less than the total flash size (assume 1MB) 
+TargetAddress = TargetAddress & 0xFFFFF;
+
+Fls_Erase erases a flash memory block starting from FlsBaseAddress + TargetAddress of size Length. Length should be rounded up to the next full sector boundary since only complete flash sectors can be erased.
+
+SWS_Fls_00065
+
+If development error detection is enabled: the Fls_Erase shall check that the FLS module has been initialized. If this check fails, the Fls_Erase shall reject the erase request, raise the development error FLS_E_UNINIT and return with E_NOT_OK
+
+SWS_Fls_00023
+
+If development error detection is enabled: the Fls_Erase shall check that the FLS module is currently not busy. If this check fails, the Fls_Erase shall reject the erase request, raise the development error FLS_E_BUSY and return with E_NOT_OK
+
+SWS_Fls_00020
+
+SRS_Fls_12159
+
+If development error detection is enabled: the Fls_Erase shall check that the erase start address (FlsBaseAddress + TargetAddress) is aligned to a flash sector boundary and that it lies within the specified lower and upper flash address boundaries. If this check fails, the Fls_Erase shall reject the erase request, raise the development error FLS_E_PARAM_ADDRESS and return with E_NOT_OK
+
+SWS_Fls_00021
+
+SRS_Fls_12159
+
+If development error detection for is enabled: the Fls_Erase shall check that the erase length is greater than 0 and that the erase end address (erase start address + length) is aligned to a flash sector boundary and that it lies within the specified upper flash address boundary. If this check fails, the Fls_Erase shall reject the erase request, raise the development error FLS_E_PARAM_LENGTH and return with E_NOT_OK
+
+if (STD_ON == FLS_DEV_ERROR_DETECT)
+
+SWS_Fls_00328
+
+After initiating the erase job, the Fls_Erase shall set the FLS module status to MEMIF_BUSY
+
+SWS_Fls_00329
+
+After initiating the erase job, the Fls_Erase shall set the job result to MEMIF_JOB_PENDING
+
+[ SWS_Fls_00221 ]
+
+FLS_BANK_ERASE)
+
+
+### function Fls_Write
+
+```
+Std_ReturnType Fls_Write(
+    Fls_AddressType TargetAddress,
+    const uint8 * SourceAddressPtr,
+    Fls_LengthType Length
+)
+```
+
+
+**Brief**: 
+Writes one or more complete flash pages. 
+
+
+
+```
+*  Service name        : Fls_Write
+*  Syntax              : Std_ReturnType Fls_Write(Fls_AddressType TargetAddress
+*                        ,const uint8* SourceAddressPtr,
+*                        Fls_LengthType Length)
+*  Mode                : Supervisor Mode (Privileged Mode)
+*  Service ID[hex]     : 0x02
+*  Sync/Async          : Asynchronous
+*  Reentrancy          : Non Reentrant
+*  Parameters (in)     : TargetAddress - Target address in flash memory.
+*                        This address offset will be added to the flash memory
+*                        base address.
+*                        SourceAddressPtr - Pointer to source data buffer
+*                        Length - Number of bytes to erase
+*  Parameters (inout)  : None
+*  Parameters (out)    : None
+*  Return value        : Std_ReturnType -
+*                        E_OK: write command has been accepted
+*                        E_NOT_OK: write command has not been accepted
+*  Description         : Writes one or more complete flash pages.
+*  ```
+
+Function Name: Fls_Write
+
+The function Fls_Write shall write one or more complete flash pages to the flash device. 
+
+
+SWS_Fls_00226
+
+The job of the function Fls_Write shall program a flash memory block with data provided via SourceAddressPtr starting from FlsBaseAddress + TargetAddress of size Length.
+
+TargetAddress is the offset relative to the FLS base address which is 0x10c00000 for F29H85x device
+
+The offset should be less than the total flash size (assume 1MB) 
+TargetAddress = TargetAddress & 0xFFFFF;
+
+SWS_Fls_00066
+
+If development error detection for the module Fls is enabled: the function Fls_Write shall check that the FLS module has been initialized. If this check fails, the function Fls_Write shall reject the write request, raise the development error FLS_E_UNINIT and return with E_NOT_OK
+
+SWS_Fls_00030
+
+If development error detection for the module Fls is enabled: the function Fls_Write shall check that the FLS module is currently not busy. If this check fails, the function Fls_Write shall reject the write request, raise the development error FLS_E_BUSY and return with E_NOT_OK
+
+SWS_Fls_00157
+
+If development error detection for the module Fls is enabled: the function Fls_Write shall check the given data buffer pointer for not being a null pointer. If the data buffer pointer is a null pointer, the function Fls_Write shall reject the write request, raise the development error FLS_E_PARAM_DATA and return with E_NOT_OK
+
+SWS_Fls_00026
+
+SRS_Fls_12159
+
+If development error detection for the module Fls is enabled: the function Fls_Write shall check that the write start address (FlsBaseAddress + TargetAddress) is aligned to a flash page boundary and that it lies within the specified lower and upper flash address boundaries. If this check fails, the function Fls_Write shall reject the write request, raise the development error FLS_E_PARAM_ADDRESS and return with E_NOT_OK
+
+SWS_Fls_00027
+
+SRS_Fls_12159
+
+If development error detection for the module Fls is enabled: the function Fls_Write shall check that the write length is greater than 0, that the write end address (write start address + length) is aligned to a flash page boundary and that it lies within the specified upper flash address boundary. If this check fails, the function Fls_Write shall reject the write request, raise the development error FLS_E_PARAM_LENGTH and return with E_NOT_OK
+
+SWS_Fls_00026
+
+SWS_Fls_00027
+
+if (STD_ON == FLS_DEV_ERROR_DETECT)
+
+[SWS_Fls_00333
+
+After initiating the write job, Fls_Write shall set the job result to MEMIF_JOB_PENDING
+
+SWS_Fls_00332
+
+After initiating the write job, Fls_Write shall set the FLS module status to MEMIF_BUSY
+
+SWS_Fls_00226
+
+
+### function Fls_Read
+
+```
+Std_ReturnType Fls_Read(
+    Fls_AddressType SourceAddress,
+    uint8 * TargetAddressPtr,
+    Fls_LengthType Length
+)
+```
+
+
+**Brief**: 
+Reads from flash memory.. 
+
+
+
+```
+*  Service name        : Fls_Read
+*  Syntax              : Std_ReturnType Fls_Read((Fls_AddressType SourceAddress
+*                        ,const uint8* TargetAddressPtr,
+*                        Fls_LengthType Length)
+*  Mode                : Supervisor Mode (Privileged Mode)
+*  Service ID[hex]     : 0x07
+*  Sync/Async          : Asynchronous
+*  Reentrancy          : Non Reentrant
+*  Parameters (in)     : SourceAddress - source address in flash memory.
+*                        This address offset will be added to the flash memory
+*                        base address.
+*                        TargetAddressPtr - Pointer to source data buffer
+*                        Length - Number of bytes to erase
+*  Parameters (inout)  : None
+*  Parameters (out)    : None
+*  Return value        : Std_ReturnType -
+*                        E_OK: read command has been accepted
+*                        E_NOT_OK: read command has not been accepted
+*  Description         : Reads from flash memory.
+*  ```
+
+Function Name: Fls_Read
+
+The function Fls_Read shall read from flash memory. 
+
+
+TargetAddress is the offset relative to the FLS base address which is 0x10c00000 for F29H85x device
+
+The offset should be less than the total flash size (assume 1MB) 
+TargetAddress = TargetAddress & 0xFFFFF;
+
+SWS_Fls_00239
+
+The read job of Fls_Read shall copy a continuous flash memory block starting from FlsBaseAddress + SourceAddress of size Length to the buffer pointed to by TargetAddressPtr
+
+SWS_Fls_00099
+
+If development error detection for the module Fls is enabled: the function Fls_Read shall check that the driver has been initialized. If this check fails, the function Fls_Read shall reject the read request, raise the development error FLS_E_UNINIT and return with E_NOT_OK
+
+SWS_Fls_00100
+
+If development error detection for the module Fls is enabled: the function Fls_Read shall check that the driver is currently not busy. If this check fails, the function Fls_Read shall reject the read request, raise the development error FLS_E_BUSY and return with E_NOT_OK
+
+SWS_Fls_00158
+
+If development error detection for the module Fls is enabled: the function Fls_Read shall check the given data buffer pointer for not being a null pointer. If the data buffer pointer is a null pointer, the function Fls_Read shall reject the read request, raise the development error FLS_E_PARAM_DATA and return with E_NOT_OK
+
+SWS_Fls_00097
+
+If development error detection for the module Fls is enabled: the function Fls_Read shall check that the read start address (FlsBaseAddress + SourceAddress) lies within the specified lower and upper flash address boundaries. If this check fails, the function Fls_Read shall reject the read job, raise development error FLS_E_PARAM_ADDRESS and return with E_NOT_OK
+
+SWS_Fls_00098
+
+If development error detection for the module Fls is enabled: the function Fls_Read shall check that the read length is greater than 0 and that the read end address (read start address + length) lies within the specified upper flash address boundary. If this check fails, the function Fls_Read shall reject the read job, raise the development error FLS_E_PARAM_LENGTH and return with E_NOT_OK
+
+SWS_Fls_00340
+
+After initiating a read job, the function Fls_Read shall return with E_OK.
+
+SWS_Fls_00338
+
+After initiating a read job, the function Fls_Read shall set the FLS module status to MEMIF_BUSY
+
+SWS_Fls_00339
+
+After initiating a read job, the function Fls_Read shall set the FLS module job result to MEMIF_JOB_PENDING
+
+SWS_Fls_00239
+
+"Reason - The source address needs to stored, for functionality operation. "
+
+
+### function Fls_Compare
+
+```
+Std_ReturnType Fls_Compare(
+    Fls_AddressType SourceAddress,
+    const uint8 * TargetAddressPtr,
+    Fls_LengthType Length
+)
+```
+
+
+**Brief**: 
+Compares the contents of an area of flash memory with that of an application data buffer. 
+
+
+
+```
+*  Service name        : Fls_Compare
+*  Syntax              : Std_ReturnType Fls_Compare
+*                        (Fls_AddressType SourceAddress,
+*                        const uint8* TargetAddressPtr,
+*                        Fls_LengthType Length)
+*  Mode                : User Mode (Non-Privileged Mode)
+*  Service ID[hex]     : 0x08
+*  Sync/Async          : Asynchronous
+*  Reentrancy          : Non Reentrant
+*  Parameters (in)     : SourceAddress - Target address in flash memory.
+*                        This address offset will be added to the flash memory
+*                        base address.
+*                        TargetAddressPtr - Pointer to source data buffer
+*                        Length - Number of bytes to erase
+*  Parameters (inout)  : None
+*  Parameters (out)    : None
+*  Return value        : Std_ReturnType -
+*                        E_OK: compare command has been accepted
+*                        E_NOT_OK: compare command has not been accepted
+*  Description         : Compares the contents of an area of flash memory
+*                        with that of an application data buffer.
+*  ```
+
+Function Name: Fls_Compare The function Fls_Compare shall compare the contents of an area of flash memory with that of an application data buffer. 
+
+
+SWS_Fls_00244
+
+The job of the function Fls_Compare shall compare a continuous flash memory block starting from FlsBaseAddress + SourceAddress of size Length with the buffer pointed to by TargetAddressPtr
+
+Source is the offset relative to the FLS base address which is 0x10c00000 for F29H85x device
+
+The offset should be less than the total flash size (assume 1MB) 
+SourceAddress = SourceAddress & 0xFFFFF;
+
+SWS_Fls_00152
+
+If development error detection for the module Fls is enabled: the function Fls_Compare shall check that the driver has been initialized. If this check fails, the function Fls_Compare shall reject the compare job, raise the development error FLS_E_UNINIT and return with E_NOT_OK
+
+SWS_Fls_00153
+
+If development error detection for the module Fls is enabled: the function Fls_Compare shall check that the driver is currently not busy. If this check fails, the function Fls_Compare shall reject the compare job, raise the development error FLS_E_BUSY and return with E_NOT_OK
+
+SWS_Fls_00273
+
+If development error detection for the module Fls is enabled: the function Fls_Compare shall check the given data buffer pointer for not being a null pointer. If the data buffer pointer is a null pointer, the function Fls_Compare shall reject the request, raise the development error FLS_E_PARAM_DATA and return with E_NOT_OK
+
+SWS_Fls_00150
+
+If development error detection is enabled: the function Fls_Compare shall check that the compare start address (FlsBaseAddress + SourceAddress) lies within the specified lower and upper flash address boundaries. If this check fails, the function Fls_Compare shall reject the compare job, raise the development error FLS_E_PARAM_ADDRESS and return with E_NOT_OK
+
+SWS_Fls_00151
+
+If If development error detection is enabled: the function Fls_Compare shall check that the given length is greater than 0 and that the compare end address (compare start address + length) lies within the specified upper flash address boundary. If this check fails, the function Fls_Compare shall reject the compare job, raise the development error FLS_E_PARAM_LENGTH and return with E_NOT_OK
+
+if (STD_ON == FLS_DEV_ERROR_DETECT)
+
+SWS_Fls_00342
+
+After initiating the compare job, the function Fls_Compare shall set the status to MEMIF_BUSY
+
+SWS_Fls_00343
+
+After initiating the compare job, Fls_Compare shall set the job result to MEMIF_JOB_PENDING
+
+SWS_Fls_00244
+
+The job of the function Fls_Compare shall compare a continuous flash memory block starting from FlsBaseAddress + SourceAddress of size Length with the buffer pointed to by TargetAddressPtr
+
+
+### function Fls_BlankCheck
+
+```
+Std_ReturnType Fls_BlankCheck(
+    Fls_AddressType Address,
+    Fls_LengthType Length
+)
+```
+
+
+**Brief**: 
+The function Fls_BlankCheck shall verify, whether a given memory area has been erased but not (yet) programmed. 
+
+
+
+```
+*  Service name        : Fls_BlankCheck
+*  Syntax              : Std_ReturnType Fls_Compare
+*                        (Fls_AddressType TargetAddress,,
+*                        Fls_LengthType Length)
+*  Mode                : User Mode (Non-Privileged Mode)
+*  Service ID[hex]     : 0x0a
+*  Sync/Async          : Asynchronous
+*  Reentrancy          : Non Reentrant
+*  Parameters (in)     : TargetAddress - Target address in flash memory.
+*                        This address offset will be added to the flash memory
+*                        base address.
+*                        SourceAddressPtr - Pointer to source data buffer
+*                        Length - Number of bytes to erase
+*  Parameters (inout)  : None
+*  Parameters (out)    : None
+*  Return value        : Std_ReturnType -
+*                        E_OK: BlankCheck command has been accepted
+*                        E_NOT_OK: BlankCheck command has not been accepted
+*  Description         : The function Fls_BlankCheck shall verify,
+*                        whether a given memory area has been
+*                        erased but not (yet) programmed.
+*  ```
+
+Function Name: Fls_BlankCheck The function Fls_BlankCheck shall verify, whether a given memory area 
+
+ has been erased. 
+
+
+SWS_Fls_00379
+
+The verification job of the function Fls_BlankCheck shall check, that the continuous flash memory area starting from FlsBaseAddress + TargetAddress of size Length is eras
+
+TargetAddress is the offset relative to the FLS base address which is 0x10c00000 for F29H85x device
+
+The offset should be less than the total flash size (assume 1MB) 
+TargetAddress = TargetAddress & 0xFFFFF;
+
+SWS_Fls_00382
+
+If development error detection is enabled: the function Fls_BlankCheck shall check that the driver has been initialized. If this check fails, the function Fls_BlankCheck shall reject the verification request, raise the development error FLS_E_UNINIT and return with E_NOT_OK
+
+SRS_BSW_00406
+
+If development error detection for the module FLS is enabled: the function Fls_BlankCheck shall check that the driver is currently not busy. If this check fails, the function Fls_BlankCheck shall reject the verification request, raise the development error FLS_E_BUSY and return with E_NOT_OK
+
+SWS_Fls_00380
+
+If development error detection for the module FLS is enabled; the function Fls_BlankCheck shall check that the verification start address (FlsBaseAddress + TargetAddress) lies within the specified lower and upper flash address boundaries. If this check fails, the function Fls_BlankCheck shall reject the verification job, raise the development error FLS_E_PARAM_ADDRESS and return with E_NOT_OK
+
+SWS_Fls_00381
+
+If development error detection for the module FLS is enabled: the function Fls_BlankCheck shall check that the given length is greater than 0 and that the verification end address (verification start address + length) lies within the specified upper flash address boundary. If this check fails, the function Fls_BlankCheck shall reject the verification job, raise the development error FLS_E_PARAM_LENGTH and return with E_NOT_OK
+
+SWS_Fls_00377
+
+After initiating the verification job, the function Fls_BlankCheck shall return with E_OK
+
+if (STD_ON == FLS_DEV_ERROR_DETECT)
+
+SWS_Fls_00375
+
+After initiating the verification job, the function Fls_BlankCheck shall set the FLS module status to MEMIF_BUSY
+
+SWS_Fls_00376
+
+After initiating the verification job, the function Fls_BlankCheck shall set the FLS module job result to MEMIF_JOB_PENDING
+
+SWS_Fls_00379
+
+The verification job of the function Fls_BlankCheck shall check, that the continuous flash memory area starting from FlsBaseAddress + TargetAddress of size Length is eras
+
+
+### function Fls_GetStatus
+
+```
+MemIf_StatusType Fls_GetStatus(
+    void 
+)
+```
+
+
+**Brief**: 
+Returns the driver state. 
+
+
+
+```
+*  Service name        : Fls_GetStatus
+*  Syntax              : MemIf_StatusType Fls_GetStatus( void )
+*  Mode                : User Mode (Non-Privileged Mode)
+*  Service ID[hex]     : 0x04
+*  Sync/Async          : Synchronous
+*  Reentrancy          : Reentrant
+*  Parameters (in)     : None
+*  Parameters (inout)  : None
+*  Parameters (out)    : None
+*  Return value        : MemIf_StatusType
+*  Description         : Returns the driver state.
+*  ```
+
+if (STD_ON == FLS_BLANK_CHECK_API) Function Name: Fls_GetStatus The function Fls_GetStatus shall return the FLS module state synchronously
+
+This function may be called before the module has been initialized in which case it shall return MEMIF_UNINIT.
+
+SRS_Fls_12138 
+
+
+### function Fls_GetVersionInfo
+
+```
+Std_ReturnType Fls_GetVersionInfo(
+    Std_VersionInfoType * versioninfo
+)
+```
+
+
+**Brief**: 
+This service returns the version information of this module. 
+
+
+
+```
+*  Service name        : Fls_GetVersionInfo
+*  Syntax              : void Fls_GetVersionInfo( Std_VersionInfoType*
+*                                                                 versioninfo )
+*  Mode                : User Mode (Non-Privileged Mode)
+*  Service ID[hex]     : 0x10
+*  Sync/Async          : Synchronous
+*  Reentrancy          : Reentrant
+*  Parameters (in)     : None
+*  Parameters (inout)  : versioninfo - Pointer to where to store the version
+*                        information of this module
+*  Parameters (out)    : None
+*  Return value        : None
+*  Description         : This service returns the version information of this
+*                        module
+*  ```
+
+if (STD_ON == FLS_GET_JOB_RESULT_API) Function Name: Fls_GetVersionInfo The function Returns the version information of this module. 
+
+
+SWS_Fls_00363
+
+If development error detection for the module Fls is enabled: the function Fls_GetVersionInfo shall raise the development error FLS_E_PARAM_POINTER if the argument is a NULL pointer and return without any action.
+
+if (STD_ON == FLS_DEV_ERROR_DETECT)
+
+
+### function Fls_GetJobResult
+
+```
+MemIf_JobResultType Fls_GetJobResult(
+    void 
+)
+```
+
+
+**Brief**: 
+Returns the result of the last job. 
+
+
+
+```
+*  Service name        : Fls_GetJobResult
+*  Syntax              : MemIf_JobResultType Fls_GetJobResult(void)
+*  Mode                : User Mode (Non-Privileged Mode)
+*  Service ID[hex]     : 0x05
+*  Sync/Async          : Synchronous
+*  Reentrancy          : Reentrant
+*  Parameters (in)     : None
+*  Parameters (inout)  : None
+*  Parameters (out)    : None
+*  Return value        : MemIf_JobResultType
+*  Description         : Returns the result of the last job.
+*  ```
+
+if (STD_ON == FLS_GET_STATUS_API) Function Name: Fls_GetJobResult The function Fls_GetJobResult shall return the result of the last job synchronously 
+
+
+SWS_Fls_00358
+
+If development error detection for the module Fls is enabled: the function Fls_GetJobResult shall check that the FLS module has been initialized. If this check fails, the function Fls_GetJobResult shall raise the development error FLS_E_UNINIT and return with MEMIF_JOB_FAILED
+
+if (STD_ON == FLS_DEV_ERROR_DETECT)
+
+
+### function Fls_MainFunction
+
+```
+void Fls_MainFunction(
+    void 
+)
+```
+
+
+**Brief**: 
+Performs the processing of jobs. 
+
+
+
+```
+*  Service name        : Fls_MainFunction
+*  Syntax              : void Fls_MainFunction(void)
+*  Mode                : Supervisor Mode (Privileged Mode)
+*  Service ID[hex]     : 0x06
+*  Description         : Performs the processing of jobs.
+*  ```
+
+if (STD_ON == FLS_VERSION_INFO_API) Function Name: Fls_MainFunction
+
+The function Fls_MainFunction shall perform the processing of the flash read, write, erase and compare jobs SWS_Fls_00037, SWS_Fls_00038 
+
+
+if (STD_ON == FLS_DEV_ERROR_DETECT)
+
+SWS_Fls_00147
+
+
+### function Fls_Cancel
+
+```
+void Fls_Cancel(
+    void 
+)
+```
+
+
+**Brief**: 
+Cancels an ongoing job. 
+
+
+
+```
+*  Service name        : Fls_Cancel
+*  Syntax              : void Fls_Cancel(void)
+*  Mode                : User Mode (Non-Privileged Mode)
+*  Service ID[hex]     : 0x03
+*  Description         : Cancels an ongoing job.
+*  ```
+
+Function Name: Fls_Cancel
+
+The function Fls_Cancel shall cancel an ongoing flash read, write, erase or compare job synchronously so that directly after returning from this function a new job can be started
+
+SRS_Fls_12137 
+
+
+SWS_Fls_00356
+
+If development error detection for the module Fls is enabled: the function Fls_Cancel shall check that the FLS module has been initialized. If this check fails, the function Fls_Cancel shall raise the development error FLS_E_UNINIT and return
+
+if (STD_ON == FLS_DEV_ERROR_DETECT)
+
+Reset internal job processing variables (like address, length and data pointer)
+
+SWS_Fls_00336
+
+The function Fls_Cancel shall set the FLS module state to MEMIF_IDLE
+
+SWS_Fls_00033
+
+The function Fls_Cancel shall set the job result to MEMIF_JOB_CANCELED if the job result currently has the value MEMIF_JOB_PENDING. Otherwise the function Fls_Cancel shall leave the job result unchanged
+
+SWS_Fls_00147
+
+If configured, the function Fls_Cancel shall call the error notification function to inform the caller about the cancellation of a job
+
+
+### function Fls_SetMode
+
+```
+void Fls_SetMode(
+    MemIf_ModeType Mode
+)
+```
+
+
+**Brief**: 
+Sets the flash driver's operation mode. 
+
+
+
+```
+*  Service name        : Fls_SetMode
+*  Syntax              : void Fls_SetMode(MemIf_ModeType Mode)
+*  Mode                : User Mode (Non-Privileged Mode)
+*  Service ID[hex]     : 0x09
+*  Sync/Async          : Synchronous
+*  Reentrancy          : Non Reentrant
+*  Parameters (in)     : Mode
+*                        MEMIF_MODE_SLOW: Slow read access / normal SPI access.
+*                        MEMIF_MODE_FAST: Fast read access / SPI burst access.
+*  Parameters (inout)  : None
+*  Parameters (out)    : None
+*  Return value        : None
+*  Description         : Sets the flash driver's operation mode
+*                        This is a dummy API which is not supported and 
+*                        Added for integration purposes 
+*  ```
+
+SRS_Fls_13302 
+
+
+### function Fls_SetEraseType
+
+```
+uint32 Fls_SetEraseType(
+    Fls_EraseType erasetype
+)
+```
+
+
+**Brief**: 
+Sets the parameters for required erase type. 
+
+
+
+```
+*  Service name        : Fls_SetEraseType
+*  Syntax              : uint32  Fls_SetEraseType(Fls_EraseType erasetype)
+*  Mode                : User Mode (Non-Privileged Mode)
+*  Service ID[hex]     : NA
+*  Description         : Sets the parameters required in application, based on the erase type parameter 
+*                        passed to this function while calling from Application.
+*  ```
+
+Function Name: Fls_SetEraseType
+
+The function Fls_SetEraseType sets the parameters like data size, erase type(sector/block/chip),typeoferase for Fls_DrvObj, which are required in application, based on the erase type parameter passed to this function while calling from Application. This function is called from application based on the macros enabled in application itself. Implementation of this function is done to allow user to select one or more erase types based on the requirement. 
+
+
+### function __attribute__
+
+```
+struct Fls_FlashStatusWordTag __attribute__(
+    (packed) 
+)
+```
+
+
+**Brief**: 
+This is the master type containing all possible returned status codes. 
+
+This contains all the possible Flash State Machine commands.
+
+Flash status 
+
+
+### function Fls_Fapi_getFsmStatus
+
+```
+Fls_FapiFlashStatus Fls_Fapi_getFsmStatus(
+    void 
+)
+```
+
+
+### function Fls_Fapi_checkFsmForReady
+
+```
+Fls_FapiStatusType Fls_Fapi_checkFsmForReady(
+    void 
+)
+```
+
+
+### function Fls_Fapi_setupBankSectorEnable
+
+```
+Fls_FapiStatusType Fls_Fapi_setupBankSectorEnable(
+    uint32 reg_address,
+    uint32 value
+)
+```
+
+
+### function Fls_Fapi_issueAsyncCommandWithAddress
+
+```
+Fls_FapiStatusType Fls_Fapi_issueAsyncCommandWithAddress(
+    Fls_FlashStateCmdType oCommand,
+    uint32 * pu32StartAddress
+)
+```
+
+
+### function Fls_Fapi_issueAsyncCommand
+
+```
+Fls_FapiStatusType Fls_Fapi_issueAsyncCommand(
+    Fls_FlashStateCmdType oCommand
+)
+```
+
+
+### function Fls_Fapi_issueBankEraseCommand
+
+```
+Fls_FapiStatusType Fls_Fapi_issueBankEraseCommand(
+    uint32 * pu32StartAddress
+)
+```
+
+
+### function Fls_Fapi_initializeAPI
+
+```
+Fls_FapiStatusType Fls_Fapi_initializeAPI(
+    uint32 u32HclkFrequency
+)
+```
+
+
+Init 
+
+
+### function Fls_Fapi_doBlankCheck
+
+```
+Fls_FapiStatusType Fls_Fapi_doBlankCheck(
+    uint32 * pu32StartAddress,
+    uint32 u32Length,
+    Fls_FlashStatusWordType * poFlashStatusWord
+)
+```
+
+
+Read commands 
+
+
+### function Fls_Fapi_doVerify
+
+```
+Fls_FapiStatusType Fls_Fapi_doVerify(
+    uint32 * pu32StartAddress,
+    uint32 u32Length,
+    uint32 * pu32CheckValueBuffer,
+    Fls_FlashStatusWordType * poFlashStatusWord
+)
+```
+
+
+### function Fls_Fapi_doVerifyByByte
+
+```
+Fls_FapiStatusType Fls_Fapi_doVerifyByByte(
+    uint8 * pu8StartAddress,
+    uint32 u32Length,
+    uint8 * pu8CheckValueBuffer,
+    Fls_FlashStatusWordType * poFlashStatusWord
+)
+```
+
+
+### function Fls_Fapi_issueProgrammingCommand
+
+```
+Fls_FapiStatusType Fls_Fapi_issueProgrammingCommand(
+    uint32 * pu32StartAddress,
+    uint8 * pu8DataBuffer,
+    uint8 u8DataBufferSizeInBytes
+)
+```
+
+
+Programming Commands 
+
+
+### function Fls_Update_WaitStates
+
+```
+void Fls_Update_WaitStates(
+    uint16 waitstates
+)
+```
+
+
+Utility Commands 
+
+
+### function Fls_SSU_claimFlashSemaphore
+
+```
+void Fls_SSU_claimFlashSemaphore(
+    void 
+)
+```
+
+
+### function Fls_SSU_releaseFlashSemaphore
+
+```
+void Fls_SSU_releaseFlashSemaphore(
+    void 
+)
+```
+
+
+### function Fls_processJobs
+
+```
+void Fls_processJobs(
+    Fls_JobType job
+)
+```
+
+
+### function Fls_resetDrvObj
+
+```
+void Fls_resetDrvObj(
+    Fls_DriverObjType * drvObj
+)
+```
+
+
+### function Fls_copyConfig
+
+```
+void Fls_copyConfig(
+    Fls_DriverObjType * drvObj,
+    const Fls_ConfigType * cfgPtr
+)
+```
+
+
+
+## Detailed Description
+
+
+This files defines FLS MCAL configuration structures 
+
+
+
+-------------------------------

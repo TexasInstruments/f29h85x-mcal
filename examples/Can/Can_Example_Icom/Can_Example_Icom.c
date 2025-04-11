@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@
  *                      SamplePoint: 60%, Pre-scaler:8, TSEG1:5, TSEG2:4, tq: 100 ns, Nq: 10
  *                      Sync Jump Width: 4,
  *                      Pre-scaler: 10
- *				  4. Start sending predefined data from PCAN
+ *				  4. Start sending predefined data 7 times from PCAN
  *                      CAN-ID: 100h, Length: 8, Data(in Hex): 12 34 56 78 91 23 45 67
  *                3. Send the data using can_write() with pre-defined data.
  *                4. Read Tx confirmation and rx indication.
@@ -197,7 +197,40 @@ int main(void)
     {
         /* Set Controller Mode for controller 0U */
 		AppUtils_Printf("Can_Example_Icom : Enabling pretended networking.\n\r");
+        
         status = Can_SetIcomConfiguration(0U, 1);
+        if (status != E_OK)
+        {
+            gTestPassed = E_NOT_OK;
+        }
+        elapsedCount = (uint32) 0U;
+        do
+        {
+
+            McalLib_Delay(1U);
+            elapsedCount += (uint32) 15U;
+            Can_MainFunction_Write_CanMainFunctionRWPeriods_0();
+            Can_MainFunction_Read_CanMainFunctionRWPeriods_0();
+            Can_MainFunction_Write_CanMainFunctionRWPeriods_1();
+            Can_MainFunction_Read_CanMainFunctionRWPeriods_1();
+            Can_MainFunction_Write_CanMainFunctionRWPeriods_2();
+            Can_MainFunction_Read_CanMainFunctionRWPeriods_2();
+            if (READ_WRITE_WAIT_TIME <= elapsedCount)
+            {
+                gTestPassed = E_NOT_OK;
+                //break;
+            }
+            else
+            {
+                /*  Do Nothing */
+            }
+        } while (CanIf_RxConfirmationCount == 0U);
+        
+        CanIf_RxConfirmationCount = 0;
+        /* Set Controller Mode for controller 0U */
+		AppUtils_Printf("Can_Example_Icom : Enabling pretended networking.\n\r");
+
+        status = Can_SetIcomConfiguration(0U, 2);
         if (status != E_OK)
         {
             gTestPassed = E_NOT_OK;

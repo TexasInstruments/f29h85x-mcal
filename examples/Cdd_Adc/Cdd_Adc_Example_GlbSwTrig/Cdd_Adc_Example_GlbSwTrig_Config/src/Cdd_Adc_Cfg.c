@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -30,11 +30,11 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
-#if ((CDD_ADC_SW_MAJOR_VERSION != (1U)) || CDD_ADC_SW_MINOR_VERSION != (0U))
+#if ((CDD_ADC_SW_MAJOR_VERSION != (2U)) || CDD_ADC_SW_MINOR_VERSION != (0U))
   #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc.h are inconsistent!"
 #endif
 
-#if ( (CDD_ADC_CFG_MAJOR_VERSION != (1U)) \
+#if ( (CDD_ADC_CFG_MAJOR_VERSION != (2U)) \
     ||(CDD_ADC_CFG_MINOR_VERSION != (0U)))
   #error "Version numbers of Cdd_Adc_Cfg.c and Cdd_Adc_Cfg.h are inconsistent!"
 #endif
@@ -65,7 +65,7 @@
 #include "Cdd_Adc_MemMap.h"
 
 
-CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) CddAdcConfigSet =
+CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_ConfigSet1 =
 {
     .hwunitcfg =
     {

@@ -253,6 +253,20 @@ when enabled. The driver interface contains the MACRO declaration of the error c
 |API invoked without performing Mcu_init|MCU_E_UNINIT|0x0F|
 |API called with a NULL_PTR|MCU_E_PARAM_POINTER|0x10|
 
+### Safety Mechanism
+
+|TI Diagnostic Unique Identifier| Summary | Description |
+|------------|-----------------|----------------|
+|RST2|Reset Cause Information|  Reset cause information is provided by API Mcu_GetResetReason and Error detection are Reported to DET |
+|RST9|Peripheral Soft Reset |  Peripheral soft resets are performed by API Mcu_InitClock and Error detection are Reported to DET  |
+|SYS2|Lock Mechanism for Control Registers|  Lock mechanism for clock & peripheral config critical registers is provided in driver code with enable/disable option  |
+|CLK5|External monitoring of clock via XCLKOUT| External monitoring of clock is provided by API Mcu_InitClock in driver code with enable/disable option  |
+|CLK14|Peripheral Clock Gating |  Peripheral soft resets are performed by API Mcu_InitClock and Error detection are Reported to DET |
+
+```{NOTE}
+More details of Safety Mechanisms can be found in Safety Manual.
+```
+
 ### Used resources
 
 #### Interrupt Handling
@@ -303,3013 +317,991 @@ The associated Mcu driver configuration generated source files are **Mcu_Cfg.c**
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
+
+
 #### McuGeneralConfiguration
+This container contains the configuration (parameters) of the MCU driver.
 
 ##### McuDevErrorDetect
 
-|SWS Item|ECUC_Mcu_00166|
-|--------|----------------|
-|**Name**| McuDevErrorDetect|
-|**Parent Container**| McuGeneralConfiguration|
-|**Description**|Switches the development error detection and notification on or off. <br> true: detection and notification is enabled.<br>false: detection and notification is disabled.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | McuDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### McuClockConfigLockCriticalRegisters
+
+| Item ||
+|--------|---------------|
+| **Name** | McuClockConfigLockCriticalRegisters |
+| **Description** | Switches the Lock for clock configuration critical registers on or off. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### McuCpuPeripheralConfigLockCriticalRegisters
+
+| Item ||
+|--------|---------------|
+| **Name** | McuCpuPeripheralConfigLockCriticalRegisters |
+| **Description** | Switches the Lock for cpu peripheral configuration critical registers on or off. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### McuCpuSystemLockCriticalRegisters
+
+| Item ||
+|--------|---------------|
+| **Name** | McuCpuSystemLockCriticalRegisters |
+| **Description** | Switches the Lock for cpu system critical registers on or off. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### McuGetRamStateApi
 
-|SWS Item|ECUC_Mcu_00181|
-|--------|----------------|
-|**Name**|McuGetRamStateApi|
-|**Parent Container**|McuGeneralConfiguration|
-|**Description**|Pre-processor switch to enable/disable the API Mcu_GetRamState. (e.g. If the H/W does not support the functionality, this parameter can be used to disable the Api).|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | McuGetRamStateApi |
+| **Description** | Pre-processor switch to enable/disable the API Mcu_GetRamState. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### McuInitClock
 
-|SWS Item|ECUC_Mcu_00182|
-|--------|----------------|
-|**Name**|McuInitClock|
-|**Parent Container**|McuGeneralConfiguration|
-|**Description**|If this parameter is set to FALSE, the clock initialization has to be disabled from the MCU driver. This concept applies when there are some write once clock registers and a boot loader is present. If this parameter is set to sTRUE, the MCU driver is responsible of the clock initialization.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | McuInitClock |
+| **Description** | If this parameter is set to FALSE, the clock initialization has to be disabled from the MCU driver. This concept applies when there are some write once clock registers and a bootloader is present. If this parameter is set to TRUE, the MCU driver is responsible of the clock initialization. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### McuNoPll
 
-|SWS Item|ECUC_Mcu_00180|
-|--------|----------------|
-|**Name**|McuNoPll|
-|**Parent Container**|McuGeneralConfiguration|
-|**Description**|This parameter shall be set True, if the H/W does not have a PLL or the PLL circuitry is enabled after the power on without S/W intervention. In this case MCU_DistributePllClock has to be disabled and MCU_GetPllStatus has to return MCU_PLL_STATUS_UNDEFINED. Otherwise this parameters has to be set False.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | McuNoPll |
+| **Description** | This parameter shall be set True, if the H/W does not have a PLL or the PLL circuitry is enabled after the power on without S/W intervention. In this case MCU_DistributePllClock has to be disabled and  MCU_GetPllStatus has to return MCU_PLL_STATUS_UNDEFINED. Otherwise this parameters has to be set False |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### McuPerformResetApi
 
-|SWS Item|ECUC_Mcu_00167|
-|--------|----------------|
-|**Name**|McuPerformResetApi|
-|**Parent Container**|McuGeneralConfiguration|
-|**Description**|Pre-processor switch to enable / disable the use of the function Mcu_PerformReset().|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | McuPerformResetApi |
+| **Description** | Pre-processor switch to enable / disable the use of the function Mcu_PerformReset() |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### McuVersionInfoApi
 
-|SWS Item|ECUC_Mcu_00168|
-|--------|----------------|
-|**Name**|McuVersionInfoApi|
-|**Parent Container**|McuGeneralConfiguration|
-|**Description**|Pre-processor switch to enable / disable the API to read out the modules version information.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | McuVersionInfoApi |
+| **Description** | Pre-processor switch to enable / disable the API to read out the modules version information. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 #### McuModuleConfiguration
+This container contains the configuration (parameters) of the MCU driver
 
 ##### McuClockSrcFailureNotification
 
-|SWS Item|ECUC_Mcu_00170|
-|--------|----------------|
-|**Name**|McuClockSrcFailureNotification|
-|**Parent Container**|McuModuleConfiguration|
-|**Description**|Enables/Disables clock failure notification. In case this feature is not supported by HW the setting should be disabled.|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**|DISABLED or ENABLED|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | McuClockSrcFailureNotification |
+| **Description** | Enables/Disables clock failure notification. In case this feature is not supported by HW the setting should be disabled. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | DISABLED |
+| **Range** | DISABLED<br>ENABLED |
 
 ##### McuNumberOfMcuModes
 
-|SWS Item|ECUC_Mcu_00171|
-|--------|----------------|
-|**Name**|McuNumberOfMcuModes|
-|**Parent Container**|McuModuleConfiguration|
-|**Description**|This parameter shall represent the number of Modes available for the MCU. calculationFormula = Number of configured McuModeSettingConf|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|1 .. 255|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | McuNumberOfMcuModes |
+| **Description** | This parameter shall represent the number of Modes available for the MCU. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 255 |
+| **Min-value** | 1 |
 
 ##### McuRamSectors
 
-|SWS Item|ECUC_Mcu_00172|
-|--------|----------------|
-|**Name**|McuRamSectors|
-|**Parent Container**|McuModuleConfiguration|
-|**Description**|This parameter shall represent the number of RAM sectors available for the MCU. calculationFormula = Number of configured McuRamSectorSettingConf|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 4294967295|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | McuRamSectors |
+| **Description** | This parameter shall represent the number of RAM sectors available for the MCU. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
 
 ##### McuResetSetting
 
-|SWS Item|ECUC_Mcu_00173|
-|--------|----------------|
-|**Name**|McuResetSetting|
-|**Parent Container**|McuModuleConfiguration|
-|**Description**|This parameter relates to the MCU specific reset configuration. This applies to the function Mcu_PerformReset, which performs a micro-controller reset using the hardware feature of the micro-controller.|
-|**Multiplicity**|0 .. 1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|1 .. 255|
-|**Default value**|--|
-|**Post-Build Variant Multiplicity**|false|
-|**Post-Build Variant Value**|false|
-|**Multiplicity Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuClockSettingConfig
-
-##### McuClockSettingId
-
-|SWS Item|ECUC_Mcu_00183|
-|--------|----------------|
-|**Name**|McuClockSettingId|
-|**Parent Container**|McuClockSettingConfig|
-|**Description**|The Id of this McuClockSettingConfig to be used as argument for the API call "Mcu_InitClock".|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef(Symbolic Name generated for this parameter)|
-|**Range**|0 .. 255|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuDemEventParameterRefs
-
-##### MCU_E_CLOCK_FAILURE
-
-|SWS Item|ECUC_Mcu_00188|
-|--------|----------------|
-|**Name**|MCU_E_CLOCK_FAILURE|
-|**Parent Container**|McuDemEventParameterRefs|
-|**Description**|Reference to configured DEM event to report "Clock source failure".|
-|**Multiplicity**|0 .. 1|
-|**Type**|Symbolic name reference to [ DemEventParameter ]|
-|**Post-Build Variant Multiplicity**|false|
-|**Post-Build Variant Value**|false|
-|**Multiplicity Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local, dependency: Dem|
-
-#### McuRamSectorSettingConf
-
-##### McuRamDefaultValue
-
-|SWS Item|ECUC_Mcu_00177|
-|--------|----------------|
-|**Name**|McuRamDefaultValue|
-|**Parent Container**|McuRamSectorSettingConf|
-|**Description**|This parameter shall represent the Data pre-setting to be initialized|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 255|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-##### McuRamSectionBaseAddress
-
-|SWS Item|ECUC_Mcu_00178|
-|--------|----------------|
-|**Name**|McuRamSectionBaseAddress|
-|**Parent Container**|McuRamSectorSettingConf|
-|**Description**|This parameter shall represent the MCU RAM section base address|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 4294967295|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-##### McuRamSectionSize
-
-|SWS Item|ECUC_Mcu_00179|
-|--------|----------------|
-|**Name**|McuRamSectionSize|
-|**Parent Container**|McuRamSectorSettingConf|
-|**Description**|This parameter represents the MCU RAM Section size in bytes|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 4294967295|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-##### McuRamSectionWriteSize
-
-|SWS Item|ECUC_Mcu_00190|
-|--------|----------------|
-|**Name**|McuRamSectionWriteSize|
-|**Parent Container**|McuRamSectorSettingConf|
-|**Description**|This parameter shall define the size in bytes of data which can be written into RAM at once.|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 4294967295|
-|**Default value**|8|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-#### McuClockReferencePoint
-
-##### McuClockReferencePointFrequency
-
-|SWS Item|ECUC_Mcu_00175|
-|--------|----------------|
-|**Name**|McuClockReferencePointFrequency|
-|**Parent Container**|McuClockReferencePoint|
-|**Description**|This is the frequency for the specific instance of the McuClockReferencePoint container. It shall be given in Hz.|
-|**Multiplicity**|1|
-|**Type**|EcucFloatParamDef|
-|**Range**|[0 .. INF]|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-#### McuResetReasonConf
-
-##### McuResetReason
-
-|SWS Item|ECUC_Mcu_00186|
-|--------|----------------|
-|**Name**|McuResetReason|
-|**Parent Container**|McuResetReasonConf|
-|**Description**|The parameter represents the different type of reset that a Micro-controller supports. This parameter is referenced by the parameter EcuMResetReason in the ECU State manager module.|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef (Symbolic Name generated for this parameter)|
-|**Range**|0 .. 255|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|**Published Information**|All Variants|
-|**Scope / Dependency**|scope: ECU|
-
-#### McuClkConfig
-
-##### McuClockSource
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuClockSource|
-|**Parent Container**|McuClkConfig|
-|**Description**|Configures the clock source.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_CLKSRC_OSC2 <br> MCU_CLKSRC_OSC1 <br> MCU_CLKSRC_XTAL <br> MCU_CLKSRC_XTAL_SE|
-|**Default value**|MCU_CLKSRC_XTAL|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuExternalClkFreq
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuExternalClkFreq|
-|**Parent Container**|McuClkConfig|
-|**Description**|Frequency of the external clock source (XTAL) in Hz.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|10000000 .. 25000000|
-|**Default value**|20000000|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuSysClkDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuSysClkDiv|
-|**Parent Container**|McuClkConfig|
-|**Description**|Configures the System Clock Divider. Value should be 1 or even value up to 64.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|1 .. 64|
-|**Default value**|1|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuHsmClkDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuHsmClkDiv|
-|**Parent Container**|McuClkConfig|
-|**Description**|Configures the HSM Clock Divider. Value should be 1 or even value up to 16.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_HSMCLK_DIV_1 <br> MCU_HSMCLK_DIV_2 <br> MCU_HSMCLK_DIV_4 <br> MCU_HSMCLK_DIV_8 <br> MCU_HSMCLK_DIV_16|
-|**Default value**|MCU_HSMCLK_DIV_16|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuEpwmClkDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuHsmClkDiv|
-|**Parent Container**|McuClkConfig|
-|**Description**|Configures the EPWM Clock Divider. Value should be 1 or 2.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_EPWMCLK_DIV_1 <br> MCU_EPWMCLK_DIV_2|
-|**Default value**|MCU_EPWMCLK_DIV_2|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuEmifClkDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuEmifClkDiv|
-|**Parent Container**|McuClkConfig|
-|**Description**|Configures the EMIF Clock Divider. Value should be 1 or 2 or 4.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_EMIFCLK_DIV_1 <br> MCU_EMIFCLK_DIV_2 <br> MCU_EMIFCLK_DIV_4|
-|**Default value**|MCU_EMIFCLK_DIV_2|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-#### McuLinClkConfig
-
-##### McuLinInstance
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuLinInstance|
-|**Parent Container**|McuLinClkConfig|
-|**Description**|Configures the Instance ID for Lin module.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_LIN_A <br> MCU_LIN_B|
-|**Default value**|MCU_LIN_A|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuLinClkDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuLinClkDiv|
-|**Parent Container**|McuLinClkConfig|
-|**Description**|Configures the Lin Clock Divider.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_LINCLK_DIV_1 <br> MCU_LINCLK_DIV_2 <br> MCU_LINCLK_DIV_4|
-|**Default value**|MCU_LINCLK_DIV_2|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-#### McuMCanClkConfig
-
-##### McuMCanInstance
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuMCanInstance|
-|**Parent Container**|McuMCanClkConfig|
-|**Description**|Configures the Instance ID for MCan module.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_MCAN_A <br> MCU_MCAN_B <br> MCU_MCAN_C <br> MCU_MCAN_D <br> MCU_MCAN_E <br> MCU_MCAN_F|
-|**Default value**|MCU_MCAN_A|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuMCanClockSource
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuMCanClockSource|
-|**Parent Container**|McuMCanClkConfig|
-|**Description**|Configures the clock source for MCan module.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_MCANCLKSRC_PERxSYSCLK <br> MCU_MCANCLKSRC_AUXCLKIN <br> MCU_MCANCLKSRC_PLLRAWCLK|
-|**Default value**|MCU_MCANCLKSRC_PERxSYSCLK|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuMCanClkDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuMCanClkDiv|
-|**Parent Container**|McuMCanClkConfig|
-|**Description**|Configures the MCan Clock Divider.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_MCANCLK_DIV_1 <br> MCU_MCANCLK_DIV_2 <br> MCU_MCANCLK_DIV_3 <br> MCU_MCANCLK_DIV_4 <br> MCU_MCANCLK_DIV_5 <br> MCU_MCANCLK_DIV_6 <br> MCU_MCANCLK_DIV_7 <br> MCU_MCANCLK_DIV_8 <br> MCU_MCANCLK_DIV_9 <br> MCU_MCANCLK_DIV_10 <br> MCU_MCANCLK_DIV_11 <br> MCU_MCANCLK_DIV_12 <br> MCU_MCANCLK_DIV_13 <br> MCU_MCANCLK_DIV_14 <br> MCU_MCANCLK_DIV_15 <br> MCU_MCANCLK_DIV_16 <br> MCU_MCANCLK_DIV_17 <br> MCU_MCANCLK_DIV_18 <br> MCU_MCANCLK_DIV_19 <br> MCU_MCANCLK_DIV_20|
-|**Default value**|MCU_MCANCLK_DIV_20|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-#### McuCpuTimerClkConfig
-
-##### McuCpuTimer2ClockSource
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuCpuTimer2ClockSource|
-|**Parent Container**|McuCpuTimerClkConfig|
-|**Description**|Configures the clock source for CpuTimer 2 module.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_CPUTIMERCLKSRC_SYSCLK <br> MCU_CPUTIMERCLKSRC_INTOSC1 <br> MCU_CPUTIMERCLKSRC_INTOSC2 <br> MCU_CPUTIMERCLKSRC_XTAL|
-|**Default value**|MCU_CPUTIMERCLKSRC_SYSCLK|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuCpuTimer2ClkDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuCpuTimer2ClkDiv|
-|**Parent Container**|McuCpuTimerClkConfig|
-|**Description**|Configures the CpuTimer 2 prescalar.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|1 .. 5|
-|**Default value**|1|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-#### McuExternalClkOutConfig
-
-##### McuExternalClockOut
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuExternalClockOut|
-|**Parent Container**|McuExternalClkOutConfig|
-|**Description**|External Clock output Enable flag.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### McuExternalClockOutSource
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuExternalClockOutSource|
-|**Parent Container**|McuExternalClkOutConfig|
-|**Description**|Configures the clock source for External clock output module.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_XCLKOUTSRC_PLLSYS <br> MCU_XCLKOUTSRC_CPU1CLK <br> MCU_XCLKOUTSRC_CPU2CLK <br> MCU_XCLKOUTSRC_CPU3CLK <br> MCU_XCLKOUTSRC_INTOSC1 <br> MCU_XCLKOUTSRC_INTOSC2 <br> MCU_XCLKOUTSRC_XTALOSC|
-|**Default value**|MCU_XCLKOUTSRC_PLLSYS|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuExternalClkOutDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuExternalClkOutDiv|
-|**Parent Container**|McuExternalClkOutConfig|
-|**Description**|Configures the External clock output divider.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_XCLKOUT_DIV_1 <br> MCU_XCLKOUT_DIV_2 <br> MCU_XCLKOUT_DIV_4 <br> MCU_XCLKOUT_DIV_8|
-|**Default value**|MCU_XCLKOUT_DIV_8|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-#### McuEthercatClkConfig
-
-##### McuEthercatPhyClkEnable
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuEthercatPhyClkEnable|
-|**Parent Container**|McuEthercatClkConfig|
-|**Description**|Ethercat Clock Enable value.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_ECAT_PHYCLK_ENABLE <br> MCU_ECAT_PHYCLK_DISABLE|
-|**Default value**|MCU_ECAT_PHYCLK_ENABLE|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### McuEthercatClkDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuEthercatClkDiv|
-|**Parent Container**|McuEthercatClkConfig|
-|**Description**|Configures the Ethercat clock divider.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|MCU_ECATCLKOUT_DIV_1 <br> MCU_ECATCLKOUT_DIV_2  <br> MCU_ECATCLKOUT_DIV_3 <br> MCU_ECATCLKOUT_DIV_4 <br> MCU_ECATCLKOUT_DIV_5 <br> MCU_ECATCLKOUT_DIV_6 <br> MCU_ECATCLKOUT_DIV_7 <br> MCU_ECATCLKOUT_DIV_8|
-|**Default value**|MCU_ECATCLKOUT_DIV_8|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-#### McuPllConfig
-
-##### McuPLLRefDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuPLLRefDiv|
-|**Parent Container**|McuPllConfig|
-|**Description**|Configures Reference Clock Divider.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|1 .. 32|
-|**Default value**|1|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuPLLIntMult
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuPLLIntMult|
-|**Parent Container**|McuPllConfig|
-|**Description**|Configures Integer Multiplier.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|4 .. 127|
-|**Default value**|30|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-##### McuPLLOutDiv
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuPLLOutDiv|
-|**Parent Container**|McuPllConfig|
-|**Description**|Configures Output Clock Divider.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|1 .. 32|
-|**Default value**|3|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
-
-#### McuPeripheralClock0
-
-##### MCU_PERIPH_CLK_RTDMA1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_RTDMA1|
-|**Parent Container**|McuPeripheralClock0|
-|**Description**|Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_RTDMA2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_RTDMA2|
-|**Parent Container**|McuPeripheralClock0|
-|**Description**|Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CPUTIMER0
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CPUTIMER0|
-|**Parent Container**|McuPeripheralClock0|
-|**Description**|Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CPUTIMER1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CPUTIMER1|
-|**Parent Container**|McuPeripheralClock0|
-|**Description**|Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CPUTIMER2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CPUTIMER2|
-|**Parent Container**|McuPeripheralClock0|
-|**Description**|Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_TBCLKSYNC
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_TBCLKSYNC|
-|**Parent Container**|McuPeripheralClock0|
-|**Description**|EPWM Time Base Clock sync.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_GTBCLKSYNC
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_GTBCLKSYNC|
-|**Parent Container**|McuPeripheralClock0|
-|**Description**|EPWM Time Base Clock Global sync.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CPUXERAD
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CPUXERAD|
-|**Parent Container**|McuPeripheralClock0|
-|**Description**|ERAD Clock Enable Bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CPUXDLT
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CPUXDLT|
-|**Parent Container**|McuPeripheralClock0|
-|**Description**|DLT Clock Enable Bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock1
-
-##### MCU_PERIPH_CLK_EMIF1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EMIF1|
-|**Parent Container**|McuPeripheralClock1|
-|**Description**|EMIF1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock2
-
-##### MCU_PERIPH_CLK_EPWM1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM1|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM2|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM3|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM3 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM4
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM4|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM4 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM5
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM5|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM5 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM6
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM6|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM6 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM7
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM7|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM7 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM8
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM8|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM8 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM9
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM9|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM9 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM10
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM10|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM10 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM11
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM11|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM11 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM12
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM12|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM12 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM13
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM13|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM13 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM14
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM14|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM14 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM15
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM15|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM15 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM16
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM16|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM16 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM17
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM17|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM17 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EPWM18
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPWM18|
-|**Parent Container**|McuPeripheralClock2|
-|**Description**|EPWM18 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock3
-
-##### MCU_PERIPH_CLK_ECAP1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ECAP1|
-|**Parent Container**|McuPeripheralClock3|
-|**Description**|ECAP1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ECAP2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ECAP2|
-|**Parent Container**|McuPeripheralClock3|
-|**Description**|ECAP2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ECAP3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ECAP3|
-|**Parent Container**|McuPeripheralClock3|
-|**Description**|ECAP3 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ECAP4
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ECAP4|
-|**Parent Container**|McuPeripheralClock3|
-|**Description**|ECAP4 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ECAP5
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ECAP5|
-|**Parent Container**|McuPeripheralClock3|
-|**Description**|ECAP5 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ECAP6
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ECAP6|
-|**Parent Container**|McuPeripheralClock3|
-|**Description**|ECAP6 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock4
-
-##### MCU_PERIPH_CLK_EQEP1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EQEP1|
-|**Parent Container**|McuPeripheralClock4|
-|**Description**|EQEP1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EQEP2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EQEP2|
-|**Parent Container**|McuPeripheralClock4|
-|**Description**|EQEP2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EQEP3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EQEP3|
-|**Parent Container**|McuPeripheralClock4|
-|**Description**|EQEP3 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EQEP4
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EQEP4|
-|**Parent Container**|McuPeripheralClock4|
-|**Description**|EQEP4 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EQEP5
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EQEP5|
-|**Parent Container**|McuPeripheralClock4|
-|**Description**|EQEP5 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_EQEP6
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EQEP6|
-|**Parent Container**|McuPeripheralClock4|
-|**Description**|EQEP6 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock6
-
-##### MCU_PERIPH_CLK_SD1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SD1|
-|**Parent Container**|McuPeripheralClock6|
-|**Description**|SD1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SD2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SD2|
-|**Parent Container**|McuPeripheralClock6|
-|**Description**|SD2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SD3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SD3|
-|**Parent Container**|McuPeripheralClock6|
-|**Description**|SD3 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SD4
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SD4|
-|**Parent Container**|McuPeripheralClock6|
-|**Description**|SD4 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock7
-
-##### MCU_PERIPH_CLK_UARTA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_UARTA|
-|**Parent Container**|McuPeripheralClock7|
-|**Description**|UART A Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_UARTB
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_UARTB|
-|**Parent Container**|McuPeripheralClock7|
-|**Description**|UART B Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_UARTC
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_UARTC|
-|**Parent Container**|McuPeripheralClock7|
-|**Description**|UART C Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_UARTD
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_UARTD|
-|**Parent Container**|McuPeripheralClock7|
-|**Description**|UART D Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_UARTE
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_UARTE|
-|**Parent Container**|McuPeripheralClock7|
-|**Description**|UART E Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_UARTF
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_UARTF|
-|**Parent Container**|McuPeripheralClock7|
-|**Description**|UART F Module Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock8
-
-##### MCU_PERIPH_CLK_SPIA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SPIA|
-|**Parent Container**|McuPeripheralClock8|
-|**Description**|SPI_A Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SPIB
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SPIB|
-|**Parent Container**|McuPeripheralClock8|
-|**Description**|SPI_B Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SPIC
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SPIC|
-|**Parent Container**|McuPeripheralClock8|
-|**Description**|SPI_C Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SPID
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SPID|
-|**Parent Container**|McuPeripheralClock8|
-|**Description**|SPI_D Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SPIE
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SPIE|
-|**Parent Container**|McuPeripheralClock8|
-|**Description**|SPI_E Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock9
-
-##### MCU_PERIPH_CLK_I2CA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_I2CA|
-|**Parent Container**|McuPeripheralClock9|
-|**Description**| I2C_A Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_I2CB
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_I2CB|
-|**Parent Container**|McuPeripheralClock9|
-|**Description**| I2C_B Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock10
-
-##### MCU_PERIPH_CLK_MCANA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_MCANA|
-|**Parent Container**|McuPeripheralClock10|
-|**Description**|MCAN_A Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_MCANB
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_MCANB|
-|**Parent Container**|McuPeripheralClock10|
-|**Description**|MCAN_B Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_MCANC
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_MCANC|
-|**Parent Container**|McuPeripheralClock10|
-|**Description**|MCAN_C Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_MCAND
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_MCAND|
-|**Parent Container**|McuPeripheralClock10|
-|**Description**|MCAN_D Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_MCANE
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_MCANE|
-|**Parent Container**|McuPeripheralClock10|
-|**Description**|MCAN_E Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_MCANF
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_MCANF|
-|**Parent Container**|McuPeripheralClock10|
-|**Description**|MCAN_F Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock13
-
-##### MCU_PERIPH_CLK_ADCA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCA|
-|**Parent Container**|McuPeripheralClock13|
-|**Description**|ADC_A Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCB
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCB|
-|**Parent Container**|McuPeripheralClock13|
-|**Description**|ADC_B Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCC
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCC|
-|**Parent Container**|McuPeripheralClock13|
-|**Description**|ADC_C Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCD
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCD|
-|**Parent Container**|McuPeripheralClock13|
-|**Description**|ADC_D Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCE
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCE|
-|**Parent Container**|McuPeripheralClock13|
-|**Description**|ADC_E Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock14
-
-##### MCU_PERIPH_CLK_CMPSS1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS1|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS2|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS3|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS3 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS4
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS4|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS4 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS5
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS5|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS5 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS6
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS6|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS6 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS7
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS7|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS7 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS8
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS8|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS8 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS9
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS9|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS9 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS10
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS10|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS10 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS11
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS11|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS11 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CMPSS12
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CMPSS12|
-|**Parent Container**|McuPeripheralClock14|
-|**Description**|CMPSS12 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock16
-
-##### MCU_PERIPH_CLK_DACA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_DACA|
-|**Parent Container**|McuPeripheralClock16|
-|**Description**|Buffered_DAC_A Clock Enable Bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_DACB
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_DACB|
-|**Parent Container**|McuPeripheralClock16|
-|**Description**|Buffered_DAC_B Clock Enable Bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock17
-
-##### MCU_PERIPH_CLK_CLB1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CLB1|
-|**Parent Container**|McuPeripheralClock17|
-|**Description**|CLB1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CLB2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CLB2|
-|**Parent Container**|McuPeripheralClock17|
-|**Description**|CLB2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CLB3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CLB3|
-|**Parent Container**|McuPeripheralClock17|
-|**Description**|CLB3 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CLB4
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CLB4|
-|**Parent Container**|McuPeripheralClock17|
-|**Description**|CLB4 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CLB5
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CLB5|
-|**Parent Container**|McuPeripheralClock17|
-|**Description**|CLB5 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_CLB6
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_CLB6|
-|**Parent Container**|McuPeripheralClock17|
-|**Description**|CLB6 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock18
-
-##### MCU_PERIPH_CLK_FSITXA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_FSITXA|
-|**Parent Container**|McuPeripheralClock18|
-|**Description**|FSITX_A Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_FSITXB
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_FSITXB|
-|**Parent Container**|McuPeripheralClock18|
-|**Description**|FSITX_B Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_FSITXC
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_FSITXC|
-|**Parent Container**|McuPeripheralClock18|
-|**Description**|FSITX_C Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_FSITXD
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_FSITXD|
-|**Parent Container**|McuPeripheralClock18|
-|**Description**|FSITX_D Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_FSIRXA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_FSIRXA|
-|**Parent Container**|McuPeripheralClock18|
-|**Description**|FSIRX_A Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_FSIRXB
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_FSIRXB|
-|**Parent Container**|McuPeripheralClock18|
-|**Description**|FSIRX_B Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_FSIRXC
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_FSIRXC|
-|**Parent Container**|McuPeripheralClock18|
-|**Description**|FSIRX_C Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_FSIRXD
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_FSIRXD|
-|**Parent Container**|McuPeripheralClock18|
-|**Description**|FSIRX_D Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock19
-
-##### MCU_PERIPH_CLK_LINA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_LINA|
-|**Parent Container**|McuPeripheralClock19|
-|**Description**|LIN_A Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_LINB
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_LINB|
-|**Parent Container**|McuPeripheralClock19|
-|**Description**|LIN_B Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock20
-
-##### MCU_PERIPH_CLK_PMBUSA
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_PMBUSA|
-|**Parent Container**|McuPeripheralClock20|
-|**Description**|PMBUS_A Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock21
-
-##### MCU_PERIPH_CLK_DCC1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_DCC1|
-|**Parent Container**|McuPeripheralClock21|
-|**Description**|DCC1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_DCC2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_DCC2|
-|**Parent Container**|McuPeripheralClock21|
-|**Description**|DCC2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_DCC3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_DCC3|
-|**Parent Container**|McuPeripheralClock21|
-|**Description**|DCC3 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock23
-
-##### MCU_PERIPH_CLK_ETHERCAT
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ETHERCAT|
-|**Parent Container**|McuPeripheralClock23|
-|**Description**|ETHERCAT Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock25
-
-##### MCU_PERIPH_CLK_HRCAL0
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_HRCAL0|
-|**Parent Container**|McuPeripheralClock25|
-|**Description**|HRCAL0 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_HRCAL1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_HRCAL1|
-|**Parent Container**|McuPeripheralClock25|
-|**Description**|HRCAL1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_HRCAL2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_HRCAL2|
-|**Parent Container**|McuPeripheralClock25|
-|**Description**|HRCAL2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock27
-
-##### MCU_PERIPH_CLK_EPG1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_EPG1|
-|**Parent Container**|McuPeripheralClock27|
-|**Description**|EPG1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock28
-
-##### MCU_PERIPH_CLK_ADCCHECKER1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER1|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCCHECKER2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER2|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCCHECKER3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER3|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCCHECKER4
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER4|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCCHECKER5
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER5|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCCHECKER6
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER6|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCCHECKER7
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER7|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCCHECKER8
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER8|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCCHECKER9
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER9|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCCHECKER10
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCCHECKER10|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCSEAGGRCPU1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCSEAGGRCPU1|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCSEAGGRCPU2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCSEAGGRCPU2|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_ADCSEAGGRCPU3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_ADCSEAGGRCPU3|
-|**Parent Container**|McuPeripheralClock28|
-|**Description**|Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock30
-
-##### MCU_PERIPH_CLK_SENT1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SENT1|
-|**Parent Container**|McuPeripheralClock30|
-|**Description**|SENT1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SENT2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SENT2|
-|**Parent Container**|McuPeripheralClock30|
-|**Description**|SENT2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SENT3
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SENT3|
-|**Parent Container**|McuPeripheralClock30|
-|**Description**|SENT3 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SENT4
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SENT4|
-|**Parent Container**|McuPeripheralClock30|
-|**Description**|SENT4 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SENT5
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SENT5|
-|**Parent Container**|McuPeripheralClock30|
-|**Description**|SENT5 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_SENT6
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_SENT6|
-|**Parent Container**|McuPeripheralClock30|
-|**Description**|SENT6 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuPeripheralClock32
-
-##### MCU_PERIPH_CLK_WADI1
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_WADI1|
-|**Parent Container**|McuPeripheralClock32|
-|**Description**|WADI1 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### MCU_PERIPH_CLK_WADI2
-
-|SWS Item||
-|--------|----------------|
-|**Name**|MCU_PERIPH_CLK_WADI2|
-|**Parent Container**|McuPeripheralClock32|
-|**Description**|WADI2 Clock Enable bit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### McuModeSettingConf
-
-##### McuMode
-
-|SWS Item|ECUC_Mcu_00176|
-|--------|----------------|
-|**Name**|McuMode|
-|**Parent Container**|McuModeSettingConf|
-|**Description**|The parameter represents the MCU Mode settings.|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef (Symbolic Name generated for this parameter)|
-|**Range**|0 .. 255|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### McuQualPeriod
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuQualPeriod|
-|**Parent Container**|McuModeSettingConf|
-|**Description**|The number of OSCCLK clock cycles used to qualify the selected inputs when waking from STANDBY mode.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|2 .. 65|
-|**Default value**|2|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**||
-
-##### McuEnableWDWakeup
-
-|SWS Item||
-|--------|----------------|
-|**Name**|McuEnableWDWakeup|
-|**Parent Container**|McuModeSettingConf|
-|**Description**|Enable/Disable using watchdog to wakeup from standby or halt mode.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**||
-
+| Item ||
+|--------|---------------|
+| **Name** | McuResetSetting |
+| **Description** | This parameter relates to the MCU specific reset configuration. This applies to the function Mcu_PerformReset, which performs a microcontroller reset using the hardware feature of the microcontroller. |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 255 |
+| **Min-value** | 1 |
+
+##### McuClockSettingConfig
+This container contains the configuration (parameters) for the Clock settings of the MCU.  Please see MCU031 for more information on the MCU clock settings.
+
+###### McuClockSettingId
+
+| Item ||
+|--------|---------------|
+| **Name** | McuClockSettingId |
+| **Description** | The Id of this McuClockSettingConfig to be used as argument for the API call "Mcu_InitClock". |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 255 |
+| **Min-value** | 0 |
+
+##### McuClockReferencePoint
+This container defines a reference point in the Mcu Clock tree. It defines the frequency which then can be used by other modules as an input value. Lower multiplicity is 1, as even in the simplest case (only one frequency is used), there is one frequency to be defined.
+
+###### McuClockReferencePointFrequency
+
+| Item ||
+|--------|---------------|
+| **Name** | McuClockReferencePointFrequency |
+| **Description** | This is the frequency for the specific instance of the McuClockReferencePoint container. It shall be given in Hz. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 2.0E8 |
+| **Max-value** | INF |
+| **Min-value** | 0.0 |
+
+##### McuClkConfig
+Device specific clock settings
+
+###### McuClockSource
+
+| Item ||
+|--------|---------------|
+| **Name** | McuClockSource |
+| **Description** | Configures the clock source. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_CLKSRC_XTAL |
+| **Range** | MCU_CLKSRC_OSC2<br>MCU_CLKSRC_OSC1<br>MCU_CLKSRC_XTAL<br>MCU_CLKSRC_XTAL_SE |
+
+###### McuExternalClkFreq
+
+| Item ||
+|--------|---------------|
+| **Name** | McuExternalClkFreq |
+| **Description** | Frequency of the external clock source (XTAL) in Hz. |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 20000000 |
+| **Max-value** | 25000000 |
+| **Min-value** | 10000000 |
+
+###### McuSysClkDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuSysClkDiv |
+| **Description** | Configures the System Clock Divider. Value should be 1 or even value up to 64. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 64 |
+| **Min-value** | 1 |
+
+###### McuHsmClkDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuHsmClkDiv |
+| **Description** | Configures the HSM Clock Divider. Value should be 1 or even value up to 16. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_HSMCLK_DIV_16 |
+| **Range** | MCU_HSMCLK_DIV_1<br>MCU_HSMCLK_DIV_2<br>MCU_HSMCLK_DIV_4<br>MCU_HSMCLK_DIV_8<br>MCU_HSMCLK_DIV_16 |
+
+###### McuEpwmClkDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuEpwmClkDiv |
+| **Description** | Configures the EPWM Clock Divider. Value should be 1 or 2. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_EPWMCLK_DIV_2 |
+| **Range** | MCU_EPWMCLK_DIV_1<br>MCU_EPWMCLK_DIV_2 |
+
+###### McuEmifClkDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuEmifClkDiv |
+| **Description** | Configures the EMIF Clock Divider. Value should be 1 or 2 or 4. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_EMIFCLK_DIV_2 |
+| **Range** | MCU_EMIFCLK_DIV_1<br>MCU_EMIFCLK_DIV_2<br>MCU_EMIFCLK_DIV_4 |
+
+##### McuLinClkConfig
+Device specific Lin clock settings
+
+###### McuLinInstance
+
+| Item ||
+|--------|---------------|
+| **Name** | McuLinInstance |
+| **Description** | Configures the Instance ID for Lin module. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_LIN_A |
+| **Range** | MCU_LIN_A<br>MCU_LIN_B |
+
+###### McuLinClkDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuLinClkDiv |
+| **Description** | Configures the Lin Clock Divider. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_LINCLK_DIV_2 |
+| **Range** | MCU_LINCLK_DIV_1<br>MCU_LINCLK_DIV_2<br>MCU_LINCLK_DIV_4 |
+
+##### McuMCanClkConfig
+Device specific MCan clock settings
+
+###### McuMCanInstance
+
+| Item ||
+|--------|---------------|
+| **Name** | McuMCanInstance |
+| **Description** | Configures the Instance ID for MCan module. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_MCAN_A |
+| **Range** | MCU_MCAN_A<br>MCU_MCAN_B<br>MCU_MCAN_C<br>MCU_MCAN_D<br>MCU_MCAN_E<br>MCU_MCAN_F |
+
+###### McuMCanClockSource
+
+| Item ||
+|--------|---------------|
+| **Name** | McuMCanClockSource |
+| **Description** | Configures the clock source for MCan module. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_MCANCLKSRC_PERxSYSCLK |
+| **Range** | MCU_MCANCLKSRC_PERxSYSCLK<br>MCU_MCANCLKSRC_AUXCLKIN<br>MCU_MCANCLKSRC_PLLRAWCLK |
+
+###### McuMCanClkDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuMCanClkDiv |
+| **Description** | Configures the MCan Clock Divider. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_MCANCLK_DIV_20 |
+| **Range** | MCU_MCANCLK_DIV_1<br>MCU_MCANCLK_DIV_2<br>MCU_MCANCLK_DIV_3<br>MCU_MCANCLK_DIV_4<br>MCU_MCANCLK_DIV_5<br>MCU_MCANCLK_DIV_6<br>MCU_MCANCLK_DIV_7<br>MCU_MCANCLK_DIV_8<br>MCU_MCANCLK_DIV_9<br>MCU_MCANCLK_DIV_10<br>MCU_MCANCLK_DIV_11<br>MCU_MCANCLK_DIV_12<br>MCU_MCANCLK_DIV_13<br>MCU_MCANCLK_DIV_14<br>MCU_MCANCLK_DIV_15<br>MCU_MCANCLK_DIV_16<br>MCU_MCANCLK_DIV_17<br>MCU_MCANCLK_DIV_18<br>MCU_MCANCLK_DIV_19<br>MCU_MCANCLK_DIV_20 |
+
+##### McuCpuTimerClkConfig
+Device specific CPU Timer clock settings
+
+###### McuCpuTimer2ClockSource
+
+| Item ||
+|--------|---------------|
+| **Name** | McuCpuTimer2ClockSource |
+| **Description** | Configures the clock source for CpuTimer 2 module. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_CPUTIMERCLKSRC_SYSCLK |
+| **Range** | MCU_CPUTIMERCLKSRC_SYSCLK<br>MCU_CPUTIMERCLKSRC_INTOSC1<br>MCU_CPUTIMERCLKSRC_INTOSC2<br>MCU_CPUTIMERCLKSRC_XTAL |
+
+###### McuCpuTimer2ClkDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuCpuTimer2ClkDiv |
+| **Description** | Configures the CpuTimer 2 prescalar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 5 |
+| **Min-value** | 1 |
+
+##### McuExternalClkOutConfig
+Device specific External clock output settings
+
+###### McuExternalClockOut
+
+| Item ||
+|--------|---------------|
+| **Name** | McuExternalClockOut |
+| **Description** | External Clock output Enable flag. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+###### McuExternalClockOutSource
+
+| Item ||
+|--------|---------------|
+| **Name** | McuExternalClockOutSource |
+| **Description** | Configures the clock source for External clock output module. |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_XCLKOUTSRC_PLLSYS |
+| **Range** | MCU_XCLKOUTSRC_PLLSYS<br>MCU_XCLKOUTSRC_CPU1CLK<br>MCU_XCLKOUTSRC_CPU2CLK<br>MCU_XCLKOUTSRC_CPU3CLK<br>MCU_XCLKOUTSRC_INTOSC1<br>MCU_XCLKOUTSRC_INTOSC2<br>MCU_XCLKOUTSRC_XTALOSC |
+
+###### McuExternalClkOutDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuExternalClkOutDiv |
+| **Description** | Configures the External clock output divider. |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_XCLKOUT_DIV_8 |
+| **Range** | MCU_XCLKOUT_DIV_1<br>MCU_XCLKOUT_DIV_2<br>MCU_XCLKOUT_DIV_4<br>MCU_XCLKOUT_DIV_8 |
+
+##### McuEthercatClkConfig
+Device specific Ethercat clock settings
+
+###### McuEthercatPhyClkEnable
+
+| Item ||
+|--------|---------------|
+| **Name** | McuEthercatPhyClkEnable |
+| **Description** | Ethercat Clock Enable value. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_ECAT_PHYCLK_ENABLE |
+| **Range** | MCU_ECAT_PHYCLK_ENABLE<br>MCU_ECAT_PHYCLK_DISABLE |
+
+###### McuEthercatClkDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuEthercatClkDiv |
+| **Description** | Configures the Ethercat clock divider. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | MCU_ECATCLKOUT_DIV_8 |
+| **Range** | MCU_ECATCLKOUT_DIV_1<br>MCU_ECATCLKOUT_DIV_2<br>MCU_ECATCLKOUT_DIV_3<br>MCU_ECATCLKOUT_DIV_4<br>MCU_ECATCLKOUT_DIV_5<br>MCU_ECATCLKOUT_DIV_6<br>MCU_ECATCLKOUT_DIV_7<br>MCU_ECATCLKOUT_DIV_8 |
+
+##### McuPllConfig
+Device specific PLL settings
+
+###### McuPLLRefDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPLLRefDiv |
+| **Description** | Configures Reference Clock Divider. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 32 |
+| **Min-value** | 1 |
+
+###### McuPLLIntMult
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPLLIntMult |
+| **Description** | Configures Integer Multiplier. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 30 |
+| **Max-value** | 255 |
+| **Min-value** | 4 |
+
+###### McuPLLOutDiv
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPLLOutDiv |
+| **Description** | Configures Output Clock Divider. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 3 |
+| **Max-value** | 32 |
+| **Min-value** | 1 |
+
+##### McuPeripheralClock0
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock0 |
+| **Description** | DLT Clock Enable Bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock1
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock1 |
+| **Description** | EMIF1 Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock2
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock2 |
+| **Description** | EPWM18 Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock3
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock3 |
+| **Description** | ECAP6 Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock4
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock4 |
+| **Description** | EQEP6 Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock6
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock6 |
+| **Description** | SD4 Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock7
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock7 |
+| **Description** | UART F Module Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock8
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock8 |
+| **Description** | SPI_E Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock9
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock9 |
+| **Description** | I2C_B Clock Enable bit:. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock10
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock10 |
+| **Description** | MCAN_F Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock13
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock13 |
+| **Description** | ADC_E Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock14
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock14 |
+| **Description** | CMPSS12 Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock16
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock16 |
+| **Description** | Buffered_DAC_B Clock Enable Bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock17
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock17 |
+| **Description** | CLB6 Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock18
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock18 |
+| **Description** | FSIRX_D Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock19
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock19 |
+| **Description** | LIN_B Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock20
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock20 |
+| **Description** | PMBUS_A Clock Enable bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock21
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock21 |
+| **Description** | DCC3 Clock Enable Bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock23
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock23 |
+| **Description** | ETHERCAT Clock Enable Bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock25
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock25 |
+| **Description** | HRCAL2 Clock Enable Bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock27
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock27 |
+| **Description** | EPG1 Clock Enable Bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock28
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock28 |
+| **Description** | Clock Enable Bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock30
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock30 |
+| **Description** | SENT6 Clock Enable Bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuPeripheralClock32
+
+| Item ||
+|--------|---------------|
+| **Name** | McuPeripheralClock32 |
+| **Description** | WADI2 Clock Enable Bit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### McuDemEventParameterRefs
+
+| Item ||
+|--------|---------------|
+| **Name** | McuDemEventParameterRefs |
+| **Description** | Reference to configured DEM event to report "Clock source failure". |
+| **Post-build-variant-multiplicity** | false |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+##### McuModeSettingConf
+This container contains the configuration (parameters) for the Mode setting of the MCU.  Please see MCU035 for more information on the MCU mode settings.
+
+###### McuMode
+
+| Item ||
+|--------|---------------|
+| **Name** | McuMode |
+| **Description** | The parameter represents the MCU Mode settings. IDLE Mode :0, STANDBY mode :1 |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1 |
+| **Min-value** | 0 |
+
+###### McuQualPeriod
+
+| Item ||
+|--------|---------------|
+| **Name** | McuQualPeriod |
+| **Description** | The number of OSCCLK clock cycles used to qualify the selected inputs when waking from STANDBY mode. |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 2 |
+| **Max-value** | 65 |
+| **Min-value** | 2 |
+
+###### McuEnableWDWakeup
+
+| Item ||
+|--------|---------------|
+| **Name** | McuEnableWDWakeup |
+| **Description** | Enable/Disable using watchdog to wakeup from standby or halt mode |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### McuRamSectorSettingConf
+This container contains the configuration (parameters) for the RAM Sector setting. Please see MCU030 for more information on RAM sec-tor settings.
+
+###### McuRamDefaultValue
+
+| Item ||
+|--------|---------------|
+| **Name** | McuRamDefaultValue |
+| **Description** | This parameter shall represent the Data pre-setting to be initialized |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 255 |
+| **Min-value** | 0 |
+
+###### McuRamSectionBaseAddress
+
+| Item ||
+|--------|---------------|
+| **Name** | McuRamSectionBaseAddress |
+| **Description** | This parameter shall represent the MCU RAM section base address |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
+
+###### McuRamSectionSize
+
+| Item ||
+|--------|---------------|
+| **Name** | McuRamSectionSize |
+| **Description** | This parameter represents the MCU RAM Section size in bytes. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
+
+###### McuRamSectionWriteSize
+
+| Item ||
+|--------|---------------|
+| **Name** | McuRamSectionWriteSize |
+| **Description** | This parameter shall define the size in bytes of data which can be written into RAM at once. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 8 |
+| **Min-value** | 1 |
 Refer [AUTOSAR_SWS_MCUDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_MCUDriver.pdf) for configuration parameters details
 
 #### Steps To Configure Mcu Module

@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -150,13 +150,13 @@ FUNC(void,OS_CODE) Os_StartOS(void)
 
 #if(STD_ON == OS_COUNTER_ENABLE)
 
-FUNC(StatusType,OS_CODE) Os_GetCounterValue(Os_CounterIdType CounterId, Os_TickRefType Value)
+FUNC(StatusType,OS_CODE) GetCounterValue(Os_CounterIdType CounterId, Os_TickRefType Value)
 {
     *Value = OS_GetPeriodCount() - OS_GetTimerCount();
     return (StatusType)E_OK;
 }
 
-FUNC(StatusType,OS_CODE) Os_GetElapsedValue(Os_CounterIdType CounterId,Os_TickRefType Value,Os_TickRefType ElapsedValue)
+FUNC(StatusType,OS_CODE) GetElapsedValue(Os_CounterIdType CounterId,Os_TickRefType Value,Os_TickRefType ElapsedValue)
 {
     Os_TickType cur_val ;
     cur_val =  OS_GetPeriodCount() - OS_GetTimerCount();

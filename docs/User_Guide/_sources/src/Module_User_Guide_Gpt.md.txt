@@ -248,451 +248,340 @@ The generated configuration files should not be modified manually. The config to
 If CPU Timer2 is used in OS, parameter 'GptUseTimer2InOS' should be checked in GPT configurator.
 ```
 
-#### GptDriverConfiguration
 
-##### GPTDevErrorDetect
-
-|SWS Item|ECUC_GPT_00321|
-|--------|--------------|
-|**Name**|GPTDevErrorDetect|
-|**Parent Container**|GPTDriverConfiguration|
-|**Description**|Switches the development error detection and notification on or off.<br>&bull; **TRUE**: detection and notification is enabled.<br>&bull; **FALSE**: detection and notification is disabled.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time |--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-#### GptChannelConfiguration
-
-##### GptChannelId
-
-|SWS Item|ECUC_Gpt_00308|
-|--------|--------------|
-|**Name**|GptChannelId|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Channel Id of the GPT channel. This value will be assigned to the symbolic name derived of the GptChannelConfiguration container short name.|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef (Symbolic Name generated for this parameter)|
-|**Range**|0 .. 4294967295|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: ECU|
-
-##### GptChannelMode
-
-|SWS Item|ECUC_Gpt_00309|
-|--------|--------------|
-|**Name**|GptChannelMode|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Specifies the behavior of the timer channel after the target time is reached.|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**||
-|GPT_CH_MODE_CONTINUOUS|After reaching the target time, the timer continues running with the value "zero" again.|
-|GPT_CH_MODE_ONESHOT|After reaching the target time, the timer stops automatically (timer expired).|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: ECU|
-
-##### GptChannelPrescaleValue
-
-|SWS Item||
-|--------|--------------|
-|**Name**|GptChannelPrescaleValue|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|The input GPT clock will be divided by this value|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**|0 .. 65535|
-|**Default**||
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: ECU|
-
-##### GptChannelTickFrequency
-
-|SWS Item|ECUC_Gpt_00331|
-|-------|---------------|
-|**Name**|GptChannelTickFrequency|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Specifies the tick frequency of the timer channel in Hz.|
-|**Multiplicity**|1|
-|**Type**|EcucFloatParamDef|
-|**Range**|[0 .. INF]|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: ECU|
-
-##### GptChannelTickValueMax
-
-|SWS Item|ECUC_Gpt_00332|
-|--------|--------------|
-|**Name**|GptChannelTickValueMax|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Maximum value in ticks, the timer channel is able to count. With the next tick, the timer rolls over to zero.|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Range**|0 .. 18446744073709551615|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: ECU|
-
-##### GptNotification
-
-|SWS Item|ECUC_Gpt_00312|
-|--------|--------------|
-|**Name**|GptNotification|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Function pointer to callback function (for non-wake up notification)|
-|**Multiplicity**|0..1|
-|**Type**|EcucFunctionNameDef|
-|**Default value**|--|
-|**maxLength**|--|
-|**minLength**|--|
-|**regularExpression**|--|
-|**Post-Build Variant Multiplicity**|true|
-|**Post-Build Variant Value**|true|
-|**Multiplicity Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-##### GptChannelClkSrcRef
-
-|SWS Item|ECUC_Gpt_00333|
-|--------|----------------|
-|**Name**|GptChannelClkSrcRef|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Reference to the GptClockReferencePoint from which the channel clock is derived.|
-|**Multiplicity**|1|
-|**Type**|Reference to [ GptClockReferencePoint ]|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
-
-#### GptConfigurationOfOptApiServices
-
-##### GptDeinitAp
-
-|SWS Item|ECUC_Gpt_00314|
-|--------|--------------|
-|**Name**|GptDeinitAp|
-|**Parent Container**|GptConfigurationOfOptApiServices|
-|**Description**|Adds / removes the service Gpt_DeInit() from the code.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope :local|
-
-##### GptEnableDisableNotificationApi
-
-|SWS Item|ECUC_Gpt_00315|
-|--------|----------------|
-|**Name**|GptEnableDisableNotificationApi|
-|**Parent Container**|GptConfigurationOfOptApiServices|
-|**Description**|Adds / removes the services Gpt_EnableNotification() and Gpt_DisableNotification from the code.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope :local|
-
-##### GptTimeElapsedApi
-
-|SWS Item|ECUC_Gpt_00317|
-|--------|----------------|
-|**Name**|GptTimeElapsedApi|
-|**Parent Container**|GptConfigurationOfOptApiServices|
-|**Description**|Adds / removes the service Gpt_GetTimeElapsed() from the code|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### GptTimeRemainingApi
-
-|SWS Item|ECUC_Gpt_00318|
-|--------|----------------|
-|**Name**|GptTimeRemainingApi|
-|**Parent Container**|GptConfigurationOfOptApiServices|
-|**Description**|Adds / removes the service Gpt_GetTimeRemaining() from the code.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### GptVersionInfoApi
-
-|SWS Item|ECUC_Gpt_00319|
-|--------|----------------|
-|**Name**|GptVersionInfoApi|
-|**Parent Container**|GptConfigurationOfOptApiServices|
-|**Description**|Adds / removes the service Gpt_GetVersionInfo() from the code.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
 
 #### GptChannelConfigSet
+This container is the base of a Configuration Set which contains the configured GPT channels. This way, different configuration sets can be defined for post-build process.
 
 ##### GptUseTimer2InOS
 
-|SWS Item||
-|--------|----------------|
-|**Name**|GptUseTimer2InOS|
-|**Parent Container**||
-|**Description**|Enable/Disable of CPU timer2 usage in OS|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**||
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | GptUseTimer2InOS |
+| **Description** | Enable/Disable of CPU timer2 usage in OS |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### GptSimulationStatus
+##### GptChannelConfiguration
+Configuration of an individual GPT channel.
 
-|SWS Item||
-|--------|----------------|
-|**Name**|GptSimulationStatus|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Specifies the simulation state(Enable/Disable) of the timer.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**||
-|GPT_SIM_DISABLE||
-|GPT_SIM_ENABLE||
-|**Default value**|GPT_SIM_DISABLE|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: ECU|
+###### GptChannelId
 
-##### GptTypeofInterrupt
+| Item ||
+|--------|---------------|
+| **Name** | GptChannelId |
+| **Description** | Channel Id of the GPT channel. This value will be assigned to the symbolic name derived of the GptChannelConfiguration container short name. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 2 |
+| **Min-value** | 0 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|GptTypeofInterrupt|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Specifies the behavior of the timer in simulation mode(Stop timer at next counter decrement or Stop timer at next elapsed time).|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**||
-|GPT_ISR_CAT1_RTINT||
-|GPT_ISR_CAT1_INT||
-|GPT_ISR_CAT2||
-|**Default value**|GPT_ISR_CAT1_RTINT|
-|**Post-Build Variant Value**||
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**||
+###### GptChannelMode
 
-##### GPTPredefTimer100us32bitEnable
+| Item ||
+|--------|---------------|
+| **Name** | GptChannelMode |
+| **Description** | Specifies the behavior of the timer channel after the target time is reached. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | GPT_CH_MODE_ONESHOT |
+| **Range** | GPT_CH_MODE_CONTINUOUS<br>GPT_CH_MODE_ONESHOT |
 
-|SWS Item|ECUC_GPT_00335|
-|--------|--------------|
-|**Name**|GPTPredefTimer100us32bitEnable|
-|**Parent Container**|GPTDriverConfiguration|
-|**Description**|Enables/disables the GPT Predef Timer 100µs32bit.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time |--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: ECU|
+###### GptChannelPrescaleValue
 
-##### GptPredefTimer1usEnablingGrade
+| Item ||
+|--------|---------------|
+| **Name** | GptChannelPrescaleValue |
+| **Description** |  The input GPT clock will be divided by this value |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| **Default-value** | 0 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
 
-|SWS Item|ECUC_GPT_00334|
-|--------|--------------|
-|**Name**|GptPredefTimer1usEnablingGrade|
-|**Parent Container**| GptDriverConfiguration|
-|**Description**|Specifies the grade of enabling the GPT Predef Timers with 1µs tick duration.|
-|**Multiplicity**|1|
-|**Type**|EcucEnumerationParamDef|
-|**Range**||
-|GPT_PREDEF_TIMER_1US_16BIT_ENABLED|16bit timer enabled|
-|GPT_PREDEF_TIMER_1US_16_24BIT_ENABLED|16 and 24bit timers enabled|
-|GPT_PREDEF_TIMER_1US_16_24_32BIT_ENABLED|16, 24 and 32bit timers enabled|
-|GPT_PREDEF_TIMER_1US_DISABLED|disabled|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: ECU|
+###### GptChannelTickFrequency
 
-##### GptReportWakeupSource
+| Item ||
+|--------|---------------|
+| **Name** | GptChannelTickFrequency |
+| **Description** | Specifies the tick frequency of the timer channel in Hz. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1.0 |
+| **Max-value** | INF |
+| **Min-value** | 0.0 |
 
-|SWS Item|ECUC_Gpt_00322|
-|--------|--------------|
-|**Name**|GptReportWakeupSource|
-|**Parent Container**|GptDriverConfiguration|
-|**Description**|Enables/Disables wake up source reporting.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### GptChannelTickValueMax
 
-#### GptClockReferencePoint
+| Item ||
+|--------|---------------|
+| **Name** | GptChannelTickValueMax |
+| **Description** | Maximum value in ticks, the timer channel is able to count. With the next tick, the timer rolls over to zero. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 4294967295 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
 
-##### GptClockReference
+###### GptEnableWakeup
 
-|SWS Item|ECUC_Gpt_00330|
-|--------|--------------|
-|**Name**|GptClockReference|
-|**Parent Container**|GptClockReferencePoint|
-|**Description**|Reference to a container of the type McuClockReferencePoint, to select an input clock.The configuration editor for the GPT module can support the integrator by only allowing a selection of those clock reference points that can be connected physically to the GPT hardware peripheral.The desired frequency (desired by GPT) has to be the same as the selected and provided frequency of the MCU configuration. This has to be checked automatically|
-|**Multiplicity**|1|
-|**Type**|Reference to [ McuClockReferencePoint ]|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | GptEnableWakeup |
+| **Description** | Enables wakeup capability of MCU for a channel. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### GptEnableWakeup
+###### GptNotification
 
-|SWS Item|ECUC_Gpt_00311|
-|--------|--------------|
-|**Name**|GptEnableWakeup|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Enables wake up capability of MCU for a channel.|
-|**Multiplicity**|1|
-|**Type**|EcucIntegerParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | GptNotification |
+| **Description** | Function pointer to callback function (for non-wakeup notification) |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-build-variant-multiplicity** | true |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
 
-#### GptWakeupConfiguration
+###### GptSimulationStatus
 
-##### GptWakeupSourceRef
+| Item ||
+|--------|---------------|
+| **Name** | GptSimulationStatus |
+| **Description** | Specifies the simulation state(Enable/Disable) of the timer. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | GPT_SIM_DISABLE |
+| **Range** | GPT_SIM_DISABLE<br>GPT_SIM_ENABLE |
 
-|SWS Item|ECUC_Gpt_00313|
-|--------|----------------|
-|**Name**|GptWakeupSourceRef|
-|**Parent Container**|GptWakeupConfiguration|
-|**Description**|In case the wake up-capability is true this value is transmitted to the Ecu State Manager.Implementation Type: reference to EcuM_WakeupSourceType|
-|**Multiplicity**|1|
-|**Type**|Symbolic name reference to [ EcuMWakeupSource ]|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|VARIANT-PRE-COMPILE|
-|Link time|--|
-|Post-build time|VARIANT-POST-BUILD|
-|**Scope / Dependency**|scope: local|
+###### GptSimulationMode
+
+| Item ||
+|--------|---------------|
+| **Name** | GptSimulationMode |
+| **Description** | Specifies the behavior of the timer in simulation mode(Stop timer at next counter decrement or Stop timer at nect elapsed time). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC |
+| **Range** | GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC<br>GPT_SIM_STOP_TIMER_AT_NEXT_TIMER_ELAPSE |
+
+###### GptTypeofInterrupt
+
+| Item ||
+|--------|---------------|
+| **Name** | GptTypeofInterrupt |
+| **Description** | Type of ISR function |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | GPT_ISR_CAT1_RTINT |
+| **Range** | GPT_ISR_CAT1_RTINT<br>GPT_ISR_CAT1_INT<br>GPT_ISR_CAT2 |
+
+###### GptChannelClkSrcRef
+
+| Item ||
+|--------|---------------|
+| **Name** | GptChannelClkSrcRef |
+| **Description** | Reference to the GptClockReferencePoint from which the channel |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+##### GptWakeupConfiguration
+Function pointer to callback function (for wakeup notification).
+
+###### GptWakeupSourceRef
+
+| Item ||
+|--------|---------------|
+| **Name** | GptWakeupSourceRef |
+| **Description** | In case the wakeup-capability is true this value is transmitted to the Ecu State Manager. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+#### GptConfigurationOfOptApiServices
+This container contains all configuration switches for configuring optional API services of the GPT driver.
+
+##### GptDeinitApi
+
+| Item ||
+|--------|---------------|
+| **Name** | GptDeinitApi |
+| **Description** | Adds / removes the service Gpt_DeInit() from the code. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### GptEnableDisableNotificationApi
+
+| Item ||
+|--------|---------------|
+| **Name** | GptEnableDisableNotificationApi |
+| **Description** | Adds / removes the services Gpt_EnableNotification() and Gpt_DisableNotification from the code. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### GptTimeElapsedApi
+
+| Item ||
+|--------|---------------|
+| **Name** | GptTimeElapsedApi |
+| **Description** | Adds / removes the service Gpt_GetTimeElapsed() from the code |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### GptTimeRemainingApi
+
+| Item ||
+|--------|---------------|
+| **Name** | GptTimeRemainingApi |
+| **Description** | Adds / removes the service Gpt_GetTimeRemaining() from the code. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### GptVersionInfoApi
+
+| Item ||
+|--------|---------------|
+| **Name** | GptVersionInfoApi |
+| **Description** | Adds / removes the service Gpt_GetVersionInfo() from the code. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### GptWakeupFunctionalityApi
 
-|SWS Item|ECUC_Gpt_00320|
-|--------|----------------|
-|**Name**|GptWakeupFunctionalityApi|
-|**Parent Container**|GptConfigurationOfOptApiServices|
-|**Description**|Adds / removes the services Gpt_SetMode(), Gpt_EnableWakeup(),Gpt_DisableWakeup() and Gpt_CheckWakeup() from the code.|
-|**Multiplicity**|1|
-|**Type**|EcucBooleanParamDef|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | GptWakeupFunctionalityApi |
+| **Description** | Adds / removes the services Gpt_SetMode(), Gpt_EnableWakeup() Gpt_DisableWakeup() and Gpt_CheckWakeup() from the code. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### GptSimulationMode
+#### GptDriverConfiguration
+This container contains the module-wide configuration (parameters) of the GPT Driver
 
-|SWS Item||
-|--------|----------------|
-|**Name**|GptSimulationMode|
-|**Parent Container**|GptChannelConfiguration|
-|**Description**|Specifies the behavior of the timer in simulation mode(Stop timer at next counter decrement or Stop timer at next elapsed time).|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**||
-|GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC||
-|GPT_SIM_STOP_TIMER_AT_NEXT_TIMER_ELAPSE||
-|**Default value**|GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC|
-|**Post-Build Variant Value**|true|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: ECU|
+##### GptDevErrorDetect
 
+| Item ||
+|--------|---------------|
+| **Name** | GptDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### GptPredefTimer100us32bitEnable
+
+| Item ||
+|--------|---------------|
+| **Name** | GptPredefTimer100us32bitEnable |
+| **Description** | Enables/disables the GPT Predef Timer 100?s32bit. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### GptPredefTimer1usEnablingGrade
+
+| Item ||
+|--------|---------------|
+| **Name** | GptPredefTimer1usEnablingGrade |
+| **Description** | Specifies the grade of enabling the GPT Predef Timers with 1?s tick duration. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | GPT_PREDEF_TIMER_1US_DISABLED |
+| **Range** | GPT_PREDEF_TIMER_1US_16BIT_ENABLED<br>GPT_PREDEF_TIMER_1US_16_24BIT_ENABLED<br>GPT_PREDEF_TIMER_1US_16_24_32BIT_ENABLED<br>GPT_PREDEF_TIMER_1US_DISABLED |
+
+##### GptReportWakeupSource
+
+| Item ||
+|--------|---------------|
+| **Name** | GptReportWakeupSource |
+| **Description** | Enables/Disables wakeup source reporting. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### GptClockReferencePoint
+This container contains a parameter, which represents a reference to a container of the type McuClockReferencePoint (defined in module MCU).
 Refer [AUTOSAR_SWS_GPTDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_GPTDriver.pdf) for configuration parameters details
 
 #### Steps To Configure Gpt Module

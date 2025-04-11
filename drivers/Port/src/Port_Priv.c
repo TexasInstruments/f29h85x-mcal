@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -173,6 +173,7 @@ static FUNC(void, PORT_CODE) Port_SetAnalogMode(Port_PinType PinNumber, Port_Ana
  *********************************************************************************************************************/
 #define PORT_START_SEC_CODE
 #include "Port_MemMap.h"
+
 /*
  *Design: MCAL-22382,MCAL-22316,MCAL-22409,MCAL-22390,MCAL-22404
  */
@@ -197,10 +198,11 @@ FUNC(Std_ReturnType, PORT_CODE) Port_SetCntSpConfig(P2CONST(Port_PinConfigType, 
             * Do Nothing
             */
         }
-
+        /* TI_COVERAGE_GAP_START [Branch Gap] OR Condition short-circuiting nature in PORT_IS_ANALOG_MODE_SUPPORTED */
         if((FALSE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr))
             || ((TRUE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr))
                 && (PORT_ANALOG_DISABLED == controllerSpecificPtr->Port_AnalogMode)))
+        /* TI_COVERAGE_GAP_STOP*/
         {
             Port_SetPadConfig(PinConfig->Port_PinId, controllerSpecificPtr->Port_PinPadConfig);
 
@@ -240,21 +242,30 @@ FUNC(Std_ReturnType, PORT_CODE) Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigTy
     VAR(Port_PinType, AUTOMATIC) gpio63 = 63U;
     VAR(Port_PinType, AUTOMATIC) PinNumber = PinConfig->Port_PinId;
     VAR(uint32, AUTOMATIC) pinMask = 0U;
-    VAR(Std_ReturnType, AUTOMATIC) returnValue = (Std_ReturnType)E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) returnValue = (Std_ReturnType)E_OK;
+
+    P2CONST(Port_ControllerSpecificType, AUTOMATIC, PORT_CONFIG_DATA) controllerSpecificPtr = NULL_PTR;
+    controllerSpecificPtr = &PinConfig->Port_ControllerSpecific;
 
     /*Bit position of the pin Number/GPIO number*/
-    pinMask = (uint32)ONE_BIT_MASK << (PinNumber % PORT_WIDTH); 
+    pinMask = (uint32)ONE_BIT_MASK << (PinNumber % PORT_WIDTH);
 
-    /*If pin number is less than equal to 31 ( GPIO31 )*/
-    if (gpio31 >= PinNumber) 
+    /* Enable LPM Wakeup Pin if configured for the current pin*/
+    if ((boolean)TRUE == controllerSpecificPtr->Port_EnableWakeupPinLPM)
     {
-        HWREG(CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL0) |= (pinMask);
-        returnValue = (Std_ReturnType)E_OK;
-    }
-    else if (gpio63 >= PinNumber) /*If pin number is less than equal to 63 ( GPIO63 )*/
-    {
-        HWREG(CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL1) |= (pinMask);
-        returnValue = (Std_ReturnType)E_OK;
+        /*If pin number is less than equal to 31 ( GPIO31 )*/
+        if (gpio31 >= PinNumber) 
+        {
+            HWREG(CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL0) |= (pinMask);            
+        }
+        else if (gpio63 >= PinNumber) /*If pin number is less than equal to 63 ( GPIO63 )*/
+        {
+            HWREG(CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL1) |= (pinMask);
+        }
+        else
+        {
+            returnValue = (Std_ReturnType)E_NOT_OK;
+        }
     }
     else
     {
@@ -279,7 +290,8 @@ FUNC(Std_ReturnType, PORT_CODE) Port_SetPinLevel(P2CONST(Port_PinConfigType, AUT
 
     PortPinNumValid = Port_IsPinNumberValid(pinNumber);
 
-    if ((PortPinNumValid != (Std_ReturnType)E_NOT_OK) && (PORT_PIN_IN != PinConfig->Port_PinDirection))
+    if ((PortPinNumValid != (Std_ReturnType)E_NOT_OK) && ((PORT_PIN_OUT == PinConfig->Port_PinDirection) || \
+                        (PORT_PIN_NA == PinConfig->Port_PinDirection)))
     {
         gpioDataReg = (uint32 *)((uint32*)GPIODATA_BASE + ((pinNumber / PORT_WIDTH) * PORT_DATA_REGS_STEP));        
         pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
@@ -330,7 +342,7 @@ FUNC(Std_ReturnType, PORT_CODE)
 
     PortPinNumValid = Port_IsPinNumberValid(pinNumber);
 
-    if (PortPinNumValid != (Std_ReturnType)E_NOT_OK) 
+    if (PortPinNumValid != (Std_ReturnType)E_NOT_OK)
     {
         gpioBaseAddr = (uint32 *)((uint32 *)GPIODATA_BASE + ((pinNumber / PORT_WIDTH) * PORT_DATA_REGS_STEP));
         pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
@@ -438,6 +450,92 @@ FUNC(Std_ReturnType, PORT_CODE) Port_ValidateSetPinMode(Port_PinModeType Mode,
         *errorIdPtr = PORT_E_MODE_UNCHANGEABLE;
     }
     return (retVal);
+}
+
+/* 
+ *Design: MCAL-29441
+ */
+FUNC(void, PORT_CODE) Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig)
+{
+    VAR(uint32, AUTOMATIC) pinMask = 0U;
+    VAR(Port_PinType, AUTOMATIC) pinNumber = pinConfig->Port_PinId;
+    VAR(Std_ReturnType, AUTOMATIC) PortPinNumValid = (Std_ReturnType)E_NOT_OK;
+    VAR(uint32, AUTOMATIC) regAddr = 0U;
+
+    PortPinNumValid = Port_IsPinNumberValid(pinNumber);
+
+    if (PortPinNumValid != (Std_ReturnType)E_NOT_OK)
+    {
+        /*Bit position of the pin Number/GPIO number*/
+        pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
+
+        regAddr = ((uint32)GPIOCTRL_BASE + \
+                    (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) + \
+                            (uint32)GPIO_O_GPALOCK);
+
+        HWREG(regAddr) |= (pinMask);
+    }
+    else
+    {
+        /* Do Nothing */
+    }
+}
+
+/* 
+ *Design: MCAL-29440
+ */
+FUNC(void, PORT_CODE) Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig)
+{
+    VAR(uint32, AUTOMATIC) pinMask = 0U;
+    VAR(Port_PinType, AUTOMATIC) pinNumber = pinConfig->Port_PinId;
+    VAR(Std_ReturnType, AUTOMATIC) PortPinNumValid = (Std_ReturnType)E_NOT_OK;
+    VAR(uint32, AUTOMATIC) regAddr = 0U;
+
+    PortPinNumValid = Port_IsPinNumberValid(pinNumber);
+
+    if (PortPinNumValid != (Std_ReturnType)E_NOT_OK)
+    {
+        /*Bit position of the pin Number/GPIO number*/
+        pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
+
+        regAddr = ((uint32)GPIOCTRL_BASE + \
+                    (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) + \
+                            (uint32)GPIO_O_GPALOCK);
+
+        HWREG(regAddr) &= ~pinMask;
+    }
+    else
+    {
+        /* Do Nothing */
+    }
+}
+
+/* 
+ *Design: MCAL-29442
+ */
+FUNC(void, PORT_CODE) Port_CommitConfigurationProcess(Port_PinType pinNumber)
+{
+    VAR(uint32, AUTOMATIC) pinMask = 0U;
+    VAR(uint32, AUTOMATIC) regAddr = 0U;
+
+    /*Bit position of the pin Number/GPIO number*/
+    pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
+
+    #if (STD_OFF == PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS)
+    /* Lock the Pin */
+    regAddr = ((uint32)GPIOCTRL_BASE + \
+                    (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) + \
+                            (uint32)GPIO_O_GPALOCK);
+
+    HWREG(regAddr) |= (pinMask);
+    #endif
+
+    /* Commit the Pin */
+    regAddr = ((uint32)GPIOCTRL_BASE + \
+                (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) + \
+                    (uint32)GPIO_O_GPACR);
+
+    HWREG(regAddr) |= (pinMask);
 }
 
 /*********************************************************************************************************************
@@ -585,7 +683,7 @@ static FUNC(void, PORT_CODE) Port_SetAnalogMode(Port_PinType PinNumber, Port_Ana
         /* Enable analog mode */
         gpioBaseAddr[PORT_AMSEL_REGS_INDEX] |= pinMask;
 
-        if ((PinNumber >= (uint32)224U) && (PinNumber <= (uint32)249U))
+        if ((PinNumber >= (uint32)AGPIO_PINS_START_VALUE))
         {
             /* Set AGPIOCTL */
             HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_AGPIOCTRLH) |= (pinMask);
@@ -596,7 +694,7 @@ static FUNC(void, PORT_CODE) Port_SetAnalogMode(Port_PinType PinNumber, Port_Ana
         /* Disable analog mode */
         gpioBaseAddr[PORT_AMSEL_REGS_INDEX] &= ~pinMask;
 
-        if ((PinNumber >= (uint32)224U) && (PinNumber <= (uint32)249U))
+        if ((PinNumber >= (uint32)AGPIO_PINS_START_VALUE))
         {
             /* Clear AGPIOCTL */
             HWREG(ANALOGSUBSYS_BASE + ASYSCTL_O_AGPIOCTRLH) &= ~(pinMask);

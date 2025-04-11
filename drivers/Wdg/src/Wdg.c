@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -25,6 +25,8 @@
  *********************************************************************************************************************/
 #include "Wdg.h"
 #include "Wdg_Priv.h"
+#include "Wdg_Cbk.h"
+#include "SchM_Wdg.h"
 
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
     #include "Det.h"
@@ -95,6 +97,18 @@ VAR(Wdg_DriverObjType, WDG_VAR_NO_INIT) Wdg_DrvObj;
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
+/** \brief Wdg_CheckAndSetRequestedMode - This API will check requested mode configuration settings and set the mode
+ * 
+ * \param[in] Mode The requested mode type off,slow,fast mode
+ * \param[out] None
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: command has been accepted.
+ * \retval E_NOT_OK: command has not been accepted
+ *
+ *********************************************************************************************************************/
+static FUNC(Std_ReturnType, WDG_CODE) Wdg_CheckAndSetRequestedMode(VAR(WdgIf_ModeType, AUTOMATIC) Mode);
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -150,12 +164,13 @@ FUNC(void, WDG_CODE) Wdg_Init(P2CONST(Wdg_ConfigType, WDG_CONFIG_DATA, WDG_CONFI
     Wdg_DrvStatus = WDG_UNINIT;
 #endif
 
-#if (STD_ON == WDG_VARIANT_PRE_COMPILE)
+
+#if ((STD_ON == WDG_VARIANT_PRE_COMPILE) || (STD_ON == WDG_VARIANT_LINK_TIME))
     if (NULL_PTR == CfgPtr)
     {
         config_ptr = &WDG_INIT_CONFIG_PC;
     }
-#endif  /* (STD_ON == WDG_VARIANT_PRE_COMPILE) */
+#endif  /* (STD_ON == WDG_VARIANT_PRE_COMPILE) or  (STD_ON == WDG_VARIANT_LINK_TIME) */
 
 #if (STD_ON == WDG_VARIANT_POST_BUILD)  
     if (NULL_PTR != CfgPtr)
@@ -163,14 +178,6 @@ FUNC(void, WDG_CODE) Wdg_Init(P2CONST(Wdg_ConfigType, WDG_CONFIG_DATA, WDG_CONFI
         config_ptr = CfgPtr;
     }
 #endif  /* (STD_ON == WDG_VARIANT_POST_BUILD) */
-
-#if (STD_ON == WDG_VARIANT_LINK_TIME)
-    if (NULL_PTR != CfgPtr)
-    {
-        config_ptr = CfgPtr; 
-    }
-#endif  /* (STD_ON == WDG_VARIANT_LINK_TIME) */	
-
 
     if (NULL_PTR == config_ptr)
     {
@@ -202,22 +209,30 @@ FUNC(void, WDG_CODE) Wdg_Init(P2CONST(Wdg_ConfigType, WDG_CONFIG_DATA, WDG_CONFI
 #endif
         else
         {
+            #ifdef WDG_E_DISABLE_REJECTED
+                (void)Dem_SetEventStatus(WDG_E_DISABLE_REJECTED, DEM_EVENT_STATUS_PASSED);
+            #endif
+
             ret_val = Wdg_PlatformInit(config_ptr);
 
             if (((Std_ReturnType) E_OK) != ret_val)
             {
-            #if (STD_ON == WDG_DEV_ERROR_DETECT)
-                (void) Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, 
-                                WDG_SID_INIT, WDG_E_PARAM_CONFIG);        
-            #endif
-
             #ifdef WDG_E_MODE_FAILED
                 /* Mode not supported */
                 (void)Dem_SetEventStatus(WDG_E_MODE_FAILED, DEM_EVENT_STATUS_FAILED);
             #endif
+
+            #if (STD_ON == WDG_DEV_ERROR_DETECT)
+                (void) Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, 
+                                WDG_SID_INIT, WDG_E_PARAM_CONFIG);        
+            #endif
             }
             else
             {
+                #ifdef WDG_E_MODE_FAILED
+                    (void)Dem_SetEventStatus(WDG_E_MODE_FAILED, DEM_EVENT_STATUS_PASSED);
+                #endif
+
                 /* Save the configured Mode type & Mode configuration settings to global object*/
                 Wdg_DrvObj.Wdg_PreviousMode  = config_ptr->Wdg_DefaultMode;
                 Wdg_DrvObj.Wdg_SlowModeCfg   = config_ptr->Wdg_SlowModeCfg;
@@ -251,7 +266,6 @@ FUNC(void, WDG_CODE) Wdg_Init(P2CONST(Wdg_ConfigType, WDG_CONFIG_DATA, WDG_CONFI
 FUNC(Std_ReturnType, WDG_CODE) Wdg_SetMode(VAR(WdgIf_ModeType, AUTOMATIC) Mode)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType) E_NOT_OK;
-    P2CONST(Wdg_ModeInfoType, AUTOMATIC, WDG_APPL_CONST) mode_cfg_ptr = NULL_PTR;
 
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
     if (WDG_IDLE != Wdg_DrvStatus)
@@ -290,60 +304,12 @@ FUNC(Std_ReturnType, WDG_CODE) Wdg_SetMode(VAR(WdgIf_ModeType, AUTOMATIC) Mode)
 #endif
         else
         {
-            /* Check if requested mode type is other than configured mode type */
-            if (Mode != Wdg_DrvObj.Wdg_PreviousMode)
-            {
-                /* Get Requested mode type settings from configuration settings */
-                if(Mode == WDGIF_FAST_MODE)
-                {
-                    mode_cfg_ptr = &Wdg_DrvObj.Wdg_FastModeCfg;
-                }
-                else
-                {
-                    mode_cfg_ptr = &Wdg_DrvObj.Wdg_SlowModeCfg;
-                }
-#if (STD_ON == WDG_DEV_ERROR_DETECT)
-                /* Set driver status as busy */
-                Wdg_DrvStatus = WDG_BUSY;
-#endif
+            #ifdef WDG_E_DISABLE_REJECTED
+                (void)Dem_SetEventStatus(WDG_E_DISABLE_REJECTED, DEM_EVENT_STATUS_PASSED);
+            #endif
 
-                /* Reset the Watchdog Counter */
-                Wdg_ServiceWatchdog();
-
-                /* Disable the Watchdog */
-                Wdg_DisableWatchdog();
-
-                /* Set requested mode configuration settings */
-                return_value = Wdg_SetModeConfig(mode_cfg_ptr);
-
-
-                if (((Std_ReturnType) E_NOT_OK) == return_value)
-                {
-                    #if (STD_ON == WDG_DEV_ERROR_DETECT)
-                        (void) Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, 
-                                    WDG_SID_SET_MODE, WDG_E_PARAM_CONFIG);  
-                    #endif
-
-                    #ifdef WDG_E_MODE_FAILED
-                    /* Mode not supported */
-                        (void)Dem_SetEventStatus(WDG_E_MODE_FAILED, DEM_EVENT_STATUS_FAILED);
-                    #endif  
-                }
-                else
-
-                {
-                    /* Save the configured Mode type value */
-                    Wdg_DrvObj.Wdg_PreviousMode = Mode;
-
-                    /* Enable the Watchdog */
-                    Wdg_EnableWatchdog();
-                }
-
-            }
-            else
-            {
-                return_value = (Std_ReturnType) E_OK;
-            }
+            /* local function to check requested mode configuration settings and set mode */
+            return_value = Wdg_CheckAndSetRequestedMode(Mode);          
         }
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
         if(return_value == (Std_ReturnType) E_OK)
@@ -370,19 +336,7 @@ FUNC(void, WDG_CODE) Wdg_SetTriggerCondition(VAR(uint16, AUTOMATIC) Timeout)
 #if (STD_ON == WDG_DEV_ERROR_DETECT)
     VAR(uint16, AUTOMATIC) Max_Timeout = 0U;
 
-    if(WDGIF_FAST_MODE == Wdg_DrvObj.Wdg_PreviousMode)
-    {
-        Max_Timeout = Wdg_DrvObj.Wdg_FastModeCfg.Timeout;
-    }
-    else if(WDGIF_SLOW_MODE == Wdg_DrvObj.Wdg_PreviousMode)
-    {
-        Max_Timeout = Wdg_DrvObj.Wdg_SlowModeCfg.Timeout;
-    }
-    else
-    {
-        /* Do nothing */
-    }
-
+    Max_Timeout = Wdg_GetMaxTimeout(&Wdg_DrvObj);
 
     /* Check if driver already initialized */
     if (WDG_IDLE != Wdg_DrvStatus)
@@ -400,16 +354,7 @@ FUNC(void, WDG_CODE) Wdg_SetTriggerCondition(VAR(uint16, AUTOMATIC) Timeout)
     else
 #endif 
     {
-        if (0U == Timeout)
-        {
-            /* Write Bad key to generate immediate watchdog event */
-            Wdg_GenerateImmediateEvent();
-        }
-        else
-        {
-            /* Service Watchdog: Write Good Key */
-            Wdg_ServiceWatchdog();
-        }
+        Wdg_SetTriggerConditionPriv(Timeout);
     }
 
     return;
@@ -419,6 +364,74 @@ FUNC(void, WDG_CODE) Wdg_SetTriggerCondition(VAR(uint16, AUTOMATIC) Timeout)
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
+
+ /*
+ * Design: MCAL-28572
+ */
+static FUNC(Std_ReturnType, WDG_CODE) Wdg_CheckAndSetRequestedMode(VAR(WdgIf_ModeType, AUTOMATIC) Mode)
+{
+    VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType) E_NOT_OK;
+    P2CONST(Wdg_ModeInfoType, AUTOMATIC, WDG_APPL_CONST) mode_cfg_ptr = NULL_PTR;
+
+    /* Check if requested mode type is other than configured mode type */
+    if (Mode != Wdg_DrvObj.Wdg_PreviousMode)
+    {
+        /* Get Requested mode type settings from configuration settings */
+        if(Mode == WDGIF_FAST_MODE)
+        {
+            mode_cfg_ptr = &Wdg_DrvObj.Wdg_FastModeCfg;
+        }
+        else
+        {
+            mode_cfg_ptr = &Wdg_DrvObj.Wdg_SlowModeCfg;
+        }
+#if (STD_ON == WDG_DEV_ERROR_DETECT)
+        /* Set driver status as busy */
+        Wdg_DrvStatus = WDG_BUSY;
+#endif
+
+        /* Disable the Watchdog */
+        Wdg_DisableWatchdog();
+
+        /* Reset the Watchdog Counter */
+        Wdg_ServiceWatchdog();
+
+        /* Set requested mode configuration settings */
+        return_value = Wdg_SetModeConfig(mode_cfg_ptr);
+
+
+        if (((Std_ReturnType) E_NOT_OK) == return_value)
+        {
+
+            #ifdef WDG_E_MODE_FAILED
+            /* Mode not supported */
+                (void)Dem_SetEventStatus(WDG_E_MODE_FAILED, DEM_EVENT_STATUS_FAILED);
+            #endif
+            #if (STD_ON == WDG_DEV_ERROR_DETECT)
+                (void) Det_ReportError(WDG_MODULE_ID, WDG_INSTANCE_ID, 
+                            WDG_SID_SET_MODE, WDG_E_PARAM_CONFIG);  
+            #endif  
+        }
+        else
+        {
+            #ifdef WDG_E_MODE_FAILED
+                (void)Dem_SetEventStatus(WDG_E_MODE_FAILED, DEM_EVENT_STATUS_PASSED);
+            #endif
+
+            /* Save the configured Mode type value */
+            Wdg_DrvObj.Wdg_PreviousMode = Mode;
+
+            /* Enable the Watchdog */
+            Wdg_EnableWatchdog();
+        }
+
+    }
+    else
+    {
+        return_value = (Std_ReturnType) E_OK;
+    }
+    return return_value;
+}
 
 #define WDG_STOP_SEC_CODE
 #include "Wdg_MemMap.h"

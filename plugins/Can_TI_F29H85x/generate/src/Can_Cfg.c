@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright [!"substring-before($date,'-')"!] Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -37,11 +37,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (0U)))
+#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (1U)))
     #error "Version numbers of Can_cfg.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (0U)))
+#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Can_cfg.c and Can_Cfg.h are inconsistent!"
 #endif
 
@@ -120,7 +120,7 @@ CONST(Can_BaudConfigType, CAN_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@nam
         .CanControllerTxBitRateSwitch = (boolean )[!IF "CanControllerFdBaudrateConfig/CanControllerTxBitRateSwitch='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
 [!VAR "TxDelayComp" = "0"!][!//
 [!VAR "TxDelayComp" = "1"!][!//
-[!IF "node:exists(CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationOffset)"!]//
+[!IF "node:exists(CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationOffset)"!][!//
         .TxDelayCompEnable = (boolean )TRUE,
         .TxDelayCompFilter = (uint8 )[!"CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationFilter"!]U,
         .CanControllerTrcvDelayCompensationOffset = (uint16 )[!"CanControllerFdBaudrateConfig/CanControllerTrcvDelayCompensationOffset"!]U,
@@ -379,7 +379,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
     .CanObjectType = (Can_MailboxDirectionType )[!IF "CanObjectType = 'TRANSMIT'"!]TRANSMIT[!ELSE!]RECEIVE[!ENDIF!],
     .CanControllerRef = (const Can_ControllerType* )&[!"../../@name"!]_[!"node:name(node:ref(CanControllerRef))"!],
     .CanFdPaddingValue = (uint8 )[!"CanFdPaddingValue"!]U,
-    .CanHardwareObjectUsesPolling = (boolean )[!IF "CanHardwareObjectUsesPolling/* = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+    .CanHardwareObjectUsesPolling = (boolean )[!IF "CanHardwareObjectUsesPolling = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
     .CanTriggerTransmitEnable = (boolean )[!IF "CanTriggerTransmitEnable = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
 [!IF "CanObjectType = 'RECEIVE'"!][!//
 [!IF "node:empty(CanHwFilter/*/CanHwFilterCode) = 'TRUE'"!][!//
@@ -398,6 +398,8 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ELSE!][!//
     .CanHwFilterMask = {(uint32 )[!"CanHwFilter/*/CanHwFilterMask"!]U},
 [!ENDIF!][!//
+    .CanStandardFilterType = [!"CanHwFilter/*/CanStandardFilterType"!],
+    .CanEventPin = [!"CanHwFilter/*/CanEventPin"!],
 [!ELSE!][!//
     .CanHwFilterCode = (uint32 )0U, /* Only valid if CAN object type is RECEIVE */
     .CanHwFilterMask = {(uint32 )0U},

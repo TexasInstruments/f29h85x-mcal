@@ -128,8 +128,11 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" value="as:uuid()"/>
+								      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <a:da name="DEFAULT" value="0"/>
+                      <a:da name="WARNING" type="Multi">
+                        <mt:xpath expr="(../GptChannelId ='2')" true = " Timer 2 supports different clock configuration. User need to update this prescalar values based upon  clock source referenced in GptChannelClkSrcRef parameter."/>
+                      </a:da>
                       <a:da name="INVALID" type="Range">
                         <a:tst expr="&lt;=65535"/>
                         <a:tst expr="&gt;=0"/>
@@ -234,8 +237,9 @@
                            value="cb5b9d2e-2c21-4620-a685-195ddca94a27"/>
                       <a:da name="REF" 
                             value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Gpt/GptDriverConfiguration/GptClockReferencePoint"/>
-                      <a:da name="VISIBLE"  value="false"/>
-                      <a:da name="EDITABLE"  value="false"/>
+                      <a:da name="VISIBLE"  value="true"/>
+                      <a:da name="EDITABLE"  value="true"/>
+                      <a:da name="ENABLE" type="XPath" expr="(../GptChannelId  = '2')"/> 
                     </v:ref>
                     <v:var name="GptSimulationStatus" type="ENUMERATION">
                       <a:a name="DESC" 
@@ -249,8 +253,7 @@
                       <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                       <a:a name="SCOPE" value="ECU"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" 
-                            value="as:uuid()"/>
+                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <a:da name="DEFAULT" value="GPT_SIM_DISABLE"/>
                       <a:da name="RANGE">
                         <a:v>GPT_SIM_DISABLE</a:v>
@@ -269,8 +272,7 @@
                       <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                       <a:a name="SCOPE" value="ECU"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" 
-                            value="as:uuid()"/>
+                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <a:da name="DEFAULT" value="GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC"/>
                       <a:da name="RANGE">
                         <a:v>GPT_SIM_STOP_TIMER_AT_NEXT_COUNTER_DEC</a:v>
@@ -286,7 +288,7 @@
                         </a:a>
                         <a:a name="ORIGIN" value="Texas Instruments"/>
                         <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="UUID" value="as:uuid()"/>
+                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                         <a:da name="DEFAULT" value="GPT_ISR_CAT1_RTINT"/>
                         <a:da name="RANGE">
                             <a:v>GPT_ISR_CAT1_RTINT</a:v>

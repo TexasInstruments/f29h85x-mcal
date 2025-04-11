@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version. */
 #define SPI_SW_MAJOR_VERSION            (1U)
 /** \brief Driver Implementation Minor Version. */
-#define SPI_SW_MINOR_VERSION            (0U)
+#define SPI_SW_MINOR_VERSION            (1U)
  /** \brief Driver Implementation Patch Version. */
 #define SPI_SW_PATCH_VERSION            (0U)
 
@@ -86,7 +86,7 @@ extern "C" {
 /** \brief SPI Error Codes. Error codes returned by SPI functions */
 #ifndef SPI_E_PARAM_CHANNEL
 /*
- * Design : MCAL-24924  
+ * Design : MCAL-24924, MCAL-24937  
  */
 /** \brief API service called with wrong parameter */
 #define SPI_E_PARAM_CHANNEL             ((uint8) 0x0AU)
@@ -162,6 +162,15 @@ extern "C" {
  *   already been initialized
  */
 #define SPI_E_ALREADY_INITIALIZED       ((uint8) 0x4AU)
+#endif
+
+#ifndef SPI_E_SEQ_TIMEOUT
+/*
+ * Design : MCAL-28864
+ */
+/** \brief sequence transmission failed with a timeout  */
+
+#define SPI_E_SEQ_TIMEOUT               ((uint8) 0x5AU)
 #endif
 
 

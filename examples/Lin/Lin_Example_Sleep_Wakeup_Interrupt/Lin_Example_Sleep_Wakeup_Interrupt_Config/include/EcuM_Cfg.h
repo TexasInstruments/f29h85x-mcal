@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -30,7 +30,6 @@ extern "C" {
  * Header Files
  *********************************************************************************************************************/
 #include "Std_Types.h"
-
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -48,7 +47,7 @@ extern "C" {
 #define ECUM_PRE_COMPILE_VARIANT   (STD_ON)
 
 /* Symbolic Names for EcuM wakeup event source type Id*/
-#define EcuMConf_EcuMWakeupSource_EcuMWakeupSource_0       1  /*~ASR~*/
+#define EcuMConf_EcuMWakeupSource_EcuMWakeupSource_0       0  /*~ASR~*/
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros

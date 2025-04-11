@@ -14,7 +14,7 @@ macro(SUBDIRLIST subdirlist curdir)
 endmacro()
 
 #Add the module name to the module_list. Don't edit anything else.
-set(module_list "Mcu" "Gpt" "Dio" "Port" "Can" "Wdg" "Cdd_Xbar" "Lin" "Spi" "Cdd_Sent" "Cdd_Adc")
+set(module_list "Mcu" "Gpt" "Dio" "Port" "Can" "Wdg" "Cdd_Xbar" "Lin" "Spi" "Cdd_Sent" "Cdd_Uart" "Cdd_Adc" "Cdd_Ecap" "Cdd_Pwm" "Cdd_Ipc" "Fls")
 set(example_list "")
 
 foreach(example ${module_list})
@@ -23,7 +23,7 @@ foreach(example ${module_list})
     SUBDIRLIST(subdir_${example} ${CMAKE_CURRENT_SOURCE_DIR}/${example})
 
     list(APPEND example_list ${subdir_${example}})
-    
+
     # Add custom target to build all the examples of a module.
     # Example: To run all the examples of the Mcu module give the below command:
     # cmake --build <path/to/the/artefacts> -t Mcu_Examples
