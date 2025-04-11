@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.7. LIN &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.8. SPI" href="group___s_p_i.html" />
+    <link rel="prev" title="5.6. WDG" href="group___w_d_g.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.01.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="group___m_c_u.html">5.1. MCU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___d_i_o.html">5.2. DIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___g_p_t.html">5.3. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___p_o_r_t.html">5.4. PORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_a_n.html">5.5. CAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___w_d_g.html">5.6. WDG</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.7. LIN</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">5.7.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-lin-channelactivitystatustype">5.7.1.1. enum Lin_ChannelActivityStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-lin-channelnetworkstatustype">5.7.1.2. enum Lin_ChannelNetworkStatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-lin-interruptlinenum">5.7.1.3. enum Lin_InterruptLineNum</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-lin-loopbackmodetype">5.7.1.4. enum Lin_LoopbackModeType</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">5.7.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">5.7.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">5.7.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-getversioninfo">5.7.4.1. function Lin_GetVersionInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-init">5.7.4.2. function Lin_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-checkwakeup">5.7.4.3. function Lin_CheckWakeup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-sendframe">5.7.4.4. function Lin_SendFrame</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-gotosleep">5.7.4.5. function Lin_GoToSleep</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-gotosleepinternal">5.7.4.6. function Lin_GoToSleepInternal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-wakeup">5.7.4.7. function Lin_Wakeup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-wakeupinternal">5.7.4.8. function Lin_WakeupInternal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-getstatus">5.7.4.9. function Lin_GetStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-initinternal">5.7.4.10. function Lin_InitInternal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-checkwakeupinternal">5.7.4.11. function Lin_CheckWakeupInternal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-wakeupprocess">5.7.4.12. function Lin_WakeupProcess</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-wakeupinternalprocess">5.7.4.13. function Lin_WakeupInternalProcess</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-getstatusinternal">5.7.4.14. function Lin_GetStatusInternal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-hwunitconfig">5.7.4.15. function Lin_HwUnitConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-senddata">5.7.4.16. function Lin_SendData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-getdata">5.7.4.17. function Lin_GetData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-fetchtxstatus">5.7.4.18. function Lin_FetchTxStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-fetchrxstatus">5.7.4.19. function Lin_FetchRxStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-sendwakeupsignal">5.7.4.20. function Lin_SendWakeupSignal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-sendgotosleepsignal">5.7.4.21. function Lin_SendGoToSleepSignal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-enterlowpowermode">5.7.4.22. function Lin_EnterLowPowerMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-checkwakeupstatus">5.7.4.23. function Lin_CheckWakeupStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-aborttransmission">5.7.4.24. function Lin_AbortTransmission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-enablewakeupdetection">5.7.4.25. function Lin_EnableWakeupDetection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-processisr">5.7.4.26. function Lin_ProcessISR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-regwriteraw32">5.7.4.27. function Lin_RegWriteRaw32</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-regwriteraw8">5.7.4.28. function Lin_RegWriteRaw8</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-regmfwriteraw32">5.7.4.29. function Lin_RegMFWriteRaw32</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-regreadraw32">5.7.4.30. function Lin_RegReadRaw32</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-lin-regreadraw8">5.7.4.31. function Lin_RegReadRaw8</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group___s_p_i.html">5.8. SPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___a_d_c.html">5.9. CDD_ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___s_e_n_t.html">5.10. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group___c_d_d___x_b_a_r.html">5.11. CDD_XBAR</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api_guide.html"><span class="section-number">5. </span>API guide</a> &raquo;</li>
+      <li><span class="section-number">5.7. </span>LIN</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lin">
+<h1><span class="section-number">5.7. </span>LIN<a class="headerlink" href="#lin" title="Link to this heading"></a></h1>
+<section id="types">
+<h2><span class="section-number">5.7.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Base type</p></th>
+<th class="head"><p>Type Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-lin-channelactivitystatustype"><span class="std std-ref">Lin_ChannelActivityStatusType</span></a></strong></p></td>
+<td><p>Enum of Channel Activity Status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-lin-channelnetworkstatustype"><span class="std std-ref">Lin_ChannelNetworkStatusType</span></a></strong></p></td>
+<td><p>Enum of Channel Network Status.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-lin-interruptlinenum"><span class="std std-ref">Lin_InterruptLineNum</span></a></strong></p></td>
+<td><p>Enum of Lin Interrupt line number, 0 or 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-lin-loopbackmodetype"><span class="std std-ref">Lin_LoopbackModeType</span></a></strong></p></td>
+<td><p>Enum of Lin Loopbackmode, Internal/External/Disabled Type selection.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="enum-lin-channelactivitystatustype">
+<h3><span class="section-number">5.7.1.1. </span>enum Lin_ChannelActivityStatusType<a class="headerlink" href="#enum-lin-channelactivitystatustype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LIN_CHANNEL_IDLE</p></td>
+<td><p></p></td>
+<td><p>Idle state.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_CHANNEL_TX_STARTED</p></td>
+<td><p></p></td>
+<td><p>Transmission started.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_CHANNEL_RX_STARTED</p></td>
+<td><p></p></td>
+<td><p>Reception started.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enum of Channel Activity Status.</p>
+</section>
+<section id="enum-lin-channelnetworkstatustype">
+<h3><span class="section-number">5.7.1.2. </span>enum Lin_ChannelNetworkStatusType<a class="headerlink" href="#enum-lin-channelnetworkstatustype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LIN_CHANNEL_OPERATIONAL</p></td>
+<td><p></p></td>
+<td><p>Channel is operational.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_CHANNEL_SLEEP_PENDING</p></td>
+<td><p></p></td>
+<td><p>Sleep state pending.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_CHANNEL_SLEEP</p></td>
+<td><p></p></td>
+<td><p>Sleep state.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enum of Channel Network Status.</p>
+</section>
+<section id="enum-lin-interruptlinenum">
+<h3><span class="section-number">5.7.1.3. </span>enum Lin_InterruptLineNum<a class="headerlink" href="#enum-lin-interruptlinenum" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LIN_INTERRUPT_LINE_NUM_0</p></td>
+<td><p>0x0U</p></td>
+<td><p>Use Interrupt Line 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_INTERRUPT_LINE_NUM_1</p></td>
+<td><p>0x1U</p></td>
+<td><p>Use Interrupt Line 1.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enum of Lin Interrupt line number, 0 or 1.</p>
+</section>
+<section id="enum-lin-loopbackmodetype">
+<h3><span class="section-number">5.7.1.4. </span>enum Lin_LoopbackModeType<a class="headerlink" href="#enum-lin-loopbackmodetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LIN_LOOPBACK_DISABLED</p></td>
+<td><p></p></td>
+<td><p>Loopback disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_LOOPBACK_INTERNAL</p></td>
+<td><p></p></td>
+<td><p>Loopback internal.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_LOOPBACK_EXTERNAL</p></td>
+<td><p></p></td>
+<td><p>Loopback external.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Enum of Lin Loopbackmode, Internal/External/Disabled Type selection.</p>
+</section>
+</section>
+<section id="structures">
+<h2><span class="section-number">5.7.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_lin___channel_type.html"><span class="std std-doc">Lin_ChannelType</span></a></strong></p></td>
+<td><p>Lin Channel type structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_lin___config_type.html"><span class="std std-doc">Lin_ConfigType</span></a></strong></p></td>
+<td><p>LIN Channel Configuration structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_lin___channel_status_type.html"><span class="std std-doc">Lin_ChannelStatusType</span></a></strong></p></td>
+<td><p>Channel Status type structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/struct_lin___controller_type.html"><span class="std std-doc">Lin_ControllerType</span></a></strong></p></td>
+<td><p>Lin Controller Configuration structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/struct_lin___baud_rate_config_type.html"><span class="std std-doc">Lin_BaudRateConfigType</span></a></strong></p></td>
+<td><p>Lin Controller BaudRate Configuration.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="defines">
+<h2><span class="section-number">5.7.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LIN_SW_MAJOR_VERSION</p></td>
+<td><p>Driver Implementation Major Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_SW_MINOR_VERSION</p></td>
+<td><p>Driver Implementation Minor Version.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_SW_PATCH_VERSION</p></td>
+<td><p>Driver Implementation Patch Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_AR_RELEASE_MAJOR_VERSION</p></td>
+<td><p>AUTOSAR Major version specification implemented by LIN Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_AR_RELEASE_MINOR_VERSION</p></td>
+<td><p>AUTOSAR Minor version specification implemented by LIN Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_AR_RELEASE_REVISION_VERSION</p></td>
+<td><p>AUTOSAR Patch version specification implemented by LIN Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_VENDOR_ID</p></td>
+<td><p>Texas Instruments Vendor ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_MODULE_ID</p></td>
+<td><p>LIN Driver Module ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_INSTANCE_ID</p></td>
+<td><p>LIN Driver Instance ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_E_UNINIT</p></td>
+<td><p>API service used without module initialization.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_E_INVALID_CHANNEL</p></td>
+<td><p>API service used with an invalid or inactive channel parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_E_INVALID_POINTER</p></td>
+<td><p>API service called with invalid configuration pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_E_STATE_TRANSITION</p></td>
+<td><p>Invalid state transition for the current state.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_E_PARAM_POINTER</p></td>
+<td><p>API service called with a NULL pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_SID_INIT</p></td>
+<td><p>Service ID - Lin_Init().</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_SID_GET_VERSION_INFO</p></td>
+<td><p>Service ID - Lin_GetVersionInfo().</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_SID_SEND_FRAME</p></td>
+<td><p>Service ID - Lin_SendFrame().</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_SID_GOTO_SLEEP</p></td>
+<td><p>Service ID - Lin_GoToSleep().</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_SID_WAKEUP</p></td>
+<td><p>Service ID - Lin_Wakeup().</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_SID_GET_STATUS</p></td>
+<td><p>Service ID - Lin_GetStatus().</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_SID_GOTO_SLEEP_INTERNAL</p></td>
+<td><p>Service ID - Lin_GoToSleepInternal().</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_SID_CHECK_WAKEUP</p></td>
+<td><p>Service ID - Lin_CheckWakeup().</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_SID_WAKEUP_INTERNAL</p></td>
+<td><p>Service ID - Lin_WakeupInternal().</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_ISR_CAT1_RTINT</p></td>
+<td><p>Category 1 RT ISR type.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_ISR_CAT1_INT</p></td>
+<td><p>Category 1 ISR type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_ISR_CAT2</p></td>
+<td><p>Category 2 ISR type.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_INT_WAKEUP</p></td>
+<td><p>Lin Interrupt Wakeup Flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_INT_TO</p></td>
+<td><p>Time out.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_INT_TOAWUS</p></td>
+<td><p>Time out after wakeup signal.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_INT_TOA3WUS</p></td>
+<td><p>Time out after 3 wakeup signals.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_INT_TX</p></td>
+<td><p>Transmit buffer ready.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_INT_RX</p></td>
+<td><p>Receive buffer ready.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_INT_ID</p></td>
+<td><p>Received matching identifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_INT_PE</p></td>
+<td><p>Parity error.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_INT_OE</p></td>
+<td><p>Overrun error.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_INT_FE</p></td>
+<td><p>Framing error.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_INT_NRE</p></td>
+<td><p>No response error.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_INT_ISFE</p></td>
+<td><p>Inconsistent sync field error.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_INT_CE</p></td>
+<td><p>Checksum error.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_INT_PBE</p></td>
+<td><p>Physical bus error.</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN_INT_BE</p></td>
+<td><p>Bit error.</p></td>
+</tr>
+<tr class="row-odd"><td><p>LIN_INT_ALL</p></td>
+<td><p>All interrupts.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2><span class="section-number">5.7.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Return type</p></th>
+<th class="head"><p>Function Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-getversioninfo"><span class="std std-ref">Lin_GetVersionInfo</span></a></strong>(Std_VersionInfoType * versioninfo)</p></td>
+<td><p>Service to get the version information of the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-init"><span class="std std-ref">Lin_Init</span></a></strong>(const <a class="reference internal" href="#Classes/struct_lin___config_type.md"><span class="xref myst">Lin_ConfigType</span></a> * Config)</p></td>
+<td><p>Lin_Init - Initializes the LIN module.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-checkwakeup"><span class="std std-ref">Lin_CheckWakeup</span></a></strong>(uint8 Channel)</p></td>
+<td><p>Lin_CheckWakeup - This function checks if a wakeup has occurred on the addressed LIN channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-sendframe"><span class="std std-ref">Lin_SendFrame</span></a></strong>(uint8 Channel, const Lin_PduType * PduInfoPtr)</p></td>
+<td><p>Lin_SendFrame - Sends a LIN header and a LIN response, if necessary. The direction of the frame response (master response, slave response, slave-to-slave communication) is provided by the PduInfoPtr.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-gotosleep"><span class="std std-ref">Lin_GoToSleep</span></a></strong>(uint8 Channel)</p></td>
+<td><p>Lin_GoToSleep - The service instructs the driver to transmit a go-to-sleep-command on the addressed LIN channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-gotosleepinternal"><span class="std std-ref">Lin_GoToSleepInternal</span></a></strong>(uint8 Channel)</p></td>
+<td><p>Lin_GoToSleepInternal - Sets the channel state to LIN_CH_SLEEP, enables the wake-up detection and optionally sets the LIN hardware unit to reduced power operation mode.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-wakeup"><span class="std std-ref">Lin_Wakeup</span></a></strong>(uint8 Channel)</p></td>
+<td><p>Lin_Wakeup - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-wakeupinternal"><span class="std std-ref">Lin_WakeupInternal</span></a></strong>(uint8 Channel)</p></td>
+<td><p>Lin_WakeupInternal - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL without generating a wake up pulse.</p></td>
+</tr>
+<tr class="row-even"><td><p>Lin_StatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-getstatus"><span class="std std-ref">Lin_GetStatus</span></a></strong>(uint8 Channel, uint8 ** Lin_SduPtr)</p></td>
+<td><p>Lin_GetStatus - Gets the status of the LIN driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-initinternal"><span class="std std-ref">Lin_InitInternal</span></a></strong>(const <a class="reference internal" href="#Classes/struct_lin___config_type.md"><span class="xref myst">Lin_ConfigType</span></a> * Lin_ConfigPtr)</p></td>
+<td><p>Lin_InitInternal - Initializes the LIN module.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-checkwakeupinternal"><span class="std std-ref">Lin_CheckWakeupInternal</span></a></strong>(uint8 Channel)</p></td>
+<td><p>Lin_CheckWakeupInternal - This function checks if a wakeup has occurred on the addressed LIN channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-wakeupprocess"><span class="std std-ref">Lin_WakeupProcess</span></a></strong>(uint8 Channel)</p></td>
+<td><p>Lin_WakeupProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-wakeupinternalprocess"><span class="std std-ref">Lin_WakeupInternalProcess</span></a></strong>(uint8 Channel)</p></td>
+<td><p>Lin_WakeupInternalProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL without generating a wake up pulse.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lin_StatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-getstatusinternal"><span class="std std-ref">Lin_GetStatusInternal</span></a></strong>(uint8 Channel, uint8 ** Lin_SduPtr, const uint32 * lin_cnt_base_addr)</p></td>
+<td><p>Lin_GetStatusInternal - Gets the status of the LIN driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-hwunitconfig"><span class="std std-ref">Lin_HwUnitConfig</span></a></strong>(const <a class="reference internal" href="#Classes/struct_lin___channel_type.md"><span class="xref myst">Lin_ChannelType</span></a> * linChannel)</p></td>
+<td><p>Lin_HwUnitConfig - This API will configure Lin IP instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-senddata"><span class="std std-ref">Lin_SendData</span></a></strong>(const <a class="reference internal" href="#Classes/struct_lin___channel_type.md"><span class="xref myst">Lin_ChannelType</span></a> * linChannel, <a class="reference internal" href="#Modules/group___l_i_n.md#enum-lin-channelactivitystatustype"><span class="xref myst">Lin_ChannelActivityStatusType</span></a> * linChannelActivityStatus, const Lin_PduType * pduInfoPtr)</p></td>
+<td><p>Lin_SendData - This API will copy data into LIN_TDx registers and start transmission.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-getdata"><span class="std std-ref">Lin_GetData</span></a></strong>(uint32 channelID, uint32 base, uint8 ** sduPtr)</p></td>
+<td><p>Lin_GetData - This API will copy the received data into sduPtr.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lin_StatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-fetchtxstatus"><span class="std std-ref">Lin_FetchTxStatus</span></a></strong>(uint32 base)</p></td>
+<td><p>Lin_FetchTxStatus - This API will fetch transmit status.</p></td>
+</tr>
+<tr class="row-even"><td><p>Lin_StatusType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-fetchrxstatus"><span class="std std-ref">Lin_FetchRxStatus</span></a></strong>(uint32 base)</p></td>
+<td><p>Lin_FetchRxStatus - This API will fetch receive status.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-sendwakeupsignal"><span class="std std-ref">Lin_SendWakeupSignal</span></a></strong>(uint32 base)</p></td>
+<td><p>Lin_SendWakeupSignal - This API will send wakeup signal on Lin bus.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-sendgotosleepsignal"><span class="std std-ref">Lin_SendGoToSleepSignal</span></a></strong>(uint32 base)</p></td>
+<td><p>Lin_SendGoToSleepSignal - This API will send go to sleep signal on Lin bus.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-enterlowpowermode"><span class="std std-ref">Lin_EnterLowPowerMode</span></a></strong>(uint32 base, boolean enable)</p></td>
+<td><p>Lin_EnterLowPowerMode - This API will enter local low power mode for Lin instance.</p></td>
+</tr>
+<tr class="row-even"><td><p>boolean</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-checkwakeupstatus"><span class="std std-ref">Lin_CheckWakeupStatus</span></a></strong>(uint32 base)</p></td>
+<td><p>Lin_CheckWakeupStatus - This API will check if Lin in woken up.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-aborttransmission"><span class="std std-ref">Lin_AbortTransmission</span></a></strong>(uint32 base)</p></td>
+<td><p>Lin_AbortTransmission - This API will abort ongoing transmission.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-enablewakeupdetection"><span class="std std-ref">Lin_EnableWakeupDetection</span></a></strong>(const <a class="reference internal" href="#Classes/struct_lin___channel_type.md"><span class="xref myst">Lin_ChannelType</span></a> * linChannel, boolean enable)</p></td>
+<td><p>Lin_EnableWakeupDetection - This API will enable wakeup detection.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-processisr"><span class="std std-ref">Lin_ProcessISR</span></a></strong>(uint32 channelID)</p></td>
+<td><p>Lin_ProcessISR - This API will process ISR for given channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>__inline void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-regwriteraw32"><span class="std std-ref">Lin_RegWriteRaw32</span></a></strong>(uint32 addr, uint32 value)</p></td>
+<td><p>This function writes a 32 bit register.</p></td>
+</tr>
+<tr class="row-odd"><td><p>__inline void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-regwriteraw8"><span class="std std-ref">Lin_RegWriteRaw8</span></a></strong>(uint32 addr, uint8 value)</p></td>
+<td><p>This function writes a 8 bit register value.</p></td>
+</tr>
+<tr class="row-even"><td><p>__inline void</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-regmfwriteraw32"><span class="std std-ref">Lin_RegMFWriteRaw32</span></a></strong>(uint32 addr, uint32 mask, uint32 shift, uint32 value)</p></td>
+<td><p>This function writes a 32 bit register masking specific set of bits and the left shifted value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>__inline uint32</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-regreadraw32"><span class="std std-ref">Lin_RegReadRaw32</span></a></strong>(uint32 addr)</p></td>
+<td><p>This function reads a 32 bit register.</p></td>
+</tr>
+<tr class="row-even"><td><p>__inline uint8</p></td>
+<td><p><strong><a class="reference internal" href="#function-lin-regreadraw8"><span class="std std-ref">Lin_RegReadRaw8</span></a></strong>(uint32 addr)</p></td>
+<td><p>This function reads a 8 bits of 32 bit register.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="function-lin-getversioninfo">
+<h3><span class="section-number">5.7.4.1. </span>function Lin_GetVersionInfo<a class="headerlink" href="#function-lin-getversioninfo" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_GetVersionInfo</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Std_VersionInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">versioninfo</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to get the version information of the module.</p>
+<p>This service writes the version information of this module into the data structure referenced by the parameter. If this parameter references NULL_PTR, a development error is reported to Det. This service is only available if the pre-compile configuration parameter LIN_GET_VERSION_INFO_API is enabled.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong></p></li>
+<li><p><strong>Versioninfo</strong> structure that contains the version information parameters.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-init">
+<h3><span class="section-number">5.7.4.2. </span>function Lin_Init<a class="headerlink" href="#function-lin-init" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_Init</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Lin_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Config</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_Init - Initializes the LIN module.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Config</strong> Pointer to LIN driver configuration set.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-checkwakeup">
+<h3><span class="section-number">5.7.4.3. </span>function Lin_CheckWakeup<a class="headerlink" href="#function-lin-checkwakeup" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_CheckWakeup</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_CheckWakeup - This function checks if a wakeup has occurred on the addressed LIN channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> No error has occurred during execution of the API
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> An error has occurred during execution of the API
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-sendframe">
+<h3><span class="section-number">5.7.4.4. </span>function Lin_SendFrame<a class="headerlink" href="#function-lin-sendframe" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_SendFrame</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Lin_PduType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PduInfoPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_SendFrame - Sends a LIN header and a LIN response, if necessary. The direction of the frame response (master response, slave response, slave-to-slave communication) is provided by the PduInfoPtr.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>PduInfoPtr</strong> Pointer to PDU containing the PID, checksum model, response type, Dl and SDU data pointer</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Send command has been accepted.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Send command has not been accepted, development or production error occurred.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-gotosleep">
+<h3><span class="section-number">5.7.4.5. </span>function Lin_GoToSleep<a class="headerlink" href="#function-lin-gotosleep" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_GoToSleep</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_GoToSleep - The service instructs the driver to transmit a go-to-sleep-command on the addressed LIN channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Sleep command has been accepted.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Sleep command has not been accepted, development or production error occurred.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-gotosleepinternal">
+<h3><span class="section-number">5.7.4.6. </span>function Lin_GoToSleepInternal<a class="headerlink" href="#function-lin-gotosleepinternal" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_GoToSleepInternal</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_GoToSleepInternal - Sets the channel state to LIN_CH_SLEEP, enables the wake-up detection and optionally sets the LIN hardware unit to reduced power operation mode.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Command has been accepted.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Command has not been accepted, development or production error occurred.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-wakeup">
+<h3><span class="section-number">5.7.4.7. </span>function Lin_Wakeup<a class="headerlink" href="#function-lin-wakeup" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_Wakeup</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_Wakeup - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Wake-up request has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Wake-up request has not been accepted, development or production error occurred.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-wakeupinternal">
+<h3><span class="section-number">5.7.4.8. </span>function Lin_WakeupInternal<a class="headerlink" href="#function-lin-wakeupinternal" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_WakeupInternal</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_WakeupInternal - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL without generating a wake up pulse.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Wake-up request has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Wake-up request has not been accepted, development or production error occurred.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-getstatus">
+<h3><span class="section-number">5.7.4.9. </span>function Lin_GetStatus<a class="headerlink" href="#function-lin-getstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Lin_StatusType</span><span class="w"> </span><span class="n">Lin_GetStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">Lin_SduPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_GetStatus - Gets the status of the LIN driver.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>Lin_SduPtr</strong> Pointer to pointer to a shadow buffer or memory mapped LIN Hardware receive buffer where the current SDU is stored.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>LIN_NOT_OK</strong> Development or production error occurred
+<br></p></li>
+<li><p><strong>LIN_TX_OK</strong> Successful transmission
+<br></p></li>
+<li><p><strong>LIN_TX_BUSY</strong> Ongoing transmission (Header or Response)
+<br></p></li>
+<li><p><strong>LIN_TX_HEADER_ERROR</strong> Erroneous header transmission such as:</p></li>
+<li><p>Mismatch between sent and read back data</p></li>
+<li><p>Identifier parity error or Physical bus error
+<br></p></li>
+<li><p><strong>LIN_TX_ERROR</strong> Erroneous response transmission such as:</p></li>
+<li><p>Mismatch between sent and read back data</p></li>
+<li><p>Physical bus error
+<br></p></li>
+<li><p><strong>LIN_RX_OK</strong> Reception of correct response
+<br></p></li>
+<li><p><strong>LIN_RX_BUSY</strong> Ongoing reception: at least one response byte has been received, but the checksum byte has not been received
+<br></p></li>
+<li><p><strong>LIN_RX_ERROR</strong> Erroneous response reception such as:</p></li>
+<li><p>Framing error</p></li>
+<li><p>Overrun error</p></li>
+<li><p>Checksum error or Short response
+<br></p></li>
+<li><p><strong>LIN_RX_NO_RESPONSE</strong> No response byte has been received so far
+<br></p></li>
+<li><p><strong>LIN_OPERATIONAL</strong> Normal operation; the related LIN channel is woken up from the LIN_CH_SLEEP and no data has been sent.
+<br></p></li>
+<li><p><strong>LIN_CH_SLEEP</strong> Sleep state operation; in this state wake-up detection from slave nodes is enabled.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-initinternal">
+<h3><span class="section-number">5.7.4.10. </span>function Lin_InitInternal<a class="headerlink" href="#function-lin-initinternal" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_InitInternal</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Lin_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Lin_ConfigPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_InitInternal - Initializes the LIN module.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Lin_ConfigPtr</strong> Pointer to LIN driver configuration set.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> No error has occurred during execution of the API
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> An error has occurred during execution of the API
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-checkwakeupinternal">
+<h3><span class="section-number">5.7.4.11. </span>function Lin_CheckWakeupInternal<a class="headerlink" href="#function-lin-checkwakeupinternal" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_CheckWakeupInternal</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_CheckWakeupInternal - This function checks if a wakeup has occurred on the addressed LIN channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> No error has occurred during execution of the API
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> An error has occurred during execution of the API
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-wakeupprocess">
+<h3><span class="section-number">5.7.4.12. </span>function Lin_WakeupProcess<a class="headerlink" href="#function-lin-wakeupprocess" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_WakeupProcess</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_WakeupProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Wake-up request has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Wake-up request has not been accepted, development or production error occurred.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-wakeupinternalprocess">
+<h3><span class="section-number">5.7.4.13. </span>function Lin_WakeupInternalProcess<a class="headerlink" href="#function-lin-wakeupinternalprocess" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_WakeupInternalProcess</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_WakeupInternalProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL without generating a wake up pulse.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Wake-up request has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Wake-up request has not been accepted, development or production error occurred.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-getstatusinternal">
+<h3><span class="section-number">5.7.4.14. </span>function Lin_GetStatusInternal<a class="headerlink" href="#function-lin-getstatusinternal" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Lin_StatusType</span><span class="w"> </span><span class="n">Lin_GetStatusInternal</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">Lin_SduPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">lin_cnt_base_addr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_GetStatusInternal - Gets the status of the LIN driver.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>lin_cnt_base_addr</strong> Base address of the lin</p></li>
+<li><p><strong>Lin_SduPtr</strong> Pointer to pointer to a shadow buffer or memory mapped LIN Hardware receive buffer where the current SDU is stored.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>LIN_NOT_OK</strong> Development or production error occurred
+<br></p></li>
+<li><p><strong>LIN_TX_OK</strong> Successful transmission
+<br></p></li>
+<li><p><strong>LIN_TX_BUSY</strong> Ongoing transmission (Header or Response)
+<br></p></li>
+<li><p><strong>LIN_TX_HEADER_ERROR</strong> Erroneous header transmission such as:</p></li>
+<li><p>Mismatch between sent and read back data</p></li>
+<li><p>Identifier parity error or Physical bus error
+<br></p></li>
+<li><p><strong>LIN_TX_ERROR</strong> Erroneous response transmission such as:</p></li>
+<li><p>Mismatch between sent and read back data</p></li>
+<li><p>Physical bus error
+<br></p></li>
+<li><p><strong>LIN_RX_OK</strong> Reception of correct response
+<br></p></li>
+<li><p><strong>LIN_RX_BUSY</strong> Ongoing reception: at least one response byte has been received, but the checksum byte has not been received
+<br></p></li>
+<li><p><strong>LIN_RX_ERROR</strong> Erroneous response reception such as:</p></li>
+<li><p>Framing error</p></li>
+<li><p>Overrun error</p></li>
+<li><p>Checksum error or Short response
+<br></p></li>
+<li><p><strong>LIN_RX_NO_RESPONSE</strong> No response byte has been received so far
+<br></p></li>
+<li><p><strong>LIN_OPERATIONAL</strong> Normal operation; the related LIN channel is woken up from the LIN_CH_SLEEP and no data has been sent.
+<br></p></li>
+<li><p><strong>LIN_CH_SLEEP</strong> Sleep state operation; in this state wake-up detection from slave nodes is enabled.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-hwunitconfig">
+<h3><span class="section-number">5.7.4.15. </span>function Lin_HwUnitConfig<a class="headerlink" href="#function-lin-hwunitconfig" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_HwUnitConfig</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Lin_ChannelType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">linChannel</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_HwUnitConfig - This API will configure Lin IP instance.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>linChannel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-senddata">
+<h3><span class="section-number">5.7.4.16. </span>function Lin_SendData<a class="headerlink" href="#function-lin-senddata" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_SendData</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Lin_ChannelType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">linChannel</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Lin_ChannelActivityStatusType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">linChannelActivityStatus</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Lin_PduType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">pduInfoPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_SendData - This API will copy data into LIN_TDx registers and start transmission.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>linChannel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>linChannelActivityStatus</strong> Pointer to current activity staus of the channel.</p></li>
+<li><p><strong>pduInfoPtr</strong> Pointer to PDU to be sent.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> : Transmission command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> : Transmission command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-getdata">
+<h3><span class="section-number">5.7.4.17. </span>function Lin_GetData<a class="headerlink" href="#function-lin-getdata" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_GetData</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">channelID</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">base</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">sduPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_GetData - This API will copy the received data into sduPtr.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>linChannel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>base</strong> Base address of Lin Instance.</p></li>
+<li><p><strong>sduPtr</strong> Pointer to Pointer to SDU to be received.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> : Copying of received data command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> : Copying of received data command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-fetchtxstatus">
+<h3><span class="section-number">5.7.4.18. </span>function Lin_FetchTxStatus<a class="headerlink" href="#function-lin-fetchtxstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Lin_StatusType</span><span class="w"> </span><span class="n">Lin_FetchTxStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">base</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_FetchTxStatus - This API will fetch transmit status.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>base</strong> Base address of Lin Instance.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> : Fetching the transmit status command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> : Fetching the transmit status command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: return_value</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-fetchrxstatus">
+<h3><span class="section-number">5.7.4.19. </span>function Lin_FetchRxStatus<a class="headerlink" href="#function-lin-fetchrxstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Lin_StatusType</span><span class="w"> </span><span class="n">Lin_FetchRxStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">base</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_FetchRxStatus - This API will fetch receive status.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>base</strong> Base address of Lin Instance.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> : Fetching the receive status command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> : Fetching the receive status command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-sendwakeupsignal">
+<h3><span class="section-number">5.7.4.20. </span>function Lin_SendWakeupSignal<a class="headerlink" href="#function-lin-sendwakeupsignal" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_SendWakeupSignal</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">base</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_SendWakeupSignal - This API will send wakeup signal on Lin bus.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>base</strong> Base address of Lin Instance.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> : Wakeup request has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> : Wakeup request has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-sendgotosleepsignal">
+<h3><span class="section-number">5.7.4.21. </span>function Lin_SendGoToSleepSignal<a class="headerlink" href="#function-lin-sendgotosleepsignal" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Lin_SendGoToSleepSignal</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">base</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_SendGoToSleepSignal - This API will send go to sleep signal on Lin bus.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>base</strong> Base address of Lin Instance.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> : Sleep command has been sent
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> : Sleep command has not been sent/Timeout error occurred
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returnValue</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-enterlowpowermode">
+<h3><span class="section-number">5.7.4.22. </span>function Lin_EnterLowPowerMode<a class="headerlink" href="#function-lin-enterlowpowermode" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_EnterLowPowerMode</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">base</span><span class="p">,</span>
+<span class="w">    </span><span class="n">boolean</span><span class="w"> </span><span class="n">enable</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_EnterLowPowerMode - This API will enter local low power mode for Lin instance.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>base</strong> Base address of Lin Instance.</p></li>
+<li><p><strong>enable</strong> If TRUE low power will be entered; if FALSE Lin comes out of low power mode.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-checkwakeupstatus">
+<h3><span class="section-number">5.7.4.23. </span>function Lin_CheckWakeupStatus<a class="headerlink" href="#function-lin-checkwakeupstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">boolean</span><span class="w"> </span><span class="n">Lin_CheckWakeupStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">base</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_CheckWakeupStatus - This API will check if Lin in woken up.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>base</strong> Base address of Lin Instance.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-aborttransmission">
+<h3><span class="section-number">5.7.4.24. </span>function Lin_AbortTransmission<a class="headerlink" href="#function-lin-aborttransmission" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_AbortTransmission</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">base</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_AbortTransmission - This API will abort ongoing transmission.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>base</strong> Base address of Lin Instance.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-enablewakeupdetection">
+<h3><span class="section-number">5.7.4.25. </span>function Lin_EnableWakeupDetection<a class="headerlink" href="#function-lin-enablewakeupdetection" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_EnableWakeupDetection</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Lin_ChannelType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">linChannel</span><span class="p">,</span>
+<span class="w">    </span><span class="n">boolean</span><span class="w"> </span><span class="n">enable</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_EnableWakeupDetection - This API will enable wakeup detection.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>linChannel</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>enable</strong> If TRUE wakeup detection will be enabled; if FALSE wakeup detection will be disabled.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-processisr">
+<h3><span class="section-number">5.7.4.26. </span>function Lin_ProcessISR<a class="headerlink" href="#function-lin-processisr" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_ProcessISR</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">channelID</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Lin_ProcessISR - This API will process ISR for given channel.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>channelID</strong> LIN channel to be addressed.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-regwriteraw32">
+<h3><span class="section-number">5.7.4.27. </span>function Lin_RegWriteRaw32<a class="headerlink" href="#function-lin-regwriteraw32" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">__inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_RegWriteRaw32</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">value</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function writes a 32 bit register.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>addr</strong> Address of the memory mapped hardware register.</p></li>
+<li><p><strong>value</strong> Value to write in the 32-bit register.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-regwriteraw8">
+<h3><span class="section-number">5.7.4.28. </span>function Lin_RegWriteRaw8<a class="headerlink" href="#function-lin-regwriteraw8" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">__inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_RegWriteRaw8</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">value</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function writes a 8 bit register value.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>addr</strong> Address of the memory mapped hardware register.</p></li>
+<li><p><strong>value</strong> Value to write 8 bits to the 32-bit register.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-regmfwriteraw32">
+<h3><span class="section-number">5.7.4.29. </span>function Lin_RegMFWriteRaw32<a class="headerlink" href="#function-lin-regmfwriteraw32" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">__inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Lin_RegMFWriteRaw32</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">mask</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">shift</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">value</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function writes a 32 bit register masking specific set of bits and the left shifted value.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>addr</strong> Address of the memory mapped hardware register.</p></li>
+<li><p><strong>mask</strong> Mask for the bit field.</p></li>
+<li><p><strong>shift</strong> Bit field shift from LSB.</p></li>
+<li><p><strong>value</strong> Value to write in the memory mapped hardware register.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-regreadraw32">
+<h3><span class="section-number">5.7.4.30. </span>function Lin_RegReadRaw32<a class="headerlink" href="#function-lin-regreadraw32" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">__inline</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Lin_RegReadRaw32</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">addr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function reads a 32 bit register.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>addr</strong> Address of the memory mapped hardware register.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>Value</strong> of the type uint32.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Bit-field value (absolute value - shifted to LSB position).</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-lin-regreadraw8">
+<h3><span class="section-number">5.7.4.31. </span>function Lin_RegReadRaw8<a class="headerlink" href="#function-lin-regreadraw8" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="kr">__inline</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Lin_RegReadRaw8</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">addr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This function reads a 8 bits of 32 bit register.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>addr</strong> Address of the memory mapped hardware register.</p></li>
+<li><p><strong>None</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>Value</strong> of the type uint32.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Bit-field value (absolute value - shifted to LSB position).</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="group___w_d_g.html" class="btn btn-neutral float-left" title="5.6. WDG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group___s_p_i.html" class="btn btn-neutral float-right" title="5.8. SPI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Dec 18, 2024.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

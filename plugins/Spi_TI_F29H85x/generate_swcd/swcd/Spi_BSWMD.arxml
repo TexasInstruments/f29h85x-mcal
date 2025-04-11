@@ -1,0 +1,900 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
+[!AUTOSPACING!][!//
+[!VAR "spia_cat1"="0"!][!//
+[!VAR "spib_cat1"="0"!][!//
+[!VAR "spic_cat1"="0"!][!//
+[!VAR "spid_cat1"="0"!][!//
+[!VAR "spie_cat1"="0"!][!//
+[!LOOP "as:modconf('Spi')[1]/SpiDriver/SpiHwUnitConfig/*"!][!//
+[!IF "SpiHwUnitType = 'SPI_UNIT_SPIA'"!][!//
+[!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+[!VAR "spia_cat1" = "$spia_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!IF "SpiHwUnitType = 'SPI_UNIT_SPIB'"!][!//
+[!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+[!VAR "spib_cat1" = "$spib_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!IF "SpiHwUnitType = 'SPI_UNIT_SPIC'"!][!//
+[!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+[!VAR "spic_cat1" = "$spic_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!IF "SpiHwUnitType = 'SPI_UNIT_SPID'"!][!//
+[!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+[!VAR "spid_cat1" = "$spid_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!IF "SpiHwUnitType = 'SPI_UNIT_SPIE'"!][!//
+[!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+[!VAR "spie_cat1" = "$spie_cat1 + 1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="c7a247f4-d5d1-4f74-9136-620e3aa20ec2">
+      <SHORT-NAME>Spi_TI_F29H85x</SHORT-NAME>
+      <ELEMENTS>
+        <BSW-MODULE-DESCRIPTION UUID="017617b1-2e96-477d-9c19-bd114eaaea92">
+          <SHORT-NAME>Spi</SHORT-NAME>
+          <CATEGORY>BSW_MODULE</CATEGORY>
+          <IMPLEMENTED-ENTRYS>
+            [!LOOP "as:modconf('Spi')[1]/SpiDriver/SpiHwUnitConfig/*"!][!//
+            [!IF "SpiHwUnitType = 'SPI_UNIT_SPIA'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_A_RxISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            [!IF "SpiHwUnitType = 'SPI_UNIT_SPIB'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_B_RxISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            [!IF "SpiHwUnitType = 'SPI_UNIT_SPIC'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_C_RxISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            [!IF "SpiHwUnitType = 'SPI_UNIT_SPID'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_D_RxISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            [!IF "SpiHwUnitType = 'SPI_UNIT_SPIE'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_E_RxISR</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            [!ENDLOOP!][!//
+            [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiCancelApi = 'true'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_Cancel</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_DeInit</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiHwStatusApi = 'true'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetHWUnitStatus</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetJobResult</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetSequenceResult</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetStatus</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiVersionInfoApi = 'true'"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetVersionInfo</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_Init</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_MainFunction_Handling</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiChannelBuffersAllowed != 1"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_WriteIB</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_ReadIB</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_JobEndNotification</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_SeqEndNotification</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiLevelDelivered = 2"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_SetAsyncMode</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiChannelBuffersAllowed != 0"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_SetupEB</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiLevelDelivered != 1"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_SyncTransmit</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+            [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiLevelDelivered != 0"!][!//
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_AsyncTransmit</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            [!ENDIF!][!//
+          </IMPLEMENTED-ENTRYS>
+          <MODULE-ID>83</MODULE-ID>
+          <BSW-MODULE-DEPENDENCYS>
+            [!IF "node:refexists(as:modconf('Spi')[1]/SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR)"!][!//
+            <BSW-MODULE-DEPENDENCY UUID="b9c371c1-d80d-4257-be35-cfc9e6288b10">
+              <SHORT-NAME>Dem</SHORT-NAME>
+              <TARGET-MODULE-ID>54</TARGET-MODULE-ID>
+              <TARGET-MODULE-REFS>
+                <BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+                  <BSW-MODULE-DESCRIPTION-REF DEST="BSW-MODULE-DESCRIPTION">/AUTOSAR_Dem/Dem</BSW-MODULE-DESCRIPTION-REF>
+                </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+              </TARGET-MODULE-REFS>
+            </BSW-MODULE-DEPENDENCY>
+            [!ENDIF!][!//
+            <BSW-MODULE-DEPENDENCY UUID="8e42ba0a-5c68-4dd3-b95e-d64182d848b8">
+              <SHORT-NAME>Det</SHORT-NAME>
+              <TARGET-MODULE-ID>15</TARGET-MODULE-ID>
+              <TARGET-MODULE-REFS>
+                <BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+                  <BSW-MODULE-DESCRIPTION-REF DEST="BSW-MODULE-DESCRIPTION">/AUTOSAR_Det/Det</BSW-MODULE-DESCRIPTION-REF>
+                </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+              </TARGET-MODULE-REFS>
+            </BSW-MODULE-DEPENDENCY>
+            [!LOOP "as:modconf('Spi')[1]/SpiDriver/SpiExternalDevice/*"!][!//
+            [!IF "not(node:empty(SpiCsSelection))"!][!//
+            [!IF "node:value(SpiCsSelection) = 'CS_VIA_GPIO'"!][!//
+            <BSW-MODULE-DEPENDENCY UUID="8e42ba0a-5c78-5dd3-c96e-d65182c828b5">
+              <SHORT-NAME>Dio</SHORT-NAME>
+              <TARGET-MODULE-ID>120</TARGET-MODULE-ID>
+              <TARGET-MODULE-REFS>
+                <BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+                  <BSW-MODULE-DESCRIPTION-REF DEST="BSW-MODULE-DESCRIPTION">/Dio_TI_F29H85x/Dio</BSW-MODULE-DESCRIPTION-REF>
+                </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+              </TARGET-MODULE-REFS>
+            </BSW-MODULE-DEPENDENCY>
+            [!BREAK!]
+            [!ENDIF!][!//
+            [!ENDIF!][!//
+            [!ENDLOOP!][!//
+          </BSW-MODULE-DEPENDENCYS>
+          <INTERNAL-BEHAVIORS>
+            <BSW-INTERNAL-BEHAVIOR UUID="de79ba18-6ebf-4405-8014-65a4bf532e9c">
+              <SHORT-NAME>Spi_Behavior</SHORT-NAME>
+              <EXCLUSIVE-AREAS>
+                <EXCLUSIVE-AREA UUID="f928a9eb-3814-4254-b9a0-999476c2a905">
+                  <SHORT-NAME>SPI_EXCLUSIVE_AREA_0</SHORT-NAME>
+                </EXCLUSIVE-AREA>
+              </EXCLUSIVE-AREAS>
+              <ENTITYS>
+                [!LOOP "as:modconf('Spi')[1]/SpiDriver/SpiHwUnitConfig/*"!][!//
+                [!IF "SpiHwUnitType = 'SPI_UNIT_SPIA'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="88ab04b1-50b2-4c9d-86e5-1ba18f936c2e">
+                  <SHORT-NAME>Spi_A_RxISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "node:refexists(as:modconf('Spi')[1]/SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR)"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_A_RxISR</IMPLEMENTED-ENTRY-REF>
+                  [!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+                  [!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+                  [!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                [!ENDIF!][!//
+                [!IF "SpiHwUnitType = 'SPI_UNIT_SPIB'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="88ab04b1-59b2-4a9d-87e5-1bc18f937c2e">
+                  <SHORT-NAME>Spi_B_RxISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "node:refexists(as:modconf('Spi')[1]/SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR)"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_B_RxISR</IMPLEMENTED-ENTRY-REF>
+                  [!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+                  [!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+                  [!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                [!ENDIF!][!//
+                [!IF "SpiHwUnitType = 'SPI_UNIT_SPIC'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="88ab14b1-69b2-5a9d-86e5-1ce18f037c2e">
+                  <SHORT-NAME>Spi_C_RxISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "node:refexists(as:modconf('Spi')[1]/SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR)"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_C_RxISR</IMPLEMENTED-ENTRY-REF>
+                  [!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+                  [!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+                  [!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                [!ENDIF!][!//
+                [!IF "SpiHwUnitType = 'SPI_UNIT_SPID'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="87ab05b1-59b2-4b9d-86e5-1bc18f937c2e">
+                  <SHORT-NAME>Spi_D_RxISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "node:refexists(as:modconf('Spi')[1]/SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR)"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_D_RxISR</IMPLEMENTED-ENTRY-REF>
+                  [!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+                  [!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+                  [!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                [!ENDIF!][!//
+                [!IF "SpiHwUnitType = 'SPI_UNIT_SPIE'"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="88ab04b1-69b2-4a9d-87e6-1bc28f947c1e">
+                  <SHORT-NAME>Spi_E_RxISR</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "node:refexists(as:modconf('Spi')[1]/SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR)"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_E_RxISR</IMPLEMENTED-ENTRY-REF>
+                  [!IF "SpiIrqType != 'SPI_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+                  [!ELSE!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+                  [!ENDIF!][!//
+                </BSW-INTERRUPT-ENTITY>
+                [!ENDIF!][!//
+                [!ENDLOOP!][!//
+                [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiLevelDelivered != 0"!][!//
+                <BSW-CALLED-ENTITY UUID="c5e45eef-56dd-4bdf-9078-44273560b966">
+                  <SHORT-NAME>Spi_AsyncTransmit</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Spi_TI_F29H85x/Spi/Spi_Behavior/SPI_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                    [!ENDIF!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportRuntimeError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportRuntimeError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_AsyncTransmit</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                [!ENDIF!][!//
+                [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiCancelApi = 'true'"!][!//
+                <BSW-CALLED-ENTITY UUID="608dcbde-c4de-47a0-a73f-a4b098adb6f8">
+                  <SHORT-NAME>Spi_Cancel</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Spi_TI_F29H85x/Spi/Spi_Behavior/SPI_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_Cancel</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                [!ENDIF!][!//
+                <BSW-CALLED-ENTITY UUID="d7c57291-fe10-4043-9cfb-dad232a7a7b4">
+                  <SHORT-NAME>Spi_DeInit</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_DeInit</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiHwStatusApi = 'true'"!][!//
+                <BSW-CALLED-ENTITY UUID="ce5beb51-2275-4755-83b2-5e657b1742fa">
+                  <SHORT-NAME>Spi_GetHWUnitStatus</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Spi_TI_F29H85x/Spi/Spi_Behavior/SPI_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetHWUnitStatus</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                [!ENDIF!][!//
+                <BSW-CALLED-ENTITY UUID="f7d3c1be-2883-439b-ba47-ca36951cbe2e">
+                  <SHORT-NAME>Spi_GetJobResult</SHORT-NAME>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetJobResult</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="af9ae46c-776d-4a72-9610-8162ad0aa687">
+                  <SHORT-NAME>Spi_GetSequenceResult</SHORT-NAME>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetSequenceResult</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="ce8a0b74-6726-4c26-9360-7ef692f78dff">
+                  <SHORT-NAME>Spi_GetStatus</SHORT-NAME>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetStatus</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiVersionInfoApi = 'true'"!][!//
+                <BSW-CALLED-ENTITY S="" UUID="ea0c8e17-8cf1-4b17-953c-4efbb86a3d26">
+                  <SHORT-NAME>Spi_GetVersionInfo</SHORT-NAME>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_GetVersionInfo</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                [!ENDIF!][!//
+                <BSW-CALLED-ENTITY UUID="d845a988-52fd-4d1c-b1ea-576eae6c18b8">
+                  <SHORT-NAME>Spi_Init</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_Init</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-SCHEDULABLE-ENTITY UUID="2d60bc75-ab42-4f73-8b58-caab66718bb4">
+                  <SHORT-NAME>Spi_MainFunction_Handling</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                    [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                    [!ENDIF!][!//
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_MainFunction_Handling</IMPLEMENTED-ENTRY-REF>
+                </BSW-SCHEDULABLE-ENTITY>
+                <BSW-CALLED-ENTITY UUID="1514f85e-8edb-41eb-8d26-f9420850ea0d">
+                  <SHORT-NAME>Spi_ReadIB</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Spi_TI_F29H85x/Spi/Spi_Behavior/SPI_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_ReadIB</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="d260f7d6-ed54-4e0f-a50e-42f435f35b33">
+                  <SHORT-NAME>Spi_SetAsyncMode</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_SetAsyncMode</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="c65cd1e7-bde6-486b-9206-9414c42a28fa">
+                  <SHORT-NAME>Spi_SetupEB</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Spi_TI_F29H85x/Spi/Spi_Behavior/SPI_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_SetupEB</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="d7ea84f3-19f3-4159-b549-5d02e82208c7">
+                  <SHORT-NAME>Spi_SyncTransmit</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Spi_TI_F29H85x/Spi/Spi_Behavior/SPI_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                    [!ENDIF!][!//
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportRuntimeError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportRuntimeError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_SyncTransmit</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="6dde5aed-d6e2-43cf-a349-c7e8f80dc1ac">
+                  <SHORT-NAME>Spi_WriteIB</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Spi_TI_F29H85x/Spi/Spi_Behavior/SPI_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!][!//
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  [!ENDIF!][!//
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Spi_TI_F29H85x/BSWModuleEntry/Spi_WriteIB</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+              </ENTITYS>
+              <EVENTS>
+                <BSW-TIMING-EVENT UUID="35ea7b2e-c64-4586-aceb-56657b4be751">
+                  <SHORT-NAME>SpiMainFunctionPeriod</SHORT-NAME>
+                  <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Spi_TI_F29H85x/Spi/Spi_Behavior/Spi_MainFunction_Handling</STARTS-ON-EVENT-REF>
+                  [!IF "node:exists(as:modconf('Spi')[1]/SpiGeneral/SpiMainFunctionPeriod)"!][!//
+                  <PERIOD>[!"as:modconf('Spi')[1]/SpiGeneral/SpiMainFunctionPeriod"!]</PERIOD>
+                  [!ENDIF!][!//
+                </BSW-TIMING-EVENT>
+              </EVENTS>
+            </BSW-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </BSW-MODULE-DESCRIPTION>
+        <BSW-IMPLEMENTATION UUID="31be5c8e-ac89-4816-b3af-512c6eb17298">
+          <SHORT-NAME>Spi_Impl</SHORT-NAME>
+          <CODE-DESCRIPTORS>
+            <CODE UUID="95cd9010-9770-467b-b8ee-228ad27711e3">
+              <SHORT-NAME>Files</SHORT-NAME>
+              <ARTIFACT-DESCRIPTORS>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>generate::include::Spi_Cfg.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>generate::src::Spi_Cfg.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>generate::src::Spi_Lcfg.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>generate::src::Spi_PBcfg.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>include::Spi.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>include::Spi_Priv.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>include::Spi_Reg_Access.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>include::Spi_Utils.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Spi.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Spi_Irq.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Spi_Priv.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Spi_Utils.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+              </ARTIFACT-DESCRIPTORS>
+            </CODE>
+          </CODE-DESCRIPTORS>
+          <COMPILERS>
+            <COMPILER UUID="be0e643b-939f-4ab4-ab68-182ead10662e">
+              <SHORT-NAME>TI_C29Clang</SHORT-NAME>
+              <NAME>TI_C29Clang</NAME>
+              <VENDOR>Texas Instruments</VENDOR>
+              <VERSION>1.0.0</VERSION>
+            </COMPILER>
+          </COMPILERS>
+          <LINKERS>
+            <LINKER UUID="6024b094-4db9-44a9-8ede-ac8325d8afe6">
+              <SHORT-NAME>TI_C29Linker</SHORT-NAME>
+              <NAME>TI_C29Linker</NAME>
+              <VENDOR>Texas Instruments</VENDOR>
+              <VERSION>1.0.0</VERSION>
+            </LINKER>
+          </LINKERS>
+          <PROGRAMMING-LANGUAGE>C</PROGRAMMING-LANGUAGE>
+          <RESOURCE-CONSUMPTION UUID="798a4994-a0f3-4c41-ac87-59b735baa77e">
+            <SHORT-NAME>ResourceConsumption</SHORT-NAME>
+            <MEMORY-SECTIONS>
+              <MEMORY-SECTION UUID="d2b9dfa2-f458-45f1-bfc6-6b9799177d81">
+                <SHORT-NAME>SPI_CODE</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CODE</SW-ADDRMETHOD-REF>
+                <SYMBOL>CODE</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="fa87b6e5-afb3-4978-9713-3524082218bb">
+                <SHORT-NAME>SPI_CONFIG_DATA</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CONST_PBCFG</SW-ADDRMETHOD-REF>
+                <SYMBOL>CONFIG_DATA</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="434b5773-57e4-4b1b-bcc0-b0f3ea8e14a7">
+                <SHORT-NAME>SPI_ISR_CODE</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CODE</SW-ADDRMETHOD-REF>
+                <SYMBOL>ISR_CODE</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="882c22b7-2fb3-43a5-8473-07b10e1d22f0">
+                <SHORT-NAME>SPI_VAR_INIT_UNSPECIFIED</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/VAR_INIT</SW-ADDRMETHOD-REF>
+                <SYMBOL>VAR_INIT_UNSPECIFIED</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="49f847df-7a08-4186-bff4-180d4be79d12">
+                <SHORT-NAME>SPI_VAR_NO_INIT_UNSPECIFIED</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/VAR_NO_INIT</SW-ADDRMETHOD-REF>
+                <SYMBOL>VAR_NO_INIT_UNSPECIFIED</SYMBOL>
+              </MEMORY-SECTION>
+            </MEMORY-SECTIONS>
+          </RESOURCE-CONSUMPTION>
+          <SW-VERSION>[!"$moduleSoftwareVer"!]</SW-VERSION>
+          <VENDOR-ID>44</VENDOR-ID>
+          <AR-RELEASE-VERSION>[!"substring-after($moduleReleaseVer, 'AUTOSAR ')"!]</AR-RELEASE-VERSION>
+          <BEHAVIOR-REF DEST="BSW-INTERNAL-BEHAVIOR">/Spi_TI_F29H85x/Spi/Spi_Behavior</BEHAVIOR-REF>
+          <VENDOR-SPECIFIC-MODULE-DEF-REFS>
+            <VENDOR-SPECIFIC-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Spi</VENDOR-SPECIFIC-MODULE-DEF-REF>
+          </VENDOR-SPECIFIC-MODULE-DEF-REFS>
+        </BSW-IMPLEMENTATION>
+      </ELEMENTS>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="b07eb56b-14e7-45f3-bec5-ef5dcc6ca1d4">
+          <SHORT-NAME>BSWModuleEntry</SHORT-NAME>
+          <ELEMENTS>
+            <BSW-MODULE-ENTRY UUID="6fd6f1dd-8dd8-4111-9633-819a36bb081d">
+              <SHORT-NAME>Spi_A_RxISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$spia_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="9f1542e7-aed7-4763-bc61-c43911ea3a1f">
+              <SHORT-NAME>Spi_B_RxISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$spib_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="6166f053-8ced-4bd6-94e1-a160e4470ce4">
+              <SHORT-NAME>Spi_C_RxISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$spic_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="de89ceaf-5f65-4d9b-a6f2-0fcad6b6f5a0">
+              <SHORT-NAME>Spi_D_RxISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$spid_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="516094f9-1421-47fb-a82c-16d49fca0f76">
+              <SHORT-NAME>Spi_E_RxISR</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "$spie_cat1 = 0"!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ENDIF!][!//
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="0637ad73-f2ae-436c-98e7-fc0e33107361">
+              <SHORT-NAME>Spi_AsyncTransmit</SHORT-NAME>
+              <SERVICE-ID>3</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="2809bc8f-2a8f-4625-96a2-ea3450639590">
+              <SHORT-NAME>Spi_Cancel</SHORT-NAME>
+              <SERVICE-ID>12</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="46cd3371-d607-4045-a291-816328dae90f">
+              <SHORT-NAME>Spi_DeInit</SHORT-NAME>
+              <SERVICE-ID>1</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY S="" UUID="09ec68ff-d786-4cd7-8659-f6986c8ab11e">
+              <SHORT-NAME>Spi_GetHWUnitStatus</SHORT-NAME>
+              <SERVICE-ID>11</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="3144792d-ddce-4376-ad90-bacd253716cb">
+              <SHORT-NAME>Spi_GetJobResult</SHORT-NAME>
+              <SERVICE-ID>7</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="2f44303f-085b-439c-ad4e-f4113abf20b4">
+              <SHORT-NAME>Spi_GetSequenceResult</SHORT-NAME>
+              <SERVICE-ID>8</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY S="" UUID="256d44b0-ddb0-497a-93d7-6e65c73df213">
+              <SHORT-NAME>Spi_GetStatus</SHORT-NAME>
+              <SERVICE-ID>6</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="55411476-88f4-4218-adaa-eb49479886c2">
+              <SHORT-NAME>Spi_GetVersionInfo</SHORT-NAME>
+              <SERVICE-ID>9</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY S="" UUID="c7c10c2b-3bb9-47cd-8a4c-2d141ea63442">
+              <SHORT-NAME>Spi_Init</SHORT-NAME>
+              <SERVICE-ID>0</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY S="" UUID="09f75a66-2ba3-45f6-8e10-267a619fb2bf">
+              <SHORT-NAME>Spi_JobEndNotification</SHORT-NAME>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>CALLBACK</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>ABSTRACT</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="53cda482-4487-4b4e-a70d-bd1c5e7bce86">
+              <SHORT-NAME>Spi_MainFunction_Handling</SHORT-NAME>
+              <SERVICE-ID>16</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="3147b49e-c629-4656-af4c-8b725524cc3a">
+              <SHORT-NAME>Spi_ReadIB</SHORT-NAME>
+              <SERVICE-ID>4</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="7c6e12a6-4e54-4a39-be75-620d4f3e4871">
+              <SHORT-NAME>Spi_SeqEndNotification</SHORT-NAME>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>CALLBACK</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>ABSTRACT</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY S="" UUID="96375c39-80e2-440b-9189-34d32805227d">
+              <SHORT-NAME>Spi_SetAsyncMode</SHORT-NAME>
+              <SERVICE-ID>13</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY S="" UUID="8df1242f-ff74-46ea-ac11-561b9847ca83">
+              <SHORT-NAME>Spi_SetupEB</SHORT-NAME>
+              <SERVICE-ID>5</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY S="" UUID="24fd1e2d-49bd-4e0b-b85f-36e86b949034">
+              <SHORT-NAME>Spi_SyncTransmit</SHORT-NAME>
+              <SERVICE-ID>10</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="1d3d328c-2c52-4d2e-a55c-5f38b464efdb">
+              <SHORT-NAME>Spi_WriteIB</SHORT-NAME>
+              <SERVICE-ID>2</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>
+

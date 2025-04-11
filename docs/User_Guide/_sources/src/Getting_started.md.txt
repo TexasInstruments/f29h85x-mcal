@@ -170,7 +170,7 @@ Will be added in later release.
 
 ## Compiler and Linker Settings
 
-C29 compiler version to be used is **ti-cgt-c29_0.1.0.STS**
+C29 compiler version to be used is **ti-cgt-c29_1.0.0.STS**
 
 Compiler Option  |Description|
 -----------------|------------|
@@ -182,8 +182,7 @@ Compiler Option  |Description|
 -O                  | Level of optimization <br> **-O1 (for Debug build type) <br> -O2 (for Release build type)** |
 -I                  | Option to add directories to the include file directory path|
 -cl-single-precision-constant | Option with the c29clang compiler to treat double precision floating-point constants as single precision constants|
-Build Type          | User-option to select the build type : **Debug/Release**. To configure this option refer section [Build system](#build-system)|
-Build Configuration | User-option to select the build configuration: **RAM/FLASH**. To configure this option refer section [Build system](#build-system)|
+-Werror             | Treat detected warnings in the specified category as errors. |
 
 Linker Option  |Description|
 ---------------|------------|
@@ -198,7 +197,7 @@ Linker Option  |Description|
 --display_error_number | Displays a diagnostic’s identifiers along with its text|
 --diag_wrap | Wrap diagnostic messages in the output display. This option is enabled by default|
 
-[Refer this link to get more information on C29 Compiler options](https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/indexC29.html)
+[Refer this link to get more information on C29 Compiler options](https://software-dl.ti.com/codegen/docs/c29clang/rel1_0_0_LTS/indexC29.html)
 
 ## Modules Supported
 
@@ -209,6 +208,12 @@ Dio |  Driver for DIO module |  F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2 
 Gpt |  Driver for GPT module |  F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
 Port | Driver for PORT module | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
 Can |  Driver for CAN module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Wdg |  Driver for Wdg module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Lin |  Driver for Lin module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Spi |  Driver for Spi module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Cdd_Adc  |  Driver for Cdd_Adc module   | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Cdd_Sent |  Driver for Cdd_Sent module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
+Cdd_Xbar |  Driver for Cdd_Xbar module  | F29H85x | CPU 1 / CPU 2 / CPU 3 | CPU 1 / CPU 2  |
 
 ## Getting access to MCAL
 
@@ -236,7 +241,7 @@ F29H85x | C29xx_CPU3 | CPU 3 | Not supported in F29H85x MCAL |
 
 #### Emulator
 
-F29x EVMs includes an **XDS110 USB** emulator which could be used with CCS Theia.
+F29x EVMs includes an **XDS110 USB** emulator which could be used with CCS.
 
 ```{Note}
  Please refer to ti.com or contact your FAE for documents describing the EVM.
@@ -244,15 +249,15 @@ F29x EVMs includes an **XDS110 USB** emulator which could be used with CCS Theia
 
 ### Software Dependencies
 
-#### IDE (CCS Theia)
+#### IDE (CCS)
 
 Code Composer Studio is an integrated development environment (IDE) that supports TI's Micro-controller and Embedded Processors portfolio.
 
 ```{Note}
-Please refer release notes for CCS Theia Studio version details.
+Please refer release notes for CCS version details.
  ```
 
-[Refer this link to get access for CCS Theia](https://www.ti.com/drr/opn/C2000-F29-3P)
+You can downloaded CCS from [ti.com](https://www.ti.com/tool/CCSTUDIO#downloads)
 
 ## Start-up & AppUtils
 
@@ -265,6 +270,9 @@ Please refer release notes for CCS Theia Studio version details.
  ┣ 📂**examples**\
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂**DeviceSupport**\
  ┃ ┃ ┣ 📂include\
  ┃ ┃ ┣ 📂LinkerCMD\
@@ -276,15 +284,18 @@ Please refer release notes for CCS Theia Studio version details.
  ┃ ┃ ┗ 📜makefile.defs\
  ┃ ┣ 📂Dio\
  ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┗ 📂Wdg\
  ┣ 📂plugins\
  ┣ 📜**CMakeLists.txt** : *Top-level CMake file*\
  ┗ 📜CMakePresets.json
 
 * **codestartbranch.asm:** Defines the code start point, it disables watchdog and calls the _c_int00 function.
 The _c_int00 function is the startup/boot routine responsible for setting up the C environment.
-Refer [compiler user guide](https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/compiler_manual/program_loading_and_running/run-time-initialization-slau1316977.html#the-c-int00-function) to know more details about _c_int00 function.
+Refer [compiler user guide](https://software-dl.ti.com/codegen/docs/c29clang/rel1_0_0_LTS/compiler_manual/program_loading_and_running/run-time-initialization-slau1316977.html#the-c-int00-function) to know more details about _c_int00 function.
 
 * **DeviceSupport.c:** Defines DeviceSupport_Init function that initializes the required flash wait states(only for FLASH build configuration).
 
@@ -304,11 +315,17 @@ Start-up code is for reference only, it should not be used as-is in a typical AU
  ┃ ┃ ┣ 📜**AppUtils.h**\
  ┃ ┃ ┗ 📜CMakeLists.txt\
  ┃ ┣ 📂Can\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
  ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┗ 📂Wdg\
  ┣ 📂plugins\
  ┣ 📜**CMakeLists.txt** : *Top-level CMake file*\
  ┗ 📜CMakePresets.json
@@ -380,12 +397,18 @@ For more information on CMake, please refer CMake [official documentation](https
  ┃ ┃ ┃ ┣ 📜Can_Irq.c\
  ┃ ┃ ┃ ┗ 📜Can_Priv.c\
  ┃ ┃ ┗ 📜CMakeLists.txt : *CAN driver CMake file*\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂Dio\
  ┃ ┣ 📂Gpt\
  ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcal_Lib\
  ┃ ┣ 📂Mcu\
- ┃ ┗ 📂Port\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┗ 📂Wdg\
  ┣ 📂**examples**\
  ┃ ┣ 📂AppUtils\
  ┃ ┣ 📂Can\
@@ -414,11 +437,17 @@ For more information on CMake, please refer CMake [official documentation](https
  ┃ ┃ ┃ ┗ 📜**CMakeLists.txt** : *Can_Example_Classic CAN example CMake file*\
  ┃ ┃ ┣ 📂Can_Example_Icom\
  ┃ ┃ ┗ 📂Can_Example_loopback\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
  ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┣ 📂Wdg\
  ┃ ┗ 📜**CMakeLists.txt** : *Examples CMake file*\
  ┣ 📜**CMakeLists.txt** : *Root-Level CMake file*\
  ┗ 📜**CMakePresets.json** : *CMake preset json file*
@@ -506,7 +535,7 @@ Any MCAL example CMake file can be used as reference.
 5. Link all the added interface libraries in Step 2 and 3 by using **target_link_libraries**.
 
 ```{Note}
-For more information on CMake support by the C29Clang compiler you can refer [compiler documentation](https://software-dl.ti.com/codegen/docs/c29clang/rel0_1_0_STS/getting_started_guide/building_simple_application.html?highlight=cmake#compile-and-link-using-build-automation-tools)
+For more information on CMake support by the C29Clang compiler you can refer [compiler documentation](https://software-dl.ti.com/codegen/docs/c29clang/rel1_0_0_LTS/getting_started_guide/building_simple_application.html#compile-and-link-using-build-automation-tools)
 ```
 
 ### Code Composer Studio (CCS)
@@ -528,11 +557,17 @@ For more information on CMake support by the C29Clang compiler you can refer [co
  ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
  ┃ ┃ ┣ 📂Can_Example_Icom\
  ┃ ┃ ┗ 📂Can_Example_loopback\
+ ┃ ┣ 📂Cdd_Adc\
+ ┃ ┣ 📂Cdd_Sent\
+ ┃ ┣ 📂Cdd_Xbar\
  ┃ ┣ 📂DeviceSupport\
  ┃ ┣ 📂Dio\
  ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Lin\
  ┃ ┣ 📂Mcu\
  ┃ ┣ 📂Port\
+ ┃ ┣ 📂Spi\
+ ┃ ┣ 📂Wdg\
  ┃ ┗ 📜CMakeLists.txt\
  ┣ 📜CMakeLists.txt\
  ┗ 📜CMakePresets.json
@@ -569,14 +604,66 @@ Every F29x MCAL example comes with a projectspec file which can be imported in C
     CCS Project Imported
     ```
 
+#### Loading generated executable file using CCS
+
+1. Import any example project to CCS, right click on the ccxml file and 'Start project-less Debug'.
+
+    ```{figure} Assets/images/CCS_Loading_Executable_Step1.png
+    :alt: CCS Loading Executable Step1
+    :align: center
+
+
+    CCS Loading Executable Step1
+    ```
+
+2. Right click on the C29xx_CPU1 THREAD and 'Connect Target'.
+
+    ```{figure} Assets/images/CCS_Loading_Executable_Step2.png
+    :alt: CCS Loading Executable Step2
+    :align: center
+
+
+    CCS Loading Executable Step2
+    ```
+
+3. Go to Run - Load - Load Program.
+
+    ```{figure} Assets/images/CCS_Loading_Executable_Step3.png
+    :alt: CCS Loading Executable Step3
+    :align: center
+
+
+    CCS Loading Executable Step3
+    ```
+
+4. Browse to the folder containing the generated executable, select the desired executable to be loaded and click on OK.
+
+    ```{figure} Assets/images/CCS_Loading_Executable_Step4.png
+    :alt: CCS Loading Executable Step4
+    :align: center
+
+
+    CCS Loading Executable Step4
+    ```
+
+5. Once the executable is loaded you can continue to run and debug the project.
+
+    ```{figure} Assets/images/CCS_Loading_Executable_Step5.png
+    :alt: CCS Executable Loaded 
+    :align: center
+
+
+    CCS Executable Loaded 
+    ```
+
 ```{Note}
-For more information on projectspec and their use in CCS [refer documentation](https://software-dl.ti.com/ccs/esd/documents/ccs_projectspecs.html).
+For more information on projectspec and it's use in CCS [refer documentation](https://software-dl.ti.com/ccs/esd/documents/ccs_projectspecs.html).
 ```
 
 #### Building and Debugging projects in CCS
 
 ```{Note}
-For information on how to build and debug any project in CCS [refer documentation](https://software-dl.ti.com/ccs/esd/documents/users_guide_ccs_theia/index_project-management.html).
+For information on how to build and debug any project in CCS [refer documentation](https://software-dl.ti.com/ccs/esd/documents/users_guide_ccs/index_project-management.html).
 ```
 
 ## Information on the F29x device family
@@ -595,8 +682,39 @@ Following are the list of F29H85x CPU major features:
 * Multi-zone security in hardware
 * Enhanced debug and trace capabilities
 
-[Refer this link to get access for TRM details](https://www.ti.com/drr/opn/C2000-F29-3P)
+You can downloaded TRM from [ti.com](https://www.ti.com/product/F29H859TU-Q1)
 
 ## Boot Modes
 
 Will be added in later release.
+
+## Loading example configs to EB tresos
+
+* Create and load the plugins required for the example by following the steps in [Create an EB project](./MCAL_Configuration_and_EB_Tresos.md#create-an-eb-project) and [Load plugins](./MCAL_Configuration_and_EB_Tresos.md#load-plugins) and close the EB tresos.
+
+```{figure} Assets/images/EB_Tresos_Example_Step1.png
+:alt: EB Tresos Example Project Created 
+:align: center
+
+EB Tresos Example Project Created 
+```
+
+* Copy the ECU Parameter definition files(.xdm) of the specific example.
+
+```{figure} Assets/images/EB_Tresos_Example_Step2.png
+:alt: MCAL Example ECU Parameter definition files
+:align: center
+
+MCAL Example ECU Parameter definition files
+```
+
+* Go to the EB tresos project workspace and replace the generated ECU Parameter definition files (.xdm) with the ECU Parameter definition files of your specific example.
+
+```{figure} Assets/images/EB_Tresos_Example_Step3.png
+:alt: EB Tresos ECU Parameter definition files
+:align: center
+
+EB Tresos ECU Parameter definition files
+```
+
+* Launch the EB Tresos tool again to see the example configurations.

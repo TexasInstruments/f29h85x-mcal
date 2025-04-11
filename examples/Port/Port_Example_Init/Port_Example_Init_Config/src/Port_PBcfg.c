@@ -75,7 +75,7 @@
 #include "Port_MemMap.h"
 
 
-static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig[10] =
+static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig[8] =
 {
    
    {
@@ -153,46 +153,6 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         [1] = 
         {
         .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_36_MCANC_RX
-        },
-    }
-
-   },
-   
-   {
-    /* .Port_PhysicalPinId = H16U,    Physical Pin Number*/
-	.Port_PinId = (Port_PinType)65U,
-    .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_OUT,
-    .Port_DirectionChangeable = (boolean) TRUE,
-    .Port_ModeChangeable = (boolean) TRUE,
-    .Port_PinLevelValue = (Port_PinLevelValueType)PORT_PIN_LEVEL_NA,
-    .Port_ControllerSpecific =
-    {
-        .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
-        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_65_GPIO65,
-        .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD,
-        .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_SYNC,
-        .Port_PinQualificationPeriod = (uint32)1U,
-        .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
-        .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
-                            |(0UL<<1U)
-                            |(0UL<<2U)
-                            |(0UL<<3U)
-                            |(1UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
-    },
-    .Port_NumPortMuxModes = (uint32)2U,
-    .Port_PinMode =
-    {
-        
-        
-        [0] = 
-        {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_65_GPIO65
-        },
-        
-        [1] = 
-        {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_65_UARTF_RX
         },
     }
 
@@ -279,48 +239,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
    },
    
    {
-    /* .Port_PhysicalPinId = M16U,    Physical Pin Number*/
-	.Port_PinId = (Port_PinType)219U,
-    .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_OUT,
-    .Port_DirectionChangeable = (boolean) TRUE,
-    .Port_ModeChangeable = (boolean) TRUE,
-    .Port_PinLevelValue = (Port_PinLevelValueType)PORT_PIN_LEVEL_HIGH,
-    .Port_ControllerSpecific =
-    {
-        .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
-        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_219_GPIO219,
-        .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD_PULLUP,
-        .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_SYNC,
-        .Port_PinQualificationPeriod = (uint32)1U,
-        .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
-        .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
-                            |(0UL<<1U)
-                            |(0UL<<2U)
-                            |(0UL<<3U)
-                            |(1UL<<4U)),
-        .Port_EnableWakeupPinLPM = (boolean) FALSE
-    },
-    .Port_NumPortMuxModes = (uint32)2U,
-    .Port_PinMode =
-    {
-        
-        
-        [0] = 
-        {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_219_GPIO219
-        },
-        
-        [1] = 
-        {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_219_OUTPUTXBAR1
-        },
-    }
-
-   },
-   
-   {
-    /* .Port_PhysicalPinId = M9U,    Physical Pin Number*/
-	.Port_PinId = (Port_PinType)237U,
+    /* .Port_PhysicalPinId = G2U,    Physical Pin Number*/
+	.Port_PinId = (Port_PinType)234U,
     .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_OUT,
     .Port_DirectionChangeable = (boolean) TRUE,
     .Port_ModeChangeable = (boolean) TRUE,
@@ -328,7 +248,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     .Port_ControllerSpecific =
     {
         .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
-        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_237_GPIO237,
+        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_234_GPIO234,
         .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_NA,
         .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_SYNC,
         .Port_PinQualificationPeriod = (uint32)1U,
@@ -347,20 +267,20 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         
         [0] = 
         {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_237_GPIO237
+        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_234_GPIO234
         },
         
         [1] = 
         {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_237_LINA_TX
+        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_234_EPWM17_A
         },
     }
 
    },
    
    {
-    /* .Port_PhysicalPinId = B7U,    Physical Pin Number*/
-	.Port_PinId = (Port_PinType)2U,
+    /* .Port_PhysicalPinId = C16U,    Physical Pin Number*/
+	.Port_PinId = (Port_PinType)42U,
     .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_NA,
     .Port_DirectionChangeable = (boolean) FALSE,
     .Port_ModeChangeable = (boolean) FALSE,
@@ -368,7 +288,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     .Port_ControllerSpecific =
     {
         .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
-        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_2_UARTA_TX,
+        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_42_UARTA_TX,
         .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD,
         .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_ASYNC,
         .Port_PinQualificationPeriod = (uint32)1U,
@@ -387,15 +307,15 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         
         [0] = 
         {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_2_UARTA_TX
+        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_42_UARTA_TX
         },
     }
 
    },
    
    {
-    /* .Port_PhysicalPinId = C7U,    Physical Pin Number*/
-	.Port_PinId = (Port_PinType)3U,
+    /* .Port_PhysicalPinId = C15U,    Physical Pin Number*/
+	.Port_PinId = (Port_PinType)43U,
     .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_NA,
     .Port_DirectionChangeable = (boolean) FALSE,
     .Port_ModeChangeable = (boolean) FALSE,
@@ -403,7 +323,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     .Port_ControllerSpecific =
     {
         .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
-        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_3_UARTA_RX,
+        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_43_UARTA_RX,
         .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD_PULLUP,
         .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_ASYNC,
         .Port_PinQualificationPeriod = (uint32)1U,
@@ -422,15 +342,15 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         
         [0] = 
         {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_3_UARTA_RX
+        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_43_UARTA_RX
         },
     }
 
    },
    
    {
-    /* .Port_PhysicalPinId = G3U,    Physical Pin Number*/
-	.Port_PinId = (Port_PinType)228U,
+    /* .Port_PhysicalPinId = N7U,    Physical Pin Number*/
+	.Port_PinId = (Port_PinType)190U,
     .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_NA,
     .Port_DirectionChangeable = (boolean) FALSE,
     .Port_ModeChangeable = (boolean) FALSE,
@@ -446,7 +366,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(1UL<<1U)
                             |(0UL<<2U)
-                            |(0UL<<3U)
+                            |(1UL<<3U)
                             |(0UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -470,7 +390,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
 const struct Port_ConfigType_s Port_PortConfigSet = 
 {
     .Port_PinConfig = (const Port_PinConfigType *)&Port_PortConfigSet_PinConfig[0],
-    .Port_NumberOfPortPins = (Port_PinType)10U
+    .Port_NumberOfPortPins = (Port_PinType)8U
 };
 
 

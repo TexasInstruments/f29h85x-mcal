@@ -48,6 +48,9 @@
  /* Bootrom status */  
 __attribute__((noinit, retain, location(0x20000800))) const McalLib_BromStatus McalLib_BootRomStatus;
 
+/* Device calibration Data */
+__attribute__((noinit, retain, location(0x20000EDC))) const McalLib_DevCalData McalLib_DeviceCalibrationData;
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/

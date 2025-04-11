@@ -22,7 +22,7 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="5.5. CAN" href="Modules/group___c_a_n.html" /> 
+    <link rel="prev" title="5.11. CDD_XBAR" href="Modules/group___c_d_d___x_b_a_r.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -46,7 +46,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.00.00
+                01.01.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -60,7 +60,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Getting_started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">6. Key Performance and Memory Consumption Data</a><ul>
@@ -69,11 +69,17 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#memory-footprints">6.2. Memory Footprints</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#can">6.2.1. CAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mcu">6.2.1. MCU</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dio">6.2.2. DIO</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gpt">6.2.3. GPT</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mcu">6.2.4. MCU</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#port">6.2.5. PORT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#port">6.2.4. PORT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#can">6.2.5. CAN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wdg">6.2.6. WDG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lin">6.2.7. LIN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spi">6.2.8. SPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdd-adc">6.2.9. CDD ADC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdd-sent">6.2.10. CDD SENT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdd-xbar">6.2.11. CDD XBAR</a></li>
 </ul>
 </li>
 </ul>
@@ -139,23 +145,23 @@
 <td><p>Classic CAN : 8 byte : 1 Mbps</p></td>
 </tr>
 <tr class="row-even"><td><p>Maximum packets Transmission per second in polling</p></td>
-<td><p>8772</p></td>
-<td><p>7292</p></td>
+<td><p>9010</p></td>
+<td><p>8182</p></td>
 <td><p>Classic CAN : 8 byte : 1 Mbps</p></td>
 </tr>
 <tr class="row-odd"><td><p>Maximum packets Transmission per second in polling</p></td>
-<td><p>8896</p></td>
-<td><p>4678</p></td>
+<td><p>7270</p></td>
+<td><p>6042</p></td>
 <td><p>CAN FD : 64 byte : 5 Mbps</p></td>
 </tr>
 <tr class="row-even"><td><p>Maximum packets Transmission per second in Interrupt</p></td>
-<td><p>8772</p></td>
-<td><p>7531</p></td>
+<td><p>9010</p></td>
+<td><p>8389</p></td>
 <td><p>Classic CAN : 8 byte : 1 Mbps</p></td>
 </tr>
 <tr class="row-odd"><td><p>Maximum packets Transmission per second in Interrupt</p></td>
-<td><p>8896</p></td>
-<td><p>4818</p></td>
+<td><p>7270</p></td>
+<td><p>5853</p></td>
 <td><p>CAN FD : 64 byte : 5 Mbps</p></td>
 </tr>
 </tbody>
@@ -164,31 +170,36 @@
 </section>
 <section id="memory-footprints">
 <h2><span class="section-number">6.2. </span>Memory Footprints<a class="headerlink" href="#memory-footprints" title="Link to this heading"></a></h2>
-<section id="can">
-<h3><span class="section-number">6.2.1. </span>CAN<a class="headerlink" href="#can" title="Link to this heading"></a></h3>
+<section id="mcu">
+<h3><span class="section-number">6.2.1. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Examples</p></th>
 <th class="head"><p>.text</p></th>
-<th class="head"><p>.bss</p></th>
 <th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Can_Example_Classic</p></td>
-<td><p>42645</p></td>
+<tr class="row-even"><td><p>Mcu_Example_Clock</p></td>
+<td><p>33340</p></td>
 <td><p>0</p></td>
-<td><p>8256</p></td>
+<td><p>4632</p></td>
 </tr>
-<tr class="row-odd"><td><p>Can_Example_Icom</p></td>
-<td><p>43861</p></td>
+<tr class="row-odd"><td><p>Mcu_Example_PowerMode</p></td>
+<td><p>33872</p></td>
 <td><p>0</p></td>
-<td><p>8268</p></td>
+<td><p>4633</p></td>
 </tr>
-<tr class="row-even"><td><p>Can_Example_loopback</p></td>
-<td><p>42405</p></td>
+<tr class="row-even"><td><p>Mcu_Example_Ram</p></td>
+<td><p>33618</p></td>
 <td><p>0</p></td>
-<td><p>8192</p></td>
+<td><p>4641</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mcu_Example_Reset</p></td>
+<td><p>33636</p></td>
+<td><p>0</p></td>
+<td><p>4629</p></td>
 </tr>
 </tbody>
 </table>
@@ -199,15 +210,15 @@
 <thead>
 <tr class="row-odd"><th class="head"><p>Examples</p></th>
 <th class="head"><p>.text</p></th>
-<th class="head"><p>.bss</p></th>
 <th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Dio_Example_Read_Write_All</p></td>
-<td><p>33876</p></td>
+<td><p>36414</p></td>
 <td><p>0</p></td>
-<td><p>4388</p></td>
+<td><p>4652</p></td>
 </tr>
 </tbody>
 </table>
@@ -218,88 +229,237 @@
 <thead>
 <tr class="row-odd"><th class="head"><p>Examples</p></th>
 <th class="head"><p>.text</p></th>
-<th class="head"><p>.bss</p></th>
 <th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Gpt_Example_Timers</p></td>
-<td><p>36525</p></td>
+<td><p>38842</p></td>
 <td><p>0</p></td>
-<td><p>4460</p></td>
+<td><p>4724</p></td>
 </tr>
 <tr class="row-odd"><td><p>Gpt_Example_OneShotMode</p></td>
-<td><p>37061</p></td>
+<td><p>39468</p></td>
 <td><p>0</p></td>
-<td><p>4456</p></td>
+<td><p>4720</p></td>
 </tr>
 <tr class="row-even"><td><p>Gpt_Example_MixedMode</p></td>
-<td><p>35525</p></td>
+<td><p>37946</p></td>
 <td><p>0</p></td>
-<td><p>4432</p></td>
+<td><p>4700</p></td>
 </tr>
 <tr class="row-odd"><td><p>Gpt_Example_InterruptTimeout</p></td>
-<td><p>36125</p></td>
+<td><p>38452</p></td>
 <td><p>0</p></td>
-<td><p>4432</p></td>
+<td><p>4696</p></td>
 </tr>
 <tr class="row-even"><td><p>Gpt_Example_ContinuousMode</p></td>
-<td><p>37069</p></td>
+<td><p>39392</p></td>
 <td><p>0</p></td>
-<td><p>4448</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="mcu">
-<h3><span class="section-number">6.2.4. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h3>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Examples</p></th>
-<th class="head"><p>.text</p></th>
-<th class="head"><p>.bss</p></th>
-<th class="head"><p>.data</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Mcu_Example_Clock</p></td>
-<td><p>30596</p></td>
-<td><p>0</p></td>
-<td><p>4368</p></td>
-</tr>
-<tr class="row-odd"><td><p>Mcu_Example_PowerMode</p></td>
-<td><p>31180</p></td>
-<td><p>0</p></td>
-<td><p>4369</p></td>
-</tr>
-<tr class="row-even"><td><p>Gpt_Example_MixedMode</p></td>
-<td><p>35525</p></td>
-<td><p>0</p></td>
-<td><p>4432</p></td>
-</tr>
-<tr class="row-odd"><td><p>Mcu_Example_Reset</p></td>
-<td><p>30924</p></td>
-<td><p>0</p></td>
-<td><p>4373</p></td>
+<td><p>4716</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="port">
-<h3><span class="section-number">6.2.5. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h3>
+<h3><span class="section-number">6.2.4. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Examples</p></th>
 <th class="head"><p>.text</p></th>
-<th class="head"><p>.bss</p></th>
 <th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Port_Example_Init</p></td>
-<td><p>32844</p></td>
+<td><p>35398</p></td>
 <td><p>0</p></td>
-<td><p>4378</p></td>
+<td><p>4638</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="can">
+<h3><span class="section-number">6.2.5. </span>CAN<a class="headerlink" href="#can" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Examples</p></th>
+<th class="head"><p>.text</p></th>
+<th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Can_Example_Classic</p></td>
+<td><p>44781</p></td>
+<td><p>0</p></td>
+<td><p>8508</p></td>
+</tr>
+<tr class="row-odd"><td><p>Can_Example_Icom</p></td>
+<td><p>45788</p></td>
+<td><p>0</p></td>
+<td><p>8520</p></td>
+</tr>
+<tr class="row-even"><td><p>Can_Example_loopback</p></td>
+<td><p>44510</p></td>
+<td><p>0</p></td>
+<td><p>8448</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wdg">
+<h3><span class="section-number">6.2.6. </span>WDG<a class="headerlink" href="#wdg" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Examples</p></th>
+<th class="head"><p>.text</p></th>
+<th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Wdg_Example_Interrupt</p></td>
+<td><p>34466</p></td>
+<td><p>0</p></td>
+<td><p>4700</p></td>
+</tr>
+<tr class="row-odd"><td><p>Wdg_Example_Service</p></td>
+<td><p>34724</p></td>
+<td><p>0</p></td>
+<td><p>4700</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="lin">
+<h3><span class="section-number">6.2.7. </span>LIN<a class="headerlink" href="#lin" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Examples</p></th>
+<th class="head"><p>.text</p></th>
+<th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Lin_Example_Init_Sleep_Wakeup</p></td>
+<td><p>38202</p></td>
+<td><p>0</p></td>
+<td><p>4685</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lin_Example_SendData</p></td>
+<td><p>38098</p></td>
+<td><p>0</p></td>
+<td><p>4708</p></td>
+</tr>
+<tr class="row-even"><td><p>Lin_Example_Sleep_Wakeup_Interrupt</p></td>
+<td><p>36994</p></td>
+<td><p>0</p></td>
+<td><p>4684</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spi">
+<h3><span class="section-number">6.2.8. </span>SPI<a class="headerlink" href="#spi" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Examples</p></th>
+<th class="head"><p>.text</p></th>
+<th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Spi_Example_Sync_AsyncTransfer</p></td>
+<td><p>45264</p></td>
+<td><p>0</p></td>
+<td><p>5676</p></td>
+</tr>
+<tr class="row-odd"><td><p>Spi_Example_AsyncTransfer_Interrupt</p></td>
+<td><p>43388</p></td>
+<td><p>0</p></td>
+<td><p>5568</p></td>
+</tr>
+<tr class="row-even"><td><p>Spi_Example_SyncTransfer</p></td>
+<td><p>41244</p></td>
+<td><p>0</p></td>
+<td><p>5404</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cdd-adc">
+<h3><span class="section-number">6.2.9. </span>CDD ADC<a class="headerlink" href="#cdd-adc" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Examples</p></th>
+<th class="head"><p>.text</p></th>
+<th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cdd_Adc_Example_Differential</p></td>
+<td><p>47108</p></td>
+<td><p>0</p></td>
+<td><p>5024</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Adc_Example_GlbSwTrig</p></td>
+<td><p>48916</p></td>
+<td><p>0</p></td>
+<td><p>5580</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_Adc_Example_Ppb_TrigRepeater</p></td>
+<td><p>48876</p></td>
+<td><p>0</p></td>
+<td><p>7300</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Adc_Example_TempSensor</p></td>
+<td><p>41572</p></td>
+<td><p>0</p></td>
+<td><p>4808</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cdd-sent">
+<h3><span class="section-number">6.2.10. </span>CDD SENT<a class="headerlink" href="#cdd-sent" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Examples</p></th>
+<th class="head"><p>.text</p></th>
+<th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cdd_Sent_Standard</p></td>
+<td><p>35376</p></td>
+<td><p>0</p></td>
+<td><p>4664</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cdd-xbar">
+<h3><span class="section-number">6.2.11. </span>CDD XBAR<a class="headerlink" href="#cdd-xbar" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Examples</p></th>
+<th class="head"><p>.text</p></th>
+<th class="head"><p>.data</p></th>
+<th class="head"><p>.bss</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cdd_Xbar_GpioToGpio</p></td>
+<td><p>37410</p></td>
+<td><p>0</p></td>
+<td><p>4696</p></td>
 </tr>
 </tbody>
 </table>
@@ -311,14 +471,14 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Modules/group___c_a_n.html" class="btn btn-neutral float-left" title="5.5. CAN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Modules/group___c_d_d___x_b_a_r.html" class="btn btn-neutral float-left" title="5.11. CDD_XBAR" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2024, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Oct 22, 2024.
+          <span class="lastupdated" >Last updated on Dec 18, 2024.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

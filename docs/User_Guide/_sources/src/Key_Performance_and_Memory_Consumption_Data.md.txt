@@ -10,49 +10,95 @@
 |Reception time in polling |NA|198 us|Classic CAN : 8 byte : 1 Mbps|
 |Transmission time in Interrupt |NA|134 us|Classic CAN : 8 byte : 1 Mbps|
 |Reception time in Interrupt|NA|130 us|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|8772|7292|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in polling|8896|4678|CAN FD : 64 byte : 5 Mbps|
-|Maximum packets Transmission per second in Interrupt|8772|7531|Classic CAN : 8 byte : 1 Mbps|
-|Maximum packets Transmission per second in Interrupt|8896|4818|CAN FD : 64 byte : 5 Mbps|
+|Maximum packets Transmission per second in polling|9010|8182|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in polling|7270|6042|CAN FD : 64 byte : 5 Mbps|
+|Maximum packets Transmission per second in Interrupt|9010|8389|Classic CAN : 8 byte : 1 Mbps|
+|Maximum packets Transmission per second in Interrupt|7270|5853|CAN FD : 64 byte : 5 Mbps|
 
 ## Memory Footprints
 
-### CAN
+### MCU
 
-| Examples   | .text  |  .bss  |  .data  |
+| Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Can_Example_Classic   |   42645    |       0    |    8256    |
- | Can_Example_Icom   |   43861    |       0    |    8268    |
- | Can_Example_loopback   |   42405    |       0    |    8192    |
+| Mcu_Example_Clock   |   33340    |       0    |    4632    |
+ | Mcu_Example_PowerMode   |   33872    |       0    |    4633    |
+ | Mcu_Example_Ram   |   33618    |       0    |    4641    |
+ | Mcu_Example_Reset   |   33636    |       0    |    4629    |
  
 ### DIO
 
-| Examples   | .text  |  .bss  |  .data  |
+| Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Dio_Example_Read_Write_All   |   33876    |       0    |    4388    |
+| Dio_Example_Read_Write_All   |   36414    |       0    |    4652    |
  
 ### GPT
 
-| Examples   | .text  |  .bss  |  .data  |
+| Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Gpt_Example_Timers   |   36525    |       0    |    4460    |
- | Gpt_Example_OneShotMode   |   37061    |       0    |    4456    |
- | Gpt_Example_MixedMode   |   35525    |       0    |    4432    |
- | Gpt_Example_InterruptTimeout   |   36125    |       0    |    4432    |
- | Gpt_Example_ContinuousMode   |   37069    |       0    |    4448    |
- 
-### MCU
-
-| Examples   | .text  |  .bss  |  .data  |
-| ------------ | ----------| -------- | ---------- |
-| Mcu_Example_Clock   |   30596    |       0    |    4368    |
- | Mcu_Example_PowerMode   |   31180    |       0    |    4369    |
- | Gpt_Example_MixedMode   |   35525    |       0    |    4432    |
- | Mcu_Example_Reset   |   30924    |       0    |    4373    |
+| Gpt_Example_Timers   |   38842    |       0    |    4724    |
+ | Gpt_Example_OneShotMode   |   39468    |       0    |    4720    |
+ | Gpt_Example_MixedMode   |   37946    |       0    |    4700    |
+ | Gpt_Example_InterruptTimeout   |   38452    |       0    |    4696    |
+ | Gpt_Example_ContinuousMode   |   39392    |       0    |    4716    |
  
 ### PORT
 
-| Examples   | .text  |  .bss  |  .data  |
+| Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Port_Example_Init   |   32844    |       0    |    4378    |
+| Port_Example_Init   |   35398    |       0    |    4638    |
  
+### CAN
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Can_Example_Classic   |   44781    |       0    |    8508    |
+ | Can_Example_Icom   |   45788    |       0    |    8520    |
+ | Can_Example_loopback   |   44510    |       0    |    8448    |
+ 
+### WDG
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Wdg_Example_Interrupt   |   34466    |       0    |    4700    |
+ | Wdg_Example_Service   |   34724    |       0    |    4700    |
+ 
+### LIN
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Lin_Example_Init_Sleep_Wakeup   |   38202    |       0    |    4685    |
+ | Lin_Example_SendData   |   38098    |       0    |    4708    |
+ | Lin_Example_Sleep_Wakeup_Interrupt   |   36994    |       0    |    4684    |
+ 
+### SPI
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Spi_Example_Sync_AsyncTransfer   |   45264    |       0    |    5676    |
+ | Spi_Example_AsyncTransfer_Interrupt   |   43388    |       0    |    5568    |
+ | Spi_Example_SyncTransfer   |   41244    |       0    |    5404    |
+ 
+### CDD ADC
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Cdd_Adc_Example_Differential   |   47108    |       0    |    5024    |
+ | Cdd_Adc_Example_GlbSwTrig   |   48916    |       0    |    5580    |
+ | Cdd_Adc_Example_Ppb_TrigRepeater   |   48876    |       0    |    7300    |
+ | Cdd_Adc_Example_TempSensor   |   41572    |       0    |    4808    |
+ 
+### CDD SENT
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Cdd_Sent_Standard   |   35376    |       0    |    4664    |
+ 
+### CDD XBAR
+
+| Examples   | .text  |  .data  |  .bss  |
+| ------------ | ----------| -------- | ---------- |
+| Cdd_Xbar_GpioToGpio   |   37410    |       0    |    4696    |
+ 
+
+    

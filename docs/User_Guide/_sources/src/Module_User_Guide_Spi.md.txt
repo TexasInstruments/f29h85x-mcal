@@ -1,0 +1,1512 @@
+## SPI Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|SPI |Serial peripheral Interface|
+|AUTOSAR |AUTomotive Open System ARchitecture|
+|BSW |Basic Software|
+|RTE |Runtime Environment|
+|MCAL |MicroController Abstraction Layer|
+|API |Application Programming Interface|
+|ECU |Electronic Control Unit|
+|CS |Chip Select|
+|MISO |Master Input Slave Output|
+|MOSI |Master Output Slave Input|
+|Master |A device controlling other devices (slaves)|
+|Slave |A device being completely controlled by a master device|
+|Channel |A Channel is a software exchange medium for data that are defined with the same criteria: Config. Parameters, Number of Data elements with same size and data pointers (Source & Destination) or location. |
+|Job |A Job is composed of one or several Channels with the same Chip Select (is not released during the processing of Job). A Job is considered atomic and therefore cannot be interrupted by another Job. A Job has an assigned priority.|
+|Sequence |A Sequence is a number of consecutive Jobs to transmit but it can be rescheduled between Jobs using a priority mechanism. A Sequence transmission is interruptible (by another Sequence transmission) or not depending on a static configuration|
+|ID|Identification Number of an element (Channel, Job, Sequence)|
+|EB|Externally buffered channels. Buffers containing data to transfer are outside the SPI Handler/Driver|
+|IB |Internally buffered channels. Buffers containing data to transfer are inside the SPI Handler/Driver.|
+|NMI |Non Maskable Interrupt|
+|OS |Operating System|
+|DET |Default Error Tracer|
+|DEM |Diagnostic Event Manager – module to handle diagnostic relevant events.|
+|DAR |Decision Analysis and Resolution|
+|SoC |System on a Chip|
+
+### Introduction
+
+The SPI driver provides services for basic transmission and reception of SPI data using channels, Jobs and Sequences software components.
+These API's and components can be used by an application.
+
+```{figure} Assets/images/Spi_Autosar_MCAL.png
+:alt: SPI MCAL AUTOSAR
+:align: center
+
+SPI MCAL AUTOSAR
+```
+
+This document details AUTOSAR BSW SPI module implementation
+
+|Supported AUTOSAR Release|**4.3.1**|
+|------|-------------|
+| **Supported Configuration Variants** | **Pre-Compile, Link-Time & Post Build**|
+| **Vendor ID**                      |   **SPI_VENDOR_ID (44)**|
+| **Module ID**                      |   **SPI_MODULE_ID (83)**|
+
+### Functional Overview
+
+A SPI bus is a Controller-peripheral  multi node bus system, the controller sets a Chip Select (CS) to select a peripheral for data communication. The SPI (Serial Peripheral Interface) has a 4-wire synchronous serial interface. Data communication is enabled with a Chip Select wire (CS). Data is transmitted with a 3-wire interface consisting of wires for serial data input (MOSI), serial data output (MISO) and Serial ClocK (SCK). The following SPI module provides channel based read, write and transfer access to different devices on SPI busses. A SPI channel represents data elements (8 to 16 data bits). These channels could be combined in sequence which shall not be interrupted (e.g. Daisy-Chain, EEPROM). Channels have a static configuration defining baud rate, chip select A SPI device is generally identified by the used SPI hardware unit and the associated chip select line. This module can operate only as SPI controller.
+
+### Hardware Features
+
+#### Hardware Features supported
+
+* Two operational modes: Controller and Peripheral
+* Baud rate: 125 different programmable rates. The maximum baud rate that can be employed is limited by the
+maximum speed of the I/O buffers used on the SPI pins. See the device data sheet for more details.
+* Data word length: 1 to 16 data bits
+* Four clocking schemes (controlled by clock polarity and clock phase bits) include:
+  * Falling edge without phase delay: SPICLK active-high. SPI transmits data on the falling edge of the SPICLK signal and receives data on the rising edge of the SPICLK signal.
+  * Falling edge with phase delay: SPICLK active-high. SPI transmits data one half-cycle ahead of the falling edge of the SPICLK signal and receives data on the falling edge of the SPICLK signal.
+  * Rising edge without phase delay: SPICLK inactive-low. SPI transmits data on the rising edge of the SPICLK signal and receives data on the falling edge of the SPICLK signal.
+  * Rising edge with phase delay: SPICLK inactive-low. SPI transmits data one half-cycle ahead of the rising edge of the SPICLK signal and receives data on the rising edge of the SPICLK signal.
+* Simultaneous receive and transmit operation (transmit function can be disabled in software)
+* Transmitter and receiver operations are accomplished through either interrupt- driven or polled algorithm
+* Delayed transmit control
+* 16-level transmit/receive FIFO
+* High-speed mode
+
+#### Not supported Features
+
+* The SPI Handler/Driver does not handle peripheral mode(slave mode).
+* The SPI Handler/Driver only supports full-duplex mode, and F29x SPI three-wire mode is a half-duplex communication, three-wire mode is not supported in SPI Handler/Driver as per AUTOSAR.
+* The LEVEL 2 SPI Handler/Driver is specified for microcontrollers that have to provide, at least, two SPI busses using separated hardware units. Otherwise, using this level of functionality does not make sense.
+* SPIPTE inversion for digital audio interface receive mode on devices with two SPI modules- since it requires SPI to be configured as peripheral mode, it is not handled in SPI Handler/Driver as per AUTOSAR
+
+#### Non compliance
+
+* Since F29x SPI is 16 bit, SPI transfer/receive of word length greater than 16 bits are not supported.
+
+### Source files
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┃ ┣ 📂BSW_Stubs\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂hw_include\
+ ┃ ┣ 📂Mcal_Lib\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂**Spi**\
+ ┃ ┃ ┣ 📂**include**\
+ ┃ ┃ ┃ ┣ 📜**Spi.h** : *Contains the API’s of the Spi driver to be used by upper layers.*\
+ ┃ ┃ ┃ ┣ 📜**Spi_Priv.h** : *Contains data structures and Internal function declarations.*\
+ ┃ ┃ ┃ ┣ 📜**Spi_Reg_Access.h** : *Contains the MACROs for Spi register access.*\
+ ┃ ┃ ┃ ┗ 📜**Spi_Utils.h** : *Contains Internal function declarations.*\
+ ┃ ┃ ┣ 📂**src**\
+ ┃ ┃ ┃ ┣ 📜**Spi.c** : *Contains the implementation of the API's for Spi driver.*\
+ ┃ ┃ ┃ ┣ 📜**Spi_Irq.c** : *contains the implementation for Spi interrupts handlers.*\
+ ┃ ┃ ┃ ┣ 📜**Spi_Priv.c** : *Contains Functions that support the API's for Spi driver*\
+ ┃ ┃ ┃ ┗ 📜**Spi_Utils.c** : *Contains Functions that support the API's for Spi driver*\
+ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📂examples\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+```{figure} Assets/images/Spi_Header_File_Structure.png
+:alt: Spi_Header_File_Structure
+:align: center
+
+Spi_Header_File_Structure
+```
+
+### Module requirements
+
+#### Memory Mapping
+
+Will be added in later release
+
+#### Scheduling
+
+|Schedule Function API|Description|
+|------------|---------------|
+|Spi_MainFunction_Handling| This function performs the polling of Rx interrupt flag and performs next transmission |
+
+#### Error handling
+
+##### Development Error Reporting
+
+Development errors are reported to the DET using the service Det_ReportError(),when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+Development RunTime errors are reported to the DET using the service Det_ReportRuntimeError().
+
+###### Error codes
+
+|Type of Error|Related Error code|Value (Hex)|
+|----|-----|-------|
+|API SPI_Init service is called while the SPI the driver has already been initialized|SPI_E_ALREADY_INITIALIZED|0x4A|
+|API service used without module initialization|SPI_E_UNINIT|0x1A|
+|APIs called with a Null Pointer|SPI_E_PARAM_POINTER|0x10|
+|API parameter checking: invalid channel|SPI_E_PARAM_CHANNEL|0x0A|
+|API parameter checking: invalid job|SPI_E_PARAM_JOB|0x0B|
+|API parameter checking: invalid sequence|SPI_E_PARAM_SEQ|0x0C|
+|API parameter checking: invalid length|SPI_E_PARAM_LENGTH|0x0D|
+|API parameter checking: invalid HWUnit|SPI_E_PARAM_UNIT|0x0E|
+|Runtime Error - Services called in a wrong sequence|SPI_E_SEQ_PENDING|0x2A|
+|Runtime Error - Synchronous transmission service|SPI_E_SEQ_IN_PROCESS|0x3A|
+
+##### Extended Production Error Reporting
+
+Extended production errors are reported to the DEM using the service Dem_SetEventStatus(),
+when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.
+
+### Used resources
+
+#### Interrupt Handling
+
+[AUTOSAR_SWS_SPIDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_SPIHandlerDriver.pdf), details the expected behavior and control flow for ISR implementation, please refer the same.
+
+The Driver doesn’t register any interrupts handler (ISR), it’s expected that consumer of this driver registers the required interrupt handler.
+
+For every SPI Instance, an ISR requires to be registered. The Interrupt number associated with instance of the SPI is detailed in TRM (also, please refer the Example application).
+Interrupt type should be selected in SPI plugin.
+
+|SPI Instance| Interrupt handler|
+|------------|-----------------|
+|SPIA| SPIA_RxINT|
+|SPIB| SPIB_RxINT|
+|SPIC| SPIC_RxINT|
+|SPID| SPID_RxINT|
+|SPIE| SPIE_RxINT|
+
+```{NOTE}
+Same Interrupt Category needs to be configured in both SPI and OS Modules.
+SPI Tx Interrupt is not used by SPI driver.
+```
+
+#### Instance support
+
+|CPU instances|supported|
+|-------|-------|
+|CPU 1 | YES |
+|CPU 2 | NO |
+|CPU 3 | NO |
+
+#### Hardware-Software Mapping
+
+Below image shows SPI driver Hardware-Software mapping. For more information related to HW, refer the F29x Reference Manual.
+
+```{figure} Assets/images/Spi_HW_SW_Mapping.png
+:alt: SPI HW/SW Mapping
+:align: center
+
+Spi HW/SW Mapping
+```
+
+### Integration description
+
+#### Dependent modules
+
+##### DET
+
+This implementation depends on the DET in order to report development errors
+The detection of development errors is configurable (ON / OFF), The switch SPI_CFG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors.
+
+##### DEM
+
+SPI Production errors are reported to DEM ( Diagnostic Event Manager ) Module.
+
+##### SchM
+
+If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that SPI module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.
+
+The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter **RteExclusiveAreaImplMechanism**. This parameter is an input for RTE generator.
+
+For SPI Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
+
+| Exclusive Area Functions used | SPI Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
+|-------|-------|-------|-------|
+|SPI_EXCLUSIVE_AREA_0| Spi_AsyncTransmit<br>Spi_Cancel<br> Spi_SyncTransmit<br>Spi_GetHWUnitStatus<br>Spi_WriteIB<br>Spi_ReadIB<br>Spi_SetupEB| To protect against multiple access for shared resources | **OS_RESOURCE** : If the SPI APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If SPI APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+
+##### MCU
+
+MCU Module is required to initialize all the clock to be used by different peripherals.
+
+##### PORT
+
+PORT Module is required to initialize Pin configurations and MUX mode for SPI Instances.
+
+##### DIO
+
+Dio Module is required to handle SPI chip select when GPIO is configured to use as chip select.
+
+#### Multi-core and Resource allocator
+
+Not Supported
+
+### Configuration
+
+The Spi Driver implementation supports multiple configuration variants
+The driver expects generated **Spi_Cfg.h** to be present as input file.
+The associated Spi driver configuration generated source files are **Spi_LCfg.c** if Link-Time variant is selected and **Spi_PBcfg.c** if Post-Build config variant is selected, only **Spi_Cfg.c** if Pre-Compile variant is selected
+
+The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+#### SpiDemEventParameterRefs
+
+##### SPI_E_HARDWARE_ERROR
+
+|SWS Item|ECUC_Spi_00241|
+|--------|----------------|
+|**Name**|SPI_E_HARDWARE_ERROR|
+|**Parent Container**|SpiDemEventParameterRefs|
+|**Description**|Reference to configured DEM event to report "Hardware failure". If the reference is not configured the error shall not be reported.|
+|**Multiplicity**|1|
+|**Type**|Symbolic name reference to [DemEventParameter]|
+|**Range**||
+|**Post-Build Variant Multiplicity**|false|
+|**Post-Build Variant Value**|false|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Default value**||
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|Local|
+
+#### SpiDriver
+
+##### SpiMaxChannel
+
+|SWS Item|ECUC_Spi_00197|
+|--------|----------------|
+|**Name**|SpiMaxChannel|
+|**Parent Container**|SpiDriver|
+|**Description**|This parameter contains the number of Channels configured. It will be gathered by tools during the configuration stage|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 255|
+|**Default value**|0|
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiMaxJob
+
+|SWS Item|ECUC_Spi_00198|
+|--------|----------------|
+|**Name**|SpiMaxJob|
+|**Parent Container**|SpiDriver|
+|**Description**|Total number of Jobs configured.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 65535|
+|**Default value**|--|
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiMaxSequence
+
+|SWS Item|ECUC_Spi_00199|
+|--------|----------------|
+|**Name**|SpiMaxSequence|
+|**Parent Container**|SpiDriver|
+|**Description**|Total number of Sequences configured.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 255|
+|**Default value**|--|
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiMaxChannelsPerJob
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiMaxChannelsPerJob|
+|**Parent Container**|SpiDriver|
+|**Description**|Maximum channels allowed per job|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|1..32|
+|**Default value**|4|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiMaxJobsPerSequence
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiMaxJobsPerSequence|
+|**Parent Container**|SpiDriver|
+|**Description**|Maximum jobs allowed per sequence.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|1..32|
+|**Default value**|4|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+#### SpiChannel
+
+##### SpiChannelId
+
+|SWS Item|ECUC_Spi_00200|
+|--------|----------------|
+|**Name**|SpiChannelId|
+|**Parent Container**|SpiChannel|
+|**Description**|SPI Channel ID, used as parameter in SPI API functions.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef (Symbolic Name generated for this parameter)|
+|**Range**|0..255|
+|**Default value**|--|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|Local|
+
+##### SpiChannelType
+
+|SWS Item|ECUC_Spi_00201|
+|--------|----------------|
+|**Name**|SpiChannelType|
+|**Parent Container**|SpiChannel|
+|**Description**|Buffer usage with EB/IB channel|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**|EB External Buffer <br> IB Internal Buffer|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiDataWidth
+
+|SWS Item|ECUC_Spi_00202|
+|--------|----------------|
+|**Name**|SpiDataWidth|
+|**Parent Container**|SpiChannel|
+|**Description**|This parameter is the width of a transmitted data uni|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|1..32|
+|**Default value**|--|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+#### SpiDefaultData
+
+|SWS Item|ECUC_Spi_00203|
+|--------|----------------|
+|**Name**|SpiDefaultData|
+|**Parent Container**|SpiChannel|
+|**Description**|The default data to be transmitted when (for internal buffer or external buffer) the pointer passed to Spi_WriteIB (for internal buffer) or to Spi_SetupEB (for external buffer) is NULL.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 4294967295|
+|**Default value**||
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiEbMaxLength
+
+|SWS Item|ECUC_Spi_00204|
+|--------|----------------|
+|**Name**|SpiEbMaxLength|
+|**Parent Container**|SpiChannel|
+|**Description**|This parameter contains the maximum size (number of data elements) of data buffers in case of EB Channels and only|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 65535|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local <br>dependency: The SPI_CHANNEL_TYPE parameter has to be configured as EB for this Channel.<br>The SPI_CHANNEL_BUFFERS_ALLOWED parameter has to be configured as 1 or 2|
+
+##### SpiIbNBuffers
+
+|SWS Item|ECUC_Spi_00205|
+|--------|----------------|
+|**Name**|SpiIbNBuffers|
+|**Parent Container**|SpiChannel|
+|**Description**|This parameter contains the maximum number of data buffers in case of IB Channels and only.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0 .. 65535|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### SpiTransferStart
+
+|SWS Item|ECUC_Spi_00206|
+|--------|----------------|
+|**Name**|SpiTransferStart|
+|**Parent Container**|SpiChannel|
+|**Description**|This parameter defines the first starting bit for transmission.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**|LSB Transmission starts with the Least Significant Bit first <br> MSB Transmission starts with the Most Significant Bit first|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+#### SpiExternalDevice
+
+##### SpiBaudrate
+
+|SWS Item|ECUC_Spi_00208|
+|--------|----------------|
+|**Name**|SpiBaudrate|
+|**Parent Container**|SpiExternalDevice|
+|**Description**|This parameter is the communication baudrate - This parameter allows using a range of values, from the point of view of configuration tools,from Hz up to MHz|
+|**Multiplicity**|1|
+|**Type**|EcucFloatParamDef|
+|**Range**|[0 .. INF]|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### SpiCsIdentifier
+
+|SWS Item|ECUC_Spi_00209|
+|--------|----------------|
+|**Name**|SpiCsIdentifier|
+|**Parent Container**|SpiExternalDevice|
+|**Description**|This parameter is the symbolic name to identify the Chip Select (CS) allocated to this Job.|
+|**Multiplicity**|1|
+|**Type**|EcucStringParamDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### SpiCsPolarity
+
+|SWS Item|ECUC_Spi_00210|
+|--------|----------------|
+|**Name**|SpiCsPolarity|
+|**Parent Container**|SpiExternalDevice|
+|**Description**|This parameter defines the active polarity of Chip Select.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**|HIGH LOW|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### SpiCsSelection
+
+|SWS Item|ECUC_Spi_00239|
+|--------|----------------|
+|**Name**|SpiCsSelection|
+|**Parent Container**|SpiExternalDevice|
+|**Description**|When the Chip select handling is enabled (see SpiEnableCs), then this parameter specifies if the chip select is handled automatically by Peripheral HW engine or via general purpose IO by Spi driver.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**|CS_VIA_GPIO chip select handled via gpio by Spi driver. <br> CS_VIA_PERIPHERAL_ENGINE chip select is handled automatically by Peripheral HW engine|
+|**Default value**|CS_VIA_PERIPHERAL_ENGINE|
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local <br> depdendency:SpiEnableCs|
+
+##### SpiDataShiftEdge
+
+|SWS Item|ECUC_Spi_00211|
+|--------|----------------|
+|**Name**|SpiDataShiftEdge|
+|**Parent Container**|SpiExternalDevice|
+|**Description**|This parameter defines the SPI data shift edge.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**|LEADING TRAILING|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### SpiEnableCs
+
+|SWS Item|ECUC_Spi_00212|
+|--------|----------------|
+|**Name**|SpiEnableCs|
+|**Parent Container**|SpiExternalDevice|
+|**Description**|This parameter enables or not the Chip Select handling functions. If this parameter is enabled then parameter SpiCsSelection further details the type of chip selection|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### SpiHwUnit
+
+|SWS Item|ECUC_Spi_00217|
+|--------|----------------|
+|**Name**|SpiHwUnit|
+|**Parent Container**|SpiExternalDevice|
+|**Description**|This parameter is the symbolic name to identify the HW SPI Hardware microcontroller peripheral allocated to this Job.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**|SPI_UNIT_SPIA SPI_UNIT_SPIB SPI_UNIT_SPIC SPI_UNIT_SPID SPI_UNIT_SPIE|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### SpiShiftClockIdleLevel
+
+|SWS Item|ECUC_Spi_00213|
+|--------|----------------|
+|**Name**|SpiShiftClockIdleLevel|
+|**Parent Container**|SpiExternalDevice|
+|**Description**|This parameter defines the SPI shift clock idle level.|
+|**Multiplicity**|1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**|HIGH LOW|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### SpiTimeClk2Cs
+
+|SWS Item|ECUC_Spi_00214|
+|--------|----------------|
+|**Name**|SpiTimeClk2Cs|
+|**Parent Container**|SpiExternalDevice|
+|**Description**|Timing between clock and chip select (in seconds) - This parameter allows to use a range of values from 0 up to 0.0001 seconds.The real configuration-value used in software BSW-SPI is calculated out of this by the generator-tools.|
+|**Multiplicity**|1|
+|**Type**|EcucFloatParamDef|
+|**Range**|[0 .. 1E-4]|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### SpiCsGpioPinNumRef
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiCsGpioPinNumRef|
+|**Parent Container**|SpiExternalDevice|
+|**Description**| Reference to the Port Pin configuration, which is set in the PORT driver configuration.|
+|**Multiplicity**|1|
+|**Type**|REFERENCE|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+##### SpiCsGpioPinId
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiCsGpioPinId|
+|**Parent Container**|SpiExternalDevice|
+|**Description**| GPIO pin ID . This value will be assigned to the symbolic names.|
+|**Multiplicity**|1|
+|**Type**|Integer|
+|**Range**|0..255|
+|**Default value**||
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|scope: local|
+
+##### SpiDataWordDelay
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiDataWordDelay|
+|**Parent Container**|SpiExternalDevice|
+|**Description**| This parameter defines the SPI delay between every transfer from FIFO transmit buffer to transmit shift register, work only in FIFO mode.|
+|**Multiplicity**|1|
+|**Type**|Integer|
+|**Range**|0..255|
+|**Default value**||
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local|
+
+#### SpiJob
+
+##### SpiHwUnitSynchronous
+
+|SWS Item|ECUC_Spi_00238|
+|--------|----------------|
+|**Name**|SpiHwUnitSynchronous|
+|**Parent Container**|SpiJob|
+|**Description**|If SpiHwUnitSynchronous is set to "SYNCHRONOUS", the SpiJob uses its containing SpiDriver in a synchronous manner. If it is set to "ASYNCHRONOUS", it uses the driver in an asynchronous way. If the parameter is not set, the SpiChannel uses the driver also in an asynchronous way. Tags:atp.Status=obsolete|
+|**Multiplicity**|0..1|
+|**Type**|EcucEnumerationParamDef|
+|**Range**|ASYNCHRONOUS SYNCHRONOUS|
+|**Default value**||
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiJobEndNotification
+
+|SWS Item|ECUC_Spi_00218|
+|--------|----------------|
+|**Name**|SpiJobEndNotification|
+|**Parent Container**|SpiJob|
+|**Description**|This parameter is a reference to a notification function|
+|**Multiplicity**|0..1|
+|**Type**|EcucFunctionNameDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiJobId
+
+|SWS Item|ECUC_Spi_00219|
+|--------|----------------|
+|**Name**|SpiJobId|
+|**Parent Container**|SpiJob|
+|**Description**|SPI Job ID, used as parameter in SPI API functions.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0..65535|
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|local|
+
+##### SpiJobPriority
+
+|SWS Item|ECUC_Spi_00220|
+|--------|----------------|
+|**Name**|SpiJobPriority|
+|**Parent Container**|SpiJob|
+|**Description**|Priority set accordingly to SPI093: 0, lowest, 3, highest priority.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0..3|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|local|
+
+##### SpiDeviceAssignment
+
+|SWS Item|ECUC_Spi_00216|
+|--------|----------------|
+|**Name**|SpiDeviceAssignment|
+|**Parent Container**|SpiJob|
+|**Description**|Reference to the external device used by this job.|
+|**Multiplicity**|1|
+|**Type**|Reference|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|local|
+
+#### SpiChannelList
+
+##### SpiChannelIndex
+
+|SWS Item|ECUC_Spi_00234|
+|--------|----------------|
+|**Name**|SpiChannelIndex|
+|**Parent Container**|SpiChannelList|
+|**Description**|This parameter specifies the order of Channels within the Job.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0..255|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|local|
+
+##### SpiChannelAssignment
+
+|SWS Item|ECUC_Spi_00215|
+|--------|----------------|
+|**Name**|SpiChannelAssignment|
+|**Parent Container**|SpiChannel|
+|**Description**|A job reference to a SPI channel.|
+|**Multiplicity**|1|
+|**Type**|Reference|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|local|
+
+#### SpiSequence
+
+##### SpiInterruptibleSequence
+
+|SWS Item|ECUC_Spi_00222|
+|--------|----------------|
+|**Name**|SpiInterruptibleSequence|
+|**Parent Container**|SpiSequence|
+|**Description**|This parameter allows or not this Sequence to be suspended by another one.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|scope: local dependency: This SPI_INTERRUPTIBLE_SEQ_ALLOWED parameter as to be configured as ON.|
+
+##### SpiSeqEndNotification
+
+|SWS Item|ECUC_Spi_00223|
+|--------|----------------|
+|**Name**|SpiSeqEndNotification|
+|**Parent Container**|SpiSequence|
+|**Description**|This parameter is a reference to a notification function.|
+|**Multiplicity**|0..1|
+|**Type**|EcucFunctionNameDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiSequenceId
+
+|SWS Item|ECUC_Spi_00224|
+|--------|----------------|
+|**Name**|SpiSequenceId|
+|**Parent Container**|SpiSequence|
+|**Description**|SPI Sequence ID, used as parameter in SPI API functions.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0..255|
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time|--|
+|Post-build time|--|
+|**Scope / Dependency**|ECU|
+
+##### SpiJobAssignment
+
+|SWS Item|ECUC_Spi_00221|
+|--------|----------------|
+|**Name**|SpiJobAssignment|
+|**Parent Container**|SpiSequence|
+|**Description**|A sequence references several jobs, which are executed during a communication sequence.|
+|**Multiplicity**|1..*|
+|**Type**|Reference to [ SpiJob ]|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Multiplicity**|true|
+|**Post-Build Variant Value**|true|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+#### SpiHwUnitConfig
+
+##### SpiHwUnitType
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiHwUnitType|
+|**Parent Container**|SpiHwUnitConfig|
+|**Description**|SPI HW unit to use|
+|**Multiplicity**|0..1|
+|**Type**|ENUMERATION|
+|**Range**|SPI_UNIT_SPIA SPI_UNIT_SPIB SPI_UNIT_SPIC SPI_UNIT_SPID SPI_UNIT_SPIE|
+|**Default value**||
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiHighSpeedMode
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiHighSpeedMode|
+|**Parent Container**|SpiHwUnitConfig|
+|**Description**| Enables High speed mode for SPI instance, Note: Since only selected pins support HS mode, to enable high speed communication apropriate HS pins shall be configured for SPI in port configration, please check F29x TRM and data sheet for HS mode supported pins.|
+|**Multiplicity**|0..1|
+|**Type**|ENUMERATION|
+|**Range**|SPI_UNIT_SPIA SPI_UNIT_SPIB SPI_UNIT_SPIC SPI_UNIT_SPID SPI_UNIT_SPIE|
+|**Default value**|false|
+|**Post-Build Variant Value**|true|
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiFifoModeEnable
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiFifoModeEnable|
+|**Parent Container**|SpiHwUnitConfig|
+|**Description**| Enables FIFO mode for SPI instance.|
+|**Multiplicity**|0..1|
+|**Type**|BOOLEAN|
+|**Range**||
+|**Default value**|true|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|VARIANT-PRE-COMPILE|
+|Link time|VARIANT-LINK-TIME|
+|Post-build time|VARIANT-POST-BUILD|
+|**Scope / Dependency**|Local|
+
+##### SpiIrqType
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiIrqType|
+|**Parent Container**|SpiHwUnitConfig|
+|**Description**| Type of Isr function: CAT1 realtime interrupt or CAT1 : interrupt void func(void) or CAT2 : ISR(func).|
+|**Multiplicity**|0..1|
+|**Type**|ENUMERATION|
+|**Range**|SPI_ISR_CAT1_RTINT SPI_ISR_CAT1_INT SPI_ISR_CAT2|
+|**Default value**|SPI_ISR_CAT2|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+#### SpiGeneral
+
+##### SpiCancelApi
+
+|SWS Item|ECUC_Spi_00226|
+|--------|----------------|
+|**Name**|SpiCancelApi|
+|**Parent Container**|SpiGeneral|
+|**Description**| Switches the Spi_Cancel function ON or OFF.|
+|**Multiplicity**|0..1|
+|**Type**|EcucBooleanParamDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiChannelBuffersAllowed
+
+|SWS Item|ECUC_Spi_00227|
+|--------|----------------|
+|**Name**|SpiChannelBuffersAllowed|
+|**Parent Container**|SpiGeneral|
+|**Description**| Selects the SPI Handler/Driver Channel Buffers usage allowed and delivered.<br>IB = 0;<br>EB = 1; <br>IB/EB = 2.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0..2|
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiDevErrorDetect
+
+|SWS Item|ECUC_Spi_00228|
+|--------|----------------|
+|**Name**|SpiCSpiDevErrorDetectancelApi|
+|**Parent Container**|SpiGeneral|
+|**Description**| Switches the development error detection and notification on or off.<br>true: detection and notification is enabled.<br> false: detection and notification is disabled.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Range**||
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiHwStatusApi
+
+|SWS Item|ECUC_Spi_00229|
+|--------|----------------|
+|**Name**|SpiHwStatusApi|
+|**Parent Container**|SpiGeneral|
+|**Description**| Switches the Spi_GetHWUnitStatus function ON or OFF.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiInterruptibleSeqAllowed
+
+|SWS Item|ECUC_Spi_00230|
+|--------|----------------|
+|**Name**|SpiInterruptibleSeqAllowed|
+|**Parent Container**|SpiGeneral|
+|**Description**| Switches the Interruptible Sequences handling functionality ON or OFF.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local dependency: This parameter depends on SPI_LEVEL_DELIVERED value. <br> It is only used for SPI_LEVEL_DELIVERED configured to 1 or 2.|
+
+##### SpiLevelDelivered
+
+|SWS Item|ECUC_Spi_00231|
+|--------|----------------|
+|**Name**|SpiLevelDelivered|
+|**Parent Container**|SpiGeneral|
+|**Description**| Selects the SPI Handler/Driver level of scalable functionality that is available and delivered.|
+|**Multiplicity**|1|
+|**Type**|EcucIntegerParamDef|
+|**Range**|0..2|
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiMainFunctionPeriod
+
+|SWS Item|ECUC_Spi_00242|
+|--------|----------------|
+|**Name**|SpiMainFunctionPeriod|
+|**Parent Container**|SpiGeneral|
+|**Description**| This parameter defines the cycle time of the function Spi_MainFunction_Handling in seconds. The parameter is not used by the driver it self, but it is used by upper layer.|
+|**Multiplicity**|0..1|
+|**Type**|EcucFloatParamDef|
+|**Range**|0..INF|
+|**Default value**|0.01|
+|**Post-Build Variant Multiplicity**|false|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiSupportConcurrentSyncTransmit
+
+|SWS Item|ECUC_Spi_00237|
+|--------|----------------|
+|**Name**|SpiSupportConcurrentSyncTransmit|
+|**Parent Container**|SpiGeneral|
+|**Description**| Specifies whether concurrent Spi_SyncTransmit() calls for different sequences shall be configurable.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiUserCallbackHeaderFile
+
+|SWS Item|ECUC_Spi_00243|
+|--------|----------------|
+|**Name**|SpiUserCallbackHeaderFile|
+|**Parent Container**|SpiGeneral|
+|**Description**| Header file name which will be included by the Spi. The value of this parameter shall be used as h-char-sequence or q-char-sequence according to ISO C90 section 6.10.2 "source file inclusion". The parameter value MUST NOT represent a path, since ISO C90 does not specify how such a path is treated (i.e., this is implementation defined (and additionally depends on the operating system and the underlying file system))..|
+|**Multiplicity**|0..*|
+|**Type**|EcucStringParamDef|
+|**Range**||
+|**Default value**||
+|**Post-Build Variant Multiplicity**|false|
+|**Multiplicity Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiVersionInfoApi
+
+|SWS Item|ECUC_Spi_00232|
+|--------|----------------|
+|**Name**|SpiVersionInfoApi|
+|**Parent Container**|SpiGeneral|
+|**Description**|Switches the Spi_GetVersionInfo function ON or OFF.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Range**||
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiChannelInternalBufferMaxLength
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiChannelInternalBufferMaxLength|
+|**Parent Container**|SpiGeneral|
+|**Description**|Internal Buffer length in bytes - applicable for SpiChannelBuffer type - SPI_IB. This is the maximum length that can be allocated by each channel and it is fixed.Can vary buffer length per channel by configuring SpiIbNBuffers and SpiDataWidth. Refer MCAL-1255 and MCAL-1203.|
+|**Multiplicity**|1|
+|**Type**|INTEGER|
+|**Range**|1..4294967295|
+|**Default value**|64|
+|**Post-Build Variant Value**||
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+##### SpiLoopbackModeApi
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiLoopbackModeApi|
+|**Parent Container**|SpiGeneral|
+|**Description**|Switches the Spi_SetLoopbackMode function ON or OFF.|
+|**Multiplicity**|1|
+|**Type**|EcucBooleanParamDef|
+|**Range**||
+|**Default value**|false|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+#### SpiPublishedInformation
+
+##### SpiMaxHwUnit
+
+|SWS Item||
+|--------|----------------|
+|**Name**|SpiMaxHwUnit|
+|**Parent Container**|SpiPublishedInformation|
+|**Description**|Number of different SPI hardware microcontroller peripherals (units/busses) available and handled by this SPI Handler/Driver module.|
+|**Multiplicity**|1|
+|**Type**|INTEGER_LABEL|
+|**Range**|0..5|
+|**Default value**|5|
+|**Post-Build Variant Value**|false|
+|**Value Configuration Class**||
+|Pre-compile time|ALL VARIANTS|
+|Link time||
+|Post-build time||
+|**Scope / Dependency**|Local|
+
+Refer [AUTOSAR_SWS_SPIDriver section: 10 Configuration specification](https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_SPIDriver.pdf) for configuration parameters details
+
+#### Steps To Configure Spi Module
+
+  1. Open EB Tresos configurator tool and load Port, Mcu, Ecum, Os, Dem and Spi modules
+  2. Open PORT module plugin and configure required pins as MISO, MOSI, CLK, CS.
+  3. Open SPI module plugin, Select the Config Variant (Pre-compile or Link-Time or Post-Build)
+  4. In SPI module plugin configure required parameters.
+  5. Save the configuration and generate the configuration.
+
+### Examples
+
+The example application demonstrates use of Spi module, the list below identifies key steps performed the example.
+
+#### Spi_Example_Sync_AsyncTransfer
+
+##### Overview of Spi_Example_Sync_AsyncTransfer
+
+* Spi_Example_Sync_AsyncTransfer
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes required port pins for SPI.
+  * Spi_Init()
+  * Write the data into channels if channel buffer type is IB,setup buffer if channel buffer type is EB.
+  * Transmit One sequence Synchronously.
+  * Transmit another sequence Asynchronously.
+  * Check for HWUnit, Job, Sequence status.
+  * Read the data from channels.
+  * Validate the received data with pre-defined transmit data.
+
+##### Setup required to run Spi_Example_Sync_AsyncTransfer
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+##### How to run Spi_Example_Sync_AsyncTransfer
+
+* Open CCS and Import Spi_Example_Sync_AsyncTransfer
+* Build project and start debug project
+
+##### Sample Log of Spi_Example_Sync_AsyncTransfer
+
+```{EXAMPLE LOGS}
+    Sample Application - STARTS !!!
+    SPI MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 83
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Setting loopback mode
+    Writing to internal buffer channel0.
+    Writing to internal buffer channel1.
+    Writing to external buffer channel2.
+    Transmitting data in asynchronous mode.
+    AsyncTransmit status is 0
+    Getting job status.
+    Called Sequence end notification function
+    Called Sequence end notification function
+    Getting sequence status.
+    Result of sequence_1 is SPI_SEQ_OK.
+    De-initializing SPI.
+```
+
+#### Spi_Example_AsyncTransfer_Interrupt
+
+##### Overview of Spi_Example_AsyncTransfer_Interrupt
+
+* Spi_Example_AsyncTransfer_Interrupt
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes required port pins for SPI.
+  * Spi_Init()
+  * Write the data into channels if channel buffer type is IB,setup buffer if channel buffer type is EB.
+  * Transmit data asynchronously.
+  * Check for HWUnit, Job, Sequence status.
+  * Read the data from channels.
+  * Validate the received data with pre-defined transmit data.
+
+##### Setup required to run Spi_Example_AsyncTransfer_Interrupt
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+##### How to run Spi_Example_AsyncTransfer_Interrupt
+
+* Open CCS and Import Spi_Example_AsyncTransfer_Interrupt
+* Build project and start debug project
+
+##### Sample Log of Spi_Example_AsyncTransfer_Interrupt
+
+```{EXAMPLE LOGS}
+    Sample Application - STARTS !!!
+    SPI MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 83
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Writing to internal buffer channel0.
+    Writing to internal buffer channel1.
+    Writing to external buffer channel2.
+    Transmitting data in asynchronous mode.
+    Called Sequence end notification function
+    ACalled Sequence end notification function
+    syncTransmit status is 0
+    Getting hardware unit status.
+    Result of Hardware unit is not SPI_BUSY.
+    Getting job status.
+    Getting sequence status.
+    Result of sequence_1 is SPI_SEQ_OK.
+    De-initializing SPI.
+```
+
+#### Spi_Example_SyncTransfer
+
+##### Overview of Spi_Example_SyncTransfer
+
+* Spi_Example_SyncTransfer
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes required port pins for SPI.
+  * Spi_Init()
+  * Write the data into channels if channel buffer type is IB,setup buffer if channel buffer type is EB.
+  * Transmit data synchronously.
+  * Check for HWUnit, Job, Sequence status.
+  * Read the data from channels.
+  * Validate the received data with pre-defined transmit data.
+
+##### Setup required to run Spi_Example_SyncTransfer
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Connect the uart set up to check the log on serial console
+
+##### How to run Spi_Example_SyncTransfer
+
+* Open CCS and Import Spi_Example_SyncTransfer
+* Build project and start debug project
+
+##### Sample Log of Spi_Example_SyncTransfer
+
+```{EXAMPLE LOGS}
+    Sample Application - STARTS !!!
+    SPI MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 83
+    SW Major Version    : 1
+    SW Minor Version    : 0
+    SW Patch Version    : 0
+    Setting loopback mode
+    Writing to internal buffer channel0.
+    Writing to internal buffer channel1.
+    Writing to external buffer channel2.
+    Transmitting data in synchronous mode.
+    SyncTransmit status is 0
+    Getting sequence status.
+    Deinitializing SPI.
+```
+
+#### File Structure
+
+📦f29h85x_mcal\
+ ┣ 📂build\
+ ┣ 📂docs\
+ ┣ 📂drivers\
+ ┣ 📂examples\
+ ┃ ┣ 📂AppUtils\
+ ┃ ┣ 📂Can\
+ ┃ ┣ 📂DeviceSupport\
+ ┃ ┣ 📂Dio\
+ ┃ ┣ 📂Gpt\
+ ┃ ┣ 📂Mcu\
+ ┃ ┣ 📂Port\
+ ┃ ┣ 📂**Spi**\
+ ┃ ┃ ┣ 📂 **Spi_Example_Sync_AsyncTransfer**\
+ ┃ ┃ ┃ ┣ 📂CCS\
+ ┃ ┃ ┃ ┃ ┗ 📜**Spi_Example_Sync_AsyncTransfer.projectspec**\
+ ┃ ┃ ┃ ┣ 📂F29H85x_Config\
+ ┃ ┃ ┃ ┃ ┣ 📂config\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port.xdm\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Spi.xdm** : *Generated EB Tresos config file in .xdm format*\
+ ┃ ┃ ┃ ┃ ┣ 📂include\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.h\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Spi_Cfg.h** : *Contains the generated pre-complier configuration header.*\
+ ┃ ┃ ┃ ┃ ┣ 📂src\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_PBcfg.c\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Spi_PBcfg.c** : *Contains the Post build configuration parameters.*\
+ ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
+ ┃ ┃ ┃ ┣ 📜**Spi_Example_Sync_AsyncTransfer.c** : *Example application for Spi*\
+ ┃ ┃ ┃ ┗ 📜**Spi_Example_Sync_AsyncTransfer.h** : *Example application for Spi*\
+ ┃ ┃ ┣ 📂 **Spi_Example_AsyncTransfer_Interrupt**\
+ ┃ ┃ ┗ 📂 **Spi_Example_SyncTransfer**\
+ ┃ ┗ 📜CMakeLists.txt\
+ ┣ 📂plugins\
+ ┣ 📜CMakeLists.txt\
+ ┗ 📜CMakePresets.json
+
+ ```{Note}
+    Spi_PBcfg.c will be present if Post-Build config variant is selected, only Spi_Cfg.c will be present if Pre-Compile variant is selected and only Spi_Lcfg.c will be present if Link-Time variant is selected
+ ```

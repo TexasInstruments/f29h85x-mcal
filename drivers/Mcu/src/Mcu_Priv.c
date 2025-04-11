@@ -605,6 +605,12 @@ FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertResetReason(Mcu_RawResetType RawResetTy
     {
         reset_reason = MCU_POWER_ON_RESET;
     }
+    /* Watchdog reset */
+    else if ((uint32)SYSCTL_RESC_WDRSN ==
+            ((uint32)SYSCTL_RESC_WDRSN & RawResetType))
+    {
+        reset_reason = MCU_WATCHDOG_RESET;
+    }
     /* Simulation of External Reset */
     else if (((uint32)SYSCTL_RESC_SIMRESET_XRSN ==
             ((uint32)SYSCTL_RESC_SIMRESET_XRSN & RawResetType)))
@@ -622,12 +628,6 @@ FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertResetReason(Mcu_RawResetType RawResetTy
             ((uint32)SYSCTL_RESC_NMIWDRSN & RawResetType))
     {
         reset_reason = MCU_ESM_NMI_WATCHDOG_RESET;
-    }
-    /* Watchdog reset */
-    else if ((uint32)SYSCTL_RESC_WDRSN ==
-            ((uint32)SYSCTL_RESC_WDRSN & RawResetType))
-    {
-        reset_reason = MCU_WATCHDOG_RESET;
     }
     /* ESM reset */
     else if ((uint32)SYSCTL_RESC_ESMRESET ==
@@ -1081,9 +1081,9 @@ static FUNC(boolean, MCU_CODE) Mcu_XtalFreqRangeCheck(Mcu_ClockConfigPtrType Clo
     /* CLK SRC = XTAL    and XTAL    MAX Freq Range : 20 MHz  */
     /* CLK SRC = XTAL_SE and XTAL_SE MAX Freq Range : 25 MHz  */
     if((((MCU_CLKSRC_XTAL == ClockConfigPtr->Mcu_ClockSourceId) &&
-        (MCU_EXTCLKFREQ_XTAL_MAX < ClockConfigPtr->Mcu_ExternalClkFreq)) ||
+        ((MCU_EXTCLKFREQ_XTAL_MIN > ClockConfigPtr->Mcu_ExternalClkFreq) || (MCU_EXTCLKFREQ_XTAL_MAX < ClockConfigPtr->Mcu_ExternalClkFreq))) ||
         ((MCU_CLKSRC_XTAL_SE == ClockConfigPtr->Mcu_ClockSourceId) &&
-        (MCU_EXTCLKFREQ_XTAL_SE_MAX < ClockConfigPtr->Mcu_ExternalClkFreq))))
+        ((MCU_EXTCLKFREQ_XTAL_SE_MIN > ClockConfigPtr->Mcu_ExternalClkFreq) || (MCU_EXTCLKFREQ_XTAL_SE_MAX < ClockConfigPtr->Mcu_ExternalClkFreq)))))
     {
         /* Invalid Parameters */
         status = TRUE;
@@ -1132,7 +1132,7 @@ static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(uint32 oscClk, Mcu
 #endif /*MCU_CFG_NO_PLL*/
 
 #if(STD_OFF == MCU_CFG_NO_PLL)
-    if(((MCU_PLLINTCLK_MIN > pll_int_clk) || (MCU_PLLINTCLK_MAX < pll_int_clk)) || /* Internal clock range: 2-200 MHz */
+    if(((MCU_PLLINTCLK_MIN > pll_int_clk) || (MCU_PLLINTCLK_MAX < pll_int_clk)) || /* Internal clock range: 2-25 MHz */
     ((MCU_PLLVCOCLK_MIN > pll_vco_clk) || (MCU_PLLVCOCLK_MAX < pll_vco_clk)) || /* Vco clock range: 220-600 MHz */
     ((MCU_PLLRAWCLK_MIN > pll_raw_clk) || (MCU_PLLRAWCLK_MAX < pll_raw_clk)))  /* PLL Raw clock range: 6-400 MHz */
     {

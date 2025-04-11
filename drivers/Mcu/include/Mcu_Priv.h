@@ -70,8 +70,14 @@ extern "C" {
 /** \brief Maximum PLL Output Clock Divider supported */
 #define MCU_PLLOUTDIV_MAX           ((uint8)32U)
 
+/** \brief Minimum XTAL frequency supported */
+#define MCU_EXTCLKFREQ_XTAL_MIN     ((uint32)10000000U)
+
 /** \brief Maximum XTAL frequency supported */
 #define MCU_EXTCLKFREQ_XTAL_MAX     ((uint32)20000000U)
+
+/** \brief Minimum XTAL frequency supported in Single Ended mode */
+#define MCU_EXTCLKFREQ_XTAL_SE_MIN  ((uint32)10000000U)
 
 /** \brief Maximum XTAL frequency supported in Single Ended mode */
 #define MCU_EXTCLKFREQ_XTAL_SE_MAX  ((uint32)25000000U)
@@ -86,10 +92,10 @@ extern "C" {
 #define MCU_PLLRAWCLK_MAX	         ((uint32)400000000U)
 
 /** \brief Minimum Frequency of Internal clock  (before SYSCLK divider) */
-#define MCU_PLLINTCLK_MIN	         ((uint32)2000000U)
+#define MCU_PLLINTCLK_MIN	         ((uint32)10000000U)
 
 /** \brief Maximum Frequency of Internal clock  (before SYSCLK divider) */
-#define MCU_PLLINTCLK_MAX	         ((uint32)20000000U)
+#define MCU_PLLINTCLK_MAX	         ((uint32)25000000U)
 
 /** \brief Minimum Frequency of VCO clock (before SYSCLK divider) */
 #define MCU_PLLVCOCLK_MIN	         ((uint32)220000000U)
