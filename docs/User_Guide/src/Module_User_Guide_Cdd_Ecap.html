@@ -109,7 +109,9 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.11.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-ecap-module">4.11.9.1. Steps To Configure Cdd Ecap Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddecapconfigset">4.11.9.1. CddEcapConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cddecapgeneral">4.11.9.2. CddEcapGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-ecap-module">4.11.9.3. Steps To Configure Cdd Ecap Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.11.10. Examples</a><ul>
@@ -673,10 +675,812 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 <p class="admonition-title">Note</p>
 <p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
 </div>
-<p>#__BEGIN_ARXML_CONFIG_PARAMS</p>
-<p>#__END_ARXML_CONFIG_PARAMS</p>
+<section id="cddecapconfigset">
+<h3><span class="section-number">4.11.9.1. </span>CddEcapConfigSet<a class="headerlink" href="#cddecapconfigset" title="Link to this heading"></a></h3>
+<p>This container contains the configuration parameters and sub containers of the AUTOSAR CddEcap module.</p>
+<section id="cddecapmaxchannel">
+<h4><span class="section-number">4.11.9.1.1. </span>CddEcapMaxChannel<a class="headerlink" href="#cddecapmaxchannel" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapMaxChannel</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter contains the number of Channels configured. It will be gathered by tools during the configuration stage.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapchannel">
+<h4><span class="section-number">4.11.9.1.2. </span>CddEcapChannel<a class="headerlink" href="#cddecapchannel" title="Link to this heading"></a></h4>
+<p>Configuration of an individual CDD ECAP channel.</p>
+<section id="cddecapchannelid">
+<h5><span class="section-number">4.11.9.1.2.1. </span>CddEcapChannelId<a class="headerlink" href="#cddecapchannelid" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapChannelId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Channel Id of the CDD ECAP channel. This value will be assigned to the symbolic name derived of the CddEcapChannel container short name.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapdefaultstartedge">
+<h5><span class="section-number">4.11.9.1.2.2. </span>CddEcapDefaultStartEdge<a class="headerlink" href="#cddecapdefaultstartedge" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapDefaultStartEdge</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configures the default-activation-edge which shall be used for this channel if there was no activation-edge configured by the call of service CddEcap_SetActivationCondition().</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_ECAP_RISING_EDGE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_ECAP_BOTH_EDGES<br>CDD_ECAP_FALLING_EDGE<br>CDD_ECAP_RISING_EDGE</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapinputselect">
+<h5><span class="section-number">4.11.9.1.2.3. </span>CddEcapInputSelect<a class="headerlink" href="#cddecapinputselect" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapInputSelect</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configures the source to be used in order to give CDD ECAP the required input</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_ECAP_INPUT_INPUTXBAR1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapirqtype">
+<h5><span class="section-number">4.11.9.1.2.4. </span>CddEcapIrqType<a class="headerlink" href="#cddecapirqtype" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapIrqType</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Type of Isr function:<br>                          void functionname(void)<br>                          CAT1  see description in oil tool : interrupt void func(void)<br>                          CAT2  see description in oil tool : ISR(func)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>ISR_CAT1_INT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>ISR_CAT1_INT<br>ISR_CAT1_RINT<br>ISR_CAT2_INT</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapmeasurementmode">
+<h5><span class="section-number">4.11.9.1.2.5. </span>CddEcapMeasurementMode<a class="headerlink" href="#cddecapmeasurementmode" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapMeasurementMode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configures the measurement mode of this channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_ECAP_MODE_EDGE_COUNTER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_ECAP_MODE_EDGE_COUNTER<br>CDD_ECAP_MODE_SIGNAL_EDGE_DETECT<br>CDD_ECAP_MODE_SIGNAL_MEASUREMENT<br>CDD_ECAP_MODE_TIMESTAMP</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapprescaler">
+<h5><span class="section-number">4.11.9.1.2.6. </span>CddEcapPrescaler<a class="headerlink" href="#cddecapprescaler" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapPrescaler</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configures the prescale value, keep it as 0 if you want to bypass it</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_ECAP_PRESCALAR_1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapclkfrequency">
+<h5><span class="section-number">4.11.9.1.2.7. </span>CddEcapClkFrequency<a class="headerlink" href="#cddecapclkfrequency" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapClkFrequency</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to a container of the type McuClockReferencePoint, to select an input clock.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>200000000</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
+<td><p>200000000</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
+<td><p>2000000</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapfunctionalclock">
+<h5><span class="section-number">4.11.9.1.2.8. </span>CddEcapFunctionalClock<a class="headerlink" href="#cddecapfunctionalclock" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapFunctionalClock</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to a container of the type McuClockReferencePoint, to select an input clock.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddecapsignalmeasurement">
+<h4><span class="section-number">4.11.9.1.3. </span>CddEcapSignalMeasurement<a class="headerlink" href="#cddecapsignalmeasurement" title="Link to this heading"></a></h4>
+<p>This container contains the configuration (parameters) in case the measurement mode is “CddEcapSignalMeasurement”</p>
+<section id="cddecapsignalmeasurementproperty">
+<h5><span class="section-number">4.11.9.1.3.1. </span>CddEcapSignalMeasurementProperty<a class="headerlink" href="#cddecapsignalmeasurementproperty" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapSignalMeasurementProperty</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configures the property that could be measured in case the mode is “CddEcapSignalMeasurement”.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_ECAP_HIGH_TIME</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_ECAP_DUTY_CYCLE<br>CDD_ECAP_HIGH_TIME<br>CDD_ECAP_LOW_TIME<br>CDD_ECAP_PERIOD_TIME</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddecaptimestampmeasurement">
+<h4><span class="section-number">4.11.9.1.4. </span>CddEcapTimestampMeasurement<a class="headerlink" href="#cddecaptimestampmeasurement" title="Link to this heading"></a></h4>
+<p>This container contains the configuration (parameters) in case the measurement mode is “CddEcapTimestamp”</p>
+<section id="cddecaptimestampmeasurementproperty">
+<h5><span class="section-number">4.11.9.1.4.1. </span>CddEcapTimestampMeasurementProperty<a class="headerlink" href="#cddecaptimestampmeasurementproperty" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapTimestampMeasurementProperty</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configures the handling of the buffer in case the mode is “Timestamp”</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_ECAP_CIRCULAR_BUFFER</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_ECAP_CIRCULAR_BUFFER<br>CDD_ECAP_LINEAR_BUFFER</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecaptimestampnotification">
+<h5><span class="section-number">4.11.9.1.4.2. </span>CddEcapTimestampNotification<a class="headerlink" href="#cddecaptimestampnotification" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapTimestampNotification</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Notification function if the number of requested timestamps</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>NULL_PTR</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cddecapsignaledgedetection">
+<h4><span class="section-number">4.11.9.1.5. </span>CddEcapSignalEdgeDetection<a class="headerlink" href="#cddecapsignaledgedetection" title="Link to this heading"></a></h4>
+<p>This container contains the configuration (parameters) in case the measurement mode is “CddEcapSignalEdgeDetection”</p>
+<section id="cddecapsignalnotification">
+<h5><span class="section-number">4.11.9.1.5.1. </span>CddEcapSignalNotification<a class="headerlink" href="#cddecapsignalnotification" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapSignalNotification</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Notification function for signal notification.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build Time</p></td>
+<td><p>VARIANT-POST-BUILD</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>NULL_PTR</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="cddecapgeneral">
+<h3><span class="section-number">4.11.9.2. </span>CddEcapGeneral<a class="headerlink" href="#cddecapgeneral" title="Link to this heading"></a></h3>
+<p>Configuration of general CDD ECAP parameters.</p>
+<section id="cddecapdeverrordetect">
+<h4><span class="section-number">4.11.9.2.1. </span>CddEcapDevErrorDetect<a class="headerlink" href="#cddecapdeverrordetect" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapDevErrorDetect</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Switches the development error detection and notification on or off.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapdeinitapi">
+<h4><span class="section-number">4.11.9.2.2. </span>CddEcapDeInitApi<a class="headerlink" href="#cddecapdeinitapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapDeInitApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service CddEcap_DeInit() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapedgecountapi">
+<h4><span class="section-number">4.11.9.2.3. </span>CddEcapEdgeCountApi<a class="headerlink" href="#cddecapedgecountapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapEdgeCountApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes all services related to the edge counting functionality as listed below, from the code: CddEcap_ResetEdgeCount(), CddEcap_EnableEdgeCount(), CddEcap_DisableEdgeCount(), CddEcap_GetEdgeNumbers().</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapedgedetectapi">
+<h4><span class="section-number">4.11.9.2.4. </span>CddEcapEdgeDetectApi<a class="headerlink" href="#cddecapedgedetectapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapEdgeDetectApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the services related to the edge detection functionality, from the code:</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapgetdutycyclevaluesapi">
+<h4><span class="section-number">4.11.9.2.5. </span>CddEcapGetDutyCycleValuesApi<a class="headerlink" href="#cddecapgetdutycyclevaluesapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapGetDutyCycleValuesApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service CddEcap_GetDutyCycleValues() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapgetinputstateapi">
+<h4><span class="section-number">4.11.9.2.6. </span>CddEcapGetInputStateApi<a class="headerlink" href="#cddecapgetinputstateapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapGetInputStateApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service CddEcap_GetInputState() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapgettimeelapsedapi">
+<h4><span class="section-number">4.11.9.2.7. </span>CddEcapGetTimeElapsedApi<a class="headerlink" href="#cddecapgettimeelapsedapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapGetTimeElapsedApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service CddEcap_GetTimeElapsed() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapgetversioninfoapi">
+<h4><span class="section-number">4.11.9.2.8. </span>CddEcapGetVersionInfoApi<a class="headerlink" href="#cddecapgetversioninfoapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapGetVersionInfoApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the service CddEcap_GetVersionInfo() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddecapsignalmeasurementapi">
+<h4><span class="section-number">4.11.9.2.9. </span>CddEcapSignalMeasurementApi<a class="headerlink" href="#cddecapsignalmeasurementapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapSignalMeasurementApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes the services CddEcap_StartSignalMeasurement() and CddEcap_StopSignalMeasurement() from the code.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 <section id="steps-to-configure-cdd-ecap-module">
-<h3><span class="section-number">4.11.9.1. </span>Steps To Configure Cdd Ecap Module<a class="headerlink" href="#steps-to-configure-cdd-ecap-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.11.9.3. </span>Steps To Configure Cdd Ecap Module<a class="headerlink" href="#steps-to-configure-cdd-ecap-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Cdd_Ecap module. Select the Precompile Config Variant.</p></li>
 <li><p>Configure the required parameters.</p></li>
@@ -865,7 +1669,7 @@ Period of the signal is: 1002
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Apr 11, 2025.
+          <span class="lastupdated" >Last updated on Apr 13, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -903,7 +1707,7 @@ Period of the signal is: 1002
     // Function to fetch the JSON file from GitHub and populate the version links
     async function loadVersions() {
       try {
-    const versionsUrl = '';
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
         const response = await fetch(versionsUrl); // Replace with your raw URL
         const versions = await response.json();
         const versionList = document.getElementById('version-list');

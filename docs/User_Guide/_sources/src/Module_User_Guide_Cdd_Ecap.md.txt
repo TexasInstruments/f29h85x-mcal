@@ -326,10 +326,307 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#__BEGIN_ARXML_CONFIG_PARAMS
 
-#__END_ARXML_CONFIG_PARAMS
 
+#### CddEcapConfigSet
+This container contains the configuration parameters and sub containers of the AUTOSAR CddEcap module.
+
+##### CddEcapMaxChannel
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapMaxChannel |
+| **Description** | This parameter contains the number of Channels configured. It will be gathered by tools during the configuration stage. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 5 |
+| **Min-value** | 0 |
+
+##### CddEcapChannel
+Configuration of an individual CDD ECAP channel.
+
+###### CddEcapChannelId
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapChannelId |
+| **Description** | Channel Id of the CDD ECAP channel. This value will be assigned to the symbolic name derived of the CddEcapChannel container short name. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 5 |
+| **Min-value** | 0 |
+
+###### CddEcapDefaultStartEdge
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapDefaultStartEdge |
+| **Description** | Configures the default-activation-edge which shall be used for this channel if there was no activation-edge configured by the call of service CddEcap_SetActivationCondition(). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ECAP_RISING_EDGE |
+| **Range** | CDD_ECAP_BOTH_EDGES<br>CDD_ECAP_FALLING_EDGE<br>CDD_ECAP_RISING_EDGE |
+
+###### CddEcapInputSelect
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapInputSelect |
+| **Description** | Configures the source to be used in order to give CDD ECAP the required input |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ECAP_INPUT_INPUTXBAR1 |
+
+###### CddEcapIrqType
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapIrqType |
+| **Description** | Type of Isr function:<br>                          void functionname(void)<br>                          CAT1  see description in oil tool : interrupt void func(void)<br>                          CAT2  see description in oil tool : ISR(func) |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | ISR_CAT1_INT |
+| **Range** | ISR_CAT1_INT<br>ISR_CAT1_RINT<br>ISR_CAT2_INT |
+
+###### CddEcapMeasurementMode
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapMeasurementMode |
+| **Description** | Configures the measurement mode of this channel. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ECAP_MODE_EDGE_COUNTER |
+| **Range** | CDD_ECAP_MODE_EDGE_COUNTER<br>CDD_ECAP_MODE_SIGNAL_EDGE_DETECT<br>CDD_ECAP_MODE_SIGNAL_MEASUREMENT<br>CDD_ECAP_MODE_TIMESTAMP |
+
+###### CddEcapPrescaler
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapPrescaler |
+| **Description** | Configures the prescale value, keep it as 0 if you want to bypass it |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ECAP_PRESCALAR_1 |
+
+###### CddEcapClkFrequency
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapClkFrequency |
+| **Description** | Reference to a container of the type McuClockReferencePoint, to select an input clock. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 200000000 |
+| **Max-value** | 200000000 |
+| **Min-value** | 2000000 |
+
+###### CddEcapFunctionalClock
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapFunctionalClock |
+| **Description** | Reference to a container of the type McuClockReferencePoint, to select an input clock. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
+##### CddEcapSignalMeasurement
+This container contains the configuration (parameters) in case the measurement mode is "CddEcapSignalMeasurement"
+
+###### CddEcapSignalMeasurementProperty
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapSignalMeasurementProperty |
+| **Description** | Configures the property that could be measured in case the mode is "CddEcapSignalMeasurement". |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ECAP_HIGH_TIME |
+| **Range** | CDD_ECAP_DUTY_CYCLE<br>CDD_ECAP_HIGH_TIME<br>CDD_ECAP_LOW_TIME<br>CDD_ECAP_PERIOD_TIME |
+
+##### CddEcapTimestampMeasurement
+This container contains the configuration (parameters) in case the measurement mode is "CddEcapTimestamp"
+
+###### CddEcapTimestampMeasurementProperty
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapTimestampMeasurementProperty |
+| **Description** | Configures the handling of the buffer in case the mode is "Timestamp" |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ECAP_CIRCULAR_BUFFER |
+| **Range** | CDD_ECAP_CIRCULAR_BUFFER<br>CDD_ECAP_LINEAR_BUFFER |
+
+###### CddEcapTimestampNotification
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapTimestampNotification |
+| **Description** | Notification function if the number of requested timestamps |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | true |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+##### CddEcapSignalEdgeDetection
+This container contains the configuration (parameters) in case the measurement mode is "CddEcapSignalEdgeDetection"
+
+###### CddEcapSignalNotification
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapSignalNotification |
+| **Description** | Notification function for signal notification. |
+| **Multiplicity-Configuration-Class** | -- |
+| Post-Build Time | VARIANT-POST-BUILD |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | true |
+| **Post-Build-Variant-Value** | true |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+#### CddEcapGeneral
+Configuration of general CDD ECAP parameters.
+
+##### CddEcapDevErrorDetect
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddEcapDeInitApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapDeInitApi |
+| **Description** | Adds / removes the service CddEcap_DeInit() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### CddEcapEdgeCountApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapEdgeCountApi |
+| **Description** | Adds / removes all services related to the edge counting functionality as listed below, from the code: CddEcap_ResetEdgeCount(), CddEcap_EnableEdgeCount(), CddEcap_DisableEdgeCount(), CddEcap_GetEdgeNumbers(). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddEcapEdgeDetectApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapEdgeDetectApi |
+| **Description** | Adds / removes the services related to the edge detection functionality, from the code: |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddEcapGetDutyCycleValuesApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapGetDutyCycleValuesApi |
+| **Description** | Adds / removes the service CddEcap_GetDutyCycleValues() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddEcapGetInputStateApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapGetInputStateApi |
+| **Description** | Adds / removes the service CddEcap_GetInputState() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddEcapGetTimeElapsedApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapGetTimeElapsedApi |
+| **Description** | Adds / removes the service CddEcap_GetTimeElapsed() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddEcapGetVersionInfoApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapGetVersionInfoApi |
+| **Description** | Adds / removes the service CddEcap_GetVersionInfo() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddEcapSignalMeasurementApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapSignalMeasurementApi |
+| **Description** | Adds / removes the services CddEcap_StartSignalMeasurement() and CddEcap_StopSignalMeasurement() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 #### Steps To Configure Cdd Ecap Module
 
 1. Open EB Tresos configurator tool, load Cdd_Ecap module. Select the Precompile Config Variant.
