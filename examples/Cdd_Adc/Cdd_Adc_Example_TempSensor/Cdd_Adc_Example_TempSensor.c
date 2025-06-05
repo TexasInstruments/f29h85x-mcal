@@ -17,20 +17,20 @@
  *  File:       Cdd_Adc_Example_TempSensor.c
  *  Generator:  None
  *
- *  Description:  Cdd_Adc example source file. Channel ID 20 on ADCA and ADCC are both connected to the temperature 
- *                sensor internally. The ADC conversion results can be passed to GetTemperatureC & GetTemperatureC APIs 
- *                to get the temperature value in Celsius and Kelvin respectively.
- * 
+ *  Description:  Cdd_Adc example source file. Channel ID 20 on ADCA and ADCC are both connected to
+ *  the temperature sensor internally. The ADC conversion results can be passed to GetTemperatureC
+ *  & GetTemperatureC APIs to get the temperature value in Celsius and Kelvin respectively.
+ *
  * Steps followed in the example:
  * EcuM_Init()
  * - Initialize clock to 200 MHz using Mcu_Init()
  * - Initialize pins using Port_Init() to see the print statements on the console
  * - Initialize Cdd_Adc driver using Cdd_Adc_Init()
  * Verification of Cdd_Adc temperature sensor values
- * Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally. 
- * The ADC conversion results can be passed to GetTemperatureC & GetTemperatureC APIs to get the temperature value in 
- * Celsius and Kelvin respectively.
- * 
+ * Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally.
+ * The ADC conversion results can be passed to GetTemperatureC & GetTemperatureC APIs to get the
+ * temperature value in Celsius and Kelvin respectively.
+ *
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -53,27 +53,27 @@
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
-#define TIMER_CLK_FREQ_HZ      (20000000U) /* Timer clock frequency in Hz */
-#define GPT_TIME_US_1 (10000U)                  /* 10 ms */
+#define TIMER_CLK_FREQ_HZ (20000000U) /* Timer clock frequency in Hz */
+#define GPT_TIME_US_1     (10000U)    /* 10 ms */
 
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
  *********************************************************************************************************************/
 
-#define GPT_COUNT_VALUE_1MS     (TIMER_CLK_FREQ_HZ / 100000U) * GPT_TIME_US_1
+#define GPT_COUNT_VALUE_1MS (TIMER_CLK_FREQ_HZ / 100000U) * GPT_TIME_US_1
 
 /*********************************************************************************************************************
  * Local Type Declarations
  *********************************************************************************************************************/
 
-uint16 Gpt_IntCount = 0U;
-Cdd_Adc_ValueGroupType Cdd_Adc_Buffer[CDD_ADC_GROUP_CNT][10U],Cdd_Adc_ResultBuffer[CDD_ADC_GROUP_CNT][10U];
-sint16 Cdd_Adc_ADCA_TempC,Cdd_Adc_ADCC_TempC,Cdd_Adc_ADCA_TempK,Cdd_Adc_ADCC_TempK;
+uint16                 Gpt_IntCount = 0U;
+Cdd_Adc_ValueGroupType Cdd_Adc_Buffer[CDD_ADC_GROUP_CNT][10U], Cdd_Adc_ResultBuffer[CDD_ADC_GROUP_CNT][10U];
+sint16                 Cdd_Adc_ADCA_TempC, Cdd_Adc_ADCC_TempC, Cdd_Adc_ADCA_TempK, Cdd_Adc_ADCC_TempK;
 
 /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
@@ -103,54 +103,55 @@ void Gpt_Notify_Func_0(void)
 void Cdd_Adc_Group1Notification()
 {
     /* When the group status is IDLE the read the temperature sensor value in temperature */
-    if(Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
-    {    
+    if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
+    {
         /* Read group results */
-        Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,\
-                                &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
-        Cdd_Adc_ADCA_TempC = Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,\
-                                Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
-        Cdd_Adc_ADCA_TempK = Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,\
-                                Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
+        Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
+                          &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
+        Cdd_Adc_ADCA_TempC = Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
+                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
+        Cdd_Adc_ADCA_TempK = Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
+                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
     }
 }
 
 void Cdd_Adc_Group2Notification()
-{    
-    if(Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
+{
+    if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
     {
         /* Read group results */
-        Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,\
-                                    &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
-        Cdd_Adc_ADCC_TempC = Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,\
-                                            Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
-        Cdd_Adc_ADCC_TempK = Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,\
-                                Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+        Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
+                          &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+        Cdd_Adc_ADCC_TempC = Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
+                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+        Cdd_Adc_ADCC_TempK = Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
+                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
     }
 }
 
 int main()
 {
     DeviceSupport_Init();
-    EcuM_Init();    
+    EcuM_Init();
     /* To print the statements */
     AppUtils_Init(200000000U);
     AppUtils_Printf(" Executing Cdd_Adc_Example_TempSensor example\n");
 
     /* Set group result buffer */
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0,\
-                                        &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0,\
-                                    &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
 
     /* Enable group notification */
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0);
 
-    /* Enable timer interrupt which is the trigger source for the hardware trigger group conversion */
+    /* Enable timer interrupt which is the trigger source for the hardware trigger group conversion
+     */
     Gpt_EnableNotification(0U);
     /* Configure the timer in the continuous mode with 1millisecond as the time period */
-    Gpt_StartTimer(0U,GPT_COUNT_VALUE_1MS);
+    Gpt_StartTimer(0U, GPT_COUNT_VALUE_1MS);
 
     /* Start the software group conversion */
     Cdd_Adc_StartGroupConversion(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
@@ -158,17 +159,17 @@ int main()
     Cdd_Adc_EnableHardwareTrigger(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0);
 
     /* Wait until both the group conversions are done */
-    while((Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0)!=CDD_ADC_IDLE) ||\
-            (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0)!=CDD_ADC_IDLE))
+    while ((Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0) != CDD_ADC_IDLE) ||
+           (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0) != CDD_ADC_IDLE))
     {
         McalLib_Delay(100);
     }
-    
+
     /* Print the temperature values that were calculated in the notification function */
-    AppUtils_Printf("Temperature in Celsius converted by ADCA is %d\n",Cdd_Adc_ADCA_TempC);
-    AppUtils_Printf("Temperature in Kelvin converted by ADCA is %d\n",Cdd_Adc_ADCA_TempK);
-    AppUtils_Printf("Temperature in Celsius converted by ADCC is %d\n",Cdd_Adc_ADCC_TempC);
-    AppUtils_Printf("Temperature in Kelvin converted by ADCC is %d\n",Cdd_Adc_ADCC_TempK);
+    AppUtils_Printf("Temperature in Celsius converted by ADCA is %d\n", Cdd_Adc_ADCA_TempC);
+    AppUtils_Printf("Temperature in Kelvin converted by ADCA is %d\n", Cdd_Adc_ADCA_TempK);
+    AppUtils_Printf("Temperature in Celsius converted by ADCC is %d\n", Cdd_Adc_ADCC_TempC);
+    AppUtils_Printf("Temperature in Kelvin converted by ADCC is %d\n", Cdd_Adc_ADCC_TempK);
 
     /* Stop the timer */
     Gpt_StopTimer(0U);
@@ -179,8 +180,6 @@ int main()
     Cdd_Adc_DeInit();
 
     AppUtils_Printf("Cdd_Adc_Example_TempSensor Example executed successfully\n");
-
-    while(1){}
 
     return 0;
 }

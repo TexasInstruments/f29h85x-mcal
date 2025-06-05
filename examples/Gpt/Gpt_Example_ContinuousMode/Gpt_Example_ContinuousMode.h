@@ -23,8 +23,7 @@
 #define GPT_EXAMPLE_CONTINUOUSMODE_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*********************************************************************************************************************
@@ -41,26 +40,26 @@ extern "C"
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-#define GPT_CHANNEL_0           0            /* Gpt Timer Channel 0 */
-#define GPT_CHANNEL_1           1            /* Gpt Timer Channel 1 */
-#define GPT_CHANNEL_2           2            /* Gpt Timer Channel 2 */
+#define GPT_CHANNEL_0 0 /* Gpt Timer Channel 0 */
+#define GPT_CHANNEL_1 1 /* Gpt Timer Channel 1 */
+#define GPT_CHANNEL_2 2 /* Gpt Timer Channel 2 */
 
-#define DEV_TIMER_CLK_FREQ_HZ      (20000000U) /* Timer clock frequency in Hz */
-#define GPT_TIME_US_1 (10000U)                  /* 10 ms */
-#define GPT_TIME_US_2 (100000U)                 /* 100 ms */
-#define GPT_TIME_US_3 (1000000U)                /* 1 sec */
+#define DEV_TIMER_CLK_FREQ_HZ      (20000000U)  /* Timer clock frequency in Hz */
+#define GPT_TIME_US_1              (10000U)     /* 10 ms */
+#define GPT_TIME_US_2              (100000U)    /* 100 ms */
+#define GPT_TIME_US_3              (1000000U)   /* 1 sec */
 #define GPT_TIME_US_MAX_TICK_COUNT (0xFFFFFFFF) /*Max Tick Count*/
-#define GPT_TIME_DELAY_PER_SECOND (5000000U) /* 1 second Mcal delay*/
+#define GPT_TIME_DELAY_PER_SECOND  (5000000U)   /* 1 second Mcal delay*/
 
 #define GPT_COUNT_VALUE_MAX_TICK (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_MAX_TICK_COUNT
-#define GPT_COUNT_VALUE_1S (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_3
-#define GPT_COUNT_VALUE_100MS (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_2
-#define GPT_COUNT_VALUE_10MS (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_1
+#define GPT_COUNT_VALUE_1S       (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_3
+#define GPT_COUNT_VALUE_100MS    (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_2
+#define GPT_COUNT_VALUE_10MS     (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_1
 
 void Gpt_Notify_Func_0(void);
 void Gpt_Notify_Func_1(void);
 void Gpt_Notify_Func_2(void);
-int Time_Delay(float64 seconds);
+int  Time_Delay(float64 seconds);
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -88,5 +87,5 @@ int Time_Delay(float64 seconds);
 
 #endif /* GPT_EXAMPLE_CONTINUOUSMODE_H */
 /*********************************************************************************************************************
-*  End of File: Gpt_Example_ContinuousMode.h
-*********************************************************************************************************************/
+ *  End of File: Gpt_Example_ContinuousMode.h
+ *********************************************************************************************************************/

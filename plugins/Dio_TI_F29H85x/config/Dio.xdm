@@ -79,7 +79,7 @@
                       <a:da name="INVALID" type="XPath">
                         <a:tst expr="text:uniq((../../..//*[@name='DioPortId']),node:value(.))"
                                 false="DioPortId selection has to be unique across all Port containers"/>
-                        <a:tst expr="count(node:filter(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortConfigSet/PortContainer/PortContainer_0//*[@name='PortPinId'],
+                        <a:tst expr="count(node:filter(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortConfigSet/PortContainer/*//*[@name='PortPinId'],
                             concat( 'number(.) &gt;= ', (number(node:value(.)) * 32), 
                             'and number(.) &lt; ',((number(node:value(.)) * 32) + 32)))) > 0" false="Atleast one of the port pin in that port should be configured in PORT plugin/module" />
                       </a:da>

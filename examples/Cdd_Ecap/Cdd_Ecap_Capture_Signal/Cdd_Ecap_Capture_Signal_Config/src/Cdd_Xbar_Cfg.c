@@ -83,7 +83,7 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Configuration =
     {
         {
             .inputSelect = CDD_XBAR_INPUT7,   /* Design: MCAL-25720 */
-            .inputLine = 1U,    /* GPIO1 */  /* Design: MCAL-25721 */
+            .inputLine = 0U,    /* EPWM1 */  /* Design: MCAL-25721 */
             .selectConfigLock = FALSE,   /* Design: MCAL-25707 */
         },
     },

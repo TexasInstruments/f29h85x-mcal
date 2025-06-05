@@ -24,9 +24,9 @@
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
-/* 
-* Design: MCAL-28618
-*/
+/*
+ * Design: MCAL-28618
+ */
 #include "Cdd_Sent.h"
 #include "Cdd_Sent_Priv.h"
 
@@ -39,8 +39,7 @@
  * Version Check (if required)
  * AUTOSAR version information check has to match definition in header file.
  *********************************************************************************************************************/
-#if ((CDD_SENT_AR_RELEASE_MAJOR_VERSION != (0x04U)) || \
-     (CDD_SENT_AR_RELEASE_MINOR_VERSION != (0x03U)) || \
+#if ((CDD_SENT_AR_RELEASE_MAJOR_VERSION != (0x04U)) || (CDD_SENT_AR_RELEASE_MINOR_VERSION != (0x03U)) || \
      (CDD_SENT_AR_RELEASE_REVISION_VERSION != (0x01U)))
 #error "AUTOSAR Version Numbers of CDD_SENT are different"
 #endif
@@ -120,20 +119,18 @@ FUNC(void, CDD_SENT_CODE)
 Cdd_Sent_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_SENT_APPL_DATA) VersionInfoPtr)
 {
 #if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
-    /* If the output pointer (VersionInfoPtr) is NULL, report to DET with "CDD_SENT_E_PARAM_POINTER" error */
+    /* If the output pointer (VersionInfoPtr) is NULL, report to DET with "CDD_SENT_E_PARAM_POINTER"
+     * error */
     if (NULL_PTR == VersionInfoPtr)
     {
-        (void)Det_ReportError(
-            CDD_SENT_MODULE_ID,
-            CDD_SENT_INSTANCE_ID,
-            CDD_SENT_SID_GET_VERSION_INFO,
-            CDD_SENT_E_PARAM_POINTER);
+        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_GET_VERSION_INFO,
+                              CDD_SENT_E_PARAM_POINTER);
     }
     else
 #endif
     {
-        VersionInfoPtr->vendorID = (uint16)CDD_SENT_VENDOR_ID;
-        VersionInfoPtr->moduleID = (uint16)CDD_SENT_MODULE_ID;
+        VersionInfoPtr->vendorID         = (uint16)CDD_SENT_VENDOR_ID;
+        VersionInfoPtr->moduleID         = (uint16)CDD_SENT_MODULE_ID;
         VersionInfoPtr->sw_major_version = (uint8)CDD_SENT_SW_MAJOR_VERSION;
         VersionInfoPtr->sw_minor_version = (uint8)CDD_SENT_SW_MINOR_VERSION;
         VersionInfoPtr->sw_patch_version = (uint8)CDD_SENT_SW_PATCH_VERSION;
@@ -141,14 +138,14 @@ Cdd_Sent_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_SENT_APPL_DATA
 }
 #endif
 
-
 /*
  *Design: MCAL-28650, MCAL-28651, MCAL-28652, MCAL-28653, MCAL-28626, MCAL-28680
  */
 FUNC(void, CDD_SENT_CODE)
 Cdd_Sent_Init(P2CONST(Cdd_Sent_ConfigType, AUTOMATIC, CDD_SENT_CONST) ConfigPtr)
 {
-    P2CONST(Cdd_Sent_ConfigType, AUTOMATIC, CDD_SENT_CONST) config_ptr = NULL_PTR;  /* Config pointer initialised with NULL_PTR */
+    P2CONST(Cdd_Sent_ConfigType, AUTOMATIC, CDD_SENT_CONST)
+    config_ptr = NULL_PTR; /* Config pointer initialised with NULL_PTR */
 
 #if (STD_ON == CDD_SENT_CFG_PRE_COMPILE_VARIANT)
     if (NULL_PTR == ConfigPtr)
@@ -157,29 +154,29 @@ Cdd_Sent_Init(P2CONST(Cdd_Sent_ConfigType, AUTOMATIC, CDD_SENT_CONST) ConfigPtr)
     }
     else
     {
-    #if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
+#if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_INIT, CDD_SENT_E_PARAM_POINTER);
-    #endif 
+#endif
     }
 #endif
 
-    /* Cdd_Sent module must not be initialized. Otherwise call the Det with CDD_SENT_E_ALREADY_INITIALIZED */
+    /* Cdd_Sent module must not be initialized. Otherwise call the Det with
+     * CDD_SENT_E_ALREADY_INITIALIZED */
     if (TRUE == Cdd_Sent_DriverInitialized)
     {
-        #if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
-        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_INIT, \
-        CDD_SENT_E_ALREADY_INITIALIZED);
-        #endif
+#if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
+        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_INIT,
+                              CDD_SENT_E_ALREADY_INITIALIZED);
+#endif
     }
     else if (NULL_PTR == config_ptr)
     {
-        #if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
+#if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
         (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_INIT, CDD_SENT_E_PARAM_POINTER);
-        #endif 
+#endif
     }
     else
     {
-
         /* Save the pointer to configuration */
         Cdd_Sent_DrvObj.CddSent_CfgPtr = config_ptr;
 
@@ -203,45 +200,39 @@ Cdd_Sent_Deinit(void)
     /* CDD_Sent module must  be initialized. Otherwise call the Det with CDD_SENT_E_UNINIT */
     if (FALSE == Cdd_Sent_DriverInitialized)
     {
-        (void) Det_ReportError(CDD_SENT_MODULE_ID,
-                               CDD_SENT_INSTANCE_ID,
-                               CDD_SENT_SID_DEINIT,
-                               CDD_SENT_E_UNINIT);
+        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_DEINIT, CDD_SENT_E_UNINIT);
     }
     else
 #endif
     {
-
         /*
          * Only initialize configured resources, that means, only channels listed
          * in the channel configuration structure.
          */
 #if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
-        for(loop_count = ((uint32)0U); loop_count<((uint32 )SENT_CFG_NO_OF_HW_UNITS); loop_count++)
+        for (loop_count = ((uint32)0U); loop_count < ((uint32)SENT_CFG_NO_OF_HW_UNITS); loop_count++)
         {
             /* If the channel is invalid, report to DET with "CDD_SENT_E_PARAM_CHANNEL" error. */
             if (Cdd_Sent_DrvObj.CddSent_CfgPtr->Cdd_Sent_HWUnit[loop_count]->CddSentHWUnitId >=
-                        ((uint8 )SENT_MAX_HW_UNITS))
+                ((uint8)SENT_MAX_HW_UNITS))
             {
                 return_value = E_NOT_OK;
-                (void) Det_ReportError(CDD_SENT_MODULE_ID,
-                                       CDD_SENT_INSTANCE_ID,
-                                       CDD_SENT_SID_INIT,
-                                       CDD_SENT_E_PARAM_CHANNEL);
+                (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_INIT,
+                                      CDD_SENT_E_PARAM_CHANNEL);
                 break;
             }
             else
             {
-                 return_value = E_OK;
+                return_value = E_OK;
             }
         }
-        if(E_OK == return_value)
+        if (E_OK == return_value)
 #endif
         {
-            for(loop_count = ((uint32)0U); loop_count<((uint32 )SENT_CFG_NO_OF_HW_UNITS); loop_count++)
+            for (loop_count = ((uint32)0U); loop_count < ((uint32)SENT_CFG_NO_OF_HW_UNITS); loop_count++)
             {
                 /* De-Initialize the CDD_SENT channel. */
-                (void) Cdd_Sent_HwDenitPrv(Cdd_Sent_DrvObj.CddSent_CfgPtr->Cdd_Sent_HWUnit[loop_count]);
+                (void)Cdd_Sent_HwDenitPrv(Cdd_Sent_DrvObj.CddSent_CfgPtr->Cdd_Sent_HWUnit[loop_count]);
             }
             Cdd_Sent_DriverInitialized = FALSE;
         }
@@ -253,8 +244,7 @@ Cdd_Sent_Deinit(void)
  */
 #if (STD_ON == CDD_SENT_ENABLE_MTP_MODE)
 FUNC(Std_ReturnType, CDD_SENT_CODE)
-Cdd_Sent_Transmit(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr,
-                    PduIdType TxPduId)
+Cdd_Sent_Transmit(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr, PduIdType TxPduId)
 {
     VAR(Std_ReturnType, AUTOMATIC) Status = E_NOT_OK;
 
@@ -262,24 +252,19 @@ Cdd_Sent_Transmit(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr,
     /* CDD_Sent module must  be initialized. Otherwise call the Det with CDD_SENT_E_UNINIT */
     if (FALSE == Cdd_Sent_DriverInitialized)
     {
-        (void) Det_ReportError(CDD_SENT_MODULE_ID,
-                               CDD_SENT_INSTANCE_ID,
-                               CDD_SENT_SID_TRANSMIT,
-                               CDD_SENT_E_UNINIT);
+        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_TRANSMIT, CDD_SENT_E_UNINIT);
     }
     else if (NULL_PTR == PduInfoPtr)
     {
-        (void) Det_ReportError(CDD_SENT_MODULE_ID,
-                               CDD_SENT_INSTANCE_ID,
-                               CDD_SENT_SID_TRANSMIT,
-                               CDD_SENT_E_PARAM_POINTER);
+        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_TRANSMIT,
+                              CDD_SENT_E_PARAM_POINTER);
     }
     else
 #endif
     {
         Status = Cdd_Sent_TransmitPriv(PduInfoPtr, TxPduId);
     }
-	return Status;
+    return Status;
 }
 #endif
 
@@ -296,28 +281,23 @@ Cdd_Sent_Enable_Interrupts(Cdd_SentInstance SentInstance)
     /* CDD_Sent module must  be initialized. Otherwise call the Det with CDD_SENT_E_UNINIT */
     if (FALSE == Cdd_Sent_DriverInitialized)
     {
-        (void) Det_ReportError(CDD_SENT_MODULE_ID,
-                               CDD_SENT_INSTANCE_ID,
-                               CDD_SENT_SID_ENABLE_INTERRUPT,
-                               CDD_SENT_E_UNINIT);
+        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_ENABLE_INTERRUPT,
+                              CDD_SENT_E_UNINIT);
     }
     else if (SENT_MAX_HW_UNITS < instance_index)
     {
-        (void) Det_ReportError(CDD_SENT_MODULE_ID,
-                        CDD_SENT_INSTANCE_ID,
-                        CDD_SENT_SID_ENABLE_INTERRUPT,
-                        CDD_SENT_E_PARAM_CHANNEL);
+        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_ENABLE_INTERRUPT,
+                              CDD_SENT_E_PARAM_CHANNEL);
     }
     else
 #endif
     {
-            uint32 Sent_Instance_BaseAdress= Cdd_Sent_DrvObj.CddSent_CfgPtr-> \
-            Cdd_Sent_HWUnit[instance_index]->CddSentBaseAddress;
-            
-            /* Enable interrupt sources*/
-            Cdd_Sent_enableInterrupt(Sent_Instance_BaseAdress, SENT_ENABLE_INTERRUPT_SOURCES);
-    }
+        uint32 Sent_Instance_BaseAdress =
+            Cdd_Sent_DrvObj.CddSent_CfgPtr->Cdd_Sent_HWUnit[instance_index]->CddSentBaseAddress;
 
+        /* Enable interrupt sources*/
+        Cdd_Sent_enableInterrupt(Sent_Instance_BaseAdress, SENT_ENABLE_INTERRUPT_SOURCES);
+    }
 }
 
 /*
@@ -333,23 +313,20 @@ Cdd_Sent_Disable_Interrupts(Cdd_SentInstance SentInstance)
     /* CDD_Sent module must  be initialized. Otherwise call the Det with CDD_SENT_E_UNINIT */
     if (FALSE == Cdd_Sent_DriverInitialized)
     {
-        (void) Det_ReportError(CDD_SENT_MODULE_ID,
-                               CDD_SENT_INSTANCE_ID,
-                               CDD_SENT_SID_DISABLE_INTERRUPT,
-                               CDD_SENT_E_UNINIT);
+        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_DISABLE_INTERRUPT,
+                              CDD_SENT_E_UNINIT);
     }
     else if (SENT_MAX_HW_UNITS < instance_index)
     {
-        (void) Det_ReportError(CDD_SENT_MODULE_ID,
-                        CDD_SENT_INSTANCE_ID,
-                        CDD_SENT_SID_DISABLE_INTERRUPT,
-                        CDD_SENT_E_PARAM_CHANNEL);
+        (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_DISABLE_INTERRUPT,
+                              CDD_SENT_E_PARAM_CHANNEL);
     }
     else
 #endif
     {
-        uint32 Sent_Instance_BaseAdress= Cdd_Sent_DrvObj.CddSent_CfgPtr->Cdd_Sent_HWUnit[instance_index]->CddSentBaseAddress;
-        
+        uint32 Sent_Instance_BaseAdress =
+            Cdd_Sent_DrvObj.CddSent_CfgPtr->Cdd_Sent_HWUnit[instance_index]->CddSentBaseAddress;
+
         /* Disable interrupt sources*/
         Cdd_Sent_disableInterrupt(Sent_Instance_BaseAdress, (0xFFFFFFFFU));
     }
@@ -366,28 +343,27 @@ static FUNC(void, CDD_SENT_CODE) Cdd_Sent_ConfigInitPriv(void)
 #if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
     VAR(uint32, AUTOMATIC) return_value = E_NOT_OK;
 #endif
-    for (uint32 loop_count = ((uint32)0U); loop_count < ((uint32) SENT_MAX_HW_UNITS); loop_count++)
+    for (uint32 loop_count = ((uint32)0U); loop_count < ((uint32)SENT_MAX_HW_UNITS); loop_count++)
     {
-        Cdd_Sent_DrvObj.CddSent_Lut_Channel_Index[loop_count]=CDD_SENT_MAX_32BIT_VAL;
-        for(uint32 Channel_count = 0U; Channel_count < (uint32)MAXIMUM_NUMBER_OF_SENSORS; Channel_count++)
+        Cdd_Sent_DrvObj.CddSent_Lut_Channel_Index[loop_count] = CDD_SENT_MAX_32BIT_VAL;
+        for (uint32 Channel_count = 0U; Channel_count < (uint32)MAXIMUM_NUMBER_OF_SENSORS; Channel_count++)
         {
             Cdd_Sent_DrvObj.CddSent_Fast_Channel_PduID[loop_count][Channel_count] = CDD_SENT_MAX_16BIT_VAL;
         }
     }
     /*
-        * Only initialize configured resources, that means, only HW units listed
-        * in the configuration structure.
-        */
+     * Only initialize configured resources, that means, only HW units listed
+     * in the configuration structure.
+     */
 #if (STD_ON == CDD_SENT_CFG_DEV_ERROR_DETECT)
-    for (uint32 loop_count = ((uint32)0U); loop_count < ((uint32) SENT_CFG_NO_OF_HW_UNITS); loop_count++)
+    for (uint32 loop_count = ((uint32)0U); loop_count < ((uint32)SENT_CFG_NO_OF_HW_UNITS); loop_count++)
     {
         /* If the channel is invalid, report to DET with "CDD_SENT_E_PARAM_CHANNEL" error. */
-        if (Cdd_Sent_DrvObj.CddSent_CfgPtr->Cdd_Sent_HWUnit[loop_count]->CddSentHWUnitId >=
-        ((uint8)SENT_MAX_HW_UNITS))
+        if (Cdd_Sent_DrvObj.CddSent_CfgPtr->Cdd_Sent_HWUnit[loop_count]->CddSentHWUnitId >= ((uint8)SENT_MAX_HW_UNITS))
         {
             return_value = E_NOT_OK;
-            (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, \
-            CDD_SENT_SID_INIT,CDD_SENT_E_PARAM_CHANNEL);
+            (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_INIT,
+                                  CDD_SENT_E_PARAM_CHANNEL);
             break;
         }
         else
@@ -395,7 +371,7 @@ static FUNC(void, CDD_SENT_CODE) Cdd_Sent_ConfigInitPriv(void)
             return_value = E_OK;
         }
     }
-        if(E_OK == return_value)
+    if (E_OK == return_value)
 #endif
     {
         Cdd_Sent_InitPriv(&Cdd_Sent_DrvObj, &Cdd_Sent_DriverInitialized);

@@ -17,7 +17,7 @@
  *  File:       Mcal_Lib_Cpu.h
  *  Generator:  None
  *
- *  Description:  Useful C29x CPU defines.                                                           
+ *  Description:  Useful C29x CPU defines.
  *********************************************************************************************************************/
 #ifndef MCAL_LIB_CPU_H
 #define MCAL_LIB_CPU_H
@@ -29,7 +29,7 @@ extern "C" {
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -43,28 +43,28 @@ extern "C" {
  *********************************************************************************************************************/
 
 #ifndef MCAL_LIB_EINT
-#define MCAL_LIB_EINT               __asm(" ENINT")            /* Define to enable interrupts */
+#define MCAL_LIB_EINT __asm(" ENINT") /* Define to enable interrupts */
 #endif
 
 #ifndef MCAL_LIB_DINT
-#define MCAL_LIB_DINT               __asm(" DISINT")           /* Define to disable interrupts */
+#define MCAL_LIB_DINT __asm(" DISINT") /* Define to disable interrupts */
 #endif
 
 #ifndef MCAL_LIB_EMUSTOP0
-#define MCAL_LIB_EMUSTOP0           __asm(" EMUSTOP0")        /* Define for emulation stop */
+#define MCAL_LIB_EMUSTOP0 __asm(" EMUSTOP0") /* Define for emulation stop */
 #endif
 
 #ifndef MCAL_LIB_NOP
-#define MCAL_LIB_NOP                __asm(" NOP #1")            /* Define for no operation */
+#define MCAL_LIB_NOP __asm(" NOP #1") /* Define for no operation */
 #endif
 
 #ifndef MCAL_LIB_IDLE
-#define MCAL_LIB_IDLE               __asm(" IDLE")              /* Define for putting processor into a low-power mode */
+#define MCAL_LIB_IDLE __asm(" IDLE") /* Define for putting processor into a low-power mode */
 #endif
 
 #ifndef MCAL_LIB_INT_ISR
 /* Define for declaring ISRs for INT level interrupts */
-#define MCAL_LIB_INT_ISR(ISRNAME)   __attribute__((interrupt("INT"))) void ISRNAME(void)
+#define MCAL_LIB_INT_ISR(ISRNAME) __attribute__((interrupt("INT"))) void ISRNAME(void)
 #endif
 
 #ifndef MCAL_LIB_RTINT_ISR

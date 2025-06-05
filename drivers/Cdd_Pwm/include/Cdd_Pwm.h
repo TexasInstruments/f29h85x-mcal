@@ -45,70 +45,72 @@ extern "C" {
  *********************************************************************************************************************/
 /* Defines for CDD_PWM Driver version used for compatibility checks.*/
 /** \brief Driver Implementation Major Version */
-#define CDD_PWM_SW_MAJOR_VERSION     (1U)
+#define CDD_PWM_SW_MAJOR_VERSION (1U)
 /** \brief Driver Implementation Minor Version */
-#define CDD_PWM_SW_MINOR_VERSION     (0U)
+#define CDD_PWM_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_PWM_SW_PATCH_VERSION     (0U) 
+#define CDD_PWM_SW_PATCH_VERSION (0U)
 
 /*  Defines for CDD_PWM Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_PWM Driver*/
-#define CDD_PWM_AR_RELEASE_MAJOR_VERSION    (4U)
+#define CDD_PWM_AR_RELEASE_MAJOR_VERSION (4U)
 /** \brief AUTOSAR Minor version specification implemented by CDD_PWM Driver*/
-#define CDD_PWM_AR_RELEASE_MINOR_VERSION    (3U)
+#define CDD_PWM_AR_RELEASE_MINOR_VERSION (3U)
 /** \brief AUTOSAR Patch version specification implemented by CDD_PWM Driver*/
 #define CDD_PWM_AR_RELEASE_REVISION_VERSION (1U)
 
 /* CDD PWM Driver ID Info. */
-/** \brief Texas Instruments Vendor ID */ 
-#define CDD_PWM_VENDOR_ID       ((uint16) 44U)
+/** \brief Texas Instruments Vendor ID */
+#define CDD_PWM_VENDOR_ID ((uint16)44U)
 /** \brief CDD PWM Driver Module ID */
-#define CDD_PWM_MODULE_ID       ((uint16) 255U)
-/** \brief CDD PWM Instance ID */  
-#define CDD_PWM_INSTANCE_ID     ((uint8) 0U)
+#define CDD_PWM_MODULE_ID ((uint16)255U)
+/** \brief CDD PWM Instance ID */
+#define CDD_PWM_INSTANCE_ID ((uint8)0U)
 
 /* Error codes returned by Cdd Pwm functions. */
 
-/** \brief API service used without module initialization */ 
-#define CDD_PWM_E_UNINIT                    ((uint8) 0x0AU)
+/** \brief API service used without module initialization */
+#define CDD_PWM_E_UNINIT ((uint8)0x0AU)
 /** \brief API Cdd_Pwm_Init service called while the PWM driver has already been initialized */
-#define CDD_PWM_E_ALREADY_INITIALIZED       ((uint8) 0x0BU)
-/** \brief  API service called with invalid pointer */ 
-#define CDD_PWM_E_PARAM_POINTER             ((uint8) 0x0CU)
-/** \brief  API service called with invalid parameter ID */ 
-#define CDD_PWM_E_INVALID_ID               ((uint8) 0x0DU)
-/** \brief Enable/disable notification function for a PWM instance whose configuration set has no notification available */
-#define CDD_PWM_E_NOTIF_CAPABILITY          ((uint8) 0x0EU)
-/** \brief  API service called for the instance whose channel class is not variable period */ 
-#define CDD_PWM_E_CHANNEL_CLASS               ((uint8) 0x0FU)
+#define CDD_PWM_E_ALREADY_INITIALIZED ((uint8)0x0BU)
+/** \brief  API service called with invalid pointer */
+#define CDD_PWM_E_PARAM_POINTER ((uint8)0x0CU)
+/** \brief  API service called with invalid parameter ID */
+#define CDD_PWM_E_INVALID_ID ((uint8)0x0DU)
+/** \brief Enable/disable notification function for a PWM instance whose configuration set has no
+ * notification available */
+#define CDD_PWM_E_NOTIF_CAPABILITY ((uint8)0x0EU)
+/** \brief  API service called for the instance whose channel class is not variable period */
+#define CDD_PWM_E_CHANNEL_CLASS ((uint8)0x0FU)
 /** \brief API service called when the notification is already enabled */
-#define CDD_PWM_E_NOTIF_ALREADY_ENABLED          ((uint8) 0x10U)
+#define CDD_PWM_E_NOTIF_ALREADY_ENABLED ((uint8)0x10U)
 /** \brief API service called when the channel configured for the notification is invalid */
-#define CDD_PWM_E_INVALID_CHANNEL_NOTIFICATION         ((uint8) 0x11U)
+#define CDD_PWM_E_INVALID_CHANNEL_NOTIFICATION ((uint8)0x11U)
 /** \brief API service called when the edge notification type is not valid */
-#define CDD_PWM_E_INVALID_NOTIFICATION         ((uint8) 0x12U)
+#define CDD_PWM_E_INVALID_NOTIFICATION ((uint8)0x12U)
 /** \brief API service called when the event count is invalid/out-of-range */
-#define CDD_PWM_E_INVALID_EVENT_COUNT         ((uint8) 0x13U)
+#define CDD_PWM_E_INVALID_EVENT_COUNT ((uint8)0x13U)
 /** \brief API service called with the invalid duty cycle value */
-#define CDD_PWM_E_INVALID_DUTY_CYCLE          ((uint8) 0x14U)
+#define CDD_PWM_E_INVALID_DUTY_CYCLE ((uint8)0x14U)
 
-/* The Service Id is one of the argument to Det_ReportError function and is used to identify the source of the error */
+/* The Service Id is one of the argument to Det_ReportError function and is used to identify the
+ * source of the error */
 /** \brief Cdd_Pwm_Init() API Service ID */
-#define CDD_PWM_SID_INIT                        ((uint8) 0x00U)
+#define CDD_PWM_SID_INIT ((uint8)0x00U)
 /** \brief Cdd_Pwm_DeInit() API Service ID */
-#define CDD_PWM_SID_DEINIT                      ((uint8) 0x01U)
+#define CDD_PWM_SID_DEINIT ((uint8)0x01U)
 /** \brief Cdd_Pwm_SetDutyCycle() API Service ID */
-#define CDD_PWM_SID_SET_DUTY_CYCLE              ((uint8) 0x02U)
+#define CDD_PWM_SID_SET_DUTY_CYCLE ((uint8)0x02U)
 /** \brief Cdd_Pwm_SetPeriod() API Service ID */
-#define CDD_PWM_SID_SET_PERIOD                  ((uint8) 0x03U)
-/** \brief Cdd_Pwm_SetOutputToIdle() API Service ID */ 
-#define CDD_PWM_SID_SET_OUTPUT_TO_IDLE          ((uint8) 0x04U)
+#define CDD_PWM_SID_SET_PERIOD ((uint8)0x03U)
+/** \brief Cdd_Pwm_SetOutputToIdle() API Service ID */
+#define CDD_PWM_SID_SET_OUTPUT_TO_IDLE ((uint8)0x04U)
 /** \brief Cdd_Pwm_EnableNotification() API Service ID */
-#define CDD_PWM_SID_ENABLE_NOTIFICATION         ((uint8) 0x05U)
+#define CDD_PWM_SID_ENABLE_NOTIFICATION ((uint8)0x05U)
 /** \brief Cdd_Pwm_DisableNotification() API Service ID */
-#define CDD_PWM_SID_DISABLE_NOTIFICATION        ((uint8) 0x06U)
-/** \brief Cdd_Pwm_GetVersionInfo() API Service ID */ 
-#define CDD_PWM_SID_GET_VERSION_INFO            ((uint8) 0x07U)
+#define CDD_PWM_SID_DISABLE_NOTIFICATION ((uint8)0x06U)
+/** \brief Cdd_Pwm_GetVersionInfo() API Service ID */
+#define CDD_PWM_SID_GET_VERSION_INFO ((uint8)0x07U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -130,7 +132,7 @@ typedef uint16 Cdd_Pwm_PeriodType;
 /** \brief Duty cycle of the PWM channel */
 typedef uint16 Cdd_Pwm_DutyCycleType;
 
-#if(STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
+#if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
 /** \brief Notification function pointer */
 typedef P2FUNC(void, CDD_PWM_CODE, Cdd_Pwm_NotificationType)(void);
 #endif
@@ -138,90 +140,95 @@ typedef P2FUNC(void, CDD_PWM_CODE, Cdd_Pwm_NotificationType)(void);
 /** \brief Output Status type */
 typedef enum
 {
-    CDD_PWM_HIGH,   /*!< \brief  The PWM channel is in high state. */
-    CDD_PWM_LOW     /*!< \brief  The PWM channel is in low state. */
-}Cdd_Pwm_OutputStateType;
+    CDD_PWM_HIGH, /*!< \brief  The PWM channel is in high state. */
+    CDD_PWM_LOW   /*!< \brief  The PWM channel is in low state. */
+} Cdd_Pwm_OutputStateType;
 
 /** \brief Edge notification type */
 typedef enum
 {
-    CDD_PWM_RISING_EDGE, /*!< \brief Notification will be called when a rising edge occurs on the PWM output signal */
-    CDD_PWM_FALLING_EDGE, /*!< \brief Notification will be called when a falling edge occurs on the PWM output signal*/
-    /*!< \brief Notification will be called when either a rising edge or falling edge occur on the PWM output signal */
+    CDD_PWM_RISING_EDGE,  /*!< \brief Notification will be called when a rising edge occurs on the
+                             PWM output signal */
+    CDD_PWM_FALLING_EDGE, /*!< \brief Notification will be called when a falling edge occurs on the
+                             PWM output signal*/
+    /*!< \brief Notification will be called when either a rising edge or falling edge occur on the
+       PWM output signal */
     CDD_PWM_BOTH_EDGES,
-    CDD_PWM_EDGE_NONE    /*!< \brief No notification will be called */
-}Cdd_Pwm_EdgeNotificationType;
+    CDD_PWM_EDGE_NONE /*!< \brief No notification will be called */
+} Cdd_Pwm_EdgeNotificationType;
 
 /** \brief Channel class type */
 typedef enum
 {
-    /** \brief The PWM channel has a variable period. The duty cycle and the period can be changed. */
+    /** \brief The PWM channel has a variable period. The duty cycle and the period can be changed.
+     */
     CDD_PWM_VARIABLE_PERIOD,
     /** \brief The PWM channel has a fixed period. Only the duty cycle can be changed */
     CDD_PWM_FIXED_PERIOD
-}Cdd_Pwm_ChannelClassType;
+} Cdd_Pwm_ChannelClassType;
 
 /** \brief Enumeration to define the output channel type for the notification */
 typedef enum
 {
-    CDD_PWM_CHANNEL_A,         /** \brief Up - count mode */
-    CDD_PWM_CHANNEL_B,       /** \brief Down - count mode */
-    CDD_PWM_BOTH_A_AND_B,    /** \brief Up - down - count mode */
-    CDD_PWM_NONE            /** \brief Stop - Freeze counter */
-}Cdd_Pwm_NotificationChannelType;
+    CDD_PWM_CHANNEL_A,    /** \brief Up - count mode */
+    CDD_PWM_CHANNEL_B,    /** \brief Down - count mode */
+    CDD_PWM_BOTH_A_AND_B, /** \brief Up - down - count mode */
+    CDD_PWM_NONE          /** \brief Stop - Freeze counter */
+} Cdd_Pwm_NotificationChannelType;
 
 /* Pwm channel configation */
 typedef struct Cdd_Pwm_ChannelCfgTag
 {
     /* PMW instance index*/
-    uint8 hw_index;
+    uint8                    hw_index;
     /* Output type of the channel */
-    Cdd_Pwm_OuputChannelType  outputchannel;
+    Cdd_Pwm_OuputChannelType outputchannel;
     /* Default duty cycle */
-    Cdd_Pwm_DutyCycleType dutycycle;
+    Cdd_Pwm_DutyCycleType    dutycycle;
     /* Idle state of the PWM channel */
-    Cdd_Pwm_OutputStateType idlestate;
+    Cdd_Pwm_OutputStateType  idlestate;
     /* Polarity of the PWM channel (Active Low or Active High) */
-    Cdd_Pwm_OutputStateType polarity;
-}Cdd_Pwm_ChannelCfgType;
+    Cdd_Pwm_OutputStateType  polarity;
+} Cdd_Pwm_ChannelCfgType;
 
 /* PWM Hardware unit configuration */
 typedef struct Cdd_Pwm_HwUnitCfgTag
 {
     /* PWM instance ID */
-    uint8 instance_id;
+    uint8                     instance_id;
     /* Class type of the PWM channel */
-    Cdd_Pwm_ChannelClassType channelclass;
-    /* Clock divider is time base clock divider multiplied with high speed clock divider(CLKDIV*HSPCLKDIV) */
-    uint8 clockdivider;
+    Cdd_Pwm_ChannelClassType  channelclass;
+    /* Clock divider is time base clock divider multiplied with high speed clock
+     * divider(CLKDIV*HSPCLKDIV) */
+    uint8                     clockdivider;
     /* Phase shift of the PWM channel */
-    uint16 phaseshift;
+    uint16                    phaseshift;
     /* Default period */
-    Cdd_Pwm_PeriodType period;
+    Cdd_Pwm_PeriodType        period;
     /* Base address of the PWM channel */
-    uint32 base_addr;
+    uint32                    base_addr;
     /* Symmetry of the waveform */
     Cdd_Pwm_OuputSymmetryType symmetry;
     /* Interrupt enable/disable */
-    boolean enable_interrupt;
+    boolean                   enable_interrupt;
     /* Starting channel ID  */
-    uint8 startchannel;
+    uint8                     startchannel;
     /* Last channel ID */
-    uint8 lastchannel;
-#if(STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
+    uint8                     lastchannel;
+#if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
     /* Idle state of the PWM channel */
     Cdd_Pwm_NotificationType notification;
 #endif
-}Cdd_Pwm_HwUnitCfgType;
+} Cdd_Pwm_HwUnitCfgType;
 
 /** \brief PWM driver configuration */
 typedef struct Cdd_Pwm_ConfigTag
 {
-    /** \brief  PWM hardware instance configurations */    
-    Cdd_Pwm_HwUnitCfgType     hwunitcfg[CDD_PWM_COUNT];
-    /** \brief  Channel configurations */    
-    Cdd_Pwm_ChannelCfgType     channelcfg[CDD_PWM_CHANNEL_COUNT];
-}Cdd_Pwm_ConfigType;
+    /** \brief  PWM hardware instance configurations */
+    Cdd_Pwm_HwUnitCfgType  hwunitcfg[CDD_PWM_COUNT];
+    /** \brief  Channel configurations */
+    Cdd_Pwm_ChannelCfgType channelcfg[CDD_PWM_CHANNEL_COUNT];
+} Cdd_Pwm_ConfigType;
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -233,7 +240,7 @@ typedef struct Cdd_Pwm_ConfigTag
 
 /** \brief Service to initialize Cdd Pwm driver.
  *
- * This service initializes all the PWM channels with the configured values. 
+ * This service initializes all the PWM channels with the configured values.
  *
  * \param[in] CfgPtr Pointer to configuration set (Variant PC requires a NULL_PTR)
  * \post None
@@ -241,7 +248,7 @@ typedef struct Cdd_Pwm_ConfigTag
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_Init(P2CONST(Cdd_Pwm_ConfigType,AUTOMATIC, CDD_PWM_CFG) CfgPtr);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_Init(P2CONST(Cdd_Pwm_ConfigType, AUTOMATIC, CDD_PWM_CFG) CfgPtr);
 
 #if (STD_ON == CDD_PWM_DEINIT_API)
 /** \brief Service to deinitialize Cdd Pwm driver.
@@ -255,8 +262,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_Init(P2CONST(Cdd_Pwm_ConfigType,AUTOMATIC, CDD_P
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DeInit(void);
-#endif 
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DeInit(void);
+#endif
 
 #if (STD_ON == CDD_PWM_SET_DUTY_CYCLE_API)
 /** \brief Service to set the duty cycle
@@ -271,9 +278,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DeInit(void);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDutyCycle(VAR(Cdd_Pwm_ChannelType,AUTOMATIC) ChannelNumber,\
-                                                    VAR(Cdd_Pwm_DutyCycleType,AUTOMATIC) DutyCycle);
-#endif 
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDutyCycle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelNumber,
+                     VAR(Cdd_Pwm_DutyCycleType, AUTOMATIC) DutyCycle);
+#endif
 
 #if (STD_ON == CDD_PWM_SET_PERIOD_API)
 /** \brief Service to set the period and duty cycle for a PWM channel
@@ -289,8 +297,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDutyCycle(VAR(Cdd_Pwm_ChannelType,AUTOMATIC) 
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetPeriod(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,\
-                                    VAR(Cdd_Pwm_PeriodType,AUTOMATIC) Period);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetPeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_PeriodType, AUTOMATIC) Period);
 #endif
 
 #if (STD_ON == CDD_PWM_SET_OUTPUT_TO_IDLE_API)
@@ -305,7 +313,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetPeriod(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) In
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetOutputToIdle(VAR(Cdd_Pwm_ChannelType,AUTOMATIC) ChannelNumber);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetOutputToIdle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelNumber);
 #endif
 
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
@@ -321,9 +329,11 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetOutputToIdle(VAR(Cdd_Pwm_ChannelType,AUTOMATI
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,\
-                            VAR(Cdd_Pwm_NotificationChannelType,AUTOMATIC) Channel,\
-                            VAR(Cdd_Pwm_EdgeNotificationType,AUTOMATIC) Notification,VAR(uint8,AUTOMATIC) IntEvtCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                           VAR(Cdd_Pwm_NotificationChannelType, AUTOMATIC) Channel,
+                           VAR(Cdd_Pwm_EdgeNotificationType, AUTOMATIC) Notification,
+                           VAR(uint8, AUTOMATIC) IntEvtCount);
 
 /** \brief Service to disable the PWM signal edge notification
  *
@@ -336,9 +346,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_InstanceType,AUTO
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DisableNotification(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,\
-                                                    VAR(Cdd_Pwm_NotificationChannelType,AUTOMATIC) Channel);
-#endif 
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_DisableNotification(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                            VAR(Cdd_Pwm_NotificationChannelType, AUTOMATIC) Channel);
+#endif
 
 #if (STD_ON == CDD_PWM_VERSION_INFO_API)
 /** \brief service that returns the version information of the module.
@@ -352,7 +363,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DisableNotification(VAR(Cdd_Pwm_InstanceType,AUT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_PWM_DATA) VersionInfo);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_PWM_DATA) VersionInfo);
 #endif
 
 /*********************************************************************************************************************

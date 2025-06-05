@@ -17,11 +17,11 @@
  *  File:       Mcu_Example_PowerMode.c
  *  Generator:  None
  *
- *  Description:  This file contains example application for Mcu Driver module     
+ *  Description:  This file contains example application for Mcu Driver module
  *
- *  This example demonstrates Standby entry and Exit example.  
+ *  This example demonstrates Standby entry and Exit example.
  *
- * 
+ *
  *  Low Power Modes: Device Standby Mode and Wakeup using GPIO</h1>
  *
  *  This example puts the device into STANDBY mode. If the lowest possible
@@ -42,12 +42,12 @@
  *  This pin must be pulsed by an external agent for wakeup.
  *
  * GPIO1 is pulled high before entering the STANDBY mode from tresos
- * 
- * External Connections: 
+ *
+ * External Connections:
  * Short the GPIO1-GPIO0 to make GPIO0 High before standby
  * Make GPIO0 low to wakeup from standby
  *
- * 
+ *
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -102,51 +102,43 @@ volatile boolean Mcu_ActivatePowerMode = TRUE;
 
 int main(void)
 {
-    Std_ReturnType return_value = E_NOT_OK;
+    Std_ReturnType return_value = E_OK;
 
     DeviceSupport_Init();
     EcuM_Init(); /* PORT & MCU Initilization to get configuration settings */
     AppUtils_Init(200000000U);
-    AppUtils_Printf("Sample Application - STARTS !!!\n");
+    AppUtils_Printf("Sample Application - STARTS !!!\r\n");
 
     /*  get version Info */
 #if (STD_ON == MCU_CFG_GET_VERSION_INFO_API)
-    Std_VersionInfoType       Mcu_VersionInfo;
+    Std_VersionInfoType Mcu_VersionInfo;
 
     Mcu_GetVersionInfo(&Mcu_VersionInfo);
-    AppUtils_Printf("MCU MCAL Version Info\n");
-    AppUtils_Printf("---------------------\n");
-    AppUtils_Printf("Vendor ID           : %d\n", Mcu_VersionInfo.vendorID);
-    AppUtils_Printf("Module ID           : %d\n", Mcu_VersionInfo.moduleID);
-    AppUtils_Printf("SW Major Version    : %d\n", Mcu_VersionInfo.sw_major_version);
-    AppUtils_Printf("SW Minor Version    : %d\n", Mcu_VersionInfo.sw_minor_version);
-    AppUtils_Printf("SW Patch Version    : %d\n", Mcu_VersionInfo.sw_patch_version);
+    AppUtils_Printf("MCU MCAL Version Info\r\n");
+    AppUtils_Printf("---------------------\r\n");
+    AppUtils_Printf("Vendor ID           : %d\r\n", Mcu_VersionInfo.vendorID);
+    AppUtils_Printf("Module ID           : %d\r\n", Mcu_VersionInfo.moduleID);
+    AppUtils_Printf("SW Major Version    : %d\r\n", Mcu_VersionInfo.sw_major_version);
+    AppUtils_Printf("SW Minor Version    : %d\r\n", Mcu_VersionInfo.sw_minor_version);
+    AppUtils_Printf("SW Patch Version    : %d\r\n", Mcu_VersionInfo.sw_patch_version);
 #endif
 
-
     /* It Sets the STANBY mode from mode configuration structure*/
-    if(TRUE == Mcu_ActivatePowerMode)
+    if (TRUE == Mcu_ActivatePowerMode)
     {
         Mcu_SetMode(McuConf_McuModeSettingConf_McuModeSettingConf_1); /* Activate low power modes */
     }
 
-    AppUtils_Printf("Woken up from stand by mode usign GPIO wakeup pins  \n");
-    AppUtils_Printf("Mcu_Example_PowerMode: Sample Application - Completes successfully !!!\n");
+    AppUtils_Printf("Woken up from stand by mode usign GPIO wakeup pins  \r\n");
+    AppUtils_Printf("Mcu_Example_PowerMode: Sample Application - Completes successfully !!!\r\n");
 
-    while (TRUE)
-    {
-        /* Example App Has finished running Successfully */
-        return_value = E_OK;
-    }
     return return_value;
 }
 
 void Mcu_ApplWakeupIsr(void)
 {
-    
     /* Wakeup ISR function*/
-    AppUtils_Printf("Wakeup ISR function is triggered  \n"); 
-
+    AppUtils_Printf("Wakeup ISR function is triggered  \r\n");
 }
 /*********************************************************************************************************************
  *  End of File: Mcu_Example_PowerMode.c

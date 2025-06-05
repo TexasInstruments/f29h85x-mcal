@@ -108,17 +108,17 @@ CONST(Can_ControllerType*, CAN_CONFIG_DATA) CanConfigSet_CanController_List[]=
             
 CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_0 =
 {
-    .CanHandleType = (uint8 )FULL,
-    .CanIdType = (Can_IdType )MIXED_ID,
+    .CanHandleType = (uint8 )CAN_FULL,
+    .CanIdType = (Can_IdType )CAN_MIXED_ID,
     .CanObjectId = (uint16 )0U,
     .HwHandle = (Can_HwHandleType )0U, /* HwHandle */ /* Mailbox - Hw object in the controller*/
     .CanHwObjectCount = (uint16 )1U,
-    .CanObjectType = (Can_MailboxDirectionType )TRANSMIT,
+    .CanObjectType = (Can_MailboxDirectionType )CAN_TRANSMIT,
     .CanControllerRef = (const Can_ControllerType* )&CanConfigSet_CanController_0,
     .CanFdPaddingValue = (uint8 )0U,
     .CanHardwareObjectUsesPolling = (boolean )FALSE,
     .CanTriggerTransmitEnable = (boolean )FALSE,
-    .CanHwFilterCode = (uint32 )0U, /* Only valid if CAN object type is RECEIVE */
+    .CanHwFilterCode = (uint32 )0U, /* Only valid if CAN object type is CAN_RECEIVE */
     .CanHwFilterMask = {(uint32 )0U},
 
     .CanMainFunctionRWPeriodRef = {(uint16 )CanMainFunctionRWPeriods_0},
@@ -126,12 +126,12 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_0 =
 
 CONST(Can_MailboxType, CAN_CONFIG_DATA) CanConfigSet_CanHardwareObject_1 =
 {
-    .CanHandleType = (uint8 )BASIC,
-    .CanIdType = (Can_IdType )STANDARD_ID,
+    .CanHandleType = (uint8 )CAN_BASIC,
+    .CanIdType = (Can_IdType )CAN_STANDARD_ID,
     .CanObjectId = (uint16 )1U,
     .HwHandle = (Can_HwHandleType )0U, /* HwHandle */ /* Mailbox - Hw object in the controller*/
     .CanHwObjectCount = (uint16 )2U,
-    .CanObjectType = (Can_MailboxDirectionType )RECEIVE,
+    .CanObjectType = (Can_MailboxDirectionType )CAN_RECEIVE,
     .CanControllerRef = (const Can_ControllerType* )&CanConfigSet_CanController_0,
     .CanFdPaddingValue = (uint8 )0U,
     .CanHardwareObjectUsesPolling = (boolean )FALSE,

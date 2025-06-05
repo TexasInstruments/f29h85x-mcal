@@ -43,7 +43,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -74,7 +74,7 @@ MCAL_LIB_INT_ISR(Spi_A_RxISR)
 #elif defined(SPI_SPIA_ISR_CAT2)
 ISR(Spi_A_RxISR)
 #else
-    #error "Invalid interrupt category"
+#error "Invalid interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -91,14 +91,13 @@ MCAL_LIB_INT_ISR(Spi_B_RxISR)
 #elif defined(SPI_SPIB_ISR_CAT2)
 ISR(Spi_B_RxISR)
 #else
-    #error "Invalid interrupt category"
+#error "Invalid interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
     Spi_ProcessRxEvent(SPI_UNIT_SPIB);
 }
 #endif
-
 
 /* define ISR functions for SPI C */
 #if defined(SPI_UNIT_SPIC_ACTIVE)
@@ -109,14 +108,13 @@ MCAL_LIB_INT_ISR(Spi_C_RxISR)
 #elif defined(SPI_SPIC_ISR_CAT2)
 ISR(Spi_C_RxISR)
 #else
-    #error "Invalid interrupt category"
+#error "Invalid interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
     Spi_ProcessRxEvent(SPI_UNIT_SPIC);
 }
 #endif
-
 
 /* define ISR functions for SPI D */
 #if defined(SPI_UNIT_SPID_ACTIVE)
@@ -127,14 +125,13 @@ MCAL_LIB_INT_ISR(Spi_D_RxISR)
 #elif defined(SPI_SPID_ISR_CAT2)
 ISR(Spi_D_RxISR)
 #else
-    #error "Invalid interrupt category"
+#error "Invalid interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
     Spi_ProcessRxEvent(SPI_UNIT_SPID);
 }
 #endif
-
 
 /* define ISR functions for SPI E */
 #if defined(SPI_UNIT_SPIE_ACTIVE)
@@ -145,7 +142,7 @@ MCAL_LIB_INT_ISR(Spi_E_RxISR)
 #elif defined(SPI_SPIE_ISR_CAT2)
 ISR(Spi_E_RxISR)
 #else
-    #error "Invalid interrupt category"
+#error "Invalid interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */

@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@
  /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
@@ -92,11 +92,11 @@ Mcu_InitClock(McuConf_McuClockSettingConfig_McuClockSettingConfig_Osc2);
 while (MCU_PLL_LOCKED != Mcu_GetPllStatus()){}
 
 Mcu_DistributePllClock();
-    
+
     Port_Init(NULL_PTR);
-    
+
     Cdd_Adc_Init(NULL_PTR);
-    
+
 }
 
 #define ECUM_STOP_SEC_CONFIG_DATA

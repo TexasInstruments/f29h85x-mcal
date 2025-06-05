@@ -1,4 +1,4 @@
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
@@ -17,19 +17,20 @@
  *  File:       Cdd_Sent_Standard.c
  *  Generator:  None
  *
- *  Description:  This file contains Cdd_Sent standard example to read the data from the standard sent sensor .
- * 
- * This program will receive sensor data from a magnetic angle sensor using the SENT communication protocol. 
- * This data can be further utilized to convert and get the sensed information.
- * 
- * The sensor sends out a signal that is made up of a string of pulses with data encoded as falling to falling edge periods. 
- * It happens independently of any receiver module activity, which occurs without the receiver module sending a sync signal. 
- * The modulated signal with a constant amplitude voltage and an evaluation of the time interval between two falling edges 
- * (a single edge)
- *  is delivered in units of 4 bits (1 nibble), which can represent values ranging from 0 to 15.
- * 
+ *  Description:  This file contains Cdd_Sent standard example to read the data from the standard
+ *sent sensor .
+ *
+ * This program will receive sensor data from a magnetic angle sensor using the SENT communication
+ *protocol. This data can be further utilized to convert and get the sensed information.
+ *
+ * The sensor sends out a signal that is made up of a string of pulses with data encoded as falling
+ *to falling edge periods. It happens independently of any receiver module activity, which occurs
+ *without the receiver module sending a sync signal. The modulated signal with a constant amplitude
+ *voltage and an evaluation of the time interval between two falling edges (a single edge) is
+ *delivered in units of 4 bits (1 nibble), which can represent values ranging from 0 to 15.
+ *
  * This example configures SENT module to receive 6 Data-nibble per frame for fast channel.
- * 
+ *
  * \b External \b Connections \n
  *    - Connect GPIO15 to sensor's SENT channel 1 pin
  *********************************************************************************************************************/
@@ -70,7 +71,7 @@
  *********************************************************************************************************************/
 #if (STD_ON == CDD_SENT_CFG_GET_VERSION_INFO_API)
 /*  version info variable */
-Std_VersionInfoType       Cdd_Sent_VersionInfo;
+Std_VersionInfoType Cdd_Sent_VersionInfo;
 #endif
 volatile uint32 data_received_count = 0;
 /*********************************************************************************************************************
@@ -94,7 +95,7 @@ int main(void)
     EcuM_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("Cdd_Sent Driver Sample Application - Starts!!!\n\r");
-	/*  get version Info */
+    /*  get version Info */
 #if (STD_ON == CDD_SENT_CFG_GET_VERSION_INFO_API)
     Cdd_Sent_GetVersionInfo(&Cdd_Sent_VersionInfo);
     AppUtils_Printf("Cdd_Sent MCAL Version Info\n");
@@ -111,36 +112,35 @@ int main(void)
     AppUtils_Printf("Cdd Sent Drive initilized\n");
 
     /* Wait for 1 seconds*/
-    McalLib_Delay(CDD_SENT_TIME_DELAY_PER_SECOND*1);
+    McalLib_Delay(CDD_SENT_TIME_DELAY_PER_SECOND * 1);
 
-    if(data_received_count >= 2)
+    if (data_received_count >= 2)
     {
         return_value = E_OK;
         AppUtils_Printf("Cdd_Sent_Standard: Sample Application - Completes successfully !!!\n");
-        
     }
     else
     {
         return_value = E_NOT_OK;
         AppUtils_Printf("Cdd_Sent_Standard: Sample Application - FAILED !!!\n");
     }
-    
+
     AppUtils_Printf("De-Initilizing Cdd_Sent Driver\n");
-    (void) Cdd_Sent_Deinit();
+    (void)Cdd_Sent_Deinit();
 
     return return_value;
 }
 
 void CddSent_Callback(PduIdType id, const PduInfoType *PduInfoPtr)
 {
-    uint32 * data = (uint32 *)PduInfoPtr->SduDataPtr;
-    if(PduInfoPtr->SduLength > 2)
+    uint32 *data = (uint32 *)PduInfoPtr->SduDataPtr;
+    if (PduInfoPtr->SduLength > 2)
     {
-            AppUtils_Printf("Id received  from Fast channel : %d\n", id);
-            AppUtils_Printf("Timestamp received  from Fast channel : %d\n", *data);
-            AppUtils_Printf("Data received  from Fast channel : %d\n", *(data+1));
+        AppUtils_Printf("Id received  from Fast channel : %d\n", id);
+        AppUtils_Printf("Timestamp received  from Fast channel : %d\n", *data);
+        AppUtils_Printf("Data received  from Fast channel : %d\n", *(data + 1));
     }
-    else 
+    else
     {
         AppUtils_Printf("Id received  from Slow channel : %d\n", id);
         AppUtils_Printf("Data received  from Slow channel : %d\n", *data);
@@ -150,7 +150,7 @@ void CddSent_Callback(PduIdType id, const PduInfoType *PduInfoPtr)
 
 void CddSent_Error_Callback()
 {
-        AppUtils_Printf("Error data received \n");
+    AppUtils_Printf("Error data received \n");
 }
 /*********************************************************************************************************************
  *  End of File: Cdd_Sent_Standard.c

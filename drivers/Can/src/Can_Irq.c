@@ -17,13 +17,13 @@
  *  File:       Can_Irq.c
  *  Generator:  None
  *
- *  Description:  This file contains controller dependent local functions and private functions 
+ *  Description:  This file contains controller dependent local functions and private functions
  *                to be used in Can.c.
  *********************************************************************************************************************/
 /*
  *Design: MCAL-22825, MCAL-22842, MCAL-22827, MCAL-22880, MCAL-23013, MCAL-23010
  */
- 
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -31,7 +31,6 @@
 #include "Can.h"
 #include "Can_Priv.h"
 #include "Mcal_Lib_Cpu.h"
-
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -61,11 +60,9 @@
  *  Local Function Prototypes
  *********************************************************************************************************************/
 
-
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
-
 
 /*********************************************************************************************************************
  *  External Functions Definition
@@ -91,7 +88,7 @@ ISR(Can_1_Int0ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN1,MCAN_INT_LINE_0);
+    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN1, MCAN_INT_LINE_0);
 }
 
 /*Design: MCAL-22839 */
@@ -106,8 +103,7 @@ ISR(Can_1_Int1ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN1,MCAN_INT_LINE_1);
-
+    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN1, MCAN_INT_LINE_1);
 }
 
 #if defined(CAN_MCAN1_ISR_CAT1_RTINT)
@@ -136,7 +132,7 @@ ISR(Can_2_Int0ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN2,MCAN_INT_LINE_0);
+    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN2, MCAN_INT_LINE_0);
 }
 
 /*Design: MCAL-22839 */
@@ -151,7 +147,7 @@ ISR(Can_2_Int1ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN2,MCAN_INT_LINE_1);
+    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN2, MCAN_INT_LINE_1);
 }
 
 #if defined(CAN_MCAN2_ISR_CAT1_RTINT)
@@ -167,7 +163,6 @@ ISR(Can_2_WakeUpISR)
 }
 #endif
 
-
 #if defined(CAN_MCAN3_ENABLE)
 /*Design: MCAL-22839 */
 #if defined(CAN_MCAN3_ISR_CAT1_RTINT)
@@ -181,7 +176,7 @@ ISR(Can_3_Int0ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN3,MCAN_INT_LINE_0);
+    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN3, MCAN_INT_LINE_0);
 }
 
 /*Design: MCAL-22839 */
@@ -196,7 +191,7 @@ ISR(Can_3_Int1ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN3,MCAN_INT_LINE_1);
+    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN3, MCAN_INT_LINE_1);
 }
 
 #if defined(CAN_MCAN3_ISR_CAT1_RTINT)
@@ -212,7 +207,6 @@ ISR(Can_3_WakeUpISR)
 }
 #endif
 
-
 #if defined(CAN_MCAN4_ENABLE)
 /*Design: MCAL-22839 */
 #if defined(CAN_MCAN4_ISR_CAT1_RTINT)
@@ -226,7 +220,7 @@ ISR(Can_4_Int0ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN4,MCAN_INT_LINE_0);
+    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN4, MCAN_INT_LINE_0);
 }
 
 /*Design: MCAL-22839 */
@@ -241,7 +235,7 @@ ISR(Can_4_Int1ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN4,MCAN_INT_LINE_1);
+    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN4, MCAN_INT_LINE_1);
 }
 
 #if defined(CAN_MCAN4_ISR_CAT1_RTINT)
@@ -257,7 +251,6 @@ ISR(Can_4_WakeUpISR)
 }
 #endif
 
-
 #if defined(CAN_MCAN5_ENABLE)
 /*Design: MCAL-22839 */
 #if defined(CAN_MCAN5_ISR_CAT1_RTINT)
@@ -271,7 +264,7 @@ ISR(Can_5_Int0ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN5,MCAN_INT_LINE_0);
+    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN5, MCAN_INT_LINE_0);
 }
 
 /*Design: MCAL-22839 */
@@ -286,7 +279,7 @@ ISR(Can_5_Int1ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN5,MCAN_INT_LINE_1);
+    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN5, MCAN_INT_LINE_1);
 }
 
 #if defined(CAN_MCAN5_ISR_CAT1_RTINT)
@@ -302,7 +295,6 @@ ISR(Can_5_WakeUpISR)
 }
 #endif
 
-
 #if defined(CAN_MCAN6_ENABLE)
 /*Design: MCAL-22839 */
 #if defined(CAN_MCAN6_ISR_CAT1_RTINT)
@@ -316,7 +308,7 @@ ISR(Can_6_Int0ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN6,MCAN_INT_LINE_0);
+    Can_ProcessLine0ISR(CAN_CONTROLLER_INSTANCE_MCAN6, MCAN_INT_LINE_0);
 }
 
 /*Design: MCAL-22839 */
@@ -331,7 +323,7 @@ ISR(Can_6_Int1ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN6,MCAN_INT_LINE_1);
+    Can_ProcessLine1ISR(CAN_CONTROLLER_INSTANCE_MCAN6, MCAN_INT_LINE_1);
 }
 
 #if defined(CAN_MCAN6_ISR_CAT1_RTINT)
@@ -346,8 +338,6 @@ ISR(Can_6_WakeUpISR)
     Can_ProcessWakeUpISR(CAN_CONTROLLER_INSTANCE_MCAN6);
 }
 #endif
-
-
 
 #define CAN_STOP_SEC_ISR_CODE
 #include "Can_MemMap.h"

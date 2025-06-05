@@ -81,7 +81,7 @@ extern "C" {
 
 /**  \brief Pre Compile config macro name. */
 #define FLS_INIT_CONFIG_PC       Fls_FlsConfigSet
-       
+
 /** \brief Flash Sectors (0~31) protection */
 #define FLS_CMDWEPROTA                 (0U)
 
@@ -149,9 +149,6 @@ extern "C" {
 /** \brief Flash wait states */
 #define FLS_WAIT_STATES         (3U)
 
-/** \brief Counter ID for counter used to count wait ticks */
-#define FLS_OS_COUNTER_ID              ((Os_CounterIdType)0U)
-
 /** \brief Max Erase time in microsec*/
 #define FLS_MAX_ERASE_TIME                (1003000U)
 
@@ -182,7 +179,7 @@ extern const struct Fls_ConfigType_s Fls_FlsConfigSet;
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

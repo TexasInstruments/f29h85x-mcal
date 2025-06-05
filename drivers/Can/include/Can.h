@@ -17,14 +17,14 @@
  *  File:       Can.h
  *  Generator:  None
  *
- *  Description:  This file contains interface header for Can Driver functions                        
+ *  Description:  This file contains interface header for Can Driver functions
  *********************************************************************************************************************/
 /*
  *Design: MCAL-22825, MCAL-22842, MCAL-22827, MCAL-22880, MCAL-23013, MCAL-23010
  */
 #ifndef CAN_H
 #define CAN_H
- 
+
 /**
  * \defgroup CAN Can API GUIDE Header file
  * @{
@@ -58,34 +58,33 @@ extern "C" {
  * Defines for CAN Driver version used for compatibility checks.
  */
 /** \brief  Driver Implementation Major Version. */
-#define CAN_SW_MAJOR_VERSION    (1U)
+#define CAN_SW_MAJOR_VERSION (1U)
 /** \brief  Driver Implementation Minor Version. */
-#define CAN_SW_MINOR_VERSION    (1U)
+#define CAN_SW_MINOR_VERSION (1U)
 /** \brief  Driver Implementation Patch Version. */
-#define CAN_SW_PATCH_VERSION    (0U)
+#define CAN_SW_PATCH_VERSION (0U)
 
-/** 
- * Defines for CAN Driver AUTOSAR version used for compatibility checks. 
+/**
+ * Defines for CAN Driver AUTOSAR version used for compatibility checks.
  */
 /** \brief  AUTOSAR Major version specification implemented by CAN Driver */
-#define CAN_AR_RELEASE_MAJOR_VERSION    (4U)  
+#define CAN_AR_RELEASE_MAJOR_VERSION (4U)
 
 /** \brief AUTOSAR Minor version specification implemented by CAN Driver */
-#define CAN_AR_RELEASE_MINOR_VERSION    (3U)
+#define CAN_AR_RELEASE_MINOR_VERSION (3U)
 
-/** \brief AUTOSAR Patch version specification implemented by CAN Driver.*/   
-#define CAN_AR_RELEASE_REVISION_VERSION (1U)  
+/** \brief AUTOSAR Patch version specification implemented by CAN Driver.*/
+#define CAN_AR_RELEASE_REVISION_VERSION (1U)
 
 /**
  * \brief CAN Driver ID Info.
  */
 /** \brief  Texas Instruments Vendor ID. */
-#define CAN_VENDOR_ID       ((uint16) 44U)
+#define CAN_VENDOR_ID ((uint16)44U)
 /** \brief  CAN Driver Module ID. */
-#define CAN_MODULE_ID       ((uint16) 80U)
+#define CAN_MODULE_ID ((uint16)80U)
 /** \brief  CAN Instance ID. */
-#define CAN_INSTANCE_ID     ((uint16) 0U)
-
+#define CAN_INSTANCE_ID ((uint16)0U)
 
 /**
  * \brief The Service Id is one of the argument to Det_ReportError function and is
@@ -93,47 +92,47 @@ extern "C" {
  */
 
 /** \brief Service ID - Can_Init(). */
-#define CAN_SID_INIT                0x00U
+#define CAN_SID_INIT 0x00U
 /** \brief Service ID - Can_MainFunction_Write(). */
-#define CAN_SID_MAINFUNC_WRITE      0x01U
+#define CAN_SID_MAINFUNC_WRITE 0x01U
 /** \brief Service ID - Can_SetControllerMode(). */
-#define CAN_SID_SETCTR              0x03U
+#define CAN_SID_SETCTR 0x03U
 /** \brief Service ID - Can_DisableControllerInterrupts(). */
-#define CAN_SID_DIINT               0x04U
+#define CAN_SID_DIINT 0x04U
 /** \brief Service ID - Can_EnableControllerInterrupts(). */
-#define CAN_SID_ENINT               0x05U
+#define CAN_SID_ENINT 0x05U
 /** \brief Service ID - Can_Write(). */
-#define CAN_SID_WRITE               0x06U
+#define CAN_SID_WRITE 0x06U
 /** \brief Service ID - Can_GetVersionInfo(). */
-#define CAN_SID_GET_VERSION_INFO    0x07U
+#define CAN_SID_GET_VERSION_INFO 0x07U
 /** \brief Service ID - Can_MainFunction_Read(). */
-#define CAN_SID_MAINFUNC_READ       0x08U
+#define CAN_SID_MAINFUNC_READ 0x08U
 /** \brief Service ID - Can_MainFunction_BusOff(). */
-#define CAN_SID_MAINFUNC_BO         0x09U
+#define CAN_SID_MAINFUNC_BO 0x09U
 /** \brief Service ID - Can_MainFunction_Wakeup(). */
-#define CAN_SID_MAINFUNC_WU         0x0AU
+#define CAN_SID_MAINFUNC_WU 0x0AU
 /** \brief Service ID - Can_CheckWakeup(). */
-#define CAN_SID_CKWAKEUP            0x0BU
+#define CAN_SID_CKWAKEUP 0x0BU
 /** \brief Service ID - Can_MainFunction_Mode(). */
-#define CAN_SID_MAINFUNC_MODE       0x0CU
+#define CAN_SID_MAINFUNC_MODE 0x0CU
 /** \brief Service ID - Can_ChangeBaudrate(). */
-#define CAN_SID_CHNGBAUDRATE        0x0DU
+#define CAN_SID_CHNGBAUDRATE 0x0DU
 /** \brief Service ID - Can_CheckBaudrate(). */
-#define CAN_SID_CHKBAUDRATE         0x0EU
+#define CAN_SID_CHKBAUDRATE 0x0EU
 /** \brief Service ID - Can_SetBaudRate(). */
-#define CAN_SID_SETBAUDRATE         0x0FU
+#define CAN_SID_SETBAUDRATE 0x0FU
 /** \brief Service ID - Can_DeInit(). */
-#define CAN_SID_DEINIT              0x10U
+#define CAN_SID_DEINIT 0x10U
 /** \brief Service ID - Can_GetControllerErrorState(). */
-#define CAN_SID_GETCNTRERRSTATE     0x11U
+#define CAN_SID_GETCNTRERRSTATE 0x11U
 /** \brief Service ID - Can_GetControllerMode(). */
-#define CAN_SID_GETCNTRMODE         0x12U
+#define CAN_SID_GETCNTRMODE 0x12U
 /** \brief Service ID - Can_ProcessISR(). */
-#define CAN_SID_PROCESSISR          0x13U
+#define CAN_SID_PROCESSISR 0x13U
 /** \brief Service ID - Can_SetIcomConfiguration(). */
-#define CAN_SID_ICOMCONFIG          0x21U
+#define CAN_SID_ICOMCONFIG 0x21U
 /** \brief Service ID - Can_PeriodicReadback(). */
-#define CAN_SID_READBACK            0x22U
+#define CAN_SID_READBACK 0x22U
 
 /*
  *Design: MCAL-22929
@@ -142,59 +141,59 @@ extern "C" {
 
 /** \brief NULL_PTR passed as parameter. */
 #ifndef CAN_E_PARAM_POINTER
-#define CAN_E_PARAM_POINTER          0x01U
+#define CAN_E_PARAM_POINTER 0x01U
 #endif
 
 /** \brief Invalid Controller Handle. */
 #ifndef CAN_E_PARAM_HANDLE
-#define CAN_E_PARAM_HANDLE           0x02U
+#define CAN_E_PARAM_HANDLE 0x02U
 #endif
 
 /** \brief Invalid length of msg. */
 #ifndef CAN_E_PARAM_DATA_LENGTH
-#define CAN_E_PARAM_DATA_LENGTH      0x03U
+#define CAN_E_PARAM_DATA_LENGTH 0x03U
 #endif
 
 /** \brief Invalid controller id. */
 #ifndef CAN_E_PARAM_CONTROLLER
-#define CAN_E_PARAM_CONTROLLER       0x04U
+#define CAN_E_PARAM_CONTROLLER 0x04U
 #endif
 
 /** \brief Error due to API invoked without performing Can_Init(). */
 #ifndef CAN_E_UNINIT
-#define CAN_E_UNINIT                 0x05U
+#define CAN_E_UNINIT 0x05U
 #endif
 
 /** \brief Error during Controller state transition. */
 #ifndef CAN_E_TRANSITION
-#define CAN_E_TRANSITION             0x06U
+#define CAN_E_TRANSITION 0x06U
 #endif
 
 /** \brief Invalid Baudrate configuration. */
 #ifndef CAN_E_PARAM_BAUDRATE
-#define CAN_E_PARAM_BAUDRATE         0x07U
+#define CAN_E_PARAM_BAUDRATE 0x07U
 #endif
 
 /** \brief Invalid ICOM configuration Id */
 #ifndef CAN_E_ICOM_CONFIG_INVALID
-#define CAN_E_ICOM_CONFIG_INVALID    0x08U
+#define CAN_E_ICOM_CONFIG_INVALID 0x08U
 #endif
 
 /** \brief Error codes returned by Can functions - Run Time Errors. */
 /** \brief Data lost/dropped. */
 #ifndef CAN_E_DATALOST
-#define CAN_E_DATALOST               0x01U
+#define CAN_E_DATALOST 0x01U
 #endif
 
 /** \brief Icom config disable. */
-#define ICOM_CONFIG_DISABLE                (0U)
+#define CAN_ICOM_CONFIG_DISABLE (0U)
 
 /** \brief Extended id. */
-#define EXTENDED_ID (1U)
+#define CAN_EXTENDED_ID (1U)
 /** \brief Standard id. */
-#define STANDARD_ID (0U)
+#define CAN_STANDARD_ID (0U)
 /** \brief Mixed id. */
-#define MIXED_ID    (2U)
+#define CAN_MIXED_ID (2U)
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -209,11 +208,11 @@ extern "C" {
 typedef enum
 {
     /** \brief Interrupt */
-    INTERRUPT = 0x0U,
+    CAN_INTERRUPT = 0x0U,
     /** \brief Mixed  */
-    MIXED = 0x1U,
+    CAN_MIXED = 0x1U,
     /** \brief Polling */
-    POLLING = 0x2U
+    CAN_POLLING = 0x2U
 } Can_ProcessingType;
 
 /*
@@ -234,11 +233,10 @@ typedef enum
 typedef enum
 {
     /** \brief Full  */
-    FULL = 0x0U,
+    CAN_FULL = 0x0U,
     /** \brief Basic  */
-    BASIC
-}
-Can_HandleType;
+    CAN_BASIC
+} Can_HandleType;
 
 /*
  *Design: MCAL-24243
@@ -261,12 +259,12 @@ typedef enum
 
 } Can_ControllerInstance;
 
-
 /*
  *Design: MCAL-24244
  */
 /** \brief Can Main Function RW Period Ref Type Identifier */
-typedef struct {
+typedef struct
+{
     /** \brief ID */
     uint16 ID;
 } Can_MainFunctionRWPeriodRefType;
@@ -278,9 +276,8 @@ typedef struct {
 typedef struct Can_MaskType_s
 {
     /** \brief  Filter mask value. */
-   uint32 MaskValue;
+    uint32 MaskValue;
 } Can_MaskType;
-
 
 /*
  *Design: MCAL-24246
@@ -289,9 +286,9 @@ typedef struct Can_MaskType_s
 typedef enum
 {
     /** \brief Mailbox is for receive */
-    RECEIVE = 0x0U,
-    /** \brief Mailbox is for transmit */ 
-    TRANSMIT
+    CAN_RECEIVE = 0x0U,
+    /** \brief Mailbox is for transmit */
+    CAN_TRANSMIT
 } Can_MailboxDirectionType;
 
 /*
@@ -311,7 +308,8 @@ typedef struct Can_CanConfigType_s
 } Can_CanConfigType;
 
 /*
- *Design: MCAL-22786, MCAL-22785, MCAL-22784, MCAL-22783, MCAL-22782, MCAL-22781, MCAL-22780, MCAL-24248
+ *Design: MCAL-22786, MCAL-22785, MCAL-22784, MCAL-22783, MCAL-22782, MCAL-22781, MCAL-22780,
+ *MCAL-24248
  */
 /** \brief  Structure defining the CAN FD data phase baud rate configuration */
 typedef struct Can_FdBaudConfigType_s
@@ -319,27 +317,28 @@ typedef struct Can_FdBaudConfigType_s
     /** \brief Transceiver Delay Compensation offset */
     uint16  CanControllerTrcvDelayCompensationOffset;
     /** \brief In KB */
-    uint16 CanControllerFdBaudRate;
+    uint16  CanControllerFdBaudRate;
     /** \brief Controller BRP value for Baud */
-    uint16 BrpValue;
+    uint16  BrpValue;
     /** \brief Prop Segement value */
-    uint8 CanControllerPropSeg;
+    uint8   CanControllerPropSeg;
     /** \brief Phase Segment 1 */
-    uint8 CanControllerSeg1;
+    uint8   CanControllerSeg1;
     /** \brief Phase Segment 2 */
-    uint8 CanControllerSeg2;
+    uint8   CanControllerSeg2;
     /** \brief Sync jump width */
-    uint8 CanControllerSyncJumpWidth;
+    uint8   CanControllerSyncJumpWidth;
     /** \brief Specifies if the bit rate switching shall be used for transmissions */
     boolean CanControllerTxBitRateSwitch;
     /** \brief TRUE = Enable Transmitter Delay Compensation */
     boolean TxDelayCompEnable;
     /** \brief Transmitter Delay Compensation Filter windown length (CAN module CLK cycles) */
-    uint8 TxDelayCompFilter;
+    uint8   TxDelayCompFilter;
 } Can_FdBaudConfigType;
 
 /*
- *Design: MCAL-22773, MCAL-22774, MCAL-22772, MCAL-22778, MCAL-22777, MCAL-22776, MCAL-22775, MCAL-24249
+ *Design: MCAL-22773, MCAL-22774, MCAL-22772, MCAL-22778, MCAL-22777, MCAL-22776, MCAL-22775,
+ *MCAL-24249
  */
 /** \brief  Can Controller Baud Rate Configuration definition */
 typedef struct Can_BaudConfigType_s
@@ -347,96 +346,97 @@ typedef struct Can_BaudConfigType_s
     /** \brief List of available Data phase Baud rates for CAN FD */
     Can_FdBaudConfigType BaudFdRateConfig;
     /** \brief Controller BRP value for Baud */
-    uint16 BrpValue;
+    uint16               BrpValue;
     /** \brief In KB */
-    uint16 CanControllerBaudRate;
+    uint16               CanControllerBaudRate;
     /** \brief Config ID */
-    uint8 CanControllerBaudRateConfigID;
+    uint8                CanControllerBaudRateConfigID;
     /** \brief Prop Segement value */
-    uint8 CanControllerPropSeg;
+    uint8                CanControllerPropSeg;
     /** \brief Phase Segment 1 */
-    uint8 CanControllerSeg1;
+    uint8                CanControllerSeg1;
     /** \brief Phase Segment 2 */
-    uint8 CanControllerSeg2;
+    uint8                CanControllerSeg2;
     /** \brief Sync jump width */
-    uint8 CanControllerSyncJumpWidth;
+    uint8                CanControllerSyncJumpWidth;
     /** \brief Baud Fd Enable */
-    boolean BaudFdEnable;
+    boolean              BaudFdEnable;
 
 } Can_BaudConfigType;
 
 /*
- *Design: MCAL-22760, MCAL-22761, MCAL-22763, MCAL-22764, MCAL-22765, MCAL-22766, MCAL-22767, MCAL-22768,
- *Design: MCAL-22769, MCAL-22771, MCAL-24250
+ *Design: MCAL-22760, MCAL-22761, MCAL-22763, MCAL-22764, MCAL-22765, MCAL-22766, MCAL-22767,
+ *MCAL-22768, Design: MCAL-22769, MCAL-22771, MCAL-24250
  */
 /** \brief  Can Controller Configuration definition */
 typedef struct Can_ControllerType_s
 {
     /** \brief Id as provided by GUI */
-    uint8 CanControllerId;
+    uint8                      CanControllerId;
     /** \brief Contoller is used=1 or not_used=0 */
-    boolean CanControllerActivation;
+    boolean                    CanControllerActivation;
     /** \brief Can Controller Instance */
-    Can_ControllerInstance CanControllerInstance;
+    Can_ControllerInstance     CanControllerInstance;
     /** \brief Pointer to CanReg structure */
-    uint32 CanControllerBaseAddress;
+    uint32                     CanControllerBaseAddress;
     /** \brief TRUE = Interrupt FALSE = Polling */
-    Can_ProcessingType CanBusoffProcessing;
+    Can_ProcessingType         CanBusoffProcessing;
     /** \brief TRUE = Interrupt FALSE = Polling */
-    Can_ProcessingType CanRxProcessing;
+    Can_ProcessingType         CanRxProcessing;
     /** \brief TRUE = Interrupt FALSE = Polling */
-    Can_ProcessingType CanTxProcessing;
+    Can_ProcessingType         CanTxProcessing;
     /** \brief TRUE = Enable Can_CheckWakeup API */
-    boolean CanWakeupFunctionalityAPI;
+    boolean                    CanWakeupFunctionalityAPI;
     /** \brief TRUE = Interrupt FALSE = Polling */
-    Can_ProcessingType CanWakeupProcessing;
+    Can_ProcessingType         CanWakeupProcessing;
     /** \brief Automatic wakeup via bus activity */
-    boolean CanWakeupSupport;
+    boolean                    CanWakeupSupport;
     /** \brief Wakeup source to be set */
-    EcuM_WakeupSourceType CanWakeupSourceRef;
+    EcuM_WakeupSourceType      CanWakeupSourceRef;
     /** \brief pointer to default Baud structure */
-    const Can_BaudConfigType *CanControllerDefaultBaudrate;
+    const Can_BaudConfigType*  CanControllerDefaultBaudrate;
     /** \brief List of available Baud rates */
-    const Can_BaudConfigType **BaudRateConfigList;
+    const Can_BaudConfigType** BaudRateConfigList;
     /** \brief HW specific config parameters */
-    Can_CanConfigType CanConfigParam;
+    Can_CanConfigType          CanConfigParam;
 
 } Can_ControllerType;
 
 /*
- *Design: MCAL-22799, MCAL-22796, MCAL-22800, MCAL-22795, MCAL-22794, MCAL-22793, MCAL-22792, MCAL-22791, MCAL-22790, 
- *Design: MCAL-22794, MCAL-22789, MCAL-22788
+ *Design: MCAL-22799, MCAL-22796, MCAL-22800, MCAL-22795, MCAL-22794, MCAL-22793, MCAL-22792,
+ *MCAL-22791, MCAL-22790, Design: MCAL-22794, MCAL-22789, MCAL-22788
  */
 /** \brief  Can mailbox configuration definition */
 typedef struct Can_MailboxType_s
 {
     /** \brief  CanHandleType 0=Full, 1=Basic */
-    uint8 CanHandleType;
+    uint8                           CanHandleType;
     /** \brief  CanIdType 0=standard 1=Extended */
-    Can_IdType CanIdType;
+    Can_IdType                      CanIdType;
     /** \brief  ID value extended will have MSB set */
-    uint32 CanHwFilterCode;
+    uint32                          CanHwFilterCode;
     /** \brief  CanObjectId - Holds handle Id */
-    uint16 CanObjectId;
+    uint16                          CanObjectId;
     /** \brief  Mailbox - Hw object in the controller */
-    Can_HwHandleType HwHandle;
+    Can_HwHandleType                HwHandle;
     /** \brief  Number of hardware objects used to implement one HOH */
-    uint16 CanHwObjectCount;
+    uint16                          CanHwObjectCount;
     /** \brief  CanObjectType - Direction of Mailbox */
-    Can_MailboxDirectionType CanObjectType;
+    Can_MailboxDirectionType        CanObjectType;
     /** \brief  Controller */
-    const Can_ControllerType *CanControllerRef;
+    const Can_ControllerType*       CanControllerRef;
     /** \brief  ptr to Mask for the RX filtering */
-    Can_MaskType CanHwFilterMask;
-    /** \brief  If PduInfo->SduLength does not match possible DLC values CanDrv will use the next higher valid DLC for
-                transmission with initialization of unused bytes to the value of the corresponding CanFdPaddingValue. */
-    Can_EventPin CanEventPin;
-    Can_StandardFilterType CanStandardFilterType;
-    uint8 CanFdPaddingValue;
+    Can_MaskType                    CanHwFilterMask;
+    /** \brief  If PduInfo->SduLength does not match possible DLC values CanDrv will use the next
+       higher valid DLC for transmission with initialization of unused bytes to the value of the
+       corresponding CanFdPaddingValue. */
+    Can_EventPin                    CanEventPin;
+    Can_StandardFilterType          CanStandardFilterType;
+    uint8                           CanFdPaddingValue;
     /** \brief  Trigger Transmit Enable/Disable */
-    boolean CanTriggerTransmitEnable;
+    boolean                         CanTriggerTransmitEnable;
     /** \brief  Whether HW Object uses polling */
-    boolean CanHardwareObjectUsesPolling;
+    boolean                         CanHardwareObjectUsesPolling;
     /** \brief Main Function Read/Write Period*/
     Can_MainFunctionRWPeriodRefType CanMainFunctionRWPeriodRef;
 
@@ -446,7 +446,7 @@ typedef struct Can_MailboxType_s
  *Design: MCAL-24252
  */
 /** \brief Icom signal operation type. */
-typedef enum 
+typedef enum
 {
     /** \brief AND */
     AND = 0U,
@@ -458,7 +458,7 @@ typedef enum
     SMALLER = 3U,
     /** \brief XOR */
     XOR = 4U,
-}Can_Icom_signal_operation_type;
+} Can_Icom_signal_operation_type;
 
 /*
  *Design: MCAL-24254
@@ -467,11 +467,11 @@ typedef enum
 typedef struct Can_IcomSignalConfigType_s
 {
     /** \brief Icom Signal Mask */
-    uint64 CanIcomSignalMask;
+    uint64                         CanIcomSignalMask;
     /** \brief Icom Signal Operation */
-     Can_Icom_signal_operation_type CanIcomSignalOperation;
+    Can_Icom_signal_operation_type CanIcomSignalOperation;
     /** \brief Icom Signal value*/
-    uint64 CanIcomSignalValue;
+    uint64                         CanIcomSignalValue;
 } Can_IcomSignalConfigType;
 
 /*
@@ -481,17 +481,17 @@ typedef struct Can_IcomSignalConfigType_s
 typedef struct Can_IcomRxMessageType_s
 {
     /** \brief Icom Meassage Id */
-    uint32 CanIcomMessageId;
+    uint32                   CanIcomMessageId;
     /** \brief Icom Payload Length Error */
-    boolean          CanIcomPayloadLengthError;
+    boolean                  CanIcomPayloadLengthError;
     /** \brief Icom Counter value */
-     uint16   CanIcomCounterValue;
+    uint16                   CanIcomCounterValue;
     /** \brief Icom Message Id Mask */
-     uint32  CanIcomMessageIdMask;
+    uint32                   CanIcomMessageIdMask;
     /** \brief Icom Missing Message Timer value */
-     uint32  CanIcomMissingMessageTimerValue;
+    uint32                   CanIcomMissingMessageTimerValue;
     /** \brief Signal Count */
-     uint16  SignalCount;
+    uint16                   SignalCount;
     /** \brief Icom Rx Message Signal Config */
     Can_IcomSignalConfigType CanIcomRxMessageSignalConfig[MAX_ICOM_RX_SIGNAL_COUNT];
 
@@ -506,15 +506,15 @@ typedef struct Can_IcomRxMessageType_s
 typedef struct Can_IcomConfigType_s
 {
     /** \brief List of enabled Controllers */
-    IcomConfigIdType CanIcomConfigId;
+    IcomConfigIdType      CanIcomConfigId;
     /** \brief Icom Wake ON Busoff */
-     boolean          CanIcomWakeOnBusOff;
+    boolean               CanIcomWakeOnBusOff;
     /** \brief Rx Message Count */
-     uint16    RxMessageCount;
+    uint16                RxMessageCount;
     /** \brief Icom Rx Message */
-     Can_IcomRxMessageType CanIcomRxMessage[MAX_ICOM_MESSAGES];
+    Can_IcomRxMessageType CanIcomRxMessage[MAX_ICOM_MESSAGES];
     /** \brief Icom Counter value */
-    uint32  CanIcomCounterValue;
+    uint32                CanIcomCounterValue;
 } Can_IcomConfigType;
 
 /*
@@ -522,7 +522,7 @@ typedef struct Can_IcomConfigType_s
  */
 /** \brief External data structure containing the overall
  *  initialization data for the CAN driver and SFR settings affecting all
- *  controllers. 
+ *  controllers.
  */
 typedef struct Can_ConfigType_s
 {
@@ -538,10 +538,9 @@ typedef struct Can_ConfigType_s
     uint32                     MaxBaudConfigID[KMAX_CONTROLLER];
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
     /** \brief Icom Configuration List */
-    const Can_IcomConfigType**      IcomConfigurationList;
+    const Can_IcomConfigType** IcomConfigurationList;
 #endif
 } Can_ConfigType;
-
 
 /** \brief  Can periodic readback register definition */
 typedef struct Can_PeriodicReadBackDataType_s
@@ -597,7 +596,7 @@ typedef struct Can_PeriodicReadBackDataType_s
     /** \brief Register data for MCAN_HPMS register */
     uint32 CanMcanHpms;
 
-}Can_PeriodicReadBackDataType;
+} Can_PeriodicReadBackDataType;
 
 /*
  *Design: MCAL-24253
@@ -608,11 +607,8 @@ typedef enum
     /** \brief Can module state when reset/power-up */
     CAN_UNINIT = 0U,
     /** \brief Can module state after initialization */
-    CAN_READY = 1U  
+    CAN_READY = 1U
 } Can_DrvState;
-
-
-
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -628,18 +624,17 @@ typedef enum
  * This service writes the version information of this module into the data
  * structure referenced by the parameter. If this parameter references
  * NULL_PTR, a development error is reported.
- * 
+ *
  * \param[out] versioninfo Pointer to where to store the version information of
- * this module.  
+ * this module.
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
-Can_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CAN_APPL_DATA) \
-                   versioninfo);
+FUNC(void, CAN_CODE)
+Can_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CAN_APPL_DATA) versioninfo);
 #endif
 
 /** \brief This function initializes the configuration.
@@ -666,7 +661,7 @@ FUNC(void, CAN_CODE) Can_Init(P2CONST(Can_ConfigType, AUTOMATIC, CAN_APPL_CONST)
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
+FUNC(void, CAN_CODE)
 Can_DeInit(void);
 
 #if (STD_ON == CAN_CFG_SET_BAUDRATE_API)
@@ -687,7 +682,7 @@ Can_DeInit(void);
  * \retval E_NOT_OK - Service request not accepted.
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) \
+FUNC(Std_ReturnType, CAN_CODE)
 Can_SetBaudrate(uint8 Controller, const uint16 BaudRateConfigID);
 #endif
 
@@ -708,7 +703,7 @@ Can_SetBaudrate(uint8 Controller, const uint16 BaudRateConfigID);
  *                     incorrect transition.
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) \
+FUNC(Std_ReturnType, CAN_CODE)
 Can_SetControllerMode(uint8 Controller, Can_ControllerStateType Transition);
 
 /** \brief This service disables all interrupts.
@@ -723,7 +718,7 @@ Can_SetControllerMode(uint8 Controller, Can_ControllerStateType Transition);
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
+FUNC(void, CAN_CODE)
 Can_DisableControllerInterrupts(uint8 Controller);
 
 /** \brief This service enables all allowed interrupts.
@@ -738,7 +733,7 @@ Can_DisableControllerInterrupts(uint8 Controller);
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
+FUNC(void, CAN_CODE)
 Can_EnableControllerInterrupts(uint8 Controller);
 
 #if (STD_ON == CAN_CFG_WAKEUP_FUNCTIONALITY_API)
@@ -756,7 +751,7 @@ Can_EnableControllerInterrupts(uint8 Controller);
  * \retval E_NOT_OK: API call has not been accepted.
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) \
+FUNC(Std_ReturnType, CAN_CODE)
 Can_CheckWakeup(uint8 Controller);
 #endif
 
@@ -765,7 +760,7 @@ Can_CheckWakeup(uint8 Controller);
  * This function gets the error state of the CAN controller.
  *
  * \param[in] Controller CAN controller, which is requested for ErrorState.
- * \param[in] ErrorStatePtr Pointer to a memory location, where the error state of the CAN 
+ * \param[in] ErrorStatePtr Pointer to a memory location, where the error state of the CAN
  *                      controller will be stored.
  * \pre None
  * \post None
@@ -774,8 +769,8 @@ Can_CheckWakeup(uint8 Controller);
  * \retval E_NOT_OK - Error state request has not been accepted..
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) Can_GetControllerErrorState(uint8 Controller, \
-                P2VAR(Can_ErrorStateType, AUTOMATIC, CAN_APPL_DATA) ErrorStatePtr);
+FUNC(Std_ReturnType, CAN_CODE)
+Can_GetControllerErrorState(uint8 Controller, P2VAR(Can_ErrorStateType, AUTOMATIC, CAN_APPL_DATA) ErrorStatePtr);
 
 /** \brief This service reports about the current status of the requested CAN controller.
  *
@@ -791,8 +786,8 @@ FUNC(Std_ReturnType, CAN_CODE) Can_GetControllerErrorState(uint8 Controller, \
  * \retval E_NOT_OK - Controller mode request has not been accepted.
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) Can_GetControllerMode(uint8 Controller, \
-            P2VAR(Can_ControllerStateType, AUTOMATIC, CAN_APPL_DATA) ControllerModePtr );
+FUNC(Std_ReturnType, CAN_CODE)
+Can_GetControllerMode(uint8 Controller, P2VAR(Can_ControllerStateType, AUTOMATIC, CAN_APPL_DATA) ControllerModePtr);
 
 /** \brief This service is called by CanIf to pass a CAN message to CanDrv
  * for transmission.
@@ -814,10 +809,8 @@ FUNC(Std_ReturnType, CAN_CODE) Can_GetControllerMode(uint8 Controller, \
  *                   Can_Write that can't be implemented re-entrant
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) Can_Write(uint8 Hth, 
-            P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo);
-
-
+FUNC(Std_ReturnType, CAN_CODE)
+Can_Write(uint8 Hth, P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo);
 
 /** \brief This service performs the polling of TX confirmation when
  *        CAN_TX_PROCESSING is set to POLLING.
@@ -833,9 +826,8 @@ FUNC(Std_ReturnType, CAN_CODE) Can_Write(uint8 Hth,
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
+FUNC(void, CAN_CODE)
 Can_MainFunction_Write(uint16 RWFuncID);
-
 
 /** \brief This service performs the polling of RX indications when
  *        CAN_RX_PROCESSING is set to POLLING.
@@ -851,7 +843,7 @@ Can_MainFunction_Write(uint16 RWFuncID);
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
+FUNC(void, CAN_CODE)
 Can_MainFunction_Read(uint16 RWFuncID);
 
 /** \brief This service performs the polling of bus-off events that are
@@ -867,7 +859,7 @@ Can_MainFunction_Read(uint16 RWFuncID);
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
+FUNC(void, CAN_CODE)
 Can_MainFunction_BusOff(void);
 
 /** \brief This function performs the polling of wake-up events that are
@@ -882,9 +874,8 @@ Can_MainFunction_BusOff(void);
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
+FUNC(void, CAN_CODE)
 Can_MainFunction_Wakeup(void);
-
 
 /** \brief This function performs the polling of CAN controller mode
  *        transitions.
@@ -899,11 +890,11 @@ Can_MainFunction_Wakeup(void);
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) \
+FUNC(void, CAN_CODE)
 Can_MainFunction_Mode(void);
 
-/** \brief This service shall change the Icom Configuration of a CAN controller to the 
- * requested one.  
+/** \brief This service shall change the Icom Configuration of a CAN controller to the
+ * requested one.
  *
  * \param[in] Controller CAN controller for which the status shall be changed
  * \param[in] ConfigurationId Requested Configuration
@@ -916,10 +907,10 @@ Can_MainFunction_Mode(void);
  *                   Configuration id.
  *
  *****************************************************************************/
-FUNC(Std_ReturnType, CAN_CODE) \
- Can_SetIcomConfiguration( uint8 Controller, IcomConfigIdType ConfigurationId);
+FUNC(Std_ReturnType, CAN_CODE)
+Can_SetIcomConfiguration(uint8 Controller, IcomConfigIdType ConfigurationId);
 
-/** \brief This service shall read all the statically configured registers 
+/** \brief This service shall read all the statically configured registers
  *
  * \param[in] Controller CAN controller for which the configured registers shall be read
  * \param[out] ReadBackRegisterdata pointer for the read back registers
@@ -929,10 +920,10 @@ FUNC(Std_ReturnType, CAN_CODE) \
  * \retval None
  *
  *****************************************************************************/
- FUNC(void, CAN_CODE) \
-Can_PeriodicReadback(uint8 Controller, \
-        P2VAR(Can_PeriodicReadBackDataType, AUTOMATIC, CAN_APPL_DATA) ReadBackRegisterdata);
- 
+FUNC(void, CAN_CODE)
+Can_PeriodicReadback(uint8 Controller,
+                     P2VAR(Can_PeriodicReadBackDataType, AUTOMATIC, CAN_APPL_DATA) ReadBackRegisterdata);
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

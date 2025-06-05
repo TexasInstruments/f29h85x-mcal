@@ -8,7 +8,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@ extern "C" {
 #define ECUM_CFG_PATCH_VERSION                 (0U)
 
 /* Number of wakeup events configured in EcuM wakeup source .*/
-#define ECUM_CFG_WAKEUP_EVENT_COUNT     (0U) 
+#define ECUM_CFG_WAKEUP_EVENT_COUNT     (0U)
 
 #define ECUM_PRE_COMPILE_VARIANT   (STD_ON)
 

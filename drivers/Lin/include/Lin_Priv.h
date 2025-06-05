@@ -29,7 +29,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -45,41 +45,41 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-/* 
+/*
  *Design: MCAL-25541, MCAL-25542, MCAL-25543
  */
 /** \brief Lin Interrupt Wakeup Flag*/
-#define LIN_INT_WAKEUP                      (0x00000002U)
+#define LIN_INT_WAKEUP (0x00000002U)
 /** \brief Time out */
-#define LIN_INT_TO                          (0x00000010U) 
+#define LIN_INT_TO (0x00000010U)
 /** \brief Time out after wakeup signal */
-#define LIN_INT_TOAWUS                      (0x00000040U) 
+#define LIN_INT_TOAWUS (0x00000040U)
 /** \brief Time out after 3 wakeup signals */
-#define LIN_INT_TOA3WUS                     (0x00000080U) 
+#define LIN_INT_TOA3WUS (0x00000080U)
 /** \brief Transmit buffer ready */
-#define LIN_INT_TX                          (0x00000100U) 
+#define LIN_INT_TX (0x00000100U)
 /** \brief Receive buffer ready */
-#define LIN_INT_RX                          (0x00000200U) 
+#define LIN_INT_RX (0x00000200U)
 /** \brief Received matching identifier */
-#define LIN_INT_ID                          (0x00002000U) 
+#define LIN_INT_ID (0x00002000U)
 /** \brief Parity error */
-#define LIN_INT_PE                          (0x01000000U) 
+#define LIN_INT_PE (0x01000000U)
 /** \brief Overrun error */
-#define LIN_INT_OE                          (0x02000000U) 
+#define LIN_INT_OE (0x02000000U)
 /** \brief Framing error */
-#define LIN_INT_FE                          (0x04000000U) 
+#define LIN_INT_FE (0x04000000U)
 /** \brief No response error */
-#define LIN_INT_NRE                         (0x08000000U) 
+#define LIN_INT_NRE (0x08000000U)
 /** \brief Inconsistent sync field error */
-#define LIN_INT_ISFE                        (0x10000000U) 
+#define LIN_INT_ISFE (0x10000000U)
 /** \brief Checksum error */
-#define LIN_INT_CE                          (0x20000000U) 
+#define LIN_INT_CE (0x20000000U)
 /** \brief Physical bus error */
-#define LIN_INT_PBE                         (0x40000000U) 
+#define LIN_INT_PBE (0x40000000U)
 /** \brief Bit error */
-#define LIN_INT_BE                          (0x80000000U) 
+#define LIN_INT_BE (0x80000000U)
 /** \brief All interrupts */
-#define LIN_INT_ALL                         (0xFF0023D2U) 
+#define LIN_INT_ALL (0xFF0023D2U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -89,12 +89,12 @@ extern "C" {
  * Exported Type Declarations
  *********************************************************************************************************************/
 
-/* 
+/*
  *Design: MCAL-25688
  */
 /** \brief Enum of Channel Activity Status */
 typedef enum Lin_ChannelActivityStatusTag
-{   
+{
     /** \brief Idle state. */
     LIN_CHANNEL_IDLE,
     /** \brief Transmission started. */
@@ -103,12 +103,12 @@ typedef enum Lin_ChannelActivityStatusTag
     LIN_CHANNEL_RX_STARTED,
 } Lin_ChannelActivityStatusType;
 
-/* 
+/*
  *Design: MCAL-25689
  */
 /** \brief Enum of Channel Network Status */
 typedef enum Lin_ChannelNetworkStatusTag
-{ 
+{
     /** \brief Channel is operational. */
     LIN_CHANNEL_OPERATIONAL,
     /** \brief Sleep state pending. */
@@ -117,12 +117,12 @@ typedef enum Lin_ChannelNetworkStatusTag
     LIN_CHANNEL_SLEEP
 } Lin_ChannelNetworkStatusType;
 
-/* 
+/*
  *Design: MCAL-25690
  */
 /** \brief Channel Status type structure */
 typedef struct Lin_ChannelStatusTag
-{   
+{
     /** \brief Enum of Channel Activity Status. */
     Lin_ChannelActivityStatusType linChannelActivityStatus;
 
@@ -144,129 +144,131 @@ typedef struct Lin_ChannelStatusTag
  * \pre None
  * \post None
  * \return returnValue
- * \retval E_OK: No error has occurred during execution of the API 
+ * \retval E_OK: No error has occurred during execution of the API
  * \retval E_NOT_OK: An error has occurred during execution of the API
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, LIN_CODE) Lin_InitInternal(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_APPL_CONST) Lin_ConfigPtr);
+FUNC(Std_ReturnType, LIN_CODE)
+Lin_InitInternal(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_APPL_CONST) Lin_ConfigPtr);
 
-
-/** \brief Lin_CheckWakeupInternal - This function checks if a wakeup has occurred on the addressed LIN channel.
+/** \brief Lin_CheckWakeupInternal - This function checks if a wakeup has occurred on the addressed
+ *LIN channel.
  *
  * \param[in] Channel LIN channel to be addressed.
  * \param[out] None
  * \pre None
  * \post None
  * \return returnValue
- * \retval E_OK: No error has occurred during execution of the API 
+ * \retval E_OK: No error has occurred during execution of the API
  * \retval E_NOT_OK: An error has occurred during execution of the API
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, LIN_CODE) Lin_CheckWakeupInternal(uint8 Channel);
 
-
-/** \brief Lin_WakeupProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.
- * 
+/** \brief Lin_WakeupProcess - Generates a wake up pulse and sets the channel state to
+ *LIN_CH_OPERATIONAL.
+ *
  * \param[in] Channel LIN channel to be addressed.
  * \param[out] None
  * \pre None
  * \post None
  * \return return_value
  * \retval E_OK: Wake-up request has been accepted
- * \retval E_NOT_OK: Wake-up request has not been accepted, development or production error occurred.
+ * \retval E_NOT_OK: Wake-up request has not been accepted, development or production error
+ *occurred.
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, LIN_CODE) Lin_WakeupProcess(uint8 Channel);
 
-
-/** \brief Lin_WakeupInternalProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL 
- *         without generating a wake up pulse.
- * 
+/** \brief Lin_WakeupInternalProcess - Generates a wake up pulse and sets the channel state to
+ *LIN_CH_OPERATIONAL without generating a wake up pulse.
+ *
  * \param[in] Channel LIN channel to be addressed.
  * \param[out] None
  * \pre None
  * \post None
  * \return return_value
  * \retval E_OK: Wake-up request has been accepted
- * \retval E_NOT_OK: Wake-up request has not been accepted, development or production error occurred.
+ * \retval E_NOT_OK: Wake-up request has not been accepted, development or production error
+ *occurred.
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, LIN_CODE) Lin_WakeupInternalProcess(uint8 Channel);
 
 /** \brief Lin_GetStatusInternalProcess - Gets the status of the LIN driver.
- * 
+ *
  * \param[in] Channel LIN channel to be addressed.
  * \param[in] lin_cnt_base_addr Base address of the lin
- * \param[out] Lin_SduPtr Pointer to pointer to a shadow buffer or memory mapped LIN Hardware receive buffer where the 
- *                       current SDU is stored.
+ * \param[out] Lin_SduPtr Pointer to pointer to a shadow buffer or memory mapped LIN Hardware
+ *receive buffer where the current SDU is stored.
  * \pre None
  * \post None
  * \return return_value
- * \retval LIN_NOT_OK: Development or production error occurred 
- * \retval LIN_TX_OK: Successful transmission 
- * \retval LIN_TX_BUSY: Ongoing transmission (Header or Response) 
- * \retval LIN_TX_HEADER_ERROR: Erroneous header transmission such as: 
- *                      - Mismatch between sent and read back data 
- *                      - Identifier parity error or Physical bus error 
- * \retval LIN_TX_ERROR: Erroneous response transmission such as: 
- *                      - Mismatch between sent and read back data 
- *                      - Physical bus error 
- * \retval LIN_RX_OK: Reception of correct response 
- * \retval LIN_RX_BUSY: Ongoing reception: at least one response byte has been received, 
- *                      but the checksum byte has not been received 
- * \retval LIN_RX_ERROR: Erroneous response reception such as: 
- *                      - Framing error 
- *                      - Overrun error 
- *                      - Checksum error or Short response 
- * \retval LIN_RX_NO_RESPONSE: No response byte has been received so far 
- * \retval LIN_OPERATIONAL: Normal operation; the related LIN channel is woken up from the LIN_CH_SLEEP 
- *                      and no data has been sent. 
- * \retval LIN_CH_SLEEP: Sleep state operation; in this state wake-up detection from slave nodes is enabled.
+ * \retval LIN_NOT_OK: Development or production error occurred
+ * \retval LIN_TX_OK: Successful transmission
+ * \retval LIN_TX_BUSY: Ongoing transmission (Header or Response)
+ * \retval LIN_TX_HEADER_ERROR: Erroneous header transmission such as:
+ *                      - Mismatch between sent and read back data
+ *                      - Identifier parity error or Physical bus error
+ * \retval LIN_TX_ERROR: Erroneous response transmission such as:
+ *                      - Mismatch between sent and read back data
+ *                      - Physical bus error
+ * \retval LIN_RX_OK: Reception of correct response
+ * \retval LIN_RX_BUSY: Ongoing reception: at least one response byte has been received,
+ *                      but the checksum byte has not been received
+ * \retval LIN_RX_ERROR: Erroneous response reception such as:
+ *                      - Framing error
+ *                      - Overrun error
+ *                      - Checksum error or Short response
+ * \retval LIN_RX_NO_RESPONSE: No response byte has been received so far
+ * \retval LIN_OPERATIONAL: Normal operation; the related LIN channel is woken up from the
+ *LIN_CH_SLEEP and no data has been sent.
+ * \retval LIN_CH_SLEEP: Sleep state operation; in this state wake-up detection from slave nodes is
+ *enabled.
  *
  *********************************************************************************************************************/
 FUNC(Lin_StatusType, LIN_CODE)
-Lin_GetStatusInternalProcess(uint8 Channel, P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin_SduPtr, \
-                                        P2CONST(uint32, AUTOMATIC, LIN_CONFIG_DATA) lin_cnt_base_addr);
-
+Lin_GetStatusInternalProcess(uint8 Channel, P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin_SduPtr,
+                             P2CONST(uint32, AUTOMATIC, LIN_CONFIG_DATA) lin_cnt_base_addr);
 
 /** \brief Lin_GetStatusInternal - Gets the status of the LIN driver.
- * 
+ *
  * \param[in] Channel LIN channel to be addressed.
  * \param[in] lin_cnt_base_addr Base address of the lin
- * \param[out] Lin_SduPtr Pointer to pointer to a shadow buffer or memory mapped LIN Hardware receive buffer where the 
- *                       current SDU is stored.
+ * \param[out] Lin_SduPtr Pointer to pointer to a shadow buffer or memory mapped LIN Hardware
+ *receive buffer where the current SDU is stored.
  * \pre None
  * \post None
  * \return return_value
- * \retval LIN_NOT_OK: Development or production error occurred 
- * \retval LIN_TX_OK: Successful transmission 
- * \retval LIN_TX_BUSY: Ongoing transmission (Header or Response) 
- * \retval LIN_TX_HEADER_ERROR: Erroneous header transmission such as: 
- *                      - Mismatch between sent and read back data 
- *                      - Identifier parity error or Physical bus error 
- * \retval LIN_TX_ERROR: Erroneous response transmission such as: 
- *                      - Mismatch between sent and read back data 
- *                      - Physical bus error 
- * \retval LIN_RX_OK: Reception of correct response 
- * \retval LIN_RX_BUSY: Ongoing reception: at least one response byte has been received, 
- *                      but the checksum byte has not been received 
- * \retval LIN_RX_ERROR: Erroneous response reception such as: 
- *                      - Framing error 
- *                      - Overrun error 
- *                      - Checksum error or Short response 
- * \retval LIN_RX_NO_RESPONSE: No response byte has been received so far 
- * \retval LIN_OPERATIONAL: Normal operation; the related LIN channel is woken up from the LIN_CH_SLEEP 
- *                      and no data has been sent. 
- * \retval LIN_CH_SLEEP: Sleep state operation; in this state wake-up detection from slave nodes is enabled.
+ * \retval LIN_NOT_OK: Development or production error occurred
+ * \retval LIN_TX_OK: Successful transmission
+ * \retval LIN_TX_BUSY: Ongoing transmission (Header or Response)
+ * \retval LIN_TX_HEADER_ERROR: Erroneous header transmission such as:
+ *                      - Mismatch between sent and read back data
+ *                      - Identifier parity error or Physical bus error
+ * \retval LIN_TX_ERROR: Erroneous response transmission such as:
+ *                      - Mismatch between sent and read back data
+ *                      - Physical bus error
+ * \retval LIN_RX_OK: Reception of correct response
+ * \retval LIN_RX_BUSY: Ongoing reception: at least one response byte has been received,
+ *                      but the checksum byte has not been received
+ * \retval LIN_RX_ERROR: Erroneous response reception such as:
+ *                      - Framing error
+ *                      - Overrun error
+ *                      - Checksum error or Short response
+ * \retval LIN_RX_NO_RESPONSE: No response byte has been received so far
+ * \retval LIN_OPERATIONAL: Normal operation; the related LIN channel is woken up from the
+ *LIN_CH_SLEEP and no data has been sent.
+ * \retval LIN_CH_SLEEP: Sleep state operation; in this state wake-up detection from slave nodes is
+ *enabled.
  *
  *********************************************************************************************************************/
-FUNC(Lin_StatusType, LIN_CODE) Lin_GetStatusInternal(uint8 Channel,\
-                            P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin_SduPtr, 
-                           P2CONST(uint32, AUTOMATIC, LIN_CONFIG_DATA) lin_cnt_base_addr);
-
+FUNC(Lin_StatusType, LIN_CODE)
+Lin_GetStatusInternal(uint8 Channel, P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin_SduPtr,
+                      P2CONST(uint32, AUTOMATIC, LIN_CONFIG_DATA) lin_cnt_base_addr);
 
 /** \brief Lin_HwUnitConfig - This API will configure Lin IP instance.
- * 
+ *
  * \param[in] linChannel      LIN channel to be addressed.
  * \param[out] None
  * \pre None
@@ -275,11 +277,11 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_GetStatusInternal(uint8 Channel,\
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, LIN_CODE) Lin_HwUnitConfig(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_DATA) linChannel);
-
+FUNC(Std_ReturnType, LIN_CODE)
+Lin_HwUnitConfig(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_DATA) linChannel);
 
 /** \brief Lin_SendData - This API will copy data into LIN_TDx registers and start transmission.
- * 
+ *
  * \param[in] linChannel      LIN channel to be addressed.
  * \param[in] linChannelActivityStatus      Pointer to current activity staus of the channel.
  * \param[in] pduInfoPtr     Pointer to PDU to be sent.
@@ -291,13 +293,13 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_HwUnitConfig(P2CONST(Lin_ChannelType, AUTOMAT
  * \retval E_NOT_OK : Transmission command has not been accepted
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, LIN_CODE) Lin_SendData(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_DATA) linChannel, \
-P2VAR(Lin_ChannelActivityStatusType, AUTOMATIC, LIN_APPL_DATA) linChannelActivityStatus, \
-P2CONST(Lin_PduType, AUTOMATIC, LIN_APPL_CONST) pduInfoPtr);
-
+FUNC(Std_ReturnType, LIN_CODE)
+Lin_SendData(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_DATA) linChannel,
+             P2VAR(Lin_ChannelActivityStatusType, AUTOMATIC, LIN_APPL_DATA) linChannelActivityStatus,
+             P2CONST(Lin_PduType, AUTOMATIC, LIN_APPL_CONST) pduInfoPtr);
 
 /** \brief Lin_GetData - This API will copy the received data into sduPtr.
- * 
+ *
  * \param[in] linChannel      LIN channel to be addressed.
  * \param[in] base           Base address of Lin Instance.
  * \param[in] sduPtr         Pointer to Pointer to SDU to be received.
@@ -309,11 +311,11 @@ P2CONST(Lin_PduType, AUTOMATIC, LIN_APPL_CONST) pduInfoPtr);
  * \retval E_NOT_OK : Copying of received data command has not been accepted
  *
  *********************************************************************************************************************/
-FUNC(void, LIN_CODE) Lin_GetData(uint32 channelID, uint32 base, P2VAR(uint8*, AUTOMATIC, LIN_APPL_CONST) sduPtr);
-
+FUNC(void, LIN_CODE)
+Lin_GetData(uint32 channelID, uint32 base, P2VAR(uint8*, AUTOMATIC, LIN_APPL_CONST) sduPtr);
 
 /** \brief Lin_FetchTxStatus - This API will fetch transmit status.
- * 
+ *
  * \param[in] base      Base address of Lin Instance.
  * \param[out] None
  * \pre None
@@ -325,9 +327,8 @@ FUNC(void, LIN_CODE) Lin_GetData(uint32 channelID, uint32 base, P2VAR(uint8*, AU
  *********************************************************************************************************************/
 FUNC(Lin_StatusType, LIN_CODE) Lin_FetchTxStatus(uint32 base);
 
-
 /** \brief Lin_FetchRxStatus - This API will fetch receive status.
- * 
+ *
  * \param[in] base      Base address of Lin Instance.
  * \param[out] None
  * \pre None
@@ -339,9 +340,8 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchTxStatus(uint32 base);
  *********************************************************************************************************************/
 FUNC(Lin_StatusType, LIN_CODE) Lin_FetchRxStatus(uint32 base);
 
-
 /** \brief Lin_SendWakeupSignal - This API will send wakeup signal on Lin bus.
- * 
+ *
  * \param[in] base      Base address of Lin Instance.
  * \param[out] None
  * \pre None
@@ -354,7 +354,7 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchRxStatus(uint32 base);
 FUNC(void, LIN_CODE) Lin_SendWakeupSignal(uint32 base);
 
 /** \brief Lin_SendGoToSleepSignal - This API will send go to sleep signal on Lin bus.
- * 
+ *
  * \param[in] base      Base address of Lin Instance.
  * \param[out] None
  * \pre None
@@ -366,9 +366,8 @@ FUNC(void, LIN_CODE) Lin_SendWakeupSignal(uint32 base);
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, LIN_CODE) Lin_SendGoToSleepSignal(uint32 base);
 
-
 /** \brief Lin_EnterLowPowerMode - This API will enter local low power mode for Lin instance.
- * 
+ *
  * \param[in] base      Base address of Lin Instance.
  * \param[in] enable    If TRUE low power will be entered; if FALSE Lin comes out of low power mode.
  * \param[out] None
@@ -380,9 +379,8 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_SendGoToSleepSignal(uint32 base);
  *********************************************************************************************************************/
 FUNC(void, LIN_CODE) Lin_EnterLowPowerMode(uint32 base, boolean enable);
 
-
 /** \brief Lin_CheckWakeupStatus - This API will check if Lin in woken up.
- * 
+ *
  * \param[in] base      Base address of Lin Instance.
  * \param[out] None
  * \pre None
@@ -393,9 +391,8 @@ FUNC(void, LIN_CODE) Lin_EnterLowPowerMode(uint32 base, boolean enable);
  *********************************************************************************************************************/
 FUNC(boolean, LIN_CODE) Lin_CheckWakeupStatus(uint32 base);
 
-
 /** \brief Lin_AbortTransmission - This API will abort ongoing transmission.
- * 
+ *
  * \param[in] base      Base address of Lin Instance.
  * \param[out] None
  * \pre None
@@ -406,11 +403,11 @@ FUNC(boolean, LIN_CODE) Lin_CheckWakeupStatus(uint32 base);
  *********************************************************************************************************************/
 FUNC(void, LIN_CODE) Lin_AbortTransmission(uint32 base);
 
-
 /** \brief Lin_EnableWakeupDetection - This API will enable wakeup detection.
- * 
+ *
  * \param[in] linChannel      LIN channel to be addressed.
- * \param[in] enable    If TRUE wakeup detection will be enabled; if FALSE wakeup detection will be disabled.
+ * \param[in] enable    If TRUE wakeup detection will be enabled; if FALSE wakeup detection will be
+ *disabled.
  * \param[out] None
  * \pre None
  * \post None
@@ -418,12 +415,11 @@ FUNC(void, LIN_CODE) Lin_AbortTransmission(uint32 base);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, LIN_CODE) Lin_EnableWakeupDetection(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_CONST) linChannel, \
-boolean enable);
-
+FUNC(void, LIN_CODE)
+Lin_EnableWakeupDetection(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_CONST) linChannel, boolean enable);
 
 /** \brief Lin_ProcessISR - This API will process ISR for given channel.
- * 
+ *
  * \param[in] channelID      LIN channel to be addressed.
  * \param[out] None
  * \pre None
@@ -433,7 +429,6 @@ boolean enable);
  *
  *********************************************************************************************************************/
 FUNC(void, LIN_CODE) Lin_ProcessISR(uint32 channelID);
-
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

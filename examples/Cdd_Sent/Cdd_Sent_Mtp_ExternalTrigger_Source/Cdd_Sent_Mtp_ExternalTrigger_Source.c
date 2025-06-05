@@ -1,46 +1,54 @@
- /*********************************************************************************************************************
- *  COPYRIGHT
- *  ------------------------------------------------------------------------------------------------------------------
- *  \verbatim
- *
- *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
- *
- *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
- *                 is strictly prohibited.  This product  is  protected  under  copyright  law
- *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
- *
- *  \endverbatim
- *  ------------------------------------------------------------------------------------------------------------------
- *  FILE DESCRIPTION
- *  ------------------------------------------------------------------------------------------------------------------
- *  File:       Cdd_Sent_Mtp_ExternalTrigger_Source.c
- *  Generator:  None
- *
- *  Description:  This file contains Cdd_Sent  example to read the data from the Mtp sensor with external trigger source.
- *  Sensor details :
- *         Product Type  : TLE5014C16D
- *         Marking       : 014CD
- *         Sensor Type   : SPC Interface
- * 
- * This program will receive sensor data from a magnetic angle sensor using the SENT communication protocol. 
- * This data can be further utilized to convert and get the sensed information.
- * 
- * The sensor sends out a signal that is made up of a string of pulses with data encoded as falling to falling edge periods. 
- * It happens independently of any receiver module activity, which occurs without the receiver module sending a sync signal. 
- * The modulated signal with a constant amplitude voltage and an evaluation of the time interval between two falling edges 
- * (a single edge)
- *  is delivered in units of 4 bits (1 nibble), which can represent values ranging from 0 to 15.
- * 
- * This example configures SENT module to receive 4 Data-nibble per frame for fast channel.
- * 
- * \b External \b Connections \n
- *    - Connect GPIO58 to sensor's SENT channel 1 pin
+/*********************************************************************************************************************
+*  COPYRIGHT
+*
+------------------------------------------------------------------------------------------------------------------
+*  \verbatim
+*
+*                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+*
+*                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
+*                 is strictly prohibited.  This product  is  protected  under  copyright  law
+*                 and  trade  secret law as an  unpublished work.
+*                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+*
+*  \endverbatim
+*
+------------------------------------------------------------------------------------------------------------------
+*  FILE DESCRIPTION
+*
+------------------------------------------------------------------------------------------------------------------
+*  File:       Cdd_Sent_Mtp_ExternalTrigger_Source.c
+*  Generator:  None
+*
+*  Description:  This file contains Cdd_Sent  example to read the data from the Mtp sensor with
+external trigger source.
+*  Sensor details :
+*         Product Type  : TLE5014C16D
+*         Marking       : 014CD
+*         Sensor Type   : SPC Interface
+*
+* This program will receive sensor data from a magnetic angle sensor using the SENT communication
+protocol.
+* This data can be further utilized to convert and get the sensed information.
+*
+* The sensor sends out a signal that is made up of a string of pulses with data encoded as falling
+to falling edge periods.
+* It happens independently of any receiver module activity, which occurs without the receiver module
+sending a sync signal.
+* The modulated signal with a constant amplitude voltage and an evaluation of the time interval
+between two falling edges
+* (a single edge)
+*  is delivered in units of 4 bits (1 nibble), which can represent values ranging from 0 to 15.
+*
+* This example configures SENT module to receive 4 Data-nibble per frame for fast channel.
+*
+* \b External \b Connections \n
+*    - Connect GPIO58 to sensor's SENT channel 1 pin
 
- * \b Watch \b Variables \n
- * - \b SENT_Frame[] - Frame received from the Sensor
- * - \b timestamp[] - Time stamp of the data nibble received
- *********************************************************************************************************************/
+* \b Watch \b Variables \n
+* - \b SENT_Frame[] - Frame received from the Sensor
+* - \b timestamp[] - Time stamp of the data nibble received
+*********************************************************************************************************************/
 
 /*********************************************************************************************************************
  * Header Files
@@ -79,10 +87,10 @@
  *********************************************************************************************************************/
 #if (STD_ON == CDD_SENT_CFG_GET_VERSION_INFO_API)
 /*  version info variable */
-Std_VersionInfoType       Cdd_Sent_VersionInfo;
+Std_VersionInfoType Cdd_Sent_VersionInfo;
 #endif
-volatile uint32 data_received_count = 0;
-uint32 Gpt_InterruptCnt[GPT_CFG_MAX_CHANNELS] = {0U};
+volatile uint32 data_received_count                    = 0;
+uint32          Gpt_InterruptCnt[GPT_CFG_MAX_CHANNELS] = {0U};
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
@@ -100,11 +108,11 @@ uint32 Gpt_InterruptCnt[GPT_CFG_MAX_CHANNELS] = {0U};
 int main(void)
 {
     Std_ReturnType return_value = E_NOT_OK;
-    PduInfoType PduInfo_Type;
-    uint8 data[5];
-    PduInfo_Type.SduLength=1;
+    PduInfoType    PduInfo_Type;
+    uint8          data[5];
+    PduInfo_Type.SduLength  = 1;
     PduInfo_Type.SduDataPtr = data;
-    uint32 i = 0;
+    uint32 i                = 0;
 
     /* Reset Counters */
     Gpt_InterruptCnt[GPT_CHANNEL_0] = 0;
@@ -112,7 +120,7 @@ int main(void)
     EcuM_Init();
     AppUtils_Init(20000000U);
     AppUtils_Printf("Cdd_Sent Driver Sample Application - Starts!!!\n\r");
-	/*  get version Info */
+    /*  get version Info */
 #if (STD_ON == CDD_SENT_CFG_GET_VERSION_INFO_API)
     Cdd_Sent_GetVersionInfo(&Cdd_Sent_VersionInfo);
     AppUtils_Printf("Cdd_Sent MCAL Version Info\n");
@@ -129,17 +137,17 @@ int main(void)
     AppUtils_Printf("Cdd Sent Drive initilized\n");
 
     AppUtils_Printf("Trigger sensor with Sent Handle ID\n");
-    #if (STD_ON == CDD_SENT_ENABLE_MTP_MODE)
+#if (STD_ON == CDD_SENT_ENABLE_MTP_MODE)
     data[0] = 1;
-    Cdd_Sent_Transmit(&PduInfo_Type,Cdd_SentConf_CddPduRLowerLayerTxPdu_CddPduRLowerLayerTxPdu_0);
-    #endif
+    Cdd_Sent_Transmit(&PduInfo_Type, Cdd_SentConf_CddPduRLowerLayerTxPdu_CddPduRLowerLayerTxPdu_0);
+#endif
     AppUtils_Printf("Sensor trigger successfully\n");
 
     AppUtils_Printf("Enable notifications for channel-0\n\r");
     /* Enable notifications for GPT channel 0. */
     Gpt_EnableNotification(GPT_CHANNEL_0);
     AppUtils_Printf("Notifications enabled for channel-0\n\r");
-    
+
     AppUtils_Printf("Start timer for channel-0 with 1s Timeout\n\r");
     /* Start GPT channel 0 in one shot mode */
     Gpt_StartTimer(GPT_CHANNEL_0, GPT_COUNT_VALUE_1S);
@@ -147,7 +155,7 @@ int main(void)
 
     Time_Delay(3);
 
-    if(data_received_count != 0)
+    if (data_received_count != 0)
     {
         AppUtils_Printf("\nFailed !!!\r\n");
 
@@ -158,12 +166,12 @@ int main(void)
         AppUtils_Printf("Stop timer for Channel-0\r\n");
         Gpt_StopTimer(GPT_CHANNEL_0);
         AppUtils_Printf("Timer stopped for channel-0\n\r");
-        
+
         AppUtils_Printf("Trigger sensor with Sent Handle ID\n");
-        #if (STD_ON == CDD_SENT_ENABLE_MTP_MODE)
+#if (STD_ON == CDD_SENT_ENABLE_MTP_MODE)
         data[0] = 1;
-        Cdd_Sent_Transmit(&PduInfo_Type,Cdd_SentConf_CddPduRLowerLayerTxPdu_CddPduRLowerLayerTxPdu_0);
-        #endif
+        Cdd_Sent_Transmit(&PduInfo_Type, Cdd_SentConf_CddPduRLowerLayerTxPdu_CddPduRLowerLayerTxPdu_0);
+#endif
         AppUtils_Printf("Sensor trigger successfully\n");
 
         AppUtils_Printf("Start timer for channel-0 with 1s Timeout\n\r");
@@ -171,16 +179,18 @@ int main(void)
         Gpt_StartTimer(GPT_CHANNEL_0, GPT_COUNT_VALUE_100MS);
         AppUtils_Printf("Timer started for channel-0 with 1s Timeout\n\r");
 
-        while(data_received_count > 1)
+        while (data_received_count > 1)
         {
             McalLib_Delay(1);
             i++;
-            if(i>CDD_SENT_TIME_DELAY_PER_SECOND)
-            break;   
-        } 
+            if (i > CDD_SENT_TIME_DELAY_PER_SECOND)
+            {
+                break;
+            }
+        }
 
         return_value = E_OK;
-    }  
+    }
 
     AppUtils_Printf("Stop timer for Channel-0\r\n");
     /* Stop all timers */
@@ -190,7 +200,7 @@ int main(void)
     AppUtils_Printf("Deinitialize Gpt & Cdd_Sent Driver\n\r");
     /* DeInit the driver */
     Gpt_DeInit();
-    (void) Cdd_Sent_Deinit();
+    (void)Cdd_Sent_Deinit();
     AppUtils_Printf("Deinitialize Gpt & Cdd_Sent Driver successfully\n\n\r");
     AppUtils_Printf("------------------------------------------\r\n");
 
@@ -202,18 +212,18 @@ void Gpt_Notify_Func_0(void)
 {
     Gpt_InterruptCnt[GPT_CHANNEL_0]++;
 
-     /* Stop the timer after 5 times time elapsed */
-     if (Gpt_InterruptCnt[GPT_CHANNEL_0] == 5)
-     {
-         /* Stop the timer 0 */
-         Gpt_StopTimer(GPT_CHANNEL_0);
-     }
-
+    /* Stop the timer after 5 times time elapsed */
+    if (Gpt_InterruptCnt[GPT_CHANNEL_0] == 5)
+    {
+        /* Stop the timer 0 */
+        Gpt_StopTimer(GPT_CHANNEL_0);
+    }
 }
 
 /* Time delay*/
-int Time_Delay(float64 seconds){
-    McalLib_Delay(GPT_TIME_DELAY_PER_SECOND*seconds);
+int Time_Delay(float64 seconds)
+{
+    McalLib_Delay(GPT_TIME_DELAY_PER_SECOND * seconds);
     return 0;
 }
 
@@ -221,25 +231,24 @@ int Time_Delay(float64 seconds){
 void CddSent_Callback(PduIdType id, const PduInfoType *PduInfoPtr)
 {
     data_received_count++;
-    uint32 * data = (uint32 *)PduInfoPtr->SduDataPtr;
-    if(PduInfoPtr->SduLength > 2)
+    uint32 *data = (uint32 *)PduInfoPtr->SduDataPtr;
+    if (PduInfoPtr->SduLength > 2)
     {
-            AppUtils_Printf("Id received  from Fast channel : %d\n", id);
-            AppUtils_Printf("Timestamp received  from Fast channel : %d\n", *data);
-            AppUtils_Printf("Data received  from Fast channel : %d\n", *(data+1));
+        AppUtils_Printf("Id received  from Fast channel : %d\n", id);
+        AppUtils_Printf("Timestamp received  from Fast channel : %d\n", *data);
+        AppUtils_Printf("Data received  from Fast channel : %d\n", *(data + 1));
     }
-    else 
+    else
     {
         AppUtils_Printf("Id received  from Slow channel : %d\n", id);
         AppUtils_Printf("Data received  from Slow channel : %d\n", *data);
     }
-
 }
 
 /* Cdd_Sent user error callback notification function */
 void CddSent_Error_Callback()
 {
-        AppUtils_Printf("Error data received \n");
+    AppUtils_Printf("Error data received \n");
 }
 /*********************************************************************************************************************
  *  End of File: Cdd_Sent_Standard.c

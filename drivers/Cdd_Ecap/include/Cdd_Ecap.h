@@ -34,8 +34,7 @@
 #include "Cdd_Ecap_Cfg.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*********************************************************************************************************************
@@ -47,23 +46,23 @@ extern "C"
  *********************************************************************************************************************/
 /* CDD ECAP Driver ID Info */
 /** \brief Texas Instruments Vendor ID */
-#define CDD_ECAP_VENDOR_ID                   ((uint16) 44U)
+#define CDD_ECAP_VENDOR_ID ((uint16)44U)
 /** \brief CDD ECAP Driver Module ID */
-#define CDD_ECAP_MODULE_ID                   ((uint16) 255U)
+#define CDD_ECAP_MODULE_ID ((uint16)255U)
 /** \brief CDD ECAP Driver Instance ID */
-#define CDD_ECAP_INSTANCE_ID                 ((uint8) 0U)
+#define CDD_ECAP_INSTANCE_ID ((uint8)0U)
 
 /** \brief Driver Implementation Major Version */
-#define CDD_ECAP_SW_MAJOR_VERSION            (1U)
+#define CDD_ECAP_SW_MAJOR_VERSION (1U)
 /** \brief Driver Implementation Minor Version */
-#define CDD_ECAP_SW_MINOR_VERSION            (0U)
+#define CDD_ECAP_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_ECAP_SW_PATCH_VERSION            (0U)
+#define CDD_ECAP_SW_PATCH_VERSION (0U)
 
 /** \brief AUTOSAR Major version specification implemented by CDD_ECAP Driver */
-#define CDD_ECAP_AR_RELEASE_MAJOR_VERSION    (4U)
+#define CDD_ECAP_AR_RELEASE_MAJOR_VERSION (4U)
 /** \brief AUTOSAR Minor  version specification implemented by CDD_ECAP Driver */
-#define CDD_ECAP_AR_RELEASE_MINOR_VERSION    (3U)
+#define CDD_ECAP_AR_RELEASE_MINOR_VERSION (3U)
 /** \brief AUTOSAR Patch version specification implemented by CDD_ECAP Driver */
 #define CDD_ECAP_AR_RELEASE_REVISION_VERSION (1U)
 
@@ -75,47 +74,49 @@ extern "C"
  *  @{
  */
 /** \brief Cdd_Ecap_Init() API Service ID */
-#define CDD_ECAP_INIT_ID                    ((uint8) 0x00U)
+#define CDD_ECAP_INIT_ID ((uint8)0x00U)
 /** \brief Cdd_Ecap_DeInit() API Service ID */
-#define CDD_ECAP_DEINIT_ID                  ((uint8) 0x01U)
+#define CDD_ECAP_DEINIT_ID ((uint8)0x01U)
 /** \brief Cdd_Ecap_SetMode() API Service ID */
-#define CDD_ECAP_SETMODE_ID                 ((uint8) 0x02U)
+#define CDD_ECAP_SETMODE_ID ((uint8)0x02U)
 /** \brief Cdd_Ecap_SetActivationCondition() API Service ID */
-#define CDD_ECAP_SETACTIVATIONCONDITION_ID  ((uint8) 0x05U)
+#define CDD_ECAP_SETACTIVATIONCONDITION_ID ((uint8)0x05U)
 /** \brief Cdd_Ecap_DisableNotification() API Service ID */
-#define CDD_ECAP_DISABLENOTIFICATION_ID     ((uint8) 0x06U)
+#define CDD_ECAP_DISABLENOTIFICATION_ID ((uint8)0x06U)
 /** \brief Cdd_Ecap_EnableNotification() API Service ID */
-#define CDD_ECAP_ENABLENOTIFICATION_ID      ((uint8) 0x07U)
+#define CDD_ECAP_ENABLENOTIFICATION_ID ((uint8)0x07U)
 /** \brief Cdd_Ecap_GetInputState() API Service ID */
-#define CDD_ECAP_GETINPUTSTATE_ID           ((uint8) 0x08U)
+#define CDD_ECAP_GETINPUTSTATE_ID ((uint8)0x08U)
 /** \brief Cdd_Ecap_StartTimestamp() API Service ID */
-#define CDD_ECAP_STARTTIMESTAMP_ID          ((uint8) 0x09U)
+#define CDD_ECAP_STARTTIMESTAMP_ID ((uint8)0x09U)
 /** \brief Cdd_Ecap_StopTimestamp() API Service ID */
-#define CDD_ECAP_STOPTIMESTAMP_ID           ((uint8) 0x0AU)
+#define CDD_ECAP_STOPTIMESTAMP_ID ((uint8)0x0AU)
 /** \brief Cdd_Ecap_GetTimeStampIndex() API Service ID */
-#define CDD_ECAP_GETTIMESTAMPINDEX_ID       ((uint8) 0x0BU)
+#define CDD_ECAP_GETTIMESTAMPINDEX_ID ((uint8)0x0BU)
 /** \brief Cdd_Ecap_ResetEdgeCount() API Service ID */
-#define CDD_ECAP_RESETEDGECOUNT_ID          ((uint8) 0x0CU)
+#define CDD_ECAP_RESETEDGECOUNT_ID ((uint8)0x0CU)
 /** \brief Cdd_Ecap_EnableEdgeCount() API Service ID */
-#define CDD_ECAP_ENABLEEDGECOUNT_ID         ((uint8) 0x0DU)
+#define CDD_ECAP_ENABLEEDGECOUNT_ID ((uint8)0x0DU)
 /** \brief Cdd_Ecap_DisableEdgeCount() API Service ID */
-#define CDD_ECAP_DISABLEEDGECOUNT_ID        ((uint8) 0x0EU)
+#define CDD_ECAP_DISABLEEDGECOUNT_ID ((uint8)0x0EU)
 /** \brief Cdd_Ecap_GetEdgeNumbers() API Service ID */
-#define CDD_ECAP_GETEDGENUMBERS_ID          ((uint8) 0x0FU)
+#define CDD_ECAP_GETEDGENUMBERS_ID ((uint8)0x0FU)
 /** \brief Cdd_Ecap_GetTimeElapsed() API Service ID */
-#define CDD_ECAP_GETTIMEELAPSED_ID          ((uint8) 0x10U)
+#define CDD_ECAP_GETTIMEELAPSED_ID ((uint8)0x10U)
 /** \brief Cdd_Ecap_GetDutyCycleValues() API Service ID */
-#define CDD_ECAP_GETDUTYCYCLEVALUES_ID      ((uint8) 0x11U)
+#define CDD_ECAP_GETDUTYCYCLEVALUES_ID ((uint8)0x11U)
 /** \brief Cdd_Ecap_GetVersionInfo() API Service ID */
-#define CDD_ECAP_GETVERSIONINFO_ID          ((uint8) 0x12U)
+#define CDD_ECAP_GETVERSIONINFO_ID ((uint8)0x12U)
 /** \brief Cdd_Ecap_StartSignalMeasurement() API Service ID */
-#define CDD_ECAP_STARTSIGNALMEASUREMENT_ID  ((uint8) 0x13U)
+#define CDD_ECAP_STARTSIGNALMEASUREMENT_ID ((uint8)0x13U)
 /** \brief Cdd_Ecap_StopSignalMeasurement() API Service ID */
-#define CDD_ECAP_STOPSIGNALMEASUREMENT_ID   ((uint8) 0x14U)
+#define CDD_ECAP_STOPSIGNALMEASUREMENT_ID ((uint8)0x14U)
 /** \brief Cdd_Ecap_EnableEdgeDetection() API Service ID */
-#define CDD_ECAP_ENABLEEDGEDETECTION_ID     ((uint8) 0x16U)
+#define CDD_ECAP_ENABLEEDGEDETECTION_ID ((uint8)0x16U)
 /** \brief Cdd_Ecap_DisableEdgeDetection() API Service ID */
-#define CDD_ECAP_DISABLEEDGEDETECTION_ID    ((uint8) 0x17U)
+#define CDD_ECAP_DISABLEEDGEDETECTION_ID ((uint8)0x17U)
+/** \brief Cdd_Ecap_SetStartLevelCondition() API Service ID */
+#define CDD_ECAP_SETSTARTLEVELCONDITION_ID ((uint8)0x18U)
 /** @} */
 
 /**
@@ -125,32 +126,34 @@ extern "C"
  *  @{
  */
 /** \brief API service called with invalid pointer */
-#define CDD_ECAP_E_PARAM_POINTER             ((uint8) 0x0AU)
+#define CDD_ECAP_E_PARAM_POINTER ((uint8)0x0AU)
 /**
  *  \brief API service called with invalid channel identifier
  *  or channel not configured
  */
-#define CDD_ECAP_E_PARAM_CHANNEL             ((uint8) 0x0BU)
-/** \brief API service calleed with an invalid or not feasible activation */
-#define CDD_ECAP_E_PARAM_ACTIVATION          ((uint8) 0x0CU)
+#define CDD_ECAP_E_PARAM_CHANNEL ((uint8)0x0BU)
+/** \brief API service called with an invalid or not feasible activation */
+#define CDD_ECAP_E_PARAM_ACTIVATION ((uint8)0x0CU)
 /** \brief Init Function Failed */
-#define CDD_ECAP_E_INIT_FAILED               ((uint8) 0x0DU)
+#define CDD_ECAP_E_INIT_FAILED ((uint8)0x0DU)
 /** \brief API service used with invalid Buffer size */
-#define CDD_ECAP_E_PARAM_BUFFER_SIZE         ((uint8) 0x0EU)
+#define CDD_ECAP_E_PARAM_BUFFER_SIZE ((uint8)0x0EU)
 /** \brief API service called with invalid mode */
-#define CDD_ECAP_E_PARAM_MODE                ((uint8) 0x0FU)
-/** \brief API service calleed without module initialisation */
-#define CDD_ECAP_E_UNINIT                    ((uint8) 0x14U)
+#define CDD_ECAP_E_PARAM_MODE ((uint8)0x0FU)
+/** \brief API service called without module initialisation */
+#define CDD_ECAP_E_UNINIT ((uint8)0x14U)
 /** \brief Cdd_Ecap_StopTimestamp called on channel not started or already stopped */
-#define CDD_ECAP_E_NOT_STARTED               ((uint8) 0x15U)
+#define CDD_ECAP_E_NOT_STARTED ((uint8)0x15U)
 /** \brief API service called while a running operation */
-#define CDD_ECAP_E_BUSY_OPERATION            ((uint8) 0x16U)
+#define CDD_ECAP_E_BUSY_OPERATION ((uint8)0x16U)
 /** \brief API service Cdd_Ecap_Init called when module already initialized */
-#define CDD_ECAP_E_ALREADY_INITIALIZED       ((uint8) 0x17U)
+#define CDD_ECAP_E_ALREADY_INITIALIZED ((uint8)0x17U)
 /** \brief API service called when notify interval is invalid */
-#define CDD_ECAP_E_PARAM_NOTIFY_INTERVAL     ((uint8) 0x18U)
+#define CDD_ECAP_E_PARAM_NOTIFY_INTERVAL ((uint8)0x18U)
 /** \brief API service Cdd_Ecap_GetVersionInfo called and parameter is invalid */
-#define CDD_ECAP_E_PARAM_VINFO               ((uint8) 0x19U)
+#define CDD_ECAP_E_PARAM_VINFO ((uint8)0x19U)
+/** \brief API service called with an invalid or not feasible start level */
+#define CDD_ECAP_E_PARAM_START_LEVEL ((uint8)0x1AU)
 /** @} */
 
 /**
@@ -160,9 +163,9 @@ extern "C"
  *  @{
  */
 /** \brief CDD_ECAP driver Status uninitialized */
-#define CDD_ECAP_STATUS_UNINIT              ((uint8)(0U))
+#define CDD_ECAP_STATUS_UNINIT ((uint8)(0U))
 /** \brief CDD_ECAP driver Status Initialized */
-#define CDD_ECAP_STATUS_INIT                ((uint8)(1U))
+#define CDD_ECAP_STATUS_INIT ((uint8)(1U))
 /** @} */
 
 /**
@@ -172,13 +175,13 @@ extern "C"
  *  @{
  */
 /** \brief Capture Event 1 Interrupt Enable */
-#define CDD_ECAP_ECEINT_CEVT1               (0x2U)
+#define CDD_ECAP_ECEINT_CEVT1 (0x2U)
 /** \brief Capture Event 2 Interrupt Enable */
-#define CDD_ECAP_ECEINT_CEVT2               (0x4U)
+#define CDD_ECAP_ECEINT_CEVT2 (0x4U)
 /** \brief Capture Event 3 Interrupt Enable */
-#define CDD_ECAP_ECEINT_CEVT3               (0x8U)
+#define CDD_ECAP_ECEINT_CEVT3 (0x8U)
 /** \brief Capture Event 4 Interrupt Enable */
-#define CDD_ECAP_ECEINT_CEVT4               (0x10U)
+#define CDD_ECAP_ECEINT_CEVT4 (0x10U)
 /** @} */
 
 /*********************************************************************************************************************
@@ -191,7 +194,7 @@ extern "C"
 /**
  *  \brief This type defines Value type
  */
-typedef uint16 Cdd_Ecap_ValueType;
+typedef uint32 Cdd_Ecap_ValueType;
 /**
  *  \brief This type defines return value Cdd_Ecap_GetTimeStampIndex
  */
@@ -203,21 +206,21 @@ typedef uint32 Cdd_Ecap_EdgeNumberType;
 /**
  *  \brief This type defines Channel type
  */
-typedef uint8 Cdd_Ecap_ChannelType;
+typedef uint8  Cdd_Ecap_ChannelType;
 /**
  *  \brief This type defines Prescaler type
  */
-typedef uint8 Cdd_Ecap_ChannelPrescalerType;
+typedef uint8  Cdd_Ecap_ChannelPrescalerType;
 
 /**
  *  \brief This type defines a range of mode type
  */
 typedef enum
 {
-   /** \brief Normal Mode */
-   CDD_ECAP_MODE_NORMAL,
-   /** \brief Sleep Mode */
-   CDD_ECAP_MODE_SLEEP
+    /** \brief Normal Mode */
+    CDD_ECAP_MODE_NORMAL,
+    /** \brief Sleep Mode */
+    CDD_ECAP_MODE_SLEEP
 } Cdd_Ecap_ModeType;
 
 /**
@@ -225,10 +228,10 @@ typedef enum
  */
 typedef enum
 {
-   /** \brief Module is in active state */
-   CDD_ECAP_ACTIVE,
-   /** \brief Module is in idle state */
-   CDD_ECAP_IDLE
+    /** \brief Module is in active state */
+    CDD_ECAP_ACTIVE,
+    /** \brief Module is in idle state */
+    CDD_ECAP_IDLE
 } Cdd_Ecap_InputStateType;
 
 /**
@@ -236,12 +239,12 @@ typedef enum
  */
 typedef enum
 {
-   /** \brief Rising Edge Activation type */
-   CDD_ECAP_RISING_EDGE,
-   /** \brief Falling Edge Activation type */
-   CDD_ECAP_FALLING_EDGE,
-   /** \brief Both Edge Activation type */
-   CDD_ECAP_BOTH_EDGES
+    /** \brief Rising Edge Activation type */
+    CDD_ECAP_RISING_EDGE,
+    /** \brief Falling Edge Activation type */
+    CDD_ECAP_FALLING_EDGE,
+    /** \brief Both Edge Activation type */
+    CDD_ECAP_BOTH_EDGES
 } Cdd_Ecap_ActivationType;
 
 /**
@@ -249,21 +252,21 @@ typedef enum
  */
 typedef enum
 {
-   CDD_ECAP_CEVT1_INT = CDD_ECAP_ECEINT_CEVT1,
-   CDD_ECAP_CEVT2_INT = CDD_ECAP_ECEINT_CEVT2,
-   CDD_ECAP_CEVT3_INT = CDD_ECAP_ECEINT_CEVT3,
-   CDD_ECAP_CEVT4_INT = CDD_ECAP_ECEINT_CEVT4,
-   CDD_ECAP_CEVT1_CEVT2_INT = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT2,
-   CDD_ECAP_CEVT1_CEVT3_INT = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT3,
-   CDD_ECAP_CEVT1_CEVT4_INT = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT4,
-   CDD_ECAP_CEVT2_CEVT3_INT = CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT3,
-   CDD_ECAP_CEVT2_CEVT4_INT = CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT4,
-   CDD_ECAP_CEVT3_CEVT4_INT = CDD_ECAP_ECEINT_CEVT3 | CDD_ECAP_ECEINT_CEVT4,
-   CDD_ECAP_CEVT1_CEVT2_CEVT3_INT = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT3,
-   CDD_ECAP_CEVT1_CEVT2_CEVT4_INT = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT4,
-   CDD_ECAP_CEVT1_CEVT3_CEVT4_INT = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT3 | CDD_ECAP_ECEINT_CEVT4,
-   CDD_ECAP_CEVT2_CEVT3_CEVT4_INT = CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT3 | CDD_ECAP_ECEINT_CEVT4,
-   CDD_ECAP_INT_ALL   = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT3 | CDD_ECAP_ECEINT_CEVT4
+    CDD_ECAP_CEVT1_INT             = CDD_ECAP_ECEINT_CEVT1,
+    CDD_ECAP_CEVT2_INT             = CDD_ECAP_ECEINT_CEVT2,
+    CDD_ECAP_CEVT3_INT             = CDD_ECAP_ECEINT_CEVT3,
+    CDD_ECAP_CEVT4_INT             = CDD_ECAP_ECEINT_CEVT4,
+    CDD_ECAP_CEVT1_CEVT2_INT       = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT2,
+    CDD_ECAP_CEVT1_CEVT3_INT       = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT3,
+    CDD_ECAP_CEVT1_CEVT4_INT       = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT4,
+    CDD_ECAP_CEVT2_CEVT3_INT       = CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT3,
+    CDD_ECAP_CEVT2_CEVT4_INT       = CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT4,
+    CDD_ECAP_CEVT3_CEVT4_INT       = CDD_ECAP_ECEINT_CEVT3 | CDD_ECAP_ECEINT_CEVT4,
+    CDD_ECAP_CEVT1_CEVT2_CEVT3_INT = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT3,
+    CDD_ECAP_CEVT1_CEVT2_CEVT4_INT = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT4,
+    CDD_ECAP_CEVT1_CEVT3_CEVT4_INT = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT3 | CDD_ECAP_ECEINT_CEVT4,
+    CDD_ECAP_CEVT2_CEVT3_CEVT4_INT = CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT3 | CDD_ECAP_ECEINT_CEVT4,
+    CDD_ECAP_INT_ALL = CDD_ECAP_ECEINT_CEVT1 | CDD_ECAP_ECEINT_CEVT2 | CDD_ECAP_ECEINT_CEVT3 | CDD_ECAP_ECEINT_CEVT4
 } Cdd_Ecap_IntrCapSelect;
 
 /**
@@ -271,14 +274,14 @@ typedef enum
  */
 typedef enum
 {
-   /** \brief Signal Edge Detect Mode */
-   CDD_ECAP_MODE_SIGNAL_EDGE_DETECT,
-   /** \brief Signal measurement Mode */
-   CDD_ECAP_MODE_SIGNAL_MEASUREMENT,
-   /** \brief Signal Timestamp Mode */
-   CDD_ECAP_MODE_TIMESTAMP,
-   /** \brief Signal Edge counter Mode */
-   CDD_ECAP_MODE_EDGE_COUNTER
+    /** \brief Signal Edge Detect Mode */
+    CDD_ECAP_MODE_SIGNAL_EDGE_DETECT,
+    /** \brief Signal measurement Mode */
+    CDD_ECAP_MODE_SIGNAL_MEASUREMENT,
+    /** \brief Signal Timestamp Mode */
+    CDD_ECAP_MODE_TIMESTAMP,
+    /** \brief Signal Edge counter Mode */
+    CDD_ECAP_MODE_EDGE_COUNTER
 } Cdd_Ecap_MeasurementModeType;
 
 /**
@@ -286,14 +289,14 @@ typedef enum
  */
 typedef enum
 {
-   /** \brief Signal Low time */
-   CDD_ECAP_LOW_TIME,
-   /** \brief Signal High time */
-   CDD_ECAP_HIGH_TIME,
-   /** \brief Signal Period time */
-   CDD_ECAP_PERIOD_TIME,
-   /** \brief Signal Duty Cycle time */
-   CDD_ECAP_DUTY_CYCLE
+    /** \brief Signal Low time */
+    CDD_ECAP_LOW_TIME,
+    /** \brief Signal High time */
+    CDD_ECAP_HIGH_TIME,
+    /** \brief Signal Period time */
+    CDD_ECAP_PERIOD_TIME,
+    /** \brief Signal Duty Cycle time */
+    CDD_ECAP_DUTY_CYCLE
 } Cdd_Ecap_SignalMeasurementPropertyType;
 
 /**
@@ -301,11 +304,22 @@ typedef enum
  */
 typedef enum
 {
-   /** \brief Linear Buffer to be used in Timestamp */
-   CDD_ECAP_LINEAR_BUFFER,
-   /** \brief Circular Buffer to be used in Timestamp */
-   CDD_ECAP_CIRCULAR_BUFFER
+    /** \brief Linear Buffer to be used in Timestamp */
+    CDD_ECAP_LINEAR_BUFFER,
+    /** \brief Circular Buffer to be used in Timestamp */
+    CDD_ECAP_CIRCULAR_BUFFER
 } Cdd_Ecap_TimestampBufferType;
+
+/**
+ *  \brief This type defines the edge to start the edge capturing
+ */
+typedef enum
+{
+    /** \brief Rising Edge Activation type */
+    CDD_ECAP_START_LEVEL_RISING_EDGE,
+    /** \brief Falling Edge Activation type */
+    CDD_ECAP_START_LEVEL_FALLING_EDGE
+} Cdd_Ecap_StartLevelType;
 
 /** \brief  Notification callback function pointer  */
 typedef void (*Cdd_Ecap_NotifyFuncType)(void);
@@ -315,38 +329,37 @@ typedef void (*Cdd_Ecap_NotifyFuncType)(void);
  */
 typedef struct
 {
-   /** \brief Active time of Signal */
-   Cdd_Ecap_ValueType ActiveTime;
-   /** \brief Period time of Signal */
-   Cdd_Ecap_ValueType PeriodTime;
+    /** \brief Active time of Signal */
+    Cdd_Ecap_ValueType ActiveTime;
+    /** \brief Period time of Signal */
+    Cdd_Ecap_ValueType PeriodTime;
 } Cdd_Ecap_DutyCycleType;
 
 /**
  *  \brief CDD_ECAP Channel Config Structure
  */
-typedef struct {
-   /** \brief Base address of CDD_ECAP Channel in use */
-   uint32                               base_addr;
-   /** \brief Channel ID of CDD_ECAP Channel in use */
-   Cdd_Ecap_ChannelType                 channelId;
-   /** \brief Default activation edge to be used by CDD_ECAP module */
-   Cdd_Ecap_ActivationType              defaultStartEdge;
-   /** \brief xbar to used for input */
-   Cdd_Ecap_InputSelect                 inputSelect;
-   /** \brief capture event for interrupt enable */
-   Cdd_Ecap_IntrCapSelect               intrcapSelect;
-   /** \brief Measurement Mode to be used */
-   Cdd_Ecap_MeasurementModeType         measurementMode;
-   /** \brief Signal Measurement property to be used if mode choosen */
-   Cdd_Ecap_SignalMeasurementPropertyType signalMeasurementProperty;
-   /** \brief Notification handler for notifications */
-   Cdd_Ecap_NotifyFuncType              notificationHandler;
-   /** \brief Buffer Type for Timestamp API mode */
-   Cdd_Ecap_TimestampBufferType         bufferType;
-   /** \brief Clk src for CDD_ECAP module in MHz */
-   uint32                               instanceClkMHz;
-   /** \brief Prescaler value to be used for CDD_ECAP  module */
-   Cdd_Ecap_ChannelPrescalerType        prescaler;
+typedef struct
+{
+    /** \brief Base address of CDD_ECAP Channel in use */
+    uint32                                 base_addr;
+    /** \brief Channel ID of CDD_ECAP Channel in use */
+    Cdd_Ecap_ChannelType                   channelId;
+    /** \brief Default activation edge to be used by CDD_ECAP module */
+    Cdd_Ecap_ActivationType                defaultStartEdge;
+    /** \brief xbar to used for input */
+    Cdd_Ecap_InputSelect                   inputSelect;
+    /** \brief Measurement Mode to be used */
+    Cdd_Ecap_MeasurementModeType           measurementMode;
+    /** \brief Signal Measurement property to be used if mode choosen */
+    Cdd_Ecap_SignalMeasurementPropertyType signalMeasurementProperty;
+    /** \brief Notification handler for notifications */
+    Cdd_Ecap_NotifyFuncType                notificationHandler;
+    /** \brief Buffer Type for Timestamp API mode */
+    Cdd_Ecap_TimestampBufferType           bufferType;
+    /** \brief Clk src for CDD_ECAP module in MHz */
+    uint32                                 instanceClkMHz;
+    /** \brief Prescaler value to be used for CDD_ECAP  module */
+    Cdd_Ecap_ChannelPrescalerType          prescaler;
 } Cdd_Ecap_ChannelConfigType;
 
 /**
@@ -376,8 +389,8 @@ typedef struct Cdd_Ecap_ConfigTag
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Init(
-                    P2CONST(Cdd_Ecap_ConfigType, AUTOMATIC, CDD_ECAP_CFG) ConfigPtr);
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_Init(P2CONST(Cdd_Ecap_ConfigType, AUTOMATIC, CDD_ECAP_CFG) ConfigPtr);
 
 #if (STD_ON == CDD_ECAP_DE_INIT_API)
 /** \brief Service to De-initialize Cdd Ecap driver.
@@ -400,20 +413,38 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DeInit(void);
  *
  * \param[in] Channel        CDD_ECAP Channel in use
  * \param[in] Activation     Activation condition or Edge to be selected
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_SetActivationCondition(Cdd_Ecap_ChannelType Channel,
-                                                          Cdd_Ecap_ActivationType Activation);
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_SetActivationCondition(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_ActivationType Activation);
+
+/** \brief Service for setting the start level condition.
+ *
+ *  This service sets the start level condition of a channel (Rising or Falling).
+ *  In case of both edge detection, this parameter selects the start edge from which to start
+ *counting the edges.
+ *
+ * \param[in] Channel        CDD_ECAP Channel in use
+ * \param[in] Activation     Activation condition or Edge to be selected
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_SetStartLevelCondition(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_StartLevelType StartLevel);
+
 /** \brief Service for disabling the notification.
  *
  *  This service disables the notification function of a channel.
  *
  * \param[in] Channel        CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -426,7 +457,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableNotification(Cdd_Ecap_ChannelType Chan
  *  This service enables the notification function of a channel.
  *
  * \param[in] Channel        CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -435,13 +466,12 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableNotification(Cdd_Ecap_ChannelType Chan
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableNotification(Cdd_Ecap_ChannelType Channel);
 
 #if (CDD_ECAP_GET_INPUT_STATE_API == STD_ON)
-
 /** \brief Service for getting the input state of CDD_ECAP channel.
  *
  *  This service gets the input state of CDD_ECAP channel.
  *
  * \param[in] Channel        CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -451,7 +481,6 @@ FUNC(Cdd_Ecap_InputStateType, CDD_ECAP_CODE) Cdd_Ecap_GetInputState(Cdd_Ecap_Cha
 #endif
 
 #if (CDD_ECAP_TIMESTAMP_API == STD_ON)
-
 /** \brief Service for starting the timestamp measurement.
  *
  *  This service starts the timestamp measurement on the edges of a given channel.
@@ -460,21 +489,22 @@ FUNC(Cdd_Ecap_InputStateType, CDD_ECAP_CODE) Cdd_Ecap_GetInputState(Cdd_Ecap_Cha
  * \param[in] BufferPtr        Pointer which points to timestamp buffer
  * \param[in] BufferSize       Size of the timestamp buffer
  * \param[in] NotifyInterval   Notify Interval
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StartTimestamp(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_ValueType* BufferPtr,
-                                                  uint16 BufferSize, uint16 NotifyInterval);
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_StartTimestamp(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_ValueType* BufferPtr, uint16 BufferSize,
+                        uint16 NotifyInterval);
 
 /** \brief Service for stopping the timestamp measurement.
  *
  *  This service stops the timestamp measurement on the edges of a given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -487,7 +517,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopTimestamp(Cdd_Ecap_ChannelType Channel);
  *  This service reads the index of the timestamp measurement.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -497,13 +527,12 @@ FUNC(Cdd_Ecap_IndexType, CDD_ECAP_CODE) Cdd_Ecap_GetTimestampIndex(Cdd_Ecap_Chan
 #endif
 
 #if (CDD_ECAP_EDGE_COUNT_API == STD_ON)
-
 /** \brief Service resets the edge count value to 0.
  *
  *  This service resets the edge count value to 0.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -516,7 +545,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ResetEdgeCount(Cdd_Ecap_ChannelType Channel);
  *  This service enables the counting of edges of the given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -529,7 +558,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableEdgeCount(Cdd_Ecap_ChannelType Channel)
  *  This service disables the counting of edges of the given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -542,7 +571,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeCount(Cdd_Ecap_ChannelType Channel
  *  This service counts the edges of the given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -552,13 +581,12 @@ FUNC(Cdd_Ecap_EdgeNumberType, CDD_ECAP_CODE) Cdd_Ecap_GetEdgeNumbers(Cdd_Ecap_Ch
 #endif
 
 #if (CDD_ECAP_EDGE_DETECT_API == STD_ON)
-
 /** \brief Service for enabling the detection of edges of the given channel.
  *
  *  This service enables the edge detection of given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -571,7 +599,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableEdgeDetection(Cdd_Ecap_ChannelType Chan
  *  This service disables the edge detection of given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -581,13 +609,12 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeDetection(Cdd_Ecap_ChannelType Cha
 #endif
 
 #if (CDD_ECAP_SIGNAL_MEASUREMENT_API == STD_ON)
-
 /** \brief Service for starting the measurement of signals for a given channel.
  *
  *  This service starts the signal measurement of a given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -600,7 +627,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StartSignalMeasurement(Cdd_Ecap_ChannelType C
  *  This service stops the signal measurement of a given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
@@ -610,40 +637,38 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopSignalMeasurement(Cdd_Ecap_ChannelType Ch
 #endif
 
 #if (CDD_ECAP_GET_TIME_ELAPSED_API == STD_ON)
-
 /** \brief Service for reading the time elapsed between the edges of a channel.
  *
- *  This service reads the time elapsed between the edges of a channel(High time, low time, period and duty).
+ *  This service reads the time elapsed between the edges of a channel(High time, low time, period
+ *and duty).
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC (Cdd_Ecap_ValueType, CDD_ECAP_CODE) Cdd_Ecap_GetTimeElapsed(Cdd_Ecap_ChannelType Channel);
+FUNC(Cdd_Ecap_ValueType, CDD_ECAP_CODE) Cdd_Ecap_GetTimeElapsed(Cdd_Ecap_ChannelType Channel);
 #endif
 
 #if (CDD_ECAP_GET_DUTY_CYCLE_VALUES_API == STD_ON)
-
 /** \brief Service for reading the active time and period.
  *
  *  This service reads the active time and period of a given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \pre None  
+ * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC (void, CDD_ECAP_CODE) Cdd_Ecap_GetDutyCycleValues(Cdd_Ecap_ChannelType Channel,
-                                                       Cdd_Ecap_DutyCycleType* DutyCycleValues);
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_GetDutyCycleValues(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_DutyCycleType* DutyCycleValues);
 #endif
 
 #if (CDD_ECAP_GET_VERSION_INFO_API)
-
 /** \brief service that returns the version information of the module.
  *
  * This service returns the version information of the Cdd Ecap module.
@@ -655,8 +680,8 @@ FUNC (void, CDD_ECAP_CODE) Cdd_Ecap_GetDutyCycleValues(Cdd_Ecap_ChannelType Chan
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_GetVersionInfo(
-        P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ECAP_APPL_DATA) VersionInfoPtr);
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ECAP_APPL_DATA) VersionInfoPtr);
 #endif
 
 /*********************************************************************************************************************

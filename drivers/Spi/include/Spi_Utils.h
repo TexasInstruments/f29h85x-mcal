@@ -19,7 +19,7 @@
  *
  *  Description:  SPI utility functions header file
  *  This file declares the functions required to create, add and remove nodes.
- *                                                                     
+ *
  *********************************************************************************************************************/
 #ifndef SPI_UTILS_H_
 #define SPI_UTILS_H_
@@ -160,10 +160,8 @@ void Spi_UtilsDeInitLinkList(Spi_UtilsLinkListObj *llobj);
  *  \return None
  *  \retval None
  ********************************************************************************************************************/
-void Spi_UtilsLinkNodePri(Spi_UtilsLinkListObj  *llobj,
-                          Spi_UtilsNode         *node,
-                          const Spi_UtilsParams *params,
-                          uint8                  currSeqId);
+void Spi_UtilsLinkNodePri(Spi_UtilsLinkListObj *llobj, Spi_UtilsNode *node, const Spi_UtilsParams *params,
+                          uint8 currSeqId);
 
 /**
  *  \brief Unlinks the node from the list. Used for the priority link lists.
@@ -217,7 +215,7 @@ Spi_UtilsNode *Spi_UtilsGetHeadNode(const Spi_UtilsLinkListObj *llobj);
 /**
  * @}
  */
-#endif  /* #ifndef SPI_UTILS_H_ */
+#endif /* #ifndef SPI_UTILS_H_ */
 /*********************************************************************************************************************
  *  End of File: Spi_Utils.h
  *********************************************************************************************************************/

@@ -53,14 +53,13 @@ extern "C" {
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
 /** \brief Bit corresponding to the locking in the lock register */
-#define CDD_XBAR_LOCK_BIT                          1U
+#define CDD_XBAR_LOCK_BIT 1U
 /** \brief Shift value for lock key */
-#define CDD_XBAR_LOCK_KEY_SHIFT                    16U
+#define CDD_XBAR_LOCK_KEY_SHIFT 16U
 /** \brief Key for locking */
-#define CDD_XBAR_LOCK_KEY                          0x5A5A  
+#define CDD_XBAR_LOCK_KEY 0x5A5A
 /** \brief Offset value for output Xbar flag registers  */
-#define XBAR_OUTPUTXBAR_FLAGS_OFFSET               0x1000U
-
+#define XBAR_OUTPUTXBAR_FLAGS_OFFSET 0x1000U
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -108,16 +107,15 @@ typedef enum
  * \retval E_NOT_OK if input selection failed.
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) \
-Cdd_Xbar_InSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect, 
-                  P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, 
-                  VAR(boolean, AUTOMATIC) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_InSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect,
+                  P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection);
 
 /* Design: MCAL-25767 */
 /** \brief Locks input crossbar select line.
  *
- * Function to lock an unlocked input crossbar select. Locking prevents further input selection updation. 
- * Once locked, will remain locked unless system reset.
+ * Function to lock an unlocked input crossbar select. Locking prevents further input selection
+ *updation. Once locked, will remain locked unless system reset.
  *
  * \param[in] InputSelect is the pointer to INPUT XBAR input select.
  * \pre Input crossbar select line should not be in locked state.
@@ -127,7 +125,8 @@ Cdd_Xbar_InSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect,
  * \retval E_NOT_OK if locking failed.
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_InSelectLock(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_InSelectLock(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect);
 
 /* Design: MCAL-25768 */
 /** \brief Returns input crossbar select line lock status.
@@ -142,7 +141,8 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_InSelectLock(P2CONST(uint8, AUTOMATIC, CDD_XB
  * \retval FALSE if not locked.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_InSelectLockStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_InSelectLockStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) InputSelect);
 #endif /* 0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25769 */
@@ -162,8 +162,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutLockStatus(void);
 /* Design: MCAL-25770 */
 /** \brief Locks output crossbar.
  *
- * Function to entirely Lock all output crossbar units. Locking impacts input 
- * line selection updation and output inversion. Once locked, it cannot be 
+ * Function to entirely Lock all output crossbar units. Locking impacts input
+ * line selection updation and output inversion. Once locked, it cannot be
  * unlocked unless system reset.
  *
  * \pre Output crossbar should not be in locked state.
@@ -191,9 +191,9 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutLock(void);
  * \retval E_NOT_OK if selection failed.
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutSelect
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, 
-VAR(boolean, AUTOMATIC) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_OutSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                   P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection);
 
 /* Design: MCAL-25772 */
 /** \brief Invert/Uninvert the output crossbar output.
@@ -207,8 +207,9 @@ VAR(boolean, AUTOMATIC) Selection);
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutOutputInvert
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_OutOutputInvert(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                         P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
 
 /* Design: MCAL-25771 */
 /** \brief Returns output crossbar output inversion status.
@@ -223,7 +224,8 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutOutputInvert
  * \retval FALSE if uninverted.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_OutOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 
 /* Design: MCAL-25773 */
 /** \brief Returns status of output crossbar output inversion before latch.
@@ -238,7 +240,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutOutputInvertCheck(P2CONST(uint8, AUTOMA
  * \retval FALSE if uninverted.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutputInvLatchSts(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_OutputInvLatchSts(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 
 /* Design: MCAL-25775 */
 /** \brief Selects/deselects the latch as the output crossbar output.
@@ -246,14 +249,16 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutputInvLatchSts(P2CONST(uint8, AUTOMATIC
  * Function to select or deselect the output latch to drive an output of the Output Crossbar unit.
  *
  * \param[in] OutputLine is the pointer to the OUTPUT XBAR output line.
- * \param[in] Selection TRUE : Latched event selected as output, FALSE : Latched event not selected as output.
+ * \param[in] Selection TRUE : Latched event selected as output, FALSE : Latched event not selected
+ *as output.
  * \pre Driver should be in initialized state.
  * \post None
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutputLatchSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, 
-P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_OutputLatchSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                           P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
 
 /* Design: MCAL-25774*/
 /** \brief Returns the status of selecting latch as output of output crossbar .
@@ -265,7 +270,8 @@ P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
  * \retval FALSE if latch event not selected as output.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutputLatchSelectSts(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_OutputLatchSelectSts(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 
 /* Design: MCAL-28156 */
 /** \brief Returns the status of output latch of the given output of Output Crossbar.
@@ -277,7 +283,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutputLatchSelectSts(P2CONST(uint8, AUTOMA
  * \retval FALSE if no input latched output.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutputLatchFlagStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_OutputLatchFlagStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 
 /* Design: MCAL-28157 */
 /** \brief Forces the output latch of the given output of Output Crossbar.
@@ -287,8 +294,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutputLatchFlagStatus(P2CONST(uint8, AUTOM
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutputLatchFlagForce(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
-
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_OutputLatchFlagForce(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 
 /* Design: MCAL-28158 */
 /** \brief Clears the output latch of the given output of Output Crossbar.
@@ -298,8 +305,8 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutputLatchFlagForce(P2CONST(uint8, AUTOMATIC
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutputLatchFlagClear(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
-
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_OutputLatchFlagClear(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 
 /* Design: MCAL-28155 */
 /** \brief Inverts and restores output inversion before latch for a chosen output XBAR output.
@@ -310,14 +317,14 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutputLatchFlagClear(P2CONST(uint8, AUTOMATIC
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutputInvLatch
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
-
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_OutputInvLatch(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                        P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
 
 /* Design: MCAL-25776 */
 /** \brief Stretch or unstretch an output of output crossbar.
  *
- * Function to stretch or unstretch a chosen output line of the output crossbar unit. 
+ * Function to stretch or unstretch a chosen output line of the output crossbar unit.
  * Ticks for unstretching = CDD_XBAR_SYSTICKS_STRETCH_OFF.
  *
  * \param[in] OutputLine is the pointer to the OUTPUT XBAR output line.
@@ -327,9 +334,9 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutputInvLatch
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_OutputStretchPulse
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, 
-P2CONST(Cdd_Xbar_TickStretchType, AUTOMATIC, CDD_XBAR_CONST) Ticks);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_OutputStretchPulse(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                            P2CONST(Cdd_Xbar_TickStretchType, AUTOMATIC, CDD_XBAR_CONST) Ticks);
 
 /* Design: MCAL-25777 */
 /** \brief Returns the status of output stretch on an output of the output crossbar.
@@ -341,7 +348,8 @@ P2CONST(Cdd_Xbar_TickStretchType, AUTOMATIC, CDD_XBAR_CONST) Ticks);
  * \retval FALSE if stretch is not enabled.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutputStretchOrNot(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_OutputStretchOrNot(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 
 /* Design: MCAL-25778 */
 /** \brief Returns the output stretch on an output of an output crossbar.
@@ -353,8 +361,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutputStretchOrNot(P2CONST(uint8, AUTOMATI
  * \retval CDD_XBAR_SYSTICKS_STRETCH_OFF if stretch not selected.
  *
  *********************************************************************************************************************/
-FUNC(Cdd_Xbar_TickStretchType, CDD_XBAR_CODE) Cdd_Xbar_OutputStretchGet
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(Cdd_Xbar_TickStretchType, CDD_XBAR_CODE)
+Cdd_Xbar_OutputStretchGet(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 
 /* Design: MCAL-25779 */
 /** \brief Returns the output signal state on output crossbar output.
@@ -370,8 +378,8 @@ FUNC(Cdd_Xbar_TickStretchType, CDD_XBAR_CODE) Cdd_Xbar_OutputStretchGet
  * \retval STD_LOW if Logic Low (0).
  *
  *********************************************************************************************************************/
-FUNC(Cdd_Xbar_OutputlevelType, CDD_XBAR_CODE) Cdd_Xbar_OutOutputState
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(Cdd_Xbar_OutputlevelType, CDD_XBAR_CODE)
+Cdd_Xbar_OutOutputState(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 #endif /* 0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25784 */
@@ -388,8 +396,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_ClbLockStatus(void);
 /* Design: MCAL-25785 */
 /** \brief Locks CLB crossbar.
  *
- * Function to entirely Lock all CLB Crossbar units. Locking prevents input 
- * line selection updation and output inversion. Once locked, it cannot be 
+ * Function to entirely Lock all CLB Crossbar units. Locking prevents input
+ * line selection updation and output inversion. Once locked, it cannot be
  * unlocked unless system reset.
  *
  * \pre CLB crossbar should not be in locked state.
@@ -416,8 +424,9 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_ClbLock(void);
  * \retval E_OK if selection is successful.
  * \retval E_OK if selection failed.
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_ClbSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, 
-P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_ClbSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                   P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection);
 
 /* Design: MCAL-25787 */
 /** \brief Invert/Uninvert the CLB crossbar output.
@@ -431,8 +440,9 @@ P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Se
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_ClbOutputInvert
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_ClbOutputInvert(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                         P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
 
 /* Design: MCAL-25786 */
 /** \brief Returns inversion status of CLB crossbar output .
@@ -447,7 +457,8 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_ClbOutputInvert
  * \retval FALSE if not inverted.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_ClbOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_ClbOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 #endif /* 0U < CDD_XBAR_CLB_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25780 */
@@ -464,8 +475,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_EpwmLockStatus(void);
 /* Design: MCAL-25781 */
 /** \brief Locks EPWM crossbar.
  *
- * Function to entirely Lock all EPWM Crossbar units. Locking prevents input 
- * line selection updation and output inversion. Once locked, it cannot be 
+ * Function to entirely Lock all EPWM Crossbar units. Locking prevents input
+ * line selection updation and output inversion. Once locked, it cannot be
  * unlocked unless system reset.
  *
  * \pre EPWM crossbar should not be in locked state.
@@ -493,9 +504,9 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_EpwmLock(void);
  * \retval E_NOT_OK if selection failed.
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_EpwmSelect
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, 
-VAR(boolean, AUTOMATIC) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_EpwmSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                    P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection);
 
 /* Design: MCAL-25783 */
 /** \brief Inverts EPWM crossbar output.
@@ -509,8 +520,9 @@ VAR(boolean, AUTOMATIC) Selection);
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_EpwmOutputInvert
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_EpwmOutputInvert(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                          P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
 
 /* Design: MCAL-25782 */
 /** \brief Returns EPWM crossbar output inversion status.
@@ -525,7 +537,8 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_EpwmOutputInvert
  * \retval FALSE if invertion failed.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_EpwmOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_EpwmOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 #endif /* 0U < CDD_XBAR_EPWM_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25788 */
@@ -541,8 +554,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_MdlLockStatus(void);
 /* Design: MCAL-25789 */
 /** \brief Locks MINDB Crossbar
  *
- * Function to entirely Lock all MINDB Crossbar units. Locking prevents input 
- * line selection updation and output inversion. Once locked, it cannot be 
+ * Function to entirely Lock all MINDB Crossbar units. Locking prevents input
+ * line selection updation and output inversion. Once locked, it cannot be
  * unlocked unless system reset.
  *
  * \pre MINDB crossbar should not be in locked state.
@@ -570,9 +583,9 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_MdlLock(void);
  * \retval E_NOT_OK if selection failed.
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_MdlSelect
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, 
-VAR(boolean, AUTOMATIC) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_MdlSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                   P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection);
 
 /* Design: MCAL-25791 */
 /** \brief Inverts MINDB crossbar output.
@@ -586,8 +599,9 @@ VAR(boolean, AUTOMATIC) Selection);
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_MdlOutputInvert
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_MdlOutputInvert(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                         P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
 
 /* Design: MCAL-25790 */
 /** \brief Returns MINDB crossbar output inversion status.
@@ -600,7 +614,8 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_MdlOutputInvert
  * \retval FALSE if not inverted.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_MdlOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_MdlOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 #endif /* 0U < CDD_XBAR_MINDB_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25792 */
@@ -617,8 +632,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_IclLockStatus(void);
 /* Design: MCAL-25793 */
 /** \brief Locks ICL crossbar.
  *
- * Function to entirely Lock all ICL Crossbar units. Locking prevents input 
- * line selection updation and output inversion. Once locked, it cannot be 
+ * Function to entirely Lock all ICL Crossbar units. Locking prevents input
+ * line selection updation and output inversion. Once locked, it cannot be
  * unlocked unless system reset.
  *
  * \pre ICL crossbar should not be in locked state.
@@ -629,7 +644,6 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_IclLockStatus(void);
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_IclLock(void);
-
 
 #if (0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS)
 /* Design: MCAL-25766 */
@@ -647,9 +661,9 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_IclLock(void);
  * \retval E_NOT_OK if selection failed.
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_IclSelect
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, 
-VAR(boolean, AUTOMATIC) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_IclSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                   P2CONST(uint16, AUTOMATIC, CDD_XBAR_CONST) InputLine, VAR(boolean, AUTOMATIC) Selection);
 
 /* Design: MCAL-25795 */
 /** \brief Inverts ICL Crossbar Output.
@@ -663,8 +677,9 @@ VAR(boolean, AUTOMATIC) Selection);
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_IclOutputInvert
-(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine, P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_IclOutputInvert(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                         P2CONST(boolean, AUTOMATIC, CDD_XBAR_CONST) Selection);
 
 /* Design: MCAL-25794 */
 /** \brief Returns ICL Crossbar Output Inversion status.
@@ -678,7 +693,8 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_IclOutputInvert
  * \retval FALSE if not inverted.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_IclOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_IclOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
 #endif /* 0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS*/
 
 #if (STD_ON == CDD_XBAR_INPUT_FLAG_API)
@@ -701,9 +717,10 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOM
  * \retval FALSE if input was not triggered.
  *
  *********************************************************************************************************************/
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_InFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag);
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_InFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag);
 #endif /* STD_ON == CDD_XBAR_INPUT_FLAG_API */
-#endif /* STD_ON == CDD_XBAR_API_ENABLE */ 
+#endif /* STD_ON == CDD_XBAR_API_ENABLE */
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

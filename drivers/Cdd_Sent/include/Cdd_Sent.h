@@ -57,32 +57,32 @@ extern "C" {
  *********************************************************************************************************************/
 
 /** \brief Driver Implementation Major Version. */
-#define CDD_SENT_SW_MAJOR_VERSION     (2U)
+#define CDD_SENT_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version. */
-#define CDD_SENT_SW_MINOR_VERSION     (0U)
+#define CDD_SENT_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version. */
-#define CDD_SENT_SW_PATCH_VERSION     (0U)
+#define CDD_SENT_SW_PATCH_VERSION (0U)
 
 /** \brief AUTOSAR major version specification implemented by Cdd_Sent Driver. */
-#define CDD_SENT_AR_RELEASE_MAJOR_VERSION    (4U)
+#define CDD_SENT_AR_RELEASE_MAJOR_VERSION (4U)
 /** \brief AUTOSAR minor version specification implemented by Cdd_Sent Driver. */
-#define CDD_SENT_AR_RELEASE_MINOR_VERSION    (3U)
+#define CDD_SENT_AR_RELEASE_MINOR_VERSION (3U)
 /** \brief AUTOSAR Patch version specification implemented by Cdd_Sent Driver. */
 #define CDD_SENT_AR_RELEASE_REVISION_VERSION (1U)
 
 /** \brief Texas Instruments Vendor ID. */
-#define CDD_SENT_VENDOR_ID   ((uint16) 44U)
+#define CDD_SENT_VENDOR_ID ((uint16)44U)
 /** \brief Cdd_Sent Driver Module ID. */
-#define CDD_SENT_MODULE_ID   ((uint16) 255U)
+#define CDD_SENT_MODULE_ID ((uint16)255U)
 /** \brief  Cdd_Sent Driver Instance ID. */
-#define CDD_SENT_INSTANCE_ID ((uint8) 0U)
+#define CDD_SENT_INSTANCE_ID ((uint8)0U)
 
 /*
  * Design: MCAL-28630
  */
 /** \brief API parameter checking: invalid pointer. */
 #ifndef CDD_SENT_E_PARAM_POINTER
-#define CDD_SENT_E_PARAM_POINTER             (0x20U)
+#define CDD_SENT_E_PARAM_POINTER (0x20U)
 #endif
 
 /*
@@ -90,7 +90,7 @@ extern "C" {
  */
 /** \brief API parameter checking: invalid value. */
 #ifndef CDD_SENT_E_PARAM_CHANNEL
-#define CDD_SENT_E_PARAM_CHANNEL             (0x21U)
+#define CDD_SENT_E_PARAM_CHANNEL (0x21U)
 #endif
 
 /*
@@ -98,7 +98,7 @@ extern "C" {
  */
 /** \brief API service for initialization called when already  initialized. */
 #ifndef CDD_SENT_E_ALREADY_INITIALIZED
-#define CDD_SENT_E_ALREADY_INITIALIZED       (0x22U)
+#define CDD_SENT_E_ALREADY_INITIALIZED (0x22U)
 #endif
 
 /*
@@ -106,7 +106,7 @@ extern "C" {
  */
 /** \brief  API service called without module initialization. */
 #ifndef CDD_SENT_E_UNINIT
-#define CDD_SENT_E_UNINIT                    (0x23U)
+#define CDD_SENT_E_UNINIT (0x23U)
 #endif
 
 /*
@@ -119,34 +119,34 @@ extern "C" {
  * used to identify the source of the error.
  *********************************************************************************************************************/
 /** \brief Cdd_Sent_GetVersionInfo(). */
-#define CDD_SENT_SID_GET_VERSION_INFO       (0x0U)
+#define CDD_SENT_SID_GET_VERSION_INFO (0x0U)
 /** \brief Cdd_Sent_Init(). */
-#define CDD_SENT_SID_INIT                   (0x1U)
+#define CDD_SENT_SID_INIT (0x1U)
 /** \brief Cdd_Sent_Deinit(). */
-#define CDD_SENT_SID_DEINIT                 (0x2U)
+#define CDD_SENT_SID_DEINIT (0x2U)
 /** \brief Cdd_Sent_Transmit(). */
-#define CDD_SENT_SID_TRANSMIT               (0x3U) 
+#define CDD_SENT_SID_TRANSMIT (0x3U)
 /** \brief Cdd_Sent_Enable_Interrupts(). */
-#define CDD_SENT_SID_ENABLE_INTERRUPT               (0x4U) 
+#define CDD_SENT_SID_ENABLE_INTERRUPT (0x4U)
 /** \brief Cdd_Sent_Disable_Interrupts(). */
-#define CDD_SENT_SID_DISABLE_INTERRUPT               (0x5U) 
+#define CDD_SENT_SID_DISABLE_INTERRUPT (0x5U)
 
 /** \brief TIMESTAMP MEMDATA */
-#define TIMESTAMP_MEMDATA                   ((uint16) 0x3U)
+#define TIMESTAMP_MEMDATA ((uint16)0x3U)
 /** \brief DATA0 MEMDATA */
-#define DATA0_MEMDATA                       ((uint16) 0x1U)
+#define DATA0_MEMDATA ((uint16)0x1U)
 
 /** \brief Data offsent for data1 and data 0 */
-#define SENT_DATAXMAP_STEP       (SENT_O_DATA1_MAP - SENT_O_DATA0_MAP)
+#define SENT_DATAXMAP_STEP (SENT_O_DATA1_MAP - SENT_O_DATA0_MAP)
 /** \brief software trigger step */
-#define SENT_MTP_SWTR_STEP      (SENT_O_S1_MTP_SWTR - SENT_O_BC_MTP_SWTR)
+#define SENT_MTP_SWTR_STEP (SENT_O_S1_MTP_SWTR - SENT_O_BC_MTP_SWTR)
 /** \brief Mtp Timeout step */
-#define SENT_MTP_TIMEOUT_STEP   (SENT_O_S2_MTP_TO - SENT_O_S1_MTP_TO)
+#define SENT_MTP_TIMEOUT_STEP (SENT_O_S2_MTP_TO - SENT_O_S1_MTP_TO)
 /*
  * Design: MCAL-28668
  */
 /** \brief maximum number of sensors */
-#define MAXIMUM_NUMBER_OF_SENSORS      (4U)
+#define MAXIMUM_NUMBER_OF_SENSORS (4U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -182,7 +182,6 @@ typedef enum
     CDD_SENT_INSTANCE_SENT6,
 } Cdd_SentInstance;
 
-
 /** \brief Type for Receiver Data */
 /*
  * Design: MCAL-28637
@@ -190,7 +189,7 @@ typedef enum
 typedef enum
 {
     /** \brief Receiver Data 0 */
-    CDD_SENT_RECEIVER_DATA0 = 0x0U,   
+    CDD_SENT_RECEIVER_DATA0 = 0x0U,
     /** \brief Receiver Data 1 */
     CDD_SENT_RECEIVER_DATA1 = 0x1U
 } Cdd_Sent_DataNumber;
@@ -202,21 +201,21 @@ typedef enum
 typedef enum
 {
     /** \brief DataX Nibble Number 0 */
-    CDD_SENT_DATAX_NIB0 = 0x0U,   
+    CDD_SENT_DATAX_NIB0 = 0x0U,
     /** \brief DataX Nibble Number 1 */
-    CDD_SENT_DATAX_NIB1 = 0x1U,   
+    CDD_SENT_DATAX_NIB1 = 0x1U,
     /** \brief DataX Nibble Number 2 */
-    CDD_SENT_DATAX_NIB2 = 0x2U,   
+    CDD_SENT_DATAX_NIB2 = 0x2U,
     /** \brief DataX Nibble Number 3 */
-    CDD_SENT_DATAX_NIB3 = 0x3U,   
+    CDD_SENT_DATAX_NIB3 = 0x3U,
     /** \brief DataX Nibble Number 4 */
-    CDD_SENT_DATAX_NIB4 = 0x4U,   
+    CDD_SENT_DATAX_NIB4 = 0x4U,
     /** \brief DataX Nibble Number 5 */
-    CDD_SENT_DATAX_NIB5 = 0x5U,   
+    CDD_SENT_DATAX_NIB5 = 0x5U,
     /** \brief DataX Nibble Number 6 */
-    CDD_SENT_DATAX_NIB6 = 0x6U,   
+    CDD_SENT_DATAX_NIB6 = 0x6U,
     /** \brief DataX Nibble Number 7 */
-    CDD_SENT_DATAX_NIB7 = 0x7U    
+    CDD_SENT_DATAX_NIB7 = 0x7U
 } Cdd_SentNibbleNumber;
 
 /** \brief Type for Receiver Data Nibble*/
@@ -226,29 +225,29 @@ typedef enum
 typedef enum
 {
     /** \brief No Nibble Selected */
-    CDD_SENT_NO_NIBBLE      = 0x0U,
-    /** \brief Data Nibble 1 */   
-    CDD_SENT_DATA_NIBBLE1   = 0x1U,   
-    /** \brief Data Nibble 2 */   
-    CDD_SENT_DATA_NIBBLE2   = 0x2U,   
-    /** \brief Data Nibble 3 */   
-    CDD_SENT_DATA_NIBBLE3   = 0x3U,   
-    /** \brief Data Nibble 4 */   
-    CDD_SENT_DATA_NIBBLE4   = 0x4U,   
-    /** \brief Data Nibble 5 */   
-    CDD_SENT_DATA_NIBBLE5   = 0x5U,   
-    /** \brief Data Nibble 6 */   
-    CDD_SENT_DATA_NIBBLE6   = 0x6U,   
-    /** \brief Data Nibble 7 */   
-    CDD_SENT_DATA_NIBBLE7   = 0x7U,   
-    /** \brief Data Nibble 8 */   
-    CDD_SENT_DATA_NIBBLE8   = 0x8U,   
-    /** \brief Crc Nibble 1 */   
-    CDD_SENT_CRC_NIBBLE1    = 0xAU,   
-    /** \brief Crc Nibble 2 */   
-    CDD_SENT_CRC_NIBBLE2    = 0xBU,   
-    /** \brief status Nibble */   
-    CDD_SENT_STATUS_NIBBLE  = 0xFU 
+    CDD_SENT_NO_NIBBLE = 0x0U,
+    /** \brief Data Nibble 1 */
+    CDD_SENT_DATA_NIBBLE1 = 0x1U,
+    /** \brief Data Nibble 2 */
+    CDD_SENT_DATA_NIBBLE2 = 0x2U,
+    /** \brief Data Nibble 3 */
+    CDD_SENT_DATA_NIBBLE3 = 0x3U,
+    /** \brief Data Nibble 4 */
+    CDD_SENT_DATA_NIBBLE4 = 0x4U,
+    /** \brief Data Nibble 5 */
+    CDD_SENT_DATA_NIBBLE5 = 0x5U,
+    /** \brief Data Nibble 6 */
+    CDD_SENT_DATA_NIBBLE6 = 0x6U,
+    /** \brief Data Nibble 7 */
+    CDD_SENT_DATA_NIBBLE7 = 0x7U,
+    /** \brief Data Nibble 8 */
+    CDD_SENT_DATA_NIBBLE8 = 0x8U,
+    /** \brief Crc Nibble 1 */
+    CDD_SENT_CRC_NIBBLE1 = 0xAU,
+    /** \brief Crc Nibble 2 */
+    CDD_SENT_CRC_NIBBLE2 = 0xBU,
+    /** \brief status Nibble */
+    CDD_SENT_STATUS_NIBBLE = 0xFU
 } Cdd_SentNibble;
 
 /** \brief Type for SENT CRC Type */
@@ -264,7 +263,6 @@ typedef enum
     /** \brief CRC Disable */
     CDD_SENT_CRC_NONE = 0xFFFU,
 } Cdd_SentCRCType;
-
 
 /** \brief Type for SENT CRC Width */
 /*
@@ -300,35 +298,35 @@ typedef enum
 typedef enum
 {
     /** \brief Trigger disable */
-    CDD_SENT_TRIGDISABLE    = 0U,    
+    CDD_SENT_TRIGDISABLE = 0U,
     /** \brief Trigger level 3 */
-    CDD_SENT_TRIGLEV3       = 3U,    
+    CDD_SENT_TRIGLEV3 = 3U,
     /** \brief Trigger level 4 */
-    CDD_SENT_TRIGLEV4       = 4U,       
+    CDD_SENT_TRIGLEV4 = 4U,
     /** \brief Trigger level 5 */
-    CDD_SENT_TRIGLEV5       = 5U,       
+    CDD_SENT_TRIGLEV5 = 5U,
     /** \brief Trigger level 6 */
-    CDD_SENT_TRIGLEV6       = 6U,       
+    CDD_SENT_TRIGLEV6 = 6U,
     /** \brief Trigger level 7 */
-    CDD_SENT_TRIGLEV7       = 7U,       
+    CDD_SENT_TRIGLEV7 = 7U,
     /** \brief Trigger level 8 */
-    CDD_SENT_TRIGLEV8       = 8U,       
+    CDD_SENT_TRIGLEV8 = 8U,
     /** \brief Trigger level 9 */
-    CDD_SENT_TRIGLEV9       = 9U,       
+    CDD_SENT_TRIGLEV9 = 9U,
     /** \brief Trigger level 10 */
-    CDD_SENT_TRIGLEV10      = 10,       
+    CDD_SENT_TRIGLEV10 = 10,
     /** \brief Trigger level 11 */
-    CDD_SENT_TRIGLEV11      = 11U,      
+    CDD_SENT_TRIGLEV11 = 11U,
     /** \brief Trigger level 12 */
-    CDD_SENT_TRIGLEV12      = 12U,      
+    CDD_SENT_TRIGLEV12 = 12U,
     /** \brief Trigger level 13 */
-    CDD_SENT_TRIGLEV13      = 13U,      
+    CDD_SENT_TRIGLEV13 = 13U,
     /** \brief Trigger level 14 */
-    CDD_SENT_TRIGLEV14      = 14U,      
+    CDD_SENT_TRIGLEV14 = 14U,
     /** \brief Trigger level 15 */
-    CDD_SENT_TRIGLEV15      = 15U,     
+    CDD_SENT_TRIGLEV15 = 15U,
     /** \brief Trigger level 16 */
-    CDD_SENT_TRIGLEV16      = 16U       
+    CDD_SENT_TRIGLEV16 = 16U
 } Cdd_SentTriggerLevel;
 
 /** \brief Type for SENT CRC includes status or not */
@@ -342,7 +340,6 @@ typedef enum
     /** \brief Calculation of CRC excludes Status nibble*/
     CDD_SENT_CRC_WITHOUT_STATUS = 0x000,
 } Cdd_SentCRCWithStatus;
-
 
 /** \brief Type for SENT number of data nibbles count */
 /*
@@ -368,7 +365,6 @@ typedef enum
     CDD_SENT_8_DATA_NIBBLES = 8,
 } Cdd_SentDataNibblesCount;
 
-
 /** \brief Type for SENT Sensor type */
 /*
  * Design: MCAL-28646
@@ -387,8 +383,7 @@ typedef enum
     CDD_SENT_CHANNEL_SENSOR_4,
     /** \brief Standard sensor trigger  */
     CDD_SENT_CHANNEL_STANDARD_SENSOR,
-}Cdd_SentSensorType;
-
+} Cdd_SentSensorType;
 
 /*
  * Design: MCAL-28647
@@ -410,7 +405,7 @@ typedef enum
     SHORT_SERIAL_ENHANCED_SERIAL_12BIT_SLOW_CHANNEL,
     /** \brief enhanced serial 16 bit slowc channel */
     ENHANCED_SERIAL_16BIT_SLOW_CHANNEL
-}Cdd_SentChannelType;
+} Cdd_SentChannelType;
 
 /** \brief  Sent Data Buffer. */
 /*
@@ -422,7 +417,7 @@ typedef struct
     uint32 Timestamp[1];
     /** \brief Data Buffer */
     uint32 Data_Buffer[2];
-}Cdd_Sent_Data_Buffer;
+} Cdd_Sent_Data_Buffer;
 
 /*
  * Design: MCAL-28664
@@ -445,13 +440,13 @@ typedef struct Cdd_Sent_MTPConfigType_s
     /** \brief Cdd_Sent channel type*/
     Cdd_SentSensorType    CddSentMTPSensorType;
     /** \brief interrupt source*/
-    Cdd_SentTriggerSource  CddSentTriggerSource;
+    Cdd_SentTriggerSource CddSentTriggerSource;
     /** \brief Cdd_Sent MTP enable or not */
     boolean               CddSentMTPSensorEnable;
     /** \brief Cdd_Sent sensor Timeout */
-    uint32                 CddSentMTPSensorTimeout;
+    uint32                CddSentMTPSensorTimeout;
     /** \brief Cdd_Sent MTP Channel Period */
-	uint16                CddSentMTPSensorPeriod;
+    uint16                CddSentMTPSensorPeriod;
     /** \brief Cdd_Sent MTP Channel Compare 1 */
     uint16                CddSentMTPSensorCompare1;
     /** \brief Cdd_Sent MTP Channel Compare 2 */
@@ -473,7 +468,7 @@ typedef struct Cdd_Sent_MTPConfigType_s
     /** \brief Cdd_Sent MTP Channel Compare 10 */
     uint16                CddSentMTPSensorCompare10;
     /** \brief Cdd_Sent Sensor PduId*/
-    uint16                 CddSentMTPSensorPduID;
+    uint16                CddSentMTPSensorPduID;
 
 } Cdd_Sent_MTPConfigType;
 
@@ -484,13 +479,13 @@ typedef struct Cdd_Sent_MTPConfigType_s
 typedef struct Cdd_Sent_ChannelConfigType_s
 {
     /** \brief Cdd_Sent sensor type */
-    Cdd_SentSensorType CddSentSensorType;
+    Cdd_SentSensorType  CddSentSensorType;
     /** \brief Cdd_Sent channel */
     Cdd_SentChannelType CddSentChannelType;
     /** \brief Cdd_Sent PduID */
-    uint32                  CddSentPduID;
+    uint32              CddSentPduID;
     /** \brief Cdd_Sent SensorID*/
-    uint32                  CddSentMessageID;
+    uint32              CddSentMessageID;
 } Cdd_Sent_ChannelConfigType;
 
 /** \brief  Configuration per HW unit */
@@ -500,49 +495,49 @@ typedef struct Cdd_Sent_ChannelConfigType_s
 typedef struct Cdd_Sent_HWUnitType_s
 {
     /** \brief Cdd_Sent HW unit ID */
-    uint8               CddSentHWUnitId;
+    uint8                        CddSentHWUnitId;
     /** \brief Cdd_Sent HW unit Instance */
-    Cdd_SentInstance   CddSentInstance;
+    Cdd_SentInstance             CddSentInstance;
     /** \brief Cdd_Sent HW unit Base Address */
-    uint32              CddSentBaseAddress;
+    uint32                       CddSentBaseAddress;
     /** \brief Clock tick time for the Cdd_Sent data range 3usec -10 usec*/
-    uint32               CddSentClockTick;
+    uint32                       CddSentClockTick;
     /** \brief Cdd_Sent CRC type */
-    Cdd_SentCRCType    CddSentCRCType;
+    Cdd_SentCRCType              CddSentCRCType;
     /** \brief Cdd_Sent CRC Width */
-    Cdd_SentCRCWidth   CddSentCRCWidth;
+    Cdd_SentCRCWidth             CddSentCRCWidth;
     /** \brief Cdd_Sent CRC status */
-    Cdd_SentCRCWithStatus  CddSentCRCWithStatus;
+    Cdd_SentCRCWithStatus        CddSentCRCWithStatus;
     /** \brief Cdd_Sent Data Nibbles Count */
-    Cdd_SentDataNibblesCount    CddSentDataNibblesCount;
+    Cdd_SentDataNibblesCount     CddSentDataNibblesCount;
     /** \brief Cdd_Sent FIFO trigger level */
-    Cdd_SentTriggerLevel  CddSentFIFOTriggerLevel;
+    Cdd_SentTriggerLevel         CddSentFIFOTriggerLevel;
     /** \brief Cdd_Sent Sync Timeout */
-    uint32              CddSentSyncTimeout;
+    uint32                       CddSentSyncTimeout;
     /** \brief Accept Error Data */
-    boolean                CddSentAcceptErrorData;
+    boolean                      CddSentAcceptErrorData;
     /** \brief Cdd_Sent Enable Timestamp */
-    boolean                CddSentEnableTimeStamp;    
+    boolean                      CddSentEnableTimeStamp;
     /** \brief Glitch filter */
-    uint8                  CddSentGlitchFilter;
+    uint8                        CddSentGlitchFilter;
     /** \brief Cdd_Sent Channel Count */
-    uint8               CddSentChannelCount;
+    uint8                        CddSentChannelCount;
     /** \brief Cdd_Sent CONFIG List */
-    Cdd_Sent_ChannelConfigType**    CddSentChannelConfigList;
+    Cdd_Sent_ChannelConfigType **CddSentChannelConfigList;
     /** \brief Cdd_Sent MTP */
-    boolean                CddSentMTP;
+    boolean                      CddSentMTP;
     /** \brief Cdd_Sent MTP Channel Count */
-    uint8               CddSentMTPChannelCount;
+    uint8                        CddSentMTPChannelCount;
     /** \brief Cdd_Sent MTP CONFIG List */
-    Cdd_Sent_MTPConfigType**    CddSentMTPConfigList;
+    Cdd_Sent_MTPConfigType     **CddSentMTPConfigList;
     /** \brief Global wait time */
-    uint16                      CddSentGlobalWaitTime;
+    uint16                       CddSentGlobalWaitTime;
     /** \brief User call back function */
-    Cdd_Sent_NotifyType         CddSentUserCallbackFunction;
+    Cdd_Sent_NotifyType          CddSentUserCallbackFunction;
     /** \brief User call back function for Errors */
-    Cdd_Sent_ErrorNotifyType   CddSentUserErrorCallbackFunction;
+    Cdd_Sent_ErrorNotifyType     CddSentUserErrorCallbackFunction;
     /** \brief Cdd_Sent Data buffer */
-    Cdd_Sent_Data_Buffer             CddSent_Buffer_Data;
+    Cdd_Sent_Data_Buffer         CddSent_Buffer_Data;
 } Cdd_Sent_HWUnitType;
 
 /** \brief  Configuration per HW unit */
@@ -564,11 +559,11 @@ typedef struct Cdd_Sent_ConfigType_s
 typedef struct Cdd_Sent_DriverObjType_s
 {
     /** \brief Cdd Sent driver configuration pointer.*/
-    const Cdd_Sent_ConfigType      *CddSent_CfgPtr;
+    const Cdd_Sent_ConfigType *CddSent_CfgPtr;
     /** \brief Lookup Table for Channel-Index  Ex:CddSent_Lut_Channel_Index[Ch] = index */
-    CddSent_ValueType             CddSent_Lut_Channel_Index[SENT_MAX_HW_UNITS];
+    CddSent_ValueType          CddSent_Lut_Channel_Index[SENT_MAX_HW_UNITS];
     /** \brief Array to store fast channel PDU id's */
-    PduIdType             CddSent_Fast_Channel_PduID[SENT_MAX_HW_UNITS][MAXIMUM_NUMBER_OF_SENSORS];
+    PduIdType                  CddSent_Fast_Channel_PduID[SENT_MAX_HW_UNITS][MAXIMUM_NUMBER_OF_SENSORS];
 
 } Cdd_Sent_DriverObjType;
 
@@ -592,7 +587,7 @@ typedef struct Cdd_Sent_DriverObjType_s
  *
  *********************************************************************************************************************/
 #if (STD_ON == CDD_SENT_CFG_GET_VERSION_INFO_API)
-FUNC(void, CDD_SENT_CODE) \
+FUNC(void, CDD_SENT_CODE)
 Cdd_Sent_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_SENT_APPL_DATA) VersionInfoPtr);
 #endif /* CDD_SENT_CFG_GET_VERSION_INFO_API */
 
@@ -607,7 +602,8 @@ Cdd_Sent_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_SENT_APPL_DATA
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_SENT_CODE) Cdd_Sent_Init(P2CONST(Cdd_Sent_ConfigType, AUTOMATIC, CDD_SENT_CONST) ConfigPtr);
+FUNC(void, CDD_SENT_CODE)
+Cdd_Sent_Init(P2CONST(Cdd_Sent_ConfigType, AUTOMATIC, CDD_SENT_CONST) ConfigPtr);
 
 /** \brief Cdd_Sent_Deinit : De-initializes the CDD_SENT module.
  *
@@ -626,13 +622,13 @@ FUNC(void, CDD_SENT_CODE) Cdd_Sent_Deinit(void);
  *
  * \param[in] PduInfoPtr Pointer to PDU Information.
  *                       If PduInfoPtr->SduDataPtr[0] is 0, Will disbale HW trigger
- *                       If PduInfoPtr->SduDataPtr[0] is 1, Will configure HW trigger to configuration value
- *                       If PduInfoPtr->SduDataPtr[0] is 2, Will trigger SW trigger
+ *                       If PduInfoPtr->SduDataPtr[0] is 1, Will configure HW trigger to
+ *configuration value If PduInfoPtr->SduDataPtr[0] is 2, Will trigger SW trigger
  * \param[in] TxPduId  : When Cdd Sent is integrated with Autosar Com stack, this TxPduId parameter
  * is a Pdu identifier used  to address the respective sensor.
  * When Cdd Sent is not integrated with Autosar Com stack, this TxPduId parameter
  * is a device identifier used  to address the respective sensor.
- * 
+ *
  * \pre Cdd_Sent_Init should be called first before calling this service.
  * \post None
  * \return Std_ReturnType
@@ -641,9 +637,8 @@ FUNC(void, CDD_SENT_CODE) Cdd_Sent_Deinit(void);
  *
  *********************************************************************************************************************/
 #if (STD_ON == CDD_SENT_ENABLE_MTP_MODE)
-FUNC(Std_ReturnType, CDD_SENT_CODE) \
-Cdd_Sent_Transmit(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr,
-                    PduIdType TxPduId);
+FUNC(Std_ReturnType, CDD_SENT_CODE)
+Cdd_Sent_Transmit(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr, PduIdType TxPduId);
 #endif /* CDD_SENT_ENABLE_MTP_MODE */
 
 /** \brief Cdd_Sent_Enable_Interrupts : Enable Interrupts.
@@ -674,9 +669,9 @@ Cdd_Sent_Enable_Interrupts(Cdd_SentInstance SentInstance);
  *
  *********************************************************************************************************************/
 
- FUNC(void, CDD_SENT_CODE)
- Cdd_Sent_Disable_Interrupts(Cdd_SentInstance SentInstance);
- 
+FUNC(void, CDD_SENT_CODE)
+Cdd_Sent_Disable_Interrupts(Cdd_SentInstance SentInstance);
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

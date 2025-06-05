@@ -44,7 +44,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -66,9 +66,7 @@
 #define CDD_IPC_START_SEC_ISR_CODE
 #include "Cdd_Ipc_MemMap.h"
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU1_L_CPU2_R_INST0_ENABLE)
 #if defined(CDD_IPC_CPU1_L_CPU2_R_INST0_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR)
@@ -77,7 +75,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR)
 #elif defined(CDD_IPC_CPU1_L_CPU2_R_INST0_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -85,9 +83,7 @@ ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU1_L_CPU2_R_INST1_ENABLE)
 #if defined(CDD_IPC_CPU1_L_CPU2_R_INST1_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST1_ISR)
@@ -96,7 +92,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST1_ISR)
 #elif defined(CDD_IPC_CPU1_L_CPU2_R_INST1_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST1_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -104,9 +100,7 @@ ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST1_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU1_L_CPU2_R_INST2_ENABLE)
 #if defined(CDD_IPC_CPU1_L_CPU2_R_INST2_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST2_ISR)
@@ -115,7 +109,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST2_ISR)
 #elif defined(CDD_IPC_CPU1_L_CPU2_R_INST2_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST2_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -123,9 +117,7 @@ ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST2_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU1_L_CPU2_R_INST3_ENABLE)
 #if defined(CDD_IPC_CPU1_L_CPU2_R_INST3_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST3_ISR)
@@ -134,7 +126,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST3_ISR)
 #elif defined(CDD_IPC_CPU1_L_CPU2_R_INST3_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST3_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -142,9 +134,7 @@ ISR(Cdd_Ipc_CPU1_L_CPU2_R_INST3_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU1_L_CPU3_R_INST0_ENABLE)
 #if defined(CDD_IPC_CPU1_L_CPU3_R_INST0_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST0_ISR)
@@ -153,7 +143,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST0_ISR)
 #elif defined(CDD_IPC_CPU1_L_CPU3_R_INST0_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST0_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -161,9 +151,7 @@ ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST0_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU1_L_CPU3_R_INST1_ENABLE)
 #if defined(CDD_IPC_CPU1_L_CPU3_R_INST1_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST1_ISR)
@@ -172,7 +160,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST1_ISR)
 #elif defined(CDD_IPC_CPU1_L_CPU3_R_INST1_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST1_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -180,9 +168,7 @@ ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST1_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU1_L_CPU3_R_INST2_ENABLE)
 #if defined(CDD_IPC_CPU1_L_CPU3_R_INST2_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST2_ISR)
@@ -191,7 +177,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST2_ISR)
 #elif defined(CDD_IPC_CPU1_L_CPU3_R_INST2_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST2_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -199,9 +185,7 @@ ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST2_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU1_L_CPU3_R_INST3_ENABLE)
 #if defined(CDD_IPC_CPU1_L_CPU3_R_INST3_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST3_ISR)
@@ -210,7 +194,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST3_ISR)
 #elif defined(CDD_IPC_CPU1_L_CPU3_R_INST3_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST3_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -218,9 +202,7 @@ ISR(Cdd_Ipc_CPU1_L_CPU3_R_INST3_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU2_L_CPU1_R_INST0_ENABLE)
 #if defined(CDD_IPC_CPU2_L_CPU1_R_INST0_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST0_ISR)
@@ -229,7 +211,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST0_ISR)
 #elif defined(CDD_IPC_CPU2_L_CPU1_R_INST0_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST0_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -237,9 +219,7 @@ ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST0_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU2_L_CPU1_R_INST1_ENABLE)
 #if defined(CDD_IPC_CPU2_L_CPU1_R_INST1_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST1_ISR)
@@ -248,7 +228,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST1_ISR)
 #elif defined(CDD_IPC_CPU2_L_CPU1_R_INST1_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST1_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -256,9 +236,7 @@ ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST1_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU2_L_CPU1_R_INST2_ENABLE)
 #if defined(CDD_IPC_CPU2_L_CPU1_R_INST2_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST2_ISR)
@@ -267,7 +245,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST2_ISR)
 #elif defined(CDD_IPC_CPU2_L_CPU1_R_INST2_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST2_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -275,9 +253,7 @@ ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST2_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU2_L_CPU1_R_INST3_ENABLE)
 #if defined(CDD_IPC_CPU2_L_CPU1_R_INST3_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST3_ISR)
@@ -286,7 +262,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST3_ISR)
 #elif defined(CDD_IPC_CPU2_L_CPU1_R_INST3_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST3_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -294,9 +270,7 @@ ISR(Cdd_Ipc_CPU2_L_CPU1_R_INST3_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU2_L_CPU3_R_INST0_ENABLE)
 #if defined(CDD_IPC_CPU2_L_CPU3_R_INST0_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST0_ISR)
@@ -305,7 +279,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST0_ISR)
 #elif defined(CDD_IPC_CPU2_L_CPU3_R_INST0_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST0_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -313,9 +287,7 @@ ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST0_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU2_L_CPU3_R_INST1_ENABLE)
 #if defined(CDD_IPC_CPU2_L_CPU3_R_INST1_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST1_ISR)
@@ -324,7 +296,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST1_ISR)
 #elif defined(CDD_IPC_CPU2_L_CPU3_R_INST1_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST1_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -332,9 +304,7 @@ ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST1_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU2_L_CPU3_R_INST2_ENABLE)
 #if defined(CDD_IPC_CPU2_L_CPU3_R_INST2_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST2_ISR)
@@ -343,7 +313,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST2_ISR)
 #elif defined(CDD_IPC_CPU2_L_CPU3_R_INST2_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST2_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -351,9 +321,7 @@ ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST2_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU2_L_CPU3_R_INST3_ENABLE)
 #if defined(CDD_IPC_CPU2_L_CPU3_R_INST3_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST3_ISR)
@@ -362,7 +330,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST3_ISR)
 #elif defined(CDD_IPC_CPU2_L_CPU3_R_INST3_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST3_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -370,9 +338,7 @@ ISR(Cdd_Ipc_CPU2_L_CPU3_R_INST3_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU3_L_CPU1_R_INST0_ENABLE)
 #if defined(CDD_IPC_CPU3_L_CPU1_R_INST0_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST0_ISR)
@@ -381,7 +347,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST0_ISR)
 #elif defined(CDD_IPC_CPU3_L_CPU1_R_INST0_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST0_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -389,9 +355,7 @@ ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST0_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU3_L_CPU1_R_INST1_ENABLE)
 #if defined(CDD_IPC_CPU3_L_CPU1_R_INST1_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST1_ISR)
@@ -400,7 +364,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST1_ISR)
 #elif defined(CDD_IPC_CPU3_L_CPU1_R_INST1_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST1_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -408,9 +372,7 @@ ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST1_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU3_L_CPU1_R_INST2_ENABLE)
 #if defined(CDD_IPC_CPU3_L_CPU1_R_INST2_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST2_ISR)
@@ -419,7 +381,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST2_ISR)
 #elif defined(CDD_IPC_CPU3_L_CPU1_R_INST2_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST2_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -427,9 +389,7 @@ ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST2_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU3_L_CPU1_R_INST3_ENABLE)
 #if defined(CDD_IPC_CPU3_L_CPU1_R_INST3_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST3_ISR)
@@ -438,7 +398,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST3_ISR)
 #elif defined(CDD_IPC_CPU3_L_CPU1_R_INST3_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST3_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -446,9 +406,7 @@ ISR(Cdd_Ipc_CPU3_L_CPU1_R_INST3_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU3_L_CPU2_R_INST0_ENABLE)
 #if defined(CDD_IPC_CPU3_L_CPU2_R_INST0_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST0_ISR)
@@ -457,7 +415,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST0_ISR)
 #elif defined(CDD_IPC_CPU3_L_CPU2_R_INST0_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST0_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -465,9 +423,7 @@ ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST0_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU3_L_CPU2_R_INST1_ENABLE)
 #if defined(CDD_IPC_CPU3_L_CPU2_R_INST1_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST1_ISR)
@@ -476,7 +432,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST1_ISR)
 #elif defined(CDD_IPC_CPU3_L_CPU2_R_INST1_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST1_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -484,9 +440,7 @@ ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST1_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU3_L_CPU2_R_INST2_ENABLE)
 #if defined(CDD_IPC_CPU3_L_CPU2_R_INST2_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST2_ISR)
@@ -495,7 +449,7 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST2_ISR)
 #elif defined(CDD_IPC_CPU3_L_CPU2_R_INST2_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST2_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -503,9 +457,7 @@ ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST2_ISR)
 }
 #endif
 
-/*
- *Design: MCAL-
- */
+/* Design: MCAL-30596 */
 #if defined(CDD_IPC_CPU3_L_CPU2_R_INST3_ENABLE)
 #if defined(CDD_IPC_CPU3_L_CPU2_R_INST3_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST3_ISR)
@@ -514,14 +466,13 @@ MCAL_LIB_INT_ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST3_ISR)
 #elif defined(CDD_IPC_CPU3_L_CPU2_R_INST3_ISR_CAT2_INT)
 ISR(Cdd_Ipc_CPU3_L_CPU2_R_INST3_ISR)
 #else
-    #error "Invalid Ipc interrupt category"
+#error "Invalid Ipc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
     Cdd_Ipc_ProcessIsr(CDD_IPC_CPU3_L_CPU2_R_INST3);
 }
 #endif
-
 
 #define CDD_IPC_STOP_SEC_ISR_CODE
 #include "Cdd_Ipc_MemMap.h"

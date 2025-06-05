@@ -86,7 +86,7 @@ extern "C" {
 #define FLS_INIT_CONFIG_PC       Fls_[!"@name"!]
 [!ENDLOOP!]
 [!ENDIF!]
-       
+
 /** \brief Flash Sectors (0~31) protection */
 #define FLS_CMDWEPROTA                 ([!"as:modconf('Fls')[1]/FlsConfigSet/Fls_CMDWEPROTA"!]U)
 
@@ -95,7 +95,7 @@ extern "C" {
 
 /** \brief Number of Sectorlist configured */
 [!LOOP "as:modconf('Fls')[1]/FlsConfigSet"!][!//
-[!VAR "NumOfSectorCfg" = "0"!]  
+[!VAR "NumOfSectorCfg" = "0"!]
 [!WS "4"!][!LOOP "FlsSectorList/FlsSector/*"!]
 [!VAR "NumOfSectorCfg" = "$NumOfSectorCfg + 1"!]
 [!WS "4"!][!ENDLOOP!]
@@ -160,9 +160,6 @@ extern "C" {
 /** \brief Flash wait states */
 #define FLS_WAIT_STATES         ([!"as:modconf('Fls')[1]/FlsGeneral/FlsWaitStates"!]U)
 
-/** \brief Counter ID for counter used to count wait ticks */
-#define FLS_OS_COUNTER_ID              ((Os_CounterIdType)[!"num:i(node:ref(as:modconf('Fls')[1]/FlsGeneral/FlsOsCounterRef)/OsCounterId)"!]U)
-
 /** \brief Max Erase time in microsec*/
 #define FLS_MAX_ERASE_TIME                ([!"num:i(as:modconf('Fls')[1]/FlsPublishedInformation/FlsEraseTime)"!]U)
 
@@ -195,7 +192,7 @@ extern const struct Fls_ConfigType_s Fls_[!"@name"!];
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

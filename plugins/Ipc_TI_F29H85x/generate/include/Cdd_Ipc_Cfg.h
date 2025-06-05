@@ -115,6 +115,7 @@ extern "C" {
 [!VAR "sysClockFrequency"="num:i(node:value(concat(node:path(node:ref(as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcGeneral/CddIpcCounterClockRef)), '/McuClockReferencePointFrequency')))"!]
 #define CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES    ((uint64)([!"num:i(as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcGeneral/CddIpcTimeoutDuration * $sysClockFrequency)"!]U))
 
+/* Design: MCAL-30536 */
 /*****************************************************************************
  * \brief Symbolic names for the remote cores
  *****************************************************************************/ 
@@ -124,6 +125,7 @@ extern "C" {
 [!ENDLOOP!]
 
 [!IF "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable  = 'true'"!]
+/* Design: MCAL-30537 */
 /*****************************************************************************
  * \brief Defines for symbolic names for the CddIpcPduR Lower layer Rx PdU's
  *****************************************************************************/
@@ -131,6 +133,7 @@ extern "C" {
 #define Cdd_IpcConf_CddPduRLowerLayerRxPdu_[!"@name"!]        [!"@index"!]U      /*~ASR~*/
 [!ENDLOOP!]
 
+/* Design: MCAL-30538 */
 /*****************************************************************************
  * \brief Defines for symbolic names for the CddIpcPduR Lower layer Tx PdU's
  *****************************************************************************/
@@ -139,6 +142,7 @@ extern "C" {
 [!ENDLOOP!]
 
 [!ELSE!]
+/* Design: MCAL-30603 */
 /*****************************************************************************
  * \brief Symbolic names for the Tx channels
  ***************************************************************************/
@@ -146,6 +150,7 @@ extern "C" {
 #define Cdd_IpcConf_CddIpcTxChannelConfig_[!"@name"!] [!"node:value(CddIpcTxGlobalChannelId)"!]U	         /*~ASR~*/
 [!ENDLOOP!]
 
+/* Design: MCAL-30602 */
 /*****************************************************************************
  * \brief Symbolic names for the Rx channels
  ***************************************************************************/
@@ -167,6 +172,7 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Design: MCAL-30527 */
 /** \brief CPU cores type */
 typedef enum
 {
@@ -175,6 +181,7 @@ typedef enum
     CDD_IPC_CPU3 = 2U,              /*!< \brief  CPU3*/
 }Cdd_Ipc_CoreType;
 
+/* Design: MCAL-30526 */
 /** \brief IPC Tx processing */
 typedef enum
 {
@@ -182,6 +189,7 @@ typedef enum
     CDD_IPC_INTERRUPT  = 2U            /*!< \brief  Interrupt mode*/
 }Cdd_Ipc_TxProcessingType;
 
+/* Design: MCAL-30525 */
 /** \brief IPC Instance type */
 typedef enum
 {

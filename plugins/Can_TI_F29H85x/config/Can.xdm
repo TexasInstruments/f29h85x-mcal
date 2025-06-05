@@ -140,11 +140,11 @@
                         <a:tst expr="&lt;=4294967295"/>
                         <a:tst expr="&gt;=0"/>
                       </a:da>
-                          <a:a name="DEFAULT_RADIX" value="HEX"/>
-                          <a:da name="DEFAULT" type="XPath">
-                              <a:tst expr="node:fallback(&quot;->(num:inttohex((substring-after(node:value(../CanControllerInstance),'MCAN') - 1 )*32768+1610743808))&quot;,num:i(0))"   />
-                          </a:da>
-                          <a:da name="READONLY" value="true"/>
+                      <a:a name="DEFAULT_RADIX" value="HEX"/>
+                      <a:da name="DEFAULT" type="XPath">
+                      <a:tst expr="node:fallback(&quot;->(num:inttohex((substring-after(node:value(../CanControllerInstance),'MCAN') - 1 )*32768+1610743808))&quot;,num:i(0))"   />
+                      </a:da>
+                      <a:da name="EDITABLE" value="false"/>
                     </v:var>
                     <v:var name="CanControllerId" type="INTEGER">
                       <a:a name="DESC" 
@@ -1616,7 +1616,7 @@
                                 <a:tst expr="&gt;=0"/>
                               </a:da>
                               <a:da name="DEFAULT" value="0"/>
-                              <a:da name="READONLY" value="true"/>
+                              <a:da name="EDITABLE" value="false"/>
                             </v:var>
                             <v:var name="CanIcomPayloadLengthError" 
                                    type="BOOLEAN">
@@ -1770,7 +1770,7 @@
                     <a:tst expr="&gt;=0"/>
                   </a:da>
                   <a:da name="DEFAULT" value="0"/>
-                  <a:da name="READONLY" value="true"/>
+                  <a:da name="EDITABLE" value="false"/>
                 </v:var>
                 <v:var name="CanLPduReceiveCalloutFunction" 
                        type="FUNCTION-NAME">
@@ -1947,7 +1947,8 @@
                 </v:var>
                 <v:ref name="CanOsCounterRef" type="REFERENCE">
                   <a:a name="DESC" 
-                       value="EN: This parameter contains a reference to the OsCounter, which is used by the CAN driver."/>
+                       value="EN: This parameter contains a reference to the OsCounter, which is used by the CAN driver.
+                       Note: The CAN driver does not currently utilize this parameter"/>
                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                        type="IMPLEMENTATIONCONFIGCLASS">
                     <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
@@ -1957,9 +1958,27 @@
                   </a:a>
                   <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                   <a:a name="SCOPE" value="LOCAL"/>
+                  <a:da name="EDITABLE" value="false"/>
+                  <a:da name="VISIBLE"  value="false"/>
+                  <a:da name="DEFAULT" value="/Os/Os/OsCounter_0"/>
                   <a:a name="UUID" value="7186c35e-9215-4442-9cac-d1f52b64ea84"/>
                   <a:da name="REF" 
                         value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Os/OsCounter"/>
+                </v:ref>
+                <v:ref name="CanSysClockRef" type="REFERENCE">
+                  <a:a name="DESC" 
+                       value="EN: This parameter references the SYSCLK to convert timeout values from milliseconds to clock ticks. Users should ensure the correct clock reference point is selected to achieve accurate timeout calculations."/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      <icc:v vclass="Link">VariantLinkTime</icc:v>
+                      <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                  <a:da name="REF"
+                                value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
                 </v:ref>
                 <!--Design: MCAL-22758 -->
                 <v:ref name="CanSupportTTCANRef" type="REFERENCE">
@@ -2027,7 +2046,7 @@
                       <a:v>CAN_ICOM_VARIANT_NONE</a:v>
                       <a:v>CAN_ICOM_VARIANT_SW</a:v>
                     </a:da>
-                    <a:da name="READONLY" value="true"/>
+                    <a:da name="EDITABLE" value="false"/>
                   </v:var>
                 </v:ctr>
                 <v:lst name="CanMainFunctionRWPeriods" type="MAP">

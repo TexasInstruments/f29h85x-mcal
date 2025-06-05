@@ -23,7 +23,7 @@
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
- /* 
+/*
  *Design: MCAL-21954
  */
 #include "Gpt_Priv.h"
@@ -45,7 +45,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -77,7 +77,7 @@ MCAL_LIB_INT_ISR(Gpt_Ch0Isr)
 #elif defined(GPT_ISR_CAT2_CHANNEL0)
 ISR(Gpt_Ch0Isr)
 #else
-    #error "Invalid interrupt category for timer channel 0"
+#error "Invalid interrupt category for timer channel 0"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -96,7 +96,7 @@ MCAL_LIB_INT_ISR(Gpt_Ch1Isr)
 #elif defined(GPT_ISR_CAT2_CHANNEL1)
 ISR(Gpt_Ch1Isr)
 #else
-    #error "Invalid interrupt category for timer channel 1"
+#error "Invalid interrupt category for timer channel 1"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -115,7 +115,7 @@ MCAL_LIB_INT_ISR(Gpt_Ch2Isr)
 #elif defined(GPT_ISR_CAT2_CHANNEL2)
 ISR(Gpt_Ch2Isr)
 #else
-    #error "Invalid interrupt category for timer channel 2"
+#error "Invalid interrupt category for timer channel 2"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */

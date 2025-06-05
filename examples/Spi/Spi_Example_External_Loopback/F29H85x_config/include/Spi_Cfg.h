@@ -180,7 +180,7 @@ extern "C" {
  */
 
 
-#define SPI_CFG_TIMEOUT_CLOCK_CYCLES    ((uint64)(10000U))
+#define SPI_CFG_TIMEOUT_CLOCK_CYCLES    ((McalLib_TickType)(10000U))
 
 /** \brief Maximum channels allowed per job */
 /*

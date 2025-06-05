@@ -42,7 +42,7 @@ extern "C" {
 #define ECUM_CFG_PATCH_VERSION                 (0U)
 
 /* Number of wakeup events configured in EcuM wakeup source .*/
-#define ECUM_CFG_WAKEUP_EVENT_COUNT     (1U) 
+#define ECUM_CFG_WAKEUP_EVENT_COUNT     (1U)
 
 #define ECUM_PRE_COMPILE_VARIANT   (STD_ON)
 

@@ -74,7 +74,7 @@ extern "C" {
  * \brief Enable/Disable development error detection.
  *
  *****************************************************************************/
-#define PORT_CFG_DEV_ERROR_DETECT            (STD_ON) 
+#define PORT_CFG_DEV_ERROR_DETECT            (STD_OFF) 
 
 /*****************************************************************************
  *
@@ -95,7 +95,7 @@ extern "C" {
  * \brief Enable/Disable Port_GetVersionInfo().
  *
  *****************************************************************************/
-#define PORT_CFG_GET_VERSION_INFO_API        (STD_ON) 
+#define PORT_CFG_GET_VERSION_INFO_API        (STD_OFF) 
 
 /*****************************************************************************
  *

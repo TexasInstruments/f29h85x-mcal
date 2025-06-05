@@ -16,7 +16,7 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Port_Priv.h
  *
- *  Description:  Definations of internal Private functions, MACROs and Structures 
+ *  Description:  Definations of internal Private functions, MACROs and Structures
  *********************************************************************************************************************/
 
 #ifndef PORT_PRIV_H
@@ -29,7 +29,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -48,98 +48,96 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-/* 
+/*
  *Design: MCAL-23521, MCAL-22409, MCAL-23523, MCAL-22412, MCAL-22413,MCAL-23521
  */
 /** \brief Pin configuration check */
-#define PORT_IS_PIN_CONFIGURABLE(x)    ((boolean)(((x->Port_ControllerSpecific.Port_PinConfigFlags)) & ((uint8)0x1U)))
+#define PORT_IS_PIN_CONFIGURABLE(x) ((boolean)(((x->Port_ControllerSpecific.Port_PinConfigFlags)) & ((uint8)0x1U)))
 /** \brief Pin Analog Support check */
-#define PORT_IS_ANALOG_MODE_SUPPORTED(x)        ((boolean)(((x->Port_PinConfigFlags) >> (uint8)1U) & (0x1U)))
+#define PORT_IS_ANALOG_MODE_SUPPORTED(x) ((boolean)(((x->Port_PinConfigFlags) >> (uint8)1U) & (0x1U)))
 /** \brief AGPIO Pin check */
-#define PORT_IS_PIN_AGPIO(x)                    ((boolean)(((x->Port_PinConfigFlags) >> 2U) & (0x1U)))
+#define PORT_IS_PIN_AGPIO(x) ((boolean)(((x->Port_PinConfigFlags) >> 2U) & (0x1U)))
 /** \brief AIO Pin check */
-#define PORT_IS_PIN_AIO(x)                      ((boolean)(((x->Port_PinConfigFlags) >> 3U) & (0x1U)))
+#define PORT_IS_PIN_AIO(x) ((boolean)(((x->Port_PinConfigFlags) >> 3U) & (0x1U)))
 /** \brief GPIO Pin check */
-#define PORT_IS_PIN_GPIO(x)                     ((boolean)(((x->Port_PinConfigFlags) >> 4U) & (0x1U))) 
+#define PORT_IS_PIN_GPIO(x) ((boolean)(((x->Port_PinConfigFlags) >> 4U) & (0x1U)))
 /** \brief Port Width : 32 */
-#define PORT_WIDTH                              (32U)
+#define PORT_WIDTH (32U)
 /** \brief Half of Port Width */
-#define PORT_WIDTH_HALF                         (16U)
+#define PORT_WIDTH_HALF (16U)
 /** \brief Quarter of Port Width */
-#define PORT_WIDTH_QUARTER                      (8U)
+#define PORT_WIDTH_QUARTER (8U)
 /** \brief One bit mask value */
-#define ONE_BIT_MASK                            (1U)
+#define ONE_BIT_MASK (1U)
 /** \brief Two bit mask value */
-#define TWO_BIT_MASK                            (0x3U)
+#define TWO_BIT_MASK (0x3U)
 /** \brief AGPIO Pin start Value */
-#define AGPIO_PINS_START_VALUE                  (224U)
+#define AGPIO_PINS_START_VALUE (224U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
 /*****************************************************************************
-* 
-* Useful defines used within the driver functions to access gpio registers.
-* Not intended for use by application code.
-*
-* Divide by 4 is for C29x which has word access. (temporary macro declared)
-*
-*****************************************************************************/
-/* 
+ *
+ * Useful defines used within the driver functions to access gpio registers.
+ * Not intended for use by application code.
+ *
+ * Divide by 4 is for C29x which has word access. (temporary macro declared)
+ *
+ *****************************************************************************/
+/*
  *Design: MCAL-23519,MCAL-23520
  */
 /** \brief Port Control register step size */
-#define PORT_CTRL_REGS_STEP             ((GPIO_O_GPBCTRL - GPIO_O_GPACTRL) / 4U)
+#define PORT_CTRL_REGS_STEP ((GPIO_O_GPBCTRL - GPIO_O_GPACTRL) / 4U)
 /** \brief Port Data register step size */
-#define PORT_DATA_REGS_STEP             ((GPIO_O_GPBDAT - GPIO_O_GPADAT) / 4U)
+#define PORT_DATA_REGS_STEP ((GPIO_O_GPBDAT - GPIO_O_GPADAT) / 4U)
 /** \brief Port Data read register step size */
-#define PORT_DATA_READ_REGS_STEP        ((GPIO_O_GPBDAT_R - GPIO_O_GPADAT_R) / 4U)
+#define PORT_DATA_READ_REGS_STEP ((GPIO_O_GPBDAT_R - GPIO_O_GPADAT_R) / 4U)
 
 /** \brief Port Control register Index value */
-#define PORT_CTRL_REGS_INDEX              (GPIO_O_GPACTRL / 4U)                 /* 0U */
+#define PORT_CTRL_REGS_INDEX (GPIO_O_GPACTRL / 4U) /* 0U */
 /** \brief Port Q-Select register Index value */
-#define PORT_QSEL_REGS_INDEX              (GPIO_O_GPAQSEL1 / 4U)                /* 1U */
+#define PORT_QSEL_REGS_INDEX (GPIO_O_GPAQSEL1 / 4U) /* 1U */
 /** \brief Port MUX register Index value */
-#define PORT_MUX_REGS_INDEX               (GPIO_O_GPAMUX1 / 4U)                 /* 3U */
+#define PORT_MUX_REGS_INDEX (GPIO_O_GPAMUX1 / 4U) /* 3U */
 /** \brief Port Pull up disable register Index value */
-#define PORT_PUD_REGS_INDEX               (GPIO_O_GPAPUD / 4U)                  /* 6U */
+#define PORT_PUD_REGS_INDEX (GPIO_O_GPAPUD / 4U) /* 6U */
 /** \brief Port Invert polarity register Index value */
-#define PORT_INV_REGS_INDEX               (GPIO_O_GPAINV / 4U)                  /* 8U */
+#define PORT_INV_REGS_INDEX (GPIO_O_GPAINV / 4U) /* 8U */
 /** \brief Port Open drain register Index value */
-#define PORT_ODR_REGS_INDEX               (GPIO_O_GPAODR / 4U)                  /* 9U */
+#define PORT_ODR_REGS_INDEX (GPIO_O_GPAODR / 4U) /* 9U */
 /** \brief Port AM Select register Index value */
-#define PORT_AMSEL_REGS_INDEX             (10U)                                 /* 10U */
+#define PORT_AMSEL_REGS_INDEX (10U) /* 10U */
 /** \brief Port GMUX register Index value */
-#define PORT_GMUX_REGS_INDEX              (GPIO_O_GPAGMUX1 / 4U)                /* 16U */
+#define PORT_GMUX_REGS_INDEX (GPIO_O_GPAGMUX1 / 4U) /* 16U */
 /** \brief Port Core Select register Index value */
-#define PORT_CSEL_REGS_INDEX              (GPIO_O_GPACSEL1 / 4U)                /* 20U */
+#define PORT_CSEL_REGS_INDEX (GPIO_O_GPACSEL1 / 4U) /* 20U */
 /** \brief Port Lock configuration register Index value */
-#define PORT_LOCK_REGS_INDEX              (GPIO_O_GPALOCK / 4U)                 /* 30U */
+#define PORT_LOCK_REGS_INDEX (GPIO_O_GPALOCK / 4U) /* 30U */
 /** \brief Port lock commit register Index value */
-#define PORT_CR_REGS_INDEX                (GPIO_O_GPACR / 4U)                   /* 31U */
+#define PORT_CR_REGS_INDEX (GPIO_O_GPACR / 4U) /* 31U */
 
 /** \brief Port Data register Index value */
-#define PORT_DAT_REGS_INDEX               (GPIO_O_GPADAT / 4U)                  /* 0U */
-/** \brief Port Data Set register Index value */      
-#define PORT_SET_REGS_INDEX               (GPIO_O_GPASET / 4U)                  /* 1U */
-/** \brief Port Data Clear register Index value */  
-#define PORT_CLEAR_REGS_INDEX             (GPIO_O_GPACLEAR / 4U)                /* 2U */
-/** \brief Port Data Toggle register Index value */  
-#define PORT_TOGGLE_REGS_INDEX            (GPIO_O_GPATOGGLE / 4U)               /* 3U */
-/** \brief Port Data Direction Set register Index value */  
-#define PORT_DIR_REGS_INDEX               (GPIO_O_GPADIR / 4U)                  /* 4U */ 
+#define PORT_DAT_REGS_INDEX (GPIO_O_GPADAT / 4U) /* 0U */
+/** \brief Port Data Set register Index value */
+#define PORT_SET_REGS_INDEX (GPIO_O_GPASET / 4U) /* 1U */
+/** \brief Port Data Clear register Index value */
+#define PORT_CLEAR_REGS_INDEX (GPIO_O_GPACLEAR / 4U) /* 2U */
+/** \brief Port Data Toggle register Index value */
+#define PORT_TOGGLE_REGS_INDEX (GPIO_O_GPATOGGLE / 4U) /* 3U */
+/** \brief Port Data Direction Set register Index value */
+#define PORT_DIR_REGS_INDEX (GPIO_O_GPADIR / 4U) /* 4U */
 
-/** \brief Port Data read register Index value */  
-#define GPIO_DAT_R_REGS_INDEX             (0U)
+/** \brief Port Data read register Index value */
+#define GPIO_DAT_R_REGS_INDEX (0U)
 
-/** \brief Port MUX to GMUX difference value */  
-#define PORT_MUX_TO_GMUX                (GPIO_O_GPAGMUX1 - GPIO_O_GPAMUX1)
+/** \brief Port MUX to GMUX difference value */
+#define PORT_MUX_TO_GMUX (GPIO_O_GPAGMUX1 - GPIO_O_GPAMUX1)
 
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-
-
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -151,7 +149,7 @@ extern "C" {
 
 /** \brief Sets the pad/pull configuration for the specified pin.
  *
- * This function sets the controller specific parameters for the specified pin. 
+ * This function sets the controller specific parameters for the specified pin.
  * The pin is specified by its numerical value. For example, GPIO34 is
  * specified by passing 34 as \e PinNumber.
  *
@@ -164,9 +162,8 @@ extern "C" {
  * \retval E_NOT_OK if pad configuration Fails
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, PORT_CODE) \
+FUNC(Std_ReturnType, PORT_CODE)
 Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfigPtr);
-
 
 /** \brief Writes the level value to the specified pin.
  *
@@ -186,10 +183,9 @@ Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) Pin
  * \retval E_NOT_OK if Level Set Fails
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, PORT_CODE) \
-Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) \
-                                                            PinConfigPtr, Port_PinLevelValueType PinLevel);
-
+FUNC(Std_ReturnType, PORT_CODE)
+Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfigPtr,
+                 Port_PinLevelValueType PinLevel);
 
 /** \brief Set pins as Low Power wakeup modes GPIO pins.
  *
@@ -204,9 +200,8 @@ Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) \
  * \retval E_NOT_OK if Wakeup Enable is failure
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, PORT_CODE) \
+FUNC(Std_ReturnType, PORT_CODE)
 Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig);
-
 
 /** \brief Configures the Pin Mode function of a PORT pin.
  *
@@ -215,7 +210,7 @@ Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA)
  * time can be associated with a PORT pin, and each peripheral function should
  * only be associated with a single PORT pin at a time (despite the fact that
  * many of them can be associated with more than one PORT pin).
- * 
+ *
  * The available mappings are supplied in Port_Pin_Map.h
  *
  * \param[in] PinMode is the pin configuration value for pin
@@ -227,7 +222,6 @@ Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA)
  *
  *********************************************************************************************************************/
 FUNC(void, PORT_CODE) Port_SetPinModeConfig(uint32 PinMode);
-
 
 /** \brief Sets the direction of the specified pin.
  *
@@ -252,17 +246,17 @@ FUNC(void, PORT_CODE) Port_SetPinModeConfig(uint32 PinMode);
  * \post None
  * \return returnValue
  * \retval E_OK if pin direction is set successfully.
- * \retval E_NOT_OK if pin direction is Not set successfully. 
+ * \retval E_NOT_OK if pin direction is Not set successfully.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, PORT_CODE) Port_SetDirectionMode(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) \
-                                            PinConfigPtr, Port_PinDirectionType PinDirection);
-
+FUNC(Std_ReturnType, PORT_CODE)
+Port_SetDirectionMode(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfigPtr,
+                      Port_PinDirectionType PinDirection);
 
 /** \brief Checks if the provided pin number is Valid or Not.
  *
  * This function Checks if the pin number provided in the configuration is valid or not.
- * 
+ *
  *
  * \param[in] PinNumber is the pin num value provided in the pin configuration
  * \param[out] returnvalue
@@ -275,15 +269,15 @@ FUNC(Std_ReturnType, PORT_CODE) Port_SetDirectionMode(P2CONST(Port_PinConfigType
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, PORT_CODE) Port_IsPinNumberValid(Port_PinType PinNumber);
 
-
 /** \brief Validates the pin Mode provided.
- * 
- * This function checks with the Pin mode provided for the particular pin config is valid mode or not
+ *
+ * This function checks with the Pin mode provided for the particular pin config is valid mode or
+ *not
  *
  * \param[in] Mode is the Mode passed to Pin
  * \param[in] pinConfig is the Pointer having pin config
- * \param[in] errorIdPtr is the error pointer 
- * \param[out] retVal 
+ * \param[in] errorIdPtr is the error pointer
+ * \param[out] retVal
  * \pre None
  * \post None
  * \return retVal
@@ -291,13 +285,12 @@ FUNC(Std_ReturnType, PORT_CODE) Port_IsPinNumberValid(Port_PinType PinNumber);
  * \retval E_NOT_OK if mode provided is not valid
  *
  ****************************************************************************/
-FUNC(Std_ReturnType, PORT_CODE) Port_ValidateSetPinMode(Port_PinModeType Mode, \
-                                        P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA)  pinConfig,\
-                                        P2VAR(uint8, AUTOMATIC, PORT_APPL_DATA) errorIdPtr);
-
+FUNC(Std_ReturnType, PORT_CODE)
+Port_ValidateSetPinMode(Port_PinModeType Mode, P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig,
+                        P2VAR(uint8, AUTOMATIC, PORT_APPL_DATA) errorIdPtr);
 
 /** \brief Locks the Critical Configuration registers for the passed Pin.
- * 
+ *
  * This function Locks the Critical Configuration registers for the passed Pin
  *
  * \param[in] pinConfig is the Pointer having pin config
@@ -308,11 +301,11 @@ FUNC(Std_ReturnType, PORT_CODE) Port_ValidateSetPinMode(Port_PinModeType Mode, \
  * \retval None
  *
  ****************************************************************************/
-FUNC(void, PORT_CODE) Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig);
-
+FUNC(void, PORT_CODE)
+Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig);
 
 /** \brief Unlocks the Critical Configuration registers for the passed Pin.
- * 
+ *
  * This function Unlocks the Critical Configuration registers for the passed Pin
  *
  * \param[in] pinConfig is the Pointer having pin config
@@ -323,11 +316,11 @@ FUNC(void, PORT_CODE) Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMAT
  * \retval None
  *
  ****************************************************************************/
-FUNC(void, PORT_CODE) Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig);
-
+FUNC(void, PORT_CODE)
+Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig);
 
 /** \brief Locks and Commit the Critical Configuration registers for the passed Pin.
- * 
+ *
  * This function Locks and Commit the Critical Configuration registers for the passed Pin
  *
  * \param[in] pinNumber Pin Number

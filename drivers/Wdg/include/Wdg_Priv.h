@@ -49,15 +49,15 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
- /*
+/*
  * Design: MCAL-25306, MCAL-25307, MCAL-25311
  */
 /** \brief Shifted pattern for WDCR register's WDCHK field. */
-#define WDG_CHKBITS       (0x0028U)
+#define WDG_CHKBITS (0x0028U)
 /** \brief Keys for WDKEY field. This key is to enable reset. */
-#define WDG_ENRSTKEY      (0x0055U) /* */
+#define WDG_ENRSTKEY (0x0055U) /* */
 /** \brief Keys for WDKEY field. This key is to reset . */
-#define WDG_RSTKEY        (0x00AAU) /* */
+#define WDG_RSTKEY (0x00AAU) /* */
 /** \brief Reset pattern for WDCR register's WDCHK field. */
 #define WDG_CHKBITS_RESET (0x0038U)
 /** \brief Maximum 8 bit counter value. */
@@ -80,91 +80,86 @@ extern "C" {
  *********************************************************************************************************************/
 
 /** \brief Initialize the configuration settings
- * 
+ *
  * \param[in] ConfigPtr pointer to the Watchdog configuration
  * \pre None
  * \post None
  * \return Std_ReturnType
  * \retval E_OK: command has been accepted
  * \retval E_NOT_OK: command has not been accepted
- * 
+ *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, WDG_CODE) Wdg_PlatformInit(P2CONST(Wdg_ConfigType, AUTOMATIC, WDG_APPL_DATA) ConfigPtr);
-
+FUNC(Std_ReturnType, WDG_CODE)
+Wdg_PlatformInit(P2CONST(Wdg_ConfigType, AUTOMATIC, WDG_APPL_DATA) ConfigPtr);
 
 /** \brief Sets the requested Mode configuration settings into Watchdog registers
- * 
+ *
  * \param[in] ModeCfg pointer to the Watchdog Mode settings
  * \pre None
  * \post None
  * \return Std_ReturnType
  * \retval E_OK: command has been accepted
  * \retval E_NOT_OK: command has not been accepted
- * 
+ *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, WDG_CODE) Wdg_SetModeConfig(P2CONST(Wdg_ModeInfoType, AUTOMATIC, WDG_APPL_DATA) ModeCfg);
-
-
+FUNC(Std_ReturnType, WDG_CODE)
+Wdg_SetModeConfig(P2CONST(Wdg_ModeInfoType, AUTOMATIC, WDG_APPL_DATA) ModeCfg);
 
 /** \brief Enables the watchdog.
- * 
+ *
  * This function enables the watchdog timer.
  *
  * \post None
  * \return None
  * \retval None
- * 
+ *
  *********************************************************************************************************************/
 FUNC(void, WDG_CODE) Wdg_EnableWatchdog(void);
 
-
 /** \brief Disables the watchdog.
- * 
+ *
  * This function disables the watchdog timer.
- * 
+ *
  * \param[in] None
  * \post None
  * \return None
  * \retval None
- * 
+ *
  *********************************************************************************************************************/
 FUNC(void, WDG_CODE) Wdg_DisableWatchdog(void);
 
-
 /** \brief Services the watchdog.
- * 
+ *
  * This function resets the watchdog counter
- * 
+ *
  * \post None
  * \return None
  * \retval None
- * 
+ *
  *********************************************************************************************************************/
 FUNC(void, WDG_CODE) Wdg_ServiceWatchdog(void);
 
-
-/** \brief Generates the immediate watchdog reset/interrupt 
- * 
- * This function generates the immediate watchdog event 
- * 
+/** \brief Generates the immediate watchdog reset/interrupt
+ *
+ * This function generates the immediate watchdog event
+ *
  * \param[in] None
  * \param[out] None
  * \post None
  * \return None
  * \retval None
- * 
+ *
  *********************************************************************************************************************/
 FUNC(void, WDG_CODE) Wdg_GenerateImmediateEvent(void);
 
-
 /** \brief Gets the watchdog counter value.
- * 
+ *
  * \param[in] None
  * \param[out] None
-*  \post None
+ *  \post None
  * \return Returns the current value of the 8-bit watchdog counter.
  * \retval Wdg counter value
- * 
+ *
  *********************************************************************************************************************/
 FUNC(uint16, WDG_CODE) Wdg_GetWatchdogCounterValue(void);
 
@@ -172,12 +167,13 @@ FUNC(uint16, WDG_CODE) Wdg_GetWatchdogCounterValue(void);
  *
  * \param[in] Wdg_DrvObjPtr pointer to the Watchdog Driver Object which is initialised in Wdg.c
  * \param[out] None
-*  \post None
+ *  \post None
  * \return Returns the Watchdog Maximum Timeout Value.
  * \retval Wdg Maximum Timeout value
  *
  *********************************************************************************************************************/
-FUNC(uint16, WDG_CODE) Wdg_GetMaxTimeout(P2CONST(Wdg_DriverObjType, AUTOMATIC, WDG_APPL_DATA) Wdg_DrvObjPtr);
+FUNC(uint16, WDG_CODE)
+Wdg_GetMaxTimeout(P2CONST(Wdg_DriverObjType, AUTOMATIC, WDG_APPL_DATA) Wdg_DrvObjPtr);
 
 /** \brief Sets the timeout value for the trigger counter
  *
@@ -194,7 +190,8 @@ FUNC(void, WDG_CODE) Wdg_SetTriggerConditionPriv(VAR(uint16, AUTOMATIC) Time_out
  *********************************************************************************************************************/
 
 #ifdef __cplusplus
-extern "C" }
+extern "C"
+}
 #endif
 
 #endif /* WDG_PRIV_H */

@@ -17,7 +17,7 @@
  *  File:       Mcal_Lib_BootRom.h
  *  Generator:  None
  *
- *  Description:  Bootrom structures.                                                         
+ *  Description:  Bootrom structures.
  *********************************************************************************************************************/
 #ifndef MCAL_LIB_BOOTROM_H
 #define MCAL_LIB_BOOTROM_H
@@ -29,7 +29,7 @@ extern "C" {
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
- #include "Std_Types.h"
+#include "Std_Types.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -137,16 +137,15 @@ typedef enum
  *****************************************************************************/
 typedef enum
 {
-    LINK0_ERR_ID_NONE           = 0xF487DA78U, /* No error */
-    LINK0_ERR_ID_APR_CONFIG     = 0x2AC69B4FU, /* LINK0 APR configurtation error */
-    LINK0_ERR_ID_SSU_POST       = 0xADF53EF6U, /* SSU POST error */
-    LINK0_ERR_ID_SSU_CONFIG     = 0x57DE827CU, /* SSU configurtation error */
-    LINK0_ERR_ID_NMI            = 0xCDF5847DU, /* NMI error */
-    LINK0_ERR_ID_SECCFG_APR     = 0x69D473BEU, /* NMI error */
-    LINK0_ERR_ID_WDG_SYNCBUSY   = 0xFE3BC723U, /* WDG Sync Busy */
-    LINK0_ERR_ID_XTAL_SYNCBUSY  = 0x9BC4EA4CU  /* XTAL Sync Busy */
+    LINK0_ERR_ID_NONE          = 0xF487DA78U, /* No error */
+    LINK0_ERR_ID_APR_CONFIG    = 0x2AC69B4FU, /* LINK0 APR configurtation error */
+    LINK0_ERR_ID_SSU_POST      = 0xADF53EF6U, /* SSU POST error */
+    LINK0_ERR_ID_SSU_CONFIG    = 0x57DE827CU, /* SSU configurtation error */
+    LINK0_ERR_ID_NMI           = 0xCDF5847DU, /* NMI error */
+    LINK0_ERR_ID_SECCFG_APR    = 0x69D473BEU, /* NMI error */
+    LINK0_ERR_ID_WDG_SYNCBUSY  = 0xFE3BC723U, /* WDG Sync Busy */
+    LINK0_ERR_ID_XTAL_SYNCBUSY = 0x9BC4EA4CU  /* XTAL Sync Busy */
 } McalLib_Link0ErrId;
-
 
 /*****************************************************************************
  *
@@ -155,39 +154,38 @@ typedef enum
  *  STATUS_NA   - Step Not Run.
  *  STATUS_PASS - Step Pass.
  *  STATUS_FAIL - Step Fail.
- * 
+ *
  *****************************************************************************/
 typedef struct
 {
-    McalLib_Status RamInit:2;       /* Flow status for RAM Initialization: */
-    McalLib_Status Hwpatch:2;       /* Flow status for ROM Hardware Patching: */
-    McalLib_Status ErrorStsPin:2;   /* Flow status for Error status pin configuration: */
-    McalLib_Status Zone0pswd:2;     /* Flow status for ZONE0 debug passwsrd: */
-    McalLib_Status Uid:2;           /* Flow status for Unique Id: */
-    McalLib_Status Friws:2;         /* Flow status for FRI wait states:*/
-    McalLib_Status WdEnable:2;      /* Flow status for Watchdog enable:*/
-    McalLib_Status Pmmtrim:2;       /* Flow status for PMM Trim: */
-    McalLib_Status Osctrim:2;       /* Flow status for OSC Trim: */
-    McalLib_Status Aplltrim:2;      /* Flow status for APLL Trim: */
-    McalLib_Status Flashtrim:2;     /* Flow status for Flash Trim: */
-    McalLib_Status Criticaltrim:2;  /* Flow status for Overall Critical Trim: */
-    McalLib_Status Devconfig:2;     /* Flow status for Device Configuration: */
-    McalLib_Status LockDcx:2;       /* Flow status for DCx Lock: */
-    McalLib_Status RescClr:2;       /* Flow status for Reset Cause Clear: */
-    McalLib_Status FlashTrimLock:2; /* Flow status for Flash Trim Lock: */
-    McalLib_Status EsmLockCommit:2; /* Flow status for ESM Lock and Commit Group 0 error events: */
-    McalLib_Status UppRev:2;        /* Flow status for UPP revision: */
-    McalLib_Status XtalEn:2;        /* Flow status for external crystal power up:*/
-    McalLib_Status SsuPost:2;       /* Flow status for SSU post: */
-    McalLib_Status SsuInit:2;       /* Flow status for SSU Initialization: */
-    McalLib_Status PmmDbgtrim:2;    /* Flow status for PMM Debug Trim: */
-    McalLib_Status AdcReftrim:2;    /* Flow status for ADC Reference Trim: */
-    McalLib_Status AdcOfftrim:2;    /* Flow status for ADC offset Trim: */
-    McalLib_Status AdcInltrim:2;    /* Flow status for ADCINL Trim: */
-    McalLib_Status DacOfftrim:2;    /* Flow status for DAC Offset Trim: */
+    McalLib_Status RamInit : 2;       /* Flow status for RAM Initialization: */
+    McalLib_Status Hwpatch : 2;       /* Flow status for ROM Hardware Patching: */
+    McalLib_Status ErrorStsPin : 2;   /* Flow status for Error status pin configuration: */
+    McalLib_Status Zone0pswd : 2;     /* Flow status for ZONE0 debug passwsrd: */
+    McalLib_Status Uid : 2;           /* Flow status for Unique Id: */
+    McalLib_Status Friws : 2;         /* Flow status for FRI wait states:*/
+    McalLib_Status WdEnable : 2;      /* Flow status for Watchdog enable:*/
+    McalLib_Status Pmmtrim : 2;       /* Flow status for PMM Trim: */
+    McalLib_Status Osctrim : 2;       /* Flow status for OSC Trim: */
+    McalLib_Status Aplltrim : 2;      /* Flow status for APLL Trim: */
+    McalLib_Status Flashtrim : 2;     /* Flow status for Flash Trim: */
+    McalLib_Status Criticaltrim : 2;  /* Flow status for Overall Critical Trim: */
+    McalLib_Status Devconfig : 2;     /* Flow status for Device Configuration: */
+    McalLib_Status LockDcx : 2;       /* Flow status for DCx Lock: */
+    McalLib_Status RescClr : 2;       /* Flow status for Reset Cause Clear: */
+    McalLib_Status FlashTrimLock : 2; /* Flow status for Flash Trim Lock: */
+    McalLib_Status EsmLockCommit : 2; /* Flow status for ESM Lock and Commit Group 0 error events: */
+    McalLib_Status UppRev : 2;        /* Flow status for UPP revision: */
+    McalLib_Status XtalEn : 2;        /* Flow status for external crystal power up:*/
+    McalLib_Status SsuPost : 2;       /* Flow status for SSU post: */
+    McalLib_Status SsuInit : 2;       /* Flow status for SSU Initialization: */
+    McalLib_Status PmmDbgtrim : 2;    /* Flow status for PMM Debug Trim: */
+    McalLib_Status AdcReftrim : 2;    /* Flow status for ADC Reference Trim: */
+    McalLib_Status AdcOfftrim : 2;    /* Flow status for ADC offset Trim: */
+    McalLib_Status AdcInltrim : 2;    /* Flow status for ADCINL Trim: */
+    McalLib_Status DacOfftrim : 2;    /* Flow status for DAC Offset Trim: */
 
 } McalLib_Brom;
-
 
 /*****************************************************************************
  *
@@ -196,30 +194,29 @@ typedef struct
  ******************************************************************************/
 typedef struct
 {
-    McalLib_Status          BankMgmtCpu1:2;         /* Flow status for CPU1 bank mgmt */
-    McalLib_Status          BankMgmtCpu3:2;         /* Flow status for CPU3 bank mgmt */
-    McalLib_Status          EccBankMode:2;          /* Flow status for Bank mode ECC */
-    McalLib_Status          EetBankMode:2;          /* Flow status for Get bankmode */
-    McalLib_Status          ReadError:2;            /* Flow status for sector read error */
-    McalLib_Status          EccSsuMode:2;           /* Flow status for SSU mode ECC */
-    McalLib_Status          GetSsuMode:2;           /* Flow status for Get SSU mode */
-    McalLib_Status          SecCfgCpu1:2;           /* Flow status for CPU1 seccfg */
-    McalLib_Status          SecCfgCpu3:2;           /* Flow status for CPU3 seccfg */
-    McalLib_Status          SsuCfgCpu1:2;           /* Flow status for CPU1 SSU config */
-    McalLib_Status          SsuCfgCpu3:2;           /* Flow status for CPU3 SSU config */
-    McalLib_Status          AprCfg:2;               /* Flow status for CPU1, CPU2 and CPU3 APR configuration */
-    uint32                  WinningBankMgmtCpu1;    /* Winning bank mgmt sector found for CPU1 */
-    uint32                  WinningBankMgmtCpu3;    /* Winning bank mgmt sector found for CPU3 */
-    uint32                  ValidSecCfgCpu1;        /* Valid SECCFG sector found for CPU1 */
-    uint32                  ValidSecCfgCpu3;        /* Valid SECCFG sector found for CPU3 */
-    McalLib_FlashBankMode   BankMode;               /* Bankmode got from bank mgmt sector */
-    McalLib_FlashBankSwap   Cpu1swap;               /* Decoded CPU1 swap settings */
-    McalLib_FlashBankSwap   Cpu3swap;               /* Decoded CPU3 swap settings */
-    McalLib_SecValid        SecvalidCpu1;           /* Decoded CPU1 SECVALID settings */
-    McalLib_SecValid        SecvalidCpu3;           /* Decoded CPU3 SECVALID settings */
-    McalLib_SsuMode         SsuMode;                /* SSU mode setting */
+    McalLib_Status        BankMgmtCpu1 : 2;    /* Flow status for CPU1 bank mgmt */
+    McalLib_Status        BankMgmtCpu3 : 2;    /* Flow status for CPU3 bank mgmt */
+    McalLib_Status        EccBankMode : 2;     /* Flow status for Bank mode ECC */
+    McalLib_Status        EetBankMode : 2;     /* Flow status for Get bankmode */
+    McalLib_Status        ReadError : 2;       /* Flow status for sector read error */
+    McalLib_Status        EccSsuMode : 2;      /* Flow status for SSU mode ECC */
+    McalLib_Status        GetSsuMode : 2;      /* Flow status for Get SSU mode */
+    McalLib_Status        SecCfgCpu1 : 2;      /* Flow status for CPU1 seccfg */
+    McalLib_Status        SecCfgCpu3 : 2;      /* Flow status for CPU3 seccfg */
+    McalLib_Status        SsuCfgCpu1 : 2;      /* Flow status for CPU1 SSU config */
+    McalLib_Status        SsuCfgCpu3 : 2;      /* Flow status for CPU3 SSU config */
+    McalLib_Status        AprCfg : 2;          /* Flow status for CPU1, CPU2 and CPU3 APR configuration */
+    uint32                WinningBankMgmtCpu1; /* Winning bank mgmt sector found for CPU1 */
+    uint32                WinningBankMgmtCpu3; /* Winning bank mgmt sector found for CPU3 */
+    uint32                ValidSecCfgCpu1;     /* Valid SECCFG sector found for CPU1 */
+    uint32                ValidSecCfgCpu3;     /* Valid SECCFG sector found for CPU3 */
+    McalLib_FlashBankMode BankMode;            /* Bankmode got from bank mgmt sector */
+    McalLib_FlashBankSwap Cpu1swap;            /* Decoded CPU1 swap settings */
+    McalLib_FlashBankSwap Cpu3swap;            /* Decoded CPU3 swap settings */
+    McalLib_SecValid      SecvalidCpu1;        /* Decoded CPU1 SECVALID settings */
+    McalLib_SecValid      SecvalidCpu3;        /* Decoded CPU3 SECVALID settings */
+    McalLib_SsuMode       SsuMode;             /* SSU mode setting */
 } McalLib_SsuStatus;
-
 
 /*****************************************************************************
  *
@@ -228,12 +225,11 @@ typedef struct
  ******************************************************************************/
 typedef struct
 {
-    uint32  HighPriAddr;      /* EA High priority address */
-    uint32  LowPriAddr;       /* EA Low priority address */
-    uint32  ErrType;          /* EA Error Type */
-    uint32  PcAddr;           /* Program Counter */
+    uint32 HighPriAddr; /* EA High priority address */
+    uint32 LowPriAddr;  /* EA Low priority address */
+    uint32 ErrType;     /* EA Error Type */
+    uint32 PcAddr;      /* Program Counter */
 } McalLib_EaStatus;
-
 
 /*****************************************************************************
  *
@@ -242,14 +238,13 @@ typedef struct
  ******************************************************************************/
 typedef struct
 {
-    uint32              EsmRawStatus;   /* ESM RAW status */
-    McalLib_EaStatus    EaCpu1Pr;       /* EA CPU1 PR status */ 
-    McalLib_EaStatus    EaCpu1Dr1;      /* EA CPU1 DR1 status */
-    McalLib_EaStatus    EaCpu1Dr2;      /* EA CPU1 DR2 status */
-    McalLib_EaStatus    EaCpu1Dw;       /* EA CPU1 DW status */
-    McalLib_EaStatus    EaCpu1Int;      /* EA CPU1 INT status */
+    uint32           EsmRawStatus; /* ESM RAW status */
+    McalLib_EaStatus EaCpu1Pr;     /* EA CPU1 PR status */
+    McalLib_EaStatus EaCpu1Dr1;    /* EA CPU1 DR1 status */
+    McalLib_EaStatus EaCpu1Dr2;    /* EA CPU1 DR2 status */
+    McalLib_EaStatus EaCpu1Dw;     /* EA CPU1 DW status */
+    McalLib_EaStatus EaCpu1Int;    /* EA CPU1 INT status */
 } McalLib_NmiStatus;
-
 
 /*****************************************************************************
  *
@@ -258,75 +253,75 @@ typedef struct
  ******************************************************************************/
 typedef struct
 {
-    uint64                      Link0StartCycleCount;   /* Link0 start cycle count */
-    uint64                      Link0EndCycleCount;     /* Link0 end cycle count */
-    uint32                      ResetCnt;               /* Reset count */
-    uint32                      ResetCause;             /* Reset cause */
-    uint32                      Sysclk;                 /* System Clock in Hertz */
-    uint32                      EccErrAddrDR1;          /* ECC Error Address for DR1: */
-    uint32                      EccErrAddrDR2;          /* ECC Error Address for DR2: */
-    uint32                      BootMode;               /* Boot Mode: */
-    uint32                      BootLoaderLock;         /* Bootloader Lock: */
-    McalLib_DevLifeCycleState   DeviceLifeCycleState;   /* Device life cycle state */
-    McalLib_Link0ErrId          Link0ErrId;             /* Link0 Error Id */
-    McalLib_Brom                BromStatus;             /* Boot rom status */
-    McalLib_SsuStatus           SsuStatus;              /* SSU status */
-    McalLib_NmiStatus           NmiStatus;              /* NMI status */
+    uint64                    Link0StartCycleCount; /* Link0 start cycle count */
+    uint64                    Link0EndCycleCount;   /* Link0 end cycle count */
+    uint32                    ResetCnt;             /* Reset count */
+    uint32                    ResetCause;           /* Reset cause */
+    uint32                    Sysclk;               /* System Clock in Hertz */
+    uint32                    EccErrAddrDR1;        /* ECC Error Address for DR1: */
+    uint32                    EccErrAddrDR2;        /* ECC Error Address for DR2: */
+    uint32                    BootMode;             /* Boot Mode: */
+    uint32                    BootLoaderLock;       /* Bootloader Lock: */
+    McalLib_DevLifeCycleState DeviceLifeCycleState; /* Device life cycle state */
+    McalLib_Link0ErrId        Link0ErrId;           /* Link0 Error Id */
+    McalLib_Brom              BromStatus;           /* Boot rom status */
+    McalLib_SsuStatus         SsuStatus;            /* SSU status */
+    McalLib_NmiStatus         NmiStatus;            /* NMI status */
 } McalLib_BromStatus;
 
 typedef struct
 {
-    uint32    DevCalI2vR130C;   /* I2V R1 30C */
-    uint32    DevCalI2vR230C;   /* I2V R2 30C */
-    uint32    DevCalI2vR330C;   /* I2V R3 30C */
-    uint32    DevCalI2vR1N40C;  /* I2V R1 N40C */
-    uint32    DevCalI2vR2N40C;  /* I2V R2 N40C */
-    uint32    DevCalI2vR3N40C;  /* I2V R3 N40C */
-    uint32    DevCalI2vR1125C;  /* I2V R1 125C */
-    uint32    DevCalI2vR2125C;  /* I2V R2 125C */
-    uint32    DevCalI2vR3125C;  /* I2V R3 125C */
-    uint32    Rsvd11Mp1;        /* Reserved 11 MP1 */
-    uint32    DfwtRevMp1;       /* Dfwtrev MP1 */
-    uint32    BoardIdMp1;       /* BoardId MP1 */
-    uint32    ChkSumLsbMp1;     /* Chksumlsb MP1 */
-    uint32    Rsvd14Mp3;        /* Reserved 14 MP3 */
-    uint32    DfwtRevMp3;       /* Dfwtrev MP1 */
-    uint32    BoardIdMp3;       /* BoardId MP3 */
-    uint32    ChkSumLsbMp3;     /* Chksumlsb MP3 */
-    uint32    BootRomRsvd0;     /* Bootrom reserved 0 */
-    uint32    BootRomRsvd2;     /* Bootrom reserved 2 */
-    uint32    BootRomRsvd4;     /* Bootrom reserved 4 */
-    uint32    DfwtRevFt;        /* Dfwtrev FT */
-    uint32    PmmConfigDebug0;  /* PMM Config Debug 0 */
-    uint32    PmmConfigDebug1;  /* PMM Config Debug 1 */
-    uint32    AnaRefTrimA1P65;  /* ANAREFTRIMA1P65 */
-    uint32    AnaRefTrimA2P5;   /* ANAREFTRIMA2P5 */
-    uint32    AnaRefTrimC1P65;  /* ANAREFTRIMC1P65 */
-    uint32    AnaRefTrimC2P5;   /* ANAREFTRIMC2P5 */
-    uint32    AdcAoffTrim;      /* ADCA OFF TRIM */
-    uint32    AdcAoffTrim2;     /* ADCA OFF TRIM 2 */
-    uint32    AdcAoffTrim3;     /* ADCA OFF TRIM 3 */
-    uint32    AdcBoffTrim;      /* ADCA OFF TRIM 3*/
-    uint32    AdcBoffTrim2;     /* ADCA OFF TRIM 3 */
-    uint32    AdcBoffTrim3;     /* ADCB OFF TRIM 3 */
-    uint32    AdcCoffTrim;      /* ADCC OFF TRIM 3 */
-    uint32    AdcDoffTrim;      /* ADCD OFF TRIM 3 */
-    uint32    AdcEoffTrim;      /* ADCE OFF TRIM 3 */
-    uint32    AdcAInlTrim[6U];  /* ADCA INL TRIM 1-6 */
-    uint32    AdcBInlTrim[6U];  /* ADCB INL TRIM 1-6 */
-    uint32    AdcCInlTrim[3U];  /* ADCC INL TRIM 1-6 */
-    uint32    AdcDInlTrim[3U];  /* ADCD INL TRIM 1-6 */
-    uint32    AdcEInlTrim[3U];  /* ADCE INL TRIM 1-6 */
-    uint32    DacAOffTrim;      /* DACA OFF TRIM */
-    uint32    DacCOffTrim;      /* DACC OFF TRIM */
-    uint32    Hole0;            /* Hole 0 */
-    uint32    Hole1;            /* Hole 1 */
-    uint32    Hole2;            /* Hole 2 */
-    uint32    DevCalTsGainExtref;       /* DEVCAL TS Gain Extref */
-    uint32    DevCalTsOffsetExtref;     /* DEVCAL TS Offset Extref */
-    uint32    DevCalTsGainIntref;       /* DEVCAL TS Gain Intref */
-    uint32    DevCalTsOffsetIntref;     /* DEVCAL TS Offset Intref */
-    uint32    DevCalRev;                /* DEVCAL Revision */
+    uint32 DevCalI2vR130C;       /* I2V R1 30C */
+    uint32 DevCalI2vR230C;       /* I2V R2 30C */
+    uint32 DevCalI2vR330C;       /* I2V R3 30C */
+    uint32 DevCalI2vR1N40C;      /* I2V R1 N40C */
+    uint32 DevCalI2vR2N40C;      /* I2V R2 N40C */
+    uint32 DevCalI2vR3N40C;      /* I2V R3 N40C */
+    uint32 DevCalI2vR1125C;      /* I2V R1 125C */
+    uint32 DevCalI2vR2125C;      /* I2V R2 125C */
+    uint32 DevCalI2vR3125C;      /* I2V R3 125C */
+    uint32 Rsvd11Mp1;            /* Reserved 11 MP1 */
+    uint32 DfwtRevMp1;           /* Dfwtrev MP1 */
+    uint32 BoardIdMp1;           /* BoardId MP1 */
+    uint32 ChkSumLsbMp1;         /* Chksumlsb MP1 */
+    uint32 Rsvd14Mp3;            /* Reserved 14 MP3 */
+    uint32 DfwtRevMp3;           /* Dfwtrev MP1 */
+    uint32 BoardIdMp3;           /* BoardId MP3 */
+    uint32 ChkSumLsbMp3;         /* Chksumlsb MP3 */
+    uint32 BootRomRsvd0;         /* Bootrom reserved 0 */
+    uint32 BootRomRsvd2;         /* Bootrom reserved 2 */
+    uint32 BootRomRsvd4;         /* Bootrom reserved 4 */
+    uint32 DfwtRevFt;            /* Dfwtrev FT */
+    uint32 PmmConfigDebug0;      /* PMM Config Debug 0 */
+    uint32 PmmConfigDebug1;      /* PMM Config Debug 1 */
+    uint32 AnaRefTrimA1P65;      /* ANAREFTRIMA1P65 */
+    uint32 AnaRefTrimA2P5;       /* ANAREFTRIMA2P5 */
+    uint32 AnaRefTrimC1P65;      /* ANAREFTRIMC1P65 */
+    uint32 AnaRefTrimC2P5;       /* ANAREFTRIMC2P5 */
+    uint32 AdcAoffTrim;          /* ADCA OFF TRIM */
+    uint32 AdcAoffTrim2;         /* ADCA OFF TRIM 2 */
+    uint32 AdcAoffTrim3;         /* ADCA OFF TRIM 3 */
+    uint32 AdcBoffTrim;          /* ADCA OFF TRIM 3*/
+    uint32 AdcBoffTrim2;         /* ADCA OFF TRIM 3 */
+    uint32 AdcBoffTrim3;         /* ADCB OFF TRIM 3 */
+    uint32 AdcCoffTrim;          /* ADCC OFF TRIM 3 */
+    uint32 AdcDoffTrim;          /* ADCD OFF TRIM 3 */
+    uint32 AdcEoffTrim;          /* ADCE OFF TRIM 3 */
+    uint32 AdcAInlTrim[6U];      /* ADCA INL TRIM 1-6 */
+    uint32 AdcBInlTrim[6U];      /* ADCB INL TRIM 1-6 */
+    uint32 AdcCInlTrim[3U];      /* ADCC INL TRIM 1-6 */
+    uint32 AdcDInlTrim[3U];      /* ADCD INL TRIM 1-6 */
+    uint32 AdcEInlTrim[3U];      /* ADCE INL TRIM 1-6 */
+    uint32 DacAOffTrim;          /* DACA OFF TRIM */
+    uint32 DacCOffTrim;          /* DACC OFF TRIM */
+    uint32 Hole0;                /* Hole 0 */
+    uint32 Hole1;                /* Hole 1 */
+    uint32 Hole2;                /* Hole 2 */
+    uint32 DevCalTsGainExtref;   /* DEVCAL TS Gain Extref */
+    uint32 DevCalTsOffsetExtref; /* DEVCAL TS Offset Extref */
+    uint32 DevCalTsGainIntref;   /* DEVCAL TS Gain Intref */
+    uint32 DevCalTsOffsetIntref; /* DEVCAL TS Offset Intref */
+    uint32 DevCalRev;            /* DEVCAL Revision */
 } McalLib_DevCalData;
 
 /*********************************************************************************************************************
@@ -348,7 +343,7 @@ extern const McalLib_DevCalData McalLib_DeviceCalibrationData;
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, MCAL_LIB_CODE) McalLib_BootRomStructure(McalLib_BromStatus ** BootRomStatus);
+FUNC(void, MCAL_LIB_CODE) McalLib_BootRomStructure(McalLib_BromStatus** BootRomStatus);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

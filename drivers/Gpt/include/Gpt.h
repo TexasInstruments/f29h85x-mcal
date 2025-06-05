@@ -28,7 +28,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -46,113 +46,109 @@ extern "C" {
  *********************************************************************************************************************/
 
 /** \brief Driver Implementation Major Version. */
-#define GPT_SW_MAJOR_VERSION            (1U)
+#define GPT_SW_MAJOR_VERSION (1U)
 /** \brief Driver Implementation Minor Version. */
-#define GPT_SW_MINOR_VERSION            (0U)
+#define GPT_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version. */
-#define GPT_SW_PATCH_VERSION            (2U)
-
+#define GPT_SW_PATCH_VERSION (2U)
 
 /** \brief AUTOSAR major version specification implemented by GPT Driver. */
-#define GPT_AR_RELEASE_MAJOR_VERSION    (4U)
+#define GPT_AR_RELEASE_MAJOR_VERSION (4U)
 /** \brief AUTOSAR minor version specification implemented by GPT Driver. */
-#define GPT_AR_RELEASE_MINOR_VERSION    (3U)
+#define GPT_AR_RELEASE_MINOR_VERSION (3U)
 /** \brief AUTOSAR patch version specification implemented by GPT Driver */
-#define GPT_AR_RELEASE_PATCH_VERSION    (1U)
-
+#define GPT_AR_RELEASE_PATCH_VERSION (1U)
 
 /** \brief Texas Instruments Vendor ID. */
-#define GPT_VENDOR_ID                   ((uint16) 44U)
+#define GPT_VENDOR_ID ((uint16)44U)
 /** \brief GPT Driver Module ID. */
-#define GPT_MODULE_ID                   ((uint16) 100U)
-
+#define GPT_MODULE_ID ((uint16)100U)
 
 /** \brief  API service called without module initialization. */
 /*
- * Design: MCAL-22042, MCAL-21969, MCAL-21968, MCAL-21961, MCAL-21966, MCAL-21963, 
+ * Design: MCAL-22042, MCAL-21969, MCAL-21968, MCAL-21961, MCAL-21966, MCAL-21963,
  * Design: MCAL-21962, MCAL-21965, MCAL-21970, MCAL-21967, MCAL-21964
  */
 #ifndef GPT_E_UNINIT
-#define GPT_E_UNINIT                    ((uint8)0x0AU)
+#define GPT_E_UNINIT ((uint8)0x0AU)
 #endif
 
 /** \brief  API service called when timer channel is still busy (running). */
 #ifndef GPT_E_BUSY
-#define GPT_E_BUSY                      ((uint8)0x0BU)
+#define GPT_E_BUSY ((uint8)0x0BU)
 #endif
 
 /** \brief API service called when driver is in wrong mode. */
 #ifndef GPT_E_MODE
-#define GPT_E_MODE                      ((uint8)0x0CU)
+#define GPT_E_MODE ((uint8)0x0CU)
 #endif
 
 /** \brief API service for initialization called when already  initialized. */
 #ifndef GPT_E_ALREADY_INITIALIZED
-#define GPT_E_ALREADY_INITIALIZED       ((uint8)0x0DU)
+#define GPT_E_ALREADY_INITIALIZED ((uint8)0x0DU)
 #endif
 
 /** \brief API error return code: Init function failed. */
 #ifndef GPT_E_INIT_FAILED
-#define GPT_E_INIT_FAILED               ((uint8)0x0EU)
+#define GPT_E_INIT_FAILED ((uint8)0x0EU)
 #endif
 
- /** \brief API parameter checking: invalid channel. */
+/** \brief API parameter checking: invalid channel. */
 #ifndef GPT_E_PARAM_CHANNEL
-#define GPT_E_PARAM_CHANNEL             ((uint8)0x14U)
+#define GPT_E_PARAM_CHANNEL ((uint8)0x14U)
 #endif
 
 /** \brief API parameter checking: invalid value. */
 #ifndef GPT_E_PARAM_VALUE
-#define GPT_E_PARAM_VALUE               ((uint8)0x15U)
+#define GPT_E_PARAM_VALUE ((uint8)0x15U)
 #endif
 
 /** \brief API parameter checking: invalid pointer. */
 #ifndef GPT_E_PARAM_POINTER
-#define GPT_E_PARAM_POINTER             ((uint8)0x16U)
+#define GPT_E_PARAM_POINTER ((uint8)0x16U)
 #endif
 
 /** \brief API parameter checking: invalid pointer. */
 #ifndef GPT_E_PARAM_PREDEF_TIMER
-#define GPT_E_PARAM_PREDEF_TIMER        ((uint8)0x17U)
+#define GPT_E_PARAM_PREDEF_TIMER ((uint8)0x17U)
 #endif
 
 /** \brief API parameter checking: invalid mode. */
 #ifndef GPT_E_PARAM_MODE
-#define GPT_E_PARAM_MODE                ((uint8)0x1FU)
+#define GPT_E_PARAM_MODE ((uint8)0x1FU)
 #endif
 
 /*
  *Design: MCAL-22034, MCAL-22035
  */
 /** \brief Gpt_GetVersionInfo(). */
-#define GPT_SID_GET_VERSION_INFO   ((uint8)0x00U)
+#define GPT_SID_GET_VERSION_INFO ((uint8)0x00U)
 /** \brief Gpt_Init(). */
-#define GPT_SID_INIT               ((uint8)0x01U)
+#define GPT_SID_INIT ((uint8)0x01U)
 /** \brief Gpt_DeInit(). */
-#define GPT_SID_DEINIT             ((uint8)0x02U)
- /** \brief Gpt_GetTimeElapsed(). */
-#define GPT_SID_GET_TIME_ELAPSED   ((uint8)0x03U)
- /** \brief Gpt_GetTimeRemaining(). */
+#define GPT_SID_DEINIT ((uint8)0x02U)
+/** \brief Gpt_GetTimeElapsed(). */
+#define GPT_SID_GET_TIME_ELAPSED ((uint8)0x03U)
+/** \brief Gpt_GetTimeRemaining(). */
 #define GPT_SID_GET_TIME_REMAINING ((uint8)0x04U)
 /** \brief Gpt_StartTimer(). */
-#define GPT_SID_START_TIMER        ((uint8)0x05U)
+#define GPT_SID_START_TIMER ((uint8)0x05U)
 /** \brief Gpt_StopTimer(). */
-#define GPT_SID_STOP_TIMER         ((uint8)0x06U)
+#define GPT_SID_STOP_TIMER ((uint8)0x06U)
 /** \brief Gpt_EnableNotification(). */
-#define GPT_SID_ENABLE_NOTIFY      ((uint8)0x07U)
+#define GPT_SID_ENABLE_NOTIFY ((uint8)0x07U)
 /** \brief Gpt_DisableNotification(). */
-#define GPT_SID_DISABLE_NOTIFY     ((uint8)0x08U)
+#define GPT_SID_DISABLE_NOTIFY ((uint8)0x08U)
 /** \brief Gpt_SetMode(). */
-#define GPT_SID_SET_MODE           ((uint8)0x09U)
+#define GPT_SID_SET_MODE ((uint8)0x09U)
 /** \brief Gpt_DisableWakeup(). */
-#define GPT_SID_DISABLE_WAKEUP     ((uint8)0x0AU)
+#define GPT_SID_DISABLE_WAKEUP ((uint8)0x0AU)
 /** \brief Gpt_EnableWakeup(). */
-#define GPT_SID_ENABLE_WAKEUP      ((uint8)0x0BU)
+#define GPT_SID_ENABLE_WAKEUP ((uint8)0x0BU)
 /** \brief Gpt_CheckWakeup(). */
-#define GPT_SID_CHECK_WAKEUP       ((uint8)0x0CU)
+#define GPT_SID_CHECK_WAKEUP ((uint8)0x0CU)
 /** \brief Gpt_GetPredefTimerValue(). */
-#define GPT_SID_GET_TIME_PREDEF    ((uint8)0x0DU)
-
+#define GPT_SID_GET_TIME_PREDEF ((uint8)0x0DU)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -167,13 +163,11 @@ extern "C" {
  */
 typedef uint8 Gpt_ChannelType;
 
-
 /** \brief Base address of a GPT channel. */
 /*
  *Design: MCAL-22074
  */
 typedef uint32 Gpt_ChannelBaseAddrType;
-
 
 /** \brief Type for reading and setting the timer values(in number of ticks). */
 /*
@@ -181,13 +175,11 @@ typedef uint32 Gpt_ChannelBaseAddrType;
  */
 typedef uint32 Gpt_ValueType;
 
-
 /** \brief Prescale value for General purpose timer channels. */
 /*
  *Design: MCAL-21959
  */
 typedef uint16 Gpt_PrescaleValueType;
-
 
 /** \brief Type for GPT Predef Timers */
 typedef enum
@@ -202,7 +194,6 @@ typedef enum
     GPT_PREDEF_TIMER_100US_32BIT = 3U
 } Gpt_PredefTimerType;
 
-
 /** \brief  GPT channel mode macro. */
 /*
  * Design: MCAL-22066
@@ -210,7 +201,7 @@ typedef enum
 typedef enum
 {
     /** \brief Timer will continue to running with the specified time period when target
-                              * time reached.*/
+     * time reached.*/
     GPT_CH_MODE_CONTINUOUS,
     /** \brief Timer will stop after running once when target time reached. */
     GPT_CH_MODE_ONESHOT
@@ -228,7 +219,6 @@ typedef enum
     GPT_SIM_ENABLE
 } Gpt_SimStatusType;
 
-
 /** \brief  GPT Simulation Behaviour Hard/Soft stop upon GPT simulation enabled. */
 /*
  *Design: MCAL-22070
@@ -241,23 +231,20 @@ typedef enum
     GPT_SIM_STOP_TIMER_AT_NEXT_TIMER_ELAPSE
 } Gpt_SimModeType;
 
-
 /** \brief GPT Operation Mode. */
 typedef enum
 {
     /** \brief Normal Mode. */
     GPT_MODE_NORMAL = 0x0U,
     /** \brief Sleep Mode. */
-    GPT_MODE_SLEEP  = 0x1U,
+    GPT_MODE_SLEEP = 0x1U,
 } Gpt_ModeType;
-
 
 /** \brief  Notification callback function pointer. */
 /*
  *Design: MCAL-23170
  */
 typedef void (*Gpt_NotifyType)(void);
-
 
 /** \brief  Configuration per channel */
 /*
@@ -281,7 +268,6 @@ typedef struct Gpt_ChannelConfigType_s
     Gpt_ChannelType         Gpt_ChannelId;
 } Gpt_ChannelConfigType;
 
-
 /** \brief  global configuration of the driver. */
 /*
  *Design: MCAL-22072
@@ -291,7 +277,6 @@ typedef struct Gpt_ConfigType_s
     /** \brief Pointer to Channel list. */
     P2CONST(Gpt_ChannelConfigType, AUTOMATIC, GPT_CONST) ChannelCfgPtr;
 } Gpt_ConfigType;
-
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -314,7 +299,8 @@ typedef struct Gpt_ConfigType_s
  *
  *********************************************************************************************************************/
 #if (STD_ON == GPT_CFG_VERSION_INFO_API)
-FUNC(void, GPT_CODE) Gpt_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, GPT_APPL_DATA) VersionInfoPtr);
+FUNC(void, GPT_CODE)
+Gpt_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, GPT_APPL_DATA) VersionInfoPtr);
 #endif
 
 /** \brief Gpt_Init : Initializes the Gpt module.
@@ -375,10 +361,10 @@ FUNC(Gpt_ValueType, GPT_CODE) Gpt_GetTimeElapsed(Gpt_ChannelType Channel);
 /** \brief Gpt_GetTimeRemaining : Returns the time remaining for a given channel.
  *
  * Gpt_GetTimeRemaining will return the timer value remaining until the
- * target time will be reached next time. The remaining time is the absolute 
- * difference of the target time and time already elapsed. 
- * In one shot mode, if the timer is in stopped state, the function will return 
- * remaining time value at the moment of stopping. If the timer is expired, 
+ * target time will be reached next time. The remaining time is the absolute
+ * difference of the target time and time already elapsed.
+ * In one shot mode, if the timer is in stopped state, the function will return
+ * remaining time value at the moment of stopping. If the timer is expired,
  * the function will return 0.
  * In continuous mode, the return value will be the time remaining in the
  * current iteration only.
@@ -431,7 +417,8 @@ FUNC(void, GPT_CODE) Gpt_StartTimer(Gpt_ChannelType Channel, Gpt_ValueType Value
 FUNC(void, GPT_CODE) Gpt_StopTimer(Gpt_ChannelType Channel);
 
 #if (STD_ON == GPT_CFG_NOTIFICATION_API)
-/** \brief Gpt_EnableNotification : Enables the interrupt notification for a channel (relevant in normal mode).
+/** \brief Gpt_EnableNotification : Enables the interrupt notification for a channel (relevant in
+ *normal mode).
  *
  * This service will enable the interrupt notification for the
  * selected channel. The TIE bit in TCR register will be Set to enable the
@@ -446,7 +433,8 @@ FUNC(void, GPT_CODE) Gpt_StopTimer(Gpt_ChannelType Channel);
  *********************************************************************************************************************/
 FUNC(void, GPT_CODE) Gpt_EnableNotification(Gpt_ChannelType Channel);
 
-/** \brief Gpt_DisableNotification : Disables the interrupt notification for a channel (relevant in normal mode).
+/** \brief Gpt_DisableNotification : Disables the interrupt notification for a channel (relevant in
+ *normal mode).
  *
  * Gpt_DisableNotification will disable the compare interrupt notification for
  * the selected channel. The TIE bit in TCR register will be cleared to
@@ -467,14 +455,16 @@ FUNC(void, GPT_CODE) Gpt_DisableNotification(Gpt_ChannelType Channel);
 /** \brief Gpt_SetMode : Sets the operation mode of the GPT. */
 FUNC(void, GPT_CODE) Gpt_SetMode(Gpt_ModeType Mode);
 
-/** \brief Gpt_DisableWakeup : Disables the wakeup interrupt of a channel (relevant in sleep mode). */
+/** \brief Gpt_DisableWakeup : Disables the wakeup interrupt of a channel (relevant in sleep mode).
+ */
 FUNC(void, GPT_CODE) Gpt_DisableWakeup(Gpt_ChannelType Channel);
 
 /** \brief Gpt_EnableWakeup : Enables the wakeup interrupt of a channel (relevant in sleep mode). */
 FUNC(void, GPT_CODE) Gpt_EnableWakeup(Gpt_ChannelType Channel);
 
-/** \brief Gpt_CheckWakeup : Checks if a wakeup capable GPT channel is the source for a wakeup event and 
- *  calls the ECU state manager service EcuM_SetWakeupEvent in case of a valid GPT channel wakeup event. */
+/** \brief Gpt_CheckWakeup : Checks if a wakeup capable GPT channel is the source for a wakeup event
+ * and calls the ECU state manager service EcuM_SetWakeupEvent in case of a valid GPT channel wakeup
+ * event. */
 FUNC(void, GPT_CODE) Gpt_CheckWakeup(EcuM_WakeupSourceType WakeupSource);
 #endif
 
@@ -488,7 +478,7 @@ FUNC(void, GPT_CODE) Gpt_CheckWakeup(EcuM_WakeupSourceType WakeupSource);
 /**
  * @}
  */
- #endif /* GPT_H */
+#endif /* GPT_H */
 /*********************************************************************************************************************
  *  End of File: Gpt.h
  *********************************************************************************************************************/

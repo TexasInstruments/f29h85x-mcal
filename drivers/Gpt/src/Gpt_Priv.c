@@ -17,7 +17,8 @@
  *  File:         Gpt_Priv.c
  *  Generator:    None
  *
- *  Description:  This file contains the GPT MCAL driver private API's definitions specific to device
+ *  Description:  This file contains the GPT MCAL driver private API's definitions specific to
+ *device
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -26,7 +27,7 @@
 #include "Gpt_Priv.h"
 #include "Det.h"
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
 
@@ -42,7 +43,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -54,7 +55,7 @@
  * Local Object Definitions
  *********************************************************************************************************************/
 /** \brief GPT Driver gloabal pointer to save address of Gpt_DrvObj defined in Gpt.c */
-/* 
+/*
  *Design: MCAL-23358
  */
 #define GPT_START_SEC_VAR_NO_INIT_UNSPECIFIED
@@ -80,7 +81,7 @@ P2VAR(Gpt_DriverObjType, AUTOMATIC, VAR_NO_INIT_UNSPECIFIED) Gpt_DrvObjPtr;
 /*
  *Design: MCAL-28449
  */
-FUNC(void, GPT_CODE) Gpt_SetDriverObjPtr( Gpt_DriverObjType* Set_DrvObj)
+FUNC(void, GPT_CODE) Gpt_SetDriverObjPtr(Gpt_DriverObjType *Set_DrvObj)
 {
     Gpt_DrvObjPtr = Set_DrvObj;
 }
@@ -88,17 +89,16 @@ FUNC(void, GPT_CODE) Gpt_SetDriverObjPtr( Gpt_DriverObjType* Set_DrvObj)
 /*
  *Design: MCAL-22077
  */
-FUNC(void, GPT_CODE) Gpt_GetChIdxPriv(const Gpt_DriverObjType *GptDrvObj, Gpt_ChannelType Channel, 
-     uint32* ChannelIndex)
+FUNC(void, GPT_CODE)
+Gpt_GetChIdxPriv(const Gpt_DriverObjType *GptDrvObj, Gpt_ChannelType Channel, uint32 *ChannelIndex)
 {
-    if(Channel < GPT_CFG_MAX_CHANNELS)
+    if (Channel < GPT_CFG_MAX_CHANNELS)
     {
         *ChannelIndex = GptDrvObj->Gpt_Lut_Channel_Index[Channel];
     }
 
     return;
 }
-
 
 /*
  *Design: MCAL-22076
@@ -115,9 +115,9 @@ FUNC(void, GPT_CODE) Gpt_DeInitPriv(const Gpt_ChannelConfigType *ChannelObj)
     HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TCR)) |= ((uint16)CPUTIMER_TCR_TRB);
 
     /* Set TPR.TDDR and TPRH.TDDRH registers to reset values */
-    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TPRH)) = \
+    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TPRH)) =
         ((GPT_CFG_PRESCALE_RESET_VAL >> ((uint16)8U)) << CPUTIMER_TPRH_TDDRH_S) & CPUTIMER_TPRH_TDDRH_M;
-    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TPR))  = \
+    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TPR)) =
         (GPT_CFG_PRESCALE_RESET_VAL << ((uint16)CPUTIMER_TPR_TDDR_S)) & CPUTIMER_TPR_TDDR_M;
 
     /* Set TIF bit of TCR register  */
@@ -130,7 +130,6 @@ FUNC(void, GPT_CODE) Gpt_DeInitPriv(const Gpt_ChannelConfigType *ChannelObj)
     return;
 }
 
-
 /*
  *Design: MCAL-22075
  */
@@ -140,10 +139,10 @@ FUNC(void, GPT_CODE) Gpt_InitPriv(const Gpt_ChannelConfigType *ChannelObj)
     HWREG(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_PRD)) = GPT_CFG_MAX_TICK_VALUE;
 
     /* Writes to TPR.TDDR and TPRH.TDDRH bits */
-    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TPRH)) = \
+    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TPRH)) =
         ((ChannelObj->Gpt_PrescaleValue >> (uint16)8U) << CPUTIMER_TPRH_TDDRH_S) & CPUTIMER_TPRH_TDDRH_M;
 
-    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TPR))  = \
+    HWREGH(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TPR)) =
         (ChannelObj->Gpt_PrescaleValue << ((uint16)CPUTIMER_TPR_TDDR_S)) & CPUTIMER_TPR_TDDR_M;
 
     /* Set TIF bit of TCR register */
@@ -181,7 +180,6 @@ FUNC(void, GPT_CODE) Gpt_InitPriv(const Gpt_ChannelConfigType *ChannelObj)
     return;
 }
 
-
 /*
  *Design: MCAL-22078
  */
@@ -189,8 +187,7 @@ FUNC(uint32, GPT_CODE) Gpt_GetCurCountPriv(const Gpt_ChannelConfigType *ChannelO
 {
     /* Read & return the counter register */
     return (HWREG(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_TIM)));
-} 
-
+}
 
 /*
  *Design: MCAL-22079
@@ -200,7 +197,6 @@ FUNC(uint32, GPT_CODE) Gpt_GetPrdCountPriv(const Gpt_ChannelConfigType *ChannelO
     /* Read & return the period register */
     return (HWREG(ChannelObj->Gpt_ChannelBaseAddr + ((uint32)CPUTIMER_O_PRD)));
 }
-
 
 /*
  *Design: MCAL-22080
@@ -219,7 +215,6 @@ FUNC(void, GPT_CODE) Gpt_StartTimerPriv(const Gpt_ChannelConfigType *ChannelObj,
     return;
 }
 
-
 /*
  *Design: MCAL-22081
  */
@@ -230,7 +225,6 @@ FUNC(void, GPT_CODE) Gpt_StopTimerPriv(const Gpt_ChannelConfigType *ChannelObj)
 
     return;
 }
-
 
 /*
  *Design: MCAL-22084
@@ -243,7 +237,6 @@ FUNC(void, GPT_CODE) Gpt_ClrOvfFlagPriv(const Gpt_ChannelConfigType *ChannelObj)
     return;
 }
 
-
 /*
  *Design: MCAL-22082
  */
@@ -255,7 +248,6 @@ FUNC(void, GPT_CODE) Gpt_EnableIntPriv(const Gpt_ChannelConfigType *ChannelObj)
     return;
 }
 
-
 /*
  *Design: MCAL-22083
  */
@@ -266,7 +258,6 @@ FUNC(void, GPT_CODE) Gpt_DisableIntPriv(const Gpt_ChannelConfigType *ChannelObj)
 
     return;
 }
-
 
 /*
  *Design: MCAL-28452, 22040, MCAL-21957, MCAL-21958, MCAL-21960, MCAL-22038, MCAL-22039
@@ -290,7 +281,7 @@ FUNC(void, GPT_CODE) Gpt_IsrNotifyFunction(Gpt_ChannelType Channel)
         Gpt_ClrOvfFlagPriv(&(Gpt_DrvObjPtr->Gpt_CfgPtr->ChannelCfgPtr[ch_index]));
 
         /* Call notification callback. */
-        if(NULL_PTR != Gpt_DrvObjPtr->Gpt_CfgPtr->ChannelCfgPtr[ch_index].Gpt_PtrNotifyFunction)
+        if (NULL_PTR != Gpt_DrvObjPtr->Gpt_CfgPtr->ChannelCfgPtr[ch_index].Gpt_PtrNotifyFunction)
         {
             Gpt_DrvObjPtr->Gpt_CfgPtr->ChannelCfgPtr[ch_index].Gpt_PtrNotifyFunction();
         }

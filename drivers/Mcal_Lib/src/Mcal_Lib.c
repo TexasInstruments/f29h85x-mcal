@@ -17,20 +17,20 @@
  *  File:       Mcal_Lib.c
  *  Generator:  None
  *
- *  Description:  Source file for library functions used by MCALs / CDDs                                                           
+ *  Description:  Source file for library functions used by MCALs / CDDs
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
 #include "Mcal_Lib.h"
- 
+
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
 /* Vendor specific version information is BCD coded */
 #if ((MCAL_LIB_SW_MAJOR_VERSION != (1U)) || (MCAL_LIB_SW_MINOR_VERSION != (0U)))
-    #error "Version numbers of Mcal_Lib.c and Mcal_lib.h are inconsistent!"
+#error "Version numbers of Mcal_Lib.c and Mcal_lib.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
@@ -44,19 +44,18 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
 
-
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
@@ -71,34 +70,52 @@ __asm(
     "    MV A0,D0                     \n"
     "loop:                            \n"
     "    DECB A0, #1, loop            \n"
-    "    RET                          \n"
-    );                                  
-void McalLib_GetCounterValue(P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) startTime)
+    "    RET                          \n");
+
+void McalLib_DelayUsec(McalLib_TickType delayUsec, uint32 sysclkHz)
+{
+    McalLib_TickType cycles, loopcnt;
+
+    cycles = (delayUsec * sysclkHz) / 1000000UL;
+    if (cycles > 11U)
+    {
+        cycles -= 11U; /* each API call has 11 cycles of overhead*/
+    }
+    loopcnt = cycles >> 2U; /* each loop takes 4 cycles */
+    McalLib_Delay(loopcnt);
+}
+
+void McalLib_DelayMsec(McalLib_TickType delayMsec, uint32 sysclkHz)
+{
+    McalLib_DelayUsec(delayMsec * 1000U, sysclkHz);
+}
+
+void McalLib_GetCounterValue(P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) startTime)
 {
     uint32 regValL;
     uint32 regValH;
-    regValL = *(volatile uint32 *)(IPCCOUNTERREGS_BASE+IPC_O_COUNTERL);
-    regValH = *(volatile uint32 *)(IPCCOUNTERREGS_BASE+IPC_O_COUNTERH);
-    *startTime = (uint64)(((uint64)regValH << 32) | (uint64)regValL);
+    regValL    = *(volatile uint32 *)(IPCCOUNTERREGS_BASE + IPC_O_COUNTERL);
+    regValH    = *(volatile uint32 *)(IPCCOUNTERREGS_BASE + IPC_O_COUNTERH);
+    *startTime = (McalLib_TickType)(((McalLib_TickType)regValH << 32) | (McalLib_TickType)regValL);
     return;
 }
 
-void McalLib_GetElapsedValue(P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) startTime, \
-                             P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) elapsedTime)
+void McalLib_GetElapsedValue(CONSTP2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) startTime,
+                             P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) elapsedTime)
 {
-    uint64 cur_val;
-    uint32 regValL;
-    uint32 regValH;
-    regValL = *(volatile uint32 *)(IPCCOUNTERREGS_BASE+IPC_O_COUNTERL);
-    regValH = *(volatile uint32 *)(IPCCOUNTERREGS_BASE+IPC_O_COUNTERH);
-    cur_val = (uint64)(((uint64)regValH << 32) | (uint64)regValL);
+    McalLib_TickType cur_val;
+    uint32           regValL;
+    uint32           regValH;
+    regValL      = *(volatile uint32 *)(IPCCOUNTERREGS_BASE + IPC_O_COUNTERL);
+    regValH      = *(volatile uint32 *)(IPCCOUNTERREGS_BASE + IPC_O_COUNTERH);
+    cur_val      = (McalLib_TickType)(((McalLib_TickType)regValH << 32) | (McalLib_TickType)regValL);
     *elapsedTime = (cur_val - *startTime);
     return;
 }
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  *  End of File: Mcal_Lib.c
  *********************************************************************************************************************/

@@ -42,10 +42,10 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
@@ -70,10 +70,8 @@
  *  \return None
  *  \retval None
  ********************************************************************************************************************/
-static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj  *llobj,
-                                   Spi_UtilsNode         *node,
-                                   const Spi_UtilsParams *params,
-                                   uint8                  currSeqId);
+static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj *llobj, Spi_UtilsNode *node, const Spi_UtilsParams *params,
+                                   uint8 currSeqId);
 
 /**
  *  \brief Unlinks the node from the list. Used for the priority link lists.
@@ -86,8 +84,7 @@ static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj  *llobj,
  *  \return None
  *  \retval None
  ********************************************************************************************************************/
-static void Spi_UtilsUnLinkDoublePri(Spi_UtilsLinkListObj *llobj,
-                                     Spi_UtilsNode        *node);
+static void Spi_UtilsUnLinkDoublePri(Spi_UtilsLinkListObj *llobj, Spi_UtilsNode *node);
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -116,13 +113,10 @@ void Spi_UtilsDeInitLinkList(Spi_UtilsLinkListObj *llobj)
     return;
 }
 
-void Spi_UtilsLinkNodePri(Spi_UtilsLinkListObj  *llobj,
-                          Spi_UtilsNode         *node,
-                          const Spi_UtilsParams *params,
-                          uint8                  currSeqId)
+void Spi_UtilsLinkNodePri(Spi_UtilsLinkListObj *llobj, Spi_UtilsNode *node, const Spi_UtilsParams *params,
+                          uint8 currSeqId)
 {
-    Spi_UtilsLinkDoublePri(
-        llobj, node, params, currSeqId);
+    Spi_UtilsLinkDoublePri(llobj, node, params, currSeqId);
 
     return;
 }
@@ -139,9 +133,9 @@ void Spi_UtilsInitNodeObject(Spi_UtilsNode *node)
     node->next                    = NULL_PTR;
     node->prev                    = NULL_PTR;
     node->params.data             = NULL_PTR;
-    node->params.priority         = ((uint32) 0U);
-    node->params.seqId            = ((uint8) 0U);
-    node->params.seqInterruptible = (uint8) FALSE;
+    node->params.priority         = ((uint32)0U);
+    node->params.seqId            = ((uint8)0U);
+    node->params.seqInterruptible = (uint8)FALSE;
 
     return;
 }
@@ -156,10 +150,8 @@ Spi_UtilsNode *Spi_UtilsGetHeadNode(const Spi_UtilsLinkListObj *llobj)
  *  \brief Links a node to a double link list based on priority.
  *  For nodes with same priority, the new node will be added to the last.
  */
-static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj  *llobj,
-                                   Spi_UtilsNode         *node,
-                                   const Spi_UtilsParams *params,
-                                   uint8                  currSeqId)
+static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj *llobj, Spi_UtilsNode *node, const Spi_UtilsParams *params,
+                                   uint8 currSeqId)
 {
     VAR(uint32, AUTOMATIC) interruptible;
     P2VAR(Spi_UtilsNode, AUTOMATIC, SPI_CODE) curNode;
@@ -178,16 +170,17 @@ static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj  *llobj,
         /* Check if we can insert the job after current job */
         if (currSeqId == curNode->params.seqId)
         {
-            interruptible = (uint32) TRUE;
-        }else{
-            interruptible = (uint32) curNode->params.seqInterruptible;
+            interruptible = (uint32)TRUE;
+        }
+        else
+        {
+            interruptible = (uint32)curNode->params.seqInterruptible;
         }
 
         /* Nodes with the same priority are always added to the bottom
          * of the existing nodes with same priority. So break only if
          * priority is high */
-        if ((params->priority > curNode->params.priority) &&
-            (((uint32) TRUE) == interruptible))
+        if ((params->priority > curNode->params.priority) && (((uint32)TRUE) == interruptible))
         {
             break;
         }
@@ -226,8 +219,7 @@ static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj  *llobj,
  *  Spi_UtilsUnLinkDoublePri
  *  \brief Unlinks a node from a double link list.
  */
-static void Spi_UtilsUnLinkDoublePri(Spi_UtilsLinkListObj *llobj,
-                                     Spi_UtilsNode        *node)
+static void Spi_UtilsUnLinkDoublePri(Spi_UtilsLinkListObj *llobj, Spi_UtilsNode *node)
 {
     if (NULL_PTR == node->prev)
     {

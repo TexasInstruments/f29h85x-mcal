@@ -17,17 +17,16 @@
  *  File:       Wdg_Cbk.h
  *  Generator:  None
  *
- *  Description:  This file contains the declaration of callback functions from other 
- *                modules implemented by the Wdg module                                         
+ *  Description:  This file contains the declaration of callback functions from other
+ *                modules implemented by the Wdg module
  *********************************************************************************************************************/
 #ifndef WDG_CBK_H
 #define WDG_CBK_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -64,8 +63,7 @@ extern "C" {
 }
 #endif
 
-
- #endif /* WDG_CBK_H */
+#endif /* WDG_CBK_H */
 /*********************************************************************************************************************
  *  End of File: Wdg_Cbk.h
  *********************************************************************************************************************/

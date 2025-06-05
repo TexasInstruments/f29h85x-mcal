@@ -1,6 +1,7 @@
 /*********************************************************************************************************************
  *  COPYRIGHT
- *  ------------------------------------------------------------------------------------------------------------------
+ *
+ ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
  *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
@@ -11,17 +12,19 @@
  *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
- *  ------------------------------------------------------------------------------------------------------------------
+ *
+ ------------------------------------------------------------------------------------------------------------------
  *  FILE DESCRIPTION
- *  ------------------------------------------------------------------------------------------------------------------
+ *
+ ------------------------------------------------------------------------------------------------------------------
  *  File:       Cdd_Adc_Example_GlbSwTrig.c
  *  Generator:  None
  *
- *  Description:  Cdd_Adc example source file. This examples demonstrates how to use global software trigger. The group
- *                  conversion started with StartGlobalSwTrig must stop with StopGlobalSwTrig. StartGroupConversion
- *                  shouldn't be used before StopGlobalSwTrig to start a new group conversion. 
- *                  First stop the global software trigger and then start the normal software group conversion.
- * 
+ *  Description:  Cdd_Adc example source file. This examples demonstrates how to use global software
+ *  trigger. The group conversion started with StartGlobalSwTrig must stop with StopGlobalSwTrig.
+ *  StartGroupConversion shouldn't be used before StopGlobalSwTrig to start a new group conversion.
+ *  First stop the global software trigger and then start the normal software group conversion.
+ *
  * Steps followed in the example:
  * EcuM_Init()
  *  - Initialize clock to 200 MHz using Mcu_Init()
@@ -32,7 +35,6 @@
  * Stop the global software conversion with Cdd_Adc_StopGlobalSwTrig API
  * Start software group 1 conversion with Cdd_Adc_StartGroupConversion
  * After the group conversion is done,print the execution successful statement.
-
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -62,14 +64,14 @@
 /*********************************************************************************************************************
  * Local Type Declarations
  *********************************************************************************************************************/
-uint32 Cdd_Adc_GroupMask = 0U;
-sint32 Cdd_Adc_PpbValue[2U] = {0};     /* Variables to PPB result */
+uint32 Cdd_Adc_GroupMask    = 0U;
+sint32 Cdd_Adc_PpbValue[2U] = {0}; /* Variables to PPB result */
 
-Cdd_Adc_PpbValType PpbFinalValue[2U],PpbPartialValue[2U]; /* Variables to store Final and partial register values */
+Cdd_Adc_PpbValType PpbFinalValue[2U], PpbPartialValue[2U]; /* Variables to store Final and partial register values */
 
-uint8 PpbTripHighCount = 0U,PpbTripLowCount = 0U;
+uint8 PpbTripHighCount = 0U, PpbTripLowCount = 0U;
 
-const Cdd_Adc_ConfigType * Cdd_Adc_ConfigTypePtr = NULL_PTR;
+const Cdd_Adc_ConfigType* Cdd_Adc_ConfigTypePtr = NULL_PTR;
 
 Cdd_Adc_ValueGroupType Cdd_Adc_Buffer[CDD_ADC_GROUP_CNT][20U];
 
@@ -78,7 +80,7 @@ Cdd_Adc_ValueGroupType Cdd_Adc_ResultBuffer[CDD_ADC_GROUP_CNT][20U];
 /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
@@ -98,92 +100,92 @@ Cdd_Adc_ValueGroupType Cdd_Adc_ResultBuffer[CDD_ADC_GROUP_CNT][20U];
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
- 
+
 void Cdd_Adc_ADCA_Grp0NotifFunc()
 {
     /* Read group results */
-    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0,\
-                                    &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
+    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0,
+                      &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
     /* Read the values from PPB1 */
-    PpbFinalValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0] = \
-                                            Cdd_Adc_ReadPpbValue(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0);
-    PpbPartialValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0] = \
-                                            Cdd_Adc_ReadPartialPpbValue(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0);
-    Cdd_Adc_PpbValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0] = \
-                                                    Cdd_Adc_ReadPpb(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0);
-    
+    PpbFinalValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0] =
+        Cdd_Adc_ReadPpbValue(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0);
+    PpbPartialValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0] =
+        Cdd_Adc_ReadPartialPpbValue(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0);
+    Cdd_Adc_PpbValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0] =
+        Cdd_Adc_ReadPpb(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_0);
+
     /* Read the values from PPB1 */
-    PpbFinalValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1] = \
-                                                    Cdd_Adc_ReadPpbValue(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1);
-    PpbPartialValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1] = \
-                                        Cdd_Adc_ReadPartialPpbValue(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1);
-    Cdd_Adc_PpbValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1] = \
-                                            Cdd_Adc_ReadPpb(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1);
+    PpbFinalValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1] =
+        Cdd_Adc_ReadPpbValue(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1);
+    PpbPartialValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1] =
+        Cdd_Adc_ReadPartialPpbValue(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1);
+    Cdd_Adc_PpbValue[CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1] =
+        Cdd_Adc_ReadPpb(CddAdcConf_CddAdcHwUnit_0_CddAdcPpbConfig_1);
     /* Update group mask */
-    Cdd_Adc_GroupMask |= (1<<CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
+    Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
 }
 
 void Cdd_Adc_ADCA_Grp1NotifFunc()
 {
     /* Read group results */
     Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1,
-                                    &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1][0]);
+                      &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1][0]);
     /* Update group mask */
-    Cdd_Adc_GroupMask |= (1<<CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
+    Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
 }
 
 void Cdd_Adc_ADCB_Grp0NotifFunc()
 {
     /* Read group results */
-    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0,\
-                                        &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0,
+                      &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
     /* Update group mask */
-    Cdd_Adc_GroupMask |= (1<<CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0);
+    Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0);
 }
 
 void Cdd_Adc_ADCB_Grp1NotifFunc()
 {
     /* Read group results */
-    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1,\
-                                            &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1][0]);
+    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1,
+                      &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1][0]);
     /* Update group mask */
-    Cdd_Adc_GroupMask |= (1<<CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1);
+    Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1);
 }
 
 void Cdd_Adc_ADCC_Grp0NotifFunc()
 {
     /* Read group results */
-    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0,\
-                                    &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0][0]);
+    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0,
+                      &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0][0]);
     /* Update group mask */
-    Cdd_Adc_GroupMask |= (1<<CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0);
+    Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0);
 }
 
 void Cdd_Adc_ADCC_Grp1NotifFunc()
 {
     /* Read group results */
-    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1,\
-                                    &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1][0]);
+    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1,
+                      &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1][0]);
     /* Update group mask */
-    Cdd_Adc_GroupMask |= (1<<CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1);
+    Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1);
 }
 
 void Cdd_Adc_ADCD_GrpNotifFunc()
 {
     /* Read group results */
-    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0,\
-                                    &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0][0]);
+    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0,
+                      &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0][0]);
     /* Update group mask */
-    Cdd_Adc_GroupMask |= (1<<CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0);
+    Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0);
 }
 
 void Cdd_Adc_ADCE_GrpNotifFunc()
 {
     /* Read group results */
-    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0,\
-                                            &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0][0]);
+    Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0,
+                      &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0][0]);
     /* Update group mask */
-    Cdd_Adc_GroupMask |= (1<<CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0);
+    Cdd_Adc_GroupMask |= (1 << CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0);
 }
 
 /* Configure PPB for one of the channels in group 1 */
@@ -204,35 +206,34 @@ void Cdd_Adc_TripLowNotification()
 int main()
 {
     Std_ReturnType return_value;
-    uint8 group_mask;
+    uint8          group_mask;
     DeviceSupport_Init();
-    EcuM_Init();    
-    
-    AppUtils_Init(200000000U); // Init App utils to enable prints
+    EcuM_Init();
+
+    AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf(" Executing Cdd_Adc_Example_GlbSwTrig example\n");
-    
 
     Cdd_Adc_ConfigTypePtr = &CDD_ADC_CONFIG_PC;
-    group_mask=Cdd_Adc_ConfigTypePtr->glbtrigcfg[CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0].group_mask;
+    group_mask = Cdd_Adc_ConfigTypePtr->glbtrigcfg[CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0].group_mask;
 
     /* Set group result buffer */
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0,\
-                                            &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1,\
-                                            &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1][0]);
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0,\
-                                            &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1,\
-                                            &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1][0]);
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0,\
-                                            &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0][0]);
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1,\
-                                            &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1][0]);
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0,\
-                                            &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0][0]);
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0,\
-                                            &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0][0]);
-    
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0][0]);
+
     /* Enable group notification */
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
@@ -246,12 +247,13 @@ int main()
     /* Start Global software trigger 1 */
     return_value = Cdd_Adc_StartGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
 
-    if(return_value == E_OK)
+    if (return_value == E_OK)
     {
-        AppUtils_Printf("Started globalswtrigger %d conversion\n",\
-                                            CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
-        /* Wait until all the group conversions are done configured for the global software trigger */
-        while((Cdd_Adc_GroupMask != group_mask) || (PpbTripHighCount != 1U) || (PpbTripLowCount != 1U))
+        AppUtils_Printf("Started globalswtrigger %d conversion\n",
+                        CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
+        /* Wait until all the group conversions are done configured for the global software trigger
+         */
+        while ((Cdd_Adc_GroupMask != group_mask) || (PpbTripHighCount != 1U) || (PpbTripLowCount != 1U))
         {
             McalLib_Delay(100);
         }
@@ -261,19 +263,19 @@ int main()
         AppUtils_Printf("Cdd_Adc_StartGlobalSwTrig API execution unsuccessful");
     }
 
-    AppUtils_Printf("Completed globalswtrigger %d conversion\n",\
-                                    CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
+    AppUtils_Printf("Completed globalswtrigger %d conversion\n",
+                    CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
     Cdd_Adc_GroupMask = 0U;
     /* Re-trigger the global software trigger */
     return_value = Cdd_Adc_StartGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
 
-
-    if(return_value == E_OK)
+    if (return_value == E_OK)
     {
-        AppUtils_Printf("Re-triggers globalswtrigger %d conversion\n",\
-                                CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
-        /* Wait until all the group conversions are done configured for the global software trigger */
-        while((Cdd_Adc_GroupMask != group_mask) || (PpbTripHighCount != 2U) || (PpbTripLowCount != 2U))
+        AppUtils_Printf("Re-triggers globalswtrigger %d conversion\n",
+                        CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
+        /* Wait until all the group conversions are done configured for the global software trigger
+         */
+        while ((Cdd_Adc_GroupMask != group_mask) || (PpbTripHighCount != 2U) || (PpbTripLowCount != 2U))
         {
             McalLib_Delay(100);
         }
@@ -282,30 +284,32 @@ int main()
     {
         AppUtils_Printf("Cdd_Adc_StartGlobalSwTrig API execution unsuccessful");
     }
-    
-    AppUtils_Printf("Completed second round of globalswtrigger %d conversion\n",\
-                                        CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
+
+    AppUtils_Printf("Completed second round of globalswtrigger %d conversion\n",
+                    CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
     /* Stop the global software trigger once all the group conversions are done */
     Cdd_Adc_StopGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_0);
 
     /* Start Global software trigger 2 */
     Cdd_Adc_GroupMask = 0U;
-    group_mask=Cdd_Adc_ConfigTypePtr->glbtrigcfg[CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1].group_mask;
-    
+    group_mask = Cdd_Adc_ConfigTypePtr->glbtrigcfg[CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1].group_mask;
+
     /* Enable group notifications for the groups configured for the global software trigger */
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0);
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_0);
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_3_CddAdcGroup_0);
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_4_CddAdcGroup_0);
-    
+
     return_value = Cdd_Adc_StartGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1);
 
-    if(return_value == E_OK)
+    if (return_value == E_OK)
     {
-        AppUtils_Printf("Started globalswtrigger %d conversion\n",CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1);
-        /* Wait until all the group conversions are done configured for the global software trigger */
-        while((Cdd_Adc_GroupMask != group_mask) || (PpbTripHighCount != 3U) || (PpbTripLowCount != 3U))
+        AppUtils_Printf("Started globalswtrigger %d conversion\n",
+                        CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1);
+        /* Wait until all the group conversions are done configured for the global software trigger
+         */
+        while ((Cdd_Adc_GroupMask != group_mask) || (PpbTripHighCount != 3U) || (PpbTripLowCount != 3U))
         {
             McalLib_Delay(100);
         }
@@ -315,29 +319,30 @@ int main()
         AppUtils_Printf("Cdd_Adc_StartGlobalSwTrig API execution unsuccessful");
     }
 
-    AppUtils_Printf("Completed globalswtrigger %d conversion\n",\
-                                CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1);
+    AppUtils_Printf("Completed globalswtrigger %d conversion\n",
+                    CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1);
 
     /* Stop the global software trigger once all the group conversions are done */
     Cdd_Adc_StopGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_1);
 
     /* Start Global software trigger 3 */
     Cdd_Adc_GroupMask = 0U;
-    group_mask=Cdd_Adc_ConfigTypePtr->glbtrigcfg[CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2].group_mask;
+    group_mask = Cdd_Adc_ConfigTypePtr->glbtrigcfg[CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2].group_mask;
 
     /* Enable group notifications for the groups configured for the global software trigger */
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_1);
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_2_CddAdcGroup_1);
-    
+
     return_value = Cdd_Adc_StartGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2);
 
-    if(return_value == E_OK)
+    if (return_value == E_OK)
     {
-        AppUtils_Printf("Started globalswtrigger %d conversion\n",\
-                            CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2);
-        /* Wait until all the group conversions are done configured for the global software trigger */
-        while(Cdd_Adc_GroupMask != group_mask)
+        AppUtils_Printf("Started globalswtrigger %d conversion\n",
+                        CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2);
+        /* Wait until all the group conversions are done configured for the global software trigger
+         */
+        while (Cdd_Adc_GroupMask != group_mask)
         {
             McalLib_Delay(100);
         }
@@ -350,28 +355,26 @@ int main()
     /* Stop the global software trigger once all the group conversions are done */
     Cdd_Adc_StopGlobalSwTrig(CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2);
 
-    AppUtils_Printf("Completed globalswtrigger %d conversion\n",\
-                            CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2);
+    AppUtils_Printf("Completed globalswtrigger %d conversion\n",
+                    CddAdcConf_CddAdcGlobalSwTrigger_CddAdcGlobalSwTrigger_2);
 
     /* Enable group notification which is disabled by Cdd_Adc_StopGlobalSwTrig API */
     Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
     Cdd_Adc_StartGroupConversion(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
 
-    AppUtils_Printf("Started software triggered group %d conversion\n",CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
+    AppUtils_Printf("Started software triggered group %d conversion\n", CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
 
     /* Wait until the software group conversion is done */
-    while(Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1) != CDD_ADC_IDLE)
+    while (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1) != CDD_ADC_IDLE)
     {
         McalLib_Delay(10);
     }
 
-    AppUtils_Printf("Completed software triggered group %d conversion\n",CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
+    AppUtils_Printf("Completed software triggered group %d conversion\n", CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_1);
 
     AppUtils_Printf("Example executed successfully\n");
-    
+
     Cdd_Adc_DeInit();
-    
-    while(1){}
 
     return 0;
 }

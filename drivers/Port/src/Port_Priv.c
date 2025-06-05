@@ -16,7 +16,8 @@
  *  ------------------------------------------------------------------------------------------------------------------
  *  File:       Port_Priv.c
  *
- *  Description:  This file contains controller dependent local functions and private functions to be used in Port.c
+ *  Description:  This file contains controller dependent local functions and private functions to
+ *be used in Port.c
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -92,8 +93,7 @@ static FUNC(void, PORT_CODE) Port_SetPadConfig(Port_PinType PinNumber, Port_PinP
  * \retval None
  *
  *********************************************************************************************************************/
-static FUNC(void, PORT_CODE)
- Port_SetQualificationMode(Port_PinType PinNumber, Port_PinQualificationMode Qualification);
+static FUNC(void, PORT_CODE) Port_SetQualificationMode(Port_PinType PinNumber, Port_PinQualificationMode Qualification);
 
 /** \brief  Sets the qualification period for a set of pins
  *
@@ -177,11 +177,12 @@ static FUNC(void, PORT_CODE) Port_SetAnalogMode(Port_PinType PinNumber, Port_Ana
 /*
  *Design: MCAL-22382,MCAL-22316,MCAL-22409,MCAL-22390,MCAL-22404
  */
-FUNC(Std_ReturnType, PORT_CODE) Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig)
+FUNC(Std_ReturnType, PORT_CODE)
+Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig)
 {
-    P2CONST(Port_ControllerSpecificType, AUTOMATIC, PORT_APPL_DATA) controllerSpecificPtr = 
-                                                                   &PinConfig->Port_ControllerSpecific;
-    VAR(Std_ReturnType, AUTOMATIC) returnValue = (Std_ReturnType)E_NOT_OK;
+    P2CONST(Port_ControllerSpecificType, AUTOMATIC, PORT_APPL_DATA)
+    controllerSpecificPtr                          = &PinConfig->Port_ControllerSpecific;
+    VAR(Std_ReturnType, AUTOMATIC) returnValue     = (Std_ReturnType)E_NOT_OK;
     VAR(Std_ReturnType, AUTOMATIC) PortPinNumValid = (Std_ReturnType)E_NOT_OK;
 
     PortPinNumValid = Port_IsPinNumberValid(PinConfig->Port_PinId);
@@ -195,22 +196,21 @@ FUNC(Std_ReturnType, PORT_CODE) Port_SetCntSpConfig(P2CONST(Port_PinConfigType, 
         else
         {
             /*
-            * Do Nothing
-            */
+             * Do Nothing
+             */
         }
-        /* TI_COVERAGE_GAP_START [Branch Gap] OR Condition short-circuiting nature in PORT_IS_ANALOG_MODE_SUPPORTED */
-        if((FALSE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr))
-            || ((TRUE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr))
-                && (PORT_ANALOG_DISABLED == controllerSpecificPtr->Port_AnalogMode)))
+        /* TI_COVERAGE_GAP_START [Branch Gap] OR Condition short-circuiting nature in
+         * PORT_IS_ANALOG_MODE_SUPPORTED */
+        if ((FALSE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr)) ||
+            ((TRUE == PORT_IS_ANALOG_MODE_SUPPORTED(controllerSpecificPtr)) &&
+             (PORT_ANALOG_DISABLED == controllerSpecificPtr->Port_AnalogMode)))
         /* TI_COVERAGE_GAP_STOP*/
         {
             Port_SetPadConfig(PinConfig->Port_PinId, controllerSpecificPtr->Port_PinPadConfig);
 
-            Port_SetQualificationMode(PinConfig->Port_PinId, 
-                                            controllerSpecificPtr->Port_PinQualification);
+            Port_SetQualificationMode(PinConfig->Port_PinId, controllerSpecificPtr->Port_PinQualification);
 
-            Port_SetQualificationPeriod(PinConfig->Port_PinId, 
-                                            controllerSpecificPtr->Port_PinQualificationPeriod);
+            Port_SetQualificationPeriod(PinConfig->Port_PinId, controllerSpecificPtr->Port_PinQualificationPeriod);
 
             Port_SetMasterCore(PinConfig->Port_PinId, controllerSpecificPtr->Port_CoreSelect);
 
@@ -219,16 +219,16 @@ FUNC(Std_ReturnType, PORT_CODE) Port_SetCntSpConfig(P2CONST(Port_PinConfigType, 
         else
         {
             /*
-            * Do Nothing
-            */
+             * Do Nothing
+             */
         }
         returnValue = (Std_ReturnType)E_OK;
     }
     else
     {
         /*
-        * Do Nothing
-        */
+         * Do Nothing
+         */
     }
     return (returnValue);
 }
@@ -236,15 +236,17 @@ FUNC(Std_ReturnType, PORT_CODE) Port_SetCntSpConfig(P2CONST(Port_PinConfigType, 
 /*
  *Design: MCAL-22411,MCAL-22703
  */
-FUNC(Std_ReturnType, PORT_CODE) Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig)
+FUNC(Std_ReturnType, PORT_CODE)
+Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig)
 {
-    VAR(Port_PinType, AUTOMATIC) gpio31 = 31U;
-    VAR(Port_PinType, AUTOMATIC) gpio63 = 63U;
-    VAR(Port_PinType, AUTOMATIC) PinNumber = PinConfig->Port_PinId;
-    VAR(uint32, AUTOMATIC) pinMask = 0U;
+    VAR(Port_PinType, AUTOMATIC) gpio31        = 31U;
+    VAR(Port_PinType, AUTOMATIC) gpio63        = 63U;
+    VAR(Port_PinType, AUTOMATIC) PinNumber     = PinConfig->Port_PinId;
+    VAR(uint32, AUTOMATIC) pinMask             = 0U;
     VAR(Std_ReturnType, AUTOMATIC) returnValue = (Std_ReturnType)E_OK;
 
-    P2CONST(Port_ControllerSpecificType, AUTOMATIC, PORT_CONFIG_DATA) controllerSpecificPtr = NULL_PTR;
+    P2CONST(Port_ControllerSpecificType, AUTOMATIC, PORT_CONFIG_DATA)
+    controllerSpecificPtr = NULL_PTR;
     controllerSpecificPtr = &PinConfig->Port_ControllerSpecific;
 
     /*Bit position of the pin Number/GPIO number*/
@@ -254,9 +256,9 @@ FUNC(Std_ReturnType, PORT_CODE) Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigTy
     if ((boolean)TRUE == controllerSpecificPtr->Port_EnableWakeupPinLPM)
     {
         /*If pin number is less than equal to 31 ( GPIO31 )*/
-        if (gpio31 >= PinNumber) 
+        if (gpio31 >= PinNumber)
         {
-            HWREG(CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL0) |= (pinMask);            
+            HWREG(CPUSYS_BASE + SYSCTL_O_GPIOLPMSEL0) |= (pinMask);
         }
         else if (gpio63 >= PinNumber) /*If pin number is less than equal to 63 ( GPIO63 )*/
         {
@@ -270,8 +272,8 @@ FUNC(Std_ReturnType, PORT_CODE) Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigTy
     else
     {
         /*
-        * Do Nothing
-        */
+         * Do Nothing
+         */
     }
     return (returnValue);
 }
@@ -279,22 +281,22 @@ FUNC(Std_ReturnType, PORT_CODE) Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigTy
 /*
  *Design: MCAL-22383,MCAL-22404
  */
-FUNC(Std_ReturnType, PORT_CODE) Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig, 
-                                        Port_PinLevelValueType PinLevel)
+FUNC(Std_ReturnType, PORT_CODE)
+Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig, Port_PinLevelValueType PinLevel)
 {
     volatile P2VAR(uint32, AUTOMATIC, REGSPACE) gpioDataReg;
     VAR(uint32, AUTOMATIC) pinMask;
-    VAR(Port_PinType, AUTOMATIC) pinNumber = PinConfig->Port_PinId;
-    VAR(Std_ReturnType, AUTOMATIC) returnValue = (Std_ReturnType)E_NOT_OK;
+    VAR(Port_PinType, AUTOMATIC) pinNumber         = PinConfig->Port_PinId;
+    VAR(Std_ReturnType, AUTOMATIC) returnValue     = (Std_ReturnType)E_NOT_OK;
     VAR(Std_ReturnType, AUTOMATIC) PortPinNumValid = (Std_ReturnType)E_NOT_OK;
 
     PortPinNumValid = Port_IsPinNumberValid(pinNumber);
 
-    if ((PortPinNumValid != (Std_ReturnType)E_NOT_OK) && ((PORT_PIN_OUT == PinConfig->Port_PinDirection) || \
-                        (PORT_PIN_NA == PinConfig->Port_PinDirection)))
+    if ((PortPinNumValid != (Std_ReturnType)E_NOT_OK) &&
+        ((PORT_PIN_OUT == PinConfig->Port_PinDirection) || (PORT_PIN_NA == PinConfig->Port_PinDirection)))
     {
-        gpioDataReg = (uint32 *)((uint32*)GPIODATA_BASE + ((pinNumber / PORT_WIDTH) * PORT_DATA_REGS_STEP));        
-        pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
+        gpioDataReg = (uint32 *)((uint32 *)GPIODATA_BASE + ((pinNumber / PORT_WIDTH) * PORT_DATA_REGS_STEP));
+        pinMask     = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
 
         if (PORT_PIN_LEVEL_LOW == PinLevel)
         {
@@ -320,9 +322,9 @@ FUNC(Std_ReturnType, PORT_CODE) Port_SetPinLevel(P2CONST(Port_PinConfigType, AUT
         else
         {
             /*
-            * Do Nothing
-            */
-        }        
+             * Do Nothing
+             */
+        }
     }
     return (returnValue);
 }
@@ -331,13 +333,13 @@ FUNC(Std_ReturnType, PORT_CODE) Port_SetPinLevel(P2CONST(Port_PinConfigType, AUT
  *Design: MCAL-22384,MCAL-22404
  */
 FUNC(Std_ReturnType, PORT_CODE)
- Port_SetDirectionMode(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig, 
-                                            Port_PinDirectionType PinDirection)
+Port_SetDirectionMode(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinConfig,
+                      Port_PinDirectionType PinDirection)
 {
     volatile P2VAR(uint32, AUTOMATIC, REGSPACE) gpioBaseAddr;
     VAR(uint32, AUTOMATIC) pinMask;
-    VAR(Port_PinType, AUTOMATIC) pinNumber = PinConfig->Port_PinId;
-    VAR(Std_ReturnType, AUTOMATIC) returnValue = (Std_ReturnType)E_NOT_OK;
+    VAR(Port_PinType, AUTOMATIC) pinNumber         = PinConfig->Port_PinId;
+    VAR(Std_ReturnType, AUTOMATIC) returnValue     = (Std_ReturnType)E_NOT_OK;
     VAR(Std_ReturnType, AUTOMATIC) PortPinNumValid = (Std_ReturnType)E_NOT_OK;
 
     PortPinNumValid = Port_IsPinNumberValid(pinNumber);
@@ -345,7 +347,7 @@ FUNC(Std_ReturnType, PORT_CODE)
     if (PortPinNumValid != (Std_ReturnType)E_NOT_OK)
     {
         gpioBaseAddr = (uint32 *)((uint32 *)GPIODATA_BASE + ((pinNumber / PORT_WIDTH) * PORT_DATA_REGS_STEP));
-        pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
+        pinMask      = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
 
         /* Set the data direction */
         if (PORT_PIN_OUT == PinDirection)
@@ -364,8 +366,8 @@ FUNC(Std_ReturnType, PORT_CODE)
     else
     {
         /*
-        * Do Nothing
-        */
+         * Do Nothing
+         */
     }
 
     return (returnValue);
@@ -376,26 +378,25 @@ FUNC(Std_ReturnType, PORT_CODE)
  */
 FUNC(void, PORT_CODE) Port_SetPinModeConfig(uint32 PinMode)
 {
-    VAR(uint32, AUTOMATIC) muxRegAddr = 0U;
-    VAR(uint32, AUTOMATIC) pinMask = 0U;
-    VAR(uint32, AUTOMATIC) shiftAmt = 0U;
+    VAR(uint32, AUTOMATIC) muxRegAddr       = 0U;
+    VAR(uint32, AUTOMATIC) pinMask          = 0U;
+    VAR(uint32, AUTOMATIC) shiftAmt         = 0U;
     VAR(uint32, AUTOMATIC) gmuxPinModeShift = 2U;
 
     muxRegAddr = (uint32)GPIOCTRL_BASE + (PinMode >> PORT_WIDTH_HALF);
-    shiftAmt = ((PinMode >> PORT_WIDTH_QUARTER) & (uint32)0xFFU);
-    pinMask = (uint32)TWO_BIT_MASK << shiftAmt;
+    shiftAmt   = ((PinMode >> PORT_WIDTH_QUARTER) & (uint32)0xFFU);
+    pinMask    = (uint32)TWO_BIT_MASK << shiftAmt;
 
     /* Clear fields in MUX register first to avoid glitches */
     HWREG(muxRegAddr) &= ~pinMask;
 
     /* Write value into GMUX register */
-    HWREG(muxRegAddr + PORT_MUX_TO_GMUX) =
-        (HWREG(muxRegAddr + PORT_MUX_TO_GMUX) & ~pinMask) | 
-            (((PinMode >> gmuxPinModeShift) & (uint32)TWO_BIT_MASK) << shiftAmt);
+    HWREG(muxRegAddr + PORT_MUX_TO_GMUX) = (HWREG(muxRegAddr + PORT_MUX_TO_GMUX) & ~pinMask) |
+                                           (((PinMode >> gmuxPinModeShift) & (uint32)TWO_BIT_MASK) << shiftAmt);
 
     /* Write value into MUX register */
     HWREG(muxRegAddr) |= ((PinMode & (uint32)TWO_BIT_MASK) << shiftAmt);
-    }
+}
 
 /*
  *Design:MCAL:22390
@@ -404,10 +405,9 @@ FUNC(Std_ReturnType, PORT_CODE) Port_IsPinNumberValid(Port_PinType PinNumber)
 {
     VAR(Std_ReturnType, AUTOMATIC) returnvalue = (Std_ReturnType)E_NOT_OK;
 
-    if ((PinNumber <= (uint32)101U) || (PinNumber == (uint32)103U)    ||
-        (PinNumber == (uint32)105U) || (PinNumber == (uint32)127U)    ||
-        ((PinNumber >= (uint32)160U) && (PinNumber <= (uint32)213U))  ||
-        ((PinNumber >= (uint32)219U) && (PinNumber <= (uint32)249U))) 
+    if ((PinNumber <= (uint32)101U) || (PinNumber == (uint32)103U) || (PinNumber == (uint32)105U) ||
+        (PinNumber == (uint32)127U) || ((PinNumber >= (uint32)160U) && (PinNumber <= (uint32)213U)) ||
+        ((PinNumber >= (uint32)219U) && (PinNumber <= (uint32)249U)))
 
     {
         returnvalue = (Std_ReturnType)E_OK;
@@ -422,12 +422,12 @@ FUNC(Std_ReturnType, PORT_CODE) Port_IsPinNumberValid(Port_PinType PinNumber)
 /*
  * Design: MCAL-22704,MCAL-22404
  */
-FUNC(Std_ReturnType, PORT_CODE) Port_ValidateSetPinMode(Port_PinModeType Mode, 
-                                        P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA)  pinConfig,
-                                        P2VAR(uint8, AUTOMATIC, PORT_APPL_DATA) errorIdPtr)
+FUNC(Std_ReturnType, PORT_CODE)
+Port_ValidateSetPinMode(Port_PinModeType Mode, P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig,
+                        P2VAR(uint8, AUTOMATIC, PORT_APPL_DATA) errorIdPtr)
 {
     VAR(Std_ReturnType, AUTOMATIC) retVal = (Std_ReturnType)E_NOT_OK;
-    VAR(uint32, AUTOMATIC)  idx = 0U;
+    VAR(uint32, AUTOMATIC) idx            = 0U;
 
     if (pinConfig->Port_ModeChangeable == (boolean)TRUE)
     {
@@ -446,21 +446,22 @@ FUNC(Std_ReturnType, PORT_CODE) Port_ValidateSetPinMode(Port_PinModeType Mode,
     }
     else
     {
-        retVal = (Std_ReturnType)E_NOT_OK;
+        retVal      = (Std_ReturnType)E_NOT_OK;
         *errorIdPtr = PORT_E_MODE_UNCHANGEABLE;
     }
     return (retVal);
 }
 
-/* 
+/*
  *Design: MCAL-29441
  */
-FUNC(void, PORT_CODE) Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig)
+FUNC(void, PORT_CODE)
+Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig)
 {
-    VAR(uint32, AUTOMATIC) pinMask = 0U;
-    VAR(Port_PinType, AUTOMATIC) pinNumber = pinConfig->Port_PinId;
+    VAR(uint32, AUTOMATIC) pinMask                 = 0U;
+    VAR(Port_PinType, AUTOMATIC) pinNumber         = pinConfig->Port_PinId;
     VAR(Std_ReturnType, AUTOMATIC) PortPinNumValid = (Std_ReturnType)E_NOT_OK;
-    VAR(uint32, AUTOMATIC) regAddr = 0U;
+    VAR(uint32, AUTOMATIC) regAddr                 = 0U;
 
     PortPinNumValid = Port_IsPinNumberValid(pinNumber);
 
@@ -469,9 +470,8 @@ FUNC(void, PORT_CODE) Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMAT
         /*Bit position of the pin Number/GPIO number*/
         pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
 
-        regAddr = ((uint32)GPIOCTRL_BASE + \
-                    (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) + \
-                            (uint32)GPIO_O_GPALOCK);
+        regAddr = ((uint32)GPIOCTRL_BASE + (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) +
+                   (uint32)GPIO_O_GPALOCK);
 
         HWREG(regAddr) |= (pinMask);
     }
@@ -481,15 +481,16 @@ FUNC(void, PORT_CODE) Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMAT
     }
 }
 
-/* 
+/*
  *Design: MCAL-29440
  */
-FUNC(void, PORT_CODE) Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig)
+FUNC(void, PORT_CODE)
+Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) pinConfig)
 {
-    VAR(uint32, AUTOMATIC) pinMask = 0U;
-    VAR(Port_PinType, AUTOMATIC) pinNumber = pinConfig->Port_PinId;
+    VAR(uint32, AUTOMATIC) pinMask                 = 0U;
+    VAR(Port_PinType, AUTOMATIC) pinNumber         = pinConfig->Port_PinId;
     VAR(Std_ReturnType, AUTOMATIC) PortPinNumValid = (Std_ReturnType)E_NOT_OK;
-    VAR(uint32, AUTOMATIC) regAddr = 0U;
+    VAR(uint32, AUTOMATIC) regAddr                 = 0U;
 
     PortPinNumValid = Port_IsPinNumberValid(pinNumber);
 
@@ -498,9 +499,8 @@ FUNC(void, PORT_CODE) Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOM
         /*Bit position of the pin Number/GPIO number*/
         pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
 
-        regAddr = ((uint32)GPIOCTRL_BASE + \
-                    (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) + \
-                            (uint32)GPIO_O_GPALOCK);
+        regAddr = ((uint32)GPIOCTRL_BASE + (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) +
+                   (uint32)GPIO_O_GPALOCK);
 
         HWREG(regAddr) &= ~pinMask;
     }
@@ -510,7 +510,7 @@ FUNC(void, PORT_CODE) Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOM
     }
 }
 
-/* 
+/*
  *Design: MCAL-29442
  */
 FUNC(void, PORT_CODE) Port_CommitConfigurationProcess(Port_PinType pinNumber)
@@ -521,19 +521,17 @@ FUNC(void, PORT_CODE) Port_CommitConfigurationProcess(Port_PinType pinNumber)
     /*Bit position of the pin Number/GPIO number*/
     pinMask = (uint32)ONE_BIT_MASK << (pinNumber % PORT_WIDTH);
 
-    #if (STD_OFF == PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS)
+#if (STD_OFF == PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS)
     /* Lock the Pin */
-    regAddr = ((uint32)GPIOCTRL_BASE + \
-                    (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) + \
-                            (uint32)GPIO_O_GPALOCK);
+    regAddr = ((uint32)GPIOCTRL_BASE + (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) +
+               (uint32)GPIO_O_GPALOCK);
 
     HWREG(regAddr) |= (pinMask);
-    #endif
+#endif
 
     /* Commit the Pin */
-    regAddr = ((uint32)GPIOCTRL_BASE + \
-                (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) + \
-                    (uint32)GPIO_O_GPACR);
+    regAddr =
+        ((uint32)GPIOCTRL_BASE + (uint32)((pinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP * 4U) + (uint32)GPIO_O_GPACR);
 
     HWREG(regAddr) |= (pinMask);
 }
@@ -553,7 +551,7 @@ static FUNC(void, PORT_CODE) Port_SetPadConfig(Port_PinType PinNumber, Port_PinP
     if (PORT_PIN_TYPE_NA != PinProperty)
     {
         gpioBaseAddr = (uint32 *)((uint32 *)GPIOCTRL_BASE + ((PinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP));
-        pinMask = (uint32)ONE_BIT_MASK << (PinNumber % PORT_WIDTH);
+        pinMask      = (uint32)ONE_BIT_MASK << (PinNumber % PORT_WIDTH);
 
         /* Enable open drain if necessary */
         if (((uint32)PinProperty & (uint32)PORT_PIN_TYPE_OPEN_DRAIN) != 0U)
@@ -578,16 +576,15 @@ static FUNC(void, PORT_CODE) Port_SetPadConfig(Port_PinType PinNumber, Port_PinP
     else
     {
         /*
-        * Do Nothing
-        */
+         * Do Nothing
+         */
     }
 }
 
 /*
  * Design: MCAL-22386
  */
-static FUNC(void, PORT_CODE) Port_SetQualificationMode(Port_PinType PinNumber,
-                                      Port_PinQualificationMode Qualification)
+static FUNC(void, PORT_CODE) Port_SetQualificationMode(Port_PinType PinNumber, Port_PinQualificationMode Qualification)
 {
     volatile P2VAR(uint32, AUTOMATIC, REGSPACE) gpioBaseAddr;
     VAR(uint32, AUTOMATIC) qSelIndex;
@@ -596,43 +593,42 @@ static FUNC(void, PORT_CODE) Port_SetQualificationMode(Port_PinType PinNumber,
     if (PORT_QUAL_NA > Qualification)
     {
         gpioBaseAddr = (uint32 *)((uint32 *)GPIOCTRL_BASE + ((PinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP));
-        shiftAmt = (uint32)(GPIO_GPAQSEL1_GPIO1_S * (PinNumber % PORT_WIDTH_HALF));
-        qSelIndex = PORT_QSEL_REGS_INDEX + ((PinNumber % PORT_WIDTH) / PORT_WIDTH_HALF);
+        shiftAmt     = (uint32)(GPIO_GPAQSEL1_GPIO1_S * (PinNumber % PORT_WIDTH_HALF));
+        qSelIndex    = PORT_QSEL_REGS_INDEX + ((PinNumber % PORT_WIDTH) / PORT_WIDTH_HALF);
 
         /*
-        * Write the input qualification mode to the register.
-        */
+         * Write the input qualification mode to the register.
+         */
         gpioBaseAddr[qSelIndex] &= ~((uint32)GPIO_GPAQSEL1_GPIO0_M << shiftAmt);
         gpioBaseAddr[qSelIndex] |= (uint32)Qualification << shiftAmt;
     }
     else
     {
         /*
-        * Do Nothing
-        */
+         * Do Nothing
+         */
     }
 }
 
 /*
  * Design: MCAL-23161
  */
-static FUNC(void, PORT_CODE)
- Port_SetQualificationPeriod(Port_PinType PinNumber, uint32 QualificationPeriod)
+static FUNC(void, PORT_CODE) Port_SetQualificationPeriod(Port_PinType PinNumber, uint32 QualificationPeriod)
 {
     volatile P2VAR(uint32, AUTOMATIC, REGSPACE) gpioBaseAddr;
-    VAR(uint32, AUTOMATIC) pinMask = 0U;
-    VAR(uint32, AUTOMATIC) regVal = 0U;
+    VAR(uint32, AUTOMATIC) pinMask  = 0U;
+    VAR(uint32, AUTOMATIC) regVal   = 0U;
     VAR(uint32, AUTOMATIC) shiftAmt = 0U;
-    VAR(uint32, AUTOMATIC) divider = 2U;
+    VAR(uint32, AUTOMATIC) divider  = 2U;
 
     /*
-    * Divide divider (QualificationPeriod) by two to get the value that needs to go into the field.
-    * Then shift it into the right place.
-    */
+     * Divide divider (QualificationPeriod) by two to get the value that needs to go into the field.
+     * Then shift it into the right place.
+     */
     if ((QualificationPeriod >= (uint32)1U) && (QualificationPeriod <= (uint32)510U))
     {
         shiftAmt = (PinNumber % PORT_WIDTH) & ~((uint32)0x7U);
-        pinMask = (uint32)0xFFU << shiftAmt;
+        pinMask  = (uint32)0xFFU << shiftAmt;
 
         regVal = (QualificationPeriod / divider) << shiftAmt;
 
@@ -655,11 +651,11 @@ static FUNC(void, PORT_CODE) Port_SetMasterCore(Port_PinType PinNumber, Port_Pin
 {
     volatile P2VAR(uint32, AUTOMATIC, REGSPACE) gpioBaseAddr;
     VAR(uint32, AUTOMATIC) cSelIndex = 0U;
-    VAR(uint32, AUTOMATIC) shiftAmt = 0U;
+    VAR(uint32, AUTOMATIC) shiftAmt  = 0U;
 
     gpioBaseAddr = (uint32 *)((uint32 *)GPIOCTRL_BASE + ((PinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP));
-    shiftAmt = (uint32)GPIO_GPACSEL1_GPIO1_S * (PinNumber % PORT_WIDTH_QUARTER);
-    cSelIndex = PORT_CSEL_REGS_INDEX + ((PinNumber % PORT_WIDTH) / PORT_WIDTH_QUARTER);
+    shiftAmt     = (uint32)GPIO_GPACSEL1_GPIO1_S * (PinNumber % PORT_WIDTH_QUARTER);
+    cSelIndex    = PORT_CSEL_REGS_INDEX + ((PinNumber % PORT_WIDTH) / PORT_WIDTH_QUARTER);
 
     /* Write the core parameter into the register. */
     gpioBaseAddr[cSelIndex] &= ~((uint32)GPIO_GPACSEL1_GPIO0_M << shiftAmt);
@@ -674,7 +670,7 @@ static FUNC(void, PORT_CODE) Port_SetAnalogMode(Port_PinType PinNumber, Port_Ana
     volatile P2VAR(uint32, AUTOMATIC, REGSPACE) gpioBaseAddr;
     VAR(uint32, AUTOMATIC) pinMask = 0U;
 
-    pinMask = (uint32)ONE_BIT_MASK << (PinNumber % PORT_WIDTH);
+    pinMask      = (uint32)ONE_BIT_MASK << (PinNumber % PORT_WIDTH);
     gpioBaseAddr = (uint32 *)((uint32 *)GPIOCTRL_BASE + ((PinNumber / PORT_WIDTH) * PORT_CTRL_REGS_STEP));
 
     /* Set the analog mode selection. */
@@ -701,7 +697,6 @@ static FUNC(void, PORT_CODE) Port_SetAnalogMode(Port_PinType PinNumber, Port_Ana
         }
     }
 }
-
 
 #define PORT_STOP_SEC_CODE
 #include "Port_MemMap.h"

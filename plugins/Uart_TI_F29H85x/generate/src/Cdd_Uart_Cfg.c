@@ -71,7 +71,7 @@
  * Local Object Definitions
  *********************************************************************************************************************/
 
-// [!AUTOSPACING!][!//
+
 
 #define CDD_UART_START_SEC_CONFIG_DATA
 #include "Cdd_Uart_MemMap.h"
@@ -82,7 +82,7 @@ CONST(Cdd_Uart_ConfigType, CDD_UART_CONFIG_DATA) Cdd_Uart_[!"@name"!] =
 {
     .Cdd_Uart_HwUnitCfg =
     {
-        [!LOOP "CddUartConfig/*"!][!//
+        [!LOOP "CddUartConfig/*"!]
         [[!"node:pos(.)"!]]=
         {
             .Cdd_Uart_Instance = (Cdd_Uart_Instance)CDD_UART_INSTANCE_[!"CddUartInstance"!],
@@ -95,27 +95,27 @@ CONST(Cdd_Uart_ConfigType, CDD_UART_CONFIG_DATA) Cdd_Uart_[!"@name"!] =
             .Cdd_Uart_WordLength = (Cdd_Uart_WordLength)[!"CddUartWordLength"!],
             .Cdd_Uart_StopBits = (Cdd_Uart_StopBits)[!"CddUartStopBit"!],
             .Cdd_Uart_ParityEnable = (boolean)[!IF "CddUartParityModeEnable ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
-            .Cdd_Uart_FifoEnable = (boolean) [!IF "CddUartFIFOModeEnable ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
+            .Cdd_Uart_FifoEnable = (boolean)[!IF "CddUartFIFOModeEnable ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
             .Cdd_Uart_IoMode = (Cdd_Uart_Mode)[!"CddUartProcessingMode"!],
             .Cdd_Uart_LoopbackEnable = (boolean)[!IF "CddUartLoopBackModeEnable ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
-            [!IF "node:value(CddUartEnableWrite)='true'"!]
-            [!IF "node:value(CddUartFIFOModeEnable)='true'"!]
+[!IF "node:value(CddUartEnableWrite)='true'"!][!//
+[!IF "node:value(CddUartFIFOModeEnable)='true'"!][!//
             .Cdd_Uart_WriteFifoLvl = (Cdd_Uart_FifoLevel)[!"node:value(CddUartWriteConfig/CddUartTriggerLevelWriteFIFO)"!],
-            [!ENDIF!]
+[!ENDIF!][!//
             .Cdd_Uart_WriteCompleteCb = (Cdd_Uart_CallbackType)[!IF "(node:empty(CddUartWriteConfig/CddUartWriteNotificationHandler))"!]NULL_PTR[!ELSE!][!"(node:value(CddUartWriteConfig/CddUartWriteNotificationHandler))"!][!ENDIF!],
-            [!ENDIF!]
-            [!IF "node:value(CddUartEnableRead)='true'"!]
-            [!IF "node:value(CddUartFIFOModeEnable)='true'"!]
+[!ENDIF!][!//
+[!IF "node:value(CddUartEnableRead)='true'"!][!//
+[!IF "node:value(CddUartFIFOModeEnable)='true'"!][!//
             .Cdd_Uart_ReadFifoLvl = (Cdd_Uart_FifoLevel)[!"node:value(CddUartReadConfig/CddUartTriggerLevelReadFIFO)"!],
-            [!ENDIF!]
+[!ENDIF!][!//
             .Cdd_Uart_ReadCompleteCb = (Cdd_Uart_CallbackType)[!IF "(node:empty(CddUartReadConfig/CddUartReadNotificationHandler))"!]NULL_PTR[!ELSE!][!"(node:value(CddUartReadConfig/CddUartReadNotificationHandler))"!][!ENDIF!],
             .Cdd_Uart_ErrorCb = (Cdd_Uart_CallbackType)[!IF "(node:empty(CddUartReadConfig/CddUartErrorNotificationHandler))"!]NULL_PTR[!ELSE!][!"(node:value(CddUartReadConfig/CddUartErrorNotificationHandler))"!][!ENDIF!],
-            [!ENDIF!]
-        }
-        [!ENDLOOP!][!//
+[!ENDIF!]
+        }[!IF "not(node:islast())"!],[!ENDIF!]
+        [!ENDLOOP!]
     }
-};
-[!ENDLOOP!][!//
+};[!//
+[!ENDLOOP!]
 
 
 

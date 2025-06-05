@@ -42,7 +42,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -69,14 +69,14 @@
 FUNC(Std_ReturnType, DIO_CODE)
 Dio_IsChannelValid(Dio_ChannelType channelId)
 {
-    VAR(Std_ReturnType, AUTOMATIC) status = (Std_ReturnType) E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) status = (Std_ReturnType)E_NOT_OK;
 
-    VAR(uint32, AUTOMATIC) port_num = (uint32) (channelId/DIO_PORT_WIDTH);
+    VAR(uint32, AUTOMATIC) port_num = (uint32)(channelId / DIO_PORT_WIDTH);
 
     /*  Check if the port configuration is enable else return E_NOT_OK. */
     if (0U != (DIO_CFG_ENABLED_PORT_MASK & ((uint32)1U << port_num)))
     {
-        status = (Std_ReturnType) E_OK;
+        status = (Std_ReturnType)E_OK;
     }
 
     return (status);
@@ -88,14 +88,14 @@ Dio_IsChannelValid(Dio_ChannelType channelId)
 FUNC(Std_ReturnType, DIO_CODE)
 Dio_IsChannelGroupValid(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr)
 {
-    VAR(Std_ReturnType, AUTOMATIC) status = (Std_ReturnType) E_NOT_OK;
+    VAR(Std_ReturnType, AUTOMATIC) status = (Std_ReturnType)E_NOT_OK;
 
     /*  Check if the channel group configuration is valid else return E_NOT_OK. */
-    for(uint32 i = 0; i < (uint32) DIO_MAX_NO_OF_CHANNEL_GROUPS; i++)
+    for (uint32 i = 0; i < (uint32)DIO_MAX_NO_OF_CHANNEL_GROUPS; i++)
     {
         if (Dio_ChannelGroupRef[i] == ChannelGroupIdPtr)
         {
-            status = (Std_ReturnType) E_OK;
+            status = (Std_ReturnType)E_OK;
             break;
         }
     }
@@ -108,17 +108,15 @@ Dio_IsChannelGroupValid(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) 
 FUNC(Dio_LevelType, DIO_CODE)
 Dio_PinReadPriv(Dio_ChannelType channelId)
 {
-    VAR(uint32, AUTOMATIC)                            reg_val;
-    VAR(Dio_LevelType, AUTOMATIC)                     status;
-    P2VAR(volatile uint32, AUTOMATIC, REGSPACE)       gpio_data_reg;
+    VAR(uint32, AUTOMATIC) reg_val;
+    VAR(Dio_LevelType, AUTOMATIC) status;
+    P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpio_data_reg;
 
-    gpio_data_reg = \
-        (uint32 *)((uint32*)GPIODATA_BASE + ((channelId/DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));
+    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((channelId / DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));
 
-    reg_val = \
-        ((gpio_data_reg[GPIO_DATA_INDEX] >> (channelId%DIO_PORT_WIDTH)) & (uint32)0x1U);
+    reg_val = ((gpio_data_reg[GPIO_DATA_INDEX] >> (channelId % DIO_PORT_WIDTH)) & (uint32)0x1U);
 
-    status = ((uint32)0U != reg_val)?(Dio_LevelType)STD_HIGH:(Dio_LevelType)STD_LOW;
+    status = ((uint32)0U != reg_val) ? (Dio_LevelType)STD_HIGH : (Dio_LevelType)STD_LOW;
 
     return (status);
 }
@@ -127,15 +125,14 @@ Dio_PinReadPriv(Dio_ChannelType channelId)
 FUNC(void, DIO_CODE)
 Dio_PinWritePriv(Dio_ChannelType channelId, Dio_LevelType channelVal)
 {
-    P2VAR(volatile uint32, AUTOMATIC, REGSPACE)      gpio_data_reg;
-    VAR(uint32, AUTOMATIC)                           pin_mask_val;
+    P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpio_data_reg;
+    VAR(uint32, AUTOMATIC) pin_mask_val;
 
-    gpio_data_reg = \
-        (uint32 *)((uint32*)GPIODATA_BASE + ((channelId/DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));
-    pin_mask_val = (uint32)1U << (channelId % DIO_PORT_WIDTH);
+    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((channelId / DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));
+    pin_mask_val  = (uint32)1U << (channelId % DIO_PORT_WIDTH);
 
     /*  Writing 0 to either SET or CLEAR register has no effect */
-    if(((Dio_LevelType) STD_LOW) == channelVal)
+    if (((Dio_LevelType)STD_LOW) == channelVal)
     {
         gpio_data_reg[GPIO_CLEAR_INDEX] = pin_mask_val;
     }
@@ -149,42 +146,42 @@ Dio_PinWritePriv(Dio_ChannelType channelId, Dio_LevelType channelVal)
 FUNC(void, DIO_CODE)
 Dio_WritePortDataPriv(Dio_PortType portId, Dio_PortLevelType portValue)
 {
-    P2VAR(volatile uint32, AUTOMATIC, REGSPACE)     gpio_data_reg;
-    VAR(uint32, AUTOMATIC)                          set_bits;
-    VAR(uint32, AUTOMATIC)                          clear_bits;
+    P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpio_data_reg;
+    VAR(uint32, AUTOMATIC) set_bits;
+    VAR(uint32, AUTOMATIC) clear_bits;
 
     set_bits   = portValue;
     clear_bits = ~portValue;
 
     /* Get the starting address of the port's registers and write to DATA. */
-    gpio_data_reg = (uint32 *)((uint32*)GPIODATA_BASE + ((uint32)portId * GPIO_DATA_REGS_STEP));
+    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((uint32)portId * GPIO_DATA_REGS_STEP));
     /* Writing 1 will clear the bit and Writing 0 has no effect. */
     gpio_data_reg[GPIO_CLEAR_INDEX] = clear_bits;
 
     /* Writing 1 will set the bit and Writing 0 has no effect. */
-    gpio_data_reg[GPIO_SET_INDEX]   = set_bits;
+    gpio_data_reg[GPIO_SET_INDEX] = set_bits;
 }
 
 /* Design: MCAL-22682,MCAL-22517,MCAL-22518,MCAL-22519 */
 FUNC(void, DIO_CODE)
 Dio_WriteChannelGroupPriv(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr,
-                Dio_PortLevelType level)
+                          Dio_PortLevelType level)
 {
-    P2VAR(volatile uint32, AUTOMATIC, REGSPACE)     gpio_data_reg;
-    VAR(uint32, AUTOMATIC)                          set_bits;
-    VAR(uint32, AUTOMATIC)                          clear_bits;
+    P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpio_data_reg;
+    VAR(uint32, AUTOMATIC) set_bits;
+    VAR(uint32, AUTOMATIC) clear_bits;
 
-    set_bits = ((level << ChannelGroupIdPtr->offset) & ChannelGroupIdPtr->mask);
+    set_bits   = ((level << ChannelGroupIdPtr->offset) & ChannelGroupIdPtr->mask);
     clear_bits = ((~level << ChannelGroupIdPtr->offset) & ChannelGroupIdPtr->mask);
 
     /* Get the starting address of the port's registers and write to DATA. */
-    gpio_data_reg = (uint32 *)((uint32*)GPIODATA_BASE + ((uint32)ChannelGroupIdPtr->port * GPIO_DATA_REGS_STEP));
+    gpio_data_reg = (uint32 *)((uint32 *)GPIODATA_BASE + ((uint32)ChannelGroupIdPtr->port * GPIO_DATA_REGS_STEP));
 
     /* Writing 1 will clear the bit and Writing 0 has no effect. */
     gpio_data_reg[GPIO_CLEAR_INDEX] = clear_bits;
 
     /* Writing 1 will set the bit and Writing 0 has no effect. */
-    gpio_data_reg[GPIO_SET_INDEX]   = set_bits;
+    gpio_data_reg[GPIO_SET_INDEX] = set_bits;
 }
 
 /* Design: MCAL-22524,MCAL-22515 */
@@ -194,22 +191,20 @@ Dio_PinFlipVal(Dio_ChannelType ChannelId)
     P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpioDataReg;
     VAR(uint32, AUTOMATIC) pinMaskVal;
 
-    gpioDataReg = \
-        (uint32 *)((uint32*)GPIODATA_BASE + ((ChannelId/DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));
+    gpioDataReg = (uint32 *)((uint32 *)GPIODATA_BASE + ((ChannelId / DIO_PORT_WIDTH) * GPIO_DATA_REGS_STEP));
 
     pinMaskVal = (uint32)1U << (ChannelId % DIO_PORT_WIDTH);
 
     gpioDataReg[GPIO_TOGGLE_INDEX] = pinMaskVal;
 }
 
- /* Design: MCAL-22522,MCAL-22516 */
+/* Design: MCAL-22522,MCAL-22516 */
 FUNC(void, DIO_CODE)
 Dio_ReadPortDataPriv(Dio_PortType PortId, Dio_PortLevelType *PortValue)
 {
     P2VAR(volatile uint32, AUTOMATIC, REGSPACE) gpioDataReg;
     /* Get the starting address of the registers. */
-    gpioDataReg = \
-        (uint32 *)((uint32*)GPIODATA_BASE + ((uint32)PortId * GPIO_DATA_REGS_STEP));
+    gpioDataReg = (uint32 *)((uint32 *)GPIODATA_BASE + ((uint32)PortId * GPIO_DATA_REGS_STEP));
 
     /* Return the data of the port. */
     *PortValue = gpioDataReg[GPIO_DATA_INDEX];
@@ -220,7 +215,6 @@ Dio_ReadPortDataPriv(Dio_PortType PortId, Dio_PortLevelType *PortValue)
 
 #define DIO_STOP_SEC_CODE
 #include "Dio_MemMap.h"
-
 
 /*********************************************************************************************************************
  *  End of File: Dio_Priv.c

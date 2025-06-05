@@ -59,7 +59,7 @@
  /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
@@ -83,7 +83,7 @@
 volatile EcuM_WakeupEventSourceType EcuM_EventRecord[ECUM_CFG_WAKEUP_EVENT_COUNT]=
 {[!LOOP "as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*"!]
     [!VAR "bitset" = "bit:or(num:i($bitset),bit:bitset(0,num:i(node:value(EcuMWakeupSourceId))))"!][!//
-  [[!"@index"!]] = 
+  [[!"@index"!]] =
       {
           .source_id                  = [!"bit:bitset(0,num:i(node:value(EcuMWakeupSourceId)))"!]U,
           .wakeup_funcptr             = (EcuM_WakeupFuncPtrType)[!"EcuMWakeupSourceModuleName"!]_CheckWakeup,
@@ -96,7 +96,7 @@ FUNC(void, ECUM_CODE) EcuM_InitList(void)
 {
 [!LOOP "as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMDriverInitList/*"!][!//
     [!"ModuleFunction"!]
-    
+
 [!ENDLOOP!][!//
 }
 

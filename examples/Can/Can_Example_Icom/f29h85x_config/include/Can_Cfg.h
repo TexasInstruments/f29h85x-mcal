@@ -205,17 +205,6 @@ extern "C" {
 
 /*****************************************************************************
  *
- * \brief Counter ID for counter used to count wait ticks
- *
- *****************************************************************************/
-/*
- *Design: MCAL-22757
- */
-#define CAN_CFG_OS_COUNTER_ID               ((Os_CounterIdType)0U)
-
-
-/*****************************************************************************
- *
  * \brief CAN timeout - used in CAN Cancel wait and Start/Stop busy wait.
  *  Specifies the maximum time for blocking function until a timeout is detected.
  *  Unit is milli seconds.
@@ -225,7 +214,8 @@ extern "C" {
  *Design: MCAL-22755
  */
 
-#define CAN_CFG_TIMEOUT_DURATION            ((uint32)100000U)
+
+#define CAN_CFG_TIMEOUT_DURATION    ((McalLib_TickType)(20000000U))
 
 /*****************************************************************************
  *

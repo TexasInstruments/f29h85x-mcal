@@ -80,7 +80,6 @@
 					            <a:da name="DEFAULT" type="XPath">
                       <a:tst expr="node:fallback(&quot;-> num:i(count(../PortPin/*))&quot;,num:i(1))"/>
                       </a:da>
-                      <a:da name="READONLY" value="false"/>
                     </v:var>
 					
                     <v:lst name="PortPin" type="MAP">
@@ -196,11 +195,10 @@
 								<a:da name="DEFAULT" type="XPath">
 								<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinNumber')))&quot;,'0')"/>
 								</a:da>
-								
-								<a:da name="INVALID" type="Range">
-								  <a:tst expr="&lt;= node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),'.numberOfPins'))&quot;,num:i(1))"/>
-									<!--<a:tst expr="&gt;=0"/>-->
-								</a:da>
+
+                <a:da name="INVALID" type="XPath">
+                  <a:tst expr="node:value(.) = node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinNumber')))&quot;,'0')" false="PortPinId value is invalid. Please recalculate the value."/>
+                </a:da>
 								
 								<a:a name="VISIBLE" value="true"/>
 								
@@ -223,7 +221,7 @@
 								<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isConfigurable')))&quot;,'true')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
-								<a:da name="READONLY" value="true"/>
+								<a:da name="EDITABLE" value="false"/>
 							</v:var>
 							
 							<v:var name="PortIsAnalogModeSupported" type="BOOLEAN">
@@ -243,7 +241,7 @@
 								<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAnalogModeSupported')))&quot;,'false')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
-								<a:da name="READONLY" value="true"/>
+								<a:da name="EDITABLE" value="false"/>
 							</v:var>
 									  
 							<v:var name="PortIsAGPIO" type="BOOLEAN">
@@ -264,7 +262,7 @@
 									<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAGPIO')))&quot;,'true')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
-								<a:da name="READONLY" value="true"/>
+								<a:da name="EDITABLE" value="false"/>
 							</v:var>
 									  
 							<v:var name="PortIsAIO" type="BOOLEAN">
@@ -284,7 +282,7 @@
 									<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isAIO')))&quot;,'true')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
-								<a:da name="READONLY" value="true"/>
+								<a:da name="EDITABLE" value="false"/>
 							</v:var>
 									  
 							<v:var name="PortIsGPIO" type="BOOLEAN">
@@ -304,7 +302,7 @@
 									<a:tst expr="node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.isGPIO')))&quot;,'true')"/>
 								</a:da>
                 <a:a name="VISIBLE" value="false"/>
-								<a:da name="READONLY" value="true"/>
+								<a:da name="EDITABLE" value="false"/>
 							</v:var>
 									  
 							<v:var name="PortAnalogMode" type="ENUMERATION">

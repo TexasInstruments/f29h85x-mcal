@@ -1,3 +1,4 @@
+
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -70,7 +71,8 @@
  * Local Object Definitions
  *********************************************************************************************************************/
 
-//
+
+
 #define CDD_UART_START_SEC_CONFIG_DATA
 #include "Cdd_Uart_MemMap.h"
 
@@ -79,6 +81,7 @@ CONST(Cdd_Uart_ConfigType, CDD_UART_CONFIG_DATA) Cdd_Uart_CddUartConfigSet =
 {
     .Cdd_Uart_HwUnitCfg =
     {
+        
         [0]=
         {
             .Cdd_Uart_Instance = (Cdd_Uart_Instance)CDD_UART_INSTANCE_UART3,
@@ -99,7 +102,9 @@ CONST(Cdd_Uart_ConfigType, CDD_UART_CONFIG_DATA) Cdd_Uart_CddUartConfigSet =
             .Cdd_Uart_ReadFifoLvl = (Cdd_Uart_FifoLevel)CDD_UART_FIFO_LEVEL_1_2,
             .Cdd_Uart_ReadCompleteCb = (Cdd_Uart_CallbackType)CddUartReadDoneCallback,
             .Cdd_Uart_ErrorCb = (Cdd_Uart_CallbackType)CddUartErrorCallback,
+
         }
+        
     }
 };
 
