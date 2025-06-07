@@ -23,11 +23,6 @@
 #ifndef FLS_CBK_H_
 #define FLS_CBK_H_
 
-/**
- *  \addtogroup FLS FLS Configuration
- *  @{
- */
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -81,8 +76,6 @@ extern void Fee_JobErrorNotification(void);
 #ifdef __cplusplus
 }
 #endif
-
-/**  @} */
 
 #endif  /** #ifndef FLS_CBK_H_ */
 

@@ -24,7 +24,7 @@
 #define FLS_CFG_H_
 
 /**
- *  \defgroup FLS FLS Configuration
+ *  \addtogroup FLS
  *
  *  This files defines FLS MCAL configuration structures
  *  @{

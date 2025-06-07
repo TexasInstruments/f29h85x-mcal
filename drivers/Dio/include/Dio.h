@@ -67,7 +67,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version. */
 #define DIO_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version. */
-#define DIO_SW_PATCH_VERSION (2U)
+#define DIO_SW_PATCH_VERSION (3U)
 
 /*********************************************************************************************************************
  * Defines for DIO Driver AUTOSAR version used for compatibility checks.

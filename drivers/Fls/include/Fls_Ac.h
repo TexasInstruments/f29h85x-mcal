@@ -23,7 +23,7 @@
 #define FLS_AC_H_
 
 /**
- * \defgroup FLS Fls API GUIDE Header file
+ *  \addtogroup FLS
  * @{
  */
 
@@ -293,6 +293,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 /*typedef unsigned char      boolean;*/
 /** \brief Flash status */
 typedef uint32 Fls_FapiFlashStatus;
@@ -343,6 +345,7 @@ typedef enum Fls_FlashFRITag
     FLS_FLASH_FRI4 = (uint8)(3U)  /*!< \brief Flash read interface(FRI) 4 */
 } Fls_FlashFRIType;
 
+#endif
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/

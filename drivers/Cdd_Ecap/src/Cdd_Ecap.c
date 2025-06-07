@@ -40,7 +40,7 @@
 #endif
 
 /** \brief AUTOSAR version information check has to match definition in header file */
-#if ((CDD_ECAP_SW_MAJOR_VERSION != (1U)) || (CDD_ECAP_SW_MINOR_VERSION != (0U)) || (CDD_ECAP_SW_PATCH_VERSION != (0U)))
+#if ((CDD_ECAP_SW_MAJOR_VERSION != (1U)) || (CDD_ECAP_SW_MINOR_VERSION != (0U)))
 #error "Cdd_Ecap: Software Version Numbers are inconsistent!!"
 #endif
 

@@ -148,7 +148,6 @@ CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) CddSentConfig_CddSentController
     .CddSentCRCWidth   = (Cdd_SentCRCWidth  )CDD_SENT_CRC_4_BIT,
     .CddSentCRCWithStatus  = (Cdd_SentCRCWithStatus )CDD_SENT_CRC_WITH_STATUS,
     .CddSentDataNibblesCount  = (Cdd_SentDataNibblesCount )CDD_SENT_4_DATA_NIBBLES,
-
     .CddSentSyncTimeout   = (uint32 )0U,
     .CddSentAcceptErrorData    = (boolean )TRUE,
     .CddSentEnableTimeStamp  = (boolean )TRUE,

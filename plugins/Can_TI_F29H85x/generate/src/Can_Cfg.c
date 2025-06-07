@@ -37,11 +37,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (1U)))
+#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (2U)))
     #error "Version numbers of Can_cfg.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (1U)))
+#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (2U)))
     #error "Version numbers of Can_cfg.c and Can_Cfg.h are inconsistent!"
 #endif
 

@@ -25,7 +25,7 @@
 #define FLS_PRIV_H_
 
 /**
- * \defgroup FLS Fls API GUIDE Header file
+ *  \addtogroup FLS
  * @{
  */
 

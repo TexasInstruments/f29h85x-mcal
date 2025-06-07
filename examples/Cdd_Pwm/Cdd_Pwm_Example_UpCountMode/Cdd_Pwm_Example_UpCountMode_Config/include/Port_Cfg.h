@@ -54,11 +54,11 @@ extern "C" {
  *
  *****************************************************************************/
 /** \brief Port configuration Major Version. */
-#define PORT_CFG_MAJOR_VERSION    (1U)
+#define PORT_CFG_MAJOR_VERSION           (1U)
 /** \brief Port configuration Minor Version. */
-#define PORT_CFG_MINOR_VERSION    (1U)
+#define PORT_CFG_MINOR_VERSION           (1U)
 /** \brief Port configuration Patch Version. */
-#define PORT_CFG_PATCH_VERSION    (0U)
+#define PORT_CFG_PATCH_VERSION           (1U)
 
 
 /*****************************************************************************

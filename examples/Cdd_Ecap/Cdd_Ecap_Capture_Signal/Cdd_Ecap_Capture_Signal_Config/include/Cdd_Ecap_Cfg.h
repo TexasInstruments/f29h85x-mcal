@@ -46,7 +46,7 @@ extern "C" {
 
 #define CDD_ECAP_CFG_MAJOR_VERSION           (1U)
 #define CDD_ECAP_CFG_MINOR_VERSION           (0U)
-#define CDD_ECAP_CFG_PATCH_VERSION           (0U)
+#define CDD_ECAP_CFG_PATCH_VERSION           (1U)
 
 /* Macro to define the number of channels configured */
 #define CDD_ECAP_HW_CNT                      ((uint8)4U)

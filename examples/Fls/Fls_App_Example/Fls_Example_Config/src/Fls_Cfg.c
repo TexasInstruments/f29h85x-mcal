@@ -31,7 +31,7 @@
  * AUTOSAR version information check has to match definition in header file.
  *********************************************************************************************************************/
 #if ((FLS_CFG_MAJOR_VERSION != (1U)) ||\
-    (FLS_CFG_MINOR_VERSION != (0U)))
+    (FLS_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Fls_Cfg.c and Fls.h are inconsistent!"
 #endif
 

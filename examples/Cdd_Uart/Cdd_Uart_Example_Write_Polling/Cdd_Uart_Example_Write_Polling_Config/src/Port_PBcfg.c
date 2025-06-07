@@ -79,7 +79,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
 {
    
    {
-    /* .Port_PhysicalPinId = B7U,    Physical Pin Number*/
+    /* .Port_PhysicalPinId = C16U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)42U,
     .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_NA,
     .Port_DirectionChangeable = (boolean) FALSE,
@@ -114,7 +114,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
    },
    
    {
-    /* .Port_PhysicalPinId = C7U,    Physical Pin Number*/
+    /* .Port_PhysicalPinId = C15U,    Physical Pin Number*/
 	.Port_PinId = (Port_PinType)43U,
     .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_NA,
     .Port_DirectionChangeable = (boolean) FALSE,

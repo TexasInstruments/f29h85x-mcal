@@ -24,7 +24,7 @@
 #define FLS_CFG_H_
 
 /**
- *  \defgroup FLS FLS Configuration
+ *  \addtogroup FLS
  *
  *  This files defines FLS MCAL configuration structures
  *  @{
@@ -65,7 +65,7 @@ extern "C" {
 /** \brief Fls configuration Major Version */
 #define FLS_CFG_MAJOR_VERSION           (1U)
 /** \brief Fls configuration Minor Version */
-#define FLS_CFG_MINOR_VERSION           (0U)
+#define FLS_CFG_MINOR_VERSION           (1U)
 /** \brief Fls configuration Patch Version */
 #define FLS_CFG_PATCH_VERSION           (0U)
 /* @} */

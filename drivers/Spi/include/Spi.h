@@ -54,7 +54,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version. */
 #define SPI_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version. */
-#define SPI_SW_PATCH_VERSION (0U)
+#define SPI_SW_PATCH_VERSION (1U)
 
 /* Defines for SPI Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR major version specification implemented by SPI Driver. */
