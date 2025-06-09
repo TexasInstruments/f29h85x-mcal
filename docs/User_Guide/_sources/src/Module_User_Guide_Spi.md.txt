@@ -357,7 +357,7 @@ This container contains the configuration parameters and sub containers of the A
 | Item ||
 |--------|---------------|
 | **Name** | SpiCounterClockRef |
-| **Description** | This parameter contains a reference to the sysClock to calculate clock cycles for IPC free run counter, which is used by the SPI driver. |
+| **Description** | This parameter references the SYSCLK to convert timeout values from milliseconds to clock ticks. Users should ensure the correct clock reference point is selected to achieve accurate timeout calculations. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -847,22 +847,6 @@ The communication settings of an external device. Closely linked to SpiJob.
 | **Max-value** | 255 |
 | **Min-value** | 0 |
 
-###### SpiTimeClk2Cs
-
-| Item ||
-|--------|---------------|
-| **Name** | SpiTimeClk2Cs |
-| **Description** | Timing between clock and chip select (in seconds) - This parameter allows to use a range of values from 0 up to 0.0001 seconds., This parameter is not supported for this Hardware |
-| **Origin** | AUTOSAR_ECUC |
-| **Post-Build-Variant-Value** | true |
-| **Value-Configuration-Class** | -- |
-| Link-Time | VARIANT-LINK-TIME |
-| Post-Build-Time | VARIANT-POST-BUILD |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 0.0 |
-| **Max-value** | 1.0E-4 |
-| **Min-value** | 0.0 |
-
 ###### SpiSysClockRef
 
 | Item ||
@@ -1187,7 +1171,7 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Sample Log of Spi_Example_Sync_AsyncTransfer
 
-```{EXAMPLE LOGS}
+```{code-block}
     Sample Application - STARTS !!!
     SPI MCAL Version Info
     ---------------------
@@ -1239,7 +1223,7 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Sample Log of Spi_Example_AsyncTransfer_Interrupt
 
-```{EXAMPLE LOGS}
+```{code-block}
     Sample Application - STARTS !!!
     SPI MCAL Version Info
     ---------------------
@@ -1292,7 +1276,7 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Sample Log of Spi_Example_SyncTransfer
 
-```{EXAMPLE LOGS}
+```{code-block}
     Sample Application - STARTS !!!
     SPI MCAL Version Info
     ---------------------
@@ -1308,6 +1292,78 @@ The example application demonstrates use of Spi module, the list below identifie
     Transmitting data in synchronous mode.
     SyncTransmit status is 0
     Getting sequence status.
+    Deinitializing SPI.
+```
+
+
+#### Spi_Example_External_Loopback
+
+##### Overview of Spi_Example_External_Loopback
+
+* Spi_Example_External_Loopback
+  * EcuM_Init()
+    * Initializes clock to 200 MHz using Mcu_Init()
+    * Initializes required port pins for SPI.
+  * Call Spi_Init() to initialize SPI Driver
+  * Initialize Internal and External Buffers.           
+  * Transmit data synchronously.
+  * Read the data from channels.
+  * Received data can be seen in Spi_DestBuf0
+  * Validate the received data with pre-defined transmit data.
+
+##### Setup required to run Spi_Example_External_Loopback
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest c29 compiler
+* Connect the hardware and power up
+* Makes sure to disable the S2 POCI switch on the XDS110 to OFF (Only when used with SOM EVM) as shown below:
+```{figure} Assets/images/S2_POCI_Switch_XDS110.png
+:alt: S2 POCI Switch on XDS110 Debugger
+:align: center
+
+S2 POCI Switch on XDS110 Debugger
+```
+* Place the SOM on Bank Mode 2 and disable FOTA.
+* Make necessary connections between SPI A and SPI D as shown in the figure below:
+```{figure} Assets/images/Spi_Example_External_Loopback_Connections.png
+:alt: SPI Example External Loopback Connections
+:align: center
+
+SPI Example External Loopback Connections
+```
+* Connect the uart set up to check the log on serial console
+
+##### How to run Spi_Example_External_Loopback
+
+* Build the example to generate .out.
+* Connect to CPU1 and load only the Spi_Example_External_Loopback_merged.out.
+* After the program is loaded, run CPU1.
+* CPU1 configures and releases CPU3 out of reset.
+* CPU1 pauses due to software breakpoint (EMUSTOP0).
+* Connect to CPU3 target now. C29x3.out would have started execution as soon as it is released from reset.
+* Resume CPU1 after CPU3 starts running.
+
+ ```{Note}
+Note: To visualise the CPU3 source file (in debug mode), load the CPU3.out by clicking on the "Load Symbols" option.
+ ```
+
+##### Sample Log of Spi_Example_External_Loopback
+
+```{code-block}
+    Sample Application - STARTS !!!
+    SPI MCAL Version Info
+    ---------------------
+    Vendor ID           : 44
+    Module ID           : 83
+    SW Major Version    : 1
+    SW Minor Version    : 1
+    Patch Version    : 0
+    Writing to internal buffer channel0.
+    Getting hardware unit status.
+    Transmitting data in synchronous mode.
+    SyncTransmit status is 0
+    Getting sequence status.
+    SPI Transmission successful!
     Deinitializing SPI.
 ```
 

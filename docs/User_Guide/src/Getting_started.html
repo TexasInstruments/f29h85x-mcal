@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.00
+                01.02.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -202,7 +202,7 @@
 </section>
 <section id="un-installation-procedure">
 <h3><span class="section-number">3.2.2. </span>Un-installation Procedure<a class="headerlink" href="#un-installation-procedure" title="Link to this heading"></a></h3>
-<p>1.Check the installation directory (which is selected in <a class="reference internal" href="#installation-procedure"><span class="xref myst">Installation Procedure</span></a> step3) for the package contents <strong>F29xxxxMCAL_xx_xx_xx</strong> &amp; <strong>uninstall</strong> executable.</p>
+<p>1.Check the installation directory (which is selected in <a class="reference internal" href="#installation-procedure">Installation Procedure</a> step3) for the package contents <strong>F29xxxxMCAL_xx_xx_xx</strong> &amp; <strong>uninstall</strong> executable.</p>
 <figure class="align-center" id="id7">
 <img alt="Installation Step7" src="../_images/Installation_Step7.png" />
 <figcaption>
@@ -865,7 +865,7 @@ It can generate native build files for different platforms and compilers, such a
 <li><p><strong>CMakePresets.json</strong></p>
 <ul>
 <li><p>This file contains recommended presets configured for F29x MCAL projects, users can continue to use the presets as-is or choose to override them with their project specific requirements by adding a CMakeUserPresets.json file.</p></li>
-<li><p>It also define all the compiler and linker options as defined in <a class="reference internal" href="#compiler-and-linker-settings"><span class="xref myst">Compiler and Linker Settings</span></a></p></li>
+<li><p>It also define all the compiler and linker options as defined in <a class="reference internal" href="#compiler-and-linker-settings">Compiler and Linker Settings</a></p></li>
 <li><p>The presets file defines support for different generators -</p>
 <ol class="arabic simple">
 <li><p><strong>mingw-c2000-f29h85x:</strong> Preset for MinGW Makefiles generator - works on Windows based system</p></li>
@@ -927,11 +927,11 @@ It can generate native build files for different platforms and compilers, such a
 <section id="f29x-mcal-specific-options-during-cmake-configure-stage-1">
 <h5><span class="section-number">3.11.1.2.1. </span>F29x MCAL Specific options during <em>CMake configure</em> (Stage 1)<a class="headerlink" href="#f29x-mcal-specific-options-during-cmake-configure-stage-1" title="Link to this heading"></a></h5>
 <p>To configure CMake following command can be executed in terminal -</p>
-<div class="highlight-{CMAKE notranslate"><div class="highlight"><pre><span></span>**cmake -S {source_dir_path} --preset {preset_name} -DCMAKE_BUILD_TYPE = {build_type} -DBUILD_CONFIGURATION = {build_configuration} -DTCP={path-to-the-compiler}**
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>**cmake<span class="w"> </span>-S<span class="w"> </span><span class="o">{</span>source_dir_path<span class="o">}</span><span class="w"> </span>--preset<span class="w"> </span><span class="o">{</span>preset_name<span class="o">}</span><span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>build_type<span class="o">}</span><span class="w"> </span>-DBUILD_CONFIGURATION<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span>build_configuration<span class="o">}</span><span class="w"> </span>-DTCP<span class="o">={</span>path-to-the-compiler<span class="o">}</span>**
 </pre></div>
 </div>
 <p>For example,</p>
-<div class="highlight-{CMAKE notranslate"><div class="highlight"><pre><span></span>cmake -S . --preset mingw-c2000-f29h85x  -DCMAKE_BUILD_TYPE=Debug -DBUILD_CONFIGURATION=RAM -DTCP=&quot;C:\ti\ti-cgt-c29_1.0.0LTS&quot;
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>--preset<span class="w"> </span>mingw-c2000-f29h85x<span class="w">  </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug<span class="w"> </span>-DBUILD_CONFIGURATION<span class="o">=</span>RAM<span class="w"> </span>-DTCP<span class="o">=</span><span class="s2">&quot;C:\ti\ti-cgt-c29_1.0.0LTS&quot;</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -956,11 +956,11 @@ It can generate native build files for different platforms and compilers, such a
 <section id="f29x-mcal-specific-options-during-cmake-build-stage-2">
 <h5><span class="section-number">3.11.1.2.2. </span>F29x MCAL Specific options during <em>CMake build</em> (Stage 2)<a class="headerlink" href="#f29x-mcal-specific-options-during-cmake-build-stage-2" title="Link to this heading"></a></h5>
 <p>To build following command can be executed in terminal -</p>
-<div class="highlight-{CMAKE notranslate"><div class="highlight"><pre><span></span>**cmake --build {path-to-the-CMake-generated-files} -t {target}**
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>**cmake<span class="w"> </span>--build<span class="w"> </span><span class="o">{</span>path-to-the-CMake-generated-files<span class="o">}</span><span class="w"> </span>-t<span class="w"> </span><span class="o">{</span>target<span class="o">}</span>**
 </pre></div>
 </div>
 <p>For example,</p>
-<div class="highlight-{CMAKE notranslate"><div class="highlight"><pre><span></span>**cmake --build build/artefacts -t Can_Example_Classic_FD**
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>**cmake<span class="w"> </span>--build<span class="w"> </span>build/artefacts<span class="w"> </span>-t<span class="w"> </span>Can_Example_Classic_FD**
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -1192,7 +1192,7 @@ It can generate native build files for different platforms and compilers, such a
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Apr 13, 2025.
+          <span class="lastupdated" >Last updated on Jun 09, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1209,7 +1209,7 @@ It can generate native build files for different platforms and compilers, such a
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.00
+       Current Version: 01.02.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

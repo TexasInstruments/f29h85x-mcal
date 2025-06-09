@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.00
+                01.02.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -66,7 +66,13 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="group___c_a_n.html">5.1. CAN</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. DIO</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#types">5.2.1. Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#types">5.2.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-dio-channeltype">5.2.1.1. typedef Dio_ChannelType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-dio-porttype">5.2.1.2. typedef Dio_PortType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-dio-leveltype">5.2.1.3. typedef Dio_LevelType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-dio-portleveltype">5.2.1.4. typedef Dio_PortLevelType</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#structures">5.2.2. Structures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#defines">5.2.3. Defines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#functions">5.2.4. Functions</a><ul>
@@ -163,6 +169,38 @@
 </tr>
 </tbody>
 </table>
+<section id="typedef-dio-channeltype">
+<h3><span class="section-number">5.2.1.1. </span>typedef Dio_ChannelType<a class="headerlink" href="#typedef-dio-channeltype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Dio_ChannelType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Numeric ID of a DIO channel.</p>
+</section>
+<section id="typedef-dio-porttype">
+<h3><span class="section-number">5.2.1.2. </span>typedef Dio_PortType<a class="headerlink" href="#typedef-dio-porttype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Dio_PortType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Numeric ID of a DIO port.</p>
+</section>
+<section id="typedef-dio-leveltype">
+<h3><span class="section-number">5.2.1.3. </span>typedef Dio_LevelType<a class="headerlink" href="#typedef-dio-leveltype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Dio_LevelType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+These are the possible levels a DIO channel can have (input or output).</p>
+</section>
+<section id="typedef-dio-portleveltype">
+<h3><span class="section-number">5.2.1.4. </span>typedef Dio_PortLevelType<a class="headerlink" href="#typedef-dio-portleveltype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Dio_PortLevelType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+If the uC owns ports of different port widths Dio_PortLevelType inherits the size of the largest port.</p>
+</section>
 </section>
 <section id="structures">
 <h2><span class="section-number">5.2.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
@@ -310,64 +348,64 @@
 <td><p><strong><a class="reference internal" href="#function-dio-getversioninfo"><span class="std std-ref">Dio_GetVersionInfo</span></a></strong>(Std_VersionInfoType * Versioninfo)</p></td>
 <td><p>Service to get the version information of the module.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-leveltype"><span class="xref myst">Dio_LevelType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-readchannel"><span class="std std-ref">Dio_ReadChannel</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-channeltype"><span class="xref myst">Dio_ChannelType</span></a> ChannelId)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#typedef-dio-leveltype"><span class="std std-ref">Dio_LevelType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-readchannel"><span class="std std-ref">Dio_ReadChannel</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> ChannelId)</p></td>
 <td><p>Returns the value of the specified DIO channel.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-writechannel"><span class="std std-ref">Dio_WriteChannel</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-channeltype"><span class="xref myst">Dio_ChannelType</span></a> ChannelId, <a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-leveltype"><span class="xref myst">Dio_LevelType</span></a> Level)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-writechannel"><span class="std std-ref">Dio_WriteChannel</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> ChannelId, <a class="reference internal" href="#typedef-dio-leveltype"><span class="std std-ref">Dio_LevelType</span></a> Level)</p></td>
 <td><p>Service to set a level of a channel.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-portleveltype"><span class="xref myst">Dio_PortLevelType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-readport"><span class="std std-ref">Dio_ReadPort</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-porttype"><span class="xref myst">Dio_PortType</span></a> PortId)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-readport"><span class="std std-ref">Dio_ReadPort</span></a></strong>(<a class="reference internal" href="#typedef-dio-porttype"><span class="std std-ref">Dio_PortType</span></a> PortId)</p></td>
 <td><p>Returns the level of all channels of that port.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-writeport"><span class="std std-ref">Dio_WritePort</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-porttype"><span class="xref myst">Dio_PortType</span></a> PortId, <a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-portleveltype"><span class="xref myst">Dio_PortLevelType</span></a> Level)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-writeport"><span class="std std-ref">Dio_WritePort</span></a></strong>(<a class="reference internal" href="#typedef-dio-porttype"><span class="std std-ref">Dio_PortType</span></a> PortId, <a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a> Level)</p></td>
 <td><p>Service to set a value of the port.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-portleveltype"><span class="xref myst">Dio_PortLevelType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-readchannelgroup"><span class="std std-ref">Dio_ReadChannelGroup</span></a></strong>(const <a class="reference internal" href="#Classes/struct_dio___channel_group_type.md"><span class="xref myst">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-readchannelgroup"><span class="std std-ref">Dio_ReadChannelGroup</span></a></strong>(const <a class="reference internal" href="../Classes/struct_dio___channel_group_type.html"><span class="std std-doc">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr)</p></td>
 <td><p>This Service reads a subset of the adjoining bits of a port.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-writechannelgroup"><span class="std std-ref">Dio_WriteChannelGroup</span></a></strong>(const <a class="reference internal" href="#Classes/struct_dio___channel_group_type.md"><span class="xref myst">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr, <a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-portleveltype"><span class="xref myst">Dio_PortLevelType</span></a> Level)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-writechannelgroup"><span class="std std-ref">Dio_WriteChannelGroup</span></a></strong>(const <a class="reference internal" href="../Classes/struct_dio___channel_group_type.html"><span class="std std-doc">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr, <a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a> Level)</p></td>
 <td><p>Service to set a subset of the adjoining bits of a port to a specified level.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-leveltype"><span class="xref myst">Dio_LevelType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-flipchannel"><span class="std std-ref">Dio_FlipChannel</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-channeltype"><span class="xref myst">Dio_ChannelType</span></a> ChannelId)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#typedef-dio-leveltype"><span class="std std-ref">Dio_LevelType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-flipchannel"><span class="std std-ref">Dio_FlipChannel</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> ChannelId)</p></td>
 <td><p>Service to flip the value of a DIO channel.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-ischannelvalid"><span class="std std-ref">Dio_IsChannelValid</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-channeltype"><span class="xref myst">Dio_ChannelType</span></a> ChannelId)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-ischannelvalid"><span class="std std-ref">Dio_IsChannelValid</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> ChannelId)</p></td>
 <td><p>Checks if the channel ID is valid.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-ischannelgroupvalid"><span class="std std-ref">Dio_IsChannelGroupValid</span></a></strong>(const <a class="reference internal" href="#Classes/struct_dio___channel_group_type.md"><span class="xref myst">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-ischannelgroupvalid"><span class="std std-ref">Dio_IsChannelGroupValid</span></a></strong>(const <a class="reference internal" href="../Classes/struct_dio___channel_group_type.html"><span class="std std-doc">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr)</p></td>
 <td><p>Checks if the channel group is valid.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-leveltype"><span class="xref myst">Dio_LevelType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-pinreadpriv"><span class="std std-ref">Dio_PinReadPriv</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-channeltype"><span class="xref myst">Dio_ChannelType</span></a> channelId)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#typedef-dio-leveltype"><span class="std std-ref">Dio_LevelType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-pinreadpriv"><span class="std std-ref">Dio_PinReadPriv</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> channelId)</p></td>
 <td><p>Reads the value present on the specified pin.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-pinwritepriv"><span class="std std-ref">Dio_PinWritePriv</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-channeltype"><span class="xref myst">Dio_ChannelType</span></a> channelId, <a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-leveltype"><span class="xref myst">Dio_LevelType</span></a> channelVal)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-pinwritepriv"><span class="std std-ref">Dio_PinWritePriv</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> channelId, <a class="reference internal" href="#typedef-dio-leveltype"><span class="std std-ref">Dio_LevelType</span></a> channelVal)</p></td>
 <td><p>Writes a value to the specified pin.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-writeportdatapriv"><span class="std std-ref">Dio_WritePortDataPriv</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-porttype"><span class="xref myst">Dio_PortType</span></a> portId, <a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-portleveltype"><span class="xref myst">Dio_PortLevelType</span></a> portValue)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-writeportdatapriv"><span class="std std-ref">Dio_WritePortDataPriv</span></a></strong>(<a class="reference internal" href="#typedef-dio-porttype"><span class="std std-ref">Dio_PortType</span></a> portId, <a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a> portValue)</p></td>
 <td><p>Writes a value to the specified port.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-writechannelgrouppriv"><span class="std std-ref">Dio_WriteChannelGroupPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_dio___channel_group_type.md"><span class="xref myst">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr, <a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-portleveltype"><span class="xref myst">Dio_PortLevelType</span></a> PortValue)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-writechannelgrouppriv"><span class="std std-ref">Dio_WriteChannelGroupPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_dio___channel_group_type.html"><span class="std std-doc">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr, <a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a> PortValue)</p></td>
 <td><p>Writes a subset of the adjoining bits of a port to a specified level.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-readportdatapriv"><span class="std std-ref">Dio_ReadPortDataPriv</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-porttype"><span class="xref myst">Dio_PortType</span></a> PortId, <a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-portleveltype"><span class="xref myst">Dio_PortLevelType</span></a> * PortValue)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-readportdatapriv"><span class="std std-ref">Dio_ReadPortDataPriv</span></a></strong>(<a class="reference internal" href="#typedef-dio-porttype"><span class="std std-ref">Dio_PortType</span></a> PortId, <a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a> * PortValue)</p></td>
 <td><p>Reads the data on the specified port.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-pinflipval"><span class="std std-ref">Dio_PinFlipVal</span></a></strong>(<a class="reference internal" href="#Modules/group___d_i_o.md#typedef-dio-channeltype"><span class="xref myst">Dio_ChannelType</span></a> ChannelId)</p></td>
+<td><p><strong><a class="reference internal" href="#function-dio-pinflipval"><span class="std std-ref">Dio_PinFlipVal</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> ChannelId)</p></td>
 <td><p>Toggles the present value of the specified channel.</p></td>
 </tr>
 </tbody>
@@ -756,7 +794,6 @@ Toggles the present value of the specified channel.</p>
 <p><strong>Return</strong>: None</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
-<hr class="docutils" />
 </section>
 </section>
 </section>
@@ -773,7 +810,7 @@ Toggles the present value of the specified channel.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Apr 13, 2025.
+          <span class="lastupdated" >Last updated on Jun 09, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -790,7 +827,7 @@ Toggles the present value of the specified channel.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.00
+       Current Version: 01.02.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

@@ -11,10 +11,10 @@ title: Lin API GUIDE Header file
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
-|enum| **[Lin_ChannelActivityStatusType](../Modules/group___l_i_n.md#enum-lin-channelactivitystatustype)** | Enum of Channel Activity Status.  | 
-|enum| **[Lin_ChannelNetworkStatusType](../Modules/group___l_i_n.md#enum-lin-channelnetworkstatustype)** | Enum of Channel Network Status.  | 
-|enum| **[Lin_InterruptLineNum](../Modules/group___l_i_n.md#enum-lin-interruptlinenum)** | Enum of Lin Interrupt line number, 0 or 1.  | 
-|enum| **[Lin_LoopbackModeType](../Modules/group___l_i_n.md#enum-lin-loopbackmodetype)** | Enum of Lin Loopbackmode, Internal/External/Disabled Type selection.  | 
+|enum| **[Lin_ChannelActivityStatusType](../Modules/group___l_i_n.md#enum-lin_channelactivitystatustype)** | Enum of Channel Activity Status.  | 
+|enum| **[Lin_ChannelNetworkStatusType](../Modules/group___l_i_n.md#enum-lin_channelnetworkstatustype)** | Enum of Channel Network Status.  | 
+|enum| **[Lin_InterruptLineNum](../Modules/group___l_i_n.md#enum-lin_interruptlinenum)** | Enum of Lin Interrupt line number, 0 or 1.  | 
+|enum| **[Lin_LoopbackModeType](../Modules/group___l_i_n.md#enum-lin_loopbackmodetype)** | Enum of Lin Loopbackmode, Internal/External/Disabled Type selection.  | 
 
 
 
@@ -141,33 +141,33 @@ Enum of Lin Loopbackmode, Internal/External/Disabled Type selection.
 
 | Return type    | Function Name           |      Brief        |
 | -------------- | ----------------------- | ----------------- |
-| void | **[Lin_GetVersionInfo](../Modules/group___l_i_n.md#function-lin-getversioninfo)**(Std_VersionInfoType * versioninfo)| Service to get the version information of the module.  |
-| void | **[Lin_Init](../Modules/group___l_i_n.md#function-lin-init)**(const [Lin_ConfigType](Classes/struct_lin___config_type.md) * Config)| Lin_Init - Initializes the LIN module.  |
-| Std_ReturnType | **[Lin_CheckWakeup](../Modules/group___l_i_n.md#function-lin-checkwakeup)**(uint8 Channel)| Lin_CheckWakeup - This function checks if a wakeup has occurred on the addressed LIN channel.  |
-| Std_ReturnType | **[Lin_SendFrame](../Modules/group___l_i_n.md#function-lin-sendframe)**(uint8 Channel, const Lin_PduType * PduInfoPtr)| Lin_SendFrame - Sends a LIN header and a LIN response, if necessary. The direction of the frame response (master response, slave response, slave-to-slave communication) is provided by the PduInfoPtr.  |
-| Std_ReturnType | **[Lin_GoToSleep](../Modules/group___l_i_n.md#function-lin-gotosleep)**(uint8 Channel)| Lin_GoToSleep - The service instructs the driver to transmit a go-to-sleep-command on the addressed LIN channel.  |
-| Std_ReturnType | **[Lin_GoToSleepInternal](../Modules/group___l_i_n.md#function-lin-gotosleepinternal)**(uint8 Channel)| Lin_GoToSleepInternal - Sets the channel state to LIN_CH_SLEEP, enables the wake-up detection and optionally sets the LIN hardware unit to reduced power operation mode.  |
-| Std_ReturnType | **[Lin_Wakeup](../Modules/group___l_i_n.md#function-lin-wakeup)**(uint8 Channel)| Lin_Wakeup - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.  |
-| Std_ReturnType | **[Lin_WakeupInternal](../Modules/group___l_i_n.md#function-lin-wakeupinternal)**(uint8 Channel)| Lin_WakeupInternal - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL without generating a wake up pulse.  |
-| Lin_StatusType | **[Lin_GetStatus](../Modules/group___l_i_n.md#function-lin-getstatus)**(uint8 Channel, uint8 ** Lin_SduPtr)| Lin_GetStatus - Gets the status of the LIN driver.  |
-| Std_ReturnType | **[Lin_InitInternal](../Modules/group___l_i_n.md#function-lin-initinternal)**(const [Lin_ConfigType](Classes/struct_lin___config_type.md) * Lin_ConfigPtr)| Lin_InitInternal - Initializes the LIN module.  |
-| Std_ReturnType | **[Lin_CheckWakeupInternal](../Modules/group___l_i_n.md#function-lin-checkwakeupinternal)**(uint8 Channel)| Lin_CheckWakeupInternal - This function checks if a wakeup has occurred on the addressed LIN channel.  |
-| Std_ReturnType | **[Lin_WakeupProcess](../Modules/group___l_i_n.md#function-lin-wakeupprocess)**(uint8 Channel)| Lin_WakeupProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.  |
-| Std_ReturnType | **[Lin_WakeupInternalProcess](../Modules/group___l_i_n.md#function-lin-wakeupinternalprocess)**(uint8 Channel)| Lin_WakeupInternalProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL without generating a wake up pulse.  |
-| Lin_StatusType | **[Lin_GetStatusInternalProcess](../Modules/group___l_i_n.md#function-lin-getstatusinternalprocess)**(uint8 Channel, uint8 ** Lin_SduPtr, const uint32 * lin_cnt_base_addr)| Lin_GetStatusInternalProcess - Gets the status of the LIN driver.  |
-| Lin_StatusType | **[Lin_GetStatusInternal](../Modules/group___l_i_n.md#function-lin-getstatusinternal)**(uint8 Channel, uint8 ** Lin_SduPtr, const uint32 * lin_cnt_base_addr)| Lin_GetStatusInternal - Gets the status of the LIN driver.  |
-| Std_ReturnType | **[Lin_HwUnitConfig](../Modules/group___l_i_n.md#function-lin-hwunitconfig)**(const [Lin_ChannelType](Classes/struct_lin___channel_type.md) * linChannel)| Lin_HwUnitConfig - This API will configure Lin IP instance.  |
-| Std_ReturnType | **[Lin_SendData](../Modules/group___l_i_n.md#function-lin-senddata)**(const [Lin_ChannelType](Classes/struct_lin___channel_type.md) * linChannel, [Lin_ChannelActivityStatusType](Modules/group___l_i_n.md#enum-lin-channelactivitystatustype) * linChannelActivityStatus, const Lin_PduType * pduInfoPtr)| Lin_SendData - This API will copy data into LIN_TDx registers and start transmission.  |
-| void | **[Lin_GetData](../Modules/group___l_i_n.md#function-lin-getdata)**(uint32 channelID, uint32 base, uint8 ** sduPtr)| Lin_GetData - This API will copy the received data into sduPtr.  |
-| Lin_StatusType | **[Lin_FetchTxStatus](../Modules/group___l_i_n.md#function-lin-fetchtxstatus)**(uint32 base)| Lin_FetchTxStatus - This API will fetch transmit status.  |
-| Lin_StatusType | **[Lin_FetchRxStatus](../Modules/group___l_i_n.md#function-lin-fetchrxstatus)**(uint32 base)| Lin_FetchRxStatus - This API will fetch receive status.  |
-| void | **[Lin_SendWakeupSignal](../Modules/group___l_i_n.md#function-lin-sendwakeupsignal)**(uint32 base)| Lin_SendWakeupSignal - This API will send wakeup signal on Lin bus.  |
-| Std_ReturnType | **[Lin_SendGoToSleepSignal](../Modules/group___l_i_n.md#function-lin-sendgotosleepsignal)**(uint32 base)| Lin_SendGoToSleepSignal - This API will send go to sleep signal on Lin bus.  |
-| void | **[Lin_EnterLowPowerMode](../Modules/group___l_i_n.md#function-lin-enterlowpowermode)**(uint32 base, boolean enable)| Lin_EnterLowPowerMode - This API will enter local low power mode for Lin instance.  |
-| boolean | **[Lin_CheckWakeupStatus](../Modules/group___l_i_n.md#function-lin-checkwakeupstatus)**(uint32 base)| Lin_CheckWakeupStatus - This API will check if Lin in woken up.  |
-| void | **[Lin_AbortTransmission](../Modules/group___l_i_n.md#function-lin-aborttransmission)**(uint32 base)| Lin_AbortTransmission - This API will abort ongoing transmission.  |
-| void | **[Lin_EnableWakeupDetection](../Modules/group___l_i_n.md#function-lin-enablewakeupdetection)**(const [Lin_ChannelType](Classes/struct_lin___channel_type.md) * linChannel, boolean enable)| Lin_EnableWakeupDetection - This API will enable wakeup detection.  |
-| void | **[Lin_ProcessISR](../Modules/group___l_i_n.md#function-lin-processisr)**(uint32 channelID)| Lin_ProcessISR - This API will process ISR for given channel.  |
+| void | **[Lin_GetVersionInfo](../Modules/group___l_i_n.md#function-lin_getversioninfo)**(Std_VersionInfoType * versioninfo)| Service to get the version information of the module.  |
+| void | **[Lin_Init](../Modules/group___l_i_n.md#function-lin_init)**(const [Lin_ConfigType](../Classes/struct_lin___config_type.md) * Config)| Lin_Init - Initializes the LIN module.  |
+| Std_ReturnType | **[Lin_CheckWakeup](../Modules/group___l_i_n.md#function-lin_checkwakeup)**(uint8 Channel)| Lin_CheckWakeup - This function checks if a wakeup has occurred on the addressed LIN channel.  |
+| Std_ReturnType | **[Lin_SendFrame](../Modules/group___l_i_n.md#function-lin_sendframe)**(uint8 Channel, const Lin_PduType * PduInfoPtr)| Lin_SendFrame - Sends a LIN header and a LIN response, if necessary. The direction of the frame response (master response, slave response, slave-to-slave communication) is provided by the PduInfoPtr.  |
+| Std_ReturnType | **[Lin_GoToSleep](../Modules/group___l_i_n.md#function-lin_gotosleep)**(uint8 Channel)| Lin_GoToSleep - The service instructs the driver to transmit a go-to-sleep-command on the addressed LIN channel.  |
+| Std_ReturnType | **[Lin_GoToSleepInternal](../Modules/group___l_i_n.md#function-lin_gotosleepinternal)**(uint8 Channel)| Lin_GoToSleepInternal - Sets the channel state to LIN_CH_SLEEP, enables the wake-up detection and optionally sets the LIN hardware unit to reduced power operation mode.  |
+| Std_ReturnType | **[Lin_Wakeup](../Modules/group___l_i_n.md#function-lin_wakeup)**(uint8 Channel)| Lin_Wakeup - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.  |
+| Std_ReturnType | **[Lin_WakeupInternal](../Modules/group___l_i_n.md#function-lin_wakeupinternal)**(uint8 Channel)| Lin_WakeupInternal - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL without generating a wake up pulse.  |
+| Lin_StatusType | **[Lin_GetStatus](../Modules/group___l_i_n.md#function-lin_getstatus)**(uint8 Channel, uint8 ** Lin_SduPtr)| Lin_GetStatus - Gets the status of the LIN driver.  |
+| Std_ReturnType | **[Lin_InitInternal](../Modules/group___l_i_n.md#function-lin_initinternal)**(const [Lin_ConfigType](../Classes/struct_lin___config_type.md) * Lin_ConfigPtr)| Lin_InitInternal - Initializes the LIN module.  |
+| Std_ReturnType | **[Lin_CheckWakeupInternal](../Modules/group___l_i_n.md#function-lin_checkwakeupinternal)**(uint8 Channel)| Lin_CheckWakeupInternal - This function checks if a wakeup has occurred on the addressed LIN channel.  |
+| Std_ReturnType | **[Lin_WakeupProcess](../Modules/group___l_i_n.md#function-lin_wakeupprocess)**(uint8 Channel)| Lin_WakeupProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.  |
+| Std_ReturnType | **[Lin_WakeupInternalProcess](../Modules/group___l_i_n.md#function-lin_wakeupinternalprocess)**(uint8 Channel)| Lin_WakeupInternalProcess - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL without generating a wake up pulse.  |
+| Lin_StatusType | **[Lin_GetStatusInternalProcess](../Modules/group___l_i_n.md#function-lin_getstatusinternalprocess)**(uint8 Channel, uint8 ** Lin_SduPtr, const uint32 * lin_cnt_base_addr)| Lin_GetStatusInternalProcess - Gets the status of the LIN driver.  |
+| Lin_StatusType | **[Lin_GetStatusInternal](../Modules/group___l_i_n.md#function-lin_getstatusinternal)**(uint8 Channel, uint8 ** Lin_SduPtr, const uint32 * lin_cnt_base_addr)| Lin_GetStatusInternal - Gets the status of the LIN driver.  |
+| Std_ReturnType | **[Lin_HwUnitConfig](../Modules/group___l_i_n.md#function-lin_hwunitconfig)**(const [Lin_ChannelType](../Classes/struct_lin___channel_type.md) * linChannel)| Lin_HwUnitConfig - This API will configure Lin IP instance.  |
+| Std_ReturnType | **[Lin_SendData](../Modules/group___l_i_n.md#function-lin_senddata)**(const [Lin_ChannelType](../Classes/struct_lin___channel_type.md) * linChannel, [Lin_ChannelActivityStatusType](../Modules/group___l_i_n.md#enum-lin_channelactivitystatustype) * linChannelActivityStatus, const Lin_PduType * pduInfoPtr)| Lin_SendData - This API will copy data into LIN_TDx registers and start transmission.  |
+| void | **[Lin_GetData](../Modules/group___l_i_n.md#function-lin_getdata)**(uint32 channelID, uint32 base, uint8 ** sduPtr)| Lin_GetData - This API will copy the received data into sduPtr.  |
+| Lin_StatusType | **[Lin_FetchTxStatus](../Modules/group___l_i_n.md#function-lin_fetchtxstatus)**(uint32 base)| Lin_FetchTxStatus - This API will fetch transmit status.  |
+| Lin_StatusType | **[Lin_FetchRxStatus](../Modules/group___l_i_n.md#function-lin_fetchrxstatus)**(uint32 base)| Lin_FetchRxStatus - This API will fetch receive status.  |
+| void | **[Lin_SendWakeupSignal](../Modules/group___l_i_n.md#function-lin_sendwakeupsignal)**(uint32 base)| Lin_SendWakeupSignal - This API will send wakeup signal on Lin bus.  |
+| Std_ReturnType | **[Lin_SendGoToSleepSignal](../Modules/group___l_i_n.md#function-lin_sendgotosleepsignal)**(uint32 base)| Lin_SendGoToSleepSignal - This API will send go to sleep signal on Lin bus.  |
+| void | **[Lin_EnterLowPowerMode](../Modules/group___l_i_n.md#function-lin_enterlowpowermode)**(uint32 base, boolean enable)| Lin_EnterLowPowerMode - This API will enter local low power mode for Lin instance.  |
+| boolean | **[Lin_CheckWakeupStatus](../Modules/group___l_i_n.md#function-lin_checkwakeupstatus)**(uint32 base)| Lin_CheckWakeupStatus - This API will check if Lin in woken up.  |
+| void | **[Lin_AbortTransmission](../Modules/group___l_i_n.md#function-lin_aborttransmission)**(uint32 base)| Lin_AbortTransmission - This API will abort ongoing transmission.  |
+| void | **[Lin_EnableWakeupDetection](../Modules/group___l_i_n.md#function-lin_enablewakeupdetection)**(const [Lin_ChannelType](../Classes/struct_lin___channel_type.md) * linChannel, boolean enable)| Lin_EnableWakeupDetection - This API will enable wakeup detection.  |
+| void | **[Lin_ProcessISR](../Modules/group___l_i_n.md#function-lin_processisr)**(uint32 channelID)| Lin_ProcessISR - This API will process ISR for given channel.  |
 
 
 
@@ -1266,4 +1266,4 @@ Lin_ProcessISR - This API will process ISR for given channel.
 
 
 
--------------------------------
+

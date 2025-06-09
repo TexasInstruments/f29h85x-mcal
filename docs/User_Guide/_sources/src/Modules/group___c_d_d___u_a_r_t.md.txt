@@ -11,13 +11,13 @@ title: Cdd Uart
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
-|enum| **[Cdd_Uart_Instance](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd-uart-instance)** | Uart Configuration Instance ID.  | 
-|enum| **[Cdd_Uart_WordLength](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd-uart-wordlength)** | UART Word Length.  | 
-|enum| **[Cdd_Uart_StopBits](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd-uart-stopbits)** | UART Stop Bits.  | 
-|enum| **[Cdd_Uart_Mode](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd-uart-mode)** | UART Mode.  | 
-|enum| **[Cdd_Uart_FifoLevel](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd-uart-fifolevel)** | UART FIFO Level.  | 
-|typedef void(*)(void)  | **[Cdd_Uart_CallbackType](../Modules/group___c_d_d___u_a_r_t.md#typedef-cdd-uart-callbacktype)** | Cdd Uart Callback type.  | 
-|typedef uint8  | **[Cdd_Uart_DataBufferType](../Modules/group___c_d_d___u_a_r_t.md#typedef-cdd-uart-databuffertype)** | Typedef for the data buffer elements.  | 
+|enum| **[Cdd_Uart_Instance](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd_uart_instance)** | Uart Configuration Instance ID.  | 
+|enum| **[Cdd_Uart_WordLength](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd_uart_wordlength)** | UART Word Length.  | 
+|enum| **[Cdd_Uart_StopBits](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd_uart_stopbits)** | UART Stop Bits.  | 
+|enum| **[Cdd_Uart_Mode](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd_uart_mode)** | UART Mode.  | 
+|enum| **[Cdd_Uart_FifoLevel](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd_uart_fifolevel)** | UART FIFO Level.  | 
+|typedef void(*)(void)  | **[Cdd_Uart_CallbackType](../Modules/group___c_d_d___u_a_r_t.md#typedef-cdd_uart_callbacktype)** | Cdd Uart Callback type.  | 
+|typedef uint8  | **[Cdd_Uart_DataBufferType](../Modules/group___c_d_d___u_a_r_t.md#typedef-cdd_uart_databuffertype)** | Typedef for the data buffer elements.  | 
 
 
 
@@ -100,7 +100,25 @@ UART FIFO Level.
 
 
 
+### typedef Cdd_Uart_CallbackType
+```
+typedef void(* Cdd_Uart_CallbackType) (void);
+```
 
+
+**Brief**: 
+Cdd Uart Callback type. 
+
+
+
+### typedef Cdd_Uart_DataBufferType
+```
+typedef uint8 Cdd_Uart_DataBufferType;
+```
+
+
+**Brief**: 
+Typedef for the data buffer elements. 
 
 
 
@@ -156,35 +174,35 @@ UART FIFO Level.
 
 | Return type    | Function Name           |      Brief        |
 | -------------- | ----------------------- | ----------------- |
-| void | **[Cdd_Uart_GetVersionInfo](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| Service to provide the version information of Cdd Uart module.  |
-| void | **[Cdd_Uart_Init](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-init)**(const Cdd_Uart_ConfigType * ConfigPtr)| Cdd_Uart_Init : Initializes the CDD_UART module.  |
-| void | **[Cdd_Uart_Deinit](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-deinit)**(void )| Cdd_Uart_Deinit : De-initializes the CDD_UART module.  |
-| Std_ReturnType | **[Cdd_Uart_Write](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-write)**(uint8 HwUnitId, const [Cdd_Uart_DataBufferType](Modules/group___c_d_d___u_a_r_t.md#typedef-cdd-uart-databuffertype) * SrcBufferPtr, uint32 Count)| Service to transmit data.  |
-| Std_ReturnType | **[Cdd_Uart_Read](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-read)**(uint8 HwUnitId, [Cdd_Uart_DataBufferType](Modules/group___c_d_d___u_a_r_t.md#typedef-cdd-uart-databuffertype) * DestBufferPtr, uint32 Count)| Service to reception of data.  |
-| Std_ReturnType | **[Cdd_Uart_CancelWrite](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-cancelwrite)**(uint8 HwUnitId)| Service to cancel the ongoing transmission.  |
-| Std_ReturnType | **[Cdd_Uart_CancelRead](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-cancelread)**(uint8 HwUnitId)| Service to cancel the ongoing transmission.  |
-| Std_ReturnType | **[Cdd_Uart_GetWriteStatus](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-getwritestatus)**(uint8 HwUnitId, [Cdd_Uart_WriteStatusType](Classes/struct_cdd___uart___write_status_type.md) * WriteStatus)| Service to get the status of the ongoing transmission.  |
-| Std_ReturnType | **[Cdd_Uart_GetReadStatus](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-getreadstatus)**(uint8 HwUnitId, [Cdd_Uart_ReadStatusType](Classes/struct_cdd___uart___read_status_type.md) * ReadStatus)| Service to get the status of the ongoing transmission.  |
-| void | **[Cdd_Uart_MainFunction_Write](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-mainfunction-write)**(void )| Service to auto perform the polling of configured UART Write channel.  |
-| void | **[Cdd_Uart_Poll_Read](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-poll-read)**(void )| Service to perform the polling of confgured UART Read channel by user.  |
-| void | **[Cdd_Uart_SetObj](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-setobj)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_SetObj : Initializes the UART Hardware Unit.  |
-| void | **[Cdd_Uart_HwUnitInit](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-hwunitinit)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_HwUnitInit : Initializes the UART Hardware Unit.  |
-| void | **[Cdd_Uart_HwUnitDeinit](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-hwunitdeinit)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_HwUnitDeinit : DeInitializes the UART Hardware Unit.  |
-| Std_ReturnType | **[Cdd_Uart_IsWriteBusy](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-iswritebusy)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_IsWriteBusy : checks the status of the UART Hardware TX Unit.  |
-| Std_ReturnType | **[Cdd_Uart_IsReadBusy](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-isreadbusy)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_IsReadBusy : checks the status of the UART Hardware RX Unit.  |
-| void | **[Cdd_Uart_FlushReadFifo](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-flushreadfifo)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_FlushReadFifo : Flush the read fifo.  |
-| void | **[Cdd_Uart_ConfigWriteTrans](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-configwritetrans)**([Cdd_Uart_WriteTransactionType](Classes/struct_cdd___uart___write_transaction_type.md) * UartWriteTrans, const [Cdd_Uart_DataBufferType](Modules/group___c_d_d___u_a_r_t.md#typedef-cdd-uart-databuffertype) * SrcBufferPtr, uint32 Count)| Cdd_Uart_ConfigWriteTrans : Reset the Write transaction structure.  |
-| void | **[Cdd_Uart_ConfigReadTrans](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-configreadtrans)**([Cdd_Uart_ReadTransactionType](Classes/struct_cdd___uart___read_transaction_type.md) * UartReadTrans, [Cdd_Uart_DataBufferType](Modules/group___c_d_d___u_a_r_t.md#typedef-cdd-uart-databuffertype) * DestBufferPtr, uint32 Count)| Cdd_Uart_ConfigReadTrans : Reset the Read transaction structure.  |
-| void | **[Cdd_Uart_PushWriteFifo](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-pushwritefifo)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_PushWriteFifo : Pushes the data into FIFO until it is full or data count exhausts.  |
-| void | **[Cdd_Uart_PullReadFifo](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-pullreadfifo)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_PullReadFifo : Pushes the data into FIFO until it is full or data count exhausts.  |
-| Std_ReturnType | **[Cdd_Uart_CheckParam](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-checkparam)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj, const [Cdd_Uart_DataBufferType](Modules/group___c_d_d___u_a_r_t.md#typedef-cdd-uart-databuffertype) * BufferPtr, uint32 Count)| Cdd_Uart_CheckParam : Check the UART write parameters.  |
-| void | **[Cdd_Uart_EnableWriteIntr](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-enablewriteintr)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj, boolean Enable)| Cdd_Uart_EnableWriteIntr : Enable or Disable UART Write interrupt.  |
-| void | **[Cdd_Uart_EnableReadIntr](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-enablereadintr)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj, boolean Enable)| Cdd_Uart_EnableReadIntr : Enable or Disable UART Read interrupt.  |
-| Std_ReturnType | **[Cdd_Uart_CheckReadErrors](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-checkreaderrors)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_CheckReadErrors : Check for read errors.  |
-| void | **[Cdd_Uart_WriteInterruptHandler](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-writeinterrupthandler)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_WriteInterruptHandler : UART Write interrupt handler.  |
-| void | **[Cdd_Uart_ReadInterruptHandler](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-readinterrupthandler)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_ReadInterruptHandler : UART Read interrupt handler.  |
-| void | **[Cdd_Uart_ErrorInterruptHandler](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-errorinterrupthandler)**([Cdd_Uart_ObjectType](Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_ErrorInterruptHandler : UART Error interrupt handler.  |
-| void | **[Cdd_Uart_ProcessISR](../Modules/group___c_d_d___u_a_r_t.md#function-cdd-uart-processisr)**([Cdd_Uart_Instance](Modules/group___c_d_d___u_a_r_t.md#enum-cdd-uart-instance) UartInstId)| Cdd_Uart_ProcessISR : UART Interrupt handler.  |
+| void | **[Cdd_Uart_GetVersionInfo](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| Service to provide the version information of Cdd Uart module.  |
+| void | **[Cdd_Uart_Init](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_init)**(const Cdd_Uart_ConfigType * ConfigPtr)| Cdd_Uart_Init : Initializes the CDD_UART module.  |
+| void | **[Cdd_Uart_Deinit](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_deinit)**(void )| Cdd_Uart_Deinit : De-initializes the CDD_UART module.  |
+| Std_ReturnType | **[Cdd_Uart_Write](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_write)**(uint8 HwUnitId, const [Cdd_Uart_DataBufferType](../Modules/group___c_d_d___u_a_r_t.md#typedef-cdd_uart_databuffertype) * SrcBufferPtr, uint32 Count)| Service to transmit data.  |
+| Std_ReturnType | **[Cdd_Uart_Read](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_read)**(uint8 HwUnitId, [Cdd_Uart_DataBufferType](../Modules/group___c_d_d___u_a_r_t.md#typedef-cdd_uart_databuffertype) * DestBufferPtr, uint32 Count)| Service to reception of data.  |
+| Std_ReturnType | **[Cdd_Uart_CancelWrite](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_cancelwrite)**(uint8 HwUnitId)| Service to cancel the ongoing transmission.  |
+| Std_ReturnType | **[Cdd_Uart_CancelRead](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_cancelread)**(uint8 HwUnitId)| Service to cancel the ongoing transmission.  |
+| Std_ReturnType | **[Cdd_Uart_GetWriteStatus](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_getwritestatus)**(uint8 HwUnitId, [Cdd_Uart_WriteStatusType](../Classes/struct_cdd___uart___write_status_type.md) * WriteStatus)| Service to get the status of the ongoing transmission.  |
+| Std_ReturnType | **[Cdd_Uart_GetReadStatus](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_getreadstatus)**(uint8 HwUnitId, [Cdd_Uart_ReadStatusType](../Classes/struct_cdd___uart___read_status_type.md) * ReadStatus)| Service to get the status of the ongoing transmission.  |
+| void | **[Cdd_Uart_MainFunction_Write](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_mainfunction_write)**(void )| Service to auto perform the polling of configured UART Write channel.  |
+| void | **[Cdd_Uart_Poll_Read](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_poll_read)**(void )| Service to perform the polling of confgured UART Read channel by user.  |
+| void | **[Cdd_Uart_SetObj](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_setobj)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_SetObj : Initializes the UART Hardware Unit.  |
+| void | **[Cdd_Uart_HwUnitInit](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_hwunitinit)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_HwUnitInit : Initializes the UART Hardware Unit.  |
+| void | **[Cdd_Uart_HwUnitDeinit](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_hwunitdeinit)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_HwUnitDeinit : DeInitializes the UART Hardware Unit.  |
+| Std_ReturnType | **[Cdd_Uart_IsWriteBusy](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_iswritebusy)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_IsWriteBusy : checks the status of the UART Hardware TX Unit.  |
+| Std_ReturnType | **[Cdd_Uart_IsReadBusy](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_isreadbusy)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_IsReadBusy : checks the status of the UART Hardware RX Unit.  |
+| void | **[Cdd_Uart_FlushReadFifo](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_flushreadfifo)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_FlushReadFifo : Flush the read fifo.  |
+| void | **[Cdd_Uart_ConfigWriteTrans](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_configwritetrans)**([Cdd_Uart_WriteTransactionType](../Classes/struct_cdd___uart___write_transaction_type.md) * UartWriteTrans, const [Cdd_Uart_DataBufferType](../Modules/group___c_d_d___u_a_r_t.md#typedef-cdd_uart_databuffertype) * SrcBufferPtr, uint32 Count)| Cdd_Uart_ConfigWriteTrans : Reset the Write transaction structure.  |
+| void | **[Cdd_Uart_ConfigReadTrans](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_configreadtrans)**([Cdd_Uart_ReadTransactionType](../Classes/struct_cdd___uart___read_transaction_type.md) * UartReadTrans, [Cdd_Uart_DataBufferType](../Modules/group___c_d_d___u_a_r_t.md#typedef-cdd_uart_databuffertype) * DestBufferPtr, uint32 Count)| Cdd_Uart_ConfigReadTrans : Reset the Read transaction structure.  |
+| void | **[Cdd_Uart_PushWriteFifo](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_pushwritefifo)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_PushWriteFifo : Pushes the data into FIFO until it is full or data count exhausts.  |
+| void | **[Cdd_Uart_PullReadFifo](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_pullreadfifo)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_PullReadFifo : Pushes the data into FIFO until it is full or data count exhausts.  |
+| Std_ReturnType | **[Cdd_Uart_CheckParam](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_checkparam)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj, const [Cdd_Uart_DataBufferType](../Modules/group___c_d_d___u_a_r_t.md#typedef-cdd_uart_databuffertype) * BufferPtr, uint32 Count)| Cdd_Uart_CheckParam : Check the UART write parameters.  |
+| void | **[Cdd_Uart_EnableWriteIntr](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_enablewriteintr)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj, boolean Enable)| Cdd_Uart_EnableWriteIntr : Enable or Disable UART Write interrupt.  |
+| void | **[Cdd_Uart_EnableReadIntr](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_enablereadintr)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj, boolean Enable)| Cdd_Uart_EnableReadIntr : Enable or Disable UART Read interrupt.  |
+| Std_ReturnType | **[Cdd_Uart_CheckReadErrors](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_checkreaderrors)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_CheckReadErrors : Check for read errors.  |
+| void | **[Cdd_Uart_WriteInterruptHandler](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_writeinterrupthandler)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_WriteInterruptHandler : UART Write interrupt handler.  |
+| void | **[Cdd_Uart_ReadInterruptHandler](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_readinterrupthandler)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_ReadInterruptHandler : UART Read interrupt handler.  |
+| void | **[Cdd_Uart_ErrorInterruptHandler](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_errorinterrupthandler)**([Cdd_Uart_ObjectType](../Classes/struct_cdd___uart___object_type.md) * UartHwUnitObj)| Cdd_Uart_ErrorInterruptHandler : UART Error interrupt handler.  |
+| void | **[Cdd_Uart_ProcessISR](../Modules/group___c_d_d___u_a_r_t.md#function-cdd_uart_processisr)**([Cdd_Uart_Instance](../Modules/group___c_d_d___u_a_r_t.md#enum-cdd_uart_instance) UartInstId)| Cdd_Uart_ProcessISR : UART Interrupt handler.  |
 
 
 
@@ -1086,4 +1104,4 @@ This service initialize the CDD_UART driver
 
 
 
--------------------------------
+

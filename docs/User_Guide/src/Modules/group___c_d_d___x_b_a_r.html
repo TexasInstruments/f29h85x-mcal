@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.00
+                01.02.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -91,6 +91,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#enum-cdd-xbar-mindb-xbar-input-linestype">5.16.1.8. enum Cdd_Xbar_Mindb_Xbar_Input_LinesType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-cdd-xbar-icl-xbar-input-linestype">5.16.1.9. enum Cdd_Xbar_Icl_Xbar_Input_LinesType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-cdd-xbar-inputflagtype">5.16.1.10. enum Cdd_Xbar_InputFlagType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-xbar-type">5.16.1.11. typedef Cdd_Xbar_Type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-xbar-outputleveltype">5.16.1.12. typedef Cdd_Xbar_OutputlevelType</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#structures">5.16.2. Structures</a></li>
@@ -5379,6 +5381,22 @@ ICL Crossbar Input Lines.</p>
 <p><strong>Brief</strong>:
 Crossbar input flags.</p>
 </section>
+<section id="typedef-cdd-xbar-type">
+<h3><span class="section-number">5.16.1.11. </span>typedef Cdd_Xbar_Type<a class="headerlink" href="#typedef-cdd-xbar-type" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint16</span><span class="w"> </span><span class="n">Cdd_Xbar_Type</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Type for symbolic name of CDD XBAR instances.</p>
+</section>
+<section id="typedef-cdd-xbar-outputleveltype">
+<h3><span class="section-number">5.16.1.12. </span>typedef Cdd_Xbar_OutputlevelType<a class="headerlink" href="#typedef-cdd-xbar-outputleveltype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Cdd_Xbar_OutputlevelType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+These are the possible levels an output crossbar output can have.</p>
+</section>
 </section>
 <section id="structures">
 <h2><span class="section-number">5.16.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
@@ -6046,79 +6064,79 @@ Crossbar input flags.</p>
 <td><p>Service for getting CDD crossbar driver version information.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-init"><span class="std std-ref">Cdd_Xbar_Init</span></a></strong>(const <a class="reference internal" href="#Classes/struct_cdd___xbar___config_type.md"><span class="xref myst">Cdd_Xbar_ConfigType</span></a> * ConfigPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-init"><span class="std std-ref">Cdd_Xbar_Init</span></a></strong>(const <a class="reference internal" href="../Classes/struct_cdd___xbar___config_type.html"><span class="std std-doc">Cdd_Xbar_ConfigType</span></a> * ConfigPtr)</p></td>
 <td><p>Service to initialize CDD Crossbar driver.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-selectinput"><span class="std std-ref">Cdd_Xbar_SelectInput</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit, uint16 InputLine, boolean Selection)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-selectinput"><span class="std std-ref">Cdd_Xbar_SelectInput</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit, uint16 InputLine, boolean Selection)</p></td>
 <td><p>Service for selecting available inputs for a given Crossbar Module.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchselect"><span class="std std-ref">Cdd_Xbar_OutLatchSelect</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit, boolean LatchEnable)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchselect"><span class="std std-ref">Cdd_Xbar_OutLatchSelect</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit, boolean LatchEnable)</p></td>
 <td><p>Service for enabling or disabling the output latch to drive the output of the selected output crossbar instance.</p></td>
 </tr>
 <tr class="row-even"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchselectsts"><span class="std std-ref">Cdd_Xbar_OutLatchSelectSts</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchselectsts"><span class="std std-ref">Cdd_Xbar_OutLatchSelectSts</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for checking the status of enabling the latched event as output of any output crossbar instance.</p></td>
 </tr>
 <tr class="row-odd"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchflagstatus"><span class="std std-ref">Cdd_Xbar_OutLatchFlagStatus</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchflagstatus"><span class="std std-ref">Cdd_Xbar_OutLatchFlagStatus</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for fetching latch status of output crossbar instance.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchflagforce"><span class="std std-ref">Cdd_Xbar_OutLatchFlagForce</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchflagforce"><span class="std std-ref">Cdd_Xbar_OutLatchFlagForce</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for setting the respective Output X-BAR output signal latch.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchflagclear"><span class="std std-ref">Cdd_Xbar_OutLatchFlagClear</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outlatchflagclear"><span class="std std-ref">Cdd_Xbar_OutLatchFlagClear</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for clearing the respective Output X-BAR output signal latch.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outinvbeforelatch"><span class="std std-ref">Cdd_Xbar_OutInvBeforeLatch</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit, boolean Selection)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outinvbeforelatch"><span class="std std-ref">Cdd_Xbar_OutInvBeforeLatch</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit, boolean Selection)</p></td>
 <td><p>Service for setting and restoring output line inversion before latch for a chosen output crossbar instance.</p></td>
 </tr>
 <tr class="row-odd"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outinvcheckbeforelatch"><span class="std std-ref">Cdd_Xbar_OutInvCheckBeforeLatch</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outinvcheckbeforelatch"><span class="std std-ref">Cdd_Xbar_OutInvCheckBeforeLatch</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service to check inversion before latching for an output line of the given output crossbar instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-outputleveltype"><span class="xref myst">Cdd_Xbar_OutputlevelType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outoutputsignal"><span class="std std-ref">Cdd_Xbar_OutOutputSignal</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#typedef-cdd-xbar-outputleveltype"><span class="std std-ref">Cdd_Xbar_OutputlevelType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outoutputsignal"><span class="std std-ref">Cdd_Xbar_OutOutputSignal</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for finding the signal on a output of an output crossbar instance.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outstretchpulse"><span class="std std-ref">Cdd_Xbar_OutStretchPulse</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit, <a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#enum-cdd-xbar-tickstretchtype"><span class="xref myst">Cdd_Xbar_TickStretchType</span></a> TickStretch)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outstretchpulse"><span class="std std-ref">Cdd_Xbar_OutStretchPulse</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit, <a class="reference internal" href="#enum-cdd-xbar-tickstretchtype"><span class="std std-ref">Cdd_Xbar_TickStretchType</span></a> TickStretch)</p></td>
 <td><p>Service for selecting 16 or 32-bit stretched pulse selection at the output of an output crossbar instance.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outstretchpulseclear"><span class="std std-ref">Cdd_Xbar_OutStretchPulseClear</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outstretchpulseclear"><span class="std std-ref">Cdd_Xbar_OutStretchPulseClear</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for clearing a stretched pulse selection as output crossbar instance.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#enum-cdd-xbar-tickstretchtype"><span class="xref myst">Cdd_Xbar_TickStretchType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outstretchpulsecheck"><span class="std std-ref">Cdd_Xbar_OutStretchPulseCheck</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#enum-cdd-xbar-tickstretchtype"><span class="std std-ref">Cdd_Xbar_TickStretchType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outstretchpulsecheck"><span class="std std-ref">Cdd_Xbar_OutStretchPulseCheck</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for checking a stretched pulse selection of output of output crossbar instance.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-selectoutputinversion"><span class="std std-ref">Cdd_Xbar_SelectOutputInversion</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit, boolean Selection)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-selectoutputinversion"><span class="std std-ref">Cdd_Xbar_SelectOutputInversion</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit, boolean Selection)</p></td>
 <td><p>Service for inverting and restoring inversion of an output crossbar instance.</p></td>
 </tr>
 <tr class="row-odd"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-checkoutputinversion"><span class="std std-ref">Cdd_Xbar_CheckOutputInversion</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-checkoutputinversion"><span class="std std-ref">Cdd_Xbar_CheckOutputInversion</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for getting the current status of inversion on the output line of a crossbar instance in a given Crossbar Entity.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-lock"><span class="std std-ref">Cdd_Xbar_Lock</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-lock"><span class="std std-ref">Cdd_Xbar_Lock</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for locking the given Crossbar entity for freezing the inputs and output inversion unless reset.</p></td>
 </tr>
 <tr class="row-odd"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-lockstatus"><span class="std std-ref">Cdd_Xbar_LockStatus</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-type"><span class="xref myst">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-lockstatus"><span class="std std-ref">Cdd_Xbar_LockStatus</span></a></strong>(<a class="reference internal" href="#typedef-cdd-xbar-type"><span class="std std-ref">Cdd_Xbar_Type</span></a> CrossbarUnit)</p></td>
 <td><p>Service for checking lock status on a given Crossbar Unit.</p></td>
 </tr>
 <tr class="row-even"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-inputflagstatus"><span class="std std-ref">Cdd_Xbar_InputFlagStatus</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#enum-cdd-xbar-inputflagtype"><span class="xref myst">Cdd_Xbar_InputFlagType</span></a> InputFlag)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-inputflagstatus"><span class="std std-ref">Cdd_Xbar_InputFlagStatus</span></a></strong>(<a class="reference internal" href="#enum-cdd-xbar-inputflagtype"><span class="std std-ref">Cdd_Xbar_InputFlagType</span></a> InputFlag)</p></td>
 <td><p>Service for checking status of a crossbar input flag.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-inputflagclear"><span class="std std-ref">Cdd_Xbar_InputFlagClear</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#enum-cdd-xbar-inputflagtype"><span class="xref myst">Cdd_Xbar_InputFlagType</span></a> InputFlag)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-inputflagclear"><span class="std std-ref">Cdd_Xbar_InputFlagClear</span></a></strong>(<a class="reference internal" href="#enum-cdd-xbar-inputflagtype"><span class="std std-ref">Cdd_Xbar_InputFlagType</span></a> InputFlag)</p></td>
 <td><p>Service for clearing a crossbar input flag.</p></td>
 </tr>
 <tr class="row-even"><td><p>uint32</p></td>
@@ -6186,18 +6204,18 @@ Crossbar input flags.</p>
 <td><p>Inverts and restores output inversion before latch for a chosen output XBAR output.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outputstretchpulse"><span class="std std-ref">Cdd_Xbar_OutputStretchPulse</span></a></strong>(const uint8 * OutputLine, const <a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#enum-cdd-xbar-tickstretchtype"><span class="xref myst">Cdd_Xbar_TickStretchType</span></a> * Ticks)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-outputstretchpulse"><span class="std std-ref">Cdd_Xbar_OutputStretchPulse</span></a></strong>(const uint8 * OutputLine, const <a class="reference internal" href="#enum-cdd-xbar-tickstretchtype"><span class="std std-ref">Cdd_Xbar_TickStretchType</span></a> * Ticks)</p></td>
 <td><p>Stretch or unstretch an output of output crossbar.</p></td>
 </tr>
 <tr class="row-odd"><td><p>boolean</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-xbar-outputstretchornot"><span class="std std-ref">Cdd_Xbar_OutputStretchOrNot</span></a></strong>(const uint8 * OutputLine)</p></td>
 <td><p>Returns the status of output stretch on an output of the output crossbar.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#enum-cdd-xbar-tickstretchtype"><span class="xref myst">Cdd_Xbar_TickStretchType</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#enum-cdd-xbar-tickstretchtype"><span class="std std-ref">Cdd_Xbar_TickStretchType</span></a></p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-xbar-outputstretchget"><span class="std std-ref">Cdd_Xbar_OutputStretchGet</span></a></strong>(const uint8 * OutputLine)</p></td>
 <td><p>Returns the output stretch on an output of an output crossbar.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#typedef-cdd-xbar-outputleveltype"><span class="xref myst">Cdd_Xbar_OutputlevelType</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#typedef-cdd-xbar-outputleveltype"><span class="std std-ref">Cdd_Xbar_OutputlevelType</span></a></p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-xbar-outoutputstate"><span class="std std-ref">Cdd_Xbar_OutOutputState</span></a></strong>(const uint8 * OutputLine)</p></td>
 <td><p>Returns the output signal state on output crossbar output.</p></td>
 </tr>
@@ -6282,11 +6300,11 @@ Crossbar input flags.</p>
 <td><p>Returns ICL Crossbar Output Inversion status. Function to check inversion on an output line of the ICL Crossbar.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-inflagclear"><span class="std std-ref">Cdd_Xbar_InFlagClear</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#enum-cdd-xbar-inputflagtype"><span class="xref myst">Cdd_Xbar_InputFlagType</span></a> InputFlag)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-inflagclear"><span class="std std-ref">Cdd_Xbar_InFlagClear</span></a></strong>(<a class="reference internal" href="#enum-cdd-xbar-inputflagtype"><span class="std std-ref">Cdd_Xbar_InputFlagType</span></a> InputFlag)</p></td>
 <td><p>Clears a crossbar input flag.</p></td>
 </tr>
 <tr class="row-odd"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-xbar-inflagstatus"><span class="std std-ref">Cdd_Xbar_InFlagStatus</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___x_b_a_r.md#enum-cdd-xbar-inputflagtype"><span class="xref myst">Cdd_Xbar_InputFlagType</span></a> InputFlag)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-xbar-inflagstatus"><span class="std std-ref">Cdd_Xbar_InFlagStatus</span></a></strong>(<a class="reference internal" href="#enum-cdd-xbar-inputflagtype"><span class="std std-ref">Cdd_Xbar_InputFlagType</span></a> InputFlag)</p></td>
 <td><p>Returns the status of a crossbar input flag.</p></td>
 </tr>
 </tbody>
@@ -7736,7 +7754,6 @@ Returns the status of a crossbar input flag.</p>
 <p><strong>Return</strong>: Status of the crossbar input flag.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
-<hr class="docutils" />
 </section>
 </section>
 </section>
@@ -7753,7 +7770,7 @@ Returns the status of a crossbar input flag.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Apr 13, 2025.
+          <span class="lastupdated" >Last updated on Jun 09, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -7770,7 +7787,7 @@ Returns the status of a crossbar input flag.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.00
+       Current Version: 01.02.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

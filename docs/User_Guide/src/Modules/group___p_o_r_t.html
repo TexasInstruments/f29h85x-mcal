@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.00
+                01.02.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -78,6 +78,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#enum-port-pinqualificationmode">5.7.1.4. enum Port_PinQualificationMode</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-port-pincoreselect">5.7.1.5. enum Port_PinCoreSelect</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-port-analogmodetype">5.7.1.6. enum Port_AnalogModeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-port-pintype">5.7.1.7. typedef Port_PinType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-port-pinmodetype">5.7.1.8. typedef Port_PinModeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-port-pinconfigflagtype">5.7.1.9. typedef Port_PinConfigFlagType</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#structures">5.7.2. Structures</a></li>
@@ -369,6 +372,30 @@ Values that can be passed to select master core for MCU module.</p>
 <p><strong>Brief</strong>:
 Values that can be passed to set the mode in which Pin should operate.</p>
 </section>
+<section id="typedef-port-pintype">
+<h3><span class="section-number">5.7.1.7. </span>typedef Port_PinType<a class="headerlink" href="#typedef-port-pintype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Port_PinType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Type for symbolic name of Port pins.</p>
+</section>
+<section id="typedef-port-pinmodetype">
+<h3><span class="section-number">5.7.1.8. </span>typedef Port_PinModeType<a class="headerlink" href="#typedef-port-pinmodetype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Port_PinModeType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Pin Mode type structure.</p>
+</section>
+<section id="typedef-port-pinconfigflagtype">
+<h3><span class="section-number">5.7.1.9. </span>typedef Port_PinConfigFlagType<a class="headerlink" href="#typedef-port-pinconfigflagtype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Port_PinConfigFlagType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Type for Pin Config Flag. Pin config flags Bit 0 - Is Pin configurable? Bit 1 - Does Pin support Analog Mode? Bit 2 - Does Pin operate in AGPIO mode? Bit 3 - Does Pin operate in AIO mode? Bit 4 - Does Pin operate in GPIO mode?</p>
+</section>
 </section>
 <section id="structures">
 <h2><span class="section-number">5.7.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
@@ -579,11 +606,11 @@ Values that can be passed to set the mode in which Pin should operate.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-init"><span class="std std-ref">Port_Init</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___config_type.md"><span class="xref myst">Port_ConfigType</span></a> * CfgPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-init"><span class="std std-ref">Port_Init</span></a></strong>(const <a class="reference internal" href="../Classes/struct_port___config_type.html"><span class="std std-doc">Port_ConfigType</span></a> * CfgPtr)</p></td>
 <td><p>Initializes the Port Driver module.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-setpindirection"><span class="std std-ref">Port_SetPinDirection</span></a></strong>(<a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pintype"><span class="xref myst">Port_PinType</span></a> Pin, <a class="reference internal" href="#Modules/group___p_o_r_t.md#enum-port-pindirectiontype"><span class="xref myst">Port_PinDirectionType</span></a> Direction)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setpindirection"><span class="std std-ref">Port_SetPinDirection</span></a></strong>(<a class="reference internal" href="#typedef-port-pintype"><span class="std std-ref">Port_PinType</span></a> Pin, <a class="reference internal" href="#enum-port-pindirectiontype"><span class="std std-ref">Port_PinDirectionType</span></a> Direction)</p></td>
 <td><p>Sets the port pin direction.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
@@ -595,7 +622,7 @@ Values that can be passed to set the mode in which Pin should operate.</p>
 <td><p>Service to get the version information of the module.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-setpinmode"><span class="std std-ref">Port_SetPinMode</span></a></strong>(<a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pintype"><span class="xref myst">Port_PinType</span></a> Pin, <a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pinmodetype"><span class="xref myst">Port_PinModeType</span></a> Mode)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setpinmode"><span class="std std-ref">Port_SetPinMode</span></a></strong>(<a class="reference internal" href="#typedef-port-pintype"><span class="std std-ref">Port_PinType</span></a> Pin, <a class="reference internal" href="#typedef-port-pinmodetype"><span class="std std-ref">Port_PinModeType</span></a> Mode)</p></td>
 <td><p>Sets the port pin mode.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
@@ -603,15 +630,15 @@ Values that can be passed to set the mode in which Pin should operate.</p>
 <td><p>Commits the locked Critical Configuration registers for the current Configuration.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-setcntspconfig"><span class="std std-ref">Port_SetCntSpConfig</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * PinConfigPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setcntspconfig"><span class="std std-ref">Port_SetCntSpConfig</span></a></strong>(const <a class="reference internal" href="../Classes/struct_port___pin_config_type.html"><span class="std std-doc">Port_PinConfigType</span></a> * PinConfigPtr)</p></td>
 <td><p>Sets the pad/pull configuration for the specified pin.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-setpinlevel"><span class="std std-ref">Port_SetPinLevel</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * PinConfigPtr, <a class="reference internal" href="#Modules/group___p_o_r_t.md#enum-port-pinlevelvaluetype"><span class="xref myst">Port_PinLevelValueType</span></a> PinLevel)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setpinlevel"><span class="std std-ref">Port_SetPinLevel</span></a></strong>(const <a class="reference internal" href="../Classes/struct_port___pin_config_type.html"><span class="std std-doc">Port_PinConfigType</span></a> * PinConfigPtr, <a class="reference internal" href="#enum-port-pinlevelvaluetype"><span class="std std-ref">Port_PinLevelValueType</span></a> PinLevel)</p></td>
 <td><p>Writes the level value to the specified pin.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-enablelpmwakeuppin"><span class="std std-ref">Port_EnableLPMWakeUpPin</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * PinConfig)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-enablelpmwakeuppin"><span class="std std-ref">Port_EnableLPMWakeUpPin</span></a></strong>(const <a class="reference internal" href="../Classes/struct_port___pin_config_type.html"><span class="std std-doc">Port_PinConfigType</span></a> * PinConfig)</p></td>
 <td><p>Set pins as Low Power wakeup modes GPIO pins.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
@@ -619,27 +646,27 @@ Values that can be passed to set the mode in which Pin should operate.</p>
 <td><p>Configures the Pin Mode function of a PORT pin.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-setdirectionmode"><span class="std std-ref">Port_SetDirectionMode</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * PinConfigPtr, <a class="reference internal" href="#Modules/group___p_o_r_t.md#enum-port-pindirectiontype"><span class="xref myst">Port_PinDirectionType</span></a> PinDirection)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-setdirectionmode"><span class="std std-ref">Port_SetDirectionMode</span></a></strong>(const <a class="reference internal" href="../Classes/struct_port___pin_config_type.html"><span class="std std-doc">Port_PinConfigType</span></a> * PinConfigPtr, <a class="reference internal" href="#enum-port-pindirectiontype"><span class="std std-ref">Port_PinDirectionType</span></a> PinDirection)</p></td>
 <td><p>Sets the direction of the specified pin.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-ispinnumbervalid"><span class="std std-ref">Port_IsPinNumberValid</span></a></strong>(<a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pintype"><span class="xref myst">Port_PinType</span></a> PinNumber)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-ispinnumbervalid"><span class="std std-ref">Port_IsPinNumberValid</span></a></strong>(<a class="reference internal" href="#typedef-port-pintype"><span class="std std-ref">Port_PinType</span></a> PinNumber)</p></td>
 <td><p>Checks if the provided pin number is Valid or Not.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-validatesetpinmode"><span class="std std-ref">Port_ValidateSetPinMode</span></a></strong>(<a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pinmodetype"><span class="xref myst">Port_PinModeType</span></a> Mode, const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * pinConfig, uint8 * errorIdPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-validatesetpinmode"><span class="std std-ref">Port_ValidateSetPinMode</span></a></strong>(<a class="reference internal" href="#typedef-port-pinmodetype"><span class="std std-ref">Port_PinModeType</span></a> Mode, const <a class="reference internal" href="../Classes/struct_port___pin_config_type.html"><span class="std std-doc">Port_PinConfigType</span></a> * pinConfig, uint8 * errorIdPtr)</p></td>
 <td><p>Validates the pin Mode provided.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-lockconfiguration"><span class="std std-ref">Port_LockConfiguration</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * pinConfig)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-lockconfiguration"><span class="std std-ref">Port_LockConfiguration</span></a></strong>(const <a class="reference internal" href="../Classes/struct_port___pin_config_type.html"><span class="std std-doc">Port_PinConfigType</span></a> * pinConfig)</p></td>
 <td><p>Locks the Critical Configuration registers for the passed Pin.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-unlockconfiguration"><span class="std std-ref">Port_UnlockConfiguration</span></a></strong>(const <a class="reference internal" href="#Classes/struct_port___pin_config_type.md"><span class="xref myst">Port_PinConfigType</span></a> * pinConfig)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-unlockconfiguration"><span class="std std-ref">Port_UnlockConfiguration</span></a></strong>(const <a class="reference internal" href="../Classes/struct_port___pin_config_type.html"><span class="std std-doc">Port_PinConfigType</span></a> * pinConfig)</p></td>
 <td><p>Unlocks the Critical Configuration registers for the passed Pin.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-port-commitconfigurationprocess"><span class="std std-ref">Port_CommitConfigurationProcess</span></a></strong>(<a class="reference internal" href="#Modules/group___p_o_r_t.md#typedef-port-pintype"><span class="xref myst">Port_PinType</span></a> pinNumber)</p></td>
+<td><p><strong><a class="reference internal" href="#function-port-commitconfigurationprocess"><span class="std std-ref">Port_CommitConfigurationProcess</span></a></strong>(<a class="reference internal" href="#typedef-port-pintype"><span class="std std-ref">Port_PinType</span></a> pinNumber)</p></td>
 <td><p>Locks and Commit the Critical Configuration registers for the passed Pin.</p></td>
 </tr>
 </tbody>
@@ -1056,7 +1083,6 @@ Locks and Commit the Critical Configuration registers for the passed Pin.</p>
 <p><strong>Return</strong>: None</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
-<hr class="docutils" />
 </section>
 </section>
 </section>
@@ -1073,7 +1099,7 @@ Locks and Commit the Critical Configuration registers for the passed Pin.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Apr 13, 2025.
+          <span class="lastupdated" >Last updated on Jun 09, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1090,7 +1116,7 @@ Locks and Commit the Critical Configuration registers for the passed Pin.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.00
+       Current Version: 01.02.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

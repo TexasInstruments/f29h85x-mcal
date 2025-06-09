@@ -11,18 +11,18 @@ title: Gpt API GUIDE Header file
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
-|enum| **[Gpt_PredefTimerType](../Modules/group___g_p_t.md#enum-gpt-predeftimertype)** | Type for GPT Predef Timers.  | 
-|enum| **[Gpt_ChannelModeType](../Modules/group___g_p_t.md#enum-gpt-channelmodetype)** | GPT channel mode macro.  | 
-|enum| **[Gpt_SimStatusType](../Modules/group___g_p_t.md#enum-gpt-simstatustype)** | GPT Simulation enabled/disabled.  | 
-|enum| **[Gpt_SimModeType](../Modules/group___g_p_t.md#enum-gpt-simmodetype)** | GPT Simulation Behaviour Hard/Soft stop upon GPT simulation enabled.  | 
-|enum| **[Gpt_ModeType](../Modules/group___g_p_t.md#enum-gpt-modetype)** | GPT Operation Mode.  | 
-|enum| **[Gpt_NotificationStateType](../Modules/group___g_p_t.md#enum-gpt-notificationstatetype)** | GPT channel notification enable/disable status. This indicates if the notification of GPT channel is enabled or disabled.  | 
-|enum| **[Gpt_ChannelStateType](../Modules/group___g_p_t.md#enum-gpt-channelstatetype)** | GPT channel state. GPT will be in one of this state during its lifetime.  | 
-|typedef uint8  | **[Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt-channeltype)** | Numeric ID of a GPT channel.  | 
-|typedef uint32  | **[Gpt_ChannelBaseAddrType](../Modules/group___g_p_t.md#typedef-gpt-channelbaseaddrtype)** | Base address of a GPT channel.  | 
-|typedef uint32  | **[Gpt_ValueType](../Modules/group___g_p_t.md#typedef-gpt-valuetype)** | Type for reading and setting the timer values(in number of ticks).  | 
-|typedef uint16  | **[Gpt_PrescaleValueType](../Modules/group___g_p_t.md#typedef-gpt-prescalevaluetype)** | Prescale value for General purpose timer channels.  | 
-|typedef void(*)(void)  | **[Gpt_NotifyType](../Modules/group___g_p_t.md#typedef-gpt-notifytype)** | Notification callback function pointer.  | 
+|enum| **[Gpt_PredefTimerType](../Modules/group___g_p_t.md#enum-gpt_predeftimertype)** | Type for GPT Predef Timers.  | 
+|enum| **[Gpt_ChannelModeType](../Modules/group___g_p_t.md#enum-gpt_channelmodetype)** | GPT channel mode macro.  | 
+|enum| **[Gpt_SimStatusType](../Modules/group___g_p_t.md#enum-gpt_simstatustype)** | GPT Simulation enabled/disabled.  | 
+|enum| **[Gpt_SimModeType](../Modules/group___g_p_t.md#enum-gpt_simmodetype)** | GPT Simulation Behaviour Hard/Soft stop upon GPT simulation enabled.  | 
+|enum| **[Gpt_ModeType](../Modules/group___g_p_t.md#enum-gpt_modetype)** | GPT Operation Mode.  | 
+|enum| **[Gpt_NotificationStateType](../Modules/group___g_p_t.md#enum-gpt_notificationstatetype)** | GPT channel notification enable/disable status. This indicates if the notification of GPT channel is enabled or disabled.  | 
+|enum| **[Gpt_ChannelStateType](../Modules/group___g_p_t.md#enum-gpt_channelstatetype)** | GPT channel state. GPT will be in one of this state during its lifetime.  | 
+|typedef uint8  | **[Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt_channeltype)** | Numeric ID of a GPT channel.  | 
+|typedef uint32  | **[Gpt_ChannelBaseAddrType](../Modules/group___g_p_t.md#typedef-gpt_channelbaseaddrtype)** | Base address of a GPT channel.  | 
+|typedef uint32  | **[Gpt_ValueType](../Modules/group___g_p_t.md#typedef-gpt_valuetype)** | Type for reading and setting the timer values(in number of ticks).  | 
+|typedef uint16  | **[Gpt_PrescaleValueType](../Modules/group___g_p_t.md#typedef-gpt_prescalevaluetype)** | Prescale value for General purpose timer channels.  | 
+|typedef void(*)(void)  | **[Gpt_NotifyType](../Modules/group___g_p_t.md#typedef-gpt_notifytype)** | Notification callback function pointer.  | 
 
 
 
@@ -129,13 +129,58 @@ GPT channel state. GPT will be in one of this state during its lifetime.
 
 
 
+### typedef Gpt_ChannelType
+```
+typedef uint8 Gpt_ChannelType;
+```
+
+
+**Brief**: 
+Numeric ID of a GPT channel. 
 
 
 
+### typedef Gpt_ChannelBaseAddrType
+```
+typedef uint32 Gpt_ChannelBaseAddrType;
+```
+
+
+**Brief**: 
+Base address of a GPT channel. 
 
 
 
+### typedef Gpt_ValueType
+```
+typedef uint32 Gpt_ValueType;
+```
 
+
+**Brief**: 
+Type for reading and setting the timer values(in number of ticks). 
+
+
+
+### typedef Gpt_PrescaleValueType
+```
+typedef uint16 Gpt_PrescaleValueType;
+```
+
+
+**Brief**: 
+Prescale value for General purpose timer channels. 
+
+
+
+### typedef Gpt_NotifyType
+```
+typedef void(* Gpt_NotifyType) (void);
+```
+
+
+**Brief**: 
+Notification callback function pointer. 
 
 
 
@@ -192,30 +237,30 @@ GPT channel state. GPT will be in one of this state during its lifetime.
 
 | Return type    | Function Name           |      Brief        |
 | -------------- | ----------------------- | ----------------- |
-| void | **[Gpt_GetVersionInfo](../Modules/group___g_p_t.md#function-gpt-getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| Gpt_GetVersionInfo : Returns the Gpt Version Info.  |
-| void | **[Gpt_Init](../Modules/group___g_p_t.md#function-gpt-init)**(const [Gpt_ConfigType](Classes/struct_gpt___config_type.md) * ConfigPtr)| Gpt_Init : Initializes the Gpt module.  |
-| void | **[Gpt_DeInit](../Modules/group___g_p_t.md#function-gpt-deinit)**(void )| Gpt_DeInit : De-initializes the GPT module.  |
-| [Gpt_ValueType](Modules/group___g_p_t.md#typedef-gpt-valuetype) | **[Gpt_GetTimeElapsed](../Modules/group___g_p_t.md#function-gpt-gettimeelapsed)**([Gpt_ChannelType](Modules/group___g_p_t.md#typedef-gpt-channeltype) Channel)| Gpt_GetTimeElapsed : Returns the time elapsed for a given channel.  |
-| [Gpt_ValueType](Modules/group___g_p_t.md#typedef-gpt-valuetype) | **[Gpt_GetTimeRemaining](../Modules/group___g_p_t.md#function-gpt-gettimeremaining)**([Gpt_ChannelType](Modules/group___g_p_t.md#typedef-gpt-channeltype) Channel)| Gpt_GetTimeRemaining : Returns the time remaining for a given channel.  |
-| void | **[Gpt_StartTimer](../Modules/group___g_p_t.md#function-gpt-starttimer)**([Gpt_ChannelType](Modules/group___g_p_t.md#typedef-gpt-channeltype) Channel, [Gpt_ValueType](Modules/group___g_p_t.md#typedef-gpt-valuetype) Value)| Gpt_StartTimer : Starts a timer channel.  |
-| void | **[Gpt_StopTimer](../Modules/group___g_p_t.md#function-gpt-stoptimer)**([Gpt_ChannelType](Modules/group___g_p_t.md#typedef-gpt-channeltype) Channel)| Gpt_StopTimer : Stops a timer channel.  |
-| void | **[Gpt_SetMode](../Modules/group___g_p_t.md#function-gpt-setmode)**([Gpt_ModeType](Modules/group___g_p_t.md#enum-gpt-modetype) Mode)| Gpt_SetMode : Sets the operation mode of the GPT.  |
-| void | **[Gpt_DisableWakeup](../Modules/group___g_p_t.md#function-gpt-disablewakeup)**([Gpt_ChannelType](Modules/group___g_p_t.md#typedef-gpt-channeltype) Channel)| Gpt_DisableWakeup : Disables the wakeup interrupt of a channel (relevant in sleep mode).  |
-| void | **[Gpt_EnableWakeup](../Modules/group___g_p_t.md#function-gpt-enablewakeup)**([Gpt_ChannelType](Modules/group___g_p_t.md#typedef-gpt-channeltype) Channel)| Gpt_EnableWakeup : Enables the wakeup interrupt of a channel (relevant in sleep mode).  |
-| void | **[Gpt_CheckWakeup](../Modules/group___g_p_t.md#function-gpt-checkwakeup)**(EcuM_WakeupSourceType WakeupSource)| Gpt_CheckWakeup : Checks if a wakeup capable GPT channel is the source for a wakeup event and calls the ECU state manager service EcuM_SetWakeupEvent in case of a valid GPT channel wakeup event.  |
-| void | **[Gpt_SetDriverObjPtr](../Modules/group___g_p_t.md#function-gpt-setdriverobjptr)**([Gpt_DriverObjType](Classes/struct_gpt___driver_obj_type.md) * Set_DrvObj)| Set the Gpt driver object into global pointer.  |
-| void | **[Gpt_DeInitPriv](../Modules/group___g_p_t.md#function-gpt-deinitpriv)**(const [Gpt_ChannelConfigType](Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Deinitializes the timer hardware to reset state.  |
-| void | **[Gpt_InitPriv](../Modules/group___g_p_t.md#function-gpt-initpriv)**(const [Gpt_ChannelConfigType](Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Initialize the timer instance.  |
-| uint32 | **[Gpt_GetCurCountPriv](../Modules/group___g_p_t.md#function-gpt-getcurcountpriv)**(const [Gpt_ChannelConfigType](Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Get the current timer count.  |
-| uint32 | **[Gpt_GetPrdCountPriv](../Modules/group___g_p_t.md#function-gpt-getprdcountpriv)**(const [Gpt_ChannelConfigType](Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Get the timer period count.  |
-| void | **[Gpt_StartTimerPriv](../Modules/group___g_p_t.md#function-gpt-starttimerpriv)**(const [Gpt_ChannelConfigType](Classes/struct_gpt___channel_config_type.md) * ChannelObj, uint32 count)| Start the timer.  |
-| void | **[Gpt_StopTimerPriv](../Modules/group___g_p_t.md#function-gpt-stoptimerpriv)**(const [Gpt_ChannelConfigType](Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Stop the timer.  |
-| void | **[Gpt_ClrOvfFlagPriv](../Modules/group___g_p_t.md#function-gpt-clrovfflagpriv)**(const [Gpt_ChannelConfigType](Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Clear the Timer Overflow flag.  |
-| void | **[Gpt_EnableIntPriv](../Modules/group___g_p_t.md#function-gpt-enableintpriv)**(const [Gpt_ChannelConfigType](Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Enable the timer interrupt.  |
-| void | **[Gpt_DisableIntPriv](../Modules/group___g_p_t.md#function-gpt-disableintpriv)**(const [Gpt_ChannelConfigType](Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Disable the timer interrupt.  |
-| void | **[Gpt_GetChIdxPriv](../Modules/group___g_p_t.md#function-gpt-getchidxpriv)**(const [Gpt_DriverObjType](Classes/struct_gpt___driver_obj_type.md) * GptDrvObj, [Gpt_ChannelType](Modules/group___g_p_t.md#typedef-gpt-channeltype) Channel, uint32 * ChannelIndex)| Get the array index of a channel from configuration array/vector.  |
-| Std_ReturnType | **[Gpt_GetPredefTimerValue](../Modules/group___g_p_t.md#function-gpt-getpredeftimervalue)**([Gpt_PredefTimerType](Modules/group___g_p_t.md#enum-gpt-predeftimertype) PredefTimer, uint32 * TimeValuePtr)| Gpt_GetPredefTimerValue : Delivers the current value of the desired GPT Predef Timer.  |
-| void | **[Gpt_IsrNotifyFunction](../Modules/group___g_p_t.md#function-gpt-isrnotifyfunction)**([Gpt_ChannelType](Modules/group___g_p_t.md#typedef-gpt-channeltype) Channel)| Gpt_IsrNotifyFunction: Invoked by the respective timer channel ISR.  |
+| void | **[Gpt_GetVersionInfo](../Modules/group___g_p_t.md#function-gpt_getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| Gpt_GetVersionInfo : Returns the Gpt Version Info.  |
+| void | **[Gpt_Init](../Modules/group___g_p_t.md#function-gpt_init)**(const [Gpt_ConfigType](../Classes/struct_gpt___config_type.md) * ConfigPtr)| Gpt_Init : Initializes the Gpt module.  |
+| void | **[Gpt_DeInit](../Modules/group___g_p_t.md#function-gpt_deinit)**(void )| Gpt_DeInit : De-initializes the GPT module.  |
+| [Gpt_ValueType](../Modules/group___g_p_t.md#typedef-gpt_valuetype) | **[Gpt_GetTimeElapsed](../Modules/group___g_p_t.md#function-gpt_gettimeelapsed)**([Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt_channeltype) Channel)| Gpt_GetTimeElapsed : Returns the time elapsed for a given channel.  |
+| [Gpt_ValueType](../Modules/group___g_p_t.md#typedef-gpt_valuetype) | **[Gpt_GetTimeRemaining](../Modules/group___g_p_t.md#function-gpt_gettimeremaining)**([Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt_channeltype) Channel)| Gpt_GetTimeRemaining : Returns the time remaining for a given channel.  |
+| void | **[Gpt_StartTimer](../Modules/group___g_p_t.md#function-gpt_starttimer)**([Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt_channeltype) Channel, [Gpt_ValueType](../Modules/group___g_p_t.md#typedef-gpt_valuetype) Value)| Gpt_StartTimer : Starts a timer channel.  |
+| void | **[Gpt_StopTimer](../Modules/group___g_p_t.md#function-gpt_stoptimer)**([Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt_channeltype) Channel)| Gpt_StopTimer : Stops a timer channel.  |
+| void | **[Gpt_SetMode](../Modules/group___g_p_t.md#function-gpt_setmode)**([Gpt_ModeType](../Modules/group___g_p_t.md#enum-gpt_modetype) Mode)| Gpt_SetMode : Sets the operation mode of the GPT.  |
+| void | **[Gpt_DisableWakeup](../Modules/group___g_p_t.md#function-gpt_disablewakeup)**([Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt_channeltype) Channel)| Gpt_DisableWakeup : Disables the wakeup interrupt of a channel (relevant in sleep mode).  |
+| void | **[Gpt_EnableWakeup](../Modules/group___g_p_t.md#function-gpt_enablewakeup)**([Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt_channeltype) Channel)| Gpt_EnableWakeup : Enables the wakeup interrupt of a channel (relevant in sleep mode).  |
+| void | **[Gpt_CheckWakeup](../Modules/group___g_p_t.md#function-gpt_checkwakeup)**(EcuM_WakeupSourceType WakeupSource)| Gpt_CheckWakeup : Checks if a wakeup capable GPT channel is the source for a wakeup event and calls the ECU state manager service EcuM_SetWakeupEvent in case of a valid GPT channel wakeup event.  |
+| void | **[Gpt_SetDriverObjPtr](../Modules/group___g_p_t.md#function-gpt_setdriverobjptr)**([Gpt_DriverObjType](../Classes/struct_gpt___driver_obj_type.md) * Set_DrvObj)| Set the Gpt driver object into global pointer.  |
+| void | **[Gpt_DeInitPriv](../Modules/group___g_p_t.md#function-gpt_deinitpriv)**(const [Gpt_ChannelConfigType](../Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Deinitializes the timer hardware to reset state.  |
+| void | **[Gpt_InitPriv](../Modules/group___g_p_t.md#function-gpt_initpriv)**(const [Gpt_ChannelConfigType](../Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Initialize the timer instance.  |
+| uint32 | **[Gpt_GetCurCountPriv](../Modules/group___g_p_t.md#function-gpt_getcurcountpriv)**(const [Gpt_ChannelConfigType](../Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Get the current timer count.  |
+| uint32 | **[Gpt_GetPrdCountPriv](../Modules/group___g_p_t.md#function-gpt_getprdcountpriv)**(const [Gpt_ChannelConfigType](../Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Get the timer period count.  |
+| void | **[Gpt_StartTimerPriv](../Modules/group___g_p_t.md#function-gpt_starttimerpriv)**(const [Gpt_ChannelConfigType](../Classes/struct_gpt___channel_config_type.md) * ChannelObj, uint32 count)| Start the timer.  |
+| void | **[Gpt_StopTimerPriv](../Modules/group___g_p_t.md#function-gpt_stoptimerpriv)**(const [Gpt_ChannelConfigType](../Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Stop the timer.  |
+| void | **[Gpt_ClrOvfFlagPriv](../Modules/group___g_p_t.md#function-gpt_clrovfflagpriv)**(const [Gpt_ChannelConfigType](../Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Clear the Timer Overflow flag.  |
+| void | **[Gpt_EnableIntPriv](../Modules/group___g_p_t.md#function-gpt_enableintpriv)**(const [Gpt_ChannelConfigType](../Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Enable the timer interrupt.  |
+| void | **[Gpt_DisableIntPriv](../Modules/group___g_p_t.md#function-gpt_disableintpriv)**(const [Gpt_ChannelConfigType](../Classes/struct_gpt___channel_config_type.md) * ChannelObj)| Disable the timer interrupt.  |
+| void | **[Gpt_GetChIdxPriv](../Modules/group___g_p_t.md#function-gpt_getchidxpriv)**(const [Gpt_DriverObjType](../Classes/struct_gpt___driver_obj_type.md) * GptDrvObj, [Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt_channeltype) Channel, uint32 * ChannelIndex)| Get the array index of a channel from configuration array/vector.  |
+| Std_ReturnType | **[Gpt_GetPredefTimerValue](../Modules/group___g_p_t.md#function-gpt_getpredeftimervalue)**([Gpt_PredefTimerType](../Modules/group___g_p_t.md#enum-gpt_predeftimertype) PredefTimer, uint32 * TimeValuePtr)| Gpt_GetPredefTimerValue : Delivers the current value of the desired GPT Predef Timer.  |
+| void | **[Gpt_IsrNotifyFunction](../Modules/group___g_p_t.md#function-gpt_isrnotifyfunction)**([Gpt_ChannelType](../Modules/group___g_p_t.md#typedef-gpt_channeltype) Channel)| Gpt_IsrNotifyFunction: Invoked by the respective timer channel ISR.  |
 
 
 
@@ -937,4 +982,4 @@ This Interrupt notification call function is called when interrupt notification 
 
 
 
--------------------------------
+

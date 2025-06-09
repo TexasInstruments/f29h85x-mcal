@@ -492,7 +492,7 @@ Container for runtime configuration parameters of the flash driver.
 | Item ||
 |--------|---------------|
 | **Name** | Fls_CMDWEPROTA |
-| **Description** | Erase/write protection settings. CMDWEPROTA controls program/erase protection for first 32 sectors.                                    Each bit allows users to enable/disable protection for each sector. Eg: Bit 0 allows protection configuration                                    for Sectors 0. A value of 0 disables protection and a value of 1 enables protection from program/erase |
+| **Description** | Erase/write protection settings. CMDWEPROTA controls program/erase protection for first 32 sectors.                                   Each bit allows users to enable/disable protection for each sector. Eg: Bit 0 allows protection configuration                                   for Sectors 0. A value of 0 disables protection and a value of 1 enables protection from program/erase |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | true |
 | **Value-Configuration-Class** | -- |
@@ -507,7 +507,7 @@ Container for runtime configuration parameters of the flash driver.
 | Item ||
 |--------|---------------|
 | **Name** | Fls_CMDWEPROTB |
-| **Description** | Erase/write protection settings. CMDWEPROTB controls program/erase protection for sectors 32 to 255.                                    Each bit allows users to enable/disable protection for a group of eight sectors. Note - The first 4 bit                                    fields are reserved (bits 0-3) and protection of bit 4 and above would begin at sector 32. Eg: Bit 4                                    allows protection configuration for Sectors 32-39. A value of 0 disables protection and a value of 1                                    enables protection from program/erase |
+| **Description** | Erase/write protection settings. CMDWEPROTB controls program/erase protection for sectors 32 to 255.                                   Each bit allows users to enable/disable protection for a group of eight sectors. Note - The first 4 bit                                   fields are reserved (bits 0-3) and protection of bit 4 and above would begin at sector 32. Eg: Bit 4                                   allows protection configuration for Sectors 32-39. A value of 0 disables protection and a value of 1                                   enables protection from program/erase |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | true |
 | **Value-Configuration-Class** | -- |
@@ -542,6 +542,66 @@ List of flashable sectors and pages.
 ##### FlsSector
 Configuration description of a flashable sector
 
+###### FlsNumberOfSectors
+
+| Item ||
+|--------|---------------|
+| **Name** | FlsNumberOfSectors |
+| **Description** | Number of continuous sectors with identical values for FlsSectorSize and |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
+
+###### FlsPageSize
+
+| Item ||
+|--------|---------------|
+| **Name** | FlsPageSize |
+| **Description** | Size of one page of this sector. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 256 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
+
+###### FlsSectorSize
+
+| Item ||
+|--------|---------------|
+| **Name** | FlsSectorSize |
+| **Description** | Size of this sector. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 2048 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
+
+###### FlsSectorStartaddress
+
+| Item ||
+|--------|---------------|
+| **Name** | FlsSectorStartaddress |
+| **Description** | Start address of this sector. |
+| **Origin** | AUTOSAR_ECUC |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Post-Build-Time | VARIANT-POST-BUILD |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
+
 #### FlsGeneral
 Container for general parameters of the flash driver. These parameters are always pre-compile.
 
@@ -571,21 +631,6 @@ Container for general parameters of the flash driver. These parameters are alway
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
-
-##### FlsPointToRamBaseAddress
-
-| Item ||
-|--------|---------------|
-| **Name** | FlsPointToRamBaseAddress |
-| **Description** | The RAM memory start address. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Post-Build-Time | VARIANT-POST-BUILD |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 536870912 |
-| **Max-value** | 4294967295 |
-| **Min-value** | 0 |
 
 ##### FlsBaseAddress
 
@@ -779,19 +824,6 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### FlsUseInterrupts
-
-| Item ||
-|--------|---------------|
-| **Name** | FlsUseInterrupts |
-| **Description** | Job processing triggered by hardware interrupt. |
-| **Origin** | AUTOSAR_ECUC |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Post-Build-Time | VARIANT-POST-BUILD |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | false |
-
 ##### FlsVersionInfoApi
 
 | Item ||
@@ -818,35 +850,6 @@ Container for general parameters of the flash driver. These parameters are alway
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### FlsIrqType
-
-| Item ||
-|--------|---------------|
-| **Name** | FlsIrqType |
-| **Description** | Type of Isr function:<br>                                void functionname(void)<br>                                CAT1  see description in oil tool : interrupt void func(void)<br>                                CAT2  see description in oil tool : ISR(func) |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| Post-Build-Time | VARIANT-POST-BUILD |
-| **Default-value** | FLS_ISR_CAT1 |
-| **Range** | FLS_ISR_VOID<br>FLS_ISR_CAT1<br>FLS_ISR_CAT2 |
-
-##### FlsDefaultOSCounterId
-
-| Item ||
-|--------|---------------|
-| **Name** | FlsDefaultOSCounterId |
-| **Description** | Default Os Counter Id if node reference to OsCounter ref FlsOsCounterRef is not set |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Post-Build-Time | VARIANT-POST-BUILD |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 0 |
-| **Max-value** | 16 |
-| **Min-value** | 0 |
-
 ##### FlsWaitStates
 
 | Item ||
@@ -862,16 +865,17 @@ Container for general parameters of the flash driver. These parameters are alway
 | **Max-value** | 3 |
 | **Min-value** | 1 |
 
-##### FlsOsCounterRef
+##### FlsSysClockRef
 
 | Item ||
 |--------|---------------|
-| **Name** | FlsOsCounterRef |
-| **Description** | This parameter contains a reference to the OsCounter, which is used by the FLS driver. |
+| **Name** | FlsSysClockRef |
+| **Description** | This parameter references the SYSCLK to convert timeout values from milliseconds to clock ticks. Users should ensure the correct clock reference point is selected to achieve accurate timeout calculations. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Link-Time | VARIANT-LINK-TIME |
 | Post-Build-Time | VARIANT-POST-BUILD |
 
 ##### FlsCpuClockRef
@@ -942,7 +946,7 @@ Refer [AUTOSAR_SWS_FlashDriver section: 10 Configuration specification](https://
 
 ##### Sample Log of Fls_App_Example
 
-```{EXAMPLE LOGS}
+```{code-block}
     FLS Example: Sample Application - STARTS !!!
     APP_NAME : Variant - Pre Compile being used !!!
     FLS MCAL version info:1.0.0

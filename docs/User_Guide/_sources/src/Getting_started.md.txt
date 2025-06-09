@@ -572,7 +572,7 @@ F29x MCAL specific CMake files are described below -
 
 * **CMakePresets.json**
   * This file contains recommended presets configured for F29x MCAL projects, users can continue to use the presets as-is or choose to override them with their project specific requirements by adding a CMakeUserPresets.json file.
-  * It also define all the compiler and linker options as defined in [Compiler and Linker Settings](compiler-and-linker-settings)
+  * It also define all the compiler and linker options as defined in [Compiler and Linker Settings](#compiler-and-linker-settings)
   * The presets file defines support for different generators -
     1. **mingw-c2000-f29h85x:** Preset for MinGW Makefiles generator - works on Windows based system
     2. **unix-c2000-f29h85x:** Preset for Unix Makefiles generator - works on Linux based system
@@ -619,16 +619,15 @@ F29x MCAL specific CMake files are described below -
 
 To configure CMake following command can be executed in terminal -
 
-```{CMAKE COMMANDS}
+```{code-block} shell
 **cmake -S {source_dir_path} --preset {preset_name} -DCMAKE_BUILD_TYPE = {build_type} -DBUILD_CONFIGURATION = {build_configuration} -DTCP={path-to-the-compiler}**
 ```
 
 For example,
 
-```{CMAKE EXAMPLE}
+```{code-block} shell
 cmake -S . --preset mingw-c2000-f29h85x  -DCMAKE_BUILD_TYPE=Debug -DBUILD_CONFIGURATION=RAM -DTCP="C:\ti\ti-cgt-c29_1.0.0LTS"
 ```
-
 
 Configure Option  |Description|
 -----------------|------------|
@@ -639,13 +638,14 @@ Configure Option  |Description|
 ##### F29x MCAL Specific options during *CMake build* (Stage 2)
 
 To build following command can be executed in terminal -
-```{CMAKE COMMAND}
+
+```{code-block} shell
 **cmake --build {path-to-the-CMake-generated-files} -t {target}**
 ```
 
 For example,
 
-```{CMAKE EXAMPLE}
+```{code-block} shell
 **cmake --build build/artefacts -t Can_Example_Classic_FD**
 ```
 

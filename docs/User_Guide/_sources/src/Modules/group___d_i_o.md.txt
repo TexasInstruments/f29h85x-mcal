@@ -11,18 +11,54 @@ title: Dio API GUIDE Header file
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
-|typedef uint32  | **[Dio_ChannelType](../Modules/group___d_i_o.md#typedef-dio-channeltype)** | Numeric ID of a DIO channel.  | 
-|typedef uint32  | **[Dio_PortType](../Modules/group___d_i_o.md#typedef-dio-porttype)** | Numeric ID of a DIO port.  | 
-|typedef uint8  | **[Dio_LevelType](../Modules/group___d_i_o.md#typedef-dio-leveltype)** | These are the possible levels a DIO channel can have (input or output).  | 
-|typedef uint32  | **[Dio_PortLevelType](../Modules/group___d_i_o.md#typedef-dio-portleveltype)** | If the uC owns ports of different port widths Dio_PortLevelType inherits the size of the largest port.  | 
+|typedef uint32  | **[Dio_ChannelType](../Modules/group___d_i_o.md#typedef-dio_channeltype)** | Numeric ID of a DIO channel.  | 
+|typedef uint32  | **[Dio_PortType](../Modules/group___d_i_o.md#typedef-dio_porttype)** | Numeric ID of a DIO port.  | 
+|typedef uint8  | **[Dio_LevelType](../Modules/group___d_i_o.md#typedef-dio_leveltype)** | These are the possible levels a DIO channel can have (input or output).  | 
+|typedef uint32  | **[Dio_PortLevelType](../Modules/group___d_i_o.md#typedef-dio_portleveltype)** | If the uC owns ports of different port widths Dio_PortLevelType inherits the size of the largest port.  | 
 
 
 
+### typedef Dio_ChannelType
+```
+typedef uint32 Dio_ChannelType;
+```
+
+
+**Brief**: 
+Numeric ID of a DIO channel. 
 
 
 
+### typedef Dio_PortType
+```
+typedef uint32 Dio_PortType;
+```
 
 
+**Brief**: 
+Numeric ID of a DIO port. 
+
+
+
+### typedef Dio_LevelType
+```
+typedef uint8 Dio_LevelType;
+```
+
+
+**Brief**: 
+These are the possible levels a DIO channel can have (input or output). 
+
+
+
+### typedef Dio_PortLevelType
+```
+typedef uint32 Dio_PortLevelType;
+```
+
+
+**Brief**: 
+If the uC owns ports of different port widths Dio_PortLevelType inherits the size of the largest port. 
 
 
 
@@ -79,22 +115,22 @@ title: Dio API GUIDE Header file
 
 | Return type    | Function Name           |      Brief        |
 | -------------- | ----------------------- | ----------------- |
-| void | **[Dio_GetVersionInfo](../Modules/group___d_i_o.md#function-dio-getversioninfo)**(Std_VersionInfoType * Versioninfo)| Service to get the version information of the module.  |
-| [Dio_LevelType](Modules/group___d_i_o.md#typedef-dio-leveltype) | **[Dio_ReadChannel](../Modules/group___d_i_o.md#function-dio-readchannel)**([Dio_ChannelType](Modules/group___d_i_o.md#typedef-dio-channeltype) ChannelId)| Returns the value of the specified DIO channel.  |
-| void | **[Dio_WriteChannel](../Modules/group___d_i_o.md#function-dio-writechannel)**([Dio_ChannelType](Modules/group___d_i_o.md#typedef-dio-channeltype) ChannelId, [Dio_LevelType](Modules/group___d_i_o.md#typedef-dio-leveltype) Level)| Service to set a level of a channel.  |
-| [Dio_PortLevelType](Modules/group___d_i_o.md#typedef-dio-portleveltype) | **[Dio_ReadPort](../Modules/group___d_i_o.md#function-dio-readport)**([Dio_PortType](Modules/group___d_i_o.md#typedef-dio-porttype) PortId)| Returns the level of all channels of that port.  |
-| void | **[Dio_WritePort](../Modules/group___d_i_o.md#function-dio-writeport)**([Dio_PortType](Modules/group___d_i_o.md#typedef-dio-porttype) PortId, [Dio_PortLevelType](Modules/group___d_i_o.md#typedef-dio-portleveltype) Level)| Service to set a value of the port.  |
-| [Dio_PortLevelType](Modules/group___d_i_o.md#typedef-dio-portleveltype) | **[Dio_ReadChannelGroup](../Modules/group___d_i_o.md#function-dio-readchannelgroup)**(const [Dio_ChannelGroupType](Classes/struct_dio___channel_group_type.md) * ChannelGroupIdPtr)| This Service reads a subset of the adjoining bits of a port.  |
-| void | **[Dio_WriteChannelGroup](../Modules/group___d_i_o.md#function-dio-writechannelgroup)**(const [Dio_ChannelGroupType](Classes/struct_dio___channel_group_type.md) * ChannelGroupIdPtr, [Dio_PortLevelType](Modules/group___d_i_o.md#typedef-dio-portleveltype) Level)| Service to set a subset of the adjoining bits of a port to a specified level.  |
-| [Dio_LevelType](Modules/group___d_i_o.md#typedef-dio-leveltype) | **[Dio_FlipChannel](../Modules/group___d_i_o.md#function-dio-flipchannel)**([Dio_ChannelType](Modules/group___d_i_o.md#typedef-dio-channeltype) ChannelId)| Service to flip the value of a DIO channel.  |
-| Std_ReturnType | **[Dio_IsChannelValid](../Modules/group___d_i_o.md#function-dio-ischannelvalid)**([Dio_ChannelType](Modules/group___d_i_o.md#typedef-dio-channeltype) ChannelId)| Checks if the channel ID is valid.  |
-| Std_ReturnType | **[Dio_IsChannelGroupValid](../Modules/group___d_i_o.md#function-dio-ischannelgroupvalid)**(const [Dio_ChannelGroupType](Classes/struct_dio___channel_group_type.md) * ChannelGroupIdPtr)| Checks if the channel group is valid.  |
-| [Dio_LevelType](Modules/group___d_i_o.md#typedef-dio-leveltype) | **[Dio_PinReadPriv](../Modules/group___d_i_o.md#function-dio-pinreadpriv)**([Dio_ChannelType](Modules/group___d_i_o.md#typedef-dio-channeltype) channelId)| Reads the value present on the specified pin.  |
-| void | **[Dio_PinWritePriv](../Modules/group___d_i_o.md#function-dio-pinwritepriv)**([Dio_ChannelType](Modules/group___d_i_o.md#typedef-dio-channeltype) channelId, [Dio_LevelType](Modules/group___d_i_o.md#typedef-dio-leveltype) channelVal)| Writes a value to the specified pin.  |
-| void | **[Dio_WritePortDataPriv](../Modules/group___d_i_o.md#function-dio-writeportdatapriv)**([Dio_PortType](Modules/group___d_i_o.md#typedef-dio-porttype) portId, [Dio_PortLevelType](Modules/group___d_i_o.md#typedef-dio-portleveltype) portValue)| Writes a value to the specified port.  |
-| void | **[Dio_WriteChannelGroupPriv](../Modules/group___d_i_o.md#function-dio-writechannelgrouppriv)**(const [Dio_ChannelGroupType](Classes/struct_dio___channel_group_type.md) * ChannelGroupIdPtr, [Dio_PortLevelType](Modules/group___d_i_o.md#typedef-dio-portleveltype) PortValue)| Writes a subset of the adjoining bits of a port to a specified level.  |
-| void | **[Dio_ReadPortDataPriv](../Modules/group___d_i_o.md#function-dio-readportdatapriv)**([Dio_PortType](Modules/group___d_i_o.md#typedef-dio-porttype) PortId, [Dio_PortLevelType](Modules/group___d_i_o.md#typedef-dio-portleveltype) * PortValue)| Reads the data on the specified port.  |
-| void | **[Dio_PinFlipVal](../Modules/group___d_i_o.md#function-dio-pinflipval)**([Dio_ChannelType](Modules/group___d_i_o.md#typedef-dio-channeltype) ChannelId)| Toggles the present value of the specified channel.  |
+| void | **[Dio_GetVersionInfo](../Modules/group___d_i_o.md#function-dio_getversioninfo)**(Std_VersionInfoType * Versioninfo)| Service to get the version information of the module.  |
+| [Dio_LevelType](../Modules/group___d_i_o.md#typedef-dio_leveltype) | **[Dio_ReadChannel](../Modules/group___d_i_o.md#function-dio_readchannel)**([Dio_ChannelType](../Modules/group___d_i_o.md#typedef-dio_channeltype) ChannelId)| Returns the value of the specified DIO channel.  |
+| void | **[Dio_WriteChannel](../Modules/group___d_i_o.md#function-dio_writechannel)**([Dio_ChannelType](../Modules/group___d_i_o.md#typedef-dio_channeltype) ChannelId, [Dio_LevelType](../Modules/group___d_i_o.md#typedef-dio_leveltype) Level)| Service to set a level of a channel.  |
+| [Dio_PortLevelType](../Modules/group___d_i_o.md#typedef-dio_portleveltype) | **[Dio_ReadPort](../Modules/group___d_i_o.md#function-dio_readport)**([Dio_PortType](../Modules/group___d_i_o.md#typedef-dio_porttype) PortId)| Returns the level of all channels of that port.  |
+| void | **[Dio_WritePort](../Modules/group___d_i_o.md#function-dio_writeport)**([Dio_PortType](../Modules/group___d_i_o.md#typedef-dio_porttype) PortId, [Dio_PortLevelType](../Modules/group___d_i_o.md#typedef-dio_portleveltype) Level)| Service to set a value of the port.  |
+| [Dio_PortLevelType](../Modules/group___d_i_o.md#typedef-dio_portleveltype) | **[Dio_ReadChannelGroup](../Modules/group___d_i_o.md#function-dio_readchannelgroup)**(const [Dio_ChannelGroupType](../Classes/struct_dio___channel_group_type.md) * ChannelGroupIdPtr)| This Service reads a subset of the adjoining bits of a port.  |
+| void | **[Dio_WriteChannelGroup](../Modules/group___d_i_o.md#function-dio_writechannelgroup)**(const [Dio_ChannelGroupType](../Classes/struct_dio___channel_group_type.md) * ChannelGroupIdPtr, [Dio_PortLevelType](../Modules/group___d_i_o.md#typedef-dio_portleveltype) Level)| Service to set a subset of the adjoining bits of a port to a specified level.  |
+| [Dio_LevelType](../Modules/group___d_i_o.md#typedef-dio_leveltype) | **[Dio_FlipChannel](../Modules/group___d_i_o.md#function-dio_flipchannel)**([Dio_ChannelType](../Modules/group___d_i_o.md#typedef-dio_channeltype) ChannelId)| Service to flip the value of a DIO channel.  |
+| Std_ReturnType | **[Dio_IsChannelValid](../Modules/group___d_i_o.md#function-dio_ischannelvalid)**([Dio_ChannelType](../Modules/group___d_i_o.md#typedef-dio_channeltype) ChannelId)| Checks if the channel ID is valid.  |
+| Std_ReturnType | **[Dio_IsChannelGroupValid](../Modules/group___d_i_o.md#function-dio_ischannelgroupvalid)**(const [Dio_ChannelGroupType](../Classes/struct_dio___channel_group_type.md) * ChannelGroupIdPtr)| Checks if the channel group is valid.  |
+| [Dio_LevelType](../Modules/group___d_i_o.md#typedef-dio_leveltype) | **[Dio_PinReadPriv](../Modules/group___d_i_o.md#function-dio_pinreadpriv)**([Dio_ChannelType](../Modules/group___d_i_o.md#typedef-dio_channeltype) channelId)| Reads the value present on the specified pin.  |
+| void | **[Dio_PinWritePriv](../Modules/group___d_i_o.md#function-dio_pinwritepriv)**([Dio_ChannelType](../Modules/group___d_i_o.md#typedef-dio_channeltype) channelId, [Dio_LevelType](../Modules/group___d_i_o.md#typedef-dio_leveltype) channelVal)| Writes a value to the specified pin.  |
+| void | **[Dio_WritePortDataPriv](../Modules/group___d_i_o.md#function-dio_writeportdatapriv)**([Dio_PortType](../Modules/group___d_i_o.md#typedef-dio_porttype) portId, [Dio_PortLevelType](../Modules/group___d_i_o.md#typedef-dio_portleveltype) portValue)| Writes a value to the specified port.  |
+| void | **[Dio_WriteChannelGroupPriv](../Modules/group___d_i_o.md#function-dio_writechannelgrouppriv)**(const [Dio_ChannelGroupType](../Classes/struct_dio___channel_group_type.md) * ChannelGroupIdPtr, [Dio_PortLevelType](../Modules/group___d_i_o.md#typedef-dio_portleveltype) PortValue)| Writes a subset of the adjoining bits of a port to a specified level.  |
+| void | **[Dio_ReadPortDataPriv](../Modules/group___d_i_o.md#function-dio_readportdatapriv)**([Dio_PortType](../Modules/group___d_i_o.md#typedef-dio_porttype) PortId, [Dio_PortLevelType](../Modules/group___d_i_o.md#typedef-dio_portleveltype) * PortValue)| Reads the data on the specified port.  |
+| void | **[Dio_PinFlipVal](../Modules/group___d_i_o.md#function-dio_pinflipval)**([Dio_ChannelType](../Modules/group___d_i_o.md#typedef-dio_channeltype) ChannelId)| Toggles the present value of the specified channel.  |
 
 
 
@@ -671,4 +707,4 @@ Toggles the corresponding bit values to the pin specified by _ChannelId_.
 
 
 
--------------------------------
+

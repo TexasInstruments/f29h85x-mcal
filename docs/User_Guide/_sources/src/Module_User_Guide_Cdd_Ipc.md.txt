@@ -304,6 +304,62 @@ This container contains the configuration parameters of the CddIpc Instances.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_IPC_CPU1_L_CPU2_R_INST0 |
 
+###### CddIpcTxChannelConfig
+This container contains the configuration parameters of the CddIpc channels.
+
+###### CddIpcTxChannelId
+
+| Item ||
+|--------|---------------|
+| **Name** | CddIpcTxChannelId |
+| **Description** | Channel ID specific to the selected instance, channels configured in the selected instance should have unique values. An instance can have 255 channels ranging from 1-255. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 255 |
+| **Min-value** | 1 |
+
+###### CddIpcTxProcessing
+
+| Item ||
+|--------|---------------|
+| **Name** | CddIpcTxProcessing |
+| **Description** | Selects the Tx processing type.                                                 If CddIpcTxProcessing is selected as CDD_IPC_INTERRUPT, the transmit request triggers an interrupt on the other core.                                                If CddIpcTxProcessing is selected as CDD_IPC_POLLING, the transmit request doesn't trigger any interrupts on the other core. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_IPC_INTERRUPT |
+
+###### CddIpcTxGlobalChannelId
+
+| Item ||
+|--------|---------------|
+| **Name** | CddIpcTxGlobalChannelId |
+| **Description** | This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is disabled. This channel identifier will be used in transmit function to address the respective channel.  |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 9223372036854775807 |
+| **Min-value** | -9223372036854775808 |
+
+###### CddIpcTxPduID
+
+| Item ||
+|--------|---------------|
+| **Name** | CddIpcTxPduID |
+| **Description** | Reference to PduId. This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in transmit function to address the respective channel.  |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
 ##### CddIpcRxInstanceConfig
 This container contains the configuration parameters of the CddIpc Instances.
 
@@ -331,6 +387,63 @@ This container contains the configuration parameters of the CddIpc Instances.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | ISR_CAT2_INT |
 | **Range** | ISR_CAT1_RTINT<br>ISR_CAT1_INT<br>ISR_CAT2_INT |
+
+###### CddIpcRxChannelConfig
+This container contains the configuration parameters of the CddIpc channels.
+
+###### CddIpcRxChannelId
+
+| Item ||
+|--------|---------------|
+| **Name** | CddIpcRxChannelId |
+| **Description** | Channel ID specific to the selected instance, channels configured in the selected instance should have unique values. An instance can have 255 channels ranging from 1-255. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 255 |
+| **Min-value** | 1 |
+
+###### CddIpcUserCallbackFunction
+
+| Item ||
+|--------|---------------|
+| **Name** | CddIpcUserCallbackFunction |
+| **Description** | Call back function for the data during reception |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
+
+###### CddIpcRxGlobalChannelId
+
+| Item ||
+|--------|---------------|
+| **Name** | CddIpcRxGlobalChannelId |
+| **Description** | This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is disabled. This channel object identifier will be used in configured receive callback function to  address the received message from respective channel. |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 9223372036854775807 |
+| **Min-value** | -9223372036854775808 |
+
+###### CddIpcRxPduID
+
+| Item ||
+|--------|---------------|
+| **Name** | CddIpcRxPduID |
+| **Description** | Reference to Pduid. This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in receive function callback to PduR to address the received Pdu from respective channel.  |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 #### CddComStackContribution
 Contribution of COM Stack modules.
@@ -556,7 +669,7 @@ The example applications demonstrates usecases of the Cdd Ipc driver APIs. The e
 
 #### Sample Logs of Cdd_Ipc_Example_Interrupt_C29x1
 
-```{EXAMPLE LOGS}
+```{code-block}
 Sample Application - STARTS !!!
 CDD IPC MCAL Version Info
 ---------------------
@@ -606,7 +719,7 @@ PASS: IPC example between CPU1 and CPU3 executed successfully
 
 #### Sample Logs of Cdd_Ipc_Example_Polling_C29x1
 
-```{EXAMPLE LOGS}
+```{code-block}
 Sample Application - STARTS !!!
 CDD IPC MCAL Version Info
 ---------------------

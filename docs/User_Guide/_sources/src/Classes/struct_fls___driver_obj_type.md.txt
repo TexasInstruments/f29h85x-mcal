@@ -1,15 +1,18 @@
 ---
+orphan: true
+---
+
+---
 title: Fls_DriverObjType
+summary: FLS Driver Object, global information used by module. 
 
 ---
 
 # Fls_DriverObjType
 
-**Module:** **[Fls API GUIDE Header file](../Modules/group___f_l_s.md)**
 
 
-
- [More...](#detailed-description)
+FLS Driver Object, global information used by module. 
 
 
 `#include <Fls_Priv.h>`
@@ -19,32 +22,23 @@ title: Fls_DriverObjType
 |  Member Type   | Member name    | Brief |
 | -------------- | -------------- | ----- |
 |  Fls_JobEndNotifyType | Fls_JobEndNotification |  |
-|  Fls_JobErrorNotifyType | Fls_JobErrorNotification |  |
-|  uint32 | FlsMaxReadFastMode |  |
-|  uint32 | FlsMaxWriteFastMode |  |
-|  uint32 | FlsMaxReadNormalMode |  |
-|  uint32 | FlsMaxWriteNormalMode |  |
-|  [Fls_SectorType](Classes/struct_fls___sector_type.md)[FLS_NUMBER_OF_SECTOR_CFG] | sectorList |  |
-|  MemIf_StatusType | status |  |
-|  MemIf_JobResultType | jobResultType |  |
-|  [Fls_JobType](Modules/group___f_l_s.md#enum-fls-jobtype) | jobType |  |
-|  [Fls_AddressType](Modules/group___f_l_s.md#typedef-fls-addresstype) | flashAddr |  |
-|  uint8 * | ramAddr |  |
-|  Fls_LengthType | length |  |
+|  Fls_JobErrorNotifyType | Fls_JobErrorNotification |  Mapped to the job end notification routine provided by some upper layer module, typically the Fee module.  |
+|  uint32 | FlsMaxReadFastMode |  Mapped to the job error notification routine provided by some upper layer module, typically the Fee module.  |
+|  uint32 | FlsMaxWriteFastMode |  The maximum number of bytes to read or compare in one cycle of the flash driver's job processing function in Fast mode.  |
+|  uint32 | FlsMaxReadNormalMode |  The maximum number of bytes to write in one cycle of the flash driver's job processing function in Fast mode.  |
+|  uint32 | FlsMaxWriteNormalMode |  The maximum number of bytes to read or compare in one cycle of the flash driver's job processing function in normal mode.  |
+|  [Fls_SectorType](../Classes/struct_fls___sector_type.md)[FLS_NUMBER_OF_SECTOR_CFG] | sectorList |  The maximum number of bytes to write in one cycle of the flash driver's job processing function in normal mode.  |
+|  MemIf_StatusType | status |  The maximum number of bytes to write in one cycle of the flash driver's job processing function in normal mode. Using Fls Info Structure instead of this for now.  |
+|  MemIf_JobResultType | jobResultType |  Current Module Status update variable.  |
+|  [Fls_JobType](../Modules/group___f_l_s.md#enum-fls_jobtype) | jobType |  Current Job Result update variable.  |
+|  [Fls_AddressType](../Modules/group___f_l_s.md#typedef-fls_addresstype) | flashAddr |  Current running job type.  |
+|  uint8 * | ramAddr |  Flash Address for the current job.  |
+|  [Fls_LengthType](../Modules/group___f_l_s.md#typedef-fls_lengthtype) | length |  Ram Address pointer for the current job.  |
 |  MemIf_ModeType | mode |  |
-|  uint32 | jobChunkSize |  |
-|  Fls_LengthType | transferred |  |
-|  uint32 | postBlankCheckFlashaddr |  |
-|  uint32 | prevFlashaddr |  |
-|  [Fls_EraseType](Modules/group___f_l_s.md#enum-fls-erasetype) | typeoferase |  |
-
-## Detailed Description
-
-```cpp
-struct Fls_DriverObjType;
-```
+|  uint32 | jobChunkSize |  Module mode setup for current job - SLOW for now.  |
+|  [Fls_LengthType](../Modules/group___f_l_s.md#typedef-fls_lengthtype) | transferred |  Length of Data to be transfer in current call cycle.  |
+|  uint32 | postBlankCheckFlashaddr |  Flash Post Blank Check Address.  |
+|  uint32 | prevFlashaddr |  Flash Previous Address.  |
+|  [Fls_EraseType](../Modules/group___f_l_s.md#enum-fls_erasetype) | typeoferase |  Size of Data has been transferred.  |
 
 
-\breif FLS Driver Object, global information used by module. 
-
--------------------------------

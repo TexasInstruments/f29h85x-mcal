@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.00
+                01.02.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -80,6 +80,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#enum-cdd-ipc-coretype">5.12.1.1. enum Cdd_Ipc_CoreType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-cdd-ipc-txprocessingtype">5.12.1.2. enum Cdd_Ipc_TxProcessingType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-cdd-ipc-instancetype">5.12.1.3. enum Cdd_Ipc_InstanceType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-ipc-remotecoretype">5.12.1.4. typedef Cdd_Ipc_RemoteCoreType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-ipc-notifytype">5.12.1.5. typedef Cdd_Ipc_NotifyType</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#structures">5.12.2. Structures</a></li>
@@ -339,6 +341,22 @@ IPC Tx processing.</p>
 <p><strong>Brief</strong>:
 IPC Instance type.</p>
 </section>
+<section id="typedef-cdd-ipc-remotecoretype">
+<h3><span class="section-number">5.12.1.4. </span>typedef Cdd_Ipc_RemoteCoreType<a class="headerlink" href="#typedef-cdd-ipc-remotecoretype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Cdd_Ipc_RemoteCoreType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Specifies ID of the remote core</p>
+</section>
+<section id="typedef-cdd-ipc-notifytype">
+<h3><span class="section-number">5.12.1.5. </span>typedef Cdd_Ipc_NotifyType<a class="headerlink" href="#typedef-cdd-ipc-notifytype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_Ipc_NotifyType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">PduInfoType</span><span class="w"> </span><span class="o">*</span><span class="n">PduInfoPtr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Notification callback function pointer.</p>
+</section>
 </section>
 <section id="structures">
 <h2><span class="section-number">5.12.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
@@ -491,7 +509,7 @@ IPC Instance type.</p>
 <td><p>IPC FLAG 1 - Indicates polling mode.</p></td>
 </tr>
 <tr class="row-even"><td><p>CDD_IPC_FLAG2</p></td>
-<td><p>IPC FLAG 2 - Reserved for syncronization of CPUs.</p></td>
+<td><p>IPC FLAG 2 - Reserved for syncronization of CPUs \ .</p></td>
 </tr>
 <tr class="row-odd"><td><p>CDD_IPC_COMMBYTE</p></td>
 <td><p>Macro to define the upper byte index that can be transmitted/received in command register.</p></td>
@@ -529,11 +547,11 @@ IPC Instance type.</p>
 <td><p>Service to provide the version information of Cdd Ipc module.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-init"><span class="std std-ref">Cdd_Ipc_Init</span></a></strong>(const <a class="reference internal" href="#Classes/struct_cdd___ipc___config_type.md"><span class="xref myst">Cdd_Ipc_ConfigType</span></a> * ConfigPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ipc-init"><span class="std std-ref">Cdd_Ipc_Init</span></a></strong>(const <a class="reference internal" href="../Classes/struct_cdd___ipc___config_type.html"><span class="std std-doc">Cdd_Ipc_ConfigType</span></a> * ConfigPtr)</p></td>
 <td><p>Service to initialize CDD IPC driver.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-sync"><span class="std std-ref">Cdd_Ipc_Sync</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-remotecoretype"><span class="xref myst">Cdd_Ipc_RemoteCoreType</span></a> RemoteCore)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ipc-sync"><span class="std std-ref">Cdd_Ipc_Sync</span></a></strong>(<a class="reference internal" href="#typedef-cdd-ipc-remotecoretype"><span class="std std-ref">Cdd_Ipc_RemoteCoreType</span></a> RemoteCore)</p></td>
 <td><p>Service to synchronise two cores communicating in IPC communication within a preconfigured timeout.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
@@ -553,11 +571,11 @@ IPC Instance type.</p>
 <td><p>Service to read the timestamp counter value.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-setcfgobj"><span class="std std-ref">Cdd_Ipc_SetCfgObj</span></a></strong>(const <a class="reference internal" href="#Classes/struct_cdd___ipc___config_type.md"><span class="xref myst">Cdd_Ipc_ConfigType</span></a> * ConfigPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ipc-setcfgobj"><span class="std std-ref">Cdd_Ipc_SetCfgObj</span></a></strong>(const <a class="reference internal" href="../Classes/struct_cdd___ipc___config_type.html"><span class="std std-doc">Cdd_Ipc_ConfigType</span></a> * ConfigPtr)</p></td>
 <td><p>Sets the configuration pointer.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-sync-process"><span class="std std-ref">Cdd_Ipc_Sync_Process</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-remotecoretype"><span class="xref myst">Cdd_Ipc_RemoteCoreType</span></a> RemoteCore)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ipc-sync-process"><span class="std std-ref">Cdd_Ipc_Sync_Process</span></a></strong>(<a class="reference internal" href="#typedef-cdd-ipc-remotecoretype"><span class="std std-ref">Cdd_Ipc_RemoteCoreType</span></a> RemoteCore)</p></td>
 <td><p>Synchronises two cores for inter process communication.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
@@ -581,15 +599,15 @@ IPC Instance type.</p>
 <td><p>Copies the data to be transmitted from PduInfoPtr to command registers.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-acknowledge"><span class="std std-ref">Cdd_Ipc_Acknowledge</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype"><span class="xref myst">Cdd_Ipc_InstanceType</span></a> Instance)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ipc-acknowledge"><span class="std std-ref">Cdd_Ipc_Acknowledge</span></a></strong>(<a class="reference internal" href="#enum-cdd-ipc-instancetype"><span class="std std-ref">Cdd_Ipc_InstanceType</span></a> Instance)</p></td>
 <td><p>Acknowledges the reception of a PDU.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-getrxidxpriv"><span class="std std-ref">Cdd_Ipc_GetRxIdxPriv</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype"><span class="xref myst">Cdd_Ipc_InstanceType</span></a> Instance, uint8 * InstanceIndex, uint8 * ChannelIndex)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ipc-getrxidxpriv"><span class="std std-ref">Cdd_Ipc_GetRxIdxPriv</span></a></strong>(<a class="reference internal" href="#enum-cdd-ipc-instancetype"><span class="std std-ref">Cdd_Ipc_InstanceType</span></a> Instance, uint8 * InstanceIndex, uint8 * ChannelIndex)</p></td>
 <td><p>Finds the Rx instance index and Rx channel index for the given instance.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-getrxchidx"><span class="std std-ref">Cdd_Ipc_GetRxChIdx</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype"><span class="xref myst">Cdd_Ipc_InstanceType</span></a> Instance, uint8 InstanceIndex, uint8 * ChannelIndex)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ipc-getrxchidx"><span class="std std-ref">Cdd_Ipc_GetRxChIdx</span></a></strong>(<a class="reference internal" href="#enum-cdd-ipc-instancetype"><span class="std std-ref">Cdd_Ipc_InstanceType</span></a> Instance, uint8 InstanceIndex, uint8 * ChannelIndex)</p></td>
 <td><p>Finds the Rx channel index for the given instance.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
@@ -597,7 +615,7 @@ IPC Instance type.</p>
 <td><p>Finds the Tx instance index and Tx channel index for the given Pdu.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-processisr"><span class="std std-ref">Cdd_Ipc_ProcessIsr</span></a></strong>(<a class="reference internal" href="#Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype"><span class="xref myst">Cdd_Ipc_InstanceType</span></a> Instance)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ipc-processisr"><span class="std std-ref">Cdd_Ipc_ProcessIsr</span></a></strong>(<a class="reference internal" href="#enum-cdd-ipc-instancetype"><span class="std std-ref">Cdd_Ipc_InstanceType</span></a> Instance)</p></td>
 <td><p>Invoked by the respective IPC instance ISR.</p></td>
 </tr>
 <tr class="row-odd"><td><p>boolean</p></td>
@@ -1113,7 +1131,6 @@ Returns the timestamp counter value.</p>
 <p><strong>Return</strong>: 64-bit timestamp counter value</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
-<hr class="docutils" />
 </section>
 </section>
 </section>
@@ -1130,7 +1147,7 @@ Returns the timestamp counter value.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Apr 13, 2025.
+          <span class="lastupdated" >Last updated on Jun 09, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1147,7 +1164,7 @@ Returns the timestamp counter value.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.00
+       Current Version: 01.02.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

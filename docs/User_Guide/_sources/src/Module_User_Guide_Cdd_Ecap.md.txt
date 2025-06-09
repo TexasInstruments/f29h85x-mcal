@@ -331,20 +331,6 @@ Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Treso
 #### CddEcapConfigSet
 This container contains the configuration parameters and sub containers of the AUTOSAR CddEcap module.
 
-##### CddEcapMaxChannel
-
-| Item ||
-|--------|---------------|
-| **Name** | CddEcapMaxChannel |
-| **Description** | This parameter contains the number of Channels configured. It will be gathered by tools during the configuration stage. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | true |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 1 |
-| **Max-value** | 5 |
-| **Min-value** | 0 |
-
 ##### CddEcapChannel
 Configuration of an individual CDD ECAP channel.
 
@@ -369,7 +355,7 @@ Configuration of an individual CDD ECAP channel.
 | **Name** | CddEcapDefaultStartEdge |
 | **Description** | Configures the default-activation-edge which shall be used for this channel if there was no activation-edge configured by the call of service CddEcap_SetActivationCondition(). |
 | **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | true |
+| **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ECAP_RISING_EDGE |
@@ -382,7 +368,7 @@ Configuration of an individual CDD ECAP channel.
 | **Name** | CddEcapInputSelect |
 | **Description** | Configures the source to be used in order to give CDD ECAP the required input |
 | **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | true |
+| **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ECAP_INPUT_INPUTXBAR1 |
@@ -407,7 +393,7 @@ Configuration of an individual CDD ECAP channel.
 | **Name** | CddEcapMeasurementMode |
 | **Description** | Configures the measurement mode of this channel. |
 | **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | true |
+| **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ECAP_MODE_EDGE_COUNTER |
@@ -460,7 +446,7 @@ This container contains the configuration (parameters) in case the measurement m
 | **Name** | CddEcapSignalMeasurementProperty |
 | **Description** | Configures the property that could be measured in case the mode is "CddEcapSignalMeasurement". |
 | **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | true |
+| **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ECAP_HIGH_TIME |
@@ -476,7 +462,7 @@ This container contains the configuration (parameters) in case the measurement m
 | **Name** | CddEcapTimestampMeasurementProperty |
 | **Description** | Configures the handling of the buffer in case the mode is "Timestamp" |
 | **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | true |
+| **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ECAP_CIRCULAR_BUFFER |
@@ -489,11 +475,10 @@ This container contains the configuration (parameters) in case the measurement m
 | **Name** | CddEcapTimestampNotification |
 | **Description** | Notification function if the number of requested timestamps |
 | **Multiplicity-Configuration-Class** | -- |
-| Post-Build Time | VARIANT-POST-BUILD |
 | Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
-| **Post-build-variant-multiplicity** | true |
-| **Post-Build-Variant-Value** | true |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
@@ -508,11 +493,10 @@ This container contains the configuration (parameters) in case the measurement m
 | **Name** | CddEcapSignalNotification |
 | **Description** | Notification function for signal notification. |
 | **Multiplicity-Configuration-Class** | -- |
-| Post-Build Time | VARIANT-POST-BUILD |
 | Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
-| **Post-build-variant-multiplicity** | true |
-| **Post-Build-Variant-Value** | true |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | NULL_PTR |
@@ -678,7 +662,7 @@ PWM signal (EPWM1_A) is generated on the GPIO0.
 
 #### Sample Logs of Cdd_Ecap_Capture_Signal
 
-```{EXAMPLE LOGS}
+```{code-block}
 Executing Cdd_Ecap_Capture_Signal example
 High time of the signal is: 251
 Period of the signal is: 1002
