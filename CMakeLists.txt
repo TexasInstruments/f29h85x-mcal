@@ -40,22 +40,6 @@ macro(CPU3MERGE PROJECT_NAME PROJECT_BIN_PATH CPU3_PROJECT_NAME CPU3_OUT_PATH)
 
 
 endmacro()
-
-# Option to enable Code Coverage Instrumentation
-option(CODE_COVERAGE "Determines whether to enable Code Coverage" OFF)
-
-# Enable / Disable Code Coverage for all the modules
-if(${CODE_COVERAGE})
-  message("\nConfiguring CMake to enable Code Coverage\n")
-
-  add_compile_options(-fprofile-instr-generate)
-  
-  add_compile_options(-fcoverage-mapping)
-
-  add_compile_options(-fmcdc)
-
-endif(${CODE_COVERAGE})
-
 # Settings specific for FLASH build configuration
 if(BUILD_CONFIGURATION MATCHES "FLASH")
 
@@ -80,12 +64,3 @@ endif()
 # Build driver examples
 message("Configuring CMake to build examples\n")
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
-
-# Option to enable the build for tests
-option(BUILD_TESTS "Determines whether to build tests" OFF)
-
-# Build tests for all the modules when enabled
-if(${BUILD_TESTS})
-  message("\nConfiguring CMake to build tests when BUILD_TESTS is ON\n")
-  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests) 
-endif(${BUILD_TESTS})

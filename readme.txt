@@ -1,6 +1,6 @@
 Documentation
 ==============
-1. Release notes is available at {install_directory} - mcal_release_notes.pdf
+1. Release notes are available at {install_directory} - mcal_release_notes.pdf
 2. MCAL User Guide is located at - {install_directory}/docs/User_Guide/index.html. Online version of User Guide is also available at - https://software-dl.ti.com/C2000/docs/mcal/F29H85x/latest/index.html.
 3. Test Reports for each module are available at - {install_directory}/docs/Test_Report
 
