@@ -181,7 +181,7 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_ConfigObj =
                 .externalDeviceId = (uint8)0U,
                 .csEnable = (uint16) FALSE,
                 .csPolarity = STD_LOW,
-                .clkDivider = (uint32) 0U,
+                .clkDivider = (uint32) 21U,
                 .clkMode = (Spi_ClkMode) SPI_CLK_MODE_0,
                 .wordDelay = (Spi_DataDelayType) 0U,
             },

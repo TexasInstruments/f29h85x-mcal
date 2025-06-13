@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.00
+                01.02.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -76,6 +76,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#enum-gpt-modetype">5.4.1.5. enum Gpt_ModeType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-gpt-notificationstatetype">5.4.1.6. enum Gpt_NotificationStateType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-gpt-channelstatetype">5.4.1.7. enum Gpt_ChannelStateType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-gpt-channeltype">5.4.1.8. typedef Gpt_ChannelType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-gpt-channelbaseaddrtype">5.4.1.9. typedef Gpt_ChannelBaseAddrType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-gpt-valuetype">5.4.1.10. typedef Gpt_ValueType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-gpt-prescalevaluetype">5.4.1.11. typedef Gpt_PrescaleValueType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-gpt-notifytype">5.4.1.12. typedef Gpt_NotifyType</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#structures">5.4.2. Structures</a></li>
@@ -393,6 +398,46 @@ GPT channel notification enable/disable status. This indicates if the notificati
 <p><strong>Brief</strong>:
 GPT channel state. GPT will be in one of this state during its lifetime.</p>
 </section>
+<section id="typedef-gpt-channeltype">
+<h3><span class="section-number">5.4.1.8. </span>typedef Gpt_ChannelType<a class="headerlink" href="#typedef-gpt-channeltype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Gpt_ChannelType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Numeric ID of a GPT channel.</p>
+</section>
+<section id="typedef-gpt-channelbaseaddrtype">
+<h3><span class="section-number">5.4.1.9. </span>typedef Gpt_ChannelBaseAddrType<a class="headerlink" href="#typedef-gpt-channelbaseaddrtype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Gpt_ChannelBaseAddrType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Base address of a GPT channel.</p>
+</section>
+<section id="typedef-gpt-valuetype">
+<h3><span class="section-number">5.4.1.10. </span>typedef Gpt_ValueType<a class="headerlink" href="#typedef-gpt-valuetype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Gpt_ValueType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Type for reading and setting the timer values(in number of ticks).</p>
+</section>
+<section id="typedef-gpt-prescalevaluetype">
+<h3><span class="section-number">5.4.1.11. </span>typedef Gpt_PrescaleValueType<a class="headerlink" href="#typedef-gpt-prescalevaluetype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint16</span><span class="w"> </span><span class="n">Gpt_PrescaleValueType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Prescale value for General purpose timer channels.</p>
+</section>
+<section id="typedef-gpt-notifytype">
+<h3><span class="section-number">5.4.1.12. </span>typedef Gpt_NotifyType<a class="headerlink" href="#typedef-gpt-notifytype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Gpt_NotifyType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Notification callback function pointer.</p>
+</section>
 </section>
 <section id="structures">
 <h2><span class="section-number">5.4.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
@@ -541,39 +586,39 @@ GPT channel state. GPT will be in one of this state during its lifetime.</p>
 <td><p>Gpt_GetVersionInfo : Returns the Gpt Version Info.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-init"><span class="std std-ref">Gpt_Init</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___config_type.md"><span class="xref myst">Gpt_ConfigType</span></a> * ConfigPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-init"><span class="std std-ref">Gpt_Init</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___config_type.html"><span class="std std-doc">Gpt_ConfigType</span></a> * ConfigPtr)</p></td>
 <td><p>Gpt_Init : Initializes the Gpt module.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-gpt-deinit"><span class="std std-ref">Gpt_DeInit</span></a></strong>(void )</p></td>
 <td><p>Gpt_DeInit : De-initializes the GPT module.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-valuetype"><span class="xref myst">Gpt_ValueType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-gettimeelapsed"><span class="std std-ref">Gpt_GetTimeElapsed</span></a></strong>(<a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-channeltype"><span class="xref myst">Gpt_ChannelType</span></a> Channel)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#typedef-gpt-valuetype"><span class="std std-ref">Gpt_ValueType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-gettimeelapsed"><span class="std std-ref">Gpt_GetTimeElapsed</span></a></strong>(<a class="reference internal" href="#typedef-gpt-channeltype"><span class="std std-ref">Gpt_ChannelType</span></a> Channel)</p></td>
 <td><p>Gpt_GetTimeElapsed : Returns the time elapsed for a given channel.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-valuetype"><span class="xref myst">Gpt_ValueType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-gettimeremaining"><span class="std std-ref">Gpt_GetTimeRemaining</span></a></strong>(<a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-channeltype"><span class="xref myst">Gpt_ChannelType</span></a> Channel)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#typedef-gpt-valuetype"><span class="std std-ref">Gpt_ValueType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-gettimeremaining"><span class="std std-ref">Gpt_GetTimeRemaining</span></a></strong>(<a class="reference internal" href="#typedef-gpt-channeltype"><span class="std std-ref">Gpt_ChannelType</span></a> Channel)</p></td>
 <td><p>Gpt_GetTimeRemaining : Returns the time remaining for a given channel.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-starttimer"><span class="std std-ref">Gpt_StartTimer</span></a></strong>(<a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-channeltype"><span class="xref myst">Gpt_ChannelType</span></a> Channel, <a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-valuetype"><span class="xref myst">Gpt_ValueType</span></a> Value)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-starttimer"><span class="std std-ref">Gpt_StartTimer</span></a></strong>(<a class="reference internal" href="#typedef-gpt-channeltype"><span class="std std-ref">Gpt_ChannelType</span></a> Channel, <a class="reference internal" href="#typedef-gpt-valuetype"><span class="std std-ref">Gpt_ValueType</span></a> Value)</p></td>
 <td><p>Gpt_StartTimer : Starts a timer channel.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-stoptimer"><span class="std std-ref">Gpt_StopTimer</span></a></strong>(<a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-channeltype"><span class="xref myst">Gpt_ChannelType</span></a> Channel)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-stoptimer"><span class="std std-ref">Gpt_StopTimer</span></a></strong>(<a class="reference internal" href="#typedef-gpt-channeltype"><span class="std std-ref">Gpt_ChannelType</span></a> Channel)</p></td>
 <td><p>Gpt_StopTimer : Stops a timer channel.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-setmode"><span class="std std-ref">Gpt_SetMode</span></a></strong>(<a class="reference internal" href="#Modules/group___g_p_t.md#enum-gpt-modetype"><span class="xref myst">Gpt_ModeType</span></a> Mode)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-setmode"><span class="std std-ref">Gpt_SetMode</span></a></strong>(<a class="reference internal" href="#enum-gpt-modetype"><span class="std std-ref">Gpt_ModeType</span></a> Mode)</p></td>
 <td><p>Gpt_SetMode : Sets the operation mode of the GPT.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-disablewakeup"><span class="std std-ref">Gpt_DisableWakeup</span></a></strong>(<a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-channeltype"><span class="xref myst">Gpt_ChannelType</span></a> Channel)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-disablewakeup"><span class="std std-ref">Gpt_DisableWakeup</span></a></strong>(<a class="reference internal" href="#typedef-gpt-channeltype"><span class="std std-ref">Gpt_ChannelType</span></a> Channel)</p></td>
 <td><p>Gpt_DisableWakeup : Disables the wakeup interrupt of a channel (relevant in sleep mode).</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-enablewakeup"><span class="std std-ref">Gpt_EnableWakeup</span></a></strong>(<a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-channeltype"><span class="xref myst">Gpt_ChannelType</span></a> Channel)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-enablewakeup"><span class="std std-ref">Gpt_EnableWakeup</span></a></strong>(<a class="reference internal" href="#typedef-gpt-channeltype"><span class="std std-ref">Gpt_ChannelType</span></a> Channel)</p></td>
 <td><p>Gpt_EnableWakeup : Enables the wakeup interrupt of a channel (relevant in sleep mode).</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
@@ -581,55 +626,55 @@ GPT channel state. GPT will be in one of this state during its lifetime.</p>
 <td><p>Gpt_CheckWakeup : Checks if a wakeup capable GPT channel is the source for a wakeup event and calls the ECU state manager service EcuM_SetWakeupEvent in case of a valid GPT channel wakeup event.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-setdriverobjptr"><span class="std std-ref">Gpt_SetDriverObjPtr</span></a></strong>(<a class="reference internal" href="#Classes/struct_gpt___driver_obj_type.md"><span class="xref myst">Gpt_DriverObjType</span></a> * Set_DrvObj)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-setdriverobjptr"><span class="std std-ref">Gpt_SetDriverObjPtr</span></a></strong>(<a class="reference internal" href="../Classes/struct_gpt___driver_obj_type.html"><span class="std std-doc">Gpt_DriverObjType</span></a> * Set_DrvObj)</p></td>
 <td><p>Set the Gpt driver object into global pointer.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-deinitpriv"><span class="std std-ref">Gpt_DeInitPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___channel_config_type.md"><span class="xref myst">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-deinitpriv"><span class="std std-ref">Gpt_DeInitPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___channel_config_type.html"><span class="std std-doc">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
 <td><p>Deinitializes the timer hardware to reset state.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-initpriv"><span class="std std-ref">Gpt_InitPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___channel_config_type.md"><span class="xref myst">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-initpriv"><span class="std std-ref">Gpt_InitPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___channel_config_type.html"><span class="std std-doc">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
 <td><p>Initialize the timer instance.</p></td>
 </tr>
 <tr class="row-even"><td><p>uint32</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-getcurcountpriv"><span class="std std-ref">Gpt_GetCurCountPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___channel_config_type.md"><span class="xref myst">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-getcurcountpriv"><span class="std std-ref">Gpt_GetCurCountPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___channel_config_type.html"><span class="std std-doc">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
 <td><p>Get the current timer count.</p></td>
 </tr>
 <tr class="row-odd"><td><p>uint32</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-getprdcountpriv"><span class="std std-ref">Gpt_GetPrdCountPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___channel_config_type.md"><span class="xref myst">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-getprdcountpriv"><span class="std std-ref">Gpt_GetPrdCountPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___channel_config_type.html"><span class="std std-doc">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
 <td><p>Get the timer period count.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-starttimerpriv"><span class="std std-ref">Gpt_StartTimerPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___channel_config_type.md"><span class="xref myst">Gpt_ChannelConfigType</span></a> * ChannelObj, uint32 count)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-starttimerpriv"><span class="std std-ref">Gpt_StartTimerPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___channel_config_type.html"><span class="std std-doc">Gpt_ChannelConfigType</span></a> * ChannelObj, uint32 count)</p></td>
 <td><p>Start the timer.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-stoptimerpriv"><span class="std std-ref">Gpt_StopTimerPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___channel_config_type.md"><span class="xref myst">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-stoptimerpriv"><span class="std std-ref">Gpt_StopTimerPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___channel_config_type.html"><span class="std std-doc">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
 <td><p>Stop the timer.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-clrovfflagpriv"><span class="std std-ref">Gpt_ClrOvfFlagPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___channel_config_type.md"><span class="xref myst">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-clrovfflagpriv"><span class="std std-ref">Gpt_ClrOvfFlagPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___channel_config_type.html"><span class="std std-doc">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
 <td><p>Clear the Timer Overflow flag.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-enableintpriv"><span class="std std-ref">Gpt_EnableIntPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___channel_config_type.md"><span class="xref myst">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-enableintpriv"><span class="std std-ref">Gpt_EnableIntPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___channel_config_type.html"><span class="std std-doc">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
 <td><p>Enable the timer interrupt.</p></td>
 </tr>
 <tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-disableintpriv"><span class="std std-ref">Gpt_DisableIntPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___channel_config_type.md"><span class="xref myst">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-disableintpriv"><span class="std std-ref">Gpt_DisableIntPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___channel_config_type.html"><span class="std std-doc">Gpt_ChannelConfigType</span></a> * ChannelObj)</p></td>
 <td><p>Disable the timer interrupt.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-getchidxpriv"><span class="std std-ref">Gpt_GetChIdxPriv</span></a></strong>(const <a class="reference internal" href="#Classes/struct_gpt___driver_obj_type.md"><span class="xref myst">Gpt_DriverObjType</span></a> * GptDrvObj, <a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-channeltype"><span class="xref myst">Gpt_ChannelType</span></a> Channel, uint32 * ChannelIndex)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-getchidxpriv"><span class="std std-ref">Gpt_GetChIdxPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_gpt___driver_obj_type.html"><span class="std std-doc">Gpt_DriverObjType</span></a> * GptDrvObj, <a class="reference internal" href="#typedef-gpt-channeltype"><span class="std std-ref">Gpt_ChannelType</span></a> Channel, uint32 * ChannelIndex)</p></td>
 <td><p>Get the array index of a channel from configuration array/vector.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-getpredeftimervalue"><span class="std std-ref">Gpt_GetPredefTimerValue</span></a></strong>(<a class="reference internal" href="#Modules/group___g_p_t.md#enum-gpt-predeftimertype"><span class="xref myst">Gpt_PredefTimerType</span></a> PredefTimer, uint32 * TimeValuePtr)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-getpredeftimervalue"><span class="std std-ref">Gpt_GetPredefTimerValue</span></a></strong>(<a class="reference internal" href="#enum-gpt-predeftimertype"><span class="std std-ref">Gpt_PredefTimerType</span></a> PredefTimer, uint32 * TimeValuePtr)</p></td>
 <td><p>Gpt_GetPredefTimerValue : Delivers the current value of the desired GPT Predef Timer.</p></td>
 </tr>
 <tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-gpt-isrnotifyfunction"><span class="std std-ref">Gpt_IsrNotifyFunction</span></a></strong>(<a class="reference internal" href="#Modules/group___g_p_t.md#typedef-gpt-channeltype"><span class="xref myst">Gpt_ChannelType</span></a> Channel)</p></td>
+<td><p><strong><a class="reference internal" href="#function-gpt-isrnotifyfunction"><span class="std std-ref">Gpt_IsrNotifyFunction</span></a></strong>(<a class="reference internal" href="#typedef-gpt-channeltype"><span class="std std-ref">Gpt_ChannelType</span></a> Channel)</p></td>
 <td><p>Gpt_IsrNotifyFunction: Invoked by the respective timer channel ISR.</p></td>
 </tr>
 </tbody>
@@ -1126,7 +1171,6 @@ Gpt_IsrNotifyFunction: Invoked by the respective timer channel ISR.</p>
 <p><strong>Return</strong>: None</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
-<hr class="docutils" />
 </section>
 </section>
 </section>
@@ -1143,7 +1187,7 @@ Gpt_IsrNotifyFunction: Invoked by the respective timer channel ISR.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Apr 13, 2025.
+          <span class="lastupdated" >Last updated on Jun 09, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1160,7 +1204,7 @@ Gpt_IsrNotifyFunction: Invoked by the respective timer channel ISR.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.00
+       Current Version: 01.02.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

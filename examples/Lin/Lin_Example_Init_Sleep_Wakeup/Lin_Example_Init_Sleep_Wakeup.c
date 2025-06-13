@@ -1,4 +1,4 @@
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
@@ -19,10 +19,10 @@
  *  Module:     Lin Driver
  *  Generator:  None
  *
- *  Description:  This file contains Lin Driver Demo implementation which will Initialize the Lin Module, Move the 
- *                channel state to internal sleep and wakeup from Internal Sleep, Move the channel state to deep sleep
- *                and wakeup from sleep mode.
- *  
+ *  Description:  This file contains Lin Driver Demo implementation which will Initialize the Lin
+ *Module, Move the channel state to internal sleep and wakeup from Internal Sleep, Move the channel
+ *state to deep sleep and wakeup from sleep mode.
+ *
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -77,8 +77,8 @@ Std_VersionInfoType Lin_VersionInfo;
 #endif
 
 Std_ReturnType returnValue = E_NOT_OK;
-uint8* rxBuff;
-uint8** rxData = &rxBuff;
+uint8*         rxBuff;
+uint8**        rxData = &rxBuff;
 
 /*********************************************************************************************************************
  *  Local Function Prototypes
@@ -101,8 +101,8 @@ int main(void)
 {
     /* INITIALIZATIONS*/
     DeviceSupport_Init();
-    /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call 
-    Port_Init(&Port_PortConfigSet) and will Initialize the Port and Mcu Driver */       
+    /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call
+    Port_Init(&Port_PortConfigSet) and will Initialize the Port and Mcu Driver */
     EcuM_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("LIN Driver Sample Application: Lin Init Sleep WakeUp - Starts!!!\n\n\r");
@@ -129,7 +129,7 @@ int main(void)
 #if (STD_ON == LIN_PRE_COMPILE_VARIANT)
     Lin_Init(NULL_PTR);
 #else
-    const Lin_ConfigType *pCfgPtr = &Lin_LinGlobalConfig;
+    const Lin_ConfigType* pCfgPtr = &Lin_LinGlobalConfig;
     Lin_Init(pCfgPtr);
     AppUtils_Printf("Initialization of LIN Module is Success !!!\n\r");
     AppUtils_Printf("---------------------------------------------------------------\n\n\r");
@@ -137,7 +137,7 @@ int main(void)
 #endif
 
     returnValue = Lin_CheckWakeUp_and_Sleep_Internal();
-    if ( (returnValue == E_OK) && (LIN_OPERATIONAL == Lin_GetStatus(LinConf_LinChannel_LinChannel_0, rxData)))
+    if ((returnValue == E_OK) && (LIN_OPERATIONAL == Lin_GetStatus(LinConf_LinChannel_LinChannel_0, rxData)))
     {
         AppUtils_Printf("Lin Waking up from Internal Sleep by LinWakeupInternal API is Success !!!\n\r");
         AppUtils_Printf("---------------------------------------------------------------\n\n\r");
@@ -146,7 +146,7 @@ int main(void)
     returnValue = E_NOT_OK;
 
     returnValue = Lin_CheckWakeUp_and_Sleep();
-    if ( (returnValue == E_OK) && (LIN_OPERATIONAL == Lin_GetStatus(LinConf_LinChannel_LinChannel_0, rxData)))
+    if ((returnValue == E_OK) && (LIN_OPERATIONAL == Lin_GetStatus(LinConf_LinChannel_LinChannel_0, rxData)))
     {
         AppUtils_Printf("Lin Waking up from Sleep by LinWakeup API is Success !!!\n\r");
         AppUtils_Printf("---------------------------------------------------------------\n\n\r");
@@ -160,13 +160,6 @@ int main(void)
         AppUtils_Printf("!!!LIN Example Init Sleep WakeUp Run FAILED to run!!! \n\r");
         AppUtils_Printf("---------------------------------------------------------------\n\r");
     }
-
-    
-    while (1)
-    {
-        /* Example Run Success */
-    }
-
 }
 
 Std_ReturnType Lin_CheckWakeUp_and_Sleep_Internal()
@@ -176,9 +169,10 @@ Std_ReturnType Lin_CheckWakeUp_and_Sleep_Internal()
     AppUtils_Printf("Test 3: Lin Module : Internal Sleep\n\r");
     return_val = Lin_GoToSleepInternal(LinConf_LinChannel_LinChannel_0);
 
-    while (LIN_CH_SLEEP != Lin_GetStatus(LinConf_LinChannel_LinChannel_0, rxData));
+    while (LIN_CH_SLEEP != Lin_GetStatus(LinConf_LinChannel_LinChannel_0, rxData))
+        ;
 
-    if ( return_val == E_OK)
+    if (return_val == E_OK)
     {
         AppUtils_Printf("Lin going to internal Sleep is Success !!!\n\r");
         AppUtils_Printf("---------------------------------------------------------------\n\n\r");
@@ -195,11 +189,12 @@ Std_ReturnType Lin_CheckWakeUp_and_Sleep()
 
     AppUtils_Printf("Test 5: Lin Module : Sleep\n\r");
     AppUtils_Printf("Sending Go To Sleep Command on Lin Bus...\n\r");
-    return_val = Lin_GoToSleep(LinConf_LinChannel_LinChannel_0);    
+    return_val = Lin_GoToSleep(LinConf_LinChannel_LinChannel_0);
 
-    if ( return_val == E_OK)
+    if (return_val == E_OK)
     {
-        while (LIN_CH_SLEEP != Lin_GetStatus(LinConf_LinChannel_LinChannel_0, rxData));
+        while (LIN_CH_SLEEP != Lin_GetStatus(LinConf_LinChannel_LinChannel_0, rxData))
+            ;
 
         AppUtils_Printf("Lin Go to Sleep Command is sent on Lin Bus !!!\n\r");
         AppUtils_Printf("Lin going to Sleep is Success !!!\n\r");
@@ -213,9 +208,7 @@ Std_ReturnType Lin_CheckWakeUp_and_Sleep()
         AppUtils_Printf("Failed to Send Sleep Command on Lin Bus !!!\n\r");
     }
 
-
     return return_val;
-
 }
 
 /*********************************************************************************************************************

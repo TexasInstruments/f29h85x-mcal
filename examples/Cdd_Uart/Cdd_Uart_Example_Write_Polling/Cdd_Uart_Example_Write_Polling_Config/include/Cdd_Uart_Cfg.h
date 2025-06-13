@@ -46,7 +46,7 @@ extern "C" {
 /* CDD UART Driver Configuration SW Version Info */
 #define CDD_UART_CFG_MAJOR_VERSION           (1U)
 #define CDD_UART_CFG_MINOR_VERSION           (0U)
-#define CDD_UART_CFG_PATCH_VERSION           (0U)
+#define CDD_UART_CFG_PATCH_VERSION           (1U)
 
 /** \brief Maximum UART HW Instances on Board */
 #define CDD_UART_MAX_NUM_HWUNIT                     (uint8)(1U)

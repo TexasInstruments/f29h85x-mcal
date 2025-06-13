@@ -79,7 +79,7 @@ CONST(Wdg_ConfigType, WDG_CONFIG_DATA) Wdg_ConfigSetptr =
 {
     .Wdg_DefaultMode    = ((WdgIf_ModeType) WDGIF_SLOW_MODE),
     .Wdg_InstanceId     = ((uint16) 0U),
-    .Wdg_InitialTimeOut = ((uint16) 0U),
+    .Wdg_InitialTimeOut = ((uint16) 13U),
     .Wdg_MaxTimeOut     = ((uint16) 3342U),
     .Wdg_FastModeCfg    =
    {

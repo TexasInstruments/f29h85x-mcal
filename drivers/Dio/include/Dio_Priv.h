@@ -57,35 +57,35 @@ extern "C" {
 
 /** \brief Index of GPIO_DATA register for a port registers set */
 
-#define GPIO_DATA_INDEX       (GPIO_O_GPADAT / 4U)
+#define GPIO_DATA_INDEX (GPIO_O_GPADAT / 4U)
 
 /* Design: MCAL-23536 */
 
 /** \brief Index of GPIO_TOGGLE register for a port registers set */
 
-#define GPIO_TOGGLE_INDEX    (GPIO_O_GPATOGGLE / 4U)
+#define GPIO_TOGGLE_INDEX (GPIO_O_GPATOGGLE / 4U)
 
 /* Design: MCAL-23535 */
 
 /** \brief Index of GPIO_CLEAR register for a port registers set */
 
-#define GPIO_CLEAR_INDEX     (GPIO_O_GPACLEAR / 4U)
+#define GPIO_CLEAR_INDEX (GPIO_O_GPACLEAR / 4U)
 
 /* Design: MCAL-23534 */
 
 /** \brief Index of GPIO_SET register for a port registers set */
 
-#define GPIO_SET_INDEX       (GPIO_O_GPASET / 4U)
+#define GPIO_SET_INDEX (GPIO_O_GPASET / 4U)
 
 /* Design: MCAL-23537 */
 
 /** \brief Port Data register step size */
 
-#define GPIO_DATA_REGS_STEP     ((GPIO_O_GPBDAT - GPIO_O_GPADAT) / 4U)
+#define GPIO_DATA_REGS_STEP ((GPIO_O_GPBDAT - GPIO_O_GPADAT) / 4U)
 
 /* Design: MCAL-22468 */
 /** \brief Width of GPIO register in this platform. */
-#define DIO_PORT_WIDTH                  (32U)
+#define DIO_PORT_WIDTH (32U)
 
 /*********************************************************************************************************************
  * Exported Type Declarations
@@ -111,14 +111,14 @@ extern "C" {
  *               E_NOT_OK: ChannelId is Invalid.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, DIO_CODE) \
+FUNC(Std_ReturnType, DIO_CODE)
 Dio_IsChannelValid(Dio_ChannelType ChannelId);
 
 /** \brief Checks if the channel group is valid.
  *
  * Checks if the channelgroup_id_ptr passed to the API is valid or not by
  * comparing it with the structure pointers of the current configuration.
- * 
+ *
  * \param[in] ChannelGroupIdPtr for referencing channel group structures.
  * \pre None
  * \post None
@@ -127,14 +127,14 @@ Dio_IsChannelValid(Dio_ChannelType ChannelId);
  *         E_NOT_OK: ChannelGroupIdPtr is Invalid.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, DIO_CODE) \
+FUNC(Std_ReturnType, DIO_CODE)
 Dio_IsChannelGroupValid(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr);
 
 /** \brief Reads the value present on the specified pin.
  *
  * The value at the specified channel is read, as specified by \e channelId
- * and returned 
- * 
+ * and returned
+ *
  * \param[in] channelId is the identifying number of the pin.
  * \pre None
  * \post None
@@ -143,7 +143,7 @@ Dio_IsChannelGroupValid(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) 
  *         STD_LOW: logic level 0
  *
  *********************************************************************************************************************/
-FUNC(Dio_LevelType, DIO_CODE) \
+FUNC(Dio_LevelType, DIO_CODE)
 Dio_PinReadPriv(Dio_ChannelType channelId);
 
 /** \brief Writes a value to the specified pin.
@@ -151,7 +151,7 @@ Dio_PinReadPriv(Dio_ChannelType channelId);
  * Writes the corresponding bit values to the pin specified by
  * \e channelId. Writing to a channel configured as an input pin has no
  * effect.
- * 
+ *
  * \param[in] channelId is the identifying number of the pin.
  * \param[in] channelVal is the value to write to the channel.
  * \pre None
@@ -160,14 +160,14 @@ Dio_PinReadPriv(Dio_ChannelType channelId);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, DIO_CODE) \
+FUNC(void, DIO_CODE)
 Dio_PinWritePriv(Dio_ChannelType channelId, Dio_LevelType channelVal);
 
 /** \brief Writes a value to the specified port.
  *
  * This function writes the value \e port_value to the port specified by the
  * \e portId parameter.
- * 
+ *
  * \param[in] portId is the DIO port being accessed.
  * \param[in] portValue is the value to write to the port.
  * \pre None
@@ -176,14 +176,15 @@ Dio_PinWritePriv(Dio_ChannelType channelId, Dio_LevelType channelVal);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, DIO_CODE) \
+FUNC(void, DIO_CODE)
 Dio_WritePortDataPriv(Dio_PortType portId, Dio_PortLevelType portValue);
 
 /** \brief Writes  a subset of the adjoining bits of a port to a specified level.
  *
  *  This function compute the port value based on the received level, group mask and offset.
- *  Then write the computed port value to the specified port based on the portId received in channelGroupPtr.
- * 
+ *  Then write the computed port value to the specified port based on the portId received in
+ *channelGroupPtr.
+ *
  * \param[in] ChannelGroupIdPtr for referencing channel group structures.
  * \param[in] PortValue is the value to write to the port.
  * \pre None
@@ -192,9 +193,9 @@ Dio_WritePortDataPriv(Dio_PortType portId, Dio_PortLevelType portValue);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, DIO_CODE) \
-Dio_WriteChannelGroupPriv(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr, \
-                Dio_PortLevelType PortValue);
+FUNC(void, DIO_CODE)
+Dio_WriteChannelGroupPriv(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr,
+                          Dio_PortLevelType PortValue);
 
 /** \brief Reads the data on the specified port.
  *
@@ -209,13 +210,13 @@ Dio_WriteChannelGroupPriv(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, DIO_CODE) \
+FUNC(void, DIO_CODE)
 Dio_ReadPortDataPriv(Dio_PortType PortId, Dio_PortLevelType *PortValue);
 
 /** \brief Toggles the present value of the specified channel.
- * 
+ *
  * Toggles the corresponding bit values to the pin specified by \e ChannelId.
- * 
+ *
  * \param[in] ChannelId is the identifying number of the pin.
  * \pre None
  * \post None
@@ -223,7 +224,7 @@ Dio_ReadPortDataPriv(Dio_PortType PortId, Dio_PortLevelType *PortValue);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, DIO_CODE) \
+FUNC(void, DIO_CODE)
 Dio_PinFlipVal(Dio_ChannelType ChannelId);
 
 /*********************************************************************************************************************

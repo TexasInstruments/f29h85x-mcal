@@ -119,7 +119,7 @@ extern "C" {
  /*
  * Design: MCAL-25308, MCAL-25309
  */
-#define WDG_INITIAL_TIMEOUT        (uint16) (0)
+#define WDG_INITIAL_TIMEOUT        (uint16) (13)
 #define WDG_MAX_TIMEOUT            (uint16) (3342)
 
 

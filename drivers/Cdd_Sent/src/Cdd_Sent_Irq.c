@@ -17,12 +17,12 @@
  *  File:       Cdd_Sent_Irq.c
  *  Generator:  None
  *
- *  Description:  This file contains controller dependent local functions and private functions 
+ *  Description:  This file contains controller dependent local functions and private functions
  *                to be used in Cdd_Sent_Irq.c.
  *********************************************************************************************************************/
-/* 
-* Design: MCAL-28620
-*/
+/*
+ * Design: MCAL-28620
+ */
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -62,7 +62,6 @@
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
 
-
 /*********************************************************************************************************************
  *  External Functions Definition
  *********************************************************************************************************************/
@@ -70,9 +69,9 @@
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
-/* 
-* Design: MCAL-28621
-*/
+/*
+ * Design: MCAL-28621
+ */
 #define CDD_SENT_START_SEC_ISR_CODE
 #include "Cdd_Sent_MemMap.h"
 
@@ -82,14 +81,13 @@ MCAL_LIB_RTINT_ISR(Cdd_Sent_1_ISR)
 #elif defined(CDD_SENT1_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Cdd_Sent_1_ISR)
 #else
-    ISR(Cdd_Sent_1_ISR)
+ISR(Cdd_Sent_1_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
     Cdd_Sent_ProcessISR(CDD_SENT_INSTANCE_SENT1);
 }
 #endif
-
 
 #if defined(CDD_SENT2_ENABLE)
 #if defined(CDD_SENT2_ISR_CAT1_RTINT)

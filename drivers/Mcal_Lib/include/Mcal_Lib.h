@@ -17,7 +17,7 @@
  *  File:       Mcal_Lib.h
  *  Generator:  None
  *
- *  Description:  Interface header file for library functions used by MCALs / CDDs                                                           
+ *  Description:  Interface header file for library functions used by MCALs / CDDs
  *********************************************************************************************************************/
 #ifndef MCAL_LIB_H
 #define MCAL_LIB_H
@@ -37,9 +37,9 @@ extern "C" {
  * Version Check (if required)
  *********************************************************************************************************************/
 
-#define MCAL_LIB_SW_MAJOR_VERSION            (1U) /* Driver Implementation Major Version. */
-#define MCAL_LIB_SW_MINOR_VERSION            (0U) /* Driver Implementation Minor Version. */
-#define MCAL_LIB_SW_PATCH_VERSION            (0U) /* Driver Implementation Patch Version. */
+#define MCAL_LIB_SW_MAJOR_VERSION (1U) /* Driver Implementation Major Version. */
+#define MCAL_LIB_SW_MINOR_VERSION (0U) /* Driver Implementation Minor Version. */
+#define MCAL_LIB_SW_PATCH_VERSION (0U) /* Driver Implementation Patch Version. */
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
@@ -52,11 +52,15 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-
+/** \brief Type definition for timer tick values
+ *
+ * This type represents the tick count value used for timing and counter operations using the counter in IPC.
+ * It is defined as a 64-bit unsigned integer as IPC counter is 64 bit.
+ */
+typedef uint64 McalLib_TickType;
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
-
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes
@@ -64,7 +68,7 @@ extern "C" {
 
 /** \brief Delays for a fixed number of cycles.
  *
- * This function generates a constant length delay using assembly code. The loop takes 4 cycles per 
+ * This function generates a constant length delay using assembly code. The loop takes 4 cycles per
  * iteration plus 11 cycles of overhead.
  *
  * \param[in] count The number of delay loop iterations to perform.
@@ -77,6 +81,32 @@ extern "C" {
  *********************************************************************************************************************/
 extern FUNC(void, MCAL_LIB_CODE) McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count);
 
+/** \brief Delay function in microseconds.
+ *
+ * \param[in] delayUsec Number of microseconds of delay
+ * \param[in] sysclkHz CPU SYSCLK in Hz
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+extern FUNC(void, MCAL_LIB_CODE)
+    McalLib_DelayUsec(VAR(McalLib_TickType, MCAL_LIB_DATA) delayUsec, VAR(uint32, MCAL_LIB_DATA) sysclkHz);
+
+/** \brief Delay function in milliseconds.
+ *
+ * \param[in] delayMsec Number of microseconds of delay
+ * \param[in] sysclkHz CPU SYSCLK in Hz
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+extern FUNC(void, MCAL_LIB_CODE)
+    McalLib_DelayMsec(VAR(McalLib_TickType, MCAL_LIB_DATA) delayMsec, VAR(uint32, MCAL_LIB_DATA) sysclkHz);
+
 /** \brief This function reads IPC free run timer (64-bit value) and update startTime param
  *
  * \param[out] startTime pointer to store IPC timer value
@@ -85,11 +115,11 @@ extern FUNC(void, MCAL_LIB_CODE) McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count)
  * \return None
  * \retval None
  *
- ******************************************************************************/    
-extern FUNC(void, MCAL_LIB_CODE) McalLib_GetCounterValue(P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) startTime);
+ ******************************************************************************/
+extern FUNC(void, MCAL_LIB_CODE) McalLib_GetCounterValue(P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) startTime);
 
-/** \brief This function reads the elapsed value in timer ticks of IPC free run counter(running at sysclock frequency) 
- * with respect startTime param.
+/** \brief This function reads the elapsed value in timer ticks of IPC free run counter(running at
+ *sysclock frequency) with respect startTime param.
  *
  * \param[in] startTime pointer which has timer reference value
  * \param[out] elapsedTime pointer in which elapsed value in number of timer ticks is updated
@@ -99,8 +129,9 @@ extern FUNC(void, MCAL_LIB_CODE) McalLib_GetCounterValue(P2VAR(uint64, AUTOMATIC
  * \retval None
  *
  ******************************************************************************/
-extern FUNC(void, MCAL_LIB_CODE) McalLib_GetElapsedValue(P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) startTime, \
-                                                            P2VAR(uint64, AUTOMATIC, MCAL_LIB_DATA) elapsedTime);
+extern FUNC(void, MCAL_LIB_CODE)
+    McalLib_GetElapsedValue(CONSTP2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) startTime,
+                            P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) elapsedTime);
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

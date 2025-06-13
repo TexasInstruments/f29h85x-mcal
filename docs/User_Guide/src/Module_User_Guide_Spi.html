@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.00
+                01.02.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -110,7 +110,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#spi-example-sync-asynctransfer">4.8.11.1. Spi_Example_Sync_AsyncTransfer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#spi-example-asynctransfer-interrupt">4.8.11.2. Spi_Example_AsyncTransfer_Interrupt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#spi-example-synctransfer">4.8.11.3. Spi_Example_SyncTransfer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.8.11.4. File Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spi-example-external-loopback">4.8.11.4. Spi_Example_External_Loopback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.8.11.5. File Structure</a></li>
 </ul>
 </li>
 </ul>
@@ -827,7 +828,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <td><p>SpiCounterClockRef</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>This parameter contains a reference to the sysClock to calculate clock cycles for IPC free run counter, which is used by the SPI driver.</p></td>
+<td><p>This parameter references the SYSCLK to convert timeout values from milliseconds to clock ticks. Users should ensure the correct clock reference point is selected to achieve accurate timeout calculations.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>Texas Instruments</p></td>
@@ -2183,53 +2184,8 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </tbody>
 </table>
 </section>
-<section id="spitimeclk2cs">
-<h5><span class="section-number">4.8.10.2.10.12. </span>SpiTimeClk2Cs<a class="headerlink" href="#spitimeclk2cs" title="Link to this heading"></a></h5>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Item</p></th>
-<th class="head"><p></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>SpiTimeClk2Cs</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Timing between clock and chip select (in seconds) - This parameter allows to use a range of values from 0 up to 0.0001 seconds., This parameter is not supported for this Hardware</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Origin</strong></p></td>
-<td><p>AUTOSAR_ECUC</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
-<td><p>true</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Link-Time</p></td>
-<td><p>VARIANT-LINK-TIME</p></td>
-</tr>
-<tr class="row-even"><td><p>Post-Build-Time</p></td>
-<td><p>VARIANT-POST-BUILD</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
-<td><p>1.0E-4</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
-<td><p>0.0</p></td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="spisysclockref">
-<h5><span class="section-number">4.8.10.2.10.13. </span>SpiSysClockRef<a class="headerlink" href="#spisysclockref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.10.12. </span>SpiSysClockRef<a class="headerlink" href="#spisysclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2265,7 +2221,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicsgpioref">
-<h5><span class="section-number">4.8.10.2.10.14. </span>SpiCsGpioRef<a class="headerlink" href="#spicsgpioref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.2.10.13. </span>SpiCsGpioRef<a class="headerlink" href="#spicsgpioref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3068,26 +3024,26 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 <section id="sample-log-of-spi-example-sync-asynctransfer">
 <h4><span class="section-number">4.8.11.1.4. </span>Sample Log of Spi_Example_Sync_AsyncTransfer<a class="headerlink" href="#sample-log-of-spi-example-sync-asynctransfer" title="Link to this heading"></a></h4>
-<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    Sample Application - STARTS !!!
-    SPI MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 83
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    Setting loopback mode
-    Writing to internal buffer channel0.
-    Writing to internal buffer channel1.
-    Writing to external buffer channel2.
-    Transmitting data in asynchronous mode.
-    AsyncTransmit status is 0
-    Getting job status.
-    Called Sequence end notification function
-    Called Sequence end notification function
-    Getting sequence status.
-    Result of sequence_1 is SPI_SEQ_OK.
-    De-initializing SPI.
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="w">    </span><span class="o">---------------------</span>
+<span class="w">    </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="w">    </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Setting</span><span class="w"> </span><span class="n">loopback</span><span class="w"> </span><span class="n">mode</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel1</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel2</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">asynchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
+<span class="w">    </span><span class="n">AsyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
+<span class="w">    </span><span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
+<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">sequence_1</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">SPI_SEQ_OK</span><span class="p">.</span>
+<span class="w">    </span><span class="n">De</span><span class="o">-</span><span class="n">initializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
 </pre></div>
 </div>
 </section>
@@ -3133,27 +3089,27 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 <section id="sample-log-of-spi-example-asynctransfer-interrupt">
 <h4><span class="section-number">4.8.11.2.4. </span>Sample Log of Spi_Example_AsyncTransfer_Interrupt<a class="headerlink" href="#sample-log-of-spi-example-asynctransfer-interrupt" title="Link to this heading"></a></h4>
-<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    Sample Application - STARTS !!!
-    SPI MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 83
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    Writing to internal buffer channel0.
-    Writing to internal buffer channel1.
-    Writing to external buffer channel2.
-    Transmitting data in asynchronous mode.
-    Called Sequence end notification function
-    ACalled Sequence end notification function
-    syncTransmit status is 0
-    Getting hardware unit status.
-    Result of Hardware unit is not SPI_BUSY.
-    Getting job status.
-    Getting sequence status.
-    Result of sequence_1 is SPI_SEQ_OK.
-    De-initializing SPI.
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="w">    </span><span class="o">---------------------</span>
+<span class="w">    </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="w">    </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel1</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel2</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">asynchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
+<span class="w">    </span><span class="n">ACalled</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
+<span class="w">    </span><span class="n">syncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">Hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">SPI_BUSY</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">sequence_1</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">SPI_SEQ_OK</span><span class="p">.</span>
+<span class="w">    </span><span class="n">De</span><span class="o">-</span><span class="n">initializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
 </pre></div>
 </div>
 </section>
@@ -3199,28 +3155,116 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 <section id="sample-log-of-spi-example-synctransfer">
 <h4><span class="section-number">4.8.11.3.4. </span>Sample Log of Spi_Example_SyncTransfer<a class="headerlink" href="#sample-log-of-spi-example-synctransfer" title="Link to this heading"></a></h4>
-<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>    Sample Application - STARTS !!!
-    SPI MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 83
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    Setting loopback mode
-    Writing to internal buffer channel0.
-    Writing to internal buffer channel1.
-    Writing to external buffer channel2.
-    Transmitting data in synchronous mode.
-    SyncTransmit status is 0
-    Getting sequence status.
-    Deinitializing SPI.
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="w">    </span><span class="o">---------------------</span>
+<span class="w">    </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="w">    </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Setting</span><span class="w"> </span><span class="n">loopback</span><span class="w"> </span><span class="n">mode</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel1</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel2</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">synchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
+<span class="w">    </span><span class="n">SyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Deinitializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="spi-example-external-loopback">
+<h3><span class="section-number">4.8.11.4. </span>Spi_Example_External_Loopback<a class="headerlink" href="#spi-example-external-loopback" title="Link to this heading"></a></h3>
+<section id="overview-of-spi-example-external-loopback">
+<h4><span class="section-number">4.8.11.4.1. </span>Overview of Spi_Example_External_Loopback<a class="headerlink" href="#overview-of-spi-example-external-loopback" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Spi_Example_External_Loopback</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init()</p></li>
+<li><p>Initializes required port pins for SPI.</p></li>
+</ul>
+</li>
+<li><p>Call Spi_Init() to initialize SPI Driver</p></li>
+<li><p>Initialize Internal and External Buffers.</p></li>
+<li><p>Transmit data synchronously.</p></li>
+<li><p>Read the data from channels.</p></li>
+<li><p>Received data can be seen in Spi_DestBuf0</p></li>
+<li><p>Validate the received data with pre-defined transmit data.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-spi-example-external-loopback">
+<h4><span class="section-number">4.8.11.4.2. </span>Setup required to run Spi_Example_External_Loopback<a class="headerlink" href="#setup-required-to-run-spi-example-external-loopback" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest c29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Makes sure to disable the S2 POCI switch on the XDS110 to OFF (Only when used with SOM EVM) as shown below:</p></li>
+</ul>
+<figure class="align-center" id="id4">
+<img alt="S2 POCI Switch on XDS110 Debugger" src="../_images/S2_POCI_Switch_XDS110.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.30 </span><span class="caption-text">S2 POCI Switch on XDS110 Debugger</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Place the SOM on Bank Mode 2 and disable FOTA.</p></li>
+<li><p>Make necessary connections between SPI A and SPI D as shown in the figure below:</p></li>
+</ul>
+<figure class="align-center" id="id5">
+<img alt="SPI Example External Loopback Connections" src="../_images/Spi_Example_External_Loopback_Connections.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.31 </span><span class="caption-text">SPI Example External Loopback Connections</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-spi-example-external-loopback">
+<h4><span class="section-number">4.8.11.4.3. </span>How to run Spi_Example_External_Loopback<a class="headerlink" href="#how-to-run-spi-example-external-loopback" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Build the example to generate .out.</p></li>
+<li><p>Connect to CPU1 and load only the Spi_Example_External_Loopback_merged.out.</p></li>
+<li><p>After the program is loaded, run CPU1.</p></li>
+<li><p>CPU1 configures and releases CPU3 out of reset.</p></li>
+<li><p>CPU1 pauses due to software breakpoint (EMUSTOP0).</p></li>
+<li><p>Connect to CPU3 target now. C29x3.out would have started execution as soon as it is released from reset.</p></li>
+<li><p>Resume CPU1 after CPU3 starts running.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note: To visualise the CPU3 source file (in debug mode), load the CPU3.out by clicking on the “Load Symbols” option.</p>
+</div>
+</section>
+<section id="sample-log-of-spi-example-external-loopback">
+<h4><span class="section-number">4.8.11.4.4. </span>Sample Log of Spi_Example_External_Loopback<a class="headerlink" href="#sample-log-of-spi-example-external-loopback" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="w">    </span><span class="o">---------------------</span>
+<span class="w">    </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="w">    </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="w">    </span><span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">synchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
+<span class="w">    </span><span class="n">SyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">successful</span><span class="o">!</span>
+<span class="w">    </span><span class="n">Deinitializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="file-structure">
-<h3><span class="section-number">4.8.11.4. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.8.11.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -3289,7 +3333,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Apr 13, 2025.
+          <span class="lastupdated" >Last updated on Jun 09, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -3306,7 +3350,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.00
+       Current Version: 01.02.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

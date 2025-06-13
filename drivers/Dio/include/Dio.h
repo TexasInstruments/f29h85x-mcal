@@ -40,8 +40,8 @@ extern "C" {
  * Below are the global requirements which are met by this DIO driver which
  * can't be mapped to a particular source ID.
  *
- * Design:  MCAL-22530, MCAL-22531, MCAL-22436, MCAL-22442, MCAL-22443, MCAL-22444, MCAL-22500, MCAL-22512,
- * Design:  MCAL-22533, MCAL-22534, MCAL-22553
+ * Design:  MCAL-22530, MCAL-22531, MCAL-22436, MCAL-22442, MCAL-22443, MCAL-22444, MCAL-22500,
+ *MCAL-22512, Design:  MCAL-22533, MCAL-22534, MCAL-22553
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -63,41 +63,41 @@ extern "C" {
  * Defines for DIO Driver version used for compatibility checks.
  */
 /** \brief Driver Implementation Major Version. */
-#define DIO_SW_MAJOR_VERSION     (1U)
-/** \brief Driver Implementation Minor Version. */ 
-#define DIO_SW_MINOR_VERSION     (0U)
-/** \brief Driver Implementation Patch Version. */ 
-#define DIO_SW_PATCH_VERSION     (2U)
+#define DIO_SW_MAJOR_VERSION (1U)
+/** \brief Driver Implementation Minor Version. */
+#define DIO_SW_MINOR_VERSION (0U)
+/** \brief Driver Implementation Patch Version. */
+#define DIO_SW_PATCH_VERSION (3U)
 
 /*********************************************************************************************************************
  * Defines for DIO Driver AUTOSAR version used for compatibility checks.
  *********************************************************************************************************************/
 /** \brief AUTOSAR Major version specification implemented by DIO Driver. */
-#define DIO_AR_RELEASE_MAJOR_VERSION    (4U)
+#define DIO_AR_RELEASE_MAJOR_VERSION (4U)
 
 /** \brief AUTOSAR Minor version specification implemented by DIO Driver. */
-#define DIO_AR_RELEASE_MINOR_VERSION    (3U)
+#define DIO_AR_RELEASE_MINOR_VERSION (3U)
 
 /** \brief AUTOSAR Patch version specification implemented by DIO Driver. */
 #define DIO_AR_RELEASE_REVISION_VERSION (1U)
 
 /** \brief Texas Instruments Vendor ID. */
-#define DIO_VENDOR_ID   ((uint16) 44U)
-/** \brief DIO Driver Module ID. */ 
-#define DIO_MODULE_ID   ((uint16) 120U) 
+#define DIO_VENDOR_ID ((uint16)44U)
+/** \brief DIO Driver Module ID. */
+#define DIO_MODULE_ID ((uint16)120U)
 /** \brief DIO Driver Instance ID. */
-#define DIO_INSTANCE_ID ((uint8) 0U)   
+#define DIO_INSTANCE_ID ((uint8)0U)
 
 /* DIO Error Codes returned by Driver functions. */
 /* Design: MCAL-22460, MCAL-22461, MCAL-22462, MCAL-22463 */
 /** \brief API service called with invalid channel ID. */
-#define DIO_E_PARAM_INVALID_CHANNEL_ID  (0x0AU)
+#define DIO_E_PARAM_INVALID_CHANNEL_ID (0x0AU)
 /** \brief API service called with invalid port ID. */
-#define DIO_E_PARAM_INVALID_PORT_ID     (0x14U)
+#define DIO_E_PARAM_INVALID_PORT_ID (0x14U)
 /** \brief API service called with invalid channel group ID. */
-#define DIO_E_PARAM_INVALID_GROUP       (0x1FU)
+#define DIO_E_PARAM_INVALID_GROUP (0x1FU)
 /** \brief Dio_GetVersionInfo() called with NULL_PTR as parameter. */
-#define DIO_E_PARAM_POINTER             (0x20U)
+#define DIO_E_PARAM_POINTER (0x20U)
 
 /*
  * Dio Service Ids.
@@ -106,21 +106,21 @@ extern "C" {
  * used to identify the source of the error.
  */
 /** \brief Dio_ReadChannel() */
-#define DIO_SID_READ_CHANNEL           (0x0U)
+#define DIO_SID_READ_CHANNEL (0x0U)
 /** \brief Dio_WriteChannel() */
-#define DIO_SID_WRITE_CHANNEL          (0x1U)
+#define DIO_SID_WRITE_CHANNEL (0x1U)
 /** \brief Dio_ReadPort() */
-#define DIO_SID_READ_PORT              (0x2U)
+#define DIO_SID_READ_PORT (0x2U)
 /** \brief Dio_WritePort() */
-#define DIO_SID_WRITE_PORT             (0x3U)
+#define DIO_SID_WRITE_PORT (0x3U)
 /** \brief Dio_ReadChannelGroup() */
-#define DIO_SID_READ_CHANNEL_GROUP     (0x4U)
+#define DIO_SID_READ_CHANNEL_GROUP (0x4U)
 /** \brief Dio_WriteChannelGroup() */
-#define DIO_SID_WRITE_CHANNEL_GROUP    (0x5U)
+#define DIO_SID_WRITE_CHANNEL_GROUP (0x5U)
 /** \brief Dio_FlipChannel() */
-#define DIO_SID_FLIP_CHANNEL           (0x11U)
+#define DIO_SID_FLIP_CHANNEL (0x11U)
 /** \brief Dio_GetVersionInfo() */
-#define DIO_SID_GET_VERSION_INFO       (0x12U)
+#define DIO_SID_GET_VERSION_INFO (0x12U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -153,11 +153,11 @@ typedef uint32 Dio_PortLevelType;
 typedef struct Dio_ChannelGroupType_s
 {
     /** \brief Port ID of a channel group. */
-    Dio_PortType      port; 
-    /** \brief Bitmask where a '1' represents a pin handled by this channel group. */  
+    Dio_PortType      port;
+    /** \brief Bitmask where a '1' represents a pin handled by this channel group. */
     Dio_PortLevelType mask;
-    /** \brief Shifts channel group values, so it is always "right" aligned. */   
-    uint8             offset; 
+    /** \brief Shifts channel group values, so it is always "right" aligned. */
+    uint8             offset;
 } Dio_ChannelGroupType;
 
 /*********************************************************************************************************************
@@ -175,7 +175,7 @@ typedef struct Dio_ChannelGroupType_s
  * NULL_PTR, a development error is reported to Det. This service is only
  * available if the pre-compile configuration parameter DIO_VERSION_INFO_API
  * is enabled.
- * 
+ *
  * \param[in] Versioninfo
  * \param[out] Versioninfo structure that contains the version information parameters.
  * \pre None
@@ -184,9 +184,8 @@ typedef struct Dio_ChannelGroupType_s
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, DIO_CODE) \
-Dio_GetVersionInfo(P2VAR (Std_VersionInfoType, AUTOMATIC,DIO_APPL_DATA) \
-                   Versioninfo);
+FUNC(void, DIO_CODE)
+Dio_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, DIO_APPL_DATA) Versioninfo);
 #endif
 
 /** \brief Returns the value of the specified DIO channel.
@@ -194,7 +193,7 @@ Dio_GetVersionInfo(P2VAR (Std_VersionInfoType, AUTOMATIC,DIO_APPL_DATA) \
  * This service is to read from a specified DIO channel. If the channel
  * specified is not valid, a development error is reported to Det. The value
  * for the DIO channel is read and returned.
- * 
+ *
  * \param[in] ChannelId specifies the ID of the general-purpose digital
  *     input/output pin.
  * \pre None
@@ -204,7 +203,7 @@ Dio_GetVersionInfo(P2VAR (Std_VersionInfoType, AUTOMATIC,DIO_APPL_DATA) \
  * \retval STD_LOW: logic level 0
  *
  *********************************************************************************************************************/
-FUNC(Dio_LevelType, DIO_CODE) \
+FUNC(Dio_LevelType, DIO_CODE)
 Dio_ReadChannel(Dio_ChannelType ChannelId);
 
 /** \brief Service to set a level of a channel.
@@ -212,7 +211,7 @@ Dio_ReadChannel(Dio_ChannelType ChannelId);
  * This service is to set a specified level of a particular DIO channel. If
  * the channel specified is not valid, a development error is reported to Det.
  * The value is written to the specified DIO channel.
- * 
+ *
  * \param[in] ChannelId specifies the ID of the general-purpose digital
  * input/output pin.
  * \param[in] Level specifies the value to be written to the channel. Value can
@@ -223,11 +222,11 @@ Dio_ReadChannel(Dio_ChannelType ChannelId);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, DIO_CODE) \
+FUNC(void, DIO_CODE)
 Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level);
 
 /** \brief Returns the level of all channels of that port.
- * 
+ *
  * This service reads the value of a DIO port. If the port is not
  * enabled, a development error is reported to Det. The value of the port of
  * which the ID is specified is read and returned.
@@ -239,7 +238,7 @@ Dio_WriteChannel(Dio_ChannelType ChannelId, Dio_LevelType Level);
  * \retval Value of type Dio_PortLevelType
  *
  *********************************************************************************************************************/
-FUNC(Dio_PortLevelType, DIO_CODE) \
+FUNC(Dio_PortLevelType, DIO_CODE)
 Dio_ReadPort(Dio_PortType PortId);
 
 /** \brief Service to set a value of the port.
@@ -255,9 +254,9 @@ Dio_ReadPort(Dio_PortType PortId);
  * \post None
  * \return None
  * \retval None
- * 
+ *
  *********************************************************************************************************************/
-FUNC(void, DIO_CODE) \
+FUNC(void, DIO_CODE)
 Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level);
 
 /** \brief This Service reads a subset of the adjoining bits of a port.
@@ -265,25 +264,25 @@ Dio_WritePort(Dio_PortType PortId, Dio_PortLevelType Level);
  * This service reads the value of the subset of the bits of a port. If this
  * parameter references NULL_PTR, a development error is reported to Det. The
  * value of the level of the channel group is read and returned.
- * 
+ *
  * \param[in] ChannelGroupIdPtr for referencing channel group structures.
  * \pre None
  * \post None
  * \return levels of the specified channel group.
  * \retval value of type Dio_PortLevelType
- * 
+ *
  *********************************************************************************************************************/
-FUNC(Dio_PortLevelType, DIO_CODE) \
+FUNC(Dio_PortLevelType, DIO_CODE)
 Dio_ReadChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr);
 
 /** \brief Service to set a subset of the adjoining bits of a port to a
  * specified level.
- * 
+ *
  * This service writes the specified value to a subset of the bits of a port.
  * If this parameter references NULL_PTR, a development error is reported to
  * Det. The information of the channel group is in the referenced channel
  * group structure.The data is then written to the port.
- * 
+ *
  * \param[in] ChannelGroupIdPtr for referencing channel group structures.
  * \param[in] Level Value consisting of levels of the specified channel group.
  * \pre None
@@ -292,8 +291,8 @@ Dio_ReadChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) Cha
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, DIO_CODE) \
-Dio_WriteChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr, \
+FUNC(void, DIO_CODE)
+Dio_WriteChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) ChannelGroupIdPtr,
                       Dio_PortLevelType Level);
 
 #if (STD_ON == DIO_FLIP_CHANNEL_API)
@@ -304,7 +303,7 @@ Dio_WriteChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) Ch
  * The value of the specified channel is flipped.This service is only
  * available if the pre-compile configuration parameter DIO_FLIP_CHANNEL_API
  * is enabled.
- * 
+ *
  * \param[in] ChannelId specifies the ID of the general-purpose digital input/output pin.
  * \pre None
  * \post None
@@ -313,7 +312,7 @@ Dio_WriteChannelGroup(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) Ch
  *         STD_LOW: logic level 0
  *
  *********************************************************************************************************************/
-FUNC(Dio_LevelType, DIO_CODE) \
+FUNC(Dio_LevelType, DIO_CODE)
 Dio_FlipChannel(Dio_ChannelType ChannelId);
 #endif
 

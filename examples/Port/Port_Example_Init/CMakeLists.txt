@@ -1,58 +1,60 @@
 project(Port_Example_Init LANGUAGES C ASM)
 
-if (NOT TARGET hw_include)
+if(NOT TARGET hw_include)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/hw_include/ ${CMAKE_BINARY_DIR}/hw_include)
-endif ()
+endif()
 
-if (NOT TARGET Port)
+if(NOT TARGET Port)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Port/ ${CMAKE_BINARY_DIR}/Port)
-endif ()
+endif()
 
-if (NOT TARGET Mcal_Lib)
+if(NOT TARGET Mcal_Lib)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcal_Lib/ ${CMAKE_BINARY_DIR}/Mcal_Lib)
-endif ()
+endif()
 
-if (NOT TARGET AUTOSAR_Types)
-    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/AUTOSAR_Types/ ${CMAKE_BINARY_DIR}/AUTOSAR_Types)
-endif ()
+if(NOT TARGET AUTOSAR_Types)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/AUTOSAR_Types/
+                     ${CMAKE_BINARY_DIR}/AUTOSAR_Types)
+endif()
 
-if (NOT TARGET Det)
+if(NOT TARGET Det)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Det/ ${CMAKE_BINARY_DIR}/Det)
-endif ()
+endif()
 
-if (NOT TARGET Dem)
+if(NOT TARGET Dem)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Dem/ ${CMAKE_BINARY_DIR}/Dem)
-endif ()
+endif()
 
-if (NOT TARGET MemMap)
+if(NOT TARGET MemMap)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/MemMap/ ${CMAKE_BINARY_DIR}/MemMap)
-endif ()
+endif()
 
-if (NOT TARGET SchM_Port)
+if(NOT TARGET SchM_Port)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Port/ ${CMAKE_BINARY_DIR}/SchM_Port)
-endif ()
+endif()
 
-if (NOT TARGET Port_Example_Init_Config)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Port_Example_Init_Config/  ${CMAKE_BINARY_DIR}/Port_Example_Init_Config) 
-endif ()
+if(NOT TARGET Port_Example_Init_Config)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Port_Example_Init_Config/
+                     ${CMAKE_BINARY_DIR}/Port_Example_Init_Config)
+endif()
 
-if (NOT TARGET EcuM)
+if(NOT TARGET EcuM)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/EcuM/ ${CMAKE_BINARY_DIR}/EcuM)
-endif ()
+endif()
 
-if (NOT TARGET Os)
+if(NOT TARGET Os)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/Os/ ${CMAKE_BINARY_DIR}/Os)
-endif ()
+endif()
 
-if (NOT TARGET Mcu)
+if(NOT TARGET Mcu)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcu ${CMAKE_BINARY_DIR}/Mcu)
-endif ()
+endif()
 
-if (NOT TARGET AppUtils)
+if(NOT TARGET AppUtils)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../AppUtils ${CMAKE_BINARY_DIR}/AppUtils)
-endif ()
+endif()
 
-if (NOT TARGET DeviceSupport)
+if(NOT TARGET DeviceSupport)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport ${CMAKE_BINARY_DIR}/DeviceSupport)
 endif()
 
@@ -69,33 +71,34 @@ endif()
 # This command is used to move the .out file
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_ROOT_DIRECTORY}/build/assets/examples/${PROJECT_NAME}/)
 
-add_executable(${PROJECT_NAME}
-    Port_Example_Init.c
-)
+add_executable(${PROJECT_NAME} Port_Example_Init.c)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    Port_Example_Init_Config
-    Port
-    hw_include
-    AUTOSAR_Types
-    Det
-    Mcal_Lib
-    MemMap
-    SchM_Port
-    EcuM
-    Os
-    Mcu
-    Dem
-    AppUtils
-    DeviceSupport
-    )
+target_link_libraries(
+    ${PROJECT_NAME}
+    PRIVATE Port_Example_Init_Config
+            Port
+            hw_include
+            AUTOSAR_Types
+            Det
+            Mcal_Lib
+            MemMap
+            SchM_Port
+            EcuM
+            Os
+            Mcu
+            Dem
+            AppUtils
+            DeviceSupport)
 
 # This command is used to move the .xml and .map files
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_linkInfo.xml" "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map"
-${PROJECT_ROOT_DIRECTORY}/build/assets/examples/${PROJECT_NAME}/
-)
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND
+        ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_linkInfo.xml"
+        "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map"
+        ${PROJECT_ROOT_DIRECTORY}/build/assets/examples/${PROJECT_NAME}/)
 
 if(BUILD_CONFIGURATION MATCHES "FLASH")
-SIGNING(${PROJECT_NAME} ${PROJECT_ROOT_DIRECTORY}/build/assets/examples/${PROJECT_NAME})
+    signing(${PROJECT_NAME} ${PROJECT_ROOT_DIRECTORY}/build/assets/examples/${PROJECT_NAME})
 endif()

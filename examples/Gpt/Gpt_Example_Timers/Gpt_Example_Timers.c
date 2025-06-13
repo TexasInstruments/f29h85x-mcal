@@ -17,8 +17,9 @@
  *  File:         Gpt_Example_Timers.c
  *  Generator:    None
  *
- *  Description:  This file contains Gpt examples with Init & DeInit sequence, timers in one shot and continuous mode,
- *                start & stop timers, enable & disable interrupts and time remaining & time elapsed features.
+ *  Description:  This file contains Gpt examples with Init & DeInit sequence, timers in one shot
+ *and continuous mode, start & stop timers, enable & disable interrupts and time remaining & time
+ *elapsed features.
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -52,11 +53,11 @@
  * Local Object Definitions
  *********************************************************************************************************************/
 uint32 Gpt_Interrupt_Cnt[GPT_CFG_MAX_CHANNELS] = {0U};
-uint32 Max_Interrupt_Cnt =100;
-uint32 Interrupt_Cnt = 1;
+uint32 Max_Interrupt_Cnt                       = 100;
+uint32 Interrupt_Cnt                           = 1;
 #if (STD_ON == GPT_CFG_VERSION_INFO_API)
 /*  version info variable */
-Std_VersionInfoType       Gpt_VersionInfo;
+Std_VersionInfoType Gpt_VersionInfo;
 #endif
 /*********************************************************************************************************************
  *  Local Function Prototypes
@@ -124,8 +125,7 @@ int main(void)
     /* Wait for 1.1 seconds to complete one iteration*/
     Time_Delay(1.1);
 
-    if ((Gpt_Interrupt_Cnt[GPT_CHANNEL_0] >= 1) && \
-        (Gpt_Interrupt_Cnt[GPT_CHANNEL_1] == 1) && \
+    if ((Gpt_Interrupt_Cnt[GPT_CHANNEL_0] >= 1) && (Gpt_Interrupt_Cnt[GPT_CHANNEL_1] == 1) &&
         (Gpt_Interrupt_Cnt[GPT_CHANNEL_2] == 1))
     {
         return_value = E_OK;
@@ -152,18 +152,16 @@ int main(void)
     AppUtils_Printf("API Gpt_DeInit executed successfully\n\n\r");
     AppUtils_Printf("------------------------------------------\r\n");
 
-    if(E_OK == return_value){
+    if (E_OK == return_value)
+    {
         AppUtils_Printf("\nGpt_Example_Timers : Sample Application - Completes successfully !!!\r\n");
     }
-    else{
+    else
+    {
         AppUtils_Printf("\nGpt_Example_Timers : Sample Application - FAILED !!!\r\n");
     }
 
     AppUtils_Printf("------------------------------------------\r\n");
-    while(TRUE)
-    {
-        /* Wait here */
-    }
 
     return return_value;
 }
@@ -177,9 +175,8 @@ int Time_Delay(float64 seconds)
 /* GPT timer channel 0 notification function */
 void Gpt_Notify_Func_0(void)
 {
-    Gpt_ValueType time_elapsed = 0;
+    Gpt_ValueType time_elapsed   = 0;
     Gpt_ValueType time_remaining = 0;
-
 
     /* Increment the counter */
     Gpt_Interrupt_Cnt[GPT_CHANNEL_0]++;
@@ -205,16 +202,17 @@ void Gpt_Notify_Func_0(void)
     /* Time Remaining */
     time_remaining = Gpt_GetTimeRemaining(GPT_CHANNEL_0);
 
-    AppUtils_Printf("CHANNEL-0: Time_elapsed and Time_remaining values in one shot mode"
-                    "When the timer  is in Running state are"
-                    "(Time_elapsed = %d Time_remaining = %d)\r\n",
-            time_elapsed, time_remaining);
+    AppUtils_Printf(
+        "CHANNEL-0: Time_elapsed and Time_remaining values in one shot mode"
+        "When the timer  is in Running state are"
+        "(Time_elapsed = %d Time_remaining = %d)\r\n",
+        time_elapsed, time_remaining);
 }
 
 /* GPT timer channel 1 notification function */
 void Gpt_Notify_Func_1(void)
 {
-    Gpt_ValueType time_elapsed = 0;
+    Gpt_ValueType time_elapsed   = 0;
     Gpt_ValueType time_remaining = 0;
 
     /* Increment the counter */
@@ -240,16 +238,17 @@ void Gpt_Notify_Func_1(void)
     /* Time Remaining */
     time_remaining = Gpt_GetTimeRemaining(GPT_CHANNEL_1);
 
-    AppUtils_Printf("CHANNEL-1:Time_elapsed and Time_remaining values in continuous mode"
-                    "When the timer is in Running state are"
-                    "(Time_elapsed = %d Time_remaining = %d)\r\n",
-                    time_elapsed, time_remaining);
+    AppUtils_Printf(
+        "CHANNEL-1:Time_elapsed and Time_remaining values in continuous mode"
+        "When the timer is in Running state are"
+        "(Time_elapsed = %d Time_remaining = %d)\r\n",
+        time_elapsed, time_remaining);
 }
 
 /* GPT timer channel 2 notification function */
 void Gpt_Notify_Func_2(void)
 {
-    Gpt_ValueType time_elapsed = 0;
+    Gpt_ValueType time_elapsed   = 0;
     Gpt_ValueType time_remaining = 0;
 
     /* Increment the counter */
@@ -275,10 +274,11 @@ void Gpt_Notify_Func_2(void)
     /* Time Remaining */
     time_remaining = Gpt_GetTimeRemaining(GPT_CHANNEL_2);
 
-    AppUtils_Printf("CHANNEL-2:Time_elapsed and Time_remaining values in continuous mode"
-                    "When the timer is in Running state are"
-                    "(Time_elapsed = %d Time_remaining = %d)\r\n",
-                    time_elapsed, time_remaining);
+    AppUtils_Printf(
+        "CHANNEL-2:Time_elapsed and Time_remaining values in continuous mode"
+        "When the timer is in Running state are"
+        "(Time_elapsed = %d Time_remaining = %d)\r\n",
+        time_elapsed, time_remaining);
 }
 
 /*********************************************************************************************************************

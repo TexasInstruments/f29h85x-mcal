@@ -17,7 +17,7 @@
  *  File:       Mcu.c
  *  Generator:  None
  *
- *  Description:  This file contains interface for Mcu Drv functions                                                  
+ *  Description:  This file contains interface for Mcu Drv functions
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -33,11 +33,11 @@
  * Design: MCAL-21799,  MCAL-21850, MCAL-21849
  */
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
-    #include "Det.h"
+#include "Det.h"
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
 
 #if (STD_ON == MCU_CFG_DEM_ENABLE)
-    #include "Dem.h"
+#include "Dem.h"
 #endif /*MCU_CFG_DEM_ENABLE*/
 
 /*********************************************************************************************************************
@@ -45,19 +45,18 @@
  *********************************************************************************************************************/
 
 /* AUTOSAR version information check has to match definition in header file */
-#if ((MCU_AR_RELEASE_MAJOR_VERSION != (0x04U)) || \
-    (MCU_AR_RELEASE_MINOR_VERSION != (0x03U)) || \
-    (MCU_AR_RELEASE_REVISION_VERSION != (0x01U)))
-    #error "MCU: AUTOSAR Version Numbers of MCU are different"
+#if ((MCU_AR_RELEASE_MAJOR_VERSION != (0x04U)) || (MCU_AR_RELEASE_MINOR_VERSION != (0x03U)) || \
+     (MCU_AR_RELEASE_REVISION_VERSION != (0x01U)))
+#error "MCU: AUTOSAR Version Numbers of MCU are different"
 #endif
 
 /* vendor specific version information is BCD coded */
 #if ((MCU_SW_MAJOR_VERSION != (1U)) || (MCU_SW_MINOR_VERSION != (1U)))
-    #error "Version numbers of Mcu.c and Mcu.h are inconsistent!"
+#error "Version numbers of Mcu.c and Mcu.h are inconsistent!"
 #endif
 
 #if ((MCU_CFG_MAJOR_VERSION != (1U)) || (MCU_CFG_MINOR_VERSION != (1U)))
-    #error "Version numbers of Mcu.c and Mcu_Cfg.h are inconsistent!"
+#error "Version numbers of Mcu.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
 /*********************************************************************************************************************
@@ -72,7 +71,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -86,12 +85,11 @@ static VAR(boolean, MCU_VAR_INIT) Mcu_InitDone = FALSE;
 
 #define MCU_STOP_SEC_VAR_INIT_BOOLEAN
 #include "Mcu_MemMap.h"
- 
 
 #define MCU_START_SEC_VAR_INIT_PTR
 #include "Mcu_MemMap.h"
 
- /* Global configuration structure object */
+/* Global configuration structure object */
 P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFIG_DATA) Mcu_ConfigObj = NULL_PTR;
 
 #define MCU_STOP_SEC_VAR_INIT_PTR
@@ -106,7 +104,7 @@ P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFIG_DATA) Mcu_ConfigObj = NULL_P
  *********************************************************************************************************************/
 
 /** \brief Mcu_ReportClockFailure - This API will report clock failure error to DEM module
- * 
+ *
  * \param[in] Value set clock functionality return value E_OK or E_NOT_OK
  * \param[out] None
  * \pre None
@@ -134,9 +132,7 @@ FUNC(void, MCU_CODE) Mcu_GetVersionInfo(Std_VersionInfoType *versioninfo)
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
     if (NULL_PTR == versioninfo)
     {
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_GET_VERSION_INFO,
-                            MCU_E_PARAM_POINTER);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_GET_VERSION_INFO, MCU_E_PARAM_POINTER);
     }
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
@@ -150,13 +146,13 @@ FUNC(void, MCU_CODE) Mcu_GetVersionInfo(Std_VersionInfoType *versioninfo)
 }
 #endif /*MCU_CFG_GET_VERSION_INFO_API*/
 
-
 /*
  * Design: MCAL-21817, MCAL-21857, MCAL-21818, MCAL-21819, MCAL-21820, MCAL-21821, MCAL-21822
  */
 FUNC(void, MCU_CODE) Mcu_Init(P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFIG_DATA) CfgPtr)
 {
-    P2CONST(Mcu_ConfigType, AUTOMATIC, MCU_CONFIG_DATA) config_ptr = NULL_PTR;  /* Config pointer initialised with NULL_PTR */
+    P2CONST(Mcu_ConfigType, AUTOMATIC, MCU_CONFIG_DATA)
+    config_ptr = NULL_PTR; /* Config pointer initialised with NULL_PTR */
 #if (STD_ON == MCU_CFG_PRE_COMPILE_VARIANT)
     if (NULL_PTR == CfgPtr)
     {
@@ -170,13 +166,12 @@ FUNC(void, MCU_CODE) Mcu_Init(P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFI
     }
 #endif /*MCU_CFG_PRE_COMPILE_VARIANT*/
 
-
     if (NULL_PTR == config_ptr)
     {
-#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)       
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
         /* API is being called with invalid config param */
-        (void) Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_INIT, MCU_E_PARAM_CONFIG);
-#endif /* STD_ON == MCU_CFG_DEV_ERROR_DETECT */       
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_INIT, MCU_E_PARAM_CONFIG);
+#endif /* STD_ON == MCU_CFG_DEV_ERROR_DETECT */
     }
     else
     {
@@ -189,7 +184,6 @@ FUNC(void, MCU_CODE) Mcu_Init(P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFI
     }
 }
 
-
 /*
  * Design: MCAL-21823, MCAL-21824, MCAL-21854, MCAL-21856
  */
@@ -201,20 +195,18 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitRamSection(Mcu_RamSectionType RamSection)
     if ((boolean)FALSE == Mcu_InitDone)
     {
         /* API is being called before calling Mcu_Init */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_INIT_RAMSECTION, MCU_E_UNINIT);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_INIT_RAMSECTION, MCU_E_UNINIT);
     }
     else if (RamSection > Mcu_ConfigObj->Mcu_NumberOfRamSectors)
     {
         /* API is being called with an invalid parameter */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_INIT_RAMSECTION,
-                            MCU_E_PARAM_RAMSECTION);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_INIT_RAMSECTION, MCU_E_PARAM_RAMSECTION);
     }
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
-        P2CONST(Mcu_RamSectionConfigType, AUTOMATIC, MCU_APPL_CONST) ramsection_config_ptr = &Mcu_ConfigObj->Mcu_ConfigRamSection[RamSection];
+        P2CONST(Mcu_RamSectionConfigType, AUTOMATIC, MCU_APPL_CONST)
+        ramsection_config_ptr = &Mcu_ConfigObj->Mcu_ConfigRamSection[RamSection];
 
         /* Check for Ram Section Base Address pointer validity */
         if (NULL_PTR != ramsection_config_ptr->Mcu_RamSectionBaseAddress)
@@ -228,11 +220,9 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitRamSection(Mcu_RamSectionType RamSection)
         {
             /* Do Nothing */
         }
-
     }
     return (init_ramsection_return);
 }
-
 
 /*
  * Design: MCAL-21825, MCAL-21826, MCAL-21827, MCAL-21828, MCAL-21790,
@@ -243,10 +233,11 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitRamSection(Mcu_RamSectionType RamSection)
 FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClock(Mcu_ClockType ClockSetting)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_NOT_OK;
-    P2CONST(Mcu_ClockConfigType, AUTOMATIC, MCU_APPL_CONST) clk_config_ptr = &Mcu_ConfigObj->Mcu_ClockConfig[ClockSetting];
+    P2CONST(Mcu_ClockConfigType, AUTOMATIC, MCU_APPL_CONST)
+    clk_config_ptr = &Mcu_ConfigObj->Mcu_ClockConfig[ClockSetting];
 
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
-    if((boolean)FALSE == Mcu_InitDone)
+    if ((boolean)FALSE == Mcu_InitDone)
     {
         /* API is being called before calling Mcu_Init */
         (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_INIT_CLOCK, MCU_E_UNINIT);
@@ -264,42 +255,41 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClock(Mcu_ClockType ClockSetting)
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
-        #if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
+#if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
         /* Unlocks all Clock configuration registers */
         Mcu_UnlockClockConfigRegisters();
-        #endif
+#endif
 
-        #if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
+#if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
         /* Unlocks all Cpu Peripheral configuration registers */
         Mcu_UnlockCpuPeripheralConfigRegisters();
-        #endif
+#endif
 
         /* Initialize the clock */
         return_value = Mcu_SetClock(clk_config_ptr);
 
-        #if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
+#if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
         /* Locks all Clock configuration registers */
         Mcu_LockClockConfigRegisters();
-        #endif
+#endif
 
-        #if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
+#if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
         /* Locks all Cpu Peripheral configuration registers */
         Mcu_LockCpuPeripheralConfigRegisters();
-        #endif
+#endif
 
         Mcu_ReportClockFailure(return_value);
     }
 
     return (return_value);
 }
-#endif   /*MCU_CFG_INIT_CLOCK_API*/
-
+#endif /*MCU_CFG_INIT_CLOCK_API*/
 
 /*
- * Design: MCAL-21829, MCAL-21830, MCAL-21831, MCAL-21832, MCAL-21833, 
+ * Design: MCAL-21829, MCAL-21830, MCAL-21831, MCAL-21832, MCAL-21833,
  * Design: MCAL-21855, MCAL-21856
  */
-#if(STD_OFF == MCU_CFG_NO_PLL)
+#if (STD_OFF == MCU_CFG_NO_PLL)
 FUNC(Std_ReturnType, MCU_CODE) Mcu_DistributePllClock(void)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_NOT_OK;
@@ -309,15 +299,12 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_DistributePllClock(void)
     if ((boolean)FALSE == Mcu_InitDone)
     {
         /* API is being called before calling Mcu_Init */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_DISTRIBUTE_PLL_CLOCK, MCU_E_UNINIT);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_DISTRIBUTE_PLL_CLOCK, MCU_E_UNINIT);
     }
     else if (MCU_PLL_LOCKED != Mcu_GetPllStatus())
     {
         /* API is being called before PLL is locked*/
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_DISTRIBUTE_PLL_CLOCK,
-                            MCU_E_PLL_NOT_LOCKED);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_DISTRIBUTE_PLL_CLOCK, MCU_E_PLL_NOT_LOCKED);
     }
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
@@ -329,8 +316,7 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_DistributePllClock(void)
     }
     return (return_value);
 }
-#endif  /*MCU_CFG_NO_PLL*/
-
+#endif /*MCU_CFG_NO_PLL*/
 
 /*
  * Design: MCAL-21834, MCAL-21835, MCAL-21836, MCAL-21856
@@ -343,11 +329,10 @@ FUNC(Mcu_PllStatusType, MCU_CODE) Mcu_GetPllStatus(void)
     if ((boolean)FALSE == Mcu_InitDone)
     {
         /* API is being called before calling Mcu_Init */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_GET_PLL_STATUS, MCU_E_UNINIT);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_GET_PLL_STATUS, MCU_E_UNINIT);
     }
     else
-#endif   /*MCU_CFG_DEV_ERROR_DETECT*/
+#endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
 #if (STD_ON == MCU_CFG_NO_PLL)
         /* Return the PLL status as undefined*/
@@ -366,22 +351,19 @@ FUNC(Mcu_PllStatusType, MCU_CODE) Mcu_GetPllStatus(void)
     return (pll_status);
 }
 
-
 /*
  * Design: MCAL-21837, MCAL-21838, MCAL-21789, MCAL-21856
  */
 FUNC(Mcu_ResetType, MCU_CODE) Mcu_GetResetReason(void)
 {
-    VAR(Mcu_ResetType, AUTOMATIC) reset_reason = MCU_RESET_UNDEFINED;
+    VAR(Mcu_ResetType, AUTOMATIC) reset_reason      = MCU_RESET_UNDEFINED;
     VAR(Mcu_RawResetType, AUTOMATIC) raw_reset_type = MCU_ERRORRST_MASK;
 
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
     if ((boolean)FALSE == Mcu_InitDone)
     {
         /* API is being called before calling Mcu_Init */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_GET_RESET_REASON,
-                            MCU_E_UNINIT);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_GET_RESET_REASON, MCU_E_UNINIT);
     }
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
@@ -399,7 +381,6 @@ FUNC(Mcu_ResetType, MCU_CODE) Mcu_GetResetReason(void)
     return (reset_reason);
 }
 
-
 /*
  * Design: MCAL-21839, MCAL-21840, MCAL-21856
  */
@@ -410,12 +391,10 @@ FUNC(Mcu_RawResetType, MCU_CODE) Mcu_GetResetRawValue(void)
     if ((boolean)FALSE == Mcu_InitDone)
     {
         /* API is being called before calling Mcu_Init */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_GET_RESET_RAW_VALUE,
-                            MCU_E_UNINIT);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_GET_RESET_RAW_VALUE, MCU_E_UNINIT);
     }
     else
-#endif   /*MCU_CFG_DEV_ERROR_DETECT*/
+#endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
         /* Get raw reset reason */
         raw_reset_type = (Mcu_RawResetType)Mcu_GetResetCause();
@@ -425,7 +404,6 @@ FUNC(Mcu_RawResetType, MCU_CODE) Mcu_GetResetRawValue(void)
     }
     return (raw_reset_type);
 }
-
 
 /*
  * Design: MCAL-21841, MCAL-21842, MCAL-21843, MCAL-21844, MCAL-21788, MCAL-21856
@@ -437,12 +415,10 @@ FUNC(void, MCU_CODE) Mcu_PerformReset(void)
     if ((boolean)FALSE == Mcu_InitDone)
     {
         /* API is being called before calling Mcu_Init */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_PERFORM_RESET,
-                            MCU_E_UNINIT);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_PERFORM_RESET, MCU_E_UNINIT);
     }
     else
-#endif   /*MCU_CFG_DEV_ERROR_DETECT*/
+#endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
         /* Only Software reset (i.e simualtion of XRS) should be performed */
         Mcu_PerformControllerReset();
@@ -450,50 +426,46 @@ FUNC(void, MCU_CODE) Mcu_PerformReset(void)
 }
 #endif /*MCU_CFG_PERFORM_RESET_API*/
 
-
 /*
  * Design: MCAL-21845, MCAL-21846, MCAL-21791, MCAL-21792, MCAL-21853, MCAL-21856
  */
 FUNC(void, MCU_CODE) Mcu_SetMode(Mcu_ModeType McuMode)
 {
-    P2CONST(Mcu_ModeConfigType, AUTOMATIC, MCU_APPL_CONST) mode_config_ptr = &Mcu_ConfigObj->Mcu_ModeConfig[McuMode];
+    P2CONST(Mcu_ModeConfigType, AUTOMATIC, MCU_APPL_CONST)
+    mode_config_ptr = &Mcu_ConfigObj->Mcu_ModeConfig[McuMode];
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
     if ((boolean)FALSE == Mcu_InitDone)
     {
         /* API is being called before calling Mcu_Init */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_SET_MODE, MCU_E_UNINIT);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_SET_MODE, MCU_E_UNINIT);
     }
-    else if(McuMode > Mcu_ConfigObj->Mcu_NumberOfLowPowerModes)
+    else if (McuMode > Mcu_ConfigObj->Mcu_NumberOfLowPowerModes)
     {
         /* API is being called with an invalid mode parameter */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_SET_MODE,
-                            MCU_E_PARAM_MODE);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_SET_MODE, MCU_E_PARAM_MODE);
     }
     else if ((Std_ReturnType)E_NOT_OK == Mcu_SetModeParamCheck(mode_config_ptr))
     {
         /* DET Error reported */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_SET_MODE,
-                            MCU_E_PARAM_CONFIG);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_SET_MODE, MCU_E_PARAM_CONFIG);
     }
     else
-#endif   /*MCU_CFG_DEV_ERROR_DETECT*/
+#endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
-        #if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
+#if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
         /* Unlocks Cpu system register: LPMCR */
         Mcu_UnlockCpuSysRegisters();
-        #endif
+#endif
 
         /* Sets and Enter in to low power modes*/
         Mcu_EnterLowPowerMode(mode_config_ptr);
 
-        #if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
+#if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
         /* Locks Cpu system register: LPMCR */
         Mcu_LockCpuSysRegisters();
-        #endif
+#endif
     }
 }
-
 
 /*
  * Design: MCAL-21847, MCAL-21848, MCAL-21856
@@ -506,12 +478,10 @@ FUNC(Mcu_RamStateType, MCU_CODE) Mcu_GetRamState(void)
     if ((boolean)FALSE == Mcu_InitDone)
     {
         /* API is being called before calling Mcu_Init */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID,
-                            MCU_SID_GET_RAM_STATE,
-                            MCU_E_UNINIT);
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_GET_RAM_STATE, MCU_E_UNINIT);
     }
     else
-#endif   /*MCU_CFG_DEV_ERROR_DETECT*/
+#endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
         /* Always return RAM Valid status only */
         ram_state_type = MCU_RAMSTATE_VALID;
@@ -519,7 +489,6 @@ FUNC(Mcu_RamStateType, MCU_CODE) Mcu_GetRamState(void)
     return (ram_state_type);
 }
 #endif /*MCU_CFG_GET_RAM_STATE_API*/
-
 
 /*********************************************************************************************************************
  *  Local Functions Definition
@@ -529,13 +498,13 @@ FUNC(Mcu_RamStateType, MCU_CODE) Mcu_GetRamState(void)
  */
 static FUNC(void, MCU_CODE) Mcu_ReportClockFailure(Std_ReturnType Value)
 {
-    if((Std_ReturnType)E_NOT_OK == Value)
+    if ((Std_ReturnType)E_NOT_OK == Value)
     {
         if ((boolean)TRUE == Mcu_ConfigObj->Mcu_EnableClkFailNotification)
         {
-            #ifdef MCU_E_CLOCK_FAILURE
+#ifdef MCU_E_CLOCK_FAILURE
             (void)Dem_SetEventStatus(MCU_E_CLOCK_FAILURE, DEM_EVENT_STATUS_FAILED);
-            #endif
+#endif
         }
         else
         {

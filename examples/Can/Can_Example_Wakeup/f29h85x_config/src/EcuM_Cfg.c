@@ -57,7 +57,7 @@
  /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
@@ -79,7 +79,7 @@
 
 volatile EcuM_WakeupEventSourceType EcuM_EventRecord[ECUM_CFG_WAKEUP_EVENT_COUNT]=
 {
-      [0] = 
+      [0] =
       {
           .source_id                  = 1U,
           .wakeup_funcptr             = (EcuM_WakeupFuncPtrType)EcuM_Can_CheckWakeup,
@@ -104,11 +104,11 @@ FUNC(void, ECUM_CODE) EcuM_InitList(void)
 	Mcu_DistributePllClock();
 #endif
 #endif
-    
+
      Port_Init(&Port_PortConfigSet);
-    
+
     Can_Init(&Can_CanConfigSet);
-    
+
 }
 
 #define ECUM_STOP_SEC_CONFIG_DATA

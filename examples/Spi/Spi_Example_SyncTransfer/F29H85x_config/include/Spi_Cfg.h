@@ -63,7 +63,7 @@ extern "C" {
 /** \brief Spi configuration Minor Version */
 #define SPI_CFG_MINOR_VERSION           (1U)
 /** \brief Spi configuration Patch Version */
-#define SPI_CFG_PATCH_VERSION           (0U)
+#define SPI_CFG_PATCH_VERSION           (1U)
 
 
 /**
@@ -180,7 +180,7 @@ extern "C" {
  */
 
 
-#define SPI_CFG_TIMEOUT_CLOCK_CYCLES    ((uint64)(100000U))
+#define SPI_CFG_TIMEOUT_CLOCK_CYCLES    ((McalLib_TickType)(100000U))
 
 /** \brief Maximum channels allowed per job */
 /*

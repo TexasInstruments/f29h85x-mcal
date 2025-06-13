@@ -53,10 +53,12 @@
                       <a:v>VariantPreCompile</a:v>
                     </a:da>
                   </v:var>
+                  <!--Design: MCAL-30540 -->
                   <v:ctr name="CddIpcConfig" type="IDENTIFIABLE">
                     <a:a name="DESC" 
                          value="EN: This container contains the configuration parameters and sub containers of the Cdd_Ipc module."/>
                     <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                    <!--Design: MCAL-30545 -->
                     <v:lst name="CddIpcRemoteCoreConfig" type="MAP">
                       <a:da name="MIN" value="0"/>
                       <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('No_of_cores')-1&quot;,num:i(2))"/>
@@ -64,6 +66,7 @@
                           <a:a name="DESC" 
                              value="EN: This container contains the configuration parameters of the remote cores."/>
                           <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <!--Design: MCAL-30558 -->
                           <v:var name="CddIpcRemoteCore" type="ENUMERATION">
                             <a:a name="DESC" 
                                value="EN: Selects the Cdd Ipc remote cores."/>
@@ -81,6 +84,7 @@
                                      expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select a remote core only once.">
                             </a:da>
                           </v:var> 
+                          <!--Design: MCAL-30546 -->
                           <v:lst name="CddIpcTxInstanceConfig" type="MAP">
                               <a:da name="MIN" value="0"/>
                               <a:da name="MAX" type="XPath" 
@@ -89,6 +93,7 @@
                                 <a:a name="DESC" 
                                   value="EN: This container contains the configuration parameters of the CddIpc Instances."/>
                                 <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                <!--Design: MCAL-30559 -->
                                 <v:var name="CddIpcTxInstance" type="ENUMERATION">
                                   <a:a name="DESC" 
                                     value="EN: Selects CddIpc Instance."/>
@@ -111,12 +116,14 @@
                                 <v:lst name="CddIpcTxChannelConfig" type="MAP">
                                   <a:da name="MIN" value="1"/>
                                   <a:da name="MAX" value="255"/>
+                                  <!--Design: MCAL-30548 -->
                                   <v:ctr name="CddIpcTxChannelConfig" type="IDENTIFIABLE">
                                     <a:a name="DESC" value="EN: This container contains the configuration parameters of the CddIpc channels."/>
                                     <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                                     <a:da name="INVALID" type="XPath">
                                       <a:tst expr="text:uniq((../../../../../../CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*/CddIpcTxChannelConfig/*/@name),@name)" false="CddIpcTxChannelConfig name has to be unique across all containers"/>
                                     </a:da>
+                                    <!--Design: MCAL-30560 -->
                                     <v:var name="CddIpcTxChannelId" type="INTEGER">
                                       <a:a name="DESC" 
                                         value="EN: Channel ID specific to the selected instance, channels configured in the selected instance should have unique values. An instance can have 255 channels ranging from 1-255."/>
@@ -140,6 +147,7 @@
                                          expr="text:uniq(../..//*[@name = 'CddIpcTxChannelId'],node:value(.))" false="Please make sure to add a channel only once.">
                                       </a:da>
                                     </v:var>
+                                    <!--Design: MCAL-30561 -->
                                     <v:var name="CddIpcTxProcessing" type="ENUMERATION">
                                       <a:a name="DESC" 
                                         value="EN: Selects the Tx processing type. 
@@ -161,6 +169,7 @@
                                       <a:da name="RANGE" type="XPath" 
                                         expr="node:fallback(&quot;->ecu:list('Tx_processing')&quot;,'CDD_IPC_INTERRUPT')"/>
                                     </v:var>
+                                    <!--Design: MCAL-30562 -->
                                     <v:ref name="CddIpcTxPduID" type="REFERENCE">
                                       <a:a name="DESC" 
                                         value="EN: Reference to PduId. This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in transmit function to address the respective channel. "/>
@@ -177,6 +186,7 @@
                                       <a:da name="REF" 
                                         value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Cdd/CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerTxPdu"/>
                                     </v:ref>
+                                    <!--Design: MCAL-30563 -->
                                     <v:var name="CddIpcTxGlobalChannelId" type="INTEGER">
                                       <a:a name="DESC" 
                                         value="EN: This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is disabled. This channel identifier will be used in transmit function to address the respective channel. "/>
@@ -199,6 +209,7 @@
                                 </v:lst>
                               </v:ctr>
                           </v:lst> 
+                          <!--Design: MCAL-30547 -->
                           <v:lst name="CddIpcRxInstanceConfig" type="MAP">
                               <a:da name="MIN" value="0"/>
                               <a:da name="MAX" type="XPath"
@@ -207,6 +218,7 @@
                                 <a:a name="DESC" 
                                    value="EN: This container contains the configuration parameters of the CddIpc Instances."/>
                                 <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                <!--Design: MCAL-30564 -->
                                 <v:var name="CddIpcRxInstance" type="ENUMERATION">
                                   <a:a name="DESC" 
                                     value="EN: Selects CddIpc Instance."/>
@@ -226,6 +238,7 @@
                                     expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select a Rx instance only once.">
                                   </a:da>
                                 </v:var> 
+                                <!--Design: MCAL-30565 -->
                                 <v:var name="CddIpcInteruptType" type="ENUMERATION">
                                   <a:a name="DESC" 
                                     value="EN: Defines the interrupt type for the specific instance."/>
@@ -244,6 +257,7 @@
                                     <a:v>ISR_CAT2_INT</a:v>
                                   </a:da>
                                 </v:var>
+                                <!--Design: MCAL-30549 -->
                                 <v:lst name="CddIpcRxChannelConfig" type="MAP">
                                   <a:da name="MIN" value="1"/>
                                   <a:da name="MAX" value="255"/>
@@ -253,6 +267,7 @@
                                     <a:da name="INVALID" type="XPath">
                                       <a:tst expr="text:uniq((../../../../../../CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*/CddIpcRxChannelConfig/*/@name),@name)" false="CddIpcRxChannelConfig name has to be unique across all containers"/>
                                     </a:da>
+                                    <!--Design: MCAL-30566 -->
                                     <v:var name="CddIpcRxChannelId" type="INTEGER">
                                       <a:a name="DESC" value="EN: Channel ID specific to the selected instance, channels configured in the selected instance should have unique values. An instance can have 255 channels ranging from 1-255."/>
                                       <a:a name="IMPLEMENTATIONCONFIGCLASS" 
@@ -275,6 +290,7 @@
                                         expr="text:uniq(../..//*[@name = 'CddIpcRxChannelId'],node:value(.))" false="Please make sure to add a channel only once.">
                                       </a:da>
                                     </v:var>
+                                    <!--Design: MCAL-30568 -->
                                     <v:var name="CddIpcUserCallbackFunction" type="FUNCTION-NAME">
                                       <a:a name="DESC" 
                                         value="EN: Call back function for the data during reception"/>
@@ -289,6 +305,7 @@
                                       <a:da name="ENABLE" value="false"/>
                                       <a:da name="DEFAULT" value="NULL_PTR"/>
                                     </v:var>
+                                    <!--Design: MCAL-30567 -->
                                     <v:ref name="CddIpcRxPduID" type="REFERENCE">
                                       <a:a name="DESC" 
                                         value="EN: Reference to Pduid. This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in receive function callback to PduR to address the received Pdu from respective channel. "/>
@@ -305,6 +322,7 @@
                                       <a:da name="REF" 
                                         value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Cdd/CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerRxPdu"/>
                                     </v:ref>
+                                    <!--Design: MCAL-30569 -->
                                     <v:var name="CddIpcRxGlobalChannelId" type="INTEGER">
                                       <a:a name="DESC" 
                                         value="EN: This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is disabled. This channel object identifier will be used in configured receive callback function to  address the received message from respective channel."/>
@@ -330,12 +348,14 @@
                       </v:ctr>
                     </v:lst> 
                   </v:ctr>
+                  <!--Design: MCAL-30541 -->
                   <v:ctr name="CddComStackContribution" type="IDENTIFIABLE">
                     <a:a name="DESC" 
                          value="EN: Contribution of COM Stack modules."/>
                     <a:a name="UUID" 
                          value="161d6be2-67e5-48cc-8518-a905f4c21672"/>
                     <a:da name="ENABLE" type="XPath" expr="(../CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true')"/>
+                    <!--Design: MCAL-30542 -->
                     <v:ctr name="CddPduRLowerLayerContribution" 
                            type="IDENTIFIABLE">
                       <a:a name="DESC" 
@@ -344,6 +364,7 @@
                       <a:a name="UUID" 
                            value="f7561d1b-df9e-495a-96dd-6e108e268b6d"/>
                       <a:da name="ENABLE" value="false"/>
+                      <!--Design: MCAL-30543 -->
                       <v:lst name="CddPduRLowerLayerRxPdu" type="MAP">
                         <v:ctr name="CddPduRLowerLayerRxPdu" 
                                type="IDENTIFIABLE">
@@ -351,6 +372,7 @@
                                value="EN: This container specifies Rx PDUs that are exchanged between the CDD and the standardized BSW module."/>
                           <a:a name="UUID" 
                                value="24e1e7cf-c6bc-4637-b875-24d96277176d"/>
+                          <!--Design: MCAL-30570 -->
                           <v:var name="CddPduRApiType" type="ENUMERATION">
                             <a:a name="DESC" 
                                  value="EN: This parameter configures the type of the CDD interface (IF/TP)"/>
@@ -361,11 +383,12 @@
                                  value="cbaefcc0-8c49-44fe-b648-dd0edf46ae76"/>
                             <a:da name="ENABLE" value="false"/>
                            <a:da name="DEFAULT" value="IF"/>
-                            <a:da name="READONLY" value="true"/>
+                            <a:da name="EDITABLE" value="false"/>
                             <a:da name="RANGE">
                               <a:v>IF</a:v>
                             </a:da>
                           </v:var>
+                          <!--Design: MCAL-30571 -->
                           <v:var name="CddPduRLowerLayerHandleId" 
                                  type="INTEGER">
                             <a:a name="DESC" 
@@ -382,6 +405,7 @@
                               <a:tst expr="&gt;=0"/>
                             </a:da>
                           </v:var>
+                          <!--Design: MCAL-30572 -->
                           <v:ref name="CddPduRLowerLayerPduRef" 
                                  type="REFERENCE">
                             <a:a name="DESC" 
@@ -395,6 +419,7 @@
                             <a:da name="REF" 
                                   value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/EcuC/EcucConfigSet/EcucPduCollection/Pdu"/>
                           </v:ref>
+                          <!--Design: MCAL-30573 -->
                           <v:var name="CddIpcPduRHandle" 
                                  type="STRING">
                             <a:a name="DESC" 
@@ -414,6 +439,7 @@
                           </v:var>
                         </v:ctr>
                       </v:lst>
+                      <!--Design: MCAL-30544 -->
                       <v:lst name="CddPduRLowerLayerTxPdu" type="MAP">
                         <v:ctr name="CddPduRLowerLayerTxPdu" 
                                type="IDENTIFIABLE">
@@ -421,6 +447,7 @@
                                value="EN: This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module."/>
                           <a:a name="UUID" 
                                value="53f1ad8a-16b0-4e5b-a61e-771e90acd056"/>
+                          <!--Design: MCAL-30574 -->
                           <v:var name="CddPduRApiType" type="ENUMERATION">
                             <a:a name="DESC" 
                                  value="EN: This parameter configures the type of the CDD interface (IF/TP)"/>
@@ -431,11 +458,12 @@
                                  value="1e934f66-27fe-4918-9643-1bb7ee642441"/>
                             <a:da name="ENABLE" value="false"/>
                            <a:da name="DEFAULT" value="IF"/>
-                            <a:da name="READONLY" value="true"/>
+                            <a:da name="EDITABLE" value="false"/>
                             <a:da name="RANGE">
                               <a:v>IF</a:v>
                             </a:da>
                           </v:var>
+                          <!--Design: MCAL-30575 -->
                           <v:var name="CddPduRLowerLayerHandleId" 
                                  type="INTEGER">
                             <a:a name="DESC" 
@@ -452,6 +480,7 @@
                               <a:tst expr="&gt;=0"/>
                             </a:da>
                           </v:var>
+                          <!--Design: MCAL-30576 -->
                           <v:ref name="CddPduRLowerLayerPduRef" 
                                  type="REFERENCE">
                             <a:a name="DESC" 
@@ -469,10 +498,12 @@
                       </v:lst>
                     </v:ctr>
                   </v:ctr>
+                  <!--Design: MCAL-30539 -->
                   <v:ctr name="CddIpcGeneral" type="IDENTIFIABLE">
                     <a:a name="DESC" 
                          value="EN: Contains the general configuration parameters of the module."/>
                     <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                    <!--Design: MCAL-30550 -->
                     <v:var name="CddIpcDevErrorDetect" type="BOOLEAN">
                       <a:a name="DESC" 
                            value="EN: Switches the development error detection and notification on or off."/>
@@ -486,6 +517,7 @@
                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <a:da name="DEFAULT" value="false"/>
                     </v:var>
+                    <!--Design: MCAL-30551 -->
                     <v:var name="CddIpcVersionInfoApi" type="BOOLEAN">
                       <a:a name="DESC" 
                            value="EN: Adds / removes the service Cdd_Ipc_GetVersionInfo() from the code."/>
@@ -499,6 +531,7 @@
                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <a:da name="DEFAULT" value="false"/>
                     </v:var>
+                    <!--Design: MCAL-30557 -->
                     <v:var name="CddIpcIntegrationWithAsrComStackEnable" type="BOOLEAN">
                       <a:a name="DESC" 
                            value="EN: This parameter is used to enable the integration of Cdd Ipc module with Autosar Com Stack.
@@ -514,6 +547,7 @@
                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
                       <a:da name="DEFAULT" value="false"/>
                     </v:var>
+                    <!--Design: MCAL-30552 -->
                     <v:var name="CddIpcReservedInstances" type="INTEGER">
                         <a:a name="DESC" 
                             value="EN: Number of reserved instances.The reserved instances won't be available as channels in CDD IPC"/>
@@ -534,6 +568,7 @@
                             <a:tst expr="&gt;=0"/>
                         </a:da>
                     </v:var>
+                    <!--Design: MCAL-30553 -->
                     <v:var name="CddIpcLocalCore" type="ENUMERATION">
                       <a:a name="DESC" 
                            value="EN: The local core for which the configuration is being done"/>
@@ -548,6 +583,7 @@
                       <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Local_Cores')[1]&quot;,'CDD_IPC_CPU1')"/>
                       <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Local_Cores')&quot;,'CDD_IPC_CPU1')"/>
                     </v:var>
+                    <!--Design: MCAL-30554 -->
                     <v:var name="CddIpcMainFunctionReadPeriod" type="FLOAT">
                       <a:a name="DESC" 
                          value="EN: This parameter describes the period for cyclic call to Cdd_Ipc_MainFunction_Read. Unit is seconds."/>
@@ -566,6 +602,7 @@
                         <a:tst expr="&gt;=1.0E-6"/>
                       </a:da>
                     </v:var>
+                    <!--Design: MCAL-30555 -->
                     <v:var name="CddIpcTimeoutDuration" type="FLOAT">
                        <a:a name="DESC" 
                          value="EN: Timeout value for synchronization of cores in seconds, if synchronization didn't happen within this time frame, Cdd_Ipc_Sync will abort and returns E_NOT_OK"/>
@@ -583,6 +620,7 @@
                          <a:tst expr="&gt;=1.0E-6"/>
                        </a:da>
                     </v:var>
+                    <!--Design: MCAL-30556 -->
                     <v:ref name="CddIpcCounterClockRef" type="REFERENCE">
                       <a:a name="DESC" 
                          value="EN: This parameter contains a reference to the sysClock to calculate clock cycles for IPC free run counter, which is used by the CDD IPC driver."/>

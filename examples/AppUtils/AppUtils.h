@@ -53,7 +53,7 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
-#define APPUTILS_ASSERT(y) (AppUtils_AssertFunc((uint32)(y),(char *) #y,(char *) __FILE__,(uint32) __LINE__))
+#define APPUTILS_ASSERT(y) (AppUtils_AssertFunc((uint32)(y), (char *)#y, (char *)__FILE__, (uint32)__LINE__))
 
 /*********************************************************************************************************************
  * Exported Type Declarations
@@ -81,7 +81,7 @@ extern "C" {
  * \retval None
  *
  *********************************************************************************************************************/
-void AppUtils_AssertFunc(uint32 Condition,char *Str,char *FileName,uint32 LineNum);
+void AppUtils_AssertFunc(uint32 Condition, char *Str, char *FileName, uint32 LineNum);
 
 /** \brief Function to initialiaze UART.
  *
@@ -126,7 +126,7 @@ void AppUtils_Printf(const char *Message, ...);
  *
  * This function reads the character passed via console.
  *
- * \param[in] None 
+ * \param[in] None
  * \param[out] None
  * \post None
  * \return Returns the character read that is passed via console.
@@ -213,7 +213,7 @@ void Uart_DisableModule();
  * \retval None
  *
  *********************************************************************************************************************/
-void Uart_SetConfig(uint32 UartClk,uint32 Baudrate, uint32 Config);
+void Uart_SetConfig(uint32 UartClk, uint32 Baudrate, uint32 Config);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

@@ -11,15 +11,15 @@ title: Port API GUIDE Header file
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
-|enum| **[Port_PinDirectionType](../Modules/group___p_o_r_t.md#enum-port-pindirectiontype)** | Enum of Port Direction.  | 
-|enum| **[Port_PinLevelValueType](../Modules/group___p_o_r_t.md#enum-port-pinlevelvaluetype)** | Enum of Port Pin Level.  | 
-|enum| **[Port_PinPadConfigType](../Modules/group___p_o_r_t.md#enum-port-pinpadconfigtype)** | Enum of Port Pin Pad, Up/Down Type selection.  | 
-|enum| **[Port_PinQualificationMode](../Modules/group___p_o_r_t.md#enum-port-pinqualificationmode)** | Values that can be passed to set qualification parameter to initialize MCU module.  | 
-|enum| **[Port_PinCoreSelect](../Modules/group___p_o_r_t.md#enum-port-pincoreselect)** | Values that can be passed to select master core for MCU module.  | 
-|enum| **[Port_AnalogModeType](../Modules/group___p_o_r_t.md#enum-port-analogmodetype)** | Values that can be passed to set the mode in which Pin should operate.  | 
-|typedef uint32  | **[Port_PinType](../Modules/group___p_o_r_t.md#typedef-port-pintype)** | Type for symbolic name of Port pins.  | 
-|typedef uint32  | **[Port_PinModeType](../Modules/group___p_o_r_t.md#typedef-port-pinmodetype)** | Pin Mode type structure.  | 
-|typedef uint8  | **[Port_PinConfigFlagType](../Modules/group___p_o_r_t.md#typedef-port-pinconfigflagtype)** | Type for Pin Config Flag. Pin config flags Bit 0 - Is Pin configurable? Bit 1 - Does Pin support Analog Mode? Bit 2 - Does Pin operate in AGPIO mode? Bit 3 - Does Pin operate in AIO mode? Bit 4 - Does Pin operate in GPIO mode?  | 
+|enum| **[Port_PinDirectionType](../Modules/group___p_o_r_t.md#enum-port_pindirectiontype)** | Enum of Port Direction.  | 
+|enum| **[Port_PinLevelValueType](../Modules/group___p_o_r_t.md#enum-port_pinlevelvaluetype)** | Enum of Port Pin Level.  | 
+|enum| **[Port_PinPadConfigType](../Modules/group___p_o_r_t.md#enum-port_pinpadconfigtype)** | Enum of Port Pin Pad, Up/Down Type selection.  | 
+|enum| **[Port_PinQualificationMode](../Modules/group___p_o_r_t.md#enum-port_pinqualificationmode)** | Values that can be passed to set qualification parameter to initialize MCU module.  | 
+|enum| **[Port_PinCoreSelect](../Modules/group___p_o_r_t.md#enum-port_pincoreselect)** | Values that can be passed to select master core for MCU module.  | 
+|enum| **[Port_AnalogModeType](../Modules/group___p_o_r_t.md#enum-port_analogmodetype)** | Values that can be passed to set the mode in which Pin should operate.  | 
+|typedef uint32  | **[Port_PinType](../Modules/group___p_o_r_t.md#typedef-port_pintype)** | Type for symbolic name of Port pins.  | 
+|typedef uint32  | **[Port_PinModeType](../Modules/group___p_o_r_t.md#typedef-port_pinmodetype)** | Pin Mode type structure.  | 
+|typedef uint8  | **[Port_PinConfigFlagType](../Modules/group___p_o_r_t.md#typedef-port_pinconfigflagtype)** | Type for Pin Config Flag. Pin config flags Bit 0 - Is Pin configurable? Bit 1 - Does Pin support Analog Mode? Bit 2 - Does Pin operate in AGPIO mode? Bit 3 - Does Pin operate in AIO mode? Bit 4 - Does Pin operate in GPIO mode?  | 
 
 
 
@@ -117,9 +117,36 @@ Values that can be passed to set the mode in which Pin should operate.
 
 
 
+### typedef Port_PinType
+```
+typedef uint32 Port_PinType;
+```
+
+
+**Brief**: 
+Type for symbolic name of Port pins. 
 
 
 
+### typedef Port_PinModeType
+```
+typedef uint32 Port_PinModeType;
+```
+
+
+**Brief**: 
+Pin Mode type structure. 
+
+
+
+### typedef Port_PinConfigFlagType
+```
+typedef uint8 Port_PinConfigFlagType;
+```
+
+
+**Brief**: 
+Type for Pin Config Flag. Pin config flags Bit 0 - Is Pin configurable? Bit 1 - Does Pin support Analog Mode? Bit 2 - Does Pin operate in AGPIO mode? Bit 3 - Does Pin operate in AIO mode? Bit 4 - Does Pin operate in GPIO mode? 
 
 
 
@@ -198,22 +225,22 @@ Values that can be passed to set the mode in which Pin should operate.
 
 | Return type    | Function Name           |      Brief        |
 | -------------- | ----------------------- | ----------------- |
-| void | **[Port_Init](../Modules/group___p_o_r_t.md#function-port-init)**(const [Port_ConfigType](Classes/struct_port___config_type.md) * CfgPtr)| Initializes the Port Driver module.  |
-| void | **[Port_SetPinDirection](../Modules/group___p_o_r_t.md#function-port-setpindirection)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) Pin, [Port_PinDirectionType](Modules/group___p_o_r_t.md#enum-port-pindirectiontype) Direction)| Sets the port pin direction.  |
-| void | **[Port_RefreshPortDirection](../Modules/group___p_o_r_t.md#function-port-refreshportdirection)**(void )| Refreshes port direction.  |
-| void | **[Port_GetVersionInfo](../Modules/group___p_o_r_t.md#function-port-getversioninfo)**(Std_VersionInfoType * versioninfo)| Service to get the version information of the module.  |
-| void | **[Port_SetPinMode](../Modules/group___p_o_r_t.md#function-port-setpinmode)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) Pin, [Port_PinModeType](Modules/group___p_o_r_t.md#typedef-port-pinmodetype) Mode)| Sets the port pin mode.  |
-| void | **[Port_CommitConfiguration](../Modules/group___p_o_r_t.md#function-port-commitconfiguration)**(void )| Commits the locked Critical Configuration registers for the current Configuration.  |
-| Std_ReturnType | **[Port_SetCntSpConfig](../Modules/group___p_o_r_t.md#function-port-setcntspconfig)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfigPtr)| Sets the pad/pull configuration for the specified pin.  |
-| Std_ReturnType | **[Port_SetPinLevel](../Modules/group___p_o_r_t.md#function-port-setpinlevel)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfigPtr, [Port_PinLevelValueType](Modules/group___p_o_r_t.md#enum-port-pinlevelvaluetype) PinLevel)| Writes the level value to the specified pin.  |
-| Std_ReturnType | **[Port_EnableLPMWakeUpPin](../Modules/group___p_o_r_t.md#function-port-enablelpmwakeuppin)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfig)| Set pins as Low Power wakeup modes GPIO pins.  |
-| void | **[Port_SetPinModeConfig](../Modules/group___p_o_r_t.md#function-port-setpinmodeconfig)**(uint32 PinMode)| Configures the Pin Mode function of a PORT pin.  |
-| Std_ReturnType | **[Port_SetDirectionMode](../Modules/group___p_o_r_t.md#function-port-setdirectionmode)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * PinConfigPtr, [Port_PinDirectionType](Modules/group___p_o_r_t.md#enum-port-pindirectiontype) PinDirection)| Sets the direction of the specified pin.  |
-| Std_ReturnType | **[Port_IsPinNumberValid](../Modules/group___p_o_r_t.md#function-port-ispinnumbervalid)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) PinNumber)| Checks if the provided pin number is Valid or Not.  |
-| Std_ReturnType | **[Port_ValidateSetPinMode](../Modules/group___p_o_r_t.md#function-port-validatesetpinmode)**([Port_PinModeType](Modules/group___p_o_r_t.md#typedef-port-pinmodetype) Mode, const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * pinConfig, uint8 * errorIdPtr)| Validates the pin Mode provided.  |
-| void | **[Port_LockConfiguration](../Modules/group___p_o_r_t.md#function-port-lockconfiguration)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * pinConfig)| Locks the Critical Configuration registers for the passed Pin.  |
-| void | **[Port_UnlockConfiguration](../Modules/group___p_o_r_t.md#function-port-unlockconfiguration)**(const [Port_PinConfigType](Classes/struct_port___pin_config_type.md) * pinConfig)| Unlocks the Critical Configuration registers for the passed Pin.  |
-| void | **[Port_CommitConfigurationProcess](../Modules/group___p_o_r_t.md#function-port-commitconfigurationprocess)**([Port_PinType](Modules/group___p_o_r_t.md#typedef-port-pintype) pinNumber)| Locks and Commit the Critical Configuration registers for the passed Pin.  |
+| void | **[Port_Init](../Modules/group___p_o_r_t.md#function-port_init)**(const [Port_ConfigType](../Classes/struct_port___config_type.md) * CfgPtr)| Initializes the Port Driver module.  |
+| void | **[Port_SetPinDirection](../Modules/group___p_o_r_t.md#function-port_setpindirection)**([Port_PinType](../Modules/group___p_o_r_t.md#typedef-port_pintype) Pin, [Port_PinDirectionType](../Modules/group___p_o_r_t.md#enum-port_pindirectiontype) Direction)| Sets the port pin direction.  |
+| void | **[Port_RefreshPortDirection](../Modules/group___p_o_r_t.md#function-port_refreshportdirection)**(void )| Refreshes port direction.  |
+| void | **[Port_GetVersionInfo](../Modules/group___p_o_r_t.md#function-port_getversioninfo)**(Std_VersionInfoType * versioninfo)| Service to get the version information of the module.  |
+| void | **[Port_SetPinMode](../Modules/group___p_o_r_t.md#function-port_setpinmode)**([Port_PinType](../Modules/group___p_o_r_t.md#typedef-port_pintype) Pin, [Port_PinModeType](../Modules/group___p_o_r_t.md#typedef-port_pinmodetype) Mode)| Sets the port pin mode.  |
+| void | **[Port_CommitConfiguration](../Modules/group___p_o_r_t.md#function-port_commitconfiguration)**(void )| Commits the locked Critical Configuration registers for the current Configuration.  |
+| Std_ReturnType | **[Port_SetCntSpConfig](../Modules/group___p_o_r_t.md#function-port_setcntspconfig)**(const [Port_PinConfigType](../Classes/struct_port___pin_config_type.md) * PinConfigPtr)| Sets the pad/pull configuration for the specified pin.  |
+| Std_ReturnType | **[Port_SetPinLevel](../Modules/group___p_o_r_t.md#function-port_setpinlevel)**(const [Port_PinConfigType](../Classes/struct_port___pin_config_type.md) * PinConfigPtr, [Port_PinLevelValueType](../Modules/group___p_o_r_t.md#enum-port_pinlevelvaluetype) PinLevel)| Writes the level value to the specified pin.  |
+| Std_ReturnType | **[Port_EnableLPMWakeUpPin](../Modules/group___p_o_r_t.md#function-port_enablelpmwakeuppin)**(const [Port_PinConfigType](../Classes/struct_port___pin_config_type.md) * PinConfig)| Set pins as Low Power wakeup modes GPIO pins.  |
+| void | **[Port_SetPinModeConfig](../Modules/group___p_o_r_t.md#function-port_setpinmodeconfig)**(uint32 PinMode)| Configures the Pin Mode function of a PORT pin.  |
+| Std_ReturnType | **[Port_SetDirectionMode](../Modules/group___p_o_r_t.md#function-port_setdirectionmode)**(const [Port_PinConfigType](../Classes/struct_port___pin_config_type.md) * PinConfigPtr, [Port_PinDirectionType](../Modules/group___p_o_r_t.md#enum-port_pindirectiontype) PinDirection)| Sets the direction of the specified pin.  |
+| Std_ReturnType | **[Port_IsPinNumberValid](../Modules/group___p_o_r_t.md#function-port_ispinnumbervalid)**([Port_PinType](../Modules/group___p_o_r_t.md#typedef-port_pintype) PinNumber)| Checks if the provided pin number is Valid or Not.  |
+| Std_ReturnType | **[Port_ValidateSetPinMode](../Modules/group___p_o_r_t.md#function-port_validatesetpinmode)**([Port_PinModeType](../Modules/group___p_o_r_t.md#typedef-port_pinmodetype) Mode, const [Port_PinConfigType](../Classes/struct_port___pin_config_type.md) * pinConfig, uint8 * errorIdPtr)| Validates the pin Mode provided.  |
+| void | **[Port_LockConfiguration](../Modules/group___p_o_r_t.md#function-port_lockconfiguration)**(const [Port_PinConfigType](../Classes/struct_port___pin_config_type.md) * pinConfig)| Locks the Critical Configuration registers for the passed Pin.  |
+| void | **[Port_UnlockConfiguration](../Modules/group___p_o_r_t.md#function-port_unlockconfiguration)**(const [Port_PinConfigType](../Classes/struct_port___pin_config_type.md) * pinConfig)| Unlocks the Critical Configuration registers for the passed Pin.  |
+| void | **[Port_CommitConfigurationProcess](../Modules/group___p_o_r_t.md#function-port_commitconfigurationprocess)**([Port_PinType](../Modules/group___p_o_r_t.md#typedef-port_pintype) pinNumber)| Locks and Commit the Critical Configuration registers for the passed Pin.  |
 
 
 
@@ -837,4 +864,4 @@ This function Locks and Commit the Critical Configuration registers for the pass
 
 
 
--------------------------------
+

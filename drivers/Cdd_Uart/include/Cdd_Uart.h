@@ -46,67 +46,68 @@ extern "C" {
  *********************************************************************************************************************/
 /* Defines for CDD_UART Driver version used for compatibility checks.*/
 /** \brief Driver Implementation Major Version */
-#define CDD_UART_SW_MAJOR_VERSION                   (1U)
+#define CDD_UART_SW_MAJOR_VERSION (1U)
 /** \brief Driver Implementation Minor Version */
-#define CDD_UART_SW_MINOR_VERSION                   (0U)
+#define CDD_UART_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_UART_SW_PATCH_VERSION                   (0U)
+#define CDD_UART_SW_PATCH_VERSION (1U)
 
 /*  Defines for CDD_UART Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_UART Driver*/
-#define CDD_UART_AR_RELEASE_MAJOR_VERSION           (4U)
+#define CDD_UART_AR_RELEASE_MAJOR_VERSION (4U)
 /** \brief AUTOSAR Minor version specification implemented by CDD_UART Driver*/
-#define CDD_UART_AR_RELEASE_MINOR_VERSION           (3U)
+#define CDD_UART_AR_RELEASE_MINOR_VERSION (3U)
 /** \brief AUTOSAR Patch version specification implemented by CDD_UART Driver*/
-#define CDD_UART_AR_RELEASE_REVISION_VERSION        (1U)
+#define CDD_UART_AR_RELEASE_REVISION_VERSION (1U)
 
 /* CDD UART Driver ID Info. */
 /** \brief Texas Instruments Vendor ID */
-#define CDD_UART_VENDOR_ID                          ((uint16) 44U)
+#define CDD_UART_VENDOR_ID ((uint16)44U)
 /** \brief CDD UART Driver Module ID */
-#define CDD_UART_MODULE_ID                          ((uint16) 255U)
+#define CDD_UART_MODULE_ID ((uint16)255U)
 /** \brief CDD UART Instance ID */
-#define CDD_UART_INSTANCE_ID                        ((uint8) 0U)
+#define CDD_UART_INSTANCE_ID ((uint8)0U)
 
 /* Error codes returned by Cdd Uart functions. */
 /** \brief API service used without module initialization */
-#define CDD_UART_E_UNINIT                           ((uint8) 0x01U)
+#define CDD_UART_E_UNINIT ((uint8)0x01U)
 /** \brief API Cdd_Uart_Init service called while the UART driver has already been initialized */
-#define CDD_UART_E_ALREADY_INITIALIZED              ((uint8) 0x02U)
+#define CDD_UART_E_ALREADY_INITIALIZED ((uint8)0x02U)
 /** \brief  API service called with invalid parameter value */
-#define CDD_UART_E_PARAM_VALUE                      ((uint8) 0x03U)
+#define CDD_UART_E_PARAM_VALUE ((uint8)0x03U)
 /** \brief  API service called with invalid data buffer pointer */
-#define CDD_UART_E_PARAM_POINTER                    ((uint8) 0x04U)
+#define CDD_UART_E_PARAM_POINTER ((uint8)0x04U)
 /** \brief  API service called with invalid hardware index */
-#define CDD_UART_E_PARAM_HWINDEX                    ((uint8) 0x05U)
+#define CDD_UART_E_PARAM_HWINDEX ((uint8)0x05U)
 /** \brief API Service Called without initialization */
-#define CDD_UART_E_NOT_INITIALIZED                  ((uint8) 0x06U)
+#define CDD_UART_E_NOT_INITIALIZED ((uint8)0x06U)
 /* \brief API service called when UART is busy*/
-#define CDD_UART_E_BUSY                             ((uint8) 0x07U)
+#define CDD_UART_E_BUSY ((uint8)0x07U)
 
-/* The Service Id is one of the argument to Det_ReportError function and is used to identify the source of the error. */
+/* The Service Id is one of the argument to Det_ReportError function and is used to identify the
+ * source of the error. */
 /** \brief Cdd_Uart_GetVersionInfo API Service ID */
-#define CDD_UART_SID_GET_VERSION_INFO               ((uint8) 0x00U)
+#define CDD_UART_SID_GET_VERSION_INFO ((uint8)0x00U)
 /** \brief Cdd_Uart_Init() API Service ID */
-#define CDD_UART_SID_INIT                           ((uint8) 0x01U)
+#define CDD_UART_SID_INIT ((uint8)0x01U)
 /** \brief Cdd_Uart_DeInit() API Service ID */
-#define CDD_UART_SID_DEINIT                         ((uint8) 0x02U)
+#define CDD_UART_SID_DEINIT ((uint8)0x02U)
 /** \brief Cdd_Uart_Write() API Service ID */
-#define CDD_UART_SID_WRITE                          ((uint8) 0x03U)
+#define CDD_UART_SID_WRITE ((uint8)0x03U)
 /** \brief Cdd_Uart_Read() API Service ID */
-#define CDD_UART_SID_READ                           ((uint8) 0x04U)
+#define CDD_UART_SID_READ ((uint8)0x04U)
 /** \brief Cdd_Uart_CancelWrite() API Service ID */
-#define CDD_UART_SID_CANCEL_WRITE                   ((uint8) 0x05U)
+#define CDD_UART_SID_CANCEL_WRITE ((uint8)0x05U)
 /** \brief Cdd_Uart_CancelRead() API Service ID */
-#define CDD_UART_SID_CANCEL_READ                    ((uint8) 0x06U)
+#define CDD_UART_SID_CANCEL_READ ((uint8)0x06U)
 /** \brief Cdd_Uart_GetWriteStatus() API Service ID */
-#define CDD_UART_SID_GET_WRITE_STATUS               ((uint8) 0x07U)
+#define CDD_UART_SID_GET_WRITE_STATUS ((uint8)0x07U)
 /** \brief Cdd_Uart_GetReadStatus() API Service ID */
-#define CDD_UART_SID_GET_READ_STATUS                ((uint8) 0x08U)
+#define CDD_UART_SID_GET_READ_STATUS ((uint8)0x08U)
 /** \brief Cdd_Uart_MainFunction_Write() API Service ID */
-#define CDD_UART_SID_MAIN_FUN_WRITE                 ((uint8) 0x09U)
+#define CDD_UART_SID_MAIN_FUN_WRITE ((uint8)0x09U)
 /** \brief Cdd_Uart_Poll_Read() API Service ID */
-#define CDD_UART_SID_POLL_READ                      ((uint8) 0x0AU)
+#define CDD_UART_SID_POLL_READ ((uint8)0x0AU)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -161,7 +162,7 @@ typedef enum
 typedef enum
 {
     /** \brief UART Mode Polling */
-    CDD_UART_MODE_POLLING   = 0U,
+    CDD_UART_MODE_POLLING = 0U,
     /** \brief UART Mode Interrupt */
     CDD_UART_MODE_INTERRUPT = 1U
 } Cdd_Uart_Mode;
@@ -195,41 +196,41 @@ typedef uint8 Cdd_Uart_DataBufferType;
 typedef struct Cdd_Uart_CfgTag
 {
     /**< Uart clock frequency */
-    uint32                  Cdd_Uart_ClockFreq;
+    uint32                Cdd_Uart_ClockFreq;
     /**< Uart baud rate */
-    uint32                  Cdd_Uart_BaudRate;
+    uint32                Cdd_Uart_BaudRate;
     /**< Uart word length */
-    Cdd_Uart_WordLength     Cdd_Uart_WordLength;
+    Cdd_Uart_WordLength   Cdd_Uart_WordLength;
     /**< Uart stop bits */
-    Cdd_Uart_StopBits       Cdd_Uart_StopBits;
+    Cdd_Uart_StopBits     Cdd_Uart_StopBits;
     /**< Uart Write fifo level */
-    Cdd_Uart_FifoLevel      Cdd_Uart_WriteFifoLvl;
+    Cdd_Uart_FifoLevel    Cdd_Uart_WriteFifoLvl;
     /**< Uart Read fifo level */
-    Cdd_Uart_FifoLevel      Cdd_Uart_ReadFifoLvl;
+    Cdd_Uart_FifoLevel    Cdd_Uart_ReadFifoLvl;
     /**< Uart Instance */
-    Cdd_Uart_Instance       Cdd_Uart_Instance;
+    Cdd_Uart_Instance     Cdd_Uart_Instance;
     /**< Uart Base Address */
-    uint32                  Cdd_Uart_BaseAddr;
+    uint32                Cdd_Uart_BaseAddr;
     /**< Uart hw unit id */
-    uint8                   Cdd_Uart_HWUnitId;
+    uint8                 Cdd_Uart_HWUnitId;
     /**< Uart I/o mode polling/interrupt */
-    Cdd_Uart_Mode           Cdd_Uart_IoMode;
+    Cdd_Uart_Mode         Cdd_Uart_IoMode;
     /**< Uart Write Enable */
-    boolean                 Cdd_Uart_WriteEnable;
+    boolean               Cdd_Uart_WriteEnable;
     /**< Uart Read Enable */
-    boolean                 Cdd_Uart_ReadEnable;
+    boolean               Cdd_Uart_ReadEnable;
     /**< Uart fifo enable */
-    boolean                 Cdd_Uart_FifoEnable;
+    boolean               Cdd_Uart_FifoEnable;
     /**< Uart parity enable */
-    boolean                 Cdd_Uart_ParityEnable;
+    boolean               Cdd_Uart_ParityEnable;
     /**< Uart Loopback enable */
-    boolean                 Cdd_Uart_LoopbackEnable;
+    boolean               Cdd_Uart_LoopbackEnable;
     /**< Uart Write Done Callback */
-    Cdd_Uart_CallbackType   Cdd_Uart_WriteCompleteCb;
+    Cdd_Uart_CallbackType Cdd_Uart_WriteCompleteCb;
     /**< Uart Read Done Callback */
-    Cdd_Uart_CallbackType   Cdd_Uart_ReadCompleteCb;
+    Cdd_Uart_CallbackType Cdd_Uart_ReadCompleteCb;
     /**< Uart Error Callback */
-    Cdd_Uart_CallbackType   Cdd_Uart_ErrorCb;
+    Cdd_Uart_CallbackType Cdd_Uart_ErrorCb;
 } Cdd_Uart_CfgType;
 
 /**
@@ -240,26 +241,26 @@ typedef struct Cdd_Uart_CfgTag
 typedef struct Cdd_Uart_ConfigTag
 {
     /* Channel Configurations */
-    Cdd_Uart_CfgType    Cdd_Uart_HwUnitCfg[CDD_UART_MAX_NUM_HWUNIT];
+    Cdd_Uart_CfgType Cdd_Uart_HwUnitCfg[CDD_UART_MAX_NUM_HWUNIT];
 } Cdd_Uart_ConfigType;
 
 /** \brief Typedef for the Write Status */
 typedef struct Cdd_Uart_WriteStatusTag
 {
     /**< Words remaining to transfer */
-    uint32          Cdd_Uart_RemainingWordsToWrite;
+    uint32         Cdd_Uart_RemainingWordsToWrite;
     /**< Busy status */
-    Std_ReturnType  Cdd_Uart_BusyStatus;
-}Cdd_Uart_WriteStatusType;
+    Std_ReturnType Cdd_Uart_BusyStatus;
+} Cdd_Uart_WriteStatusType;
 
 /** \brief Typedef for the Read Status */
 typedef struct Cdd_Uart_ReadStatusTag
 {
     /**< Words remaining to read */
-    uint32          Cdd_Uart_RemainingWordsToRead;
+    uint32         Cdd_Uart_RemainingWordsToRead;
     /**< Busy status */
-    Std_ReturnType  Cdd_Uart_BusyStatus;
-}Cdd_Uart_ReadStatusType;
+    Std_ReturnType Cdd_Uart_BusyStatus;
+} Cdd_Uart_ReadStatusType;
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes
@@ -275,7 +276,8 @@ typedef struct Cdd_Uart_ReadStatusTag
  *
  *********************************************************************************************************************/
 #if (STD_ON == CDD_UART_CFG_GET_VERSION_INFO_API)
-FUNC(void, CDD_UART_CODE) Cdd_Uart_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_UART_APPL_DATA) VersionInfoPtr);
+FUNC(void, CDD_UART_CODE)
+Cdd_Uart_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_UART_APPL_DATA) VersionInfoPtr);
 #endif /* CDD_UART_CFG_GET_VERSION_INFO_API */
 
 /** \brief Cdd_Uart_Init : Initializes the CDD_UART module.
@@ -288,7 +290,8 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_GetVersionInfo(P2VAR(Std_VersionInfoType, AUT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_UART_CODE) Cdd_Uart_Init(P2CONST(Cdd_Uart_ConfigType, AUTOMATIC, CDD_UART_CONFIG_DATA) ConfigPtr);
+FUNC(void, CDD_UART_CODE)
+Cdd_Uart_Init(P2CONST(Cdd_Uart_ConfigType, AUTOMATIC, CDD_UART_CONFIG_DATA) ConfigPtr);
 
 /** \brief Cdd_Uart_Deinit : De-initializes the CDD_UART module.
  *
@@ -313,7 +316,8 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_Deinit(void);
  * \retval E_OK: Write request has been accepted.
  * \retval E_NOT_OK: Write request has not been accepted.
  *****************************************************************************/
-FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_Write(uint8 HwUnitId, const Cdd_Uart_DataBufferType* SrcBufferPtr, uint32 Count);
+FUNC(Std_ReturnType, CDD_UART_CODE)
+Cdd_Uart_Write(uint8 HwUnitId, const Cdd_Uart_DataBufferType* SrcBufferPtr, uint32 Count);
 
 /** \brief Service to reception of data
  *
@@ -326,7 +330,8 @@ FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_Write(uint8 HwUnitId, const Cdd_Uar
  * \retval E_OK: Read request has been accepted.
  * \retval E_NOT_OK: Read request has not been accepted.
  *****************************************************************************/
-FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_Read(uint8 HwUnitId, Cdd_Uart_DataBufferType* DestBufferPtr, uint32 Count);
+FUNC(Std_ReturnType, CDD_UART_CODE)
+Cdd_Uart_Read(uint8 HwUnitId, Cdd_Uart_DataBufferType* DestBufferPtr, uint32 Count);
 
 /** \brief Service to cancel the ongoing transmission
  *
@@ -362,7 +367,8 @@ FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_CancelRead(uint8 HwUnitId);
  * \retval E_OK: GetWriteStatus request has been accepted.
  * \retval E_NOT_OK: GetWriteStatus request has not been accepted.
  *****************************************************************************/
-FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_GetWriteStatus(uint8 HwUnitId, Cdd_Uart_WriteStatusType *WriteStatus);
+FUNC(Std_ReturnType, CDD_UART_CODE)
+Cdd_Uart_GetWriteStatus(uint8 HwUnitId, Cdd_Uart_WriteStatusType* WriteStatus);
 
 /** \brief Service to get the status of the ongoing transmission
  *
@@ -374,7 +380,8 @@ FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_GetWriteStatus(uint8 HwUnitId, Cdd_
  * \retval E_OK: GetReadStatus request has been accepted.
  * \retval E_NOT_OK: GetReadStatus request has not been accepted.
  *****************************************************************************/
-FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_GetReadStatus(uint8 HwUnitId, Cdd_Uart_ReadStatusType *ReadStatus);
+FUNC(Std_ReturnType, CDD_UART_CODE)
+Cdd_Uart_GetReadStatus(uint8 HwUnitId, Cdd_Uart_ReadStatusType* ReadStatus);
 
 /** \brief Service to auto perform the polling of configured UART Write channel
  *

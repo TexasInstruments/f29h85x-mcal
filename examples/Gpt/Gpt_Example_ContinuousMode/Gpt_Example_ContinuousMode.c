@@ -17,8 +17,8 @@
  *  File:         Gpt_Example_ContinuousMode.c
  *  Generator:    None
  *
- *  Description:  This file contains Gpt examples with Init & DeInit sequence, timers in continuous mode,
- *                start & stop timers, enable & disable interrupts features.
+ *  Description:  This file contains Gpt examples with Init & DeInit sequence, timers in continuous
+ *mode, start & stop timers, enable & disable interrupts features.
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -97,10 +97,15 @@ int main(void)
     AppUtils_Printf("API Gpt_EnableNotification executed successfully for all channels\n\n\r");
     AppUtils_Printf("---------------------------------------------------------------\n\n\r");
 
-    AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-    AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                "for 10ms Timeout - Started !!!\r\n");
-    AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+    AppUtils_Printf(
+        "---------------------------------------------------------------------------------------"
+        "\r");
+    AppUtils_Printf(
+        "\nSimultaneous Timers Test In Continuous mode"
+        "for 10ms Timeout - Started !!!\r\n");
+    AppUtils_Printf(
+        "---------------------------------------------------------------------------------------"
+        "\n\n\r");
     AppUtils_Printf("Start timer for all Channels with 10ms Timeout\n\r");
     /* Start GPT channel 0 in one shot mode */
     Gpt_StartTimer(GPT_CHANNEL_0, GPT_COUNT_VALUE_10MS);
@@ -111,31 +116,37 @@ int main(void)
     AppUtils_Printf("Timer started for all channels with 10ms Timeout\n\r");
     AppUtils_Printf("API Gpt_StartTimer executed successfully for all channels\n\n\r");
     AppUtils_Printf("Wait until all the timers get notified atleast 1 time.\r\n\n");
-        
+
     /* Wait for 11 milliseconds to complete one iteration*/
     Time_Delay(0.011);
 
-    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] >= 1) && \
-        (Gpt_InterruptCnt[GPT_CHANNEL_1] >= 1) && \
+    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] >= 1) && (Gpt_InterruptCnt[GPT_CHANNEL_1] >= 1) &&
         (Gpt_InterruptCnt[GPT_CHANNEL_2] >= 1))
     {
-        AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-        AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                    "for 10ms Timeout - Passed !!!\r\n");
-        AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
-    
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\r");
+        AppUtils_Printf(
+            "\nSimultaneous Timers Test In Continuous mode"
+            "for 10ms Timeout - Passed !!!\r\n");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\n\n\r");
     }
     else
     {
-        AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-        AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                    "for 10ms Timeout - Failed !!!\r\n");
-        AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
-    
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\r");
+        AppUtils_Printf(
+            "\nSimultaneous Timers Test In Continuous mode"
+            "for 10ms Timeout - Failed !!!\r\n");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\n\n\r");
     }
 
     AppUtils_Printf("Reset all counters.\r\n");
-
 
     AppUtils_Printf("Stop timer for all Channels\r\n");
     /* Stop the timers */
@@ -151,38 +162,52 @@ int main(void)
     AppUtils_Printf("Timer stopped for all channels\n\r");
     AppUtils_Printf("API Gpt_StopTimer executed successfully for all channels\n\n\r");
 
-    AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-    AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                    "for 100ms Timeout - Started !!!\r\n");
-    AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+    AppUtils_Printf(
+        "---------------------------------------------------------------------------------------"
+        "\r");
+    AppUtils_Printf(
+        "\nSimultaneous Timers Test In Continuous mode"
+        "for 100ms Timeout - Started !!!\r\n");
+    AppUtils_Printf(
+        "---------------------------------------------------------------------------------------"
+        "\n\n\r");
 
     AppUtils_Printf("Start timer for all Channels with 100ms Timeout\n\r");
-    
+
     /* Start all GPT channels in continuos mode with 100 ms timeout*/
     Gpt_StartTimer(GPT_CHANNEL_0, GPT_COUNT_VALUE_100MS);
     Gpt_StartTimer(GPT_CHANNEL_1, GPT_COUNT_VALUE_100MS);
     Gpt_StartTimer(GPT_CHANNEL_2, GPT_COUNT_VALUE_100MS);
     AppUtils_Printf("Timer started for all channels with 100ms Timeout\n\r");
     AppUtils_Printf("API Gpt_StartTimer executed successfully for all channels\n\n\r");
-    AppUtils_Printf("Wait until all the timers get notified atleast 1 time.\r\n\n");    
+    AppUtils_Printf("Wait until all the timers get notified atleast 1 time.\r\n\n");
     /* Wait for 101 milliseconds to complete one iteration*/
     Time_Delay(0.101);
 
-    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 1) && \
-    (Gpt_InterruptCnt[GPT_CHANNEL_1] == 1) && \
-    (Gpt_InterruptCnt[GPT_CHANNEL_2] == 1))
+    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 1) && (Gpt_InterruptCnt[GPT_CHANNEL_1] == 1) &&
+        (Gpt_InterruptCnt[GPT_CHANNEL_2] == 1))
     {
-        AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-        AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                        "for 100ms Timeout - Passed !!!\r\n");
-        AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\r");
+        AppUtils_Printf(
+            "\nSimultaneous Timers Test In Continuous mode"
+            "for 100ms Timeout - Passed !!!\r\n");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\n\n\r");
     }
     else
     {
-        AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-        AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                        "for 100ms Timeout - Failed !!!\r\n");
-        AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\r");
+        AppUtils_Printf(
+            "\nSimultaneous Timers Test In Continuous mode"
+            "for 100ms Timeout - Failed !!!\r\n");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\n\n\r");
     }
 
     AppUtils_Printf("Reset all counters.\r\n");
@@ -199,10 +224,15 @@ int main(void)
     AppUtils_Printf("Timer stopped for all channels\n\r");
     AppUtils_Printf("API Gpt_StopTimer executed successfully for all channels\n\n\r");
 
-    AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-    AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                    "for 1s Timeout - Started !!!\r\n");
-    AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+    AppUtils_Printf(
+        "---------------------------------------------------------------------------------------"
+        "\r");
+    AppUtils_Printf(
+        "\nSimultaneous Timers Test In Continuous mode"
+        "for 1s Timeout - Started !!!\r\n");
+    AppUtils_Printf(
+        "---------------------------------------------------------------------------------------"
+        "\n\n\r");
     AppUtils_Printf("Start timer for all Channels with 1s Timeout\n\r");
     /* Start all GPT channels in continuos mode with 1 s timeout*/
     Gpt_StartTimer(GPT_CHANNEL_0, GPT_COUNT_VALUE_1S);
@@ -215,21 +245,30 @@ int main(void)
     /* Wait for 1.1 seconds to complete one iteration*/
     Time_Delay(1.10);
 
-    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 1) && \
-    (Gpt_InterruptCnt[GPT_CHANNEL_1] == 1) && \
-    (Gpt_InterruptCnt[GPT_CHANNEL_2] == 1))
+    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 1) && (Gpt_InterruptCnt[GPT_CHANNEL_1] == 1) &&
+        (Gpt_InterruptCnt[GPT_CHANNEL_2] == 1))
     {
-        AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-        AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                "for 1s Timeout - Passed !!!\r\n");
-        AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\r");
+        AppUtils_Printf(
+            "\nSimultaneous Timers Test In Continuous mode"
+            "for 1s Timeout - Passed !!!\r\n");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\n\n\r");
     }
     else
     {
-        AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-        AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                "for 1s Timeout - Failed !!!\r\n");
-        AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\r");
+        AppUtils_Printf(
+            "\nSimultaneous Timers Test In Continuous mode"
+            "for 1s Timeout - Failed !!!\r\n");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\n\n\r");
     }
 
     AppUtils_Printf("Reset all counters.\r\n");
@@ -245,11 +284,16 @@ int main(void)
     Gpt_StopTimer(GPT_CHANNEL_2);
     AppUtils_Printf("Timer stopped for all channels\n\r");
     AppUtils_Printf("API Gpt_StopTimer executed successfully for all channels\n\n\r");
-    
-    AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-    AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                    "for Max Tick Timeout - Started !!!\r\n");
-    AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+
+    AppUtils_Printf(
+        "---------------------------------------------------------------------------------------"
+        "\r");
+    AppUtils_Printf(
+        "\nSimultaneous Timers Test In Continuous mode"
+        "for Max Tick Timeout - Started !!!\r\n");
+    AppUtils_Printf(
+        "---------------------------------------------------------------------------------------"
+        "\n\n\r");
 
     AppUtils_Printf("Start timer for all Channels with Max Tick Timeout\n\r");
     /* Start all GPT channels in continuos mode with max tick count timeout*/
@@ -263,21 +307,30 @@ int main(void)
     /* Wait for max tick timeout to complete one iteration*/
     Time_Delay(220.0);
 
-    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 1) && \
-    (Gpt_InterruptCnt[GPT_CHANNEL_1] == 1) && \
-    (Gpt_InterruptCnt[GPT_CHANNEL_2] == 1))
+    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 1) && (Gpt_InterruptCnt[GPT_CHANNEL_1] == 1) &&
+        (Gpt_InterruptCnt[GPT_CHANNEL_2] == 1))
     {
-        AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-        AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                    "for Max tick Timeout - Passed !!!\r\n");
-        AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\r");
+        AppUtils_Printf(
+            "\nSimultaneous Timers Test In Continuous mode"
+            "for Max tick Timeout - Passed !!!\r\n");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\n\n\r");
     }
     else
     {
-        AppUtils_Printf("---------------------------------------------------------------------------------------\r");
-        AppUtils_Printf("\nSimultaneous Timers Test In Continuous mode"
-                    "for Max tick Timeout - Failed !!!\r\n");
-        AppUtils_Printf("---------------------------------------------------------------------------------------\n\n\r");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\r");
+        AppUtils_Printf(
+            "\nSimultaneous Timers Test In Continuous mode"
+            "for Max tick Timeout - Failed !!!\r\n");
+        AppUtils_Printf(
+            "--------------------------------------------------------------------------------------"
+            "-\n\n\r");
     }
 
     AppUtils_Printf("Stop timer for all Channels\r\n");
@@ -294,18 +347,15 @@ int main(void)
     Gpt_DeInit();
     AppUtils_Printf("API Gpt_DeInit executed successfully\n\n\r");
     AppUtils_Printf("------------------------------------------\r\n");
-    while(TRUE)
-    {
-        /* Wait here */
-    }
 
     return return_value;
 }
 
 /* Time delay*/
-int Time_Delay(float64 seconds){
-     McalLib_Delay(GPT_TIME_DELAY_PER_SECOND*seconds);
-     return 0;
+int Time_Delay(float64 seconds)
+{
+    McalLib_Delay(GPT_TIME_DELAY_PER_SECOND * seconds);
+    return 0;
 }
 
 /* GPT timer channel 0 notification function */

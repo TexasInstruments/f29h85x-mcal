@@ -11,11 +11,11 @@ title: Cdd Ipc
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
-|enum| **[Cdd_Ipc_CoreType](../Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-coretype)** | CPU cores type.  | 
-|enum| **[Cdd_Ipc_TxProcessingType](../Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-txprocessingtype)** | IPC Tx processing.  | 
-|enum| **[Cdd_Ipc_InstanceType](../Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype)** | IPC Instance type.  | 
-|typedef uint8  | **[Cdd_Ipc_RemoteCoreType](../Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-remotecoretype)** | Specifies ID of the remote core  | 
-|typedef void(*)(const PduInfoType *PduInfoPtr)  | **[Cdd_Ipc_NotifyType](../Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-notifytype)** | Notification callback function pointer.  | 
+|enum| **[Cdd_Ipc_CoreType](../Modules/group___c_d_d___i_p_c.md#enum-cdd_ipc_coretype)** | CPU cores type.  | 
+|enum| **[Cdd_Ipc_TxProcessingType](../Modules/group___c_d_d___i_p_c.md#enum-cdd_ipc_txprocessingtype)** | IPC Tx processing.  | 
+|enum| **[Cdd_Ipc_InstanceType](../Modules/group___c_d_d___i_p_c.md#enum-cdd_ipc_instancetype)** | IPC Instance type.  | 
+|typedef uint8  | **[Cdd_Ipc_RemoteCoreType](../Modules/group___c_d_d___i_p_c.md#typedef-cdd_ipc_remotecoretype)** | Specifies ID of the remote core  | 
+|typedef void(*)(const PduInfoType *PduInfoPtr)  | **[Cdd_Ipc_NotifyType](../Modules/group___c_d_d___i_p_c.md#typedef-cdd_ipc_notifytype)** | Notification callback function pointer.  | 
 
 
 
@@ -84,7 +84,25 @@ IPC Instance type.
 
 
 
+### typedef Cdd_Ipc_RemoteCoreType
+```
+typedef uint8 Cdd_Ipc_RemoteCoreType;
+```
 
+
+**Brief**: 
+Specifies ID of the remote core 
+
+
+
+### typedef Cdd_Ipc_NotifyType
+```
+typedef void(* Cdd_Ipc_NotifyType) (const PduInfoType *PduInfoPtr);
+```
+
+
+**Brief**: 
+Notification callback function pointer. 
 
 
 
@@ -143,7 +161,7 @@ IPC Instance type.
 | CDD_IPC_REG_RECVDATA (x)  | Receive data register address.  |
 | CDD_IPC_FLAG0   | IPC FLAG 0 - Triggers interrupt.  |
 | CDD_IPC_FLAG1   | IPC FLAG 1 - Indicates polling mode.  |
-| CDD_IPC_FLAG2   | IPC FLAG 2 - Reserved for syncronization of CPUs.  |
+| CDD_IPC_FLAG2   | IPC FLAG 2 - Reserved for syncronization of CPUs \ .  |
 | CDD_IPC_COMMBYTE   | Macro to define the upper byte index that can be transmitted/received in command register.  |
 | CDD_IPC_ADDRBYTE   | Macro to define the upper byte index that can be transmitted/received in address register.  |
 | CDD_IPC_DATABYTE   | Macro to define the upper byte index that can be transmitted/received in address register.  |
@@ -155,28 +173,28 @@ IPC Instance type.
 
 | Return type    | Function Name           |      Brief        |
 | -------------- | ----------------------- | ----------------- |
-| void | **[Cdd_Ipc_GetVersionInfo](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| Service to provide the version information of Cdd Ipc module.  |
-| void | **[Cdd_Ipc_Init](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-init)**(const [Cdd_Ipc_ConfigType](Classes/struct_cdd___ipc___config_type.md) * ConfigPtr)| Service to initialize CDD IPC driver.  |
-| Std_ReturnType | **[Cdd_Ipc_Sync](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-sync)**([Cdd_Ipc_RemoteCoreType](Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-remotecoretype) RemoteCore)| Service to synchronise two cores communicating in IPC communication within a preconfigured timeout.  |
-| Std_ReturnType | **[Cdd_Ipc_Transmit](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-transmit)**(PduIdType ChannelId, const PduInfoType * PduInfoPtr)| Service to request transmission.  |
-| void | **[Cdd_Ipc_MainFunction_Read](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-mainfunction-read)**(void )| Service to perform the polling of confgured IPC Rx instances.  |
-| boolean | **[Cdd_Ipc_IsTxInstanceFree](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-istxinstancefree)**(PduIdType ChannelId)| Service to check the status of the instance that is configured for transmitting the message in the respective channel.  |
-| uint64 | **[Cdd_Ipc_GetCounter](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getcounter)**(void )| Service to read the timestamp counter value.  |
-| void | **[Cdd_Ipc_SetCfgObj](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-setcfgobj)**(const [Cdd_Ipc_ConfigType](Classes/struct_cdd___ipc___config_type.md) * ConfigPtr)| Sets the configuration pointer.  |
-| Std_ReturnType | **[Cdd_Ipc_Sync_Process](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-sync-process)**([Cdd_Ipc_RemoteCoreType](Modules/group___c_d_d___i_p_c.md#typedef-cdd-ipc-remotecoretype) RemoteCore)| Synchronises two cores for inter process communication.  |
-| Std_ReturnType | **[Cdd_Ipc_Transmit_Priv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-transmit-priv)**(PduIdType ChannelId, const PduInfoType * PduInfoPtr)| Requests the transmission of a PDU.  |
-| void | **[Cdd_Ipc_RxIndication](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-rxindication)**(uint8 Instance_Index, uint8 Channel_Index, const PduInfoType * PduInfoPtr)| Indicates a successful reception of a received Cdd Ipc Rx LPDU to the upper layer.  |
-| boolean | **[Cdd_Ipc_GetChannelPollingStatus](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getchannelpollingstatus)**(uint8 Instance_Index, uint8 * ChannelIndex)| Returns the Rx polling status of the instance.  |
-| void | **[Cdd_Ipc_ReadChannelPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-readchannelpriv)**(uint8 Instance_Index, const PduInfoType * PduInfoPtr)| Copies the received data to the PduInfoPtr.  |
-| void | **[Cdd_Ipc_WriteChannelPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-writechannelpriv)**(uint8 Instance_Index, uint8 Channel_Index, const PduInfoType * PduInfoPtr)| Copies the data to be transmitted from PduInfoPtr to command registers.  |
-| void | **[Cdd_Ipc_Acknowledge](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-acknowledge)**([Cdd_Ipc_InstanceType](Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype) Instance)| Acknowledges the reception of a PDU.  |
-| Std_ReturnType | **[Cdd_Ipc_GetRxIdxPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getrxidxpriv)**([Cdd_Ipc_InstanceType](Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype) Instance, uint8 * InstanceIndex, uint8 * ChannelIndex)| Finds the Rx instance index and Rx channel index for the given instance.  |
-| Std_ReturnType | **[Cdd_Ipc_GetRxChIdx](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-getrxchidx)**([Cdd_Ipc_InstanceType](Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype) Instance, uint8 InstanceIndex, uint8 * ChannelIndex)| Finds the Rx channel index for the given instance.  |
-| Std_ReturnType | **[Cdd_Ipc_GetTxIdxPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-gettxidxpriv)**(PduIdType ChannelId, uint8 * InstanceIndex, uint8 * ChannelIndex)| Finds the Tx instance index and Tx channel index for the given Pdu.  |
-| void | **[Cdd_Ipc_ProcessIsr](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-processisr)**([Cdd_Ipc_InstanceType](Modules/group___c_d_d___i_p_c.md#enum-cdd-ipc-instancetype) Instance)| Invoked by the respective IPC instance ISR.  |
-| boolean | **[Cdd_Ipc_IsChannelIdValid](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-ischannelidvalid)**(PduIdType ChannelId)| Checks whether the TxPdu is valid or not.  |
-| boolean | **[Cdd_Ipc_InstanceStatus](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-instancestatus)**(PduIdType ChannelId)| Returns the status of the instance that is configured for transmitting the PDU.  |
-| uint64 | **[Cdd_Ipc_ReadCounter](../Modules/group___c_d_d___i_p_c.md#function-cdd-ipc-readcounter)**(void )| Returns the timestamp counter value.  |
+| void | **[Cdd_Ipc_GetVersionInfo](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| Service to provide the version information of Cdd Ipc module.  |
+| void | **[Cdd_Ipc_Init](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_init)**(const [Cdd_Ipc_ConfigType](../Classes/struct_cdd___ipc___config_type.md) * ConfigPtr)| Service to initialize CDD IPC driver.  |
+| Std_ReturnType | **[Cdd_Ipc_Sync](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_sync)**([Cdd_Ipc_RemoteCoreType](../Modules/group___c_d_d___i_p_c.md#typedef-cdd_ipc_remotecoretype) RemoteCore)| Service to synchronise two cores communicating in IPC communication within a preconfigured timeout.  |
+| Std_ReturnType | **[Cdd_Ipc_Transmit](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_transmit)**(PduIdType ChannelId, const PduInfoType * PduInfoPtr)| Service to request transmission.  |
+| void | **[Cdd_Ipc_MainFunction_Read](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_mainfunction_read)**(void )| Service to perform the polling of confgured IPC Rx instances.  |
+| boolean | **[Cdd_Ipc_IsTxInstanceFree](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_istxinstancefree)**(PduIdType ChannelId)| Service to check the status of the instance that is configured for transmitting the message in the respective channel.  |
+| uint64 | **[Cdd_Ipc_GetCounter](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_getcounter)**(void )| Service to read the timestamp counter value.  |
+| void | **[Cdd_Ipc_SetCfgObj](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_setcfgobj)**(const [Cdd_Ipc_ConfigType](../Classes/struct_cdd___ipc___config_type.md) * ConfigPtr)| Sets the configuration pointer.  |
+| Std_ReturnType | **[Cdd_Ipc_Sync_Process](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_sync_process)**([Cdd_Ipc_RemoteCoreType](../Modules/group___c_d_d___i_p_c.md#typedef-cdd_ipc_remotecoretype) RemoteCore)| Synchronises two cores for inter process communication.  |
+| Std_ReturnType | **[Cdd_Ipc_Transmit_Priv](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_transmit_priv)**(PduIdType ChannelId, const PduInfoType * PduInfoPtr)| Requests the transmission of a PDU.  |
+| void | **[Cdd_Ipc_RxIndication](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_rxindication)**(uint8 Instance_Index, uint8 Channel_Index, const PduInfoType * PduInfoPtr)| Indicates a successful reception of a received Cdd Ipc Rx LPDU to the upper layer.  |
+| boolean | **[Cdd_Ipc_GetChannelPollingStatus](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_getchannelpollingstatus)**(uint8 Instance_Index, uint8 * ChannelIndex)| Returns the Rx polling status of the instance.  |
+| void | **[Cdd_Ipc_ReadChannelPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_readchannelpriv)**(uint8 Instance_Index, const PduInfoType * PduInfoPtr)| Copies the received data to the PduInfoPtr.  |
+| void | **[Cdd_Ipc_WriteChannelPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_writechannelpriv)**(uint8 Instance_Index, uint8 Channel_Index, const PduInfoType * PduInfoPtr)| Copies the data to be transmitted from PduInfoPtr to command registers.  |
+| void | **[Cdd_Ipc_Acknowledge](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_acknowledge)**([Cdd_Ipc_InstanceType](../Modules/group___c_d_d___i_p_c.md#enum-cdd_ipc_instancetype) Instance)| Acknowledges the reception of a PDU.  |
+| Std_ReturnType | **[Cdd_Ipc_GetRxIdxPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_getrxidxpriv)**([Cdd_Ipc_InstanceType](../Modules/group___c_d_d___i_p_c.md#enum-cdd_ipc_instancetype) Instance, uint8 * InstanceIndex, uint8 * ChannelIndex)| Finds the Rx instance index and Rx channel index for the given instance.  |
+| Std_ReturnType | **[Cdd_Ipc_GetRxChIdx](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_getrxchidx)**([Cdd_Ipc_InstanceType](../Modules/group___c_d_d___i_p_c.md#enum-cdd_ipc_instancetype) Instance, uint8 InstanceIndex, uint8 * ChannelIndex)| Finds the Rx channel index for the given instance.  |
+| Std_ReturnType | **[Cdd_Ipc_GetTxIdxPriv](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_gettxidxpriv)**(PduIdType ChannelId, uint8 * InstanceIndex, uint8 * ChannelIndex)| Finds the Tx instance index and Tx channel index for the given Pdu.  |
+| void | **[Cdd_Ipc_ProcessIsr](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_processisr)**([Cdd_Ipc_InstanceType](../Modules/group___c_d_d___i_p_c.md#enum-cdd_ipc_instancetype) Instance)| Invoked by the respective IPC instance ISR.  |
+| boolean | **[Cdd_Ipc_IsChannelIdValid](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_ischannelidvalid)**(PduIdType ChannelId)| Checks whether the TxPdu is valid or not.  |
+| boolean | **[Cdd_Ipc_InstanceStatus](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_instancestatus)**(PduIdType ChannelId)| Returns the status of the instance that is configured for transmitting the PDU.  |
+| uint64 | **[Cdd_Ipc_ReadCounter](../Modules/group___c_d_d___i_p_c.md#function-cdd_ipc_readcounter)**(void )| Returns the timestamp counter value.  |
 
 
 
@@ -894,4 +912,4 @@ Returns the timestamp counter value.
 
 
 
--------------------------------
+

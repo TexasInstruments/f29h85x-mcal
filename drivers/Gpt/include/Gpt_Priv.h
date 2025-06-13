@@ -49,14 +49,11 @@ extern "C" {
 /*
  *Design: MCAL-23356
  */
-#define GPT_MAX_32BIT_VAL           (0xFFFFFFFFU)     /* Max 32 bit value. */
-
-
+#define GPT_MAX_32BIT_VAL (0xFFFFFFFFU) /* Max 32 bit value. */
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
-
 
 /*********************************************************************************************************************
  * Exported Type Declarations
@@ -74,7 +71,6 @@ typedef enum
     /** \brief GPT notification is disabled. */
     GPT_NOTIF_DISABLED
 } Gpt_NotificationStateType;
-
 
 /** \brief  GPT channel state. GPT will be in one of this state during its lifetime. */
 /*
@@ -94,7 +90,6 @@ typedef enum
     GPT_CH_EXPIRED
 } Gpt_ChannelStateType;
 
-
 /** \brief GPT driver object structure. */
 /*
  *Design: MCAL-22073
@@ -102,19 +97,18 @@ typedef enum
 typedef struct Gpt_DriverObjType_s
 {
     /* Gpt driver configuration pointer.*/
-    const Gpt_ConfigType      *Gpt_CfgPtr;
+    const Gpt_ConfigType     *Gpt_CfgPtr;
     /* Channel state. */
     Gpt_ChannelStateType      Gpt_ChannelState[GPT_CFG_NO_OF_CHANNELS];
-     /* Notification state. */
+    /* Notification state. */
     Gpt_NotificationStateType Gpt_NotificationState[GPT_CFG_NO_OF_CHANNELS];
     /* Counter period when the timer is  stopped. */
     Gpt_ValueType             Gpt_StopStatePrdCounter[GPT_CFG_NO_OF_CHANNELS];
-   /* Timer current count when the timer is stopped. */
+    /* Timer current count when the timer is stopped. */
     Gpt_ValueType             Gpt_StopStateCurCounter[GPT_CFG_NO_OF_CHANNELS];
     /* Lookup Table for Channel-Index  Ex:Gpt_Lut_Channel_Index[Ch] = index */
     Gpt_ValueType             Gpt_Lut_Channel_Index[GPT_CFG_MAX_CHANNELS];
 } Gpt_DriverObjType;
-
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -126,7 +120,8 @@ typedef struct Gpt_DriverObjType_s
 
 /** \brief Set the Gpt driver object into global pointer.
  *
- * This function Set the Gpt driver object into global pointer which can be used in ISR notification API.
+ * This function Set the Gpt driver object into global pointer which can be used in ISR notification
+ *API.
  *
  * \param[in] Gpt_DrvObj Gpt_DrvObj is the Gpt driver object defined in Gpt.c
  * \pre None
@@ -135,8 +130,7 @@ typedef struct Gpt_DriverObjType_s
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, GPT_PRIV_CODE) Gpt_SetDriverObjPtr(Gpt_DriverObjType* Set_DrvObj);
-
+FUNC(void, GPT_PRIV_CODE) Gpt_SetDriverObjPtr(Gpt_DriverObjType *Set_DrvObj);
 
 /** \brief Deinitializes the timer hardware to reset state.
  *
@@ -152,7 +146,6 @@ FUNC(void, GPT_PRIV_CODE) Gpt_SetDriverObjPtr(Gpt_DriverObjType* Set_DrvObj);
  *********************************************************************************************************************/
 FUNC(void, GPT_PRIV_CODE) Gpt_DeInitPriv(const Gpt_ChannelConfigType *ChannelObj);
 
-
 /** \brief Initialize the timer instance.
  *
  * This function initializes the CPU timer using the configuration parameters.
@@ -166,7 +159,6 @@ FUNC(void, GPT_PRIV_CODE) Gpt_DeInitPriv(const Gpt_ChannelConfigType *ChannelObj
  *********************************************************************************************************************/
 FUNC(void, GPT_PRIV_CODE) Gpt_InitPriv(const Gpt_ChannelConfigType *ChannelObj);
 
-
 /** \brief Get the current timer count.
  *
  * This function queries the current (instantaneous) timer count of the TIM reg.
@@ -177,9 +169,8 @@ FUNC(void, GPT_PRIV_CODE) Gpt_InitPriv(const Gpt_ChannelConfigType *ChannelObj);
  * \return This function returns the current (instantaneous) timer count.
  * \retval Value of Type uint32
  *
-*********************************************************************************************************************/
+ *********************************************************************************************************************/
 FUNC(uint32, GPT_PRIV_CODE) Gpt_GetCurCountPriv(const Gpt_ChannelConfigType *ChannelObj);
-
 
 /** \brief Get the timer period count.
  *
@@ -191,9 +182,8 @@ FUNC(uint32, GPT_PRIV_CODE) Gpt_GetCurCountPriv(const Gpt_ChannelConfigType *Cha
  * \return Returns the period count of the PRD regsiter.
  * \retval Value of Type uint32
  *
-*********************************************************************************************************************/
+ *********************************************************************************************************************/
 FUNC(uint32, GPT_PRIV_CODE) Gpt_GetPrdCountPriv(const Gpt_ChannelConfigType *ChannelObj);
-
 
 /** \brief Start the timer.
  *
@@ -206,9 +196,8 @@ FUNC(uint32, GPT_PRIV_CODE) Gpt_GetPrdCountPriv(const Gpt_ChannelConfigType *Cha
  * \return None
  * \retval None
  *
-*********************************************************************************************************************/
+ *********************************************************************************************************************/
 FUNC(void, GPT_PRIV_CODE) Gpt_StartTimerPriv(const Gpt_ChannelConfigType *ChannelObj, uint32 count);
-
 
 /** \brief Stop the timer.
  *
@@ -220,9 +209,8 @@ FUNC(void, GPT_PRIV_CODE) Gpt_StartTimerPriv(const Gpt_ChannelConfigType *Channe
  * \return None
  * \retval None
  *
-*********************************************************************************************************************/
+ *********************************************************************************************************************/
 FUNC(void, GPT_PRIV_CODE) Gpt_StopTimerPriv(const Gpt_ChannelConfigType *ChannelObj);
-
 
 /** \brief Clear the Timer Overflow flag
  *
@@ -234,9 +222,8 @@ FUNC(void, GPT_PRIV_CODE) Gpt_StopTimerPriv(const Gpt_ChannelConfigType *Channel
  * \return None
  * \retval None
  *
-*********************************************************************************************************************/
+ *********************************************************************************************************************/
 FUNC(void, GPT_PRIV_CODE) Gpt_ClrOvfFlagPriv(const Gpt_ChannelConfigType *ChannelObj);
-
 
 /** \brief Enable the timer interrupt.
  *
@@ -248,9 +235,8 @@ FUNC(void, GPT_PRIV_CODE) Gpt_ClrOvfFlagPriv(const Gpt_ChannelConfigType *Channe
  * \return None
  * \retval None
  *
-*********************************************************************************************************************/
+ *********************************************************************************************************************/
 FUNC(void, GPT_PRIV_CODE) Gpt_EnableIntPriv(const Gpt_ChannelConfigType *ChannelObj);
-
 
 /** \brief Disable the timer interrupt.
  *
@@ -262,13 +248,12 @@ FUNC(void, GPT_PRIV_CODE) Gpt_EnableIntPriv(const Gpt_ChannelConfigType *Channel
  * \return None
  * \retval None
  *
-*********************************************************************************************************************/
+ *********************************************************************************************************************/
 FUNC(void, GPT_PRIV_CODE) Gpt_DisableIntPriv(const Gpt_ChannelConfigType *ChannelObj);
- 
 
 /** \brief Get the array index of a channel from configuration array/vector
  *
- *  This function populates the 'ChannelIndex' pointer with the array index of the 
+ *  This function populates the 'ChannelIndex' pointer with the array index of the
  *  'Channel' present in configuration array
  *
  * \param[in] GptDrvObj is a structure containing multiple timer configurations.
@@ -279,13 +264,13 @@ FUNC(void, GPT_PRIV_CODE) Gpt_DisableIntPriv(const Gpt_ChannelConfigType *Channe
  * \return None
  * \retval None
  *
-*********************************************************************************************************************/
-FUNC(void, GPT_PRIV_CODE) \
-Gpt_GetChIdxPriv(const Gpt_DriverObjType* GptDrvObj, Gpt_ChannelType Channel, uint32* ChannelIndex);
-
+ *********************************************************************************************************************/
+FUNC(void, GPT_PRIV_CODE)
+Gpt_GetChIdxPriv(const Gpt_DriverObjType *GptDrvObj, Gpt_ChannelType Channel, uint32 *ChannelIndex);
 
 /** \brief Gpt_GetPredefTimerValue : Delivers the current value of the desired GPT Predef Timer. */
-FUNC(Std_ReturnType, GPT_CODE) Gpt_GetPredefTimerValue(Gpt_PredefTimerType PredefTimer, uint32* TimeValuePtr);
+FUNC(Std_ReturnType, GPT_CODE)
+Gpt_GetPredefTimerValue(Gpt_PredefTimerType PredefTimer, uint32 *TimeValuePtr);
 
 /** \brief Gpt_IsrNotifyFunction: Invoked by the respective timer channel ISR.
  *
@@ -303,11 +288,9 @@ FUNC(Std_ReturnType, GPT_CODE) Gpt_GetPredefTimerValue(Gpt_PredefTimerType Prede
  *********************************************************************************************************************/
 FUNC(void, GPT_CODE) Gpt_IsrNotifyFunction(Gpt_ChannelType Channel);
 
-
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
-
 
 #ifdef __cplusplus
 }

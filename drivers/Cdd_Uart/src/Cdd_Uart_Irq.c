@@ -23,7 +23,7 @@
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
- /*
+/*
  *Design: MCAL-xxxxx
  */
 #include "Cdd_Uart.h"
@@ -47,7 +47,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -76,11 +76,11 @@
 
 #if defined(CDD_UART0_ENABLE)
 #if defined(CDD_UART0_ISR_CAT1_RTINT)
-    MCAL_LIB_RTINT_ISR(Cdd_Uart_0_ISR)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_0_ISR)
 #elif defined(CDD_UART0_ISR_CAT1_INT)
-    MCAL_LIB_INT_ISR(Cdd_Uart_0_ISR)
+MCAL_LIB_INT_ISR(Cdd_Uart_0_ISR)
 #else
-    ISR(Cdd_Uart_0_ISR)
+ISR(Cdd_Uart_0_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -90,11 +90,11 @@
 
 #if defined(CDD_UART1_ENABLE)
 #if defined(CDD_UART1_ISR_CAT1_RTINT)
-    MCAL_LIB_RTINT_ISR(Cdd_Uart_1_ISR)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_1_ISR)
 #elif defined(CDD_UART1_ISR_CAT1_INT)
-    MCAL_LIB_INT_ISR(Cdd_Uart_1_ISR)
+MCAL_LIB_INT_ISR(Cdd_Uart_1_ISR)
 #else
-    ISR(Cdd_Uart_1_ISR)
+ISR(Cdd_Uart_1_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -104,11 +104,11 @@
 
 #if defined(CDD_UART2_ENABLE)
 #if defined(CDD_UART2_ISR_CAT1_RTINT)
-    MCAL_LIB_RTINT_ISR(Cdd_Uart_2_ISR)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_2_ISR)
 #elif defined(CDD_UART2_ISR_CAT1_INT)
-    MCAL_LIB_INT_ISR(Cdd_Uart_2_ISR)
+MCAL_LIB_INT_ISR(Cdd_Uart_2_ISR)
 #else
-    ISR(Cdd_Uart_2_ISR)
+ISR(Cdd_Uart_2_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -118,11 +118,11 @@
 
 #if defined(CDD_UART3_ENABLE)
 #if defined(CDD_UART3_ISR_CAT1_RTINT)
-    MCAL_LIB_RTINT_ISR(Cdd_Uart_3_ISR)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_3_ISR)
 #elif defined(CDD_UART3_ISR_CAT1_INT)
-    MCAL_LIB_INT_ISR(Cdd_Uart_3_ISR)
+MCAL_LIB_INT_ISR(Cdd_Uart_3_ISR)
 #else
-    ISR(Cdd_Uart_3_ISR)
+ISR(Cdd_Uart_3_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -132,11 +132,11 @@
 
 #if defined(CDD_UART4_ENABLE)
 #if defined(CDD_UART4_ISR_CAT1_RTINT)
-    MCAL_LIB_RTINT_ISR(Cdd_Uart_4_ISR)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_4_ISR)
 #elif defined(CDD_UART4_ISR_CAT1_INT)
-    MCAL_LIB_INT_ISR(Cdd_Uart_4_ISR)
+MCAL_LIB_INT_ISR(Cdd_Uart_4_ISR)
 #else
-    ISR(Cdd_Uart_4_ISR)
+ISR(Cdd_Uart_4_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -146,11 +146,11 @@
 
 #if defined(CDD_UART5_ENABLE)
 #if defined(CDD_UART5_ISR_CAT1_RTINT)
-    MCAL_LIB_RTINT_ISR(Cdd_Uart_5_ISR)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_5_ISR)
 #elif defined(CDD_UART5_ISR_CAT1_INT)
-    MCAL_LIB_INT_ISR(Cdd_Uart_5_ISR)
+MCAL_LIB_INT_ISR(Cdd_Uart_5_ISR)
 #else
-    ISR(Cdd_Uart_5_ISR)
+ISR(Cdd_Uart_5_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */

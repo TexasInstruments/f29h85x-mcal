@@ -1,4 +1,4 @@
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
@@ -19,7 +19,7 @@
  *
  *  Description:  This file contains Dio examples with read/write of channel, read/write of port,
  *                read/write of channel group and fliping channel level.
- * 
+ *
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -58,36 +58,30 @@
  *********************************************************************************************************************/
 
 /*  GPIO direction configuration */
-#define DIO_A_DIR                       ((uint32)0x0F0F0F0F)
-#define DIO_WRITE_PORT_LEVEL            ((uint32)0x55555555)
-#define DIO_WRITE_PORT_GROUPLEVEL       ((uint32)0xAA)
-
+#define DIO_A_DIR                 ((uint32)0x0F0F0F0F)
+#define DIO_WRITE_PORT_LEVEL      ((uint32)0x55555555)
+#define DIO_WRITE_PORT_GROUPLEVEL ((uint32)0xAA)
 
 #if (STD_ON == DIO_VERSION_INFO_API)
 /*  version info variable */
-Std_VersionInfoType       Dio_VersionInfo;
+Std_VersionInfoType Dio_VersionInfo;
 #endif
 /* Dio channel level global variable */
-Dio_LevelType     Dio_ChannelLevel     = 0x0;
+Dio_LevelType        Dio_ChannelLevel = 0x0;
 /* Dio port level global variable */
-Dio_PortLevelType Dio_PortLevel = 0x00000000;
+Dio_PortLevelType    Dio_PortLevel = 0x00000000;
 /* Dio channel group */
-Dio_ChannelGroupType Dio_ChannelGroup =
-{
-    .port   = GPIO_PORT_A,
-    .mask   = 0xFF00,
-    .offset = 8U
-};
+Dio_ChannelGroupType Dio_ChannelGroup = {.port = GPIO_PORT_A, .mask = 0xFF00, .offset = 8U};
 
 #if (STD_ON == DIO_FLIP_CHANNEL_API)
 /* dio flip channel level */
-Dio_LevelType     Dio_FlipLevel = 0x0;
+Dio_LevelType Dio_FlipLevel = 0x0;
 #endif
 
 /* dio channel response */
 Std_ReturnType Dio_ChannelResponse = E_OK;
 /* dio port response */
-Std_ReturnType Dio_PortResponse    = E_OK;
+Std_ReturnType Dio_PortResponse = E_OK;
 /* dio channel group response */
 Std_ReturnType Dio_ChnlGroupResponse = E_OK;
 
@@ -112,7 +106,7 @@ int main(void)
     DeviceSupport_Init();
     /*  Configure the Port A pins direction and init MCU */
     EcuM_Init();
-    AppUtils_Init(200000000U); // Init App utils to enable prints
+    AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Sample Application - STARTS !!!\n");
     /*  get version Info */
 #if (STD_ON == DIO_VERSION_INFO_API)
@@ -129,22 +123,25 @@ int main(void)
     Dio_WriteChannel(DioConf_DioChannel_DioChannel_0, STD_HIGH);
     /*  The level of the pins configured as output should be changed */
     Dio_ChannelLevel = Dio_ReadChannel(DioConf_DioChannel_DioChannel_0);
-    if(Dio_ChannelLevel != STD_HIGH){
+    if (Dio_ChannelLevel != STD_HIGH)
+    {
         Dio_ChannelResponse = E_NOT_OK;
     }
 
     AppUtils_Printf("\nTest A. Write and Read Channel\n");
     AppUtils_Printf("-------------------------------\n");
-    /*  DioConf_DioChannel_DioChannel_4 is configured as input, below wtite should not have any impact */
+    /*  DioConf_DioChannel_DioChannel_4 is configured as input, below wtite should not have any
+     * impact */
     AppUtils_Printf("Reading channel 4\n");
-    Dio_LevelType     Dio_InptChannelLevel = Dio_ReadChannel(DioConf_DioChannel_DioChannel_4);
+    Dio_LevelType Dio_InptChannelLevel = Dio_ReadChannel(DioConf_DioChannel_DioChannel_4);
     /* write STD_HIGH to input channel */
     AppUtils_Printf("Writing High to channel 4\n");
     Dio_WriteChannel(DioConf_DioChannel_DioChannel_4, STD_HIGH);
     /* The level of the pins configured as input should not be changed */
     AppUtils_Printf("Reading channel 4\n");
     Dio_ChannelLevel = Dio_ReadChannel(DioConf_DioChannel_DioChannel_4);
-    if(Dio_ChannelLevel != Dio_InptChannelLevel){
+    if (Dio_ChannelLevel != Dio_InptChannelLevel)
+    {
         Dio_ChannelResponse = E_NOT_OK;
     }
     /* write STD_LOW to input channel */
@@ -152,7 +149,8 @@ int main(void)
     Dio_WriteChannel(DioConf_DioChannel_DioChannel_4, STD_LOW);
     AppUtils_Printf("Reading channel 4\n");
     Dio_ChannelLevel = Dio_ReadChannel(DioConf_DioChannel_DioChannel_4);
-    if(Dio_ChannelLevel != Dio_InptChannelLevel){
+    if (Dio_ChannelLevel != Dio_InptChannelLevel)
+    {
         Dio_ChannelResponse = E_NOT_OK;
     }
     AppUtils_Printf("DIO Test A :Service API: Write/Read Channel completed\n");
@@ -166,7 +164,7 @@ int main(void)
     AppUtils_Printf("Reading from Port 0\n");
     /*  The level of the pins configured as input should not be changed */
     Dio_PortLevel = Dio_ReadPort(DioConf_DioPort_DioPort_0);
-    if((Dio_PortLevel & DIO_A_DIR) != (DIO_WRITE_PORT_LEVEL & DIO_A_DIR))
+    if ((Dio_PortLevel & DIO_A_DIR) != (DIO_WRITE_PORT_LEVEL & DIO_A_DIR))
     {
         Dio_PortResponse = E_NOT_OK;
     }
@@ -181,7 +179,7 @@ int main(void)
     AppUtils_Printf("Reding from channel group 0\n");
     /*  The level of the pins configured as input should not be changed */
     Dio_PortLevel = Dio_ReadChannelGroup(DioConf_DioChannelGroup_DioChannelGroup_0);
-    if((Dio_PortLevel & DIO_A_DIR) != (DIO_WRITE_PORT_GROUPLEVEL & DIO_A_DIR))
+    if ((Dio_PortLevel & DIO_A_DIR) != (DIO_WRITE_PORT_GROUPLEVEL & DIO_A_DIR))
     {
         Dio_ChnlGroupResponse = E_NOT_OK;
     }
@@ -195,19 +193,18 @@ int main(void)
     AppUtils_Printf("Fliping channel 8 level\n");
     Dio_FlipLevel = Dio_FlipChannel(DioConf_DioChannel_DioChannel_8);
     /*  The level of the pins configured as output should be fliped */
-    if(Dio_ChannelLevel == Dio_FlipLevel){
+    if (Dio_ChannelLevel == Dio_FlipLevel)
+    {
         Dio_ChannelResponse = E_NOT_OK;
         AppUtils_Printf("FAIL: Failed to flip channel 8 level \n");
-    } else {
+    }
+    else
+    {
         AppUtils_Printf("PASS: channel 8 level fliped\n");
     }
     AppUtils_Printf("DIO Test D :Service API: Flip Channel completed\n");
 #endif
     AppUtils_Printf("\nDio_Example_Read_Write_All: Sample Application - Completes successfully !!!");
-    while(TRUE)
-    {
-        /* Wait here */
-    }
 
     return return_value;
 }

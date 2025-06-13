@@ -54,11 +54,11 @@ extern "C" {
  *
  *****************************************************************************/
 /** \brief Port configuration Major Version. */
-#define PORT_CFG_MAJOR_VERSION    (1U)
+#define PORT_CFG_MAJOR_VERSION           (1U)
 /** \brief Port configuration Minor Version. */
-#define PORT_CFG_MINOR_VERSION    (1U)
+#define PORT_CFG_MINOR_VERSION           (1U)
 /** \brief Port configuration Patch Version. */
-#define PORT_CFG_PATCH_VERSION    (0U)
+#define PORT_CFG_PATCH_VERSION           (1U)
 
 
 /*****************************************************************************
@@ -74,7 +74,7 @@ extern "C" {
  * \brief Enable/Disable development error detection.
  *
  *****************************************************************************/
-#define PORT_CFG_DEV_ERROR_DETECT            (STD_ON) 
+#define PORT_CFG_DEV_ERROR_DETECT            (STD_OFF) 
 
 /*****************************************************************************
  *
@@ -95,7 +95,7 @@ extern "C" {
  * \brief Enable/Disable Port_GetVersionInfo().
  *
  *****************************************************************************/
-#define PORT_CFG_GET_VERSION_INFO_API        (STD_ON) 
+#define PORT_CFG_GET_VERSION_INFO_API        (STD_OFF) 
 
 /*****************************************************************************
  *

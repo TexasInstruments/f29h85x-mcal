@@ -47,7 +47,7 @@ extern "C" {
 #define ECUM_CFG_PATCH_VERSION                 ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 
 /* Number of wakeup events configured in EcuM wakeup source .*/
-#define ECUM_CFG_WAKEUP_EVENT_COUNT     ([!"num:i(count(as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*))"!]U) 
+#define ECUM_CFG_WAKEUP_EVENT_COUNT     ([!"num:i(count(as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*))"!]U)
 
 #define ECUM_PRE_COMPILE_VARIANT   [!IF "as:modconf('EcuM')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 

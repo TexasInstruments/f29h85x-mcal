@@ -95,8 +95,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) TRUE
     },
@@ -129,14 +129,14 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     {
         .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
         .Port_InitialMuxMode = (Port_PinType)PORT_PIN_36_GPIO36,
-        .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_NA,
+        .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD,
         .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_SYNC,
         .Port_PinQualificationPeriod = (uint32)1U,
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -175,8 +175,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -209,15 +209,15 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     {
         .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
         .Port_InitialMuxMode = (Port_PinType)PORT_PIN_168_AIO168,
-        .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_NA,
+        .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD,
         .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_SYNC,
         .Port_PinQualificationPeriod = (uint32)1U,
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
-                            |(0UL<<1U)
-                            |(1UL<<2U)
+                            |(1UL<<1U)
+                            |(0UL<<2U)
                             |(1UL<<3U)
-                            |(1UL<<4U)),
+                            |(0UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
     .Port_NumPortMuxModes = (uint32)2U,
@@ -249,15 +249,15 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     {
         .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
         .Port_InitialMuxMode = (Port_PinType)PORT_PIN_234_GPIO234,
-        .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_NA,
+        .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD,
         .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_SYNC,
         .Port_PinQualificationPeriod = (uint32)1U,
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
-                            |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
-                            |(1UL<<4U)),
+                            |(1UL<<1U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
+                            |(0UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
     .Port_NumPortMuxModes = (uint32)2U,
@@ -295,8 +295,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -330,8 +330,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -364,10 +364,10 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_PinQualificationPeriod = (uint32)1U,
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
-                            |(0UL<<1U)
-                            |(1UL<<2U)
+                            |(1UL<<1U)
+                            |(0UL<<2U)
                             |(1UL<<3U)
-                            |(1UL<<4U)),
+                            |(0UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
     .Port_NumPortMuxModes = (uint32)1U,

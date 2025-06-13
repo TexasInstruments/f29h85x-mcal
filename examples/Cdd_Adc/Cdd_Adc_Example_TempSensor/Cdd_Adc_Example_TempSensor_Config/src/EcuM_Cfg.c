@@ -9,7 +9,7 @@
  *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
  *                 is strictly prohibited.  This product  is  protected  under  copyright  law
  *                 and  trade  secret law as an  unpublished work.
- *                 (C) Copyright 2024 Texas Instruments Inc.  All rights reserved.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
  *  ------------------------------------------------------------------------------------------------------------------
@@ -58,7 +58,7 @@
  /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
@@ -99,13 +99,13 @@ FUNC(void, ECUM_CODE) EcuM_InitList(void)
 	Mcu_DistributePllClock();
 #endif
 #endif
-    
+
     Port_Init(NULL_PTR);
-    
+
     Cdd_Adc_Init(NULL_PTR);
-    
+
     Gpt_Init(NULL_PTR);
-    
+
 }
 
 #define ECUM_STOP_SEC_CONFIG_DATA

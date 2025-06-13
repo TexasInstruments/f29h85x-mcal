@@ -42,7 +42,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -79,11 +79,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCA_Int1Isr)
 #elif defined(CDD_ADCA_INT1_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCA_Int1Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT1,CDD_ADCA);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT1, CDD_ADCA);
 }
 #endif
 
@@ -98,11 +98,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCA_Int2Isr)
 #elif defined(CDD_ADCA_INT2_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCA_Int2Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT2,CDD_ADCA);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT2, CDD_ADCA);
 }
 #endif
 
@@ -117,11 +117,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCA_Int3Isr)
 #elif defined(CDD_ADCA_INT3_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCA_Int3Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT3,CDD_ADCA);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT3, CDD_ADCA);
 }
 #endif
 
@@ -136,11 +136,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCA_Int4Isr)
 #elif defined(CDD_ADCA_INT4_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCA_Int4Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT4,CDD_ADCA);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT4, CDD_ADCA);
 }
 #endif
 
@@ -159,11 +159,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCB_Int1Isr)
 #elif defined(CDD_ADCB_INT1_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCB_Int1Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT1,CDD_ADCB);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT1, CDD_ADCB);
 }
 #endif
 
@@ -178,11 +178,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCB_Int2Isr)
 #elif defined(CDD_ADCB_INT2_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCB_Int2Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT2,CDD_ADCB);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT2, CDD_ADCB);
 }
 #endif
 
@@ -197,11 +197,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCB_Int3Isr)
 #elif defined(CDD_ADCB_INT3_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCB_Int3Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT3,CDD_ADCB);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT3, CDD_ADCB);
 }
 #endif
 
@@ -216,11 +216,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCB_Int4Isr)
 #elif defined(CDD_ADCB_INT4_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCB_Int4Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT4,CDD_ADCB);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT4, CDD_ADCB);
 }
 #endif
 
@@ -239,11 +239,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCC_Int1Isr)
 #elif defined(CDD_ADCC_INT1_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCC_Int1Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT1,CDD_ADCC);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT1, CDD_ADCC);
 }
 #endif
 
@@ -258,11 +258,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCC_Int2Isr)
 #elif defined(CDD_ADCC_INT2_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCC_Int2Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT2,CDD_ADCC);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT2, CDD_ADCC);
 }
 #endif
 
@@ -277,11 +277,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCC_Int3Isr)
 #elif defined(CDD_ADCC_INT3_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCC_Int3Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT3,CDD_ADCC);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT3, CDD_ADCC);
 }
 #endif
 
@@ -296,11 +296,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCC_Int4Isr)
 #elif defined(CDD_ADCC_INT4_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCC_Int4Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT4,CDD_ADCC);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT4, CDD_ADCC);
 }
 #endif
 
@@ -319,11 +319,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCD_Int1Isr)
 #elif defined(CDD_ADCD_INT1_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCD_Int1Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT1,CDD_ADCD);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT1, CDD_ADCD);
 }
 #endif
 
@@ -338,11 +338,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCD_Int2Isr)
 #elif defined(CDD_ADCD_INT2_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCD_Int2Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT2,CDD_ADCD);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT2, CDD_ADCD);
 }
 #endif
 
@@ -357,11 +357,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCD_Int3Isr)
 #elif defined(CDD_ADCD_INT3_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCD_Int3Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT3,CDD_ADCD);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT3, CDD_ADCD);
 }
 #endif
 
@@ -376,11 +376,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCD_Int4Isr)
 #elif defined(CDD_ADCD_INT4_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCD_Int4Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT4,CDD_ADCD);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT4, CDD_ADCD);
 }
 #endif
 
@@ -399,11 +399,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCE_Int1Isr)
 #elif defined(CDD_ADCE_INT1_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCE_Int1Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT1,CDD_ADCE);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT1, CDD_ADCE);
 }
 #endif
 
@@ -418,11 +418,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCE_Int2Isr)
 #elif defined(CDD_ADCE_INT2_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCE_Int2Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT2,CDD_ADCE);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT2, CDD_ADCE);
 }
 #endif
 
@@ -437,11 +437,11 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCE_Int3Isr)
 #elif defined(CDD_ADCE_INT3_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCE_Int3Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT3,CDD_ADCE);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT3, CDD_ADCE);
 }
 #endif
 
@@ -456,16 +456,15 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCE_Int4Isr)
 #elif defined(CDD_ADCE_INT4_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCE_Int4Isr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Adc_ProcessIsr(CDD_ADC_INT4,CDD_ADCE);
+    Cdd_Adc_ProcessIsr(CDD_ADC_INT4, CDD_ADCE);
 }
 #endif
 
-
-#if(STD_ON == CDD_ADC_ENABLE_PPB_API)
+#if (STD_ON == CDD_ADC_ENABLE_PPB_API)
 /* Enable the ISR functions only if Limit check API is enabled */
 
 #if defined(CDD_ADCA_EVTINT_ENABLE)
@@ -476,7 +475,7 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCA_PpbEvtIntIsr)
 #elif defined(CDD_ADCA_EVTINT_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCA_PpbEvtIntIsr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -492,7 +491,7 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCB_PpbEvtIntIsr)
 #elif defined(CDD_ADCB_EVTINT_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCB_PpbEvtIntIsr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -508,7 +507,7 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCC_PpbEvtIntIsr)
 #elif defined(CDD_ADCC_EVTINT_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCC_PpbEvtIntIsr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -524,7 +523,7 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCD_PpbEvtIntIsr)
 #elif defined(CDD_ADCD_EVTINT_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCD_PpbEvtIntIsr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -540,7 +539,7 @@ MCAL_LIB_INT_ISR(Cdd_Adc_ADCE_PpbEvtIntIsr)
 #elif defined(CDD_ADCE_EVTINT_ISR_CAT2_INT)
 ISR(Cdd_Adc_ADCE_PpbEvtIntIsr)
 #else
-    #error "Invalid Adc interrupt category"
+#error "Invalid Adc interrupt category"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */

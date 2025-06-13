@@ -1,16 +1,16 @@
 <?xml version='1.0'?>
-<datamodel version="6.0" 
-           xmlns="http://www.tresos.de/_projects/DataModel2/14/root.xsd" 
-           xmlns:a="http://www.tresos.de/_projects/DataModel2/14/attribute.xsd" 
-           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+<datamodel version="6.0"
+           xmlns="http://www.tresos.de/_projects/DataModel2/14/root.xsd"
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/14/attribute.xsd"
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd"
            xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
 
-  <d:ctr type="AUTOSAR" factory="autosar" 
-         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
-         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
-         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
-         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
-         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+  <d:ctr type="AUTOSAR" factory="autosar"
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd"
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd"
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd"
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd"
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"
          xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
     <d:lst type="TOP-LEVEL-PACKAGES">
       <d:ctr name="AUTOSAR" type="AR-PACKAGE">
@@ -31,42 +31,41 @@
                       </ad:DOC-REVISIONS>
                     </ad:ADMIN-DATA>
                   </a:a>
-                  <a:a name="DESC" 
+                  <a:a name="DESC"
                        value="EN: Configuration of the EcuM (ECU State Manager) module."/>
                   <a:a name="LOWER-MULTIPLICITY" value="0"/>
                   <a:a name="POSTBUILDVARIANTSUPPORT" value="true"/>
                   <a:a name="RELEASE" value="asc:4.3.1"/>
                   <a:a name="UPPER-MULTIPLICITY" value="1"/>
-                  <a:a name="UUID" 
+                  <a:a name="UUID"
                        value="ECUC:2cef58ce-79fe-4a40-935b-ee76b6a60605"/>
-                  <v:var name="IMPLEMENTATION_CONFIG_VARIANT" 
+                  <v:var name="IMPLEMENTATION_CONFIG_VARIANT"
                          type="ENUMERATION">
                     <a:a name="LABEL" value="Config Variant"/>
                     <a:da name="DEFAULT" value="VariantPreCompile"/>
                     <a:da name="EDITABLE" value="false"/>
                   </v:var>
                   <v:ctr name="EcuMConfiguration" type="IDENTIFIABLE">
-                    <a:a name="DESC" 
+                    <a:a name="DESC"
                          value="EN: This container contains the configuration (parameters) of the ECU State Manager."/>
-                    <a:a name="UUID" 
+                    <a:a name="UUID"
                          value="ECUC:16fb469f-1f19-45e7-b4e5-555ae0f14089"/>
                     <v:ctr name="EcuMCommonConfiguration" type="IDENTIFIABLE">
-                      <a:a name="DESC" 
+                      <a:a name="DESC"
                            value="EN: This container contains the common configuration (parameters) of the ECU State Manager."/>
-                      <a:a name="UUID" 
+                      <a:a name="UUID"
                            value="ECUC:8e610dbe-ea33-4a18-bca8-c4d70a9da2f1"/>
                       <v:lst name="EcuMDriverInitList" type="MAP">
                         <v:ctr name="EcuMDriverInitItem" type="IDENTIFIABLE">
-                        <a:a name="DESC" 
+                        <a:a name="DESC"
                                 value="EN: These containers describe the entries in a driver init list."/>
                         <a:a name="REQUIRES-INDEX" value="true"/>
-                        <a:a name="UUID" 
+                        <a:a name="UUID"
                                 value="ECUC:b37908f7-5536-96bf-545e-fa7e8d6d11e0"/>
                         <v:var name="ModuleHeaderFileName" type="STRING">
-                          <a:a name="DESC" 
+                          <a:a name="DESC"
                                 value="EN: This parameter defines the header file name. It should be unique so that the same file doesn't need to be defined twice."/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                                  
-                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
@@ -74,15 +73,14 @@
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" value="ECUC:f43bffda-8d3a-4520-b424-b558fcbe752c"/>
                           <a:da name="INVALID" type="XPath">
-                              <a:tst expr="text:uniq(../.././/*[@name = 'ModuleHeaderFileName'],node:value(.))" 
-                                  false="Module file name should be unique and it can be empty also."/>                                
-                          </a:da> 
-                        </v:var>                              
+                              <a:tst expr="text:uniq(../.././/*[@name = 'ModuleHeaderFileName'],node:value(.))"
+                                  false="Module file name should be unique and it can be empty also."/>
+                          </a:da>
+                        </v:var>
                         <v:var name="ModuleFunction" type="MULTILINE-STRING">
-                          <a:a name="DESC" 
+                          <a:a name="DESC"
                                 value="EN: Provide module functions.It supports multiple functions declarations."/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                                  
-                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
@@ -90,29 +88,29 @@
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" value="ECUC:f43bffda-8d3a-4520-b424-b558fcbe752c"/>
                           <a:da name="INVALID" type="XPath">
-                              <a:tst expr="not(node:empty(.))" 
-                                  false="No function provided, it shouldn't be empty."/>                                
-                          </a:da>                          
-                        </v:var>                                              
+                              <a:tst expr="not(node:empty(.))"
+                                  false="No function provided, it shouldn't be empty."/>
+                          </a:da>
+                        </v:var>
                         </v:ctr>
                       </v:lst>
                       <v:lst name="EcuMWakeupSource" type="MAP">
                       <v:ctr name="EcuMWakeupSource" type="IDENTIFIABLE">
-                          <a:a name="DESC" 
+                          <a:a name="DESC"
                                 value="EN: These containers describe the configured wakeup sources."/>
-                          <a:a name="UUID" 
+                          <a:a name="UUID"
                                 value="ECUC:0a729dd6-2641-4d68-95a0-5a26ca418457"/>
                         <v:var name="EcuMWakeupSourceId" type="INTEGER">
-                          <a:a name="DESC" 
+                          <a:a name="DESC"
                                 value="EN: This parameter defines the identifier of this wakeup source."/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS"
                                 type="IMPLEMENTATIONCONFIGCLASS">
                           <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                           <a:a name="SCOPE" value="ECU"/>
                           <a:a name="SYMBOLICNAMEVALUE" value="true"/>
-                          <a:a name="UUID" 
+                          <a:a name="UUID"
                                 value="ECUC:bdc9686e-5683-43b0-95b2-0f1cd8114964"/>
                           <a:a name="INVALID" type="Multi">
                               <mt:range>
@@ -122,12 +120,11 @@
                               <mt:xpath expr="text:uniq(../.././/*[@name='EcuMWakeupSourceId'], node:value(.))" false="WakeupSourceId should be unique"/>
                           </a:a>
                         </v:var>
-						
+
 						<v:var name="EcuMWakeupSourceModuleName" type="STRING">
-                          <a:a name="DESC" 
+                          <a:a name="DESC"
                                 value="EN: This parameter defines the Module/function name for the Ecum wakeup function."/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                                  
-                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
@@ -135,11 +132,11 @@
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" value="ECUC:f43bffda-8d3a-4520-b424-b558fcbe752c"/>
                           <!--<a:da name="INVALID" type="XPath">
-                              <a:tst expr="text:uniq(../.././/*[@name = 'ModuleHeaderFileName'],node:value(.))" 
-                                  false="Module file name should be unique and it can be empty also."/>                                
+                              <a:tst expr="text:uniq(../.././/*[@name = 'ModuleHeaderFileName'],node:value(.))"
+                                  false="Module file name should be unique and it can be empty also."/>
                           </a:da> -->
-                        </v:var>                              
-                        
+                        </v:var>
+
                       </v:ctr>
                       </v:lst>
                     </v:ctr>

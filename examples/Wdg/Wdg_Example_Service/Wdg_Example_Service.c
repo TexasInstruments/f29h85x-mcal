@@ -1,6 +1,7 @@
 /*********************************************************************************************************************
  *  COPYRIGHT
- *  ------------------------------------------------------------------------------------------------------------------
+ *
+ ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
  *
  *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
@@ -11,19 +12,22 @@
  *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
  *
  *  \endverbatim
- *  ------------------------------------------------------------------------------------------------------------------
+ *
+ ------------------------------------------------------------------------------------------------------------------
  *  FILE DESCRIPTION
- *  ------------------------------------------------------------------------------------------------------------------
+ *
+ ------------------------------------------------------------------------------------------------------------------
  *  File:       Wdg_Example_Service.c
  *  Generator:  None
  *
  *  Description:  This file contains application for Servicing Watchdog Example
  *
- * This example shows how to service the watchdog. 
- * if the function Wdg_SetTriggerCondition is called, wdg servicing happens in loop and never expires
- * 
+ * This example shows how to service the watchdog.
+ * if the function Wdg_SetTriggerCondition is called, wdg servicing happens in loop and never
+ expires
+ *
  * Wdg_IsrCount  - The number of times entered into the watchdog ISR
- * 
+ *
 
  *********************************************************************************************************************/
 
@@ -77,11 +81,10 @@ volatile uint32 Wdg_IsrCount;
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-
 int main(void)
-{ 
+{
     Std_ReturnType return_value = E_NOT_OK;
-    uint16 Wdg_Timeout = 0U;
+    uint16         Wdg_Timeout  = 0U;
     DeviceSupport_Init();
 
     EcuM_Init(); /* PORT & MCU Initialization to get configuration settings */
@@ -91,12 +94,12 @@ int main(void)
 
     AppUtils_Printf("Sample Application to test Wdg Interrupt & Servicing - STARTS !!!\n");
 
-    /* Clear the counters */ 
+    /* Clear the counters */
     Wdg_IsrCount = 0;
 
     /*  get version Info */
 #if (STD_ON == WDG_GET_VERSION_INFO_API)
-    Std_VersionInfoType       Wdg_VersionInfo;
+    Std_VersionInfoType Wdg_VersionInfo;
 
     AppUtils_Printf("Wdg GetVersionInfo API - STARTS !!!\n");
     Wdg_GetVersionInfo(&Wdg_VersionInfo);
@@ -110,7 +113,6 @@ int main(void)
     AppUtils_Printf("Wdg GetVersionInfo API - ENDS !!!\n");
 #endif
 
-
     /* Test Wdg Servicing functionality*/
     /*  Default Mode: Slow mode configuration - Timeout : 3342 milli-seconds */
 
@@ -118,11 +120,11 @@ int main(void)
     Wdg_Init(&Wdg_ConfigSetptr);
     AppUtils_Printf("Wdg Initialization - ENDS !!!\n");
 
-    if(Wdg_ConfigSetptr.Wdg_DefaultMode == WDGIF_SLOW_MODE)
+    if (Wdg_ConfigSetptr.Wdg_DefaultMode == WDGIF_SLOW_MODE)
     {
         Wdg_Timeout = Wdg_ConfigSetptr.Wdg_SlowModeCfg.Timeout;
     }
-    else if(Wdg_ConfigSetptr.Wdg_DefaultMode == WDGIF_FAST_MODE)
+    else if (Wdg_ConfigSetptr.Wdg_DefaultMode == WDGIF_FAST_MODE)
     {
         Wdg_Timeout = Wdg_ConfigSetptr.Wdg_FastModeCfg.Timeout;
     }
@@ -130,12 +132,11 @@ int main(void)
     /* print timeout duration */
     AppUtils_Printf("Wdg Max timeout duration in milliseconds is : %d !!!\n", Wdg_Timeout);
 
-
     AppUtils_Printf("Wdg servicing is called in loop, So interrupts will not be generated !!!\n");
 
-    for(;;)
+    for (;;)
     {
-        if(Wdg_IsrCount >= 1) 
+        if (Wdg_IsrCount >= 1)
         {
             return_value = E_OK;
             AppUtils_Printf("Wdg Interrupt is generated after timeout!!!\n");
@@ -150,7 +151,6 @@ int main(void)
     return return_value;
 }
 
-
 /* watchdogISR ISR - The interrupt service routine called when the watchdog
                   triggers the wake interrupt signal */
 void Wdg_ApplWdgIsr(void)
@@ -161,4 +161,3 @@ void Wdg_ApplWdgIsr(void)
 /*********************************************************************************************************************
  *  End of File: Wdg_Example_Service.c
  *********************************************************************************************************************/
-

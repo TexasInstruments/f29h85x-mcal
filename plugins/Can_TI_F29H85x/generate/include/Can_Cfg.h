@@ -204,17 +204,6 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 
 /*****************************************************************************
  *
- * \brief Counter ID for counter used to count wait ticks
- *
- *****************************************************************************/
-/*
- *Design: MCAL-22757
- */
-#define CAN_CFG_OS_COUNTER_ID               ((Os_CounterIdType)[!"num:i(node:ref(as:modconf('Can')[1]/CanGeneral/CanOsCounterRef)/OsCounterId)"!]U)
-
-
-/*****************************************************************************
- *
  * \brief CAN timeout - used in CAN Cancel wait and Start/Stop busy wait.
  *  Specifies the maximum time for blocking function until a timeout is detected.
  *  Unit is milli seconds.
@@ -223,8 +212,9 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 /*
  *Design: MCAL-22755
  */
-[!VAR "ostickpersec"="node:ref(as:modconf('Can')[1]/CanGeneral/CanOsCounterRef)/OsSecondsPerTick"!]
-#define CAN_CFG_TIMEOUT_DURATION            ((uint32)[!"num:i(num:div(as:modconf('Can')[1]/CanGeneral/CanTimeoutDuration,$ostickpersec))"!]U)
+
+[!VAR "sysClockFrequency"="num:i(node:value(concat(node:path(node:ref(as:modconf('Can')[1]/CanGeneral/CanSysClockRef)), '/McuClockReferencePointFrequency')))"!]
+#define CAN_CFG_TIMEOUT_DURATION    ((McalLib_TickType)([!"num:i(as:modconf('Can')[1]/CanGeneral/CanTimeoutDuration * $sysClockFrequency)"!]U))
 
 /*****************************************************************************
  *

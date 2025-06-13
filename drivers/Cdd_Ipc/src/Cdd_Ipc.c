@@ -36,17 +36,17 @@
 /* AUTOSAR version information check has to match definition in header file */
 #if ((CDD_IPC_AR_RELEASE_MAJOR_VERSION != (0x04U)) || (CDD_IPC_AR_RELEASE_MINOR_VERSION != (0x03U)) || \
      (CDD_IPC_AR_RELEASE_REVISION_VERSION != (0x01U)))
-    #error "AUTOSAR Version of CDD_IPC is incorrect"
+#error "AUTOSAR Version of CDD_IPC is incorrect"
 #endif
 
 /* vendor specific version information check */
 
 #if ((CDD_IPC_SW_MAJOR_VERSION != (1U)) || (CDD_IPC_SW_MINOR_VERSION != (0U)))
-    #error "Version numbers of Cdd_Ipc.c and Cdd_Ipc.h are not matching!"
+#error "Version numbers of Cdd_Ipc.c and Cdd_Ipc.h are not matching!"
 #endif
 
 #if ((CDD_IPC_CFG_MAJOR_VERSION != (1U)) || (CDD_IPC_CFG_MINOR_VERSION != (0U)))
-    #error "Version numbers of Cdd_Ipc.c and Cdd_Ipc_Cfg.h are not matching!"
+#error "Version numbers of Cdd_Ipc.c and Cdd_Ipc_Cfg.h are not matching!"
 #endif
 
 /*********************************************************************************************************************
@@ -61,7 +61,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -70,15 +70,17 @@
  *********************************************************************************************************************/
 #define CDD_IPC_START_SEC_VAR_INIT_BOOLEAN
 #include "Cdd_Ipc_MemMap.h"
+/* Design: MCAL-30533 */
 /* Cdd_Ipc Driver initialization variable */
-VAR(boolean,CDD_IPC_VAR_INIT) Cdd_Ipc_IsInitialized = FALSE;
+VAR(boolean, CDD_IPC_VAR_INIT) Cdd_Ipc_IsInitialized = FALSE;
 #define CDD_IPC_STOP_SEC_VAR_INIT_BOOLEAN
 #include "Cdd_Ipc_MemMap.h"
 
 #define CDD_IPC_START_SEC_VAR_INIT_PTR
 #include "Cdd_Ipc_MemMap.h"
+/* Design: MCAL-30534 */
 /* Cdd_Ipc configuration pointer to access driver configuration. */
-P2CONST(Cdd_Ipc_ConfigType,AUTOMATIC,CDD_IPC_CONST) Cdd_Ipc_CfgPtr = NULL_PTR;
+P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONST) Cdd_Ipc_CfgPtr = NULL_PTR;
 #define CDD_IPC_STOP_SEC_VAR_INIT_PTR
 #include "Cdd_Ipc_MemMap.h"
 
@@ -86,17 +88,19 @@ P2CONST(Cdd_Ipc_ConfigType,AUTOMATIC,CDD_IPC_CONST) Cdd_Ipc_CfgPtr = NULL_PTR;
  *  Local Function Prototypes
  *********************************************************************************************************************/
 #if (STD_ON == CDD_IPC_DEV_ERROR_DETECT)
+/* Design: MCAL-30600 */
 /** \brief Checks and reports DET errors for Cdd_Ipc_Transmit API
  *
- * \param[in] PduInfoPtr is the pointer to a struct of type PduInfoType containing the complete data to be transmitted.
+ * \param[in] PduInfoPtr is the pointer to a struct of type PduInfoType containing the complete data
+ *to be transmitted.
  * \pre None
  * \post None
  * \return DET errors detection status.
  * \retval E_OK: DET errors not reported.
  * \retval E_NOT_OK: DET errors reported.
  *********************************************************************************************************************/
-static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_TransmitPduDetCheck
-(P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr);
+static FUNC(Std_ReturnType, CDD_IPC_CODE)
+    Cdd_Ipc_TransmitPduDetCheck(P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr);
 #endif
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -112,24 +116,25 @@ static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_TransmitPduDetCheck
 /*
  * Design: MCAL-
  */
-FUNC(void,CDD_IPC_CODE) Cdd_Ipc_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_IPC_APPL_DATA) VersionInfo)
+FUNC(void, CDD_IPC_CODE)
+Cdd_Ipc_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_IPC_APPL_DATA) VersionInfo)
 {
 #if (STD_ON == CDD_IPC_DEV_ERROR_DETECT)
     /* If VersionInfo is NULL */
     if (NULL_PTR == VersionInfo)
     {
-        (void)Det_ReportError(CDD_IPC_MODULE_ID,CDD_IPC_INSTANCE_ID,CDD_IPC_SID_GET_VERSION_INFO,\
-                                                                         CDD_IPC_E_PARAM_POINTER);
+        (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_GET_VERSION_INFO,
+                              CDD_IPC_E_PARAM_POINTER);
     }
     else
 #endif
     {
         VersionInfo->vendorID         = (uint16)CDD_IPC_VENDOR_ID;
-        VersionInfo->moduleID         = (uint16)CDD_IPC_MODULE_ID ;
-        VersionInfo->instanceID       = (uint8)CDD_IPC_INSTANCE_ID ;
-        VersionInfo->sw_major_version = (uint8)CDD_IPC_SW_MAJOR_VERSION ;
-        VersionInfo->sw_minor_version = (uint8)CDD_IPC_SW_MINOR_VERSION ;
-        VersionInfo->sw_patch_version = (uint8)CDD_IPC_SW_PATCH_VERSION ;
+        VersionInfo->moduleID         = (uint16)CDD_IPC_MODULE_ID;
+        VersionInfo->instanceID       = (uint8)CDD_IPC_INSTANCE_ID;
+        VersionInfo->sw_major_version = (uint8)CDD_IPC_SW_MAJOR_VERSION;
+        VersionInfo->sw_minor_version = (uint8)CDD_IPC_SW_MINOR_VERSION;
+        VersionInfo->sw_patch_version = (uint8)CDD_IPC_SW_PATCH_VERSION;
     }
     return;
 }
@@ -138,7 +143,8 @@ FUNC(void,CDD_IPC_CODE) Cdd_Ipc_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMA
 /*
  * Design: MCAL-
  */
-FUNC(void, CDD_IPC_CODE) Cdd_Ipc_Init(P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONFIG_DATA) ConfigPtr)
+FUNC(void, CDD_IPC_CODE)
+Cdd_Ipc_Init(P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONFIG_DATA) ConfigPtr)
 {
     /* Config pointer initialised with NULL_PTR */
     P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONFIG_DATA) config_ptr = NULL_PTR;
@@ -155,21 +161,20 @@ FUNC(void, CDD_IPC_CODE) Cdd_Ipc_Init(P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD
     }
 #endif /*CDD_IPC_PRE_COMPILE_VARIANT*/
 
-    /* Cdd_Ipc module must not be initialized. Otherwise call the Det with CDD_IPC_E_ALREADY_INITIALIZED */
+    /* Cdd_Ipc module must not be initialized. Otherwise call the Det with
+     * CDD_IPC_E_ALREADY_INITIALIZED */
     if (TRUE == Cdd_Ipc_IsInitialized)
     {
-        #if (STD_ON == CDD_IPC_DEV_ERROR_DETECT)
-        (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, 
-        CDD_IPC_SID_INIT, CDD_IPC_E_ALREADY_INITIALIZED);
-        #endif /* STD_ON == CDD_IPC_DEV_ERROR_DETECT */ 
+#if (STD_ON == CDD_IPC_DEV_ERROR_DETECT)
+        (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_INIT, CDD_IPC_E_ALREADY_INITIALIZED);
+#endif /* STD_ON == CDD_IPC_DEV_ERROR_DETECT */
     }
     else if (NULL_PTR == config_ptr)
     {
-        #if (STD_ON == CDD_IPC_DEV_ERROR_DETECT)      
+#if (STD_ON == CDD_IPC_DEV_ERROR_DETECT)
         /* API is being called with invalid config param */
-        (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, 
-            CDD_IPC_SID_INIT, CDD_IPC_E_PARAM_POINTER);   
-        #endif /* STD_ON == CDD_IPC_DEV_ERROR_DETECT */    
+        (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_INIT, CDD_IPC_E_PARAM_POINTER);
+#endif /* STD_ON == CDD_IPC_DEV_ERROR_DETECT */
     }
     else
     {
@@ -188,8 +193,8 @@ FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_Sync(VAR(Cdd_Ipc_RemoteCoreType, AUTO
 {
     VAR(Std_ReturnType, AUTOMATIC) return_val = E_NOT_OK;
 
-#if(CDD_IPC_DEV_ERROR_DETECT == STD_ON)
-    if(Cdd_Ipc_IsInitialized == FALSE)
+#if (CDD_IPC_DEV_ERROR_DETECT == STD_ON)
+    if (Cdd_Ipc_IsInitialized == FALSE)
     {
         /* Report Det error if the driver is already initialized */
         (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_SYNC, CDD_IPC_E_UNINIT);
@@ -211,23 +216,23 @@ FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_Sync(VAR(Cdd_Ipc_RemoteCoreType, AUTO
 /*
  * Design: MCAL-
  */
-FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_Transmit
-(VAR(PduIdType , AUTOMATIC) ChannelId, P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
+FUNC(Std_ReturnType, CDD_IPC_CODE)
+Cdd_Ipc_Transmit(VAR(PduIdType, AUTOMATIC) ChannelId, P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_val = E_NOT_OK;
 
-#if(CDD_IPC_DEV_ERROR_DETECT == STD_ON)
-    if(Cdd_Ipc_IsInitialized == FALSE)
+#if (CDD_IPC_DEV_ERROR_DETECT == STD_ON)
+    if (Cdd_Ipc_IsInitialized == FALSE)
     {
         /* Report Det error if the driver is already initialized */
         (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_TRANSMIT, CDD_IPC_E_UNINIT);
     }
-    else if(FALSE == Cdd_Ipc_IsChannelIdValid(ChannelId))
+    else if (FALSE == Cdd_Ipc_IsChannelIdValid(ChannelId))
     {
         /* Report Det error if ChannelId is not configured */
         (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_TRANSMIT, CDD_IPC_E_PARAM_VALUE);
     }
-    else if(E_NOT_OK == Cdd_Ipc_TransmitPduDetCheck(PduInfoPtr))
+    else if (E_NOT_OK == Cdd_Ipc_TransmitPduDetCheck(PduInfoPtr))
     {
         /* Cdd_Ipc_TransmitPduDetCheck() reports Det error if PduInfoPtr is invalid */
     }
@@ -247,11 +252,11 @@ FUNC(void, CDD_IPC_CODE) Cdd_Ipc_MainFunction_Read(void)
     VAR(uint8, AUTOMATIC) channel_index = (uint8)0U;
     VAR(PduInfoType, AUTOMATIC) pduinfo;
     VAR(uint8, AUTOMATIC) databuffer[CDD_IPC_MAX_SIZE] = {0U};
-    pduinfo.SduDataPtr = databuffer;
+    pduinfo.SduDataPtr                                 = databuffer;
 
     for (uint8 instance_index = 0U; instance_index < CDD_IPC_RX_INSTANCE_COUNT; instance_index++)
     {
-        if(TRUE == Cdd_Ipc_GetChannelPollingStatus(instance_index, &channel_index))
+        if (TRUE == Cdd_Ipc_GetChannelPollingStatus(instance_index, &channel_index))
         {
             SchM_Enter_Cdd_Ipc_CDD_IPC_EXCLUSIVE_AREA_1();
             Cdd_Ipc_ReadChannelPriv(instance_index, &pduinfo);
@@ -262,38 +267,37 @@ FUNC(void, CDD_IPC_CODE) Cdd_Ipc_MainFunction_Read(void)
     }
 }
 
-FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_IsTxInstanceFree(VAR(PduIdType , AUTOMATIC) ChannelId)
+FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_IsTxInstanceFree(VAR(PduIdType, AUTOMATIC) ChannelId)
 {
     VAR(boolean, AUTOMATIC) return_val = FALSE;
 
-#if(CDD_IPC_DEV_ERROR_DETECT == STD_ON)
-    if(Cdd_Ipc_IsInitialized == FALSE)
+#if (CDD_IPC_DEV_ERROR_DETECT == STD_ON)
+    if (Cdd_Ipc_IsInitialized == FALSE)
     {
         /* Report Det error if the driver is already initialized */
-        (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, 
-             CDD_IPC_IS_TX_INSTANCE_FREE, CDD_IPC_E_UNINIT);
+        (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_IS_TX_INSTANCE_FREE, CDD_IPC_E_UNINIT);
     }
-    else if(FALSE == Cdd_Ipc_IsChannelIdValid(ChannelId))
+    else if (FALSE == Cdd_Ipc_IsChannelIdValid(ChannelId))
     {
         /* Report Det error if ChannelId is not configured */
-        (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, 
-            CDD_IPC_IS_TX_INSTANCE_FREE, CDD_IPC_E_PARAM_VALUE);
+        (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_IS_TX_INSTANCE_FREE,
+                              CDD_IPC_E_PARAM_VALUE);
     }
     else
 #endif
     {
         return_val = Cdd_Ipc_InstanceStatus(ChannelId);
     }
-    
+
     return return_val;
 }
 
-FUNC(uint64 , CDD_IPC_CODE) Cdd_Ipc_GetCounter(void)
+FUNC(uint64, CDD_IPC_CODE) Cdd_Ipc_GetCounter(void)
 {
     VAR(uint64, AUTOMATIC) return_val;
 
-     return_val = Cdd_Ipc_ReadCounter();
-    
+    return_val = Cdd_Ipc_ReadCounter();
+
     return return_val;
 }
 
@@ -303,12 +307,12 @@ FUNC(uint64 , CDD_IPC_CODE) Cdd_Ipc_GetCounter(void)
  *  Local Functions Definition
  *********************************************************************************************************************/
 #if (STD_ON == CDD_IPC_DEV_ERROR_DETECT)
-static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_TransmitPduDetCheck
-(P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
+static FUNC(Std_ReturnType, CDD_IPC_CODE)
+    Cdd_Ipc_TransmitPduDetCheck(P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_OK;
 
-    if((NULL_PTR == PduInfoPtr) || ((PduInfoPtr->SduLength != 0U) && (NULL_PTR == PduInfoPtr->SduDataPtr)))
+    if ((NULL_PTR == PduInfoPtr) || ((PduInfoPtr->SduLength != 0U) && (NULL_PTR == PduInfoPtr->SduDataPtr)))
     {
         /* Report Det error if PduInfoPtr is NULL */
         (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_TRANSMIT, CDD_IPC_E_PARAM_POINTER);

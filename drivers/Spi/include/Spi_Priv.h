@@ -73,7 +73,8 @@ typedef uint8 Spi_CsLevelType;
  *  \brief SPI Buffer pointer type.
  */
 
-typedef enum {
+typedef enum
+{
     /** \brief SPI 8 bit buffer */
     SPI_8BIT_BUFFER,
     /** \brief SPI 16 bit buffer */
@@ -90,7 +91,6 @@ typedef enum {
 
 typedef struct
 {
-
     /** \brief SPI channel config passed during init */
     const Spi_ChannelConfigType *chCfg;
     /** \brief TX buffer pointer given by user. This should be persistent */
@@ -98,34 +98,33 @@ typedef struct
     /** \brief RX buffer pointer given by user. This should be persistent */
     P2VAR(Spi_DataBufferType, AUTOMATIC, SPI_APPL_DATA) rxBufPtr;
 
-#if ((SPI_CHANNEL_BUFFERS == SPI_IB) || \
-                                    (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
+#if ((SPI_CHANNEL_BUFFERS == SPI_IB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
     /** \brief Internal TX buffer */
-    Spi_DataBufferType    txIb[SPI_IB_MAX_LENGTH];
+    Spi_DataBufferType txIb[SPI_IB_MAX_LENGTH];
     /** \brief Internal RX buffer */
-    Spi_DataBufferType    rxIb[SPI_IB_MAX_LENGTH];
+    Spi_DataBufferType rxIb[SPI_IB_MAX_LENGTH];
 #endif
     /** \brief Current TX buffer pointer */
-    const uint8          *curTxBufPtr;
+    const uint8         *curTxBufPtr;
     /** \brief Current RX buffer pointer */
-    uint8                *curRxBufPtr;
+    uint8               *curRxBufPtr;
     /** \brief Number of words to transfer */
-    Spi_NumberOfDataType  numWordsTxRx;
+    Spi_NumberOfDataType numWordsTxRx;
     /** \brief   Number of words transmitted. We need separate counters for
      *   TX/RX because when FIFO in enabled, TX writes happen in
      *   advance where as RX will happen on actual received data. */
-    Spi_NumberOfDataType  curTxWords;
+    Spi_NumberOfDataType curTxWords;
     /** \brief Number of words received */
-    Spi_NumberOfDataType  curRxWords;
+    Spi_NumberOfDataType curRxWords;
     /** \brief   Width of buffer in bytes-used for accessing the TX/RX buffer.
      *   When dataWidth < 9,           bufWidth = uint8 (1 bytes)
      *   When dataWidth >= 9  && < 17, bufWidth = uint16 (2 bytes)
      */
-    Spi_BufferWidthType   bufWidth;
+    Spi_BufferWidthType  bufWidth;
     /** \brief Effective TX FIFO depth in words - depends on dataWidth */
-    uint16                effTxFifoDepth;
+    uint16               effTxFifoDepth;
     /** \brief Data width mask depending on SPI word size */
-    uint16                dataWidthBitMask;
+    uint16               dataWidthBitMask;
 
 } Spi_ChannelObjType;
 
@@ -141,9 +140,9 @@ typedef struct
     /** \brief SPI sequence config passed during init */
     const Spi_SeqConfigType *seqCfg;
     /** \brief SPI sequence result/status */
-    Spi_SeqResultType seqResult;
+    Spi_SeqResultType        seqResult;
     /** \brief Number of jobs still pending.Used for notifying sequence end */
-    uint32            numJobsPending;
+    uint32                   numJobsPending;
 
 } Spi_SeqObjType;
 
@@ -157,7 +156,7 @@ typedef struct
 typedef struct
 {
     /** \brief SPI job config passed during init */
-    const Spi_JobConfigType             *jobCfg;
+    const Spi_JobConfigType      *jobCfg;
     /** \brief SPI job config passed during init */
     Spi_ExternalDeviceConfigType *extDevCfg;
     /** \brief SPI job result/status */
@@ -190,19 +189,19 @@ struct Spi_HwUnitObjType_t
     /** \brief SPI HW unit config passed during init */
     const Spi_HwUnitConfigType *hwUnitCfg;
     /** \brief SPI HW unit result/status */
-    Spi_HwUnitResultType hwUnitResult;
+    Spi_HwUnitResultType        hwUnitResult;
     /** \brief Base address of the hardware */
-    uint32               baseAddr;
+    uint32                      baseAddr;
     /** \brief Job link list per hardware */
-    Spi_UtilsLinkListObj jobList;
+    Spi_UtilsLinkListObj        jobList;
     /** \brief When hardware is busy, this points to the current job that
      * is in progress. When hardware is idle, this will be NULL */
-    Spi_JobObjType      *curJobObj;
+    Spi_JobObjType             *curJobObj;
     /** \brief Currently configured job ID. Used to avoid re-configuring the
      * hardware again when the same job ID is used back to back */
-    Spi_JobType          curConfiguredJobId;
+    Spi_JobType                 curConfiguredJobId;
     /* current DEM status for this HW unit */
-    Std_ReturnType      hwUnitDemState;
+    Std_ReturnType              hwUnitDemState;
 };
 
 /*
@@ -246,7 +245,6 @@ typedef struct
 
 } Spi_DriverObjType;
 
-
 /*
  * Design : MCAL-25182
  */
@@ -267,7 +265,7 @@ extern volatile Spi_StatusType Spi_DrvStatus;
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_ResetDrvObj(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj);
+FUNC(void, SPI_CODE) Spi_ResetDrvObj(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj);
 
 /** \brief function to copy configuration into driver obj
  *
@@ -281,8 +279,9 @@ FUNC(void, SPI_CODE) Spi_ResetDrvObj(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_CopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj,
-    P2CONST(Spi_ConfigType,AUTOMATIC,SPI_CODE)cfgPtr);
+FUNC(void, SPI_CODE)
+Spi_CopyConfig(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+               P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CODE) cfgPtr);
 
 /** \brief function to initialize SPI hardware unit
  *
@@ -295,8 +294,9 @@ FUNC(void, SPI_CODE) Spi_CopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)d
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_HwUnitInit(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
-                                    P2VAR(Spi_HwUnitObjType,AUTOMATIC,SPI_CODE)hwUnitObj);
+FUNC(void, SPI_CODE)
+Spi_HwUnitInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+               P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj);
 
 /** \brief function to de-initialize SPI hardware unit
  *
@@ -309,7 +309,7 @@ FUNC(void, SPI_CODE) Spi_HwUnitInit(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)d
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_HwUnitDeInit(P2VAR(Spi_HwUnitObjType,AUTOMATIC,SPI_CODE)hwUnitObj);
+FUNC(void, SPI_CODE) Spi_HwUnitDeInit(P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj);
 
 /** \brief function to get hardware unit object based on HW unit ID
  *
@@ -322,8 +322,8 @@ FUNC(void, SPI_CODE) Spi_HwUnitDeInit(P2VAR(Spi_HwUnitObjType,AUTOMATIC,SPI_CODE
  * \retval Spi_HwUnitObjType: pointer to HW unit object
  *
  ********************************************************************************************************************/
-Spi_HwUnitObjType *Spi_GetHwUnitObj(VAR(Spi_HWUnitType,AUTOMATIC)HWUnit,
-                                     P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj);
+Spi_HwUnitObjType *Spi_GetHwUnitObj(VAR(Spi_HWUnitType, AUTOMATIC) HWUnit,
+                                    P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj);
 
 /** \brief function to disable all the interrupts
  *
@@ -337,8 +337,8 @@ Spi_HwUnitObjType *Spi_GetHwUnitObj(VAR(Spi_HWUnitType,AUTOMATIC)HWUnit,
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_DisableInterrupt(VAR(uint32,AUTOMATIC)baseAddr, VAR(boolean,AUTOMATIC)isFifoEnabled);
-
+FUNC(void, SPI_CODE)
+Spi_DisableInterrupt(VAR(uint32, AUTOMATIC) baseAddr, VAR(boolean, AUTOMATIC) isFifoEnabled);
 
 /** \brief function to enable interrupts
  *
@@ -352,7 +352,8 @@ FUNC(void, SPI_CODE) Spi_DisableInterrupt(VAR(uint32,AUTOMATIC)baseAddr, VAR(boo
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_EnableInterrupt(VAR(uint32,AUTOMATIC)baseAddr, VAR(boolean,AUTOMATIC)isFifoEnabled);
+FUNC(void, SPI_CODE)
+Spi_EnableInterrupt(VAR(uint32, AUTOMATIC) baseAddr, VAR(boolean, AUTOMATIC) isFifoEnabled);
 
 /** \brief private function to start Asynchronous transmission
  *
@@ -366,8 +367,9 @@ FUNC(void, SPI_CODE) Spi_EnableInterrupt(VAR(uint32,AUTOMATIC)baseAddr, VAR(bool
  * \retval E_NOT_OK: sequence transfer start in async mode failed
  *
  ********************************************************************************************************************/
-FUNC(Std_ReturnType, SPI_CODE) Spi_StartSeqAsync(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
-                                                 P2VAR(Spi_SeqObjType,AUTOMATIC,SPI_CODE)seqObj);
+FUNC(Std_ReturnType, SPI_CODE)
+Spi_StartSeqAsync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+                  P2VAR(Spi_SeqObjType, AUTOMATIC, SPI_CODE) seqObj);
 
 /** \brief private function to start synchronous transmission
  *
@@ -381,8 +383,9 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_StartSeqAsync(P2VAR(Spi_DriverObjType,AUTOMAT
  * \retval E_NOT_OK: sequence transfer start in sync mode failed
  *
  ********************************************************************************************************************/
-FUNC(Std_ReturnType, SPI_CODE) Spi_StartSeqSync(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
-                                                P2VAR(Spi_SeqObjType,AUTOMATIC,SPI_CODE)seqObj);
+FUNC(Std_ReturnType, SPI_CODE)
+Spi_StartSeqSync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+                 P2VAR(Spi_SeqObjType, AUTOMATIC, SPI_CODE) seqObj);
 
 /** \brief process receive interrupt(RXINT/INT)
  *
@@ -395,8 +398,7 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_StartSeqSync(P2VAR(Spi_DriverObjType,AUTOMATI
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_ProcessRxEvent(VAR(Spi_HWUnitType,AUTOMATIC)hwUnitId);
-
+FUNC(void, SPI_CODE) Spi_ProcessRxEvent(VAR(Spi_HWUnitType, AUTOMATIC) hwUnitId);
 
 /** \brief process channel completion
  *
@@ -410,10 +412,11 @@ FUNC(void, SPI_CODE) Spi_ProcessRxEvent(VAR(Spi_HWUnitType,AUTOMATIC)hwUnitId);
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_ProcessChCompletion(P2VAR(Spi_HwUnitObjType,AUTOMATIC, SPI_CODE)hwUnitObj, \
-                             VAR(Spi_JobResultType,AUTOMATIC)jobResult,
-                              P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE) drvObj);
-#if(STD_ON == SPI_CS_VIA_GPIO)
+FUNC(void, SPI_CODE)
+Spi_ProcessChCompletion(P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj,
+                        VAR(Spi_JobResultType, AUTOMATIC) jobResult,
+                        P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj);
+#if (STD_ON == SPI_CS_VIA_GPIO)
 /** \brief function to Enable or Disable chip-select when it is a GPIO
  *
  *  function to Enable or disable chip-select what it is a GPIO
@@ -426,7 +429,8 @@ FUNC(void, SPI_CODE) Spi_ProcessChCompletion(P2VAR(Spi_HwUnitObjType,AUTOMATIC, 
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_ConfigGpioChipSelect(P2CONST(Spi_JobObjType,AUTOMATIC, SPI_CODE)jobObj,VAR(boolean,AUTOMATIC)enable);
+FUNC(void, SPI_CODE)
+Spi_ConfigGpioChipSelect(P2CONST(Spi_JobObjType, AUTOMATIC, SPI_CODE) jobObj, VAR(boolean, AUTOMATIC) enable);
 #endif
 
 /** \brief function to get HW unit base address
@@ -440,7 +444,7 @@ FUNC(void, SPI_CODE) Spi_ConfigGpioChipSelect(P2CONST(Spi_JobObjType,AUTOMATIC, 
  * \retval base address of the hardware unit
  *
  ********************************************************************************************************************/
-FUNC(uint32, SPI_CODE) Spi_GetHwUnitBaseAddr(VAR(Spi_HWUnitType,AUTOMATIC)HwUnitId);
+FUNC(uint32, SPI_CODE) Spi_GetHwUnitBaseAddr(VAR(Spi_HWUnitType, AUTOMATIC) HwUnitId);
 
 /** \brief function to cancel ongoing sequence
  *
@@ -453,8 +457,9 @@ FUNC(uint32, SPI_CODE) Spi_GetHwUnitBaseAddr(VAR(Spi_HWUnitType,AUTOMATIC)HwUnit
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_CancelSequence(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
-                                        P2VAR(Spi_SeqObjType,AUTOMATIC,SPI_CODE)seqObj);
+FUNC(void, SPI_CODE)
+Spi_CancelSequence(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+                   P2VAR(Spi_SeqObjType, AUTOMATIC, SPI_CODE) seqObj);
 #if ((SPI_CHANNEL_BUFFERS == SPI_IB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
 /** \brief function to write into internal buffer in 8 bits
  *
@@ -468,8 +473,9 @@ FUNC(void, SPI_CODE) Spi_CancelSequence(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CO
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivIntlBufWrite8(P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)ChObj, \
-                           P2CONST(Spi_DataBufferType,AUTOMATIC,SPI_CODE)DataBufferPtr);
+FUNC(void, SPI_CODE)
+Spi_PrivIntlBufWrite8(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) ChObj,
+                      P2CONST(Spi_DataBufferType, AUTOMATIC, SPI_CODE) DataBufferPtr);
 
 /** \brief function to write  into internal buffer in 16 bits
  *
@@ -483,10 +489,11 @@ FUNC(void, SPI_CODE) Spi_PrivIntlBufWrite8(P2VAR(Spi_ChannelObjType,AUTOMATIC,SP
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivIntlBufWrite16(P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)ChObj, \
-                           P2CONST(Spi_DataBufferType,AUTOMATIC,SPI_CODE)DataBufferPtr);
+FUNC(void, SPI_CODE)
+Spi_PrivIntlBufWrite16(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) ChObj,
+                       P2CONST(Spi_DataBufferType, AUTOMATIC, SPI_CODE) DataBufferPtr);
 
-/** \brief function to read  from internal buffer 
+/** \brief function to read  from internal buffer
  *
  *  function to read  from internal buffer
  *
@@ -498,8 +505,9 @@ FUNC(void, SPI_CODE) Spi_PrivIntlBufWrite16(P2VAR(Spi_ChannelObjType,AUTOMATIC,S
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivReadIB(P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)ChObj, \
-                    P2CONST(Spi_DataBufferType,AUTOMATIC,SPI_CODE)DataBufferPtr);
+FUNC(void, SPI_CODE)
+Spi_PrivReadIB(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) ChObj,
+               P2CONST(Spi_DataBufferType, AUTOMATIC, SPI_CODE) DataBufferPtr);
 #endif
 /** \brief function to get HW Status
  *
@@ -514,8 +522,8 @@ FUNC(void, SPI_CODE) Spi_PrivReadIB(P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)
  * \retval  SPI_BUSY : The SPI Handler/Driver is performing a SPI Job (transmit)
  *
  ********************************************************************************************************************/
-FUNC(Spi_StatusType, SPI_CODE) Spi_PrivGetHWStatus(P2CONST(Spi_HwUnitObjType,AUTOMATIC,SPI_CODE)hwUnitObj);
-
+FUNC(Spi_StatusType, SPI_CODE)
+Spi_PrivGetHWStatus(P2CONST(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj);
 
 /** \brief This function process transfer interrupt(TXINT)
  *
@@ -529,8 +537,9 @@ FUNC(Spi_StatusType, SPI_CODE) Spi_PrivGetHWStatus(P2CONST(Spi_HwUnitObjType,AUT
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivProcessTxEvent(VAR(uint32,AUTOMATIC)baseAddr,P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)chObj, 
-                    VAR(uint16,AUTOMATIC)txIntrStatus);
+FUNC(void, SPI_CODE)
+Spi_PrivProcessTxEvent(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj,
+                       VAR(uint16, AUTOMATIC) txIntrStatus);
 
 /** \brief function to copy configuration into Job obj
  *
@@ -544,8 +553,9 @@ FUNC(void, SPI_CODE) Spi_PrivProcessTxEvent(VAR(uint32,AUTOMATIC)baseAddr,P2VAR(
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivJobCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
-                           P2CONST(Spi_ConfigType,AUTOMATIC,SPI_CODE)cfgPtr);
+FUNC(void, SPI_CODE)
+Spi_PrivJobCopyConfig(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+                      P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CODE) cfgPtr);
 
 /** \brief function to copy configuration into Sequence obj
  *
@@ -559,8 +569,9 @@ FUNC(void, SPI_CODE) Spi_PrivJobCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivSeqCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
-                           P2CONST(Spi_ConfigType,AUTOMATIC,SPI_CODE)cfgPtr);
+FUNC(void, SPI_CODE)
+Spi_PrivSeqCopyConfig(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+                      P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CODE) cfgPtr);
 
 /** \brief function to copy configuration into Channel obj
  *
@@ -574,8 +585,9 @@ FUNC(void, SPI_CODE) Spi_PrivSeqCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivChannelCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
-                           P2CONST(Spi_ConfigType,AUTOMATIC,SPI_CODE)cfgPtr);
+FUNC(void, SPI_CODE)
+Spi_PrivChannelCopyConfig(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+                          P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CODE) cfgPtr);
 
 /** \brief function to copy configuration into HWUnit obj
  *
@@ -589,8 +601,9 @@ FUNC(void, SPI_CODE) Spi_PrivChannelCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivHWUnitCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
-                           P2CONST(Spi_ConfigType,AUTOMATIC,SPI_CODE)cfgPtr);
+FUNC(void, SPI_CODE)
+Spi_PrivHWUnitCopyConfig(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+                         P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CODE) cfgPtr);
 
 /** \brief function to copy configuration into External Device obj
  *
@@ -604,8 +617,9 @@ FUNC(void, SPI_CODE) Spi_PrivHWUnitCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,
  * \retval None
  *
  ********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivExtDevCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE)drvObj, \
-                           P2CONST(Spi_ConfigType,AUTOMATIC,SPI_CODE)cfgPtr);
+FUNC(void, SPI_CODE)
+Spi_PrivExtDevCopyConfig(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+                         P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CODE) cfgPtr);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
@@ -616,7 +630,7 @@ FUNC(void, SPI_CODE) Spi_PrivExtDevCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
  * \param[in] wordSize : No.of bits to be shifted while writing into register
- * \param[in] transferLength : no.of bytes to transfer 
+ * \param[in] transferLength : no.of bytes to transfer
  * \param[in] curTxWords : index of transmitted words in bufPtr
  * \param[out] bufPtr: pointer to Data Buffer
  * \pre None
@@ -625,10 +639,9 @@ FUNC(void, SPI_CODE) Spi_PrivExtDevCopyConfig(P2VAR(Spi_DriverObjType,AUTOMATIC,
  * \retval pointer to bufPtr
  *
  ********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, SPI_CODE) Spi_FifoWrite8(VAR(uint32,AUTOMATIC) baseAddr,\
-                                       P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)chObj,\
-                                       VAR(uint32,AUTOMATIC) transferLength,\
-                                       VAR(uint16,AUTOMATIC) curTxWords);
+LOCAL_INLINE FUNC(void, SPI_CODE)
+    Spi_FifoWrite8(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj,
+                   VAR(uint32, AUTOMATIC) transferLength, VAR(uint16, AUTOMATIC) curTxWords);
 
 /** \brief function to write  into Register in 16 bits
  *
@@ -636,7 +649,7 @@ LOCAL_INLINE FUNC(void, SPI_CODE) Spi_FifoWrite8(VAR(uint32,AUTOMATIC) baseAddr,
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
  * \param[in] wordSize : No.of bits to be shifted while writing into register
- * \param[in] transferLength : no.of bytes to transfer 
+ * \param[in] transferLength : no.of bytes to transfer
  * \param[in] curTxWords : index of transmitted words in bufPtr
  * \param[out] bufPtr: pointer to Data Buffer
  * \post None
@@ -644,115 +657,110 @@ LOCAL_INLINE FUNC(void, SPI_CODE) Spi_FifoWrite8(VAR(uint32,AUTOMATIC) baseAddr,
  * \retval pointer to bufPtr
  *
  ********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, SPI_CODE) Spi_FifoWrite16(VAR(uint32,AUTOMATIC) baseAddr,\
-                                       P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)chObj,\
-                                       VAR(uint32,AUTOMATIC) transferLength,\
-                                       VAR(uint16,AUTOMATIC) curTxWords);
+LOCAL_INLINE FUNC(void, SPI_CODE)
+    Spi_FifoWrite16(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj,
+                    VAR(uint32, AUTOMATIC) transferLength, VAR(uint16, AUTOMATIC) curTxWords);
 
 /** \brief function to read from Register to bufPtr in 8 bits
  *
  *  function to  read from Register
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
- * \param[in] numWordsToRead : no.of bytes to transfer 
- * \param[in]  dataWidthBitMask : Clear unused bits 
- * \param[in] curRxWords : index of received words in bufPtr 
- * \param[out] bufPtr: pointer to Data Buffer       
+ * \param[in] numWordsToRead : no.of bytes to transfer
+ * \param[in]  dataWidthBitMask : Clear unused bits
+ * \param[in] curRxWords : index of received words in bufPtr
+ * \param[out] bufPtr: pointer to Data Buffer
  * \pre None
  * \post None
  * \return pointer to bufPtr
  * \retval pointer to bufPtr
  *
  ********************************************************************************************************************/
-LOCAL_INLINE uint8 *Spi_FifoRead8(VAR(uint32,AUTOMATIC)baseAddr,\
-                                P2VAR(uint8,AUTOMATIC,SPI_CODE)bufPtr,\
-                                VAR(uint32,AUTOMATIC)numWordsToRead,\
-                                VAR(uint16,AUTOMATIC)dataWidthBitMask,\
-                                VAR(uint16,AUTOMATIC)curRxWords);
+LOCAL_INLINE uint8 *Spi_FifoRead8(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(uint8, AUTOMATIC, SPI_CODE) bufPtr,
+                                  VAR(uint32, AUTOMATIC) numWordsToRead, VAR(uint16, AUTOMATIC) dataWidthBitMask,
+                                  VAR(uint16, AUTOMATIC) curRxWords);
 
 /** \brief function to read from Register to bufPtr in 16 bits
  *
  *  function to  read from Register
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
- * \param[in] numWordsToRead : no.of bytes to transfer 
- * \param[in] dataWidthBitMask : Clear unused bits 
- * \param[in] curRxWords : index of received words in bufPtr 
- * \param[out] bufPtr: pointer to Data Buffer       
+ * \param[in] numWordsToRead : no.of bytes to transfer
+ * \param[in] dataWidthBitMask : Clear unused bits
+ * \param[in] curRxWords : index of received words in bufPtr
+ * \param[out] bufPtr: pointer to Data Buffer
  * \pre None
  * \post None
  * \return pointer to bufPtr
  * \retval pointer to bufPtr
  *
  ********************************************************************************************************************/
-LOCAL_INLINE uint16 *Spi_FifoRead16(VAR(uint32,AUTOMATIC)baseAddr,\
-                                P2VAR(uint16,AUTOMATIC,SPI_CODE)bufPtr,\
-                                VAR(uint32,AUTOMATIC)numWordsToRead,\
-                                VAR(uint16,AUTOMATIC)dataWidthBitMask,\
-                                VAR(uint16,AUTOMATIC)curRxWords);
+LOCAL_INLINE uint16 *Spi_FifoRead16(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(uint16, AUTOMATIC, SPI_CODE) bufPtr,
+                                    VAR(uint32, AUTOMATIC) numWordsToRead, VAR(uint16, AUTOMATIC) dataWidthBitMask,
+                                    VAR(uint16, AUTOMATIC) curRxWords);
 
-/** \brief function to write Default data into Register 
+/** \brief function to write Default data into Register
  *
  *  function to write default data into  Register
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
  * \param[in] wordSize : No.of bits to be shifted while writing into register
- * \param[in] transferLength : no.of bytes to transfer 
- * \param[in] defaultTxData : Default data transmitted into register          
+ * \param[in] transferLength : no.of bytes to transfer
+ * \param[in] defaultTxData : Default data transmitted into register
  * \pre None
  * \post None
  * \return pointer to bufPtr
  * \retval pointer to bufPtr
  *
  ********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, SPI_CODE) Spi_FifoWriteDefault( VAR(uint32,AUTOMATIC)baseAddr,\
-                                        VAR(uint32,AUTOMATIC)transferLength,
-                                        P2VAR(Spi_ChannelObjType,AUTOMATIC,SPI_CODE)chObj);
+LOCAL_INLINE FUNC(void, SPI_CODE)
+    Spi_FifoWriteDefault(VAR(uint32, AUTOMATIC) baseAddr, VAR(uint32, AUTOMATIC) transferLength,
+                         P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj);
 
 /** \brief function to read from Register and discard
  *
  *  function to  read from Register
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
- * \param[in] transferLength : no.of bytes to read     
+ * \param[in] transferLength : no.of bytes to read
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  ********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, SPI_CODE) Spi_FifoReadDiscard(VAR(uint32,AUTOMATIC)baseAddr,\
-                                  VAR(uint32,AUTOMATIC)transferLength);
+LOCAL_INLINE FUNC(void, SPI_CODE)
+    Spi_FifoReadDiscard(VAR(uint32, AUTOMATIC) baseAddr, VAR(uint32, AUTOMATIC) transferLength);
 
 /** \brief function to read from Register to Channel Object
  *
  *  function to  read from Register
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
- * \param[out] chObj: pointer to Channel Object      
+ * \param[out] chObj: pointer to Channel Object
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  ********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, SPI_CODE) Spi_ReadRxBufferNonFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE)chObj,\
-                               VAR(uint32,AUTOMATIC)baseAddr);
+LOCAL_INLINE FUNC(void, SPI_CODE)
+    Spi_ReadRxBufferNonFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj, VAR(uint32, AUTOMATIC) baseAddr);
 
 /** \brief function to write into Register from Channel Object
  *
  *  function to  write into Register
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
- * \param[out] chObj: pointer to Channel Object      
+ * \param[out] chObj: pointer to Channel Object
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  ********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, SPI_CODE) Spi_WriteTxBufferNonFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE)chObj,\
-                               VAR(uint32,AUTOMATIC)baseAddr);
+LOCAL_INLINE FUNC(void, SPI_CODE)
+    Spi_WriteTxBufferNonFifo(P2VAR(Spi_ChannelObjType, AUTOMATIC, SPI_CODE) chObj, VAR(uint32, AUTOMATIC) baseAddr);
 /** \brief function to clear PIPE interrupt
  *
  *  function to  write into Register
@@ -764,23 +772,25 @@ LOCAL_INLINE FUNC(void, SPI_CODE) Spi_WriteTxBufferNonFifo(P2VAR(Spi_ChannelObjT
  * \retval None
  *
  ********************************************************************************************************************/
-LOCAL_INLINE FUNC(void, SPI_CODE) Spi_ClearPIPEINTFlag(VAR(uint32,AUTOMATIC) intNum);
+LOCAL_INLINE FUNC(void, SPI_CODE) Spi_ClearPIPEINTFlag(VAR(uint32, AUTOMATIC) intNum);
 
 /** \brief  Service for SPI initialization.
  *
- * This service initializes all the configured Spi channels, jobs, sequences and SPI instances This will set the
- * state of SPI driver to Initialized.
+ * This service initializes all the configured Spi channels, jobs, sequences and SPI instances This
+ *will set the state of SPI driver to Initialized.
  *
  * \param[in] CfgPtr - Pointer to configuration set
  * \param[in] drvObj - Pointer to Driver Object
- * \pre CfgPtr shall be null in Pre-Compile variant, Link-Time variant and shall not be NULL in Post-Build variant
+ * \pre CfgPtr shall be null in Pre-Compile variant, Link-Time variant and shall not be NULL in
+ *Post-Build variant
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, SPI_CODE) Spi_PrivInit(P2VAR(Spi_DriverObjType,AUTOMATIC,SPI_CODE) drvObj, \
-                                  P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) CfgPtr);
+FUNC(void, SPI_CODE)
+Spi_PrivInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
+             P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) CfgPtr);
 /*********************************************************************************************************************
  *  Mark the end of the C bindings section for C++ compilers.
  *********************************************************************************************************************/

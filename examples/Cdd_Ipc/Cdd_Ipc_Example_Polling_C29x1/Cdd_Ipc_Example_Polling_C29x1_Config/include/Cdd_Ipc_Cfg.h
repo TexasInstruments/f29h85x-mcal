@@ -55,7 +55,7 @@ extern "C" {
 #define CDD_IPC_CFG_MINOR_VERSION                (0U)
 
 /** \brief CDD Ipc configuration Patch Version */
-#define CDD_IPC_CFG_PATCH_VERSION                (0U)
+#define CDD_IPC_CFG_PATCH_VERSION                (1U)
 
 /** \brief Switches the pre compile variant ON or OFF */
 #define CDD_IPC_PRE_COMPILE_VARIANT              STD_ON
@@ -96,6 +96,7 @@ extern "C" {
 /** \brief Cdd Ipc Sync timeout, units is clock cycles. */
 #define CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES    ((uint64)(2000000000U))
 
+/* Design: MCAL-30536 */
 /*****************************************************************************
  * \brief Symbolic names for the remote cores
  *****************************************************************************/ 
@@ -103,11 +104,13 @@ extern "C" {
 #define CddIpcConf_CddIpcRemoteCoreConfig_CddIpcRemoteCoreConfig_0    CDD_IPC_CPU3  /*~ASR~*/
 
 
+/* Design: MCAL-30603 */
 /*****************************************************************************
  * \brief Symbolic names for the Tx channels
  ***************************************************************************/
 #define Cdd_IpcConf_CddIpcTxChannelConfig_CddIpcTxChannelConfig_0 1U	         /*~ASR~*/
 
+/* Design: MCAL-30602 */
 /*****************************************************************************
  * \brief Symbolic names for the Rx channels
  ***************************************************************************/
@@ -124,6 +127,7 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/* Design: MCAL-30527 */
 /** \brief CPU cores type */
 typedef enum
 {
@@ -132,6 +136,7 @@ typedef enum
     CDD_IPC_CPU3 = 2U,              /*!< \brief  CPU3*/
 }Cdd_Ipc_CoreType;
 
+/* Design: MCAL-30526 */
 /** \brief IPC Tx processing */
 typedef enum
 {
@@ -139,6 +144,7 @@ typedef enum
     CDD_IPC_INTERRUPT  = 2U            /*!< \brief  Interrupt mode*/
 }Cdd_Ipc_TxProcessingType;
 
+/* Design: MCAL-30525 */
 /** \brief IPC Instance type */
 typedef enum
 {

@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.00
+                01.02.01
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -205,7 +205,7 @@
 <figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../_images/CDD_IPC_AUTOSAR_MCAL.png"><img alt="CDD IPC MCAL AUTOSAR" src="../_images/CDD_IPC_AUTOSAR_MCAL.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4.47 </span><span class="caption-text">Cdd Ipc MCAL AUTOSAR</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.49 </span><span class="caption-text">Cdd Ipc MCAL AUTOSAR</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>This document details AUTOSAR Cdd Ipc module implementation</p>
@@ -234,7 +234,7 @@
 <figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../_images/Cdd_Ipc_Module_Architecture.png"><img alt="Cdd Ipc module architecture" src="../_images/Cdd_Ipc_Module_Architecture.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4.48 </span><span class="caption-text">Cdd Ipc module architecture</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.50 </span><span class="caption-text">Cdd Ipc module architecture</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>As depicted in architecture figure above, Cdd Ipc module has multiple IPC instances in each direction(Tx and Rx) between any two CPU cores. Each IPC instance includes 3 command registers in both Tx and Rx directions, with each register having 4-byte width.These command registers are used to transmit data between CPU cores. This architecture allows for the transmission of up to 12 bytes of data between any two CPU core pairs using a single IPC instance.</p>
@@ -351,7 +351,7 @@ In order to achieve this, correct handle Ids should be configured in both Cdd Ip
 <figure class="align-center" id="id6">
 <img alt="Cdd Ipc Header File Structure" src="../_images/Cdd_Ipc_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.49 </span><span class="caption-text">Cdd Ipc Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.51 </span><span class="caption-text">Cdd Ipc Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -498,7 +498,7 @@ Interrupt category should be selected in the Cdd_Ipc plugin.</p>
 <figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../_images/Cdd_Ipc_Hw_Sw_Mapping.png"><img alt="Cdd Ipc HW/SW Mapping" src="../_images/Cdd_Ipc_Hw_Sw_Mapping.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4.50 </span><span class="caption-text">Cdd Ipc HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.52 </span><span class="caption-text">Cdd Ipc HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -653,6 +653,157 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </tbody>
 </table>
 </section>
+<section id="cddipctxchannelconfig">
+<h5><span class="section-number">4.12.9.1.2.2. </span>CddIpcTxChannelConfig<a class="headerlink" href="#cddipctxchannelconfig" title="Link to this heading"></a></h5>
+<p>This container contains the configuration parameters of the CddIpc channels.</p>
+</section>
+<section id="cddipctxchannelid">
+<h5><span class="section-number">4.12.9.1.2.3. </span>CddIpcTxChannelId<a class="headerlink" href="#cddipctxchannelid" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddIpcTxChannelId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Channel ID specific to the selected instance, channels configured in the selected instance should have unique values. An instance can have 255 channels ranging from 1-255.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
+<td><p>255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddipctxprocessing">
+<h5><span class="section-number">4.12.9.1.2.4. </span>CddIpcTxProcessing<a class="headerlink" href="#cddipctxprocessing" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddIpcTxProcessing</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Selects the Tx processing type.                                                 If CddIpcTxProcessing is selected as CDD_IPC_INTERRUPT, the transmit request triggers an interrupt on the other core.                                                If CddIpcTxProcessing is selected as CDD_IPC_POLLING, the transmit request doesn’t trigger any interrupts on the other core.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_IPC_INTERRUPT</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddipctxglobalchannelid">
+<h5><span class="section-number">4.12.9.1.2.5. </span>CddIpcTxGlobalChannelId<a class="headerlink" href="#cddipctxglobalchannelid" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddIpcTxGlobalChannelId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is disabled. This channel identifier will be used in transmit function to address the respective channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Max-value</strong></p></td>
+<td><p>9223372036854775807</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Min-value</strong></p></td>
+<td><p>-9223372036854775808</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddipctxpduid">
+<h5><span class="section-number">4.12.9.1.2.6. </span>CddIpcTxPduID<a class="headerlink" href="#cddipctxpduid" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddIpcTxPduID</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to PduId. This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in transmit function to address the respective channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 <section id="cddipcrxinstanceconfig">
 <h4><span class="section-number">4.12.9.1.3. </span>CddIpcRxInstanceConfig<a class="headerlink" href="#cddipcrxinstanceconfig" title="Link to this heading"></a></h4>
@@ -722,6 +873,160 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </tr>
 <tr class="row-odd"><td><p><strong>Range</strong></p></td>
 <td><p>ISR_CAT1_RTINT<br>ISR_CAT1_INT<br>ISR_CAT2_INT</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddipcrxchannelconfig">
+<h5><span class="section-number">4.12.9.1.3.3. </span>CddIpcRxChannelConfig<a class="headerlink" href="#cddipcrxchannelconfig" title="Link to this heading"></a></h5>
+<p>This container contains the configuration parameters of the CddIpc channels.</p>
+</section>
+<section id="cddipcrxchannelid">
+<h5><span class="section-number">4.12.9.1.3.4. </span>CddIpcRxChannelId<a class="headerlink" href="#cddipcrxchannelid" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddIpcRxChannelId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Channel ID specific to the selected instance, channels configured in the selected instance should have unique values. An instance can have 255 channels ranging from 1-255.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
+<td><p>255</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddipcusercallbackfunction">
+<h5><span class="section-number">4.12.9.1.3.5. </span>CddIpcUserCallbackFunction<a class="headerlink" href="#cddipcusercallbackfunction" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddIpcUserCallbackFunction</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Call back function for the data during reception</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>NULL_PTR</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddipcrxglobalchannelid">
+<h5><span class="section-number">4.12.9.1.3.6. </span>CddIpcRxGlobalChannelId<a class="headerlink" href="#cddipcrxglobalchannelid" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddIpcRxGlobalChannelId</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is disabled. This channel object identifier will be used in configured receive callback function to  address the received message from respective channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Max-value</strong></p></td>
+<td><p>9223372036854775807</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Min-value</strong></p></td>
+<td><p>-9223372036854775808</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddipcrxpduid">
+<h5><span class="section-number">4.12.9.1.3.7. </span>CddIpcRxPduID<a class="headerlink" href="#cddipcrxpduid" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddIpcRxPduID</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Reference to Pduid. This parameter will be used when CddIpcIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in receive function callback to PduR to address the received Pdu from respective channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 </tbody>
 </table>
@@ -1273,23 +1578,23 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </section>
 <section id="sample-logs-of-cdd-ipc-example-interrupt-c29x1">
 <h3><span class="section-number">4.12.10.4. </span>Sample Logs of Cdd_Ipc_Example_Interrupt_C29x1<a class="headerlink" href="#sample-logs-of-cdd-ipc-example-interrupt-c29x1" title="Link to this heading"></a></h3>
-<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>Sample Application - STARTS !!!
-CDD IPC MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 255
-SW Major Version    : 1
-SW Minor Version    : 0
-SW Patch Version    : 0
-Synchronizing with remote core CPU3
-Synchronized with remote core CPU3
-Transmitting message to remote core CPU3
-Data transmitted to remote core CPU3:
-hello
-Data received from remote core CPU3:
-hello CPU1
-=================================================================================
-PASS: IPC example between CPU1 and CPU3 executed successfully
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="n">CDD</span><span class="w"> </span><span class="n">IPC</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">---------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Synchronizing</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
+<span class="n">Synchronized</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
+<span class="n">Transmitting</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">transmitted</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span><span class="o">:</span>
+<span class="n">hello</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">received</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span><span class="o">:</span>
+<span class="n">hello</span><span class="w"> </span><span class="n">CPU1</span>
+<span class="o">=================================================================================</span>
+<span class="nl">PASS</span><span class="p">:</span><span class="w"> </span><span class="n">IPC</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="n">CPU1</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">CPU3</span><span class="w"> </span><span class="n">executed</span><span class="w"> </span><span class="n">successfully</span>
 </pre></div>
 </div>
 </section>
@@ -1336,23 +1641,23 @@ PASS: IPC example between CPU1 and CPU3 executed successfully
 </section>
 <section id="sample-logs-of-cdd-ipc-example-polling-c29x1">
 <h3><span class="section-number">4.12.10.8. </span>Sample Logs of Cdd_Ipc_Example_Polling_C29x1<a class="headerlink" href="#sample-logs-of-cdd-ipc-example-polling-c29x1" title="Link to this heading"></a></h3>
-<div class="highlight-{EXAMPLE notranslate"><div class="highlight"><pre><span></span>Sample Application - STARTS !!!
-CDD IPC MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 255
-SW Major Version    : 1
-SW Minor Version    : 0
-SW Patch Version    : 0
-Synchronizing with remote core CPU3
-Synchronized with remote core CPU3
-Transmitting message to remote core CPU3
-Data transmitted to remote core CPU3:
-hello
-Data received from remote core CPU3:
-hello CPU1
-=================================================================================
-PASS: IPC example between CPU1 and CPU3 executed successfully 
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="n">CDD</span><span class="w"> </span><span class="n">IPC</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">---------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Synchronizing</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
+<span class="n">Synchronized</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
+<span class="n">Transmitting</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">transmitted</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span><span class="o">:</span>
+<span class="n">hello</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">received</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span><span class="o">:</span>
+<span class="n">hello</span><span class="w"> </span><span class="n">CPU1</span>
+<span class="o">=================================================================================</span>
+<span class="nl">PASS</span><span class="p">:</span><span class="w"> </span><span class="n">IPC</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="n">CPU1</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">CPU3</span><span class="w"> </span><span class="n">executed</span><span class="w"> </span><span class="n">successfully</span><span class="w"> </span>
 </pre></div>
 </div>
 </section>
@@ -1428,7 +1733,7 @@ PASS: IPC example between CPU1 and CPU3 executed successfully
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Apr 13, 2025.
+          <span class="lastupdated" >Last updated on Jun 09, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1445,7 +1750,7 @@ PASS: IPC example between CPU1 and CPU3 executed successfully
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.00
+       Current Version: 01.02.01
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

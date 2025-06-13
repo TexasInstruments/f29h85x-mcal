@@ -23,8 +23,7 @@
 #define CDD_SENT_MTP_EXTERNAL_SOURCE_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*********************************************************************************************************************
@@ -41,16 +40,16 @@ extern "C"
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-#define GPT_CHANNEL_0           0            /* Gpt Timer Channel 0 */
+#define GPT_CHANNEL_0 0 /* Gpt Timer Channel 0 */
 
-#define DEV_TIMER_CLK_FREQ_HZ      (20000000U) /* Timer clock frequency in Hz */
-#define GPT_TIME_US_1 (1000000U)                /* 1 sec */
-#define GPT_COUNT_VALUE_100MS (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_1
-#define GPT_COUNT_VALUE_1S (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_1
+#define DEV_TIMER_CLK_FREQ_HZ     (20000000U) /* Timer clock frequency in Hz */
+#define GPT_TIME_US_1             (1000000U)  /* 1 sec */
+#define GPT_COUNT_VALUE_100MS     (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_1
+#define GPT_COUNT_VALUE_1S        (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_1
 #define GPT_TIME_DELAY_PER_SECOND (5000000U) /* 1 second Mcal delay*/
 
 void Gpt_Notify_Func_0(void);
-int Time_Delay(float64 seconds);
+int  Time_Delay(float64 seconds);
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -78,5 +77,5 @@ int Time_Delay(float64 seconds);
 
 #endif /* CDD_SENT_MTP_EXTERNAL_SOURCE_H */
 /*********************************************************************************************************************
-*  End of File: Cdd_Sent_Mtp_ExternalTrigger_Source.h
-*********************************************************************************************************************/
+ *  End of File: Cdd_Sent_Mtp_ExternalTrigger_Source.h
+ *********************************************************************************************************************/

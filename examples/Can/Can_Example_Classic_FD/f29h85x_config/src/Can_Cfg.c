@@ -37,11 +37,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (1U)))
+#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (2U)))
     #error "Version numbers of Can_cfg.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (1U)))
+#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (2U)))
     #error "Version numbers of Can_cfg.c and Can_Cfg.h are inconsistent!"
 #endif
 
@@ -77,11 +77,11 @@ CONST(Can_ControllerType, CAN_CONFIG_DATA) CanConfigSet_CanController_0 =
     .CanControllerActivation = (boolean )TRUE,
     .CanControllerInstance = (Can_ControllerInstance )CAN_CONTROLLER_INSTANCE_MCAN1,
     .CanControllerBaseAddress = (uint32 )0x60020000U,
-    .CanBusoffProcessing = (Can_ProcessingType )POLLING,
-    .CanRxProcessing = (Can_ProcessingType )POLLING,
-    .CanTxProcessing = (Can_ProcessingType )POLLING,
+    .CanBusoffProcessing = (Can_ProcessingType )CAN_POLLING,
+    .CanRxProcessing = (Can_ProcessingType )CAN_POLLING,
+    .CanTxProcessing = (Can_ProcessingType )CAN_POLLING,
     .CanWakeupFunctionalityAPI = (boolean )FALSE,
-    .CanWakeupProcessing = (Can_ProcessingType )POLLING,
+    .CanWakeupProcessing = (Can_ProcessingType )CAN_POLLING,
     .CanWakeupSupport = (boolean )FALSE,
     .CanWakeupSourceRef = (EcuM_WakeupSourceType )(0U),
     .CanControllerDefaultBaudrate = (const Can_BaudConfigType* )&CanConfigSet_CanController_0_CanControllerBaudrateConfig_0,

@@ -17,10 +17,11 @@
  *  File:       Cdd_Ipc_Example_Polling_C29x1.c
  *  Generator:  None
  *
- *  Description:  Cdd_Ipc example source file. This example demonstrates how to configure IPC and pass information between
- *  C29x1 running MCAL to C29x3 running SDK core using polling. C29x1 running MCAL transmits a message "hello" and 
- *  C29x3 running SDK receives the message, appends the string " CPU1" to it, and send it back the C29x1.
- *  This example will be ran on C29x1 with SDK example: Ipc_Hal_Example_Polling_C29x3 running on C29x3.
+ *  Description:  Cdd_Ipc example source file. This example demonstrates how to configure IPC and
+ *  pass information between C29x1 running MCAL to C29x3 running SDK core using polling. C29x1
+ *  running MCAL transmits a message "hello" and C29x3 running SDK receives the message, appends
+ *  the string "CPU1" to it, and send it back the C29x1. This example will be ran on C29x1 with
+ *  SDK example: Ipc_Hal_Example_Polling_C29x3 running on C29x3.
  *
  *  When using CCS for debugging this Multi-core example, after launching the
  *  debug session,
@@ -29,11 +30,11 @@
  *      - C29x1 configures and releases CPU3 out of reset
  *      - Connect to CPU3 target now. C29x3.out would have started execution
  *        as soon as it is released from reset.
- *   
+ *
  *   For FLASH configuration, this example is run in FLASH BANKMODE2,
  *   where CPU3 has access to FLASH (FRI-2). Refer to the Flash Plugin
  *   documentation to know about changing FLASH BANKMODEs and more.
- * 
+ *
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -53,26 +54,24 @@
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
 
-
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
  *********************************************************************************************************************/
-
 
 /*********************************************************************************************************************
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
- 
+
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
 #if (STD_ON == CDD_IPC_GET_VERSION_INFO_API)
 /*  Version info variable */
-Std_VersionInfoType       Cdd_Ipc_VersionInfo;
+Std_VersionInfoType Cdd_Ipc_VersionInfo;
 #endif
 PduInfoType PduInfo;
 
@@ -96,18 +95,17 @@ int main(void)
 {
     VAR(PduInfoType, AUTOMATIC) PduInfo;
     VAR(uint8, AUTOMATIC) hello[] = "hello";
-    PduInfo.SduDataPtr = hello;
-    PduInfo.SduLength = strlen((char*)hello);
-
+    PduInfo.SduDataPtr            = hello;
+    PduInfo.SduLength             = strlen((char *)hello);
 
     DeviceSupport_Init();
     EcuM_Init();
-    AppUtils_Init(200000000U); // Init App utils to enable prints
+    AppUtils_Init(200000000U);  // Init App utils to enable prints
 
     AppUtils_Printf("Sample Application - STARTS !!!\n");
 
-    /*  Get version Info */
-    #if (STD_ON == CDD_IPC_GET_VERSION_INFO_API)
+/*  Get version Info */
+#if (STD_ON == CDD_IPC_GET_VERSION_INFO_API)
     Cdd_Ipc_GetVersionInfo(&Cdd_Ipc_VersionInfo);
     AppUtils_Printf("CDD IPC MCAL Version Info\n");
     AppUtils_Printf("---------------------\n");
@@ -116,14 +114,14 @@ int main(void)
     AppUtils_Printf("SW Major Version    : %d\n", Cdd_Ipc_VersionInfo.sw_major_version);
     AppUtils_Printf("SW Minor Version    : %d\n", Cdd_Ipc_VersionInfo.sw_minor_version);
     AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Ipc_VersionInfo.sw_patch_version);
-    #endif
+#endif
 
     AppUtils_Printf("Synchronizing with remote core CPU3\n");
-    if(E_OK == Cdd_Ipc_Sync(CddIpcConf_CddIpcRemoteCoreConfig_CddIpcRemoteCoreConfig_0))
+    if (E_OK == Cdd_Ipc_Sync(CddIpcConf_CddIpcRemoteCoreConfig_CddIpcRemoteCoreConfig_0))
     {
         AppUtils_Printf("Synchronized with remote core CPU3\n");
         AppUtils_Printf("Transmitting message to remote core CPU3\n");
-        if(E_OK == Cdd_Ipc_Transmit(Cdd_IpcConf_CddIpcTxChannelConfig_CddIpcTxChannelConfig_0, &PduInfo))
+        if (E_OK == Cdd_Ipc_Transmit(Cdd_IpcConf_CddIpcTxChannelConfig_CddIpcTxChannelConfig_0, &PduInfo))
         {
             AppUtils_Printf("Data transmitted to remote core CPU3:\n");
             AppUtils_Printf("%s\n", (char *)PduInfo.SduDataPtr);
@@ -136,14 +134,13 @@ int main(void)
         AppUtils_Printf("FAIL: IPC example execution between CPU1 and CPU3 failed \n");
     }
 
-    while(TRUE)
+    while (TRUE)
     {
         Cdd_Ipc_MainFunction_Read();
         /* Wait here */
     }
 
     return 0;
-
 }
 
 void CddIpcRxChannelConfig_1_Rxindication(const PduInfoType *PduInfoPtr)
@@ -157,16 +154,13 @@ void CddIpcRxChannelConfig_1_Rxindication(const PduInfoType *PduInfoPtr)
     {
         AppUtils_Printf("=================================================================================\n");
         AppUtils_Printf("PASS: IPC example between CPU1 and CPU3 executed successfully \n");
-    } 
+    }
     else
     {
         AppUtils_Printf("=================================================================================\n");
         AppUtils_Printf("FAIL: IPC example execution between CPU1 and CPU3 failed \n");
     }
-  
-
 }
-
 
 /*********************************************************************************************************************
  *  End of File: Cdd_Ipc_Example_Polling_C29x1.c

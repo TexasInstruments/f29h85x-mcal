@@ -76,7 +76,7 @@ MCAL_LIB_INT_ISR(Lin_A_Int0ISR)
 #elif (LIN_INSTANCE_A_ISR_TYPE == LIN_ISR_CAT2)
 ISR(Lin_A_Int0ISR)
 #else
-    #error "Invalid interrupt category for Lin Instance A"
+#error "Invalid interrupt category for Lin Instance A"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -92,7 +92,7 @@ MCAL_LIB_INT_ISR(Lin_A_Int1ISR)
 #elif (LIN_INSTANCE_A_ISR_TYPE == LIN_ISR_CAT2)
 ISR(Lin_A_Int1ISR)
 #else
-    #error "Invalid interrupt category for Lin Instance A"
+#error "Invalid interrupt category for Lin Instance A"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -108,7 +108,7 @@ MCAL_LIB_INT_ISR(Lin_B_Int0ISR)
 #elif (LIN_INSTANCE_B_ISR_TYPE == LIN_ISR_CAT2)
 ISR(Lin_B_Int0ISR)
 #else
-    #error "Invalid interrupt category for Lin Instance B"
+#error "Invalid interrupt category for Lin Instance B"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
@@ -124,7 +124,7 @@ MCAL_LIB_INT_ISR(Lin_B_Int1ISR)
 #elif (LIN_INSTANCE_B_ISR_TYPE == LIN_ISR_CAT2)
 ISR(Lin_B_Int1ISR)
 #else
-    #error "Invalid interrupt category for Lin Instance B"
+#error "Invalid interrupt category for Lin Instance B"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */

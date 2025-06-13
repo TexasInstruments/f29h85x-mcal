@@ -37,11 +37,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (1U)))
+#if ((CAN_SW_MAJOR_VERSION != (1U)) || (CAN_SW_MINOR_VERSION != (2U)))
     #error "Version numbers of Can_cfg.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (1U)))
+#if ((CAN_CFG_MAJOR_VERSION != (1U)) || (CAN_CFG_MINOR_VERSION != (2U)))
     #error "Version numbers of Can_cfg.c and Can_Cfg.h are inconsistent!"
 #endif
 
@@ -157,11 +157,11 @@ CONST(Can_ControllerType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
     .CanControllerActivation = (boolean )[!IF "CanControllerActivation ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
     .CanControllerInstance = (Can_ControllerInstance )CAN_CONTROLLER_INSTANCE_[!"CanControllerInstance"!],
     .CanControllerBaseAddress = (uint32 )[!"num:inttohex(CanControllerBaseAddress)"!]U,
-    .CanBusoffProcessing = (Can_ProcessingType )[!IF "CanBusoffProcessing ='INTERRUPT'"!]INTERRUPT[!ELSE!]POLLING[!ENDIF!],
-    .CanRxProcessing = (Can_ProcessingType )[!IF "CanRxProcessing ='INTERRUPT'"!]INTERRUPT[!ELSEIF "CanRxProcessing ='MIXED'"!]MIXED[!ELSE!]POLLING[!ENDIF!],
-    .CanTxProcessing = (Can_ProcessingType )[!IF "CanTxProcessing ='INTERRUPT'"!]INTERRUPT[!ELSEIF "CanTxProcessing ='MIXED'"!]MIXED[!ELSE!]POLLING[!ENDIF!],
+    .CanBusoffProcessing = (Can_ProcessingType )[!IF "CanBusoffProcessing ='INTERRUPT'"!]CAN_INTERRUPT[!ELSE!]CAN_POLLING[!ENDIF!],
+    .CanRxProcessing = (Can_ProcessingType )[!IF "CanRxProcessing ='INTERRUPT'"!]CAN_INTERRUPT[!ELSEIF "CanRxProcessing ='MIXED'"!]CAN_MIXED[!ELSE!]CAN_POLLING[!ENDIF!],
+    .CanTxProcessing = (Can_ProcessingType )[!IF "CanTxProcessing ='INTERRUPT'"!]CAN_INTERRUPT[!ELSEIF "CanTxProcessing ='MIXED'"!]CAN_MIXED[!ELSE!]CAN_POLLING[!ENDIF!],
     .CanWakeupFunctionalityAPI = (boolean )[!IF "CanWakeupFunctionalityAPI ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
-    .CanWakeupProcessing = (Can_ProcessingType )[!IF "CanWakeupProcessing ='INTERRUPT'"!]INTERRUPT[!ELSE!]POLLING[!ENDIF!],
+    .CanWakeupProcessing = (Can_ProcessingType )[!IF "CanWakeupProcessing ='INTERRUPT'"!]CAN_INTERRUPT[!ELSE!]CAN_POLLING[!ENDIF!],
     .CanWakeupSupport = (boolean )[!IF "CanWakeupSupport ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
     .CanWakeupSourceRef = (EcuM_WakeupSourceType )([!IF "not(node:empty(CanWakeupSourceRef))"!][!"num:inttohex(bit:bitset(0, node:value(node:ref(CanWakeupSourceRef)/EcuMWakeupSourceId)), 8)"!][!ELSE!]0[!ENDIF!]U),
     .CanControllerDefaultBaudrate = (const Can_BaudConfigType* )&[!"../../@name"!]_[!"@name"!]_[!"node:name(node:ref(node:current()/CanControllerDefaultBaudrate))"!],
@@ -251,13 +251,13 @@ CONST(Can_ControllerType*, CAN_CONFIG_DATA) [!"@name"!]_CanController_List[]=
 CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 {
 [!IF "CanHandleType ='FULL'"!][!//
-    .CanHandleType = (uint8 )FULL,
+    .CanHandleType = (uint8 )CAN_FULL,
 [!ELSEIF "CanHwObjectCount = '1'"!][!//
 [!ERROR "Basic Mode for MCAN is supported only if CanHwObjectCount > 1"!][!//
 [!ELSE!][!//
-    .CanHandleType = (uint8 )BASIC,
+    .CanHandleType = (uint8 )CAN_BASIC,
 [!ENDIF!][!//
-    .CanIdType = (Can_IdType )[!IF "CanIdType = 'EXTENDED'"!]EXTENDED_ID[!ELSEIF "CanIdType = 'STANDARD'"!]STANDARD_ID[!ELSE!]MIXED_ID[!ENDIF!],
+    .CanIdType = (Can_IdType )[!IF "CanIdType = 'EXTENDED'"!]CAN_EXTENDED_ID[!ELSEIF "CanIdType = 'STANDARD'"!]CAN_STANDARD_ID[!ELSE!]CAN_MIXED_ID[!ENDIF!],
 [!IF "CanIdType = 'MIXED' and CanObjectType = 'RECEIVE'"!][!ERROR "CAN: Mixed mode is not supported for Receive"!][!ENDIF!][!//
     .CanObjectId = (uint16 )[!"CanObjectId"!]U,
 [!IF "(num:i($CanObjectIdIndx)) != CanObjectId"!][!ERROR "Can Object Id should start with 0, increment by 1 and continue without any gaps"!][!ENDIF!][!//
@@ -376,7 +376,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ENDIF!][!//
 [!ENDIF!][!//
     .CanHwObjectCount = (uint16 )[!"CanHwObjectCount"!]U,
-    .CanObjectType = (Can_MailboxDirectionType )[!IF "CanObjectType = 'TRANSMIT'"!]TRANSMIT[!ELSE!]RECEIVE[!ENDIF!],
+    .CanObjectType = (Can_MailboxDirectionType )[!IF "CanObjectType = 'TRANSMIT'"!]CAN_TRANSMIT[!ELSE!]CAN_RECEIVE[!ENDIF!],
     .CanControllerRef = (const Can_ControllerType* )&[!"../../@name"!]_[!"node:name(node:ref(CanControllerRef))"!],
     .CanFdPaddingValue = (uint8 )[!"CanFdPaddingValue"!]U,
     .CanHardwareObjectUsesPolling = (boolean )[!IF "CanHardwareObjectUsesPolling = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
@@ -401,7 +401,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
     .CanStandardFilterType = [!"CanHwFilter/*/CanStandardFilterType"!],
     .CanEventPin = [!"CanHwFilter/*/CanEventPin"!],
 [!ELSE!][!//
-    .CanHwFilterCode = (uint32 )0U, /* Only valid if CAN object type is RECEIVE */
+    .CanHwFilterCode = (uint32 )0U, /* Only valid if CAN object type is CAN_RECEIVE */
     .CanHwFilterMask = {(uint32 )0U},
 [!ENDIF!][!//
 

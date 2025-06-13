@@ -47,7 +47,7 @@ extern "C" {
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
 
-#define CDD_PWM_MAX_DUTY_CYCLE  (0x8000U)
+#define CDD_PWM_MAX_DUTY_CYCLE (0x8000U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -58,49 +58,49 @@ extern "C" {
  *********************************************************************************************************************/
 typedef enum
 {
-    CDD_PWM_AQ_OUTPUT_NO_CHANGE = 0U,  /** \brief No change in the output pins */
-    CDD_PWM_AQ_OUTPUT_LOW       = 1U,  /** \brief Set output pins to low */
-    CDD_PWM_AQ_OUTPUT_HIGH      = 2U,  /** \brief Set output pins to High */
-    CDD_PWM_AQ_OUTPUT_TOGGLE    = 3U   /** \brief Toggle the output pins */
-}Cdd_Pwm_AQOutputType;
+    CDD_PWM_AQ_OUTPUT_NO_CHANGE = 0U, /** \brief No change in the output pins */
+    CDD_PWM_AQ_OUTPUT_LOW       = 1U, /** \brief Set output pins to low */
+    CDD_PWM_AQ_OUTPUT_HIGH      = 2U, /** \brief Set output pins to High */
+    CDD_PWM_AQ_OUTPUT_TOGGLE    = 3U  /** \brief Toggle the output pins */
+} Cdd_Pwm_AQOutputType;
 
 /** \brief Cdd_Pwm_AQOutputEvtType output defines the action qualifier event type */
 typedef enum
 {
     /** \brief Time base counter equals zero */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO       = 0U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO = 0U,
     /** \brief T1 event on count up */
-    CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_UP         = 1U,
+    CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_UP = 1U,
     /** \brief Time base counter equals period */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_PERIOD     = 2U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_PERIOD = 2U,
     /** \brief T1 event on count down */
-    CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_DOWN       = 3U,
+    CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_DOWN = 3U,
     /** \brief Time base counter up equals COMPA */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA    = 4U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA = 4U,
     /** \brief T2 event on count up */
-    CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_UP         = 5U,
+    CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_UP = 5U,
     /** \brief Time base counter down equals COMPA */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA  = 6U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA = 6U,
     /** \brief T2 event on count down */
-    CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_DOWN       = 7U,
+    CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_DOWN = 7U,
     /** \brief Time base counter up equals COMPB */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB    = 8U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB = 8U,
     /** \brief Time base counter down equals COMPB */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB  = 10U
-}Cdd_Pwm_AQOutputEvtType;
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB = 10U
+} Cdd_Pwm_AQOutputEvtType;
 
 /** \brief Action qualifier continuous force type */
 typedef enum
 {
     /** \brief Shadow mode load when counter equals zero */
-    CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_ZERO        = 0U,
+    CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_ZERO = 0U,
     /** \brief Shadow mode load when counter equals period */
-    CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_PERIOD      = 1U,
+    CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_PERIOD = 1U,
     /** \brief Shadow mode load when counter equals zero or period */
     CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_ZERO_PERIOD = 2U,
     /** \brief No shadow load mode. Immediate mode only */
-    CDD_PWM_AQ_SW_IMMEDIATE_LOAD   = 3U
-}Cdd_Pwm_ActionQualifierContForceType;
+    CDD_PWM_AQ_SW_IMMEDIATE_LOAD = 3U
+} Cdd_Pwm_ActionQualifierContForceType;
 
 /** \brief Action qualifier Shadow mode load mode */
 typedef enum
@@ -121,7 +121,7 @@ typedef enum
     CDD_PWM_AQ_LOAD_ON_SYNC_CNTR_ZERO_PERIOD = 6U,
     /* Load on sync only */
     CDD_PWM_AQ_LOAD_ON_SYNC_ONLY = 8U
-}Cdd_Pwm_ActionQualifierLoadModeType;
+} Cdd_Pwm_ActionQualifierLoadModeType;
 
 /** \brief Action qualifier Shadow mode load mode */
 typedef enum
@@ -142,7 +142,7 @@ typedef enum
     CDD_PWM_COMP_LOAD_ON_SYNC_CNTR_ZERO_PERIOD = 6U,
     /* Load on sync only */
     CDD_PWM_COMP_LOAD_ON_SYNC_ONLY = 8U
-}Cdd_Pwm_CounterCompareLoadModeType;
+} Cdd_Pwm_CounterCompareLoadModeType;
 
 /** \brief Period load mode type */
 typedef enum
@@ -151,24 +151,24 @@ typedef enum
     CDD_PWM_PERIOD_SHADOW_LOAD = 0U,
     /** \brief PWM Period register access is directly */
     CDD_PWM_PERIOD_DIRECT_LOAD = 1U
-}Cdd_Pwm_PeriodLoadType;
+} Cdd_Pwm_PeriodLoadType;
 
 /* Enumeration for action qualifier output type */
 typedef enum
 {
-    CDD_PWM_AQ_SW_DISABLED         = 0U,  /** \brief Software forcing disabled */
-    CDD_PWM_AQ_SW_OUTPUT_LOW       = 1U,  /** \brief Set output pins to low*/
-    CDD_PWM_AQ_SW_OUTPUT_HIGH      = 2U   /** \brief Set output pins to High*/
-}Cdd_Pwm_ActionQualifierSwOutputType;
+    CDD_PWM_AQ_SW_DISABLED    = 0U, /** \brief Software forcing disabled */
+    CDD_PWM_AQ_SW_OUTPUT_LOW  = 1U, /** \brief Set output pins to low*/
+    CDD_PWM_AQ_SW_OUTPUT_HIGH = 2U  /** \brief Set output pins to High*/
+} Cdd_Pwm_ActionQualifierSwOutputType;
 
 /** \brief Enumeration to define the time base counter mode */
 typedef enum
 {
-    CDD_PWM_COUNTER_MODE_UP = 0U,         /** \brief Up - count mode */
-    CDD_PWM_COUNTER_MODE_DOWN = 1U,       /** \brief Down - count mode */
-    CDD_PWM_COUNTER_MODE_UP_DOWN = 2U,    /** \brief Up - down - count mode */
-    CDD_PWM_COUNTER_MODE_STOP_FREEZE = 3U /** \brief Stop - Freeze counter */
-}Cdd_Pwm_TimeBaseCountModeType;
+    CDD_PWM_COUNTER_MODE_UP          = 0U, /** \brief Up - count mode */
+    CDD_PWM_COUNTER_MODE_DOWN        = 1U, /** \brief Down - count mode */
+    CDD_PWM_COUNTER_MODE_UP_DOWN     = 2U, /** \brief Up - down - count mode */
+    CDD_PWM_COUNTER_MODE_STOP_FREEZE = 3U  /** \brief Stop - Freeze counter */
+} Cdd_Pwm_TimeBaseCountModeType;
 
 /* Enumeration for interrupt sources */
 typedef enum
@@ -197,7 +197,7 @@ typedef enum
     CDD_PWM_ETMIX_TBCTR_D_CMPD = 0x200U,
     /** \brief Event is based on DCAEVT1 */
     CDD_PWM_ETMIX_DCAEVT1 = 0x400U
-}Cdd_Pwm_EvtMixTriggerSourceType;
+} Cdd_Pwm_EvtMixTriggerSourceType;
 
 /** \brief Enumeration for interrupt source */
 typedef enum
@@ -216,48 +216,48 @@ typedef enum
     CDD_PWM_INT_TBCTR_U_CMP_B_OR_D = 6U,
     /** \brief Time-base counter equal to CMPB or CMPD when the timer is decrementing */
     CDD_PWM_INT_TBCTR_D_CMP_B_OR_D = 7U
-}Cdd_Pwm_InterruptSourceType;
+} Cdd_Pwm_InterruptSourceType;
 
 /** \brief Channel object structure */
 typedef struct Cdd_Pwm_ChannelObjTag
 {
     /** \brief Duty cycle of the PWM channel */
-    Cdd_Pwm_DutyCycleType dutycycle;
+    Cdd_Pwm_DutyCycleType   dutycycle;
     /** \brief PWM channel status */
-    boolean channel_status;
+    boolean                 channel_status;
     /** \brief PWM channel update */
-    boolean channel_update;
+    boolean                 channel_update;
     /* Notification status */
-    boolean notification_enable;
+    boolean                 notification_enable;
     /* Action qualifier action */
-    Cdd_Pwm_AQOutputType level1;
-    Cdd_Pwm_AQOutputType level2;
+    Cdd_Pwm_AQOutputType    level1;
+    Cdd_Pwm_AQOutputType    level2;
     Cdd_Pwm_AQOutputEvtType outputevt1;
     Cdd_Pwm_AQOutputEvtType outputevt2;
-#if(STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
+#if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
     /* Mixed event sources */
-    boolean notification_status;
+    boolean                         notification_status;
     Cdd_Pwm_EvtMixTriggerSourceType rising_event;
     Cdd_Pwm_EvtMixTriggerSourceType falling_event;
 #endif
-}Cdd_Pwm_ChannelObjType;
+} Cdd_Pwm_ChannelObjType;
 
 /** \brief Hardware object structure */
 typedef struct Cdd_Pwm_HwUnitObjTag
 {
     /** \brief Waveform period of the PWM channel */
     Cdd_Pwm_PeriodType period;
-#if(STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
+#if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
     /** \brief Notification channel type */
-    Cdd_Pwm_NotificationChannelType  channel_notification;
+    Cdd_Pwm_NotificationChannelType channel_notification;
     /** \brief Edge notification type */
-    Cdd_Pwm_EdgeNotificationType edgenotifytype;
+    Cdd_Pwm_EdgeNotificationType    edgenotifytype;
     /* Active channels */
-    uint8 notification_active;
+    uint8                           notification_active;
 #endif
     /** \brief Interrupt source of the PWM channel */
     uint8 eventcount;
-}Cdd_Pwm_HwUnitObjType;
+} Cdd_Pwm_HwUnitObjType;
 
 /** \brief Driver object structure */
 typedef struct Cdd_Pwm_DriverObjTag
@@ -265,10 +265,10 @@ typedef struct Cdd_Pwm_DriverObjTag
     /** \brief PWM channel object */
     Cdd_Pwm_ChannelObjType channelobj[CDD_PWM_CHANNEL_COUNT];
     /** \brief PWM channel object */
-    Cdd_Pwm_HwUnitObjType hwunitobj[CDD_PWM_COUNT];
+    Cdd_Pwm_HwUnitObjType  hwunitobj[CDD_PWM_COUNT];
     /** \brief Array to store the index of the hardware unit */
-    uint8 instanceindex[(CDD_PWM_INSTANCE_COUNT+1U)];
-}Cdd_Pwm_DriverObjType;
+    uint8                  instanceindex[(CDD_PWM_INSTANCE_COUNT + 1U)];
+} Cdd_Pwm_DriverObjType;
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -279,7 +279,7 @@ typedef struct Cdd_Pwm_DriverObjTag
  *********************************************************************************************************************/
 /** \brief Sets the driver object
  *
- * This private function sets the driver object 
+ * This private function sets the driver object
  *
  * \param[in]  DrvObj Driver object
  * \param[in]  CfgPtr Configuration pointer
@@ -289,7 +289,8 @@ typedef struct Cdd_Pwm_DriverObjTag
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDrvObj(Cdd_Pwm_DriverObjType *DrvObj, const Cdd_Pwm_ConfigType *CfgPtr);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDrvObj(Cdd_Pwm_DriverObjType *DrvObj, const Cdd_Pwm_ConfigType *CfgPtr);
 
 /** \brief Initializes the driver object
  *
@@ -302,7 +303,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDrvObj(Cdd_Pwm_DriverObjType *DrvObj, const C
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DrvObjInit(void);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DrvObjInit(void);
 
 /** \brief Initializes the Cdd Pwm driver
  *
@@ -315,7 +316,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DrvObjInit(void);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_HwUnitInit(void);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitInit(void);
 
 #if (CDD_PWM_SET_PERIOD_API == STD_ON)
 /** \brief Service to set the period of the PWM hardware unit
@@ -330,8 +331,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_HwUnitInit(void);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_UpdatePeriod(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,\
-                                                                            VAR(Cdd_Pwm_PeriodType,AUTOMATIC) Period);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_UpdatePeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_PeriodType, AUTOMATIC) Period);
 #endif
 
 /** \brief Service to set the duty cycle of the PWM channel
@@ -346,8 +347,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_UpdatePeriod(VAR(Cdd_Pwm_InstanceType,AUTOMATIC)
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_UpdateDutyCycle(VAR(Cdd_Pwm_ChannelType,AUTOMATIC) ChannelNumber,\
-                                                    VAR(Cdd_Pwm_DutyCycleType,AUTOMATIC) DutyCycle);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_UpdateDutyCycle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelNumber,
+                        VAR(Cdd_Pwm_DutyCycleType, AUTOMATIC) DutyCycle);
 
 #if (CDD_PWM_SET_OUTPUT_TO_IDLE_API == STD_ON) || (CDD_PWM_DEINIT_API == STD_ON)
 /** \brief Service to set the output of the PWM channel to the configured idle state
@@ -361,7 +363,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_UpdateDutyCycle(VAR(Cdd_Pwm_ChannelType,AUTOMATI
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetIdleOutput(VAR(Cdd_Pwm_ChannelType,AUTOMATIC) ChannelNumber);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetIdleOutput(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelNumber);
 #endif
 
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
@@ -370,7 +372,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetIdleOutput(VAR(Cdd_Pwm_ChannelType,AUTOMATIC)
  * This service sets period and duty cycle for the requested PWM Channel.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
- * \param[in] Channel        Channel type for notification 
+ * \param[in] Channel        Channel type for notification
  * \param[in] Notification   Notification type for the channel
  * \param[in] IntEvtCount    Number of configured events to be occurred to generate an interrupt
  * \pre None
@@ -379,9 +381,11 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetIdleOutput(VAR(Cdd_Pwm_ChannelType,AUTOMATIC)
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_NotificationEnable(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,\
-                                VAR(Cdd_Pwm_NotificationChannelType,AUTOMATIC) Channel,\
-                            VAR(Cdd_Pwm_EdgeNotificationType,AUTOMATIC) Notification,VAR(uint8,AUTOMATIC) IntEvtCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_NotificationEnable(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                           VAR(Cdd_Pwm_NotificationChannelType, AUTOMATIC) Channel,
+                           VAR(Cdd_Pwm_EdgeNotificationType, AUTOMATIC) Notification,
+                           VAR(uint8, AUTOMATIC) IntEvtCount);
 
 /** \brief Service to disable the notification for the channel
  *
@@ -394,7 +398,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_NotificationEnable(VAR(Cdd_Pwm_InstanceType,AUTO
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_NotificationDisable(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_NotificationDisable(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 #endif
 
 #if (STD_ON == CDD_PWM_DEINIT_API)
@@ -410,7 +415,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_NotificationDisable(VAR(Cdd_Pwm_InstanceType,AUT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_HwUnitDeinit(void);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitDeinit(void);
 #endif
 
 /** \brief Interrupt service routine
@@ -424,7 +429,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_HwUnitDeinit(void);
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ProcessIsr(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ProcessIsr(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

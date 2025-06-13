@@ -51,26 +51,26 @@ extern "C" {
 //! and data preread.
 //
 //*****************************************************************************
-#define    FLASH_PREFETCH_ENABLE        0x1U
-#define    FLASH_PREFETCH_DISABLE       0x0U
-#define    FLASH_DATACACHE_ENABLE       0x2U
-#define    FLASH_DATACACHE_DISABLE      0x0U
-#define    FLASH_CODECACHE_ENABLE       0x4U
-#define    FLASH_CODECACHE_DISABLE      0x0U
-#define    FLASH_DATAPREREAD_ENABLE     0x8U
-#define    FLASH_DATAPREREAD_DISABLE    0x0U
+#define FLASH_PREFETCH_ENABLE     0x1U
+#define FLASH_PREFETCH_DISABLE    0x0U
+#define FLASH_DATACACHE_ENABLE    0x2U
+#define FLASH_DATACACHE_DISABLE   0x0U
+#define FLASH_CODECACHE_ENABLE    0x4U
+#define FLASH_CODECACHE_DISABLE   0x0U
+#define FLASH_DATAPREREAD_ENABLE  0x8U
+#define FLASH_DATAPREREAD_DISABLE 0x0U
 
 //
 // Internal macros used for committing trim registers.
 // Not intended for application use.
 //
-#define ASYSCTL_O_FLASHTRIMCOMMIT                     0x90U
-#define ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITREAD    0x1U
-#define ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITOTHER   0x2U
-#define ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITREAD    0x4U
-#define ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITOTHER   0x8U
-#define ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITREAD    0x10
-#define ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITOTHER   0x20
+#define ASYSCTL_O_FLASHTRIMCOMMIT                   0x90U
+#define ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITREAD  0x1U
+#define ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITOTHER 0x2U
+#define ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITREAD  0x4U
+#define ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITOTHER 0x8U
+#define ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITREAD  0x10
+#define ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITOTHER 0x20
 
 //*****************************************************************************
 //
@@ -78,15 +78,14 @@ extern "C" {
 //! For example, FRI_O_2_INTF_CTRL - FRI_O_1_INTF_CTRL = 0x10U.
 //
 //*****************************************************************************
-#define     FRI_REG_STEP                0x10U
-
+#define FRI_REG_STEP 0x10U
 
 //*****************************************************************************
 //
 // Defines related to Flash Support
 //
 //*****************************************************************************
-#define DEVICE_FLASH_WAITSTATES                     ((uint8)3)
+#define DEVICE_FLASH_WAITSTATES ((uint8)3)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -100,7 +99,8 @@ extern "C" {
 //! Enumeration of FRI register addresses for use with Flash_ConfigFRI()
 //
 //*****************************************************************************
-typedef enum {
+typedef enum
+{
     FLASH_FRI1 = 0,
     FLASH_FRI2 = 1,
     FLASH_FRI3 = 2,

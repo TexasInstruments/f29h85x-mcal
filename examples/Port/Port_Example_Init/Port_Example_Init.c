@@ -1,4 +1,4 @@
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
@@ -19,11 +19,12 @@
  *  Module:     Port Driver
  *  Generator:  None
  *
- *  Description:  This file contains Port Driver Demo implementation which will initialize the Port pins as per the 
- *                  provided config file. After initialization, will change the direction of one of the pins from OUT
- *                  to IN. Then will change the Mode of the pin from GPIO to some other available MUX mode. Post mode 
- *                  change, will refresh the pin direction of the pins where direction changeable is not allowed.
- *  
+ *  Description:  This file contains Port Driver Demo implementation which will initialize the Port
+ *pins as per the provided config file. After initialization, will change the direction of one of
+ *the pins from OUT to IN. Then will change the Mode of the pin from GPIO to some other available
+ *MUX mode. Post mode change, will refresh the pin direction of the pins where direction changeable
+ *is not allowed.
+ *
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -85,13 +86,13 @@ Std_VersionInfoType Port_VersionInfo;
 int main(void)
 {
     volatile static boolean flipDirection = TRUE;
-    volatile static boolean changeMode = TRUE;
-    Std_ReturnType returnValue = E_NOT_OK;
+    volatile static boolean changeMode    = TRUE;
+    Std_ReturnType          returnValue   = E_OK;
 
     DeviceSupport_Init();
-    /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call 
-    Port_Init(&Port_PortConfigSet) and will Initialize the Port and Mcu Driver */       
-    EcuM_Init(); 
+    /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call
+    Port_Init(&Port_PortConfigSet) and will Initialize the Port and Mcu Driver */
+    EcuM_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("PORT Driver Sample Application - Starts!!!\n\r");
     AppUtils_Printf("---------------------------------------------------------------\n\n\r");
@@ -101,7 +102,7 @@ int main(void)
 
 /* Change Port Pin Direction */
 #if (STD_ON == PORT_CFG_SET_PIN_DIRECTION_API)
-    if(TRUE == flipDirection)
+    if (TRUE == flipDirection)
     {
         AppUtils_Printf("---------------------------------------------------------------\n\n\r");
         AppUtils_Printf("Test 2: Change direction for PortPin_0\n\r");
@@ -114,18 +115,18 @@ int main(void)
 
 /* Change Port Pin Mode */
 #if (STD_ON == PORT_CFG_SET_PIN_MODE_API)
-    if(TRUE == changeMode)
+    if (TRUE == changeMode)
     {
         AppUtils_Printf("---------------------------------------------------------------\n\n\r");
         AppUtils_Printf("Test 3: Change Mode for PortPin_0\n\r");
         Port_SetPinMode(PortConf_PortPin_PortPin_0, PORT_PIN_0_MCAND_TX);
         AppUtils_Printf("Mode changed to MCAND_TX for PortPin_0\n\r");
         AppUtils_Printf("API Port_SetPinMode executed successfully\n\n\r");
-        changeMode = FALSE;        
+        changeMode = FALSE;
     }
 #endif
 
-/* Refresh Port Pin Direction for the Direction unchangeable pins */
+    /* Refresh Port Pin Direction for the Direction unchangeable pins */
     AppUtils_Printf("---------------------------------------------------------------\n\n\r");
     AppUtils_Printf("Test 4: Refresh Pin direction for direction unchangeable pins\n\r");
     Port_RefreshPortDirection();
@@ -150,14 +151,8 @@ int main(void)
 
     AppUtils_Printf("Port Example App run is Completed\n\r");
     AppUtils_Printf("Result - PASS!!");
-    while (TRUE)
-    {
-        /* Example App Has finished running Successfully */
-        returnValue = E_OK;
-    }
 
-    
-    return returnValue; 
+    return returnValue;
 }
 
 /*********************************************************************************************************************

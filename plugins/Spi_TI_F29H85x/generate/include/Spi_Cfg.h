@@ -205,7 +205,7 @@ extern "C" {
  */
 
 [!VAR "sysClockFrequency"="num:i(node:value(concat(node:path(node:ref(as:modconf('Spi')[1]/SpiDriver/SpiCounterClockRef)), '/McuClockReferencePointFrequency')))"!]
-#define SPI_CFG_TIMEOUT_CLOCK_CYCLES    ((uint64)([!"num:i(as:modconf('Spi')[1]/SpiDriver/SpiSequenceTimeOut * $sysClockFrequency)"!]U))
+#define SPI_CFG_TIMEOUT_CLOCK_CYCLES    ((McalLib_TickType)([!"num:i(as:modconf('Spi')[1]/SpiDriver/SpiSequenceTimeOut * $sysClockFrequency)"!]U))
 
 /** \brief Maximum channels allowed per job */
 /*

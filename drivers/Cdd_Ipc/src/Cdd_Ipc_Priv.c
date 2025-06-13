@@ -17,7 +17,8 @@
  *  File:       Cdd_Ipc_Priv.c
  *  Generator:  None
  *
- *  Description: This file contains private function definitions that are defined in Cdd_Ipc_Priv.h file.
+ *  Description: This file contains private function definitions that are defined in Cdd_Ipc_Priv.h
+ *file.
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -42,7 +43,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -53,56 +54,60 @@
 #define CDD_IPC_START_SEC_VAR_INIT_PTR
 #include "Cdd_Ipc_MemMap.h"
 /* Cdd_Ipc configuration pointer to access driver configuration. */
-P2CONST(Cdd_Ipc_ConfigType,AUTOMATIC,CDD_IPC_CONST) Cdd_Ipc_ConfigPtr = NULL_PTR;
+P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONST) Cdd_Ipc_ConfigPtr = NULL_PTR;
 #define CDD_IPC_STOP_SEC_VAR_INIT_PTR
 #include "Cdd_Ipc_MemMap.h"
 
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
+/* Design: MCAL-30592 */
 /** \brief Sets a flag for a remote core
  * \param[in]  Instance is the instance in which the flag is being set
  * \param[in]  Flag is the flag bit being set
  * \pre None
  * \post None
  * \return None
- * \retval None 
+ * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void,CDD_IPC_CODE) Cdd_Ipc_SetFlagLtoR(Cdd_Ipc_InstanceType Instance, uint32 Flag);
+LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_SetFlagLtoR(Cdd_Ipc_InstanceType Instance, uint32 Flag);
 
+/* Design: MCAL-30593 */
 /** \brief Local core acknowledges a flag set by the remote core
  * \param[in]  Instance is the instance in which the flag is achnowledged
  * \param[in]  Flag is the flag bit that is acknowledged
  * \pre None
  * \post None
  * \return None
- * \retval None 
+ * \retval None
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(void,CDD_IPC_CODE) Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_InstanceType Instance, uint32 Flag);
+LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_InstanceType Instance, uint32 Flag);
 
+/* Design: MCAL-30594 */
 /** \brief Wait for the remote core to send a flag
  * \param[in]  Instance is the instance in which the flag will be set
  * \param[in]  Flag is the flag bit that will be set
  * \pre None
  * \post None
  * \return None
- * \retval None 
+ * \retval None
  *
  *********************************************************************************************************************/
-static FUNC(Std_ReturnType,CDD_IPC_CODE) Cdd_Ipc_WaitForFlag(Cdd_Ipc_InstanceType Instance, uint32 Flag);
+static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_WaitForFlag(Cdd_Ipc_InstanceType Instance, uint32 Flag);
 
+/* Design: MCAL-30595 */
 /** \brief Wait for the IPC flag to be acknowledged
  * \param[in]  Instance is the instance in which the flag will be achnowledged
  * \param[in]  Flag is the flag bit that will be acknowledged
  * \pre None
  * \post None
  * \return None
- * \retval None 
+ * \retval None
  *
  *********************************************************************************************************************/
-static FUNC(Std_ReturnType,CDD_IPC_CODE) Cdd_Ipc_WaitForAck(Cdd_Ipc_InstanceType Instance, uint32 Flag);
+static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_WaitForAck(Cdd_Ipc_InstanceType Instance, uint32 Flag);
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -110,22 +115,22 @@ static FUNC(Std_ReturnType,CDD_IPC_CODE) Cdd_Ipc_WaitForAck(Cdd_Ipc_InstanceType
 #define CDD_IPC_START_SEC_CODE
 #include "Cdd_Ipc_MemMap.h"
 
-LOCAL_INLINE FUNC(void,CDD_IPC_CODE) Cdd_Ipc_SetFlagLtoR(Cdd_Ipc_InstanceType Instance, uint32 Flag)
+LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_SetFlagLtoR(Cdd_Ipc_InstanceType Instance, uint32 Flag)
 {
     HWREG(CDD_IPC_REG_SET(Instance)) = Flag;
 }
 
-LOCAL_INLINE FUNC(void,CDD_IPC_CODE) Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_InstanceType Instance, uint32 Flag)
+LOCAL_INLINE FUNC(void, CDD_IPC_CODE) Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_InstanceType Instance, uint32 Flag)
 {
-    HWREG(CDD_IPC_REG_ACK(Instance)) = Flag; 
+    HWREG(CDD_IPC_REG_ACK(Instance)) = Flag;
 }
-
 
 /*********************************************************************************************************************
  *  External Functions Definition
  *********************************************************************************************************************/
 
-FUNC(void,CDD_IPC_CODE) Cdd_Ipc_SetCfgObj(P2CONST(Cdd_Ipc_ConfigType,AUTOMATIC,CDD_IPC_CONST) ConfigPtr)
+FUNC(void, CDD_IPC_CODE)
+Cdd_Ipc_SetCfgObj(P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONST) ConfigPtr)
 {
     Cdd_Ipc_ConfigPtr = ConfigPtr;
 }
@@ -133,145 +138,146 @@ FUNC(void,CDD_IPC_CODE) Cdd_Ipc_SetCfgObj(P2CONST(Cdd_Ipc_ConfigType,AUTOMATIC,C
 /*
  *Design: MCAL-
  */
-FUNC(Std_ReturnType,CDD_IPC_CODE) Cdd_Ipc_Sync_Process(VAR(Cdd_Ipc_RemoteCoreType, AUTOMATIC) RemoteCore)
+FUNC(Std_ReturnType, CDD_IPC_CODE)
+Cdd_Ipc_Sync_Process(VAR(Cdd_Ipc_RemoteCoreType, AUTOMATIC) RemoteCore)
 {
     VAR(Std_ReturnType, AUTOMATIC) ret_val = E_NOT_OK;
 
     Cdd_Ipc_SetFlagLtoR(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore], CDD_IPC_FLAG2);
-    ret_val = 
+    ret_val =
         Cdd_Ipc_WaitForFlag(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore], CDD_IPC_FLAG2);
-    if(E_OK == ret_val)
+    if (E_OK == ret_val)
     {
-        Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore],
-            CDD_IPC_FLAG2);
-        ret_val = Cdd_Ipc_WaitForAck(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore],
-            CDD_IPC_FLAG2);
+        Cdd_Ipc_AckFlagRtoL(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore], CDD_IPC_FLAG2);
+        ret_val =
+            Cdd_Ipc_WaitForAck(Cdd_Ipc_Sync_Instances[Cdd_Ipc_ConfigPtr->Cdd_Ipc_LocalCore][RemoteCore], CDD_IPC_FLAG2);
     }
 
     return ret_val;
 }
 
-FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_Transmit_Priv
-(VAR(PduIdType , AUTOMATIC) ChannelId, P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
+FUNC(Std_ReturnType, CDD_IPC_CODE)
+Cdd_Ipc_Transmit_Priv(VAR(PduIdType, AUTOMATIC) ChannelId,
+                      P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_val = E_NOT_OK;
-    VAR(uint8, AUTOMATIC) instance_index = (uint8)0U;
-    VAR(uint8, AUTOMATIC) channel_index = (uint8)0U;
+    VAR(uint8, AUTOMATIC) instance_index      = (uint8)0U;
+    VAR(uint8, AUTOMATIC) channel_index       = (uint8)0U;
 
-    if(E_OK == Cdd_Ipc_GetTxIdxPriv(ChannelId, &instance_index, &channel_index))
+    if (E_OK == Cdd_Ipc_GetTxIdxPriv(ChannelId, &instance_index, &channel_index))
     {
-        if(HWREG(CDD_IPC_REG_FLG(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index]
-        .Cdd_Ipc_TxInstance)) == 0U)
+        if (HWREG(CDD_IPC_REG_FLG(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index].Cdd_Ipc_TxInstance)) ==
+            0U)
         {
             Cdd_Ipc_WriteChannelPriv(instance_index, channel_index, PduInfoPtr);
             return_val = E_OK;
-        }  
+        }
     }
 
-    return(return_val);
+    return (return_val);
 }
 
 /*
  * Design: MCAL-
  */
-FUNC(void, CDD_IPC_CODE) Cdd_Ipc_RxIndication
-(VAR(uint8 , AUTOMATIC) Instance_Index, VAR(uint8 , AUTOMATIC) Channel_Index, 
-P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
+FUNC(void, CDD_IPC_CODE)
+Cdd_Ipc_RxIndication(VAR(uint8, AUTOMATIC) Instance_Index, VAR(uint8, AUTOMATIC) Channel_Index,
+                     P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
 {
-    
-    if(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxChannelConfig[Channel_Index]
-        .Cdd_Ipc_UserCallbackFunction != NULL_PTR)
+    if (Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index]
+            .Cdd_Ipc_RxChannelConfig[Channel_Index]
+            .Cdd_Ipc_UserCallbackFunction != NULL_PTR)
     {
-        Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxChannelConfig[Channel_Index]
+        Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index]
+            .Cdd_Ipc_RxChannelConfig[Channel_Index]
             .Cdd_Ipc_UserCallbackFunction(PduInfoPtr);
-    }  
-    #if(STD_ON == CDD_IPC_INTEGRATION_WITH_ASR_COM_STACK_ENABLE)
-    PduR_Cdd_Ipc_RxIndication(
-        Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxChannelConfig[Channel_Index]
-        .Cdd_Ipc_PduID, PduInfoPtr);
-    #endif
+    }
+#if (STD_ON == CDD_IPC_INTEGRATION_WITH_ASR_COM_STACK_ENABLE)
+    PduR_Cdd_Ipc_RxIndication(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index]
+                                  .Cdd_Ipc_RxChannelConfig[Channel_Index]
+                                  .Cdd_Ipc_PduID,
+                              PduInfoPtr);
+#endif
 }
 
-
-FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_GetChannelPollingStatus
-(VAR(uint8 , AUTOMATIC) Instance_Index, uint8* ChannelIndex)
+FUNC(boolean, CDD_IPC_CODE)
+Cdd_Ipc_GetChannelPollingStatus(VAR(uint8, AUTOMATIC) Instance_Index, uint8* ChannelIndex)
 {
     VAR(boolean, AUTOMATIC) return_val = FALSE;
-    VAR(uint8, AUTOMATIC) channel = 0U;
-    VAR(uint32, AUTOMATIC) status = 
-        HWREG(CDD_IPC_REG_STS(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
+    VAR(uint8, AUTOMATIC) channel      = 0U;
+    VAR(uint32, AUTOMATIC)
+    status = HWREG(CDD_IPC_REG_STS(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
     VAR(uint8, AUTOMATIC) channel_index = 0U;
 
-
-    if(((status & CDD_IPC_FLAG1) == CDD_IPC_FLAG1) && (((status & (CDD_IPC_FLAG2 | CDD_IPC_FLAG0)) == 0U)))
+    if (((status & CDD_IPC_FLAG1) == CDD_IPC_FLAG1) && (((status & (CDD_IPC_FLAG2 | CDD_IPC_FLAG0)) == 0U)))
     {
         channel = (status >> CDD_IPC_CHANNELINDEX) & BIT_MASK_EIGHT;
 
-        for(channel_index = 0U; 
-            channel_index < Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxChannelCount; 
-            channel_index++)
+        for (channel_index = 0U;
+             channel_index < Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxChannelCount;
+             channel_index++)
         {
-            if(channel == 
-                Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxChannelConfig[channel_index]
-                .Cdd_Ipc_ChannelID)
+            if (channel == Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index]
+                               .Cdd_Ipc_RxChannelConfig[channel_index]
+                               .Cdd_Ipc_ChannelID)
             {
                 *ChannelIndex = channel_index;
-                return_val = TRUE;
+                return_val    = TRUE;
                 break;
             }
         }
-        if(FALSE == return_val)
+        if (FALSE == return_val)
         {
             Cdd_Ipc_Acknowledge(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance);
         }
     }
 
-    return(return_val);
-
+    return (return_val);
 }
 
-FUNC(void, CDD_IPC_CODE) Cdd_Ipc_WriteChannelPriv
-(VAR(uint8 , AUTOMATIC) Instance_Index, VAR(uint8 , AUTOMATIC) Channel_Index, 
-P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
+FUNC(void, CDD_IPC_CODE)
+Cdd_Ipc_WriteChannelPriv(VAR(uint8, AUTOMATIC) Instance_Index, VAR(uint8, AUTOMATIC) Channel_Index,
+                         P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
 {
-    VAR(uint32, AUTOMATIC) flags = (uint32)0U;
-    VAR(uint8, AUTOMATIC) byteCnt = 0U;
+    VAR(uint32, AUTOMATIC) flags        = (uint32)0U;
+    VAR(uint8, AUTOMATIC) byteCnt       = 0U;
     VAR(uint32, AUTOMATIC) commandValue = 0U;
     VAR(uint32, AUTOMATIC) addressValue = 0U;
-    VAR(uint32, AUTOMATIC) dataValue = 0U;
+    VAR(uint32, AUTOMATIC) dataValue    = 0U;
 
     // Calculate the values to be written to the registers
-    for(byteCnt = 0U; (byteCnt < (uint8)PduInfoPtr->SduLength) && (byteCnt < CDD_IPC_MAX_SIZE); byteCnt++)
+    for (byteCnt = 0U; (byteCnt < (uint8)PduInfoPtr->SduLength) && (byteCnt < CDD_IPC_MAX_SIZE); byteCnt++)
     {
-        if(byteCnt < CDD_IPC_COMMBYTE)
+        if (byteCnt < CDD_IPC_COMMBYTE)
         {
             // Calculate the command value
             commandValue |= (PduInfoPtr->SduDataPtr[byteCnt] << (8U * (byteCnt % CDD_IPC_COMMANDSIZE)));
         }
-        else if((byteCnt >= CDD_IPC_COMMBYTE) && (byteCnt < CDD_IPC_ADDRBYTE))
+        else if ((byteCnt >= CDD_IPC_COMMBYTE) && (byteCnt < CDD_IPC_ADDRBYTE))
         {
             // Calculate the address value
-            addressValue |= 
+            addressValue |=
                 (PduInfoPtr->SduDataPtr[byteCnt] << (8U * ((byteCnt - CDD_IPC_COMMBYTE) % CDD_IPC_COMMANDSIZE)));
         }
         else
         {
             // Calculate the data value
-            dataValue |= 
+            dataValue |=
                 (PduInfoPtr->SduDataPtr[byteCnt] << (8U * ((byteCnt - CDD_IPC_ADDRBYTE) % CDD_IPC_COMMANDSIZE)));
         }
     }
 
-    HWREG(CDD_IPC_REG_SENDCOM(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) = 
-       commandValue;
+    HWREG(CDD_IPC_REG_SENDCOM(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) =
+        commandValue;
     HWREG(CDD_IPC_REG_SENDADDR(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) =
         addressValue;
     HWREG(CDD_IPC_REG_SENDDATA(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) =
         dataValue;
-    
-    //Flags to indicate the Tx processing type
-    if(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxChannelConfig[Channel_Index]
-        .Cdd_Ipc_TxProcessing == CDD_IPC_INTERRUPT)
+
+    // Flags to indicate the Tx processing type
+    if (Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index]
+            .Cdd_Ipc_TxChannelConfig[Channel_Index]
+            .Cdd_Ipc_TxProcessing == CDD_IPC_INTERRUPT)
     {
         flags |= CDD_IPC_FLAG0;
     }
@@ -279,80 +285,81 @@ P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
     {
         flags |= CDD_IPC_FLAG1;
     }
- 
+
     // Flags to indicate the Channel ID
-    flags |= ((Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxChannelConfig[Channel_Index]
-        .Cdd_Ipc_ChannelID) << CDD_IPC_CHANNELINDEX);
-    
+    flags |= ((Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index]
+                   .Cdd_Ipc_TxChannelConfig[Channel_Index]
+                   .Cdd_Ipc_ChannelID)
+              << CDD_IPC_CHANNELINDEX);
+
     // Flags to indicate the length
     flags |= ((uint32)(PduInfoPtr->SduLength) << CDD_IPC_LENGTHINDEX);
-    
-    HWREG(CDD_IPC_REG_SET(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) = flags;
 
+    HWREG(CDD_IPC_REG_SET(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[Instance_Index].Cdd_Ipc_TxInstance)) = flags;
 }
 
-FUNC(void, CDD_IPC_CODE) Cdd_Ipc_ReadChannelPriv(VAR(uint8 , AUTOMATIC) Instance_Index, 
-P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
+FUNC(void, CDD_IPC_CODE)
+Cdd_Ipc_ReadChannelPriv(VAR(uint8, AUTOMATIC) Instance_Index,
+                        P2CONST(PduInfoType, AUTOMATIC, CDD_IPC_APPL_CONST) PduInfoPtr)
 {
-    VAR(uint32, AUTOMATIC) flags = 0U;
-    VAR(uint8, AUTOMATIC) length = 0U;
-    VAR(uint8, AUTOMATIC) byteCnt = 0U;
+    VAR(uint32, AUTOMATIC) flags        = 0U;
+    VAR(uint8, AUTOMATIC) length        = 0U;
+    VAR(uint8, AUTOMATIC) byteCnt       = 0U;
     VAR(uint32, AUTOMATIC) commandvalue = 0U;
-    VAR(uint32, AUTOMATIC) addrvalue = 0U;
-    VAR(uint32, AUTOMATIC) datavalue = 0U;
+    VAR(uint32, AUTOMATIC) addrvalue    = 0U;
+    VAR(uint32, AUTOMATIC) datavalue    = 0U;
 
-    flags = HWREG(CDD_IPC_REG_STS(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
+    flags  = HWREG(CDD_IPC_REG_STS(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
     length = (flags >> CDD_IPC_LENGTHINDEX) & BIT_MASK_FOUR;
-    ((PduInfoType *)PduInfoPtr)->SduLength = (length > CDD_IPC_MAX_SIZE) ? CDD_IPC_MAX_SIZE : length;
+    ((PduInfoType*)PduInfoPtr)->SduLength = (length > CDD_IPC_MAX_SIZE) ? CDD_IPC_MAX_SIZE : length;
 
-    commandvalue = 
+    commandvalue =
         HWREG(CDD_IPC_REG_RECVCOM(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
-    addrvalue = 
+    addrvalue =
         HWREG(CDD_IPC_REG_RECVADDR(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
-    datavalue = 
+    datavalue =
         HWREG(CDD_IPC_REG_RECVDATA(Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[Instance_Index].Cdd_Ipc_RxInstance));
 
-    for(byteCnt = 0U; (byteCnt < PduInfoPtr->SduLength); byteCnt++)
+    for (byteCnt = 0U; (byteCnt < PduInfoPtr->SduLength); byteCnt++)
     {
-        if(byteCnt < CDD_IPC_COMMBYTE)
+        if (byteCnt < CDD_IPC_COMMBYTE)
         {
-            PduInfoPtr->SduDataPtr[byteCnt] = 
+            PduInfoPtr->SduDataPtr[byteCnt] =
                 (uint8)((commandvalue >> (8U * (byteCnt % CDD_IPC_COMMANDSIZE))) & BIT_MASK_EIGHT);
         }
-        else if((byteCnt >= CDD_IPC_COMMBYTE) && (byteCnt < CDD_IPC_ADDRBYTE))
+        else if ((byteCnt >= CDD_IPC_COMMBYTE) && (byteCnt < CDD_IPC_ADDRBYTE))
         {
-            PduInfoPtr->SduDataPtr[byteCnt] = 
+            PduInfoPtr->SduDataPtr[byteCnt] =
                 (uint8)((addrvalue >> (8U * ((byteCnt - CDD_IPC_COMMBYTE) % CDD_IPC_COMMANDSIZE))) & BIT_MASK_EIGHT);
         }
         else
         {
-            PduInfoPtr->SduDataPtr[byteCnt] = 
+            PduInfoPtr->SduDataPtr[byteCnt] =
                 (uint8)((datavalue >> (8U * ((byteCnt - CDD_IPC_ADDRBYTE) % CDD_IPC_COMMANDSIZE))) & BIT_MASK_EIGHT);
         }
-     }
-
+    }
 }
 
 FUNC(void, CDD_IPC_CODE) Cdd_Ipc_Acknowledge(Cdd_Ipc_InstanceType Instance)
 {
-    VAR(uint32, AUTOMATIC) status = HWREG(CDD_IPC_REG_STS(Instance));
+    VAR(uint32, AUTOMATIC) status    = HWREG(CDD_IPC_REG_STS(Instance));
     HWREG(CDD_IPC_REG_ACK(Instance)) = status;
 }
 
 void Cdd_Ipc_ProcessIsr(Cdd_Ipc_InstanceType Instance)
 {
-    VAR(uint8, AUTOMATIC) channel_index = (uint8)0U;
+    VAR(uint8, AUTOMATIC) channel_index  = (uint8)0U;
     VAR(uint8, AUTOMATIC) instance_index = (uint8)0U;
-    VAR(boolean, AUTOMATIC) status = E_NOT_OK;
+    VAR(boolean, AUTOMATIC) status       = E_NOT_OK;
     VAR(PduInfoType, AUTOMATIC) pduinfo;
     VAR(uint8, AUTOMATIC) databuffer[CDD_IPC_MAX_SIZE] = {0U};
-    pduinfo.SduDataPtr = databuffer;
+    pduinfo.SduDataPtr                                 = databuffer;
 
-    if((HWREG(CDD_IPC_REG_STS(Instance)) & CDD_IPC_FLAG2) != CDD_IPC_FLAG2)
+    if ((HWREG(CDD_IPC_REG_STS(Instance)) & CDD_IPC_FLAG2) != CDD_IPC_FLAG2)
     {
         status = Cdd_Ipc_GetRxIdxPriv(Instance, &instance_index, &channel_index);
 
-        if(E_OK == status)
+        if (E_OK == status)
         {
             Cdd_Ipc_ReadChannelPriv(instance_index, &pduinfo);
             Cdd_Ipc_Acknowledge(Instance);
@@ -361,13 +368,13 @@ void Cdd_Ipc_ProcessIsr(Cdd_Ipc_InstanceType Instance)
     }
 }
 
-FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_IsChannelIdValid(VAR(PduIdType , AUTOMATIC) ChannelId)
+FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_IsChannelIdValid(VAR(PduIdType, AUTOMATIC) ChannelId)
 {
     VAR(boolean, AUTOMATIC) return_value = FALSE;
     VAR(uint8, AUTOMATIC) instance_index = (uint8)0U;
-    VAR(uint8, AUTOMATIC) channel_index = (uint8)0U;
+    VAR(uint8, AUTOMATIC) channel_index  = (uint8)0U;
 
-    if(E_OK == Cdd_Ipc_GetTxIdxPriv(ChannelId, &instance_index, &channel_index))
+    if (E_OK == Cdd_Ipc_GetTxIdxPriv(ChannelId, &instance_index, &channel_index))
     {
         return_value = TRUE;
     }
@@ -375,52 +382,52 @@ FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_IsChannelIdValid(VAR(PduIdType , AUTOMATIC) 
     return return_value;
 }
 
-FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_GetRxIdxPriv
-(VAR(Cdd_Ipc_InstanceType, AUTOMATIC) Instance, uint8* InstanceIndex, uint8* ChannelIndex)
+FUNC(Std_ReturnType, CDD_IPC_CODE)
+Cdd_Ipc_GetRxIdxPriv(VAR(Cdd_Ipc_InstanceType, AUTOMATIC) Instance, uint8* InstanceIndex, uint8* ChannelIndex)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = E_NOT_OK;
-    VAR(uint8, AUTOMATIC) instance_index = 0U;
+    VAR(uint8, AUTOMATIC) instance_index        = 0U;
 
     for (instance_index = 0U; instance_index < CDD_IPC_RX_INSTANCE_COUNT; instance_index++)
     {
-        if(Instance == Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[instance_index].Cdd_Ipc_RxInstance)
+        if (Instance == Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[instance_index].Cdd_Ipc_RxInstance)
         {
             return_value = Cdd_Ipc_GetRxChIdx(Instance, instance_index, ChannelIndex);
-            if(E_OK == return_value)
+            if (E_OK == return_value)
             {
                 *InstanceIndex = instance_index;
-                break;       
+                break;
             }
         }
     }
-    if(E_NOT_OK == return_value)
+    if (E_NOT_OK == return_value)
     {
         Cdd_Ipc_Acknowledge(Instance);
-    }  
+    }
 
     return return_value;
 }
 
-FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_GetRxChIdx
-(VAR(Cdd_Ipc_InstanceType, AUTOMATIC) Instance, uint8 InstanceIndex, uint8* ChannelIndex)
+FUNC(Std_ReturnType, CDD_IPC_CODE)
+Cdd_Ipc_GetRxChIdx(VAR(Cdd_Ipc_InstanceType, AUTOMATIC) Instance, uint8 InstanceIndex, uint8* ChannelIndex)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = E_NOT_OK;
-    VAR(uint8, AUTOMATIC) channel_index = 0U;
-    VAR(uint8, AUTOMATIC) channel = 
-        ((HWREG(CDD_IPC_REG_STS(Instance))) >> CDD_IPC_CHANNELINDEX) & BIT_MASK_EIGHT;
+    VAR(uint8, AUTOMATIC) channel_index         = 0U;
+    VAR(uint8, AUTOMATIC)
+    channel = ((HWREG(CDD_IPC_REG_STS(Instance))) >> CDD_IPC_CHANNELINDEX) & BIT_MASK_EIGHT;
 
-    if(Instance == Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[InstanceIndex].Cdd_Ipc_RxInstance)
+    if (Instance == Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[InstanceIndex].Cdd_Ipc_RxInstance)
     {
-        for(channel_index = 0; 
-            channel_index <
-                Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[InstanceIndex].Cdd_Ipc_RxChannelCount; 
-            channel_index++)
+        for (channel_index = 0;
+             channel_index < Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[InstanceIndex].Cdd_Ipc_RxChannelCount;
+             channel_index++)
         {
-            if(channel == Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[InstanceIndex]
-                .Cdd_Ipc_RxChannelConfig[channel_index].Cdd_Ipc_ChannelID)
+            if (channel == Cdd_Ipc_ConfigPtr->Cdd_Ipc_RxInstanceConfig[InstanceIndex]
+                               .Cdd_Ipc_RxChannelConfig[channel_index]
+                               .Cdd_Ipc_ChannelID)
             {
                 *ChannelIndex = channel_index;
-                return_value = E_OK;
+                return_value  = E_OK;
                 break;
             }
         }
@@ -429,49 +436,48 @@ FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_GetRxChIdx
     return return_value;
 }
 
-FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_GetTxIdxPriv
-(VAR(PduIdType , AUTOMATIC) ChannelId, uint8* InstanceIndex, uint8* ChannelIndex)
+FUNC(Std_ReturnType, CDD_IPC_CODE)
+Cdd_Ipc_GetTxIdxPriv(VAR(PduIdType, AUTOMATIC) ChannelId, uint8* InstanceIndex, uint8* ChannelIndex)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_val = E_NOT_OK;
-    VAR(uint8, AUTOMATIC) instance_index = 0U;
-    VAR(uint8, AUTOMATIC) channel_index = 0U;
+    VAR(uint8, AUTOMATIC) instance_index      = 0U;
+    VAR(uint8, AUTOMATIC) channel_index       = 0U;
 
     for (instance_index = 0U; instance_index < CDD_IPC_TX_INSTANCE_COUNT; instance_index++)
     {
-       for(channel_index = 0;channel_index < 
-           Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index].Cdd_Ipc_TxChannelCount; 
-           channel_index++)
+        for (channel_index = 0;
+             channel_index < Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index].Cdd_Ipc_TxChannelCount;
+             channel_index++)
         {
-            if(ChannelId == 
-                Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index]
-                .Cdd_Ipc_TxChannelConfig[channel_index].Cdd_Ipc_HandleID)
+            if (ChannelId == Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index]
+                                 .Cdd_Ipc_TxChannelConfig[channel_index]
+                                 .Cdd_Ipc_HandleID)
             {
                 *InstanceIndex = instance_index;
-                *ChannelIndex = channel_index;
-                return_val = E_OK;
+                *ChannelIndex  = channel_index;
+                return_val     = E_OK;
                 break;
             }
         }
-        if(E_OK == return_val)
+        if (E_OK == return_val)
         {
-            break;       
+            break;
         }
-    } 
+    }
 
     return return_val;
-
 }
 
-FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_InstanceStatus(VAR(PduIdType , AUTOMATIC) ChannelId)
+FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_InstanceStatus(VAR(PduIdType, AUTOMATIC) ChannelId)
 {
     VAR(boolean, AUTOMATIC) return_value = FALSE;
     VAR(uint8, AUTOMATIC) instance_index = (uint8)0U;
-    VAR(uint8, AUTOMATIC) channel_index = (uint8)0U;
+    VAR(uint8, AUTOMATIC) channel_index  = (uint8)0U;
 
-    if(E_OK == Cdd_Ipc_GetTxIdxPriv(ChannelId, &instance_index, &channel_index))
+    if (E_OK == Cdd_Ipc_GetTxIdxPriv(ChannelId, &instance_index, &channel_index))
     {
-        if(HWREG(CDD_IPC_REG_FLG(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index]
-            .Cdd_Ipc_TxInstance)) == 0U)
+        if (HWREG(CDD_IPC_REG_FLG(Cdd_Ipc_ConfigPtr->Cdd_Ipc_TxInstanceConfig[instance_index].Cdd_Ipc_TxInstance)) ==
+            0U)
         {
             return_value = TRUE;
         }
@@ -488,24 +494,24 @@ FUNC(uint64, CDD_IPC_CODE) Cdd_Ipc_ReadCounter(void)
     uint32 ctrH = HWREG(IPCCOUNTERREGS_BASE + IPC_O_COUNTERH);
 
     // Return the 64-bit value of the counter
-    return(((uint64)ctrH << 32U) | ((uint64)ctrL));
+    return (((uint64)ctrH << 32U) | ((uint64)ctrL));
 }
 
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
 
-static FUNC(Std_ReturnType,CDD_IPC_CODE) Cdd_Ipc_WaitForFlag(Cdd_Ipc_InstanceType Instance, uint32 Flag)
+static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_WaitForFlag(Cdd_Ipc_InstanceType Instance, uint32 Flag)
 {
-    VAR(uint64, AUTOMATIC)startCount = (uint64)0U;
-    VAR(uint64, AUTOMATIC)elapsedCount = (uint64)0U;
+    VAR(uint64, AUTOMATIC) startCount         = (uint64)0U;
+    VAR(uint64, AUTOMATIC) elapsedCount       = (uint64)0U;
     VAR(Std_ReturnType, AUTOMATIC) return_val = E_OK;
 
     (void)McalLib_GetCounterValue(&startCount);
-    while((HWREG(CDD_IPC_REG_STS(Instance)) & Flag) != Flag)
+    while ((HWREG(CDD_IPC_REG_STS(Instance)) & Flag) != Flag)
     {
         (void)McalLib_GetElapsedValue(&startCount, &elapsedCount);
-        if(CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES <= elapsedCount)
+        if (CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES <= elapsedCount)
         {
             return_val = E_NOT_OK;
             break;
@@ -519,18 +525,18 @@ static FUNC(Std_ReturnType,CDD_IPC_CODE) Cdd_Ipc_WaitForFlag(Cdd_Ipc_InstanceTyp
     return return_val;
 }
 
-static FUNC(Std_ReturnType,CDD_IPC_CODE) Cdd_Ipc_WaitForAck(Cdd_Ipc_InstanceType Instance, uint32 Flag)
+static FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_WaitForAck(Cdd_Ipc_InstanceType Instance, uint32 Flag)
 {
-    VAR(uint64, AUTOMATIC)startCount = (uint64)0U;
-    VAR(uint64, AUTOMATIC)elapsedCount = (uint64)0U;
+    VAR(uint64, AUTOMATIC) startCount         = (uint64)0U;
+    VAR(uint64, AUTOMATIC) elapsedCount       = (uint64)0U;
     VAR(Std_ReturnType, AUTOMATIC) return_val = E_OK;
 
     (void)McalLib_GetCounterValue(&startCount);
 
-    while((HWREG(CDD_IPC_REG_FLG(Instance)) & Flag) == Flag)
+    while ((HWREG(CDD_IPC_REG_FLG(Instance)) & Flag) == Flag)
     {
         (void)McalLib_GetElapsedValue(&startCount, &elapsedCount);
-        if(CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES <= elapsedCount)
+        if (CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES <= elapsedCount)
         {
             return_val = E_NOT_OK;
             break;
@@ -539,7 +545,7 @@ static FUNC(Std_ReturnType,CDD_IPC_CODE) Cdd_Ipc_WaitForAck(Cdd_Ipc_InstanceType
         {
             /*  Do Nothing */
         }
-    }  
+    }
 
     return return_val;
 }

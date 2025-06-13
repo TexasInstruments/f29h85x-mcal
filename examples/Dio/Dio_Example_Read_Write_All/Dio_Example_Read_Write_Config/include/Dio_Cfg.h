@@ -57,7 +57,7 @@ extern "C" {
 /** \brief Dio configuration Minor Version */
 #define DIO_CFG_MINOR_VERSION           (0U)
 /** \brief Dio configuration Patch Version */
-#define DIO_CFG_PATCH_VERSION           (2U)
+#define DIO_CFG_PATCH_VERSION           (3U)
 
 
 /*********************************************************************************************************************
@@ -165,10 +165,6 @@ extern "C" {
 #define DioConf_DioChannel_DioChannel_0 ((Dio_ChannelType) 0U) /*~ASR~*/
 /* Symbolic name for GPIO channel #1 DioChannel_1 */
 #define DioConf_DioChannel_DioChannel_1 ((Dio_ChannelType) 1U) /*~ASR~*/
-/* Symbolic name for GPIO channel #2 DioChannel_2 */
-#define DioConf_DioChannel_DioChannel_2 ((Dio_ChannelType) 2U) /*~ASR~*/
-/* Symbolic name for GPIO channel #3 DioChannel_3 */
-#define DioConf_DioChannel_DioChannel_3 ((Dio_ChannelType) 3U) /*~ASR~*/
 /* Symbolic name for GPIO channel #4 DioChannel_4 */
 #define DioConf_DioChannel_DioChannel_4 ((Dio_ChannelType) 4U) /*~ASR~*/
 /* Symbolic name for GPIO channel #5 DioChannel_5 */

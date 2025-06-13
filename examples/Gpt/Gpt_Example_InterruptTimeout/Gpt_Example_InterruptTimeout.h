@@ -25,7 +25,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -40,20 +40,20 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-#define GPT_CHANNEL_0           0            /* Gpt Timer Channel 0 */
-#define GPT_CHANNEL_1           1            /* Gpt Timer Channel 1 */
-#define GPT_CHANNEL_2           2            /* Gpt Timer Channel 2 */
+#define GPT_CHANNEL_0 0 /* Gpt Timer Channel 0 */
+#define GPT_CHANNEL_1 1 /* Gpt Timer Channel 1 */
+#define GPT_CHANNEL_2 2 /* Gpt Timer Channel 2 */
 
-#define DEV_TIMER_CLK_FREQ_HZ      (20000000U) /* Timer clock frequency in Hz */
-#define GPT_TIME_US_0           (1000000U)    /* 1 s */
-#define GPT_TIME_US_1           (1000000U)    /* 1 s */
-#define GPT_TIME_DELAY_PER_SECOND (5000000U) /* 1 second Mcal delay*/
+#define DEV_TIMER_CLK_FREQ_HZ     (20000000U) /* Timer clock frequency in Hz */
+#define GPT_TIME_US_0             (1000000U)  /* 1 s */
+#define GPT_TIME_US_1             (1000000U)  /* 1 s */
+#define GPT_TIME_DELAY_PER_SECOND (5000000U)  /* 1 second Mcal delay*/
 
 #define GPT_COUNT_VALUE_0 (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_0
 #define GPT_COUNT_VALUE_1 (DEV_TIMER_CLK_FREQ_HZ / 1000000U) * GPT_TIME_US_1
 
 void Gpt_Notify_Func_0(void);
-int Time_Delay(float64 seconds);
+int  Time_Delay(float64 seconds);
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -78,7 +78,7 @@ int Time_Delay(float64 seconds);
 }
 #endif
 
- #endif /* GPT_EXAMPLE_INTERRUPTTIMEOUT_H */
+#endif /* GPT_EXAMPLE_INTERRUPTTIMEOUT_H */
 /*********************************************************************************************************************
  *  End of File: Gpt_Example_InterruptTimeout.h
  *********************************************************************************************************************/

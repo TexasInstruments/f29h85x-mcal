@@ -57,23 +57,24 @@ typedef enum
 //! SSU Links
 //
 //**************************************************************************************************
-typedef enum{
-    SSU_LINK0   = 0,
-    SSU_LINK1   = 1,
-    SSU_LINK2   = 2,
-    SSU_LINK3   = 3,
-    SSU_LINK4   = 4,
-    SSU_LINK5   = 5,
-    SSU_LINK6   = 6,
-    SSU_LINK7   = 7,
-    SSU_LINK8   = 8,
-    SSU_LINK9   = 9,
-    SSU_LINK10  = 10,
-    SSU_LINK11  = 11,
-    SSU_LINK12  = 12,
-    SSU_LINK13  = 13,
-    SSU_LINK14  = 14,
-    SSU_LINK15  = 15,
+typedef enum
+{
+    SSU_LINK0  = 0,
+    SSU_LINK1  = 1,
+    SSU_LINK2  = 2,
+    SSU_LINK3  = 3,
+    SSU_LINK4  = 4,
+    SSU_LINK5  = 5,
+    SSU_LINK6  = 6,
+    SSU_LINK7  = 7,
+    SSU_LINK8  = 8,
+    SSU_LINK9  = 9,
+    SSU_LINK10 = 10,
+    SSU_LINK11 = 11,
+    SSU_LINK12 = 12,
+    SSU_LINK13 = 13,
+    SSU_LINK14 = 14,
+    SSU_LINK15 = 15,
 } DEVICESUPPORT_SSU_Link;
 
 //**************************************************************************************************
@@ -84,35 +85,35 @@ typedef enum{
 //**************************************************************************************************
 typedef enum
 {
-    SSU_CORE_RESET_ACTIVE     = 0xC9,  //! CPU is held in reset
-    SSU_CORE_RESET_DEACTIVE   = 0x36   //! CPU reset is released (if no HSM) or
-                                       //! determined by HSM input
+    SSU_CORE_RESET_ACTIVE   = 0xC9,  //! CPU is held in reset
+    SSU_CORE_RESET_DEACTIVE = 0x36   //! CPU reset is released (if no HSM) or
+                                     //! determined by HSM input
 } DEVICESUPPORT_SSU_CoreReset;
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 #ifdef _FLASH
 #if !defined(__CPU2__) && !defined(__CPU3__)
-    //
-    //  Dummy certificate section which is updated when actual certificate is generated
-    //  as part of the post build steps
-    //
-    __attribute__((retain, section("cert"))) const uint8 certificate[4096U] = {0U};
+//
+//  Dummy certificate section which is updated when actual certificate is generated
+//  as part of the post build steps
+//
+__attribute__((retain, section("cert"))) const uint8 certificate[4096U] = {0U};
 #endif
 #endif
 
 #if !defined(__CPU2__) && !defined(__CPU3__)
 #ifdef MULTICORE_ENABLE_CPU3
-#ifndef  CPU3_APPSIZE
+#ifndef CPU3_APPSIZE
 #ifdef _FLASH
-#define CPU3_APPSIZE    0x100000
+#define CPU3_APPSIZE 0x100000
 #else
-#define CPU3_APPSIZE    0x8000
-#endif  /* _FLASH */
-#endif  /* CPU3_APPSIZE */
+#define CPU3_APPSIZE 0x8000
+#endif /* _FLASH */
+#endif /* CPU3_APPSIZE */
 __attribute__((retain, section("cpu3app"))) const uint8 cpu3App[CPU3_APPSIZE] = {0U};
-#endif  /* MULTICORE_ENABLE_CPU3 */
+#endif /* MULTICORE_ENABLE_CPU3 */
 #endif /* !defined(__CPU2__) && !defined(__CPU3__) */
 
 /*********************************************************************************************************************
@@ -134,7 +135,7 @@ void DeviceSupport_ControlCPUReset(DEVICESUPPORT_SSU_CPUID cpu, DEVICESUPPORT_SS
 
 static inline boolean DeviceSupport_IsCPU3Reset();
 
-#endif 
+#endif
 
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
@@ -144,7 +145,10 @@ static inline boolean DeviceSupport_IsCPU3Reset();
 // Delay instruction that allows for register configuration to complete.
 //
 //*****************************************************************************
-#define    FLASH_DELAY_CONFIG   __asm(" NOP #8"); __asm(" NOP #8"); __asm(" NOP #4");
+#define FLASH_DELAY_CONFIG \
+    __asm(" NOP #8");      \
+    __asm(" NOP #8");      \
+    __asm(" NOP #4");
 
 #ifdef _FLASH
 //*****************************************************************************
@@ -164,16 +168,12 @@ static inline boolean DeviceSupport_IsCPU3Reset();
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((section(".TI.ramfunc.link2")))
-static inline void
-Flash_ConfigFRI(Flash_FRI friID, uint32 configFlags)
+__attribute__((section(".TI.ramfunc.link2"))) static inline void Flash_ConfigFRI(Flash_FRI friID, uint32 configFlags)
 {
-
     //
     // Set the FRI options.
     //
     HWREG(FRI1_BASE + FRI_O_1_INTF_CTRL + (friID * FRI_REG_STEP)) = configFlags;
-
 }
 
 //*****************************************************************************
@@ -193,22 +193,18 @@ Flash_ConfigFRI(Flash_FRI friID, uint32 configFlags)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((section(".TI.ramfunc.link2")))
-static inline void
-Flash_SetWaitstates(uint16 waitstates)
+__attribute__((section(".TI.ramfunc.link2"))) static inline void Flash_SetWaitstates(uint16 waitstates)
 {
     //
     // waitstates is 4 bits wide.
     //
-    if((waitstates <= 0xFU) && (waitstates >= 0x1U))
+    if ((waitstates <= 0xFU) && (waitstates >= 0x1U))
     {
         //
         // Write flash read wait-state amount to appropriate register.
         //
-        HWREG(FRI1_BASE + FRI_O_FRDCNTL) =
-            (HWREG(FRI1_BASE + FRI_O_FRDCNTL) &
-             ~(uint32)FRI_FRDCNTL_RWAIT_M) |
-            ((uint32)waitstates << FRI_FRDCNTL_RWAIT_S);
+        HWREG(FRI1_BASE + FRI_O_FRDCNTL) = (HWREG(FRI1_BASE + FRI_O_FRDCNTL) & ~(uint32)FRI_FRDCNTL_RWAIT_M) |
+                                           ((uint32)waitstates << FRI_FRDCNTL_RWAIT_S);
     }
 }
 
@@ -220,9 +216,7 @@ Flash_SetWaitstates(uint16 waitstates)
 //!
 //!
 //*****************************************************************************
-static inline void
-Flash_WriteTrims(uint32 reg_offset, uint32 mask,
-                 uint32 shift, uint32 value)
+static inline void Flash_WriteTrims(uint32 reg_offset, uint32 mask, uint32 shift, uint32 value)
 {
     //
     // Set the requested bits to the value.
@@ -230,7 +224,6 @@ Flash_WriteTrims(uint32 reg_offset, uint32 mask,
     HWREG(ANALOGSUBSYS_BASE + reg_offset) &= ~(uint32)mask;
 
     HWREG(ANALOGSUBSYS_BASE + reg_offset) |= ((uint32)value << shift);
-
 }
 #endif
 /*********************************************************************************************************************
@@ -244,7 +237,7 @@ void DeviceSupport_Init()
     // reside in RAM.
     //
     Flash_InitModule(DEVICE_FLASH_WAITSTATES);
-#endif    
+#endif
 
 #ifdef MULTICORE_ENABLE_CPU3
     //
@@ -255,39 +248,30 @@ void DeviceSupport_Init()
     // Bring CPU3 out of reset. Wait for CPU3 to go out of reset.
     //
     DeviceSupport_ControlCPUReset(SSU_CPU3, SSU_CORE_RESET_DEACTIVE);
-    while(DeviceSupport_IsCPU3Reset() == 0x1U);
-#endif 
-
+    while (DeviceSupport_IsCPU3Reset() == 0x1U)
+        ;
+#endif
 }
 
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
 #ifdef _FLASH
-__attribute__((section(".TI.ramfunc.link2")))
-static void Flash_InitModule(uint16 waitstates)
+__attribute__((section(".TI.ramfunc.link2"))) static void Flash_InitModule(uint16 waitstates)
 {
-    if((waitstates <= 0xFU) && (waitstates >= 0x1U))
+    if ((waitstates <= 0xFU) && (waitstates >= 0x1U))
     {
         //
         // Disable data cache, code cache, prefetch, and data preread before changing wait states
         //
-        Flash_ConfigFRI(FLASH_FRI1, FLASH_DATAPREREAD_DISABLE \
-                        | FLASH_CODECACHE_DISABLE \
-                        | FLASH_DATACACHE_DISABLE \
-                        | FLASH_PREFETCH_DISABLE);
-        Flash_ConfigFRI(FLASH_FRI2, FLASH_DATAPREREAD_DISABLE \
-                        | FLASH_CODECACHE_DISABLE \
-                        | FLASH_DATACACHE_DISABLE \
-                        | FLASH_PREFETCH_DISABLE);
-        Flash_ConfigFRI(FLASH_FRI3, FLASH_DATAPREREAD_DISABLE \
-                        | FLASH_CODECACHE_DISABLE \
-                        | FLASH_DATACACHE_DISABLE \
-                        | FLASH_PREFETCH_DISABLE);
-        Flash_ConfigFRI(FLASH_FRI4, FLASH_DATAPREREAD_DISABLE \
-                        | FLASH_CODECACHE_DISABLE \
-                        | FLASH_DATACACHE_DISABLE \
-                        | FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLASH_FRI1, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
+                                        FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLASH_FRI2, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
+                                        FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLASH_FRI3, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
+                                        FLASH_PREFETCH_DISABLE);
+        Flash_ConfigFRI(FLASH_FRI4, FLASH_DATAPREREAD_DISABLE | FLASH_CODECACHE_DISABLE | FLASH_DATACACHE_DISABLE |
+                                        FLASH_PREFETCH_DISABLE);
 
         //
         // Set waitstates according to frequency.
@@ -297,41 +281,33 @@ static void Flash_InitModule(uint16 waitstates)
         //
         // Configure TRIMCOMMITREAD and TRIMCOMMITOTHER in TRIMCOMMIT register
         //
-        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITREAD,
-                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITREAD);
-        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITOTHER,
-                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITOTHER);
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITREAD, 0,
+                         ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITREAD);
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITOTHER, 0,
+                         ASYSCTL_FLASHTRIMCOMMIT_FLC0TRIMCOMMITOTHER);
 
-        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITREAD,
-                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITREAD);
-        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITOTHER,
-                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITOTHER);
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITREAD, 0,
+                         ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITREAD);
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITOTHER, 0,
+                         ASYSCTL_FLASHTRIMCOMMIT_FLC1TRIMCOMMITOTHER);
 
-        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITREAD,
-                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITREAD);
-        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITOTHER,
-                         0, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITOTHER);
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITREAD, 0,
+                         ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITREAD);
+        Flash_WriteTrims(ASYSCTL_O_FLASHTRIMCOMMIT, ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITOTHER, 0,
+                         ASYSCTL_FLASHTRIMCOMMIT_FLC2TRIMCOMMITOTHER);
 
         //
         // Enable data cache, code cache, prefetch, and data preread to improve performance of code
         // executed from flash.
         //
-        Flash_ConfigFRI(FLASH_FRI1, FLASH_DATAPREREAD_ENABLE \
-                        | FLASH_CODECACHE_ENABLE \
-                        | FLASH_DATACACHE_ENABLE \
-                        | FLASH_PREFETCH_ENABLE);
-        Flash_ConfigFRI(FLASH_FRI2, FLASH_DATAPREREAD_ENABLE \
-                        | FLASH_CODECACHE_ENABLE \
-                        | FLASH_DATACACHE_ENABLE \
-                        | FLASH_PREFETCH_ENABLE);
-        Flash_ConfigFRI(FLASH_FRI3, FLASH_DATAPREREAD_ENABLE \
-                        | FLASH_CODECACHE_ENABLE \
-                        | FLASH_DATACACHE_ENABLE \
-                        | FLASH_PREFETCH_ENABLE);
-        Flash_ConfigFRI(FLASH_FRI4, FLASH_DATAPREREAD_ENABLE \
-                        | FLASH_CODECACHE_ENABLE \
-                        | FLASH_DATACACHE_ENABLE \
-                        | FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLASH_FRI1, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
+                                        FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLASH_FRI2, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
+                                        FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLASH_FRI3, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
+                                        FLASH_PREFETCH_ENABLE);
+        Flash_ConfigFRI(FLASH_FRI4, FLASH_DATAPREREAD_ENABLE | FLASH_CODECACHE_ENABLE | FLASH_DATACACHE_ENABLE |
+                                        FLASH_PREFETCH_ENABLE);
 
         //
         // Force a pipeline flush to ensure that the write to the last register
@@ -367,11 +343,11 @@ void DeviceSupport_ConfigBootAddress(DEVICESUPPORT_SSU_CPUID cpu, uint32 addr, D
 
 void DeviceSupport_ControlCPUReset(DEVICESUPPORT_SSU_CPUID cpu, DEVICESUPPORT_SSU_CoreReset control)
 {
-    if(cpu == SSU_CPU2)
+    if (cpu == SSU_CPU2)
     {
         HWREG(SSUCPU2CFG_BASE + SSU_O_CPU_RST_CTRL) = control;
     }
-    else if(cpu == SSU_CPU3)
+    else if (cpu == SSU_CPU3)
     {
         HWREG(SSUCPU3CFG_BASE + SSU_O_CPU_RST_CTRL) = control;
     }
@@ -385,10 +361,10 @@ void DeviceSupport_ControlCPUReset(DEVICESUPPORT_SSU_CPUID cpu, DEVICESUPPORT_SS
 
 static inline boolean DeviceSupport_IsCPU3Reset()
 {
-    return((HWREGH(DEVCFG_BASE + SYSCTL_O_RSTSTAT) & SYSCTL_RSTSTAT_CPU3) == 0U);
+    return ((HWREGH(DEVCFG_BASE + SYSCTL_O_RSTSTAT) & SYSCTL_RSTSTAT_CPU3) == 0U);
 }
 
-#endif 
+#endif
 
 /*********************************************************************************************************************
  *  End of File: DeviceSupport.c

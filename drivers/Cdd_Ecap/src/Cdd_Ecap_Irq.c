@@ -43,7 +43,7 @@
  * Local Type Declarations
  *********************************************************************************************************************/
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
 
@@ -65,7 +65,7 @@
 #define CDD_ECAP_START_SEC_ISR_CODE
 #include "Cdd_Ecap_MemMap.h"
 
-FUNC(void,CDD_ECAP_CODE) Cdd_Ecap_IntISR_Fun(Cdd_Ecap_ChannelType Cdd_Ecap_Channel)
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_IntISR_Fun(Cdd_Ecap_ChannelType Cdd_Ecap_Channel)
 {
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
     uint32 baseAddr = Cdd_Ecap_Configset.chCfg[Cdd_Ecap_Channel].base_addr;
@@ -109,7 +109,6 @@ ISR(Cdd_Ecap_ch1Notify)
 #error "Invalid interrupt category for CDD_ECAP_CHANNEL1"
 #endif
 {
-
     Cdd_Ecap_IntISR_Fun(CDD_ECAP_CHANNEL1);
 }
 #endif
@@ -177,7 +176,7 @@ ISR(Cdd_Ecap_ch5Notify)
 #define CDD_ECAP_STOP_SEC_ISR_CODE
 #include "Cdd_Ecap_MemMap.h"
 
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
 

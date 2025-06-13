@@ -95,8 +95,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -130,8 +130,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -165,8 +165,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -200,8 +200,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -235,8 +235,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -270,8 +270,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -305,8 +305,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -340,8 +340,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -375,8 +375,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -410,8 +410,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -445,8 +445,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -480,8 +480,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -515,8 +515,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -550,8 +550,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -585,8 +585,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -620,8 +620,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -655,8 +655,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -690,8 +690,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -725,8 +725,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },
@@ -760,8 +760,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         .Port_CoreSelect = (Port_PinCoreSelect)PORT_CORE_CPU1,
         .Port_PinConfigFlags = (Port_PinConfigFlagType)((1UL<<0U)
                             |(0UL<<1U)
-                            |(1UL<<2U)
-                            |(1UL<<3U)
+                            |(0UL<<2U)
+                            |(0UL<<3U)
                             |(1UL<<4U)),
         .Port_EnableWakeupPinLPM = (boolean) FALSE
     },

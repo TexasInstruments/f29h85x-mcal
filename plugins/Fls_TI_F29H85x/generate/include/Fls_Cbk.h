@@ -23,11 +23,6 @@
 #ifndef FLS_CBK_H_
 #define FLS_CBK_H_
 
-/**
- *  \addtogroup FLS FLS Configuration
- *  @{
- */
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -102,8 +97,6 @@ typedef P2FUNC (void, FLS_APPL_CODE, Fls_JobErrorNotifyType)(void);
 #ifdef __cplusplus
 }
 #endif
-
-/**  @} */
 
 #endif  /** #ifndef FLS_CBK_H_ */
 

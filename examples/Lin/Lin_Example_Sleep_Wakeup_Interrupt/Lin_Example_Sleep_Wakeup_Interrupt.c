@@ -1,4 +1,4 @@
- /*********************************************************************************************************************
+/*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
  *  \verbatim
@@ -19,10 +19,10 @@
  *  Module:     Lin Driver
  *  Generator:  None
  *
- *  Description:  This file contains Lin Driver Demo implementation which will initialize the Lin Module, Put the 
- *                device to sleep mode, and when wakeup pulse is generated on LIN BUS, Wakeup interrupt is expected
- *                and device should wakeup from sleep. 
- *  
+ *  Description:  This file contains Lin Driver Demo implementation which will initialize the Lin
+ *Module, Put the device to sleep mode, and when wakeup pulse is generated on LIN BUS, Wakeup
+ *interrupt is expected and device should wakeup from sleep.
+ *
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -87,40 +87,39 @@ Std_ReturnType Lin_CheckWakeUp_and_Sleep();
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
-uint8* Lin_Rx_Buff;
+uint8*  Lin_Rx_Buff;
 uint8** Lin_Rx_Data = &Lin_Rx_Buff;
 
 int main(void)
 {
     /* INITIALIZATIONS*/
-    Std_ReturnType returnValue = E_NOT_OK;    
+    Std_ReturnType returnValue = E_NOT_OK;
 
     DeviceSupport_Init();
-    /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call 
+    /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call
     Port_Init(&Port_PortConfigSet) and will Initialize the Port and Mcu Driver */
     EcuM_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("LIN Driver Sample Application: Lin Sleep WakeUp Interrupt - Starts!!!\n\n\r");
     AppUtils_Printf("---------------------------------------------------------------\n\n\r");
 
-
     /* Lin_Init */
 #if (STD_ON == LIN_PRE_COMPILE_VARIANT)
     Lin_Init(NULL_PTR);
     Lin_WakeupInternal(LinConf_LinChannel_LinChannel_0);
 #else
-    const Lin_ConfigType *pCfgPtr = &Lin_LinGlobalConfig;
+    const Lin_ConfigType* pCfgPtr = &Lin_LinGlobalConfig;
     Lin_Init(pCfgPtr);
     returnValue = Lin_WakeupInternal(LinConf_LinChannel_LinChannel_0);
     if (returnValue == E_OK)
     {
         AppUtils_Printf("Initialization of LIN Module is Success !!!\n\n\r");
-    }    
+    }
 
 #endif
 
     returnValue = Lin_CheckWakeUp_and_Sleep();
-    if ( (returnValue == E_OK) && (LIN_OPERATIONAL == Lin_GetStatus(LinConf_LinChannel_LinChannel_0, Lin_Rx_Data)))
+    if ((returnValue == E_OK) && (LIN_OPERATIONAL == Lin_GetStatus(LinConf_LinChannel_LinChannel_0, Lin_Rx_Data)))
     {
         AppUtils_Printf("---------------------------------------------------------------\n\r");
         AppUtils_Printf("LIN Example Application - Wake Up Interrupt PASSED !!!\n");
@@ -130,12 +129,6 @@ int main(void)
     {
         AppUtils_Printf("!!! Example Run Failed !!!\n\r");
     }
-
-    while (1)
-    {
-        /* Example Run Success */        
-    }
-
 }
 
 Std_ReturnType Lin_CheckWakeUp_and_Sleep()
@@ -145,9 +138,10 @@ Std_ReturnType Lin_CheckWakeUp_and_Sleep()
     AppUtils_Printf("LIN Module Going to Sleep. Sending Go to Sleep Command On Bus..\n\r");
     return_val = Lin_GoToSleep(LinConf_LinChannel_LinChannel_0);
 
-    while (LIN_CH_SLEEP != Lin_GetStatus(LinConf_LinChannel_LinChannel_0, Lin_Rx_Data));
+    while (LIN_CH_SLEEP != Lin_GetStatus(LinConf_LinChannel_LinChannel_0, Lin_Rx_Data))
+        ;
 
-    if ( return_val == E_OK)
+    if (return_val == E_OK)
     {
         /* If Go to sleep is Success, Need to trigger wakeup pulse from PLIN */
         /* When WakeUp Pulse is triggered, Wakeup Interrupt will be triggered */
@@ -158,7 +152,7 @@ Std_ReturnType Lin_CheckWakeUp_and_Sleep()
 
         while (LIN_OPERATIONAL != Lin_GetStatus(LinConf_LinChannel_LinChannel_0, Lin_Rx_Data))
         {
-            /* Do nothing */          
+            /* Do nothing */
         }
         AppUtils_Printf("Lin Module Wake Up from Sleep by WakeUp Interrupt is Success !!!\n\n\r");
     }
@@ -168,16 +162,15 @@ Std_ReturnType Lin_CheckWakeUp_and_Sleep()
     }
 
     return return_val;
-
 }
 
 void Ecum_Lin_CheckWakeup(EcuM_WakeupSourceType WakeupSource)
 {
     Std_ReturnType check_wakeup_status = E_NOT_OK;
-    
+
     check_wakeup_status = LinIf_CheckWakeup(WakeupSource);
 
-    if ( check_wakeup_status == E_OK )
+    if (check_wakeup_status == E_OK)
     {
         AppUtils_Printf("LinIf_CheckWakeup Detected WakeUp Pulse on Lin Bus !!!\n\r");
     }
