@@ -58,9 +58,9 @@ extern "C" {
  * Defines for CAN Driver version used for compatibility checks.
  */
 /** \brief  Driver Implementation Major Version. */
-#define CAN_SW_MAJOR_VERSION (1U)
+#define CAN_SW_MAJOR_VERSION (2U)
 /** \brief  Driver Implementation Minor Version. */
-#define CAN_SW_MINOR_VERSION (2U)
+#define CAN_SW_MINOR_VERSION (0U)
 /** \brief  Driver Implementation Patch Version. */
 #define CAN_SW_PATCH_VERSION (0U)
 
@@ -402,6 +402,21 @@ typedef struct Can_ControllerType_s
 
 } Can_ControllerType;
 
+/**
+ * \brief Structure defining the HW filter to be used
+ */
+typedef struct Can_HwFilterType_s
+{
+    /** \brief  ID value extended will have MSB set */
+    uint32                 CanHwFilterCode;
+    /** \brief  ptr to Mask for the RX filtering */
+    Can_MaskType           CanHwFilterMask;
+    /** \brief  filter event pin at extension interface */
+    Can_EventPin           CanEventPin;
+    /** \brief  filter type classic, dual, range */
+    Can_StandardFilterType CanStandardFilterType;
+} Can_HwFilterType;
+
 /*
  *Design: MCAL-22799, MCAL-22796, MCAL-22800, MCAL-22795, MCAL-22794, MCAL-22793, MCAL-22792,
  *MCAL-22791, MCAL-22790, Design: MCAL-22794, MCAL-22789, MCAL-22788
@@ -410,28 +425,26 @@ typedef struct Can_ControllerType_s
 typedef struct Can_MailboxType_s
 {
     /** \brief  CanHandleType 0=Full, 1=Basic */
-    uint8                           CanHandleType;
+    Can_HandleType                  CanHandleType;
     /** \brief  CanIdType 0=standard 1=Extended */
     Can_IdType                      CanIdType;
-    /** \brief  ID value extended will have MSB set */
-    uint32                          CanHwFilterCode;
     /** \brief  CanObjectId - Holds handle Id */
-    uint16                          CanObjectId;
+    Can_HwHandleType                CanObjectId;
     /** \brief  Mailbox - Hw object in the controller */
-    Can_HwHandleType                HwHandle;
+    uint8                           HwHandle;
     /** \brief  Number of hardware objects used to implement one HOH */
-    uint16                          CanHwObjectCount;
+    uint8                           CanHwObjectCount;
     /** \brief  CanObjectType - Direction of Mailbox */
     Can_MailboxDirectionType        CanObjectType;
     /** \brief  Controller */
     const Can_ControllerType*       CanControllerRef;
-    /** \brief  ptr to Mask for the RX filtering */
-    Can_MaskType                    CanHwFilterMask;
+    /** \brief  Reference to list of hardware filters HOH is associated to. */
+    const Can_HwFilterType**        CanHwFilterList;
+    /** \brief  Reference to list of hardware filters HOH is associated to. */
+    uint8                           CanFilterListCount;
     /** \brief  If PduInfo->SduLength does not match possible DLC values CanDrv will use the next
        higher valid DLC for transmission with initialization of unused bytes to the value of the
        corresponding CanFdPaddingValue. */
-    Can_EventPin                    CanEventPin;
-    Can_StandardFilterType          CanStandardFilterType;
     uint8                           CanFdPaddingValue;
     /** \brief  Trigger Transmit Enable/Disable */
     boolean                         CanTriggerTransmitEnable;
@@ -533,7 +546,7 @@ typedef struct Can_ConfigType_s
     /** \brief MB array for all controllers */
     const Can_MailboxType**    MailBoxList;
     /** \brief MaxMbCount in MB list in all controller */
-    uint8                      MaxMbCnt;
+    uint16                     MaxMbCnt;
     /** \brief Max Baud Config Index in BaudRateConfigList in all controller */
     uint32                     MaxBaudConfigID[KMAX_CONTROLLER];
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
@@ -810,7 +823,7 @@ Can_GetControllerMode(uint8 Controller, P2VAR(Can_ControllerStateType, AUTOMATIC
  *
  *****************************************************************************/
 FUNC(Std_ReturnType, CAN_CODE)
-Can_Write(uint8 Hth, P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo);
+Can_Write(Can_HwHandleType Hth, P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) PduInfo);
 
 /** \brief This service performs the polling of TX confirmation when
  *        CAN_TX_PROCESSING is set to POLLING.

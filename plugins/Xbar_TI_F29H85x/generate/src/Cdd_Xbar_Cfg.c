@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Cdd_Xbar/Cdd')/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!]
+[!SKIPFILE "as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -35,11 +35,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_XBAR_SW_MAJOR_VERSION != (2U)) || (CDD_XBAR_SW_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (CDD_XBAR_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Cdd_Xbar.c and Cdd_Xbar.h are inconsistent!"
 #endif
 
-#if ((CDD_XBAR_CFG_MAJOR_VERSION != (2U)) || (CDD_XBAR_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (CDD_XBAR_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Cdd_Xbar_Cfg.c and Cdd_Xbar_Cfg.h are inconsistent!"
 #endif
 
@@ -77,7 +77,7 @@
 #define CDD_XBAR_START_SEC_CONFIG_DATA
 #include "Cdd_Xbar_MemMap.h"
 
-[!SELECT "as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration"!]
+[!SELECT "as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']/CddXbarConfiguration"!]
 /** \brief CDD Crossbar Configuration */
 VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Configuration = 
 {

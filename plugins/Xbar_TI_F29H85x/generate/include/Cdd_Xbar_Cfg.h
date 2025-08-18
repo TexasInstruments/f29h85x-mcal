@@ -31,11 +31,12 @@ extern "C" {
 #endif
 [!AUTOSPACING!][!//
 
+[!SELECT "as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']"!]
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
 
-[!IF "as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarGeneral/CddXbarDevErrorDetect = 'true'"!]#include "Det.h"[!ENDIF!]
+[!IF "CddXbarGeneral/CddXbarDevErrorDetect = 'true'"!]#include "Det.h"[!ENDIF!]
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -59,34 +60,34 @@ extern "C" {
  *********************************************************************************************************************/
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /** \brief CDD XBar development error detection */
-#define CDD_XBAR_DEV_ERROR_DETECT  [!"'              '"!] [!IF "as:modconf('Cdd_Xbar/Cdd')/CddXbarGeneral/CddXbarDevErrorDetect"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
+#define CDD_XBAR_DEV_ERROR_DETECT  [!"'              '"!] [!IF "CddXbarGeneral/CddXbarDevErrorDetect"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
 
 /** \brief Switches the CDD XBAR functions ON or OFF */
-#define CDD_XBAR_API_ENABLE  [!"'                     '"!][!IF "as:modconf('Cdd_Xbar/Cdd')/CddXbarGeneral/CddXbarAPIEnable = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
+#define CDD_XBAR_API_ENABLE  [!"'                     '"!][!IF "CddXbarGeneral/CddXbarAPIEnable = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
 
 /** \brief Switches the Cdd_Xbar_GetVersionInfo function ON or OFF */
-#define CDD_XBAR_GET_VERSION_INFO_API  [!"'           '"!][!IF "as:modconf('Cdd_Xbar/Cdd')/CddXbarGeneral/CddXbarVersionInfoApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
+#define CDD_XBAR_GET_VERSION_INFO_API  [!"'           '"!][!IF "CddXbarGeneral/CddXbarVersionInfoApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
 
 /** \brief Switches Cdd_Xbar_InputFlagStatus() and Cdd_Xbar_InputFlagClear() ON or OFF */
-#define CDD_XBAR_INPUT_FLAG_API [!"'                  '"!][!IF "as:modconf('Cdd_Xbar/Cdd')/CddXbarGeneral/CddXbarInputFlagApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
+#define CDD_XBAR_INPUT_FLAG_API [!"'                  '"!][!IF "CddXbarGeneral/CddXbarInputFlagApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
 
 /** \brief  Number of Input crossbar instances configured */
-#define CDD_XBAR_INPUT_XBAR_CONFIGURATIONS        [!"num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/*))"!]U
+#define CDD_XBAR_INPUT_XBAR_CONFIGURATIONS        [!"num:i(count(CddXbarConfiguration/CddXbarInputXbarConfig/CddXbarInputXbarInstanceConfig/*))"!]U
 
 /** \brief Number of Output crossbar instances configured */
-#define CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS       [!"num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*))"!]U
+#define CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS       [!"num:i(count(CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*))"!]U
 
 /** \brief Number of EPWM crossbar instances configured */
-#define CDD_XBAR_EPWM_XBAR_CONFIGURATIONS         [!"num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*))"!]U
+#define CDD_XBAR_EPWM_XBAR_CONFIGURATIONS         [!"num:i(count(CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*))"!]U
 
 /** \brief Number of CLB crossbar instances configured */
-#define CDD_XBAR_CLB_XBAR_CONFIGURATIONS          [!"num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*))"!]U
+#define CDD_XBAR_CLB_XBAR_CONFIGURATIONS          [!"num:i(count(CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*))"!]U
 
 /** \brief Number of MinDB crossbar instances configured */
-#define CDD_XBAR_MINDB_XBAR_CONFIGURATIONS        [!"num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*))"!]U
+#define CDD_XBAR_MINDB_XBAR_CONFIGURATIONS        [!"num:i(count(CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*))"!]U
 
 /** \brief Number of ICL crossbar instances configured */
-#define CDD_XBAR_ICL_XBAR_CONFIGURATIONS          [!"num:i(count(as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*))"!]U
+#define CDD_XBAR_ICL_XBAR_CONFIGURATIONS          [!"num:i(count(CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*))"!]U
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /** \brief Number of input crossbar output lines */
@@ -107,7 +108,7 @@ extern "C" {
 /** \brief Number of ICL crossbar output lines */
 #define CDD_XBAR_ICL_XBAR_OUTPUT_COUNT            [!"ecu:get('ICL_Xbar_OutputLineCount')"!]U
 
-[!IF "as:modconf('Cdd_Xbar/Cdd')/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!] 
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!] 
 /** \brief Switches the pre compile variant ON or OFF */
 #define CDD_XBAR_PRE_COMPILE_VARIANT              STD_ON
 /** \brief Pre compile variant configuration */
@@ -136,9 +137,9 @@ extern "C" {
 #define CDD_XBAR_MAX_INPUT_LINES                  [!"ecu:get('CDD_XBAR_MAX_INPUT_LINES')"!]U
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-[!IF "num:i(count(as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*))>0"!]
+[!IF "num:i(count(CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*))>0"!]
 [!VAR "maxinput" = "' '"!] [!VAR "var1" = "0"!]
-[!LOOP "as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*"!]
+[!LOOP "CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*"!]
 [!LOOP "CddXbarOutputXbarInput/*/CddXbarOutputXbarInputLine/*"!]
 [!VAR "var1" = "$var1+1"!]
 [!ENDLOOP!]
@@ -148,9 +149,9 @@ extern "C" {
 #define CDD_XBAR_OUTXBAR_INPUT_COUNT         [!"num:max(text:split($maxinput))"!]U
 [!ENDIF!]
 
-[!IF "num:i(count(as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*))>0"!] 
+[!IF "num:i(count(CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*))>0"!] 
 [!VAR "maxinput" = "' '"!] [!VAR "var1" = "0"!] 
-[!LOOP "as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*"!] 
+[!LOOP "CddXbarConfiguration/CddXbarEpwmXbarConfig/CddXbarEpwmXbarInstanceConfig/*"!] 
 [!LOOP "CddXbarEpwmXbarInput/*/CddXbarEpwmXbarInputLine/*"!] 
 [!VAR "var1" = "$var1+1"!] 
 [!ENDLOOP!] 
@@ -160,9 +161,9 @@ extern "C" {
 #define CDD_XBAR_EPWMXBAR_INPUT_COUNT         [!"num:max(text:split($maxinput))"!]U
 [!ENDIF!]
 
-[!IF "num:i(count(as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*))>0"!] 
+[!IF "num:i(count(CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*))>0"!] 
 [!VAR "maxinput" = "' '"!] [!VAR "var1" = "0"!] 
-[!LOOP "as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*"!] 
+[!LOOP "CddXbarConfiguration/CddXbarMindbXbarConfig/CddXbarMindbXbarInstanceConfig/*"!] 
 [!LOOP "CddXbarMindbXbarInput/*/CddXbarMindbXbarInputLine/*"!] 
 [!VAR "var1" = "$var1+1"!] 
 [!ENDLOOP!] 
@@ -172,9 +173,9 @@ extern "C" {
 #define CDD_XBAR_MINDBXBAR_INPUT_COUNT        [!"num:max(text:split($maxinput))"!]U
 [!ENDIF!][!//
 
-[!IF "num:i(count(as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*))>0"!] 
+[!IF "num:i(count(CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*))>0"!] 
 [!VAR "maxinput" = "' '"!] [!VAR "var1" = "0"!] 
-[!LOOP "as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*"!] 
+[!LOOP "CddXbarConfiguration/CddXbarIclXbarConfig/CddXbarIclXbarInstanceConfig/*"!] 
 [!LOOP "CddXbarIclXbarInput/*/CddXbarIclXbarInputLine/*"!] 
 [!VAR "var1" = "$var1+1"!] 
 [!ENDLOOP!]
@@ -184,9 +185,9 @@ extern "C" {
 #define CDD_XBAR_ICLXBAR_INPUT_COUNT           [!"num:max(text:split($maxinput))"!]U
 [!ENDIF!][!//
 
-[!IF "num:i(count(as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*))>0"!] 
+[!IF "num:i(count(CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*))>0"!] 
 [!VAR "maxinput" = "' '"!] [!VAR "var1" = "0"!] 
-[!LOOP "as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*"!] 
+[!LOOP "CddXbarConfiguration/CddXbarClbXbarConfig/CddXbarClbXbarInstanceConfig/*"!] 
 [!LOOP "CddXbarClbXbarInput/*/CddXbarClbXbarInputLine/*"!] 
 [!VAR "var1" = "$var1+1"!] 
 [!ENDLOOP!]
@@ -230,7 +231,7 @@ extern "C" {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /* Design: MCAL-25820 */
-[!LOOP "as:modconf('Cdd_Xbar/Cdd')[1]/CddXbarConfiguration/*"!] 
+[!LOOP "CddXbarConfiguration/*"!] 
 [!LOOP "CddXbarInputXbarInstanceConfig/*"!] 
 [!VAR "var" = "text:toupper(substring-after(num:inttohex(@index, 2 ),'0x'))"!] 
 /** \brief Symbolic name for [!"@name"!] */
@@ -265,12 +266,12 @@ extern "C" {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /* Design: MCAL-25820 */
-[!LOOP "as:modconf('Cdd_Xbar/Cdd')/CddXbarConfiguration/*"!] 
+[!LOOP "CddXbarConfiguration/*"!] 
 [!IF "text:contains(substring-after(node:name(.), 'CddXbar'), 'Xbar')"!] 
 /** \brief Symbolic name for [!"substring-before(substring-after(node:name(.), 'CddXbar'), 'Config')"!] */
 #define CddXbarConf_[!"substring-before(node:name(.), 'Config')"!]				[!"node:pos(.)"!]U    /*~ASR~*/
 [!ENDIF!] 
-[!ENDLOOP!]
+[!ENDLOOP!][!ENDSELECT!]
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/

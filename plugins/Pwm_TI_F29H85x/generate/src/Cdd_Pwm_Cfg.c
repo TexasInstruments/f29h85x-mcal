@@ -1,4 +1,4 @@
-[!SKIPFILE "node:value(as:modconf('Cdd_Pwm/Cdd')[1]/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
+[!SKIPFILE "node:value(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
-#if ((CDD_PWM_SW_MAJOR_VERSION != (1U)) || CDD_PWM_SW_MINOR_VERSION != (0U))
+#if ((CDD_PWM_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (CDD_PWM_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
   #error "Version numbers of Cdd_Pwm_Cfg.c and Cdd_Pwm.h are inconsistent!"
 #endif
 
@@ -71,18 +71,18 @@
  /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/
-
+[!SELECT "as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']"!]
 [!VAR "ChannelCount" = "num:i(0)"!]
 
 /** \brief Cdd Pwm Driver configuration */
 #define CDD_PWM_START_SEC_CONFIG_DATA_UNSPECIFIED
 #include "Cdd_Pwm_MemMap.h"[!//
-[!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet"!]
-CONST(Cdd_Pwm_ConfigType, CDD_PWM_CONFIG_DATA) Cdd_Pwm_ConfigSet[!"@index"!] =
+
+CONST(Cdd_Pwm_ConfigType, CDD_PWM_CONFIG_DATA) Cdd_Pwm_ConfigSet =
 {
     .hwunitcfg = 
     {[!//
-        [!LOOP "CddPwmHwUnitConfig/*"!]
+        [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*"!]
         [[!"@index"!]] =
         {
             /* HwunitId: EPWM[!"node:value(CddPwmInstanceId)"!] */
@@ -103,7 +103,7 @@ CONST(Cdd_Pwm_ConfigType, CDD_PWM_CONFIG_DATA) Cdd_Pwm_ConfigSet[!"@index"!] =
     },
     .channelcfg  =
     {[!//
-        [!VAR "CddPwmChannelCount"="num:i(0)"!][!LOOP "CddPwmHwUnitConfig/*/CddPwmOutputChannel/*"!]
+        [!VAR "CddPwmChannelCount"="num:i(0)"!][!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmOutputChannel/*"!]
         [[!"num:i($CddPwmChannelCount)"!]]=
         {
             /* HwunitId: EPWM[!"node:value(../../CddPwmInstanceId)"!] */
@@ -112,10 +112,10 @@ CONST(Cdd_Pwm_ConfigType, CDD_PWM_CONFIG_DATA) Cdd_Pwm_ConfigSet[!"@index"!] =
             .idlestate = (Cdd_Pwm_OutputStateType)[!"CddPwmIdleState"!],
             .polarity = (Cdd_Pwm_OutputStateType)[!"CddPwmPolarity"!],
             .dutycycle = (Cdd_Pwm_DutyCycleType)[!"CddPwmDutyCycle"!]U
-        }[!VAR "CddPwmChannelCount"="num:i($CddPwmChannelCount+1)"!][!IF "$CddPwmChannelCount < num:i(count(as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmOutputChannel/*))"!],[!CR!][!ELSE!][!ENDIF!][!ENDLOOP!]
+        }[!VAR "CddPwmChannelCount"="num:i($CddPwmChannelCount+1)"!][!IF "$CddPwmChannelCount < num:i(count(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmOutputChannel/*))"!],[!CR!][!ELSE!][!ENDIF!][!ENDLOOP!]
     }
 };[!//
-[!ENDLOOP!]
+[!ENDSELECT!]
 #define CDD_PWM_STOP_SEC_CONFIG_DATA_UNSPECIFIED
 #include "Cdd_Pwm_MemMap.h"
 

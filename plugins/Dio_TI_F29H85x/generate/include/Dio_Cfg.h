@@ -59,7 +59,7 @@ extern "C" {
 /** \brief Dio configuration Patch Version */
 #define DIO_CFG_PATCH_VERSION           ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 
-
+[!SELECT "as:modconf('Dio')[as:path(node:dtos(.))='/TI_F29H85x/Dio']"!]
 /*********************************************************************************************************************
  *  \name DIO service enable/disable defines
  *
@@ -73,7 +73,7 @@ extern "C" {
  *
  *********************************************************************************************************************/
 /* Design: MCAL-22501 */
-#define DIO_DEV_ERROR_DETECT      [!IF "as:modconf('Dio')[1]/DioGeneral/DioDevErrorDetect"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define DIO_DEV_ERROR_DETECT      [!IF "DioGeneral/DioDevErrorDetect"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  *
@@ -81,7 +81,7 @@ extern "C" {
  *
  *********************************************************************************************************************/
 /* Design: MCAL-22503 */
-#define DIO_VERSION_INFO_API      [!IF "as:modconf('Dio')[1]/DioGeneral/DioVersionInfoApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define DIO_VERSION_INFO_API      [!IF "DioGeneral/DioVersionInfoApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  *
@@ -89,7 +89,7 @@ extern "C" {
  *
  *********************************************************************************************************************/
 /* Design: MCAL-22502 */
-#define DIO_FLIP_CHANNEL_API      [!IF "as:modconf('Dio')[1]/DioGeneral/DioFlipChannelApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define DIO_FLIP_CHANNEL_API      [!IF "DioGeneral/DioFlipChannelApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 #endif
 /*********************************************************************************************************************
  *
@@ -126,7 +126,7 @@ extern "C" {
  *********************************************************************************************************************/
 /* Design: MCAL-22504, MCAL-22474, MCAL-22473, MCAL-22537, MCAL-22538 */
 [!VAR "var1" = "0"!][!//
-[!LOOP "as:modconf('Dio')[1]/DioConfig/DioPort/*"!][!//
+[!LOOP "DioConfig/DioPort/*"!][!//
 /* Symbolic name for [!"concat('GPIO_PORT_', translate(DioPortId, '01234567', 'ABCDEFGH'))"!] */
 #define DioConf_DioPort_[!"@name"!] ((Dio_PortType)  [!"concat('GPIO_PORT_', translate(DioPortId, '01234567', 'ABCDEFGH'))"!]) /*~ASR~*/
 [!CR!][!VAR "var1" = "$var1+1"!][!//
@@ -138,7 +138,7 @@ extern "C" {
  *
  *********************************************************************************************************************/
 #define DIO_CFG_ENABLED_PORT_MASK             (0U [!//
-[!LOOP "as:modconf('Dio')[1]/DioConfig/DioPort/*"!]\
+[!LOOP "DioConfig/DioPort/*"!]\
                                                   | (1U << [!"concat('GPIO_PORT_', translate(DioPortId, '01234567', 'ABCDEFGH'))"!])[!//
 [!ENDLOOP!][!//
 )[!//
@@ -169,7 +169,7 @@ extern "C" {
  *********************************************************************************************************************/
 /* Design: MCAL-22471, MCAL-22469, MCAL-22506, MCAL-22507, MCAL-22470, MCAL-22537, MCAL-22538*/
 [!VAR "var1" = "0"!][!//
-[!LOOP "as:modconf('Dio')[1]/DioConfig/DioPort/*"!][!//
+[!LOOP "DioConfig/DioPort/*"!][!//
 [!LOOP "DioChannel/*"!][!//
 /* Symbolic name for GPIO channel #[!"DioChannelId"!] [!"@name"!] */
 #define DioConf_DioChannel_[!"@name"!] ((Dio_ChannelType) [!"DioChannelId"!]U) /*~ASR~*/
@@ -189,13 +189,13 @@ extern "C" {
  *********************************************************************************************************************/
 /* Design: MCAL-22476, MCAL-22508, MCAL-22509, MCAL-22537, MCAL-22538 */
 [!VAR "var1" = "0"!][!//
-[!LOOP "as:modconf('Dio')[1]/DioConfig/DioPort/*"!][!LOOP "DioChannelGroup/*"!][!//
+[!LOOP "DioConfig/DioPort/*"!][!LOOP "DioChannelGroup/*"!][!//
 #define DioConf_DioChannelGroup_[!"@name"!] ((P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_CONST)) Dio_ChannelGroupRef[[!"num:i($var1)"!]]) /*~ASR~*/
 [!VAR "var1" = "$var1+1"!][!//
 [!ENDLOOP!][!//
 [!ENDLOOP!][!//
 #define DIO_MAX_NO_OF_CHANNEL_GROUPS 	[!"num:i($var1)"!]U
-
+[!ENDSELECT!]
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/

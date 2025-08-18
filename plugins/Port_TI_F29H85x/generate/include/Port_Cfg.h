@@ -60,64 +60,66 @@ extern "C" {
 /** \brief Port configuration Patch Version. */
 #define PORT_CFG_PATCH_VERSION           ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 
-
+[!SELECT "as:modconf('Port')[as:path(node:dtos(.))='/TI_F29H85x/Port']"!]
 /*****************************************************************************
  *
  * \brief PORT Build Variant.
  *  Build variants.(i.e Pre-compile,Post-build)
  *
  *****************************************************************************/
-#define PORT_CFG_PRE_COMPILE_VARIANT         [!IF "as:modconf('Port')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define PORT_CFG_PRE_COMPILE_VARIANT         [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*****************************************************************************
  *
  * \brief Enable/Disable development error detection.
  *
  *****************************************************************************/
-#define PORT_CFG_DEV_ERROR_DETECT           [!IF "as:modconf('Port')[1]/PortGeneral/PortDevErrorDetect"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
+#define PORT_CFG_DEV_ERROR_DETECT           [!IF "PortGeneral/PortDevErrorDetect"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
 
 /*****************************************************************************
  *
  * \brief Enable/Disable Port_SetPinDirection().
  *
  *****************************************************************************/
-#define PORT_CFG_SET_PIN_DIRECTION_API      [!IF "as:modconf('Port')[1]/PortGeneral/PortSetPinDirectionApi"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
+#define PORT_CFG_SET_PIN_DIRECTION_API      [!IF "PortGeneral/PortSetPinDirectionApi"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
 
 /*****************************************************************************
  *
  * \brief Enable/Disable Port_SetPinMode().
  *
  *****************************************************************************/
-#define PORT_CFG_SET_PIN_MODE_API           [!IF "as:modconf('Port')[1]/PortGeneral/PortSetPinModeApi"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
+#define PORT_CFG_SET_PIN_MODE_API           [!IF "PortGeneral/PortSetPinModeApi"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
 
 /*****************************************************************************
  *
  * \brief Enable/Disable Port_GetVersionInfo().
  *
  *****************************************************************************/
-#define PORT_CFG_GET_VERSION_INFO_API       [!IF "as:modconf('Port')[1]/PortGeneral/PortVersionInfoApi"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
+#define PORT_CFG_GET_VERSION_INFO_API       [!IF "PortGeneral/PortVersionInfoApi"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
 
 /*****************************************************************************
  *
  * \brief Lock All Pins Configuration.
  *
  *****************************************************************************/
-#define PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS       [!IF "as:modconf('Port')[1]/PortGeneral/PortLockConfiguration"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
+#define PORT_CONFIGURATION_LOCK_CRITICAL_REGISTERS       [!IF "PortGeneral/PortLockConfiguration"!] (STD_ON) [!ELSE!] (STD_OFF) [!ENDIF!]
 
 /*****************************************************************************
  *
  * \brief Symbolic names for the individual port pins - INDEX.
  *
  *****************************************************************************/
-[!LOOP "as:modconf('Port')[1]/PortConfigSet"!][!VAR "NameOfContainer" = "@name"!][!LOOP "PortContainer/*/PortPin/*"!]
-#define PortConf_PortPin_[!"@name"!]      [!"@index"!]U			/*~ASR~*/
-[!ENDLOOP!][!ENDLOOP!]
+[!VAR "idx"= "0"!][!//
+[!LOOP "PortConfigSet/PortContainer/*/PortPin/*"!]
+#define PortConf_PortPin_[!"@name"!]      [!"num:i($idx)"!]U			/*~ASR~*/
+[!VAR "idx" = "$idx + 1"!][!//
+[!ENDLOOP!]
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
 
 [!VAR "maxMuxMode" = "' '"!][!//
-[!LOOP "as:modconf('Port')[1]/PortConfigSet/PortContainer/*/PortPin/*"!][!//
+[!LOOP "PortConfigSet/PortContainer/*/PortPin/*"!][!//
 [!VAR "maxMuxMode" = "concat($maxMuxMode,' ',string(count(PortPinMode/*)))"!][!//
 [!ENDLOOP!][!//
 /** \brief Port Driver Maximum number of modes per pin
@@ -252,10 +254,10 @@ typedef struct
  * \brief Post build Port config pointer.
  *
  *****************************************************************************/
-[!LOOP "as:modconf('Port')[1]/PortConfigSet"!]
+[!LOOP "PortConfigSet"!]
 extern const struct Port_ConfigType_s Port_[!"@name"!];
 [!ENDLOOP!]
-
+[!ENDSELECT!]
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/

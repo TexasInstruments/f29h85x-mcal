@@ -57,7 +57,7 @@ extern "C" {
 /** \brief AUTOSAR minor version specification implemented by GPT Driver. */
 #define GPT_AR_RELEASE_MINOR_VERSION (3U)
 /** \brief AUTOSAR patch version specification implemented by GPT Driver */
-#define GPT_AR_RELEASE_PATCH_VERSION (1U)
+#define GPT_AR_RELEASE_REVISION_VERSION (1U)
 
 /** \brief Texas Instruments Vendor ID. */
 #define GPT_VENDOR_ID ((uint16)44U)

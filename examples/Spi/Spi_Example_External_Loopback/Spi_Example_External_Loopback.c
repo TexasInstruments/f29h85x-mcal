@@ -21,7 +21,9 @@
  *               and validate the receive data with respect to the expected data.
  *
  *  Note:        Note that when runing this example on SOM board, please note that the S2 POCI switch on the XDS110
- *                board should be set to OFF.
+ *               board should be set to OFF.
+ *               For FLASH configuration, this example is run in FLASH BANKMODE2, where CPU3 has access to FLASH (FRI-2). 
+ *               Refer to the Flash Plugin documentation to know about changing FLASH BANKMODEs and more.
  *
  *  When using CCS for debugging this Multi-core example, after launching the
  *  debug session,
@@ -140,10 +142,6 @@ int main(void)
     AppUtils_Printf("Sample Application - STARTS !!!\n");
     Spi_Init(&Spi_ConfigObj);
     MCAL_LIB_EMUSTOP0;
-    /* Set SOFT bit for SPI A */
-    HWREGH(0x70158000 + SPI_O_PRI) |= (SPI_PRI_FREE);
-    /* Set SOFT bit for SPI B */
-    HWREGH(0x70159000 + SPI_O_PRI) |= (SPI_PRI_FREE);
 
 #if (STD_ON == SPI_VERSION_INFO_API)
     Spi_GetVersionInfo(&Spi_VersionInfo);
@@ -217,14 +215,19 @@ int main(void)
             break;
         }
     }
-    if (returnValue == E_OK)
-    {
-        AppUtils_Printf("SPI Transmission successful!\n");
-    }
 
     /* deinitialize SPI driver */
     AppUtils_Printf("Deinitializing SPI.\n");
     Spi_DeInit();
+
+    if (returnValue == E_OK)
+    {
+        AppUtils_Printf("Spi_Example_External_Loopback : Sample Application success\n\r");
+    }
+    else
+    {
+        AppUtils_Printf("Spi_Example_External_Loopback : Sample Application Failed\n\r");
+    }
 
     return ((sint32)returnValue);
 }

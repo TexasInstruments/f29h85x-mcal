@@ -113,8 +113,6 @@ int main(void)
 
     Spi_Init(NULL_PTR);
 
-    /* Set SOFT bit for SPI A */
-    HWREGH(0x70158000 + SPI_O_PRI) |= (SPI_PRI_SOFT);
 #if (STD_ON == SPI_VERSION_INFO_API)
     Spi_GetVersionInfo(&Spi_VersionInfo);
     AppUtils_Printf("SPI MCAL Version Info\n");
@@ -147,7 +145,6 @@ int main(void)
     if (SPI_BUSY != Spi_GetHWUnitStatus(SpiConf_SpiExternalDevice_SpiExternalDevice_0_HwUnitId0))
     {
         AppUtils_Printf("Result of Hardware unit is not SPI_BUSY.\n");
-        returnValue = E_NOT_OK;
     }
 #endif
     do
@@ -218,6 +215,15 @@ int main(void)
     /* deinitialize SPI driver */
     AppUtils_Printf("De-initializing SPI.\n");
     Spi_DeInit();
+
+    if (returnValue == E_OK)
+    {
+        AppUtils_Printf("Spi_Example_AsyncTransfer_Interrupt : Sample Application success\n\r");
+    }
+    else
+    {
+        AppUtils_Printf("Spi_Example_AsyncTransfer_Interrupt : Sample Application Failed\n\r");
+    }
 
     return (uint8)returnValue;
 }

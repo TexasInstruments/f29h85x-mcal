@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Cdd_Uart/Cdd')/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!]
+[!SKIPFILE "as:modconf('Cdd_Uart/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Uart/Cdd']/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -35,11 +35,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_UART_SW_MAJOR_VERSION != (1U)) || (CDD_UART_SW_MINOR_VERSION != (0U)))
+#if ((CDD_UART_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (CDD_UART_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Cdd_Uart_Cfg.c and Cdd_Uart.h are inconsistent!"
 #endif
 
-#if ((CDD_UART_CFG_MAJOR_VERSION != (1U)) || (CDD_UART_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_UART_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (CDD_UART_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Cdd_Uart_Cfg.c and Cdd_Uart_Cfg.h are inconsistent!"
 #endif
 
@@ -75,9 +75,9 @@
 
 #define CDD_UART_START_SEC_CONFIG_DATA
 #include "Cdd_Uart_MemMap.h"
-
+[!SELECT "as:modconf('Cdd_Uart/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Uart/Cdd']"!]
 /* Generation of configuration */
-[!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet"!][!//
+[!LOOP "CddUartConfigSet"!][!//
 CONST(Cdd_Uart_ConfigType, CDD_UART_CONFIG_DATA) Cdd_Uart_[!"@name"!] =
 {
     .Cdd_Uart_HwUnitCfg =
@@ -85,13 +85,25 @@ CONST(Cdd_Uart_ConfigType, CDD_UART_CONFIG_DATA) Cdd_Uart_[!"@name"!] =
         [!LOOP "CddUartConfig/*"!]
         [[!"node:pos(.)"!]]=
         {
+[!VAR "UartClock"="num:i(node:ref(CddUartClockFreq)/McuClockReferencePointFrequency)"!][!//	
+[!VAR "UartBdRt"="CddUartBaudRate"!][!//
             .Cdd_Uart_Instance = (Cdd_Uart_Instance)CDD_UART_INSTANCE_[!"CddUartInstance"!],
             .Cdd_Uart_BaseAddr = (uint32)[!"num:inttohex(CddUartBaseAddress)"!]U,
             .Cdd_Uart_HWUnitId = (uint8 )[!"CddUartHWUnitId"!]U,
-            .Cdd_Uart_BaudRate = (uint32)[!"CddUartBaudRate"!]U,
+[!IF "num:i(num:mul($UartBdRt,16)) >= num:i($UartClock)"!][!//
+[!VAR "UartBdRt"="num:i(num:div($UartBdRt,2))"!]
+            .Cdd_Uart_HighSpeedEnable = (boolean)TRUE,
+[!ELSE!][!//
+            .Cdd_Uart_HighSpeedEnable = (boolean)FALSE,			
+[!ENDIF!][!//
+[!VAR "uartFbrDiv"="num:i(num:div(num:mul($UartClock,8),$UartBdRt))"!][!//
+[!VAR "uartFbrDiv"="num:i(num:div(num:add($uartFbrDiv,1),2))"!][!//
+[!ASSERT "num:i(num:div($uartFbrDiv,64)) < 65526","STOP: This baudrate cannot be generated with respect to input clock"!][!//
+[!ASSERT "num:i(num:mod($uartFbrDiv,64)) < 64","STOP: This baudrate cannot be generated with respect to input clock"!][!//
+            .Cdd_Uart_BaudRateCfg = (uint32)[!"num:inttohex($uartFbrDiv)"!]U,
             .Cdd_Uart_WriteEnable = (boolean)[!IF "CddUartEnableWrite ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
             .Cdd_Uart_ReadEnable = (boolean)[!IF "CddUartEnableRead ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
-            .Cdd_Uart_ClockFreq = (uint32)[!"CddUartClockFreq"!]U,
+            .Cdd_Uart_ClockFreq = (uint32)[!"$UartClock"!]U,
             .Cdd_Uart_WordLength = (Cdd_Uart_WordLength)[!"CddUartWordLength"!],
             .Cdd_Uart_StopBits = (Cdd_Uart_StopBits)[!"CddUartStopBit"!],
             .Cdd_Uart_ParityEnable = (boolean)[!IF "CddUartParityModeEnable ='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
@@ -116,7 +128,7 @@ CONST(Cdd_Uart_ConfigType, CDD_UART_CONFIG_DATA) Cdd_Uart_[!"@name"!] =
     }
 };[!//
 [!ENDLOOP!]
-
+[!ENDSELECT!]
 
 
 #define CDD_UART_STOP_SEC_CONFIG_DATA

@@ -1,4 +1,4 @@
-[!SKIPFILE "node:value(as:modconf('Fls')[1]/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
+[!SKIPFILE "node:value(as:modconf('Fls')[as:path(node:dtos(.))='/TI_F29H85x/Fls']/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -31,9 +31,14 @@
  * Version Check (if required)
  * AUTOSAR version information check has to match definition in header file.
  *********************************************************************************************************************/
-#if ((FLS_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) ||\
-    (FLS_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
+ #if ((FLS_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) ||\
+    (FLS_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Fls_Cfg.c and Fls.h are inconsistent!"
+#endif
+
+ #if ((FLS_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) ||\
+    (FLS_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
+    #error "Version numbers of Fls_Cfg.c and Fls_Cfg.h are inconsistent!"
 #endif
 
 /*********************************************************************************************************************
@@ -64,7 +69,8 @@ extern "C" {
 #endif
 [!AUTOSPACING!]
 /* generation of configuration data */
-[!LOOP "as:modconf('Fls')[1]/FlsConfigSet"!][!//
+[!SELECT "as:modconf('Fls')[as:path(node:dtos(.))='/TI_F29H85x/Fls']"!]
+[!LOOP "FlsConfigSet"!][!//
 CONST(struct Fls_ConfigType_s, FLS_CONFIG_DATA) Fls_[!"@name"!] =
 {
 [!WS "4"!].Fls_JobEndNotification = [!IF "(node:exists(FlsJobEndNotification))"!][!IF "node:value(FlsJobEndNotification) = 'NULL_PTR' or node:empty(FlsJobEndNotification)"!] NULL_PTR[!ELSE!](Fls_JobEndNotifyType)[!"(node:value(FlsJobEndNotification))"!][!ENDIF!][!ELSE!]NULL_PTR[!ENDIF!],
@@ -78,11 +84,12 @@ CONST(struct Fls_ConfigType_s, FLS_CONFIG_DATA) Fls_[!"@name"!] =
 [!WS "4"!][!WS "4"!][!WS "4"!]{
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].numberOfSectors = [!"FlsNumberOfSectors"!]U,
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].sectorSize = [!"FlsSectorSize"!]U,
-[!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].sectorStartAddress = [!"num:i(num:i(as:modconf('Fls')[1]/FlsGeneral/FlsBaseAddress) + num:i(FlsSectorStartaddress))"!]U,
+[!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].sectorStartAddress = [!"num:i(num:i(as:modconf('Fls')[as:path(node:dtos(.))='/TI_F29H85x/Fls']/FlsGeneral/FlsBaseAddress) + num:i(FlsSectorStartaddress))"!]U,
 [!WS "4"!][!WS "4"!][!WS "4"!]},
 [!WS "4"!][!ENDLOOP!]},
 };
 [!ENDLOOP!][!//
+[!ENDSELECT!][!//
 
 #ifdef __cplusplus
 }

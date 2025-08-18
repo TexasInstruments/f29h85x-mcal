@@ -50,49 +50,50 @@ extern "C" {
 #define CDD_PWM_CFG_MINOR_VERSION           ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 #define CDD_PWM_CFG_PATCH_VERSION           ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 
+[!SELECT "as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']"!]
 /* CDD_PWM Build Variant. Pre-compile build Variants */
-[!IF "as:modconf('Cdd_Pwm/Cdd')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
 #define CDD_PWM_PRE_COMPILE_VARIANT         (STD_ON)
-[!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet"!]
-#define CDD_PWM_CONFIG_PC       Cdd_Pwm_ConfigSet[!"@index"!]
-[!ENDLOOP!][!//
+
+#define CDD_PWM_CONFIG_PC       Cdd_Pwm_ConfigSet
+
 [!ENDIF!][!//
 
 /* Macro to define the number of PWM channels supported by the driver */
 #define CDD_PWM_INSTANCE_COUNT    ((Cdd_Pwm_InstanceType)[!"num:i(ecu:get('Cdd_Pwm_InstanceCount'))"!]U)
 
 /* Macro to define the number of Pwm instances configured */
-#define CDD_PWM_COUNT       ((Cdd_Pwm_InstanceType)[!"num:i(count(as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*))"!]U)
+#define CDD_PWM_COUNT       ((Cdd_Pwm_InstanceType)[!"num:i(count(CddPwmConfigSet/CddPwmHwUnitConfig/*))"!]U)
 
 /* Macro to define the number of Pwm channels configured */
-#define CDD_PWM_CHANNEL_COUNT       ((Cdd_Pwm_ChannelType)[!"num:i(count(as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmOutputChannel/*))"!]U)
+#define CDD_PWM_CHANNEL_COUNT       ((Cdd_Pwm_ChannelType)[!"num:i(count(CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmOutputChannel/*))"!]U)
 
 /* Macro to define the maximum number of events supported for an interrupt */
 #define CDD_PWM_INTEVT_COUNT        ((uint8)15U)
 
 /* Development error detection macro */
-#define CDD_PWM_DEV_ERROR_DETECT            [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_PWM_DEV_ERROR_DETECT            [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Set output to IDLE macro */
-#define CDD_PWM_SET_OUTPUT_TO_IDLE_API      [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmSetOutputToIdle = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_PWM_SET_OUTPUT_TO_IDLE_API      [!IF "CddPwmGeneral/CddPwmSetOutputToIdle = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* SetPeriodAndDuty API macro */
-#define CDD_PWM_SET_PERIOD_API    [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmSetPeriod = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_PWM_SET_PERIOD_API    [!IF "CddPwmGeneral/CddPwmSetPeriod = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Set duty cycle API macro */
-#define CDD_PWM_SET_DUTY_CYCLE_API    [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmSetDutyCycle = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_PWM_SET_DUTY_CYCLE_API    [!IF "CddPwmGeneral/CddPwmSetDutyCycle = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Deinitialization Api macro */
-#define CDD_PWM_DEINIT_API      [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDeInitApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_PWM_DEINIT_API      [!IF "CddPwmGeneral/CddPwmDeInitApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Version info Api macro */
-#define CDD_PWM_VERSION_INFO_API    [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_PWM_VERSION_INFO_API    [!IF "CddPwmGeneral/CddPwmVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Notification API macro */
-#define CDD_PWM_NOTIFICATION_SUPPORTED    [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmNotificationSupported = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_PWM_NOTIFICATION_SUPPORTED    [!IF "CddPwmGeneral/CddPwmNotificationSupported = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 [!VAR "CddPwmChannelId" = "num:i(0)"!][!//
-[!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*"!][!//
+[!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*"!][!//
 /* Symbolic name for the PWM instance  [!"CddPwmInstanceId"!] */
 #define CddPwmConf_CddPwmUnit_[!"@name"!]   ((Cdd_Pwm_InstanceType)[!"num:i(node:pos(.))"!]U)  /*~ASR~*/
 
@@ -116,7 +117,7 @@ extern "C" {
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
 [!//
-[!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*"!][!//
+[!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*"!][!//
 [!IF "(node:value(CddPwmInterruptEnable) = 'true')"!]
 #define CDD_PWM[!"CddPwmInstanceId"!]_INT_ENABLE
 #define CDD_PWM[!"CddPwmInstanceId"!]_[!"CddPwmInterruptCategory"!]
@@ -149,23 +150,21 @@ typedef enum
  * Exported Object Declarations
  *********************************************************************************************************************/
 [!//
-[!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet"!]
-extern const struct Cdd_Pwm_ConfigTag Cdd_Pwm_ConfigSet[!"@index"!];[!//
-[!ENDLOOP!]
+extern const struct Cdd_Pwm_ConfigTag Cdd_Pwm_ConfigSet;[!//
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
 
-[!IF "(num:i(count(util:distinct(node:foreach(as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmNotification,'val','$val')))) > num:i(0))"!][!//
+[!IF "(num:i(count(util:distinct(node:foreach(CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmNotification,'val','$val')))) > num:i(0))"!][!//
 #ifndef DOXYGEN_SHOULD_SKIP_THIS[!//
 
-[!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmNotificationSupported = 'true'"!]
+[!IF "CddPwmGeneral/CddPwmNotificationSupported = 'true'"!]
 #define CDD_PWM_START_SEC_CODE
 #include "Cdd_Pwm_MemMap.h"
 
 /* Declaration of the notification functions */
-[!LOOP "(util:distinct(node:foreach(as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmNotification,'val','$val')))"!]
+[!LOOP "(util:distinct(node:foreach(CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmNotification,'val','$val')))"!]
 extern void [!"."!](void);
 [!ENDLOOP!][!//
 
@@ -175,6 +174,7 @@ extern void [!"."!](void);
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 [!ENDIF!][!//
+[!ENDSELECT!][!//
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

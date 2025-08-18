@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Cdd_Ipc/Cdd')/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!]
+[!SKIPFILE "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -35,11 +35,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_IPC_SW_MAJOR_VERSION != (1U)) || (CDD_IPC_SW_MINOR_VERSION != (0U)))
+#if ((CDD_IPC_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (CDD_IPC_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Cdd_Ipc.c and Cdd_Ipc.h are inconsistent!"
 #endif
 
-#if ((CDD_IPC_CFG_MAJOR_VERSION != (1U)) || (CDD_IPC_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_IPC_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (CDD_IPC_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Cdd_Ipc_Cfg.c and Cdd_Ipc_Cfg.h are inconsistent!"
 #endif
 
@@ -84,16 +84,16 @@ CONST(Cdd_Ipc_InstanceType, CDD_IPC__CONST) Cdd_Ipc_Sync_Instances[CDD_IPC_CORE_
 #define CDD_IPC_START_SEC_CONFIG_DATA
 #include "Cdd_Ipc_MemMap.h"
 
-[!SELECT "as:modconf('Cdd_Ipc/Cdd')/CddIpcConfig"!]
+[!SELECT "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']"!]
 /** \brief CDD Ipc Configuration */
 CONST(struct Cdd_Ipc_ConfigTag, CDD_IPC_CONFIG_DATA) Cdd_Ipc_Configuration =
 {
-    .Cdd_Ipc_LocalCore = [!"node:value(as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcLocalCore)"!],
+    .Cdd_Ipc_LocalCore = [!"node:value(CddIpcGeneral/CddIpcLocalCore)"!],
 
-[!IF "num:i(count(CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*))>0"!]
+[!IF "num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*))>0"!]
     .Cdd_Ipc_TxInstanceConfig = 
      {
-[!LOOP "CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*"!]
         {
             .Cdd_Ipc_TxInstance = [!"node:value(CddIpcTxInstance)"!],
             .Cdd_Ipc_TxChannelCount = [!"num:i(count(CddIpcTxChannelConfig/*))"!]U,
@@ -103,7 +103,7 @@ CONST(struct Cdd_Ipc_ConfigTag, CDD_IPC_CONFIG_DATA) Cdd_Ipc_Configuration =
                     {
                         .Cdd_Ipc_ChannelID = [!"node:value(CddIpcTxChannelId)"!]U,
                         .Cdd_Ipc_TxProcessing = [!"node:value(CddIpcTxProcessing)"!],
-[!IF "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable  = 'true'"!]
+[!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable  = 'true'"!]
 [!VAR "PduID"="substring-after(node:value(CddIpcTxPduID), '/CddPduRLowerLayerContribution/')"!]
                         .Cdd_Ipc_HandleID = Cdd_IpcConf_CddPduRLowerLayerTxPdu_[!"$PduID"!],
 [!ELSE!][!//
@@ -117,10 +117,10 @@ CONST(struct Cdd_Ipc_ConfigTag, CDD_IPC_CONFIG_DATA) Cdd_Ipc_Configuration =
      },
 [!ENDIF!]
 
-[!IF "num:i(count(CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*))>0"!]
+[!IF "num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*))>0"!]
     .Cdd_Ipc_RxInstanceConfig = 
     {
-[!LOOP "CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
         {
             .Cdd_Ipc_RxInstance = [!"node:value(CddIpcRxInstance)"!],
             .Cdd_Ipc_RxChannelCount = [!"num:i(count(CddIpcRxChannelConfig/*))"!]U,
@@ -130,7 +130,7 @@ CONST(struct Cdd_Ipc_ConfigTag, CDD_IPC_CONFIG_DATA) Cdd_Ipc_Configuration =
                     {
                         .Cdd_Ipc_ChannelID = [!"node:value(CddIpcRxChannelId)"!]U,
                         .Cdd_Ipc_UserCallbackFunction = [!IF "(node:exists(CddIpcUserCallbackFunction))"!][!IF "node:value(CddIpcUserCallbackFunction) = 'NULL_PTR'"!] NULL_PTR[!ELSE!](Cdd_Ipc_NotifyType)[!"(node:value(CddIpcUserCallbackFunction))"!][!ENDIF!][!ELSE!]NULL_PTR[!ENDIF!],
-[!IF "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable  = 'true'"!]
+[!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable  = 'true'"!]
 [!VAR "PduID"="substring-after(node:value(CddIpcRxPduID), '/CddPduRLowerLayerContribution/')"!]
                         .Cdd_Ipc_HandleID = Cdd_IpcConf_CddPduRLowerLayerRxPdu_[!"$PduID"!],
 [!VAR "PduID"="node:value(node:ref(CddIpcRxPduID)/CddIpcPduRHandle)"!]

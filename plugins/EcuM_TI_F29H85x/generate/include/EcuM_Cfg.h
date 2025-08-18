@@ -29,7 +29,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
-[!LOOP "as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*"!][!//
+[!SELECT "as:modconf('EcuM')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/EcuM']"!][!//
+[!LOOP "EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*"!][!//
 [!IF "not(node:empty(EcuMWakeupSourceModuleFileName))"!][!//
 #include [!"concat('&quot;',node:value(EcuMWakeupSourceModuleFileName),'.h&quot;')"!]
 [!ENDIF!][!//
@@ -47,12 +48,12 @@ extern "C" {
 #define ECUM_CFG_PATCH_VERSION                 ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 
 /* Number of wakeup events configured in EcuM wakeup source .*/
-#define ECUM_CFG_WAKEUP_EVENT_COUNT     ([!"num:i(count(as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*))"!]U)
+#define ECUM_CFG_WAKEUP_EVENT_COUNT     ([!"num:i(count(EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*))"!]U)
 
-#define ECUM_PRE_COMPILE_VARIANT   [!IF "as:modconf('EcuM')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define ECUM_PRE_COMPILE_VARIANT   [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Symbolic Names for EcuM wakeup event source type Id*/
-[!LOOP "as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*"!][!//
+[!LOOP "EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*"!][!//
 #define EcuMConf_EcuMWakeupSource_[!"@name"!]       [!"EcuMWakeupSourceId"!]  /*~ASR~*/
 [!ENDLOOP!][!//
 
@@ -71,8 +72,9 @@ typedef uint32 EcuM_WakeupSourceType;
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-[!LOOP "as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*"!]void [!"EcuMWakeupSourceModuleName"!]_CheckWakeup(EcuM_WakeupSourceType WakeupSource);
+[!LOOP "EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*"!]void [!"EcuMWakeupSourceModuleName"!]_CheckWakeup(EcuM_WakeupSourceType WakeupSource);
 [!ENDLOOP!]
+[!ENDSELECT!][!//
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

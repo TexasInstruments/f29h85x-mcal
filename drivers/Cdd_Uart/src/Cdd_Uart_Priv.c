@@ -503,19 +503,15 @@ static FUNC(void, CDD_UART_CODE)
     Cdd_Uart_CfgBrd(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj)
 {
     uint32 uartBaseAddr = UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_BaseAddr;
-    uint32 uartBaudRate = UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_BaudRate;
-    uint32 uartFbrDiv   = 0U;
+    uint32 uartFbrDiv = UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_BaudRateCfg;
+
 
     /* Baudrate configuration */
-    if ((UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_BaudRate * 16U) >
-        UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_ClockFreq)
+    if (UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_HighSpeedEnable == TRUE)
     {
         /* Enable high speed mode */
         HWREG(uartBaseAddr + UART_O_CTL) |= UART_CTL_HSE;
-        /*
-         *  Baudrate is divided by 2 to make ClkDiv = 8 when HSE = 1
-         */
-        uartBaudRate /= 2U;
+
     }
     else
     {
@@ -527,7 +523,6 @@ static FUNC(void, CDD_UART_CODE)
      * HSE = 1 IBRD is 16 bits and FBRD is 6 bits 'uartFbrDiv' is fixed point with 6 binary points
      * hence it is multiplied by 64
      */
-    uartFbrDiv = (((UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_ClockFreq * 8U) / uartBaudRate) + 1U) / 2U;
 
     HWREG(uartBaseAddr + UART_O_IBRD) = ((uartFbrDiv / 64U) << UART_IBRD_DIVINT_S) & UART_IBRD_DIVINT_M;
     HWREG(uartBaseAddr + UART_O_FBRD) = ((uartFbrDiv % 64U) << UART_FBRD_DIVFRAC_S) & UART_FBRD_DIVFRAC_M;

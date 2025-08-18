@@ -77,7 +77,7 @@ typedef enum
 /** \brief Represents the hardware object handles of a CAN hardware unit.*/
 
 /* Requirements :  */
-typedef uint8 Can_HwHandleType;
+typedef uint16 Can_HwHandleType;
 
 /** \brief Represents the Identifier of an L-PDU.*/
 /* Requirements :  */

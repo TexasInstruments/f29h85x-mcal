@@ -65,7 +65,7 @@
  *********************************************************************************************************************/
 __asm(
     "    .global McalLib_Delay        \n"
-    "    .text                        \n"
+    "    .section .TI.ramfunc, \"ax\" \n"
     "McalLib_Delay:                   \n"
     "    MV A0,D0                     \n"
     "loop:                            \n"
@@ -111,6 +111,29 @@ void McalLib_GetElapsedValue(CONSTP2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DA
     cur_val      = (McalLib_TickType)(((McalLib_TickType)regValH << 32) | (McalLib_TickType)regValL);
     *elapsedTime = (cur_val - *startTime);
     return;
+}
+
+Std_ReturnType McalLib_GetTimerTickFromUs(McalLib_TickType timeOutInUs,
+                                          P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) tickCounter)
+{
+    Std_ReturnType return_value = E_OK;
+    if (tickCounter == NULL_PTR)
+    {
+        return_value = E_NOT_OK;
+    }
+    else
+    {
+        if (timeOutInUs >= MCAL_LIB_MAX_TICK_VALUE)
+        {
+            return_value = E_NOT_OK;
+            ;
+        }
+        else
+        {
+            *tickCounter = (timeOutInUs * (uint64)1000) / (uint64)MCAL_LIB_TICK_VALUE;
+        }
+    }
+    return return_value;
 }
 /*********************************************************************************************************************
  *  Local Functions Definition

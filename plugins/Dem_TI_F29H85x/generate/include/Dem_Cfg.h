@@ -53,10 +53,10 @@ extern "C" {
 #define DEM_CFG_PATCH_VERSION   ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U) 
 
 /* Count of events configured in Dem .*/
-#define DEM_CFG_EVENT_COUNT     ([!"num:i(count(as:modconf('Dem')[1]/DemConfigSet/DemEventParameter/*))"!]U) 
+#define DEM_CFG_EVENT_COUNT     ([!"num:i(count(as:modconf('Dem')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Dem']/DemConfigSet/DemEventParameter/*))"!]U) 
 
 /* Symbolic Names for Dem Event Id*/
-[!LOOP "as:modconf('Dem')[1]/DemConfigSet/DemEventParameter/*"!][!//
+[!LOOP "as:modconf('Dem')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Dem']/DemConfigSet/DemEventParameter/*"!][!//
 #define DemConf_DemEventParameter_[!"@name"!]       [!"DemEventId"!]    /*~ASR~*/
 [!ENDLOOP!][!//
 

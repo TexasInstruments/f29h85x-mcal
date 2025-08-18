@@ -62,7 +62,7 @@ extern "C" {
 /** \brief AUTOSAR minor version specification implemented by SPI Driver. */
 #define SPI_AR_RELEASE_MINOR_VERSION (3U)
 /** \brief AUTOSAR patch version specification implemented by SPI Driver. */
-#define SPI_AR_RELEASE_PATCH_VERSION (1U)
+#define SPI_AR_RELEASE_REVISION_VERSION (1U)
 
 /* SPI Driver ID Info. */
 /** \brief Texas Instruments Vendor ID. */
@@ -222,7 +222,7 @@ extern "C" {
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-/** \brief Spi_Init : Service for SPI initialization.
+/** \brief Service for SPI initialization.
  *
  * This service initializes all the configured Spi channels, jobs, sequences and SPI instances This
  *will set the state of SPI driver to Initialized.
@@ -237,7 +237,7 @@ extern "C" {
  *********************************************************************************************************************/
 FUNC(void, SPI_CODE) Spi_Init(P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) CfgPtr);
 
-/** \brief Spi_DeInit : Service for SPI de-initialization.
+/** \brief Service for SPI de-initialization.
  *
  * This service de-initializes all the configured Spi channels, jobs, sequences and SPI instances
  *This will set the state of SPI driver to Un-Initialized.
@@ -251,7 +251,7 @@ FUNC(void, SPI_CODE) Spi_Init(P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, SPI_CODE) Spi_DeInit(void);
 
-/** \brief Spi_GetStatus: Service returns the SPI Handler/Driver software module status.
+/** \brief Service returns the SPI Handler/Driver software module status.
  *
  * Service returns the SPI Handler/Driver software module status.
  *
@@ -264,7 +264,7 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_DeInit(void);
  *
  *********************************************************************************************************************/
 FUNC(Spi_StatusType, SPI_CODE) Spi_GetStatus(void);
-/** \brief Spi_GetStatus: Service is to get the result of a specified job
+/** \brief Service returns the last transmission result of the specified Job
  *
  * Service is to get the result of a specified job(queued, pending, failed, success)
  *
@@ -281,9 +281,9 @@ FUNC(Spi_StatusType, SPI_CODE) Spi_GetStatus(void);
  *********************************************************************************************************************/
 FUNC(Spi_JobResultType, SPI_CODE) Spi_GetJobResult(VAR(Spi_JobType, AUTOMATIC) Job);
 
-/** \brief Spi_GetSequenceResult: Service
+/** \brief Service returns the last transmission result of the specified Sequence.
  *
- * Service is to return the status of a specified sequence
+ * Service is to return the status of a specified sequence(cancelled, pending, failed, success).
  *
  * \param[in] Sequence: sequence ID
  * \pre None
@@ -320,7 +320,7 @@ Spi_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, SPI_APPL_DATA) versioni
 #endif /* #if (STD_ON == SPI_VERSION_INFO_API) */
 
 #if (STD_ON == SPI_HW_STATUS_API)
-/** \brief Spi_GetHWUnitStatus: Service to get the status of the SPI hardware unit
+/** \brief Service to get the status of the SPI hardware unit
  *
  * This service returns the status of the specified SPI Hardware micro-controller peripheral.
  *
@@ -338,7 +338,7 @@ FUNC(Spi_StatusType, SPI_CODE) Spi_GetHWUnitStatus(VAR(Spi_HWUnitType, AUTOMATIC
 
 #if ((SPI_CHANNEL_BUFFERS == SPI_IB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
 
-/** \brief Spi_WriteIB: Service for writing one or more data to an IB SPI Handler/Driver
+/** \brief Service for writing one or more data to an IB SPI Handler/Driver
  * Channel specified by parameter.
  *
  * Service for writing one or more data to an IB SPI Handler/Driver Channel specified
@@ -379,7 +379,7 @@ Spi_ReadIB(VAR(Spi_ChannelType, AUTOMATIC) Channel,
 #endif /* #if SPI_IB || SPI_IB_EB */
 
 #if ((SPI_CHANNEL_BUFFERS == SPI_EB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
-/** \brief Spi_SetupEB: service to setup external buffer channels
+/** \brief Service to setup external buffer channels
  *
  * Service to setup the buffers and the length of data for the EB SPI Handler/Driver
  * Channel specified.
@@ -406,7 +406,7 @@ Spi_SetupEB(VAR(Spi_ChannelType, AUTOMATIC) Channel,
         * (SPI_CHANNEL_BUFFERS == SPI_IB_EB)) */
 
 #if ((SPI_SCALABILITY == SPI_LEVEL_1) || (SPI_SCALABILITY == SPI_LEVEL_2))
-/** \brief Spi_AsyncTransmit: Service to transmit data on the SPI bus.
+/** \brief Service to transmit data on the SPI bus.
  *
  * Service is to transmit data on SPI bus if the sequence is valid and not pending
  *
@@ -424,7 +424,7 @@ FUNC(Std_ReturnType, SPI_CODE) Spi_AsyncTransmit(VAR(Spi_SequenceType, AUTOMATIC
         *(SPI_SCALABILITY == SPI_LEVEL_2)) */
 
 #if (STD_ON == SPI_CANCEL_API)
-/** \brief Spi_Cancel: this service is to cancel on going sequence
+/** \brief Service to cancel on going sequence
  *
  * Service cancels the specified on-going sequence transmission.
  *
@@ -439,7 +439,7 @@ FUNC(void, SPI_CODE) Spi_Cancel(VAR(Spi_SequenceType, AUTOMATIC) Sequence);
 #endif /* #if (STD_ON == SPI_CANCEL_API) */
 
 #if ((SPI_SCALABILITY == SPI_LEVEL_0) || (SPI_SCALABILITY == SPI_LEVEL_2))
-/** \brief Spi_SyncTransmit: Service to transmit data on the SPI bu
+/** \brief  Service to transmit data on the SPI bus
  *
  * Service is to transmit data on SPI bus synchronously
  *

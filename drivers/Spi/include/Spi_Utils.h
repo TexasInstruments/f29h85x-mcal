@@ -168,7 +168,6 @@ void Spi_UtilsLinkNodePri(Spi_UtilsLinkListObj *llobj, Spi_UtilsNode *node, cons
  *
  *  \param[in] llobj: pointer to linklist Object
  *  \param[in]  node: pointer to a node in linklist
- *  \param[out] llobj: pointer to linklist Object
  *  \pre None
  *  \post None
  *  \return None

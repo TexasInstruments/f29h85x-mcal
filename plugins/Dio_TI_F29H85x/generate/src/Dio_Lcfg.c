@@ -19,7 +19,7 @@
  *
  *  Description:  This file contains generated link time configuration data
  *********************************************************************************************************************/
-[!SKIPFILE "node:value(as:modconf('Dio')[1]/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantLinkTime'"!]
+[!SKIPFILE "node:value(as:modconf('Dio')[as:path(node:dtos(.))='/TI_F29H85x/Dio']/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantLinkTime'"!]
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -30,7 +30,12 @@
  * Version Check (if required)
  * AUTOSAR version information check has to match definition in header file.
  *********************************************************************************************************************/
-#if ((DIO_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) ||\
+#if ((DIO_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) \
+    || (DIO_SW_MINOR_VERSION !=([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
+    #error "Version numbers of Dio_Lcfg.c and Dio.h are inconsistent!"
+#endif
+
+ #if ((DIO_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) ||\
     (DIO_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Dio_Lcfg.c and Dio_Cfg.h are inconsistent!"
 #endif
@@ -54,11 +59,12 @@
 /*********************************************************************************************************************
  * Object Definitions
  *********************************************************************************************************************/
-[!IF "num:i(count(as:modconf('Dio')[1]/DioConfig/DioPort/*/DioChannelGroup/*)) > 0"!][!//
+[!SELECT "as:modconf('Dio')[as:path(node:dtos(.))='/TI_F29H85x/Dio']"!][!//
+[!IF "num:i(count(DioConfig/DioPort/*/DioChannelGroup/*)) > 0"!][!//
 #define DIO_START_SEC_CONFIG_DATA
 #include "Dio_MemMap.h"
 /* Global Data */
-[!LOOP "as:modconf('Dio')[1]/DioConfig/DioPort/*"!]
+[!LOOP "DioConfig/DioPort/*"!]
 [!LOOP "DioChannelGroup/*"!][!//
  /* Design : MCAL-22510, MCAL-22511 */
 CONST(Dio_ChannelGroupType, DIO_CONFIG_DATA) [!"DioChannelGroupIdentification"!] =
@@ -72,14 +78,14 @@ CONST(Dio_ChannelGroupType, DIO_CONFIG_DATA) [!"DioChannelGroupIdentification"!]
 
 [!VAR "var1" = "0"!][!//
 P2CONST(struct Dio_ChannelGroupType_s, DIO_CONFIG_DATA, DIO_CONFIG_DATA) Dio_ChannelGroupRef[DIO_MAX_NO_OF_CHANNEL_GROUPS] =
-{[!LOOP "as:modconf('Dio')[1]/DioConfig/DioPort/*"!][!LOOP "DioChannelGroup/*"!]
+{[!LOOP "DioConfig/DioPort/*"!][!LOOP "DioChannelGroup/*"!]
     [[!"num:i($var1)"!]] = ((P2CONST(Dio_ChannelGroupType, DIO_CONFIG_DATA, DIO_CONFIG_DATA)) (&[!"DioChannelGroupIdentification"!])),
 [!VAR "var1" = "$var1+1"!][!//
 [!ENDLOOP!][!ENDLOOP!]};
 
 #define DIO_STOP_SEC_CONFIG_DATA
 #include "Dio_MemMap.h"
-[!ENDIF!][!//
+[!ENDIF!][!ENDSELECT!][!//
 /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/

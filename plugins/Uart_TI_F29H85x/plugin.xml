@@ -201,5 +201,33 @@
          
        </generator>
    </extension>
+   
+   <!-- definition of ecu resource properties files -->
+   <extension
+         point="dreisoft.tresos.autosar2.api.plugin.ecuresource">
+      <!-- Defines properties file E under folder resources relative to the
+        plugin's root folder. The special parameter "subderivate" is considered by a
+        DefaultEcuResourceFinder. -->
+      <ecuresource
+            target="C2000"
+            derivate="F29H85x"
+            moduleId="Cdd_Uart_F29H85x"
+            file="resources/F29H85x_Uart.properties">
+      </ecuresource>
+   </extension>
+
+   <!-- Defines a new DefaultEcuResourceFinder. The predefined parameters "name" and "path"
+     are registered with this finder. Therefore the given schema path (from parameter "path")
+     is evaluated and the resulting value is checked against the values of parameter
+     "subderivate" of any ecu resource properties with the relevant target and derivate.
+     -->
+   <extension
+         point="dreisoft.tresos.autosar2.api.plugin.ecuresourcefinder">
+      <ecuresourcefinder>
+         <finder
+            class="dreisoft.tresos.autosar2.api.ecuresource.DefaultEcuResourceFinder">
+         </finder>
+      </ecuresourcefinder>
+   </extension>
 
 </plugin>

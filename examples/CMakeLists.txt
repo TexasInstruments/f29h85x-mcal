@@ -8,8 +8,16 @@ macro(SUBDIRLIST subdirlist curdir)
     set(dirlist "")
     foreach(subdir ${subdirectories})
         if(IS_DIRECTORY ${curdir}/${subdir})
+          if(EXISTS ${curdir}/${subdir}/CMakeLists.txt)
             add_subdirectory(${curdir}/${subdir} ${CMAKE_BINARY_DIR}/${subdir})
-            list(APPEND dirlist ${subdir})
+            # Only add to dirlist if it's a target and not an INTERFACE library
+            if(TARGET ${subdir})
+                get_target_property(target_type ${subdir} TYPE)
+                if(NOT target_type STREQUAL "INTERFACE_LIBRARY")
+                    list(APPEND dirlist ${subdir})
+                endif()
+            endif()
+          endif()
         endif()
     endforeach()
     set(${subdirlist} ${dirlist})
@@ -32,7 +40,8 @@ set(module_list
     "Cdd_Ecap"
     "Cdd_Pwm"
     "Cdd_Ipc"
-    "Fls")
+    "Fls"
+    "Rtdma")
 set(example_list "")
 
 foreach(example ${module_list})

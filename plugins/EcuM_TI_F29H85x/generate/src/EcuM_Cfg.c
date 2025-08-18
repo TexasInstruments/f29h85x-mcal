@@ -1,4 +1,4 @@
-[!SKIPFILE "node:value(as:modconf('EcuM')[1]/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
+[!SKIPFILE "node:value(as:modconf('EcuM')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/EcuM']/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -26,7 +26,8 @@
  *********************************************************************************************************************/
 #include "Std_Types.h"
 #include "EcuM.h"
-[!LOOP "as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMDriverInitList/*"!][!//
+[!SELECT "as:modconf('EcuM')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/EcuM']"!][!//
+[!LOOP "EcuMConfiguration/EcuMCommonConfiguration/EcuMDriverInitList/*"!][!//
 [!IF "not(node:empty(ModuleHeaderFileName))"!][!//
 #include [!"concat('&quot;',node:value(ModuleHeaderFileName),'.h&quot;')"!]
 [!ENDIF!][!//
@@ -35,7 +36,7 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
-#if ((ECUM_SW_MAJOR_VERSION != (1U)) || ECUM_SW_MINOR_VERSION != (0U))
+#if ((ECUM_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (ECUM_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
   #error "Version numbers of EcuM_Cfg.c and EcuM.h are inconsistent!"
 #endif
 
@@ -81,7 +82,7 @@
 [!VAR "bitset" = "0"!][!//
 
 volatile EcuM_WakeupEventSourceType EcuM_EventRecord[ECUM_CFG_WAKEUP_EVENT_COUNT]=
-{[!LOOP "as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*"!]
+{[!LOOP "EcuMConfiguration/EcuMCommonConfiguration/EcuMWakeupSource/*"!]
     [!VAR "bitset" = "bit:or(num:i($bitset),bit:bitset(0,num:i(node:value(EcuMWakeupSourceId))))"!][!//
   [[!"@index"!]] =
       {
@@ -94,11 +95,12 @@ volatile uint32 EcuM_WakeupBitSet = [!"num:i($bitset)"!];
 
 FUNC(void, ECUM_CODE) EcuM_InitList(void)
 {
-[!LOOP "as:modconf('EcuM')[1]/EcuMConfiguration/EcuMCommonConfiguration/EcuMDriverInitList/*"!][!//
+[!LOOP "EcuMConfiguration/EcuMCommonConfiguration/EcuMDriverInitList/*"!][!//
     [!"ModuleFunction"!]
 
 [!ENDLOOP!][!//
 }
+[!ENDSELECT!][!//
 
 #define ECUM_STOP_SEC_CONFIG_DATA
 #include "EcuM_MemMap.h"

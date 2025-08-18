@@ -158,6 +158,8 @@
  * \brief  Macro for Message RAM config.
  */
 #define MCAN_MSGRAM_RX_FIFO_0      (0x1U)
+#define MCAN_MSGRAM_RX_FIFO_1      (0x2U)
+#define MCAN_MSGRAM_RX_BUFFER      (0x7U)
 #define MCAN_MSGRAM_CLASSIC_FILTER (0x2U)
 
 /**
@@ -342,16 +344,15 @@ static FUNC(void, CAN_CODE) Can_WriteProtectedRegLockPriv(uint32 baseAddr);
  * \param[in] canController Pointer to Can controller config parameters.
  * \param[in] canMailbox Message RAM Configuration parameters.
  * \param[in] maxMbCnt Maximum number of Mailbox to be configured.
- * \param[in] canHtrhMbMap Pointer to Htrh to mailbox mapping.
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *****************************************************************************/
-static FUNC(void, CAN_CODE) Can_SetupMsgRamPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
-                                                P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox,
-                                                uint8 maxMbCnt, P2VAR(uint8, AUTOMATIC, CAN_APPL_DATA) canHtrhMbMap);
+static FUNC(void, CAN_CODE)
+    Can_SetupMsgRamPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
+                        P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint16 maxMbCnt);
 
 /** \brief This API will initialize Message RAM.
  *
@@ -363,7 +364,8 @@ static FUNC(void, CAN_CODE) Can_SetupMsgRamPriv(P2VAR(Can_ControllerObjType, AUT
  *
  *****************************************************************************/
 static FUNC(void, CAN_CODE)
-    Can_MsgRamConfigInitPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig);
+    Can_MsgRamConfigInitPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig,
+                             P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg);
 
 /** \brief This API will configure setup Message RAM as per config.
  *
@@ -395,7 +397,7 @@ static FUNC(void, CAN_CODE)
 static FUNC(void, CAN_CODE)
     Can_SetupTxMailboxPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig,
                            P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCfg,
-                           P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg, uint8 htrh,
+                           P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg, Can_HwHandleType htrh,
                            uint32 baseAddr);
 
 /** \brief This API will add standard filter.
@@ -409,7 +411,7 @@ static FUNC(void, CAN_CODE)
  * \retval None
  *
  *****************************************************************************/
-static FUNC(void, CAN_CODE) Can_AddStdMsgIDFilterPriv(uint32 baseAddr, uint32 filtNum,
+static FUNC(void, CAN_CODE) Can_AddStdMsgIDFilterPriv(uint32 baseAddr, uint8 filtNum,
                                                       P2CONST(Can_StdMsgIDFilterElement, AUTOMATIC, CAN_CONST) elem);
 
 /** \brief This API will add extended filter.
@@ -423,7 +425,7 @@ static FUNC(void, CAN_CODE) Can_AddStdMsgIDFilterPriv(uint32 baseAddr, uint32 fi
  * \retval None
  *
  *****************************************************************************/
-static FUNC(void, CAN_CODE) Can_AddExtMsgIDFilterPriv(uint32 baseAddr, uint32 filtNum,
+static FUNC(void, CAN_CODE) Can_AddExtMsgIDFilterPriv(uint32 baseAddr, uint8 filtNum,
                                                       P2CONST(Can_ExtMsgIDFilterElement, AUTOMATIC, CAN_CONST) elem);
 
 /** \brief This API will enable/disable Loop Back Test Mode for MCAN module.
@@ -527,7 +529,7 @@ static FUNC(uint32, CAN_CODE) Can_GetTxBufTransStatusPriv(uint32 baseAddr);
  * \retval None
  *
  *****************************************************************************/
-static FUNC(void, CAN_CODE) Can_TxBufAddReqPriv(uint32 baseAddr, uint32 buffNum);
+static FUNC(void, CAN_CODE) Can_TxBufAddReqPriv(uint32 baseAddr, uint8 buffNum);
 
 /** \brief This API will read data from Rx Buffer of CAN Hw Unit.
  *
@@ -542,7 +544,8 @@ static FUNC(void, CAN_CODE) Can_TxBufAddReqPriv(uint32 baseAddr, uint32 buffNum)
  *****************************************************************************/
 static FUNC(void, CAN_CODE)
     Can_ReadRxBuffPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                       P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint8 maxMbCnt);
+                       P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, Can_HwHandleType htrh,
+                       P2VAR(Can_RxNewDataStatusType, AUTOMATIC, CAN_APPL_DATA) newDataStatus);
 
 /** \brief This API will read data from Rx FIFO of CAN Hw Unit.
  *
@@ -557,7 +560,8 @@ static FUNC(void, CAN_CODE)
  *****************************************************************************/
 static FUNC(void, CAN_CODE)
     Can_ReadRxFIFOPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                       P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint8 maxMbCnt);
+                       P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, Can_HwHandleType htrh,
+                       P2VAR(Can_RxFIFOStatusType, AUTOMATIC, CAN_APPL_DATA) fifoStatus);
 
 /** \brief This API will return the status of the current interrupts
  *
@@ -612,9 +616,11 @@ static FUNC(void, CAN_CODE) Can_ClearIntrStatusPriv(uint32 baseAddr, uint32 intr
  * \retval None
  *
  *****************************************************************************/
-static FUNC(void, CAN_CODE) Can_ClearNewDataStatusPriv(uint32 baseAddr, Can_RxNewDataStatusType newDataStatus);
+static FUNC(void, CAN_CODE)
+    Can_ClearNewDataStatusPriv(uint32 baseAddr, P2VAR(Can_RxNewDataStatusType, AUTOMATIC, CAN_APPL_DATA) newDataStatus,
+                               uint8  buffNum);
 
-/** \brief This API will read status of Rx FIFO.
+/** \brief This API will read status of Rx FIFO0/FIFO1.
  *
  * \param[in] baseAddr Base Address of controller.
  * \param[in] fifoStatus Pointer to location to store value read.
@@ -625,7 +631,21 @@ static FUNC(void, CAN_CODE) Can_ClearNewDataStatusPriv(uint32 baseAddr, Can_RxNe
  *
  *****************************************************************************/
 static FUNC(void, CAN_CODE)
-    Can_GetRxFIFOStatusPriv(uint32 baseAddr, P2VAR(Can_RxFIFOStatusType, AUTOMATIC, CAN_APPL_DATA) fifoStatus);
+    Can_GetRxFIFOStatusPriv(uint32 baseAddr, P2VAR(Can_RxFIFOStatusType, AUTOMATIC, CAN_APPL_DATA) fifoStatus,
+                            uint8  hwHandle);
+
+/** \brief This API will read status of Tx FIFO.
+ *
+ * \param[in] baseAddr Base Address of controller.
+ * \param[in] fifoStatus Pointer to location to store value read.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+static FUNC(void, CAN_CODE)
+    Can_GetTxFIFOStatusPriv(uint32 baseAddr, P2VAR(Can_TxFIFOStatusType, AUTOMATIC, CAN_APPL_DATA) fifoStatus);
 
 /** \brief This API will read new Rx data status for Can Hw Unit.
  *
@@ -652,8 +672,8 @@ static FUNC(void, CAN_CODE)
  *
  *****************************************************************************/
 static FUNC(void, CAN_CODE)
-    Can_CheckTxBuffersPriv(uint32 intrStatus, uint32 baseAddr,
-                           P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canControllerObj);
+    Can_CheckBusOffPriv(uint32 intrStatus, uint32 baseAddr,
+                        P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canControllerObj);
 
 /** \brief This API will reads the elapsed value with respect to a particular instance of the
  *counter.
@@ -666,40 +686,7 @@ static FUNC(void, CAN_CODE)
  * \return returns the elapsed value of the counter
  * \retval returns the value oh type uint32
  *****************************************************************************/
-static FUNC(McalLib_TickType, CAN_CODE)
-    Can_GetElapsedValuePriv(VAR(McalLib_TickType, AUTOMATIC) startCnt, uint32 bitPos, uint32 baseAddr);
-
-/** \brief This API will poll for Tx Mailbox.
- *
- * \param[in] drvObj Pointer to post-build configuration data.
- * \param[in] ConfigPtr Pointer to Can controllers Config structure.
- * \param[in] controller  Id for controller.
- * \param[in] mbIndx MB Index
- * \pre None
- * \post None
- * \return None
- * \retval None
- *****************************************************************************/
-static FUNC(void, CAN_CODE)
-    Can_InitPollTxActiveControllersPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj,
-                                        P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) ConfigPtr, uint32 controller,
-                                        uint32 mbIndx);
-
-/** \brief This API will poll for Rx Mailbox.
- *
- * \param[in] drvObj Pointer to post-build configuration data.
- * \param[in] ConfigPtr Pointer to Can controllers Config structure.
- * \param[in] controller  Id for controller.
- * \param[in] mbIndx MB Index
- * \pre None
- * \post None
- * \return None
- * \retval None
- *****************************************************************************/
-static FUNC(void, CAN_CODE)
-    Can_InitPollRxActiveControllersPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj,
-                                        P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) ConfigPtr, uint32 controller,
-                                        uint32 mbIndx);
+static FUNC(void, CAN_CODE) Can_WaitForTxBufCancelReqPriv(uint32 bitPos, uint32 baseAddr);
 
 #if (CAN_CFG_DEV_ERROR_DETECT == STD_ON)
 /** \brief This function will check for NULL pointers for Controller Config structure.
@@ -729,24 +716,8 @@ static FUNC(Std_ReturnType, CAN_CODE)
  *
  *****************************************************************************/
 static FUNC(void, CAN_CODE)
-    Can_CheckOnlyTxBuffers(uint32 txStat, P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canCntrlObj,
-                           P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj);
-
-/** \brief This function will check for pending message.
- *
- * \param[in] baseAddress Base Address of controller.
- * \param[in] controller Pointer to Can controller config parameters.
- * \param[in] messageObj Handles the Can HW unit.
- * \pre None
- * \post None
- * \return returns CAN_BUSY and E_OK
- * \retval CAN_BUSY - pending message
- * \retval E_OK - no pending message.
- *
- *****************************************************************************/
-static FUNC(Std_ReturnType, CAN_CODE)
-    Can_PendingMsgCheckPriv(uint32 baseAddress, P2CONST(Can_ControllerObjType, AUTOMATIC, CAN_CONST) controller,
-                            P2VAR(Can_HwHandleType, AUTOMATIC, CAN_APPL_DATA) messageObj);
+    Can_CheckAllTxBuffers(uint32 txStat, P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canCntrlObj,
+                          P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj);
 
 /** \brief This function will check for pending message.
  *
@@ -764,7 +735,7 @@ static FUNC(Std_ReturnType, CAN_CODE)
 static FUNC(Std_ReturnType, CAN_CODE)
     Can_CheckPendingMsgPriv(P2CONST(Can_ControllerObjType, AUTOMATIC, CAN_CONST) canController,
                             VAR(uint8, AUTOMATIC) loopCnt, VAR(uint32, AUTOMATIC) baseAddr,
-                            P2VAR(Can_HwHandleType, AUTOMATIC, CAN_APPL_DATA) msgObj);
+                            P2VAR(uint8, AUTOMATIC, CAN_APPL_DATA) msgObj);
 
 /** \brief This function will check for Icom configuration.
  *
@@ -779,8 +750,7 @@ static FUNC(Std_ReturnType, CAN_CODE)
  *****************************************************************************/
 static FUNC(boolean, CAN_CODE)
     Can_RxIndicationStatusPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                               VAR(uint32, AUTOMATIC) canIdentifier,
-                               P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox);
+                               VAR(uint32, AUTOMATIC) canIdentifier);
 
 /** \brief This function returns Id of Can Frame.
  *
@@ -805,7 +775,7 @@ static FUNC(uint32, CAN_CODE) Can_GetCanIdentifier(P2VAR(Can_RxBufElementType, A
  *
  *****************************************************************************/
 static FUNC(Std_ReturnType, CAN_CODE)
-    Can_BitPos(VAR(uint32, AUTOMATIC) buffNum, P2VAR(Can_RxNewDataStatusType, AUTOMATIC, CAN_APPL_DATA) newDataStatus);
+    Can_BitPos(VAR(uint8, AUTOMATIC) buffNum, P2VAR(Can_RxNewDataStatusType, AUTOMATIC, CAN_APPL_DATA) newDataStatus);
 
 /** \brief This function will Copying payload into SDU.
  *
@@ -936,40 +906,28 @@ Can_CheckInitDetPriv(P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) ConfigPtr)
 FUNC(void, CAN_CODE)
 Can_ResetDrvObjPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj)
 {
-    VAR(uint32, AUTOMATIC) controllerIndx;
-    VAR(uint32, AUTOMATIC) mbIndx;
-    VAR(uint32, AUTOMATIC) loopIndx;
+    VAR(uint8, AUTOMATIC) controllerIndx;
+    VAR(uint8, AUTOMATIC) mbIndx;
 
-    for (controllerIndx = ((uint32)0U); controllerIndx < (uint32)KMAX_CONTROLLER; controllerIndx++)
+    for (controllerIndx = ((uint8)0U); controllerIndx < (uint8)KMAX_CONTROLLER; controllerIndx++)
     {
         drvObj->canController[controllerIndx].canBaud                 = ((uint16)0U);
         drvObj->canController[controllerIndx].canBusOffRecoveryStatus = FALSE;
         drvObj->canController[controllerIndx].canInterruptCounter     = ((uint8)0U);
-
-        for (mbIndx = ((uint32)0U); mbIndx < (uint32)KMAX_MB_PER_CONTROLLER; mbIndx++)
+#if (CAN_CFG_ICOM_SUPPORT == STD_ON)
+        drvObj->Can_IcomActivation[controllerIndx] = FALSE;
+#endif
+        for (mbIndx = ((uint8)0U); mbIndx < (uint8)KMAX_TX_MB_PER_CONTROLLER; mbIndx++)
         {
-            drvObj->canController[controllerIndx].canTxStatus[mbIndx] = ((uint8)0U);
+            drvObj->canController[controllerIndx].canTxStatus[mbIndx]  = ((uint8)0U);
+            drvObj->canController[controllerIndx].canTxRxPduId[mbIndx] = ((PduIdType)0U);
         }
 
-        for (mbIndx = ((uint32)0U); mbIndx < (uint32)CAN_FD_PAYLOAD_MAX_BYTES; mbIndx++)
+        for (mbIndx = ((uint8)0U); mbIndx < (uint8)CAN_FD_PAYLOAD_MAX_BYTES; mbIndx++)
         {
             drvObj->canController[controllerIndx].canSduPtr[mbIndx] = ((uint8)0U);
         }
     }
-
-    for (mbIndx = ((uint32)0U); mbIndx < (uint32)KMAX_MAILBOXES; mbIndx++)
-    {
-        for (loopIndx = ((uint32)0U); loopIndx < (uint32)KMAX_MB_PER_CONTROLLER; loopIndx++)
-        {
-            drvObj->canMailbox[mbIndx].canTxRxPduId[loopIndx] = ((PduIdType)0U);
-        }
-    }
-#if (CAN_CFG_ICOM_SUPPORT == STD_ON)
-    for (loopIndx = ((uint32)0U); loopIndx < (uint32)KMAX_CONTROLLER; loopIndx++)
-    {
-        drvObj->Can_IcomActivation[loopIndx] = FALSE;
-    }
-#endif
 }
 
 /*
@@ -979,14 +937,13 @@ FUNC(void, CAN_CODE)
 Can_InitDrvObjPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj,
                    P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) ConfigPtr)
 {
-    VAR(uint32, AUTOMATIC) controllerIndx;
-    VAR(uint32, AUTOMATIC) mbIndx;
-    VAR(uint32, AUTOMATIC) controller;
+    VAR(uint8, AUTOMATIC) controllerIndx;
+    VAR(Can_HwHandleType, AUTOMATIC) mbIndx;
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
     VAR(uint32, AUTOMATIC) IcomIndex;
 #endif
 
-    for (controllerIndx = ((uint32)0U); controllerIndx < (uint32)KMAX_CONTROLLER; controllerIndx++)
+    for (controllerIndx = ((uint8)0U); controllerIndx < (uint8)KMAX_CONTROLLER; controllerIndx++)
     {
         drvObj->canController[controllerIndx].canControllerConfig = *ConfigPtr->CanControllerList[controllerIndx];
 
@@ -994,32 +951,13 @@ Can_InitDrvObjPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj,
 
         drvObj->controllerIDMap[ConfigPtr->CanControllerList[controllerIndx]->CanControllerInstance] = controllerIndx;
     }
-    drvObj->maxTxMbCnt = 0U;
-    drvObj->maxRxMbCnt = 0U;
-    for (mbIndx = ((uint32)0U); mbIndx < (uint32)KMAX_MAILBOXES; mbIndx++)
-    {
-        drvObj->canMailbox[mbIndx].mailBoxConfig = *ConfigPtr->MailBoxList[mbIndx];
-        controller                               = ConfigPtr->MailBoxList[mbIndx]->CanControllerRef->CanControllerId;
-        /* Poll only for Active Controllers */
-        if (TRUE == drvObj->canController[controller].canControllerConfig.CanControllerActivation)
-        {
-            /* Poll only for Tx Mailbox */
-            if (CAN_TRANSMIT == ConfigPtr->MailBoxList[mbIndx]->CanObjectType)
-            {
-                Can_InitPollTxActiveControllersPriv(drvObj, ConfigPtr, controller, mbIndx);
-            }
-            else
-            {
-                Can_InitPollRxActiveControllersPriv(drvObj, ConfigPtr, controller, mbIndx);
-            }
-        }
-        else
-        {
-            /* Do Nothing */
-        }
-    }
     drvObj->canMaxControllerCount = ConfigPtr->CanMaxControllerCount;
     drvObj->maxMbCnt              = ConfigPtr->MaxMbCnt;
+    /* Copy all mailboxes */
+    for (mbIndx = ((Can_HwHandleType)0U); mbIndx < (Can_HwHandleType)KMAX_MAILBOXES; mbIndx++)
+    {
+        drvObj->canMailbox[mbIndx].mailBoxConfig = *ConfigPtr->MailBoxList[mbIndx];
+    }
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
     for (IcomIndex = ((uint32)0U); IcomIndex < (uint32)MAX_ICOM_CONFIGURATION; IcomIndex++)
     {
@@ -1034,8 +972,7 @@ Can_InitDrvObjPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj,
  */
 FUNC(void, CAN_CODE)
 Can_HwUnitConfigPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
-                     P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint8 maxMbCnt,
-                     P2VAR(uint8, AUTOMATIC, CAN_APPL_DATA) canHtrhMbMap)
+                     P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint16 maxMbCnt)
 {
     VAR(uint32, AUTOMATIC)
     canCntBaseAddr                = canController->canControllerConfig.CanControllerBaseAddress;
@@ -1045,32 +982,36 @@ Can_HwUnitConfigPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canC
     regVal  = MCAL_LIB_REG_READ32(CPUPERCFG_BASE + SYSCTL_O_SOFTPRES10);
     regVal &= ~((uint32)1U << ((uint32)canController->canControllerConfig.CanControllerInstance + (uint32)4U));
     MCAL_LIB_REG_WRITE32((CPUPERCFG_BASE + SYSCTL_O_SOFTPRES10), regVal);
+
     /* Wait for Memory Initialization to happen */
     Can_WaitForMemoryInitPriv(canCntBaseAddr);
 
     /* Put MCAN in SW initialization mode */
     Can_SetOpModePriv(canCntBaseAddr, (Can_ControllerOperationMode)CAN_CONTROLLER_OPERATION_MODE_SW_INIT);
 
+    /* Unlock Protected Registers */
     Can_WriteProtectedRegUnlockPriv(canCntBaseAddr);
 
     /* Initialize MCAN HW Module */
     Can_InitHwPriv(canCntBaseAddr, &(canController->canControllerConfig));
 
     /* Configure Message RAM sections */
-    Can_SetupMsgRamPriv(canController, canMailbox, maxMbCnt, canHtrhMbMap);
+    Can_SetupMsgRamPriv(canController, canMailbox, maxMbCnt);
 
     /* Configure Loopback mode */
     Can_LoopbackModePriv(canCntBaseAddr, canController->canControllerConfig.CanConfigParam.CanLoopbackMode);
 
+    /* Configure MCAN interrupts enabled in config */
+    Can_EnableInterruptsPriv(&canController->canControllerConfig);
+
+    /* Configure ECC Registers */
+    Can_EccConfigPriv(canCntBaseAddr);
+
+    /* Lock Protected Registers */
     Can_WriteProtectedRegLockPriv(canCntBaseAddr);
 
     /* Configure Bit Timings */
     Can_HWSetBaudRatePriv(canCntBaseAddr, canController->canControllerConfig.CanControllerDefaultBaudrate);
-
-    /* Configure MCAN interrupts enabled in config */
-    Can_EnableInterruptsPriv(&canController->canControllerConfig);
-
-    Can_EccConfigPriv(canCntBaseAddr);
 }
 
 /*
@@ -1139,7 +1080,11 @@ Can_HWSetBaudRatePriv(uint32 baseAddr, P2CONST(Can_BaudConfigType, AUTOMATIC, CA
     VAR(uint8, AUTOMATIC) seg2 = (uint8)0U;
     VAR(uint8, AUTOMATIC) sjw  = (uint8)0U;
 
+    /* The actual interpretation by the hardware for BTP filed is such that,
+    one more than the value programmed. Hence deduct 1 from configured value. */
+
     Can_WriteProtectedRegUnlockPriv(baseAddr);
+
     if (baudConfig->BrpValue > 0U)
     {
         brp = baudConfig->BrpValue - (uint16)1U;
@@ -1177,6 +1122,7 @@ Can_HWSetBaudRatePriv(uint32 baseAddr, P2CONST(Can_BaudConfigType, AUTOMATIC, CA
         /* Do nothing */
     }
 
+    /* Update the nominal bit timing and Prescaler register*/
     MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_NBTP, MCAN_NBTP_NSJW, sjw);
     MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_NBTP, MCAN_NBTP_NTSEG2, seg2);
     MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_NBTP, MCAN_NBTP_NTSEG1, seg1);
@@ -1184,6 +1130,7 @@ Can_HWSetBaudRatePriv(uint32 baseAddr, P2CONST(Can_BaudConfigType, AUTOMATIC, CA
 
     if (TRUE == baudConfig->BaudFdEnable)
     {
+        /* Update the Data bit timing and Prescaler register*/
         Can_CanSetBaudRatePriv(baseAddr, baudConfig);
         Can_CheckTxDelayCompEnablePriv(baseAddr, baudConfig);
     }
@@ -1191,7 +1138,6 @@ Can_HWSetBaudRatePriv(uint32 baseAddr, P2CONST(Can_BaudConfigType, AUTOMATIC, CA
     {
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_DBTP, MCAN_DBTP_TDC, baudConfig->BaudFdRateConfig.TxDelayCompEnable);
     }
-
     Can_WriteProtectedRegLockPriv(baseAddr);
 }
 
@@ -1234,7 +1180,7 @@ Can_EnableInterruptsPriv(P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) confi
     baseAddr      = configParam->CanControllerBaseAddress;
     interruptMask = Can_GetInterruptMaskPriv(configParam);
 
-    if ((TRUE == configParam->CanControllerActivation) && ((uint32)0U != interruptMask))
+    if ((uint32)0U != interruptMask)
     {
         /* Interrupt Enable */
         Can_EnableInterruptPriv(baseAddr, interruptMask, TRUE);
@@ -1514,43 +1460,43 @@ Can_HwUnitWakeupPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) cont
 FUNC(Std_ReturnType, CAN_CODE)
 Can_GetFreeTxMsgObjPriv(P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCfg,
                         P2CONST(Can_ControllerObjType, AUTOMATIC, CAN_CONST) canController,
-                        P2VAR(Can_HwHandleType, AUTOMATIC, CAN_APPL_DATA) msgObj, uint8 htrh)
+                        P2VAR(uint8, AUTOMATIC, CAN_APPL_DATA) msgObj)
 {
-    VAR(Std_ReturnType, AUTOMATIC) returnValue = E_NOT_OK;
-    VAR(uint32, AUTOMATIC) baseAddr            = (uint32)0U;
-    VAR(uint8, AUTOMATIC) loopCnt              = (uint8)0U;
+    VAR(Std_ReturnType, AUTOMATIC) returnValue      = E_NOT_OK;
+    VAR(uint32, AUTOMATIC) baseAddr                 = (uint32)0U;
+    VAR(uint8, AUTOMATIC) buffNum                   = (uint8)0U;
+    VAR(Can_TxFIFOStatusType, AUTOMATIC) fifoStatus = ((Can_TxFIFOStatusType){0U});
 
     baseAddr = mailboxCfg->CanControllerRef->CanControllerBaseAddress;
 
-    if (((uint16)1U) < mailboxCfg->CanHwObjectCount)
+    if (CAN_BASIC == mailboxCfg->CanHandleType)
     {
-        returnValue = Can_PendingMsgCheckPriv(baseAddr, canController, msgObj);
-    }
-    else
-    {
-        for (loopCnt = ((uint8)0U);
-             ((loopCnt < ((uint8)(canController->canFDMsgRamConfig.txBuffNum))) && (loopCnt < (uint8)64U)); loopCnt++)
-        {
-            if (htrh == canController->canFDMsgRamConfig.txMbMapping[0U][loopCnt])
-            {
-                break;
-            }
-            else
-            {
-                /* Do Nothing */
-            }
-        }
+        /* Get the status of Tx FIFO*/
+        Can_GetTxFIFOStatusPriv(baseAddr, &fifoStatus);
 
-        if ((loopCnt < (uint8)(canController->canFDMsgRamConfig.txBuffNum)) && (loopCnt < KMAX_MB_PER_CONTROLLER))
+        /* If Tx FIFO is full, new message can't be written to FIFO*/
+        if (fifoStatus.fifoFull == TRUE)
         {
-            returnValue = Can_CheckPendingMsgPriv(canController, loopCnt, baseAddr, msgObj);
+            returnValue = (Std_ReturnType)CAN_BUSY;
+        }
+        /* Maintaining the canTxStatus is necessary, as BRP may get cleared upon lost arbitration,
+        error during transmission etc.*/
+        else if ((((uint8)1U) == canController->canTxStatus[fifoStatus.putIdx]) &&
+                 (FALSE == canController->canControllerConfig.CanConfigParam.CanDisableAutomaticRetransmission))
+        {
+            returnValue = (Std_ReturnType)CAN_BUSY;
         }
         else
         {
-            returnValue = E_NOT_OK;
+            *msgObj     = fifoStatus.putIdx;
+            returnValue = E_OK;
         }
     }
-
+    else
+    {
+        buffNum     = mailboxCfg->HwHandle;
+        returnValue = Can_CheckPendingMsgPriv(canController, buffNum, baseAddr, msgObj);
+    }
     return returnValue;
 }
 
@@ -1559,8 +1505,8 @@ Can_GetFreeTxMsgObjPriv(P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCf
  */
 FUNC(void, CAN_CODE)
 Can_WriteTxMailboxPriv(P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCfg,
-                       P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj, uint8 hth,
-                       uint32 messageBox, P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfo)
+                       P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj, uint8 messageBox,
+                       P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfo)
 {
     VAR(uint32, AUTOMATIC) baseAddr           = (uint32)0U;
     VAR(Can_TxBufElementType, AUTOMATIC) elem = {0U};
@@ -1613,8 +1559,6 @@ Can_WriteTxMailboxPriv(P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCfg
 
     Can_AddPdgValFindStdDtlen(pduInfo, &elem, mailboxCfg);
 
-    controllerObj->canFDMsgRamConfig.hthToMbMapping[messageBox] = hth;
-
     Can_WriteMsgRamPriv(baseAddr, messageBox, &elem, pduInfo, mailboxCfg);
 
     Can_TxBufAddReqPriv(baseAddr, messageBox);
@@ -1625,40 +1569,37 @@ Can_WriteTxMailboxPriv(P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCfg
  */
 FUNC(void, CAN_CODE)
 Can_HwUnitTxDonePollingPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
-                            P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint8 htrh)
+                            P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox)
 {
     VAR(uint32, AUTOMATIC) baseAddr = (uint32)0U;
-    VAR(uint32, AUTOMATIC) buffNum  = (uint32)0U;
-    VAR(uint32, AUTOMATIC) loopCnt  = (uint32)0U;
+    VAR(uint8, AUTOMATIC) buffNum   = (uint32)0U;
+    VAR(uint8, AUTOMATIC) loopCnt   = (uint32)0U;
     VAR(uint32, AUTOMATIC) bitPos   = (uint32)0U;
     VAR(uint32, AUTOMATIC) txStatus = (uint32)0U;
 
     baseAddr = canController->canControllerConfig.CanControllerBaseAddress;
 
-    if (((uint16)1U) < canMailbox->mailBoxConfig.CanHwObjectCount)
+    if (CAN_BASIC == canMailbox->mailBoxConfig.CanHandleType)
     {
-        loopCnt = (uint32)(canController->canFDMsgRamConfig.txBuffNum);
-        buffNum = ((uint32)(((uint32)canController->canFDMsgRamConfig.txBuffNum) +
-                            ((uint32)canController->canFDMsgRamConfig.txFIFONum)));
+        loopCnt = canController->canFDMsgRamConfig.txBuffNum;
+        buffNum = (canController->canFDMsgRamConfig.txBuffNum + canController->canFDMsgRamConfig.txFIFONum);
 
-        Can_HwUnitTxConfirmationPriv(loopCnt, buffNum, htrh, canController, canMailbox);
+        /* Check if transmission is completed from FIFO*/
+        Can_HwUnitTxConfirmationPriv(loopCnt, buffNum, canController, canMailbox);
     }
     else
     {
-        loopCnt  = ((uint32)canMailbox->mailBoxConfig.HwHandle);
-        bitPos   = ((uint32)1U << loopCnt);
+        loopCnt = (canMailbox->mailBoxConfig.HwHandle);
+        bitPos  = ((uint32)1U << loopCnt);
+        /* Get the transmission status of dedicated buffers */
         txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
-
+        /* Check if transmission is completed for respective dedicated buffer */
         if ((((uint8)1U) == canController->canTxStatus[loopCnt]) && (bitPos == (txStatus & bitPos)))
         {
-            /* Call Tx Confirmation */
-            CanIf_TxConfirmation(canMailbox->canTxRxPduId[loopCnt]);
-            /* Clear the status as data is already sent */
+            /* Clear the status as data is already sent. Status must be cleared before calling Tx confirmation */
             canController->canTxStatus[loopCnt] = ((uint8)0U);
-        }
-        else
-        {
-            /*  Do Nothing */
+            /* Call Tx Confirmation */
+            CanIf_TxConfirmation(canController->canTxRxPduId[loopCnt]);
         }
     }
 }
@@ -1668,13 +1609,33 @@ Can_HwUnitTxDonePollingPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DAT
  */
 FUNC(void, CAN_CODE)
 Can_ReadRxMailboxPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                      P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint8 maxMbCnt)
+                      P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, Can_HwHandleType htrh)
 {
-    /* Read Messages stored in buffers */
-    Can_ReadRxBuffPriv(controllerObj, canMailbox, maxMbCnt);
+    VAR(Std_ReturnType, AUTOMATIC) retval                 = E_NOT_OK;
+    VAR(Can_RxNewDataStatusType, AUTOMATIC) newDataStatus = {0U};
+    VAR(uint32, AUTOMATIC) baseAddr                       = (uint32)0U;
+    VAR(Can_RxFIFOStatusType, AUTOMATIC) fifoStatus       = ((Can_RxFIFOStatusType){0U});
 
-    /* Read messages stored in Rx FIFO */
-    Can_ReadRxFIFOPriv(controllerObj, canMailbox, maxMbCnt);
+    baseAddr = controllerObj->canControllerConfig.CanControllerBaseAddress;
+
+    if (CAN_BASIC == canMailbox->mailBoxConfig.CanHandleType)
+    {
+        /* Read the status of Fifo mapped to Hoh */
+        Can_GetRxFIFOStatusPriv(baseAddr, &fifoStatus, canMailbox->mailBoxConfig.HwHandle);
+        /* Read messages stored in Rx FIFO0/FIFO1 */
+        Can_ReadRxFIFOPriv(controllerObj, canMailbox, htrh, &fifoStatus);
+    }
+    else
+    {
+        /* Scan NDAT status register to chcek if new message is received in respective dedicated buffers */
+        Can_GetNewDataStatusPriv(baseAddr, &newDataStatus);
+        retval = Can_BitPos(canMailbox->mailBoxConfig.HwHandle, &newDataStatus);
+        if (retval == E_OK)
+        {
+            /* Read message from dedicated receive buffer */
+            Can_ReadRxBuffPriv(controllerObj, canMailbox, htrh, &newDataStatus);
+        }
+    }
 }
 
 /*
@@ -1840,30 +1801,44 @@ Can_ProcessLine0ISR(Can_ControllerInstance canInstance, uint32 lineSelect)
         canController = &(Can_DriverObjPtr->canController[Can_DriverObjPtr->controllerIDMap[canInstance]]);
         canMailbox    = &(Can_DriverObjPtr->canMailbox[0U]);
         baseAddr      = canController->canControllerConfig.CanControllerBaseAddress;
-        intrStatus    = Can_GetIntrStatus(baseAddr);
+        /* Get Interrupt status */
+        intrStatus = Can_GetIntrStatus(baseAddr);
+        /* Take a snap of all required status registers to process further*/
+        txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
+        /* Clear Interrupt status, next interrupt can register in MCAN_IR but can't be served until
+        current execution is completed as nesting is not allowed */
         Can_ClearIntrStatusPriv(baseAddr, intrStatus & MCANSS_INTR_LINE_0_MASK, lineSelect);
-        Can_CheckTxBuffersPriv(intrStatus, baseAddr, canController);
+        /* Check bus off*/
+        Can_CheckBusOffPriv(intrStatus, baseAddr, canController);
 
-        /* Process Tx interrupts*/
-        if (MCAN_IR_TC_MASK == (intrStatus & MCAN_IR_TC_MASK))
-        {
-            txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
-
-            /* Check only Tx buffers */
-            Can_CheckOnlyTxBuffers(txStatus, canController, canMailbox);
-        }
+        /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered can't simulate
+         * Hardware IP Errors */
 #if (CAN_CFG_DEM_BEU_ENABLE == STD_ON)
-        else if (MCAN_IR_BEU_MASK == (intrStatus & MCAN_IR_BEU_MASK))
+        /* Process Bit Error Uncorrecetd interrupt*/
+        if (MCAN_IR_BEU_MASK == (intrStatus & MCAN_IR_BEU_MASK))
         {
             (void)Dem_SetEventStatus(CAN_E_SAFTEY_BEU_ERROR, DEM_EVENT_STATUS_PREFAILED);
         }
 #endif
-        else
-        {
 #if (CAN_CFG_DEM_ENABLE == STD_ON)
-
+        if ((MCAN_IR_ARA_MASK == (intrStatus & MCAN_IR_ARA_MASK)) ||
+            (MCAN_IR_PED_MASK == (intrStatus & MCAN_IR_PED_MASK)) ||
+            (MCAN_IR_PEA_MASK == (intrStatus & MCAN_IR_PEA_MASK)) ||
+            (MCAN_IR_WDI_MASK == (intrStatus & MCAN_IR_WDI_MASK)) ||
+            (MCAN_IR_EP_MASK == (intrStatus & MCAN_IR_EP_MASK)) ||
+            (MCAN_IR_ELO_MASK == (intrStatus & MCAN_IR_ELO_MASK)) ||
+            (MCAN_IR_MRAF_MASK == (intrStatus & MCAN_IR_MRAF_MASK)) ||
+            (MCAN_IR_TOO_MASK == (intrStatus & MCAN_IR_TOO_MASK)))
+        {
             (void)Dem_SetEventStatus(CAN_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PREFAILED);
+        }
 #endif
+        /* TI_COVERAGE_GAP_STOP */
+        /* Process Transmission ocurred interrupt*/
+        if (MCAN_IR_TC_MASK == (intrStatus & MCAN_IR_TC_MASK))
+        {
+            /* Check only Tx buffers */
+            Can_CheckAllTxBuffers(txStatus, canController, canMailbox);
         }
     }
     else
@@ -1879,34 +1854,97 @@ Can_ProcessLine1ISR(Can_ControllerInstance canInstance, uint32 lineSelect)
     P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox         = NULL_PTR;
     VAR(uint32, AUTOMATIC) baseAddr                                      = (uint32)0U;
     VAR(uint32, AUTOMATIC) intrStatus                                    = (uint32)0U;
+    VAR(Can_HwHandleType, AUTOMATIC) hrh                                 = (Can_HwHandleType)0U;
+    VAR(Can_HwHandleType, AUTOMATIC) loopIdx                             = (Can_HwHandleType)0U;
+    VAR(uint8, AUTOMATIC) buffIdx                                        = (uint8)0U;
+    VAR(Can_RxNewDataStatusType, AUTOMATIC) newDataStatus                = {0U};
+    VAR(Std_ReturnType, AUTOMATIC) retval                                = E_NOT_OK;
+    VAR(Can_RxFIFOStatusType, AUTOMATIC) fifo0Status                     = ((Can_RxFIFOStatusType){0U});
+    VAR(Can_RxFIFOStatusType, AUTOMATIC) fifo1Status                     = ((Can_RxFIFOStatusType){0U});
 
     if (NULL_PTR != Can_DriverObjPtr)
     {
         canController = &(Can_DriverObjPtr->canController[Can_DriverObjPtr->controllerIDMap[canInstance]]);
         canMailbox    = &(Can_DriverObjPtr->canMailbox[0U]);
         baseAddr      = canController->canControllerConfig.CanControllerBaseAddress;
-        intrStatus    = Can_GetIntrStatus(baseAddr);
+        /* Get Interrupt status */
+        intrStatus = Can_GetIntrStatus(baseAddr);
+        /* Take a snap of all required status registers to process further */
+        Can_GetNewDataStatusPriv(baseAddr, &newDataStatus);
+        Can_GetRxFIFOStatusPriv(baseAddr, &fifo0Status, (uint8)0U);
+        Can_GetRxFIFOStatusPriv(baseAddr, &fifo1Status, (uint8)1U);
+        /* Clear Interrupt status, next interrupt can register in MCAN_IR but can't be served until
+        current execution is completed as nesting is not allowed */
         Can_ClearIntrStatusPriv(baseAddr, intrStatus & MCANSS_INTR_LINE_1_MASK, lineSelect);
-        Can_CheckTxBuffersPriv(intrStatus, baseAddr, canController);
 
-        /* Process Rx interrupts*/
-        if (((uint32)MCAN_IR_RF0N_MASK == (intrStatus & (uint32)MCAN_IR_RF0N_MASK)) ||
-            ((uint32)MCAN_IR_DRX_MASK == (intrStatus & (uint32)MCAN_IR_DRX_MASK)))
+#if (CAN_CFG_DEV_ERROR_DETECT == STD_ON)
+        if (((uint32)MCAN_IR_RF0L_MASK == (intrStatus & (uint32)MCAN_IR_RF0L_MASK)) ||
+            ((uint32)MCAN_IR_RF1L_MASK == (intrStatus & (uint32)MCAN_IR_RF1L_MASK)))
         {
-            Can_ReadRxBuffPriv(canController, canMailbox, Can_DriverObjPtr->maxMbCnt);
-
-            Can_ReadRxFIFOPriv(canController, canMailbox, Can_DriverObjPtr->maxMbCnt);
+            /* data lost error*/
+            (void)Det_ReportRuntimeError(CAN_MODULE_ID, CAN_INSTANCE_ID, CAN_SID_PROCESSISR, CAN_E_DATALOST);
         }
-        /* TI_COVERAGE_GAP_START [Line/Region/Branch Coverage] This cannot be covered can't
-            simulate Hardware Errors */
-        else
-        {
-#if (CAN_CFG_DEM_ENABLE == STD_ON)
-
-            (void)Dem_SetEventStatus(CAN_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PREFAILED);
 #endif
+#if (CAN_CFG_DEM_ENABLE == STD_ON)
+        /* Process FIFO0 and FIFO1 full interrupt*/
+        if ((uint32)MCAN_IR_RF0F_MASK == (intrStatus & (uint32)MCAN_IR_RF0F_MASK) ||
+            (uint32)MCAN_IR_RF1F_MASK == (intrStatus & (uint32)MCAN_IR_RF1F_MASK))
+        {
+            (void)Dem_SetEventStatus(CAN_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PREFAILED);
         }
-        /* TI_COVERAGE_GAP_STOP */
+#endif
+        /* Process dedicated Rx buffer interrupt */
+        if ((uint32)MCAN_IR_RF0N_MASK == (intrStatus & (uint32)MCAN_IR_RF0N_MASK))
+        {
+            /* Identify the Hoh associated with Fifo 0 */
+            loopIdx    = canController->canFDMsgRamConfig.canRxFifoToHohMapping[0];
+            canMailbox = &(Can_DriverObjPtr->canMailbox[loopIdx]);
+            if ((canController->canControllerConfig.CanTxProcessing == CAN_INTERRUPT) ||
+                ((canController->canControllerConfig.CanTxProcessing == CAN_MIXED) &&
+                 (canMailbox->mailBoxConfig.CanHardwareObjectUsesPolling == FALSE)))
+            {
+                Can_ReadRxFIFOPriv(canController, canMailbox, loopIdx, &fifo0Status);
+            }
+        }
+        /* Process FIFO1 Rx interrupt*/
+        if ((uint32)MCAN_IR_RF1N_MASK == (intrStatus & (uint32)MCAN_IR_RF1N_MASK))
+        {
+            /* Identify the Hoh associated with Fifo 1 */
+            loopIdx    = canController->canFDMsgRamConfig.canRxFifoToHohMapping[1];
+            canMailbox = &(Can_DriverObjPtr->canMailbox[loopIdx]);
+            if ((canController->canControllerConfig.CanTxProcessing == CAN_INTERRUPT) ||
+                ((canController->canControllerConfig.CanTxProcessing == CAN_MIXED) &&
+                 (canMailbox->mailBoxConfig.CanHardwareObjectUsesPolling == FALSE)))
+            {
+                Can_ReadRxFIFOPriv(canController, canMailbox, loopIdx, &fifo1Status);
+            }
+        }
+        /* Process FIFO0 Rx interrupt*/
+        if ((uint32)MCAN_IR_DRX_MASK == (intrStatus & (uint32)MCAN_IR_DRX_MASK))
+        {
+            for (buffIdx = 0; buffIdx < (uint8)KMAX_RX_MB_PER_CONTROLLER; buffIdx++)
+            {
+                retval = Can_BitPos(buffIdx, &newDataStatus);
+                if ((retval == E_OK) && (buffIdx < (uint32)canController->canFDMsgRamConfig.rxBuffNum))
+                {
+                    /* Identify Hoh associated with dedicated buffer*/
+                    hrh        = canController->canFDMsgRamConfig.canRxBufToHohMapping[buffIdx];
+                    canMailbox = &(Can_DriverObjPtr->canMailbox[hrh]);
+                    /* Chcek if Hoh is valid */
+                    if (CAN_RECEIVE == canMailbox->mailBoxConfig.CanObjectType)
+                    {
+                        /* Chcek if Hoh is expected to be read in interrupt */
+                        if ((canController->canControllerConfig.CanTxProcessing == CAN_INTERRUPT) ||
+                            ((canController->canControllerConfig.CanTxProcessing == CAN_MIXED) &&
+                             (canMailbox->mailBoxConfig.CanHardwareObjectUsesPolling == FALSE)))
+                        {
+                            /* Read dedicated message buffer */
+                            Can_ReadRxBuffPriv(canController, canMailbox, hrh, &newDataStatus);
+                        }
+                    }
+                }
+            }
+        }
     }
     else
     {
@@ -1966,53 +2004,75 @@ FUNC(void, CAN_CODE)
 Can_MsgRamConfigPriv(uint32 baseAddr, P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) canFDMsgRamConfig)
 {
     VAR(uint32, AUTOMATIC) startAddr = (uint32)0U;
-    VAR(uint32, AUTOMATIC) loopCnt   = (uint32)0U;
-    VAR(uint32, AUTOMATIC) txMbNum   = (uint32)0U;
+    VAR(uint8, AUTOMATIC) loopCnt    = (uint32)0U;
+    VAR(uint8, AUTOMATIC) txMbNum    = (uint32)0U;
 
-    txMbNum = ((uint32)canFDMsgRamConfig->txBuffNum + (uint32)canFDMsgRamConfig->txFIFONum);
+    txMbNum = (canFDMsgRamConfig->txBuffNum + canFDMsgRamConfig->txFIFONum);
 
-    if ((MCAN_TX_BUFFER_MAX_NUM >= txMbNum) && (((uint16)MCAN_RX_FIFO_0_MAX_NUM) >= canFDMsgRamConfig->rxBuffNum) &&
-        (((uint16)MCAN_RX_BUFFER_MAX_NUM) >= canFDMsgRamConfig->rxFIFONum))
+    if (((uint8)MCAN_TX_BUFFER_MAX_NUM >= txMbNum) &&
+        (((uint8)MCAN_RX_BUFFER_MAX_NUM) >= canFDMsgRamConfig->rxBuffNum) &&
+        (((uint8)MCAN_RX_FIFO_0_MAX_NUM) >= canFDMsgRamConfig->configParams.rxFIFO0size) &&
+        (((uint8)MCAN_RX_FIFO_1_MAX_NUM) >= canFDMsgRamConfig->configParams.rxFIFO1size))
     {
         /* Calculate Start Address for Message RAM sections */
-        canFDMsgRamConfig->configParams.flssa = ((uint32)0U);
+        /* Start address of standard filters*/
+        if ((uint8)0U < canFDMsgRamConfig->stdFilterNum)
+        {
+            canFDMsgRamConfig->configParams.flssa = ((uint32)0U);
+            startAddr += (uint32)(((uint32)canFDMsgRamConfig->stdFilterNum) * (uint32)MCAN_MSG_RAM_STD_ELEM_SIZE * 4U);
+        }
 
-        startAddr +=
-            (uint32)(((uint32)canFDMsgRamConfig->stdFilterNum + (uint32)1U) * (uint32)MCAN_MSG_RAM_STD_ELEM_SIZE * 4U);
-        canFDMsgRamConfig->configParams.flesa = startAddr;
+        /* Start address of extended filters*/
+        if ((uint8)0U < canFDMsgRamConfig->extFilterNum)
+        {
+            canFDMsgRamConfig->configParams.flesa = startAddr;
+            startAddr += (uint32)(((uint32)canFDMsgRamConfig->extFilterNum) * (uint32)MCAN_MSG_RAM_EXT_ELEM_SIZE * 4U);
+        }
 
-        startAddr +=
-            (uint32)(((uint32)canFDMsgRamConfig->extFilterNum + (uint32)1U) * (uint32)MCAN_MSG_RAM_EXT_ELEM_SIZE * 4U);
-        canFDMsgRamConfig->configParams.txStartAddr = startAddr;
+        /* Start address of Rx FIFO0 */
+        if ((uint8)0U < canFDMsgRamConfig->configParams.rxFIFO0size)
+        {
+            canFDMsgRamConfig->configParams.rxFIFO0startAddr = startAddr;
+            startAddr += (uint32)(((uint32)canFDMsgRamConfig->configParams.rxFIFO0size) *
+                                  (uint32)canFDMsgRamConfig->configParams.bufferElemSize * 4U);
+        }
 
-        startAddr += (uint32)(((uint32)canFDMsgRamConfig->configParams.txBufNum + (uint32)1U) *
-                              (uint32)MCAN_MSG_RAM_TX_RX_ELEM_SIZE * 4U);
-        startAddr += (uint32)(((uint32)canFDMsgRamConfig->configParams.txFIFOSize + (uint32)1U) *
-                              (uint32)MCAN_MSG_RAM_TX_RX_ELEM_SIZE * 4U);
-        canFDMsgRamConfig->configParams.rxFIFO0startAddr = startAddr;
+        /* Start address of Rx FIFO1 */
+        if ((uint8)0U < canFDMsgRamConfig->configParams.rxFIFO1size)
+        {
+            canFDMsgRamConfig->configParams.rxFIFO1startAddr = startAddr;
+            startAddr += (uint32)(((uint32)canFDMsgRamConfig->configParams.rxFIFO1size) *
+                                  (uint32)canFDMsgRamConfig->configParams.bufferElemSize * 4U);
+        }
 
-        startAddr +=
-            (uint32)((canFDMsgRamConfig->configParams.rxFIFO0size + ((uint32)1U)) * MCAN_MSG_RAM_TX_RX_ELEM_SIZE * 4U);
-        canFDMsgRamConfig->configParams.rxBufStartAddr = startAddr;
+        /* Start address of Rx Buffers */
+        if ((uint8)0U < canFDMsgRamConfig->rxBuffNum)
+        {
+            canFDMsgRamConfig->configParams.rxBufStartAddr  = startAddr;
+            startAddr                                      += (uint32)(((uint32)canFDMsgRamConfig->rxBuffNum) *
+                                  (uint32)canFDMsgRamConfig->configParams.bufferElemSize * 4U);
+        }
+
+        /* Start address of Tx Buffers */
+        if ((uint8)0U < (canFDMsgRamConfig->txBuffNum + canFDMsgRamConfig->configParams.txFIFOSize))
+        {
+            canFDMsgRamConfig->configParams.txStartAddr = startAddr;
+        }
 
         /* Configure Message RAM */
         Can_HwMsgRamConfigPriv(baseAddr, &canFDMsgRamConfig->configParams);
 
         /* Configure Standard ID Filters */
-        for (loopCnt = ((uint32)0U); loopCnt < (uint32)canFDMsgRamConfig->stdFilterNum; loopCnt++)
+        for (loopCnt = ((uint8)0U); loopCnt < canFDMsgRamConfig->stdFilterNum; loopCnt++)
         {
             Can_AddStdMsgIDFilterPriv(baseAddr, loopCnt, &canFDMsgRamConfig->stdMsgIDFilterList[loopCnt]);
         }
 
         /* Configure Extended ID Filters */
-        for (loopCnt = ((uint32)0U); loopCnt < (uint32)canFDMsgRamConfig->extFilterNum; loopCnt++)
+        for (loopCnt = ((uint8)0U); loopCnt < canFDMsgRamConfig->extFilterNum; loopCnt++)
         {
             Can_AddExtMsgIDFilterPriv(baseAddr, loopCnt, &canFDMsgRamConfig->extMsgIDFilterList[loopCnt]);
         }
-    }
-    else
-    {
-        /* Do Nothing */
     }
 }
 
@@ -2020,27 +2080,36 @@ Can_MsgRamConfigPriv(uint32 baseAddr, P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC
  *Design: MCAL-24238
  */
 FUNC(void, CAN_CODE)
-Can_ReadMsgRamPriv(uint32 baseAddr, uint32 memType, uint32 bufNum,
+Can_ReadMsgRamPriv(uint32 baseAddr, Can_MemType memType, uint8 bufNum,
                    P2VAR(Can_RxBufElementType, AUTOMATIC, CAN_APPL_DATA) elem)
 {
     VAR(uint32, AUTOMATIC) startAddr = (uint32)0U;
     VAR(uint32, AUTOMATIC) elemSize  = (uint32)0U;
     VAR(uint32, AUTOMATIC) elemAddr  = (uint32)0U;
-    VAR(uint32, AUTOMATIC) idx       = (uint32)0U;
+    VAR(uint8, AUTOMATIC) idx        = (uint32)0U;
     VAR(uint32, AUTOMATIC) regVal    = (uint32)0U;
     VAR(uint32, AUTOMATIC) loopCnt   = (uint32)0U;
 
-    if (((uint32)CAN_MEM_TYPE_BUF) == memType)
+    if (((Can_MemType)CAN_MEM_TYPE_BUF) == memType)
     {
+        /* To read RX dedicated buffer */
         startAddr = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXBC), MCAN_RXBC_RBSA);
         elemSize  = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXESC), MCAN_RXESC_RBDS);
         idx       = bufNum;
     }
-    else
+    else if (((Can_MemType)CAN_MEM_TYPE_FIFO0) == memType)
     {
+        /* To read RX FIFO0*/
         startAddr = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXF0C), MCAN_RXF0C_F0SA);
         elemSize  = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXESC), MCAN_RXESC_F0DS);
         idx       = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXF0S), MCAN_RXF0S_F0GI);
+    }
+    else
+    {
+        /* To read RX FIFO1*/
+        startAddr = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXF1C), MCAN_RXF1C_F1SA);
+        elemSize  = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXESC), MCAN_RXESC_F1DS);
+        idx       = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXF1S), MCAN_RXF1S_F1GI);
     }
 
     startAddr  = (uint32)(startAddr << ((uint32)2U));
@@ -2126,23 +2195,33 @@ Can_CheckControllerConfigPriv(P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) Conf
 FUNC(void, CAN_CODE)
 Can_HwMsgRamConfigPriv(uint32 baseAddr, P2CONST(Can_MsgRAMConfigParams, AUTOMATIC, CAN_CONST) msgRAMConfigParams)
 {
-    VAR(uint32, AUTOMATIC) elemNum = 0U;
+    VAR(uint8, AUTOMATIC) elemNum      = 0U;
+    VAR(uint32, AUTOMATIC) elementSize = 0U;
+    /* Buffer data size for tx and rx elements */
+    if (msgRAMConfigParams->bufferElemSize == MCAN_MSG_RAM_TX_RX_FD_ELEM_SIZE)
+    {
+        elementSize = CAN_ELEM_SIZE_64BYTES;
+    }
+    else
+    {
+        elementSize = CAN_ELEM_SIZE_8BYTES;
+    }
 
     /* Configure Message Filters section */
-    if (((uint32)0U) != msgRAMConfigParams->lss)
+    if (((uint8)0U) != msgRAMConfigParams->lss)
     {
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_SIDFC, MCAN_SIDFC_FLSSA, (msgRAMConfigParams->flssa >> ((uint32)2U)));
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_SIDFC, MCAN_SIDFC_LSS, msgRAMConfigParams->lss);
     }
 
-    if (((uint32)0U) != msgRAMConfigParams->lse)
+    if (((uint8)0U) != msgRAMConfigParams->lse)
     {
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_XIDFC, MCAN_XIDFC_FLESA, (msgRAMConfigParams->flesa >> ((uint32)2U)));
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_XIDFC, MCAN_XIDFC_LSE, msgRAMConfigParams->lse);
     }
 
     /* Configure Rx FIFO 0 section */
-    if (((uint32)0U) != msgRAMConfigParams->rxFIFO0size)
+    if (((uint8)0U) != msgRAMConfigParams->rxFIFO0size)
     {
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_RXF0C, MCAN_RXF0C_F0SA,
                                 (msgRAMConfigParams->rxFIFO0startAddr >> ((uint32)2U)));
@@ -2150,11 +2229,11 @@ Can_HwMsgRamConfigPriv(uint32 baseAddr, P2CONST(Can_MsgRAMConfigParams, AUTOMATI
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_RXF0C, MCAN_RXF0C_F0WM, msgRAMConfigParams->rxFIFO0waterMark);
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_RXF0C, MCAN_RXF0C_F0OM, msgRAMConfigParams->rxFIFO0OpMode);
         /* Configure Rx FIFO0 elements size */
-        MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_RXESC, MCAN_RXESC_F0DS, msgRAMConfigParams->rxFIFO0ElemSize);
+        MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_RXESC, MCAN_RXESC_F0DS, elementSize);
     }
 
     /* Configure Rx FIFO 1 section */
-    if (((uint32)0U) != msgRAMConfigParams->rxFIFO1size)
+    if (((uint8)0U) != msgRAMConfigParams->rxFIFO1size)
     {
         MCAL_LIB_REG_MF_WRITE32((baseAddr) + MCAN_RXF1C, MCAN_RXF1C_F1SA,
                                 (msgRAMConfigParams->rxFIFO1startAddr >> ((uint32)2U)));
@@ -2162,19 +2241,19 @@ Can_HwMsgRamConfigPriv(uint32 baseAddr, P2CONST(Can_MsgRAMConfigParams, AUTOMATI
         MCAL_LIB_REG_MF_WRITE32((baseAddr) + MCAN_RXF1C, MCAN_RXF1C_F1WM, msgRAMConfigParams->rxFIFO1waterMark);
         MCAL_LIB_REG_MF_WRITE32((baseAddr) + MCAN_RXF1C, MCAN_RXF1C_F1OM, msgRAMConfigParams->rxFIFO1OpMode);
         /* Configure Rx FIFO1 elements size */
-        MCAL_LIB_REG_MF_WRITE32((baseAddr) + MCAN_RXESC, MCAN_RXESC_F1DS, msgRAMConfigParams->rxFIFO1ElemSize);
+        MCAL_LIB_REG_MF_WRITE32((baseAddr) + MCAN_RXESC, MCAN_RXESC_F1DS, elementSize);
     }
 
     /* Configure Rx Buffer Start Address */
     MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_RXBC, MCAN_RXBC_RBSA, (msgRAMConfigParams->rxBufStartAddr >> ((uint32)2U)));
     /* Configure Rx Buffer elements size */
-    MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_RXESC, MCAN_RXESC_RBDS, msgRAMConfigParams->rxBufElemSize);
+    MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_RXESC, MCAN_RXESC_RBDS, elementSize);
 
     /* Configure Tx Buffer and FIFO/Q section */
-    elemNum = (uint32)((uint32)msgRAMConfigParams->txBufNum + (uint32)msgRAMConfigParams->txFIFOSize);
+    elemNum = msgRAMConfigParams->txBufNum + msgRAMConfigParams->txFIFOSize;
 
     if ((MCAN_TX_MB_MAX_NUM >= elemNum) &&
-        ((((uint32)0U) != msgRAMConfigParams->txBufNum) || (((uint32)0U) != msgRAMConfigParams->txFIFOSize)))
+        ((((uint8)0U) != msgRAMConfigParams->txBufNum) || (((uint8)0U) != msgRAMConfigParams->txFIFOSize)))
     {
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXBC, MCAN_TXBC_TBSA,
                                 (msgRAMConfigParams->txStartAddr >> ((uint32)2U)));
@@ -2182,11 +2261,7 @@ Can_HwMsgRamConfigPriv(uint32 baseAddr, P2CONST(Can_MsgRAMConfigParams, AUTOMATI
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXBC, MCAN_TXBC_TFQS, msgRAMConfigParams->txFIFOSize);
         MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXBC, MCAN_TXBC_TFQM, msgRAMConfigParams->txBufMode);
         /* Configure Tx Buffer/FIFO0/FIFO1 elements size */
-        MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXESC, MCAN_TXESC_TBDS, msgRAMConfigParams->txBufElemSize);
-    }
-    else
-    {
-        /* Do Nothing */
+        MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_TXESC, MCAN_TXESC_TBDS, elementSize);
     }
 }
 
@@ -2194,14 +2269,14 @@ Can_HwMsgRamConfigPriv(uint32 baseAddr, P2CONST(Can_MsgRAMConfigParams, AUTOMATI
  *Design: MCAL-23055
  */
 FUNC(void, CAN_CODE)
-Can_WriteMsgRamPriv(uint32 baseAddr, uint32 bufNum, P2CONST(Can_TxBufElementType, AUTOMATIC, CAN_CONST) elem,
+Can_WriteMsgRamPriv(uint32 baseAddr, uint8 bufNum, P2CONST(Can_TxBufElementType, AUTOMATIC, CAN_CONST) elem,
                     P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pdu_Info,
                     P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailBoxConfig)
 {
     VAR(uint32, AUTOMATIC) startAddr = (uint32)0U;
     VAR(uint32, AUTOMATIC) elemAddr  = (uint32)0U;
     VAR(uint32, AUTOMATIC) elemSize  = (uint32)0U;
-    VAR(uint32, AUTOMATIC) idx       = (uint32)0U;
+    VAR(uint8, AUTOMATIC) idx        = (uint32)0U;
     VAR(uint8, AUTOMATIC) loopCnt    = (uint8)0U;
     VAR(uint32, AUTOMATIC) regVal    = (uint32)0U;
 
@@ -2307,15 +2382,25 @@ static FUNC(uint32, CAN_CODE)
 /*
  *Design: MCAL-24240
  */
-FUNC(void, CAN_CODE) Can_WriteRxFIFOAckPriv(uint32 baseAddr, uint32 idx)
+FUNC(void, CAN_CODE) Can_WriteRxFIFOAckPriv(uint32 baseAddr, uint8 idx, uint8 hwHandle)
 {
-    VAR(uint32, AUTOMATIC) size = (uint32)0U;
+    VAR(uint8, AUTOMATIC) size = (uint32)0U;
 
-    size = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXF0C), MCAN_RXF0C_F0S);
-
-    if (size >= idx)
+    if (hwHandle == (uint8)0U)
     {
-        MCAL_LIB_REG_MF_WRITE32((baseAddr + MCAN_RXF0A), MCAN_RXF0A_F0AI, idx);
+        size = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXF0C), MCAN_RXF0C_F0S);
+        if (size >= idx)
+        {
+            MCAL_LIB_REG_MF_WRITE32((baseAddr + MCAN_RXF0A), MCAN_RXF0A_F0AI, idx);
+        }
+    }
+    else if (hwHandle == (uint8)1U)
+    {
+        size = MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_RXF1C), MCAN_RXF1C_F1S);
+        if (size >= idx)
+        {
+            MCAL_LIB_REG_MF_WRITE32((baseAddr + MCAN_RXF1A), MCAN_RXF1A_F1AI, idx);
+        }
     }
     else
     {
@@ -2383,31 +2468,29 @@ Can_InterruptCounterCheckPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA)
  *Design: MCAL-28426
  */
 FUNC(void, CAN_CODE)
-Can_HwUnitTxConfirmationPriv(uint32 loopCnt, uint32 buffNum, uint8 htrh,
+Can_HwUnitTxConfirmationPriv(uint8 loopCnt, uint8 buffNum,
                              P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
                              P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox)
 {
     VAR(uint32, AUTOMATIC) bitPos   = (uint32)0U;
     VAR(uint32, AUTOMATIC) txStatus = (uint32)0U;
     VAR(uint32, AUTOMATIC) baseAddr = (uint32)0U;
-    VAR(uint32, AUTOMATIC) loop_Cnt = loopCnt;
+    VAR(uint8, AUTOMATIC) loop_Cnt  = loopCnt;
 
     baseAddr = canController->canControllerConfig.CanControllerBaseAddress;
 
     for (; loop_Cnt < buffNum; loop_Cnt++)
     {
-        if (htrh == canController->canFDMsgRamConfig.hthToMbMapping[loop_Cnt])
-        {
-            bitPos   = ((uint32)1U << loop_Cnt);
-            txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
+        bitPos = ((uint32)1U << loop_Cnt);
+        /* Get the status of transmission occurred bit*/
+        txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
 
-            if ((((uint8)1U) == canController->canTxStatus[loop_Cnt]) && (bitPos == (txStatus & bitPos)))
-            {
-                /* Call Tx Confirmation */
-                CanIf_TxConfirmation(canMailbox->canTxRxPduId[loop_Cnt]);
-                /* Clear the status as data is already sent */
-                canController->canTxStatus[loop_Cnt] = ((uint8)0U);
-            }
+        if ((((uint8)1U) == canController->canTxStatus[loop_Cnt]) && (bitPos == (txStatus & bitPos)))
+        {
+            /* Clear the status as data is already sent */
+            canController->canTxStatus[loop_Cnt] = ((uint8)0U);
+            /* Call Tx Confirmation */
+            CanIf_TxConfirmation(canController->canTxRxPduId[loop_Cnt]);
         }
     }
 }
@@ -2420,8 +2503,8 @@ Can_CheckTxDelayCompEnablePriv(uint32 baseAddress, P2CONST(Can_BaudConfigType, A
 {
     if (((boolean)TRUE) == baudConfig->BaudFdRateConfig.TxDelayCompEnable)
     {
-        if ((((uint8)CAN_TDCR_TDCF_MAX) >= baudConfig->BaudFdRateConfig.TxDelayCompFilter) &&
-            (((uint8)CAN_TDCR_TDCO_MAX) >= baudConfig->BaudFdRateConfig.CanControllerTrcvDelayCompensationOffset))
+        if (((CAN_TDCR_TDCF_MAX) >= baudConfig->BaudFdRateConfig.TxDelayCompFilter) &&
+            ((CAN_TDCR_TDCO_MAX) >= baudConfig->BaudFdRateConfig.CanControllerTrcvDelayCompensationOffset))
         {
             /* Configure Transceiver Delay Compensation */
             MCAL_LIB_REG_MF_WRITE32(baseAddress + MCAN_TDCR, MCAN_TDCR_TDCF,
@@ -2442,58 +2525,6 @@ Can_CheckTxDelayCompEnablePriv(uint32 baseAddress, P2CONST(Can_BaudConfigType, A
     {
         /* Do Nothing */
     }
-}
-
-/*
- *Design: MCAL-28434
- */
-FUNC(uint8, CAN_CODE)
-Can_CheckControllerType(uint8 maxMbCount, P2VAR(Can_RxBufElementType, AUTOMATIC, CAN_APPL_DATA) elm,
-                        P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObject,
-                        P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailboxObject)
-{
-    VAR(uint8, AUTOMATIC) htrhh  = (uint8)0U;
-    VAR(uint32, AUTOMATIC) msk   = (uint32)0U;
-    VAR(uint32, AUTOMATIC) canId = (uint32)0U;
-
-    if ((uint8)CAN_ID_XTD == elm->xtd)
-    {
-        /* Received frame with Extended ID - set MSB to '1' */
-        canId = ((uint32)elm->id | CAN_MSG_ID_TYPE_EXT);
-        msk   = CAN_XTD_MSGID_MASK;
-    }
-    else
-    {
-        /* Received frame with Standard ID */
-        canId = (((uint32)elm->id >> CAN_STD_MSGID_SHIFT) & CAN_STD_MSGID_MASK);
-        msk   = CAN_STD_MSGID_MASK;
-    }
-
-    canId = (canId | ((uint32)elm->fdf << ((uint32)30U)));
-
-    for (htrhh = ((uint8)0U); htrhh < maxMbCount; htrhh++)
-    {
-        /* Check for Controller type and Active state as well
-         * as MailBox Direction */
-        if ((CAN_RECEIVE == canMailboxObject[htrhh].mailBoxConfig.CanObjectType) &&
-            (TRUE == controllerObject->canControllerConfig.CanControllerActivation) &&
-            (canMailboxObject[htrhh].mailBoxConfig.CanControllerRef->CanControllerId ==
-             controllerObject->canControllerConfig.CanControllerId) &&
-            (((uint32)elm->xtd) == canMailboxObject[htrhh].mailBoxConfig.CanIdType))
-        {
-            /* Get exact mask value */
-            msk = msk & canMailboxObject[htrhh].mailBoxConfig.CanHwFilterMask.MaskValue;
-            if ((canId & msk) == (canMailboxObject[htrhh].mailBoxConfig.CanHwFilterCode & msk))
-            {
-                break;
-            }
-        }
-        else
-        {
-            /* Do Nothing */
-        }
-    }
-    return htrhh;
 }
 
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
@@ -2542,39 +2573,6 @@ Can_IcomCheckRxmsgPriv(P2CONST(Can_IcomRxMessageType, AUTOMATIC, CAN_CONST) RxMe
 }
 
 #endif
-
-/*
- *Design: MCAL-28438
- */
-FUNC(uint8, CAN_CODE)
-Can_CheckCtrltypeActstMaildir(uint8 maxMbCnt, P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                              P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint8 elemxtd,
-                              VAR(uint32, AUTOMATIC) canIdentifier)
-{
-    VAR(uint8, AUTOMATIC) htrh = (uint8)0U;
-
-    for (htrh = ((uint8)0U); htrh < maxMbCnt; htrh++)
-    {
-        /* Check for Controller type and Active state as well
-         * as MailBox Direction */
-        if ((CAN_RECEIVE == canMailbox[htrh].mailBoxConfig.CanObjectType) &&
-            (TRUE == controllerObj->canControllerConfig.CanControllerActivation) &&
-            (canMailbox[htrh].mailBoxConfig.CanControllerRef->CanControllerId ==
-             controllerObj->canControllerConfig.CanControllerId) &&
-            (((uint32)elemxtd) == canMailbox[htrh].mailBoxConfig.CanIdType) &&
-            ((canIdentifier & CAN_XTD_MSGID_MASK) ==
-             (canMailbox[htrh].mailBoxConfig.CanHwFilterCode & CAN_XTD_MSGID_MASK)))
-        {
-            break;
-        }
-        else
-        {
-            /* Do Nothing */
-        }
-    }
-
-    return htrh;
-}
 
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
 /*
@@ -2689,9 +2687,9 @@ Can_AddPdgValFindStdDtlen(P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfo,
         }
     }
 
-    if (((uint16)1U) < mailboxCfg->CanHwObjectCount)
+    if (CAN_BASIC == mailboxCfg->CanHandleType)
     {
-        elemPtr->memType = CAN_MEM_TYPE_FIFO;
+        elemPtr->memType = CAN_MEM_TYPE_FIFO0;
     }
     else
     {
@@ -2703,7 +2701,7 @@ Can_AddPdgValFindStdDtlen(P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfo,
  *Design: MCAL-28443
  */
 FUNC(void, CAN_CODE)
-Can_CallRxIndication(CONST(boolean, AUTOMATIC) RxIndicationStatus, CONST(uint8, AUTOMATIC) htrh,
+Can_CallRxIndication(CONST(boolean, AUTOMATIC) RxIndicationStatus, CONST(Can_HwHandleType, AUTOMATIC) htrh,
                      CONST(uint32, AUTOMATIC) canIdentifier, CONST(uint8, AUTOMATIC) canDataLength,
                      P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj)
 {
@@ -2767,38 +2765,33 @@ Can_PeriodicReadbackPrv(uint8 Controller,
  *Design: MCAL-28432
  */
 static FUNC(void, CAN_CODE)
-    Can_CheckOnlyTxBuffers(uint32 txStat, P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canCntrlObj,
-                           P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj)
+    Can_CheckAllTxBuffers(uint32 txStat, P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canCntrlObj,
+                          P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailObj)
 {
-    VAR(uint32, AUTOMATIC) loopCnt = (uint32)0U;
-    VAR(uint32, AUTOMATIC) bitPos  = (uint32)0U;
-    VAR(uint8, AUTOMATIC) hth      = (uint8)0U;
+    VAR(uint8, AUTOMATIC) loopCnt        = (uint8)0U;
+    VAR(uint32, AUTOMATIC) bitPos        = (uint32)0U;
+    VAR(Can_HwHandleType, AUTOMATIC) hth = (Can_HwHandleType)0U;
 
-    for (loopCnt = ((uint32)0U); loopCnt < MCAN_TX_MB_MAX_NUM; loopCnt++)
+    /* Loop through all transmit buffers*/
+    for (loopCnt = ((uint8)0U); loopCnt < MCAN_TX_MB_MAX_NUM; loopCnt++)
     {
         bitPos = ((uint32)1U << loopCnt);
-
         if (bitPos == (txStat & bitPos))
         {
-            hth = canCntrlObj->canFDMsgRamConfig.hthToMbMapping[loopCnt];
-
-            if ((CAN_TRANSMIT == canMailObj[hth].mailBoxConfig.CanObjectType) &&
-                (((uint8)1U) == canCntrlObj->canTxStatus[loopCnt]))
+            hth = canCntrlObj->canFDMsgRamConfig.canTxBufToHohMapping[loopCnt];
+            if ((canCntrlObj->canControllerConfig.CanTxProcessing == CAN_INTERRUPT) ||
+                ((canCntrlObj->canControllerConfig.CanTxProcessing == CAN_MIXED) &&
+                 (canMailObj[hth].mailBoxConfig.CanHardwareObjectUsesPolling == FALSE)))
             {
-                /* Call Tx Confirmation */
-                CanIf_TxConfirmation(canMailObj[hth].canTxRxPduId[loopCnt]);
-                /* Clear the status as data is already sent */
-                canCntrlObj->canTxStatus[loopCnt] = ((uint8)0U);
-                break;
+                if ((CAN_TRANSMIT == canMailObj[hth].mailBoxConfig.CanObjectType) &&
+                    (((uint8)1U) == canCntrlObj->canTxStatus[loopCnt]))
+                {
+                    /* Clear the status as data is already sent */
+                    canCntrlObj->canTxStatus[loopCnt] = ((uint8)0U);
+                    /* Call Tx Confirmation */
+                    CanIf_TxConfirmation(canCntrlObj->canTxRxPduId[loopCnt]);
+                }
             }
-            else
-            {
-                /* Do Nothing */
-            }
-        }
-        else
-        {
-            /* Do Nothing */
         }
     }
 }
@@ -2894,6 +2887,28 @@ static FUNC(Can_ControllerOperationMode, CAN_CODE) Can_GetOpModePriv(uint32 base
 static FUNC(void, CAN_CODE) Can_SetOpModePriv(uint32 baseAddr, Can_ControllerOperationMode cntrMode)
 {
     MCAL_LIB_REG_MF_WRITE32(baseAddr + MCAN_CCCR, MCAN_CCCR_INIT, cntrMode);
+    VAR(uint32, AUTOMATIC) elapsedCount = (uint32)0;
+    do
+    {
+        /* TI_COVERAGE_GAP_START [Line/Region/Branch Coverage] This cannot be covered can't simulate
+         * Hardware IP Errors */
+        if (CAN_CFG_TIMEOUT_DURATION_CYCLES <= elapsedCount)
+        {
+#if (CAN_CFG_DEM_ENABLE == STD_ON)
+            (void)Dem_SetEventStatus(CAN_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PREFAILED);
+#endif
+            break;
+        }
+        /* TI_COVERAGE_GAP_STOP */
+        else
+        {
+            /* Do Nothing */
+        }
+        /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered can't simulate
+         * Hardware IP Errors */
+    } while ((Can_ControllerOperationMode)cntrMode !=
+             (Can_ControllerOperationMode)MCAL_LIB_REG_MF_READ32((baseAddr + MCAN_CCCR), MCAN_CCCR_INIT));
+    /* TI_COVERAGE_GAP_STOP */
 }
 
 /*
@@ -2927,15 +2942,12 @@ static FUNC(void, CAN_CODE)
 
     /* Configure MCAN wakeup */
     regVal = MCAL_LIB_REG_READ32(baseAddr + MCAN_MCANSS_CTRL);
-
     MCAL_LIB_REG_FIELD_SET32(regVal, MCAN_MCANSS_CTRL_WAKEUPREQEN, configParam->CanWakeupSupport);
     MCAL_LIB_REG_FIELD_SET32(regVal, MCAN_MCANSS_CTRL_AUTOWAKEUP, configParam->CanWakeupSupport);
-
     MCAL_LIB_REG_WRITE32(baseAddr + MCAN_MCANSS_CTRL, regVal);
 
     /* Configure MCAN mode(FD vs Classic CAN operation) and controls */
     regVal = MCAL_LIB_REG_READ32(baseAddr + MCAN_CCCR);
-
     MCAL_LIB_REG_FIELD_SET32(regVal, MCAN_CCCR_FDOE, configParam->CanConfigParam.CanFDMode);
     MCAL_LIB_REG_FIELD_SET32(regVal, MCAN_CCCR_BRSE,
                              configParam->CanControllerDefaultBaudrate->BaudFdRateConfig.CanControllerTxBitRateSwitch);
@@ -2943,7 +2955,6 @@ static FUNC(void, CAN_CODE)
     MCAL_LIB_REG_FIELD_SET32(regVal, MCAN_CCCR_PXHD, /* Protocol Exception Handling Disable */
                              (uint32)0U);
     MCAL_LIB_REG_FIELD_SET32(regVal, MCAN_CCCR_DAR, configParam->CanConfigParam.CanDisableAutomaticRetransmission);
-
     MCAL_LIB_REG_WRITE32(baseAddr + MCAN_CCCR, regVal);
 
     /* Configure Global Filter */
@@ -2972,11 +2983,11 @@ static FUNC(void, CAN_CODE) Can_WriteProtectedRegLockPriv(uint32 baseAddr)
 /*
  *Design: MCAL-23042
  */
-static FUNC(void, CAN_CODE) Can_SetupMsgRamPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
-                                                P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox,
-                                                uint8 maxMbCnt, P2VAR(uint8, AUTOMATIC, CAN_APPL_DATA) canHtrhMbMap)
+static FUNC(void, CAN_CODE)
+    Can_SetupMsgRamPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
+                        P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint16 maxMbCnt)
 {
-    VAR(uint8, AUTOMATIC) htrh                                              = (uint8)0U;
+    VAR(Can_HwHandleType, AUTOMATIC) htrh                                   = (Can_HwHandleType)0U;
     VAR(uint32, AUTOMATIC) baseAddr                                         = (uint32)0U;
     VAR(uint8, AUTOMATIC) controller                                        = (uint8)0U;
     P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg      = NULL_PTR;
@@ -2990,10 +3001,10 @@ static FUNC(void, CAN_CODE) Can_SetupMsgRamPriv(P2VAR(Can_ControllerObjType, AUT
     baseAddr         = canControllerCfg->CanControllerBaseAddress;
     msgRamConfig     = &canController->canFDMsgRamConfig;
 
-    Can_MsgRamConfigInitPriv(msgRamConfig);
+    Can_MsgRamConfigInitPriv(msgRamConfig, canControllerCfg);
 
     /* Initialize Message RAM parameters according to configured mailboxes */
-    for (htrh = ((uint8)0U); htrh < maxMbCnt; htrh++)
+    for (htrh = ((Can_HwHandleType)0U); htrh < (Can_HwHandleType)maxMbCnt; htrh++)
     {
         mailboxCfg = &mailboxCfgList[htrh].mailBoxConfig;
 
@@ -3007,7 +3018,6 @@ static FUNC(void, CAN_CODE) Can_SetupMsgRamPriv(P2VAR(Can_ControllerObjType, AUT
             {
                 Can_SetupTxMailboxPriv(msgRamConfig, mailboxCfg, canControllerCfg, htrh, baseAddr);
             }
-            canHtrhMbMap[mailboxCfg->CanObjectId] = htrh;
         }
         else
         {
@@ -3015,8 +3025,8 @@ static FUNC(void, CAN_CODE) Can_SetupMsgRamPriv(P2VAR(Can_ControllerObjType, AUT
         }
     }
 
-    msgRamConfig->configParams.lss = (uint32)msgRamConfig->stdFilterNum;
-    msgRamConfig->configParams.lse = (uint32)msgRamConfig->extFilterNum;
+    msgRamConfig->configParams.lss = msgRamConfig->stdFilterNum;
+    msgRamConfig->configParams.lse = msgRamConfig->extFilterNum;
 
     /* Configure Message RAM Sections :
      *  STD/EXT filters, Tx Buffers/FIFO and Rx Buffers/FIFO */
@@ -3027,57 +3037,73 @@ static FUNC(void, CAN_CODE) Can_SetupMsgRamPriv(P2VAR(Can_ControllerObjType, AUT
  *Design: MCAL-23043
  */
 static FUNC(void, CAN_CODE)
-    Can_MsgRamConfigInitPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig)
+    Can_MsgRamConfigInitPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig,
+                             P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg)
 {
-    VAR(uint32, AUTOMATIC) loopCnt = (uint32)0U;
+    VAR(uint8, AUTOMATIC) loopCnt                                   = (uint32)0U;
+    P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) controllerCfg = canControllerCfg;
 
     msgRamConfig->stdFilterNum = ((uint8)0U);
     msgRamConfig->extFilterNum = ((uint8)0U);
 
     /* Initialize Message RAM configuration parameters */
     msgRamConfig->configParams.flssa                = ((uint32)0U);
-    msgRamConfig->configParams.lss                  = ((uint32)0U);
+    msgRamConfig->configParams.lss                  = ((uint8)0U);
     msgRamConfig->configParams.flesa                = ((uint32)0U);
-    msgRamConfig->configParams.lse                  = ((uint32)0U);
+    msgRamConfig->configParams.lse                  = ((uint8)0U);
     msgRamConfig->configParams.txStartAddr          = ((uint32)0U);
-    msgRamConfig->configParams.txBufNum             = ((uint32)0U);
-    msgRamConfig->configParams.txFIFOSize           = ((uint32)0U);
+    msgRamConfig->configParams.txBufNum             = ((uint8)0U);
+    msgRamConfig->configParams.txFIFOSize           = ((uint8)0U);
     msgRamConfig->configParams.txBufMode            = ((uint32)1U);
-    msgRamConfig->configParams.txBufElemSize        = (uint32)CAN_ELEM_SIZE_64BYTES;
     msgRamConfig->configParams.txEventFIFOStartAddr = ((uint32)0U);
     msgRamConfig->configParams.txEventFIFOSize      = ((uint32)0U);
     msgRamConfig->configParams.txEventFIFOWaterMark = ((uint32)0U);
     msgRamConfig->configParams.rxFIFO0startAddr     = ((uint32)0U);
-    msgRamConfig->configParams.rxFIFO0size          = ((uint32)0U);
+    msgRamConfig->configParams.rxFIFO0size          = ((uint8)0U);
     msgRamConfig->configParams.rxFIFO0waterMark     = ((uint32)0U);
     msgRamConfig->configParams.rxFIFO0OpMode        = ((uint32)0U);
     msgRamConfig->configParams.rxFIFO1startAddr     = ((uint32)0U);
-    msgRamConfig->configParams.rxFIFO1size          = ((uint32)0U);
+    msgRamConfig->configParams.rxFIFO1size          = ((uint8)0U);
     msgRamConfig->configParams.rxFIFO1waterMark     = ((uint32)0U);
     msgRamConfig->configParams.rxFIFO1OpMode        = ((uint32)0U);
     msgRamConfig->configParams.rxBufStartAddr       = ((uint32)0U);
-    msgRamConfig->configParams.rxBufElemSize        = (uint32)CAN_ELEM_SIZE_64BYTES;
-    msgRamConfig->configParams.rxFIFO0ElemSize      = (uint32)CAN_ELEM_SIZE_64BYTES;
-    msgRamConfig->configParams.rxFIFO1ElemSize      = ((uint32)0U);
 
-    msgRamConfig->txBuffNum = ((uint16)0U);
-    msgRamConfig->txFIFONum = ((uint16)0U);
-    msgRamConfig->rxBuffNum = ((uint16)0U);
-    msgRamConfig->rxFIFONum = ((uint16)0U);
+    /* Message buffer element size is set to 8 bytes or 64 bytes based on FD mode support*/
+    if (controllerCfg->CanConfigParam.CanFDMode == TRUE)
+    {
+        msgRamConfig->configParams.bufferElemSize = (uint32)MCAN_MSG_RAM_TX_RX_FD_ELEM_SIZE;
+    }
+    else
+    {
+        msgRamConfig->configParams.bufferElemSize = (uint32)MCAN_MSG_RAM_TX_RX_CLASSIC_ELEM_SIZE;
+    }
 
-    for (loopCnt = ((uint32)0U); loopCnt < KMAX_MB_PER_CONTROLLER; loopCnt++)
+    msgRamConfig->txBuffNum = ((uint8)0U);
+    msgRamConfig->txFIFONum = ((uint8)0U);
+    msgRamConfig->rxBuffNum = ((uint8)0U);
+    msgRamConfig->rxFIFONum = ((uint8)0U);
+
+    for (loopCnt = ((uint8)0U); loopCnt < (uint8)KMAX_TX_MB_PER_CONTROLLER; loopCnt++)
+    {
+        msgRamConfig->canTxBufToHohMapping[loopCnt] = ((Can_HwHandleType)0xFFU);
+    }
+    for (loopCnt = ((uint8)0U); loopCnt < KMAX_RX_MB_PER_CONTROLLER; loopCnt++)
+    {
+        msgRamConfig->canRxBufToHohMapping[loopCnt] = ((Can_HwHandleType)0xFFU);
+    }
+    for (loopCnt = ((uint8)0U); loopCnt < KMAX_STD_FILTERS_PER_CONTROLLER; loopCnt++)
     {
         msgRamConfig->stdMsgIDFilterList[loopCnt].sfid1 = ((uint32)0U);
         msgRamConfig->stdMsgIDFilterList[loopCnt].sfid2 = ((uint32)0U);
         msgRamConfig->stdMsgIDFilterList[loopCnt].sfec  = ((uint32)0U);
         msgRamConfig->stdMsgIDFilterList[loopCnt].sft   = ((uint32)0x3U);
+    }
+    for (loopCnt = ((uint8)0U); loopCnt < KMAX_EXTD_FILTERS_PER_CONTROLLER; loopCnt++)
+    {
         msgRamConfig->extMsgIDFilterList[loopCnt].efid1 = ((uint32)0U);
         msgRamConfig->extMsgIDFilterList[loopCnt].efid2 = ((uint32)0U);
         msgRamConfig->extMsgIDFilterList[loopCnt].efec  = ((uint32)0U);
         msgRamConfig->extMsgIDFilterList[loopCnt].eft   = ((uint32)0x3U);
-        msgRamConfig->txMbMapping[0U][loopCnt]          = ((uint8)0xFFU);
-        msgRamConfig->txMbMapping[1U][loopCnt]          = ((uint8)0xFFU);
-        msgRamConfig->hthToMbMapping[loopCnt]           = ((uint8)0xFFU);
     }
 }
 
@@ -3088,94 +3114,130 @@ static FUNC(void, CAN_CODE)
     Can_SetupRxMailboxPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig,
                            P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCfg)
 {
-    VAR(uint8, AUTOMATIC) idx = (uint8)0U;
+    VAR(uint8, AUTOMATIC) idx        = (uint8)0U;
+    VAR(uint8, AUTOMATIC) filterList = (uint8)0U;
 
-    if (((uint16)1U) < mailboxCfg->CanHwObjectCount)
+    if (mailboxCfg->CanHandleType == CAN_BASIC)
     {
-        /* Get Filter Mask for HRH - STD */
-        if ((uint32)CAN_ID_STD == mailboxCfg->CanIdType)
+        if (((Can_IdType)CAN_ID_STD == mailboxCfg->CanIdType) || ((Can_IdType)CAN_ID_MIXED == mailboxCfg->CanIdType))
         {
-            idx = msgRamConfig->stdFilterNum;
+            for (filterList = (uint8)0U; filterList < mailboxCfg->CanFilterListCount; filterList++)
+            {
+                /* Index of Standard filter*/
+                idx = msgRamConfig->stdFilterNum;
 
-            msgRamConfig->stdMsgIDFilterList[idx].sfid1 = (mailboxCfg->CanHwFilterCode & CAN_STD_MSGID_MASK);
-            msgRamConfig->stdMsgIDFilterList[idx].sfid2 = (mailboxCfg->CanHwFilterMask.MaskValue & CAN_STD_MSGID_MASK);
+                /* Standard filter ids*/
+                msgRamConfig->stdMsgIDFilterList[idx].sfid1 =
+                    (mailboxCfg->CanHwFilterList[filterList]->CanHwFilterCode & CAN_STD_MSGID_MASK);
+                msgRamConfig->stdMsgIDFilterList[idx].sfid2 =
+                    (mailboxCfg->CanHwFilterList[filterList]->CanHwFilterMask.MaskValue & CAN_STD_MSGID_MASK);
 
-            /* Store the message in Rx FIFO 0 */
-            msgRamConfig->stdMsgIDFilterList[idx].sfec = MCAN_MSGRAM_RX_FIFO_0;
+                if (mailboxCfg->HwHandle == ((uint8)0U))
+                {
+                    /* Store the message in Rx FIFO 0 */
+                    msgRamConfig->stdMsgIDFilterList[idx].sfec = MCAN_MSGRAM_RX_FIFO_0;
+                    msgRamConfig->configParams.rxFIFO0size     = mailboxCfg->CanHwObjectCount;
+                }
+                else
+                {
+                    /* Store the message in Rx FIFO 1 */
+                    msgRamConfig->stdMsgIDFilterList[idx].sfec = MCAN_MSGRAM_RX_FIFO_1;
+                    msgRamConfig->configParams.rxFIFO1size     = mailboxCfg->CanHwObjectCount;
+                }
+                /* Filter type configuration */
+                msgRamConfig->stdMsgIDFilterList[idx].sft =
+                    mailboxCfg->CanHwFilterList[filterList]->CanStandardFilterType;
 
-            /* Classic Filter - Bit Mask */
-            msgRamConfig->stdMsgIDFilterList[idx].sft = mailboxCfg->CanStandardFilterType;
-
-            msgRamConfig->stdFilterNum++;
+                msgRamConfig->stdFilterNum++;
+            }
         }
-        /* Get Filter Mask for HRH - EXT */
-        else
+        if (((Can_IdType)CAN_ID_XTD == mailboxCfg->CanIdType) || ((Can_IdType)CAN_ID_MIXED == mailboxCfg->CanIdType))
         {
-            idx = msgRamConfig->extFilterNum;
+            for (filterList = (uint8)0U; filterList < mailboxCfg->CanFilterListCount; filterList++)
+            {
+                /* Index of Standard filter*/
+                idx = msgRamConfig->extFilterNum;
 
-            msgRamConfig->extMsgIDFilterList[idx].efid1 = (mailboxCfg->CanHwFilterCode & CAN_XTD_MSGID_MASK);
-            msgRamConfig->extMsgIDFilterList[idx].efid2 = (mailboxCfg->CanHwFilterMask.MaskValue & CAN_XTD_MSGID_MASK);
+                msgRamConfig->extMsgIDFilterList[idx].efid1 =
+                    (mailboxCfg->CanHwFilterList[filterList]->CanHwFilterCode & CAN_XTD_MSGID_MASK);
+                msgRamConfig->extMsgIDFilterList[idx].efid2 =
+                    (mailboxCfg->CanHwFilterList[filterList]->CanHwFilterMask.MaskValue & CAN_XTD_MSGID_MASK);
 
-            /* Store the message in Rx FIFO 0 */
-            msgRamConfig->extMsgIDFilterList[idx].efec = MCAN_MSGRAM_RX_FIFO_0;
+                if (mailboxCfg->HwHandle == ((uint8)0U))
+                {
+                    /* Store the message in Rx FIFO 0 */
+                    msgRamConfig->extMsgIDFilterList[idx].efec = MCAN_MSGRAM_RX_FIFO_0;
+                    msgRamConfig->configParams.rxFIFO0size     = mailboxCfg->CanHwObjectCount;
+                }
+                else
+                {
+                    /* Store the message in Rx FIFO 1 */
+                    msgRamConfig->extMsgIDFilterList[idx].efec = MCAN_MSGRAM_RX_FIFO_1;
+                    msgRamConfig->configParams.rxFIFO1size     = mailboxCfg->CanHwObjectCount;
+                }
 
-            /* Classic Filter - Bit Mask */
-            msgRamConfig->extMsgIDFilterList[idx].eft = mailboxCfg->CanStandardFilterType;
+                /* Filter type configuration */
+                msgRamConfig->extMsgIDFilterList[idx].eft =
+                    mailboxCfg->CanHwFilterList[filterList]->CanStandardFilterType;
 
-            msgRamConfig->extFilterNum++;
+                msgRamConfig->extFilterNum++;
+            }
         }
-
-        /* Set Mailbox Entry */
-        msgRamConfig->rxFIFONum += ((uint16)1U);
-        if ((msgRamConfig->configParams.rxFIFO0size + (uint32)mailboxCfg->CanHwObjectCount) < 64U)
-        {
-            msgRamConfig->configParams.rxFIFO0size += (uint32)mailboxCfg->CanHwObjectCount;
-        }
-        else
-        {
-            msgRamConfig->configParams.rxFIFO1size += (uint32)mailboxCfg->CanHwObjectCount;
-        }
+        msgRamConfig->rxFIFONum++;
+        msgRamConfig->canRxFifoToHohMapping[mailboxCfg->HwHandle] = mailboxCfg->CanObjectId;
     }
     else
     {
-        /* Get Filter Mask for HRH - STD */
-        if ((uint32)CAN_ID_STD == mailboxCfg->CanIdType)
+        if (((Can_IdType)CAN_ID_STD == mailboxCfg->CanIdType) || ((Can_IdType)CAN_ID_MIXED == mailboxCfg->CanIdType))
         {
-            idx = msgRamConfig->stdFilterNum;
+            for (filterList = (uint8)0U; filterList < mailboxCfg->CanFilterListCount; filterList++)
+            {
+                /* Index of Standard filter*/
+                idx = msgRamConfig->stdFilterNum;
 
-            msgRamConfig->stdMsgIDFilterList[idx].sfid1 = (mailboxCfg->CanHwFilterCode & CAN_STD_MSGID_MASK);
-            msgRamConfig->stdMsgIDFilterList[idx].sfid2 = (uint32)msgRamConfig->rxBuffNum;
+                /* Standard filter ids*/
+                msgRamConfig->stdMsgIDFilterList[idx].sfid1 =
+                    (mailboxCfg->CanHwFilterList[filterList]->CanHwFilterCode & CAN_STD_MSGID_MASK);
+                msgRamConfig->stdMsgIDFilterList[idx].sfid2 = (uint32)msgRamConfig->rxBuffNum;
+                msgRamConfig->stdMsgIDFilterList[idx].sfid2 |=
+                    ((uint32)((uint32)mailboxCfg->CanHwFilterList[filterList]->CanEventPin
+                              << (uint32)MCANSS_STD_ID_FILTER_SFID2_EVENT_PIN_SHIFT));
 
-            /* Store the message in Rx Buffer */
-            msgRamConfig->stdMsgIDFilterList[idx].sfec = ((uint32)0x7U);
-            msgRamConfig->stdMsgIDFilterList[idx].sfid2 |=
-                ((uint32)((uint32)mailboxCfg->CanEventPin << (uint32)MCANSS_STD_ID_FILTER_SFID2_EVENT_PIN_SHIFT));
+                /* Store the message in dedicated buffer */
+                msgRamConfig->stdMsgIDFilterList[idx].sfec = MCAN_MSGRAM_RX_BUFFER;
 
-            /* No filter can be set for Rx Buffer */
-            msgRamConfig->stdMsgIDFilterList[idx].sft = ((uint32)0x0U);
+                /* Standard filter type ignored for dedicated buffer */
+                msgRamConfig->stdMsgIDFilterList[idx].sft = ((uint32)0x0U);
 
-            msgRamConfig->stdFilterNum++;
+                msgRamConfig->stdFilterNum++;
+            }
         }
-        /* Get Filter Mask for HRH - EXT */
-        else
+        if (((Can_IdType)CAN_ID_XTD == mailboxCfg->CanIdType) || ((Can_IdType)CAN_ID_MIXED == mailboxCfg->CanIdType))
         {
-            idx = msgRamConfig->extFilterNum;
+            for (filterList = (uint8)0U; filterList < mailboxCfg->CanFilterListCount; filterList++)
+            {
+                /* Index of Standard filter*/
+                idx = msgRamConfig->extFilterNum;
 
-            msgRamConfig->extMsgIDFilterList[idx].efid1 = (mailboxCfg->CanHwFilterCode & CAN_XTD_MSGID_MASK);
-            msgRamConfig->extMsgIDFilterList[idx].efid2 = (uint32)msgRamConfig->rxBuffNum;
+                msgRamConfig->extMsgIDFilterList[idx].efid1 =
+                    (mailboxCfg->CanHwFilterList[filterList]->CanHwFilterCode & CAN_XTD_MSGID_MASK);
+                msgRamConfig->extMsgIDFilterList[idx].efid2 = (uint32)msgRamConfig->rxBuffNum;
+                msgRamConfig->extMsgIDFilterList[idx].efid2 |=
+                    ((uint32)((uint32)mailboxCfg->CanHwFilterList[filterList]->CanEventPin
+                              << (uint32)MCANSS_EXT_ID_FILTER_SFID2_EVENT_PIN_SHIFT));
 
-            /* Store the message in Rx FIFO 0 */
-            msgRamConfig->extMsgIDFilterList[idx].efec = ((uint32)0x7U);
-            msgRamConfig->extMsgIDFilterList[idx].efid2 |=
-                ((uint32)((uint32)mailboxCfg->CanEventPin << (uint32)MCANSS_EXT_ID_FILTER_SFID2_EVENT_PIN_SHIFT));
-            /* No filter can be set for Rx Buffer */
-            msgRamConfig->extMsgIDFilterList[idx].eft = ((uint32)0x0U);
+                /* Store the message in dedicated buffer */
+                msgRamConfig->extMsgIDFilterList[idx].efec = MCAN_MSGRAM_RX_BUFFER;
 
-            msgRamConfig->extFilterNum++;
+                /* Extended filter type ignored for dedicated buffer */
+                msgRamConfig->extMsgIDFilterList[idx].eft = ((uint32)0x0U);
+
+                msgRamConfig->extFilterNum++;
+            }
         }
-
         /* Set Mailbox Entry */
-        msgRamConfig->rxBuffNum += ((uint16)1U);
+        msgRamConfig->rxBuffNum++;
+        msgRamConfig->canRxBufToHohMapping[mailboxCfg->HwHandle] = mailboxCfg->CanObjectId;
     }
 }
 
@@ -3185,51 +3247,46 @@ static FUNC(void, CAN_CODE)
 static FUNC(void, CAN_CODE)
     Can_SetupTxMailboxPriv(P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC, CAN_APPL_DATA) msgRamConfig,
                            P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCfg,
-                           P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg, uint8 htrh,
+                           P2CONST(Can_ControllerType, AUTOMATIC, CAN_CONST) canControllerCfg, Can_HwHandleType htrh,
                            uint32 baseAddr)
 {
-    VAR(uint32, AUTOMATIC) intrCnt = (uint32)0U;
-    VAR(uint32, AUTOMATIC) regVal  = (uint32)0U;
+    VAR(uint8, AUTOMATIC) intrCnt = (uint32)0U;
+    VAR(uint32, AUTOMATIC) regVal = (uint32)0U;
 
-    if (((uint16)1U) < mailboxCfg->CanHwObjectCount)
+    if (CAN_BASIC == mailboxCfg->CanHandleType)
     {
         /* Set Mailbox Entry */
-        msgRamConfig->txMbMapping[1U][mailboxCfg->HwHandle]  = htrh;
-        msgRamConfig->txFIFONum                             += mailboxCfg->CanHwObjectCount;
-        msgRamConfig->configParams.txFIFOSize               += (uint32)mailboxCfg->CanHwObjectCount;
+        msgRamConfig->txFIFONum               += ((uint8)1U);
+        msgRamConfig->configParams.txFIFOSize += mailboxCfg->CanHwObjectCount;
 
         /* Prepare Transmission Interrupt Enable Mask */
-        for (intrCnt = ((uint32)0U); intrCnt < ((uint32)mailboxCfg->CanHwObjectCount); intrCnt++)
+
+        if ((CAN_INTERRUPT == canControllerCfg->CanTxProcessing) ||
+            ((CAN_MIXED == canControllerCfg->CanTxProcessing) && (FALSE == mailboxCfg->CanHardwareObjectUsesPolling)))
         {
-            if (CAN_INTERRUPT == canControllerCfg->CanTxProcessing)
+            regVal = MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBTIE);
+            for (intrCnt = ((uint8)0U); intrCnt < mailboxCfg->CanHwObjectCount; intrCnt++)
             {
-                regVal  = MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBTIE);
-                regVal |= (((uint32)1U) << (((uint32)mailboxCfg->HwHandle) + ((uint32)intrCnt)));
-                MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBTIE, regVal);
+                regVal |= (((uint32)1U) << (msgRamConfig->txBuffNum + intrCnt));
+                msgRamConfig->canTxBufToHohMapping[(msgRamConfig->txBuffNum + intrCnt)] = htrh;
             }
-            else
-            {
-                /* Do Nothing */
-            }
+            MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBTIE, regVal);
         }
     }
     else
     {
         /* Set Mailbox Entry */
-        msgRamConfig->txMbMapping[0U][mailboxCfg->HwHandle]  = htrh;
-        msgRamConfig->txBuffNum                             += ((uint16)1U);
+        msgRamConfig->canTxBufToHohMapping[mailboxCfg->HwHandle]  = htrh;
+        msgRamConfig->txBuffNum                                  += ((uint8)1U);
         msgRamConfig->configParams.txBufNum++;
 
         /* Prepare Transmission Interrupt Enable Mask */
-        if (CAN_INTERRUPT == canControllerCfg->CanTxProcessing)
+        if ((CAN_INTERRUPT == canControllerCfg->CanTxProcessing) ||
+            ((CAN_MIXED == canControllerCfg->CanTxProcessing) && (FALSE == mailboxCfg->CanHardwareObjectUsesPolling)))
         {
             regVal  = MCAL_LIB_REG_READ32(baseAddr + MCAN_TXBTIE);
             regVal |= ((uint32)1U << (mailboxCfg->HwHandle));
             MCAL_LIB_REG_WRITE32(baseAddr + MCAN_TXBTIE, regVal);
-        }
-        else
-        {
-            /* Do Nothing */
         }
     }
 }
@@ -3237,7 +3294,7 @@ static FUNC(void, CAN_CODE)
 /*
  *Design: MCAL-24229
  */
-static FUNC(void, CAN_CODE) Can_AddStdMsgIDFilterPriv(uint32 baseAddr, uint32 filtNum,
+static FUNC(void, CAN_CODE) Can_AddStdMsgIDFilterPriv(uint32 baseAddr, uint8 filtNum,
                                                       P2CONST(Can_StdMsgIDFilterElement, AUTOMATIC, CAN_CONST) elem)
 {
     VAR(uint32, AUTOMATIC) startAddr = (uint32)0U;
@@ -3246,20 +3303,20 @@ static FUNC(void, CAN_CODE) Can_AddStdMsgIDFilterPriv(uint32 baseAddr, uint32 fi
 
     startAddr = MCAL_LIB_REG_MF_READ32(baseAddr + MCAN_SIDFC, MCAN_SIDFC_FLSSA);
     startAddr = (uint32)(startAddr << ((uint32)2U));
-    elemAddr  = startAddr + (filtNum * MCANSS_STD_ID_FILTER_SIZE_WORDS * 4U);
+    elemAddr  = startAddr + ((uint32)filtNum * MCANSS_STD_ID_FILTER_SIZE_WORDS * 4U);
 
     regVal  = ((uint32)0U);
-    regVal |= ((uint32)elem->sfid2 << MCANSS_STD_ID_FILTER_SFID2_SHIFT);
-    regVal |= ((uint32)elem->sfid1 << MCANSS_STD_ID_FILTER_SFID1_SHIFT);
-    regVal |= ((uint32)elem->sfec << MCANSS_STD_ID_FILTER_SFEC_SHIFT);
-    regVal |= ((uint32)elem->sft << MCANSS_STD_ID_FILTER_SFT_SHIFT);
+    regVal |= (elem->sfid2 << MCANSS_STD_ID_FILTER_SFID2_SHIFT);
+    regVal |= (elem->sfid1 << MCANSS_STD_ID_FILTER_SFID1_SHIFT);
+    regVal |= (elem->sfec << MCANSS_STD_ID_FILTER_SFEC_SHIFT);
+    regVal |= (elem->sft << MCANSS_STD_ID_FILTER_SFT_SHIFT);
     MCAL_LIB_REG_WRITE32(baseAddr + elemAddr, regVal);
 }
 
 /*
  *Design: MCAL-24230
  */
-static FUNC(void, CAN_CODE) Can_AddExtMsgIDFilterPriv(uint32 baseAddr, uint32 filtNum,
+static FUNC(void, CAN_CODE) Can_AddExtMsgIDFilterPriv(uint32 baseAddr, uint8 filtNum,
                                                       P2CONST(Can_ExtMsgIDFilterElement, AUTOMATIC, CAN_CONST) elem)
 {
     VAR(uint32, AUTOMATIC) startAddr = (uint32)0U;
@@ -3268,17 +3325,17 @@ static FUNC(void, CAN_CODE) Can_AddExtMsgIDFilterPriv(uint32 baseAddr, uint32 fi
 
     startAddr = MCAL_LIB_REG_MF_READ32(baseAddr + MCAN_XIDFC, MCAN_XIDFC_FLESA);
     startAddr = (uint32)(startAddr << ((uint32)2U));
-    elemAddr  = startAddr + (filtNum * MCANSS_EXT_ID_FILTER_SIZE_WORDS * 4U);
+    elemAddr  = startAddr + ((uint32)filtNum * MCANSS_EXT_ID_FILTER_SIZE_WORDS * 4U);
 
     regVal  = ((uint32)0U);
-    regVal |= ((uint32)elem->efid1 << MCANSS_EXT_ID_FILTER_EFID1_SHIFT);
-    regVal |= ((uint32)elem->efec << MCANSS_EXT_ID_FILTER_EFEC_SHIFT);
+    regVal |= (elem->efid1 << MCANSS_EXT_ID_FILTER_EFID1_SHIFT);
+    regVal |= (elem->efec << MCANSS_EXT_ID_FILTER_EFEC_SHIFT);
     MCAL_LIB_REG_WRITE32(baseAddr + elemAddr, regVal);
 
     elemAddr += ((uint32)4U);
     regVal    = ((uint32)0U);
-    regVal   |= ((uint32)elem->efid2 << MCANSS_EXT_ID_FILTER_EFID2_SHIFT);
-    regVal   |= ((uint32)elem->eft << MCANSS_EXT_ID_FILTER_EFT_SHIFT);
+    regVal   |= (elem->efid2 << MCANSS_EXT_ID_FILTER_EFID2_SHIFT);
+    regVal   |= (elem->eft << MCANSS_EXT_ID_FILTER_EFT_SHIFT);
     MCAL_LIB_REG_WRITE32(baseAddr + elemAddr, regVal);
 }
 
@@ -3310,48 +3367,37 @@ static FUNC(uint32, CAN_CODE) Can_GetInterruptMaskPriv(P2CONST(Can_ControllerTyp
 {
     VAR(uint32, AUTOMATIC) interruptMask = (uint32)0U;
 
+    /* Enable BusOff Interrupt*/
     if (CAN_INTERRUPT == configParam->CanBusoffProcessing)
     {
         interruptMask |= ((uint32)MCAN_IR_BO_MASK);
     }
-    else
+
+    /* Enable Receive Interrupt*/
+    if (CAN_POLLING != configParam->CanRxProcessing)
     {
-        /* Do Nothing */
+        interruptMask |= ((uint32)MCAN_IR_RF0N_MASK | (uint32)MCAN_IR_RF1N_MASK | (uint32)MCAN_IR_RF0L_MASK |
+                          (uint32)MCAN_IR_RF1L_MASK | (uint32)MCAN_IR_DRX_MASK);
     }
 
-    if (CAN_INTERRUPT == configParam->CanRxProcessing)
+    /* Enable Transmit Interrupt*/
+    if (CAN_POLLING != configParam->CanTxProcessing)
     {
-        interruptMask |= ((uint32)MCAN_IR_RF0N_MASK | (uint32)MCAN_IR_RF0W_MASK | (uint32)MCAN_IR_RF0F_MASK |
-                          (uint32)MCAN_IR_RF0L_MASK | (uint32)MCAN_IR_RF1N_MASK | (uint32)MCAN_IR_RF1W_MASK |
-                          (uint32)MCAN_IR_RF1F_MASK | (uint32)MCAN_IR_RF1L_MASK | (uint32)MCAN_IR_DRX_MASK |
-                          (uint32)MCAN_IR_HPM_MASK);
-    }
-    else
-    {
-        /* Do Nothing */
+        interruptMask |= ((uint32)MCAN_IR_TFE_MASK | (uint32)MCAN_IR_TC_MASK);
     }
 
-    if (CAN_INTERRUPT == configParam->CanTxProcessing)
-    {
-        interruptMask |=
-            ((uint32)MCAN_IR_TFE_MASK | (uint32)MCAN_IR_TEFN_MASK | (uint32)MCAN_IR_TEFW_MASK |
-             (uint32)MCAN_IR_TEFF_MASK | (uint32)MCAN_IR_TEFL_MASK | (uint32)MCAN_IR_TC_MASK |
-             (uint32)MCAN_IR_PED_MASK | (uint32)MCAN_IR_PEA_MASK | (uint32)MCAN_IR_WDI_MASK | (uint32)MCAN_IR_EW_MASK |
-             (uint32)MCAN_IR_EP_MASK | (uint32)MCAN_IR_ELO_MASK | (uint32)MCAN_IR_BEU_MASK);
-    }
-    else
-    {
-        /* Do Nothing */
-    }
+#if (CAN_CFG_DEM_ENABLE == STD_ON)
+    /* Enable Hardware Error Interrupt*/
+    interruptMask |=
+        ((uint32)MCAN_IR_RF0F_MASK | (uint32)MCAN_IR_RF1F_MASK | (uint32)MCAN_IR_ARA_MASK | (uint32)MCAN_IR_PED_MASK |
+         (uint32)MCAN_IR_PEA_MASK | (uint32)MCAN_IR_WDI_MASK | (uint32)MCAN_IR_EW_MASK | (uint32)MCAN_IR_EP_MASK |
+         (uint32)MCAN_IR_ELO_MASK | (uint32)MCAN_IR_TOO_MASK | (uint32)MCAN_IR_MRAF_MASK);
+#endif
 
-    if (CAN_INTERRUPT == configParam->CanWakeupProcessing)
-    {
-        /*  Do Nothing */
-    }
-    else
-    {
-        /* Do Nothing */
-    }
+#if (CAN_CFG_DEM_BEU_ENABLE == STD_ON)
+    /* Enable Bit Error Uncorrected Interrupt*/
+    interruptMask |= ((uint32)MCAN_IR_BEU_MASK);
+#endif
 
     return interruptMask;
 }
@@ -3431,10 +3477,9 @@ static FUNC(void, CAN_CODE) Can_AddClkStopRequestPriv(Can_ControllerInstance ins
  */
 static FUNC(void, CAN_CODE) Can_CancelPendingMsgPriv(uint32 baseAddr)
 {
-    VAR(McalLib_TickType, AUTOMATIC) startCount = (McalLib_TickType)0U;
-    VAR(uint32, AUTOMATIC) txBufPendStatus      = (uint32)0U;
-    VAR(uint32, AUTOMATIC) bitIndex             = (uint32)0U;
-    VAR(uint32, AUTOMATIC) bitPos               = (uint32)0U;
+    VAR(uint32, AUTOMATIC) txBufPendStatus = (uint32)0U;
+    VAR(uint32, AUTOMATIC) bitIndex        = (uint32)0U;
+    VAR(uint32, AUTOMATIC) bitPos          = (uint32)0U;
 
     /* Get Tx Buffers with pending message requests */
     txBufPendStatus = Can_GetTxBufReqPendPriv(baseAddr);
@@ -3449,8 +3494,8 @@ static FUNC(void, CAN_CODE) Can_CancelPendingMsgPriv(uint32 baseAddr)
             /* Clear pending Tx request */
             Can_TxBufCancelReqPriv(baseAddr, bitIndex);
 
-            (void)McalLib_GetCounterValue(&startCount);
-            (void)Can_GetElapsedValuePriv(startCount, bitPos, baseAddr);
+            /* Wait till cancellation request is accepted */
+            Can_WaitForTxBufCancelReqPriv(bitPos, baseAddr);
         }
     }
 }
@@ -3458,11 +3503,13 @@ static FUNC(void, CAN_CODE) Can_CancelPendingMsgPriv(uint32 baseAddr)
 /*
  *Design: MCAL-28428
  */
-static FUNC(McalLib_TickType, CAN_CODE)
-    Can_GetElapsedValuePriv(VAR(McalLib_TickType, AUTOMATIC) startCnt, uint32 bitPos, uint32 baseAddr)
+static FUNC(void, CAN_CODE) Can_WaitForTxBufCancelReqPriv(uint32 bitPos, uint32 baseAddr)
 {
     VAR(McalLib_TickType, AUTOMATIC) elapsedCnt = 0U;
-    VAR(McalLib_TickType, AUTOMATIC) startCount = startCnt;
+    VAR(McalLib_TickType, AUTOMATIC) startCount = (McalLib_TickType)0U;
+
+    /* Fetch the start time */
+    (void)McalLib_GetCounterValue(&startCount);
     do
     {
         (void)McalLib_GetElapsedValue(&startCount, &elapsedCnt);
@@ -3486,7 +3533,7 @@ static FUNC(McalLib_TickType, CAN_CODE)
     } while ((uint32)bitPos != ((Can_TxBufCancelStatusPriv(baseAddr))&bitPos));
     /* TI_COVERAGE_GAP_STOP */
 
-    return elapsedCnt;
+    return;
 }
 
 /*
@@ -3528,7 +3575,7 @@ static FUNC(uint32, CAN_CODE) Can_GetTxBufTransStatusPriv(uint32 baseAddr)
 /*
  *Design: MCAL-23054
  */
-static FUNC(void, CAN_CODE) Can_TxBufAddReqPriv(uint32 baseAddr, uint32 buffNum)
+static FUNC(void, CAN_CODE) Can_TxBufAddReqPriv(uint32 baseAddr, uint8 buffNum)
 {
     VAR(uint32, AUTOMATIC) regVal = (uint32)0U;
 
@@ -3542,72 +3589,41 @@ static FUNC(void, CAN_CODE) Can_TxBufAddReqPriv(uint32 baseAddr, uint32 buffNum)
  */
 static FUNC(void, CAN_CODE)
     Can_ReadRxBuffPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                       P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint8 maxMbCnt)
+                       P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, Can_HwHandleType htrh,
+                       P2VAR(Can_RxNewDataStatusType, AUTOMATIC, CAN_APPL_DATA) newDataStatus)
 {
-    VAR(uint32, AUTOMATIC) baseAddr                       = (uint32)0U;
-    VAR(uint32, AUTOMATIC) buffNum                        = (uint32)0U;
-    VAR(uint8, AUTOMATIC) canDataLength                   = (uint8)0U;
-    VAR(uint32, AUTOMATIC) canIdentifier                  = (uint32)0U;
-    VAR(uint8, AUTOMATIC) htrh                            = (uint8)0U;
-    VAR(Can_RxNewDataStatusType, AUTOMATIC) newDataStatus = {0U};
-    VAR(Can_RxBufElementType, AUTOMATIC) elem             = {0U};
-    VAR(boolean, AUTOMATIC) RxIndicationStatus            = (boolean)FALSE;
-    VAR(Std_ReturnType, AUTOMATIC) retval                 = E_NOT_OK;
+    VAR(uint32, AUTOMATIC) baseAddr            = (uint32)0U;
+    VAR(uint8, AUTOMATIC) buffNum              = (uint32)0U;
+    VAR(uint8, AUTOMATIC) canDataLength        = (uint8)0U;
+    VAR(uint32, AUTOMATIC) canIdentifier       = (uint32)0U;
+    VAR(Can_RxBufElementType, AUTOMATIC) elem  = {0U};
+    VAR(boolean, AUTOMATIC) RxIndicationStatus = (boolean)FALSE;
 
     baseAddr = controllerObj->canControllerConfig.CanControllerBaseAddress;
+    buffNum  = canMailbox->mailBoxConfig.HwHandle;
 
-    /* Get NewData Status */
-    Can_GetNewDataStatusPriv(baseAddr, &newDataStatus);
+    /* Read message RAM area*/
+    Can_ReadMsgRamPriv(baseAddr, ((uint32)CAN_MEM_TYPE_BUF), buffNum, &elem);
 
-    /* Clear NewData Status */
-    Can_ClearNewDataStatusPriv(baseAddr, newDataStatus);
+    /* Clear NewData Status after reading*/
+    Can_ClearNewDataStatusPriv(baseAddr, newDataStatus, buffNum);
 
-    /* Scan newData Register (32 bits x 2 Registers) and
-     * read appropriate mailbox if any message is received */
-    for (buffNum = ((uint32)0U); buffNum < MCAN_RX_BUFFER_MAX_NUM; buffNum++)
-    {
-        retval = Can_BitPos(buffNum, &newDataStatus);
+    canDataLength = Can_DataSize[elem.dataLength];
+    canIdentifier = Can_GetCanIdentifier(&elem);
 
-        if ((retval == E_OK) && (buffNum < (uint32)controllerObj->canFDMsgRamConfig.rxBuffNum))
-        {
-            Can_ReadMsgRamPriv(baseAddr, ((uint32)CAN_MEM_TYPE_BUF), buffNum, &elem);
+    /* Copying payload into SDU */
+    Can_CopyPayloadToSdu(canDataLength, controllerObj, &elem);
 
-            canDataLength = Can_DataSize[elem.dataLength];
+    /* Copy CanId, HOH and CanControllerId */
+    controllerObj->mailboxCfg.CanId        = canIdentifier;
+    controllerObj->mailboxCfg.Hoh          = canMailbox->mailBoxConfig.CanObjectId;
+    controllerObj->mailboxCfg.ControllerId = controllerObj->canControllerConfig.CanControllerId;
 
-            canIdentifier = Can_GetCanIdentifier(&elem);
+    /* Copy SDU data */
+    controllerObj->pduInfo.SduDataPtr = controllerObj->canSduPtr;
+    controllerObj->pduInfo.SduLength  = ((PduLengthType)canDataLength);
 
-            htrh = Can_CheckCtrltypeActstMaildir(maxMbCnt, controllerObj, canMailbox, elem.xtd, canIdentifier);
-
-            if (htrh < maxMbCnt)
-            {
-                /* Copying payload into SDU */
-                Can_CopyPayloadToSdu(canDataLength, controllerObj, &elem);
-
-                /* Copy CanId, HOH and CanControllerId */
-                controllerObj->mailboxCfg.CanId        = canIdentifier;
-                controllerObj->mailboxCfg.Hoh          = (uint8)canMailbox[htrh].mailBoxConfig.CanObjectId;
-                controllerObj->mailboxCfg.ControllerId = controllerObj->canControllerConfig.CanControllerId;
-
-                /* Copy SDU data */
-                controllerObj->pduInfo.SduDataPtr = controllerObj->canSduPtr;
-                controllerObj->pduInfo.SduLength  = ((PduLengthType)canDataLength);
-
-                RxIndicationStatus = Can_RxIndicationStatusPriv(controllerObj, canIdentifier, canMailbox);
-            }
-            /* TI_COVERAGE_GAP_START [Line/Region/Branch Coverage] This Condition cannot be
-             triggered as hardware object ID cannot reach this limit */
-            else
-            {
-                /* Do Nothing */
-            }
-            /* TI_COVERAGE_GAP_STOP */
-        }
-        else
-        {
-            /* Do Nothing */
-        }
-    }
-
+    RxIndicationStatus = Can_RxIndicationStatusPriv(controllerObj, canIdentifier);
     Can_CallRxIndication(RxIndicationStatus, htrh, canIdentifier, canDataLength, controllerObj);
 }
 
@@ -3616,98 +3632,64 @@ static FUNC(void, CAN_CODE)
  */
 static FUNC(void, CAN_CODE)
     Can_ReadRxFIFOPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                       P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint8 maxMbCnt)
+                       P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, Can_HwHandleType htrh,
+                       P2VAR(Can_RxFIFOStatusType, AUTOMATIC, CAN_APPL_DATA) fifoStatus)
 {
-    VAR(uint32, AUTOMATIC) baseAddr                 = (uint32)0U;
-    VAR(uint32, AUTOMATIC) fill_Lvl                 = (uint32)0U;
-    VAR(uint32, AUTOMATIC) loop_Cnt                 = (uint32)0U;
-    VAR(uint8, AUTOMATIC) canDataLength             = (uint8)0U;
-    VAR(uint32, AUTOMATIC) canIdentifier            = (uint32)0U;
-    VAR(uint8, AUTOMATIC) htrh                      = (uint8)0U;
-    VAR(uint32, AUTOMATIC) byteCnt                  = (uint32)0U;
-    VAR(Can_RxFIFOStatusType, AUTOMATIC) fifoStatus = ((Can_RxFIFOStatusType){0U});
-    VAR(Can_RxBufElementType, AUTOMATIC) elem       = {0U};
-    VAR(boolean, AUTOMATIC) RxIndicationStatus      = (boolean)FALSE;
-    VAR(boolean, AUTOMATIC) lpduCalloutStatus       = (boolean)TRUE;
+    VAR(uint32, AUTOMATIC) baseAddr            = (uint32)0U;
+    VAR(uint8, AUTOMATIC) fill_Lvl             = (uint32)0U;
+    VAR(uint8, AUTOMATIC) loop_Cnt             = (uint32)0U;
+    VAR(uint8, AUTOMATIC) canDataLength        = (uint8)0U;
+    VAR(uint32, AUTOMATIC) canIdentifier       = (uint32)0U;
+    VAR(Can_RxBufElementType, AUTOMATIC) elem  = {0U};
+    VAR(boolean, AUTOMATIC) RxIndicationStatus = (boolean)FALSE;
 
-    baseAddr       = controllerObj->canControllerConfig.CanControllerBaseAddress;
-    fifoStatus.num = CAN_RX_FIFO_NUM_0;
+    baseAddr = controllerObj->canControllerConfig.CanControllerBaseAddress;
 
-    /* Get Rx FIFO status */
-    Can_GetRxFIFOStatusPriv(baseAddr, &fifoStatus);
-    fill_Lvl = fifoStatus.fillLvl;
-
-    for (loop_Cnt = ((uint32)0U); loop_Cnt < fill_Lvl; loop_Cnt++)
+    if ((canMailbox->mailBoxConfig.HwHandle == (uint8)0) || (canMailbox->mailBoxConfig.HwHandle == (uint8)1))
     {
-        Can_GetRxFIFOStatusPriv(baseAddr, &fifoStatus);
-        Can_ReadMsgRamPriv(baseAddr, (uint32)CAN_MEM_TYPE_FIFO, fifoStatus.getIdx, &elem);
-        Can_WriteRxFIFOAckPriv(baseAddr, fifoStatus.getIdx);
-
-        canDataLength = Can_DataSize[elem.dataLength];
-
-        /* Set CAN-FD bit (30th bit) to '1' if CAN-FD frame is
-        received */
-        canIdentifier = Can_GetCanIdentifier(&elem);
-        htrh          = Can_CheckControllerType(maxMbCnt, &elem, controllerObj, canMailbox);
-
-        if (htrh < maxMbCnt)
+#if (CAN_CFG_DEV_ERROR_DETECT == STD_ON)
+        if (fifoStatus->msgLost == TRUE)
         {
-            /* Copying payload into SDU */
-            for (byteCnt = ((uint32)0U); byteCnt < ((uint32)canDataLength); byteCnt++)
+            /* data lost error*/
+            (void)Det_ReportRuntimeError(CAN_MODULE_ID, CAN_INSTANCE_ID, CAN_SID_MAINFUNC_READ, CAN_E_DATALOST);
+        }
+#endif
+        fill_Lvl = fifoStatus->fillLvl;
+        /* Loop through all received messages in FIFO0*/
+        for (loop_Cnt = ((uint8)0U); loop_Cnt < fill_Lvl; loop_Cnt++)
+        {
+            if (canMailbox->mailBoxConfig.HwHandle == (uint8)0)
             {
-                controllerObj->canSduPtr[byteCnt] = (uint8)elem.data[byteCnt];
+                /* Read the message RAM area */
+                Can_ReadMsgRamPriv(baseAddr, (Can_MemType)CAN_MEM_TYPE_FIFO0, fifoStatus->getIdx, &elem);
             }
-
+            else
+            {
+                /* Read the message RAM area */
+                Can_ReadMsgRamPriv(baseAddr, (Can_MemType)CAN_MEM_TYPE_FIFO1, fifoStatus->getIdx, &elem);
+            }
+            /* Acknowledge the message reception, the Fifo status will be updated after ack in hardware */
+            Can_WriteRxFIFOAckPriv(baseAddr, fifoStatus->getIdx, canMailbox->mailBoxConfig.HwHandle);
+            fifoStatus->getIdx++;
+            canDataLength = Can_DataSize[elem.dataLength];
+            canIdentifier = Can_GetCanIdentifier(&elem);
             /* Copy CanId, HOH and CanControllerId */
             controllerObj->mailboxCfg.CanId        = canIdentifier;
-            controllerObj->mailboxCfg.Hoh          = (uint8)canMailbox[htrh].mailBoxConfig.CanObjectId;
+            controllerObj->mailboxCfg.Hoh          = canMailbox->mailBoxConfig.CanObjectId;
             controllerObj->mailboxCfg.ControllerId = controllerObj->canControllerConfig.CanControllerId;
+
+            /* Copying payload into SDU */
+            Can_CopyPayloadToSdu(canDataLength, controllerObj, &elem);
 
             /* Copy SDU data */
             controllerObj->pduInfo.SduDataPtr = controllerObj->canSduPtr;
             controllerObj->pduInfo.SduLength  = ((PduLengthType)canDataLength);
 
-#if (CAN_CFG_ICOM_SUPPORT == STD_ON)
-            /* check for Icom configuration */
-            if (Can_DriverObjPtr->Can_IcomActivation[controllerObj->canControllerConfig.CanControllerId] == TRUE)
-            {
-                if (E_OK ==
-                    Can_ValidateIcomConfigCriteriaPriv(
-                        canIdentifier, controllerObj->pduInfo.SduDataPtr,
-                        Can_DriverObjPtr->Can_IcomConfigurationId[controllerObj->canControllerConfig.CanControllerId],
-                        controllerObj))
-                {
-                    /* Call Receive Indication */
-                    RxIndicationStatus = TRUE;
-                }
-                else
-                {
-                    RxIndicationStatus = FALSE;
-                }
-            }
-            else
-#endif
-            {
-                /* Call Receive Indication */
-                RxIndicationStatus = TRUE;
-            }
-        }
-        else
-        {
-            /* Do Nothing */
-        }
-    }
-    if (RxIndicationStatus == TRUE)
-    {
-#ifdef CAN_LPDU_RECEIVE_CALLOUT_FUNCTION
-        lpduCalloutStatus =
-            CAN_LPDU_RECEIVE_CALLOUT_FUNCTION(htrh, canIdentifier, canDataLength, controllerObj->canSduPtr);
-#endif
+            /* Chcek whether Rx indication shall be called based on Icom */
+            RxIndicationStatus = Can_RxIndicationStatusPriv(controllerObj, canIdentifier);
 
-        if (lpduCalloutStatus == TRUE)
-        {
-            /* Call Receive Indication */
-            CanIf_RxIndication(&controllerObj->mailboxCfg, &controllerObj->pduInfo);
+            /* Lpdu callout and Rx Indication */
+            Can_CallRxIndication(RxIndicationStatus, htrh, canIdentifier, canDataLength, controllerObj);
         }
     }
 }
@@ -3797,103 +3779,90 @@ static FUNC(void, CAN_CODE)
 /*
  *Design: MCAL-24237
  */
-static FUNC(void, CAN_CODE) Can_ClearNewDataStatusPriv(uint32 baseAddr, Can_RxNewDataStatusType newDataStatus)
+static FUNC(void, CAN_CODE)
+    Can_ClearNewDataStatusPriv(uint32 baseAddr, P2VAR(Can_RxNewDataStatusType, AUTOMATIC, CAN_APPL_DATA) newDataStatus,
+                               uint8  buffNum)
 {
-    MCAL_LIB_REG_WRITE32((baseAddr + MCAN_NDAT1), newDataStatus.statusLow);
-    MCAL_LIB_REG_WRITE32((baseAddr + MCAN_NDAT2), newDataStatus.statusHigh);
+    VAR(uint32, AUTOMATIC) lowerNdatStatus  = (uint32)0U;
+    VAR(uint32, AUTOMATIC) higherNdatStatus = (uint32)0U;
+    if (((uint8)32U) > buffNum)
+    {
+        lowerNdatStatus          = newDataStatus->statusLow & (((uint32)1U) << buffNum);
+        newDataStatus->statusLow = newDataStatus->statusLow & (~lowerNdatStatus);
+    }
+    else
+    {
+        higherNdatStatus = newDataStatus->statusHigh & (((uint32)1U) << (buffNum - (uint8)32U));
+        newDataStatus->statusHigh = newDataStatus->statusHigh & (~higherNdatStatus);
+    }
+    MCAL_LIB_REG_WRITE32((baseAddr + MCAN_NDAT1), lowerNdatStatus);
+    MCAL_LIB_REG_WRITE32((baseAddr + MCAN_NDAT2), higherNdatStatus);
 }
 
 /*
  *Design: MCAL-24239
  */
 static FUNC(void, CAN_CODE)
-    Can_GetRxFIFOStatusPriv(uint32 baseAddr, P2VAR(Can_RxFIFOStatusType, AUTOMATIC, CAN_APPL_DATA) fifoStatus)
+    Can_GetRxFIFOStatusPriv(uint32 baseAddr, P2VAR(Can_RxFIFOStatusType, AUTOMATIC, CAN_APPL_DATA) fifoStatus,
+                            uint8  hwHandle)
 {
     VAR(uint32, AUTOMATIC) regVal = (uint32)0U;
+    if (hwHandle == (uint8)0U)
+    {
+        /* hWHandle 0 represents RX FIFO0, read status of RX FIFO0 */
+        regVal               = MCAL_LIB_REG_READ32(baseAddr + MCAN_RXF0S);
+        fifoStatus->fifoFull = ((boolean)MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_F0F));
+        fifoStatus->fillLvl  = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_F0FL);
+        fifoStatus->getIdx   = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_F0GI);
+        fifoStatus->msgLost  = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_RF0L);
+        fifoStatus->putIdx   = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_F0PI);
+    }
+    else if (hwHandle == (uint8)1U)
+    {
+        /* hWHandle 1 represents RX FIFO1, read status of RX FIFO1 */
+        regVal               = MCAL_LIB_REG_READ32(baseAddr + MCAN_RXF1S);
+        fifoStatus->fifoFull = ((boolean)MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF1S_F1F));
+        fifoStatus->fillLvl  = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF1S_F1FL);
+        fifoStatus->getIdx   = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF1S_F1GI);
+        fifoStatus->msgLost  = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF1S_RF1L);
+        fifoStatus->putIdx   = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF1S_F1PI);
+    }
+    else
+    {
+        /* Do Nothing */
+    }
+}
 
-    regVal               = MCAL_LIB_REG_READ32(baseAddr + MCAN_RXF0S);
-    fifoStatus->fifoFull = ((boolean)MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_F0F));
-    fifoStatus->fillLvl  = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_F0FL);
-    fifoStatus->getIdx   = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_F0GI);
-    fifoStatus->msgLost  = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_RF0L);
-    fifoStatus->putIdx   = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_RXF0S_F0PI);
+/*
+ *Design: MCAL-24239
+ */
+static FUNC(void, CAN_CODE)
+    Can_GetTxFIFOStatusPriv(uint32 baseAddr, P2VAR(Can_TxFIFOStatusType, AUTOMATIC, CAN_APPL_DATA) fifoStatus)
+{
+    VAR(uint32, AUTOMATIC) regVal = (uint32)0U;
+    /* Read the status of Tx FIFO */
+    regVal               = MCAL_LIB_REG_READ32(baseAddr + MCAN_TXFQS);
+    fifoStatus->fifoFull = ((boolean)MCAL_LIB_REG_FIELD_GET(regVal, MCAN_TXFQS_TFQF));
+    fifoStatus->putIdx   = MCAL_LIB_REG_FIELD_GET(regVal, MCAN_TXFQS_TFQPI);
 }
 
 /*
  *Design: MCAL-28427
  */
-static FUNC(void, CAN_CODE)
-    Can_CheckTxBuffersPriv(uint32 intrStatus, uint32 baseAddr,
-                           P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canControllerObj)
+static FUNC(void, CAN_CODE) Can_CheckBusOffPriv(uint32 intrStatus, uint32 baseAddr,
+                                                P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canControllerObj)
 {
     /* Process bus off interrupts*/
     if (MCAN_IR_BO_MASK == (intrStatus & MCAN_IR_BO_MASK))
     {
-        Can_CancelPendingMsgPriv(baseAddr);
-        /* BusOff Recovery sequence has not started */
-        canControllerObj->canState = CAN_CS_STOPPED;
-        /*Call the bus off indicationtoCanIf function*/
-        CanIf_ControllerBusOff(canControllerObj->canControllerConfig.CanControllerId);
-    }
-    else
-    {
-        /* Do Nothing */
-    }
-#ifdef CAN_DEV_ERROR_DETECT
-#if (CAN_DEV_ERROR_DETECT == STD_ON)
-    if ((uint32)MCAN_IR_RF0L_MASK == (intrStatus & (uint32)MCAN_IR_RF0L_MASK))
-    {
-        (void)Det_ReportError(CAN_MODULE_ID, CAN_INSTANCE_ID, CAN_SID_PROCESSISR, CAN_E_DATALOST);
-    }
-#endif
-#endif
-}
-
-/*
- *Design: MCAL-28429
- */
-static FUNC(void, CAN_CODE)
-    Can_InitPollTxActiveControllersPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj,
-                                        P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) ConfigPtr, uint32 controller,
-                                        uint32 mbIndx)
-{
-    if ((Can_ProcessingType)CAN_POLLING == drvObj->canController[controller].canControllerConfig.CanTxProcessing)
-    {
-        drvObj->canTxMailbox[drvObj->maxTxMbCnt].mailBoxConfig = *ConfigPtr->MailBoxList[mbIndx];
-        drvObj->canMailToTxMailMapping[mbIndx]                 = drvObj->maxTxMbCnt;
-        drvObj->maxTxMbCnt                                     = drvObj->maxTxMbCnt + 1U;
-    }
-    else if (((Can_ProcessingType)CAN_MIXED == drvObj->canController[controller].canControllerConfig.CanTxProcessing) &&
-             (TRUE == ConfigPtr->MailBoxList[mbIndx]->CanHardwareObjectUsesPolling))
-    {
-        drvObj->canTxMailbox[drvObj->maxTxMbCnt].mailBoxConfig = *ConfigPtr->MailBoxList[mbIndx];
-        drvObj->canMailToTxMailMapping[mbIndx]                 = drvObj->maxTxMbCnt;
-        drvObj->maxTxMbCnt                                     = drvObj->maxTxMbCnt + 1U;
-    }
-    else
-    {
-        /* Do Nothing */
-    }
-}
-
-/*
- *Design: MCAL-28430
- */
-static FUNC(void, CAN_CODE)
-    Can_InitPollRxActiveControllersPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj,
-                                        P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) ConfigPtr, uint32 controller,
-                                        uint32 mbIndx)
-{
-    if ((Can_ProcessingType)CAN_POLLING == drvObj->canController[controller].canControllerConfig.CanRxProcessing)
-    {
-        drvObj->canRxMailbox[drvObj->maxRxMbCnt].mailBoxConfig = *ConfigPtr->MailBoxList[mbIndx];
-        drvObj->maxRxMbCnt                                     = drvObj->maxRxMbCnt + 1U;
-    }
-    else if (((Can_ProcessingType)CAN_MIXED == drvObj->canController[controller].canControllerConfig.CanRxProcessing) &&
-             (TRUE == ConfigPtr->MailBoxList[mbIndx]->CanHardwareObjectUsesPolling))
-    {
-        drvObj->canRxMailbox[drvObj->maxRxMbCnt].mailBoxConfig = *ConfigPtr->MailBoxList[mbIndx];
-        drvObj->maxRxMbCnt                                     = drvObj->maxRxMbCnt + 1U;
+        if (canControllerObj->canControllerConfig.CanBusoffProcessing == CAN_INTERRUPT)
+        {
+            Can_CancelPendingMsgPriv(baseAddr);
+            /* BusOff Recovery sequence has not started */
+            canControllerObj->canState = CAN_CS_STOPPED;
+            /*Call the bus off indicationtoCanIf function*/
+            CanIf_ControllerBusOff(canControllerObj->canControllerConfig.CanControllerId);
+        }
     }
     else
     {
@@ -3923,56 +3892,12 @@ static FUNC(Std_ReturnType, CAN_CODE)
 #endif
 
 /*
- *Design: MCAL-28436
- */
-static FUNC(Std_ReturnType, CAN_CODE)
-    Can_PendingMsgCheckPriv(uint32 baseAddress, P2CONST(Can_ControllerObjType, AUTOMATIC, CAN_CONST) controller,
-                            P2VAR(Can_HwHandleType, AUTOMATIC, CAN_APPL_DATA) messageObj)
-{
-    VAR(uint8, AUTOMATIC) loopCount          = (uint8)0U;
-    VAR(Std_ReturnType, AUTOMATIC) returnVal = E_NOT_OK;
-    VAR(uint32, AUTOMATIC) bitIndexValue     = (uint32)0U;
-    VAR(uint8, AUTOMATIC) txStatus           = (uint8)0U;
-
-    loopCount = ((uint8)controller->canFDMsgRamConfig.txBuffNum);
-
-    for (; ((loopCount < (uint8)(controller->canFDMsgRamConfig.txFIFONum + controller->canFDMsgRamConfig.txBuffNum)) &&
-            (loopCount < KMAX_MB_PER_CONTROLLER));
-         loopCount++)
-    {
-        txStatus      = controller->canTxStatus[loopCount];
-        bitIndexValue = ((uint32)1U << loopCount);
-        /*- Check for pending message:
-         *     - pending message, return CAN_BUSY
-         *     - no pending message, start new transmission
-         */
-        if (bitIndexValue == (Can_GetTxBufReqPendPriv(baseAddress) & bitIndexValue))
-        {
-            returnVal = (Std_ReturnType)CAN_BUSY;
-        }
-        else if (((uint8)1U == txStatus) &&
-                 (FALSE == controller->canControllerConfig.CanConfigParam.CanDisableAutomaticRetransmission))
-        {
-            returnVal = (Std_ReturnType)CAN_BUSY;
-        }
-        else
-        {
-            *messageObj = (Can_HwHandleType)loopCount;
-            returnVal   = E_OK;
-            break;
-        }
-    }
-
-    return returnVal;
-}
-
-/*
  *Design: MCAL-28437
  */
 static FUNC(Std_ReturnType, CAN_CODE)
     Can_CheckPendingMsgPriv(P2CONST(Can_ControllerObjType, AUTOMATIC, CAN_CONST) canController,
                             VAR(uint8, AUTOMATIC) loopCnt, VAR(uint32, AUTOMATIC) baseAddr,
-                            P2VAR(Can_HwHandleType, AUTOMATIC, CAN_APPL_DATA) msgObj)
+                            P2VAR(uint8, AUTOMATIC, CAN_APPL_DATA) msgObj)
 {
     VAR(uint8, AUTOMATIC) canTxStatus          = (uint8)0U;
     VAR(uint32, AUTOMATIC) bitIndex            = (uint32)0U;
@@ -3985,10 +3910,13 @@ static FUNC(Std_ReturnType, CAN_CODE)
      *     - pending message, return CAN_BUSY
      *     - no pending message, start new transmission
      */
+    /* Check BRP for requested buffer*/
     if (bitIndex == (Can_GetTxBufReqPendPriv(baseAddr) & bitIndex))
     {
         returnValue = (Std_ReturnType)CAN_BUSY;
     }
+    /* Maintaining the canTxStatus is necessary, as BRP may get cleared upon lost arbitration,
+        error during transmission etc.*/
     else if ((((uint8)1U) == canTxStatus) &&
              (FALSE == canController->canControllerConfig.CanConfigParam.CanDisableAutomaticRetransmission))
     {
@@ -3996,7 +3924,7 @@ static FUNC(Std_ReturnType, CAN_CODE)
     }
     else
     {
-        *msgObj     = (Can_HwHandleType)loopCnt;
+        *msgObj     = loopCnt;
         returnValue = E_OK;
     }
     return returnValue;
@@ -4007,8 +3935,7 @@ static FUNC(Std_ReturnType, CAN_CODE)
  */
 static FUNC(boolean, CAN_CODE)
     Can_RxIndicationStatusPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                               VAR(uint32, AUTOMATIC) canIdentifier,
-                               P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox)
+                               VAR(uint32, AUTOMATIC) canIdentifier)
 {
     VAR(boolean, AUTOMATIC) RxIndicationStatus = (boolean)FALSE;
 
@@ -4065,13 +3992,13 @@ static FUNC(uint32, CAN_CODE) Can_GetCanIdentifier(P2VAR(Can_RxBufElementType, A
  *Design: MCAL-28445
  */
 static FUNC(Std_ReturnType, CAN_CODE)
-    Can_BitPos(VAR(uint32, AUTOMATIC) buffNum, P2VAR(Can_RxNewDataStatusType, AUTOMATIC, CAN_APPL_DATA) newDataStatus)
+    Can_BitPos(VAR(uint8, AUTOMATIC) buffNum, P2VAR(Can_RxNewDataStatusType, AUTOMATIC, CAN_APPL_DATA) newDataStatus)
 {
     VAR(Std_ReturnType, AUTOMATIC) retval = E_NOT_OK;
     VAR(uint32, AUTOMATIC) status         = (uint32)0U;
     VAR(uint32, AUTOMATIC) bitPos         = (uint32)0U;
 
-    if (buffNum < ((uint32)32U))
+    if (buffNum < (MCAN_RX_MB_NDAT_NUM))
     {
         status = newDataStatus->statusLow;
         bitPos = (((uint32)1U) << buffNum);
@@ -4079,7 +4006,7 @@ static FUNC(Std_ReturnType, CAN_CODE)
     else
     {
         status = newDataStatus->statusHigh;
-        bitPos = (((uint32)1U) << (buffNum - (uint32)32U));
+        bitPos = (((uint32)1U) << (buffNum - MCAN_RX_MB_NDAT_NUM));
     }
 
     if (bitPos == (status & bitPos))

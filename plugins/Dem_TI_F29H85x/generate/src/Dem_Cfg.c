@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Dem')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!][!//
+[!SKIPFILE "as:modconf('Dem')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Dem']/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!][!//
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -37,11 +37,11 @@
 /*********************************************************************************************************************
  * AUTOSAR version information check.
  *********************************************************************************************************************/
-#if ((DEM_SW_MAJOR_VERSION != (1U)) || (DEM_SW_MINOR_VERSION != (0U)))
+#if ((DEM_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (DEM_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Dem_cfg.c and Dem.h are inconsistent!"
 #endif
 
-#if ((DEM_CFG_MAJOR_VERSION != (1U)) || (DEM_CFG_MINOR_VERSION != (0U)))
+#if ((DEM_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (DEM_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Dem_cfg.c and Dem_Cfg.h are inconsistent!"
 #endif
 
@@ -68,7 +68,7 @@
 #include "Dem_MemMap.h"
 
 volatile Dem_EventReportType Dem_ReportRecord[DEM_CFG_EVENT_COUNT] =
-{[!LOOP "as:modconf('Dem')[1]/DemConfigSet/DemEventParameter/*"!]
+{[!LOOP "as:modconf('Dem')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Dem']/DemConfigSet/DemEventParameter/*"!]
     [[!"@index"!]] = 
     {
         .event_id                   = [!"DemEventId"!]U,

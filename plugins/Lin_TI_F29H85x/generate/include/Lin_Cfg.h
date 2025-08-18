@@ -61,15 +61,15 @@ extern "C" {
 /** \brief Lin configuration Patch Version. */
 #define LIN_CFG_PATCH_VERSION    ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 
-
+[!SELECT "as:modconf('Lin')[as:path(node:dtos(.))='/TI_F29H85x/Lin']"!]
 /*****************************************************************************
  *
  * \brief LIN Build Variant. 
  *  Build variants.(i.e Pre-compile,Post-build or Link time)
  * 
  *****************************************************************************/
-#define LIN_PRE_COMPILE_VARIANT          [!IF "as:modconf('Lin')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
-[!IF "as:modconf('Lin')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
+#define LIN_PRE_COMPILE_VARIANT          [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
 /*****************************************************************************
  *
  * \brief Pointer to Lin Config Set to be used during Pre-Compile
@@ -84,20 +84,20 @@ extern "C" {
 /*
  * Design: MCAL-25661, MCAL-25662
  */
-#define LIN_DEM_ENABLE    [!IF "node:refexists(as:modconf('Lin')[1]/LinDemEventParameterRefs/LIN_E_TIMEOUT)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
-[!IF "node:refexists(as:modconf('Lin')[1]/LinDemEventParameterRefs/LIN_E_TIMEOUT)"!]
+#define LIN_DEM_ENABLE    [!IF "node:refexists(LinDemEventParameterRefs/LIN_E_TIMEOUT)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+[!IF "node:refexists(LinDemEventParameterRefs/LIN_E_TIMEOUT)"!]
 /*
  * Design: MCAL-25586, MCAL-25588, MCAL-25589
  */
 /** \brief LIN DEM Event Configuration: LIN Timeout */
-#define LIN_E_TIMEOUT  					(DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Lin')[1]/LinDemEventParameterRefs/LIN_E_TIMEOUT))"!])
+#define LIN_E_TIMEOUT  					(DemConf_DemEventParameter_[!"node:name(node:ref(LinDemEventParameterRefs/LIN_E_TIMEOUT))"!])
 
 [!ENDIF!]
 
 /** \brief LIN DEM Event Configuration: LIN Timeout Duration*/
-#define LIN_TIMEOUT_DURATION            [!"as:modconf('Lin')[1]/LinGeneral/LinTimeoutDuration"!]U
+#define LIN_TIMEOUT_DURATION            [!"LinGeneral/LinTimeoutDuration"!]U
 
-[!VAR "SysClock"="num:i(node:ref(as:modconf('Lin')[1]/LinGeneral/SysClockRef)/McuClockReferencePointFrequency)"!][!//
+[!VAR "SysClock"="num:i(node:ref(LinGeneral/SysClockRef)/McuClockReferencePointFrequency)"!][!//
 [!VAR "SysClock"="num:i(num:div((num:div(1,65535)), num:div(15,$SysClock)))"!][!//
 /** \brief LIN Delay to Mcal Lib */
 #define LIN_MCAL_LIB_DELAY              [!"num:i($SysClock)"!]U
@@ -107,14 +107,14 @@ extern "C" {
  * \brief Enable/Disable development error detection.
  *
  *****************************************************************************/
-#define LIN_DEV_ERROR_DETECT             [!IF "as:modconf('Lin')[1]/LinGeneral/LinDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define LIN_DEV_ERROR_DETECT             [!IF "LinGeneral/LinDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*****************************************************************************
  *
  * \brief Enable/Disable Lin_GetVersionInfo().
  *
  *****************************************************************************/
-#define LIN_GET_VERSION_INFO_API         [!IF "as:modconf('Lin')[1]/LinGeneral/LinVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define LIN_GET_VERSION_INFO_API         [!IF "LinGeneral/LinVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*****************************************************************************
  *
@@ -124,7 +124,7 @@ extern "C" {
 /*
  * Design: MCAL-25663
  */
-[!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!//
+[!LOOP "LinGlobalConfig/LinChannel/*"!][!//
 #define [!"LinInstance"!]                    [!"LinChannelId"!]
 [!ENDLOOP!][!//
 
@@ -133,7 +133,7 @@ extern "C" {
  * \brief Lin Channel Symbolic Names.
  *
  *****************************************************************************/
-[!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!//
+[!LOOP "LinGlobalConfig/LinChannel/*"!][!//
 #define LinConf_LinChannel_[!"@name"!]       [!"LinChannelId"!]      /*~ASR~*/
 [!ENDLOOP!][!//
 
@@ -142,7 +142,7 @@ extern "C" {
  * \brief Lin Channel Interrupt Line Selection.
  *
  *****************************************************************************/
-[!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!//
+[!LOOP "LinGlobalConfig/LinChannel/*"!][!//
 #define [!"LinInstance"!]_[!"substring-after(LinInterruptLineSelect, 'LIN_INTERRUPT_')"!]                  
 [!ENDLOOP!][!//
 
@@ -154,7 +154,7 @@ extern "C" {
 /*
  * Design: MCAL-25665
  */
-[!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!//
+[!LOOP "LinGlobalConfig/LinChannel/*"!][!//
 #define [!"LinInstance"!]_ISR_TYPE           [!"LinISRType"!]
 [!ENDLOOP!][!//
 
@@ -164,7 +164,7 @@ extern "C" {
  * \brief Max number of channels defined
  *
  *****************************************************************************/
-#define LIN_MAX_CHANNEL                      ([!"num:i(count(as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*))"!]U)
+#define LIN_MAX_CHANNEL                      ([!"num:i(count(LinGlobalConfig/LinChannel/*))"!]U)
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 /*********************************************************************************************************************
@@ -243,7 +243,7 @@ typedef struct Lin_BaudrateConfigTag
  *Design: MCAL-25660
  */
 extern const struct Lin_ConfigTag Lin_LinGlobalConfig;
-
+[!ENDSELECT!]
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/

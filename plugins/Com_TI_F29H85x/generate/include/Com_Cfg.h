@@ -53,10 +53,10 @@ extern "C" {
 #define COM_CFG_PATCH_VERSION   ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U) 
 
 /* Count of events configured in Com .*/
-#define COM_CFG_SIGNAL_COUNT     ([!"num:i(count(as:modconf('Com')[1]/ComConfig/ComSignal/*))"!]U) 
+#define COM_CFG_SIGNAL_COUNT     ([!"num:i(count(as:modconf('Com')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Com']/ComConfig/ComSignal/*))"!]U) 
 
 /* Symbolic Names for Com Event Id*/
-[!LOOP "as:modconf('Com')[1]/ComConfig/ComSignal/*"!][!//
+[!LOOP "as:modconf('Com')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Com']/ComConfig/ComSignal/*"!][!//
 #define ComConf_ComSignal_[!"@name"!]       [!"ComHandleId"!]    /*~ASR~*/
 [!ENDLOOP!][!//
 

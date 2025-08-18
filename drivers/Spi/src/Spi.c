@@ -43,6 +43,13 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
+/*
+ * AUTOSAR version information check has to match definition in header file
+ */
+#if ((SPI_AR_RELEASE_MAJOR_VERSION != (0x04U)) || (SPI_AR_RELEASE_MINOR_VERSION != (0x03U)) || \
+     (SPI_AR_RELEASE_REVISION_VERSION != (0x01U)))
+#error "SPI: AUTOSAR Version Numbers of SPI are different"
+#endif
 
 #if ((SPI_SW_MAJOR_VERSION != (1U)) || (SPI_SW_MINOR_VERSION != (1U)))
 #error "Version numbers of Spi.c and Spi.h are inconsistent!"

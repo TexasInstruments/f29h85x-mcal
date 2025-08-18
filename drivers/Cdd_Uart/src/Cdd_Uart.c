@@ -404,7 +404,7 @@ FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_CancelRead(uint8 HwUnitId)
         else
 #endif
         {
-            SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
+            SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
 
             /* Abort the current read transaction */
             Cdd_Uart_ConfigReadTrans(&UartHwUnitObj->Cdd_Uart_ReadTransaction, NULL_PTR, 0U);
@@ -412,7 +412,7 @@ FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_CancelRead(uint8 HwUnitId)
             /* Disable Read interrupt */
             Cdd_Uart_EnableReadIntr(UartHwUnitObj, FALSE);
 
-            SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
+            SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
 
             ret_value = E_OK;
         }
@@ -486,7 +486,7 @@ Cdd_Uart_GetReadStatus(uint8 HwUnitId, Cdd_Uart_ReadStatusType *ReadStatus)
     else
 #endif
     {
-        SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
+        SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
 
         /* Get the remaining words to read */
         ReadStatus->Cdd_Uart_RemainingWordsToRead =
@@ -495,7 +495,7 @@ Cdd_Uart_GetReadStatus(uint8 HwUnitId, Cdd_Uart_ReadStatusType *ReadStatus)
         /* Busy status */
         ReadStatus->Cdd_Uart_BusyStatus = Cdd_Uart_IsReadBusy(&Cdd_Uart_Obj[HwUnitId]);
 
-        SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
+        SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
 
         ret_value = E_OK;
     }
@@ -605,7 +605,7 @@ static FUNC(Std_ReturnType, CDD_UART_CODE)
 
     if (TRUE == UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_ReadEnable)
     {
-        SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
+        SchM_Enter_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
 
         if (NULL_PTR == UartHwUnitObj->Cdd_Uart_ReadTransaction.Cdd_Uart_ReadBuf)
         {
@@ -621,7 +621,7 @@ static FUNC(Std_ReturnType, CDD_UART_CODE)
             ret_value = E_OK;
         }
 
-        SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_0();
+        SchM_Exit_Cdd_Uart_CDD_UART_EXCLUSIVE_AREA_1();
     }
     else
     {

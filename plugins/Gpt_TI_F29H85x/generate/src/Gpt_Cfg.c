@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Gpt')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!][!//
+[!SKIPFILE "as:modconf('Gpt')[as:path(node:dtos(.))='/TI_F29H85x/Gpt']/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!][!//
  /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -36,16 +36,14 @@
  * Version Check (if required)
  *********************************************************************************************************************/
 /** \brief Check module software version information */
-#if ((GPT_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) ||\
+#if ((GPT_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || \
      (GPT_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Module software version numbers of Gpt_Cfg.c and Gpt.h are inconsistent!"
 #endif
 
-/** \brief Check AUTOSAR version information */
-#if ((GPT_AR_RELEASE_MAJOR_VERSION != ([!"substring-after(substring-before($moduleReleaseVer,'.'),' ')"!]U)) ||\
-     (GPT_AR_RELEASE_MINOR_VERSION != ([!"substring-before(substring-after($moduleReleaseVer,'.'),'.')"!]U)) ||\
-     (GPT_AR_RELEASE_PATCH_VERSION != ([!"substring-after(substring-after($moduleReleaseVer,'.'),'.')"!]U)))
-    #error "AUTOSAR version numbers of Gpt_Cfg.c and Gpt.h are inconsistent!"
+#if ((GPT_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || \
+    (GPT_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
+    #error "Version numbers of Gpt_Cfg.c and Gpt_Cfg.h are inconsistent!"
 #endif
 
 
@@ -64,18 +62,19 @@
 /*********************************************************************************************************************
  * Exported Function Prototypes
  *********************************************************************************************************************/
+[!SELECT "as:modconf('Gpt')[as:path(node:dtos(.))='/TI_F29H85x/Gpt']"!][!//
 /*
  *Design: MCAL-22036, MCAL-22037, MCAL-22056
  */
 #define GPT_START_SEC_CONFIG_DATA
 #include "Gpt_MemMap.h"
-[!LOOP "as:modconf('Gpt')[1]/GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
+[!LOOP "GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
 [!IF "not(node:empty(GptNotification)) and not(text:match(GptNotification,'NULL_PTR'))"!][!//
 [!"concat('extern void ',GptNotification,'(void);')"!]
 [!ENDIF!][!//
 [!ENDLOOP!][!//
 
-[!VAR "Index" = "0"!][!VAR "NumChannels" = "num:i(count(as:modconf('Gpt')[1]/GptChannelConfigSet[1]/GptChannelConfiguration/*))"!]
+[!VAR "Index" = "0"!][!VAR "NumChannels" = "num:i(count(GptChannelConfigSet[1]/GptChannelConfiguration/*))"!]
 /*********************************************************************************************************************
  * Object Definitions
  *********************************************************************************************************************/
@@ -86,7 +85,7 @@
  */
 static CONST(Gpt_ChannelConfigType, GPT_CONFIG_DATA) Gpt_ChannelConfiguration[[!"$NumChannels"!]] =
 {[!VAR "Index" = "0"!][!// 
-[!LOOP "as:modconf('Gpt')[1]/GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
+[!LOOP "GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
 [!WS "4"!][[!"num:i($Index)"!]] =
 [!WS "4"!]{
 [!WS "8"!].Gpt_ChannelId         = ((Gpt_ChannelType) [!"GptChannelId"!]U),  /* Gpt Channel ID. */
@@ -108,7 +107,7 @@ CONST(Gpt_ConfigType, GPT_CONST) Gpt_ConfigSetptr =
 {
     .ChannelCfgPtr = ((Gpt_ChannelConfigType *) &Gpt_ChannelConfiguration[0]), /* Pointer to Channel Configuration. */
 };
-
+[!ENDSELECT!]
 /*********************************************************************************************************************
  * Exported Object Definitions
  *********************************************************************************************************************/

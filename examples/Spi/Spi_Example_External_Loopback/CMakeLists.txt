@@ -56,7 +56,7 @@ if(NOT TARGET SchM_Spi)
 endif()
 
 if(NOT TARGET Spi_Example_External_Loopback_Config)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/F29H85x_config/
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Spi_Example_External_Loopback_Config/
                      ${CMAKE_BINARY_DIR}/Spi_Example_External_Loopback/Spi_Example_External_Loopback_Config)
 endif()
 

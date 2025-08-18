@@ -57,11 +57,9 @@
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
 #define CDD_UART_EXAMPLE_READ_INTERRUPT_MAX_SIZE       (270U)
-#define CDD_UART_EXAMPLE_WRITE_INTERRUPT_WRITE_TIMEOUT (50000U)
 #define CDD_UART_EXAMPLE_READ_INTERRUPT_NUM_TESTS      (5U)
 #define CDD_UART_EXAMPLE_READ_INTERRUPT_NUM_TEST_CYCLE (2U)
 
-#define CDD_UART_OS_COUNTER_ID (0U)
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -131,8 +129,6 @@ int main(void)
 
     for (cycle = 0U; cycle < CDD_UART_EXAMPLE_READ_INTERRUPT_NUM_TEST_CYCLE; cycle++)
     {
-        /* CDD UART Init */
-        Cdd_Uart_Init(NULL_PTR);
 
         for (testNum = 0U; testNum < CDD_UART_EXAMPLE_READ_INTERRUPT_NUM_TESTS; testNum++)
         {
@@ -145,8 +141,6 @@ int main(void)
             {
                 do
                 {
-                    McalLib_Delay(1U);
-
                 } while ((FALSE == Cdd_Uart_ReadDone) && (FALSE == Cdd_Uart_Error));
             }
             else
@@ -168,14 +162,13 @@ int main(void)
         /* Wait until UART is idle before deinit */
         do
         {
-            McalLib_Delay(1U);
             /* Get read status */
             (void)Cdd_Uart_GetReadStatus(CddUartConf_CddUartConfigSet_CddUartConfig_0, &readStatus);
         } while (E_NOT_OK == readStatus.Cdd_Uart_BusyStatus);
 
-        /* CDD UART DeInit */
-        Cdd_Uart_Deinit();
     }
+    /* CDD UART DeInit */
+    Cdd_Uart_Deinit();
 
     if ((E_OK == return_value) && (0U == Cdd_Uart_ErrorCount))
     {

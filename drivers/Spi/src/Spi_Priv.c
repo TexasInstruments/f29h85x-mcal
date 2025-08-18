@@ -872,6 +872,10 @@ Spi_HwUnitInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
     {
         Spi_EnableInterrupt(hwUnitObj->baseAddr, hwUnitObj->hwUnitCfg->fifoModeEnable);
     }
+
+    /* Configure Emulation soft run*/
+    McalLib_RegBitSet16(hwUnitObj->baseAddr + SPI_O_PRI, SPI_PRI_SOFT);
+    
     hwUnitObj->hwUnitDemState = E_OK;
 
     return;
@@ -2451,9 +2455,9 @@ Spi_PrivInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
     for (index = ((uint8)0U); index < SPI_MAX_HW_UNIT; index++)
     {
         Spi_HwUnitInit(Spi_DrvObj, &(Spi_DrvObj->hwUnitObj[index]));
-        /* Initialize driver status and object */
-        Spi_DrvStatus = SPI_IDLE;
     }
+    /* Initialize driver status and object */
+    Spi_DrvStatus = SPI_IDLE;
     Spi_DriverObjPtr = Spi_DrvObj;
 }
 /* Design: MCAL-28346 */

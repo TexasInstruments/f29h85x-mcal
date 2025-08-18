@@ -1,5 +1,6 @@
 [!AUTOSPACING!][!//
 <?xml version="1.0" encoding="UTF-8"?>
+[!SELECT "as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']"!]
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
   <AR-PACKAGES>
     <AR-PACKAGE UUID="367937c5-f61a-496f-8737-ac11c6ac205a">
@@ -9,29 +10,29 @@
           <SHORT-NAME>Cdd_Pwm</SHORT-NAME>
           <CATEGORY>BSW_MODULE</CATEGORY>
           <IMPLEMENTED-ENTRYS>
-          [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+          [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
           [!IF "node:value(.) = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_Epwm[!"num:i(node:value(../CddPwmInstanceId))"!]_IntIsr</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
           [!ENDIF!]
           [!ENDLOOP!]
-            [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmSetDutyCycle = 'true'"!]
+            [!IF "CddPwmGeneral/CddPwmSetDutyCycle = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetDutyCycle</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             [!ENDIF!]
-            [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmSetPeriod = 'true'"!]
+            [!IF "CddPwmGeneral/CddPwmSetPeriod = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetPeriod</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             [!ENDIF!]
-            [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDeInitApi = 'true'"!]
+            [!IF "CddPwmGeneral/CddPwmDeInitApi = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_DeInit</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             [!ENDIF!]
-            [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmNotificationSupported = 'true'"!]
+            [!IF "CddPwmGeneral/CddPwmNotificationSupported = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_EnableNotification</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -39,12 +40,12 @@
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_DisableNotification</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             [!ENDIF!]
-            [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmSetOutputToIdle = 'true'"!]
+            [!IF "CddPwmGeneral/CddPwmSetOutputToIdle = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetOutputToIdle</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             [!ENDIF!]
-            [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmVersionInfoApi = 'true'"!]
+            [!IF "CddPwmGeneral/CddPwmVersionInfoApi = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_GetVersionInfo</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -74,9 +75,9 @@
                 </EXCLUSIVE-AREA>
               </EXCLUSIVE-AREAS>
               <ENTITYS>
-            [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+            [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "node:value(.) = 'true'"!]
-                <BSW-INTERRUPT-ENTITY UUID="[!"as:uuid()"!]">
+                <BSW-INTERRUPT-ENTITY UUID="e8eefe77-4ad9-4856-b4a8-9b29a5c359c[!"num:i(node:value(../CddPwmInstanceId))"!]">
                   <SHORT-NAME>Cdd_Pwm_Epwm[!"num:i(node:value(../CddPwmInstanceId))"!]_IntIsr</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_Epwm[!"num:i(node:value(../CddPwmInstanceId))"!]_IntIsr</IMPLEMENTED-ENTRY-REF>
@@ -88,14 +89,14 @@
                 </BSW-INTERRUPT-ENTITY>
               [!ENDIF!]
             [!ENDLOOP!]
-                [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmSetDutyCycle = 'true'"!]
+                [!IF "CddPwmGeneral/CddPwmSetDutyCycle = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="754b1fe8-4b41-4404-a489-7a78a8862632">
                   <SHORT-NAME>Cdd_Pwm_SetDutyCycle</SHORT-NAME>
                   <CAN-ENTER-EXCLUSIVE-AREA-REFS>
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm/Cdd_Pwm_Behavior/CDD_PWM_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
+                  [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -106,7 +107,7 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetDutyCycle</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 [!ENDIF!]
-                [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmSetPeriod = 'true'"!]
+                [!IF "CddPwmGeneral/CddPwmSetPeriod = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="13a6fb9d-fa67-4678-b2bc-17573156c087">
                   <SHORT-NAME>Cdd_Pwm_SetPeriod</SHORT-NAME>
                   <CAN-ENTER-EXCLUSIVE-AREA-REFS>
@@ -114,7 +115,7 @@
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
-                  [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
+                  [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
@@ -123,14 +124,14 @@
                   </CALL-POINTS>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetPeriod</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
-                [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmSetOutputToIdle  = 'true'"!]
+                [!IF "CddPwmGeneral/CddPwmSetOutputToIdle  = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="d85868a2-91fe-4b4b-b023-0de85b614193">
                   <SHORT-NAME>Cdd_Pwm_SetOutputToIdle</SHORT-NAME>
                   <CAN-ENTER-EXCLUSIVE-AREA-REFS>
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm/Cdd_Pwm_Behavior/CDD_PWM_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
+                  [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -141,14 +142,14 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetOutputToIdle</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 [!ENDIF!]
-                [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDeInitApi = 'true'"!]
+                [!IF "CddPwmGeneral/CddPwmDeInitApi = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="fc90f7a1-577b-477b-909d-d94511ed7be2">
                   <SHORT-NAME>Cdd_Pwm_DeInit</SHORT-NAME>
                   <CAN-ENTER-EXCLUSIVE-AREA-REFS>
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm/Cdd_Pwm_Behavior/CDD_PWM_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
+                  [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -159,7 +160,7 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_DeInit</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 [!ENDIF!]
-                [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmNotificationSupported = 'true'"!]
+                [!IF "CddPwmGeneral/CddPwmNotificationSupported = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="076e65f9-97b7-4016-8853-b8a55dc428b3">
                   <SHORT-NAME>Cdd_Pwm_EnableNotification</SHORT-NAME>
                   <CAN-ENTER-EXCLUSIVE-AREA-REFS>
@@ -167,7 +168,7 @@
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
-                  [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
+                  [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
@@ -187,7 +188,7 @@
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
-                  [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
+                  [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
@@ -201,11 +202,11 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_DisableNotification</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 [!ENDIF!]
-                [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmVersionInfoApi = 'true'"!]
+                [!IF "CddPwmGeneral/CddPwmVersionInfoApi = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="25cb90e6-8524-49a2-994e-6cf73824d12c">
                   <SHORT-NAME>Cdd_Pwm_GetVersionInfo</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
+                  [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -222,7 +223,7 @@
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm/Cdd_Pwm_Behavior/CDD_PWM_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
+                  [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -350,7 +351,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(1)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -368,7 +369,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(2)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -386,7 +387,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(3)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -404,7 +405,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(4)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -422,7 +423,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(5)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -440,7 +441,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(6)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -458,7 +459,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(7)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -476,7 +477,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(8)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -494,7 +495,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(9)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -512,7 +513,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(10)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -530,7 +531,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(11)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -548,7 +549,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(12)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -566,7 +567,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(13)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -584,7 +585,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(14)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -602,7 +603,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(15)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -620,7 +621,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(16)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -638,7 +639,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(17)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -656,7 +657,7 @@
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Pwm/Cdd')[1]/CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
+              [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*/.//*[@name='CddPwmInterruptEnable']"!]
               [!IF "num:i(node:value(../CddPwmInstanceId)) = num:i(18)"!]
               [!IF "(node:value(../CddPwmInterruptCategory)='ISR_CAT2_INT')"!]
               <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
@@ -757,4 +758,5 @@
     </AR-PACKAGE>
   </AR-PACKAGES>
 </AUTOSAR>
+[!ENDSELECT!]
 

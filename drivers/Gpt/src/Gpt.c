@@ -34,7 +34,22 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
+/*
+ *  AUTOSAR version information check has to match definition in header file
+ */
+#if ((GPT_AR_RELEASE_MAJOR_VERSION != (0x04U)) || (GPT_AR_RELEASE_MINOR_VERSION != (0x03U)) || \
+     (GPT_AR_RELEASE_REVISION_VERSION != (0x01U)))
+#error "GPT: AUTOSAR Version Numbers of GPT are different"
+#endif
 
+/* vendor specific version information is BCD coded */
+#if ((GPT_SW_MAJOR_VERSION != (1U)) || (GPT_SW_MINOR_VERSION != (0U)))
+#error "Version numbers of Gpt.c and Gpt.h are inconsistent!"
+#endif
+
+#if ((GPT_CFG_MAJOR_VERSION != (1U)) || (GPT_CFG_MINOR_VERSION != (0U)))
+#error "Version numbers of Gpt.c and Gpt_Cfg.h are inconsistent!"
+#endif
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/

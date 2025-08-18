@@ -35,11 +35,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((CDD_SENT_SW_MAJOR_VERSION != (2U)) || (CDD_SENT_SW_MINOR_VERSION != (0U)))
+#if ((CDD_SENT_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (CDD_SENT_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Cdd_Sent_cfg.c and Cdd_Sent.h are inconsistent!"
 #endif
 
-#if ((CDD_SENT_CFG_MAJOR_VERSION != (2U)) || (CDD_SENT_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_SENT_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (CDD_SENT_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Cdd_Sent_cfg.c and Cdd_Sent_Cfg.h are inconsistent!"
 #endif
 

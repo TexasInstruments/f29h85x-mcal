@@ -35,6 +35,7 @@ extern "C" {
  *********************************************************************************************************************/
 #include "hw_ecap.h"
 #include "hw_types.h"
+#include "Mcal_Lib.h"
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
 #include "Det.h"
 #endif
@@ -65,6 +66,8 @@ extern "C" {
 
 #define CDD_ECAP_MAX_PRESCALER_VALUE (32U) /** \brief Max Prescalar of CDD_ECAP  */
 
+#define CDD_ECAP_SYSCLK (200000000U) /** \brief  SYSCLK value  */
+
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -72,9 +75,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-
-/** \brief CDD ECAP configuration structure internal to driver */
-typedef struct
+/** \brief Channel object structure */
+typedef struct Cdd_Ecap_ChannelObjTag
 {
 #if (CDD_ECAP_TIMESTAMP_API == STD_ON)
     Cdd_Ecap_ValueType *NextTimeStampIndexPtr;
@@ -113,6 +115,10 @@ typedef struct
     /** \brief Set to true when Duty cycle values have been acquired */
     boolean                PeriodAcquired;
     /** \brief Set to true when Period values have been acquired */
+    boolean                HighTimeAcquired;
+    /** \brief Set to true when high time values have been acquired */
+    boolean                LowTimeAcquired;
+    /** \brief Set to true when low time values have been acquired */
 #endif
     Cdd_Ecap_InputStateType InputState;
     /** \brief Variable for input state of module */
@@ -128,12 +134,30 @@ typedef struct
     /** \brief Set to true when operation in in progress */
     boolean                       NotificationEnabled;
     /** \brief Set to true when notification are enabled */
-    uint32                        baseAddr;
-    /** \brief Base address of the ECAP Channel being used*/
     Cdd_Ecap_ChannelPrescalerType prescaler;
-    /** \brief Prescaler value */
-    Cdd_Ecap_ChannelConfigType    chCfg;
-    /** \brief Channel configurations */
+/** \brief Prescaler value */
+/** \brief Channel configurations */
+#if (STD_ON == CDD_ECAP_HR_API)
+    /** \brief Interrupt count for HR mode */
+    uint32  intHr;
+    /** \brief sysclkcount for HR mode */
+    uint32  sysclkCount;
+    /** \brief hrclkcount for HR mode */
+    uint32  hrclkCount;
+    /** \brief To check if the calibration is done or not in HR mode */
+    boolean calDone;
+    /** \brief Scale factor value */
+    float32 scaleFactor;
+#endif
+} Cdd_Ecap_DrvObjType;
+
+/** \brief CDD ECAP configuration structure internal to driver */
+typedef struct
+{
+    /** \brief ECAP channel object */
+    Cdd_Ecap_DrvObjType chObj[CDD_ECAP_HW_CNT];
+    /** \brief ECAP channel Index */
+    uint8               channelIdx[CDD_ECAP_MAX_NUM_CHANNELS];
 } Cdd_Ecap_ChObjType;
 
 /**
@@ -147,23 +171,6 @@ typedef enum
     /** \brief Reset upon counter capture event */
 } Cdd_Ecap_CounterRstType;
 
-/**
- *  \brief This defines the available emulation modes
- */
-typedef enum
-{
-    /** \brief TSCTR is stopped on emulation suspension */
-    CDD_ECAP_EMULATION_STOP = 0x0U,
-    /** \brief runs until 0 before stopping on emulation suspension */
-    CDD_ECAP_EMULATION_RUN_TO_ZERO = 0x1U,
-    /** \brief is not affected by emulation suspension */
-    CDD_ECAP_EMULATION_FREE_RUN = 0x2U
-} Cdd_Ecap_EmulationMode;
-
-extern Cdd_Ecap_ChObjType Cdd_Ecap_ChObj[CDD_ECAP_HW_CNT];
-/** \brief Cdd_Ecap_ChObj is not static storage class, as this requires to be accessed by
-    debug interface provided. */
-
 extern volatile uint8 Cdd_Ecap_DrvStatus;
 
 /*********************************************************************************************************************
@@ -172,38 +179,38 @@ extern volatile uint8 Cdd_Ecap_DrvStatus;
 /**
  * \brief   This API will reset CDD ECAP s/w channel object.
  *
- * \param[in]   chObj       Pointer to channel object.
+ * \param[in]   None
  *
  * \return  None.
  *
  **/
-void Cdd_Ecap_ResetChObj(Cdd_Ecap_ChObjType *chObj);
+void Cdd_Ecap_ResetChObj();
 
 /**
  * \brief   This API will copy all channel configuration into local ECAP Object
  *
  * \param[in]  chObj      Pointer to driver object.
- * \param[in]  chCfg     Pointer to configuration object sent by application.
+ * \param[in]  chCfg      Pointer to configuration object sent by application.
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  **/
-void Cdd_Ecap_CopyConfig(Cdd_Ecap_ChObjType *chObj, const Cdd_Ecap_ChannelConfigType *chCfg);
+void Cdd_Ecap_CopyConfig(Cdd_Ecap_ChObjType *chObj, const Cdd_Ecap_ConfigType *chCfg);
 
 /**
  * \brief   This API will initialize ECAP channel object associated with logical
  *          channel.
  *
- * \param[in]   chObj      Pointer to channel object.
+ * \param[in]   None
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  **/
-void Cdd_Ecap_HwUnitInit(Cdd_Ecap_ChObjType *chObj);
+void Cdd_Ecap_HwUnitInit();
 
 #if (STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API)
 /**
@@ -284,7 +291,17 @@ void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cd
  *
  **/
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ChannelISR(Cdd_Ecap_ChannelType ChannelNumber);
-
+/**
+ * \brief   This is the Channel ISR for HR mode
+ *
+ * \param[in]   Channel     Channel number
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HR_ISR(Cdd_Ecap_ChannelType ChannelNumber);
 /**
  * \brief   This will select ECAP Input.
  *
@@ -343,6 +360,234 @@ void Cdd_Ecap_intrStatusClear(uint32 baseAddr, uint16 flag);
  *
  **/
 void Cdd_Ecap_reArm(uint32 baseAddr);
+
+#if (STD_ON == CDD_ECAP_HR_API)
+/** \brief Service to enable high resolution capability for the given HRCAP channel.
+ *
+ * This service enables high resolution capability for the given HRCAP channel.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_enableHighResolution(uint32 baseAddr);
+
+/** \brief Service to disable high resolution capability for the given HRCAP channel.
+ *
+ * This service disables high resolution capability for the given HRCAP channel.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_disableHighResolution(uint32 baseAddr);
+
+/** \brief Service to enable the high resolution clock for the given HRCAP channel.
+ *
+ * This service enables the high resolution clock for the given HRCAP channel.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_enableHighResolutionClock(uint32 baseAddr);
+
+/** \brief Service to disable the high resolution clock for the given HRCAP channel.
+ *
+ * This service disables the high resolution clock for the given HRCAP channel.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_disableHighResolutionClock(uint32 baseAddr);
+
+/** \brief Service to start the calibration process for high resolution capability.
+ *
+ * This service starts the calibration process for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_startCalibration(uint32 baseAddr);
+
+/** \brief Service to set the calibration mode for high resolution capability.
+ *
+ * This service sets the calibration mode for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_setCalibrationMode(uint32 baseAddr);
+
+/** \brief Service to enable the calibration interrupt for high resolution capability.
+ *
+ * This service enables the calibration interrupt for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_enableCalibrationInterrupt(uint32 baseAddr, uint16 intFlags);
+
+/** \brief Service to disable the calibration interrupt for high resolution capability.
+ *
+ * This service disables the calibration interrupt for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_disableCalibrationInterrupt(uint32 baseAddr, uint16 intFlags);
+
+/** \brief Service to retrieve the calibration flags for high resolution capability.
+ *
+ * This service retrieves the calibration flags for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(Cdd_Ecap_ChannelHrInterruptType, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_getCalibrationFlags(uint32 baseAddr);
+
+/** \brief Service to clear the calibration flags for high resolution capability.
+ *
+ * This service clears the calibration flags for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_clearCalibrationFlags(uint32 baseAddr, uint16 flags);
+
+/** \brief Service to check if the calibration process is busy for high resolution capability.
+ *
+ * This service checks if the calibration process is busy for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(boolean, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_isCalibrationBusy(uint32 baseAddr);
+
+/** \brief Service to force the calibration flags for high resolution capability.
+ *
+ * This service forces the calibration flags for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_forceCalibrationFlags(uint32 baseAddr, uint16 flags);
+
+/** \brief Service to set the calibration period for high resolution capability.
+ *
+ * This service sets the calibration period for high resolution capability, it sets that to 1.6 ms.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_setCalibrationPeriod(uint32 baseAddr, uint32 sysclkHz);
+
+/** \brief Service to configure the calibration period for high resolution capability.
+ *
+ * This service configures the calibration period for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_configCalibrationPeriod(uint32 baseAddr, uint32 sysclkHz, float32 periodInMs);
+
+/** \brief Service to retrieve the calibration clock period for high resolution capability.
+ *
+ * This service retrieves the calibration clock period for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \param[in] ClockSource  The clock source for calibration.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(Cdd_Ecap_ValueType, CDD_ECAP_CODE)
+Cdd_Ecap_HRCAP_getCalibrationClockPeriod(uint32 baseAddr, Cdd_Ecap_HrCap_CalibrationClockSource ClockSource);
+
+/** \brief Service to retrieve the scale factor for high resolution capability.
+ *
+ * This service retrieves the scale factor for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE)
+Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Channel);
+
+/** \brief Service to convert the event timestamp to nanoseconds for high resolution capability.
+ *
+ * This service converts the event timestamp to nanoseconds for high resolution capability.
+ *
+ * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \param[in] scaleFactor  The scale factor for conversion.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE)
+Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 baseAddr, uint32 timestamp, float32 scaleFactor);
+#endif
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/

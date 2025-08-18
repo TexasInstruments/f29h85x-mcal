@@ -44,6 +44,10 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
+/* TODO: replace with actual value from Mcu based on MCAL-30739 */
+#define MCAL_LIB_TICK_VALUE 5 /* 5ns for 200MHz SYS_CLK*/
+
+#define MCAL_LIB_MAX_TICK_VALUE 0x4189374BC6A7EF /* Uint64_MAX/1000 */
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -132,6 +136,21 @@ extern FUNC(void, MCAL_LIB_CODE) McalLib_GetCounterValue(P2VAR(McalLib_TickType,
 extern FUNC(void, MCAL_LIB_CODE)
     McalLib_GetElapsedValue(CONSTP2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) startTime,
                             P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) elapsedTime);
+
+/** \brief This function provide the number of timer ticks (running at sysclock frequency)
+ * with respect to the timeout required.
+ *
+ * \param[in] timeOutInUs Number of microseconds of timeout
+ * \param[out] tickCounter pointer in which the number of timer ticks is updated
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK : Tickvalue calculation successful
+ * \retval E_NOT_OK : Tickvalue calculation failed
+ ******************************************************************************/
+extern FUNC(Std_ReturnType, MCAL_LIB_CODE)
+    McalLib_GetTimerTickFromUs(McalLib_TickType timeOutInUs,
+                               P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) tickCounter);
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
