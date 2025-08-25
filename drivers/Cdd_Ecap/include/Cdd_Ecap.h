@@ -53,11 +53,11 @@ extern "C" {
 #define CDD_ECAP_INSTANCE_ID ((uint8)0U)
 
 /** \brief Driver Implementation Major Version */
-#define CDD_ECAP_SW_MAJOR_VERSION (1U)
+#define CDD_ECAP_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version */
 #define CDD_ECAP_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_ECAP_SW_PATCH_VERSION (1U)
+#define CDD_ECAP_SW_PATCH_VERSION (0U)
 
 /** \brief AUTOSAR Major version specification implemented by CDD_ECAP Driver */
 #define CDD_ECAP_AR_RELEASE_MAJOR_VERSION (4U)
@@ -117,6 +117,10 @@ extern "C" {
 #define CDD_ECAP_DISABLEEDGEDETECTION_ID ((uint8)0x17U)
 /** \brief Cdd_Ecap_SetStartLevelCondition() API Service ID */
 #define CDD_ECAP_SETSTARTLEVELCONDITION_ID ((uint8)0x18U)
+/** \brief Cdd_Ecap_GetHrScaleFactor API Service ID */
+#define CDD_ECAP_HRSCALEFACTOR_ID ((uint8)0x19U)
+/** \brief Cdd_Ecap_GetHrScaleFactor API Service ID */
+#define CDD_ECAP_HRTIMESTAMP_ID ((uint8)0x20U)
 /** @} */
 
 /**
@@ -154,6 +158,8 @@ extern "C" {
 #define CDD_ECAP_E_PARAM_VINFO ((uint8)0x19U)
 /** \brief API service called with an invalid or not feasible start level */
 #define CDD_ECAP_E_PARAM_START_LEVEL ((uint8)0x1AU)
+/** \brief API service called with an invalid channel in the HR mode */
+#define CDD_ECAP_E_HR_CHANNEL ((uint8)0x1BU)
 /** @} */
 
 /**
@@ -166,6 +172,8 @@ extern "C" {
 #define CDD_ECAP_STATUS_UNINIT ((uint8)(0U))
 /** \brief CDD_ECAP driver Status Initialized */
 #define CDD_ECAP_STATUS_INIT ((uint8)(1U))
+/** \brief CDD_ECAP Scalefactor is not ready */
+#define CDD_ECAP_SF_NOTREADY ((uint8)(0U))
 /** @} */
 
 /**
@@ -184,6 +192,22 @@ extern "C" {
 #define CDD_ECAP_ECEINT_CEVT4 (0x10U)
 /** @} */
 
+/**
+ *  \name CDD_ECAP HR mode interrupt flags
+ *
+ *  The CDD_ECAP HR mode interrupt flags
+ *  @{
+ */
+/** \brief Global calibration interrupt flag */
+#define CDD_ECAP_HRCAP_GLOBAL_CALIBRATION_INTERRUPT (0x1U)
+/** \brief Calibration done flag */
+#define CDD_ECAP_HRCAP_CALIBRATION_DONE (0x2U)
+/** \brief Calibration period overflow flag */
+#define CDD_ECAP_HRCAP_CALIBRATION_PERIOD_OVERFLOW (0x4U)
+/** @} */
+
+#define CDD_ECAP_HRCAP_HRCAPCAL_OVERFLOW     4294967295.0f
+#define CDD_ECAP_HRCAP_HRCAPCAL_INV_OVERFLOW (float32)(1.0f / CDD_ECAP_HRCAP_HRCAPCAL_OVERFLOW)
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -194,26 +218,75 @@ extern "C" {
 /**
  *  \brief This type defines Value type
  */
-typedef uint32 Cdd_Ecap_ValueType;
+typedef uint32  Cdd_Ecap_ValueType;
 /**
  *  \brief This type defines return value Cdd_Ecap_GetTimeStampIndex
  */
-typedef uint32 Cdd_Ecap_IndexType;
+typedef uint32  Cdd_Ecap_IndexType;
 /**
  *  \brief This type defines return value of Cdd_Ecap_GetEdgeNumbers
  */
-typedef uint32 Cdd_Ecap_EdgeNumberType;
+typedef uint32  Cdd_Ecap_EdgeNumberType;
 /**
  *  \brief This type defines Channel type
  */
-typedef uint8  Cdd_Ecap_ChannelType;
+typedef uint8   Cdd_Ecap_ChannelType;
 /**
  *  \brief This type defines Prescaler type
  */
-typedef uint8  Cdd_Ecap_ChannelPrescalerType;
+typedef uint8   Cdd_Ecap_ChannelPrescalerType;
+/**
+ *  \brief This type defines the scale-factor type for HR mode
+ */
+typedef float32 Cdd_Ecap_ChannelHrScaleType;
+/**
+ *  \brief This type defines the interrupt flags type for HR mode
+ */
+typedef uint16  Cdd_Ecap_ChannelHrInterruptType;
 
 /**
- *  \brief This type defines a range of mode type
+ *  \brief This type defines clock sources for HR mode
+ */
+typedef enum
+{
+    /** \brief Use SYSCLK for period match. */
+    CDD_ECAP_HRCAP_CALIBRATION_CLOCK_SYSCLK = 0x0,
+    /** \brief Use HRCLK for period match. */
+    CDD_ECAP_HRCAP_CALIBRATION_CLOCK_HRCLK = 0x4
+} Cdd_Ecap_HrCap_CalibrationClockSource;
+
+/**
+ *  \brief This type defines continuous calibration mode enabled or not
+ */
+typedef enum
+{
+    /** \brief Continuous calibration disabled */
+    CDD_ECAP_HRCAP_CONTINUOUS_CALIBRATION_DISABLED = 0x00,
+    /** \brief Continuous calibration enabled */
+    CDD_ECAP_HRCAP_CONTINUOUS_CALIBRATION_ENABLED = 0x20
+} Cdd_Ecap_HrCap_ContinuousCalibrationMode;
+
+/**
+ *  \brief This type defines the source of interrupt
+ */
+typedef enum
+{
+    /** \brief Calibration status done flag */
+    CDD_ECAP_HRCAP_HRCALCAL_STATUS_DONE_ISR =
+        (CDD_ECAP_HRCAP_CALIBRATION_DONE | CDD_ECAP_HRCAP_GLOBAL_CALIBRATION_INTERRUPT),
+
+    /** \brief Calibration period overflow flag */
+    CDD_ECAP_HRCAP_HRCALCAL_STATUS_PERIOD_OVERFLOW_ISR =
+        (CDD_ECAP_HRCAP_CALIBRATION_DONE | CDD_ECAP_HRCAP_GLOBAL_CALIBRATION_INTERRUPT |
+         CDD_ECAP_HRCAP_CALIBRATION_PERIOD_OVERFLOW),
+
+    /** \brief Calibration status done flag and period overflow flag */
+    CDD_ECAP_HRCAP_HRCALCAL_CALIBRATION_FLAGS =
+        (CDD_ECAP_HRCAP_CALIBRATION_DONE | CDD_ECAP_HRCAP_CALIBRATION_PERIOD_OVERFLOW)
+} Cdd_Ecap_HrCap_CalStatus;
+
+/**
+ *  \brief This type defines the source of interrupt
  */
 typedef enum
 {
@@ -246,6 +319,19 @@ typedef enum
     /** \brief Both Edge Activation type */
     CDD_ECAP_BOTH_EDGES
 } Cdd_Ecap_ActivationType;
+
+/**
+ *  \brief This defines the available emulation modes
+ */
+typedef enum
+{
+    /** \brief TSCTR is stopped on emulation suspension */
+    CDD_ECAP_EMULATION_STOP = 0x0U,
+    /** \brief runs until 0 before stopping on emulation suspension */
+    CDD_ECAP_EMULATION_RUN_TO_ZERO = 0x1U,
+    /** \brief is not affected by emulation suspension */
+    CDD_ECAP_EMULATION_FREE_RUN = 0x2U
+} Cdd_Ecap_EmulationMode;
 
 /**
  *  \brief This type defines the source of interrupt
@@ -295,8 +381,6 @@ typedef enum
     CDD_ECAP_HIGH_TIME,
     /** \brief Signal Period time */
     CDD_ECAP_PERIOD_TIME,
-    /** \brief Signal Duty Cycle time */
-    CDD_ECAP_DUTY_CYCLE
 } Cdd_Ecap_SignalMeasurementPropertyType;
 
 /**
@@ -344,6 +428,8 @@ typedef struct
     uint32                                 base_addr;
     /** \brief Channel ID of CDD_ECAP Channel in use */
     Cdd_Ecap_ChannelType                   channelId;
+    /** \brief Emulation mode of CDD_ECAP Channel in use */
+    uint32                                 emulationMode;
     /** \brief Default activation edge to be used by CDD_ECAP module */
     Cdd_Ecap_ActivationType                defaultStartEdge;
     /** \brief xbar to used for input */
@@ -360,6 +446,13 @@ typedef struct
     uint32                                 instanceClkMHz;
     /** \brief Prescaler value to be used for CDD_ECAP  module */
     Cdd_Ecap_ChannelPrescalerType          prescaler;
+#if (STD_ON == CDD_ECAP_HR_API)
+    /** \brief Base address of the HR Channel in use */
+    uint32 hr_base_addr;
+#endif
+    /** \brief check if HR mode is enabled or not */
+    boolean hr_enable;
+
 } Cdd_Ecap_ChannelConfigType;
 
 /**
@@ -397,7 +490,6 @@ Cdd_Ecap_Init(P2CONST(Cdd_Ecap_ConfigType, AUTOMATIC, CDD_ECAP_CFG) ConfigPtr);
  *
  *  This service De-initializes all the ECAP HW units.
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -429,7 +521,7 @@ Cdd_Ecap_SetActivationCondition(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_Activatio
  *counting the edges.
  *
  * \param[in] Channel        CDD_ECAP Channel in use
- * \param[in] Activation     Activation condition or Edge to be selected
+ * \param[in] StartLevel     Start level condition or Edge to be selected
  * \pre None
  * \post None
  * \return None
@@ -658,6 +750,7 @@ FUNC(Cdd_Ecap_ValueType, CDD_ECAP_CODE) Cdd_Ecap_GetTimeElapsed(Cdd_Ecap_Channel
  *  This service reads the active time and period of a given channel.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
+ * \param[out] DutyCycleValues Duty cycle values
  * \pre None
  * \post None
  * \return None
@@ -682,6 +775,37 @@ Cdd_Ecap_GetDutyCycleValues(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_DutyCycleType
  *********************************************************************************************************************/
 FUNC(void, CDD_ECAP_CODE)
 Cdd_Ecap_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ECAP_APPL_DATA) VersionInfoPtr);
+#endif
+
+#if (STD_ON == CDD_ECAP_HR_API)
+
+/** \brief Service to retrieve the scale factor for high resolution capability.
+ *
+ * This service retrieves the scale factor for high resolution capability.
+ *
+ * \param[in] Channel          CDD_ECAP Channel in use.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE) Cdd_Ecap_GetHrScaleFactor(Cdd_Ecap_ChannelType Channel);
+
+/** \brief Service to convert the event timestamp to nanoseconds for high resolution capability.
+ *
+ * This service converts the event timestamp to nanoseconds for high resolution capability.
+ *
+ * \param[in] Channel          CDD_ECAP Channel in use
+ * \param[in] scaleFactor      The scale factor for conversion.
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE)
+Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp(Cdd_Ecap_ChannelType Channel, uint32 timeStamp);
 #endif
 
 /*********************************************************************************************************************

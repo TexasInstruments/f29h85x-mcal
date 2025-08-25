@@ -49,11 +49,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((PORT_SW_MAJOR_VERSION != (1U)) || (PORT_SW_MINOR_VERSION != (1U)))
+#if ((PORT_SW_MAJOR_VERSION != (2U)) || (PORT_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Port.c and Port.h are inconsistent!"
 #endif
 
-#if ((PORT_CFG_MAJOR_VERSION != (1U)) || (PORT_CFG_MINOR_VERSION != (1U)))
+#if ((PORT_CFG_MAJOR_VERSION != (2U)) || (PORT_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Port.c and Port_Cfg.h are inconsistent!"
 #endif
 
@@ -106,7 +106,6 @@ static VAR(boolean, PORT_VAR_INIT) Port_CommitDone = (boolean)FALSE;
  * This function initialzes all the pins passed in pin configuration
  *
  * \param[in] Port_ConfigObject is the pointer to the pin config structure.
- * \param[out] returnvalue
  * \pre None
  * \post None
  * \return returnValue
@@ -135,7 +134,6 @@ static FUNC(Std_ReturnType, PORT_CODE) Port_SetPinDirectionDetCheck(VAR(Port_Pin
 /** \brief Port_SetPinModeInitAndCommitCheck - This API will check for Port Init Done and Commit
  *Done for Port_SetPinMode() API.
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -169,7 +167,7 @@ FUNC(void, PORT_CODE) Port_Init(P2CONST(Port_ConfigType, AUTOMATIC, PORT_CONFIG_
 #if (STD_ON == PORT_CFG_PRE_COMPILE_VARIANT)
     if (NULL_PTR == CfgPtr)
     {
-        config_ptr = &Port_PortConfigSet;
+        config_ptr = &PORT_INIT_CONFIG_PC;
     }
 #else
     if (NULL_PTR != CfgPtr)

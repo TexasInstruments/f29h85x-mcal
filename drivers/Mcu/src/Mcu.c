@@ -51,11 +51,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((MCU_SW_MAJOR_VERSION != (1U)) || (MCU_SW_MINOR_VERSION != (1U)))
+#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Mcu.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (1U)) || (MCU_CFG_MINOR_VERSION != (1U)))
+#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Mcu.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
@@ -106,7 +106,6 @@ P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFIG_DATA) Mcu_ConfigObj = NULL_P
 /** \brief Mcu_ReportClockFailure - This API will report clock failure error to DEM module
  *
  * \param[in] Value set clock functionality return value E_OK or E_NOT_OK
- * \param[out] None
  * \pre None
  * \post None
  * \return None

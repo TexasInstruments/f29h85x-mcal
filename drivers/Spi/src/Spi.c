@@ -43,12 +43,19 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
+/*
+ * AUTOSAR version information check has to match definition in header file
+ */
+#if ((SPI_AR_RELEASE_MAJOR_VERSION != (0x04U)) || (SPI_AR_RELEASE_MINOR_VERSION != (0x03U)) || \
+     (SPI_AR_RELEASE_REVISION_VERSION != (0x01U)))
+#error "SPI: AUTOSAR Version Numbers of SPI are different"
+#endif
 
-#if ((SPI_SW_MAJOR_VERSION != (1U)) || (SPI_SW_MINOR_VERSION != (1U)))
+#if ((SPI_SW_MAJOR_VERSION != (2U)) || (SPI_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Spi.c and Spi.h are inconsistent!"
 #endif
 
-#if ((SPI_CFG_MAJOR_VERSION != (1U)) || (SPI_CFG_MINOR_VERSION != (1U)))
+#if ((SPI_CFG_MAJOR_VERSION != (2U)) || (SPI_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Spi.c and Spi_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -171,7 +178,7 @@ static FUNC(Std_ReturnType, SPI_CODE)
  *
  *  private function for checking Det errors in SyncTransmit function
  *
- * \param[in] Sequence: Sequence Id
+ * \param[in] seqObj: Pointer to sequence object
  * \pre None
  * \post None
  * \return returns whether configuration params are correct or wrong
@@ -204,7 +211,7 @@ FUNC(void, SPI_CODE) Spi_Init(P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA
 #if ((STD_ON == SPI_PRE_COMPILE_VARIANT) || (STD_ON == SPI_LINK_TIME_VARIANT))
     if (NULL_PTR == CfgPtr)
     {
-        ConfigPtr = &Spi_ConfigObj;
+        ConfigPtr = &SPI_INIT_CONFIG_PC;
     }
 #else
     if (NULL_PTR != CfgPtr)

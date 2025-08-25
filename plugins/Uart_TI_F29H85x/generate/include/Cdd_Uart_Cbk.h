@@ -55,7 +55,7 @@ extern "C" {
 
  /*********************************************************************************************************************/
 [!VAR "CddUartUserCallbackFunctionList" = "' '"!]
-[!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*"!][!//
+[!LOOP "as:modconf('Cdd_Uart/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Uart/Cdd']/CddUartConfigSet/CddUartConfig/*"!][!//
 [!IF "not(node:empty(CddUartWriteConfig/CddUartWriteNotificationHandler)) and (node:value(CddUartWriteConfig/CddUartWriteNotificationHandler) !='NULL_PTR')"!][!//
 [!IF "not(node:containsValue(text:split($CddUartUserCallbackFunctionList),CddUartWriteConfig/CddUartWriteNotificationHandler))"!][!//
 [!"concat('extern void ',node:value(CddUartWriteConfig/CddUartWriteNotificationHandler),'(void);')"!]

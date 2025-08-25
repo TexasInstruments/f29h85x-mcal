@@ -133,10 +133,6 @@ extern "C" {
  * Exported Type Declarations
  *********************************************************************************************************************/
 
-/* Design: MCAL-30524 */
-/** \brief Specifies ID of the remote core  */
-typedef uint8 Cdd_Ipc_RemoteCoreType;
-
 /* Design: MCAL-30523 */
 /** \brief  Notification callback function pointer. */
 typedef void (*Cdd_Ipc_NotifyType)(const PduInfoType *PduInfoPtr);
@@ -251,7 +247,7 @@ Cdd_Ipc_Init(P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONFIG_DATA) ConfigP
  * \retval E_OK: Synchronization is successful.
  * \retval E_NOT_OK: Synchronization failed.
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_Sync(VAR(Cdd_Ipc_RemoteCoreType, AUTOMATIC) RemoteCore);
+FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_Sync(VAR(Cdd_Ipc_CoreType, AUTOMATIC) RemoteCore);
 
 /* Design: MCAL-30509, MCAL-30510, MCAL-30511, MCAL-30512 */
 /** \brief Service to request transmission
@@ -273,7 +269,6 @@ Cdd_Ipc_Transmit(VAR(PduIdType, AUTOMATIC) ChannelId, P2CONST(PduInfoType, AUTOM
 /* Design: MCAL-30513 */
 /** \brief Service to perform the polling of confgured IPC Rx instances
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -300,7 +295,6 @@ FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_IsTxInstanceFree(VAR(PduIdType, AUTOMATIC) C
 /* Design: MCAL-30517 */
 /** \brief Service to read the timestamp counter value.
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return 64-bit timestamp counter value

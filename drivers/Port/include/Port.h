@@ -61,11 +61,11 @@ extern "C" {
  *
  *****************************************************************************/
 /** \brief Driver Implementation Major Version. */
-#define PORT_SW_MAJOR_VERSION (1U)
+#define PORT_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version. */
-#define PORT_SW_MINOR_VERSION (1U)
+#define PORT_SW_MINOR_VERSION (0U)
 /**  \brief Driver Implementation Patch Version. */
-#define PORT_SW_PATCH_VERSION (1U)
+#define PORT_SW_PATCH_VERSION (0U)
 
 /*****************************************************************************
  *
@@ -276,7 +276,6 @@ typedef struct Port_ConfigType_s
  * the microcontroller
  *
  * \param[in] CfgPtr is the configuration pointer for Port module.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -292,7 +291,6 @@ FUNC(void, PORT_CODE) Port_Init(P2CONST(Port_ConfigType, AUTOMATIC, PORT_APPL_DA
  *
  * \param[in] Pin is the symbolic name of the pin.
  * \param[in] Direction is the direction to which pin is to be set.
- * \param[out] None
  * \pre Port_Init should be called before calling this function
  * \post None
  * \return None
@@ -324,7 +322,7 @@ FUNC(void, PORT_CODE) Port_RefreshPortDirection(void);
  * available if the pre-compile configuration parameter PORT_CFG_GET_VERSION_INFO_API
  * is enabled.
  *
- * \param[out] Versioninfo structure that contains the version information parameters.
+ * \param[out] versioninfo structure that contains the version information parameters.
  * \pre None
  * \post None
  * \return None
@@ -355,11 +353,9 @@ FUNC(void, PORT_CODE) Port_SetPinMode(Port_PinType Pin, Port_PinModeType Mode);
  *
  * This function Commits the locked Critical Configuration registers for the current Configuration
  *
- * \param[in] None
  * \pre Port_Init should be called before calling this function
  * \post None
  * \return None
- * \retval None
  * \retval None
  *
  ****************************************************************************/

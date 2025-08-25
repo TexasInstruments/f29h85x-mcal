@@ -64,12 +64,12 @@ extern "C" {
  * \return None
  *********************************************************************************************************************/
 [!VAR "CddIpcUserCallbackFunctionList" = "' '"!][!//
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*/CddIpcRxChannelConfig/*"!][!//
+[!LOOP "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*/CddIpcRxChannelConfig/*"!][!//
 [!IF "(node:exists(CddIpcUserCallbackFunction))"!][!//
 [!IF "CddIpcUserCallbackFunction !='NULL_PTR'"!][!//
 [!IF "not(node:containsValue(text:split($CddIpcUserCallbackFunctionList),CddIpcUserCallbackFunction))"!][!//
 [!"concat('extern void ',node:value(CddIpcUserCallbackFunction),'(const PduInfoType *PduInfoPtr);')"!]
-[!VAR "CddIpcUserCallbackFunctionList" = "concat($CddIpcUserCallbackFunctionList,' ',CddIpcUserCallbackFunctionList)"!][!//
+[!VAR "CddIpcUserCallbackFunctionList" = "concat($CddIpcUserCallbackFunctionList,' ',CddIpcUserCallbackFunction)"!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//

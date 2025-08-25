@@ -64,9 +64,9 @@ extern "C" {
  * Design: MCAL-25697
  */
 /** \brief Driver Implementation Major Version. */
-#define LIN_SW_MAJOR_VERSION (1U)
+#define LIN_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version. */
-#define LIN_SW_MINOR_VERSION (1U)
+#define LIN_SW_MINOR_VERSION (0U)
 /**  \brief Driver Implementation Patch Version. */
 #define LIN_SW_PATCH_VERSION (0U)
 
@@ -223,8 +223,7 @@ typedef struct Lin_ConfigTag
  * available if the pre-compile configuration parameter LIN_GET_VERSION_INFO_API
  * is enabled.
  *
- * \param[in] None
- * \param[out] Versioninfo structure that contains the version information parameters.
+ * \param[out] versioninfo structure that contains the version information parameters.
  * \pre None
  * \post None
  * \return None
@@ -238,7 +237,6 @@ Lin_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, LIN_APPL_DATA) versioni
 /** \brief Lin_Init - Initializes the LIN module.
  *
  * \param[in] Config Pointer to LIN driver configuration set.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -251,7 +249,6 @@ FUNC(void, LIN_CODE) Lin_Init(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_CONFIG_DATA
  *channel.
  *
  * \param[in] Channel LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -268,7 +265,6 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_CheckWakeup(VAR(uint8, AUTOMATIC) Channel);
  * \param[in] Channel LIN channel to be addressed.
  * \param[in] PduInfoPtr Pointer to PDU containing the PID, checksum model, response type, Dl and
  *SDU data pointer
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -283,7 +279,6 @@ Lin_SendFrame(VAR(uint8, AUTOMATIC) Channel, P2CONST(Lin_PduType, AUTOMATIC, LIN
  *addressed LIN channel.
  *
  * \param[in] Channel LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -297,7 +292,6 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_GoToSleep(VAR(uint8, AUTOMATIC) Channel);
  *detection and optionally sets the LIN hardware unit to reduced power operation mode.
  *
  * \param[in] Channel LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -310,7 +304,6 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_GoToSleepInternal(VAR(uint8, AUTOMATIC) Chann
 /** \brief Lin_Wakeup - Generates a wake up pulse and sets the channel state to LIN_CH_OPERATIONAL.
  *
  * \param[in] Channel LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -325,7 +318,6 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_Wakeup(VAR(uint8, AUTOMATIC) Channel);
  *LIN_CH_OPERATIONAL without generating a wake up pulse.
  *
  * \param[in] Channel LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value

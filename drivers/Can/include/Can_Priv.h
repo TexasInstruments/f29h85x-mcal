@@ -25,7 +25,7 @@
 #ifndef CAN_PRIV_H
 #define CAN_PRIV_H
 
-/** \addtogroup CAN Can API GUIDE Header file Can_Priv.h
+/** \addtogroup CAN
  *  @{
  */
 
@@ -47,16 +47,13 @@ extern "C" {
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
 /** \brief  Can classic payload max bytes */
-#define CAN_CLASSIC_PAYLOAD_MAX_BYTES (8U)
+#define CAN_CLASSIC_PAYLOAD_MAX_BYTES ((uint8)8U)
 
 /** \brief   Can FD payload max bytes */
-#define CAN_FD_PAYLOAD_MAX_BYTES (64U)
-
-/** \brief   Can max controller supported */
-#define CAN_MAX_CONTROLLER_SUPPORTED (1U)
+#define CAN_FD_PAYLOAD_MAX_BYTES ((uint8)64U)
 
 /** \brief Can TDCR and TDCF max   */
-#define CAN_TDCR_TDCF_MAX (0x7FU)
+#define CAN_TDCR_TDCF_MAX ((uint8)0x7FU)
 
 /** \brief Can TDCR and TDCO max   */
 #define CAN_TDCR_TDCO_MAX (0x7FU)
@@ -98,22 +95,26 @@ extern "C" {
 #define MCAN_MSG_RAM_STD_ELEM_SIZE (1U)
 /** \brief  Extended ID Filter Element Size */
 #define MCAN_MSG_RAM_EXT_ELEM_SIZE (2U)
-/** \brief  Tx/Rx Mailbox Size */
-#define MCAN_MSG_RAM_TX_RX_ELEM_SIZE (18U)
+/** \brief  Tx/Rx Mailbox Size in case of FD CAN */
+#define MCAN_MSG_RAM_TX_RX_FD_ELEM_SIZE (18U)
+/** \brief  Tx/Rx Mailbox Size in case of classic CAN */
+#define MCAN_MSG_RAM_TX_RX_CLASSIC_ELEM_SIZE (4U)
 
 /** \brief MCAN IP TX buffer max number */
-#define MCAN_TX_BUFFER_MAX_NUM (32U)
+#define MCAN_TX_BUFFER_MAX_NUM ((uint8)32U)
 /** \brief MCAN IP RX buffer max number */
-#define MCAN_RX_BUFFER_MAX_NUM (64U)
+#define MCAN_RX_BUFFER_MAX_NUM ((uint8)64U)
 /** \brief MCAN rx FIFO_0 max number */
-#define MCAN_RX_FIFO_0_MAX_NUM (64U)
+#define MCAN_RX_FIFO_0_MAX_NUM ((uint8)64U)
 /** \brief MCAN rx FIFO_1 max number */
-#define MCAN_RX_FIFO_1_MAX_NUM (64U)
+#define MCAN_RX_FIFO_1_MAX_NUM ((uint8)64U)
+/** \brief MCAN rx FIFO_1 max number */
+#define MCAN_RX_MAX_FIFO_NUM ((uint8)2U)
 
-/** \brief MCAN TX_MB max number */
-#define MCAN_TX_MB_MAX_NUM (32U)
-/** \brief MCAN RX_MB max number */
-#define MCAN_RX_MB_MAX_NUM (32U)
+/** \brief MCAN number of Tx Buffers in status register */
+#define MCAN_TX_MB_MAX_NUM ((uint8)32U)
+/** \brief MCAN number of Rx buffers in NDAT status register */
+#define MCAN_RX_MB_NDAT_NUM ((uint8)32U)
 
 /** \brief Macro defines mask for all the interrupts status for MCAN. */
 #define CAN_INTR_MASK_ALL                                                                                            \
@@ -222,14 +223,14 @@ typedef struct Can_MsgRAMConfigParams_s
                 0 = No standard Message ID filter
                 1-127 = Number of standard Message ID filter elements
                 others = Values greater than 128 are interpreted as 128 */
-    uint32 lss;
+    uint8  lss;
     /** \brief Extended ID Filter List Start Address */
     uint32 flesa;
     /** \brief List Size: Extended ID
                 0 = No standard Message ID filter
                 1-64 = Number of standard Message ID filter elements
                 others = Values greater than 64 are interpreted as 64 */
-    uint32 lse;
+    uint8  lse;
     /** \brief Tx Buffers Start Address */
     uint32 txStartAddr;
     /** \brief Number of Dedicated Transmit Buffers
@@ -246,8 +247,6 @@ typedef struct Can_MsgRAMConfigParams_s
                 0 = Tx FIFO operation
                 1 = Tx Queue operation */
     uint32 txBufMode;
-    /** \brief Tx Buffer Element Size */
-    uint32 txBufElemSize;
     /** \brief Tx Event FIFO Start Address */
     uint32 txEventFIFOStartAddr;
     /** \brief Event FIFO Size
@@ -266,7 +265,7 @@ typedef struct Can_MsgRAMConfigParams_s
                 0 = No Rx FIFO
                 1-64 = Number of Rx FIFO elements
                 others = Values greater than 64 are interpreted as 64 */
-    uint32 rxFIFO0size;
+    uint8  rxFIFO0size;
     /** \brief Rx FIFO0 Watermark
                 0 = Watermark interrupt disabled
                 1-63 = Level for Rx FIFO 0 watermark interrupt
@@ -282,7 +281,7 @@ typedef struct Can_MsgRAMConfigParams_s
                 0 = No Rx FIFO
                 1-64 = Number of Rx FIFO elements
                 others = Values greater than 64 are interpreted as 64 */
-    uint32 rxFIFO1size;
+    uint8  rxFIFO1size;
     /** \brief Rx FIFO1 Watermark
                 0 = Watermark interrupt disabled
                 1-63 = Level for Rx FIFO 1 watermark interrupt
@@ -294,12 +293,8 @@ typedef struct Can_MsgRAMConfigParams_s
     uint32 rxFIFO1OpMode;
     /** \brief Rx Buffer Start Address */
     uint32 rxBufStartAddr;
-    /** \brief Rx Buffer Element Size */
-    uint32 rxBufElemSize;
-    /** \brief Rx FIFO0 Element Size */
-    uint32 rxFIFO0ElemSize;
-    /** \brief Rx FIFO1 Element Size */
-    uint32 rxFIFO1ElemSize;
+    /** \brief Size of Rx/Tx Buffer Element in words */
+    uint32 bufferElemSize;
 } Can_MsgRAMConfigParams;
 
 /*
@@ -374,28 +369,27 @@ typedef struct Can_FdMsgRAMConfigObjType_s
     /** \brief MCAN Message RAM Configuration parameters */
     Can_MsgRAMConfigParams    configParams;
     /** \brief Standard ID filter elements */
-    Can_StdMsgIDFilterElement stdMsgIDFilterList[KMAX_MB_PER_CONTROLLER];
+    Can_StdMsgIDFilterElement stdMsgIDFilterList[KMAX_STD_FILTERS_PER_CONTROLLER];
     /** \brief Extended ID filter elements */
-    Can_ExtMsgIDFilterElement extMsgIDFilterList[KMAX_MB_PER_CONTROLLER];
+    Can_ExtMsgIDFilterElement extMsgIDFilterList[KMAX_EXTD_FILTERS_PER_CONTROLLER];
     /** \brief Standard ID filter element number */
     uint8                     stdFilterNum;
     /** \brief Extended ID filter element number */
     uint8                     extFilterNum;
-    /** \brief Mapping of HTRH
-                txMbMapping[0U][0-KMAX_MB_PER_CONTROLLER]: HTH to be stored into Buffer
-                txMbMapping[1U][0-KMAX_MB_PER_CONTROLLER]: HTH to be stored into FIFO
-                txMbMapping[m][n] = 0xFF : Initialization value */
-    uint8                     txMbMapping[2U][KMAX_MB_PER_CONTROLLER];
-    /** \brief Mapping of HTH to HW mailboxes */
-    uint8                     hthToMbMapping[KMAX_MB_PER_CONTROLLER];
+    /** \brief Mapping of transmit buffer to HOH */
+    Can_HwHandleType          canTxBufToHohMapping[KMAX_TX_MB_PER_CONTROLLER];
+    /** \brief Mapping of receive buffer to HOH */
+    Can_HwHandleType          canRxBufToHohMapping[KMAX_RX_MB_PER_CONTROLLER];
+    /** \brief Mapping of receive Fifo to HOH */
+    Can_HwHandleType          canRxFifoToHohMapping[MCAN_RX_MAX_FIFO_NUM];
     /** \brief Tx number of Buffer elements */
-    uint16                    txBuffNum;
+    uint8                     txBuffNum;
     /** \brief Tx number of FIFO elements */
-    uint16                    txFIFONum;
+    uint8                     txFIFONum;
     /** \brief Rx number of Buffer elements */
-    uint16                    rxBuffNum;
+    uint8                     rxBuffNum;
     /** \brief Rx number of FIFO elements */
-    uint16                    rxFIFONum;
+    uint8                     rxFIFONum;
 } Can_FdMsgRAMConfigObjType;
 
 /*
@@ -406,8 +400,10 @@ typedef struct Can_ControllerObjType_s
 {
     /** \brief Bus off recovery status */
     boolean                   canBusOffRecoveryStatus;
-    /** \brief TxRXx Status of Mailbox */
-    uint8                     canTxStatus[KMAX_MB_PER_CONTROLLER];
+    /** \brief TxRXx Status of Message RAM buffer */
+    uint8                     canTxStatus[KMAX_TX_MB_PER_CONTROLLER];
+    /** \brief Tx/Rx Pdu ID Info for Message RAM buffer*/
+    PduIdType                 canTxRxPduId[KMAX_TX_MB_PER_CONTROLLER];
     /** \brief Total number of interrupts for this controller */
     uint8                     canInterruptCounter;
     /** \brief Set BRP value */
@@ -417,7 +413,7 @@ typedef struct Can_ControllerObjType_s
     /** \brief Can Controller */
     Can_ControllerType        canControllerConfig;
     /** \brief Max Baud Config Index in BaudRateConfigList */
-    uint32                    MaxBaudConfigID;
+    uint16                    MaxBaudConfigID;
     /** \brief State of Can */
     Can_ControllerStateType   canState;
     /** \brief Structure which includes HOH, CAN Controller ID and specific CanId */
@@ -436,8 +432,6 @@ typedef struct Can_MailboxObjType_s
 {
     /** \brief Mailbox Config Info */
     Can_MailboxType mailBoxConfig;
-    /** \brief Tx/Rx Pdu ID Info */
-    PduIdType       canTxRxPduId[KMAX_MB_PER_CONTROLLER];
 } Can_MailboxObjType;
 
 /*
@@ -450,20 +444,10 @@ typedef struct Can_DriverObjType_s
     Can_ControllerObjType canController[KMAX_CONTROLLER];
     /** \brief MB array for all controllers */
     Can_MailboxObjType    canMailbox[KMAX_MAILBOXES];
-    /** \brief MB array for all controllers */
-    Can_MailboxObjType    canTxMailbox[KMAX_MAILBOXES];
-    /** \brief MB array for all controllers */
-    Can_MailboxObjType    canRxMailbox[KMAX_MAILBOXES];
     /** \brief MaxCount of Controller in Controller List */
     uint8                 canMaxControllerCount;
-    /** \brief Mail box to Tx mailbox mapping */
-    PduIdType             canMailToTxMailMapping[KMAX_MAILBOXES];
     /** \brief MaxMbCount in MB list in all controller */
-    uint8                 maxMbCnt;
-    /** \brief MaxMbCount in MB list in all controller */
-    uint8                 maxTxMbCnt;
-    /** \brief MaxMbCount in MB list in all controller */
-    uint8                 maxRxMbCnt;
+    uint16                maxMbCnt;
     /** \brief CAN Controller ID mapping */
     uint32                controllerIDMap[KMAX_CONTROLLER];
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
@@ -487,7 +471,9 @@ typedef enum
     /** \brief MCAN Msg RAM buffersss */
     CAN_MEM_TYPE_BUF = 0U,
     /** \brief MCAN Msg RAM FIFO/Queue */
-    CAN_MEM_TYPE_FIFO = 1U
+    CAN_MEM_TYPE_FIFO0 = 1U,
+    /** \brief MCAN Msg RAM FIFO/Queue */
+    CAN_MEM_TYPE_FIFO1 = 2U
 } Can_MemType;
 
 /*
@@ -571,18 +557,34 @@ typedef struct Can_RxFIFOStatusType_s
     /** \brief Rx FIFO number */
     Can_RxFifoNumType num;
     /** \brief Rx FIFO Fill Level  */
-    uint32            fillLvl;
+    uint8             fillLvl;
     /** \brief Rx FIFO Get Index  */
-    uint32            getIdx;
+    uint8             getIdx;
     /** \brief Rx FIFO Put Index  */
-    uint32            putIdx;
+    uint8             putIdx;
     /** \brief Rx FIFO Full
         0 = Rx FIFO not full
         1 = Rx FIFO full */
     boolean           fifoFull;
-    /** \brief Rx FIFO Message Lost */
-    uint32            msgLost;
+    /** \brief Rx FIFO Message Lost
+        0 = No Rx FIFO Message Lost
+        1 = Rx FIFO Message Lost */
+    boolean           msgLost;
 } Can_RxFIFOStatusType;
+
+/*
+ *Design: MCAL-25951
+ */
+/** \brief   Structure for CAN Rx FIFO Status. */
+typedef struct Can_TxFIFOStatusType_s
+{
+    /** \brief Rx FIFO Put Index  */
+    uint8   putIdx;
+    /** \brief Rx FIFO Full
+        0 = Rx FIFO not full
+        1 = Rx FIFO full */
+    boolean fifoFull;
+} Can_TxFIFOStatusType;
 
 /*
  *Design: MCAL-25952
@@ -645,15 +647,13 @@ void Can_InitDrvObjPriv(Can_DriverObjType *drvObj, const Can_ConfigType *ConfigP
  * \param[in] canController Pointer to Can controller Config structure.
  * \param[in] canMailbox Pointer to Mailbox structure.
  * \param[in] maxMbCnt Maximum number of mailbox configured.
- * \param[in] canHtrhMbMap Pointer to Htrh to mailbox mapping.
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *****************************************************************************/
-void Can_HwUnitConfigPriv(Can_ControllerObjType *canController, const Can_MailboxObjType *canMailbox, uint8 maxMbCnt,
-                          uint8 *canHtrhMbMap);
+void Can_HwUnitConfigPriv(Can_ControllerObjType *canController, const Can_MailboxObjType *canMailbox, uint16 maxMbCnt);
 
 /** \brief This API will configure the Message RAM.
  *
@@ -742,9 +742,8 @@ Std_ReturnType Can_HWCheckWakeupPriv(const Can_ControllerType *configParam);
 /** \brief This function will start Can HW Unit.
  *
  * \param[in] controllerObj Pointer to Can controller Config structure.
- * \param[in] canIfIndication Pointer to a struct containing Start/Stop/Sleep/Wakeup controller
- *status to update, CanIf module indication done information
- * \param[out] canIfIndication Updates, Start successful status to the pointer
+ * \param[inout] canIfIndication Pointer to a struct containing Start/Stop/Sleep/Wakeup controller
+ *status to update, CanIf module indication done information / Updates, Start successful status to the pointer
  * \pre Can module must be initialized
  * \post None
  * \return The status of whether starting of Can HW Unit is successful
@@ -757,9 +756,8 @@ Std_ReturnType Can_HwUnitStartPriv(Can_ControllerObjType *controllerObj, Can_Can
 /** \brief This function will stop Can HW Unit.
  *
  * \param[in] controllerObj Pointer to Can controller Config structure.
- * \param[in] canIfIndication Pointer to a struct containing Start/Stop/Sleep/Wakeup controller
- *status to update, CanIf module indication done information
- * \param[out] canIfIndication Updates, Stop successful status to the pointer
+ * \param[inout] canIfIndication Pointer to a struct containing Start/Stop/Sleep/Wakeup controller
+ *status to update, CanIf module indication done information / Updates, Stop successful status to the pointer
  * \pre Can module must be initialized
  * \post None
  * \return The status of whether stopping of Can HW Unit is successful
@@ -771,9 +769,8 @@ void Can_HwUnitStopPriv(Can_ControllerObjType *controllerObj, Can_CanIfIndicatio
 /** \brief This function will sleep Can HW Unit.
  *
  * \param[in] controllerObj Pointer to Can controller Config structure.
- * \param[in] canIfIndication Pointer to a struct containing Start/Stop/Sleep/Wakeup controller
- *status to update, CanIf module indication done information
- * \param[out] canIfIndication Updates, Sleep successful status to the pointer
+ * \param[inout] canIfIndication Pointer to a struct containing Start/Stop/Sleep/Wakeup controller
+ *status to update, CanIf module indication done information / Updates, Sleep successful status to the pointer
  * \pre Can module must be initialized
  * \post None
  * \return The status of whether sleep of Can HW Unit is successful
@@ -786,9 +783,8 @@ Std_ReturnType Can_HwUnitSleepPriv(Can_ControllerObjType *controllerObj, Can_Can
 /** \brief This function will wakeup Can HW Unit.
  *
  * \param[in] controllerObj Pointer to Can controller Config structure.
- * \param[in] canIfIndication Pointer to a struct containing Start/Stop/Sleep/Wakeup controller
- *status to update, CanIf module indication done information
- * \param[out] canIfIndication Updates, Wakeup successful status to the pointer
+ * \param[inout] canIfIndication Pointer to a struct containing Start/Stop/Sleep/Wakeup controller
+ *status to update, CanIf module indication done information / Updates, Wakeup successful status to the pointer
  * \pre Can module must be initialized
  * \post None
  * \return The status of whether wakeup of Can HW Unit is successful
@@ -803,7 +799,6 @@ Std_ReturnType Can_HwUnitWakeupPriv(Can_ControllerObjType *controllerObj, Can_Ca
  * \param[in] mailboxCfg Pointer to Mailbox structure.
  * \param[in] canController Pointer to Can controller Config structure.
  * \param[in] msgObj HW object in the controller.
- * \param[in] htrh HW object in the configuration.
  * \pre Can module must be initialized
  * \post None
  * \return The status of Tx mailbox free/busy/not-found
@@ -813,13 +808,12 @@ Std_ReturnType Can_HwUnitWakeupPriv(Can_ControllerObjType *controllerObj, Can_Ca
  *
  *****************************************************************************/
 Std_ReturnType Can_GetFreeTxMsgObjPriv(const Can_MailboxType *mailboxCfg, const Can_ControllerObjType *canController,
-                                       Can_HwHandleType *msgObj, uint8 htrh);
+                                       uint8 *msgObj);
 
 /** \brief This function will write into the Transmit Mailbox.
  *
  * \param[in] mailboxCfg Pointer to Mailbox structure.
- * \param[in] controllerObj Pointer to Can controller Config structure.
- * \param[in] hth HW object in the configuration.
+ * \param[in] controllerObj Pointer to Can controller Config structure.s
  * \param[in] messageBox HW object in the controller.
  * \param[in] pduInfo Pointer to SDU user memory, DLC and Identifier.
  * \pre Can module must be initialized
@@ -828,35 +822,34 @@ Std_ReturnType Can_GetFreeTxMsgObjPriv(const Can_MailboxType *mailboxCfg, const 
  * \retval None
  *
  *****************************************************************************/
-void Can_WriteTxMailboxPriv(const Can_MailboxType *mailboxCfg, Can_ControllerObjType *controllerObj, uint8 hth,
-                            uint32 messageBox, const Can_PduType *pduInfo);
+void Can_WriteTxMailboxPriv(const Can_MailboxType *mailboxCfg, Can_ControllerObjType *controllerObj, uint8 messageBox,
+                            const Can_PduType *pduInfo);
 
 /** \brief This function will poll for Tx confirmation.
  *
  * \param[in] canController Pointer to Can controller Config structure.
- * \param[in] mailboxCfg Pointer to Mailbox structure.
- * \param[in] htrh HW object in the configuration.
+ * \param[in] canMailbox Pointer to Mailbox structure.
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *****************************************************************************/
-void Can_HwUnitTxDonePollingPriv(Can_ControllerObjType *canController, const Can_MailboxObjType *canMailbox,
-                                 uint8 htrh);
+void Can_HwUnitTxDonePollingPriv(Can_ControllerObjType *canController, const Can_MailboxObjType *canMailbox);
 
 /** \brief This function will read Rx messages from Mailbox.
  *
  * \param[in] controllerObj Pointer to Can controller Config structure.
  * \param[in] canMailbox Pointer to Mailbox structure.
- * \param[in] maxMbCnt Maximum number of mailbox configured.
+ * \param[in] htrh HW object in the configuration.
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  ******************************************************************************/
-void Can_ReadRxMailboxPriv(Can_ControllerObjType *controllerObj, const Can_MailboxObjType *canMailbox, uint8 maxMbCnt);
+void Can_ReadRxMailboxPriv(Can_ControllerObjType *controllerObj, const Can_MailboxObjType *canMailbox,
+                           Can_HwHandleType htrh);
 
 /** \brief This function will inform CanIf if bus off is detected.
  *
@@ -1015,7 +1008,7 @@ Can_AddPdgValFindStdDtlen(P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pduInfo,
  *
  *****************************************************************************/
 FUNC(void, CAN_CODE)
-Can_CallRxIndication(CONST(boolean, AUTOMATIC) RxIndicationStatus, CONST(uint8, AUTOMATIC) htrh,
+Can_CallRxIndication(CONST(boolean, AUTOMATIC) RxIndicationStatus, CONST(Can_HwHandleType, AUTOMATIC) htrh,
                      CONST(uint32, AUTOMATIC) canIdentifier, CONST(uint8, AUTOMATIC) canDataLength,
                      P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj);
 
@@ -1054,7 +1047,7 @@ Can_ValidateIcomConfigPriv(uint16 loopCnt, P2CONST(Can_IcomConfigType, AUTOMATIC
 
 /** \brief This function will Configure Transceiver Delay Compensation.
  *
- * \param[in] baseAddr Base Address of controller.
+ * \param[in] baseAddress Base Address of controller.
  * \param[in] baudConfig Configuration parameters for MCAN bit timing.
  * \pre None
  * \post None
@@ -1065,17 +1058,18 @@ Can_ValidateIcomConfigPriv(uint16 loopCnt, P2CONST(Can_IcomConfigType, AUTOMATIC
 FUNC(void, CAN_CODE)
 Can_CheckTxDelayCompEnablePriv(uint32 baseAddress, P2CONST(Can_BaudConfigType, AUTOMATIC, CAN_CONST) baudConfig);
 
-/** \brief This API will write acknowledgment for read of Rx FIFO.
+/** \brief This API will write acknowledgment for read of Rx FIFO0/FIFO1.
  *
  * \param[in] baseAddr Base Address of controller.
  * \param[in] idx FIFO element ID.
+ * \param[in] hwHandle of FIFO. 0 value represents FIFO0 and 1 represents FIFO1
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *****************************************************************************/
-FUNC(void, CAN_CODE) Can_WriteRxFIFOAckPriv(uint32 baseAddr, uint32 idx);
+FUNC(void, CAN_CODE) Can_WriteRxFIFOAckPriv(uint32 baseAddr, uint8 idx, uint8 hwHandle);
 
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
 /** \brief This function will validate the icom configuration critiria based on rx message configs.
@@ -1114,7 +1108,6 @@ Can_CheckControllerConfigPriv(P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) Conf
  * \param[in] buffNum Tx number of buffer and FIFO elements.
  * \param[in] canController Pointer to Can controller config parameters.
  * \param[in] canMailbox Message RAM Configuration parameters.
- * \param[in] htrh Handle ID of HTH.
  * \pre None
  * \post None
  * \return None
@@ -1122,52 +1115,17 @@ Can_CheckControllerConfigPriv(P2CONST(Can_ConfigType, AUTOMATIC, CAN_CONST) Conf
  *
  *****************************************************************************/
 FUNC(void, CAN_CODE)
-Can_HwUnitTxConfirmationPriv(uint32 loopCnt, uint32 buffNum, uint8 htrh,
+Can_HwUnitTxConfirmationPriv(uint8 loopCnt, uint8 buffNum,
                              P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) canController,
                              P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox);
-
-/** \brief This function will Check for Controller type and Active state as well as MailBox
- *Direction.
- *
- * \param[in] maxMbCnt Maximum number of Mailbox to be configured.
- * \param[in] controllerObj Pointer to Can controller config parameters.
- * \param[in] canMailbox Message RAM Configuration parameters..
- * \param[in] elemxtd Extended Identifier of CAN Rx Buffer element
- * \param[in] canIdentifier Holds Can Identifier value
- * \pre None
- * \post None
- * \return returns the value of uint8
- * \retval returns the value of type uint8
- *
- *****************************************************************************/
-FUNC(uint8, CAN_CODE)
-Can_CheckCtrltypeActstMaildir(uint8 maxMbCnt, P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObj,
-                              P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailbox, uint8 elemxtd,
-                              VAR(uint32, AUTOMATIC) canIdentifier);
-
-/** \brief This function will Check for Controller type and Active state as well as MailBox
- *Direction.
- *
- * \param[in] maxMbCount Maximum number of Mailbox to be configured.
- * \param[in] elm Pointer to location to store value read.
- * \param[in] controllerObject Pointer to Can controller config parameters.
- * \param[in] canMailboxObject Message RAM Configuration parameters.
- * \pre None
- * \post None
- * \return returns htrh value
- * \retval returns the value of type uint8
- *
- *****************************************************************************/
-FUNC(uint8, CAN_CODE)
-Can_CheckControllerType(uint8 maxMbCount, P2VAR(Can_RxBufElementType, AUTOMATIC, CAN_APPL_DATA) elm,
-                        P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DATA) controllerObject,
-                        P2CONST(Can_MailboxObjType, AUTOMATIC, CAN_CONST) canMailboxObject);
 
 /** \brief This API will update data in the Message RAM.
  *
  * \param[in] baseAddr Base Address of controller.
- * \param[in] buffNum Transmit Buffer number.
+ * \param[in] bufNum Transmit Buffer number.
  * \param[in] elem Pointer to the data to be written in Message RAM.
+ * \param[in] pdu_Info Pointer to the Pdu to be transmitted.
+ * \param[in] mailBoxConfig Pointer to the Hoh configuration data.
  * \pre Can module must be initialized
  * \post None
  * \return None
@@ -1175,7 +1133,7 @@ Can_CheckControllerType(uint8 maxMbCount, P2VAR(Can_RxBufElementType, AUTOMATIC,
  *
  *****************************************************************************/
 FUNC(void, CAN_CODE)
-Can_WriteMsgRamPriv(uint32 baseAddr, uint32 bufNum, P2CONST(Can_TxBufElementType, AUTOMATIC, CAN_CONST) elem,
+Can_WriteMsgRamPriv(uint32 baseAddr, uint8 bufNum, P2CONST(Can_TxBufElementType, AUTOMATIC, CAN_CONST) elem,
                     P2CONST(Can_PduType, AUTOMATIC, CAN_CONST) pdu_Info,
                     P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailBoxConfig);
 
@@ -1192,7 +1150,7 @@ Can_WriteMsgRamPriv(uint32 baseAddr, uint32 bufNum, P2CONST(Can_TxBufElementType
  *
  *****************************************************************************/
 FUNC(void, CAN_CODE)
-Can_ReadMsgRamPriv(uint32 baseAddr, uint32 memType, uint32 bufNum,
+Can_ReadMsgRamPriv(uint32 baseAddr, uint32 memType, uint8 bufNum,
                    P2VAR(Can_RxBufElementType, AUTOMATIC, CAN_APPL_DATA) elem);
 
 /** \brief This service shall read all the statically configured registers

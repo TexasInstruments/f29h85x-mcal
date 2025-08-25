@@ -262,7 +262,7 @@ Cdd_Xbar_OutLatchFlagStatus(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
  * \post Postconditions - None.
  * \return Status of the setting the latch of output LineNumber of output crossbar.
  * \retval E_OK if latch setting is successful.
- * \retval E_OK if latch setting failed.
+ * \retval E_NOT_OK if latch setting failed.
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_XBAR_CODE)
@@ -278,7 +278,7 @@ Cdd_Xbar_OutLatchFlagForce(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
  * \post Postconditions - None.
  * \return Status of clearing the latch of output crossbar instance.
  * \retval E_OK if latch clearing is successful.
- * \retval E_OK if latch clearing failed.
+ * \retval E_NOT_OK if latch clearing failed.
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_XBAR_CODE)
@@ -297,7 +297,7 @@ Cdd_Xbar_OutLatchFlagClear(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit);
  * \return Status of the setting and resetting the output line inversion before latch of output
  *crossbar instance.
  * \retval E_OK if setting and resetting is successful.
- * \retval E_OK if setting and resetting failed.
+ * \retval E_NOT_OK if setting and resetting failed.
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_XBAR_CODE)

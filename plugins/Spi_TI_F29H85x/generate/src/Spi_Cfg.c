@@ -1,4 +1,4 @@
-[!SKIPFILE "node:value(as:modconf('Spi')[1]/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
+[!SKIPFILE "node:value(as:modconf('Spi')[as:path(node:dtos(.))='/TI_F29H85x/Spi']/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -39,6 +39,10 @@
 #if ((SPI_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (SPI_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
   #error "Version numbers of Spi_Cfg.c and Spi.h are inconsistent!"
 #endif
+
+#if ((SPI_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (SPI_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
+  #error "Version numbers of Spi_Cfg.c and Spi_Cfg.h are inconsistent!"
+#endif
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
@@ -70,6 +74,7 @@ extern "C" {
 
 
 
+[!SELECT "as:modconf('Spi')[as:path(node:dtos(.))='/TI_F29H85x/Spi']"!]
 /*
  * Design : MCAL-24860, MCAL-24861, MCAL-24866, MCAL-24867, MCAL-24868, MCAL-24869, 
  * Design : MCAL-24870, MCAL-25160, MCAL-25145, MCAL-25121, MCAL-25122, MCAL-25123,
@@ -79,8 +84,8 @@ extern "C" {
  * Design : MCAL-25116, MCAL-25117, MCAL-25118, MCAL-25119, MCAL-25120, MCAL-25160,
  * Design : MCAL-25105, MCAL-24883  
  */
-[!LOOP "as:modconf('Spi')[1]/SpiDriver"!][!//
-CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_ConfigObj =
+[!LOOP "SpiDriver"!][!//
+CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_Config =
 {
 [!WS "4"!].maxChannels = [!IF "node:exists("SpiMaxChannel")"!][!"SpiMaxChannel"!]U[!ELSE!][!"num:i(count(SpiChannel/*))"!]U[!ENDIF!],
 [!WS "4"!].maxJobs = [!IF "node:exists("SpiMaxJob")"!][!"SpiMaxJob"!]U[!ELSE!][!"num:i(count(SpiJob/*))"!]U[!ENDIF!],
@@ -94,11 +99,11 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_ConfigObj =
 [!WS "4"!][!WS "4"!][!WS "4"!]{
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].channelId = SpiConf_SpiChannel_[!"@name"!],
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].channelBufType = [!"concat('SPI_',SpiChannelType)"!],
-[!IF "as:modconf('Spi')[1]/SpiGeneral/SpiChannelBuffersAllowed = '1'"!][!//
+[!IF "as:modconf('Spi')[as:path(node:dtos(.))='/TI_F29H85x/Spi']/SpiGeneral/SpiChannelBuffersAllowed = '1'"!][!//
 [!IF "SpiChannelType = 'IB'"!][!//
 [!ERROR "SpiChannelBuffersAllowed parameter should be selected as EB or IB/EB or SpiChannelType should be EB"!][!//
 [!ENDIF!][!//
-[!ELSEIF "as:modconf('Spi')[1]/SpiGeneral/SpiChannelBuffersAllowed = '0'"!][!//
+[!ELSEIF "as:modconf('Spi')[as:path(node:dtos(.))='/TI_F29H85x/Spi']/SpiGeneral/SpiChannelBuffersAllowed = '0'"!][!//
 [!IF "SpiChannelType = 'EB'"!][!//
 [!ERROR "SpiChannelBuffersAllowed parameter should be selected as IB or IB/EB or SpiChannelType should be IB"!][!//
 [!ENDIF!][!//
@@ -111,10 +116,10 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_ConfigObj =
 [!ELSE!][!//
 [!ERROR "SpiDataWidth cannot be more than 16"!][!//
 [!ENDIF!][!//
-[!VAR "SpiChannelIBBufferMaxLength" = "as:modconf('Spi')[1]/SpiGeneral/SpiChannelInternalBufferMaxLength"!]
+[!VAR "SpiChannelIBBufferMaxLength" = "as:modconf('Spi')[as:path(node:dtos(.))='/TI_F29H85x/Spi']/SpiGeneral/SpiChannelInternalBufferMaxLength"!]
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].defaultTxData = [!IF "node:exists(SpiDefaultData) and not(node:empty(SpiDefaultData))"!][!"node:value(SpiDefaultData)"!]U[!ELSE!]0U[!ENDIF!],
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].maxBufLength = [!IF "SpiChannelType = 'EB'"!][!"SpiEbMaxLength"!]U[!ELSE!][!"SpiIbNBuffers"!]U[!ENDIF!],
-[!IF "as:modconf('Spi')[1]/SpiGeneral/SpiChannelBuffersAllowed != '1'"!]
+[!IF "as:modconf('Spi')[as:path(node:dtos(.))='/TI_F29H85x/Spi']/SpiGeneral/SpiChannelBuffersAllowed != '1'"!]
 [!IF "SpiChannelType = 'IB'"!]
 [!IF "SpiIbNBuffers * num:i($BufWidth) > num:i($SpiChannelIBBufferMaxLength) "!][!//
 [!ERROR "Value of maxBufLength should be less than or equal to the SPI configuration SPI_IB_MAX_LENGTH in case of Internal Buffer(Refer MCAL-24874)!!"!]
@@ -212,22 +217,9 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_ConfigObj =
 [!WS "4"!]},
 };
 [!ENDLOOP!][!//
+[!ENDSELECT!]
 
 
-[!VAR "SpiChannelIndex" = "0"!][!//
-[!VAR "SpiJobIndex" = "0"!][!//
-[!VAR "SpiSequenceIndex" = "0"!][!//
-[!LOOP "as:modconf('Spi')[1]/SpiDriver"!][!//
-[!LOOP "SpiChannel/*"!][!//
-[!VAR "SpiChannelIndex" = "$SpiChannelIndex+1"!][!//
-[!ENDLOOP!][!//
-[!LOOP "SpiJob/*"!]
-[!VAR "SpiJobIndex" = "$SpiJobIndex+1"!]
-[!ENDLOOP!][!//
-[!LOOP "SpiSequence/*"!][!//
-[!VAR "SpiSequenceIndex" = "$SpiSequenceIndex+1"!]
-[!ENDLOOP!][!//
-[!ENDLOOP!][!//
 
 /**
  *  \brief This type defines a range of HW SPI Hardware microcontroller

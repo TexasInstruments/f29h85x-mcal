@@ -117,16 +117,16 @@ int main(void)
     /*  Default Mode: Slow mode configuration - Timeout : 3342 milli-seconds */
 
     AppUtils_Printf("Wdg Initialization - STARTS !!!\n");
-    Wdg_Init(&Wdg_ConfigSetptr);
+    Wdg_Init(&Wdg_Config);
     AppUtils_Printf("Wdg Initialization - ENDS !!!\n");
 
-    if (Wdg_ConfigSetptr.Wdg_DefaultMode == WDGIF_SLOW_MODE)
+    if (Wdg_Config.Wdg_DefaultMode == WDGIF_SLOW_MODE)
     {
-        Wdg_Timeout = Wdg_ConfigSetptr.Wdg_SlowModeCfg.Timeout;
+        Wdg_Timeout = Wdg_Config.Wdg_SlowModeCfg.Timeout;
     }
-    else if (Wdg_ConfigSetptr.Wdg_DefaultMode == WDGIF_FAST_MODE)
+    else if (Wdg_Config.Wdg_DefaultMode == WDGIF_FAST_MODE)
     {
-        Wdg_Timeout = Wdg_ConfigSetptr.Wdg_FastModeCfg.Timeout;
+        Wdg_Timeout = Wdg_Config.Wdg_FastModeCfg.Timeout;
     }
 
     /* print timeout duration */

@@ -107,10 +107,8 @@ int main(void)
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("Sample Application - STARTS !!!\n");
 
-    Spi_Init(&Spi_ConfigObj);
+    Spi_Init(&Spi_Config);
 
-    /* Set SOFT bit for SPI A */
-    HWREGH(0x70158000 + SPI_O_PRI) |= (SPI_PRI_SOFT);
 #if (STD_ON == SPI_VERSION_INFO_API)
     Spi_GetVersionInfo(&Spi_VersionInfo);
     AppUtils_Printf("SPI MCAL Version Info\n");
@@ -209,6 +207,15 @@ int main(void)
     // deinitialize SPI driver
     AppUtils_Printf("De-initializing SPI.\n");
     Spi_DeInit();
+
+    if (returnValue == E_OK)
+    {
+        AppUtils_Printf("Spi_Example_Sync_AsyncTransfer : Sample Application success\n\r");
+    }
+    else
+    {
+        AppUtils_Printf("Spi_Example_Sync_AsyncTransfer : Sample Application Failed\n\r");
+    }
 
     return (uint8)returnValue;
 }

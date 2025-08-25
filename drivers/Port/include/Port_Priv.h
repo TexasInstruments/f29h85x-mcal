@@ -154,7 +154,6 @@ extern "C" {
  * specified by passing 34 as \e PinNumber.
  *
  * \param[in] PinConfigPtr is the pointer to the pin config structure.
- * \param[out] returnvalue
  * \pre None
  * \post None
  * \return returnValue
@@ -175,7 +174,6 @@ Port_SetCntSpConfig(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) Pin
  *
  * \param[in] PinConfigPtr is the pointer to the pin config structure.
  * \param[in] PinLevel is the value to write to the pin.
- * \param[out] returnvalue
  * \pre None
  * \post None
  * \return returnValue
@@ -191,8 +189,7 @@ Port_SetPinLevel(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) PinCon
  *
  * This function Writes the corresponding bit values to the LPM registers.
  *
- * \param[in] controllerSpecificPtr is the structure containing LPM details.
- * \param[out] returnvalue
+ * \param[in] PinConfig is the pointer to the pin config structure.
  * \pre None
  * \post None
  * \return returnValue
@@ -214,7 +211,6 @@ Port_EnableLPMWakeUpPin(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA)
  * The available mappings are supplied in Port_Pin_Map.h
  *
  * \param[in] PinMode is the pin configuration value for pin
- * \param[out] returnvalue
  * \pre None
  * \post None
  * \return returnValue
@@ -259,7 +255,6 @@ Port_SetDirectionMode(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) P
  *
  *
  * \param[in] PinNumber is the pin num value provided in the pin configuration
- * \param[out] returnvalue
  * \pre None
  * \post None
  * \return returnValue
@@ -277,7 +272,6 @@ FUNC(Std_ReturnType, PORT_CODE) Port_IsPinNumberValid(Port_PinType PinNumber);
  * \param[in] Mode is the Mode passed to Pin
  * \param[in] pinConfig is the Pointer having pin config
  * \param[in] errorIdPtr is the error pointer
- * \param[out] retVal
  * \pre None
  * \post None
  * \return retVal
@@ -298,7 +292,6 @@ Port_ValidateSetPinMode(Port_PinModeType Mode, P2CONST(Port_PinConfigType, AUTOM
  * \post None
  * \return None
  * \retval None
- * \retval None
  *
  ****************************************************************************/
 FUNC(void, PORT_CODE)
@@ -313,7 +306,6 @@ Port_LockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA) 
  * \post None
  * \return None
  * \retval None
- * \retval None
  *
  ****************************************************************************/
 FUNC(void, PORT_CODE)
@@ -327,7 +319,6 @@ Port_UnlockConfiguration(P2CONST(Port_PinConfigType, AUTOMATIC, PORT_CONFIG_DATA
  * \pre None
  * \post None
  * \return None
- * \retval None
  * \retval None
  *
  ****************************************************************************/

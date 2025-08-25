@@ -50,11 +50,11 @@
 /*
  * Vendor specific version information is BCD coded
  */
-#if ((LIN_SW_MAJOR_VERSION != (1U)) || (LIN_SW_MINOR_VERSION != (1U)))
+#if ((LIN_SW_MAJOR_VERSION != (2U)) || (LIN_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Lin.c and Lin.h are inconsistent!"
 #endif
 
-#if ((LIN_CFG_MAJOR_VERSION != (1U)) || (LIN_CFG_MINOR_VERSION != (1U)))
+#if ((LIN_CFG_MAJOR_VERSION != (2U)) || (LIN_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Lin.c and Lin_Cfg.h are inconsistent!"
 #endif
 

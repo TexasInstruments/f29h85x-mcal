@@ -63,7 +63,6 @@
 /** \brief Configures the MCan clock source & divider values.
  *
  * \param[in] MCanClkCfg Pointer to MCan Clock config parameters.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -75,7 +74,6 @@ static FUNC(void, MCU_CODE) Mcu_SetMCanClock(const Mcu_MCanClkConfigType* MCanCl
 /** \brief Configures the Lin clock divider value.
  *
  * \param[in] LinClkCfg Pointer to Lin Clock config parameters.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -87,7 +85,6 @@ static FUNC(void, MCU_CODE) Mcu_SetLinClock(const Mcu_LinClkConfigType* LinClkCf
 /** \brief Configures the Cpu timer2 clock source & divider values.
  *
  * \param[in] CpuTimerClkCfg Pointer to Cpu Timer Clock config parameters.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -99,7 +96,6 @@ static FUNC(void, MCU_CODE) Mcu_SetCpuTimerClock(const Mcu_CpuTimerClkConfigType
 /** \brief Configures the XCLKOUT source & divider values.
  *
  * \param[in] ExternalClkOutCfg Pointer to XCLKOUT config parameters.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -111,7 +107,6 @@ static FUNC(void, MCU_CODE) Mcu_SetExternalClockOutput(const Mcu_ExternalClkOutC
 /** \brief Configures the Ethercat clock divider values.
  *
  * \param[in] EthercatClkCfg Pointer to Ethercat config parameters.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -123,7 +118,6 @@ static FUNC(void, MCU_CODE) Mcu_SetEthercatClock(const Mcu_EthercatClkConfigType
 /** \brief Configures the HSM clock divider values.
  *
  * \param[in] HsmClkDiv HSM clock divider.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -135,7 +129,6 @@ static FUNC(void, MCU_CODE) Mcu_SetHsmClock(Mcu_HsmClockDiv HsmClkDiv);
 /** \brief Configures the EPWM clock divider values.
  *
  * \param[in] EpwmClkDiv EPWM clock divider.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -147,7 +140,6 @@ static FUNC(void, MCU_CODE) Mcu_SetEpwmClock(Mcu_EPWMClkDivider EpwmClkDiv);
 /** \brief Configures the EMIF clock divider values.
  *
  * \param[in] EmifClkDiv EMIF clock divider.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -170,7 +162,6 @@ static FUNC(void, MCU_CODE) Mcu_SetEmifClock(Mcu_EMIFClkDivider EmifClkDiv);
  * Use asm(" RPT #5 || NOP"); to add 5 cycle delay post this function call.
  *
  * \param[in] PeripheralClkConfigPtr points to config of which peripherals to enable.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -184,7 +175,6 @@ static FUNC(void, MCU_CODE) Mcu_DeviceEnablePeripherals(Mcu_PeripheralClkRegConf
  * This function uses the SOFTPRESx registers to reset a specified peripheral
  *
  * \param[in] PeripheralResetConfigPtr points to config of which peripherals to reset.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -197,8 +187,6 @@ static FUNC(void, MCU_CODE) Mcu_DeviceResetPeripherals(Mcu_PeripheralResetRegCon
  *
  * This function uses the SOFTPRESx registers to reset all peripherals
  *
- * \param[in] None
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -214,7 +202,6 @@ static FUNC(void, MCU_CODE) Mcu_DeviceResetAllPeripherals(void);
  * MCU_CLKSRC_OSC2, MCU_CLKSRC_OSC1, MCU_CLKSRC_XTAL, MCU_CLKSRC_XTAL_SE.
  *
  * \param[in] OscSource is the oscillator source to be configured.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -235,8 +222,6 @@ static FUNC(void, MCU_CODE) Mcu_SelectOscSource(Mcu_ClkSourceIdType OscSource);
  * loop for a long time. It is recommended that modify this function to
  * add an appropriate timeout and error-handling procedure.
  *
- * \param[in] None
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -257,8 +242,6 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTAL(void);
  * loop for a long time. It is recommended that modify this function to
  * add an appropriate timeout and error-handling procedure.
  *
- * \param[in] None
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -269,8 +252,6 @@ static FUNC(void, MCU_CODE) Mcu_SelectXTALSingleEnded(void);
 
 /** \brief Wait for the X1 counter value in the X1CNT register to reach 2047 (0x7ff) atleast 4 times
  *
- * \param[in] None
- * \param[out] None
  * \pre None
  * \post None
  * \return boolean type
@@ -284,7 +265,6 @@ static FUNC(boolean, MCU_CODE) Mcu_PollX1Counter(void);
 /** \brief Checks the Xtal frequency range
  *
  * \param[in] ClockConfigPtr Points to clock configuration settings
- * \param[out] None
  * \pre None
  * \post None
  * \return boolean type
@@ -297,7 +277,6 @@ static FUNC(boolean, MCU_CODE) Mcu_XtalFreqRangeCheck(Mcu_ClockConfigPtrType Clo
 /** \brief Checks the Pll settings ranges
  *
  * \param[in] ClockConfigPtr Points to clock configuration settings
- * \param[out] None
  * \pre None
  * \post None
  * \return boolean type
@@ -311,7 +290,6 @@ static FUNC(boolean, MCU_CODE) Mcu_PllSettingsRangeCheck(Mcu_ClockConfigPtrType 
  *
  * \param[in] oscClk Oscillator clock source frequency
  * \param[in] ClockConfigPtr Points to clock configuration settings
- * \param[out] None
  * \pre None
  * \post None
  * \return boolean type
@@ -346,7 +324,6 @@ static FUNC(Mcu_ResetType, MCU_CODE) Mcu_ConvertSecondGroup(Mcu_RawResetType Raw
 
 /** \brief Keep clearing the counter until it is no longer saturated
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -361,7 +338,8 @@ static FUNC(void, MCU_CODE) Mcu_ClearX1Counter(void);
  * \pre None
  * \post None
  * \return boolean type
- * \retval TRUE\FALSE
+ * \retval TRUE if X1 clock saturation is successful
+ * \retval FALSE if X1 clock saturation fails
  *
  *********************************************************************************************************************/
 static FUNC(boolean, MCU_CODE) Mcu_WaitX1Saturate(uint16 loop_count);

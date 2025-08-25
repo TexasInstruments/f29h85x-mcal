@@ -36,7 +36,11 @@ extern "C" {
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
- #if ((CDD_ECAP_SW_MAJOR_VERSION != (1U))||(CDD_ECAP_SW_MINOR_VERSION != (0U)))
+  #if ((CDD_ECAP_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) ||(CDD_ECAP_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
+  #error "Version numbers of Cdd_Ecap_Cfg.c and Cdd_Ecap.h are inconsistent!"
+#endif
+
+ #if ((CDD_ECAP_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) ||(CDD_ECAP_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
   #error "Version numbers of Cdd_Ecap_Cfg.c and Cdd_Ecap_Cfg.h are inconsistent!"
 #endif
 
@@ -44,7 +48,7 @@ extern "C" {
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
 #define CDD_ECAP_BASEADDR_STEP             (ECAP2_BASE - ECAP1_BASE)
-
+#define CDD_ECAP_HR_BASEADDR_STEP          (HRCAP6_BASE - HRCAP5_BASE)
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -61,32 +65,31 @@ extern "C" {
 #define CDD_ECAP_START_SEC_CONFIG_DATA
 #include "Cdd_Ecap_MemMap.h"
 
+[!SELECT "as:modconf('Cdd_Ecap/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ecap/Cdd']"!]
+[!VAR "NumChannels" = "num:i(count(CddEcapConfigSet/CddEcapChannel/*))"!]
 
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet"!]
-[!VAR "NumChannels" = "num:i(count(as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet/CddEcapChannel/*))"!]
-[!ENDLOOP!]
 [!AUTOSPACING!]
 
 [!VAR "Index" = "0"!]
 [!VAR "Index1" = "0"!]
 [!VAR "Ticks" = "0"!]
 
-[!IF "(as:modconf('Cdd_Ecap/Cdd')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile')"!]
+[!IF "(IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile')"!]
 [!VAR "Index" = "0"!]
 [!VAR "Index1" = "0"!]
 [!VAR "Ticks" = "0"!]
 
 /* Cdd_Ecap Channel Configuration parameters */
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet"!]
  CONST(struct Cdd_Ecap_ConfigTag, CDD_ECAP_CONFIG_DATA)
-    Cdd_Ecap_Configset =
+    Cdd_Ecap_Config =
 {
     .chCfg =
     {
-    [!LOOP "CddEcapChannel/*"!][!/*Channel Loop */!]
+    [!LOOP "CddEcapConfigSet/CddEcapChannel/*"!][!/*Channel Loop */!]
         [[!"num:i($Index1)"!]] =
         {
             .channelId = CDD_ECAP_CHANNEL[!"num:i(CddEcapChannelId)"!], /* Channel ID */
+            .emulationMode = [!"CddEcapEmulationMode"!], /* Emulation Mode */
             .defaultStartEdge = [!"CddEcapDefaultStartEdge"!],/* Default start edge*/
             .inputSelect = [!"CddEcapInputSelect"!],/* Input source select */
             .measurementMode = [!"CddEcapMeasurementMode"!],/* Measurement Mode*/
@@ -110,21 +113,29 @@ extern "C" {
             [!ENDIF!]
             .instanceClkMHz = [!"num:i(num:div(num:i(CddEcapClkFrequency), 1000000))"!]U,
             .prescaler = (uint8)[!"num:i(num:div(substring-after(CddEcapPrescaler,'CDD_ECAP_PRESCALAR_'), 2))"!]U, /* prescale */
-            .base_addr = (uint32)(ECAP1_BASE + (CDD_ECAP_BASEADDR_STEP*[!"num:i(num:i(CddEcapChannelId))"!]U)) /* Base address of the channel */
+            .base_addr = (uint32)(ECAP1_BASE + (CDD_ECAP_BASEADDR_STEP*[!"num:i(num:i(CddEcapChannelId))"!]U)), /* Base address of the channel */
+            [!IF "CddEcapHREnable = 'true'"!]
+            [!IF "num:i(CddEcapChannelId) < num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex'))"!][!ERROR "HR mode is not supported for channel id less than num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex'))"!]
+            [!ELSE!]
+            .hr_enable = (boolean)TRUE,
+            .hr_base_addr = (uint32)(HRCAP5_BASE + (CDD_ECAP_HR_BASEADDR_STEP*[!"num:i(num:i(num:sub(CddEcapChannelId, num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex')))))"!]U)) /* Base address of the 
+                                                                                             high resolution channel */
+            [!ENDIF!]
+            [!ENDIF!]
         }[!VAR "Index1" = "$Index1+1"!][!IF "not(node:islast())"!],[!ENDIF!][!CR!][!ENDLOOP!]
     }[!IF "not(node:islast())"!],[!ENDIF!][!CR!]
 };
-[!VAR "Index" = "$Index+1"!][!ENDLOOP!][!/*End of CddEcapConfigSet Loop*/!]
+[!VAR "Index" = "$Index+1"!][!/*End of CddEcapConfigSet */!]
 [!ENDIF!][!//
 
 [!/*
     Duplicate channel ID check
 */!]
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet/CddEcapChannel/*"!]
+[!LOOP "CddEcapConfigSet/CddEcapChannel/*"!]
 [!VAR "chanId" = "CddEcapChannelId"!]
 [!VAR "chName" = "@name"!]
 [!VAR "Repeated" = "0"!]
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet/CddEcapChannel/*"!]
+[!LOOP "CddEcapConfigSet/CddEcapChannel/*"!]
 [!IF "CddEcapChannelId = num:i($chanId)"!]
     [!IF "'1' = num:i($Repeated)"!]
         [!ERROR!] Cdd_Ecap ChannelId should be unique!!!. Please check channel [!"$chName"!] and [!"@name"!], both have same channel ID as [!"num:i($chanId)"!]." [!ENDERROR!]
@@ -134,7 +145,7 @@ extern "C" {
 [!ENDIF!]
 [!ENDLOOP!]
 [!ENDLOOP!]
-
+[!ENDSELECT!]
 #ifdef __cplusplus
 }
 #endif

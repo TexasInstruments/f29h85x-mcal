@@ -34,7 +34,22 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
+/*
+ *  AUTOSAR version information check has to match definition in header file
+ */
+#if ((GPT_AR_RELEASE_MAJOR_VERSION != (0x04U)) || (GPT_AR_RELEASE_MINOR_VERSION != (0x03U)) || \
+     (GPT_AR_RELEASE_REVISION_VERSION != (0x01U)))
+#error "GPT: AUTOSAR Version Numbers of GPT are different"
+#endif
 
+/* vendor specific version information is BCD coded */
+#if ((GPT_SW_MAJOR_VERSION != (2U)) || (GPT_SW_MINOR_VERSION != (0U)))
+#error "Version numbers of Gpt.c and Gpt.h are inconsistent!"
+#endif
+
+#if ((GPT_CFG_MAJOR_VERSION != (2U)) || (GPT_CFG_MINOR_VERSION != (0U)))
+#error "Version numbers of Gpt.c and Gpt_Cfg.h are inconsistent!"
+#endif
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
@@ -125,7 +140,6 @@ static FUNC(uint32, GPT_CODE) Gpt_ChannelStateCheckPriv(Gpt_ValueType Channel_In
  * This service initializes all the configured Gpt channels. This will set the
  * state of the each channel to "Initialized".
  *
- * \param[in] GptDrvObj_Ptr Gpt_DrvObj is the Gpt driver object defined in Gpt.c.
  * \pre None
  * \post None
  * \return None
@@ -140,7 +154,7 @@ static FUNC(void, GPT_CODE) Gpt_ConfigureInitPriv(void);
 /** \brief Gpt_InitDet : checks the configuration data of Gpt Module is valid to initialise or not.
  *
  *
- * \param[in] ConfigPtr
+ * \param[in] Cfg_Ptr Pointer to the configuration data
  * \pre None
  * \post None
  * \return returns if Gpt module is intialised or not
@@ -154,7 +168,8 @@ static inline FUNC(uint32, GPT_CODE) Gpt_InitDet(const Gpt_ConfigType* Cfg_Ptr);
  *GPT_CH_UNINITIALIZED.
  *
  *
- * \param[in] ConfigPtr
+ * \param[in] GptDrvObj Pointer to the GPT driver object
+ * \param[in] Cfg_Ptr Pointer to the configuration data
  * \pre None
  * \post None
  * \return returns the channel is valid or invalid.
@@ -212,7 +227,7 @@ FUNC(void, GPT_CODE) Gpt_Init(P2CONST(Gpt_ConfigType, AUTOMATIC, GPT_CONST) Conf
     /* If the input pointer(CfgPtr) is NULL, use the default pre compile configuration */
     if (NULL_PTR == ConfigPtr)
     {
-        CfgPtr = &Gpt_ConfigSetptr;
+        CfgPtr = &GPT_INIT_CONFIG_PC;
     }
 #else
     if (NULL_PTR != ConfigPtr)

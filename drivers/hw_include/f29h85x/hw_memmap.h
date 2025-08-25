@@ -236,81 +236,153 @@
 #define CPU1DLTFIFO_BASE_FRAME(i)            (0x600F8000U + (i) * 0x400000U)
 #define CPU2DLTFIFO_BASE_FRAME(i)            (0x600FA000U + (i) * 0x400000U)
 #define CPU3DLTFIFO_BASE_FRAME(i)            (0x600FC000U + (i) * 0x400000U)
-#define EPWM1_BASE_FRAME(i)                  (0x70000000U + (i) * 0x400000U)
-#define EPWM1XCMP_BASE_FRAME(i)              (0x70000400U + (i) * 0x400000U)
-#define EPWM1DE_BASE_FRAME(i)                (0x70000800U + (i) * 0x400000U)
-#define EPWM1MINDBLUT_BASE_FRAME(i)          (0x70000C00U + (i) * 0x400000U)
-#define EPWM2_BASE_FRAME(i)                  (0x70001000U + (i) * 0x400000U)
-#define EPWM2XCMP_BASE_FRAME(i)              (0x70001400U + (i) * 0x400000U)
-#define EPWM2DE_BASE_FRAME(i)                (0x70001800U + (i) * 0x400000U)
-#define EPWM2MINDBLUT_BASE_FRAME(i)          (0x70001C00U + (i) * 0x400000U)
-#define EPWM3_BASE_FRAME(i)                  (0x70002000U + (i) * 0x400000U)
-#define EPWM3XCMP_BASE_FRAME(i)              (0x70002400U + (i) * 0x400000U)
-#define EPWM3DE_BASE_FRAME(i)                (0x70002800U + (i) * 0x400000U)
-#define EPWM3MINDBLUT_BASE_FRAME(i)          (0x70002C00U + (i) * 0x400000U)
-#define EPWM4_BASE_FRAME(i)                  (0x70003000U + (i) * 0x400000U)
-#define EPWM4XCMP_BASE_FRAME(i)              (0x70003400U + (i) * 0x400000U)
-#define EPWM4DE_BASE_FRAME(i)                (0x70003800U + (i) * 0x400000U)
-#define EPWM4MINDBLUT_BASE_FRAME(i)          (0x70003C00U + (i) * 0x400000U)
-#define EPWM5_BASE_FRAME(i)                  (0x70004000U + (i) * 0x400000U)
-#define EPWM5XCMP_BASE_FRAME(i)              (0x70004400U + (i) * 0x400000U)
-#define EPWM5DE_BASE_FRAME(i)                (0x70004800U + (i) * 0x400000U)
-#define EPWM5MINDBLUT_BASE_FRAME(i)          (0x70004C00U + (i) * 0x400000U)
-#define EPWM6_BASE_FRAME(i)                  (0x70005000U + (i) * 0x400000U)
-#define EPWM6XCMP_BASE_FRAME(i)              (0x70005400U + (i) * 0x400000U)
-#define EPWM6DE_BASE_FRAME(i)                (0x70005800U + (i) * 0x400000U)
-#define EPWM6MINDBLUT_BASE_FRAME(i)          (0x70005C00U + (i) * 0x400000U)
-#define EPWM7_BASE_FRAME(i)                  (0x70006000U + (i) * 0x400000U)
-#define EPWM7XCMP_BASE_FRAME(i)              (0x70006400U + (i) * 0x400000U)
-#define EPWM7DE_BASE_FRAME(i)                (0x70006800U + (i) * 0x400000U)
-#define EPWM7MINDBLUT_BASE_FRAME(i)          (0x70006C00U + (i) * 0x400000U)
-#define EPWM8_BASE_FRAME(i)                  (0x70007000U + (i) * 0x400000U)
-#define EPWM8XCMP_BASE_FRAME(i)              (0x70007400U + (i) * 0x400000U)
-#define EPWM8DE_BASE_FRAME(i)                (0x70007800U + (i) * 0x400000U)
-#define EPWM8MINDBLUT_BASE_FRAME(i)          (0x70007C00U + (i) * 0x400000U)
-#define EPWM9_BASE_FRAME(i)                  (0x70008000U + (i) * 0x400000U)
-#define EPWM9XCMP_BASE_FRAME(i)              (0x70008400U + (i) * 0x400000U)
-#define EPWM9DE_BASE_FRAME(i)                (0x70008800U + (i) * 0x400000U)
-#define EPWM9MINDBLUT_BASE_FRAME(i)          (0x70008C00U + (i) * 0x400000U)
-#define EPWM10_BASE_FRAME(i)                 (0x70009000U + (i) * 0x400000U)
-#define EPWM10XCMP_BASE_FRAME(i)             (0x70009400U + (i) * 0x400000U)
-#define EPWM10DE_BASE_FRAME(i)               (0x70009800U + (i) * 0x400000U)
-#define EPWM10MINDBLUT_BASE_FRAME(i)         (0x70009C00U + (i) * 0x400000U)
-#define EPWM11_BASE_FRAME(i)                 (0x7000A000U + (i) * 0x400000U)
-#define EPWM11XCMP_BASE_FRAME(i)             (0x7000A400U + (i) * 0x400000U)
-#define EPWM11DE_BASE_FRAME(i)               (0x7000A800U + (i) * 0x400000U)
-#define EPWM11MINDBLUT_BASE_FRAME(i)         (0x7000AC00U + (i) * 0x400000U)
-#define EPWM12_BASE_FRAME(i)                 (0x7000B000U + (i) * 0x400000U)
-#define EPWM12XCMP_BASE_FRAME(i)             (0x7000B400U + (i) * 0x400000U)
-#define EPWM12DE_BASE_FRAME(i)               (0x7000B800U + (i) * 0x400000U)
-#define EPWM12MINDBLUT_BASE_FRAME(i)         (0x7000BC00U + (i) * 0x400000U)
-#define EPWM13_BASE_FRAME(i)                 (0x7000C000U + (i) * 0x400000U)
-#define EPWM13XCMP_BASE_FRAME(i)             (0x7000C400U + (i) * 0x400000U)
-#define EPWM13DE_BASE_FRAME(i)               (0x7000C800U + (i) * 0x400000U)
-#define EPWM13MINDBLUT_BASE_FRAME(i)         (0x7000CC00U + (i) * 0x400000U)
-#define EPWM14_BASE_FRAME(i)                 (0x7000D000U + (i) * 0x400000U)
-#define EPWM14XCMP_BASE_FRAME(i)             (0x7000D400U + (i) * 0x400000U)
-#define EPWM14DE_BASE_FRAME(i)               (0x7000D800U + (i) * 0x400000U)
-#define EPWM14MINDBLUT_BASE_FRAME(i)         (0x7000DC00U + (i) * 0x400000U)
-#define EPWM15_BASE_FRAME(i)                 (0x7000E000U + (i) * 0x400000U)
-#define EPWM15XCMP_BASE_FRAME(i)             (0x7000E400U + (i) * 0x400000U)
-#define EPWM15DE_BASE_FRAME(i)               (0x7000E800U + (i) * 0x400000U)
-#define EPWM15MINDBLUT_BASE_FRAME(i)         (0x7000EC00U + (i) * 0x400000U)
-#define EPWM16_BASE_FRAME(i)                 (0x7000F000U + (i) * 0x400000U)
-#define EPWM16XCMP_BASE_FRAME(i)             (0x7000F400U + (i) * 0x400000U)
-#define EPWM16DE_BASE_FRAME(i)               (0x7000F800U + (i) * 0x400000U)
-#define EPWM16MINDBLUT_BASE_FRAME(i)         (0x7000FC00U + (i) * 0x400000U)
-#define EPWM17_BASE_FRAME(i)                 (0x70010000U + (i) * 0x400000U)
-#define EPWM17XCMP_BASE_FRAME(i)             (0x70010400U + (i) * 0x400000U)
-#define EPWM17DE_BASE_FRAME(i)               (0x70010800U + (i) * 0x400000U)
-#define EPWM17MINDBLUT_BASE_FRAME(i)         (0x70010C00U + (i) * 0x400000U)
-#define EPWM18_BASE_FRAME(i)                 (0x70011000U + (i) * 0x400000U)
-#define EPWM18XCMP_BASE_FRAME(i)             (0x70011400U + (i) * 0x400000U)
-#define EPWM18DE_BASE_FRAME(i)               (0x70011800U + (i) * 0x400000U)
-#define EPWM18MINDBLUT_BASE_FRAME(i)         (0x70011C00U + (i) * 0x400000U)
-#define HRPWMCAL1_BASE_FRAME(i)              (0x70080000U + (i) * 0x400000U)
-#define HRPWMCAL2_BASE_FRAME(i)              (0x70081000U + (i) * 0x400000U)
-#define HRPWMCAL3_BASE_FRAME(i)              (0x70082000U + (i) * 0x400000U)
+#define EPWM1_BASE_FRAME(i)                  (0x70000000U + ((i) * 0x400000U))
+#define EPWM1XCMP_BASE_FRAME(i)              (0x70000400U + ((i) * 0x400000U))
+#define EPWM1DE_BASE_FRAME(i)                (0x70000800U + ((i) * 0x400000U))
+#define EPWM1MINDBLUT_BASE_FRAME(i)          (0x70000C00U + ((i) * 0x400000U))
+#define EPWM2_BASE_FRAME(i)                  (0x70001000U + ((i) * 0x400000U))
+#define EPWM2XCMP_BASE_FRAME(i)              (0x70001400U + ((i) * 0x400000U))
+#define EPWM2DE_BASE_FRAME(i)                (0x70001800U + ((i) * 0x400000U))
+#define EPWM2MINDBLUT_BASE_FRAME(i)          (0x70001C00U + ((i) * 0x400000U))
+#define EPWM3_BASE_FRAME(i)                  (0x70002000U + ((i) * 0x400000U))
+#define EPWM3XCMP_BASE_FRAME(i)              (0x70002400U + ((i) * 0x400000U))
+#define EPWM3DE_BASE_FRAME(i)                (0x70002800U + ((i) * 0x400000U))
+#define EPWM3MINDBLUT_BASE_FRAME(i)          (0x70002C00U + ((i) * 0x400000U))
+#define EPWM4_BASE_FRAME(i)                  (0x70003000U + ((i) * 0x400000U))
+#define EPWM4XCMP_BASE_FRAME(i)              (0x70003400U + ((i) * 0x400000U))
+#define EPWM4DE_BASE_FRAME(i)                (0x70003800U + ((i) * 0x400000U))
+#define EPWM4MINDBLUT_BASE_FRAME(i)          (0x70003C00U + ((i) * 0x400000U))
+#define EPWM5_BASE_FRAME(i)                  (0x70004000U + ((i) * 0x400000U))
+#define EPWM5XCMP_BASE_FRAME(i)              (0x70004400U + ((i) * 0x400000U))
+#define EPWM5DE_BASE_FRAME(i)                (0x70004800U + ((i) * 0x400000U))
+#define EPWM5MINDBLUT_BASE_FRAME(i)          (0x70004C00U + ((i) * 0x400000U))
+#define EPWM6_BASE_FRAME(i)                  (0x70005000U + ((i) * 0x400000U))
+#define EPWM6XCMP_BASE_FRAME(i)              (0x70005400U + ((i) * 0x400000U))
+#define EPWM6DE_BASE_FRAME(i)                (0x70005800U + ((i) * 0x400000U))
+#define EPWM6MINDBLUT_BASE_FRAME(i)          (0x70005C00U + ((i) * 0x400000U))
+#define EPWM7_BASE_FRAME(i)                  (0x70006000U + ((i) * 0x400000U))
+#define EPWM7XCMP_BASE_FRAME(i)              (0x70006400U + ((i) * 0x400000U))
+#define EPWM7DE_BASE_FRAME(i)                (0x70006800U + ((i) * 0x400000U))
+#define EPWM7MINDBLUT_BASE_FRAME(i)          (0x70006C00U + ((i) * 0x400000U))
+#define EPWM8_BASE_FRAME(i)                  (0x70007000U + ((i) * 0x400000U))
+#define EPWM8XCMP_BASE_FRAME(i)              (0x70007400U + ((i) * 0x400000U))
+#define EPWM8DE_BASE_FRAME(i)                (0x70007800U + ((i) * 0x400000U))
+#define EPWM8MINDBLUT_BASE_FRAME(i)          (0x70007C00U + ((i) * 0x400000U))
+#define EPWM9_BASE_FRAME(i)                  (0x70008000U + ((i) * 0x400000U))
+#define EPWM9XCMP_BASE_FRAME(i)              (0x70008400U + ((i) * 0x400000U))
+#define EPWM9DE_BASE_FRAME(i)                (0x70008800U + ((i) * 0x400000U))
+#define EPWM9MINDBLUT_BASE_FRAME(i)          (0x70008C00U + ((i) * 0x400000U))
+#define EPWM10_BASE_FRAME(i)                 (0x70009000U + ((i) * 0x400000U))
+#define EPWM10XCMP_BASE_FRAME(i)             (0x70009400U + ((i) * 0x400000U))
+#define EPWM10DE_BASE_FRAME(i)               (0x70009800U + ((i) * 0x400000U))
+#define EPWM10MINDBLUT_BASE_FRAME(i)         (0x70009C00U + ((i) * 0x400000U))
+#define EPWM11_BASE_FRAME(i)                 (0x7000A000U + ((i) * 0x400000U))
+#define EPWM11XCMP_BASE_FRAME(i)             (0x7000A400U + ((i) * 0x400000U))
+#define EPWM11DE_BASE_FRAME(i)               (0x7000A800U + ((i) * 0x400000U))
+#define EPWM11MINDBLUT_BASE_FRAME(i)         (0x7000AC00U + ((i) * 0x400000U))
+#define EPWM12_BASE_FRAME(i)                 (0x7000B000U + ((i) * 0x400000U))
+#define EPWM12XCMP_BASE_FRAME(i)             (0x7000B400U + ((i) * 0x400000U))
+#define EPWM12DE_BASE_FRAME(i)               (0x7000B800U + ((i) * 0x400000U))
+#define EPWM12MINDBLUT_BASE_FRAME(i)         (0x7000BC00U + ((i) * 0x400000U))
+#define EPWM13_BASE_FRAME(i)                 (0x7000C000U + ((i) * 0x400000U))
+#define EPWM13XCMP_BASE_FRAME(i)             (0x7000C400U + ((i) * 0x400000U))
+#define EPWM13DE_BASE_FRAME(i)               (0x7000C800U + ((i) * 0x400000U))
+#define EPWM13MINDBLUT_BASE_FRAME(i)         (0x7000CC00U + ((i) * 0x400000U))
+#define EPWM14_BASE_FRAME(i)                 (0x7000D000U + ((i) * 0x400000U))
+#define EPWM14XCMP_BASE_FRAME(i)             (0x7000D400U + ((i) * 0x400000U))
+#define EPWM14DE_BASE_FRAME(i)               (0x7000D800U + ((i) * 0x400000U))
+#define EPWM14MINDBLUT_BASE_FRAME(i)         (0x7000DC00U + ((i) * 0x400000U))
+#define EPWM15_BASE_FRAME(i)                 (0x7000E000U + ((i) * 0x400000U))
+#define EPWM15XCMP_BASE_FRAME(i)             (0x7000E400U + ((i) * 0x400000U))
+#define EPWM15DE_BASE_FRAME(i)               (0x7000E800U + ((i) * 0x400000U))
+#define EPWM15MINDBLUT_BASE_FRAME(i)         (0x7000EC00U + ((i) * 0x400000U))
+#define EPWM16_BASE_FRAME(i)                 (0x7000F000U + ((i) * 0x400000U))
+#define EPWM16XCMP_BASE_FRAME(i)             (0x7000F400U + ((i) * 0x400000U))
+#define EPWM16DE_BASE_FRAME(i)               (0x7000F800U + ((i) * 0x400000U))
+#define EPWM16MINDBLUT_BASE_FRAME(i)         (0x7000FC00U + ((i) * 0x400000U))
+#define EPWM17_BASE_FRAME(i)                 (0x70010000U + ((i) * 0x400000U))
+#define EPWM17XCMP_BASE_FRAME(i)             (0x70010400U + ((i) * 0x400000U))
+#define EPWM17DE_BASE_FRAME(i)               (0x70010800U + ((i) * 0x400000U))
+#define EPWM17MINDBLUT_BASE_FRAME(i)         (0x70010C00U + ((i) * 0x400000U))
+#define EPWM18_BASE_FRAME(i)                 (0x70011000U + ((i) * 0x400000U))
+#define EPWM18XCMP_BASE_FRAME(i)             (0x70011400U + ((i) * 0x400000U))
+#define EPWM18DE_BASE_FRAME(i)               (0x70011800U + ((i) * 0x400000U))
+#define EPWM18MINDBLUT_BASE_FRAME(i)         (0x70011C00U + ((i) * 0x400000U))
+#define EPWM1XLINK_BASE_FRAME(i)             (0x70040000U + ((i) * 0x400000U))
+#define EPWM1XCMPXLINK_BASE_FRAME(i)         (0x70040400U + ((i) * 0x400000U))
+#define EPWM1DEXLINK_BASE_FRAME(i)           (0x70040800U + ((i) * 0x400000U))
+#define EPWM1MINDBLUTXLINK_BASE_FRAME(i)     (0x70040C00U + ((i) * 0x400000U))
+#define EPWM2XLINK_BASE_FRAME(i)             (0x70041000U + ((i) * 0x400000U))
+#define EPWM2XCMPXLINK_BASE_FRAME(i)         (0x70041400U + ((i) * 0x400000U))
+#define EPWM2DEXLINK_BASE_FRAME(i)           (0x70041800U + ((i) * 0x400000U))
+#define EPWM2MINDBLUTXLINK_BASE_FRAME(i)     (0x70041C00U + ((i) * 0x400000U))
+#define EPWM3XLINK_BASE_FRAME(i)             (0x70042000U + ((i) * 0x400000U))
+#define EPWM3XCMPXLINK_BASE_FRAME(i)         (0x70042400U + ((i) * 0x400000U))
+#define EPWM3DEXLINK_BASE_FRAME(i)           (0x70042800U + ((i) * 0x400000U))
+#define EPWM3MINDBLUTXLINK_BASE_FRAME(i)     (0x70042C00U + ((i) * 0x400000U))
+#define EPWM4XLINK_BASE_FRAME(i)             (0x70043000U + ((i) * 0x400000U))
+#define EPWM4XCMPXLINK_BASE_FRAME(i)         (0x70043400U + ((i) * 0x400000U))
+#define EPWM4DEXLINK_BASE_FRAME(i)           (0x70043800U + ((i) * 0x400000U))
+#define EPWM4MINDBLUTXLINK_BASE_FRAME(i)     (0x70043C00U + ((i) * 0x400000U))
+#define EPWM5XLINK_BASE_FRAME(i)             (0x70044000U + ((i) * 0x400000U))
+#define EPWM5XCMPXLINK_BASE_FRAME(i)         (0x70044400U + ((i) * 0x400000U))
+#define EPWM5DEXLINK_BASE_FRAME(i)           (0x70044800U + ((i) * 0x400000U))
+#define EPWM5MINDBLUTXLINK_BASE_FRAME(i)     (0x70044C00U + ((i) * 0x400000U))
+#define EPWM6XLINK_BASE_FRAME(i)             (0x70045000U + ((i) * 0x400000U))
+#define EPWM6XCMPXLINK_BASE_FRAME(i)         (0x70045400U + ((i) * 0x400000U))
+#define EPWM6DEXLINK_BASE_FRAME(i)           (0x70045800U + ((i) * 0x400000U))
+#define EPWM6MINDBLUTXLINK_BASE_FRAME(i)     (0x70045C00U + ((i) * 0x400000U))
+#define EPWM7XLINK_BASE_FRAME(i)             (0x70046000U + ((i) * 0x400000U))
+#define EPWM7XCMPXLINK_BASE_FRAME(i)         (0x70046400U + ((i) * 0x400000U))
+#define EPWM7DEXLINK_BASE_FRAME(i)           (0x70046800U + ((i) * 0x400000U))
+#define EPWM7MINDBLUTXLINK_BASE_FRAME(i)     (0x70046C00U + ((i) * 0x400000U))
+#define EPWM8XLINK_BASE_FRAME(i)             (0x70047000U + ((i) * 0x400000U))
+#define EPWM8XCMPXLINK_BASE_FRAME(i)         (0x70047400U + ((i) * 0x400000U))
+#define EPWM8DEXLINK_BASE_FRAME(i)           (0x70047800U + ((i) * 0x400000U))
+#define EPWM8MINDBLUTXLINK_BASE_FRAME(i)     (0x70047C00U + ((i) * 0x400000U))
+#define EPWM9XLINK_BASE_FRAME(i)             (0x70048000U + ((i) * 0x400000U))
+#define EPWM9XCMPXLINK_BASE_FRAME(i)         (0x70048400U + ((i) * 0x400000U))
+#define EPWM9DEXLINK_BASE_FRAME(i)           (0x70048800U + ((i) * 0x400000U))
+#define EPWM9MINDBLUTXLINK_BASE_FRAME(i)     (0x70048C00U + ((i) * 0x400000U))
+#define EPWM10XLINK_BASE_FRAME(i)            (0x70049000U + ((i) * 0x400000U))
+#define EPWM10XCMPXLINK_BASE_FRAME(i)        (0x70049400U + ((i) * 0x400000U))
+#define EPWM10DEXLINK_BASE_FRAME(i)          (0x70049800U + ((i) * 0x400000U))
+#define EPWM10MINDBLUTXLINK_BASE_FRAME(i)    (0x70049C00U + ((i) * 0x400000U))
+#define EPWM11XLINK_BASE_FRAME(i)            (0x7004A000U + ((i) * 0x400000U))
+#define EPWM11XCMPXLINK_BASE_FRAME(i)        (0x7004A400U + ((i) * 0x400000U))
+#define EPWM11DEXLINK_BASE_FRAME(i)          (0x7004A800U + ((i) * 0x400000U))
+#define EPWM11MINDBLUTXLINK_BASE_FRAME(i)    (0x7004AC00U + ((i) * 0x400000U))
+#define EPWM12XLINK_BASE_FRAME(i)            (0x7004B000U + ((i) * 0x400000U))
+#define EPWM12XCMPXLINK_BASE_FRAME(i)        (0x7004B400U + ((i) * 0x400000U))
+#define EPWM12DEXLINK_BASE_FRAME(i)          (0x7004B800U + ((i) * 0x400000U))
+#define EPWM12MINDBLUTXLINK_BASE_FRAME(i)    (0x7004BC00U + ((i) * 0x400000U))
+#define EPWM13XLINK_BASE_FRAME(i)            (0x7004C000U + ((i) * 0x400000U))
+#define EPWM13XCMPXLINK_BASE_FRAME(i)        (0x7004C400U + ((i) * 0x400000U))
+#define EPWM13DEXLINK_BASE_FRAME(i)          (0x7004C800U + ((i) * 0x400000U))
+#define EPWM13MINDBLUTXLINK_BASE_FRAME(i)    (0x7004CC00U + ((i) * 0x400000U))
+#define EPWM14XLINK_BASE_FRAME(i)            (0x7004D000U + ((i) * 0x400000U))
+#define EPWM14XCMPXLINK_BASE_FRAME(i)        (0x7004D400U + ((i) * 0x400000U))
+#define EPWM14DEXLINK_BASE_FRAME(i)          (0x7004D800U + ((i) * 0x400000U))
+#define EPWM14MINDBLUTXLINK_BASE_FRAME(i)    (0x7004DC00U + ((i) * 0x400000U))
+#define EPWM15XLINK_BASE_FRAME(i)            (0x7004E000U + ((i) * 0x400000U))
+#define EPWM15XCMPXLINK_BASE_FRAME(i)        (0x7004E400U + ((i) * 0x400000U))
+#define EPWM15DEXLINK_BASE_FRAME(i)          (0x7004E800U + ((i) * 0x400000U))
+#define EPWM15MINDBLUTXLINK_BASE_FRAME(i)    (0x7004EC00U + ((i) * 0x400000U))
+#define EPWM16XLINK_BASE_FRAME(i)            (0x7004F000U + ((i) * 0x400000U))
+#define EPWM16XCMPXLINK_BASE_FRAME(i)        (0x7004F400U + ((i) * 0x400000U))
+#define EPWM16DEXLINK_BASE_FRAME(i)          (0x7004F800U + ((i) * 0x400000U))
+#define EPWM16MINDBLUTXLINK_BASE_FRAME(i)    (0x7004FC00U + ((i) * 0x400000U))
+#define EPWM17XLINK_BASE_FRAME(i)            (0x70050000U + ((i) * 0x400000U))
+#define EPWM17XCMPXLINK_BASE_FRAME(i)        (0x70050400U + ((i) * 0x400000U))
+#define EPWM17DEXLINK_BASE_FRAME(i)          (0x70050800U + ((i) * 0x400000U))
+#define EPWM17MINDBLUTXLINK_BASE_FRAME(i)    (0x70050C00U + ((i) * 0x400000U))
+#define EPWM18XLINK_BASE_FRAME(i)            (0x70051000U + ((i) * 0x400000U))
+#define EPWM18XCMPXLINK_BASE_FRAME(i)        (0x70051400U + ((i) * 0x400000U))
+#define EPWM18DEXLINK_BASE_FRAME(i)          (0x70051800U + ((i) * 0x400000U))
+#define EPWM18MINDBLUTXLINK_BASE_FRAME(i)    (0x70051C00U + ((i) * 0x400000U))
+#define HRPWMCAL1_BASE_FRAME(i)              (0x70080000U + ((i) * 0x400000U))
+#define HRPWMCAL2_BASE_FRAME(i)              (0x70081000U + ((i) * 0x400000U))
+#define HRPWMCAL3_BASE_FRAME(i)              (0x70082000U + ((i) * 0x400000U))
 #define EQEP1_BASE_FRAME(i)                  (0x70088000U + (i) * 0x400000U)
 #define EQEP2_BASE_FRAME(i)                  (0x70089000U + (i) * 0x400000U)
 #define EQEP3_BASE_FRAME(i)                  (0x7008A000U + (i) * 0x400000U)
@@ -321,25 +393,25 @@
 #define SDFM2_BASE_FRAME(i)                  (0x70091000U + (i) * 0x400000U)
 #define SDFM3_BASE_FRAME(i)                  (0x70092000U + (i) * 0x400000U)
 #define SDFM4_BASE_FRAME(i)                  (0x70093000U + (i) * 0x400000U)
-#define ADCA_BASE_FRAME(i)                   (0x700A0000U + (i) * 0x400000U)
-#define ADCB_BASE_FRAME(i)                   (0x700A1000U + (i) * 0x400000U)
-#define ADCC_BASE_FRAME(i)                   (0x700A2000U + (i) * 0x400000U)
-#define ADCD_BASE_FRAME(i)                   (0x700A3000U + (i) * 0x400000U)
-#define ADCE_BASE_FRAME(i)                   (0x700A4000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK1_BASE_FRAME(i)        (0x700B0000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK2_BASE_FRAME(i)        (0x700B1000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK3_BASE_FRAME(i)        (0x700B2000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK4_BASE_FRAME(i)        (0x700B3000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK5_BASE_FRAME(i)        (0x700B4000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK6_BASE_FRAME(i)        (0x700B5000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK7_BASE_FRAME(i)        (0x700B6000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK8_BASE_FRAME(i)        (0x700B7000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK9_BASE_FRAME(i)        (0x700B8000U + (i) * 0x400000U)
-#define ADCSAFETYCHECK10_BASE_FRAME(i)       (0x700B9000U + (i) * 0x400000U)
-#define ADCSAFETYCHECKINTEVT1_BASE_FRAME(i)  (0x700C0000U + (i) * 0x400000U)
-#define ADCSAFETYCHECKINTEVT2_BASE_FRAME(i)  (0x700C1000U + (i) * 0x400000U)
-#define ADCSAFETYCHECKINTEVT3_BASE_FRAME(i)  (0x700C2000U + (i) * 0x400000U)
-#define ADCGLOBAL_BASE_FRAME(i)              (0x700C8000U + (i) * 0x400000U)
+#define ADCA_BASE_FRAME(i)                   (0x700A0000U + ((i) * 0x400000U))
+#define ADCB_BASE_FRAME(i)                   (0x700A1000U + ((i) * 0x400000U))
+#define ADCC_BASE_FRAME(i)                   (0x700A2000U + ((i) * 0x400000U))
+#define ADCD_BASE_FRAME(i)                   (0x700A3000U + ((i) * 0x400000U))
+#define ADCE_BASE_FRAME(i)                   (0x700A4000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK1_BASE_FRAME(i)        (0x700B0000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK2_BASE_FRAME(i)        (0x700B1000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK3_BASE_FRAME(i)        (0x700B2000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK4_BASE_FRAME(i)        (0x700B3000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK5_BASE_FRAME(i)        (0x700B4000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK6_BASE_FRAME(i)        (0x700B5000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK7_BASE_FRAME(i)        (0x700B6000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK8_BASE_FRAME(i)        (0x700B7000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK9_BASE_FRAME(i)        (0x700B8000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECK10_BASE_FRAME(i)       (0x700B9000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECKINTEVT1_BASE_FRAME(i)  (0x700C0000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECKINTEVT2_BASE_FRAME(i)  (0x700C1000U + ((i) * 0x400000U))
+#define ADCSAFETYCHECKINTEVT3_BASE_FRAME(i)  (0x700C2000U + ((i) * 0x400000U))
+#define ADCGLOBAL_BASE_FRAME(i)              (0x700C8000U + ((i) * 0x400000U))
 #define DACA_BASE_FRAME(i)                   (0x700D0000U + (i) * 0x400000U)
 #define DACB_BASE_FRAME(i)                   (0x700D1000U + (i) * 0x400000U)
 #define CMPSS1_BASE_FRAME(i)                 (0x700E0000U + (i) * 0x400000U)
@@ -960,6 +1032,222 @@
 #endif
 #ifndef EPWM18MINDBLUT_BASE
     #define EPWM18MINDBLUT_BASE              EPWM18MINDBLUT_BASE_FRAME(0U)
+#endif
+#ifndef EPWM1XLINK_BASE
+    #define EPWM1XLINK_BASE                  EPWM1XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM1XCMPXLINK_BASE
+    #define EPWM1XCMPXLINK_BASE              EPWM1XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM1DEXLINK_BASE
+    #define EPWM1DEXLINK_BASE                EPWM1DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM1MINDBLUTXLINK_BASE
+    #define EPWM1MINDBLUTXLINK_BASE          EPWM1MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM2XLINK_BASE
+    #define EPWM2XLINK_BASE                  EPWM2XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM2XCMPXLINK_BASE
+    #define EPWM2XCMPXLINK_BASE              EPWM2XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM2DEXLINK_BASE
+    #define EPWM2DEXLINK_BASE                EPWM2DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM2MINDBLUTXLINK_BASE
+    #define EPWM2MINDBLUTXLINK_BASE          EPWM2MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM3XLINK_BASE
+    #define EPWM3XLINK_BASE                  EPWM3XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM3XCMPXLINK_BASE
+    #define EPWM3XCMPXLINK_BASE              EPWM3XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM3DEXLINK_BASE
+    #define EPWM3DEXLINK_BASE                EPWM3DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM3MINDBLUTXLINK_BASE
+    #define EPWM3MINDBLUTXLINK_BASE          EPWM3MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM4XLINK_BASE
+    #define EPWM4XLINK_BASE                  EPWM4XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM4XCMPXLINK_BASE
+    #define EPWM4XCMPXLINK_BASE              EPWM4XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM4DEXLINK_BASE
+    #define EPWM4DEXLINK_BASE                EPWM4DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM4MINDBLUTXLINK_BASE
+    #define EPWM4MINDBLUTXLINK_BASE          EPWM4MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM5XLINK_BASE
+    #define EPWM5XLINK_BASE                  EPWM5XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM5XCMPXLINK_BASE
+    #define EPWM5XCMPXLINK_BASE              EPWM5XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM5DEXLINK_BASE
+    #define EPWM5DEXLINK_BASE                EPWM5DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM5MINDBLUTXLINK_BASE
+    #define EPWM5MINDBLUTXLINK_BASE          EPWM5MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM6XLINK_BASE
+    #define EPWM6XLINK_BASE                  EPWM6XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM6XCMPXLINK_BASE
+    #define EPWM6XCMPXLINK_BASE              EPWM6XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM6DEXLINK_BASE
+    #define EPWM6DEXLINK_BASE                EPWM6DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM6MINDBLUTXLINK_BASE
+    #define EPWM6MINDBLUTXLINK_BASE          EPWM6MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM7XLINK_BASE
+    #define EPWM7XLINK_BASE                  EPWM7XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM7XCMPXLINK_BASE
+    #define EPWM7XCMPXLINK_BASE              EPWM7XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM7DEXLINK_BASE
+    #define EPWM7DEXLINK_BASE                EPWM7DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM7MINDBLUTXLINK_BASE
+    #define EPWM7MINDBLUTXLINK_BASE          EPWM7MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM8XLINK_BASE
+    #define EPWM8XLINK_BASE                  EPWM8XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM8XCMPXLINK_BASE
+    #define EPWM8XCMPXLINK_BASE              EPWM8XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM8DEXLINK_BASE
+    #define EPWM8DEXLINK_BASE                EPWM8DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM8MINDBLUTXLINK_BASE
+    #define EPWM8MINDBLUTXLINK_BASE          EPWM8MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM9XLINK_BASE
+    #define EPWM9XLINK_BASE                  EPWM9XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM9XCMPXLINK_BASE
+    #define EPWM9XCMPXLINK_BASE              EPWM9XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM9DEXLINK_BASE
+    #define EPWM9DEXLINK_BASE                EPWM9DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM9MINDBLUTXLINK_BASE
+    #define EPWM9MINDBLUTXLINK_BASE          EPWM9MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM10XLINK_BASE
+    #define EPWM10XLINK_BASE                 EPWM10XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM10XCMPXLINK_BASE
+    #define EPWM10XCMPXLINK_BASE             EPWM10XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM10DEXLINK_BASE
+    #define EPWM10DEXLINK_BASE               EPWM10DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM10MINDBLUTXLINK_BASE
+    #define EPWM10MINDBLUTXLINK_BASE         EPWM10MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM11XLINK_BASE
+    #define EPWM11XLINK_BASE                 EPWM11XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM11XCMPXLINK_BASE
+    #define EPWM11XCMPXLINK_BASE             EPWM11XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM11DEXLINK_BASE
+    #define EPWM11DEXLINK_BASE               EPWM11DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM11MINDBLUTXLINK_BASE
+    #define EPWM11MINDBLUTXLINK_BASE         EPWM11MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM12XLINK_BASE
+    #define EPWM12XLINK_BASE                 EPWM12XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM12XCMPXLINK_BASE
+    #define EPWM12XCMPXLINK_BASE             EPWM12XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM12DEXLINK_BASE
+    #define EPWM12DEXLINK_BASE               EPWM12DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM12MINDBLUTXLINK_BASE
+    #define EPWM12MINDBLUTXLINK_BASE         EPWM12MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM13XLINK_BASE
+    #define EPWM13XLINK_BASE                 EPWM13XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM13XCMPXLINK_BASE
+    #define EPWM13XCMPXLINK_BASE             EPWM13XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM13DEXLINK_BASE
+    #define EPWM13DEXLINK_BASE               EPWM13DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM13MINDBLUTXLINK_BASE
+    #define EPWM13MINDBLUTXLINK_BASE         EPWM13MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM14XLINK_BASE
+    #define EPWM14XLINK_BASE                 EPWM14XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM14XCMPXLINK_BASE
+    #define EPWM14XCMPXLINK_BASE             EPWM14XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM14DEXLINK_BASE
+    #define EPWM14DEXLINK_BASE               EPWM14DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM14MINDBLUTXLINK_BASE
+    #define EPWM14MINDBLUTXLINK_BASE         EPWM14MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM15XLINK_BASE
+    #define EPWM15XLINK_BASE                 EPWM15XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM15XCMPXLINK_BASE
+    #define EPWM15XCMPXLINK_BASE             EPWM15XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM15DEXLINK_BASE
+    #define EPWM15DEXLINK_BASE               EPWM15DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM15MINDBLUTXLINK_BASE
+    #define EPWM15MINDBLUTXLINK_BASE         EPWM15MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM16XLINK_BASE
+    #define EPWM16XLINK_BASE                 EPWM16XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM16XCMPXLINK_BASE
+    #define EPWM16XCMPXLINK_BASE             EPWM16XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM16DEXLINK_BASE
+    #define EPWM16DEXLINK_BASE               EPWM16DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM16MINDBLUTXLINK_BASE
+    #define EPWM16MINDBLUTXLINK_BASE         EPWM16MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM17XLINK_BASE
+    #define EPWM17XLINK_BASE                 EPWM17XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM17XCMPXLINK_BASE
+    #define EPWM17XCMPXLINK_BASE             EPWM17XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM17DEXLINK_BASE
+    #define EPWM17DEXLINK_BASE               EPWM17DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM17MINDBLUTXLINK_BASE
+    #define EPWM17MINDBLUTXLINK_BASE         EPWM17MINDBLUTXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM18XLINK_BASE
+    #define EPWM18XLINK_BASE                 EPWM18XLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM18XCMPXLINK_BASE
+    #define EPWM18XCMPXLINK_BASE             EPWM18XCMPXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM18DEXLINK_BASE
+    #define EPWM18DEXLINK_BASE               EPWM18DEXLINK_BASE_FRAME(0U)
+#endif
+#ifndef EPWM18MINDBLUTXLINK_BASE
+    #define EPWM18MINDBLUTXLINK_BASE         EPWM18MINDBLUTXLINK_BASE_FRAME(0U)
 #endif
 #ifndef HRPWMCAL1_BASE
     #define HRPWMCAL1_BASE                   HRPWMCAL1_BASE_FRAME(0U)

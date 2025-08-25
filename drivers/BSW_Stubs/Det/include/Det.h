@@ -17,7 +17,7 @@
  *  File:       Det.h
  *  Generator:  Code generation tool (if any)
  *
- *  Description: Development Error Tracer header file.                                                      
+ *  Description: Development Error Tracer header file.
  *********************************************************************************************************************/
 #ifndef DET_H
 #define DET_H
@@ -67,7 +67,7 @@ extern "C" {
  * The function logs the error and never returns.
  *
  * \param[in] ModuleId      Module ID of calling module
- * \param[in] InstanceId    The identifier of the index based instance of a module, starting from 0, 
+ * \param[in] InstanceId    The identifier of the index based instance of a module, starting from 0,
  *                          If the module is a single instance module it shall pass 0 as the InstanceId.
  * \param[in] ApiId         ID of API service in which error is detected (defined in SWS of calling module)
  * \param[in] ErrorId       ID of detected development error (defined in SWS of calling module).
@@ -83,7 +83,7 @@ VAR(uint8, DET_DATA) ApiId, VAR(uint8, DET_DATA) ErrorId);
 /** \brief Service to report runtime errors.
  *
  * \param[in] ModuleId      Module ID of calling module
- * \param[in] InstanceId    The identifier of the index based instance of a module, starting from 0, 
+ * \param[in] InstanceId    The identifier of the index based instance of a module, starting from 0,
  *                          If the module is a single instance module it shall pass 0 as the InstanceId.
  * \param[in] ApiId         ID of API service in which error is detected (defined in SWS of calling module)
  * \param[in] ErrorId       ID of detected development error (defined in SWS of calling module).
@@ -95,6 +95,22 @@ VAR(uint8, DET_DATA) ApiId, VAR(uint8, DET_DATA) ErrorId);
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, DET_CODE) Det_ReportRuntimeError(VAR(uint16, DET_DATA) ModuleId, VAR(uint8, DET_DATA) InstanceId, \
 VAR(uint8, DET_DATA) ApiId, VAR(uint8, DET_DATA) ErrorId);
+
+/** \brief Service to report runtime errors.
+ *
+ * \param[in] ModuleId      Module ID of calling module
+ * \param[in] InstanceId    The identifier of the index based instance of a module, starting from 0,
+ *                          If the module is a single instance module it shall pass 0 as the InstanceId.
+ * \param[in] ApiId         ID of API service in which error is detected (defined in SWS of calling module)
+ * \param[in] ErrorId       ID of detected development error (defined in SWS of calling module).
+ * \pre None
+ * \post None
+ * \return Returns always E_OK (is required for services)
+ * \retval E_OK: Service executed as expected.
+ *
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, DET_CODE) Det_ReportTransientFault(VAR(uint16, DET_DATA) ModuleId, VAR(uint8, DET_DATA) InstanceId, \
+VAR(uint8, DET_DATA) ApiId, VAR(uint8, DET_DATA) FaultId);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

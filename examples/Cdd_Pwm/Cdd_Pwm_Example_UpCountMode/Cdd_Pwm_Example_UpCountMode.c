@@ -85,7 +85,7 @@
  *********************************************************************************************************************/
 
 /* Array to store the notification of the PWM instances */
-uint32 Cdd_Pwm_NotificationCount[CDD_PWM_COUNT];
+uint32 Cdd_Pwm_NotificationCount[CDD_PWM_COUNT] = {0U};
 
 /*********************************************************************************************************************
  * Exported Object Definitions
@@ -113,19 +113,19 @@ uint32 Cdd_Pwm_NotificationCount[CDD_PWM_COUNT];
 
 void Cdd_Pwm_AsymmetricNotification()
 {
-    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0]++;
+    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]++;
 }
 
 void Cdd_Pwm_SymmetricNotification()
 {
-    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1]++;
+    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1]++;
 }
 
 int main()
 {
     /* Set the notification count to zero */
-    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0] = 0U;
-    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1] = 0U;
+    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0] = 0U;
+    Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1] = 0U;
     Os_TickType start_time, elapsed_time;
 
     DeviceSupport_Init();
@@ -140,53 +140,70 @@ int main()
     McalLib_Delay(50000000U);
 
     /* Set all channels in the IDLE state */
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_0);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_1);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_0);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1);
 
     /* Enable channel notification */
-    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0, CDD_PWM_CHANNEL_A, CDD_PWM_RISING_EDGE,
-                               CDD_PWM_EVENT_COUNT);
-    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1, CDD_PWM_CHANNEL_A, CDD_PWM_BOTH_EDGES,
-                               CDD_PWM_EVENT_COUNT);
+    Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0,CDD_PWM_EVENT_COUNT);
+    Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1,CDD_PWM_EVENT_COUNT);
+
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_0_Channel_0, CDD_PWM_RISING_EDGE);
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_0_Channel_1, CDD_PWM_RISING_EDGE);
+        
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0, CDD_PWM_RISING_EDGE);
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_RISING_EDGE);
+    
     McalLib_Delay(5000000U);
 
     /* Set Duty cycle */
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_0, CDD_PWM_DUTY_CYCLE_25_PERCENT);
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_1, CDD_PWM_DUTY_CYCLE_75_PERCENT);
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_0, CDD_PWM_DUTY_CYCLE_50_PERCENT);
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_DUTY_CYCLE_25_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_0, CDD_PWM_DUTY_CYCLE_25_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_1, CDD_PWM_DUTY_CYCLE_75_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0, CDD_PWM_DUTY_CYCLE_50_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_DUTY_CYCLE_25_PERCENT);
 
     AppUtils_Printf("The duty cycles of the EPWM1 & EPWM2 channels have been modified\r\n");
 
-    McalLib_Delay(50000000U);
+    McalLib_Delay(60000000U);
+
+    AppUtils_Printf("Before\r\n");
+
+    AppUtils_Printf(
+        "The notification count for EPWM1 instance after calling Cdd_Pwm_SetDutyCycle API is "
+        "%d\r\n",
+        Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]);
+    AppUtils_Printf(
+        "The notification count for EPWM2 instance after calling Cdd_Pwm_SetDutyCycle API is "
+        "%d\r\n",
+        Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1]);
 
     /* Set the output to IDLE */
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_0);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0_Channel_1);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_0);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1);
 
     AppUtils_Printf("All the EPWM1 & EPWM2 channels in IDLE state\r\n");
 
     AppUtils_Printf(
         "The notification count for EPWM1 instance after calling Cdd_Pwm_SetDutyCycle API is "
         "%d\r\n",
-        Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0]);
+        Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]);
     AppUtils_Printf(
         "The notification count for EPWM2 instance after calling Cdd_Pwm_SetDutyCycle API is "
         "%d\r\n",
-        Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1]);
+        Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1]);
 
     McalLib_Delay(5000000U);
 
+
     /* Change the period of EPWM1 channels */
-    Cdd_Pwm_SetPeriod(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0, CDD_PWM_100HZ_PERIOD);
+    Cdd_Pwm_SetPeriod(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_100HZ_PERIOD);
 
     /* Change the duty cycle of EPWM2 channels */
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_0, CDD_PWM_DUTY_CYCLE_25_PERCENT);
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_DUTY_CYCLE_50_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0, CDD_PWM_DUTY_CYCLE_25_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_DUTY_CYCLE_50_PERCENT);
 
     AppUtils_Printf("The frequency of EPWM1 has been doubled(period halved)\r\n");
     AppUtils_Printf("The duty cycles of the EPWM2 channels have been modified\r\n");
@@ -203,9 +220,9 @@ int main()
         "%d\r\n",
         elapsed_time);
     AppUtils_Printf("Number of rising edges detected for EPWM1 are %d\r\n",
-                    (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_0] * CDD_PWM_EVENT_COUNT));
+                (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0] * CDD_PWM_EVENT_COUNT));
     AppUtils_Printf("Number of edges detected for EPWM2 are %d\r\n",
-                    (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmUnit_CddPwmHwUnitConfig_1] * CDD_PWM_EVENT_COUNT));
+                (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1] * CDD_PWM_EVENT_COUNT));
     AppUtils_Printf("Cdd_Pwm_Example_UpCountMode executed successfully\r\n");
 
     return 0;

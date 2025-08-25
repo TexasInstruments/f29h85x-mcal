@@ -22,6 +22,9 @@
 #ifndef CDD_UART_CFG_H
 #define CDD_UART_CFG_H
 
+/** \addtogroup CDD_UART
+ *  @{
+ */
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -47,31 +50,31 @@ extern "C" {
 #define CDD_UART_CFG_MAJOR_VERSION           ([!"substring-before($moduleSoftwareVer,'.')"!]U)
 #define CDD_UART_CFG_MINOR_VERSION           ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 #define CDD_UART_CFG_PATCH_VERSION           ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
-
+[!SELECT "as:modconf('Cdd_Uart/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Uart/Cdd']"!]
 /** \brief Maximum UART HW Instances on Board */
-#define CDD_UART_MAX_NUM_HWUNIT                     (uint8)([!"num:i(count(as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet[1]/CddUartConfig/*))"!]U)
+#define CDD_UART_MAX_NUM_HWUNIT                     (uint8)([!"num:i(count(CddUartConfigSet[1]/CddUartConfig/*))"!]U)
 
 /** \brief Enable/Disable Pre compile variant.*/
-#define CDD_UART_CFG_PRE_COMPILE_VARIANT            [!IF "as:modconf('Cdd_Uart/Cdd')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_UART_CFG_PRE_COMPILE_VARIANT            [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable DEV error detection.*/
-#define CDD_UART_CFG_DEV_ERROR_DETECT               [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_UART_CFG_DEV_ERROR_DETECT               [!IF "CddUartGeneral/CddUartDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable Cdd_Uart_GetVersionInfo().*/
-#define CDD_UART_CFG_GET_VERSION_INFO_API           [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_UART_CFG_GET_VERSION_INFO_API           [!IF "CddUartGeneral/CddUartVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Pre compile pointer to configuration structure */
-[!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet"!][!//
-#define CDD_UART_INIT_CONFIG_PC                     Cdd_Uart_[!"@name"!]
+[!LOOP "CddUartConfigSet"!][!//
+#define CDD_UART_INIT_CONFIG_PC                     Cdd_Uart_Config
 [!ENDLOOP!][!//
 
 /** \brief Defines symbolic names for the CddUart HW unit ID's (CddUartHWUnitId) */
-[!LOOP "as:modconf('Cdd')[1]/CddUartConfigSet/CddUartConfig/*"!][!//
+[!LOOP "CddUartConfigSet/CddUartConfig/*"!][!//
 #define CddUartConf_CddUartConfigSet_[!"@name"!] ([!"(node:value(CddUartHWUnitId))"!]U) /*~ASR~*/
 [!ENDLOOP!][!//
 
 /** \brief CddUart ConfigSet Instance interrupt definition */
-[!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*"!][!//
+[!LOOP "CddUartConfigSet/CddUartConfig/*"!][!//
 #define CDD_[!"CddUartInstance"!]_ENABLE
 [!IF "CddUartInteruptType = 'CDD_UART_ISR_CAT1_RTINT'"!][!//
 #define CDD_[!"CddUartInstance"!]_ISR_CAT1_RTINT
@@ -95,10 +98,10 @@ extern "C" {
  * Exported Object Declarations
  *********************************************************************************************************************/
 
-[!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet"!][!//
-extern CONST(struct Cdd_Uart_ConfigTag, CDD_UART_CONFIG_DATA) Cdd_Uart_[!"@name"!];
+[!LOOP "CddUartConfigSet"!][!//
+extern CONST(struct Cdd_Uart_ConfigTag, CDD_UART_CONFIG_DATA) Cdd_Uart_Config;
 [!ENDLOOP!][!//
-
+[!ENDSELECT!]
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/

@@ -352,6 +352,295 @@ ISR(Cdd_Pwm_Epwm18_IntIsr)
 }
 #endif
 
+
+#if defined(CDD_PWM1_TZINT_ENABLE)
+#if defined(CDD_PWM1_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm1_TzIntIsr)
+#elif defined(CDD_PWM1_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm1_TzIntIsr)
+#elif defined(CDD_PWM1_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm1_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(1U);
+}
+#endif
+
+#if defined(CDD_PWM2_TZINT_ENABLE)
+#if defined(CDD_PWM2_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm2_TzIntIsr)
+#elif defined(CDD_PWM2_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm2_TzIntIsr)
+#elif defined(CDD_PWM2_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm2_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(2U);
+}
+#endif
+
+#if defined(CDD_PWM3_TZINT_ENABLE)
+#if defined(CDD_PWM3_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm3_TzIntIsr)
+#elif defined(CDD_PWM3_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm3_TzIntIsr)
+#elif defined(CDD_PWM3_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm3_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(3U);
+}
+#endif
+
+#if defined(CDD_PWM4_TZINT_ENABLE)
+#if defined(CDD_PWM4_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm4_TzIntIsr)
+#elif defined(CDD_PWM4_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm4_TzIntIsr)
+#elif defined(CDD_PWM4_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm4_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(4U);
+}
+#endif
+
+#if defined(CDD_PWM5_TZINT_ENABLE)
+#if defined(CDD_PWM5_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm5_TzIntIsr)
+#elif defined(CDD_PWM5_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm5_TzIntIsr)
+#elif defined(CDD_PWM5_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm5_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(5U);
+}
+#endif
+
+#if defined(CDD_PWM6_TZINT_ENABLE)
+#if defined(CDD_PWM6_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm6_TzIntIsr)
+#elif defined(CDD_PWM6_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm6_TzIntIsr)
+#elif defined(CDD_PWM6_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm6_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(6U);
+}
+#endif
+
+#if defined(CDD_PWM7_TZINT_ENABLE)
+#if defined(CDD_PWM7_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm7_TzIntIsr)
+#elif defined(CDD_PWM7_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm7_TzIntIsr)
+#elif defined(CDD_PWM7_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm7_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(7U);
+}
+#endif
+
+#if defined(CDD_PWM8_TZINT_ENABLE)
+#if defined(CDD_PWM8_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm8_TzIntIsr)
+#elif defined(CDD_PWM8_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm8_TzIntIsr)
+#elif defined(CDD_PWM8_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm8_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(8U);
+}
+#endif
+
+#if defined(CDD_PWM9_TZINT_ENABLE)
+#if defined(CDD_PWM9_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm9_TzIntIsr)
+#elif defined(CDD_PWM9_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm9_TzIntIsr)
+#elif defined(CDD_PWM9_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm9_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(9U);
+}
+#endif
+
+#if defined(CDD_PWM10_TZINT_ENABLE)
+#if defined(CDD_PWM10_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm10_TzIntIsr)
+#elif defined(CDD_PWM10_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm10_TzIntIsr)
+#elif defined(CDD_PWM10_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm10_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(10U);
+}
+#endif
+
+#if defined(CDD_PWM11_TZINT_ENABLE)
+#if defined(CDD_PWM11_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm11_TzIntIsr)
+#elif defined(CDD_PWM11_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm11_TzIntIsr)
+#elif defined(CDD_PWM11_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm11_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(11U);
+}
+#endif
+
+#if defined(CDD_PWM12_TZINT_ENABLE)
+#if defined(CDD_PWM12_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm12_TzIntIsr)
+#elif defined(CDD_PWM12_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm12_TzIntIsr)
+#elif defined(CDD_PWM12_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm12_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(12U);
+}
+#endif
+
+#if defined(CDD_PWM13_TZINT_ENABLE)
+#if defined(CDD_PWM13_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm13_TzIntIsr)
+#elif defined(CDD_PWM13_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm13_TzIntIsr)
+#elif defined(CDD_PWM13_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm13_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(13U);
+}
+#endif
+
+#if defined(CDD_PWM14_TZINT_ENABLE)
+#if defined(CDD_PWM14_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm14_TzIntIsr)
+#elif defined(CDD_PWM14_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm14_TzIntIsr)
+#elif defined(CDD_PWM14_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm14_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(14U);
+}
+#endif
+
+#if defined(CDD_PWM15_TZINT_ENABLE)
+#if defined(CDD_PWM15_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm15_TzIntIsr)
+#elif defined(CDD_PWM15_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm15_TzIntIsr)
+#elif defined(CDD_PWM15_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm15_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(15U);
+}
+#endif
+
+#if defined(CDD_PWM16_TZINT_ENABLE)
+#if defined(CDD_PWM16_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm16_TzIntIsr)
+#elif defined(CDD_PWM16_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm16_TzIntIsr)
+#elif defined(CDD_PWM16_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm16_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(16U);
+}
+#endif
+
+#if defined(CDD_PWM17_TZINT_ENABLE)
+#if defined(CDD_PWM17_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm17_TzIntIsr)
+#elif defined(CDD_PWM17_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm17_TzIntIsr)
+#elif defined(CDD_PWM17_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm17_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(17U);
+}
+#endif
+
+#if defined(CDD_PWM18_TZINT_ENABLE)
+#if defined(CDD_PWM18_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm18_TzIntIsr)
+#elif defined(CDD_PWM18_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Pwm_Epwm18_TzIntIsr)
+#elif defined(CDD_PWM18_ISR_CAT2_INT)
+ISR(Cdd_Pwm_Epwm18_TzIntIsr)
+#else
+#error "Invalid Pwm interrupt category"
+#endif
+{
+    /* Call the internal ISR notify function to handle interrupt */
+    Cdd_Pwm_ProcessTripZoneIsr(18U);
+}
+#endif
+
 #define CDD_PWM_STOP_SEC_ISR_CODE
 #include "Cdd_Pwm_MemMap.h"
 /*********************************************************************************************************************

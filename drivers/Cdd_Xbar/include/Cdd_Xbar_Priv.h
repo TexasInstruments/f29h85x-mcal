@@ -404,7 +404,7 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_ClbLockStatus(void);
  * \post None
  * \return CLB crossbar locking status.
  * \retval E_OK if locked successfully.
- * \retval E_OK if locking failed.
+ * \retval E_NOT_OK if locking failed.
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_ClbLock(void);
@@ -422,7 +422,7 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_ClbLock(void);
  * \post None
  * \return Status of input selection.
  * \retval E_OK if selection is successful.
- * \retval E_OK if selection failed.
+ * \retval E_NOT_OK if selection failed.
  *********************************************************************************************************************/
 FUNC(void, CDD_XBAR_CODE)
 Cdd_Xbar_ClbSelect(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,

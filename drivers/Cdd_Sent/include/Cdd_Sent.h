@@ -617,6 +617,7 @@ Cdd_Sent_Init(P2CONST(Cdd_Sent_ConfigType, AUTOMATIC, CDD_SENT_CONST) ConfigPtr)
  *********************************************************************************************************************/
 FUNC(void, CDD_SENT_CODE) Cdd_Sent_Deinit(void);
 
+#if (STD_ON == CDD_SENT_ENABLE_MTP_MODE)
 /** \brief Cdd_Sent_Transmit : Triggers the MTP.
  *
  *
@@ -636,7 +637,6 @@ FUNC(void, CDD_SENT_CODE) Cdd_Sent_Deinit(void);
  * \retval E_NOT_OK: command has not been accepted
  *
  *********************************************************************************************************************/
-#if (STD_ON == CDD_SENT_ENABLE_MTP_MODE)
 FUNC(Std_ReturnType, CDD_SENT_CODE)
 Cdd_Sent_Transmit(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr, PduIdType TxPduId);
 #endif /* CDD_SENT_ENABLE_MTP_MODE */

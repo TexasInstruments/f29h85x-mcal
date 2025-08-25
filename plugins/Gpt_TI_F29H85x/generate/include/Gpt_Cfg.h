@@ -45,6 +45,7 @@ extern "C" {
 #define GPT_CFG_MINOR_VERSION               ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 #define GPT_CFG_PATCH_VERSION               ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 
+[!SELECT "as:modconf('Gpt')[as:path(node:dtos(.))='/TI_F29H85x/Gpt']"!][!//
 /** \brief GPT instance Id. */
 /*
  *Design: MCAL-23348
@@ -55,46 +56,46 @@ extern "C" {
 /*
  *Design: MCAL-23349
  */
-#define GPT_PRE_COMPILE_VARIANT             [!IF "as:modconf('Gpt')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define GPT_PRE_COMPILE_VARIANT             [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable development error detection. */
 /*
  * Design: MCAL-22044, MCAL-22045, MCAL-22048, MCAL-22047, MCAL-22046
  */
-#define GPT_CFG_DEV_ERROR_DETECT            [!IF "as:modconf('Gpt')[1]/GptDriverConfiguration/GptDevErrorDetect"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define GPT_CFG_DEV_ERROR_DETECT            [!IF "GptDriverConfiguration/GptDevErrorDetect"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable Gpt_GetVersionInfo(). */
 /*
  *Design: MCAL-22062, MCAL-22057
  */
-#define GPT_CFG_VERSION_INFO_API            [!IF "as:modconf('Gpt')[1]/GptConfigurationOfOptApiServices/GptVersionInfoApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define GPT_CFG_VERSION_INFO_API            [!IF "GptConfigurationOfOptApiServices/GptVersionInfoApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable Gpt_SetMode(), Gpt_EnableWakeup(), Gpt_DisableWakeup() and Gpt_CheckWakeup(). */
-#define GPT_CFG_WAKEUP_FUNCTIONALITY_API    [!IF "as:modconf('Gpt')[1]/GptConfigurationOfOptApiServices/GptWakeupFunctionalityApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define GPT_CFG_WAKEUP_FUNCTIONALITY_API    [!IF "GptConfigurationOfOptApiServices/GptWakeupFunctionalityApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable Gpt_DeInit(). */
 /*
  *Design: MCAL-22058, MCAL-22057
  */
-#define GPT_CFG_DEINIT_API                  [!IF "as:modconf('Gpt')[1]/GptConfigurationOfOptApiServices/GptDeinitApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define GPT_CFG_DEINIT_API                  [!IF "GptConfigurationOfOptApiServices/GptDeinitApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable Gpt_GetTimeElapsed(). */
 /*
  *Design: MCAL-22060, MCAL-22057
  */
-#define GPT_CFG_TIME_ELAPSED_API            [!IF "as:modconf('Gpt')[1]/GptConfigurationOfOptApiServices/GptTimeElapsedApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define GPT_CFG_TIME_ELAPSED_API            [!IF "GptConfigurationOfOptApiServices/GptTimeElapsedApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable Gpt_GetTimeRemaining(). */
 /*
  *Design: MCAL-22061, MCAL-22057
  */
-#define GPT_CFG_TIME_REMAINING_API          [!IF "as:modconf('Gpt')[1]/GptConfigurationOfOptApiServices/GptTimeRemainingApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define GPT_CFG_TIME_REMAINING_API          [!IF "GptConfigurationOfOptApiServices/GptTimeRemainingApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable GptEnableDisableNotification(). */
 /*
  *Design: MCAL-22059, MCAL-22057
  */
-#define GPT_CFG_NOTIFICATION_API            [!IF "as:modconf('Gpt')[1]/GptConfigurationOfOptApiServices/GptEnableDisableNotificationApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define GPT_CFG_NOTIFICATION_API            [!IF "GptConfigurationOfOptApiServices/GptEnableDisableNotificationApi"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Period register reset value. */
 /*
@@ -124,8 +125,14 @@ extern "C" {
 /*
  *Design: MCAL-23354
  */
-#define GPT_CFG_NO_OF_CHANNELS              ([!"num:i(count(as:modconf('Gpt')[1]/GptChannelConfigSet[1]/GptChannelConfiguration/*))"!]U)
+#define GPT_CFG_NO_OF_CHANNELS              ([!"num:i(count(GptChannelConfigSet[1]/GptChannelConfiguration/*))"!]U)
 
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!][!//
+/*********************************************************************************************************************
+ * \brief Pre Compile config macro name.
+ *********************************************************************************************************************/
+#define GPT_INIT_CONFIG_PC                  Gpt_Config
+[!ENDIF!][!//
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -134,7 +141,7 @@ extern "C" {
 /*
  *Design: MCAL-23355
  */
-[!LOOP "as:modconf('Gpt')[1]/GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
+[!LOOP "GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
 #define GPT_CHANNEL[!"GptChannelId"!]_ENABLE
 [!ENDLOOP!][!//
 
@@ -142,12 +149,12 @@ extern "C" {
 /*
  *Design: MCAL-23355
  */
-[!LOOP "as:modconf('Gpt')[1]/GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
+[!LOOP "GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
 #define [!"GptTypeofInterrupt"!]_CHANNEL[!"GptChannelId"!]
 [!ENDLOOP!][!//
 
 /** \brief Symbolic names for gpt timer channels. */
-[!LOOP "as:modconf('Gpt')[1]/GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
+[!LOOP "GptChannelConfigSet[1]/GptChannelConfiguration/*"!][!//
 #define GptConf_GptChannelConfiguration_[!"@name"!] ([!"GptChannelId"!]U)  /*~ASR~*/
 [!ENDLOOP!][!//
 
@@ -163,8 +170,8 @@ extern "C" {
 /*
  *Design: MCAL-22072
  */
-extern CONST(struct Gpt_ConfigType_s, GPT_CONST) Gpt_ConfigSetptr;
-
+extern CONST(struct Gpt_ConfigType_s, GPT_CONST) Gpt_Config;
+[!ENDSELECT!]
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes

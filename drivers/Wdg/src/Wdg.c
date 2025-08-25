@@ -47,11 +47,11 @@
 #endif
 
 /* vendor specific version information */
-#if ((WDG_SW_MAJOR_VERSION != (1U)) || (WDG_SW_MINOR_VERSION != (0U)))
+#if ((WDG_SW_MAJOR_VERSION != (2U)) || (WDG_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Wdg.c and Wdg.h are inconsistent!"
 #endif
 
-#if ((WDG_CFG_MAJOR_VERSION != (1U)) || (WDG_CFG_MINOR_VERSION != (0U)))
+#if ((WDG_CFG_MAJOR_VERSION != (2U)) || (WDG_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Wdg.c and Wdg_Cfg.h are inconsistent!"
 #endif
 
@@ -99,7 +99,6 @@ volatile VAR(Wdg_StatusType, WDG_VAR_INIT) Wdg_DrvStatus = WDG_UNINIT;
  *and set the mode
  *
  * \param[in] Mode The requested mode type off,slow,fast mode
- * \param[out] None
  * \pre None
  * \post None
  * \return Std_ReturnType

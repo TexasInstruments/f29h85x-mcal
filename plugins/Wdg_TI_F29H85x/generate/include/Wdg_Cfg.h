@@ -23,7 +23,7 @@
 #define WDG_CFG_H
 
 /**
- * \addtogroup WDG Wdg API GUIDE configurator header file
+ * \addtogroup WDG
  * @{
  */
 
@@ -56,17 +56,17 @@ extern "C" {
  * \brief WDG Build Variant.
  * Build variants.(i.e Precompile, postbuild or linktime)
  *********************************************************************************************************************/
+[!SELECT "as:modconf('Wdg')[as:path(node:dtos(.))='/TI_F29H85x/Wdg']"!]
+#define WDG_VARIANT_PRE_COMPILE       [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define WDG_VARIANT_POST_BUILD        [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define WDG_VARIANT_LINK_TIME         [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-#define WDG_VARIANT_PRE_COMPILE       [!IF "as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
-#define WDG_VARIANT_POST_BUILD        [!IF "as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
-#define WDG_VARIANT_LINK_TIME         [!IF "as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
-
-[!IF "as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile' or as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!]
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile' or IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!]
 /*********************************************************************************************************************
  * \brief Pre Compile config macro name.
  *********************************************************************************************************************/
-[!LOOP "as:modconf('Wdg')[1]/WdgSettingsConfig"!]
-#define WDG_INIT_CONFIG_PC		Wdg_ConfigSetptr
+[!LOOP "WdgSettingsConfig"!]
+#define WDG_INIT_CONFIG_PC		Wdg_Config
 [!ENDLOOP!]
 [!ENDIF!]
 
@@ -85,22 +85,22 @@ extern "C" {
 /*********************************************************************************************************************
  * \brief Enable/Disable DEM.
  *********************************************************************************************************************/
-#define WDG_DEM_ENABLE    [!IF "node:refexists(as:modconf('Wdg')[1]/WdgDemEventParameterRefs/WDG_E_DISABLE_REJECTED)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define WDG_DEM_ENABLE    [!IF "node:refexists(WdgDemEventParameterRefs/WDG_E_DISABLE_REJECTED)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
  /*
  * Design: MCAL-25229, MCAL-25272, MCAL-25273
  */
-[!IF "node:refexists(as:modconf('Wdg')[1]/WdgDemEventParameterRefs/WDG_E_DISABLE_REJECTED)"!]
+[!IF "node:refexists(WdgDemEventParameterRefs/WDG_E_DISABLE_REJECTED)"!]
 /** \brief WDG DEM Event Configuration: WDG Disable feature rejected error */
-#define WDG_E_DISABLE_REJECTED  (DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Wdg')[1]/WdgDemEventParameterRefs/WDG_E_DISABLE_REJECTED))"!])
+#define WDG_E_DISABLE_REJECTED  (DemConf_DemEventParameter_[!"node:name(node:ref(WdgDemEventParameterRefs/WDG_E_DISABLE_REJECTED))"!])
 [!ENDIF!]
 
  /*
  * Design: MCAL-25226, MCAL-25272, MCAL-25274
  */
-[!IF "node:refexists(as:modconf('Wdg')[1]/WdgDemEventParameterRefs/WDG_E_MODE_FAILED)"!]
+[!IF "node:refexists(WdgDemEventParameterRefs/WDG_E_MODE_FAILED)"!]
 /** \brief WDG DEM Event Configuration: WDG Mode failed error */
-#define WDG_E_MODE_FAILED  (DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Wdg')[1]/WdgDemEventParameterRefs/WDG_E_MODE_FAILED))"!])
+#define WDG_E_MODE_FAILED  (DemConf_DemEventParameter_[!"node:name(node:ref(WdgDemEventParameterRefs/WDG_E_MODE_FAILED))"!])
 [!ENDIF!]
 
 /*********************************************************************************************************************
@@ -109,7 +109,7 @@ extern "C" {
  /*
  * Design: MCAL-25276
  */
-#define WDG_DEV_ERROR_DETECT       [!IF "as:modconf('Wdg')[1]/WdgGeneral/WdgDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define WDG_DEV_ERROR_DETECT       [!IF "WdgGeneral/WdgDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable Wdg_GetVersionInfo().
@@ -117,7 +117,7 @@ extern "C" {
  /*
  * Design: MCAL-25283
  */
-#define WDG_GET_VERSION_INFO_API   [!IF "as:modconf('Wdg')[1]/WdgGeneral/WdgVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define WDG_GET_VERSION_INFO_API   [!IF "WdgGeneral/WdgVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
 /*********************************************************************************************************************
@@ -126,9 +126,9 @@ extern "C" {
  /*
  * Design: MCAL-25308, MCAL-25309
  */
-#define WDG_INITIAL_TIMEOUT        (uint16) ([!"num:i(as:modconf('Wdg')[1]/WdgGeneral/WdgInitialTimeout * 1000)"!])
-#define WDG_MAX_TIMEOUT            (uint16) ([!"num:i(as:modconf('Wdg')[1]/WdgGeneral/WdgMaxTimeout * 1000)"!])
-[!VAR "Test1" = "as:modconf('Wdg')[1]/WdgGeneral/WdgInitialTimeout"!][!VAR "Test2" = "as:modconf('Wdg')[1]/WdgGeneral/WdgMaxTimeout"!][!IF "num:i($Test1 * 1000 ) > num:i($Test2 * 1000)"!][!ERROR "WdgInitialTimeout can't be greater than WdgMaxTimeout"!][!ENDIF!]
+#define WDG_INITIAL_TIMEOUT        (uint16) ([!"num:i(WdgGeneral/WdgInitialTimeout * 1000)"!])
+#define WDG_MAX_TIMEOUT            (uint16) ([!"num:i(WdgGeneral/WdgMaxTimeout * 1000)"!])
+[!VAR "Test1" = "WdgGeneral/WdgInitialTimeout"!][!VAR "Test2" = "WdgGeneral/WdgMaxTimeout"!][!IF "num:i($Test1 * 1000 ) > num:i($Test2 * 1000)"!][!ERROR "WdgInitialTimeout can't be greater than WdgMaxTimeout"!][!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Watchdog Maximum Windowed Threshold value
@@ -144,7 +144,7 @@ extern "C" {
  /*
  * Design: MCAL-25277
  */
-#define WDG_DISABLE_ALLOWED        [!IF "as:modconf('Wdg')[1]/WdgGeneral/WdgDisableAllowed = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define WDG_DISABLE_ALLOWED        [!IF "WdgGeneral/WdgDisableAllowed = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
@@ -284,11 +284,11 @@ typedef struct Wdg_ConfigType_s
  * Exported Object Declarations
  *********************************************************************************************************************/
 
-[!LOOP "as:modconf('Wdg')[1]/WdgSettingsConfig"!]
+[!LOOP "WdgSettingsConfig"!]
  /** \brief Wdg config pointer */
-extern const struct Wdg_ConfigType_s  Wdg_ConfigSetptr;
+extern const struct Wdg_ConfigType_s  Wdg_Config;
 [!ENDLOOP!]
-
+[!ENDSELECT!]
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/

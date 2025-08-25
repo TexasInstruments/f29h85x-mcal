@@ -57,11 +57,9 @@
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
 #define CDD_UART_EXAMPLE_WRITE_POLLING_MAX_SIZE       (270U)
-#define CDD_UART_EXAMPLE_WRITE_POLLING_WRITE_TIMEOUT  (50000U)
 #define CDD_UART_EXAMPLE_WRITE_POLLING_NUM_TESTS      (10U)
 #define CDD_UART_EXAMPLE_WRITE_POLLING_NUM_TEST_CYCLE (5U)
 
-#define CDD_UART_OS_COUNTER_ID (0U)
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
  *********************************************************************************************************************/
@@ -121,9 +119,11 @@ int main(void)
         'r', 'u', 'm',  'e', 'n', 't',  's', ' ', '\n', 'H', 'e', 'l',  'l', 'o', 'W',  'o', 'r', 'l',  'd', ' ', 'T',
         'e', 'x', 'a',  's', ' ', 'I',  'n', 's', 't',  'r', 'u', 'm',  'e', 'n', 't',  's', ' ', '\n'};
     uint32 uartWriteSize[CDD_UART_EXAMPLE_WRITE_POLLING_NUM_TESTS] = {1U, 2U, 3U, 4U, 6U, 8U, 50U, 100U, 200U, 270U};
-    VAR(Os_TickType, AUTOMATIC) startCount                         = (Os_TickType)0U;
-    VAR(Os_TickType, AUTOMATIC) elapsedCount                       = (Os_TickType)0U;
+    VAR(McalLib_TickType, MCAL_LIB_DATA) startCount   = (McalLib_TickType)0U;
+    VAR(McalLib_TickType, MCAL_LIB_DATA) elapsedCount = (McalLib_TickType)0U;
     Cdd_Uart_WriteStatusType writeStatus;
+    VAR(McalLib_TickType, MCAL_LIB_DATA) uarttimeout   = (McalLib_TickType)26041U;/*in Us for 115200 bdrate and size 300*/
+    VAR(McalLib_TickType, MCAL_LIB_DATA) timerTickCount = (McalLib_TickType)0U;
 
     DeviceSupport_Init();
     EcuM_Init();
@@ -142,10 +142,11 @@ int main(void)
     AppUtils_Printf("SW Patch Version    : %d\n", Cdd_Uart_VersionInfo.sw_patch_version);
 #endif
 
+   /*calculate the timer tick*/
+    McalLib_GetTimerTickFromUs(uarttimeout, &timerTickCount);
+
     for (cycle = 0U; cycle < CDD_UART_EXAMPLE_WRITE_POLLING_NUM_TEST_CYCLE; cycle++)
     {
-        /* CDD UART Init */
-        Cdd_Uart_Init(NULL_PTR);
 
         for (testNum = 0U; testNum < CDD_UART_EXAMPLE_WRITE_POLLING_NUM_TESTS; testNum++)
         {
@@ -156,13 +157,12 @@ int main(void)
             if (E_OK == return_value)
             {
                 /* Tx polling */
-                (void)GetCounterValue(CDD_UART_OS_COUNTER_ID, &startCount);
+                (void)McalLib_GetCounterValue(&startCount);
                 do
                 {
-                    McalLib_Delay(1U);
                     Cdd_Uart_MainFunction_Write();
-                    (void)GetElapsedValue(CDD_UART_OS_COUNTER_ID, &startCount, &elapsedCount);
-                    if (CDD_UART_EXAMPLE_WRITE_POLLING_WRITE_TIMEOUT <= elapsedCount)
+                    (void)McalLib_GetElapsedValue(&startCount, &elapsedCount);
+                    if (timerTickCount <= elapsedCount)
                     {
                         Cdd_Uart_ErrorCount++;
                         AppUtils_Printf("CDD_UART TX polling Timeout\n");
@@ -184,14 +184,13 @@ int main(void)
         /* Wait until UART is idle before deinit */
         do
         {
-            McalLib_Delay(1U);
             /* Get write status */
             (void)Cdd_Uart_GetWriteStatus(CddUartConf_CddUartConfigSet_CddUartConfig_0, &writeStatus);
         } while (E_NOT_OK == writeStatus.Cdd_Uart_BusyStatus);
 
-        /* CDD UART DeInit */
-        Cdd_Uart_Deinit();
     }
+    /* CDD UART DeInit */
+    Cdd_Uart_Deinit();
 
     if ((E_OK == return_value) && (0U == Cdd_Uart_ErrorCount))
     {

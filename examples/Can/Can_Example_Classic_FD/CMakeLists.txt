@@ -74,9 +74,9 @@ if(NOT TARGET CanIf)
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/CanIf)
 endif()
 
-if(NOT TARGET f29h85x_config)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/f29h85x_config/
-                     ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/f29h85x_config)
+if(NOT TARGET Can_Example_Classic_FD_Config)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Can_Example_Classic_FD_Config/
+                     ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Can_Example_Classic_FD_Config)
 endif()
 
 if(NOT TARGET DeviceSupport)

@@ -85,7 +85,7 @@ int main(void)
     Gpt_DeInit();
     AppUtils_Printf("Initialize Gpt Driver\n\r");
     AppUtils_Printf("Initializing Gpt Driver...\n\r");
-    Gpt_Init(&Gpt_ConfigSetptr);
+    Gpt_Init(&Gpt_Config);
     AppUtils_Printf("API Gpt_Init executed successfully\n\n\r");
     AppUtils_Printf("---------------------------------------------------------------\n\n\r");
     AppUtils_Printf("Enable notifications for  Channel 0\n\r");

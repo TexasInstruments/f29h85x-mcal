@@ -15,8 +15,10 @@
          xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
          <d:lst type="TOP-LEVEL-PACKAGES">
              <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
+               <a:a name="UUID" value="301a6bb3-8538-4ee9-9be9-08855b19818c"/>
                     <d:lst type="TOP-LEVEL-PACKAGES">
                          <d:ctr name="Cdd_Uart" type="AR-PACKAGE">
+                           <a:a name="UUID" value="54bb8875-8248-4281-8c73-20913b0304bf"/>
                               <d:lst type="ELEMENTS">
                                    <d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-DEF">
                                         <v:ctr type="MODULE-DEF">
@@ -35,7 +37,7 @@
                                              <a:a name="POSTBUILDVARIANTSUPPORT" value="false"/>
                                              <a:a name="RELEASE" value="asc:4.3.1"/>
                                              <a:a name="UPPER-MULTIPLICITY" value="1"/>
-                                             <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                             <a:a name="UUID" value="45f39b2b-257d-4543-8d6a-53a27828fb7c"/>
                                              <a:a name="API-SERVICE-PREFIX" value="Cdd_Uart"/>
                                              <v:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION">
                                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
@@ -49,14 +51,15 @@
                                              </v:var>
                                         <v:ctr name="CddUartConfigSet" type="IDENTIFIABLE">
                                              <a:a name="DESC" value="EN: This container contains the configuration parameters and sub containers of the CddUart module."/>
-                                             <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-
+                                             <a:a name="UUID" 
+                                                  value="fde7d92e-c198-494c-8aa3-5dfd966471ca"/>
                                              <v:lst name="CddUartConfig" type="MAP">
                                              <a:da name="MIN" value="0"/>
                                              <a:da name="MAX" value="6"/>
                                              <v:ctr name="CddUartConfig" type="IDENTIFIABLE">
                                              <a:a name="DESC" value="EN: This container contains the configuration parameters of the CddUart HW units."/>
-                                             <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                             <a:a name="UUID" 
+                                                   value="da22966f-5c42-4a37-9434-7e1bbdc02447"/>
                                              <v:var name="CddUartInstance" type="ENUMERATION">
                                                   <a:a name="DESC"
                                                        value="EN: Selects CddUart HW unit Instance."/>
@@ -67,16 +70,17 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="a171b726-5ef4-4522-b230-a70056ed9368"/>
                                                   <a:da name="RANGE">
-                                                  <a:v>UART0</a:v>
-                                                  <a:v>UART1</a:v>
-                                                  <a:v>UART2</a:v>
-                                                  <a:v>UART3</a:v>
-                                                  <a:v>UART4</a:v>
-                                                  <a:v>UART5</a:v>
+                                                  <a:v>UARTA</a:v>
+                                                  <a:v>UARTB</a:v>
+                                                  <a:v>UARTC</a:v>
+                                                  <a:v>UARTD</a:v>
+                                                  <a:v>UARTE</a:v>
+                                                  <a:v>UARTF</a:v>
                                                   </a:da>
-                                                  <a:da name="DEFAULT" value="UART0"/>
+                                                  <a:da name="DEFAULT" value="UARTA"/>
                                                   <a:da name="INVALID" type="XPath">
                                                   <a:tst expr="text:uniq((../../..//*[@name='CddUartInstance']),node:value(.))" false="CddUartInstance selection has to be unique across all containers"/>
                                                   </a:da>
@@ -91,14 +95,15 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="fb39e447-8096-4265-8cf3-a24900b8116c"/>
                                                   <a:da name="INVALID" type="Range">
                                                   <a:tst expr="&lt;=4294967295"/>
                                                   <a:tst expr="&gt;=0"/>
                                                   </a:da>
                                                   <a:a name="DEFAULT_RADIX" value="HEX"/>
                                                   <a:da name="DEFAULT" type="XPath">
-                                                       <a:tst expr="node:fallback(&quot;->(num:inttohex((substring-after(node:value(../CddUartInstance),'UART'))*8192+1611071488))&quot;,num:i(0))"   />
+                                                       <a:tst expr="node:fallback(&quot;->ecu:get(concat('Cdd_Uart_F29H85x_',node:value(../CddUartInstance)))&quot;,num:i(0))"/>
                                                   </a:da>
                                                   <a:da name="EDITABLE" value="false"/>
                                              </v:var>
@@ -111,7 +116,8 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="ECU"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="true"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="8b505b79-895a-4690-ba59-841d00a621e2"/>
                                                   <a:da name="EDITABLE" value="false"/>
                                                   <a:da name="INVALID" type="Range">
                                                   <a:tst expr="&lt;=5"/>
@@ -122,21 +128,18 @@
                                                   </a:da>
                                                   <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> (num:i(count(preceding::CddUartHWUnitId)-1))&quot;, num:i(0))"/>
                                                   </v:var>
-                                             <v:var name="CddUartClockFreq" type="INTEGER">
+                                             <v:ref name="CddUartClockFreq" type="REFERENCE">
                                                        <a:a name="DESC" value="EN: This parameter takes the input value of clock frequency"/>
                                                        <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                                                        </a:a>
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="ECU"/>
-                                                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                                                       <a:da name="DEFAULT" value="0"/>
-                                                       <a:da name="INVALID" type="Range">
-                                                       <a:tst expr="&gt;=0"/>
-                                                       <a:tst expr="&lt;=200000000"/>
-                                                       </a:da>
-                                                  </v:var>
+                                                       <a:a name="UUID" 
+                                                            value="de96aac9-db5b-4c0b-a141-0679b80c3afe"/>
+                                                       <a:da name="REF" 
+                                                             value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
+                                                  </v:ref>
 
                                                   <v:var name="CddUartBaudRate" type="INTEGER">
                                                        <a:a name="DESC"
@@ -148,7 +151,8 @@
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="ECU"/>
                                                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                       <a:a name="UUID" 
+                                                            value="0b78439b-2eec-48e3-9ed9-7e5ade3662d6"/>
                                                        <a:da name="DEFAULT" value="0"/>
                                                        <a:da name="INVALID" type="Range">
                                                        <a:tst expr="&gt;=0"/>
@@ -165,7 +169,8 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="315b580c-556d-4fd6-8283-0e56a7bc0e6e"/>
                                                   <a:da name="DEFAULT" value="CDD_UART_MODE_INTERRUPT"/>
                                                   <a:da name="RANGE">
                                                        <a:v>CDD_UART_MODE_POLLING</a:v>
@@ -182,7 +187,8 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="2a1a1506-6fa7-4dcf-8944-f11027d5c6d8"/>
                                                   <a:da name="DEFAULT" value="false"/>
                                              </v:var>
                                              <v:var name="CddUartInteruptType" type="ENUMERATION">
@@ -194,7 +200,8 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="03f9391a-6964-4fcd-b69a-7359c345497d"/>
                                                   <a:da name="DEFAULT" value="CDD_UART_ISR_CAT1_INT"/>
                                                   <a:da name="RANGE">
                                                        <a:v>CDD_UART_ISR_CAT1_RTINT</a:v>
@@ -213,7 +220,8 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="dea69dd4-70e8-43b1-bd6a-8c3257623736"/>
                                                   <a:da name="DEFAULT" value="false"/>
                                              </v:var>
 
@@ -227,7 +235,8 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="d9230aed-233f-44ba-ab3b-9b14a57a2a5b"/>
                                                   <a:da name="RANGE">
                                                        <a:v>CDD_UART_PARITY_EVEN</a:v>
                                                        <a:v>CDD_UART_PARITY_ODD</a:v>
@@ -247,7 +256,8 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="e516a2f6-57bf-4cd3-9667-c34b9f28185b"/>
                                                   <a:da name="RANGE">
                                                        <a:v>CDD_UART_STOP_BITS_1</a:v>
                                                        <a:v>CDD_UART_STOP_BITS_2</a:v>
@@ -265,7 +275,8 @@
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="a1c8f135-e700-40e9-84ef-5fc1ecd1e91b"/>
                                                   <a:da name="DEFAULT" value="CDD_UART_WORD_LENGTH_8"/>
                                                   <a:da name="RANGE">
                                                        <a:v>CDD_UART_WORD_LENGTH_8</a:v>
@@ -284,7 +295,8 @@
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="LOCAL"/>
                                                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                       <a:a name="UUID" 
+                                                            value="0c3e8fdf-5cec-4e89-8de9-53a7517057f4"/>
                                                        <a:da name="DEFAULT" value="true"/>
                                                   </v:var>
                                                   <v:var name="CddUartEnableRead" type="BOOLEAN">
@@ -295,7 +307,8 @@
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="LOCAL"/>
                                                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                       <a:a name="UUID" 
+                                                            value="2a504595-bdd7-4ac6-a25b-f398b3f0bd63"/>
                                                        <a:da name="DEFAULT" value="true"/>
                                                   </v:var>
                                                   <v:var name="CddUartLoopBackModeEnable" type="BOOLEAN">
@@ -306,12 +319,14 @@
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="LOCAL"/>
                                                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                       <a:a name="UUID" 
+                                                            value="e73c99b0-3cdf-45a4-a2c7-99970e71eb2d"/>
                                                        <a:da name="DEFAULT" value="false"/>
                                                   </v:var>
                                                   <v:ctr name="CddUartWriteConfig" type="IDENTIFIABLE">
                                                   <a:a name="DESC" value="EN: This container contains the configuration parameters of the CddUart Write"/>
-                                                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                  <a:a name="UUID" 
+                                                       value="75561b88-3194-474e-a9dd-d6680ddb2bf8"/>
                                                   <a:da name="ENABLE" type="XPath" expr="(../CddUartEnableWrite='true')"/>
                                                   <a:a name="OPTIONAL" value="true"/>
                                                   <v:var name="CddUartWriteNotificationHandler" type="FUNCTION-NAME">
@@ -322,7 +337,8 @@
                                                             <a:a name="ORIGIN" value="Texas Instruments"/>
                                                             <a:a name="SCOPE" value="LOCAL"/>
                                                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                            <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                            <a:a name="UUID" 
+                                                                 value="d9e4dcea-374c-4672-ac6b-e2005a44442c"/>
                                                             <a:da name="DEFAULT" value="NULL_PTR"/>
                                                             <a:a name="OPTIONAL" value="true"/>
                                                   </v:var>
@@ -335,7 +351,8 @@
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="LOCAL"/>
                                                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                       <a:a name="UUID" 
+                                                            value="7565b9e1-6366-4667-b79b-0ba6dccae05f"/>
                                                        <a:da name="DEFAULT" value="CDD_UART_FIFO_LEVEL_1_2"/>
                                                        <a:da name="RANGE">
                                                             <a:v>CDD_UART_FIFO_LEVEL_1_8</a:v>
@@ -349,7 +366,8 @@
                                                   </v:ctr>
                                                   <v:ctr name="CddUartReadConfig" type="IDENTIFIABLE">
                                                   <a:a name="DESC" value="EN: This container contains the configuration parameters of the CddUart Read"/>
-                                                     <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                     <a:a name="UUID" 
+                                                          value="17698c30-4088-412b-a301-028042db916a"/>
                                                      <a:da name="ENABLE" type="XPath" expr="(../CddUartEnableRead='true')"/>
                                                      <a:a name="OPTIONAL" value="true"/>
                                                      <v:var name="CddUartReadNotificationHandler" type="FUNCTION-NAME">
@@ -360,7 +378,8 @@
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="LOCAL"/>
                                                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                       <a:a name="UUID" 
+                                                            value="478f4e32-0604-45f1-965c-b9e1acda24a4"/>
                                                        <a:da name="DEFAULT" value="NULL_PTR"/>
                                                        <a:a name="OPTIONAL" value="true"/>
                                                      </v:var>
@@ -373,7 +392,8 @@
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="LOCAL"/>
                                                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                       <a:a name="UUID" 
+                                                            value="145c971e-3e74-4012-b7bf-4a9a78e9e425"/>
                                                        <a:da name="DEFAULT" value="NULL_PTR"/>
                                                        <a:a name="OPTIONAL" value="true"/>
                                                      </v:var>
@@ -388,7 +408,8 @@
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="LOCAL"/>
                                                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                       <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                                       <a:a name="UUID" 
+                                                            value="39f444cc-1287-4326-bfdb-914934b6ff5b"/>
                                                        <a:da name="DEFAULT" value="CDD_UART_FIFO_LEVEL_1_2"/>
                                                        <a:da name="RANGE">
                                                             <a:v>CDD_UART_FIFO_LEVEL_1_8</a:v>
@@ -406,7 +427,8 @@
                                         <v:ctr name="CddUartGeneral" type="IDENTIFIABLE">
                                              <a:a name="DESC"
                                                   value="EN: General CddUart` module configuration parameters."/>
-                                             <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                             <a:a name="UUID" 
+                                                  value="8799bfca-e3f5-4ac4-b3b8-47861d7f3278"/>
                                              <v:var name="CddUartMainFunctionWritePeriod" type="FLOAT">
                                              <a:a name="DESC" 
                                                   value="EN: This parameter describes the period for cyclic call to Cdd_Uart_MainFunction_Write. Unit is seconds."/>
@@ -418,7 +440,8 @@
                                              <a:a name="ORIGIN" value="Texas Instruments"/>
                                              <a:a name="SCOPE" value="LOCAL"/>
                                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                             <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                             <a:a name="UUID" 
+                                                  value="84058c13-8b8a-483b-b82d-4a9d340ccec7"/>
                                                        <a:da name="DEFAULT" value="0.01"/>
                                              <a:da name="INVALID" type="Range">
                                              <a:tst expr="&lt;Infinity"/>
@@ -435,7 +458,8 @@
                                              <a:a name="ORIGIN" value="Texas Instruments"/>
                                              <a:a name="SCOPE" value="LOCAL"/>
                                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                             <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                             <a:a name="UUID" 
+                                                  value="ff14df95-b298-49ff-863a-71946ece8eb0"/>
                                              <a:da name="DEFAULT" value="true"/>
                                              </v:var>
                                              <v:var name="CddUartVersionInfoApi" type="BOOLEAN">
@@ -448,7 +472,8 @@
                                              <a:a name="ORIGIN" value="Texas Instruments"/>
                                              <a:a name="SCOPE" value="LOCAL"/>
                                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                             <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                                             <a:a name="UUID" 
+                                                  value="9bbafbc4-8c97-455c-a1b2-c781cd94115f"/>
                                              <a:da name="DEFAULT" value="true"/>
                                              </v:var>
                                         </v:ctr>
@@ -458,6 +483,7 @@
                                    <d:chc name="myEcuParameterDefinition" type="AR-ELEMENT" value="ECU_PARAMETER_DEFINITION">
                                         <d:ctr type="AR-ELEMENT">
                                              <a:a name="DEF" value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
+                                             <a:a name="UUID" value="5c83646b-8a15-415f-a76c-137a8d70e74e"/>
                                              <d:lst name="MODULE_REF">
                                                   <d:ref type="MODULE_REF" value="ASPath:/TI_F29H85x/Cdd_Uart"/>
                                              </d:lst>

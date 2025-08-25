@@ -220,7 +220,7 @@ LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) Cdd_Sent_getSlowData(Cdd_SentInstance S
  *
  * This function Enable MTP Channel using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] channel is the sent Channel type.
  * \pre None
  * \post None
@@ -234,7 +234,7 @@ LOCAL_INLINE FUNC(void, CDD_SENT_CODE) Cdd_Sent_enableMTPChannel(uint32 mtpBase,
  *
  * This function Set MTP Timeout using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] sensorNum is the sent Channel type.
  * \param[in] sensorTimeout is the Time period.
  * \pre None
@@ -250,7 +250,7 @@ LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
  *
  * This function Set MTP waittime using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] waitTime is the Time period.
  * \pre None
  * \post None
@@ -264,7 +264,7 @@ LOCAL_INLINE FUNC(void, CDD_SENT_CODE) Cdd_Sent_setMTPWaitTime(uint32 mtpBase, u
  *
  * This function Set MTP Period using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] channel is the sent Channel type.
  * \param[in] period is the Time period.
  * \pre None
@@ -293,7 +293,7 @@ LOCAL_INLINE FUNC(void, CDD_SENT_CODE) Cdd_Sent_clearInterruptFlag(uint32 base, 
  *
  * This function Set Broadcast Channel MTP Toggle Time using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] compareNum is the sent Compare number.
  * \param[in] toggleTime is the Toggle Time.
  * \pre None
@@ -309,7 +309,7 @@ LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
  *
  * This function Set Sensor-1 MTP Toggle Time using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] compareNum is the sent Compare number.
  * \param[in] toggleTime is the Toggle Time.
  * \pre None
@@ -325,7 +325,7 @@ LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
  *
  * This function Set Sensor-2 MTP Toggle Time using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] compareNum is the sent Compare number.
  * \param[in] toggleTime is the Toggle Time.
  * \pre None
@@ -341,7 +341,7 @@ LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
  *
  * This function Set Sensor-3 MTP Toggle Time using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] compareNum is the sent Compare number.
  * \param[in] toggleTime is the Toggle Time.
  * \pre None
@@ -357,7 +357,7 @@ LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
  *
  * This function Set Sensor-4 MTP Toggle Time using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] compareNum is the sent Compare number.
  * \param[in] toggleTime is the Toggle Time.
  * \pre None
@@ -373,7 +373,7 @@ LOCAL_INLINE FUNC(void, CDD_SENT_CODE)
  *
  * This function Disable MTP Channel using the configuration parameters.
  *
- * \param[in] mtpbase is the base address of the SENT module.
+ * \param[in] mtpBase is the base address of the SENT module.
  * \param[in] channel is the sent Channel Type.
  * \pre None
  * \post None

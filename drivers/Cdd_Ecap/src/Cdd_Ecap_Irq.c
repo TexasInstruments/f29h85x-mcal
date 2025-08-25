@@ -68,7 +68,7 @@
 FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_IntISR_Fun(Cdd_Ecap_ChannelType Cdd_Ecap_Channel)
 {
 #if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
-    uint32 baseAddr = Cdd_Ecap_Configset.chCfg[Cdd_Ecap_Channel].base_addr;
+    uint32 baseAddr = Cdd_Ecap_Config.chCfg[Cdd_Ecap_Channel].base_addr;
 
     if (CDD_ECAP_STATUS_INIT != Cdd_Ecap_DrvStatus)
     {
@@ -173,6 +173,35 @@ ISR(Cdd_Ecap_ch5Notify)
 }
 #endif
 
+#if defined(CDD_ECAP_HR_CHANNEL4_INT_ENABLE)
+#if defined(CDD_ECAP_HR_CHANNEL4_INT_ISR_CAT1_RINT)
+MCAL_LIB_RTINT_ISR(Cdd_Ecap_HR_ch4Notify)
+#elif defined(CDD_ECAP_HR_CHANNEL4_INT_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Ecap_HR_ch4Notify)
+#elif defined(CDD_ECAP_HR_CHANNEL4_INT_ISR_CAT2_INT)
+ISR(Cdd_Ecap_HR_ch4Notify)
+#else
+#error "Invalid interrupt category for HR mode CDD_ECAP_CHANNEL4"
+#endif
+{
+    Cdd_Ecap_HR_ISR(CDD_ECAP_CHANNEL4);
+}
+#endif
+
+#if defined(CDD_ECAP_HR_CHANNEL5_INT_ENABLE)
+#if defined(CDD_ECAP_HR_CHANNEL5_INT_ISR_CAT1_RINT)
+MCAL_LIB_RTINT_ISR(Cdd_Ecap_HR_ch5Notify)
+#elif defined(CDD_ECAP_HR_CHANNEL5_INT_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Ecap_HR_ch5Notify)
+#elif defined(CDD_ECAP_HR_CHANNEL5_INT_ISR_CAT2_INT)
+ISR(Cdd_Ecap_HR_ch5Notify)
+#else
+#error "Invalid interrupt category for HR mode CDD_ECAP_CHANNEL4"
+#endif
+{
+    Cdd_Ecap_HR_ISR(CDD_ECAP_CHANNEL5);
+}
+#endif
 #define CDD_ECAP_STOP_SEC_ISR_CODE
 #include "Cdd_Ecap_MemMap.h"
 

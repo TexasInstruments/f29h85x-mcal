@@ -63,7 +63,7 @@ P2VAR(Spi_DriverObjType, SPI_VAR_NO_INIT, SPI_DATA) Spi_DriverObjPtr;
  *
  *  function to Check And Set Driver State
  *
- * \param[in] None
+ * \param[in] Spi_DrvObj : pointer to Driver object
  * \pre None
  * \post None
  * \return None
@@ -102,6 +102,7 @@ FUNC(Spi_ChannelObjPtrType, SPI_CODE) Spi_GetCurrChannelObj(VAR(Spi_ChannelType,
  *
  *  function to add jobs in linked list
  *
+ * \param[in] Spi_DrvObj : pointer to Driver object
  * \param[in] seqObj : pointer to Sequence object
  * \pre None
  * \post None
@@ -117,6 +118,7 @@ static FUNC(Std_ReturnType, SPI_CODE) Spi_QueueJobs(P2VAR(Spi_DriverObjType, AUT
  *
  *  function to check whther sequence is in pending status
  *
+ * \param[in] Spi_DrvObj : pointer to Driver object
  * \param[in] seqObj : pointer to Sequence object
  * \pre None
  * \post None
@@ -175,9 +177,9 @@ static FUNC(void, SPI_CODE) Spi_ConfigChannel(P2CONST(Spi_HwUnitObjType, AUTOMAT
  *
  *  function to Start transmission
  *
- * \param[in] chObj : pointer to Channel object
  * \param[in] hwUnitObj : pointer to HWUnit object
  * \param[in] jobObj  : pointer to Job object
+ * \param[in] ChObj : pointer to Channel object
  * \param[in] isIntrMode : True or False
  * \pre None
  * \post None
@@ -194,9 +196,9 @@ static FUNC(void, SPI_CODE)
  *
  *  function to Start transmission of next channel
  *
- * \param[in] chObj : pointer to Channel object
  * \param[in] hwUnitObj : pointer to HWUnit object
- * \param[in] jobObj  : pointer to Job object
+ * \param[in] chObj : pointer to Channel object
+ * \param[in] Spi_DrvObj : pointer to Driver object
  * \pre None
  * \post None
  * \return  None
@@ -250,6 +252,7 @@ static FUNC(uint16, SPI_CODE) Spi_GetDataWidthBitMask(VAR(uint8, AUTOMATIC) data
  *
  *  function to Schedule All Jobs Synchronous Transmission
  *
+ * \param[in] Spi_DrvObj : pointer to Driver object
  * \param[in] seqObj : pointer to sequence object
  * \pre None
  * \post None
@@ -264,7 +267,8 @@ static FUNC(void, SPI_CODE) Spi_ScheduleAllJobsSyncTransmit(P2VAR(Spi_DriverObjT
  *
  *  function to Transfer Job
  *
- * \param[in] seqObj : pointer to sequence object
+ * \param[in] hwUnitObj : pointer to HWUnit object
+ * \param[in] jobObj : pointer to Job object
  * \pre None
  * \post None
  * \return return Job status
@@ -283,10 +287,10 @@ static FUNC(Spi_JobResultType, SPI_CODE) Spi_TransferJob(P2VAR(Spi_HwUnitObjType
  *
  *  function to Read from fifo
  *
+ * \param[in] ChObj : pointer to channel object
  * \param[in] baseAddr : Base Address of HWUnit
  * \param[in] numWordsToRead : number of words to read
- * \param[out] chObj : pointer to channel object
- * \param[out] curRxWords : total number of words read
+ * \param[in] curRxWords : total number of words read
  * \pre None
  * \post None
  * \return None
@@ -302,10 +306,10 @@ static FUNC(void, SPI_CODE)
  *
  *  function to Write into fifo
  *
+ * \param[in] ChObj : pointer to channel object
  * \param[in] baseAddr : Base Address of HWUnit
  * \param[in] numWordsToWrite : number of words to write
- * \param[in] chObj : pointer to channel object
- * \param[out] curTxWords : total number of words written
+ * \param[in] curTxWords : total number of words written
  * \pre None
  * \post None
  * \return None
@@ -323,7 +327,6 @@ static FUNC(void, SPI_CODE)
  *
  * \param[in] hwUnitObj : pointer to HWUnit object
  * \param[in] chObj : pointer to Channel object
- * \param[out] jobObj : pointer to job object
  * \pre None
  * \post None
  * \return return Job status
@@ -342,9 +345,9 @@ static FUNC(Spi_JobResultType, SPI_CODE) Spi_ContinueTxRx(P2VAR(Spi_HwUnitObjTyp
  *
  *  function to complete job
  *
- * \param[in] hwUnitObj : pointer to HWUnit object
- * \param[in] jobObj : pointer to job object
- * \param[out]  seqObj : pointer to Sequence object
+ * \param[in] HwUnitObj : pointer to HWUnit object
+ * \param[in] JobObj : pointer to job object
+ * \param[in] Spi_DrvObj : pointer to Driver object
  * \pre None
  * \post None
  * \return None
@@ -872,6 +875,10 @@ Spi_HwUnitInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
     {
         Spi_EnableInterrupt(hwUnitObj->baseAddr, hwUnitObj->hwUnitCfg->fifoModeEnable);
     }
+
+    /* Configure Emulation soft run*/
+    McalLib_RegBitSet16(hwUnitObj->baseAddr + SPI_O_PRI, SPI_PRI_SOFT);
+    
     hwUnitObj->hwUnitDemState = E_OK;
 
     return;
@@ -1168,10 +1175,25 @@ static FUNC(void, SPI_CODE) Spi_ScheduleJob(P2VAR(Spi_JobObjType, AUTOMATIC, SPI
         /* Start the first channel */
         chId  = jobObj->jobCfg->channelList[jobObj->curChIdx];
         chObj = (Spi_ChannelObjType *)Spi_GetCurrChannelObj(chId);
-        Spi_ConfigChannel(hwUnitObj, chObj);
+        /* TI_COVERAGE_GAP_START [Branch Coverage] channel object in driver object
+            null pointer check, As channel object  is initialized before it's usage channel object
+            can't be null pointer in any case. */
+        if (NULL_PTR == chObj)
+        /* TI_COVERAGE_GAP_STOP */
+        /* TI_COVERAGE_GAP_START [Line Coverage/Region Coverage] channel object in driver object
+           null pointer check, As channel object  is initialized before it's usage channel object
+           can't be null pointer in any case.Hence these lines can't be covered */
+        {
+           /* Do Nothing */
+        }
+        /* TI_COVERAGE_GAP_STOP */
+        else
+        {
+            Spi_ConfigChannel(hwUnitObj, chObj);
 
-        /*Start Spi transfer*/
-        Spi_Start(hwUnitObj, jobObj, chObj, isIntrMode);
+            /*Start Spi transfer*/
+            Spi_Start(hwUnitObj, jobObj, chObj, isIntrMode);
+        }
     }
     return;
 }
@@ -1451,37 +1473,52 @@ static FUNC(Spi_JobResultType, SPI_CODE) Spi_TransferJob(P2VAR(Spi_HwUnitObjType
         chId  = jobObj->jobCfg->channelList[jobObj->curChIdx];
         chObj = (Spi_ChannelObjType *)Spi_GetCurrChannelObj(chId);
 
-        /* Configure and start the channel */
-        Spi_ConfigChannel(hwUnitObj, chObj);
-
-        Spi_Start(hwUnitObj, jobObj, chObj, (uint32)FALSE);
-
-        McalLib_GetCounterValue(&startCount);
-        /* Busy loop till channel transfer is completed */
-        do
+        /* TI_COVERAGE_GAP_START [Branch Coverage] channel object in driver object
+           null pointer check, As channel object is initialized before it's usage channel object
+           can't be null pointer in any case. */
+        if (NULL_PTR == chObj)
+        /* TI_COVERAGE_GAP_STOP */
+        /* TI_COVERAGE_GAP_START [Line Coverage/Region Coverage] channel object in driver object
+           null pointer check, As channel object is initialized before it's usage channel object
+           can't be null pointer in any case. Hence these lines can't be covered */
         {
-            McalLib_GetElapsedValue(&startCount, &elapsedCount);
+            /* Do Nothing */
+        }
+        /* TI_COVERAGE_GAP_STOP */
+        else
+        {
+            /* Configure and start the channel */
+            Spi_ConfigChannel(hwUnitObj, chObj);
 
-            if (SPI_CFG_TIMEOUT_CLOCK_CYCLES <= elapsedCount)
+            Spi_Start(hwUnitObj, jobObj, chObj, (uint32)FALSE);
+
+            McalLib_GetCounterValue(&startCount);
+            /* Busy loop till channel transfer is completed */
+            do
             {
-                jobResult = SPI_JOB_FAILED;
-                (void)Det_ReportRuntimeError(SPI_MODULE_ID, SPI_INSTANCE_ID, SPI_SID_SYNC_TRANSMIT, SPI_E_SEQ_TIMEOUT);
+                McalLib_GetElapsedValue(&startCount, &elapsedCount);
+
+                if (SPI_CFG_TIMEOUT_CLOCK_CYCLES <= elapsedCount)
+                {
+                    jobResult = SPI_JOB_FAILED;
+                    (void)Det_ReportRuntimeError(SPI_MODULE_ID, SPI_INSTANCE_ID, SPI_SID_SYNC_TRANSMIT, SPI_E_SEQ_TIMEOUT);
+                    break;
+                }
+                else
+                {
+                    jobResult = Spi_ContinueTxRx(hwUnitObj, chObj);
+                }
+            } while (SPI_JOB_PENDING == jobResult);
+            /* check the job status and continue to next channel */
+            if (SPI_JOB_FAILED == jobResult)
+            {
                 break;
             }
             else
             {
-                jobResult = Spi_ContinueTxRx(hwUnitObj, chObj);
+                /* Move to next channel */
+                jobObj->curChIdx++;
             }
-        } while (SPI_JOB_PENDING == jobResult);
-        /* check the job status and continue to next channel */
-        if (SPI_JOB_FAILED == jobResult)
-        {
-            break;
-        }
-        else
-        {
-            /* Move to next channel */
-            jobObj->curChIdx++;
         }
     }
 
@@ -1736,8 +1773,23 @@ Spi_ProcessChCompletion(P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj,
     {
         chId  = jobObj->jobCfg->channelList[jobObj->curChIdx];
         chObj = (Spi_ChannelObjType *)Spi_GetCurrChannelObj(chId);
-        Spi_ConfigChannel(hwUnitObj, chObj);
-        Spi_StartNextChannel(hwUnitObj, chObj, Spi_DrvObj);
+        /* TI_COVERAGE_GAP_START [Branch Coverage] channel object in driver object
+           null pointer check, As channel object  is initialized before it's usage channel object
+           can't be null pointer in any case. */
+        if (NULL_PTR == chObj)
+        /* TI_COVERAGE_GAP_STOP */
+        /* TI_COVERAGE_GAP_START [Line Coverage/Region Coverage] channel object in driver object
+           null pointer check, As channel object  is initialized before it's usage channel object
+           can't be null pointer in any case.Hence these lines can't be covered */
+        {
+           /* Do Nothing */
+        }
+        /* TI_COVERAGE_GAP_STOP */
+        else
+        {
+            Spi_ConfigChannel(hwUnitObj, chObj);
+            Spi_StartNextChannel(hwUnitObj, chObj, Spi_DrvObj);
+        }
     }
     return;
 }
@@ -2451,9 +2503,9 @@ Spi_PrivInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
     for (index = ((uint8)0U); index < SPI_MAX_HW_UNIT; index++)
     {
         Spi_HwUnitInit(Spi_DrvObj, &(Spi_DrvObj->hwUnitObj[index]));
-        /* Initialize driver status and object */
-        Spi_DrvStatus = SPI_IDLE;
     }
+    /* Initialize driver status and object */
+    Spi_DrvStatus = SPI_IDLE;
     Spi_DriverObjPtr = Spi_DrvObj;
 }
 /* Design: MCAL-28346 */

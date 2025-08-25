@@ -37,6 +37,7 @@ extern "C" {
 #include "Cdd_Adc.h"
 #include "hw_adc.h"
 #include "hw_asysctl.h"
+#include "hw_types.h"
 #include "Mcal_Lib.h"
 #include "Os.h"
 
@@ -65,6 +66,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+
+/* Design: MCAL-31145 */
 /** \brief Group trigger type */
 typedef enum
 {
@@ -73,6 +76,7 @@ typedef enum
     CDD_ADC_GRP_TRIGG_SRC_GLBSW /*!< \brief Group is triggered by gloval software trigger call */
 } Cdd_Adc_GroupTriggerType;
 
+/* Design: MCAL-31140 */
 /** \brief Interrupt trigger type */
 typedef enum
 {
@@ -114,6 +118,7 @@ typedef enum
     CDD_ADC_INT_TRIGGER_OSINT4 = 35U  /*!< \brief OSINT4    */
 } Cdd_Adc_IntTriggerType;
 
+/* Design: MCAL-31139 */
 /** \brief Offset trim type */
 typedef enum
 {
@@ -145,6 +150,8 @@ typedef struct Cdd_Adc_GroupObjTag
     Cdd_Adc_StatusType grp_status;
     /** \brief  Determines whether the group stops implicitly or has to be stopped by the user */
     boolean            implicit_stop;
+    /** \brief  Determines whether the group stops implicitly or has to be stopped by the user */
+    boolean grp_active;
 #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
     /** \brief  Flag to enable or disable group notify function */
     boolean grp_notification;
@@ -178,18 +185,23 @@ typedef struct Cdd_Adc_GlbSwObjTag
 } Cdd_Adc_GlbSwObjType;
 #endif
 
+/* Design: MCAL-31437 */
 /** \brief Driver object structure */
 typedef struct Cdd_Adc_DriverObjTag
 {
 #if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
     /** \brief  ADC hw unit objects */
+    /* Design: MCAL-31439 */
     Cdd_Adc_HwUnitObjType hwunit_obj[CDD_ADC_HW_CNT];
 #endif
     /** \brief  ADC group objects */
+    /* Design: MCAL-31438 */
     Cdd_Adc_GroupObjType group_obj[CDD_ADC_GROUP_CNT];
 #if (STD_ON == CDD_ADC_GLBSW_TRIG_API)
+    /* Design: MCAL-31440 */
     Cdd_Adc_GlbSwObjType glbsw_obj[CDD_ADC_GLBSW_TRIG_CNT];
 #endif
+    Cdd_Adc_GroupType interrupt_obj[CDD_ADC_MAX_HW_UNIT_COUNT*CDD_ADC_MAX_INT_COUNT];
 } Cdd_Adc_DriverObjType;
 
 /*********************************************************************************************************************
@@ -218,7 +230,6 @@ Cdd_Adc_SetDrvObj(Cdd_Adc_DriverObjType *DrvObj, const Cdd_Adc_ConfigType *CfgPt
  *
  * This private function resets the driver object to the power on reset mode
  *
- * \param[in]  None
  * \pre None
  * \post None
  * \return None
@@ -231,7 +242,6 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DrvObjInit(void);
  *
  * This private function initializes the Cdd Adc driver.
  *
- * \param[in]  None
  * \pre None
  * \post None
  * \return None
@@ -258,8 +268,6 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelectInternalTestNode(Cdd_Adc_InternalTestNode
  *
  * This private function de-initializes the Adc driver.
  *
- * \param[in]  None
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -314,6 +322,24 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group);
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_SetMode(uint32 Base, Cdd_Adc_ResolutionType Resolution, Cdd_Adc_SignalModeType SignalMode);
 
+#if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
+/** \brief Updates the resolution of the specified ADC hardware unit if no DET errors are reported
+ *
+ * This private updates the resolution of the specified ADC hardware unit if no DET errors are reported
+ *
+ * \param[in] HwUnit  Instance ID of the specified ADC Hw Unit
+ * \param[in] Resolution Resolution to be set for the ADC Hw Unit
+ * \pre None
+ * \post None
+ * \return Return E_OK/E_NOT_OK based on whether the resolution update is successful
+ * \retval  E_OK - If resolution is updated
+ *          E_NOT_OK - If resolution is not updated because of DET errors
+ *
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
+                                                                VAR(Cdd_Adc_ResolutionType, AUTOMATIC) Resolution);
+#endif
+
 #if (STD_ON == CDD_ADC_READ_GROUP_API)
 /** \brief Read the specified group results
  *
@@ -321,6 +347,7 @@ Cdd_Adc_SetMode(uint32 Base, Cdd_Adc_ResolutionType Resolution, Cdd_Adc_SignalMo
  *buffer.
  *
  * \param[in]  Group    Numeric ID of the Group
+ * \param[in]  DataPtr  Pointer to result buffer
  * \pre None
  * \post None
  * \return None
@@ -352,9 +379,9 @@ Cdd_Adc_GetValidSampleCnt(Cdd_Adc_GroupType Group, Cdd_Adc_ValueGroupType **PtrT
  * This ISR updates the status of the group and call the notification function if enabled for the
  *group. Also clears the interrupt flags and for continuous sofware triggers it triggers the
  *conversion again.
- *
- * \param[in]  GroupObj   Group object
- * \param[in]  HwUnitObj   Hwunit object to which the the group belongs
+ *  
+ * \param[in]  IntNum   Interrupt number
+ * \param[in]  HwUnitId   Hwunit object to which the the group belongs
  * \pre None
  * \post None
  * \return None
@@ -384,6 +411,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_PpbEvtIsr(Cdd_Adc_HwUnitType HwUnitId);
  * This ISR updates clears the flags of the interrupts and stores the flag that generated the
  *interrupt for each safety checker unit.
  *
+ * \param[in]  IntEvtId   Group object
  * \param[in]  FlagStatus   Pointer to the array
  * \pre None
  * \post None
@@ -451,6 +479,20 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig);
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig);
+
+/** \brief CHeck if any group is BUSY
+ *
+ * This function check if any group of the specified global software trigger is busy
+ *
+ * \param[in] GlbSwTrig     Numeric ID of global software trigger configuration.
+ * \pre None
+ * \post None
+ * \return Return E_OK/E_NOT_OK based on whether any DET errors are reported or not
+ * \retval  E_OK - If no DET errors are reported
+ *          E_NOT_OK - If any DET error is reported
+ *
+ *********************************************************************************************************************/
+FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_CheckGlbTrig(VAR(Cdd_Adc_GlbTrigType, AUTOMATIC) GlbSwTrig);
 #endif
 
 #if (CDD_ADC_ENABLE_PPB_API == STD_ON)
@@ -489,6 +531,20 @@ FUNC(sint32, CDD_ADC_CODE) Cdd_Adc_ReadPpbResult(uint32 ResultBase, Cdd_Adc_PpbI
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_ClearPpbEvtStatus(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint8 TripEvtMask);
 
+/** \brief Return the trigger of the group to which the PPB is linked
+ *
+ * This function return the trigger of the group to which the PPB is linked
+ *
+ * \param[in] PpbId Numeric ID of the Ppb unit
+ * \pre None
+ * \post None
+ * \return Returns the trigger source type of the group that is linked to the PPB
+ * \retval CDD_ADC_TRIGG_SRC_SW - Group is triggered by software
+ *          CDD_ADC_TRIGG_SRC_HW - Group is triggered by hardware
+ *
+ *********************************************************************************************************************/
+FUNC(Cdd_Adc_TriggerSrcType, CDD_ADC_CODE) Cdd_Adc_PrivGetTrigSrc(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId);
+
 /** \brief Reads sample delay time stamp from a PPB.
  *
  * This function returns the sample delay time stamp. This delay is the number of system clock
@@ -523,7 +579,7 @@ FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_ReadPpbPCount(uint32 Base, Cdd_Adc_PpbIdType 
  *
  * This function returns the partial sum of results of the specified PPB.
  *
- * \param[in] ResultBase is the Base address of the ADC results.
+ * \param[in] Base is the Base address of the ADC results.
  * \param[in] PpbNumber is the numeric ID of the post-processing block
  * \pre None
  * \post None
@@ -537,7 +593,7 @@ FUNC(sint32, CDD_ADC_CODE) Cdd_Adc_ReadPpbPSum(uint32 Base, Cdd_Adc_PpbIdType Pp
  *
  * This function returns the over sampled partial maximum of the specified PPB.
  *
- * \param[in] ResultBase is the Base address of the ADC results.
+ * \param[in] Base is the Base address of the ADC results.
  * \param[in] PpbNumber is the numeric ID of the post-processing block
  * \pre None
  * \post None
@@ -551,7 +607,7 @@ FUNC(sint32, CDD_ADC_CODE) Cdd_Adc_ReadPpbPMax(uint32 Base, Cdd_Adc_PpbIdType Pp
  *
  * This function returns the oversampled partial minimum of the specified PPB.
  *
- * \param[in] ResultBase is the Base address of the ADC results.
+ * \param[in] Base is the Base address of the ADC results.
  * \param[in] PpbNumber is the numeric ID of the post-processing block
  * \pre None
  * \post None

@@ -23,7 +23,7 @@
 #define WDG_PRIV_H
 
 /**
- * \addtogroup WDG Wdg API GUIDE Header file
+ * \addtogroup WDG
  * @{
  */
 
@@ -120,7 +120,6 @@ FUNC(void, WDG_CODE) Wdg_EnableWatchdog(void);
  *
  * This function disables the watchdog timer.
  *
- * \param[in] None
  * \post None
  * \return None
  * \retval None
@@ -143,8 +142,6 @@ FUNC(void, WDG_CODE) Wdg_ServiceWatchdog(void);
  *
  * This function generates the immediate watchdog event
  *
- * \param[in] None
- * \param[out] None
  * \post None
  * \return None
  * \retval None
@@ -154,8 +151,6 @@ FUNC(void, WDG_CODE) Wdg_GenerateImmediateEvent(void);
 
 /** \brief Gets the watchdog counter value.
  *
- * \param[in] None
- * \param[out] None
  *  \post None
  * \return Returns the current value of the 8-bit watchdog counter.
  * \retval Wdg counter value
@@ -166,7 +161,6 @@ FUNC(uint16, WDG_CODE) Wdg_GetWatchdogCounterValue(void);
 /** \brief Gets the watchdog Maximum Timeout value.
  *
  * \param[in] Wdg_DrvObjPtr pointer to the Watchdog Driver Object which is initialised in Wdg.c
- * \param[out] None
  *  \post None
  * \return Returns the Watchdog Maximum Timeout Value.
  * \retval Wdg Maximum Timeout value
@@ -193,7 +187,9 @@ FUNC(void, WDG_CODE) Wdg_SetTriggerConditionPriv(VAR(uint16, AUTOMATIC) Time_out
 extern "C"
 }
 #endif
-
+/**
+ * @}
+ */
 #endif /* WDG_PRIV_H */
 /*********************************************************************************************************************
  *  End of File: Wdg_Priv.h

@@ -1,4 +1,4 @@
-[!SKIPFILE "node:value(as:modconf('Os')[1]/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
+[!SKIPFILE "node:value(as:modconf('Os')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Os']/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -29,7 +29,7 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
-#if ((OS_SW_MAJOR_VERSION != (1U)) || OS_SW_MINOR_VERSION != (0U))
+#if ((OS_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (OS_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
   #error "Version numbers of Os_Cfg.c and Os.h are inconsistent!"
 #endif
 
@@ -55,8 +55,8 @@
  *********************************************************************************************************************/
 #define OS_START_SEC_CONFIG_DATA
 #include "Os_MemMap.h"
-
-[!LOOP "as:modconf('Os')[1]/OsIsr/*"!][!//
+[!SELECT "as:modconf('Os')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Os']"!]
+[!LOOP "OsIsr/*"!][!//
 [!IF "OsIsrCategory = 'CATEGORY_2'"!][!//
 MCAL_LIB_INT_ISR(Os_Isr[!"InterruptId"!])
 {
@@ -66,12 +66,12 @@ MCAL_LIB_INT_ISR(Os_Isr[!"InterruptId"!])
 [!ENDLOOP!][!//
 
 /* Os configuration structure */
-[!LOOP "as:modconf('Os')[1]/Os_ConfigSet"!][!//
-CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) [!"@name"!] =
+[!LOOP "Os_ConfigSet"!][!//
+CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_Config =
 {
     .isr_cfg =
     {
-        [!LOOP "as:modconf('Os')[1]/OsIsr/*"!]
+        [!LOOP "as:modconf('Os')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Os']/OsIsr/*"!]
         [[!"@index"!]] =
         {
             .int_id = (Os_IntIdType)[!"InterruptId"!]U,
@@ -81,10 +81,10 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) [!"@name"!] =
             .isr_funcptr = (Os_IsrFuncPtrType)[!IF "OsIsrCategory = 'CATEGORY_1'"!][!"ISRFunc"!][!ELSE!]ISR_[!"ISRFunc"!][!ENDIF!],
         }[!IF "not(node:islast())"!],[!CR!][!ELSE!][!ENDIF!][!ENDLOOP!]
     },
-[!IF "as:modconf('Os')[1]/OsCounter/*[1]/OsCounterEnable = 'true'"!]
+[!IF "as:modconf('Os')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Os']/OsCounter/*[1]/OsCounterEnable = 'true'"!]
     .counter_cfg =
     {
-        [!LOOP "as:modconf('Os')[1]/OsCounter/*"!]
+        [!LOOP "as:modconf('Os')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Os']/OsCounter/*"!]
         [[!"@index"!]] =
         {
             .max_timercount = (Os_CounterMaxValue)[!"OsCounterMaxAllowedValue"!]U,
@@ -96,6 +96,7 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) [!"@name"!] =
     .threshold = (Os_ThresholdType)[!"OsRtIntThreshold"!]U,
 };   
 [!ENDLOOP!][!//
+[!ENDSELECT!][!//
 
 #define OS_STOP_SEC_CONFIG_DATA
 #include "Os_MemMap.h"

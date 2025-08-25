@@ -97,7 +97,7 @@ int main(void)
 
     DeviceSupport_Init();
     /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call
-    Port_Init(&Port_PortConfigSet) and will Initialize the Port and Mcu Driver */
+    Port_Init(&Port_Config) and will Initialize the Port and Mcu Driver */
     EcuM_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("LIN Driver Sample Application: Lin Sleep WakeUp Interrupt - Starts!!!\n\n\r");
@@ -108,7 +108,7 @@ int main(void)
     Lin_Init(NULL_PTR);
     Lin_WakeupInternal(LinConf_LinChannel_LinChannel_0);
 #else
-    const Lin_ConfigType* pCfgPtr = &Lin_LinGlobalConfig;
+    const Lin_ConfigType* pCfgPtr = &Lin_Config;
     Lin_Init(pCfgPtr);
     returnValue = Lin_WakeupInternal(LinConf_LinChannel_LinChannel_0);
     if (returnValue == E_OK)

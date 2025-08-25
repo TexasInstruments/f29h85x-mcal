@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
+[!SELECT "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']"!]
 [!AUTOSPACING!][!//
 [!VAR "mcan1_cat1"="0"!][!//
 [!VAR "mcan2_cat1"="0"!][!//
@@ -7,7 +8,7 @@
 [!VAR "mcan4_cat1"="0"!][!//
 [!VAR "mcan5_cat1"="0"!][!//
 [!VAR "mcan6_cat1"="0"!][!//
-[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
+[!LOOP "CanConfigSet/CanController/*"!][!//
 [!IF "CanControllerInstance = 'MCAN1'"!][!//
 [!IF "CanInteruptType != 'CAN_ISR_CAT2'"!][!//
 [!VAR "mcan1_cat1" = "$mcan1_cat1 + 1"!][!//
@@ -47,7 +48,7 @@
           <SHORT-NAME>Can</SHORT-NAME>
           <CATEGORY>BSW_MODULE</CATEGORY>
           <IMPLEMENTED-ENTRYS>
-[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
+[!LOOP "CanConfigSet/CanController/*"!][!//
 [!IF "CanControllerInstance = 'MCAN1'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_1_Int0ISR</BSW-MODULE-ENTRY-REF>
@@ -97,7 +98,7 @@
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
 [!ENDIF!][!//
 [!ENDLOOP!][!//
-[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+[!IF "count(CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_CheckWakeup</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -117,7 +118,7 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_GetControllerMode</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanVersionInfoApi = 'true'"!][!//
+[!IF "CanGeneral/CanVersionInfoApi = 'true'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_GetVersionInfo</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -125,13 +126,15 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_Init</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!IF "node:exists(CanGeneral/CanMainFunctionBusoffPeriod)"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_BusOff</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDIF!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Mode</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
+[!LOOP "CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Read_[!"@name"!]</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -139,12 +142,12 @@
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Write_[!"@name"!]</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
 [!ENDLOOP!][!ENDLOOP!][!//
-[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+[!IF "count(CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Wakeup</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
 [!ENDIF!][!//
-[!IF "as:modconf('Can')[1]/CanGeneral/CanSetBaudrateApi = 'true'"!][!//
+[!IF "CanGeneral/CanSetBaudrateApi = 'true'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_SetBaudrate</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -152,7 +155,7 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_SetControllerMode</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanPublicIcomSupport = 'true'"!][!//
+[!IF "CanGeneral/CanPublicIcomSupport = 'true'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_SetIcomConfiguration</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -184,7 +187,7 @@
                 </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
               </TARGET-MODULE-REFS>
             </BSW-MODULE-DEPENDENCY>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
             <BSW-MODULE-DEPENDENCY UUID="89a01fa7-bf07-49d6-9f89-81801def83b0">
               <SHORT-NAME>Det</SHORT-NAME>
               <TARGET-MODULE-ID>15</TARGET-MODULE-ID>
@@ -226,12 +229,12 @@
                 </EXCLUSIVE-AREA>
               </EXCLUSIVE-AREAS>
               <ENTITYS>
-[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
+[!LOOP "CanConfigSet/CanController/*"!][!//
 [!IF "CanControllerInstance = 'MCAN1'"!][!//
                 <BSW-INTERRUPT-ENTITY UUID="0919f480-8665-401d-beb7-a4f9a9d1964c">
                   <SHORT-NAME>Can_1_Int0ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -249,7 +252,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="e75bd73a-8eb4-4dc8-bbaa-6231e844c340">
                   <SHORT-NAME>Can_1_Int1ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -269,7 +272,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="230b7166-9a6b-4960-a5c5-0a367f56c1c0">
                   <SHORT-NAME>Can_2_Int0ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -287,7 +290,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="d4f28071-2fda-4227-a6f4-2a05bf429a3f">
                   <SHORT-NAME>Can_2_Int1ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -307,7 +310,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="d92ffa98-518c-4d93-b687-d078f37e2e31">
                   <SHORT-NAME>Can_3_Int0ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -325,7 +328,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="ab0c3188-beb2-4860-bbb4-0c0b84edc9e7">
                   <SHORT-NAME>Can_3_Int1ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -345,7 +348,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="c7ceef86-e0ac-449d-b555-7aaee2c4114b">
                   <SHORT-NAME>Can_4_Int0ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -363,7 +366,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="8d5ea773-d021-48b7-9639-1eac7c87f716">
                   <SHORT-NAME>Can_4_Int1ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -383,7 +386,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="ded1dbc3-ccf1-4372-8303-6626e77efcfa">
                   <SHORT-NAME>Can_5_Int0ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -401,7 +404,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="58e6d24f-45da-40d1-ab99-d9ed71a36f93">
                   <SHORT-NAME>Can_5_Int1ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -421,7 +424,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="ec65c15b-8cae-43b4-ab4e-1b902271e82f">
                   <SHORT-NAME>Can_6_Int0ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -439,7 +442,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="345a0923-ed2e-4a4f-b9a5-ceca84007262">
                   <SHORT-NAME>Can_6_Int1ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']/CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -456,13 +459,13 @@
                 </BSW-INTERRUPT-ENTITY>
 [!ENDIF!][!//
 [!ENDLOOP!][!//
-[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+[!IF "count(CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
                 <BSW-CALLED-ENTITY UUID="1cc15b6a-18c7-4743-9b71-69b98953f864">
                   <SHORT-NAME>Can_CheckWakeup</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
@@ -480,7 +483,7 @@
                   <SHORT-NAME>Can_DeInit</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -496,7 +499,7 @@
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Can_TI_F29H85x/Can/Can_Behavior/CAN_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -512,7 +515,7 @@
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Can_TI_F29H85x/Can/Can_Behavior/CAN_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -525,7 +528,7 @@
                 <BSW-CALLED-ENTITY UUID="c827c014-4aa7-4c70-911c-199360b0da4f">
                   <SHORT-NAME>Can_GetControllerErrorState</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -538,7 +541,7 @@
                 <BSW-CALLED-ENTITY UUID="5bd97c2b-ca7b-4717-9360-e4ebd87ed539">
                   <SHORT-NAME>Can_GetControllerMode</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -548,11 +551,11 @@
 [!ENDIF!][!//
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_GetControllerMode</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanVersionInfoApi = 'true'"!][!//
+[!IF "CanGeneral/CanVersionInfoApi = 'true'"!][!//
                 <BSW-CALLED-ENTITY UUID="b4f574fb-e16a-4463-be23-aa5bd04176e8">
                   <SHORT-NAME>Can_GetVersionInfo</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -566,7 +569,7 @@
                 <BSW-CALLED-ENTITY UUID="a0c04389-d210-4ae6-9c93-44c3c586441f">
                   <SHORT-NAME>Can_Init</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -576,6 +579,7 @@
 [!ENDIF!][!//
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_Init</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
+[!IF "node:exists(CanGeneral/CanMainFunctionBusoffPeriod)"!][!//
                 <BSW-SCHEDULABLE-ENTITY UUID="0a2ee4e6-1098-4061-b034-f5ab36b433af">
                   <SHORT-NAME>Can_MainFunction_BusOff</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
@@ -591,6 +595,7 @@
                   </CALL-POINTS>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_BusOff</IMPLEMENTED-ENTRY-REF>
                 </BSW-SCHEDULABLE-ENTITY>
+[!ENDIF!][!//
                 <BSW-SCHEDULABLE-ENTITY UUID="94a5d372-a6b0-4356-b097-df6ff1416505">
                   <SHORT-NAME>Can_MainFunction_Mode</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
@@ -602,8 +607,8 @@
                   </CALL-POINTS>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Mode</IMPLEMENTED-ENTRY-REF>
                 </BSW-SCHEDULABLE-ENTITY>
-[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
-                <BSW-SCHEDULABLE-ENTITY UUID="[!"as:uuid()"!]">
+[!LOOP "CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
+                <BSW-SCHEDULABLE-ENTITY UUID="afa58a2a-a398-4911-aabf-b0945498200[!"@index"!]">
                   <SHORT-NAME>Can_MainFunction_Read_[!"@name"!]</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
@@ -614,7 +619,7 @@
                   </CALL-POINTS>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Read_[!"@name"!]</IMPLEMENTED-ENTRY-REF>
                 </BSW-SCHEDULABLE-ENTITY>
-                <BSW-SCHEDULABLE-ENTITY UUID="[!"as:uuid()"!]">
+                <BSW-SCHEDULABLE-ENTITY UUID="a2ba7fad-46b4-4371-8f04-f7d2b4b98ad[!"@index"!]">
                   <SHORT-NAME>Can_MainFunction_Write_[!"@name"!]</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
@@ -626,7 +631,7 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Write_[!"@name"!]</IMPLEMENTED-ENTRY-REF>
                 </BSW-SCHEDULABLE-ENTITY>
 [!ENDLOOP!][!ENDLOOP!][!//
-[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+[!IF "count(CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
                 <BSW-SCHEDULABLE-ENTITY UUID="261e4315-94fb-4b76-9bfc-6fb5a2c85fe3">
                   <SHORT-NAME>Can_MainFunction_Wakeup</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
@@ -639,11 +644,11 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Can_TI_F29H85x/BSWModuleEntry/Can_MainFunction_Wakeup</IMPLEMENTED-ENTRY-REF>
                 </BSW-SCHEDULABLE-ENTITY>
 [!ENDIF!][!//
-[!IF "as:modconf('Can')[1]/CanGeneral/CanSetBaudrateApi = 'true'"!][!//
+[!IF "CanGeneral/CanSetBaudrateApi = 'true'"!][!//
                 <BSW-CALLED-ENTITY UUID="bc10d170-54ca-40ac-a0d1-5d2eec51583d">
                   <SHORT-NAME>Can_SetBaudrate</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -662,7 +667,7 @@
                       <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
                     </BSW-DIRECT-CALL-POINT>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
@@ -687,7 +692,7 @@
                       <SHORT-NAME>CanIf_CurrentIcomConfiguration</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_CanIf/BSWModuleEntry/CanIf_CurrentIcomConfiguration</CALLED-ENTRY-REF>
                     </BSW-DIRECT-CALL-POINT>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
@@ -707,7 +712,7 @@
                       <SHORT-NAME>CanIf_TxConfirmation</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_CanIf/BSWModuleEntry/CanIf_TxConfirmation</CALLED-ENTRY-REF>
                     </BSW-DIRECT-CALL-POINT>
-[!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!][!//
+[!IF "CanGeneral/CanDevErrorDetect = 'true'"!][!//
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
@@ -737,32 +742,34 @@
                 </BSW-CALLED-ENTITY>
               </ENTITYS>
               <EVENTS>
+[!IF "node:exists(CanGeneral/CanMainFunctionBusoffPeriod)"!][!//
                 <BSW-TIMING-EVENT UUID="35ea8b2e-e764-4486-adeb-56757b7be741">
                   <SHORT-NAME>Can_MainFunctionTimingEvent_BusOff</SHORT-NAME>
                   <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_BusOff</STARTS-ON-EVENT-REF>
-                  <PERIOD>[!"as:modconf('Can')[1]/CanGeneral/CanMainFunctionBusoffPeriod"!]</PERIOD>
+                  <PERIOD>[!"CanGeneral/CanMainFunctionBusoffPeriod"!]</PERIOD>
                 </BSW-TIMING-EVENT>
+[!ENDIF!][!//
                 <BSW-TIMING-EVENT UUID="04cd4bb0-cb81-452f-92cf-623e46acc15c">
                   <SHORT-NAME>Can_MainFunctionTimingEvent_Mode</SHORT-NAME>
                   <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_Mode</STARTS-ON-EVENT-REF>
-                  <PERIOD>[!"as:modconf('Can')[1]/CanGeneral/CanMainFunctionModePeriod"!]</PERIOD>
+                  <PERIOD>[!"CanGeneral/CanMainFunctionModePeriod"!]</PERIOD>
                 </BSW-TIMING-EVENT>
-[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
-                <BSW-TIMING-EVENT UUID="[!"as:uuid()"!]">
+[!LOOP "CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
+                <BSW-TIMING-EVENT UUID="7c543f7f-3657-47ab-b54e-60a2fe52515[!"@index"!]">
                   <SHORT-NAME>Can_MainFunctionTimingEvent_Read_[!"@name"!]</SHORT-NAME>
                   <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_Read_[!"@name"!]</STARTS-ON-EVENT-REF>
                   <PERIOD>[!"CanMainFunctionPeriod"!]</PERIOD>
                 </BSW-TIMING-EVENT>
-                <BSW-TIMING-EVENT UUID="[!"as:uuid()"!]">
+                <BSW-TIMING-EVENT UUID="850e3334-621c-4be1-886f-de2fedf30a7[!"@index"!]">
                   <SHORT-NAME>Can_MainFunctionTimingEvent_Write_[!"@name"!]</SHORT-NAME>
                   <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_Write_[!"@name"!]</STARTS-ON-EVENT-REF>
                   <PERIOD>[!"CanMainFunctionPeriod"!]</PERIOD>
                 </BSW-TIMING-EVENT>
 [!ENDLOOP!][!ENDLOOP!][!//
-[!IF "count(as:modconf('Can')[1]/CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
+[!IF "count(CanConfigSet/CanController/*[CanWakeupFunctionalityAPI = 'true']) > 0"!][!//
                 <BSW-TIMING-EVENT UUID="8b5dd1a5-2776-4eef-b311-aef69f165068">
                   <SHORT-NAME>Can_MainFunctionTimingEvent_Wakeup</SHORT-NAME>
-                  <PERIOD>[!"as:modconf('Can')[1]/CanGeneral/CanMainFunctionWakeupPeriod"!]</PERIOD>
+                  <PERIOD>[!"CanGeneral/CanMainFunctionWakeupPeriod"!]</PERIOD>
                   <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Can_TI_F29H85x/Can/Can_Behavior/Can_MainFunction_Wakeup</STARTS-ON-EVENT-REF>
                 </BSW-TIMING-EVENT>
 [!ENDIF!][!//
@@ -816,7 +823,7 @@
               <SHORT-NAME>c29clang</SHORT-NAME>
               <NAME>TI C29 Clang Compiler</NAME>
               <VENDOR>Texas Instruments</VENDOR>
-              <VERSION>1.0.0</VERSION>
+              <VERSION>2.0.0</VERSION>
             </COMPILER>
           </COMPILERS>
           <LINKERS>
@@ -824,7 +831,7 @@
               <SHORT-NAME>c29lnk</SHORT-NAME>
               <NAME>TI C29 Linker</NAME>
               <VENDOR>Texas Instruments</VENDOR>
-              <VERSION>1.0.0</VERSION>
+              <VERSION>2.0.0</VERSION>
             </LINKER>
           </LINKERS>
 		  <PROGRAMMING-LANGUAGE>C</PROGRAMMING-LANGUAGE>
@@ -1125,6 +1132,7 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
+[!IF "node:exists(CanGeneral/CanMainFunctionBusoffPeriod)"!][!//
             <BSW-MODULE-ENTRY UUID="53cda482-4487-4b4e-a70d-bd1c5e7bce86">
               <SHORT-NAME>Can_MainFunction_BusOff</SHORT-NAME>
               <SERVICE-ID>9</SERVICE-ID>
@@ -1135,6 +1143,7 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
+[!ENDIF!][!//
             <BSW-MODULE-ENTRY UUID="34aa4ce7-5a7b-441b-a568-93a8bddc79c0">
               <SHORT-NAME>Can_MainFunction_Mode</SHORT-NAME>
               <SERVICE-ID>12</SERVICE-ID>
@@ -1145,8 +1154,8 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
-[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
-            <BSW-MODULE-ENTRY UUID="[!"as:uuid()"!]">
+[!LOOP "CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
+            <BSW-MODULE-ENTRY UUID="343af4dd-5500-4cc2-a29f-f3429bca9cd[!"@index"!]">
               <SHORT-NAME>Can_MainFunction_Read_[!"@name"!]</SHORT-NAME>
               <SERVICE-ID>8</SERVICE-ID>
               <IS-REENTRANT>false</IS-REENTRANT>
@@ -1156,7 +1165,7 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
-            <BSW-MODULE-ENTRY UUID="[!"as:uuid()"!]">
+            <BSW-MODULE-ENTRY UUID="a1299ca2-6a34-4817-bc72-29488f30ccd[!"@index"!]">
               <SHORT-NAME>Can_MainFunction_Write_[!"@name"!]</SHORT-NAME>
               <SERVICE-ID>1</SERVICE-ID>
               <IS-REENTRANT>false</IS-REENTRANT>
@@ -1233,4 +1242,4 @@
     </AR-PACKAGE>
   </AR-PACKAGES>
 </AUTOSAR>
-
+[!ENDSELECT!]

@@ -46,18 +46,18 @@ extern "C" {
  *********************************************************************************************************************/
 
 /** \brief Driver Implementation Major Version. */
-#define GPT_SW_MAJOR_VERSION (1U)
+#define GPT_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version. */
 #define GPT_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version. */
-#define GPT_SW_PATCH_VERSION (2U)
+#define GPT_SW_PATCH_VERSION (0U)
 
 /** \brief AUTOSAR major version specification implemented by GPT Driver. */
 #define GPT_AR_RELEASE_MAJOR_VERSION (4U)
 /** \brief AUTOSAR minor version specification implemented by GPT Driver. */
 #define GPT_AR_RELEASE_MINOR_VERSION (3U)
 /** \brief AUTOSAR patch version specification implemented by GPT Driver */
-#define GPT_AR_RELEASE_PATCH_VERSION (1U)
+#define GPT_AR_RELEASE_REVISION_VERSION (1U)
 
 /** \brief Texas Instruments Vendor ID. */
 #define GPT_VENDOR_ID ((uint16)44U)
@@ -290,8 +290,7 @@ typedef struct Gpt_ConfigType_s
  *
  * This service returns the version information of this module.
  *
- * \param[in] VersionInfoPtr
- * \param[out] VersionInfoPtr Pointer to where to store the version information of this module.
+ * \param[inout] VersionInfoPtr Pointer to where to store the version information of this module.
  * \pre VersionInfoPtr should not be NULL
  * \post None
  * \return None

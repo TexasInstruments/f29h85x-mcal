@@ -24,15 +24,39 @@
                 <a:a name="IMPORTER_INFO" value="@DEF"/>
               </d:var>
               <d:ctr name="CddPwmConfigSet" type="IDENTIFIABLE">
+                <d:var name="CddPwmAdvancedMode" type="BOOLEAN" value="false">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
                 <d:lst name="CddPwmHwUnitConfig" type="MAP">
                   <d:ctr name="CddPwmHwUnitConfig_0" type="IDENTIFIABLE">
                     <d:var name="CddPwmInstanceId" type="INTEGER" value="1"/>
+                    <d:var name="CddPwmEmulationMode" type="ENUMERATION" 
+                           value="CDD_PWM_EMULATION_STOP_AFTER_NEXT_TB">
+                      <a:a name="IMPORTER_INFO" value="@DEF"/>
+                    </d:var>
+                    <d:var name="CddPwmInterruptNotification" 
+                           type="FUNCTION-NAME" 
+                           value="Cdd_Pwm_AsymmetricNotification">
+                      <a:a name="ENABLE" value="true"/>
+                    </d:var>
+                    <d:var name="CddPwmTripZoneInterruptEnable" type="BOOLEAN" 
+                           value="false">
+                      <a:a name="IMPORTER_INFO" value="@DEF"/>
+                    </d:var>
+                    <d:var name="CddPwmTripZoneInterruptCategory" 
+                           type="ENUMERATION" value="ISR_CAT1_RTINT">
+                      <a:a name="IMPORTER_INFO" value="@DEF"/>
+                    </d:var>
+                    <d:var name="CddPwmTripZoneNotification" 
+                           type="FUNCTION-NAME" value="NULL_PTR">
+                      <a:a name="ENABLE" value="false"/>
+                    </d:var>
                     <d:var name="CddPwmOutputClass" type="ENUMERATION" 
                            value="CDD_PWM_VARIABLE_PERIOD"/>
                     <d:var name="CddPwmClockDivider" type="ENUMERATION" 
-                           value="CDD_PWM_CLK_DIVIDER_16"/>
+                           value="CDD_PWM_CLOCK_DIVIDER_16"/>
                     <d:var name="CddPwmHighSpeedClockDivider" 
-                           type="ENUMERATION" value="CDD_PWM_HSCLK_DIVIDER_2"/>
+                           type="ENUMERATION" value="CDD_PWM_HSCLOCK_DIVIDER_2"/>
                     <d:ref name="CddPwmMcuClockReferencePoint" type="REFERENCE" 
                            value="ASPath:/Mcu/Mcu/Mcu_ModuleConfiguration_0/McuClockSettingConfig_Osc2/EPWMCLK"/>
                     <d:var name="CddPwmFrequency" type="FLOAT" value="3125000.0">
@@ -41,18 +65,15 @@
                         <a:v>@CALC</a:v>
                       </a:a>
                     </d:var>
-                    <d:var name="CddPwmPeriod" type="INTEGER" value="62499"/>
                     <d:var name="CddPwmInterruptEnable" type="BOOLEAN" 
                            value="true"/>
                     <d:var name="CddPwmInterruptCategory" type="ENUMERATION" 
                            value="ISR_CAT1_RTINT"/>
+                    <d:var name="CddPwmDefaultPeriod" type="INTEGER" 
+                           value="62499"/>
                     <d:var name="CddPwmSymmetry" type="ENUMERATION" 
                            value="CDD_PWM_ASYMMETRIC_WAVEFORM">
                       <a:a name="IMPORTER_INFO" value="@DEF"/>
-                    </d:var>
-                    <d:var name="CddPwmNotification" type="FUNCTION-NAME" 
-                           value="Cdd_Pwm_AsymmetricNotification">
-                      <a:a name="ENABLE" value="true"/>
                     </d:var>
                     <d:lst name="CddPwmOutputChannel" type="MAP">
                       <d:ctr name="CddPwmOutputChannel_0" type="IDENTIFIABLE">
@@ -66,12 +87,12 @@
                                value="CDD_PWM_LOW">
                           <a:a name="IMPORTER_INFO" value="@DEF"/>
                         </d:var>
-                        <d:var name="CddPwmDutyCycle" type="INTEGER" 
+                        <d:var name="CddPwmDefaultDutyCycle" type="INTEGER" 
                                value="16384">
                           <a:a name="IMPORTER_INFO" value="@DEF"/>
                         </d:var>
-                        <d:var name="CddPwmDutyCycleInPercentage" type="FLOAT" 
-                               value="50.0">
+                        <d:var name="CddPwmDefaultDutyCycleInPercentage" 
+                               type="FLOAT" value="50.0">
                           <a:a name="IMPORTER_INFO">
                             <a:v>@DEF</a:v>
                             <a:v>@CALC</a:v>
@@ -85,10 +106,10 @@
                                value="CDD_PWM_LOW"/>
                         <d:var name="CddPwmIdleState" type="ENUMERATION" 
                                value="CDD_PWM_HIGH"/>
-                        <d:var name="CddPwmDutyCycle" type="INTEGER" 
+                        <d:var name="CddPwmDefaultDutyCycle" type="INTEGER" 
                                value="8192"/>
-                        <d:var name="CddPwmDutyCycleInPercentage" type="FLOAT" 
-                               value="25.0">
+                        <d:var name="CddPwmDefaultDutyCycleInPercentage" 
+                               type="FLOAT" value="25.0">
                           <a:a name="IMPORTER_INFO">
                             <a:v>@DEF</a:v>
                             <a:v>@CALC</a:v>
@@ -99,12 +120,34 @@
                   </d:ctr>
                   <d:ctr name="CddPwmHwUnitConfig_1" type="IDENTIFIABLE">
                     <d:var name="CddPwmInstanceId" type="INTEGER" value="2"/>
+                    <d:var name="CddPwmEmulationMode" type="ENUMERATION" 
+                           value="CDD_PWM_EMULATION_STOP_AFTER_NEXT_TB">
+                      <a:a name="IMPORTER_INFO" value="@DEF"/>
+                    </d:var>
+                    <d:var name="CddPwmInterruptNotification" 
+                           type="FUNCTION-NAME" 
+                           value="Cdd_Pwm_SymmetricNotification">
+                      <a:a name="ENABLE" value="true"/>
+                    </d:var>
+                    <d:var name="CddPwmTripZoneInterruptEnable" type="BOOLEAN" 
+                           value="false">
+                      <a:a name="IMPORTER_INFO" value="@DEF"/>
+                    </d:var>
+                    <d:var name="CddPwmTripZoneInterruptCategory" 
+                           type="ENUMERATION" value="ISR_CAT1_RTINT">
+                      <a:a name="IMPORTER_INFO" value="@DEF"/>
+                    </d:var>
+                    <d:var name="CddPwmTripZoneNotification" 
+                           type="FUNCTION-NAME" value="NULL_PTR">
+                      <a:a name="ENABLE" value="false"/>
+                      <a:a name="IMPORTER_INFO" value="@DEF"/>
+                    </d:var>
                     <d:var name="CddPwmOutputClass" type="ENUMERATION" 
                            value="CDD_PWM_FIXED_PERIOD"/>
                     <d:var name="CddPwmClockDivider" type="ENUMERATION" 
-                           value="CDD_PWM_CLK_DIVIDER_2"/>
+                           value="CDD_PWM_CLOCK_DIVIDER_2"/>
                     <d:var name="CddPwmHighSpeedClockDivider" 
-                           type="ENUMERATION" value="CDD_PWM_HSCLK_DIVIDER_2"/>
+                           type="ENUMERATION" value="CDD_PWM_HSCLOCK_DIVIDER_2"/>
                     <d:ref name="CddPwmMcuClockReferencePoint" type="REFERENCE" 
                            value="ASPath:/Mcu/Mcu/Mcu_ModuleConfiguration_0/McuClockSettingConfig_Osc2/EPWMCLK"/>
                     <d:var name="CddPwmFrequency" type="FLOAT" value="2.5E7">
@@ -113,17 +156,14 @@
                         <a:v>@CALC</a:v>
                       </a:a>
                     </d:var>
-                    <d:var name="CddPwmPeriod" type="INTEGER" value="12500"/>
                     <d:var name="CddPwmInterruptEnable" type="BOOLEAN" 
                            value="true"/>
                     <d:var name="CddPwmInterruptCategory" type="ENUMERATION" 
                            value="ISR_CAT1_RTINT"/>
+                    <d:var name="CddPwmDefaultPeriod" type="INTEGER" 
+                           value="12500"/>
                     <d:var name="CddPwmSymmetry" type="ENUMERATION" 
                            value="CDD_PWM_SYMMETRIC_WAVEFORM"/>
-                    <d:var name="CddPwmNotification" type="FUNCTION-NAME" 
-                           value="Cdd_Pwm_SymmetricNotification">
-                      <a:a name="ENABLE" value="true"/>
-                    </d:var>
                     <d:lst name="CddPwmOutputChannel" type="MAP">
                       <d:ctr name="CddPwmOutputChannel_0" type="IDENTIFIABLE">
                         <d:var name="CddPwmChannel" type="ENUMERATION" 
@@ -136,10 +176,10 @@
                                value="CDD_PWM_LOW">
                           <a:a name="IMPORTER_INFO" value="@DEF"/>
                         </d:var>
-                        <d:var name="CddPwmDutyCycle" type="INTEGER" 
+                        <d:var name="CddPwmDefaultDutyCycle" type="INTEGER" 
                                value="8192"/>
-                        <d:var name="CddPwmDutyCycleInPercentage" type="FLOAT" 
-                               value="25.0">
+                        <d:var name="CddPwmDefaultDutyCycleInPercentage" 
+                               type="FLOAT" value="25.0">
                           <a:a name="IMPORTER_INFO">
                             <a:v>@DEF</a:v>
                             <a:v>@CALC</a:v>
@@ -153,10 +193,10 @@
                                value="CDD_PWM_LOW"/>
                         <d:var name="CddPwmIdleState" type="ENUMERATION" 
                                value="CDD_PWM_HIGH"/>
-                        <d:var name="CddPwmDutyCycle" type="INTEGER" 
+                        <d:var name="CddPwmDefaultDutyCycle" type="INTEGER" 
                                value="24576"/>
-                        <d:var name="CddPwmDutyCycleInPercentage" type="FLOAT" 
-                               value="75.0">
+                        <d:var name="CddPwmDefaultDutyCycleInPercentage" 
+                               type="FLOAT" value="75.0">
                           <a:a name="IMPORTER_INFO">
                             <a:v>@DEF</a:v>
                             <a:v>@CALC</a:v>
@@ -166,6 +206,7 @@
                     </d:lst>
                   </d:ctr>
                 </d:lst>
+                <d:lst name="CddPwmXlinkConfig" type="MAP"/>
               </d:ctr>
               <d:ctr name="CddPwmGeneral" type="IDENTIFIABLE">
                 <d:var name="CddPwmDevErrorDetect" type="BOOLEAN" value="true"/>

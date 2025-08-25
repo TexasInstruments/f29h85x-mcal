@@ -65,9 +65,10 @@ typedef P2FUNC (void, FLS_APPL_CODE, Fls_JobErrorNotifyType)(void);
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
+[!SELECT "as:modconf('Fls')[as:path(node:dtos(.))='/TI_F29H85x/Fls']"!]
 [!AUTOSPACING!]
 [!VAR "notifyFxnList" = "' '"!][!//
-[!LOOP "as:modconf('Fls')[1]/FlsConfigSet"!][!//
+[!LOOP "FlsConfigSet"!][!//
 [!IF "(node:exists(FlsJobEndNotification))"!][!//
 [!IF "FlsJobEndNotification !='NULL_PTR' and FlsJobEndNotification !=''"!][!//
 [!IF "not(node:containsValue(text:split($notifyFxnList),FlsJobEndNotification))"!][!//
@@ -79,7 +80,7 @@ typedef P2FUNC (void, FLS_APPL_CODE, Fls_JobErrorNotifyType)(void);
 [!ENDLOOP!][!//
 
 [!VAR "notifyFxnList" = "' '"!][!//
-[!LOOP "as:modconf('Fls')[1]/FlsConfigSet"!][!//
+[!LOOP "FlsConfigSet"!][!//
 [!IF "(node:exists(FlsJobErrorNotification))"!][!//
 [!IF "FlsJobErrorNotification !='NULL_PTR' and FlsJobErrorNotification !=''"!][!//
 [!IF "not(node:containsValue(text:split($notifyFxnList),FlsJobErrorNotification))"!][!//
@@ -89,6 +90,7 @@ typedef P2FUNC (void, FLS_APPL_CODE, Fls_JobErrorNotifyType)(void);
 [!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDLOOP!][!//
+[!ENDSELECT!]
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

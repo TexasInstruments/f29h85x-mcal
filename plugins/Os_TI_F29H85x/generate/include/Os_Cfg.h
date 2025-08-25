@@ -44,21 +44,22 @@ extern "C" {
 #define OS_CFG_MINOR_VERSION                 ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 #define OS_CFG_PATCH_VERSION                 ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 
-#define OS_PRE_COMPILE_VARIANT   [!IF "as:modconf('Os')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+[!SELECT "as:modconf('Os')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Os']"!][!//
+#define OS_PRE_COMPILE_VARIANT   [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-#define OS_POST_BUILD_VARIANT    [!IF "as:modconf('Os')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define OS_POST_BUILD_VARIANT    [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-#define OS_CFG_MAX_ISR          ([!"num:i(count(as:modconf('Os')[1]/OsIsr/*))"!]U)
+#define OS_CFG_MAX_ISR          ([!"num:i(count(OsIsr/*))"!]U)
 
-#define OS_CFG_MAX_COUNTER      [!IF "as:modconf('Os')[1]/OsCounter/*[1]/OsCounterEnable = 'true'"!]([!"num:i(count(as:modconf('Os')[1]/OsCounter/*))"!]U)[!ELSE!](0U)[!ENDIF!]
+#define OS_CFG_MAX_COUNTER      [!IF "OsCounter/*[1]/OsCounterEnable = 'true'"!]([!"num:i(count(OsCounter/*))"!]U)[!ELSE!](0U)[!ENDIF!]
 
-#define OS_COUNTER_ENABLE       [!IF "as:modconf('Os')[1]/OsCounter/*[1]/OsCounterEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define OS_COUNTER_ENABLE       [!IF "OsCounter/*[1]/OsCounterEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-#define RTINT_THRESHOLD          ([!"num:i(as:modconf('Os')[1]/Os_ConfigSet/OsRtIntThreshold)"!]U)
+#define RTINT_THRESHOLD          ([!"num:i(Os_ConfigSet/OsRtIntThreshold)"!]U)
 
-[!IF "as:modconf('Os')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!][!//
-[!LOOP "as:modconf('Os')[1]/Os_ConfigSet"!][!//
-#define OS_INIT_CONFIG_PC       [!"@name"!]
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!][!//
+[!LOOP "Os_ConfigSet"!][!//
+#define OS_INIT_CONFIG_PC       Os_Config
 [!ENDLOOP!][!//
 [!ENDIF!][!//
 
@@ -77,9 +78,9 @@ extern "C" {
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-[!LOOP "as:modconf('Os')[1]/OsIsr/*"!][!//
+[!LOOP "OsIsr/*"!][!//
 [!IF "OsIsrCategory = 'CATEGORY_1'"!][!//
-[!IF "node:value(InteruptPriority) < as:modconf('Os')[1]/Os_ConfigSet/OsRtIntThreshold"!][!//
+[!IF "node:value(InteruptPriority) < as:modconf('Os')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Os']/Os_ConfigSet/OsRtIntThreshold"!][!//
 /* Category 1 INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR([!"ISRFunc"!]);
 
@@ -100,9 +101,10 @@ MCAL_LIB_INT_ISR(Os_Isr[!"InterruptId"!]);
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
 
-[!LOOP "as:modconf('Os')[1]/Os_ConfigSet"!][!//
-extern const struct Os_ConfigType_s [!"@name"!];
+[!LOOP "Os_ConfigSet"!][!//
+extern const struct Os_ConfigType_s Os_Config;
 [!ENDLOOP!][!//
+[!ENDSELECT!][!//
 
 #ifdef __cplusplus
 }

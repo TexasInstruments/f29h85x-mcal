@@ -3,10 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
   <AR-PACKAGES>
-    <AR-PACKAGE UUID="23dc7f48-8d8d-4055-8c21-60425d54f348">
+    <AR-PACKAGE UUID="effbd32e-2911-471c-9dc3-936673548ad8">
       <SHORT-NAME>TI_F29H85x</SHORT-NAME>
       <ELEMENTS>
-        <ECUC-DEFINITION-COLLECTION UUID="093fcefd-8900-4f86-a35f-196877a3ee42">
+        <ECUC-DEFINITION-COLLECTION UUID="f89ad65c-64a2-41dc-acbd-13c4d06599c0">
           <SHORT-NAME>myEcuParameterDefinition</SHORT-NAME>
           <MODULE-REFS>
             <MODULE-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Fls</MODULE-REF>
@@ -308,7 +308,7 @@
                   <MAX>16</MAX>
                   <MIN>8</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="as:uuid()">
+                <ECUC-INTEGER-PARAM-DEF UUID="1f87c1f7-b255-4cbe-9bfd-efd63e26607e">
                   <SHORT-NAME>FlsProtection</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Erase/write protection settings. Only relevant if supported by hardware. Currently, not supported by Hardware.</L-2>
@@ -354,7 +354,7 @@
                   <MAX>4294967295</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="b7d3864d-a1e0-4e08-b931-f7751fb360af">
+                <ECUC-INTEGER-PARAM-DEF UUID="87b3ba7d-2f97-4e41-b57a-832ab1500800">
                   <SHORT-NAME>Fls_CMDWEPROTB</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Erase/write protection settings. CMDWEPROTB controls program/erase protection for sectors 32 to 255.                                   Each bit allows users to enable/disable protection for a group of eight sectors. Note - The first 4 bit                                   fields are reserved (bits 0-3) and protection of bit 4 and above would begin at sector 32. Eg: Bit 4                                   allows protection configuration for Sectors 32-39. A value of 0 disables protection and a value of 1                                   enables protection from program/erase</L-2>
@@ -386,6 +386,16 @@
                   </DESC>
                   <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                   <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <MULTIPLICITY-CONFIG-CLASSES>
+                    <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                    </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                    <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                  </MULTIPLICITY-CONFIG-CLASSES>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <REFERENCES>
                     <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="7a8c0bdb-bc4b-42e9-9a2b-7c567be5d88c">
@@ -436,6 +446,16 @@
                       </DESC>
                       <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
                       <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                      <MULTIPLICITY-CONFIG-CLASSES>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      </MULTIPLICITY-CONFIG-CLASSES>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
                         <ECUC-INTEGER-PARAM-DEF UUID="d36c06eb-9bdd-4298-9acf-0a07a45c5a62">
@@ -542,7 +562,7 @@
                 <L-2 L="EN">Container for general parameters of the flash driver. These parameters are always pre-compile.</L-2>
               </DESC>
               <PARAMETERS>
-                <ECUC-ENUMERATION-PARAM-DEF UUID="2fb281d8-d1a0-4647-bb1f-06ebc44c47ef">
+                <ECUC-ENUMERATION-PARAM-DEF UUID="2c124b17-e519-4eec-ab22-1fb21eeb457a">
                   <SHORT-NAME>FlsDeviceVariant</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Select required Device Variant.</L-2>
@@ -590,7 +610,7 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="bfe6b54b-97ad-4e08-9860-e5d718d5c89e">
+                <ECUC-INTEGER-PARAM-DEF UUID="78883b56-f4ca-4f65-9bdb-3f16393dbee5">
                   <SHORT-NAME>FlsPointToRamBaseAddress</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">The RAM memory start address.</L-2>
@@ -661,7 +681,7 @@
                   <MAX>4294967295</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="2e9131ac-cf77-41a1-919c-5ad1b948da7d">
+                <ECUC-INTEGER-PARAM-DEF UUID="4d056155-3596-4337-8767-1bb43b157770">
                   <SHORT-NAME>FlsNumBanks</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">The number of banks present in the current device.</L-2>
@@ -684,7 +704,7 @@
                   <MAX>4294967295</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="88b6084c-338c-4221-96be-95229e63e519">
+                <ECUC-INTEGER-PARAM-DEF UUID="6ebb7c2f-befb-46cc-81e5-fe6033888a7a">
                   <SHORT-NAME>FlsSectorSizeInBytes</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">The flash memory&apos;s sector size in bytes.</L-2>
@@ -982,7 +1002,7 @@
                   <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                   <DEFAULT-VALUE>false</DEFAULT-VALUE>
                 </ECUC-BOOLEAN-PARAM-DEF>
-                <ECUC-ENUMERATION-PARAM-DEF UUID="92d303b4-69b6-4c17-9617-239b1dc6c32b">
+                <ECUC-ENUMERATION-PARAM-DEF UUID="db1119c7-6900-4ef2-8028-cc1ce872f158">
                   <SHORT-NAME>FlsIrqType</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Type of Isr function:
@@ -1019,7 +1039,7 @@
                     </ECUC-ENUMERATION-LITERAL-DEF>
                   </LITERALS>
                 </ECUC-ENUMERATION-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="14c7fa66-e443-4e63-85ec-c46746cdc194">
+                <ECUC-INTEGER-PARAM-DEF UUID="085a1c2b-3109-4871-babb-93a41934dac0">
                   <SHORT-NAME>FlsDefaultOSCounterId</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Default Os Counter Id if node reference to OsCounter ref FlsOsCounterRef is not set</L-2>
@@ -1040,7 +1060,7 @@
                   <MAX>16</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
-                <ECUC-INTEGER-PARAM-DEF UUID="bbf650d4-3442-4a5e-9f63-4e06c8922d15">
+                <ECUC-INTEGER-PARAM-DEF UUID="48e4d639-7b93-47bd-adff-6d09cb9ff90a">
                   <SHORT-NAME>FlsWaitStates</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">defines the number of random access wait states. When CPU performs a read access to Flash, data is returned after (RWAIT + 1) SYSCLK cycles.</L-2>
@@ -1063,31 +1083,7 @@
                 </ECUC-INTEGER-PARAM-DEF>
               </PARAMETERS>
               <REFERENCES>
-                <ECUC-REFERENCE-DEF UUID="67b95b80-d9b4-4b45-9230-164da7892a31">
-                  <SHORT-NAME>FlsSysClockRef</SHORT-NAME>
-                  <DESC>
-                    <L-2 L="EN">This parameter references the SYSCLK to convert timeout values from milliseconds to clock ticks. Users should ensure the correct clock reference point is selected to achieve accurate timeout calculations.</L-2>
-                  </DESC>
-                  <SCOPE>LOCAL</SCOPE>
-                  <ORIGIN>Texas Instruments</ORIGIN>
-                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
-                  <VALUE-CONFIG-CLASSES>
-                    <ECUC-VALUE-CONFIGURATION-CLASS>
-                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                    </ECUC-VALUE-CONFIGURATION-CLASS>
-                    <ECUC-VALUE-CONFIGURATION-CLASS>
-                      <CONFIG-CLASS>LINK</CONFIG-CLASS>
-                      <CONFIG-VARIANT>VARIANT-LINK-TIME</CONFIG-VARIANT>
-                    </ECUC-VALUE-CONFIGURATION-CLASS>
-                    <ECUC-VALUE-CONFIGURATION-CLASS>
-                      <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
-                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                    </ECUC-VALUE-CONFIGURATION-CLASS>
-                  </VALUE-CONFIG-CLASSES>
-                  <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint</DESTINATION-REF>
-                </ECUC-REFERENCE-DEF>
-                <ECUC-REFERENCE-DEF UUID="46134c57-5339-4d5a-b452-065dc8ed5008">
+                <ECUC-REFERENCE-DEF UUID="bb166829-7640-47c9-8e0f-a4f5a0e04fd4">
                   <SHORT-NAME>FlsCpuClockRef</SHORT-NAME>
                   <DESC>
                     <L-2 L="EN">Reference to the CPU clock configuration, which is set in the MCU driver configuration</L-2>

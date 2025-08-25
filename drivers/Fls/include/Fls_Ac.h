@@ -124,33 +124,6 @@ extern "C" {
 #define FLS_FLASH_READINTERFACE_BASE (uint32)0x301D0000U
 /** \brief Flash command  interface base address*/
 #define FLS_FLASH_FAPI_FLASHNW_FC1_BASE (uint32)0x30100000U
-
-/**  \brief  Data flash bank start address */
-#define FLS_C29FLASHBANKFR4RP0STARTADDRESS (uint32)(0x10C00000U)
-/**  \brief  Data flash bank end address */
-#define FLS_C29FLASHBANKFR4RP0ENDADDRESS (uint32)(0x10C3FFFFU)
-/**  \brief  Data flash bank end address plus 1 */
-#define FLS_C29FLASHBANKFR4RP0ENDADDRESSPLUS1 (uint32)(0x10C40000U)
-
-/**  \brief  Data flash bank ecc start address */
-#define FLS_C29FLASHBANKFR4RP0ECCSTARTADDRESS (uint32)(0x10F80000U)
-/**  \brief  Data flash bank ecc end address */
-#define FLS_C29FLASHBANKFR4RP0ECCENDADDRESS (uint32)(0x10F87FFFU)
-/**  \brief  Data flash bank ecc end address plus 1 */
-#define FLS_C29FLASHBANKFR4RP0ECCENDADDRESSPLUS1 (uint32)(0x10F88000U)
-/**  \brief  Data flash bank bankmgmt start address */
-#define FLS_C29FLASHBANKFR4RP0BANKMGMTSTARTADDRESS (uint32)(0x10D9E000U)
-/**  \brief  Data flash bank bankmgmt end address */
-#define FLS_C29FLASHBANKFR4RP0BANKMGMTENDADDRESS (uint32)(0x10D9EFFFU)
-/**  \brief  Data flash bank bankmgmt end address plus 1 */
-#define FLS_C29FLASHBANKFR4RP0BANKMGMTENDADDRESSPLUS1 (uint32)(0x10D9F000U)
-/**  \brief  Data flash bank bankmgmt ecc start address */
-#define FLS_C29FLASHBANKFR4RP0BANKMGMTECCSTARTADDRESS (uint32)(0x10FB4000)
-/**  \brief  Data flash bank bankmgmt ecc end address */
-#define FLS_C29FLASHBANKFR4RP0BANKMGMTECCENDADDRESS (uint32)(0x10FB41FF)
-/**  \brief  Data flash bank bankmgmt ecc end address plus 1*/
-#define FLS_C29FLASHBANKFR4RP0BANKMGMTECCENDADDRESSPLUS1 (uint32)(0x10FB4200)
-
 // #endif
 /**  \brief  flash prefetch enable */
 #define FLS_FLASH_PREFETCH_ENABLE 0x1U
@@ -299,25 +272,11 @@ extern "C" {
 /** \brief Flash status */
 typedef uint32 Fls_FapiFlashStatus;
 
+
 typedef struct Fls_FlashStatusWordTag
 {
     uint32 au32StatusWord[4];
-} __attribute__((packed)) Fls_FlashStatusWordType;
-
-/** \brief This is the master type containing all possible returned status codes */
-typedef enum Fls_FapiStatusTag
-{
-    FLS_FAPI_STATUS_SUCCESS         = 0U,   /*!< \brief Function completed successfully */
-    FLS_FAPI_STATUS_FSMBUSY         = 1U,   /*!< \brief FSM is Busy */
-    FLS_FAPI_STATUS_FSMREADY        = 2U,   /*!< \brief FSM is Ready */
-    FLS_FAPI_ERROR_FAIL             = 500U, /*!< \brief Generic Function Fail code */
-    FLS_FAPI_ERROR_INVALIDHCLKVALUE = 504U, /*!< \brief Returned if FClk>max FClk - FClk is from HClk & RWAIT/EWAIT*/
-    FLS_FAPI_ERROR_INVALIDADDRESS = 507U, /*!< \brief Returned if the specified Address does not exist in Flash or OTP*/
-    FLS_FAPI_ERROR_ASYNCWRONGDBUFLEN   = 509U, /*!< \brief incorrect Data buffer length */
-    FLS_FAPI_ERROR_FEATURENOTAVAILABLE = 512U, /*!< \brief FMC feature is not available on this device */
-    FLS_FAPI_ERROR_FLASHREGSNOTWRITABLE =
-        513U /*!< \brief Returned if Flash registers are not writable due to security */
-} __attribute__((packed)) Fls_FapiStatusType;
+}Fls_FlashStatusWordType;
 
 /** \brief This contains all the possible Flash State Machine commands */
 typedef enum Fls_FlashStateCmdTag
@@ -326,7 +285,7 @@ typedef enum Fls_FlashStateCmdTag
     FLS_FAPI_ERASESECTOR = 6U, /*!< \brief Issue erase sector command to FSM */
     FLS_FAPI_ERASEBANK   = 8U, /*!< \brief Issue erase bank command to FSM */
     FLS_FAPI_CLEARSTATUS = 16U /*!< \brief Issue clear status command to FSM */
-} __attribute__((packed)) Fls_FlashStateCmdType;
+} Fls_FlashStateCmdType;
 
 /** \brief Enumeration to identify if read is for single or multiple value */
 typedef enum Fls_FapiRegionValueTag
@@ -356,8 +315,6 @@ typedef enum Fls_FlashFRITag
 /* Flash State Machine commands */
 /** \brief This api will read STATCMD status register value from the Flash Wrapper
  *
- * \param[in] None
- * \param[out] None
  * \pre None
  * \post None
  * \return Returns the STATCMD status register value
@@ -368,8 +325,6 @@ extern FUNC(Fls_FapiFlashStatus, FLS_CODE) Fls_Fapi_getFsmStatus(void);
 
 /** \brief Returns the status of the Flash State Machine
  *
- * \param[in] None
- * \param[out] None
  * \pre None
  * \post None
  * \return Returns the status of the Flash State Machine
@@ -378,25 +333,23 @@ extern FUNC(Fls_FapiFlashStatus, FLS_CODE) Fls_Fapi_getFsmStatus(void);
  * \retval Fapi_Status_FsmReady: FSM is ready to accept new command
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE) Fls_Fapi_checkFsmForReady(void);
+extern FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_checkFsmForReady(void);
 
 /** \brief Configures Write(program)/Erase protection for the sectors.
  * \param[in] reg_address
  * \param[in] value
- * \param[out] None
  * \pre None
  * \post None
  * \return Configures write/ erase protection for sectors and return success
  * \retval Fapi_Status_Success: Success
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE) Fls_Fapi_setupBankSectorEnable(uint32 reg_address, uint32 value);
+extern FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_setupBankSectorEnable(uint32 reg_address, uint32 value);
 
 /** \brief Issues an erase sector command to the Flash State Machine for the user-provided sector
  *address.
  * \param[in] oCommand Command to issue to the FSM. Use Fapi_EraseSector.
  * \param[in] pu32StartAddress Flash sector address for erase operation
- * \param[out] None
  * \pre None
  * \post None
  * \return Returns the status of command
@@ -407,12 +360,11 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE) Fls_Fapi_setupBankSectorEnable(uint32 
  * \retval Fapi_Error_InvalidAddress:  User provided an invalid address
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE)
+extern FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_issueAsyncCommandWithAddress(Fls_FlashStateCmdType oCommand, uint32 *pu32StartAddress);
 
 /** \brief Issues a command (Clear Status) to FSM
  * \param[in] oCommand Command to issue to the FSM. Use Fapi_EraseSector.
- * \param[out] None
  * \pre None
  * \post None
  * \return clears the STATCMD register of flash state machine
@@ -421,12 +373,11 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE)
  * \retval Fapi_Error_FeatureNotAvailable:  User requested a command that is not supported
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE) Fls_Fapi_issueAsyncCommand(Fls_FlashStateCmdType oCommand);
+extern FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_issueAsyncCommand(Fls_FlashStateCmdType oCommand);
 
 /** \brief Issues a bank erase command to the Flash State Machine along with a user-provided sector
  *mask
  * \param[in] pu32StartAddress Flash bank address for bank erase operation
- * \param[out] None
  * \pre None
  * \post None
  * \return returns success or failure status
@@ -435,11 +386,10 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE) Fls_Fapi_issueAsyncCommand(Fls_FlashSt
  * \retval Fapi_Error_FlashRegsNotWritable:  Flash register write failed
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE) Fls_Fapi_issueBankEraseCommand(uint32 *pu32StartAddress);
+extern FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_issueBankEraseCommand(uint32 *pu32StartAddress);
 
 /** \brief Initializes the API for first use or frequency change
  * \param[in] u32HclkFrequency System clock frequency in MHz
- * \param[out] None
  * \pre None
  * \post None
  * \return returns success or failure status
@@ -449,7 +399,7 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE) Fls_Fapi_issueBankEraseCommand(uint32 
  * \retval Fapi_Error_InvalidAddress:  User provided an invalid address
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkFrequency);
+extern FUNC(Std_ReturnType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkFrequency);
 
 /** \brief Verifies region specified is erased value.
  * \param[in] pu32StartAddress Start address for region to blank check
@@ -466,7 +416,7 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE) Fls_Fapi_initializeAPI(uint32 u32HclkF
  * \retval Fapi_Error_InvalidAddress:  User provided an invalid address
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE)
+extern FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_doBlankCheck(uint32 *pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType *poFlashStatusWord);
 
 /** \brief Verifies region specified against provided data
@@ -486,12 +436,12 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE)
  * \retval Fapi_Error_InvalidAddress:  User provided an invalid address
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE)
+extern FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_doVerify(uint32 *pu32StartAddress, uint32 u32Length, uint32 *pu32CheckValueBuffer,
                       Fls_FlashStatusWordType *poFlashStatusWord);
 
 /** \brief Verifies specified Flash memory range against supplied values by byte
- * \param[in] pu32StartAddress Start address for region to verify
+ * \param[in] pu8StartAddress Start address for region to verify
  * \param[in] u32Length length of region in bytes to verify
  * \param[in] pu8CheckValueBuffer address of buffer to verify region against. Data buffer should be
  *128-bit aligned.
@@ -507,7 +457,7 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE)
  * \retval Fapi_Error_InvalidAddress:  User provided an invalid address
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE)
+extern FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_doVerifyByByte(uint8 *pu8StartAddress, uint32 u32Length, uint8 *pu8CheckValueBuffer,
                             Fls_FlashStatusWordType *poFlashStatusWord);
 
@@ -517,7 +467,6 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE)
  * \param[in] pu8DataBuffer Pointer to the Data buffer address. Data buffer should be 64-bit
  *aligned.
  * \param[in] u8DataBufferSizeInBytes Number of bytes in the Data buffer
- * \param[out] None
  * \pre None
  * \post None
  * \return returns success or failure status
@@ -528,13 +477,12 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE)
  * \retval Fapi_Error_InvalidAddress:  User provided an invalid address
  *
  *********************************************************************************************************************/
-extern FUNC(Fls_FapiStatusType, FLS_CODE)
+extern FUNC(Std_ReturnType, FLS_CODE)
     Fls_Fapi_issueProgrammingCommand(uint32 *pu32StartAddress, uint8 *pu8DataBuffer, uint8 u8DataBufferSizeInBytes);
 
 /** \brief configures read wait states and enable data cache, code cache, prefetch, and data preread
  *to improve performance of code executed from flash
  * \param[in] waitstates waitstates according to frequency
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -543,8 +491,6 @@ extern FUNC(Fls_FapiStatusType, FLS_CODE)
 extern FUNC(void, FLS_CODE) Fls_Update_WaitStates(uint16 waitstates);
 
 /** \brief Claims flash semaphore
- * \param[in] None
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -553,8 +499,6 @@ extern FUNC(void, FLS_CODE) Fls_Update_WaitStates(uint16 waitstates);
 extern FUNC(void, FLS_CODE) Fls_SSU_claimFlashSemaphore(void);
 
 /** \brief Release flash semaphore
- * \param[in] None
- * \param[out] None
  * \pre None
  * \post None
  * \return None

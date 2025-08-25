@@ -36,7 +36,6 @@ extern "C" {
  *********************************************************************************************************************/
 #include "Std_Types.h"
 #include "Fls_Cfg.h"
-#include "Fls_Ac.h"
 #include "Fls_Cbk.h"
 
 /*********************************************************************************************************************
@@ -50,9 +49,9 @@ extern "C" {
  * \brief Defines for FLS Driver version used for compatibility checks.
  */
 /** \brief Driver Implementation Major Version */
-#define FLS_SW_MAJOR_VERSION (1U)
+#define FLS_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version */
-#define FLS_SW_MINOR_VERSION (1U)
+#define FLS_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
 #define FLS_SW_PATCH_VERSION (0U)
 
@@ -164,10 +163,10 @@ typedef uint32 Fls_LengthType;
 #define FLS_E_UNEXPECTED_FLASH_ID ((uint8)0x05U)
 #endif
 
-#ifndef FLS_E_BLANK_CHECK_FAILED
-/** \brief Flash Blank Check Failediin HW */
-#define FLS_E_BLANK_CHECK_FAILED ((uint8)0x0BU)
-#endif
+ #ifndef FLS_E_BLANK_CHECK_FAILED
+ /** \brief Flash Blank Check Failediin HW */
+ #define FLS_E_BLANK_CHECK_FAILED ((uint8)0x0BU)
+ #endif
 
 /**
  * FLS Service Ids.
@@ -283,6 +282,7 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_Erase(Fls_AddressType TargetAddress, Fls_Leng
  * \param[in] TargetAddress Target address in flash memory.
  *                          This address offset will be added to the flash memory
  *                          base address.
+ * \param[in] SourceAddressPtr Pointer to source address
  * \param[in] Length - Number of bytes to write
  * \pre Preconditions - Driver not already initialized
  * \post Postconditions - Driver in initialized state
@@ -296,9 +296,7 @@ Fls_Write(Fls_AddressType TargetAddress, const uint8 *SourceAddressPtr, Fls_Leng
 
 /** \brief Reads from flash memory
  *
- * \param[in] TargetAddress Target address in flash memory.
- *                          This address offset will be added to the flash memory
- *                          base address.
+ * \param[in] SourceAddress Source address
  * \param[in] Length - Number of bytes to read
  * \param[in] TargetAddressPtr Pointer to target data buffer
  * \pre Preconditions - Driver not already initialized
@@ -333,7 +331,7 @@ Fls_Compare(Fls_AddressType SourceAddress, const uint8 *TargetAddressPtr, Fls_Le
 #if (STD_ON == FLS_BLANK_CHECK_API)
 /** \brief The function Fls_BlankCheck shall verify, whether a given memory area has been erased but
  *not (yet) programmed.
- * \param[in] TargetAddress Address in flash memory from which the blank check should be started.
+ * \param[in] Address Address in flash memory from which the blank check should be started.
  * \param[in] Length - Number of bytes to be checked for erase pattern
  * \pre Preconditions - Driver not already initialized
  * \post Postconditions - Driver in initialized state
@@ -347,7 +345,6 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_BlankCheck(Fls_AddressType Address, Fls_Lengt
 
 #if (STD_ON == FLS_GET_STATUS_API)
 /** \brief Returns the driver state.
- * \param[in] None
  * \pre Preconditions - Driver not already initialized
  * \post Postconditions - Driver in initialized state
  * \return MemIf_StatusType
@@ -358,8 +355,7 @@ FUNC(MemIf_StatusType, FLS_CODE) Fls_GetStatus(void);
 
 #if (STD_ON == FLS_VERSION_INFO_API)
 /** \brief Returns the version information of this module.
- * \param[in] None
- * \param[out] VersioninfoPtr Pointer to where to store the version information of this module.
+ * \param[out] versioninfo Pointer to where to store the version information of this module.
  * \pre Preconditions - None
  * \post Postconditions - None
  * \return None
@@ -370,9 +366,6 @@ FUNC(Std_ReturnType, FLS_CODE) Fls_GetVersionInfo(Std_VersionInfoType *versionin
 
 #if (STD_ON == FLS_GET_JOB_RESULT_API)
 /** \brief Returns the result of the last job.
- * \param[in] None
- * \param[inout] None
- * \param[out] None
  * \pre Preconditions - None
  * \post Postconditions - None
  * \return MemIf_JobResultType
@@ -382,9 +375,6 @@ FUNC(MemIf_JobResultType, FLS_CODE) Fls_GetJobResult(void);
 #endif
 
 /** \brief Performs the processing of jobs.
- * \param[in] None
- * \param[inout] None
- * \param[out] None
  * \pre Preconditions - None
  * \post Postconditions - None
  * \return None
@@ -394,9 +384,6 @@ FUNC(void, FLS_CODE) Fls_MainFunction(void);
 
 #if (FLS_CANCEL_API == STD_ON)
 /** \brief Cancels an ongoing job.
- * \param[in] None
- * \param[inout] None
- * \param[out] None
  * \pre Preconditions - None
  * \post Postconditions - None
  * \return None
@@ -408,9 +395,6 @@ FUNC(void, FLS_CODE) Fls_Cancel(void);
 #if (STD_ON == FLS_SETMODE_API)
 /** \brief Sets the flash driver's operation mode. This is a dummy API which is not supported and
  *         added for integration purposes
- * \param[in] Mode
- * \param[inout] None
- * \param[out] None
  * \pre Preconditions - None
  * \post Postconditions - None
  * \return None
@@ -422,8 +406,6 @@ FUNC(void, FLS_CODE) Fls_SetMode(MemIf_ModeType Mode);
 /** \brief Sets the parameters required in application, based on the erase type parameter
  *         passed to this function while calling from Application.
  * \param[in] erasetype
- * \param[inout] None
- * \param[out] None
  * \pre Preconditions - None
  * \post Postconditions - None
  * \return Sector or bank size

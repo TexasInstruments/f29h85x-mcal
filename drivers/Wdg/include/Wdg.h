@@ -50,11 +50,11 @@ extern "C" {
  * Defines for WDG Driver version used for compatibility checks.
  *********************************************************************************************************************/
 /** \brief Driver Implementation Major Version. */
-#define WDG_SW_MAJOR_VERSION (1U)
+#define WDG_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version. */
 #define WDG_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version. */
-#define WDG_SW_PATCH_VERSION (1U)
+#define WDG_SW_PATCH_VERSION (0U)
 
 /*********************************************************************************************************************
  * Defines for WDG Driver AUTOSAR version used for compatibility checks.
@@ -142,7 +142,7 @@ typedef struct
 #if (STD_ON == WDG_GET_VERSION_INFO_API)
 /** \brief This service returns the version information of WDG module
  *
- * \param[in] versioninfo - Pointer to store the WDG driver version information.
+ * \param[in] Versioninfo - Pointer to store the WDG driver version information.
  * \pre This API is available only if WDG_GET_VERSION_INFO_API is STD_ON
  * \post None
  * \return None

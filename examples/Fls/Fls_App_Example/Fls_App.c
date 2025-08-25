@@ -89,7 +89,7 @@ Std_ReturnType FlsApp_main_handling(void);
 static void FlsApp_PlatformInit(void)
 {
     DeviceSupport_Init();
-    Mcu_Init(&Mcu_ModuleConfiguration_0);
+    Mcu_Init(&Mcu_Config_Mcu_ModuleConfiguration_0);
 
 #if (STD_ON == MCU_CFG_INIT_CLOCK_API)
     /*Mcu_InitClock(McuConf_McuClockSettingConfig_McuClockSettingConfig_Osc2);*/
@@ -142,7 +142,7 @@ Std_ReturnType FlsApp(void)
     MemIf_JobResultType Result_type;
 #endif
 #if defined(Debug_AppPrint)
-    Port_Init(&Port_PortConfigSet);
+    Port_Init(&Port_Config);
     AppUtils_Init(200000000U);  // Init App utils to enable prints
     AppUtils_Printf("FLS Example: Sample Application - STARTS !!!\n");
 #endif
@@ -155,7 +155,7 @@ Std_ReturnType FlsApp(void)
 #if defined(Debug_AppPrint)
     AppUtils_Printf("APP_NAME : Variant - Post Build being used !!!\n\r");
 #endif
-    Fls_Init(&Fls_FlsConfigSet);
+    Fls_Init(&Fls_Config);
 #endif /* #if (STD_ON == FLS_PRE_COMPILE_VARIANT) */
 
 #if (STD_ON == FLS_VERSION_INFO_API)
@@ -650,9 +650,9 @@ Std_ReturnType FlsApp(void)
 
         for (numofseccfg = 0; numofseccfg < FLS_NUMBER_OF_SECTOR_CFG; numofseccfg++)
         {
-            sectorStartAddr      = Fls_FlsConfigSet.sectorList[numofseccfg].sectorStartAddress;
-            CfgSectorOrBlockSize = Fls_FlsConfigSet.sectorList[numofseccfg].sectorSize;
-            numOfSectorsOrBlocks = Fls_FlsConfigSet.sectorList[numofseccfg].numberOfSectors;
+            sectorStartAddr      = Fls_Config.sectorList[numofseccfg].sectorStartAddress;
+            CfgSectorOrBlockSize = Fls_Config.sectorList[numofseccfg].sectorSize;
+            numOfSectorsOrBlocks = Fls_Config.sectorList[numofseccfg].numberOfSectors;
 
             offset = sectorStartAddr - FLS_BASE_ADDRESS; /** sector start address in sector list is absolute address */
 

@@ -4,6 +4,9 @@ project(F29x_MCAL LANGUAGES C ASM)
 
 set(PROJECT_ROOT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
+# Find the Python executable 
+find_program(python_tool NAMES python python3)
+
 # Path to the signing script folder
 set(SIGNING_DIRECTORY ${PROJECT_ROOT_DIRECTORY}/build/toolchain/signing)
 
@@ -40,6 +43,22 @@ macro(CPU3MERGE PROJECT_NAME PROJECT_BIN_PATH CPU3_PROJECT_NAME CPU3_OUT_PATH)
 
 
 endmacro()
+
+# Option to enable Code Coverage Instrumentation
+option(CODE_COVERAGE "Determines whether to enable Code Coverage" OFF)
+
+# Enable / Disable Code Coverage for all the modules
+if(${CODE_COVERAGE})
+  message("\nConfiguring CMake to enable Code Coverage\n")
+
+  add_compile_options(-fprofile-instr-generate)
+  
+  add_compile_options(-fcoverage-mapping)
+
+  add_compile_options(-fmcdc)
+
+endif(${CODE_COVERAGE})
+
 # Settings specific for FLASH build configuration
 if(BUILD_CONFIGURATION MATCHES "FLASH")
 
@@ -48,7 +67,6 @@ if(BUILD_CONFIGURATION MATCHES "FLASH")
 
     # Macro to sign(add certificate) the generated .out files
     macro(SIGNING PROJECT_NAME PROJECT_BIN_PATH)
-      find_program(python_tool NAMES python python3)
       add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
       COMMAND ${CMAKE_OBJCOPY} --remove-section=cert --remove-section=.TI.bound:CPU1_Cfg --remove-section=.TI.bound:CPU2_Cfg --remove-section=.TI.bound:CPU3_Cfg -O binary ${PROJECT_BIN_PATH}/${PROJECT_NAME}.out ${PROJECT_BIN_PATH}/${PROJECT_NAME}.bin
       COMMAND ${python_tool} ${SIGNING_DIRECTORY}/sign_non_secure.py --b "${PROJECT_BIN_PATH}/${PROJECT_NAME}.bin" --c C29 --k ${SIGNING_DIRECTORY}/keys/key.pem --o 60 --l 0x10001000 
@@ -64,3 +82,12 @@ endif()
 # Build driver examples
 message("Configuring CMake to build examples\n")
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
+
+# Option to enable the build for tests
+option(BUILD_TESTS "Determines whether to build tests" OFF)
+
+# Build tests for all the modules when enabled
+if(${BUILD_TESTS})
+  message("\nConfiguring CMake to build tests when BUILD_TESTS is ON\n")
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests) 
+endif(${BUILD_TESTS})

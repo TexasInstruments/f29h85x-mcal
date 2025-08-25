@@ -182,7 +182,6 @@ extern Fls_DriverObjType Fls_DrvObj;
  *  Fls_F29Read,Fls_F29Write and Fls_F29BlankCheck function. it will perform any one
  *  function based on job type
  * \param[in] job job type to perform operation
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -192,7 +191,6 @@ extern void Fls_processJobs(Fls_JobType job);
 
 /** \brief Reset driver parameters during initialize time
  * \param[in] drvObj Input configuration parameters
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -203,7 +201,6 @@ extern void Fls_resetDrvObj(Fls_DriverObjType *drvObj);
 /** \brief Configuration parameters are copied to drvObj,this function included with Fls_init
  * \param[in] drvObj configuration parameters are copied to this object
  * \param[in] cfgPtr Input configuration parameters
- * \param[out] None
  * \pre None
  * \post None
  * \return None

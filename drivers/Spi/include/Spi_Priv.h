@@ -287,6 +287,7 @@ Spi_CopyConfig(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
  *
  *  function to initialize SPI hardware unit
  *
+ * \param[in] drvObj: pointer to driver object
  * \param[in] hwUnitObj: pointer to hardware unit object
  * \pre None
  * \post None
@@ -316,6 +317,7 @@ FUNC(void, SPI_CODE) Spi_HwUnitDeInit(P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CO
  *  function to get hardware unit object based on HW unit ID
  *
  * \param[in] HWUnit: Hw unit ID
+ * \param[in] drvObj: pointer to driver object
  * \pre None
  * \post None
  * \return return found hardware unit object based on HW unit ID
@@ -359,6 +361,7 @@ Spi_EnableInterrupt(VAR(uint32, AUTOMATIC) baseAddr, VAR(boolean, AUTOMATIC) isF
  *
  *  private function to start Asynchronous transmission
  *
+ * \param[in] drvObj: pointer to driver object
  * \param[in] seqObj: pointer to sequence object
  * \pre None
  * \post None
@@ -375,6 +378,7 @@ Spi_StartSeqAsync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
  *
  *  private function to start synchronous transmission
  *
+ * \param[in] drvObj: pointer to driver object
  * \param[in] seqObj: pointer to sequence object
  * \pre None
  * \post None
@@ -391,7 +395,7 @@ Spi_StartSeqSync(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
  *
  *  function to process receive interrupt
  *
- * \param[in] HwUnitId: Id of Hardware Unit
+ * \param[in] hwUnitId: Id of Hardware Unit
  * \pre None
  * \post None
  * \return None
@@ -405,7 +409,8 @@ FUNC(void, SPI_CODE) Spi_ProcessRxEvent(VAR(Spi_HWUnitType, AUTOMATIC) hwUnitId)
  *  function to process operations after channel transfer is done
  *
  * \param[in] hwUnitObj: pointer to HW unit object
- * \param[out] jobResult: result of channel completion
+ * \param[in] jobResult: result of channel completion
+ * \param[in] drvObj: pointer to driver object
  * \pre None
  * \post None
  * \return None
@@ -437,7 +442,7 @@ Spi_ConfigGpioChipSelect(P2CONST(Spi_JobObjType, AUTOMATIC, SPI_CODE) jobObj, VA
  *
  *  function to get HW unit base address
  *
- * \param[in] hwUnitId: HWUnit Id
+ * \param[in] HwUnitId: HWUnit Id
  * \pre None
  * \post None
  * \return uint32
@@ -450,6 +455,7 @@ FUNC(uint32, SPI_CODE) Spi_GetHwUnitBaseAddr(VAR(Spi_HWUnitType, AUTOMATIC) HwUn
  *
  *  function to cancel ongoing sequence
  *
+ * \param[in] drvObj: pointer to driver object
  * \param[in] seqObj: pointer to Sequence object
  * \pre None
  * \post None
@@ -530,7 +536,8 @@ Spi_PrivGetHWStatus(P2CONST(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj);
  *  function to process transfer interrupt(TXINT)
  *
  * \param[in] baseAddr: Base Address of HWUnit
- * \param[out] ChObj: pointer to Channel object
+ * \param[in] chObj: pointer to Channel object
+ * \param[in] txIntrStatus: transfer interrupt status
  * \pre None
  * \post None
  * \return None
@@ -629,10 +636,9 @@ Spi_PrivExtDevCopyConfig(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
  *  function to write  into  Register
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
- * \param[in] wordSize : No.of bits to be shifted while writing into register
+ * \param[in] chObj : pointer to Channel object
  * \param[in] transferLength : no.of bytes to transfer
  * \param[in] curTxWords : index of transmitted words in bufPtr
- * \param[out] bufPtr: pointer to Data Buffer
  * \pre None
  * \post None
  * \return pointer to bufPtr
@@ -648,10 +654,9 @@ LOCAL_INLINE FUNC(void, SPI_CODE)
  *  function to write  into  Register
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
- * \param[in] wordSize : No.of bits to be shifted while writing into register
+ * \param[in] chObj : pointer to Channel object
  * \param[in] transferLength : no.of bytes to transfer
  * \param[in] curTxWords : index of transmitted words in bufPtr
- * \param[out] bufPtr: pointer to Data Buffer
  * \post None
  * \return pointer to bufPtr
  * \retval pointer to bufPtr
@@ -704,9 +709,8 @@ LOCAL_INLINE uint16 *Spi_FifoRead16(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(uint1
  *  function to write default data into  Register
  *
  * \param[in] baseAddr : BaseAddress of HWUnit
- * \param[in] wordSize : No.of bits to be shifted while writing into register
+ * \param[in] chObj : pointer to Channel object
  * \param[in] transferLength : no.of bytes to transfer
- * \param[in] defaultTxData : Default data transmitted into register
  * \pre None
  * \post None
  * \return pointer to bufPtr

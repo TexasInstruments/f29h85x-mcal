@@ -137,7 +137,7 @@ Cdd_Ipc_SetCfgObj(P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONST) ConfigPt
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_IPC_CODE)
-Cdd_Ipc_Sync_Process(VAR(Cdd_Ipc_RemoteCoreType, AUTOMATIC) RemoteCore);
+Cdd_Ipc_Sync_Process(VAR(Cdd_Ipc_CoreType, AUTOMATIC) RemoteCore);
 
 /* Design: MCAL-30579 */
 /** \brief Requests the transmission of a PDU
@@ -327,7 +327,6 @@ FUNC(boolean, CDD_IPC_CODE) Cdd_Ipc_InstanceStatus(VAR(PduIdType, AUTOMATIC) Cha
 /* Design: MCAL-30591 */
 /** \brief Returns the timestamp counter value
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return 64-bit timestamp counter value

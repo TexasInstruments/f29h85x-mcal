@@ -15,7 +15,7 @@
          xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
     <d:lst type="TOP-LEVEL-PACKAGES">
       <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
-        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+        <a:a name="UUID" value="effbd32e-2911-471c-9dc3-936673548ad8"/>
         <d:lst type="ELEMENTS">
           <d:chc name="Fls" type="AR-ELEMENT" value="MODULE-DEF">
             <v:ctr type="MODULE-DEF">
@@ -278,7 +278,7 @@
                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                   <a:a name="DEFAULT_RADIX" value="HEX" />
                   <a:a name="DEFAULT" value="0" />
-                  <a:a name="UUID"  value="as:uuid()"/>
+                  <a:a name="UUID" value="1f87c1f7-b255-4cbe-9bfd-efd63e26607e"/>
                   <a:da name="INVALID" type="Range">
                     <a:tst expr="&lt;=4294967295"/>
                     <a:tst expr="&gt;=0"/>
@@ -326,7 +326,7 @@
                       <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:a name="UUID" value="87b3ba7d-2f97-4e41-b57a-832ab1500800"/>
                       <a:a name="DEFAULT_RADIX" value="HEX" />
                       <a:a name="DEFAULT" value="0" />
                       <a:da name="INVALID" type="Range">
@@ -339,18 +339,14 @@
                       <a:da name="ENABLE" value="false"/>
                       <a:da name="VISIBLE"  value="false"/>
                       <a:da name="MAX" value="1"/>
-                 <a:a name="POSTBUILDVARIANTMULTIPLICITY" value="true"/>
-                 <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
-
-                                          <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
-                                          <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
-                                          <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
-                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-
                       <v:ctr name="FlsExternalDriver" type="IDENTIFIABLE">
                           <a:a name="DESC" value="EN: This container is present for external Flash drivers only. Internal Flash drivers do not use the parameter listed in this container, hence its multiplicity is 0 for internal drivers. Currently, not supported as only internal flash is present."/>
                           <a:a name="UUID" value="ECUC:81c36c86-d308-47d4-bc55-a02b401446e0"/>
-
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                 <icc:v class="PreCompile">VariantPostBuild</icc:v>
+                                 <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
                           <v:lst name="FlsSpiReference">
                                 <a:da name="MIN" value="1"/>
                                 <v:ref name="FlsSpiReference" type="SYMBOLIC-NAME-REFERENCE">
@@ -375,20 +371,16 @@
                   <a:a name="UUID" value="9ce126cc-6696-4720-96a5-8f9279a472f1"/>
                   <v:lst name="FlsSector" type="MAP">
                     <a:da name="MIN" value="1"/>
-                          <a:a name="POSTBUILDVARIANTMULTIPLICITY" value="true"/>
-                          <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                     <v:ctr name="FlsSector" type="IDENTIFIABLE">
                       <a:a name="DESC"
                            value="EN: Configuration description of a flashable sector"/>
                       <a:a name="UUID"
                            value="9ba2a1f9-bf08-4c0b-beba-a64cbfaa16cf"/>
-
-                                          <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
-                                          <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
-                                          <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
-                                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-
-
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                 <icc:v class="PreCompile">VariantPostBuild</icc:v>
+                                 <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
                       <v:var name="FlsNumberOfSectors" type="INTEGER">
                         <a:da name="DEFAULT" value="1"/>
                         <a:a name="DESC"
@@ -485,7 +477,7 @@
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:a name="UUID" value="2c124b17-e519-4eec-ab22-1fb21eeb457a"/>
                       <a:da name="DEFAULT" value="F29H85x"/>
                   <a:da name="RANGE">
                          <a:v>F29H85x</a:v>
@@ -519,7 +511,7 @@
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:a name="UUID" value="78883b56-f4ca-4f65-9bdb-3f16393dbee5"/>
                       <!--
                       <a:a name="DEFAULT_RADIX" value="HEX" />
                       <a:da name="DEFAULT" type="XPath" expr="num:i(number(ecu:get('Fls_Sram_BaseAddr')))"/>
@@ -547,6 +539,7 @@
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" value="545b1941-3bb1-47c9-af11-49db5d9363cd"/>
+                      <a:da name="EDITABLE" value="false"/>
                       <!--
                       <a:da name="DEFAULT" type="XPath" expr="num:i(number(ecu:get('Fls_BaseAddr')))"/>
                       <a:da name="EDITABLE" value="false"/>
@@ -591,7 +584,8 @@
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:a name="UUID" value="4d056155-3596-4337-8767-1bb43b157770"/>
+                      <a:da name="EDITABLE" value="false"/>
                       <!--
                       <a:da name="DEFAULT" type="XPath" expr="num:i(number(ecu:get(concat('Fls_DataFlash_NumBanks_',node:value(../FlsDeviceVariant  )))))"/>
                       <a:da name="ENABLE" value = "true"/>
@@ -613,7 +607,8 @@
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:a name="UUID" value="6ebb7c2f-befb-46cc-81e5-fe6033888a7a"/>
+                      <a:da name="EDITABLE" value="false"/>
                       <!--
                       <a:da name="DEFAULT" type="XPath" expr="num:i(number(ecu:get('Fls_DataFlash_SectorSize')))"/>
                       <a:da name="EDITABLE" value="false"/>
@@ -827,23 +822,7 @@
                       <a:a name="UUID" value="5c0bb8fd-3722-4f59-b577-8125ff7d14f3"/>
                       <a:da name="DEFAULT" value="false"/>
                 </v:var>
-
-                <v:ref name="FlsSysClockRef" type="REFERENCE">
-                  <a:a name="DESC"
-                       value="EN: This parameter references the SYSCLK to convert timeout values from milliseconds to clock ticks. Users should ensure the correct clock reference point is selected to achieve accurate timeout calculations."/>
-                  <a:a name="IMPLEMENTATIONCONFIGCLASS"
-                       type="IMPLEMENTATIONCONFIGCLASS">
-                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      <icc:v vclass="Link">VariantLinkTime</icc:v>
-                      <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
-                  </a:a>
-                  <a:a name="ORIGIN" value="Texas Instruments"/>
-                  <a:a name="SCOPE" value="LOCAL"/>
-                  <a:a name="UUID" type="XPath" expr="as:uuid()"/>
-                  <a:da name="REF"
-                                value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
-                </v:ref>
-
+                
                 <v:var name="FlsIrqType" type="ENUMERATION">
                       <a:a name="DESC">
                           <a:v>EN: Type of Isr function:
@@ -857,7 +836,7 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:a name="UUID" value="db1119c7-6900-4ef2-8028-cc1ce872f158"/>
                       <a:da name="DEFAULT" value="FLS_ISR_CAT1"/>
                       <a:da name="RANGE">
                           <a:v>FLS_ISR_VOID</a:v>
@@ -873,7 +852,7 @@
                           <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
-                          <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                          <a:a name="UUID" value="085a1c2b-3109-4871-babb-93a41934dac0"/>
                       <a:da name="INVALID" type="Range">
                           <a:tst expr="&lt;=16"/>
                           <a:tst expr="&gt;=0"/>
@@ -889,7 +868,7 @@
                         </a:a>
                         <a:a name="ORIGIN" value="Texas Instruments"/>
                         <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                        <a:a name="UUID" value="bb166829-7640-47c9-8e0f-a4f5a0e04fd4"/>
                         <a:da name="REF" value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
                         <a:da name="ENABLE" value="true"/>
                         <a:da name="VISIBLE"  value="true"/>
@@ -901,7 +880,7 @@
                           <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+                      <a:a name="UUID" value="48e4d639-7b93-47bd-adff-6d09cb9ff90a"/>
                       <a:da name="DEFAULT" value="3"/>
                       <a:da name="INVALID" type="Range">
                           <a:tst expr="&lt;=3"/>
@@ -1121,7 +1100,7 @@
                  value="ECU_PARAMETER_DEFINITION">
             <d:ctr type="AR-ELEMENT">
               <a:a name="DEF"  value="ASPath:/AR_PACKAGE_SCHEMA/ECU_PARAMETER_DEFINITION"/>
-              <a:a name="UUID" type="XPath" expr="as:uuid()"/>
+              <a:a name="UUID" value="f89ad65c-64a2-41dc-acbd-13c4d06599c0"/>
               <d:lst name="MODULE_REF">
                 <d:ref type="MODULE_REF" value="ASPath:/TI_F29H85x/Fls"/>
               </d:lst>

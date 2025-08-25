@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-[!SELECT "as:modconf('Lin')[1]"!]
+[!SELECT "as:modconf('Lin')[as:path(node:dtos(.))='/TI_F29H85x/Lin']"!]
 [!AUTOSPACING!][!//
 [!VAR "LinDevErrorDetect_Enable"="LinGeneral/LinDevErrorDetect = 'true'"!][!//
 [!VAR "LinVersionInfoApi_Enable"="LinGeneral/LinVersionInfoApi = 'true'"!][!//
@@ -12,7 +12,7 @@
           <SHORT-NAME>Lin</SHORT-NAME>
           <CATEGORY>BSW_MODULE</CATEGORY>
           <IMPLEMENTED-ENTRYS>
-[!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!//
+[!LOOP "LinGlobalConfig/LinChannel/*"!][!//
 [!IF "LinInstance='LIN_INSTANCE_A'"!][!//
 [!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_0'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -70,7 +70,7 @@
           </IMPLEMENTED-ENTRYS>
           <MODULE-ID>82</MODULE-ID>
           <BSW-MODULE-DEPENDENCYS>
-          [!IF "node:refexists(as:modconf('Lin')[1]/LinDemEventParameterRefs/LIN_E_TIMEOUT)"!]
+          [!IF "node:refexists(as:modconf('Lin')[as:path(node:dtos(.))='/TI_F29H85x/Lin']/LinDemEventParameterRefs/LIN_E_TIMEOUT)"!]
             <BSW-MODULE-DEPENDENCY UUID="eb1ebab4-14e1-4e6a-a5eb-d1b26074fcb0">
               <SHORT-NAME>Dem</SHORT-NAME>
               <TARGET-MODULE-ID>54</TARGET-MODULE-ID>
@@ -128,7 +128,7 @@
                 </EXCLUSIVE-AREA>
               </EXCLUSIVE-AREAS>
               <ENTITYS>
-[!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!//
+[!LOOP "LinGlobalConfig/LinChannel/*"!][!//
 [!IF "LinInstance='LIN_INSTANCE_A'"!][!//
 [!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_0'"!][!//
                 <BSW-INTERRUPT-ENTITY UUID="8859c13f-9fe5-4c20-9e0a-59a217331704">
@@ -273,7 +273,7 @@
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
-                  [!IF "node:refexists(as:modconf('Lin')[1]/LinDemEventParameterRefs/LIN_E_TIMEOUT)"!]
+                  [!IF "node:refexists(as:modconf('Lin')[as:path(node:dtos(.))='/TI_F29H85x/Lin']/LinDemEventParameterRefs/LIN_E_TIMEOUT)"!]
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Dem/BSWModuleEntry/Dem_SetEventStatus</CALLED-ENTRY-REF>
@@ -415,7 +415,7 @@
               <SHORT-NAME>c29clang</SHORT-NAME>
               <NAME>TI_C29Clang</NAME>
               <VENDOR>Texas Instruments</VENDOR>
-              <VERSION>1.0.0</VERSION>
+              <VERSION>2.0.0</VERSION>
             </COMPILER>
           </COMPILERS>
           <LINKERS>
@@ -423,7 +423,7 @@
               <SHORT-NAME>c29lnk</SHORT-NAME>
               <NAME>TI_C29Linker</NAME>
               <VENDOR>Texas Instruments</VENDOR>
-              <VERSION>1.0.0</VERSION>
+              <VERSION>2.0.0</VERSION>
             </LINKER>
           </LINKERS>
           <PROGRAMMING-LANGUAGE>C</PROGRAMMING-LANGUAGE>
@@ -481,7 +481,7 @@
         <AR-PACKAGE UUID="40fae15c-559a-4693-b7f6-a85dfcc9a94f">
           <SHORT-NAME>BSWModuleEntry</SHORT-NAME>
           <ELEMENTS>
-[!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!//
+[!LOOP "LinGlobalConfig/LinChannel/*"!][!//
 [!IF "LinInstance='LIN_INSTANCE_A'"!][!//
 [!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_0'"!][!//
             <BSW-MODULE-ENTRY UUID="9c41d5c9-252c-48f8-bd14-b09e3f421f36">

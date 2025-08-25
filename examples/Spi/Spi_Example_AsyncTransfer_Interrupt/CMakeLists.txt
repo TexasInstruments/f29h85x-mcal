@@ -56,7 +56,7 @@ endif()
 
 if(NOT TARGET Spi_Example_AsyncTransfer_Interrupt_Config)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/F29H85x_config/
+        ${CMAKE_CURRENT_SOURCE_DIR}/Spi_Example_AsyncTransfer_Interrupt_Config/
         ${CMAKE_BINARY_DIR}/Spi_Example_AsyncTransfer_Interrupt/Spi_Example_AsyncTransfer_Interrupt_Config)
 endif()
 

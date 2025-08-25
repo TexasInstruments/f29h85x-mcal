@@ -23,7 +23,7 @@
 #define CAN_CFG_H
 
 /**
- * \defgroup CAN Can API GUIDE Header file
+ * \addtogroup CAN
  * @{
  */
 
@@ -56,7 +56,7 @@ extern "C" {
 /** \brief Can configuration Patch Version. */
 #define CAN_CFG_PATCH_VERSION    ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 
-
+[!SELECT "as:modconf('Can')[as:path(node:dtos(.))='/TI_F29H85x/Can']"!]
 /*****************************************************************************
  *
  * \brief Can Build Variant.
@@ -66,7 +66,7 @@ extern "C" {
 /*
  *Design: MCAL-24204
  */
-#define CAN_CFG_PRE_COMPILE_VARIANT          [!IF "as:modconf('Can')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CAN_CFG_PRE_COMPILE_VARIANT          [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
 /*****************************************************************************
@@ -77,7 +77,7 @@ extern "C" {
 /*
  *Design: MCAL-22746,MCAL-22745
  */
-#define CAN_CFG_DEV_ERROR_DETECT             [!IF "as:modconf('Can')[1]/CanGeneral/CanDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CAN_CFG_DEV_ERROR_DETECT             [!IF "CanGeneral/CanDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
 
@@ -89,10 +89,10 @@ extern "C" {
 /*
  *Design: MCAL-22753,MCAL-22745
  */
-#define CAN_CFG_ICOM_SUPPORT             [!IF "as:modconf('Can')[1]/CanGeneral/CanPublicIcomSupport = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CAN_CFG_ICOM_SUPPORT             [!IF "CanGeneral/CanPublicIcomSupport = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-[!IF "as:modconf('Can')[1]/CanGeneral/CanPublicIcomSupport = 'true'"!][!//
-[!IF "node:exists(as:modconf('Can')[1]/CanGeneral/CanIcomGeneral/*) = 'true'"!][!//
+[!IF "CanGeneral/CanPublicIcomSupport = 'true'"!][!//
+[!IF "node:exists(CanGeneral/CanIcomGeneral/*) = 'true'"!][!//
 /*****************************************************************************
  *
  * \brief CAN ICOM variant. (i.e SW, HW, HW/SW)
@@ -102,10 +102,10 @@ extern "C" {
  *Design: MCAL-22810,MCAL-22745
  */
 
-[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!//
+[!LOOP "CanGeneral"!][!//
 #define CAN_ICOM_VARIANT	[!"CanIcomGeneral/CanIcomVariant"!]
 
-[!IF "node:exists(as:modconf('Can')[1]/CanGeneral/CanIcomGeneral/CanIcomLevel) = 'true'"!][!//
+[!IF "node:exists(CanIcomGeneral/CanIcomLevel) = 'true'"!][!//
 /*****************************************************************************
  *
  * \brief CAN ICOM level, this value is always one.
@@ -120,6 +120,13 @@ extern "C" {
 [!ENDIF!][!//
 [!ENDIF!][!//
 
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!][!//
+/*****************************************************************************
+ * \brief Pre Compile config macro name.
+ ****************************************************************************/
+#define CAN_INIT_CONFIG_PC        Can_Config
+[!ENDIF!][!//
+
 /*****************************************************************************
  *
  * \brief This parameter defines the existence and the name of a callout function that is called 
@@ -130,13 +137,13 @@ extern "C" {
 /*
  *Design: MCAL-22748,MCAL-22745
  */
-[!IF "node:exists(as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction) = 'true'"!]
-[!IF "as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction/* = ''"!]
+[!IF "node:exists(CanGeneral/CanLPduReceiveCalloutFunction) = 'true'"!]
+[!IF "CanGeneral/CanLPduReceiveCalloutFunction/* = ''"!]
 [!ERROR "CanLPduReceiveCalloutFunction should not be NULL"!][!//
 [!ENDIF!]
 
-#define CAN_LPDU_RECEIVE_CALLOUT_FUNCTION            [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"!]
-extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"!](uint8 Hrh, Can_IdType CanId, uint8 CanDataLegth,const uint8* CanSduPtr);
+#define CAN_LPDU_RECEIVE_CALLOUT_FUNCTION            [!"CanGeneral/CanLPduReceiveCalloutFunction"!]
+extern boolean [!"CanGeneral/CanLPduReceiveCalloutFunction"!](Can_HwHandleType Hrh, Can_IdType CanId, uint8 CanDataLegth,const uint8* CanSduPtr);
 [!ENDIF!]
 
 
@@ -148,7 +155,7 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 /*
  *Design: MCAL-22752,MCAL-22745
  */
-#define CAN_CFG_MULTIPLEXED_TX     [!IF "as:modconf('Can')[1]/CanGeneral/CanMultiplexedTransmission = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CAN_CFG_MULTIPLEXED_TX     [!IF "CanGeneral/CanMultiplexedTransmission = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
 /*****************************************************************************
@@ -159,7 +166,7 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 /*
  *Design: MCAL-22756
  */
-#define CAN_CFG_GET_VERSION_INFO_API         [!IF "as:modconf('Can')[1]/CanGeneral/CanVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CAN_CFG_GET_VERSION_INFO_API         [!IF "CanGeneral/CanVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*****************************************************************************
  *
@@ -169,7 +176,7 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 /*
  *Design: MCAL-22754
  */
-#define CAN_CFG_SET_BAUDRATE_API         [!IF "as:modconf('Can')[1]/CanGeneral/CanSetBaudrateApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CAN_CFG_SET_BAUDRATE_API         [!IF "CanGeneral/CanSetBaudrateApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
 /*****************************************************************************
@@ -177,7 +184,7 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
  * \brief Enable/Disable ECC configuration.
  *
  *****************************************************************************/
-#define CAN_CFG_ECC         [!IF "as:modconf('Can')[1]/CanGeneral/CanECCSupport = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CAN_CFG_ECC         [!IF "CanGeneral/CanECCSupport = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
 /*****************************************************************************
@@ -189,7 +196,7 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
  *Design: MCAL-22802
  */
 /*<CAN_CFG_MAINFUNCTIONREADWRITE_LIST>*/
-[!LOOP "as:modconf('Can')[1]/CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
+[!LOOP "CanGeneral"!][!LOOP "CanMainFunctionRWPeriods/*"!][!//
 /* Symbolic name of the RW period [!"@index"!]*/
 #define [!"@name"!]    [!"@index"!] /*~ASR~*/
 
@@ -213,8 +220,8 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
  *Design: MCAL-22755
  */
 
-[!VAR "sysClockFrequency"="num:i(node:value(concat(node:path(node:ref(as:modconf('Can')[1]/CanGeneral/CanSysClockRef)), '/McuClockReferencePointFrequency')))"!]
-#define CAN_CFG_TIMEOUT_DURATION    ((McalLib_TickType)([!"num:i(as:modconf('Can')[1]/CanGeneral/CanTimeoutDuration * $sysClockFrequency)"!]U))
+[!VAR "sysClockFrequency"="num:i(node:value(concat(node:path(node:ref(CanGeneral/CanSysClockRef)), '/McuClockReferencePointFrequency')))"!]
+#define CAN_CFG_TIMEOUT_DURATION    ((McalLib_TickType)([!"num:i(CanGeneral/CanTimeoutDuration * $sysClockFrequency)"!]U))
 
 /*****************************************************************************
  *
@@ -223,21 +230,21 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
  *  Unit is cycles.
  *
  *****************************************************************************/
-#define CAN_CFG_TIMEOUT_DURATION_CYCLES	    ((uint32)[!"num:i(num:mul(as:modconf('Can')[1]/CanGeneral/CanTimeoutDuration,10000000))"!]U)
+#define CAN_CFG_TIMEOUT_DURATION_CYCLES	    ((uint32)[!"num:i(num:mul(CanGeneral/CanTimeoutDuration,10000000))"!]U)
 [!//
 [!VAR "wakeupfunc"="0"!][!//
 [!VAR "txpoll"="0"!][!//
 [!VAR "rxpoll"="0"!][!//
 [!VAR "busoffpoll"="0"!][!//
 [!VAR "wakeuppoll"="0"!][!//
-[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
+[!LOOP "CanConfigSet/CanController/*"!][!//
 [!IF "CanWakeupFunctionalityAPI = 'true'"!][!//
     [!VAR "wakeupfunc" = "$wakeupfunc + 1"!][!//
 [!ENDIF!][!//
-[!IF "CanTxProcessing = 'POLLING'"!][!//
+[!IF "CanTxProcessing != 'INTERRUPT'"!][!//
     [!VAR "txpoll" = "$txpoll + 1"!][!//
 [!ENDIF!][!//
-[!IF "CanRxProcessing = 'POLLING'"!][!//
+[!IF "CanRxProcessing != 'INTERRUPT'"!][!//
     [!VAR "rxpoll" = "$rxpoll + 1"!][!//
 [!ENDIF!][!//
 [!IF "CanBusoffProcessing = 'POLLING'"!][!//
@@ -293,7 +300,7 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
  * \brief Defines for symbolic names for the CanHardwareObjectIds 
  *
  *****************************************************************************/
-[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanHardwareObject/*"!][!//
+[!LOOP "CanConfigSet/CanHardwareObject/*"!][!//
 #define CanConf_CanHardwareObject_[!"@name"!] ([!"CanObjectId"!]U)  /*~ASR~*/
 [!ENDLOOP!][!//
 
@@ -302,7 +309,7 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
  * \brief Defines for symbolic names for the Can controller ID's (CanControllerId) 
  *
  *****************************************************************************/
-[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
+[!LOOP "CanConfigSet/CanController/*"!][!//
 #define CanConf_CanController_[!"@name"!] ([!"CanControllerId"!]U)  /*~ASR~*/
 [!ENDLOOP!][!//
 
@@ -314,8 +321,20 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
  * \brief Can Controller Instance interrupt definition 
  *
  *****************************************************************************/
-[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanController/*"!][!//
-[!IF "CanRxProcessing ='INTERRUPT' or CanTxProcessing ='INTERRUPT' or CanBusoffProcessing ='INTERRUPT' or CanWakeupProcessing ='INTERRUPT'"!]
+[!IF "node:refexists(CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR) or node:refexists(CanGeneral/CanDemEventParameterRefs/CAN_E_SAFTEY_BEU_ERROR )"!]
+[!LOOP "CanConfigSet/CanController/*"!][!//
+#define CAN_[!"CanControllerInstance"!]_ENABLE
+[!IF "CanInteruptType = 'CAN_ISR_CAT1_RTINT'"!][!//
+#define CAN_[!"CanControllerInstance"!]_ISR_CAT1_RTINT
+[!ELSEIF "CanInteruptType = 'CAN_ISR_CAT1_INT'"!][!//
+#define CAN_[!"CanControllerInstance"!]_ISR_CAT1_INT
+[!ELSE!][!//
+#define CAN_[!"CanControllerInstance"!]_ISR_CAT2
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+[!ELSE!][!//
+[!LOOP "CanConfigSet/CanController/*"!][!//
+[!IF "CanRxProcessing !='POLLING' or CanTxProcessing !='POLLING' or CanBusoffProcessing ='INTERRUPT' or CanWakeupProcessing ='INTERRUPT'"!]
 #define CAN_[!"CanControllerInstance"!]_ENABLE
 [!IF "CanInteruptType = 'CAN_ISR_CAT1_RTINT'"!][!//
 #define CAN_[!"CanControllerInstance"!]_ISR_CAT1_RTINT
@@ -326,6 +345,7 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 [!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDLOOP!][!//
+[!ENDIF!][!//
 
 
 /*****************************************************************************
@@ -336,25 +356,25 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 /*
  *Design: MCAL-23019
  */
-#define KMAX_CONTROLLER                      ([!"num:i(count(as:modconf('Can')[1]/CanConfigSet/CanController/*))"!]U)
+#define KMAX_CONTROLLER                      ([!"num:i(count(CanConfigSet/CanController/*))"!]U)
 
 /*****************************************************************************
  *
  * \brief Max number of mailboxes defined 
  *
  *****************************************************************************/
-#define KMAX_MAILBOXES                       ([!"num:i(count(as:modconf('Can')[1]/CanConfigSet/CanHardwareObject/*))"!]U)
+#define KMAX_MAILBOXES                       ([!"num:i(count(CanConfigSet/CanHardwareObject/*))"!]U)
 
 /*****************************************************************************
  *
  * \brief Max number of Icom configurations defined 
  *
  *****************************************************************************/
-#define MAX_ICOM_CONFIGURATION               ([!"num:i(count(as:modconf('Can')[1]/CanConfigSet/CanIcom/CanIcomConfig/*))"!]U)
+#define MAX_ICOM_CONFIGURATION               ([!"num:i(count(CanConfigSet/CanIcom/CanIcomConfig/*))"!]U)
 
 [!VAR "IcomMax" =  "0"!][!//
 [!VAR "IcomRxsignals" =  "0"!][!//
-[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanIcom/CanIcomConfig/*"!][!//
+[!LOOP "CanConfigSet/CanIcom/CanIcomConfig/*"!][!//
 [!VAR "IcomRxcount" = "num:i(count(CanIcomWakeupCauses/CanIcomRxMessage/*))"!][!//
 [!IF "num:i($IcomRxcount) > num:i($IcomMax)"!][!//
 [!VAR "IcomMax" = "$IcomRxcount"!][!//
@@ -388,29 +408,50 @@ extern boolean [!"as:modconf('Can')[1]/CanGeneral/CanLPduReceiveCalloutFunction"
 /*********************************************************************************************************************
  * \brief Enable/Disable DEM for Hardware failure.
  *********************************************************************************************************************/
-#define CAN_CFG_DEM_ENABLE    [!IF "node:refexists(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CAN_CFG_DEM_ENABLE    [!IF "node:refexists(CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-[!IF "node:refexists(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR)"!]
+[!IF "node:refexists(CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR)"!]
 
-#define CAN_E_HARDWARE_ERROR  (DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR))"!])
+#define CAN_E_HARDWARE_ERROR  (DemConf_DemEventParameter_[!"node:name(node:ref(CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR))"!])
 [!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable DEM for ECC BEU error.
  *********************************************************************************************************************/
-#define CAN_CFG_DEM_BEU_ENABLE    [!IF "node:refexists(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_SAFTEY_BEU_ERROR)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CAN_CFG_DEM_BEU_ENABLE    [!IF "node:refexists(CanGeneral/CanDemEventParameterRefs/CAN_E_SAFTEY_BEU_ERROR)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-[!IF "node:refexists(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_SAFTEY_BEU_ERROR)"!]
+[!IF "node:refexists(CanGeneral/CanDemEventParameterRefs/CAN_E_SAFTEY_BEU_ERROR)"!]
 
-#define CAN_E_SAFTEY_BEU_ERROR  (DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Can')[1]/CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR))"!])
+#define CAN_E_SAFTEY_BEU_ERROR  (DemConf_DemEventParameter_[!"node:name(node:ref(CanGeneral/CanDemEventParameterRefs/CAN_E_SAFTEY_BEU_ERROR))"!])
 [!ENDIF!]
 
 /*****************************************************************************
  *
- * \brief Max number of mailboxes per controller 
+ * \brief Max number of receive dedicated mailboxes per controller 
  *
  *****************************************************************************/
-#define KMAX_MB_PER_CONTROLLER               (64U)
+#define KMAX_RX_MB_PER_CONTROLLER               (64U)
+
+/*****************************************************************************
+ *
+ * \brief Max number of transmit dedicated mailboxes per controller 
+ *
+ *****************************************************************************/
+#define KMAX_TX_MB_PER_CONTROLLER               (32U)
+
+/*****************************************************************************
+ *
+ * \brief Max number of standard filters per controller 
+ *
+ *****************************************************************************/
+#define KMAX_STD_FILTERS_PER_CONTROLLER         (128U)
+
+/*****************************************************************************
+ *
+ * \brief Max number of standard filters per controller 
+ *
+ *****************************************************************************/
+#define KMAX_EXTD_FILTERS_PER_CONTROLLER         (64U)
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
@@ -449,13 +490,13 @@ typedef enum
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
-[!LOOP "as:modconf('Can')[1]/CanConfigSet"!][!//
+[!LOOP "CanConfigSet"!][!//
 /** \brief CAN Configuration struct declaration */
-extern const struct Can_ConfigType_s Can_[!"@name"!];
+extern const struct Can_ConfigType_s Can_Config;
 [!ENDLOOP!][!//
 
-[!IF "as:modconf('Can')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!]
-[!LOOP "as:modconf('Can')[1]/CanConfigSet"!][!LOOP "CanController/*"!][!//
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!]
+[!LOOP "CanConfigSet"!][!LOOP "CanController/*"!][!//
 [!LOOP "CanControllerBaudrateConfig/*"!][!//
 
 /* Baud Rate Structure for all configsets */
@@ -464,12 +505,12 @@ extern CONST(struct Can_BaudConfigType_s, CAN_CONFIG_DATA) [!"../../../../@name"
 [!ENDLOOP!][!ENDLOOP!][!ENDLOOP!][!//
 
 /*List of the Baudrate structures */
-[!LOOP "as:modconf('Can')[1]/CanConfigSet"!][!LOOP "CanController/*"!][!//
+[!LOOP "CanConfigSet"!][!LOOP "CanController/*"!][!//
 
 extern CONST(struct Can_BaudConfigType_s*, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!]_BaudRateConfigList[[!"num:i(count(CanControllerBaudrateConfig/*))"!]];
 [!ENDLOOP!][!ENDLOOP!][!//
 
-[!LOOP "as:modconf('Can')[1]/CanConfigSet"!][!LOOP "CanController/*"!][!//
+[!LOOP "CanConfigSet"!][!LOOP "CanController/*"!][!//
 /* Controller structure for [!"../../@name"!]_[!"@name"!]*/
 extern CONST(struct Can_ControllerType_s, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!];
 
@@ -477,15 +518,15 @@ extern CONST(struct Can_ControllerType_s, CAN_CONFIG_DATA) [!"../../@name"!]_[!"
 
 
 #if (CAN_CFG_ICOM_SUPPORT == STD_ON)
-[!LOOP "as:modconf('Can')[1]/CanConfigSet/CanIcom/CanIcomConfig/*"!][!//
+[!LOOP "CanConfigSet/CanIcom/CanIcomConfig/*"!][!//
 /* Icom configuration for  [!"@name"!] */
 extern CONST(struct Can_IcomConfigType_s, CAN_CONFIG_DATA) Can_[!"@name"!];
 [!ENDLOOP!][!//
 
-extern CONST(struct Can_IcomConfigType_s*, CAN_CONFIG_DATA) Can_IcomConfigurationList[[!"num:i(count(as:modconf('Can')[1]/CanConfigSet/CanIcom/CanIcomConfig/*))"!]];
+extern CONST(struct Can_IcomConfigType_s*, CAN_CONFIG_DATA) Can_IcomConfigurationList[[!"num:i(count(CanConfigSet/CanIcom/CanIcomConfig/*))"!]];
 #endif
 [!ENDIF!]
-
+[!ENDSELECT!]
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes
@@ -498,7 +539,9 @@ extern CONST(struct Can_IcomConfigType_s*, CAN_CONFIG_DATA) Can_IcomConfiguratio
 #ifdef __cplusplus
 }
 #endif
-
+/**
+ * @}
+ */
 #endif /* CAN_CFG_H */
 /*********************************************************************************************************************
  *  End of File: Can_Cfg.h

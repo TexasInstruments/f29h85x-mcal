@@ -49,7 +49,7 @@ extern "C" {
 /** \brief Driver Implementation Minor Version */
 #define CDD_ADC_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_ADC_SW_PATCH_VERSION (0U)
+#define CDD_ADC_SW_PATCH_VERSION (1U)
 
 /*  Defines for CDD_ADC Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_ADC Driver*/
@@ -68,86 +68,58 @@ extern "C" {
 #define CDD_ADC_INSTANCE_ID ((uint8)0U)
 
 /* Error codes returned by Cdd Adc functions. */
-#ifndef CDD_ADC_E_UNINIT
+
 /** \brief API service used without module initialization */
-#define CDD_ADC_E_UNINIT ((uint8)0x0AU)
-#endif
+#define CDD_ADC_E_UNINIT ((uint8)0x0AU) /* Design: MCAL-31146 */
 
-#ifndef CDD_ADC_E_BUSY
 /** \brief API service called during ongoing process/conversion */
-#define CDD_ADC_E_BUSY ((uint8)0x0BU)
-#endif
+#define CDD_ADC_E_BUSY ((uint8)0x0BU) /* Design: MCAL-31147 */
 
-#ifndef CDD_ADC_E_IDLE
 /** \brief API service called while no conversion is ongoing */
-#define CDD_ADC_E_IDLE ((uint8)0x0CU)
-#endif
+#define CDD_ADC_E_IDLE ((uint8)0x0CU) /* Design: MCAL-31148 */
 
-#ifndef CDD_ADC_E_ALREADY_INITIALIZED
 /** \brief API Cdd_Adc_Init service called while the ADC driver has already been initialized */
-#define CDD_ADC_E_ALREADY_INITIALIZED ((uint8)0x0DU)
-#endif
+#define CDD_ADC_E_ALREADY_INITIALIZED ((uint8)0x0DU) /* Design: MCAL-31149 */
 
-#ifndef CDD_ADC_E_PARAM_CONFIG
 /** \brief  API service called with incorrect configuration parameter */
-#define CDD_ADC_E_PARAM_CONFIG ((uint8)0x0EU)
-#endif
+#define CDD_ADC_E_PARAM_CONFIG ((uint8)0x0EU) /* Design: MCAL-31150 */
 
-#ifndef CDD_ADC_E_PARAM_POINTER
 /** \brief  API service called with invalid data buffer pointer */
-#define CDD_ADC_E_PARAM_POINTER ((uint8)0x14U)
-#endif
+#define CDD_ADC_E_PARAM_POINTER ((uint8)0x14U) /* Design: MCAL-31151 */
 
-#ifndef CDD_ADC_E_PARAM_GROUP
 /** \brief  API service called with invalid group ID */
-#define CDD_ADC_E_PARAM_GROUP ((uint8)0x15U)
-#endif
+#define CDD_ADC_E_PARAM_GROUP ((uint8)0x15U) /* Design: MCAL-31152 */
 
-#ifndef CDD_ADC_E_WRONG_RESOLUTION_MODE
 /** \brief  API service called with invalid hardware unit ID */
-#define CDD_ADC_E_WRONG_RESOLUTION_MODE ((uint8)0x18U)
-#endif
+#define CDD_ADC_E_WRONG_RESOLUTION_MODE ((uint8)0x18U) /* Design: MCAL-31153 */
 
-#ifndef CDD_ADC_E_WRONG_CONV_MODE
 /** \brief API service called on a group with conversion mode configured as continuous */
-#define CDD_ADC_E_WRONG_CONV_MODE ((uint8)0x1AU)
-#endif
+#define CDD_ADC_E_WRONG_CONV_MODE ((uint8)0x1AU) /* Design: MCAL-31154 */
 
-#ifndef CDD_ADC_E_WRONG_TRIGG_SRC
 /** \brief API service called for group with wrong trigger source*/
-#define CDD_ADC_E_WRONG_TRIGG_SRC ((uint8)0x1BU)
-#endif
+#define CDD_ADC_E_WRONG_TRIGG_SRC ((uint8)0x1BU) /* Design: MCAL-31155 */
 
-#ifndef CDD_ADC_E_NOTIF_CAPABILITY
 /** \brief Enable/disable notification function for a group whose configuration set has no
  * notification available */
-#define CDD_ADC_E_NOTIF_CAPABILITY ((uint8)0x1CU)
-#endif
+#define CDD_ADC_E_NOTIF_CAPABILITY ((uint8)0x1CU) /* Design: MCAL-311596 */
 
-#ifndef CDD_ADC_E_BUFFER_UNINIT
 /** \brief Conversion started and result buffer pointer is not initialized */
-#define CDD_ADC_E_BUFFER_UNINIT ((uint8)0x1DU)
-#endif
+#define CDD_ADC_E_BUFFER_UNINIT ((uint8)0x1DU) /* Design: MCAL-31157 */
 
-#ifndef CDD_ADC_E_CHECKER_IDLE
 /** \brief One or more ADC safety checker are IDLE */
-#define CDD_ADC_E_CHECKER_IDLE ((uint8)0x1FU)
-#endif
+#define CDD_ADC_E_CHECKER_IDLE ((uint8)0x1FU) /* Design: MCAL-31158 */
 
-#ifndef CDD_ADC_E_CHECKER_BUSY
 /** \brief One or more ADC safety checker are BUSY */
-#define CDD_ADC_E_CHECKER_BUSY ((uint8)0x20U)
-#endif
+#define CDD_ADC_E_CHECKER_BUSY ((uint8)0x20U) /* Design: MCAL-31159 */
 
-#ifndef CDD_ADC_E_ALREADY_SET
 /** \brief API service called with invalid hardware unit ID */
-#define CDD_ADC_E_ALREADY_SET ((uint8)0x21U)
-#endif
+#define CDD_ADC_E_ALREADY_SET ((uint8)0x21U) /* Design: MCAL-31160 */
 
-#ifndef CDD_ADC_E_INVALID_ID
 /** \brief API service called with invalid hardware unit ID */
-#define CDD_ADC_E_INVALID_ID ((uint8)0x22U)
-#endif
+#define CDD_ADC_E_INVALID_ID ((uint8)0x22U) /* Design: MCAL-31161 */
+
+/** \brief API service called with invalid hardware unit ID */
+#define CDD_ADC_E_INVALID_RESOLUTION ((uint8)0x23U)  /* Design: MCAL-31162 */
 
 /* The Service Id is one of the argument to Det_ReportError function and is used to identify the
  * source of the error. */
@@ -236,9 +208,10 @@ typedef uint8  Cdd_Adc_CheckerIntEvtType;
 /** \brief Hardware unit instance type */
 typedef uint8  Cdd_Adc_HwUnitInstanceType;
 /** \brief Group end notification function pointer */
-typedef P2FUNC(void, CDD_ADC_CODE, Cdd_Adc_GroupEndNotifyType)(void);
+typedef P2FUNC(void, CDD_ADC_CODE, Cdd_Adc_GroupEndNotifyType)(void);  /* Design: MCAL-31119 */
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
+/* Design: MCAL-31136 */
 /** \brief Ppb notification function pointer */
 typedef P2FUNC(void, CDD_ADC_CODE, Cdd_Adc_PpbNotifyType)(void);
 #endif
@@ -255,15 +228,15 @@ typedef enum
 } Cdd_Adc_StatusType;
 
 /** \brief Trigger source type */
-typedef enum
-{
+/* Design: MCAL-31122 */
+typedef enum {
     CDD_ADC_TRIGG_SRC_SW, /*!< \brief  Group is triggered by a software API call */
     CDD_ADC_TRIGG_SRC_HW  /*!< \brief  Group is triggered by a hardware event */
 } Cdd_Adc_TriggerSrcType;
 
 /** \brief Stream buffer mode type */
-typedef enum
-{
+/* Design: MCAL-31125 */
+typedef enum {
     /** \brief The ADC Driver stops the conversion as soon as the stream buffer is full (number of
        samples reached) */
     CDD_ADC_STREAM_BUFFER_LINEAR,
@@ -273,15 +246,15 @@ typedef enum
 } Cdd_Adc_StreamBufferModeType;
 
 /** \brief Group access mode type */
-typedef enum
-{
+/* Design: MCAL-31124 */
+typedef enum {
     CDD_ADC_ACCESS_MODE_SINGLE,   /*!< \brief  Single value access mode */
     CDD_ADC_ACCESS_MODE_STREAMING /*!< \brief  Streaming access mode */
 } Cdd_Adc_GroupAccessModeType;
 
 /** \brief Group conversion mode type */
-typedef enum
-{
+/* Design: MCAL-31121,MCAL-31116 */
+typedef enum {
     /** \brief Exactly one conversion of each channel in an ADC channel group is performed after the
        trigger event */
     CDD_ADC_CONV_MODE_ONESHOT,
@@ -301,6 +274,7 @@ typedef struct
     uint16 ppbminindex; /*!< \brief  PPB minimum result index */
 } Cdd_Adc_PpbValType;
 
+/* Design MCAL-31429 */
 /** \brief PPB unit config type */
 typedef struct Cdd_Adc_PpbUnitCfgTag
 {
@@ -343,6 +317,7 @@ typedef struct Cdd_Adc_PpbUnitCfgTag
 
 #endif
 
+/* Design MCAL-31428 */
 /** \brief Channel config type */
 typedef struct Cdd_Adc_ChannelCfgTag
 {
@@ -359,6 +334,7 @@ typedef struct Cdd_Adc_ChannelCfgTag
 } Cdd_Adc_ChannelCfgType;
 
 #if (STD_ON == CDD_ADC_TRIG_REP_ENABLE)
+/* Design MCAL-31432 */
 /** \brief Trigger repeater config type */
 typedef struct Cdd_Adc_TrigRepCfgTag
 {
@@ -379,6 +355,7 @@ typedef struct Cdd_Adc_TrigRepCfgTag
 } Cdd_Adc_TrigRepCfgType;
 #endif
 
+/* Design MCAL-31426 */
 /** \brief Group config type */
 typedef struct Cdd_Adc_GroupCfgTag
 {
@@ -417,6 +394,7 @@ typedef struct Cdd_Adc_GroupCfgTag
     uint8                        lastsocnum;
 } Cdd_Adc_GroupCfgType;
 
+/* Design MCAL-31427 */
 /** \brief Hardware unit config type */
 typedef struct Cdd_Adc_HwUnitCfgTag
 {
@@ -458,6 +436,7 @@ typedef struct Cdd_Adc_HwUnitCfgTag
 } Cdd_Adc_HwUnitCfgType;
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
+/* Design: MCAL-31435 */
 /** \brief Select result config type */
 typedef struct Cdd_Adc_SelResCfgTag
 {
@@ -471,6 +450,7 @@ typedef struct Cdd_Adc_SelResCfgTag
     Cdd_Adc_CheckerInputType res_type;
 } Cdd_Adc_SelResCfgType;
 
+/* Design: MCAL-31436 */
 /** \brief Interrupt source type */
 typedef struct Cdd_Adc_IntSrcTag
 {
@@ -485,6 +465,7 @@ typedef struct Cdd_Adc_IntSrcTag
     uint16 ootflg;
 } Cdd_Adc_IntSrcType;
 
+/* Design: MCAL-31433 */
 /** \brief Checker response config type */
 typedef struct Cdd_Adc_CheckerResCfgTag
 {
@@ -499,6 +480,7 @@ typedef struct Cdd_Adc_CheckerResCfgTag
     Cdd_Adc_SelResCfgType selresult[2];
 } Cdd_Adc_CheckerResCfgType;
 
+/* Design: MCAL-31434 */
 /** \brief Checker interrupt event config type */
 typedef struct Cdd_Adc_CheckerIntEvtCfgTag
 {
@@ -512,6 +494,7 @@ typedef struct Cdd_Adc_CheckerIntEvtCfgTag
     Cdd_Adc_IntSrcType        checkevt[CDD_ADC_CHECKER_EVT_CNT];
 } Cdd_Adc_CheckerIntEvtCfgType;
 
+/* Design MCAL-31430 */
 /** \brief Checker config type */
 typedef struct Cdd_Adc_CheckerCfgTag
 {
@@ -523,6 +506,7 @@ typedef struct Cdd_Adc_CheckerCfgTag
 #endif
 
 #if (STD_ON == CDD_ADC_GLBSW_TRIG_API)
+/* Design MCAL-31431 */
 /** \brief Global software config type */
 typedef struct Cdd_Adc_GlbSwCfgTag
 {
@@ -537,8 +521,9 @@ typedef struct Cdd_Adc_GlbSwCfgTag
 #endif
 
 /** \brief ADC config type */
-typedef struct Cdd_Adc_ConfigTag
-{
+
+/* Design: MCAL-31319 */
+typedef struct Cdd_Adc_ConfigTag {
     /** \brief  Group configurations */
     Cdd_Adc_GroupCfgType   groupcfg[CDD_ADC_GROUP_CNT];
     /** \brief  HW Unit configurations */
@@ -612,7 +597,6 @@ Cdd_Adc_SetupResultBuffer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
  *
  * This service returns all ADC HW Units to a state comparable to their power on reset state.
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -751,8 +735,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DisableGroupNotification(VAR(Cdd_Adc_GroupType,
  *finished. CDD_ADC_STREAM_COMPLETED: The result buffer is completely filled.
  *
  *********************************************************************************************************************/
-FUNC(Cdd_Adc_StatusType, CDD_ADC_CODE)
-Cdd_Adc_GetGroupStatus(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group);
+FUNC(Cdd_Adc_StatusType, CDD_ADC_CODE) Cdd_Adc_GetGroupStatus(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group);
 
 #if (STD_ON == CDD_ADC_READ_GROUP_API)
 /** \brief service that reads the group conversion result of the last completed conversion round
@@ -821,7 +804,7 @@ Cdd_Adc_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ADC_DATA) Versi
  *
  * This service starts the requested safety result checker unit.
  *
- * \param[in] checkerId    Numeric ID of the result safety checker unit
+ * \param[in] CheckerId    Numeric ID of the result safety checker unit
  * \pre None
  * \post None
  * \return None
@@ -834,7 +817,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartResultChecker(VAR(Cdd_Adc_CheckerType, AUT
  *
  * This service stops the requested safety result checker unit.
  *
- * \param[in] checkerId    Numeric ID of the result safety checker unit
+ * \param[in] CheckerId    Numeric ID of the result safety checker unit
  * \pre None
  * \post None
  * \return None
@@ -866,7 +849,7 @@ Cdd_Adc_ReadCheckerStatus(VAR(Cdd_Adc_CheckerIntEvtType, AUTOMATIC) IntEvt,
  *specified interrupt event instance
  *
  * \param[in] IntEvt    is the numeric ID of the interrupt event instance ID
- * \param[in] CheckerFlag    Pointer to the array of the status flag
+ * \param[in] Event_Id    is the numeric ID of the event
  * \pre None
  * \post None
  * \return None
@@ -961,8 +944,9 @@ FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_GetDelayStamp(VAR(Cdd_Adc_PpbType, AUTOMATIC)
  * \param[in] Resolution Resolution to be set for the ADC Hw Unit
  * \pre None
  * \post None
- * \return None
- * \retval None
+ * \return Returns if the resolution update is successful.
+ * \retval  E_OK: Resolution update successfully
+ *          E_NOT_OK: Resolution update failed
  *
  *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_ADC_CODE)

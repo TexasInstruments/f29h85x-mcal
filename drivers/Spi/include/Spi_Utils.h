@@ -119,8 +119,7 @@ typedef struct
  *
  *  function to Initialize linked list
  *
- * \param[in] llobj: pointer to linklist Object
- * \param[out] llobj: pointer to linklist Object
+ * \param[inout] llobj: pointer to linklist Object
  * \pre None
  * \post None
  * \return None
@@ -133,8 +132,7 @@ void Spi_UtilsInitLinkList(Spi_UtilsLinkListObj *llobj);
  *
  *  function to De-Initialize linked list
  *
- * \param[in] llobj: pointer to linklist Object
- * \param[out] llobj: pointer to linklist Object
+ * \param[inout] llobj: pointer to linklist Object
  * \pre None
  * \post None
  * \return None
@@ -150,11 +148,9 @@ void Spi_UtilsDeInitLinkList(Spi_UtilsLinkListObj *llobj);
  *
  *  \param[in] llobj            Link list object.
  *  \param[in] node             Node object pointer used for linking.
- *  \param[in] data             Data pointer to add to node.
  *  \param[in] params           Pointer to node params containing info like data
  *                              pointer, priority, seqId, seqInterruptible.
  *  \param[in] currSeqId        Current sequence ID in progress for the HW unit.
- *  \param[out] llobj            Link list object.
  *  \pre None
  *  \post None
  *  \return None
@@ -168,7 +164,6 @@ void Spi_UtilsLinkNodePri(Spi_UtilsLinkListObj *llobj, Spi_UtilsNode *node, cons
  *
  *  \param[in] llobj: pointer to linklist Object
  *  \param[in]  node: pointer to a node in linklist
- *  \param[out] llobj: pointer to linklist Object
  *  \pre None
  *  \post None
  *  \return None
@@ -191,8 +186,7 @@ void Spi_UtilsInitNodeObject(Spi_UtilsNode *node);
  *  \brief                  Returns the reference to the head node. This does
  *                          not remove the node from the head.
  *
- *  \param[in] llobj            Link list object.
- *  \param[out] llobj            Link list object
+ *  \param[inout] llobj            Link list object.
  *  \pre None
  *  \post None
  *  \return  Returns the reference to the head node

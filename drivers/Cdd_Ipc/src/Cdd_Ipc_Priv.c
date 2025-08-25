@@ -139,7 +139,7 @@ Cdd_Ipc_SetCfgObj(P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONST) ConfigPt
  *Design: MCAL-
  */
 FUNC(Std_ReturnType, CDD_IPC_CODE)
-Cdd_Ipc_Sync_Process(VAR(Cdd_Ipc_RemoteCoreType, AUTOMATIC) RemoteCore)
+Cdd_Ipc_Sync_Process(VAR(Cdd_Ipc_CoreType, AUTOMATIC) RemoteCore)
 {
     VAR(Std_ReturnType, AUTOMATIC) ret_val = E_NOT_OK;
 

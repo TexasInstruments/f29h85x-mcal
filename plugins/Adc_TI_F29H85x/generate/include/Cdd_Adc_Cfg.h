@@ -47,55 +47,61 @@ extern "C" {
 #define CDD_ADC_CFG_MAJOR_VERSION           ([!"substring-before($moduleSoftwareVer,'.')"!]U)
 #define CDD_ADC_CFG_MINOR_VERSION           ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 #define CDD_ADC_CFG_PATCH_VERSION           ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
-
+[!SELECT "as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']"!]
 /* CDD ADC Build Variant. Pre-compile build Variants */
-[!IF "as:modconf('Cdd_Adc/Cdd')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
 #define CDD_ADC_PRE_COMPILE_VARIANT         (STD_ON)
-[!LOOP "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet"!]
-#define CDD_ADC_CONFIG_PC       Cdd_Adc_ConfigSet[!"@index"!]
-[!ENDLOOP!][!//
+
+#define CDD_ADC_CONFIG_PC       Cdd_Adc_Config
+
 [!ENDIF!][!//
 
 /* Macro to define the number of channels configured */
-#define CDD_ADC_CHN_COUNT                   ((uint8)[!"num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*/CddAdcChannel/*))"!]U)
+#define CDD_ADC_CHN_COUNT                   ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*/CddAdcChannel/*))"!]U)
+
+/* Macro to define the total number of ADC instances supported */
+#define CDD_ADC_MAX_HW_UNIT_COUNT           ((uint8)[!"num:i(ecu:get('Cdd_Adc_F29H85x_HwInstances'))"!])
+
+/* Macro to define the total number of interrupts supported */
+#define CDD_ADC_MAX_INT_COUNT               ((uint8)[!"num:i(ecu:get('Cdd_Adc_F29H85x_IntCntPerHw'))"!])
 
 /* Development error detection macro */
-#define CDD_ADC_DEV_ERROR_DETECT            [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcDevErrorDetect  = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_DEV_ERROR_DETECT            [!IF "CddAdcGeneral/CddAdcDevErrorDetect  = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Deinitialization Api macro */
-#define CDD_ADC_DEINIT_API                  [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcDeInitApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_DEINIT_API                  [!IF "CddAdcGeneral/CddAdcDeInitApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Software group conversion Api macro */
-#define CDD_ADC_ENABLE_START_STOP_GROUP_API [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcEnableStartStopGroupApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_ENABLE_START_STOP_GROUP_API [!IF "CddAdcGeneral/CddAdcEnableStartStopGroupApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Hardware trigger Api macro */
-#define CDD_ADC_GLBSW_TRIG_API             [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcEnableGlobalSoftwareTrigger = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_GLBSW_TRIG_API             [!IF "CddAdcGeneral/CddAdcEnableGlobalSoftwareTrigger = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 #if(CDD_ADC_GLBSW_TRIG_API == STD_ON)
 /* Macro to define the number of global software triggers configured */
-#define CDD_ADC_GLBSW_TRIG_CNT              ((uint8)[!"num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcGlobalSwTrigger/*))"!]U)
+#define CDD_ADC_GLBSW_TRIG_CNT              ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcGlobalSwTrigger/*))"!]U)
 #endif
 
 /* Macro to define the number of groups configured */
-#define CDD_ADC_GROUP_CNT                   ((Cdd_Adc_GroupType)[!"num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*))"!]U)
+#define CDD_ADC_GROUP_CNT                   ((Cdd_Adc_GroupType)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*))"!]U)
 
 /* Notification Api macro */
-#define CDD_ADC_GRP_NOTIF_CAPABILITY_API    [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcGrpNotifCapability = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_GRP_NOTIF_CAPABILITY_API    [!IF "CddAdcGeneral/CddAdcGrpNotifCapability = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Macro to define the number of hardware units configured */
-#define CDD_ADC_HW_CNT                      ((uint8)[!"num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*))"!]U)
+#define CDD_ADC_HW_CNT                      ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*))"!]U)
 
 /* Hardware trigger Api macro */
-#define CDD_ADC_HW_TRIGGER_API              [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcHwTriggerApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_HW_TRIGGER_API              [!IF "CddAdcGeneral/CddAdcHwTriggerApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Limit check enable Api macro */
-#define CDD_ADC_ENABLE_PPB_API             [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcPpbEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_ENABLE_PPB_API             [!IF "CddAdcGeneral/CddAdcPpbEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Temperature Sesnor enable/disable macro */
-#define CDD_ADC_LOCK_TEMPERATURE_SENSOR     [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcLockTemperatureSensor = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_LOCK_TEMPERATURE_SENSOR     [!IF "CddAdcConfigSet/CddAdcLockTemperatureSensor = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 [!NOCODE!][!VAR "count" = "num:i(0)"!]
-[!LOOP "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcOpenShortDetectMode"!][!//
+[!LOOP "CddAdcConfigSet/CddAdcHwUnit/*/CddAdcOpenShortDetectMode"!][!//
     [!IF "node:value(.) != 'CDD_ADC_OSDETECT_MODE_DISABLED'"!] [!VAR "count" = "num:i($count+1)"!] [!ENDIF!][!//
 [!ENDLOOP!][!ENDNOCODE!]
 /* Macro to enable open/shorts detection */
@@ -103,43 +109,43 @@ extern "C" {
 
 #if(STD_ON == CDD_ADC_ENABLE_PPB_API)
 /* Macro to define the number of safety checker units configured */
-#define CDD_ADC_PPB_CNT                     ((Cdd_Adc_PpbType)[!"num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*))"!]U)
+#define CDD_ADC_PPB_CNT                     ((Cdd_Adc_PpbType)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*))"!]U)
 #endif
 
 /* Read group Api macro */
-#define CDD_ADC_READ_GROUP_API              [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcReadGroupApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_READ_GROUP_API              [!IF "CddAdcGeneral/CddAdcReadGroupApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Safety checker enabling Api macro */
-#define CDD_ADC_SAFETY_CHECK_API            [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcSafetyCheckerEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_SAFETY_CHECK_API            [!IF "CddAdcGeneral/CddAdcSafetyCheckerEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 #if(CDD_ADC_SAFETY_CHECK_API == STD_ON)
 /* Macro to define the number of safety checker units configured */
-#define CDD_ADC_CHECKER_CNT                 (Cdd_Adc_CheckerType)([!"num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcResultCheckerUnit/*))"!]U)
+#define CDD_ADC_CHECKER_CNT                 (Cdd_Adc_CheckerType)([!"num:i(count(CddAdcConfigSet/CddAdcResultCheckerUnit/*))"!]U)
 
 /* Number of checker events for all the safety checker events. */
 #define CDD_ADC_CHECKER_EVT_CNT             ((uint8)[!"ecu:get('Cdd_Adc_F29H85x_CheckEvtCnt')"!]U)
 
 /* Macro to define the number of interrupt event instances configured */
-#define CDD_ADC_CHECKER_INTEVT_CNT          ((uint8)[!"num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcCheckerIntEvtConfig/*))"!]U)
+#define CDD_ADC_CHECKER_INTEVT_CNT          ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcCheckerIntEvtConfig/*))"!]U)
 #endif
 
 /* Hardware trigger Api macro */
-#define CDD_ADC_SET_RESOLUTION_API          [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcSetResolutionApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_SET_RESOLUTION_API          [!IF "CddAdcGeneral/CddAdcSetResolutionApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Temperature Sensor enable/disable macro */
-#define CDD_ADC_TEMPERATURE_SENSOR_ENABLE   [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcEnableTemperatureSensor = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_TEMPERATURE_SENSOR_ENABLE   [!IF "CddAdcConfigSet/CddAdcEnableTemperatureSensor = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Macro to enable/disable the trigger repeater */
-#define CDD_ADC_TRIG_REP_ENABLE             [!IF "num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcTriggerRepeater/*)) > 0"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_TRIG_REP_ENABLE             [!IF "num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcTriggerRepeater/*)) > 0"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
-[!IF "num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcTriggerRepeater/*)) > 0"!]
+[!IF "num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcTriggerRepeater/*)) > 0"!]
 /* Macro to define the number of trigger repeaters per ADC HW unit */
-#define CDD_ADC_TRIG_REP_CNT    ((uint8)[!"num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcTriggerRepeater/*))"!]U)[!//
+#define CDD_ADC_TRIG_REP_CNT    ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcTriggerRepeater/*))"!]U)[!//
 [!ENDIF!][!//
 
 [!NOCODE!]
 [!VAR "PpbEvtNotification"="num:i(0)"!]
-[!LOOP "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*"!]
+[!LOOP "CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*"!]
     [!IF "node:exists(CddAdcPpbEventInterruptNotification)"!]
         [!VAR "PpbEvtNotification"="num:i($PpbEvtNotification+1)"!]
     [!ENDIF!]
@@ -149,14 +155,14 @@ extern "C" {
 #define CDD_ADC_PPB_NOTIF_CAPABILITY_API    [!IF "$PpbEvtNotification > 0"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Version info Api macro */
-#define CDD_ADC_VERSION_INFO_API    [!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_VERSION_INFO_API    [!IF "CddAdcGeneral/CddAdcVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 [!NOCODE!]
 [!VAR "GroupCount" = "num:i(0)"!]
 [!VAR "PpbCount" = "num:i(0)"!]
 [!VAR "ExtChnsel"="'false'"!]
 [!ENDNOCODE!][!//
-[!LOOP "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet"!][!//
+[!LOOP "as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet"!][!//
 [!LOOP "CddAdcHwUnit/*"!]
 /* [!"CddAdcHwInstance"!] hardware unit symbolic name */
 #define CddAdcConf_CddAdcHwUnit_[!"@name"!]         ((uint8)[!"CddAdcHwUnitId"!]U) /*~ASR~*/[!//
@@ -172,7 +178,7 @@ extern "C" {
 [!VAR "GroupCount" = "num:i($GroupCount+1)"!][!//
 [!ENDLOOP!][!//
 
-[!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcPpbEnable = 'true'"!]
+[!IF "as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcGeneral/CddAdcPpbEnable = 'true'"!]
 [!LOOP "CddAdcPpbConfig/*"!][!//
 /* PPB [!"$PpbCount"!] symbolic name */
 #define CddAdcConf_[!"node:name(../../.)"!]_[!"@name"!]        ((Cdd_Adc_PpbType)[!"$PpbCount"!]U) /*~ASR~*/
@@ -183,7 +189,7 @@ extern "C" {
 [!ENDIF!][!//
 [!ENDLOOP!][!//
 
-[!IF "num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcResultCheckerUnit/*)) > 0"!][!//
+[!IF "num:i(count(CddAdcResultCheckerUnit/*)) > 0"!][!//
 [!LOOP "CddAdcResultCheckerUnit/*"!][!//
 /* Checker unit [!"num:i(CddAdcCheckerId)"!] symbolic names */
 #define CddAdcConf_CddAdcResultCheckerUnit_[!"@name"!]  ((Cdd_Adc_CheckerType)[!"num:i(CddAdcCheckerId)"!]U) /*~ASR~*/
@@ -192,7 +198,7 @@ extern "C" {
 [!ELSE!][!//
 [!ENDIF!][!//
 
-[!IF "num:i(count(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcCheckerIntEvtConfig/*)) > 0"!][!//
+[!IF "num:i(count(CddAdcCheckerIntEvtConfig/*)) > 0"!][!//
 [!LOOP "CddAdcCheckerIntEvtConfig/*"!][!//
 /* Symbolic name for the safety checker interrupt event instance [!"CddAdcIntEvtId"!] */
 #define CddAdcConf_CddAdcCheckerIntEvtConfig_[!"@name"!] ((Cdd_Adc_CheckerIntEvtType)[!"CddAdcIntEvtId"!])  /*~ASR~*/
@@ -201,7 +207,7 @@ extern "C" {
 [!ELSE!][!//
 [!ENDIF!][!//
 
-[!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcEnableGlobalSoftwareTrigger = 'true'"!][!//
+[!IF "as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcGeneral/CddAdcEnableGlobalSoftwareTrigger = 'true'"!][!//
 [!LOOP "CddAdcGlobalSwTrigger/*"!]
 /* Global software trigger symbolic names */
 #define CddAdcConf_CddAdcGlobalSwTrigger_[!"@name"!]   ((Cdd_Adc_GlbTrigType)[!"num:i(CddAdcGlbSwTrigId)"!]U) /*~ASR~*/
@@ -218,7 +224,7 @@ extern "C" {
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
 [!//
-[!LOOP "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*"!][!//
+[!LOOP "CddAdcConfigSet/CddAdcHwUnit/*"!][!//
 [!LOOP "CddAdcGroup/*"!]
 #define [!"node:value(../../CddAdcHwInstance)"!]_INT[!"substring-after(node:value(CddAdcInterruptSelect),'CDD_ADC_INT')"!]_ENABLE
 
@@ -327,7 +333,8 @@ typedef enum
 typedef enum
 {
     CDD_ADC_RESOLUTION_12BIT = 0x00U,    /* 12-bit conversion resolution */
-    CDD_ADC_RESOLUTION_16BIT = 0x40U     /* 16-bit conversion resolution */
+    CDD_ADC_RESOLUTION_16BIT = 0x1U,     /* 16-bit conversion resolution */
+    CDD_ADC_RESOLUTION_NONE
 }Cdd_Adc_ResolutionType;
 
 typedef enum
@@ -537,23 +544,23 @@ typedef enum
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
-[!LOOP "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet"!]
-extern const struct Cdd_Adc_ConfigTag Cdd_Adc_ConfigSet[!"@index"!];
-[!ENDLOOP!]
+
+extern const struct Cdd_Adc_ConfigTag Cdd_Adc_Config;
+
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-[!IF "as:modconf('Cdd_Adc/Cdd')[1]/CddAdcGeneral/CddAdcGrpNotifCapability = 'true'"!]
+[!IF "CddAdcGeneral/CddAdcGrpNotifCapability = 'true'"!]
 #define CDD_ADC_START_SEC_CODE
 #include "Cdd_Adc_MemMap.h"
 
-[!LOOP "(util:distinct(node:foreach(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*/CddAdcGroupNotification,'val','$val')))"!]
+[!LOOP "(util:distinct(node:foreach(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*/CddAdcGroupNotification,'val','$val')))"!]
 extern void [!"."!](void);
 [!ENDLOOP!]
 
 [!IF "$PpbEvtNotification > 0"!][!//
-[!LOOP "(util:distinct(node:foreach(as:modconf('Cdd_Adc/Cdd')[1]/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*/CddAdcPpbEventInterruptNotification,'val','$val')))"!]
+[!LOOP "(util:distinct(node:foreach(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*/CddAdcPpbEventInterruptNotification,'val','$val')))"!]
 extern void [!"."!](void);
 [!ENDLOOP!][!//
 [!ENDIF!][!//
@@ -561,6 +568,7 @@ extern void [!"."!](void);
 #define CDD_ADC_STOP_SEC_CODE
 #include "Cdd_Adc_MemMap.h"
 [!ENDIF!][!//
+[!ENDSELECT!][!//
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

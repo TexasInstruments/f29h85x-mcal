@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Com')[1]/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!][!//
+[!SKIPFILE "as:modconf('Com')[as:path(node:dtos(.))='/AUTOSAR/EcucDefs/Com']/IMPLEMENTATION_CONFIG_VARIANT != 'VariantPreCompile'"!][!//
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------

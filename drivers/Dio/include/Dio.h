@@ -176,8 +176,7 @@ typedef struct Dio_ChannelGroupType_s
  * available if the pre-compile configuration parameter DIO_VERSION_INFO_API
  * is enabled.
  *
- * \param[in] Versioninfo
- * \param[out] Versioninfo structure that contains the version information parameters.
+ * \param[inout] Versioninfo structure that contains the version information parameters.
  * \pre None
  * \post None
  * \return None

@@ -1,5 +1,5 @@
 set(PROCESSOR_VARIANT "-mcpu=c29.c0")
-set(FLOATING_POINT_HARDWARE "-mfpu=none")
+set(FLOATING_POINT_HARDWARE "-mfpu=f32")
 
 set(cpu_flags "${PROCESSOR_VARIANT} ${FLOATING_POINT_HARDWARE}")
 

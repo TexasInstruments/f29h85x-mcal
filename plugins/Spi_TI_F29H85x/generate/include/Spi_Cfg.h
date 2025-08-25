@@ -28,7 +28,7 @@
 #ifndef SPI_CFG_H_
 #define SPI_CFG_H_
 
-/** \addtogroup SPI Spi API GUIDE configurator header file
+/** \addtogroup SPI
  *  @{
  */
 /*********************************************************************************************************************
@@ -41,7 +41,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+[!SELECT "as:modconf('Spi')[as:path(node:dtos(.))='/TI_F29H85x/Spi']"!]
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -49,7 +49,7 @@ extern "C" {
 * Design:MCAL-25114
 */
 [!VAR "CallbackHeaderFileList" = "' '"!]
-[!LOOP "as:modconf('Spi')[1]/SpiGeneral/SpiUserCallbackHeaderFile/*"!][!//
+[!LOOP "SpiGeneral/SpiUserCallbackHeaderFile/*"!][!//
 [!IF "not(node:empty(node:current()))"!][!//
 [!IF "not(node:containsValue(text:split($CallbackHeaderFileList),node:current()))"!][!//
 #include "[!"node:current()"!]"
@@ -57,7 +57,7 @@ extern "C" {
 [!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDLOOP!][!//
-[!LOOP "as:modconf('Spi')[1]/SpiDriver/SpiExternalDevice/*"!][!//
+[!LOOP "SpiDriver/SpiExternalDevice/*"!][!//
 [!IF "not(node:empty(SpiCsSelection))"!][!//
 [!IF "node:value(SpiCsSelection) = 'CS_VIA_GPIO'"!][!//
 #include "Dio.h"
@@ -87,12 +87,18 @@ extern "C" {
 *   Build variants.(i.e Pre Compile,Post Build or Link time)
 */
 /** \brief  SPI build Pre-compile variant ON or OFF*/
-#define SPI_PRE_COMPILE_VARIANT       [!IF "as:modconf('Spi')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define SPI_PRE_COMPILE_VARIANT       [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 /** \brief  SPI build Post Build variant ON or OFF*/
-#define SPI_VARIANT_POST_BUILD        [!IF "as:modconf('Spi')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define SPI_VARIANT_POST_BUILD        [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 /** \brief  SPI build Link Time variant ON or OFF*/
-#define SPI_LINK_TIME_VARIANT         [!IF "as:modconf('Spi')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define SPI_LINK_TIME_VARIANT         [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile' or IMPLEMENTATION_CONFIG_VARIANT = 'VariantLinkTime'"!][!//
+/*********************************************************************************************************************
+ * \brief Pre Compile config macro name.
+ *********************************************************************************************************************/
+#define SPI_INIT_CONFIG_PC		Spi_Config
+[!ENDIF!][!//
 
 /** \brief FIFO Tx Interrupt level */
 #define SPI_FIFO_TX_INTERRUPT_LEVEL ((uint8)0x2U)
@@ -105,19 +111,19 @@ extern "C" {
 
 /** \brief FIFO Rx FIFO Depth */
 #define SPI_FIFO_RX_FIFO_DEPTH ((uint8)0x10U)
-[!IF "as:modconf('Spi')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
-[!LOOP "as:modconf('Spi')[1]/SpiDriver"!]
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
+[!LOOP "SpiDriver"!]
 /**
  *  \brief Pre Compile config macro name.
  */
-#define SPI_INIT_CONFIG_PC       [!"@name"!]
+#define SPI_INIT_CONFIG_PC       Spi_Config
 [!ENDLOOP!][!//
 [!ENDIF!][!//
 
 /*
  * Design : MCAL-24875, MCAL-24876, MCAL-25161, MCAL-25107, MCAL-24899, MCAL-24889
  */
-[!VAR "SpiChannelBufferType" = "as:modconf('Spi')[1]/SpiGeneral/SpiChannelBuffersAllowed"!][!//
+[!VAR "SpiChannelBufferType" = "SpiGeneral/SpiChannelBuffersAllowed"!][!//
 /** \brief Buffer mode - Internal or External or Both */
 #define SPI_CHANNEL_BUFFERS          [!IF "num:i($SpiChannelBufferType) = '0'"!](SPI_IB)[!ELSEIF "num:i($SpiChannelBufferType) = '1'"!](SPI_EB)[!ELSE!](SPI_IB_EB)[!ENDIF!]
 
@@ -125,13 +131,13 @@ extern "C" {
 /*
  * Design : MCAL-25162
  */
-#define SPI_IB_MAX_LENGTH          ((uint8)[!IF "as:modconf('Spi')[1]/SpiGeneral/SpiChannelBuffersAllowed = '1'"!](0U)[!ELSE!]([!"as:modconf('Spi')[1]/SpiGeneral/SpiChannelInternalBufferMaxLength"!]U)[!ENDIF!])
+#define SPI_IB_MAX_LENGTH          ((uint8)[!IF "SpiGeneral/SpiChannelBuffersAllowed = '1'"!](0U)[!ELSE!]([!"SpiGeneral/SpiChannelInternalBufferMaxLength"!]U)[!ENDIF!])
 
 /** \brief Enable/disable SPI dev detect error */
 /*
  * Design : MCAL-25108
  */
-#define SPI_DEV_ERROR_DETECT        [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define SPI_DEV_ERROR_DETECT        [!IF "SpiGeneral/SpiDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /**
  * \brief Scalability levels
@@ -147,31 +153,31 @@ extern "C" {
 /*
  * Design : MCAL-25113
  */
-#define SPI_SUPPORT_CONCURRENT_SYNC_TRANSMIT    [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiSupportConcurrentSyncTransmit = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define SPI_SUPPORT_CONCURRENT_SYNC_TRANSMIT    [!IF "SpiGeneral/SpiSupportConcurrentSyncTransmit = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*
  * Design : MCAL-24858, MCAL-24859, MCAL-24914, MCAL-24915, MCAL-25111, MCAL-24889
  */
 /** \brief Scalability level */
-#define SPI_SCALABILITY            (SPI_LEVEL_[!"as:modconf('Spi')[1]/SpiGeneral/SpiLevelDelivered"!])
+#define SPI_SCALABILITY            (SPI_LEVEL_[!"SpiGeneral/SpiLevelDelivered"!])
 
 /** \brief Enable/disable SPI get version info API */
 /*
  * Design : MCAL-25115
  */
-#define SPI_VERSION_INFO_API        [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define SPI_VERSION_INFO_API        [!IF "SpiGeneral/SpiVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/disable SPI HW Status API */
 /*
  * Design : MCAL-25109
  */
-#define SPI_HW_STATUS_API           [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiHwStatusApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define SPI_HW_STATUS_API           [!IF "SpiGeneral/SpiHwStatusApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/disable SPI cancel API */
 /*
  * Design : MCAL-25106
  */
-#define SPI_CANCEL_API              [!IF "as:modconf('Spi')[1]/SpiGeneral/SpiCancelApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define SPI_CANCEL_API              [!IF "SpiGeneral/SpiCancelApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*
  * All below macros are used for static memory allocation and can be changed to
@@ -181,19 +187,19 @@ extern "C" {
 /*
  * Design : MCAL-25149
  */
-#define SPI_MAX_CHANNELS            ((uint16)[!IF "node:exists("as:modconf('Spi')[1]/SpiDriver/SpiMaxChannel")"!]([!"as:modconf('Spi')[1]/SpiDriver/SpiMaxChannel"!]U)[!ELSE!]([!"num:i(count(as:modconf('Spi')[1]/SpiDriver/SpiChannel/*))"!]U)[!ENDIF!])
+#define SPI_MAX_CHANNELS            ((uint16)[!IF "node:exists("SpiDriver/SpiMaxChannel")"!]([!"SpiDriver/SpiMaxChannel"!]U)[!ELSE!]([!"num:i(count(SpiDriver/SpiChannel/*))"!]U)[!ENDIF!])
 
 /** \brief Maximum jobs across all sequence/hwunit */
 /*
  * Design : MCAL-25150
  */
-#define SPI_MAX_JOBS                ((uint16)[!IF "node:exists("as:modconf('Spi')[1]/SpiDriver/SpiMaxJob")"!]([!"as:modconf('Spi')[1]/SpiDriver/SpiMaxJob"!]U)[!ELSE!]([!"num:i(count(as:modconf('Spi')[1]/SpiDriver/SpiJob/*))"!]U)[!ENDIF!])
+#define SPI_MAX_JOBS                ((uint16)[!IF "node:exists("SpiDriver/SpiMaxJob")"!]([!"SpiDriver/SpiMaxJob"!]U)[!ELSE!]([!"num:i(count(SpiDriver/SpiJob/*))"!]U)[!ENDIF!])
 
 /** \brief Maximum sequence across all hwunit */
 /*
  * Design : MCAL-25151
  */
-#define SPI_MAX_SEQ                 ((uint16)[!IF "node:exists("as:modconf('Spi')[1]/SpiDriver/SpiMaxSequence")"!]([!"as:modconf('Spi')[1]/SpiDriver/SpiMaxSequence"!]U)[!ELSE!]([!"num:i(count(as:modconf('Spi')[1]/SpiDriver/SpiSequence/*))"!]U)[!ENDIF!])
+#define SPI_MAX_SEQ                 ((uint16)[!IF "node:exists("SpiDriver/SpiMaxSequence")"!]([!"SpiDriver/SpiMaxSequence"!]U)[!ELSE!]([!"num:i(count(SpiDriver/SpiSequence/*))"!]U)[!ENDIF!])
 
 /** \brief SPI timeout - used in SPI synchronous transmission.
  *  Specifies the maximum time for blocking function until a timeout is detected.
@@ -204,15 +210,15 @@ extern "C" {
  * Design: MCAL-28863
  */
 
-[!VAR "sysClockFrequency"="num:i(node:value(concat(node:path(node:ref(as:modconf('Spi')[1]/SpiDriver/SpiCounterClockRef)), '/McuClockReferencePointFrequency')))"!]
-#define SPI_CFG_TIMEOUT_CLOCK_CYCLES    ((McalLib_TickType)([!"num:i(as:modconf('Spi')[1]/SpiDriver/SpiSequenceTimeOut * $sysClockFrequency)"!]U))
+[!VAR "sysClockFrequency"="num:i(node:value(concat(node:path(node:ref(SpiDriver/SpiCounterClockRef)), '/McuClockReferencePointFrequency')))"!]
+#define SPI_CFG_TIMEOUT_CLOCK_CYCLES    ((McalLib_TickType)([!"num:i(SpiDriver/SpiSequenceTimeOut * $sysClockFrequency)"!]U))
 
 /** \brief Maximum channels allowed per job */
 /*
  * Design : MCAL-25163, MCAL-25155
  */
 [!VAR "SpiMaxChannelsInJob" = "0"!][!//
-[!LOOP "as:modconf('Spi')[1]/SpiDriver"!][!//
+[!LOOP "SpiDriver"!][!//
 [!LOOP "SpiJob/*"!][!//
 [!IF "$SpiMaxChannelsInJob < num:i(count(SpiChannelList/*))"!][!//
 [!VAR "SpiMaxChannelsInJob" = "num:i(count(SpiChannelList/*))"!][!//
@@ -226,7 +232,7 @@ extern "C" {
  * Design : MCAL-25164
  */
 [!VAR "SpiMaxJobsInSeq" = "0"!][!//
-[!LOOP "as:modconf('Spi')[1]/SpiDriver"!][!//
+[!LOOP "SpiDriver"!][!//
 [!LOOP "SpiSequence/*"!][!//
 [!IF "$SpiMaxJobsInSeq < num:i(count(SpiJobAssignment/*))"!][!//
 [!VAR "SpiMaxJobsInSeq" = "num:i(count(SpiJobAssignment/*))"!][!//
@@ -242,7 +248,7 @@ extern "C" {
 /*
  * Design : MCAL-25165, MCAL-25153
  */
-#define SPI_MAX_HW_UNIT             ((uint8)[!"num:i(count(as:modconf('Spi')[1]/SpiDriver/SpiHwUnitConfig/*))"!]U)
+#define SPI_MAX_HW_UNIT             ((uint8)[!"num:i(count(SpiDriver/SpiHwUnitConfig/*))"!]U)
 
 /**
  *  \brief Maximum external device cfg
@@ -250,7 +256,7 @@ extern "C" {
 /*
  * Design : MCAL-25166
  */
-#define SPI_MAX_EXT_DEV             ((uint8)[!"num:i(count(as:modconf('Spi')[1]/SpiDriver/SpiExternalDevice/*))"!]U)
+#define SPI_MAX_EXT_DEV             ((uint8)[!"num:i(count(SpiDriver/SpiExternalDevice/*))"!]U)
 
 
 /*********************************************************************************************************************
@@ -261,7 +267,7 @@ extern "C" {
  All below macros are used for enabling the ISR for a particular hardware.
  */
 
-[!LOOP "as:modconf('Spi')[1]/SpiDriver"!][!//
+[!LOOP "SpiDriver"!][!//
 [!LOOP "SpiHwUnitConfig/*"!][!//
 /** \brief Enable/disable SPI Instance ISR */
 #define SPI[!"substring-after(node:value(SpiHwUnitType),'SPI')"!]_ACTIVE
@@ -274,9 +280,7 @@ extern "C" {
 [!ENDLOOP!][!//
 [!ENDLOOP!][!//
 
-[!VAR "SpiJobIndex" = "0"!][!//
-[!VAR "SpiExDeviceIndex" = "0"!][!//
-[!LOOP "as:modconf('Spi')[1]/SpiDriver"!][!//
+[!LOOP "SpiDriver"!][!//
 [!LOOP "SpiChannel/*"!][!//
 /** \brief Symbolic Name Channel Id  - [!"SpiChannelId"!] [!"@name"!] */
 #define SpiConf_SpiChannel_[!"@name"!]  ((Spi_ChannelType)  [!"SpiChannelId"!]U)  /*~ASR~*/
@@ -284,32 +288,32 @@ extern "C" {
 /*
  * Design : MCAL-25138, MCAL-25140
  */
-[!LOOP "SpiJob/*"!]
+[!LOOP "SpiJob/*"!][!//
 /** \brief Symbolic Name Job Id - [!"SpiJobId"!] [!"@name"!] */
 #define SpiConf_SpiJob_[!"@name"!]    ((Spi_JobType) [!"SpiJobId"!]U)           /*~ASR~*/
-[!VAR "SpiJobIndex" = "$SpiJobIndex+1"!]
 [!ENDLOOP!][!//
+
 [!LOOP "SpiSequence/*"!][!//
 /** \brief Symbolic Name Sequence Id - [!"SpiSequenceId"!] [!"@name"!] */
 #define SpiConf_SpiSequence_[!"@name"!] ((Spi_SequenceType) [!"SpiSequenceId"!]U)  /*~ASR~*/
-[!ENDLOOP!]
+[!ENDLOOP!][!//
 
 [!LOOP "SpiExternalDevice/*"!][!//
-/** \brief Symbolic Name HW Unit - [!"num:i($SpiExDeviceIndex)"!] */
+/** \brief Symbolic Name HW Unit - [!"node:value(SpiHwUnit)"!] */
 #define SpiConf_SpiExternalDevice_[!"@name"!]_HwUnitId[!"@index"!] [!"SpiHwUnit"!] /*~ASR~*/
-[!ENDLOOP!]
+[!ENDLOOP!][!//
 
 /** \brief macro for invalid CS Identifier to which is greater than max channels supported */
 #define SPI_PERIPHERAL_CS_IDENTIFIER      256U
+
 [!LOOP "SpiExternalDevice/*"!][!//
-[!VAR "SpiExDeviceIndex" = "$SpiExDeviceIndex+1"!]
-/** \brief Symbolic Name Chip Select  - [!"num:i($SpiJobIndex)"!] */
+/** \brief Symbolic Name Chip Select  - [!"node:value(SpiCsIdentifier)"!] */
 #define SpiConf_SpiExternalDevice_[!"node:name(node:current())"!]_CS [!IF "not(node:empty(SpiCsIdentifier))"!]([!"node:value(SpiCsIdentifier)"!])[!ELSE!](SPI_PERIPHERAL_CS_IDENTIFIER)[!ENDIF!] /*~ASR~*/
-[!ENDLOOP!]
+[!ENDLOOP!][!//
 [!ENDLOOP!][!//
 
 [!VAR "is_gpio_chip_select" = "0"!]
-[!LOOP "as:modconf('Spi')[1]/SpiDriver/SpiExternalDevice/*"!][!//
+[!LOOP "SpiDriver/SpiExternalDevice/*"!][!//
 [!IF "not(node:empty(SpiCsSelection))"!][!//
 [!IF "node:value(SpiCsSelection) = 'CS_VIA_GPIO'"!][!//
 [!VAR "is_gpio_chip_select" = "1"!]
@@ -330,7 +334,7 @@ extern "C" {
 
 /** \brief Mask for the configured Hw Instance */
 #define SPI_CFG_ENABLED_HW_MASK             (0U [!//
-[!LOOP "as:modconf('Spi')[1]/SpiDriver/SpiHwUnitConfig/*"!]\
+[!LOOP "SpiDriver/SpiHwUnitConfig/*"!]\
                                                   | (1U << (uint8)[!"SpiHwUnitType"!])[!//
 [!ENDLOOP!][!//
 )
@@ -339,7 +343,7 @@ extern "C" {
  * Design :  MCAL-24933, MCAL-25104,  MCAL-25103
  */
 /** \brief SPI DEM hardware error ID */
-#define SPI_E_HARDWARE_ERROR        ([!IF "node:refexists(as:modconf('Spi')[1]/SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR)"!]DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Spi')[1]/SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR))"!][!ELSE!]SPI_DEM_NO_EVENT[!ENDIF!])
+#define SPI_E_HARDWARE_ERROR        ([!IF "node:refexists(SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR)"!]DemConf_DemEventParameter_[!"node:name(node:ref(SpiDemEventParameterRefs/SPI_E_HARDWARE_ERROR))"!][!ELSE!]SPI_DEM_NO_EVENT[!ENDIF!])
 #endif
 
 
@@ -349,7 +353,7 @@ extern "C" {
  *  max unit number
  */
 #define SPI_HW_UNIT_CNT                 ((uint8)5U)
-
+[!ENDSELECT!]
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 /*********************************************************************************************************************
  * Exported Type Declarations
@@ -761,7 +765,7 @@ extern const uint32 Spi_HwUnitBaseAddr[SPI_HW_UNIT_CNT];
 
 
 /** \brief SPI Configuration struct declaration */
-extern CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_ConfigObj;
+extern CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_Config;
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes

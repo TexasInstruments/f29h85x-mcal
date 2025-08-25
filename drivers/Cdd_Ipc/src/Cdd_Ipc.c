@@ -189,7 +189,7 @@ Cdd_Ipc_Init(P2CONST(Cdd_Ipc_ConfigType, AUTOMATIC, CDD_IPC_CONFIG_DATA) ConfigP
 /*
  * Design: MCAL-
  */
-FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_Sync(VAR(Cdd_Ipc_RemoteCoreType, AUTOMATIC) RemoteCore)
+FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_Sync(VAR(Cdd_Ipc_CoreType, AUTOMATIC) RemoteCore)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_val = E_NOT_OK;
 
@@ -199,7 +199,7 @@ FUNC(Std_ReturnType, CDD_IPC_CODE) Cdd_Ipc_Sync(VAR(Cdd_Ipc_RemoteCoreType, AUTO
         /* Report Det error if the driver is already initialized */
         (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_SYNC, CDD_IPC_E_UNINIT);
     }
-    else if ((RemoteCore == Cdd_Ipc_CfgPtr->Cdd_Ipc_LocalCore) || (RemoteCore > CDD_IPC_CORE_COUNT))
+    else if ((RemoteCore == Cdd_Ipc_CfgPtr->Cdd_Ipc_LocalCore) || ((uint32)RemoteCore > CDD_IPC_CORE_COUNT))
     {
         /* Report Det error if the passed configuration pointer is not NULL_PTR */
         (void)Det_ReportError(CDD_IPC_MODULE_ID, CDD_IPC_INSTANCE_ID, CDD_IPC_SID_SYNC, CDD_IPC_E_PARAM_VALUE);

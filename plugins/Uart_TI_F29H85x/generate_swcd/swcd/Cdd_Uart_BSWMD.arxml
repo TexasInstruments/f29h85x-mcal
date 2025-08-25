@@ -9,16 +9,16 @@
           <SHORT-NAME>Cdd_Uart</SHORT-NAME>
           <CATEGORY>BSW_MODULE</CATEGORY>
           <IMPLEMENTED-ENTRYS>
-          [!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
+          [!LOOP "CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
           [!IF "node:value(.) = 'CDD_UART_MODE_INTERRUPT'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_[!"num:i(node:value(../CddUartHWUnitId))"!]_ISR</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
           [!ENDIF!]
           [!ENDLOOP!]
-            [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartVersionInfoApi = 'true'"!]
+            [!IF "CddUartGeneral/CddUartVersionInfoApi = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_VersionInfo</BSW-MODULE-ENTRY-REF>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_GetVersionInfo</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             [!ENDIF!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -49,7 +49,7 @@
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_MainFunction_Write</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_PollRead</BSW-MODULE-ENTRY-REF>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_Poll_Read</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
           </IMPLEMENTED-ENTRYS>
           <MODULE-ID>255</MODULE-ID>
@@ -71,11 +71,14 @@
                 <EXCLUSIVE-AREA UUID="9ce6d3c7-4c6c-48aa-8364-0a594d37c05e">
                   <SHORT-NAME>CDD_UART_EXCLUSIVE_AREA_0</SHORT-NAME>
                 </EXCLUSIVE-AREA>
+                <EXCLUSIVE-AREA UUID="b36184e0-7300-4076-b68f-4fa0ed3b6adf">
+                  <SHORT-NAME>CDD_UART_EXCLUSIVE_AREA_1</SHORT-NAME>
+                </EXCLUSIVE-AREA>				
               </EXCLUSIVE-AREAS>
               <ENTITYS>
-            [!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
+            [!LOOP "CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
               [!IF "node:value(.) = 'CDD_UART_MODE_INTERRUPT'"!]
-                <BSW-INTERRUPT-ENTITY UUID="[!"as:uuid()"!]">
+                <BSW-INTERRUPT-ENTITY UUID="fc47ffac-cccd-48e4-8203-e076cce42a5[!"num:i(node:value(../CddUartHWUnitId))"!]">
                   <SHORT-NAME>Cdd_Uart_[!"num:i(node:value(../CddUartHWUnitId))"!]_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_[!"num:i(node:value(../CddUartHWUnitId))"!]_ISR</IMPLEMENTED-ENTRY-REF>
@@ -87,11 +90,11 @@
                 </BSW-INTERRUPT-ENTITY>
               [!ENDIF!]
             [!ENDLOOP!]
-                [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartVersionInfoApi = 'true'"!]
+                [!IF "CddUartGeneral/CddUartVersionInfoApi = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="754b1fe8-4b41-4404-a489-7a78a8862632">
-                  <SHORT-NAME>Cdd_Uart_VersionInfo</SHORT-NAME>
+                  <SHORT-NAME>Cdd_Uart_GetVersionInfo</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -99,14 +102,14 @@
                     </BSW-DIRECT-CALL-POINT>
                   </CALL-POINTS>
                   [!ENDIF!]
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_VersionInfo</IMPLEMENTED-ENTRY-REF>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_GetVersionInfo</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 [!ENDIF!]
                 <BSW-CALLED-ENTITY UUID="13a6fb9d-fa67-4678-b2bc-17573156c087">
                   <SHORT-NAME>Cdd_Uart_Init</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
@@ -118,7 +121,7 @@
                 <BSW-CALLED-ENTITY UUID="d85868a2-91fe-4b4b-b023-0de85b614193">
                   <SHORT-NAME>Cdd_Uart_Deinit</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -134,7 +137,7 @@
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Uart_TI_F29H85x/Cdd_Uart/Cdd_Uart_Behavior/CDD_UART_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -147,11 +150,11 @@
                 <BSW-CALLED-ENTITY UUID="076e65f9-97b7-4016-8853-b8a55dc428b3">
                   <SHORT-NAME>Cdd_Uart_Read</SHORT-NAME>
                   <CAN-ENTER-EXCLUSIVE-AREA-REFS>
-                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Uart_TI_F29H85x/Cdd_Uart/Cdd_Uart_Behavior/CDD_UART_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Uart_TI_F29H85x/Cdd_Uart/Cdd_Uart_Behavior/CDD_UART_EXCLUSIVE_AREA_1</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
@@ -167,7 +170,7 @@
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
@@ -179,10 +182,10 @@
                 <BSW-CALLED-ENTITY UUID="25cb90e6-8524-49a2-994e-6cf73824d12c">
                   <SHORT-NAME>Cdd_Uart_CancelRead</SHORT-NAME>
                   <CAN-ENTER-EXCLUSIVE-AREA-REFS>
-                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Uart_TI_F29H85x/Cdd_Uart/Cdd_Uart_Behavior/CDD_UART_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Uart_TI_F29H85x/Cdd_Uart/Cdd_Uart_Behavior/CDD_UART_EXCLUSIVE_AREA_1</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -198,7 +201,7 @@
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Uart_TI_F29H85x/Cdd_Uart/Cdd_Uart_Behavior/CDD_UART_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -211,10 +214,10 @@
                 <BSW-CALLED-ENTITY UUID="25cb90e6-8524-49a2-994e-6cf73824d14c">
                   <SHORT-NAME>Cdd_Uart_GetReadStatus</SHORT-NAME>
                   <CAN-ENTER-EXCLUSIVE-AREA-REFS>
-                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Uart_TI_F29H85x/Cdd_Uart/Cdd_Uart_Behavior/CDD_UART_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Uart_TI_F29H85x/Cdd_Uart/Cdd_Uart_Behavior/CDD_UART_EXCLUSIVE_AREA_1</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -227,7 +230,7 @@
                 <BSW-SCHEDULABLE-ENTITY UUID="25cb90e6-8524-49a2-994e-6cf73824d15c">
                   <SHORT-NAME>Cdd_Uart_MainFunction_Write</SHORT-NAME>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -238,9 +241,9 @@
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_MainFunction_Write</IMPLEMENTED-ENTRY-REF>
                 </BSW-SCHEDULABLE-ENTITY>
                 <BSW-CALLED-ENTITY UUID="358aa211-d177-466c-929e-7832fe041173">
-                  <SHORT-NAME>Cdd_Uart_PollRead</SHORT-NAME>
+                  <SHORT-NAME>Cdd_Uart_Poll_Read</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
+                  [!IF "CddUartGeneral/CddUartDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
@@ -248,14 +251,14 @@
                     </BSW-DIRECT-CALL-POINT>
                   </CALL-POINTS>
                   [!ENDIF!]
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_PollRead</IMPLEMENTED-ENTRY-REF>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Uart_TI_F29H85x/Cdd_Uart_ModuleEntry/Cdd_Uart_Poll_Read</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
               </ENTITYS>
               <EVENTS>
-                <BSW-TIMING-EVENT UUID="[!"as:uuid()"!]">
+                <BSW-TIMING-EVENT UUID="2b950519-bdd1-40c1-9f37-713391fe5517">
                   <SHORT-NAME>CddUartMainFunctionWritePeriod</SHORT-NAME>
                   <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Cdd_Uart_TI_F29H85x/Cdd_Uart/Cdd_Uart_Behavior/Cdd_Uart_MainFunction_Write</STARTS-ON-EVENT-REF>
-                  <PERIOD>[!"as:modconf('Cdd_Uart/Cdd')[1]/CddUartGeneral/CddUartMainFunctionWritePeriod"!]</PERIOD>
+                  <PERIOD>[!"CddUartGeneral/CddUartMainFunctionWritePeriod"!]</PERIOD>
                 </BSW-TIMING-EVENT>
               </EVENTS>
             </BSW-INTERNAL-BEHAVIOR>
@@ -307,7 +310,7 @@
               <SHORT-NAME>TI_C29Clang</SHORT-NAME>
               <NAME>TI_C29Clang</NAME>
               <VENDOR>Texas Instruments</VENDOR>
-              <VERSION>1.0.0</VERSION>
+              <VERSION>2.0.0</VERSION>
             </COMPILER>
           </COMPILERS>
           <LINKERS>
@@ -315,7 +318,7 @@
               <SHORT-NAME>TI_C29Linker</SHORT-NAME>
               <NAME>TI_C29Linker</NAME>
               <VENDOR>Texas Instruments</VENDOR>
-              <VERSION>1.0.0</VERSION>
+              <VERSION>2.0.0</VERSION>
             </LINKER>
           </LINKERS>
           <PROGRAMMING-LANGUAGE>C</PROGRAMMING-LANGUAGE>
@@ -368,11 +371,11 @@
           <SHORT-NAME>Cdd_Uart_ModuleEntry</SHORT-NAME>
           <ELEMENTS>
             <BSW-MODULE-ENTRY UUID="0a32eec9-cdb8-484f-b05a-0136eaf33d8c">
-              <SHORT-NAME>Cdd_Uart_0_ISR</SHORT-NAME>
+              <SHORT-NAME>Cdd_Uart_A_ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
+              [!LOOP "CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
               [!IF "node:value(.) = 'CDD_UART_MODE_INTERRUPT'"!]
               [!IF "num:i(node:value(../CddUartHWUnitId)) = num:i(0)"!]
               [!IF "(node:value(../CddUartInteruptType)='CDD_UART_ISR_CAT2')"!]
@@ -388,11 +391,11 @@
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY UUID="f971b6c5-964a-40ad-a836-66cf7f7523c7">
-              <SHORT-NAME>Cdd_Uart_1_ISR</SHORT-NAME>
+              <SHORT-NAME>Cdd_Uart_B_ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
+              [!LOOP "CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
               [!IF "node:value(.) = 'CDD_UART_MODE_INTERRUPT'"!]
               [!IF "num:i(node:value(../CddUartHWUnitId)) = num:i(1)"!]
               [!IF "(node:value(../CddUartInteruptType)='CDD_UART_ISR_CAT2')"!]
@@ -408,11 +411,11 @@
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY UUID="41c93848-1e12-4fde-b670-b84d0d87096b">
-              <SHORT-NAME>Cdd_Uart_2_ISR</SHORT-NAME>
+              <SHORT-NAME>Cdd_Uart_C_ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
+              [!LOOP "CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
               [!IF "node:value(.) = 'CDD_UART_MODE_INTERRUPT'"!]
               [!IF "num:i(node:value(../CddUartHWUnitId)) = num:i(2)"!]
               [!IF "(node:value(../CddUartInteruptType)='CDD_UART_ISR_CAT2')"!]
@@ -428,11 +431,11 @@
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY UUID="05bfec66-5e55-4510-bcc7-51aaa56389d1">
-              <SHORT-NAME>Cdd_Uart_3_ISR</SHORT-NAME>
+              <SHORT-NAME>Cdd_Uart_D_ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
+              [!LOOP "CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
               [!IF "node:value(.) = 'CDD_UART_MODE_INTERRUPT'"!]
               [!IF "num:i(node:value(../CddUartHWUnitId)) = num:i(3)"!]
               [!IF "(node:value(../CddUartInteruptType)='CDD_UART_ISR_CAT2')"!]
@@ -448,11 +451,11 @@
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY UUID="c4c5eda0-4f89-4502-b42b-466477eedec1">
-              <SHORT-NAME>Cdd_Uart_4_ISR</SHORT-NAME>
+              <SHORT-NAME>Cdd_Uart_E_ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
+              [!LOOP "CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
               [!IF "node:value(.) = 'CDD_UART_MODE_INTERRUPT'"!]
               [!IF "num:i(node:value(../CddUartHWUnitId)) = num:i(4)"!]
               [!IF "(node:value(../CddUartInteruptType)='CDD_UART_ISR_CAT2')"!]
@@ -468,11 +471,11 @@
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY UUID="817714e7-688d-4d70-a031-d60ec5c7869c">
-              <SHORT-NAME>Cdd_Uart_5_ISR</SHORT-NAME>
+              <SHORT-NAME>Cdd_Uart_F_ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              [!LOOP "as:modconf('Cdd_Uart/Cdd')[1]/CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
+              [!LOOP "CddUartConfigSet/CddUartConfig/*/.//*[@name='CddUartProcessingMode']"!]
               [!IF "node:value(.) = 'CDD_UART_MODE_INTERRUPT'"!]
               [!IF "num:i(node:value(../CddUartHWUnitId)) = num:i(5)"!]
               [!IF "(node:value(../CddUartInteruptType)='CDD_UART_ISR_CAT2')"!]
@@ -488,7 +491,7 @@
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY UUID="cc5d53c5-74e0-49d2-b500-058baa77a2f7">
-              <SHORT-NAME>Cdd_Uart_VersionInfo</SHORT-NAME>
+              <SHORT-NAME>Cdd_Uart_GetVersionInfo</SHORT-NAME>
               <SERVICE-ID>0</SERVICE-ID>
               <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
@@ -588,7 +591,7 @@
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY UUID="e54cb366-3cf4-41a5-acef-451f45d04a2b">
-              <SHORT-NAME>Cdd_Uart_PollRead</SHORT-NAME>
+              <SHORT-NAME>Cdd_Uart_Poll_Read</SHORT-NAME>
               <SERVICE-ID>10</SERVICE-ID>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>

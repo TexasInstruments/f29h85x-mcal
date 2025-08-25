@@ -23,7 +23,7 @@
 #define MCU_CFG_H
 
 /**
- * \addtogroup MCU Mcu API GUIDE configurator header file
+ * \addtogroup MCU
  * @{
  */
 
@@ -56,6 +56,7 @@ extern "C" {
  * \brief MCU Build Variant.
  * Build variants.(i.e Precompile, postbuild or linktime)
  *********************************************************************************************************************/
+[!SELECT "as:modconf('Mcu')[as:path(node:dtos(.))='/TI_F29H85x/Mcu']"!][!//
 /*
  * Design: MCAL-21858
  */
@@ -63,13 +64,13 @@ extern "C" {
 /*
  * Design: MCAL-21784, MCAL-21857
  */
-#define MCU_CFG_PRE_COMPILE_VARIANT   [!IF "as:modconf('Mcu')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CFG_PRE_COMPILE_VARIANT   [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
-[!IF "as:modconf('Mcu')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
 /* Pre Compile config macro name. */
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!]
-#define MCU_INIT_CONFIG_PC        [!"@name"!]
+[!LOOP "McuModuleConfiguration/*"!]
+#define MCU_INIT_CONFIG_PC        Mcu_Config_[!"@name"!]
 [!ENDLOOP!]
 [!ENDIF!]
 
@@ -79,30 +80,30 @@ extern "C" {
 /*********************************************************************************************************************
  * \brief Enable/Disable DEM.
  *********************************************************************************************************************/
-#define MCU_CFG_DEM_ENABLE    [!IF "node:refexists(as:modconf('Mcu')[1]/McuModuleConfiguration/*/McuDemEventParameterRefs/MCU_E_CLOCK_FAILURE)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CFG_DEM_ENABLE    [!IF "node:refexists(McuModuleConfiguration/*/McuDemEventParameterRefs/MCU_E_CLOCK_FAILURE)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*
  * Design: MCAL-21874, MCAL-21875
  */
-[!IF "node:refexists(as:modconf('Mcu')[1]/McuModuleConfiguration/*/McuDemEventParameterRefs/MCU_E_CLOCK_FAILURE)"!]
+[!IF "node:refexists(McuModuleConfiguration/*/McuDemEventParameterRefs/MCU_E_CLOCK_FAILURE)"!]
 /** \brief MCU DEM Event Configuration: MCU Clock failed - AUTOSAR ECUC Driver SWS Item - ECUC_Mcu_00188*/
-#define MCU_E_CLOCK_FAILURE  (DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Mcu')[1]/McuModuleConfiguration/*/McuDemEventParameterRefs/MCU_E_CLOCK_FAILURE))"!])
+#define MCU_E_CLOCK_FAILURE  (DemConf_DemEventParameter_[!"node:name(node:ref(McuModuleConfiguration/*/McuDemEventParameterRefs/MCU_E_CLOCK_FAILURE))"!])
 [!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable Lock registers mechanism for clock configuration registers.
  *********************************************************************************************************************/
-#define MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuClockConfigLockCriticalRegisters = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS    [!IF "McuGeneralConfiguration/McuClockConfigLockCriticalRegisters = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable Lock registers mechanism for cpu peripheral configuration registers.
  *********************************************************************************************************************/
-#define MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuCpuPeripheralConfigLockCriticalRegisters = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS    [!IF "McuGeneralConfiguration/McuCpuPeripheralConfigLockCriticalRegisters = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable Lock registers mechanism for cpu system registers.
  *********************************************************************************************************************/
-#define MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuCpuSystemLockCriticalRegisters = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS    [!IF "McuGeneralConfiguration/McuCpuSystemLockCriticalRegisters = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
 /*********************************************************************************************************************
@@ -111,7 +112,7 @@ extern "C" {
 /*
  * Design: MCAL-21859
  */
-#define MCU_CFG_DEV_ERROR_DETECT    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CFG_DEV_ERROR_DETECT    [!IF "McuGeneralConfiguration/McuDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable Mcu_CheckRamState().
@@ -119,7 +120,7 @@ extern "C" {
  /*
  * Design: MCAL-21860
  */
-#define MCU_CFG_GET_RAM_STATE_API    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuGetRamStateApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CFG_GET_RAM_STATE_API    [!IF "McuGeneralConfiguration/McuGetRamStateApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable Mcu_InitClock().
@@ -127,7 +128,7 @@ extern "C" {
 /*
  * Design: MCAL-21861
  */
-#define MCU_CFG_INIT_CLOCK_API    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuInitClock = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CFG_INIT_CLOCK_API    [!IF "McuGeneralConfiguration/McuInitClock = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable PLL support
@@ -135,7 +136,7 @@ extern "C" {
 /*
  * Design: MCAL-21862
  */
-#define MCU_CFG_NO_PLL    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuNoPll = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CFG_NO_PLL    [!IF "McuGeneralConfiguration/McuNoPll = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable Mcu_PerformReset().
@@ -143,7 +144,7 @@ extern "C" {
 /*
  * Design: MCAL-21863
  */
-#define MCU_CFG_PERFORM_RESET_API    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuPerformResetApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CFG_PERFORM_RESET_API    [!IF "McuGeneralConfiguration/McuPerformResetApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /*********************************************************************************************************************
  * \brief Enable/Disable Mcu_GetVersionInfo().
@@ -151,7 +152,7 @@ extern "C" {
 /*
  * Design: MCAL-21864
  */
-#define MCU_CFG_GET_VERSION_INFO_API    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define MCU_CFG_GET_VERSION_INFO_API    [!IF "McuGeneralConfiguration/McuVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /**************************************************************************************************************************
  * \brief The following defines shall be used as input parameter for: Mcu_InitClock(), Mcu_InitRamSection(), Mcu_SetMode() .
@@ -162,7 +163,7 @@ extern "C" {
  *********************************************************************************************************************/
 
 /*<MCU_CFG_CLOCKUSERCONFIG_LIST>*/
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!LOOP "McuClockSettingConfig/*"!]
+[!LOOP "McuModuleConfiguration/*"!][!LOOP "McuClockSettingConfig/*"!]
 #define McuConf_McuClockSettingConfig_[!"@name"!] ([!"@index"!]u) /*~ASR~*/
 [!CR!][!ENDLOOP!][!ENDLOOP!]
 /*</MCU_CFG_CLOCKUSERCONFIG_LIST>*/
@@ -171,7 +172,7 @@ extern "C" {
  * \brief RAM Section configuration
  *********************************************************************************************************************/
 /*<MCU_CFG_RAMSECTIONUSERCONFIG_LIST>*/
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!LOOP "McuRamSectorSettingConf/*"!]
+[!LOOP "McuModuleConfiguration/*"!][!LOOP "McuRamSectorSettingConf/*"!]
 #define [!"@name"!] ([!"@index"!]u) /*~ASR~*/
 [!CR!][!ENDLOOP!][!ENDLOOP!]
 /*</MCU_CFG_RAMSECTIONUSERCONFIG_LIST>*/
@@ -180,7 +181,7 @@ extern "C" {
  * \brief POWERMODE Section configuration
  *********************************************************************************************************************/
 /*<MCU_CFG_POWERMODEUSERCONFIG_LIST>*/
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!LOOP "McuModeSettingConf/*"!]
+[!LOOP "McuModuleConfiguration/*"!][!LOOP "McuModeSettingConf/*"!]
 #define McuConf_McuModeSettingConf_[!"@name"!] ([!"@index"!]u) /*~ASR~*/
 [!CR!][!ENDLOOP!][!ENDLOOP!]
 /*</MCU_CFG_POWERMODEUSERCONFIG_LIST>*/
@@ -193,7 +194,7 @@ extern "C" {
 /*
  * Design: MCAL-21883, MCAL-21884, MCAL-21885
  */
-[!LOOP "as:modconf('Mcu')[1]/McuPublishedInformation/McuResetReasonConf/*"!]
+[!LOOP "McuPublishedInformation/McuResetReasonConf/*"!]
 #define McuConf_McuResetReasonConf_[!"@name"!] ([!"McuResetReason"!]u) /*~ASR~*/
 [!CR!][!ENDLOOP!]
 
@@ -780,11 +781,11 @@ typedef P2CONST(Mcu_ModeConfigType, AUTOMATIC, MCU_CONFIG_DATA) Mcu_ModeConfigPt
  * Exported Object Declarations
  *********************************************************************************************************************/
 
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!]
+[!LOOP "McuModuleConfiguration/*"!]
 /* MCU Configuration struct declaration */
-extern const struct Mcu_ConfigType_s [!"@name"!];
+extern const struct Mcu_ConfigType_s Mcu_Config_[!"@name"!];
 [!ENDLOOP!]
-
+[!ENDSELECT!]
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/

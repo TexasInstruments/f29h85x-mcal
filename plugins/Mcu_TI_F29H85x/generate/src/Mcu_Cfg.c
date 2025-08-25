@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Mcu')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!][!//
+[!SKIPFILE "as:modconf('Mcu')[as:path(node:dtos(.))='/TI_F29H85x/Mcu']/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!][!//
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -40,11 +40,11 @@
 /*********************************************************************************************************************
  * AUTOSAR version information check.
  *********************************************************************************************************************/
-#if ((MCU_SW_MAJOR_VERSION != (1U)) || (MCU_SW_MINOR_VERSION != (1U)))
+#if ((MCU_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (MCU_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Mcu_cfg.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (1U)) || (MCU_CFG_MINOR_VERSION != (1U)))
+#if ((MCU_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (MCU_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Mcu_cfg.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
@@ -67,11 +67,11 @@
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/
- 
+ [!SELECT "as:modconf('Mcu')[as:path(node:dtos(.))='/TI_F29H85x/Mcu']"!]
  /*
  * Design: MCAL-21901
  */
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!VAR "ClkCfgSetNo" = "@index"!]
+[!LOOP "McuModuleConfiguration/*"!][!VAR "ClkCfgSetNo" = "@index"!]
 static CONST(Mcu_PeripheralClkRegConfigType, MCU_CONFIG_DATA) Mcu_PerClkCfgSet[!"num:i($ClkCfgSetNo)"!][[!"num:i(count(McuClockSettingConfig/*))"!]] =
 {
 [!LOOP "McuClockSettingConfig/*"!]    {
@@ -279,7 +279,7 @@ static CONST(Mcu_PeripheralClkRegConfigType, MCU_CONFIG_DATA) Mcu_PerClkCfgSet[!
 [!ENDLOOP!]
 
 
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!VAR "ClkCfgSetNo" = "@index"!]
+[!LOOP "McuModuleConfiguration/*"!][!VAR "ClkCfgSetNo" = "@index"!]
 static CONST(Mcu_PeripheralResetRegConfigType, MCU_CONFIG_DATA) Mcu_PerResetCfgSet[!"num:i($ClkCfgSetNo)"!][[!"num:i(count(McuClockSettingConfig/*))"!]] =
 {
 [!LOOP "McuClockSettingConfig/*"!]    {
@@ -481,7 +481,7 @@ static CONST(Mcu_PeripheralResetRegConfigType, MCU_CONFIG_DATA) Mcu_PerResetCfgS
 [!ENDLOOP!]
 
 
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!]
+[!LOOP "McuModuleConfiguration/*"!]
 [!LOOP "McuClockSettingConfig/*"!]
 [!VAR "ClkCfgSetNo" = "@index"!]
 static CONST(Mcu_MCanClkConfigType, MCU_CONFIG_DATA) Mcu_MCanClkCfgSet[!"num:i($ClkCfgSetNo)"!][[!"num:i(count(McuMCanClkConfig/*))"!]] =
@@ -496,7 +496,7 @@ static CONST(Mcu_MCanClkConfigType, MCU_CONFIG_DATA) Mcu_MCanClkCfgSet[!"num:i($
 [!ENDLOOP!]
 [!ENDLOOP!]
 
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!]
+[!LOOP "McuModuleConfiguration/*"!]
 [!LOOP "McuClockSettingConfig/*"!]
 [!VAR "ClkCfgSetNo" = "@index"!]
 static CONST(Mcu_LinClkConfigType, MCU_CONFIG_DATA) Mcu_LinClkCfgSet[!"num:i($ClkCfgSetNo)"!][[!"num:i(count(McuLinClkConfig/*))"!]] =
@@ -515,7 +515,7 @@ static CONST(Mcu_LinClkConfigType, MCU_CONFIG_DATA) Mcu_LinClkCfgSet[!"num:i($Cl
  * Design: MCAL-21891, MCAL-21892, MCAL-21893, MCAL-21894, MCAL-21895, MCAL-21896,
  * Design: MCAL-21897, MCAL-21898, MCAL-21899, MCAL-21900, MCAL-21901, MCAL-21872, MCAL-21873
  */
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!VAR "McuModuleCfgSetNo" = "@index"!]
+[!LOOP "McuModuleConfiguration/*"!][!VAR "McuModuleCfgSetNo" = "@index"!]
 static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet[!"num:i($McuModuleCfgSetNo)"!][[!"num:i(count(McuClockSettingConfig/*))"!]] =
 {
 [!LOOP "McuClockSettingConfig/*"!][!VAR "ClkCfgSetNo" = "@index"!]    {
@@ -544,7 +544,7 @@ static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet[!"num:i($McuMod
     .Mcu_HsmClkDiv       = ((Mcu_HsmClockDiv) [!"McuClkConfig/McuHsmClkDiv"!]),
     .Mcu_EpwmClkDiv      = ((Mcu_EPWMClkDivider) [!"McuClkConfig/McuEpwmClkDiv"!]),
     .Mcu_EmifClkDiv      = ((Mcu_EMIFClkDivider) [!"McuClkConfig/McuEmifClkDiv"!]),
-    [!IF "as:modconf('Mcu')[1]/McuGeneralConfiguration/McuNoPll = 'false'"!]
+    [!IF "as:modconf('Mcu')[as:path(node:dtos(.))='/TI_F29H85x/Mcu']/McuGeneralConfiguration/McuNoPll = 'false'"!]
     .Mcu_PllRefDiv       = ((uint8) [!"McuPllConfig/McuPLLRefDiv"!]U),
     .Mcu_PllIntMult      = ((uint8) [!"McuPllConfig/McuPLLIntMult"!]U),
     .Mcu_PllOutDiv       = ((uint8) [!"McuPllConfig/McuPLLOutDiv"!]U),[!ENDIF!]
@@ -555,7 +555,7 @@ static CONST(Mcu_ClockConfigType, MCU_CONFIG_DATA) Mcu_ClkCfgSet[!"num:i($McuMod
 /*
  * Design: MCAL-21878, MCAL-21879, MCAL-21880, MCAL-21881, MCAL-21882
  */
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!VAR "RamCfgSetNo" = "@index"!]
+[!LOOP "McuModuleConfiguration/*"!][!VAR "RamCfgSetNo" = "@index"!]
 static CONST(Mcu_RamSectionConfigType, MCU_CONFIG_DATA) Mcu_RamSectionCfgSet[!"num:i($RamCfgSetNo)"!][[!"num:i(count(McuRamSectorSettingConf/*))"!]] =
 {
 [!LOOP "McuRamSectorSettingConf/*"!]    {
@@ -570,7 +570,7 @@ static CONST(Mcu_RamSectionConfigType, MCU_CONFIG_DATA) Mcu_RamSectionCfgSet[!"n
 /*
  * Design: MCAL-21876, MCAL-21877, MCAL-21902, MCAL-21903
  */
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!][!VAR "ModeCfgSetNo" = "@index"!]
+[!LOOP "McuModuleConfiguration/*"!][!VAR "ModeCfgSetNo" = "@index"!]
 static CONST(Mcu_ModeConfigType, MCU_CONFIG_DATA) Mcu_ModeConfigurationSet[!"num:i($ModeCfgSetNo)"!][[!"num:i(count(McuModeSettingConf/*))"!]] =
 {
 [!LOOP "McuModeSettingConf/*"!]    {
@@ -585,7 +585,7 @@ static CONST(Mcu_ModeConfigType, MCU_CONFIG_DATA) Mcu_ModeConfigurationSet[!"num
 /*
  * Design: MCAL-21865, MCAL-21866, MCAL-21867, MCAL-21868, MCAL-21869, MCAL-21866
  */
-[!LOOP "as:modconf('Mcu')[1]/McuModuleConfiguration/*"!]CONST(Mcu_ConfigType, MCU_CONFIG_DATA) [!"@name"!] =
+[!LOOP "McuModuleConfiguration/*"!]CONST(Mcu_ConfigType, MCU_CONFIG_DATA) Mcu_Config_[!"@name"!] =
 {
     /* Mcu_ClockConfig */ 
     .Mcu_ClockConfig               = ((Mcu_ClockConfigPtrType) Mcu_ClkCfgSet[!"@index"!]),
@@ -605,7 +605,7 @@ static CONST(Mcu_ModeConfigType, MCU_CONFIG_DATA) Mcu_ModeConfigurationSet[!"num
     .Mcu_EnableClkFailNotification = ((boolean) [!IF "McuClockSrcFailureNotification='ENABLED'"!]TRUE[!ELSE!]FALSE[!ENDIF!])
 };
 [!ENDLOOP!]
-
+[!ENDSELECT!]
 
 /*********************************************************************************************************************
  *  Local Function Prototypes

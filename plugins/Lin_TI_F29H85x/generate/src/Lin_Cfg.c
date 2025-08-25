@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Lin')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!]
+[!SKIPFILE "as:modconf('Lin')[as:path(node:dtos(.))='/TI_F29H85x/Lin']/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPostBuild'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -43,11 +43,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((LIN_SW_MAJOR_VERSION != (1U)) || (LIN_SW_MINOR_VERSION != (1U)))
+#if ((LIN_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (LIN_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
   #error "Version numbers of Lin_Cfg.c and Lin.h are inconsistent!"
 #endif
 
-#if ((LIN_CFG_MAJOR_VERSION != (1U)) || (LIN_CFG_MINOR_VERSION != (1U)))
+#if ((LIN_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (LIN_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
   #error "Version numbers of Lin_Cfg.c and Lin_Cfg.h are inconsistent!"
 #endif
 
@@ -69,11 +69,12 @@
 #define LIN_START_SEC_CONFIG_DATA
 #include "Lin_MemMap.h"
 
+[!SELECT "as:modconf('Lin')[as:path(node:dtos(.))='/TI_F29H85x/Lin']"!]
 [!AUTOSPACING!]
-[!IF "(as:modconf('Lin')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile')"!][!VAR "LinChannelIdIndx" = "0"!]
-CONST(Lin_ConfigType, LIN_CFG) Lin_LinGlobalConfig =
+[!IF "(IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile')"!][!VAR "LinChannelIdIndx" = "0"!]
+CONST(Lin_ConfigType, LIN_CFG) Lin_Config =
 {
-    [!LOOP "as:modconf('Lin')[1]/LinGlobalConfig/LinChannel/*"!][!IF "(num:i($LinChannelIdIndx)) != LinChannelId"!][!ERROR "Lin Channel Id should start with 0, increment by 1 and continue without any gaps"!][!ENDIF!]
+    [!LOOP "LinGlobalConfig/LinChannel/*"!][!IF "(num:i($LinChannelIdIndx)) != LinChannelId"!][!ERROR "Lin Channel Id should start with 0, increment by 1 and continue without any gaps"!][!ENDIF!]
     .linChannelCfg[[!"@index"!]] =
     {
         .linControllerConfig =
@@ -89,12 +90,12 @@ CONST(Lin_ConfigType, LIN_CFG) Lin_LinGlobalConfig =
 		    .FractionalDivider = (uint32)[!"num:i(LinBaudrateConfig/LinChannelFractionalDivider)"!]
         },
         .linChannelWakeupSupport = [!IF "LinChannelWakeupSupport='true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
-	    .linWakeupSource = [!IF "not(node:empty(LinChannelEcuMWakeupSource))"!] EcuMConf_EcuMWakeupSource_[!"node:name(node:ref(LinChannelEcuMWakeupSource))"!][!ELSE!]0[!ENDIF!]
+        .linWakeupSource = (EcuM_WakeupSourceType )([!IF "not(node:empty(LinChannelEcuMWakeupSource))"!][!"num:inttohex(bit:bitset(0, node:value(node:ref(LinChannelEcuMWakeupSource)/EcuMWakeupSourceId)), 8)"!][!ELSE!]0[!ENDIF!]U)
 		
     }[!IF "not(node:islast())"!],[!CR!][!ELSE!][!ENDIF!][!VAR "LinChannelIdIndx" = "$LinChannelIdIndx+1"!][!ENDLOOP!]
    
 };
-[!ENDIF!][!//
+[!ENDIF!][!ENDSELECT!][!//
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/

@@ -58,13 +58,11 @@
  *  The memory to the node object should be allocated by the caller. This
  *  is used for link list with priority.
  *
- *  \param[in] llobj            Link list object.
+ *  \param[inout] llobj            Link list object.
  *  \param[in] node             Node object pointer used for linking.
- *  \param[in] data             Data pointer to add to node.
  *  \param[in] params           Pointer to node params containing info like data
  *                              pointer, priority, seqId, seqInterruptible.
  *  \param[in] currSeqId        Current sequence ID in progress for the HW unit.
- *  \param[out] llobj            Link list object.
  *  \pre None
  *  \post None
  *  \return None
@@ -76,9 +74,8 @@ static void Spi_UtilsLinkDoublePri(Spi_UtilsLinkListObj *llobj, Spi_UtilsNode *n
 /**
  *  \brief Unlinks the node from the list. Used for the priority link lists.
  *
- *  \param[in] llobj: pointer to linklist Object
+ *  \param[inout] llobj: pointer to linklist Object
  *  \param[in] node: pointer to a node in linklist
- *  \param[out] llobj: pointer to linklist Object
  *  \pre None
  *  \post None
  *  \return None

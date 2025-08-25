@@ -47,49 +47,52 @@ extern "C" {
 #define CDD_ECAP_CFG_MAJOR_VERSION           ([!"substring-before($moduleSoftwareVer,'.')"!]U)
 #define CDD_ECAP_CFG_MINOR_VERSION           ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 #define CDD_ECAP_CFG_PATCH_VERSION           ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
-
+[!SELECT "as:modconf('Cdd_Ecap/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ecap/Cdd']"!]
 /* Macro to define the number of channels configured */
-#define CDD_ECAP_HW_CNT                      ((uint8)[!"num:i(count(as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet/CddEcapChannel/*))"!]U)
+#define CDD_ECAP_HW_CNT                      ((uint8)[!"num:i(count(CddEcapConfigSet/CddEcapChannel/*))"!]U)
 
 /** \brief Enable/Disable Cdd_Ecap DeInit API */
-#define CDD_ECAP_DE_INIT_API                   ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapDeInitApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_DE_INIT_API                   ([!IF "CddEcapGeneral/CddEcapDeInitApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/Disable Edge Count API */
-#define CDD_ECAP_EDGE_COUNT_API                ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapEdgeCountApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_EDGE_COUNT_API                ([!IF "CddEcapGeneral/CddEcapEdgeCountApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/Disable Edge Detect API */
-#define CDD_ECAP_EDGE_DETECT_API               ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapEdgeDetectApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_EDGE_DETECT_API               ([!IF "CddEcapGeneral/CddEcapEdgeDetectApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/Disable Get Duty Cycle Values API */
-#define CDD_ECAP_GET_DUTY_CYCLE_VALUES_API     ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapGetDutyCycleValuesApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_GET_DUTY_CYCLE_VALUES_API     ([!IF "CddEcapGeneral/CddEcapGetDutyCycleValuesApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/Disable Get Input State API */
-#define CDD_ECAP_GET_INPUT_STATE_API           ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapGetInputStateApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_GET_INPUT_STATE_API           ([!IF "CddEcapGeneral/CddEcapGetInputStateApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/Disable Get Time Elapsed API */
-#define CDD_ECAP_GET_TIME_ELAPSED_API          ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapGetTimeElapsedApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_GET_TIME_ELAPSED_API          ([!IF "CddEcapGeneral/CddEcapGetTimeElapsedApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/Disable Get Version Info API */
-#define CDD_ECAP_GET_VERSION_INFO_API          ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapGetVersionInfoApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_GET_VERSION_INFO_API          ([!IF "CddEcapGeneral/CddEcapGetVersionInfoApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/Disable Signal Measurement API */
-#define CDD_ECAP_SIGNAL_MEASUREMENT_API        ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapSignalMeasurementApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_SIGNAL_MEASUREMENT_API        ([!IF "CddEcapGeneral/CddEcapSignalMeasurementApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/Disable Timestamp  API */
-#define CDD_ECAP_TIMESTAMP_API                 ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapTimestampApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_TIMESTAMP_API                 ([!IF "CddEcapGeneral/CddEcapTimestampApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+
+/** \brief Enable/Disable High Resolution API */
+#define CDD_ECAP_HR_API                        ([!IF "CddEcapGeneral/CddEcapHRConfigApi"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/Disable Development error detet */
-#define CDD_ECAP_DEV_ERROR_DETECT              ([!IF "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapGeneral/CddEcapDevErrorDetect"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
+#define CDD_ECAP_DEV_ERROR_DETECT              ([!IF "CddEcapGeneral/CddEcapDevErrorDetect"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Maximum number of Cdd_Ecap channels */
 
 #define CDD_ECAP_MAX_NUM_CHANNELS               (6U)
 
 
-[!IF "(as:modconf('Cdd_Ecap/Cdd')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile')"!]
+[!IF "(IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile')"!]
 [!VAR "notifyFxnList" = "' '"!]
 
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet/CddEcapChannel/*"!][!//
+[!LOOP "CddEcapConfigSet/CddEcapChannel/*"!][!//
 
 [!IF "CddEcapMeasurementMode = 'CDD_ECAP_MODE_TIMESTAMP'"!][!//
 [!IF "not(node:empty(CddEcapTimestampMeasurement/CddEcapTimestampNotification)) and not(text:match(CddEcapTimestampNotification,'NULL_PTR'))"!][!//
@@ -333,28 +336,28 @@ typedef enum
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet"!]
-extern const struct Cdd_Ecap_ConfigTag Cdd_Ecap_Configset;
-[!ENDLOOP!]
+
+extern const struct Cdd_Ecap_ConfigTag Cdd_Ecap_Config;
+
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
 
-[!IF "as:modconf('Cdd_Ecap/Cdd')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
+[!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
 /**
  *  \brief Pre Compile config macro name.
  */
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet"!]
-#define CDD_ECAP_INIT_CONFIG_PC       Cdd_Ecap_Configset
-[!ENDLOOP!]
+
+#define CDD_ECAP_INIT_CONFIG_PC       Cdd_Ecap_Config
+
 [!ENDIF!]
 
 /**
 *  \brief Channel ID
 *  Symbolic Names Configured channel ID(s)
 */
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet/CddEcapChannel/*"!]
+[!LOOP "CddEcapConfigSet/CddEcapChannel/*"!]
 #define CddEcapConf_CddEcapChannel_[!"@name"!] [!WS "8"!] ((uint8)[!"num:i(node:pos(.))"!]U) /*~ASR~*/
 /**\brief Channel identifiers */
 [!ENDLOOP!]
@@ -362,21 +365,29 @@ extern const struct Cdd_Ecap_ConfigTag Cdd_Ecap_Configset;
 /*
  * CDD ECAP channels available for user
  */
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet"!]
-[!LOOP "CddEcapChannel/*"!][!/*Channel Loop */!]
+
+[!LOOP "CddEcapConfigSet/CddEcapChannel/*"!][!/*Channel Loop */!]
 /** \brief ECAP Channel [!"num:i(CddEcapChannelId)"!], in MAIN DOMAIN */
 #define CDD_ECAP_CHANNEL[!"num:i(CddEcapChannelId)"!]               ([!"num:i(CddEcapChannelId)"!]U)
 [!IF "not(node:islast())"!][!ENDIF!][!CR!][!ENDLOOP!]
-[!ENDLOOP!][!/*End of CddEcapChannelConfigSet Loop*/!]
+
 
 [!//
-[!LOOP "as:modconf('Cdd_Ecap/Cdd')[1]/CddEcapConfigSet"!][!//
-[!LOOP "CddEcapChannel/*"!]
+[!LOOP "CddEcapConfigSet/CddEcapChannel/*"!]
 #define CDD_ECAP_CHANNEL[!"num:i(CddEcapChannelId)"!]_INT_ENABLE
 
 #define CDD_ECAP_CHANNEL[!"num:i(CddEcapChannelId)"!]_INT_[!"CddEcapIrqType"!]
+
+[!IF "CddEcapHREnable = 'true'"!]
+[!IF "num:i(CddEcapChannelId) < num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex'))"!][!ERROR "HR mode is not supported for channel id less than num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex'))"!]
+[!ELSE!]
+#define CDD_ECAP_HR_CHANNEL[!"num:i(CddEcapChannelId)"!]_INT_ENABLE
+
+#define CDD_ECAP_HR_CHANNEL[!"num:i(CddEcapChannelId)"!]_INT_[!"CddEcapIrqType"!]
+[!ENDIF!]
+[!ENDIF!]
 [!ENDLOOP!][!//
-[!ENDLOOP!][!//
+[!ENDSELECT!][!//
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

@@ -123,7 +123,7 @@ typedef struct Gpt_DriverObjType_s
  * This function Set the Gpt driver object into global pointer which can be used in ISR notification
  *API.
  *
- * \param[in] Gpt_DrvObj Gpt_DrvObj is the Gpt driver object defined in Gpt.c
+ * \param[in] Set_DrvObj Gpt driver object defined in Gpt.c
  * \pre None
  * \post None
  * \return None

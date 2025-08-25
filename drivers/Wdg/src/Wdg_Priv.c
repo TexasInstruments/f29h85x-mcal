@@ -156,7 +156,6 @@ LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_IsWatchdogInterruptActive(void);
 /** \brief Checks the reaction parameter range
  *
  * \param[in] reaction Reaction type i.e reset or interrupt
- * \param[out] None
  * \pre None
  * \post None
  * \return boolean type
@@ -169,7 +168,6 @@ LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckReactionParam(VAR(Wdg_Reaction, AU
 /** \brief Checks the Prescaler parameter range
  *
  * \param[in] prescaler Prescaler value
- * \param[out] None
  * \pre None
  * \post None
  * \return boolean type
@@ -182,7 +180,6 @@ LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckPrescalerParam(VAR(Wdg_PreScaler, 
 /** \brief Checks the Predivider parameter range
  *
  * \param[in] predivider Predivider value
- * \param[out] None
  * \pre None
  * \post None
  * \return boolean type
@@ -195,7 +192,6 @@ LOCAL_INLINE FUNC(boolean, WDG_CODE) Wdg_CheckPredividerParam(VAR(Wdg_PreDivider
 /** \brief Checks the Threshold parameter range
  *
  * \param[in] threshold Threshold value
- * \param[out] None
  * \pre None
  * \post None
  * \return boolean type

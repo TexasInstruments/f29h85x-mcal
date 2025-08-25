@@ -70,9 +70,9 @@ if(NOT TARGET CanIf)
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Icom/CanIf)
 endif()
 
-if(NOT TARGET f29h85x_config)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/f29h85x_config/
-                     ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Icom/f29h85x_config)
+if(NOT TARGET Can_Example_Icom_Config)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Can_Example_Icom_Config/
+                     ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Icom/Can_Example_Icom_Config)
 endif()
 
 if(NOT TARGET AppUtils)

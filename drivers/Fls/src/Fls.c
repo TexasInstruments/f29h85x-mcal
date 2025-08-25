@@ -28,7 +28,7 @@
  *********************************************************************************************************************/
 #include "Fls.h"
 #include "SchM_Fls.h"
-#include "Fls_Cfg.h"
+#include "Fls_Cbk.h"
 #include "Fls_Priv.h"
 
 #if (STD_ON == FLS_DEV_ERROR_DETECT)
@@ -45,12 +45,12 @@
 #endif
 
 /* AUTOSAR version information check has to match definition in header file */
-#if ((FLS_SW_MAJOR_VERSION != (1U)) || (FLS_SW_MINOR_VERSION != (1U)) || (FLS_SW_PATCH_VERSION != (0U)))
+#if ((FLS_SW_MAJOR_VERSION != (2U)) || (FLS_SW_MINOR_VERSION != (0U)))
 #error "Fls: Software Version Numbers are inconsistent!!"
 #endif
 
 /* AUTOSAR version information check has to match definition in FLS_Cfg.h file */
-#if ((FLS_CFG_MAJOR_VERSION != (1U)) || (FLS_CFG_MINOR_VERSION != (1U)) || (FLS_CFG_PATCH_VERSION != (0U)))
+#if ((FLS_CFG_MAJOR_VERSION != (2U)) || (FLS_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Fls.c and Fls_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -165,7 +165,7 @@ FUNC(void, FLS_CODE) Fls_Init(P2CONST(Fls_ConfigType, AUTOMATIC, FLS_CONFIG_DATA
     const Fls_ConfigType *CfgPtr = NULL_PTR;
 
     VAR(uint16, AUTOMATIC) waitStates = (uint16)3U;
-    VAR(Fls_FapiStatusType, AUTOMATIC) oReturnCheck;
+    VAR(Std_ReturnType, AUTOMATIC) oReturnCheck;
     VAR(uint32, AUTOMATIC) CPU_SYS_CLOCK_MHZ = (uint32)0U;
 
 #if (STD_ON == FLS_PRE_COMPILE_VARIANT)
@@ -241,7 +241,7 @@ FUNC(void, FLS_CODE) Fls_Init(P2CONST(Fls_ConfigType, AUTOMATIC, FLS_CONFIG_DATA
         CPU_SYS_CLOCK_MHZ = FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ;
         oReturnCheck      = Fls_Fapi_initializeAPI(CPU_SYS_CLOCK_MHZ);
 
-        if (oReturnCheck != FLS_FAPI_STATUS_SUCCESS)
+        if (oReturnCheck != E_OK)
         {
             /* Check Flash API documentation for possible errors */
             /* SWS_Fls_00323*/

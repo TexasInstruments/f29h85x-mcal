@@ -62,37 +62,38 @@ extern "C" {
 #define CDD_IPC_PRE_COMPILE_VARIANT              STD_ON
 
 /** \brief Pre compile variant configuration */
-#define CDD_IPC_PRE_COMPILE_VARIANT_CONFIG       Cdd_Ipc_Configuration
+#define CDD_IPC_PRE_COMPILE_VARIANT_CONFIG       Cdd_Ipc_Config
 
+[!SELECT "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']"!]
 /** \brief CDD Ipc developement error detection */
-#define CDD_IPC_DEV_ERROR_DETECT  [!"'              '"!] [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcDevErrorDetect"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!] 
+#define CDD_IPC_DEV_ERROR_DETECT  [!"'              '"!] [!IF "CddIpcGeneral/CddIpcDevErrorDetect"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!] 
 
 
 /** \brief Switches the Cdd_Ipc_GetVersionInfo function ON or OFF */
-#define CDD_IPC_GET_VERSION_INFO_API  [!"'           '"!][!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcVersionInfoApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
+#define CDD_IPC_GET_VERSION_INFO_API  [!"'           '"!][!IF "CddIpcGeneral/CddIpcVersionInfoApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
 
 
 /** \brief Enables or disables the integration of Cdd_Ipc with AUTOSAR communication stack */
-#define CDD_IPC_INTEGRATION_WITH_ASR_COM_STACK_ENABLE [!"'  '"!] [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_IPC_INTEGRATION_WITH_ASR_COM_STACK_ENABLE [!"'  '"!] [!IF "CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
 /** \brief Macro to define the number of core */
 #define CDD_IPC_CORE_COUNT                        [!"ecu:get('No_of_cores')"!]U
 
 /** \brief Macro to define the number of remote cores configured */
-#define CDD_IPC_REMOTE_CORE_COUNT                 [!"num:i(count(as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*))"!]U
+#define CDD_IPC_REMOTE_CORE_COUNT                 [!"num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*))"!]U
 
 /** \brief Macro to define the max no of bytes that can be transmitted or received */
 #define CDD_IPC_MAX_SIZE                          [!"ecu:get('No_of_bytes_Tx_Rx')"!]U
 
 /** \brief Macro to define the number of Tx instances configured */
-#define CDD_IPC_TX_INSTANCE_COUNT                   ([!"num:i(count(as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*))"!]U)
+#define CDD_IPC_TX_INSTANCE_COUNT                   ([!"num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*))"!]U)
 
 /** \brief Macro to define the number of Rx instances configured */
-#define CDD_IPC_RX_INSTANCE_COUNT                   ([!"num:i(count(as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*))"!]U)
+#define CDD_IPC_RX_INSTANCE_COUNT                   ([!"num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*))"!]U)
 
 [!VAR "maxinput" = "'0'"!] [!VAR "var1" = "0"!]
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*"!]
 [!LOOP "CddIpcTxChannelConfig/*"!]
 [!VAR "var1" = "$var1+1"!]
 [!ENDLOOP!]
@@ -102,7 +103,7 @@ extern "C" {
 #define CDD_IPC_TX_CHANNEL_COUNT         [!"num:max(text:split($maxinput))"!]U
 
 [!VAR "maxinput" = "'0'"!] [!VAR "var1" = "0"!]
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
 [!LOOP "CddIpcRxChannelConfig/*"!]
 [!VAR "var1" = "$var1+1"!]
 [!ENDLOOP!]
@@ -112,24 +113,24 @@ extern "C" {
 #define CDD_IPC_RX_CHANNEL_COUNT         [!"num:max(text:split($maxinput))"!]U
 
 /** \brief Cdd Ipc Sync timeout, units is clock cycles. */
-[!VAR "sysClockFrequency"="num:i(node:value(concat(node:path(node:ref(as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcGeneral/CddIpcCounterClockRef)), '/McuClockReferencePointFrequency')))"!]
-#define CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES    ((uint64)([!"num:i(as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcGeneral/CddIpcTimeoutDuration * $sysClockFrequency)"!]U))
+[!VAR "sysClockFrequency"="num:i(node:value(concat(node:path(node:ref(CddIpcGeneral/CddIpcCounterClockRef)), '/McuClockReferencePointFrequency')))"!]
+#define CDD_IPC_CFG_TIMEOUT_CLOCK_CYCLES    ((uint64)([!"num:i(CddIpcGeneral/CddIpcTimeoutDuration * $sysClockFrequency)"!]U))
 
 /* Design: MCAL-30536 */
 /*****************************************************************************
  * \brief Symbolic names for the remote cores
  *****************************************************************************/ 
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*"!]
 /** \brief Remore core [!"CddIpcRemoteCore"!] symbolic name */
 #define CddIpcConf_CddIpcRemoteCoreConfig_[!"@name"!]    [!"CddIpcRemoteCore"!]  /*~ASR~*/
 [!ENDLOOP!]
 
-[!IF "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable  = 'true'"!]
+[!IF "CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable  = 'true'"!]
 /* Design: MCAL-30537 */
 /*****************************************************************************
  * \brief Defines for symbolic names for the CddIpcPduR Lower layer Rx PdU's
  *****************************************************************************/
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')[1]/CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerRxPdu/*"!]
+[!LOOP "CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerRxPdu/*"!]
 #define Cdd_IpcConf_CddPduRLowerLayerRxPdu_[!"@name"!]        [!"@index"!]U      /*~ASR~*/
 [!ENDLOOP!]
 
@@ -137,7 +138,7 @@ extern "C" {
 /*****************************************************************************
  * \brief Defines for symbolic names for the CddIpcPduR Lower layer Tx PdU's
  *****************************************************************************/
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')[1]/CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerTxPdu/*"!]
+[!LOOP "CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerTxPdu/*"!]
 #define Cdd_IpcConf_CddPduRLowerLayerTxPdu_[!"@name"!] [!"@index"!]U	         /*~ASR~*/
 [!ENDLOOP!]
 
@@ -146,7 +147,7 @@ extern "C" {
 /*****************************************************************************
  * \brief Symbolic names for the Tx channels
  ***************************************************************************/
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*/CddIpcTxChannelConfig/*"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*/CddIpcTxChannelConfig/*"!]
 #define Cdd_IpcConf_CddIpcTxChannelConfig_[!"@name"!] [!"node:value(CddIpcTxGlobalChannelId)"!]U	         /*~ASR~*/
 [!ENDLOOP!]
 
@@ -154,7 +155,7 @@ extern "C" {
 /*****************************************************************************
  * \brief Symbolic names for the Rx channels
  ***************************************************************************/
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*/CddIpcRxChannelConfig/*"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*/CddIpcRxChannelConfig/*"!]
 #define Cdd_IpcConf_CddIpcRxChannelConfig_[!"@name"!] [!"node:value(CddIpcRxGlobalChannelId)"!]U	         /*~ASR~*/
 [!ENDLOOP!]
 [!ENDIF!]
@@ -163,11 +164,12 @@ extern "C" {
  * Exported Preprocessor #define Macros
  *********************************************************************************************************************/
 /** \brief Cdd Ipc Instance interrupt definition */
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
 #define [!"CddIpcRxInstance"!]_ENABLE
 #define [!"CddIpcRxInstance"!]_[!"CddIpcInteruptType"!]
 
 [!ENDLOOP!]
+[!ENDSELECT!][!//
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 /*********************************************************************************************************************
  * Exported Type Declarations
@@ -252,7 +254,7 @@ typedef enum
  * Exported Object Declarations
  *********************************************************************************************************************/
 /* Cdd Ipc Configuration struct extern declaration */
-extern const struct Cdd_Ipc_ConfigTag Cdd_Ipc_Configuration;
+extern const struct Cdd_Ipc_ConfigTag Cdd_Ipc_Config;
 
 /*********************************************************************************************************************
  *  Exported Function Prototypes

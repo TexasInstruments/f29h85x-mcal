@@ -127,7 +127,7 @@ int main(void)
     /* INITIALIZATIONS*/
     DeviceSupport_Init();
     /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call
-    Port_Init(&Port_PortConfigSet) and will Initialize the Port and Mcu Driver */
+    Port_Init(&Port_Config) and will Initialize the Port and Mcu Driver */
     EcuM_Init();
     AppUtils_Init(200000000U);
     AppUtils_Printf("LIN Driver Sample Application: Lin Send Data - Starts!!!\n\n\r");
@@ -137,7 +137,7 @@ int main(void)
 #if (STD_ON == LIN_PRE_COMPILE_VARIANT)
     Lin_Init(NULL_PTR);
 #else
-    const Lin_ConfigType* pCfgPtr = &Lin_LinGlobalConfig;
+    const Lin_ConfigType* pCfgPtr = &Lin_Config;
     Lin_Init(pCfgPtr);
 #endif
     AppUtils_Printf("Initialization of LIN Module is Success !!!\n\r");

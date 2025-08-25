@@ -1,4 +1,4 @@
-[!SKIPFILE "node:value(as:modconf('Wdg')[1]/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
+[!SKIPFILE "node:value(as:modconf('Wdg')[as:path(node:dtos(.))='/TI_F29H85x/Wdg']/IMPLEMENTATION_CONFIG_VARIANT) != 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -43,11 +43,11 @@
 /*********************************************************************************************************************
  * AUTOSAR version information check.
  *********************************************************************************************************************/
-#if ((WDG_SW_MAJOR_VERSION != (1U)) || (WDG_SW_MINOR_VERSION != (0U)))
+#if ((WDG_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (WDG_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Wdg_Cfg.c and Wdg.h are inconsistent!"
 #endif
 
-#if ((WDG_CFG_MAJOR_VERSION != (1U)) || (WDG_CFG_MINOR_VERSION != (0U)))
+#if ((WDG_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (WDG_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
     #error "Version numbers of Wdg_Cfg.c and Wdg_Cfg.h are inconsistent!"
 #endif
 
@@ -74,31 +74,31 @@
  * Design: MCAL-25278, MCAL-25279, MCAL-25280, MCAL-25284, MCAL-25285, MCAL-25286, MCAL-25287
  * Design: MCAL-25297, MCAL-25298, MCAL-25299, MCAL-25300
  */
-[!LOOP "as:modconf('Wdg')[1]/WdgSettingsConfig"!]
-CONST(Wdg_ConfigType, WDG_CONFIG_DATA) Wdg_ConfigSetptr =
+[!SELECT "as:modconf('Wdg')[as:path(node:dtos(.))='/TI_F29H85x/Wdg']"!]
+CONST(Wdg_ConfigType, WDG_CONFIG_DATA) Wdg_Config =
 {
-    .Wdg_DefaultMode    = ((WdgIf_ModeType) [!"WdgDefaultMode"!]),
-    .Wdg_InstanceId     = ((uint16) [!"num:i(as:modconf('Wdg')[1]/WdgGeneral/WdgIndex)"!]U),
-    .Wdg_InitialTimeOut = ((uint16) [!"num:i(as:modconf('Wdg')[1]/WdgGeneral/WdgInitialTimeout * 1000)"!]U),
-    .Wdg_MaxTimeOut     = ((uint16) [!"num:i(as:modconf('Wdg')[1]/WdgGeneral/WdgMaxTimeout * 1000)"!]U),
+    .Wdg_DefaultMode    = ((WdgIf_ModeType) [!"WdgSettingsConfig/WdgDefaultMode"!]),
+    .Wdg_InstanceId     = ((uint16) [!"num:i(WdgGeneral/WdgIndex)"!]U),
+    .Wdg_InitialTimeOut = ((uint16) [!"num:i(WdgGeneral/WdgInitialTimeout * 1000)"!]U),
+    .Wdg_MaxTimeOut     = ((uint16) [!"num:i(WdgGeneral/WdgMaxTimeout * 1000)"!]U),
     .Wdg_FastModeCfg    =
    {
-      .Reaction   = ((Wdg_Reaction) [!"as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsFast/WdgReaction "!]),
-      .Threshold  = ((uint16) [!"as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsFast/WdgThresholdValue"!]U), 
-      .PreDivider = ((Wdg_PreDivider) [!"as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsFast/WdgPredivider"!]),
-      .PreScaler  = ((Wdg_PreScaler) [!"as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsFast/WdgPrescaler"!]),
-      .Timeout  = ((uint16) [!"num:i(as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsFast/WdgTimeout)"!]U),
+      .Reaction   = ((Wdg_Reaction) [!"WdgSettingsConfig/WdgSettingsFast/WdgReaction "!]),
+      .Threshold  = ((uint16) [!"WdgSettingsConfig/WdgSettingsFast/WdgThresholdValue"!]U), 
+      .PreDivider = ((Wdg_PreDivider) [!"WdgSettingsConfig/WdgSettingsFast/WdgPredivider"!]),
+      .PreScaler  = ((Wdg_PreScaler) [!"WdgSettingsConfig/WdgSettingsFast/WdgPrescaler"!]),
+      .Timeout  = ((uint16) [!"num:i(WdgSettingsConfig/WdgSettingsFast/WdgTimeout)"!]U),
    },
    .Wdg_SlowModeCfg    =
    {
-      .Reaction   = ((Wdg_Reaction) [!"as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsSlow/WdgReaction"!]),
-      .Threshold  = ((uint16) [!"as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsSlow/WdgThresholdValue"!]U),
-      .PreDivider = ((Wdg_PreDivider) [!"as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsSlow/WdgPredivider"!]),
-      .PreScaler  = ((Wdg_PreScaler) [!"as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsSlow/WdgPrescaler"!]),
-      .Timeout  = ((uint16) [!"num:i(as:modconf('Wdg')[1]/WdgSettingsConfig[1]/WdgSettingsSlow/WdgTimeout)"!]U),	   
+      .Reaction   = ((Wdg_Reaction) [!"WdgSettingsConfig/WdgSettingsSlow/WdgReaction"!]),
+      .Threshold  = ((uint16) [!"WdgSettingsConfig/WdgSettingsSlow/WdgThresholdValue"!]U),
+      .PreDivider = ((Wdg_PreDivider) [!"WdgSettingsConfig/WdgSettingsSlow/WdgPredivider"!]),
+      .PreScaler  = ((Wdg_PreScaler) [!"WdgSettingsConfig/WdgSettingsSlow/WdgPrescaler"!]),
+      .Timeout  = ((uint16) [!"num:i(WdgSettingsConfig/WdgSettingsSlow/WdgTimeout)"!]U),	   
    },
 };
-[!ENDLOOP!]
+[!ENDSELECT!]
 
 /*********************************************************************************************************************
  *  Local Function Prototypes

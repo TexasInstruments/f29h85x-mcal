@@ -66,7 +66,6 @@
  *
  * \param[in] PinNumber is the identifying number of the pin.
  * \param[in] PinProperty specifies the pin type.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -86,7 +85,6 @@ static FUNC(void, PORT_CODE) Port_SetPadConfig(Port_PinType PinNumber, Port_PinP
  *
  * \param[in] PinNumber is the identifying number of the pin.
  * \param[in] Qualification specifies the qualification mode of the pin.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -105,7 +103,6 @@ static FUNC(void, PORT_CODE) Port_SetQualificationMode(Port_PinType PinNumber, P
  *
  * \param[in] PinNumber is the identifying GPIO number of the pin.
  * \param[in] QualificationPeriod specifies the Qualification period.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -128,7 +125,6 @@ static FUNC(void, PORT_CODE) Port_SetQualificationPeriod(Port_PinType PinNumber,
  *
  * \param[in] PinNumber is the identifying number of the pin.
  * \param[in] Core is the core that is master of the specified pin.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -155,7 +151,6 @@ static FUNC(void, PORT_CODE) Port_SetMasterCore(Port_PinType PinNumber, Port_Pin
  *
  * \param[in] PinNumber is the identifying number of the pin.
  * \param[in] Mode is the selected analog mode.
- * \param[out] None
  * \pre None
  * \post None
  * \return None

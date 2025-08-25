@@ -142,7 +142,6 @@ static VAR(uint8, LIN_VAR) Lin_RxShadowBuffer[LIN_MAX_CHANNEL][LIN_MAX_DATA_LENG
 /** \brief Lin_DisableHWUnit - This API will disable Lin HW Unit.
  *
  * \param[in] base Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -154,7 +153,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_DisableHWUnit(uint32 base);
 /** \brief Lin_EnableHWUnit - This API will enable Lin HW Unit.
  *
  * \param[in] base Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -166,7 +164,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_EnableHWUnit(uint32 base);
 /** \brief Lin_EnterSoftwareReset - This API will make Lin enter software reset mode.
  *
  * \param[in] base Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -178,7 +175,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_EnterSoftwareReset(uint32 base);
 /** \brief Lin_ExitSoftwareReset - This API will make Lin exit software reset mode.
  *
  * \param[in] base Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -190,7 +186,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_ExitSoftwareReset(uint32 base);
 /** \brief Lin_SetLinMode - This API will configure the HW unit to run in Lin mode.
  *
  * \param[in] base Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -204,7 +199,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetLinMode(uint32 base);
  * \param[in] base Base address of Lin Instance.
  * \param[in] syncBreak Value of Sync Break to be configured
  * \param[in] delimiter Value of delimiter to be configured
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -217,7 +211,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetSyncFields(uint32 base, uint16 syncBrea
  *
  * \param[in] base Base address of Lin Instance.
  * \param[in] mask Mask value to be configured
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -230,7 +223,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetTxMask(uint32 base, uint16 mask);
  *
  * \param[in] base Base address of Lin Instance.
  * \param[in] mask Mask value to be configured
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -243,7 +235,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetRxMask(uint32 base, uint16 mask);
  *
  * \param[in] base Base address of Lin Instance.
  * \param[in] baudrateconfig Pointer to baudrate config
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -257,7 +248,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE)
  *
  * \param[in] base Base address of Lin Instance.
  * \param[in] length Length of frame
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -270,7 +260,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetFrameLength(uint32 base, uint16 length)
  *
  * \param[in] base Base address of Lin Instance.
  * \param[in] type Type of checksum to be configured
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -283,7 +272,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetChecksumType(uint32 base, Lin_FrameCsMo
  *
  * \param[in] base Base address of Lin Instance.
  * \param[in] identifier ID Type to be configured.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -297,7 +285,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_SetIDByte(uint32 base, Lin_FramePidType id
  * \param[in] base Base address of Lin Instance.
  * \param[in] intrLineNum Interrupt line to be selected
  * \param[in] intFlags Interrupts to be selected
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -310,7 +297,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_EnableInterrupt(uint32 base, Lin_Interrupt
  *
  * \param[in] base Base address of Lin Instance.
  * \param[in] intFlags Interrupts to be selected
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -324,7 +310,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_DisableInterrupt(uint32 base, uint32 intFl
  *
  * \param[in] base Base address of Lin Instance.
  * \param[in] int_line Interrupt line
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -337,7 +322,6 @@ LOCAL_INLINE FUNC(void, LIN_CODE) Lin_ServiceInterrupts(uint32 base, Lin_Interru
  *
  * \param[in] base Base address of Lin Instance.
  * \param[in] loopbackMode Loopback mode to be selected
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -657,6 +641,13 @@ Lin_SendData(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_DATA) linChannel,
          */
         Lin_SetFrameLength(lin_cnt_base_addr, (uint16)length);
 
+        /*
+         * Set the message ID to initiate a header transmission.
+         * This causes the ID to be written to the bus followed by the
+         * data in the transmit buffers.
+         */
+        Lin_SetIDByte(lin_cnt_base_addr, pduInfoPtr->Pid);
+
         data_length = (length - (uint8)1U);
         p_data      = ((uint8 *)pduInfoPtr->SduPtr + data_length);
 
@@ -693,6 +684,13 @@ Lin_SendData(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_DATA) linChannel,
         /* Set Mask ID for RX */
         Lin_SetRxMask(lin_cnt_base_addr, (uint16)pduInfoPtr->Pid);
 
+        /*
+         * Set the message ID to initiate a header transmission.
+         * This causes the ID to be written to the bus followed by the
+         * data in the transmit buffers.
+         */
+        Lin_SetIDByte(lin_cnt_base_addr, pduInfoPtr->Pid);
+
         *linChannelActivityStatus = LIN_CHANNEL_RX_STARTED;
         return_value              = E_OK;
     }
@@ -711,19 +709,19 @@ Lin_SendData(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_DATA) linChannel,
         /* Set Mask ID for RX to not accept any message as we don't need to read the message */
         Lin_SetRxMask(lin_cnt_base_addr, 0x00U);
 
+        /*
+         * Set the message ID to initiate a header transmission.
+         * This causes the ID to be written to the bus followed by the
+         * data in the transmit buffers.
+         */
+        Lin_SetIDByte(lin_cnt_base_addr, pduInfoPtr->Pid);
+
         return_value = E_OK;
     }
     else
     {
         /* Do Nothing */
     }
-
-    /*
-     * Set the message ID to initiate a header transmission.
-     * This causes the ID to be written to the bus followed by the
-     * data in the transmit buffers.
-     */
-    Lin_SetIDByte(lin_cnt_base_addr, pduInfoPtr->Pid);
 
     return return_value;
 }

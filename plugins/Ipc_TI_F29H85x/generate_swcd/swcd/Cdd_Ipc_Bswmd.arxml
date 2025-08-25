@@ -1,5 +1,6 @@
 [!AUTOSPACING!][!//
 <?xml version="1.0" encoding="UTF-8"?>
+[!SELECT "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']"!]
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
 [!VAR "Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR_cat"="1"!]
 [!VAR "Cdd_Ipc_CPU1_L_CPU2_R_INST1_ISR_cat"="1"!]
@@ -25,7 +26,7 @@
 [!VAR "Cdd_Ipc_CPU3_L_CPU2_R_INST1_ISR_cat"="1"!]
 [!VAR "Cdd_Ipc_CPU3_L_CPU2_R_INST2_ISR_cat"="1"!]
 [!VAR "Cdd_Ipc_CPU3_L_CPU2_R_INST3_ISR_cat"="1"!]
-[!LOOP "as:modconf('Cdd_Ipc/Cdd')/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
+[!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
 [!IF "node:value(CddIpcRxInstance) = 'CDD_IPC_CPU1_L_CPU2_R_INST0'"!]
 [!IF "node:value(CddIpcInteruptType) = 'ISR_CAT2_INT'"!]
 [!VAR "Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR_cat" = "$Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR_cat + 1"!]
@@ -132,7 +133,7 @@
           <SHORT-NAME>Cdd_Ipc</SHORT-NAME>
           <CATEGORY>BSW_MODULE</CATEGORY>
           <IMPLEMENTED-ENTRYS>
-          [!LOOP "as:modconf('Cdd_Ipc/Cdd')/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
+          [!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
           [!IF "node:value(CddIpcRxInstance) = 'CDD_IPC_CPU1_L_CPU2_R_INST0'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ipc_TI_F29H85x/BSWModuleEntry/Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR</BSW-MODULE-ENTRY-REF>
@@ -234,7 +235,7 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ipc_TI_F29H85x/BSWModuleEntry/Cdd_Ipc_GetCounter</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-          [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcVersionInfoApi = 'true'"!]
+          [!IF "CddIpcGeneral/CddIpcVersionInfoApi = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ipc_TI_F29H85x/BSWModuleEntry/Cdd_Ipc_GetVersionInfo</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -257,7 +258,7 @@
           </IMPLEMENTED-ENTRYS>
           <MODULE-ID>255</MODULE-ID>
           <BSW-MODULE-DEPENDENCYS>
-           [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcDevErrorDetect"!]
+           [!IF "CddIpcGeneral/CddIpcDevErrorDetect"!]
             <BSW-MODULE-DEPENDENCY UUID="b7eab596-c541-42ae-8bde-aeab7dd9215a">
               <SHORT-NAME>Det</SHORT-NAME>
               <TARGET-MODULE-ID>15</TARGET-MODULE-ID>
@@ -268,7 +269,7 @@
               </TARGET-MODULE-REFS>
             </BSW-MODULE-DEPENDENCY>
            [!ENDIF!]
-            [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+            [!IF "CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
             <BSW-MODULE-DEPENDENCY UUID="ed6d0c22-58ff-45dd-9f2b-66aa5b33b39b">
               <SHORT-NAME>PduR</SHORT-NAME>
               <TARGET-MODULE-ID>51</TARGET-MODULE-ID>
@@ -292,12 +293,12 @@
                 </EXCLUSIVE-AREA>
               </EXCLUSIVE-AREAS>
               <ENTITYS>
-                [!LOOP "as:modconf('Cdd_Ipc/Cdd')/CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
+                [!LOOP "CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcRxInstanceConfig/*"!]
                 [!IF "node:value(CddIpcRxInstance) = 'CDD_IPC_CPU1_L_CPU2_R_INST0'"!]
                 <BSW-INTERRUPT-ENTITY UUID="0919f480-8665-401d-beb7-a4f9a9d1964c">
                   <SHORT-NAME>Cdd_Ipc_CPU1_L_CPU2_R_INST0_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -316,7 +317,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="c5c830e6-b532-42b9-bfa1-d0f5b0f6de33">
                   <SHORT-NAME>Cdd_Ipc_CPU1_L_CPU2_R_INST1_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -335,7 +336,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="ad73d82c-4076-4b7c-8a8a-828a7d14d570">
                   <SHORT-NAME>Cdd_Ipc_CPU1_L_CPU2_R_INST2_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -354,7 +355,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="684fb9cd-f870-46ce-b576-eb2fc3e50613">
                   <SHORT-NAME>Cdd_Ipc_CPU1_L_CPU2_R_INST3_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -373,7 +374,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="d6ce52d1-9781-43b0-a229-688bba48d106">
                   <SHORT-NAME>Cdd_Ipc_CPU1_L_CPU3_R_INST0_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -392,7 +393,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="866598a0-602e-44cc-aa13-8ee3226eab41">
                   <SHORT-NAME>Cdd_Ipc_CPU1_L_CPU3_R_INST1_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -411,7 +412,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="16eb2704-2430-49ab-a787-59b6a2410b7d">
                   <SHORT-NAME>Cdd_Ipc_CPU1_L_CPU3_R_INST2_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -430,7 +431,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="d7c0a757-1fb8-42b9-b656-3c1c57043fab">
                   <SHORT-NAME>Cdd_Ipc_CPU1_L_CPU3_R_INST3_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -449,7 +450,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="822d70bd-b472-44b4-88a6-0383ab44af3f">
                   <SHORT-NAME>Cdd_Ipc_CPU2_L_CPU1_R_INST0_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -468,7 +469,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="33255482-88ff-4ee9-b231-8b9fa1876757">
                   <SHORT-NAME>Cdd_Ipc_CPU2_L_CPU1_R_INST1_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -487,7 +488,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="e78728b2-5dc3-47ec-967b-10850918214b">
                   <SHORT-NAME>Cdd_Ipc_CPU2_L_CPU1_R_INST2_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -506,7 +507,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="8ed2cb3b-0670-42df-bbb5-a089b50b3088">
                   <SHORT-NAME>Cdd_Ipc_CPU2_L_CPU1_R_INST3_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -525,7 +526,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="85afffeb-96c8-433e-857b-3d5cdd75d707">
                   <SHORT-NAME>Cdd_Ipc_CPU2_L_CPU3_R_INST0_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -544,7 +545,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="f3c814c7-2273-4205-b5e7-25d2a5cc7df3">
                   <SHORT-NAME>Cdd_Ipc_CPU2_L_CPU3_R_INST1_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -563,7 +564,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="536c71c8-a4b7-4385-9b83-fd76c0d29c1e">
                   <SHORT-NAME>Cdd_Ipc_CPU2_L_CPU3_R_INST2_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -582,7 +583,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="5465dfaf-91ae-45fd-a644-07e15dbd8b5b">
                   <SHORT-NAME>Cdd_Ipc_CPU2_L_CPU3_R_INST3_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -601,7 +602,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="433caf71-9998-4dd1-b282-8ce54b7219c9">
                   <SHORT-NAME>Cdd_Ipc_CPU3_L_CPU1_R_INST0_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -620,7 +621,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="d83b72bd-73cb-4d25-8f69-bccc90432f57">
                   <SHORT-NAME>Cdd_Ipc_CPU3_L_CPU1_R_INST1_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -639,7 +640,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="050bf744-fa45-4bd8-be0a-b06e38f6c8cb">
                   <SHORT-NAME>Cdd_Ipc_CPU3_L_CPU1_R_INST2_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -658,7 +659,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="a9b50479-9b12-4a4a-b54a-0727f2ac3599">
                   <SHORT-NAME>Cdd_Ipc_CPU3_L_CPU1_R_INST3_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -677,7 +678,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="457c341e-d9d2-41f3-8d82-d8b0aac2cd7a">
                   <SHORT-NAME>Cdd_Ipc_CPU3_L_CPU2_R_INST0_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -696,7 +697,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="582dc2cd-01b0-4a76-aa10-04e8d4d75095">
                   <SHORT-NAME>Cdd_Ipc_CPU3_L_CPU2_R_INST1_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -715,7 +716,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="883e8d10-c7fc-4f01-9883-e4b4ebec11ee">
                   <SHORT-NAME>Cdd_Ipc_CPU3_L_CPU2_R_INST2_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -734,7 +735,7 @@
                 <BSW-INTERRUPT-ENTITY UUID="9d2f43f1-cc52-48be-b2db-f83b8305c8f6">
                   <SHORT-NAME>Cdd_Ipc_CPU3_L_CPU2_R_INST3_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -757,12 +758,12 @@
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ipc_TI_F29H85x/BSWModuleEntry/Cdd_Ipc_GetCounter</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
-                [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcVersionInfoApi = 'true'"!]
+                [!IF "CddIpcGeneral/CddIpcVersionInfoApi = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="c0d5b842-da37-4456-9b0d-c7cc55a7d5df">
                   <SHORT-NAME>Cdd_Ipc_GetVersionInfo</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcDevErrorDetect"!]
+                  [!IF "CddIpcGeneral/CddIpcDevErrorDetect"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -777,7 +778,7 @@
                   <SHORT-NAME>Cdd_Ipc_Init</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcDevErrorDetect"!]
+                  [!IF "CddIpcGeneral/CddIpcDevErrorDetect"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -791,7 +792,7 @@
                   <SHORT-NAME>Cdd_Ipc_IsTxInstanceFree</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcDevErrorDetect"!]
+                  [!IF "CddIpcGeneral/CddIpcDevErrorDetect"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -807,7 +808,7 @@
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Ipc_TI_F29H85x/Cdd_Ipc/Cdd_Ipc_Behavior/CDD_IPC_EXCLUSIVE_AREA_1</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "CddIpcGeneral/CddIpcIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Ipc_RxIndication</SHORT-NAME>
@@ -821,7 +822,7 @@
                   <SHORT-NAME>Cdd_Ipc_Sync</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcDevErrorDetect"!]
+                  [!IF "CddIpcGeneral/CddIpcDevErrorDetect"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -838,7 +839,7 @@
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcDevErrorDetect"!]
+                  [!IF "CddIpcGeneral/CddIpcDevErrorDetect"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -853,7 +854,7 @@
                 <BSW-TIMING-EVENT UUID="35ea8b2e-e764-4486-adeb-56757b7be741">
                   <SHORT-NAME>Cdd_Ipc_MainFunctionTimingEvent_Read</SHORT-NAME>
                   <STARTS-ON-EVENT-REF DEST="BSW-SCHEDULABLE-ENTITY">/Cdd_Ipc_TI_F29H85x/Cdd_Ipc/Cdd_Ipc_Behavior/Cdd_Ipc_MainFunction_Read</STARTS-ON-EVENT-REF>
-                  <PERIOD>[!"as:modconf('Cdd_Ipc/Cdd')[1]/CddIpcGeneral/CddIpcMainFunctionReadPeriod"!]</PERIOD>
+                  <PERIOD>[!"as:modconf('Cdd_Ipc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Ipc/Cdd']/CddIpcGeneral/CddIpcMainFunctionReadPeriod"!]</PERIOD>
                 </BSW-TIMING-EVENT>
               </EVENTS>
             </BSW-INTERNAL-BEHAVIOR>
@@ -901,7 +902,7 @@
               <SHORT-NAME>c29clang</SHORT-NAME>
               <NAME>TI C29 Clang Compiler</NAME>
               <VENDOR>Texas Instruments</VENDOR>
-              <VERSION>1.0.0</VERSION>
+              <VERSION>2.0.0</VERSION>
             </COMPILER>
           </COMPILERS>
           <LINKERS>
@@ -909,7 +910,7 @@
               <SHORT-NAME>c29lnk</SHORT-NAME>
               <NAME>TI C29 Linker</NAME>
               <VENDOR>Texas Instruments</VENDOR>
-              <VERSION>1.0.0</VERSION>
+              <VERSION>2.0.0</VERSION>
             </LINKER>
           </LINKERS>
           <PROGRAMMING-LANGUAGE>C</PROGRAMMING-LANGUAGE>
@@ -1324,7 +1325,7 @@
               <SERVICE-ID>4</SERVICE-ID>
               <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <CALL-TYPE>SCHEDULED</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
@@ -1355,3 +1356,4 @@
     </AR-PACKAGE>
   </AR-PACKAGES>
 </AUTOSAR>
+[!ENDSELECT!]

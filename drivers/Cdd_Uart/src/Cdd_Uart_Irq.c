@@ -74,87 +74,87 @@
 #define CDD_UART_START_SEC_ISR_CODE
 #include "Cdd_Uart_MemMap.h"
 
-#if defined(CDD_UART0_ENABLE)
-#if defined(CDD_UART0_ISR_CAT1_RTINT)
-MCAL_LIB_RTINT_ISR(Cdd_Uart_0_ISR)
-#elif defined(CDD_UART0_ISR_CAT1_INT)
-MCAL_LIB_INT_ISR(Cdd_Uart_0_ISR)
+#if defined(CDD_UARTA_ENABLE)
+#if defined(CDD_UARTA_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_A_ISR)
+#elif defined(CDD_UARTA_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Uart_A_ISR)
 #else
-ISR(Cdd_Uart_0_ISR)
+ISR(Cdd_Uart_A_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UART0);
+    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UARTA);
 }
 #endif
 
-#if defined(CDD_UART1_ENABLE)
-#if defined(CDD_UART1_ISR_CAT1_RTINT)
-MCAL_LIB_RTINT_ISR(Cdd_Uart_1_ISR)
-#elif defined(CDD_UART1_ISR_CAT1_INT)
-MCAL_LIB_INT_ISR(Cdd_Uart_1_ISR)
+#if defined(CDD_UARTB_ENABLE)
+#if defined(CDD_UARTB_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_B_ISR)
+#elif defined(CDD_UARTB_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Uart_B_ISR)
 #else
-ISR(Cdd_Uart_1_ISR)
+ISR(Cdd_Uart_B_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UART1);
+    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UARTB);
 }
 #endif
 
-#if defined(CDD_UART2_ENABLE)
-#if defined(CDD_UART2_ISR_CAT1_RTINT)
-MCAL_LIB_RTINT_ISR(Cdd_Uart_2_ISR)
-#elif defined(CDD_UART2_ISR_CAT1_INT)
-MCAL_LIB_INT_ISR(Cdd_Uart_2_ISR)
+#if defined(CDD_UARTC_ENABLE)
+#if defined(CDD_UARTC_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_C_ISR)
+#elif defined(CDD_UARTC_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Uart_C_ISR)
 #else
-ISR(Cdd_Uart_2_ISR)
+ISR(Cdd_Uart_C_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UART2);
+    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UARTC);
 }
 #endif
 
-#if defined(CDD_UART3_ENABLE)
-#if defined(CDD_UART3_ISR_CAT1_RTINT)
-MCAL_LIB_RTINT_ISR(Cdd_Uart_3_ISR)
-#elif defined(CDD_UART3_ISR_CAT1_INT)
-MCAL_LIB_INT_ISR(Cdd_Uart_3_ISR)
+#if defined(CDD_UARTD_ENABLE)
+#if defined(CDD_UARTD_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_D_ISR)
+#elif defined(CDD_UARTD_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Uart_D_ISR)
 #else
-ISR(Cdd_Uart_3_ISR)
+ISR(Cdd_Uart_D_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UART3);
+    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UARTD);
 }
 #endif
 
-#if defined(CDD_UART4_ENABLE)
-#if defined(CDD_UART4_ISR_CAT1_RTINT)
-MCAL_LIB_RTINT_ISR(Cdd_Uart_4_ISR)
-#elif defined(CDD_UART4_ISR_CAT1_INT)
-MCAL_LIB_INT_ISR(Cdd_Uart_4_ISR)
+#if defined(CDD_UARTE_ENABLE)
+#if defined(CDD_UARTE_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_E_ISR)
+#elif defined(CDD_UARTE_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Uart_E_ISR)
 #else
-ISR(Cdd_Uart_4_ISR)
+ISR(Cdd_Uart_E_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UART4);
+    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UARTE);
 }
 #endif
 
-#if defined(CDD_UART5_ENABLE)
-#if defined(CDD_UART5_ISR_CAT1_RTINT)
-MCAL_LIB_RTINT_ISR(Cdd_Uart_5_ISR)
-#elif defined(CDD_UART5_ISR_CAT1_INT)
-MCAL_LIB_INT_ISR(Cdd_Uart_5_ISR)
+#if defined(CDD_UARTF_ENABLE)
+#if defined(CDD_UARTF_ISR_CAT1_RTINT)
+MCAL_LIB_RTINT_ISR(Cdd_Uart_F_ISR)
+#elif defined(CDD_UARTF_ISR_CAT1_INT)
+MCAL_LIB_INT_ISR(Cdd_Uart_F_ISR)
 #else
-ISR(Cdd_Uart_5_ISR)
+ISR(Cdd_Uart_F_ISR)
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UART5);
+    Cdd_Uart_ProcessISR(CDD_UART_INSTANCE_UARTF);
 }
 #endif
 

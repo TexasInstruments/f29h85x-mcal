@@ -140,7 +140,6 @@ typedef struct Lin_ChannelStatusTag
 /** \brief Lin_InitInternal - Initializes the LIN module.
  *
  * \param[in] Lin_ConfigPtr Pointer to LIN driver configuration set.
- * \param[out] None
  * \pre None
  * \post None
  * \return returnValue
@@ -155,7 +154,6 @@ Lin_InitInternal(P2CONST(Lin_ConfigType, AUTOMATIC, LIN_APPL_CONST) Lin_ConfigPt
  *LIN channel.
  *
  * \param[in] Channel LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return returnValue
@@ -169,7 +167,6 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_CheckWakeupInternal(uint8 Channel);
  *LIN_CH_OPERATIONAL.
  *
  * \param[in] Channel LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -184,7 +181,6 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_WakeupProcess(uint8 Channel);
  *LIN_CH_OPERATIONAL without generating a wake up pulse.
  *
  * \param[in] Channel LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -270,7 +266,6 @@ Lin_GetStatusInternal(uint8 Channel, P2VAR(uint8*, AUTOMATIC, LIN_APPL_DATA) Lin
 /** \brief Lin_HwUnitConfig - This API will configure Lin IP instance.
  *
  * \param[in] linChannel      LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -285,7 +280,6 @@ Lin_HwUnitConfig(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_DATA) linChannel);
  * \param[in] linChannel      LIN channel to be addressed.
  * \param[in] linChannelActivityStatus      Pointer to current activity staus of the channel.
  * \param[in] pduInfoPtr     Pointer to PDU to be sent.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -300,10 +294,9 @@ Lin_SendData(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_DATA) linChannel,
 
 /** \brief Lin_GetData - This API will copy the received data into sduPtr.
  *
- * \param[in] linChannel      LIN channel to be addressed.
+ * \param[in] channelID      LIN channel to be addressed.
  * \param[in] base           Base address of Lin Instance.
  * \param[in] sduPtr         Pointer to Pointer to SDU to be received.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -317,7 +310,6 @@ Lin_GetData(uint32 channelID, uint32 base, P2VAR(uint8*, AUTOMATIC, LIN_APPL_CON
 /** \brief Lin_FetchTxStatus - This API will fetch transmit status.
  *
  * \param[in] base      Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return return_value
@@ -330,7 +322,6 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchTxStatus(uint32 base);
 /** \brief Lin_FetchRxStatus - This API will fetch receive status.
  *
  * \param[in] base      Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return returnValue
@@ -343,7 +334,6 @@ FUNC(Lin_StatusType, LIN_CODE) Lin_FetchRxStatus(uint32 base);
 /** \brief Lin_SendWakeupSignal - This API will send wakeup signal on Lin bus.
  *
  * \param[in] base      Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return returnValue
@@ -356,7 +346,6 @@ FUNC(void, LIN_CODE) Lin_SendWakeupSignal(uint32 base);
 /** \brief Lin_SendGoToSleepSignal - This API will send go to sleep signal on Lin bus.
  *
  * \param[in] base      Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return returnValue
@@ -370,7 +359,6 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_SendGoToSleepSignal(uint32 base);
  *
  * \param[in] base      Base address of Lin Instance.
  * \param[in] enable    If TRUE low power will be entered; if FALSE Lin comes out of low power mode.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -382,7 +370,6 @@ FUNC(void, LIN_CODE) Lin_EnterLowPowerMode(uint32 base, boolean enable);
 /** \brief Lin_CheckWakeupStatus - This API will check if Lin in woken up.
  *
  * \param[in] base      Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -394,7 +381,6 @@ FUNC(boolean, LIN_CODE) Lin_CheckWakeupStatus(uint32 base);
 /** \brief Lin_AbortTransmission - This API will abort ongoing transmission.
  *
  * \param[in] base      Base address of Lin Instance.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -408,7 +394,6 @@ FUNC(void, LIN_CODE) Lin_AbortTransmission(uint32 base);
  * \param[in] linChannel      LIN channel to be addressed.
  * \param[in] enable    If TRUE wakeup detection will be enabled; if FALSE wakeup detection will be
  *disabled.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -421,7 +406,6 @@ Lin_EnableWakeupDetection(P2CONST(Lin_ChannelType, AUTOMATIC, LIN_APPL_CONST) li
 /** \brief Lin_ProcessISR - This API will process ISR for given channel.
  *
  * \param[in] channelID      LIN channel to be addressed.
- * \param[out] None
  * \pre None
  * \post None
  * \return None

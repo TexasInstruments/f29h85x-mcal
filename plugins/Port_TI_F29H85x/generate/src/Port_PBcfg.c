@@ -1,4 +1,4 @@
-[!SKIPFILE "as:modconf('Port')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
+[!SKIPFILE "as:modconf('Port')[as:path(node:dtos(.))='/TI_F29H85x/Port']/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
 /*********************************************************************************************************************
  *  COPYRIGHT
  *  ------------------------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@
  /*
  *Design: MCAL-22408
  */
- /* PIN PACKAGE SELECTED = [!"as:modconf('Port')[1]/PortGeneral/PortDeviceVariant"!] */
+ /* PIN PACKAGE SELECTED = [!"as:modconf('Port')[as:path(node:dtos(.))='/TI_F29H85x/Port']/PortGeneral/PortDeviceVariant"!] */
 
 /*********************************************************************************************************************
  * Header Files
@@ -48,11 +48,11 @@
  * AUTOSAR version information check.
  *
  *****************************************************************************/
-#if ((PORT_SW_MAJOR_VERSION != (1U)) || (PORT_SW_MINOR_VERSION != (1U)))
+#if ((PORT_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (PORT_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
    #error "Version numbers of Port_PBcfg.c and Port.h are inconsistent!"
 #endif
 
-#if ((PORT_CFG_MAJOR_VERSION != (1U)) || (PORT_CFG_MINOR_VERSION != (1U)))
+#if ((PORT_CFG_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) || (PORT_CFG_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
    #error "Version numbers of Port_PBcfg.c and Port_Cfg.h are inconsistent!"
 #endif
 
@@ -73,14 +73,14 @@
  *********************************************************************************************************************/
 #define PORT_START_SEC_CONFIG_DATA
 #include "Port_MemMap.h"
-
-[!LOOP "as:modconf('Port')[1]/PortConfigSet"!][!VAR "NumOfPortPin" = "0"!]
+[!SELECT "as:modconf('Port')[as:path(node:dtos(.))='/TI_F29H85x/Port']"!]
+[!LOOP "PortConfigSet"!][!VAR "NumOfPortPin" = "0"!]
 static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[!"num:i(sum(PortContainer/*/PortNumberOfPortPins))"!]] =
 {
 [!LOOP "PortContainer/*/PortPin/*"!]   
    {
     /* .Port_PhysicalPinId = [!"PortPhysicalPinId"!]U,    Physical Pin Number*/
-	.Port_PinId = (Port_PinType)[!IF "PortPinId='NA'"!]PORT_PIN_NUM_INVALID[!ELSE!][!"PortPinId"!]U[!ENDIF!],
+	.Port_PinId = (Port_PinType)[!IF "PortPinId='NA'"!][!ERROR "PortPinId cannot be 'NA'.This pin is not configurable"!][!ELSE!][!"PortPinId"!]U[!ENDIF!],
     .Port_PinDirection = (Port_PinDirectionType)[!"PortPinDirection"!],
     .Port_DirectionChangeable = (boolean) [!"text:toupper(PortPinDirectionChangeable)"!],
     .Port_ModeChangeable = (boolean) [!"text:toupper(PortPinModeChangeable)"!],
@@ -88,7 +88,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
     .Port_ControllerSpecific =
     {
         .Port_AnalogMode = (Port_AnalogModeType)[!"PortAnalogMode"!],
-        .Port_InitialMuxMode = (Port_PinType)[!IF "PortPinId='NA' or PortPinInitialMode='PORT_MUXMODE_NA'"!]PORT_PIN_MUXMODE_NA[!ELSE!]PORT_PIN_[!"PortPinId"!]_[!"text:toupper(PortPinInitialMode)"!][!ENDIF!],
+        .Port_InitialMuxMode = (Port_PinType)[!IF "PortAnalogMode='PORT_ANALOG_DISABLED' and PortPinInitialMode='PORT_MUXMODE_NA'"!][!ERROR "PortPinInitialMode cannot be 'PORT_MUXMODE_NA' when analog mode is disabled"!]
+                                             [!ELSEIF "PortAnalogMode='PORT_ANALOG_ENABLED' and PortPinInitialMode='PORT_MUXMODE_NA'"!]PORT_PIN_MUXMODE_NA[!ELSE!]PORT_PIN_[!"PortPinId"!]_[!"text:toupper(PortPinInitialMode)"!][!ENDIF!],
         .Port_PinPadConfig = (Port_PinPadConfigType)[!"PortPinPadConfig"!][!IF "PortPinPadConfig!= 'PORT_PIN_TYPE_NA' and PortPinPullUpConfig='true'"!]_PULLUP[!ELSE!][!ENDIF!],
         .Port_PinQualification = (Port_PinQualificationMode)[!"PortPinQualificationMode"!],
         .Port_PinQualificationPeriod = (uint32)[!"PortPinQualificationPeriod"!]U,
@@ -113,17 +114,44 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
 
    },
 [!VAR "NumOfPortPin" = "$NumOfPortPin + 1"!][!ENDLOOP!]
-};[!LOOP "as:modconf('Port')[1]/PortConfigSet/PortContainer/*"!][!VAR "Test1" = "PortNumberOfPortPins"!][!IF "PortNumberOfPortPins != 0"!][!VAR "Test2" = "num:i(count(PortPin/*))"!][!IF "num:i($Test2) != num:i($Test1)"!][!ERROR "Number of configured pins doesn't match the value configured in PortNumberOfPortPins; make sure to recalculate derivable values before code generation."!][!ENDIF!][!ELSE!][!ENDIF!][!ENDLOOP!]
+};[!LOOP "PortConfigSet/PortContainer/*"!][!VAR "Test1" = "PortNumberOfPortPins"!][!IF "PortNumberOfPortPins != 0"!][!VAR "Test2" = "num:i(count(PortPin/*))"!][!IF "num:i($Test2) != num:i($Test1)"!][!ERROR "Number of configured pins doesn't match the value configured in PortNumberOfPortPins; make sure to recalculate derivable values before code generation."!][!ENDIF!][!ELSE!][!ENDIF!][!ENDLOOP!]
 [!ENDLOOP!]
 
-[!LOOP "as:modconf('Port')[1]/PortConfigSet"!]
-const struct Port_ConfigType_s Port_[!"@name"!] = 
+[!LOOP "PortConfigSet"!]
+const struct Port_ConfigType_s Port_Config = 
 {
     .Port_PinConfig = (const Port_PinConfigType *)&Port_[!"@name"!]_PinConfig[0],
     .Port_NumberOfPortPins = (Port_PinType)[!"num:i($NumOfPortPin)"!]U
 };
 [!ENDLOOP!]
-
+[!/* Check each group (0-7, 8-15, 16-23, etc.) for qualification period*/!][!//
+[!FOR "GroupIndex" = "0" TO "31"!][!//
+[!VAR "GroupStartPinId" = "$GroupIndex * 8"!][!//
+[!VAR "GroupEndPinId" = "$GroupIndex * 8 + 7"!][!//
+[!VAR "FirstQualPeriod" = "0"!][!//
+[!VAR "IsFirstPinFound" = "0"!][!//
+[!/* First pass: find the first configured pin in this group */!][!//
+[!LOOP "PortConfigSet/PortContainer/*/PortPin/*"!][!//
+[!IF "PortPinId != 'NA' and number(PortPinId) >= $GroupStartPinId and number(PortPinId) <= $GroupEndPinId"!][!//
+[!IF "$IsFirstPinFound = 0"!][!//
+[!VAR "FirstQualPeriod" = "number(PortPinQualificationPeriod)"!][!//
+[!VAR "IsFirstPinFound" = "1"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+[!/* Second pass: check all pins in this group against the first one */!][!//
+[!IF "$IsFirstPinFound = 1"!][!//
+[!LOOP "PortConfigSet/PortContainer/*/PortPin/*"!][!//
+[!IF "PortPinId != 'NA' and number(PortPinId) >= $GroupStartPinId and number(PortPinId) <= $GroupEndPinId"!][!//
+[!VAR "CurrentQualPeriod" = "number(PortPinQualificationPeriod)"!][!//
+[!IF "$CurrentQualPeriod != $FirstQualPeriod"!][!//
+[!ERROR "Please ensure that the PortPinQualificationPeriod is set correctly for all PortPinIds within a group. Each group of PortPinIds consists of 8 consecutive PortPinIds, starting from 0 and ending at 255."!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!ENDFOR!]
+[!ENDSELECT!][!//
 /*********************************************************************************************************************
  * Local Object Definitions
  *********************************************************************************************************************/

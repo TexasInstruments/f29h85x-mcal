@@ -46,11 +46,11 @@ extern "C" {
  *********************************************************************************************************************/
 /* Defines for CDD_UART Driver version used for compatibility checks.*/
 /** \brief Driver Implementation Major Version */
-#define CDD_UART_SW_MAJOR_VERSION (1U)
+#define CDD_UART_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version */
 #define CDD_UART_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_UART_SW_PATCH_VERSION (1U)
+#define CDD_UART_SW_PATCH_VERSION (0U)
 
 /*  Defines for CDD_UART Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_UART Driver*/
@@ -122,18 +122,18 @@ typedef void (*Cdd_Uart_CallbackType)(void);
 /** \brief Uart Configuration Instance ID */
 typedef enum
 {
-    /** \brief UART0 Config Instance */
-    CDD_UART_INSTANCE_UART0 = 0U,
-    /** \brief UART1 Config Instance */
-    CDD_UART_INSTANCE_UART1 = 1U,
-    /** \brief UART2 Config Instance */
-    CDD_UART_INSTANCE_UART2 = 2U,
-    /** \brief UART3 Config Instance */
-    CDD_UART_INSTANCE_UART3 = 3U,
-    /** \brief UART4 Config Instance */
-    CDD_UART_INSTANCE_UART4 = 4U,
-    /** \brief UART5 Config Instance */
-    CDD_UART_INSTANCE_UART5 = 5U
+    /** \brief UARTA Config Instance */
+    CDD_UART_INSTANCE_UARTA = 0U,
+    /** \brief UARTB Config Instance */
+    CDD_UART_INSTANCE_UARTB = 1U,
+    /** \brief UARTC Config Instance */
+    CDD_UART_INSTANCE_UARTC = 2U,
+    /** \brief UARTD Config Instance */
+    CDD_UART_INSTANCE_UARTD = 3U,
+    /** \brief UARTE Config Instance */
+    CDD_UART_INSTANCE_UARTE = 4U,
+    /** \brief UARTF Config Instance */
+    CDD_UART_INSTANCE_UARTF = 5U
 } Cdd_Uart_Instance;
 
 /** \brief UART Word Length */
@@ -189,7 +189,7 @@ typedef enum
 typedef uint8 Cdd_Uart_DataBufferType;
 
 /**
- *  \name CDD UART Config type
+ *  CDD UART Config type
  *
  * \brief UART configuration data structure for a channel
  */
@@ -198,7 +198,7 @@ typedef struct Cdd_Uart_CfgTag
     /**< Uart clock frequency */
     uint32                Cdd_Uart_ClockFreq;
     /**< Uart baud rate */
-    uint32                Cdd_Uart_BaudRate;
+    uint32                Cdd_Uart_BaudRateCfg;
     /**< Uart word length */
     Cdd_Uart_WordLength   Cdd_Uart_WordLength;
     /**< Uart stop bits */
@@ -231,10 +231,12 @@ typedef struct Cdd_Uart_CfgTag
     Cdd_Uart_CallbackType Cdd_Uart_ReadCompleteCb;
     /**< Uart Error Callback */
     Cdd_Uart_CallbackType Cdd_Uart_ErrorCb;
+    /**< Uart Highspeed Mode enable */
+    boolean               Cdd_Uart_HighSpeedEnable;
 } Cdd_Uart_CfgType;
 
 /**
- *  \name CDD UART Configurations type
+ *   CDD UART Configurations type
  *
  *  \brief UART configuration structure for all channels in use
  */
@@ -267,8 +269,7 @@ typedef struct Cdd_Uart_ReadStatusTag
  *********************************************************************************************************************/
 
 /** \brief Service to provide the version information of Cdd Uart module
- * \param[in] VersionInfoPtr is the pointer to CDD UART driver version information
- * \param[out] VersionInfoPtr is the pointer to CDD UART driver version information.
+ * \param[inout] VersionInfoPtr is the pointer to CDD UART driver version information
  * \pre This API is available only if CDD_UART_GET_VERSION_INFO_API is STD_ON
  * \post None
  * \return None
@@ -309,7 +310,7 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_Deinit(void);
  *
  * \param[in] HwUnitId number to be used for writing data
  * \param[in] SrcBufferPtr - Pointer to source data buffer
- * \param[in] count - number of data elements to be transmitted from SrcBufferPtr
+ * \param[in] Count - number of data elements to be transmitted from SrcBufferPtr
  * \pre None
  * \post None
  * \return Cdd_Uart_Write request is accepted or not
@@ -323,7 +324,7 @@ Cdd_Uart_Write(uint8 HwUnitId, const Cdd_Uart_DataBufferType* SrcBufferPtr, uint
  *
  * \param[in] HwUnitId number to be used for writing data
  * \param[in] DestBufferPtr - Pointer to dest data buffer
- * \param[in] count - number of data elements to be read into DestBufferPtr
+ * \param[in] Count - number of data elements to be read into DestBufferPtr
  * \pre None
  * \post None
  * \return Cdd_Uart_Read request is accepted or not
@@ -336,7 +337,6 @@ Cdd_Uart_Read(uint8 HwUnitId, Cdd_Uart_DataBufferType* DestBufferPtr, uint32 Cou
 /** \brief Service to cancel the ongoing transmission
  *
  * \param[in] HwUnitId number to be used for cancellation of Write
- * \param[in] writeTrans pointer to CddUart_WriteTransaction
  * \pre None
  * \post None
  * \return Cdd_Uart_CancelWrite request is accepted or not
@@ -348,7 +348,6 @@ FUNC(Std_ReturnType, CDD_UART_CODE) Cdd_Uart_CancelWrite(uint8 HwUnitId);
 /** \brief Service to cancel the ongoing transmission
  *
  * \param[in] HwUnitId number to be used for cancellation of Write
- * \param[in] writeTrans pointer to CddUart_ReadTransaction
  * \pre None
  * \post None
  * \return Cdd_Uart_CancelRead request is accepted or not
@@ -385,7 +384,6 @@ Cdd_Uart_GetReadStatus(uint8 HwUnitId, Cdd_Uart_ReadStatusType* ReadStatus);
 
 /** \brief Service to auto perform the polling of configured UART Write channel
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -396,7 +394,6 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_MainFunction_Write(void);
 
 /** \brief Service to perform the polling of confgured UART Read channel by user
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None

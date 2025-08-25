@@ -267,7 +267,6 @@ FUNC(void, MCU_CODE) Mcu_EnterLowPowerMode(Mcu_ModeConfigPtrType ModeConfigPtr);
 /** \brief Mcu_FillRamSection - This API will fill the ram sections with configured data
  *
  * \param[in] RamSectionConfigPtr Pointer to Ram section configuration set.
- * \param[out] None
  * \pre None
  * \post None
  * \return None
@@ -279,7 +278,6 @@ FUNC(void, MCU_CODE) Mcu_FillRamSection(Mcu_RamConfigPtrType RamSectionConfigPtr
 #if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
 /** \brief Unlocks all Clock configuration registers
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -290,7 +288,6 @@ FUNC(void, MCU_CODE) Mcu_UnlockClockConfigRegisters(void);
 
 /** \brief Locks all Clock configuration registers
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -303,7 +300,6 @@ FUNC(void, MCU_CODE) Mcu_LockClockConfigRegisters(void);
 #if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
 /** \brief Unlocks all Cpu Peripheral configuration registers
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -314,7 +310,6 @@ FUNC(void, MCU_CODE) Mcu_UnlockCpuPeripheralConfigRegisters(void);
 
 /** \brief Locks all Cpu Peripheral configuration registers
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -327,7 +322,6 @@ FUNC(void, MCU_CODE) Mcu_LockCpuPeripheralConfigRegisters(void);
 #if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
 /** \brief Unlocks Cpu system registers
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
@@ -338,7 +332,6 @@ FUNC(void, MCU_CODE) Mcu_UnlockCpuSysRegisters(void);
 
 /** \brief Locks Cpu system registers
  *
- * \param[in] None
  * \pre None
  * \post None
  * \return None
