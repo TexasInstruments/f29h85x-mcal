@@ -22,10 +22,6 @@
 #ifndef LIN_PRIV_H
 #define LIN_PRIV_H
 
-/**
- * \addtogroup LIN
- * @{
- */
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -421,9 +417,6 @@ FUNC(void, LIN_CODE) Lin_ProcessISR(uint32 channelID);
 #ifdef __cplusplus
 }
 #endif
-/**
- * @}
- */
 #endif /* LIN_PRIV_H */
 /*********************************************************************************************************************
  *  End of File: Lin_Priv.h

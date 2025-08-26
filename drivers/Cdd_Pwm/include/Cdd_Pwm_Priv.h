@@ -22,9 +22,6 @@
 #ifndef CDD_PWM_PRIV_H
 #define CDD_PWM_PRIV_H
 
-/** \addtogroup CDD_PWM
-*  @{
-*/
 
 #ifdef __cplusplus
 extern "C" {
@@ -4872,9 +4869,6 @@ FUNC(Cdd_Pwm_SfoStatus, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstanceTy
 }
 #endif
 
-/**
-* @}
-*/
 
 #endif /* CDD_PWM_PRIV_H*/
 /*********************************************************************************************************************

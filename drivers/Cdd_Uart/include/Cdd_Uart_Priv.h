@@ -23,9 +23,6 @@
 #ifndef CDD_UART_PRIV_H
 #define CDD_UART_PRIV_H
 
-/** \addtogroup CDD_UART
- *  @{
- */
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -349,9 +346,6 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_ProcessISR(Cdd_Uart_Instance UartInstId);
 #ifdef __cplusplus
 }
 #endif
-/**
- * @}
- */
 #endif /* CDD_UART_PRIV_H */
 
 /*********************************************************************************************************************

@@ -22,9 +22,6 @@
  *********************************************************************************************************************/
 #ifndef SPI_PRIV_H
 #define SPI_PRIV_H
-/** \addtogroup SPI
- *  @{
- */
 /*********************************************************************************************************************
  * If building with a C++ compiler, make all of the definitions in this header
  * have a C binding.
@@ -801,9 +798,6 @@ Spi_PrivInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
 #ifdef __cplusplus
 }
 #endif
-/**
- * @}
- */
 #endif /* SPI_PRIV_H */
 /*********************************************************************************************************************
  *  End of File: Spi_Priv.h

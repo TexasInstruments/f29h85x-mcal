@@ -23,9 +23,6 @@
 #ifndef CDD_IPC_PRIV_H
 #define CDD_IPC_PRIV_H
 
-/** \addtogroup CDD_IPC
- *  @{
- */
 
 #ifdef __cplusplus
 extern "C" {
@@ -342,9 +339,6 @@ FUNC(uint64, CDD_IPC_CODE) Cdd_Ipc_ReadCounter(void);
 }
 #endif
 
-/**
- * @}
- */
 
 #endif /* CDD_IPC_PRIV_H */
 /*********************************************************************************************************************

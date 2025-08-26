@@ -22,10 +22,6 @@
 #ifndef WDG_PRIV_H
 #define WDG_PRIV_H
 
-/**
- * \addtogroup WDG
- * @{
- */
 
 #ifdef __cplusplus
 extern "C" {
@@ -187,9 +183,6 @@ FUNC(void, WDG_CODE) Wdg_SetTriggerConditionPriv(VAR(uint16, AUTOMATIC) Time_out
 extern "C"
 }
 #endif
-/**
- * @}
- */
 #endif /* WDG_PRIV_H */
 /*********************************************************************************************************************
  *  End of File: Wdg_Priv.h

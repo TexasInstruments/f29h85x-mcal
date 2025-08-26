@@ -24,10 +24,6 @@
 #ifndef FLS_PRIV_H_
 #define FLS_PRIV_H_
 
-/**
- *  \addtogroup FLS
- * @{
- */
 
 #ifdef __cplusplus
 extern "C" {
@@ -216,7 +212,6 @@ extern void Fls_copyConfig(Fls_DriverObjType *drvObj, const Fls_ConfigType *cfgP
 }
 #endif
 
-/** @} */
 
 #endif /** #ifndef FLS_PRIV_H_ */
 

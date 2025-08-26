@@ -209,7 +209,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableNotification(Cdd_Ecap_ChannelType Chan
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLENOTIFICATION_ID,
                               CDD_ECAP_E_UNINIT);
     }
-    else if (CDD_ECAP_MAX_NUM_CHANNELS <= Channel)
+    else if (CDD_ECAP_HW_CNT <= Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLENOTIFICATION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -234,7 +234,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableNotification(Cdd_Ecap_ChannelType Chann
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLENOTIFICATION_ID,
                               CDD_ECAP_E_UNINIT);
     }
-    else if (CDD_ECAP_MAX_NUM_CHANNELS <= Channel)
+    else if (CDD_ECAP_HW_CNT <= Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLENOTIFICATION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -330,7 +330,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableEdgeDetection(Cdd_Ecap_ChannelType Chan
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLEEDGEDETECTION_ID,
                               CDD_ECAP_E_UNINIT);
     }
-    else if (CDD_ECAP_MAX_NUM_CHANNELS <= Channel)
+    else if (CDD_ECAP_HW_CNT <= Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLEEDGEDETECTION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -377,7 +377,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeDetection(Cdd_Ecap_ChannelType Cha
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLEEDGEDETECTION_ID,
                               CDD_ECAP_E_UNINIT);
     }
-    else if (CDD_ECAP_MAX_NUM_CHANNELS <= Channel)
+    else if (CDD_ECAP_HW_CNT <= Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLEEDGEDETECTION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -518,7 +518,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ResetEdgeCount(Cdd_Ecap_ChannelType Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_RESETEDGECOUNT_ID, CDD_ECAP_E_UNINIT);
     }
-    else if (CDD_ECAP_MAX_NUM_CHANNELS <= Channel)
+    else if (CDD_ECAP_HW_CNT <= Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_RESETEDGECOUNT_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -546,7 +546,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_EnableEdgeCount(Cdd_Ecap_ChannelType Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLEEDGECOUNT_ID, CDD_ECAP_E_UNINIT);
     }
-    else if (CDD_ECAP_MAX_NUM_CHANNELS <= Channel)
+    else if (CDD_ECAP_HW_CNT <= Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_ENABLEEDGECOUNT_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -590,7 +590,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_DisableEdgeCount(Cdd_Ecap_ChannelType Channel
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLEEDGECOUNT_ID,
                               CDD_ECAP_E_UNINIT);
     }
-    else if (CDD_ECAP_MAX_NUM_CHANNELS <= Channel)
+    else if (CDD_ECAP_HW_CNT <= Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_DISABLEEDGECOUNT_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -627,7 +627,7 @@ FUNC(Cdd_Ecap_EdgeNumberType, CDD_ECAP_CODE) Cdd_Ecap_GetEdgeNumbers(Cdd_Ecap_Ch
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETEDGENUMBERS_ID, CDD_ECAP_E_UNINIT);
     }
-    else if (CDD_ECAP_MAX_NUM_CHANNELS <= Channel)
+    else if (CDD_ECAP_HW_CNT <= Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETEDGENUMBERS_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -660,7 +660,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StartSignalMeasurement(Cdd_Ecap_ChannelType C
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTSIGNALMEASUREMENT_ID,
                               CDD_ECAP_E_UNINIT);
     }
-    else if (CDD_ECAP_MAX_NUM_CHANNELS <= Channel)
+    else if (CDD_ECAP_HW_CNT <= Channel)
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTSIGNALMEASUREMENT_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -708,7 +708,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopSignalMeasurement(Cdd_Ecap_ChannelType Ch
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STOPSIGNALMEASUREMENT_ID,
                               CDD_ECAP_E_UNINIT);
     }
-    else if ((CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    else if ((CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STOPSIGNALMEASUREMENT_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -926,7 +926,7 @@ static Std_ReturnType Cdd_Ecap_checkSetActivationConditionErrors(Cdd_Ecap_Channe
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_SETACTIVATIONCONDITION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -963,7 +963,7 @@ static Std_ReturnType Cdd_Ecap_checkStartLevelConditionErrors(Cdd_Ecap_ChannelTy
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_SETSTARTLEVELCONDITION_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -992,7 +992,7 @@ static Std_ReturnType Cdd_Ecap_checkGetInputStateErrors(Cdd_Ecap_ChannelType Cha
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETINPUTSTATE_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -1024,7 +1024,7 @@ static Std_ReturnType Cdd_Ecap_checkStartTimestampErrors(Cdd_Ecap_ChannelType Ch
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STARTTIMESTAMP_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -1075,7 +1075,7 @@ static Std_ReturnType Cdd_Ecap_checkStopTimestampErrors(Cdd_Ecap_ChannelType Cha
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STOPTIMESTAMP_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -1106,7 +1106,7 @@ static Std_ReturnType Cdd_Ecap_checkGetTimestampIndexErrors(Cdd_Ecap_ChannelType
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETTIMESTAMPINDEX_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -1138,7 +1138,7 @@ static Std_ReturnType Cdd_Ecap_checkGetDutyCycleValuesErrors(Cdd_Ecap_ChannelTyp
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETDUTYCYCLEVALUES_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -1175,7 +1175,7 @@ static Std_ReturnType Cdd_Ecap_checkGetTimeElapsedErrors(Cdd_Ecap_ChannelType Ch
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_GETTIMEELAPSED_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
@@ -1204,14 +1204,14 @@ static Std_ReturnType Cdd_Ecap_checkHighResolutionScaleFactorErrors(Cdd_Ecap_Cha
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_HRSCALEFACTOR_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (Cdd_Ecap_ConfigPtr->chCfg[Channel].channelId < 4))
+    if ((retVal == (Std_ReturnType)E_OK) && (Cdd_Ecap_ConfigPtr->chCfg[Channel].channelId < 4U))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_HRSCALEFACTOR_ID,
                               CDD_ECAP_E_HR_CHANNEL);
@@ -1231,14 +1231,14 @@ static Std_ReturnType Cdd_Ecap_checkHighResolutionTimeStampErrors(Cdd_Ecap_Chann
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_MAX_NUM_CHANNELS <= Channel))
+    if ((retVal == (Std_ReturnType)E_OK) && (CDD_ECAP_HW_CNT <= Channel))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_HRTIMESTAMP_ID,
                               CDD_ECAP_E_PARAM_CHANNEL);
         retVal = E_NOT_OK;
     }
 
-    if ((retVal == (Std_ReturnType)E_OK) && (Cdd_Ecap_ConfigPtr->chCfg[Channel].channelId < 4))
+    if ((retVal == (Std_ReturnType)E_OK) && (Cdd_Ecap_ConfigPtr->chCfg[Channel].channelId < 4U))
     {
         (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_HRTIMESTAMP_ID, CDD_ECAP_E_HR_CHANNEL);
 

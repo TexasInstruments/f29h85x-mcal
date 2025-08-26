@@ -23,9 +23,6 @@
 #ifndef CDD_SENT_PRIV_H
 #define CDD_SENT_PRIV_H
 
-/** \addtogroup CDD_SENT
- *  @{
- */
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -594,9 +591,6 @@ Cdd_Sent_TransmitPriv(P2CONST(PduInfoType, AUTOMATIC, CDD_SENT_CONST) PduInfoPtr
 #ifdef __cplusplus
 }
 #endif
-/**
- * @}
- */
 #endif /* CDD_SENT_PRIV_H */
 
 /*********************************************************************************************************************

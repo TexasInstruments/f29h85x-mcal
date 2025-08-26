@@ -21,9 +21,6 @@
  *********************************************************************************************************************/
 #ifndef GPT_PRIV_H
 #define GPT_PRIV_H
-/** \addtogroup GPT
- *  @{
- */
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -295,9 +292,6 @@ FUNC(void, GPT_CODE) Gpt_IsrNotifyFunction(Gpt_ChannelType Channel);
 #ifdef __cplusplus
 }
 #endif
-/**
- * @}
- */
 #endif /* GPT_PRIV_H */
 /*********************************************************************************************************************
  *  End of File: Gpt_Priv.h

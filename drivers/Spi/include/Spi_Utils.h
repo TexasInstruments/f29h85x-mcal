@@ -23,9 +23,6 @@
  *********************************************************************************************************************/
 #ifndef SPI_UTILS_H_
 #define SPI_UTILS_H_
-/** \addtogroup SPI
- *  @{
- */
 /*********************************************************************************************************************
  *
  * If building with a C++ compiler, make all of the definitions in this header
@@ -206,9 +203,6 @@ Spi_UtilsNode *Spi_UtilsGetHeadNode(const Spi_UtilsLinkListObj *llobj);
 #ifdef __cplusplus
 }
 #endif
-/**
- * @}
- */
 #endif /* #ifndef SPI_UTILS_H_ */
 /*********************************************************************************************************************
  *  End of File: Spi_Utils.h

@@ -22,11 +22,6 @@
 #ifndef MCU_PRIV_H
 #define MCU_PRIV_H
 
-/**
- * \addtogroup MCU Mcu API GUIDE Header file
- * @{
- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -351,9 +346,6 @@ extern "C"
 }
 #endif
 
-/**
- * @}
- */
 
 #endif /* MCU_PRIV_H */
 /*********************************************************************************************************************

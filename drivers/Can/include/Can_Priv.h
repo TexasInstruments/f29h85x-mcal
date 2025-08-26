@@ -25,10 +25,6 @@
 #ifndef CAN_PRIV_H
 #define CAN_PRIV_H
 
-/** \addtogroup CAN
- *  @{
- */
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -1185,9 +1181,6 @@ FUNC(void, CAN_CODE) Can_EccLoadRegister(uint32 baseAddr, uint32 regOffset);
 #ifdef __cplusplus
 }
 #endif
-/**
- * @}
- */
 #endif /* CAN_PRIV_H */
 /*********************************************************************************************************************
  *  End of File: Can_Priv.h

@@ -22,9 +22,6 @@
 
 #ifndef CDD_XBAR_PRIV_H
 #define CDD_XBAR_PRIV_H
-/** \addtogroup CDD_XBAR
- *  @{
- */
 
 #ifdef __cplusplus
 extern "C" {
@@ -731,9 +728,6 @@ Cdd_Xbar_InFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag);
 #ifdef __cplusplus
 }
 #endif
-/**
- * @}
- */
 #endif /* CDD_XBAR_PRIV_H */
 
 /*********************************************************************************************************************

@@ -22,10 +22,6 @@
 #ifndef FLS_AC_H_
 #define FLS_AC_H_
 
-/**
- *  \addtogroup FLS
- * @{
- */
 
 #ifdef __cplusplus
 extern "C" {
@@ -514,7 +510,6 @@ extern FUNC(void, FLS_CODE) Fls_SSU_releaseFlashSemaphore(void);
 }
 #endif
 
-/** @} */
 
 #endif /** end of FLS_AC_H_*/
 

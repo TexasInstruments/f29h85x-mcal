@@ -23,9 +23,6 @@
 #ifndef CDD_ADC_PRIV_H
 #define CDD_ADC_PRIV_H
 
-/** \addtogroup CDD_ADC
- *  @{
- */
 
 #ifdef __cplusplus
 extern "C" {
@@ -829,9 +826,6 @@ Cdd_Adc_ClearCheckerStatus(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckerEv
 }
 #endif
 
-/**
- * @}
- */
 
 #endif /* CDD_ADC_PRIV_H */
 /*********************************************************************************************************************

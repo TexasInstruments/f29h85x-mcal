@@ -797,7 +797,7 @@ FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE) Cdd_Ecap_GetHrScaleFactor(Cdd_E
  * This service converts the event timestamp to nanoseconds for high resolution capability.
  *
  * \param[in] Channel          CDD_ECAP Channel in use
- * \param[in] scaleFactor      The scale factor for conversion.
+ * \param[in] timeStamp         Event timestamp
  * \pre None
  * \post None
  * \return None

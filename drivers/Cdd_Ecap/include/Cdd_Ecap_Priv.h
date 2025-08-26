@@ -22,9 +22,6 @@
 #ifndef CDD_ECAP_PRIV_H
 #define CDD_ECAP_PRIV_H
 
-/** \addtogroup CDD_ECAP
- *  @{
- */
 
 #ifdef __cplusplus
 extern "C" {
@@ -182,7 +179,7 @@ extern volatile uint8 Cdd_Ecap_DrvStatus;
  * \return  None.
  *
  **/
-void Cdd_Ecap_ResetChObj();
+void Cdd_Ecap_ResetChObj(void);
 
 /**
  * \brief   This API will copy all channel configuration into local ECAP Object
@@ -207,7 +204,7 @@ void Cdd_Ecap_CopyConfig(Cdd_Ecap_ChObjType *chObj, const Cdd_Ecap_ConfigType *c
  * \retval None
  *
  **/
-void Cdd_Ecap_HwUnitInit();
+void Cdd_Ecap_HwUnitInit(void);
 
 #if (STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API)
 /**
@@ -295,19 +292,19 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ChannelISR(Cdd_Ecap_ChannelType Channel);
 /**
  * \brief   This is the Channel ISR for HR mode
  *
- * \param[in]   ChannelNumber     Channel number
+ * \param[in]   Channel     Channel number
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  **/
-FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HR_ISR(Cdd_Ecap_ChannelType ChannelNumber);
+FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HR_ISR(Cdd_Ecap_ChannelType Channel);
 /**
  * \brief   This will select ECAP Input.
  *
  * \param[in]        input               Cdd Ecap Input
- *  \param[in]       base                Baseaddress of channel
+ * \param[in]       base                Baseaddress of channel
  * \pre None
  * \post None
  * \return None
@@ -446,6 +443,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_setCalibrationMode(uint32 baseAddr);
  * This service enables the calibration interrupt for high resolution capability.
  *
  * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \param[in] intFlags   The interrupt flags to be enabled.
  * \pre None
  * \post None
  * \return None
@@ -459,6 +457,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_enableCalibrationInterrupt(uint32 baseA
  * This service disables the calibration interrupt for high resolution capability.
  *
  * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \param[in] intFlags   The interrupt flags to be disabled.
  * \pre None
  * \post None
  * \return None
@@ -485,6 +484,7 @@ FUNC(Cdd_Ecap_ChannelHrInterruptType, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_getCalibrati
  * This service clears the calibration flags for high resolution capability.
  *
  * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \param[in] flags      The flags to be cleared.
  * \pre None
  * \post None
  * \return None
@@ -511,6 +511,7 @@ FUNC(boolean, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_isCalibrationBusy(uint32 baseAddr);
  * This service forces the calibration flags for high resolution capability.
  *
  * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \param[in] flags      The flags to be forced.
  * \pre None
  * \post None
  * \return None
@@ -524,6 +525,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_forceCalibrationFlags(uint32 baseAddr, 
  * This service sets the calibration period for high resolution capability, it sets that to 1.6 ms.
  *
  * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \param[in] sysclkHz   The system clock frequency in Hz
  * \pre None
  * \post None
  * \return None
@@ -537,6 +539,8 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HRCAP_setCalibrationPeriod(uint32 baseAddr, u
  * This service configures the calibration period for high resolution capability.
  *
  * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \param[in] sysclkHz   The system clock frequency in Hz
+ * \param[in] periodInMs  The calibration period in milliseconds
  * \pre None
  * \post None
  * \return None
@@ -565,6 +569,7 @@ Cdd_Ecap_HRCAP_getCalibrationClockPeriod(uint32 baseAddr, Cdd_Ecap_HrCap_Calibra
  * This service retrieves the scale factor for high resolution capability.
  *
  * \param[in] baseAddr   The base address of the HRCAP channel.
+ * \param[in] Channel  The channel for which the scale factor is to be retrieved.
  * \pre None
  * \post None
  * \return None
@@ -580,6 +585,7 @@ Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Channel);
  *
  * \param[in] baseAddr   The base address of the HRCAP channel.
  * \param[in] scaleFactor  The scale factor for conversion.
+ * \param[in] timestamp   Event timestamp
  * \pre None
  * \post None
  * \return None
@@ -601,9 +607,6 @@ Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 baseAddr, uint32 timestamp, float32 
 }
 #endif
 
-/**
- * @}
- */
 
 #endif /* CDD_ECAP_PRIV_H */
 /*********************************************************************************************************************

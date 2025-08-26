@@ -247,6 +247,13 @@ uint32 Cdd_Ecap_getIntrStatus(uint32 baseAddr, uint32 flag);
  */
 void Cdd_Ecap_setEmulationMode(uint32 baseAddr, Cdd_Ecap_EmulationMode srcSelect);
 
+/**
+ \param baseAddr is the base address of the ECAP module.
+
+ * \brief This function clears the global interrupt bit of ECAP module.
+ */
+void Cdd_Ecap_clearGlobalInterrupt(uint32 baseAddr);
+
 /*********************************************************************************************************************
  *  Local Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
@@ -478,7 +485,7 @@ void Cdd_Ecap_HRCAP_enableHighResolution(uint32 baseAddr)
     return;
 }
 
-void Cdd_Ecap_HRCAP_disbleHighResolution(uint32 baseAddr)
+void Cdd_Ecap_HRCAP_disableHighResolution(uint32 baseAddr)
 {
     HWREGH(baseAddr + ECAP_O_HRCTL) &= ~ECAP_HRCTL_HRE;
     return;
@@ -543,7 +550,7 @@ void Cdd_Ecap_HRCAP_forceCalibrationFlags(uint32 baseAddr, uint16 flags)
 
 void Cdd_Ecap_HRCAP_setCalibrationPeriod(uint32 baseAddr, uint32 sysclkHz)
 {
-    HWREG(baseAddr + ECAP_O_HRCALPRD) = (sysclkHz * 1.6 * 1e9) / 1000U;
+    HWREG(baseAddr + ECAP_O_HRCALPRD) = (sysclkHz * 1600000000U) / 1000U;
     return;
 }
 
@@ -561,7 +568,7 @@ uint32 Cdd_Ecap_HRCAP_getCalibrationClockPeriod(uint32 baseAddr, Cdd_Ecap_HrCap_
 float32 Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Channel)
 {
     /* Calculate and return the scale factor. */
-    if (Cdd_Ecap_ObjPtr->chObj[Channel].intHr >= 1)
+    if (Cdd_Ecap_ObjPtr->chObj[Channel].intHr >= 1U)
     {
         return ((float32)Cdd_Ecap_HRCAP_getCalibrationClockPeriod(baseAddr, CDD_ECAP_HRCAP_CALIBRATION_CLOCK_SYSCLK) /
                 (float32)Cdd_Ecap_HRCAP_getCalibrationClockPeriod(baseAddr, CDD_ECAP_HRCAP_CALIBRATION_CLOCK_HRCLK));
@@ -575,10 +582,10 @@ float32 Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Chan
 float32 Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 baseAddr, uint32 timeStamp, float32 scaleFactor)
 {
     /* Convert the raw count value to nanoseconds using the given scale factor. */
-    return ((float32)(timeStamp * scaleFactor) / (float32)128.0);
+    return ((float32)((float32)timeStamp * scaleFactor) / (float32)128.0);
 }
 #endif
-void Cdd_Ecap_ResetChObj()
+void Cdd_Ecap_ResetChObj(void)
 {
     uint32 chNum = 0;
     for (chNum = 0U; chNum < CDD_ECAP_HW_CNT; chNum++)
@@ -636,7 +643,7 @@ void Cdd_Ecap_CopyConfig(Cdd_Ecap_ChObjType *chObj, const Cdd_Ecap_ConfigType *c
     return;
 }
 
-void Cdd_Ecap_HwUnitInit()
+void Cdd_Ecap_HwUnitInit(void)
 {
     uint32 baseAddr;
     uint8  chNum = 0U;
@@ -1314,25 +1321,25 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HR_ISR(Cdd_Ecap_ChannelType Channel)
     Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount =
         Cdd_Ecap_HRCAP_getCalibrationClockPeriod(hr_baseAddr, CDD_ECAP_HRCAP_CALIBRATION_CLOCK_SYSCLK);
 
-    if (CDD_ECAP_HRCAP_HRCALCAL_STATUS_DONE_ISR == calstatus)
+    if ((uint16)CDD_ECAP_HRCAP_HRCALCAL_STATUS_DONE_ISR == calstatus)
     {
         /* Get the scale factor */
         Cdd_Ecap_ObjPtr->chObj[chNum].scaleFactor = Cdd_Ecap_HRCAP_getScaleFactor(hr_baseAddr, chNum);
     }
-    else if (CDD_ECAP_HRCAP_HRCALCAL_STATUS_PERIOD_OVERFLOW_ISR == calstatus)
+    else if ((uint16)CDD_ECAP_HRCAP_HRCALCAL_STATUS_PERIOD_OVERFLOW_ISR == calstatus)
     {
         /*Calibration done with an overflow. Determine which counter has overflowed*/
         if (Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount > Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount)
         {
             /* HRCLK has overflowed */
             Cdd_Ecap_ObjPtr->chObj[chNum].scaleFactor =
-                Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount * CDD_ECAP_HRCAP_HRCAPCAL_INV_OVERFLOW;
+                ((float32)Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount * CDD_ECAP_HRCAP_HRCAPCAL_INV_OVERFLOW);
         }
         else if (Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount < Cdd_Ecap_ObjPtr->chObj[chNum].sysclkCount)
         {
             /* SYSCLK has overflowed */
             Cdd_Ecap_ObjPtr->chObj[chNum].scaleFactor =
-                CDD_ECAP_HRCAP_HRCAPCAL_OVERFLOW / Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount;
+                (CDD_ECAP_HRCAP_HRCAPCAL_OVERFLOW / ((float32)Cdd_Ecap_ObjPtr->chObj[chNum].hrclkCount));
         }
         else
         {

@@ -22,10 +22,6 @@
 #ifndef PORT_PRIV_H
 #define PORT_PRIV_H
 
-/**
- * \addtogroup PORT
- * @{
- */
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -330,9 +326,6 @@ FUNC(void, PORT_CODE) Port_CommitConfigurationProcess(Port_PinType pinNumber);
 #ifdef __cplusplus
 }
 #endif
-/**
- * @}
- */
 #endif /* PORT_PRIV_H */
 /*********************************************************************************************************************
  *  End of File: Port_Priv.h
