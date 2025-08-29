@@ -141,7 +141,7 @@ F29H85x MCAL consists of three main components, Micro-controller abstraction lay
  ┃ ┃ ┃ ┃ ┣ 📂config\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName.xdm : *Generated EB Tresos config file in .xdm format*\
  ┃ ┃ ┃ ┃ ┣ 📂include\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.h : *Contains the generated pre-complier configuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.h : *Contains the generated pre-compiler configuration header.*\
  ┃ ┃ ┃ ┃ ┣ 📂src\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.c or ModuleName_LCfg.c or ModuleName_PBCfg.c : *Contains the pre/Link/Post build configuration parameters.*\
  ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
@@ -177,7 +177,7 @@ Will be added in later release.
 Compiler Option  |Description|
 -----------------|------------|
 -mcpu               | Target processor version : **c29.c0** |
--mfpu               | Floating-Point Support Option : Use native 32-bit floating-point hardware operations, but emulate 64-bit floating-point operations in software. <br> **none**|
+-mfpu               | Floating-Point Support Option : Use native 32-bit floating-point hardware operations, but emulate 64-bit floating-point operations in software. <br> **f32**|
 -g                  | Debug information : The c29clang compiler generates DWARF debug information if the -g option is selected.|
 -Wall               | Enable most warning categories |
 -D                  | Predefined Symbol Options : <br> **-DDEBUG** |
@@ -293,7 +293,7 @@ You can downloaded CCS from [ti.com](https://www.ti.com/tool/CCSTUDIO#downloads)
  ┃ ┃ ┣ 📂LinkerCMD\
  ┃ ┃ ┣ 📂src\
  ┃ ┃ ┃ ┣ 📜**codestartbranch.asm**\
- ┃ ┃ ┃ ┗ 📜**DeviceSupport.c** : *Contains functions that Flash intialize wait states*\
+ ┃ ┃ ┃ ┗ 📜**DeviceSupport.c** : *Contains functions that Flash initialize wait states*\
  ┃ ┃ ┣ 📂targetconfigs\
  ┃ ┃ ┣ 📜CMakeLists.txt\
  ┃ ┃ ┗ 📜makefile.defs\
@@ -410,7 +410,7 @@ AppUtils source code is for reference only, it should not be used as-is in a typ
  ┣ 📜**CMakeLists.txt** : *Top-level CMake file*\
  ┗ 📜CMakePresets.json
 
-BSW Stubs provides a set of stubs for various Basic Software (BSW) modules, these stubs mimics the behavior of the actual BSW modules. These stubs allow for the development and testing of MCAL drivers without requiring the actual BSW modules to be implemented. The BSW_Stubs folder contains a collection of subfolders, each representing a specific BSW module. Each of these subfolders contains stub implementations for the corresponding BSW module.
+BSW Stubs provides a set of stubs for various Basic Software (BSW) modules, these stubs mimics the behavior of the actual BSW modules. These stubs allow for the development and testing of MCAL drivers without requiring the actual BSW modules to be implemented. The BSW_Stubs folder contains a collection of sub-folders, each representing a specific BSW module. Each of these sub-folders contains stub implementations for the corresponding BSW module.
 
 ```{Attention}
 BSW Stubs source code is for reference only, it should not be used as-is in a typical AUTOSAR applications.
@@ -821,6 +821,61 @@ Following are the list of F29H85x CPU major features:
 * Enhanced debug and trace capabilities
 
 You can downloaded TRM from [ti.com](https://www.ti.com/product/F29H859TU-Q1)
+
+### F29x CPU Emulation API
+
+The F29H85x, F29P58x, and F29P32x are members of the C2000™ real-time microcontroller family
+The device information is available in the datasheet and can be downloaded at [ti.com](https://www.ti.com/lit/ds/symlink/f29h859tu-q1.pdf)
+
+Emulation API supports to emulate multiple part number devices on a single device, one at a time.This helps to test softwares for multiple devices on a single device.
+Emulation API restricts the usage of features/resources according to the device being emulated.
+
+```{Note}
+ F29H85x is the super set device.MCAL will use F29H85x and it needs to be selected as Target / Derivate during EB Tresos project creation irrespective of the subset device being used (device being emulated).
+```
+
+#### Emulation API usage
+
+The Emulation API needs to invoked before ECUM initialization.
+To emulate the device F29P329SM2, below command needs to be invoked
+
+```{code-block} shell
+  DeviceSupport_EmulateDevice(DEVICE_F29P329SM2);
+```
+
+To emulate other devices the following macros can be passed as argument to function DeviceSupport_EmulateDevice(partNumber)
+
+|Part Number|
+|------|
+|DEVICE_F29H859TU8|
+|DEVICE_F29H859TM8|
+|DEVICE_F29H859DM6|
+|DEVICE_F29H859DU6|
+|DEVICE_F29P589DM5|
+|DEVICE_F29P589DU5|
+|DEVICE_F29P329SM2|
+
+Once emulation API is invoked, if any feature/resource is accessed which is not avaialble to the emulated device,
+then an exception will occur.
+
+When exception occurs the program enters wait mode.The wait mode puts the CPU in a loop in the boot ROM code and does not branch to the user application code. The program counter goes to wait point address and stays in wait boot mode.
+
+|Program Counter Address Range|Description|
+|-----------------------------|-----------|
+|0x1535C|In Wait Boot mode|
+|0x14EB0 |In Wait Boot mode|
+
+The device can be recovered by erasing the flash memory and then flashing a correct software.
+
+Below is an example of the error when an exception occured
+
+```{figure} Assets/images/Emulation_API_error.png
+:alt: Debug message on exception
+:align: center
+
+
+Debug message on exception
+```
 
 ## Boot Modes
 

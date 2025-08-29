@@ -22,15 +22,16 @@ Can FD controller Message RAM Configuration object structure.
 |  Member Type   | Member name    | Brief |
 | -------------- | -------------- | ----- |
 |  [Can_MsgRAMConfigParams](../Classes/struct_can___msg_r_a_m_config_params.md) | configParams |  MCAN Message RAM Configuration parameters.  |
-|  [Can_StdMsgIDFilterElement](../Classes/struct_can___std_msg_i_d_filter_element.md)[KMAX_MB_PER_CONTROLLER] | stdMsgIDFilterList |  Standard ID filter elements.  |
-|  [Can_ExtMsgIDFilterElement](../Classes/struct_can___ext_msg_i_d_filter_element.md)[KMAX_MB_PER_CONTROLLER] | extMsgIDFilterList |  Extended ID filter elements.  |
+|  [Can_StdMsgIDFilterElement](../Classes/struct_can___std_msg_i_d_filter_element.md)[KMAX_STD_FILTERS_PER_CONTROLLER] | stdMsgIDFilterList |  Standard ID filter elements.  |
+|  [Can_ExtMsgIDFilterElement](../Classes/struct_can___ext_msg_i_d_filter_element.md)[KMAX_EXTD_FILTERS_PER_CONTROLLER] | extMsgIDFilterList |  Extended ID filter elements.  |
 |  uint8 | stdFilterNum |  Standard ID filter element number.  |
 |  uint8 | extFilterNum |  Extended ID filter element number.  |
-|  uint8[2U][KMAX_MB_PER_CONTROLLER] | txMbMapping |  Mapping of HTRH txMbMapping[0U][0-KMAX_MB_PER_CONTROLLER]: HTH to be stored into Buffer txMbMapping[1U][0-KMAX_MB_PER_CONTROLLER]: HTH to be stored into FIFO txMbMapping[m][n] = 0xFF : Initialization value.  |
-|  uint8[KMAX_MB_PER_CONTROLLER] | hthToMbMapping |  Mapping of HTH to HW mailboxes.  |
-|  uint16 | txBuffNum |  Tx number of Buffer elements.  |
-|  uint16 | txFIFONum |  Tx number of FIFO elements.  |
-|  uint16 | rxBuffNum |  Rx number of Buffer elements.  |
-|  uint16 | rxFIFONum |  Rx number of FIFO elements.  |
+|  Can_HwHandleType[KMAX_TX_MB_PER_CONTROLLER] | canTxBufToHohMapping |  Mapping of transmit buffer to HOH.  |
+|  Can_HwHandleType[KMAX_RX_MB_PER_CONTROLLER] | canRxBufToHohMapping |  Mapping of receive buffer to HOH.  |
+|  Can_HwHandleType[((uint8) 2U)] | canRxFifoToHohMapping |  Mapping of receive Fifo to HOH.  |
+|  uint8 | txBuffNum |  Tx number of Buffer elements.  |
+|  uint8 | txFIFONum |  Tx number of FIFO elements.  |
+|  uint8 | rxBuffNum |  Rx number of Buffer elements.  |
+|  uint8 | rxFIFONum |  Rx number of FIFO elements.  |
 
 

@@ -324,7 +324,7 @@ Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Treso
 
 To align with AUTOSAR CDD naming convention, we have named Module Name as Cdd and apiServicePrefix as Cdd_Xbar. This results in change in schema as described below.
 
-To make v1.0.0 Xbar schema(generated .xdm file) compatable with v2.0.0 below changes are required:
+To make v1.0.0 Xbar schema(generated .xdm file) compatible with v2.0.0 below changes are required:
 
 1. Change 'AR-ELEMENT' name from Cdd_Xbar to Cdd.
 2. Update MODULE-CONFIGURATION path from 'ASPath:/TI_F29H85x/Cdd_Xbar' to 'ASPath:/TI_F29H85x/Cdd_Xbar/Cdd'.
@@ -348,525 +348,538 @@ Modified new schema:
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar/Cdd"/>
 ```
 
-#### CddXbarGeneral
 
-##### CddXbarDevErrorDetect
 
-|**Name**   |CddXbarDevErrorDetect|
-|-----------|------------------|
-|**Parent Container**|CddXbarGeneral|
-|**Description**|Switches the development error detection and notification on or off <br> &bull; **TRUE**: detection and notification is enabled. <br> &bull; **FALSE**: detection and notification is disabled. |
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false |
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-##### CddXbarAPIEnable
-
-|**Name**   |CddXbarAPIEnable|
-|-----------|------------------|
-|**Parent Container**|CddXbarGeneral|
-|**Description**|Enables or Disables the APIs of Cdd Xbar driver. <br> &bull; **TRUE**: All APIs are enabled. <br> &bull; **FALSE**: All APIs are disabled.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-##### CddXbarVersionInfoApi
-
-|**Name**   |CddXbarVersionInfoApi|
-|-----------|------------------|
-|**Parent Container**|CddXbarGeneral|
-|**Description**|Enables or Disables the Cdd_Xbar_GetVersionInfo API. <br> &bull; **TRUE**: Cdd_Xbar_GetVersionInfo API is enabled. <br> &bull; **FALSE**: Cdd_Xbar_GetVersionInfo API is disabled.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-##### CddXbarInputFlagApi
-
-|**Name**   |CddXbarInputFlagApi|
-|-----------|------------------|
-|**Parent Container**|CddXbarGeneral|
-|**Description**|Enables or Disables the Cdd_Xbar_InputFlagStatus() and Cdd_Xbar_InputFlagClear() APIs. <br> &bull; **TRUE**: Input flag related APIs are enabled. <br> &bull; **FALSE**: Input flag related APIs are disabled.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-#### CddXbar Configuration
+#### CddXbarConfiguration
+This container contains the configuration parameters and sub containers of the CDD XBar module.
 
 ##### CddXbarInputXbarConfig
+Configuration for Input Crossbar
 
-###### CddXbarInputXbarInputSourceSelection  
+##### CddXbarInputXbarInstanceConfig
+Configuration for Input Crossbar instance, one per output line available
 
-|**Name**   |CddXbarInputXbarInputSourceSelection  |
-|-----------|------------------|
-|**Parent Container**|CddXbarInputXbarConfig|
-|**Description**|Selects GPIO/AIO/LOGIC HIGH/LOGIC LOW as input to the Input XBar|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|GPIO|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+###### CddXbarInputXbarInputSourceSelection
 
-###### CddXbarInputXbarInputSource  
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarInputXbarInputSourceSelection |
+| **Description** | Selects GPIO/AIO or LOGIC HIGH or LOGIC LOW as input to the input xbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_GPIO_AIO |
+| **Range** | CDD_XBAR_GPIO_AIO<br>CDD_XBAR_LOGIC_HIGH<br>CDD_XBAR_LOGIC_LOW |
 
-|**Name**   |CddXbarInputXbarInputSource  |
-|-----------|------------------|
-|**Parent Container**|CddXbarInputXbarConfig|
-|**Description**|Reference to GPIO/AIO Pin, obtained from the configuration of PORT plugin if GPIO/AIO is selected as the input source for Input Xbar|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|GPIO|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+###### CddXbarInputXbarInput
 
-###### CddXbarInputXbarInput  
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarInputXbarInput |
+| **Description** | Input number of input crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_INPUT1 |
+| **Range** | CDD_XBAR_INPUT1<br>CDD_XBAR_INPUT2<br>CDD_XBAR_INPUT3<br>CDD_XBAR_INPUT4<br>CDD_XBAR_INPUT5<br>CDD_XBAR_INPUT6<br>CDD_XBAR_INPUT7<br>CDD_XBAR_INPUT8<br>CDD_XBAR_INPUT9<br>CDD_XBAR_INPUT10<br>CDD_XBAR_INPUT11<br>CDD_XBAR_INPUT12<br>CDD_XBAR_INPUT13<br>CDD_XBAR_INPUT14<br>CDD_XBAR_INPUT15<br>CDD_XBAR_INPUT16<br>CDD_XBAR_INPUT17<br>CDD_XBAR_INPUT18<br>CDD_XBAR_INPUT19<br>CDD_XBAR_INPUT20<br>CDD_XBAR_INPUT21<br>CDD_XBAR_INPUT22<br>CDD_XBAR_INPUT23<br>CDD_XBAR_INPUT24<br>CDD_XBAR_INPUT25<br>CDD_XBAR_INPUT26<br>CDD_XBAR_INPUT27<br>CDD_XBAR_INPUT28<br>CDD_XBAR_INPUT29<br>CDD_XBAR_INPUT30<br>CDD_XBAR_INPUT31<br>CDD_XBAR_INPUT32<br>CDD_XBAR_INPUT33<br>CDD_XBAR_INPUT34<br>CDD_XBAR_INPUT35<br>CDD_XBAR_INPUT36<br>CDD_XBAR_INPUT37<br>CDD_XBAR_INPUT38<br>CDD_XBAR_INPUT39<br>CDD_XBAR_INPUT40<br>CDD_XBAR_INPUT41<br>CDD_XBAR_INPUT42<br>CDD_XBAR_INPUT43<br>CDD_XBAR_INPUT44<br>CDD_XBAR_INPUT45<br>CDD_XBAR_INPUT46<br>CDD_XBAR_INPUT47<br>CDD_XBAR_INPUT48<br>CDD_XBAR_INPUT49<br>CDD_XBAR_INPUT50<br>CDD_XBAR_INPUT51<br>CDD_XBAR_INPUT52<br>CDD_XBAR_INPUT53<br>CDD_XBAR_INPUT54<br>CDD_XBAR_INPUT55<br>CDD_XBAR_INPUT56<br>CDD_XBAR_INPUT57<br>CDD_XBAR_INPUT58<br>CDD_XBAR_INPUT59<br>CDD_XBAR_INPUT60<br>CDD_XBAR_INPUT61<br>CDD_XBAR_INPUT62<br>CDD_XBAR_INPUT63<br>CDD_XBAR_INPUT64 |
 
-|**Name**   |CddXbarInputXbarInput  |
-|-----------|------------------|
-|**Parent Container**|CddXbarInputXbarConfig|
-|**Description**|Selection of the Input Xbar(INPUTx) to be configured.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_INPUT1|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+###### CddXbarInputXbarInputSelectConfigurationLock
 
-###### CddXbarInputXbarInputSelectConfigurationLock  
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarInputXbarInputSelectConfigurationLock |
+| **Description** | Option to lock the current Input Group for any further configuration on Input Crossbar until System Reset. Once locked, cannot be unlocked without reset. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-|**Name**   |CddXbarInputXbarInputSelectConfigurationLock  |
-|-----------|------------------|
-|**Parent Container**|CddXbarInputXbarConfig|
-|**Description**|Lock the current input output configurations of the INPUTx from any further configuration until System Reset. Once locked, cannot be unlocked without reset|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+###### CddXbarInputXbarInputSource
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarInputXbarInputSource |
+| **Description** | Reference to GPIO/AIO Pin, obtained from the configuration of PORT plugin. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ##### CddXbarOutputXbarConfig
-
-###### CddXbarOutputXbarInstanceConfig
-
-○ CddXbarOutputXbarInput
-
-• CddXbarOutputXbarInputGroup
-
-|**Name**   |CddXbarOutputXbarInputGroup  |
-|-----------|------------------|
-|**Parent Container**|CddXbarOutputXbarInput|
-|**Description**|Selects the input group to be chosen for Output Crossbar as input|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_INPUT_GROUP_0|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-• CddXbarOutputXbarInputLine
-
-|**Name**   |CddXbarOutputXbarInputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarOutputXbarInputLine|
-|**Description**|Selects the input line to be chosen from the selected input group for Output Crossbar as input|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_INPUT_GROUP_0|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-###### CddXbarOutputXbarOutputLine
-
-|**Name**   |CddXbarOutputXbarOutputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarOutputXbarConfig|
-|**Description**|Selection of the Output Xbar output line to be configured. |
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_OUTPUT1|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-###### CddXbarOutputXbarOutputPulseStretch
-
-|**Name**   |CddXbarOutputXbarOutputPulseStretch  |
-|-----------|------------------|
-|**Parent Container**|CddXbarOutputXbarConfig|
-|**Description**|Selects the stretching of the output signal for the selected output line of the Output Crossbar instance. |
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_SYSTICKS_STRETCH_OFF|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-###### CddXbarOutputXbarOutputInversion
-
-|**Name**   |CddXbarOutputXbarOutputInversion  |
-|-----------|------------------|
-|**Parent Container**|CddXbarOutputXbarConfig|
-|**Description**|Selects the inversion of the output signal for the selected output line of the Output Crossbar instance. |
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-###### CddXbarOutputXbarOutputLatch
-
-|**Name**   |CddXbarOutputXbarOutputLatch  |
-|-----------|------------------|
-|**Parent Container**|CddXbarOutputXbarConfig|
-|**Description**|Selects the latched event as output of selected output line for Output Crossbar instance. |
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-###### CddXbarOutputXbarOutputFlagConfig
-
-○ CddXbarOutputXbarInversionBeforeLatch
-
-|**Name**   |CddXbarOutputXbarInversionBeforeLatch  |
-|-----------|------------------|
-|**Parent Container**|CddXbarOutputXbarOutputFlagConfig|
-|**Description**|Enables or disables the inversion of the output before latching for the selected output line for Output Crossbar instance.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-○ CddXbarOutputXbarOutputLatchInitSts
-
-|**Name**   |CddXbarOutputXbarOutputLatchInitSts  |
-|-----------|------------------|
-|**Parent Container**|CddXbarOutputXbarOutputFlagConfig|
-|**Description**|Configures the initial status of the latched event, it can be forced, latched or can be left in default state. |
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+Configuration for Output Crossbar
 
 ###### CddXbarOutputXbarConfigurationLock
 
-|**Name**   |CddXbarOutputXbarConfigurationLock  |
-|-----------|------------------|
-|**Parent Container**|CddXbarOutputXbarConfig|
-|**Description**|Lock the Output Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarOutputXbarConfigurationLock |
+| **Description** | Option to lock the Output crossbar instance for any further input and output inversion configuration until System Reset. Cannot be unlocked once locked unless reset. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarOutputXbarInstanceConfig
+Configuration for Output Crossbar Instance, one per output line available
+
+###### CddXbarOutputXbarOutputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarOutputXbarOutputLine |
+| **Description** | Number of Output Line instance to be set for Output Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_OUTPUT1 |
+| **Range** | CDD_XBAR_OUTPUT1<br>CDD_XBAR_OUTPUT2<br>CDD_XBAR_OUTPUT3<br>CDD_XBAR_OUTPUT4<br>CDD_XBAR_OUTPUT5<br>CDD_XBAR_OUTPUT6<br>CDD_XBAR_OUTPUT7<br>CDD_XBAR_OUTPUT8<br>CDD_XBAR_OUTPUT9<br>CDD_XBAR_OUTPUT10<br>CDD_XBAR_OUTPUT11<br>CDD_XBAR_OUTPUT12<br>CDD_XBAR_OUTPUT13<br>CDD_XBAR_OUTPUT14<br>CDD_XBAR_OUTPUT15<br>CDD_XBAR_OUTPUT16 |
+
+###### CddXbarOutputXbarOutputPulseStretch
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarOutputXbarOutputPulseStretch |
+| **Description** | Output Line pulse stretch in Sys Clock ticks for Output Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_SYSTICKS_STRETCH_OFF |
+| **Range** | CDD_XBAR_SYSTICKS_STRETCH_OFF<br>CDD_XBAR_SYSTICKS_16<br>CDD_XBAR_SYSTICKS_32 |
+
+###### CddXbarOutputXbarOutputInversion
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarOutputXbarOutputInversion |
+| **Description** | Option to invert the output signal for the selected output line of the Output Crossbar instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddXbarOutputXbarOutputLatch
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarOutputXbarOutputLatch |
+| **Description** | Option to select latch as output of selected output line for Output Crossbar instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarOutputXbarInput
+Configuration for Output Crossbar Instance inputs
+
+###### CddXbarOutputXbarInputGroup
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarOutputXbarInputGroup |
+| **Description** | Number of Input Group to be chosen for Output Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_INPUT_GROUP_0 |
+| **Range** | CDD_XBAR_INPUT_GROUP_0<br>CDD_XBAR_INPUT_GROUP_1<br>CDD_XBAR_INPUT_GROUP_2<br>CDD_XBAR_INPUT_GROUP_3<br>CDD_XBAR_INPUT_GROUP_4<br>CDD_XBAR_INPUT_GROUP_5<br>CDD_XBAR_INPUT_GROUP_6<br>CDD_XBAR_INPUT_GROUP_7<br>CDD_XBAR_INPUT_GROUP_8<br>CDD_XBAR_INPUT_GROUP_9 |
+
+###### CddXbarOutputXbarInputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarOutputXbarInputLine |
+| **Description** | Number of Input Line from the Group selected to be chosen for Output Crossbar. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_OUT_CMPSS1_CTRIPOUTH |
+| **Range** | CDD_XBAR_OUT_CMPSS1_CTRIPOUTH |
+
+##### CddXbarOutputXbarOutputFlagConfig
+Configuration for output crossbar output latch
+
+###### CddXbarOutputXbarInversionBeforeLatch
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarOutputXbarInversionBeforeLatch |
+| **Description** | Option to invert the signal before latching for the selected output line for Output Crossbar instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+###### CddXbarOutputXbarOutputLatchInitSts
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarOutputXbarOutputLatchInitSts |
+| **Description** | Force or clear the output latch of individual output line for Output Crossbar during initialization |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_OUTPUTDEFAULT |
+| **Range** | CDD_XBAR_OUTPUTDEFAULT<br>CDD_XBAR_OUTPUTCLEARFLAG<br>CDD_XBAR_OUTPUTFORCEFLAG |
 
 ##### CddXbarEpwmXbarConfig
-
-###### CddXbarEpwmXbarInstanceConfig
-
-○ CddXbarEpwmXbarInput
-
-• CddXbarEpwmXbarInputGroup
-
-|**Name**   |CddXbarEpwmXbarInputGroup  |
-|-----------|------------------|
-|**Parent Container**|CddXbarEpwmXbarInput|
-|**Description**|Selects the input group to be chosen for ePWM Crossbar, as input.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_INPUT_GROUP_0|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-• CddXbarEpwmXbarInputLine
-
-|**Name**   |CddXbarEpwmXbarInputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarEpwmXbarInput|
-|**Description**|Selects the input line to be chosen from the selected input group for ePWM Crossbar, as input.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_EPWM_CMPSS1_CTRIPH|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-○ CddXbarEpwmXbarOutputLine
-
-|**Name**   |CddXbarEpwmXbarOutputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarEpwmXbarInstanceConfig|
-|**Description**|Selection of the ePWM Xbar output line to be configured.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_TRIP2|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-○ CddXbarEpwmXbarOutputInversion
-
-|**Name**   |CddXbarEpwmXbarOutputInversion  |
-|-----------|------------------|
-|**Parent Container**|CddXbarEpwmXbarInstanceConfig|
-|**Description**|Selects the inversion of the output signal for the selected output line of the ePWM Crossbar instance.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+Configuration for EPWM Crossbar
 
 ###### CddXbarEpwmXbarConfigurationLock
 
-|**Name**   |CddXbarEpwmXbarConfigurationLock  |
-|-----------|------------------|
-|**Parent Container**|CddXbarEpwmXbarConfig|
-|**Description**|Lock the ePWM Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarEpwmXbarConfigurationLock |
+| **Description** | Option to lock the EPWM crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarEpwmXbarInstanceConfig
+Configuration for EPWM Crossbar Instance, one per output line available
+
+###### CddXbarEpwmXbarOutputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarEpwmXbarOutputLine |
+| **Description** | Number of Output Line instance to be set for EPWM Crossbar. TRIP1 is reserved. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_TRIP2 |
+| **Range** | CDD_XBAR_TRIP2<br>CDD_XBAR_TRIP3<br>CDD_XBAR_TRIP4<br>CDD_XBAR_TRIP5<br>CDD_XBAR_TRIP6<br>CDD_XBAR_TRIP7<br>CDD_XBAR_TRIP8<br>CDD_XBAR_TRIP9<br>CDD_XBAR_TRIP10<br>CDD_XBAR_TRIP11<br>CDD_XBAR_TRIP12<br>CDD_XBAR_TRIP13<br>CDD_XBAR_TRIP14<br>CDD_XBAR_TRIP15<br>CDD_XBAR_TRIP16 |
+
+###### CddXbarEpwmXbarOutputInversion
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarEpwmXbarOutputInversion |
+| **Description** | Option to invert the output signal for the selected output line of the EPWM Crossbar instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarEpwmXbarInput
+Configuration for EPWM Crossbar Instance inputs
+
+###### CddXbarEpwmXbarInputGroup
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarEpwmXbarInputGroup |
+| **Description** | Number of Input Group to be chosen for EPWM Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_INPUT_GROUP_0 |
+| **Range** | CDD_XBAR_INPUT_GROUP_0<br>CDD_XBAR_INPUT_GROUP_1<br>CDD_XBAR_INPUT_GROUP_2<br>CDD_XBAR_INPUT_GROUP_3<br>CDD_XBAR_INPUT_GROUP_4<br>CDD_XBAR_INPUT_GROUP_5<br>CDD_XBAR_INPUT_GROUP_6<br>CDD_XBAR_INPUT_GROUP_7<br>CDD_XBAR_INPUT_GROUP_8<br>CDD_XBAR_INPUT_GROUP_9 |
+
+###### CddXbarEpwmXbarInputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarEpwmXbarInputLine |
+| **Description** | Number of Input Line from the Group selected to be chosen for EPWM Crossbar. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_EPWM_CMPSS1_CTRIPH |
+| **Range** | CDD_XBAR_EPWM_CMPSS1_CTRIPH |
 
 ##### CddXbarClbXbarConfig
-
-###### CddXbarClbXbarInstanceConfig
-
-○ CddXbarClbXbarInput
-
-• CddXbarClbXbarInputGroup
-
-|**Name**   |CddXbarClbXbarInputGroup  |
-|-----------|------------------|
-|**Parent Container**|CddXbarClbXbarInput|
-|**Description**|Selects the input group to be chosen for CLB Crossbar, as input.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_INPUT_GROUP_0|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-• CddXbarClbXbarInputLine
-
-|**Name**   |CddXbarClbXbarInputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarClbXbarInput|
-|**Description**|Selects the input line to be chosen from the selected input group for CLB Crossbar, as input.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_CLB_CMPSS1_CTRIPH|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-○ CddXbarClbXbarOutputLine
-
-|**Name**   |CddXbarClbXbarOutputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarClbXbarInstanceConfig|
-|**Description**|Selection of the CLB Xbar output line to be configured.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_AUXSIG1|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-○ CddXbarClbXbarOutputInversion
-
-|**Name**   |CddXbarClbXbarOutputInversion  |
-|-----------|------------------|
-|**Parent Container**|CddXbarClbXbarInstanceConfig|
-|**Description**|Selects the inversion of the output signal for the selected output line of the CLB Crossbar instance.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+Configuration for CLB Crossbar
 
 ###### CddXbarClbXbarConfigurationLock
 
-|**Name**   |CddXbarClbXbarConfigurationLock  |
-|-----------|------------------|
-|**Parent Container**|CddXbarClbXbarConfig|
-|**Description**|Lock the CLB Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarClbXbarConfigurationLock |
+| **Description** | Option to lock the CLB crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarClbXbarInstanceConfig
+Configuration for CLB Crossbar Instance, one per output line available
+
+###### CddXbarClbXbarOutputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarClbXbarOutputLine |
+| **Description** | Number of Output Line instance to be set for CLB Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_AUXSIG1 |
+| **Range** | CDD_XBAR_AUXSIG1<br>CDD_XBAR_AUXSIG2<br>CDD_XBAR_AUXSIG3<br>CDD_XBAR_AUXSIG4<br>CDD_XBAR_AUXSIG5<br>CDD_XBAR_AUXSIG6<br>CDD_XBAR_AUXSIG7<br>CDD_XBAR_AUXSIG8 |
+
+###### CddXbarClbXbarOutputInversion
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarClbXbarOutputInversion |
+| **Description** | Option to invert the output signal for the selected output line of the CLB Crossbar instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarClbXbarInput
+Configuration for CLB Crossbar Instance inputs
+
+###### CddXbarClbXbarInputGroup
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarClbXbarInputGroup |
+| **Description** | Number of Input Group to be chosen for CLB Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_INPUT_GROUP_0 |
+| **Range** | CDD_XBAR_INPUT_GROUP_0<br>CDD_XBAR_INPUT_GROUP_1<br>CDD_XBAR_INPUT_GROUP_2<br>CDD_XBAR_INPUT_GROUP_3<br>CDD_XBAR_INPUT_GROUP_4<br>CDD_XBAR_INPUT_GROUP_5<br>CDD_XBAR_INPUT_GROUP_6<br>CDD_XBAR_INPUT_GROUP_7 |
+
+###### CddXbarClbXbarInputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarClbXbarInputLine |
+| **Description** | Number of Input Line from the Group selected to be chosen for CLB Crossbar. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_CLB_CMPSS1_CTRIPH |
+| **Range** | CDD_XBAR_CLB_CMPSS1_CTRIPH |
 
 ##### CddXbarMindbXbarConfig
-
-###### CddXbarMindbXbarInstanceConfig
-
-○ CddXbarMindbXbarInput
-
-• CddXbarMindbXbarInputGroup
-
-|**Name**   |CddXbarMindbXbarInputGroup  |
-|-----------|------------------|
-|**Parent Container**|CddXbarMindbXbarInput|
-|**Description**|Selects the input group to be chosen for MINDB Crossbar, as input.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_INPUT_GROUP_0|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-• CddXbarMindbXbarInputLine
-
-|**Name**   |CddXbarMindbXbarInputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarMindbXbarInput|
-|**Description**|Selects the input line to be chosen from the selected input group for MINDB Crossbar, as input.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_MINDB_EPWM1A_DB_NO_HR|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-○ CddXbarMindbXbarOutputLine
-
-|**Name**   |CddXbarMindbXbarOutputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarMindbXbarInstanceConfig|
-|**Description**|Selection of the MINDB Xbar output line to be configured.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_MINDBXBAR1|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-○ CddXbarMindbXbarOutputInversion
-
-|**Name**   |CddXbarMindbXbarOutputInversion  |
-|-----------|------------------|
-|**Parent Container**|CddXbarMindbXbarInstanceConfig|
-|**Description**|Selects the inversion of the output signal for the selected output line of the MINDB Crossbar instance.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+Configuration for MINDB Crossbar
 
 ###### CddXbarMindbXbarConfigurationLock
 
-|**Name**   |CddXbarMindbXbarConfigurationLock  |
-|-----------|------------------|
-|**Parent Container**|CddXbarMindbXbarConfig|
-|**Description**|Lock the MINDB Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarMindbXbarConfigurationLock |
+| **Description** | Option to lock the MINDB crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarMindbXbarInstanceConfig
+Configuration for MINDB Crossbar Instance, one per output line available
+
+###### CddXbarMindbXbarOutputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarMindbXbarOutputLine |
+| **Description** | Number of Output Line instance to be set for MINDB Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_MINDBXBAR1 |
+| **Range** | CDD_XBAR_MINDBXBAR1<br>CDD_XBAR_MINDBXBAR2<br>CDD_XBAR_MINDBXBAR3<br>CDD_XBAR_MINDBXBAR4<br>CDD_XBAR_MINDBXBAR5<br>CDD_XBAR_MINDBXBAR6<br>CDD_XBAR_MINDBXBAR7<br>CDD_XBAR_MINDBXBAR8<br>CDD_XBAR_MINDBXBAR9<br>CDD_XBAR_MINDBXBAR10<br>CDD_XBAR_MINDBXBAR11<br>CDD_XBAR_MINDBXBAR12<br>CDD_XBAR_MINDBXBAR13<br>CDD_XBAR_MINDBXBAR14<br>CDD_XBAR_MINDBXBAR15<br>CDD_XBAR_MINDBXBAR16 |
+
+###### CddXbarMindbXbarOutputInversion
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarMindbXbarOutputInversion |
+| **Description** | Option to invert the output signal for the selected output line of the MINDB Crossbar instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarMindbXbarInput
+Configuration for MINDB Crossbar Instance inputs
+
+###### CddXbarMindbXbarInputGroup
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarMindbXbarInputGroup |
+| **Description** | Number of Input Group to be chosen for MINDB Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_INPUT_GROUP_0 |
+| **Range** | CDD_XBAR_INPUT_GROUP_0<br>CDD_XBAR_INPUT_GROUP_1<br>CDD_XBAR_INPUT_GROUP_2 |
+
+###### CddXbarMindbXbarInputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarMindbXbarInputLine |
+| **Description** | Number of Input Line from the Group selected to be chosen for MINDB Crossbar. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_MINDB_EPWM1A_DB_NO_HR |
+| **Range** | CDD_XBAR_MINDB_EPWM1A_DB_NO_HR |
 
 ##### CddXbarIclXbarConfig
-
-###### CddXbarIclXbarInstanceConfig
-
-○ CddXbarIclXbarInput
-
-• CddXbarIclXbarInputGroup
-
-|**Name**   |CddXbarIclXbarInputGroup  |
-|-----------|------------------|
-|**Parent Container**|CddXbarIclXbarInput|
-|**Description**|Selects the input group to be chosen for MINDB Crossbar, as input.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_INPUT_GROUP_0|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-• CddXbarIclXbarInputLine
-
-|**Name**   |CddXbarIclXbarInputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarIclXbarInput|
-|**Description**|Selects the input line to be chosen from the selected input group for ICL Crossbar, as input.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_ICL_EPWM1A_MINDB|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-○ CddXbarIclXbarOutputLine
-
-|**Name**   |CddXbarIclXbarOutputLine  |
-|-----------|------------------|
-|**Parent Container**|CddXbarIclXbarInstanceConfig|
-|**Description**|Selection of the ICL Xbar output line to be configured.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_XBAR_ICLXBAR1|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
-
-○ CddXbarIclXbarOutputInversion
-
-|**Name**   |CddXbarIclXbarOutputInversion  |
-|-----------|------------------|
-|**Parent Container**|CddXbarIclXbarInstanceConfig|
-|**Description**|Selects the inversion of the output signal for the selected output line of the ICL Crossbar instance.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+Configuration for ICL Crossbar
 
 ###### CddXbarIclXbarConfigurationLock
 
-|**Name**   |CddXbarIclXbarConfigurationLock  |
-|-----------|------------------|
-|**Parent Container**|CddXbarIclXbarConfig|
-|**Description**|Lock the CL Xbar configurations from any further configuration until System Reset. Once locked, cannot be unlocked without reset.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|Pre-compile time | VARIANT-PRE-COMPILE|
-|Link time |--|
-|**Scope/Dependency**|scope:local|
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarIclXbarConfigurationLock |
+| **Description** | Option to lock the ICL crossbar instance for any further configuration until System Reset. Cannot be unlocked once locked unless reset. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
+##### CddXbarIclXbarInstanceConfig
+Configuration for ICL Crossbar Instance, one per output line available
+
+###### CddXbarIclXbarOutputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarIclXbarOutputLine |
+| **Description** | Number of Output Line instance to be set for ICL Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_ICLXBAR1 |
+| **Range** | CDD_XBAR_ICLXBAR1<br>CDD_XBAR_ICLXBAR2<br>CDD_XBAR_ICLXBAR3<br>CDD_XBAR_ICLXBAR4<br>CDD_XBAR_ICLXBAR5<br>CDD_XBAR_ICLXBAR6<br>CDD_XBAR_ICLXBAR7<br>CDD_XBAR_ICLXBAR8<br>CDD_XBAR_ICLXBAR9<br>CDD_XBAR_ICLXBAR10<br>CDD_XBAR_ICLXBAR11<br>CDD_XBAR_ICLXBAR12<br>CDD_XBAR_ICLXBAR13<br>CDD_XBAR_ICLXBAR14<br>CDD_XBAR_ICLXBAR15<br>CDD_XBAR_ICLXBAR16 |
+
+###### CddXbarIclXbarOutputInversion
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarIclXbarOutputInversion |
+| **Description** | Option to invert the output signal for the selected output line of the ICL Crossbar instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarIclXbarInput
+Configuration for ICL Crossbar Instance inputs
+
+###### CddXbarIclXbarInputGroup
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarIclXbarInputGroup |
+| **Description** | Number of Input Group to be chosen for ICL Crossbar. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_INPUT_GROUP_0 |
+| **Range** | CDD_XBAR_INPUT_GROUP_0<br>CDD_XBAR_INPUT_GROUP_1<br>CDD_XBAR_INPUT_GROUP_2 |
+
+###### CddXbarIclXbarInputLine
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarIclXbarInputLine |
+| **Description** | Number of Input Line from the Group selected to be chosen for ICL Crossbar. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_XBAR_ICL_EPWM1A_MINDB |
+| **Range** | CDD_XBAR_ICL_EPWM1A_MINDB |
+
+#### CddXbarGeneral
+Contains the general configuration parameters of the module.
+
+##### CddXbarDevErrorDetect
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarDevErrorDetect |
+| **Description** | Switches the Development Error Detection and Reporting ON or OFF for this module. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
+
+##### CddXbarAPIEnable
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarAPIEnable |
+| **Description** | Enables or Disables the APIs of this module. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
+
+##### CddXbarVersionInfoApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddXbarVersionInfoApi |
+| **Description** | Switches the Cdd_Xbar_GetVersionInfo function ON or OFF. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 #### Steps To Configure Cdd Xbar Module
 
 1. Open EB Tresos configurator tool.
@@ -915,9 +928,9 @@ CDD XBAR MCAL Version Info
 ---------------------
 Vendor ID           : 44
 Module ID           : 255
-SW Major Version    : 1
+SW Major Version    : 2
 SW Minor Version    : 0
-SW Patch Version    : 0
+SW Patch Version    : 1
 -------------------------------------------- 
 Checking lock status of INPUT XBAR1 
 INPUT XBAR1 is locked 
@@ -925,6 +938,7 @@ INPUT XBAR1 is locked
 Checking lock status of INPUT XBAR2 
 INPUT XBAR2 is not locked 
 Selecting GPIO4 as input to INPUT XBAR2 
+GPIO4 is selected as input to INPUT XBAR2 
 -------------------------------------------- 
 Checking lock status of OUTPUT XBAR 
 Selecting INPUT XBAR2 as input to OUTPUT XBAR2 
@@ -971,7 +985,7 @@ PASS: GPIO0(INPUT XBAR1) and GPIO4(INPUT XBAR2) are routed to GPIO2(OUTPUT XBAR1
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar_Cfg.h** : *Contains the generated pre-complier configuration header*\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar_Cfg.h** : *Contains the generated pre-compiler configuration header*\
  ┃ ┃ ┃ ┃ ┣ 📂src\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dio_Cfg.c\
@@ -979,7 +993,7 @@ PASS: GPIO0(INPUT XBAR1) and GPIO4(INPUT XBAR2) are routed to GPIO2(OUTPUT XBAR1
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_PBcfg.c\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.c\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.c\
- ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar_Cfg.c** : *Contains the generated pre-complier configuration source*\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Cdd_Xbar_Cfg.c** : *Contains the generated pre-compiler configuration source*\
  ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt\
  ┃ ┃ ┃ ┣ 📜CMakeLists.txt\
  ┃ ┃ ┃ ┣ 📜**Cdd_Xbar_GpioToGpio.h** : *Contains data structures and Internal function declarations*\

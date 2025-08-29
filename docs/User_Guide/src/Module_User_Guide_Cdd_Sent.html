@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -123,6 +123,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -216,7 +217,7 @@
 <figure class="align-center" id="id4">
 <img alt="CDD_SENT MCAL AUTOSAR" src="../_images/Cdd_Sent_Autosar_MCAL.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.57 </span><span class="caption-text">CDD_SENT MCAL AUTOSAR</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.63 </span><span class="caption-text">CDD_SENT MCAL AUTOSAR</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>This document details AUTOSAR BSW CDD_SENT module implementation</p>
@@ -302,7 +303,7 @@ Cdd Sent is a driver. This driver can directly act as a lower layer module for P
 <figure class="align-center" id="id5">
 <img alt="Cdd_Sent Block diagram" src="../_images/Cdd_Sent_Block_Diagram.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.58 </span><span class="caption-text">Cdd_Sent Block Diagram</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.64 </span><span class="caption-text">Cdd_Sent Block Diagram</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -348,7 +349,7 @@ Cdd Sent is a driver. This driver can directly act as a lower layer module for P
 <figure class="align-center" id="id6">
 <img alt="Cdd_Sent Header File Structure" src="../_images/Cdd_Sent_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.59 </span><span class="caption-text">Cdd_Sent Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.65 </span><span class="caption-text">Cdd_Sent Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -537,7 +538,7 @@ The ISR functionality is implemented in the file Cdd_Sent_Irq.c.</p>
 <figure class="align-center" id="id7">
 <img alt="Cdd_Sent HW/SW Mapping" src="../_images/Cdd_Sent_Hw_Sw_Mapping.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.60 </span><span class="caption-text">Cdd_Sent HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.66 </span><span class="caption-text">Cdd_Sent HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -598,7 +599,7 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 <section id="migration-guide-to-v2-0-0-from-v1-0-0">
 <h3><span class="section-number">4.14.10.1. </span>Migration Guide to v2.0.0 from v1.0.0<a class="headerlink" href="#migration-guide-to-v2-0-0-from-v1-0-0" title="Link to this heading"></a></h3>
 <p>To align with AUTOSAR CDD naming convention, we have named Module Name as Cdd and apiServicePrefix as Cdd_Sent. This results in change in schema as described below.</p>
-<p>To make v1.0.0 Sent schema(generated .xdm file) compatable with v2.0.0 below changes are required:</p>
+<p>To make v1.0.0 Sent schema(generated .xdm file) compatible with v2.0.0 below changes are required:</p>
 <ol class="arabic simple">
 <li><p>Change ‘AR-ELEMENT’ name from Cdd_Sent to Cdd.</p></li>
 <li><p>Update MODULE-CONFIGURATION path from ‘ASPath:/TI_F29H85x/Cdd_Sent’ to ‘ASPath:/TI_F29H85x/Cdd_Sent/Cdd’.</p></li>
@@ -1585,6 +1586,9 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 </tr>
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
 <td><p>DISABLE</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>DISABLE<br>BROADCAST_DONE<br>SENSOR_1_DONE<br>SENSOR_2_DONE<br>SENSOR_3_DONE<br>SENSOR_4_DONE<br>CPU1_TINT0<br>CPU1_TINT1<br>CPU1_TINT2<br>CPU2_TINT0<br>CPU2_TINT1<br>CPU2_TINT2<br>CPU3_TINT0<br>CPU3_TINT1<br>CPU3_TINT2<br>INPUTXBAR5<br>INPUTXBAR11<br>INPUTXBAR12<br>INPUTXBAR13<br>INPUTXBAR14<br>INPUTXBAR15<br>INPUTXBAR16<br>EPWM1_ADCSOCA<br>EPWM1_ADCSOCB<br>EPWM2_ADCSOCA<br>EPWM2_ADCSOCB<br>EPWM3_ADCSOCA<br>EPWM3_ADCSOCB<br>EPWM4_ADCSOCA<br>EPWM4_ADCSOCB<br>EPWM5_ADCSOCA<br>EPWM5_ADCSOCB<br>EPWM6_ADCSOCA<br>EPWM6_ADCSOCB<br>EPWM7_ADCSOCA<br>EPWM7_ADCSOCB<br>EPWM8_ADCSOCA<br>EPWM8_ADCSOCB<br>EPWM9_ADCSOCA<br>EPWM9_ADCSOCB<br>EPWM10_ADCSOCA<br>EPWM10_ADCSOCB<br>EPWM11_ADCSOCA<br>EPWM11_ADCSOCB<br>EPWM12_ADCSOCA<br>EPWM12_ADCSOCB<br>EPWM13_ADCSOCA<br>EPWM13_ADCSOCB<br>EPWM14_ADCSOCA<br>EPWM14_ADCSOCB<br>EPWM15_ADCSOCA<br>EPWM15_ADCSOCB<br>EPWM16_ADCSOCA<br>EPWM16_ADCSOCB<br>EPWM17_ADCSOCA<br>EPWM17_ADCSOCB<br>EPWM18_ADCSOCA<br>EPWM18_ADCSOCB<br>ECAP1_SOC<br>ECAP2_SOC<br>ECAP3_SOC<br>ECAP4_SOC<br>ECAP5_SOC<br>ECAP6_SOC</p></td>
 </tr>
 </tbody>
 </table>
@@ -2840,7 +2844,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 <figure class="align-center" id="id8">
 <img alt="Cdd_Sent HW Setup" src="../_images/Sent_Hardware_Setup.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.61 </span><span class="caption-text">Cdd_Sent HW Setup</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.67 </span><span class="caption-text">Cdd_Sent HW Setup</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -2892,8 +2896,8 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 <span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="n">Initilizing</span><span class="w"> </span><span class="n">Cdd_Sent</span><span class="w"> </span><span class="n">Driver</span>
-<span class="n">Cdd</span><span class="w"> </span><span class="n">Sent</span><span class="w"> </span><span class="n">Drive</span><span class="w"> </span><span class="n">initilized</span>
+<span class="n">Initializing</span><span class="w"> </span><span class="n">Cdd_Sent</span><span class="w"> </span><span class="n">Driver</span>
+<span class="n">Cdd</span><span class="w"> </span><span class="n">Sent</span><span class="w"> </span><span class="n">Drive</span><span class="w"> </span><span class="n">initialized</span>
 <span class="n">Trigger</span><span class="w"> </span><span class="n">sensor</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">Sent</span><span class="w"> </span><span class="n">Handle</span><span class="w"> </span><span class="n">ID</span>
 <span class="n">Sensor</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="n">received</span><span class="w">  </span><span class="n">from</span><span class="w"> </span><span class="n">Fast</span><span class="w"> </span><span class="n">channel</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">Data</span><span class="w"> </span><span class="n">received</span><span class="w">  </span><span class="n">from</span><span class="w"> </span><span class="n">Fast</span><span class="w"> </span><span class="n">channel</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">4238653</span>
@@ -3004,7 +3008,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -3021,7 +3025,7 @@ Modified<span class="w"> </span>new<span class="w"> </span>schema:
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

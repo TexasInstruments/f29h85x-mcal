@@ -12,8 +12,6 @@ title: Fls API GUIDE Header file
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
 |enum| **[Fls_EraseType](../Modules/group___f_l_s.md#enum-fls_erasetype)** | ENUM for erase type names.  | 
-|enum| **[Fls_JobType](../Modules/group___f_l_s.md#enum-fls_jobtype)** | ENUM for job type names.  | 
-|enum| **[Fls_InternalStateType](../Modules/group___f_l_s.md#enum-fls_internalstatetype)** | ENUM for Internal State type names.  | 
 |typedef uint32  | **[Fls_AddressType](../Modules/group___f_l_s.md#typedef-fls_addresstype)** | Type of address type.  | 
 |typedef uint32  | **[Fls_LengthType](../Modules/group___f_l_s.md#typedef-fls_lengthtype)** | Type of length type.  | 
 
@@ -30,41 +28,6 @@ title: Fls API GUIDE Header file
 
 **Brief**: 
 ENUM for erase type names. 
-
-
-
-### enum Fls_JobType
-| Enumerator | Value | Description |
-| ---------- | ----- | ----------- |
-| FLS_JOB_NONE | 0U| Job type none.   |
-| FLS_JOB_COMPARE | 1U| Job type compare.   |
-| FLS_JOB_ERASE | 2U| Job type erase.   |
-| FLS_JOB_READ | 3U| Job type read.   |
-| FLS_JOB_WRITE | 4U| Job type write.   |
-| FLS_JOB_BLANKCHECK | 5U| Job type blank check.   |
-
-
-
-
-**Brief**: 
-ENUM for job type names. 
-
-
-
-### enum Fls_InternalStateType
-| Enumerator | Value | Description |
-| ---------- | ----- | ----------- |
-| FLS_INTERNAL_JOB_WAIT | 0U| Job state wait.   |
-| FLS_INTERNAL_JOB_FAIL | 1U| Job state fail.   |
-| FLS_INTERNAL_JOB_DONE | 2U| Job state done.   |
-| FLS_INTERNAL_JOB_READY | 3U| Job state ready.   |
-| FLS_INTERNAL_JOB_BUSY | 4U| Job state busy.   |
-
-
-
-
-**Brief**: 
-ENUM for Internal State type names. 
 
 
 
@@ -96,7 +59,6 @@ Type of length type.
 | -------------- | -------------- |
 | **[Fls_SectorType](../Classes/struct_fls___sector_type.md)** | FLS Module Flashable Sectors and pages.  |
 | **[Fls_ConfigType](../Classes/struct_fls___config_type.md)** |  |
-| **[Fls_DriverObjType](../Classes/struct_fls___driver_obj_type.md)** | FLS Driver Object, global information used by module.  |
 
 
 
@@ -145,121 +107,6 @@ Type of length type.
 | FLS_SID_GET_VERSION_INFO   | Fls_GetVersionInfo() API Service ID.  |
 | FLS_SID_BLANK_CHECK   | FLS_BlankCheck() API Service ID.  |
 | FLS_SID_MAIN_FUNCTION   | FLS_MainFunction() API Service ID.  |
-| FLS_SSUGEN_BASE   | Base address of SSU module.  |
-| FLS_SSU_O_FLSEMREQ   | Flash Controller Semaphore Request Register.  |
-| FLS_SSU_O_FLSEMSTAT   | Flash Controller Semaphore Status Register.  |
-| FLS_SSU_O_FLSEMCLR   | Flash Controller Semaphore Clear Register.  |
-| FLS_SSU_FLSEMSTAT_CPU_M   | Semaphore CPU owner mask.  |
-| FLS_SSU_FLSEMSTAT_CPU_S   | Semaphore CPU owner shift bit.  |
-| FLS_SSU_FLSEMSTAT_ASSIGNED   | Assigned Flag bit.  |
-| FLS_SSU_FLSEMSTAT_MATCH   | Match status bit.  |
-| FLS_SSU_O_BEPROT_BANK   | Bank Erase Protection Bank Register.  |
-| FLS_SSU_O_BEPROT_STAT   | Bank Erase Status Register.  |
-| FLS_SSU_BEPROT_BANK_BANKID_S   | Bank Erase Bank ID mask shift bit.  |
-| FLS_SSU_BEPROT_BANK_BANKID_M   | Bank Erase Bank ID mask.  |
-| FLS_SSU_BEPROT_BANK_FLCID_S   | Bank Erase Bank FLC ID shift bit.  |
-| FLS_SSU_BEPROT_BANK_FLCID_M   | Bank Erase Bank FLC ID mask bit.  |
-| FLS_FLASH_FLC1_CMD_REGS_BASE   | flash command register base address  |
-| FLS_FRI1_CTL_BASE   | Flash control register base address.  |
-| FLS_ANALOGSUBSYS_BASE   | Analog sub system base address.  |
-| FLS_FRI_O_FRDCNTL   | Flash Read Control Register.  |
-| FLS_FRI_O_1_INTF_CTRL   | Flash Read Interface 1 Control Register.  |
-| FLS_FRI_FRDCNTL_RWAIT_S   | Read Wait state shift bit.  |
-| FLS_FRI_FRDCNTL_RWAIT_M   | Read Wait state mask bit.  |
-| FLS_FLASH_DELAY_CONFIG   | Flash delay configuration.  |
-| FLS_FLASH_READINTERFACE_BASE   | Flash read interface base address.  |
-| FLS_FLASH_FAPI_FLASHNW_FC1_BASE   | Flash command interface base address.  |
-| FLS_C29FLASHBANKFR4RP0STARTADDRESS   | Data flash bank start address.  |
-| FLS_C29FLASHBANKFR4RP0ENDADDRESS   | Data flash bank end address.  |
-| FLS_C29FLASHBANKFR4RP0ENDADDRESSPLUS1   | Data flash bank end address plus 1.  |
-| FLS_C29FLASHBANKFR4RP0ECCSTARTADDRESS   | Data flash bank ecc start address.  |
-| FLS_C29FLASHBANKFR4RP0ECCENDADDRESS   | Data flash bank ecc end address.  |
-| FLS_C29FLASHBANKFR4RP0ECCENDADDRESSPLUS1   | Data flash bank ecc end address plus 1.  |
-| FLS_C29FLASHBANKFR4RP0BANKMGMTSTARTADDRESS   | Data flash bank bankmgmt start address.  |
-| FLS_C29FLASHBANKFR4RP0BANKMGMTENDADDRESS   | Data flash bank bankmgmt end address.  |
-| FLS_C29FLASHBANKFR4RP0BANKMGMTENDADDRESSPLUS1   | Data flash bank bankmgmt end address plus 1.  |
-| FLS_C29FLASHBANKFR4RP0BANKMGMTECCSTARTADDRESS   | Data flash bank bankmgmt ecc start address.  |
-| FLS_C29FLASHBANKFR4RP0BANKMGMTECCENDADDRESS   | Data flash bank bankmgmt ecc end address.  |
-| FLS_C29FLASHBANKFR4RP0BANKMGMTECCENDADDRESSPLUS1   | Data flash bank bankmgmt ecc end address plus 1.  |
-| FLS_FLASH_PREFETCH_ENABLE   | flash prefetch enable  |
-| FLS_FLASH_PREFETCH_DISABLE   | flash prefetch disable  |
-| FLS_FLASH_DATACACHE_ENABLE   | flash data cache enable  |
-| FLS_FLASH_DATACACHE_DISABLE   | flash data cache disable  |
-| FLS_FLASH_CODECACHE_ENABLE   | flash code cache enable  |
-| FLS_FLASH_CODECACHE_DISABLE   | flash code cache disable  |
-| FLS_FLASH_DATAPREREAD_ENABLE   | flash data read enable  |
-| FLS_FLASH_DATAPREREAD_DISABLE   | flash data read disable  |
-| FLS_FRI_REG_STEP   | Macro to define the offset between options for different FRIs. For example, FRI_O_2_INTF_CTRL - FRI_O_1_INTF_CTRL = 0x10U.  |
-| FLS_ASYSCTL_O_FLASHTRIMCOMMIT   | flash trim commit register offset  |
-| FLS_ASYSCTL_FLC1TRIMCOMMITREAD   | flash trim commit read register offset  |
-| FLS_ASYSCTL_FLC1TRIMCOMMITOTHER   | flash trim commit other register offset  |
-| FLS_FLASH_O_REVISION   | IP Revision Register.  |
-| FLS_FLASH_O_FRDCNTL   | Flash Read Control Register.  |
-| FLS_FLASH_O_FLCLKCTL   | Flash Read Clock Control Register.  |
-| FLS_FLASH_FLCLKCTL_KDIV_S   | KDIV value of MCLK divider shift bit.  |
-| FLS_FLASH_FLCLKCTL_KDIV_M   | KDIV value of MCLK divider mask bit.  |
-| FLS_FLASH_NW_O_CMDEXEC   | Command Execute Register.  |
-| FLS_FLASH_NW_O_CMDTYPE   | Command Type Register.  |
-| FLS_FLASH_NW_O_CMDCTL   | Command Control Register.  |
-| FLS_FLASH_NW_O_CMDADDR   | Command Address Register.  |
-| FLS_FLASH_NW_O_CMDBYTEN   | Command Program Byte Enable Register.  |
-| FLS_FLASH_NW_O_CMDDATAINDEX   | Command Data Index Register.  |
-| FLS_FLASH_NW_O_CMDDATA0   | Command Data Register 0  |
-| FLS_FLASH_NW_O_CMDWEPROTA   | Command Write Erase Protect A Register.  |
-| FLS_FLASH_NW_O_CMDWEPROTB   | Command Write Erase Protect B Register.  |
-| FLS_FLASH_NW_O_CMDWEPROTNM   | Command Write Erase Protect Non-Main.  |
-| FLS_FLASH_NW_O_CFGCMD   | Command Configuration Register.  |
-| FLS_FLASH_NW_O_STATCMD   | Command Status Register.  |
-| FLS_FLASH_NW_CMDTYPE_CMD_S   | Flash command type shift bit.  |
-| FLS_FLASH_NW_CMDTYPE_CMD_M   | Flash command type mask bit.  |
-| FLS_FLASH_NW_CMDTYPE_SECTOR_ERASE   | Configure for sector erase: Command is erase (2), Size is sector (4)  |
-| FLS_FLASH_NW_CMDTYPE_BANK_ERASE   | Configure for Bank erase: Command is erase (2), Size is Bank (5)  |
-| FLS_FLASH_NW_CMDTYPE_PROG_ONEWD   | Configure for 1*128 word program: Command is program (1), Size is ONEWORD (0)  |
-| FLS_FLASH_NW_CMDCTL_ECCGENOVR   | Flash CMDCTL AutoEccgenration mask bit.  |
-| FLS_FLASH_NW_CMDCTL_ECCGENOVR_S   | Flash CMDCTL AutoEccgenration shift bit.  |
-| FLS_FLASH_NW_CMDCTL_DATAVEREN   | Flash CMDCTL Invalid data verify mask bit.  |
-| FLS_FLASH_NW_CMDCTL_DATAVEREN_S   | Flash CMDCTL Invalid data verify shift bit.  |
-| FLS_FLASH_NW_CFGCMD_WAITSTATE_S   | Flash CFGCMD register wait state shift bit.  |
-| FLS_FLASH_NW_CFGCMD_WAITSTATE_M   | Flash CFGCMD register wait state mask bit.  |
-| FLS_FLASH_NW_CMDBYTEN_VAL_S   | Flash CMDBYTEN register value shift bit.  |
-| FLS_FLASH_NW_CMDBYTEN_VAL_M   | Flash CMDBYTEN register value mask bit.  |
-| FLS_FLASH_NW_CMDBYTEN_ECC0VAL_S   | Flash CMDBYTEN register ecc value shift bit.  |
-| FLS_FLASH_NW_CMDBYTEN_ECC0VAL_M   | Flash CMDBYTEN register ecc value mask bit.  |
-| FLS_FLASH_NW_CMDBYTEN_ECC1VAL_S   | Flash CMDBYTEN register ecc value shift bit.  |
-| FLS_FLASH_NW_CMDBYTEN_ECC1VAL_M   | Flash CMDBYTEN register ecc value mask bit.  |
-| FLS_FLASH_NW_CMDWEPROTNM_VAL_S   | Command WriteErase Protect Non-Main register shift bits.  |
-| FLS_FLASH_NW_CMDWEPROTNM_VAL_M   | Command WriteErase Protect Non-Main register mask bits.  |
-| FLS_FLASH_NW_CMDWEPROTNM_READBACK_VAL   | Readback val to protect non-main region sector 0 erase.  |
-| FLS_FLASH_NW_STATCMD_CMDDONE   |  |
-| FLS_FLASH_NW_STATCMD_CMDPASS   |  |
-| FLS_FLASH_NW_STATCMD_CMDINPROGRESS   |  |
-| FLS_FLASH_NW_STATCMD_FAILWEPROT   |  |
-| FLS_FLASH_NW_STATCMD_FAILVERIFY   |  |
-| FLS_FLASH_NW_STATCMD_FAILMISC   |  |
-| FLS_FLASH_NW_STATCMD_FAILILLADDR   |  |
-| FLS_FLASH_NW_STATCMD_FAILMODE   |  |
-| FLS_FLASH_NW_STATCMD_FAILINVDATA   |  |
-| E_COMPARE_MISMATCH   |  |
-| E_BLANKCHECK_MISMATCH   |  |
-| FLS_S_EDEFAULT   |  |
-| FLS_S_ERASE_PRECHECK   |  |
-| FLS_DO_SECTOR_UNLOCK   |  |
-| FLS_DO_ERASE_JOB   |  |
-| FLS_S_ERASE_POSTCHECK   |  |
-| FLS_ERASE_FSM_READY_CHECK   |  |
-| FLS_ERASE_FSM_ISSUE_CMD   |  |
-| FLS_ERASE_FSM_STATUS_CHECK   |  |
-| FLS_STATUS_CLEAR_CHECK   |  |
-| FLS_ERASE_CMD_CHECK   |  |
-| FLS_WRITE_FSM_READY_CHECK   |  |
-| FLS_WRITE_FSM_ISSUE_CMD   |  |
-| FLS_WRITE_FSM_STATUS_CHECK   |  |
-| FLS_WRITE_CMD_CHECK   |  |
-| FLS_S_WDEFAULT   |  |
-| FLS_S_WRITE_PRECHECK   |  |
-| FLS_DO_WRITE_JOB   |  |
-| FLS_S_WRITE_POSTCHECK   |  |
-| FLS_CONV_TO_MHZ   |  |
 
 ## Functions
 
@@ -278,23 +125,6 @@ Type of length type.
 | void | **[Fls_Cancel](../Modules/group___f_l_s.md#function-fls_cancel)**(void )| Cancels an ongoing job.  |
 | void | **[Fls_SetMode](../Modules/group___f_l_s.md#function-fls_setmode)**(MemIf_ModeType Mode)| Sets the flash driver's operation mode. This is a dummy API which is not supported and added for integration purposes.  |
 | uint32 | **[Fls_SetEraseType](../Modules/group___f_l_s.md#function-fls_seterasetype)**([Fls_EraseType](../Modules/group___f_l_s.md#enum-fls_erasetype) erasetype)| Sets the parameters required in application, based on the erase type parameter passed to this function while calling from Application.  |
-| Fls_FapiFlashStatus | **[Fls_Fapi_getFsmStatus](../Modules/group___f_l_s.md#function-fls_fapi_getfsmstatus)**(void )| This api will read STATCMD status register value from the Flash Wrapper.  |
-| Fls_FapiStatusType | **[Fls_Fapi_checkFsmForReady](../Modules/group___f_l_s.md#function-fls_fapi_checkfsmforready)**(void )| Returns the status of the Flash State Machine.  |
-| Fls_FapiStatusType | **[Fls_Fapi_setupBankSectorEnable](../Modules/group___f_l_s.md#function-fls_fapi_setupbanksectorenable)**(uint32 reg_address, uint32 value)| Configures Write(program)/Erase protection for the sectors.  |
-| Fls_FapiStatusType | **[Fls_Fapi_issueAsyncCommandWithAddress](../Modules/group___f_l_s.md#function-fls_fapi_issueasynccommandwithaddress)**(Fls_FlashStateCmdType oCommand, uint32 * pu32StartAddress)| Issues an erase sector command to the Flash State Machine for the user-provided sector address.  |
-| Fls_FapiStatusType | **[Fls_Fapi_issueAsyncCommand](../Modules/group___f_l_s.md#function-fls_fapi_issueasynccommand)**(Fls_FlashStateCmdType oCommand)| Issues a command (Clear Status) to FSM.  |
-| Fls_FapiStatusType | **[Fls_Fapi_issueBankEraseCommand](../Modules/group___f_l_s.md#function-fls_fapi_issuebankerasecommand)**(uint32 * pu32StartAddress)| Issues a bank erase command to the Flash State Machine along with a user-provided sector mask.  |
-| Fls_FapiStatusType | **[Fls_Fapi_initializeAPI](../Modules/group___f_l_s.md#function-fls_fapi_initializeapi)**(uint32 u32HclkFrequency)| Initializes the API for first use or frequency change.  |
-| Fls_FapiStatusType | **[Fls_Fapi_doBlankCheck](../Modules/group___f_l_s.md#function-fls_fapi_doblankcheck)**(uint32 * pu32StartAddress, uint32 u32Length, Fls_FlashStatusWordType * poFlashStatusWord)| Verifies region specified is erased value.  |
-| Fls_FapiStatusType | **[Fls_Fapi_doVerify](../Modules/group___f_l_s.md#function-fls_fapi_doverify)**(uint32 * pu32StartAddress, uint32 u32Length, uint32 * pu32CheckValueBuffer, Fls_FlashStatusWordType * poFlashStatusWord)| Verifies region specified against provided data.  |
-| Fls_FapiStatusType | **[Fls_Fapi_doVerifyByByte](../Modules/group___f_l_s.md#function-fls_fapi_doverifybybyte)**(uint8 * pu8StartAddress, uint32 u32Length, uint8 * pu8CheckValueBuffer, Fls_FlashStatusWordType * poFlashStatusWord)| Verifies specified Flash memory range against supplied values by byte.  |
-| Fls_FapiStatusType | **[Fls_Fapi_issueProgrammingCommand](../Modules/group___f_l_s.md#function-fls_fapi_issueprogrammingcommand)**(uint32 * pu32StartAddress, uint8 * pu8DataBuffer, uint8 u8DataBufferSizeInBytes)| Sets up data and issues program command to valid flash memory addresses.  |
-| void | **[Fls_Update_WaitStates](../Modules/group___f_l_s.md#function-fls_update_waitstates)**(uint16 waitstates)| configures read wait states and enable data cache, code cache, prefetch, and data preread to improve performance of code executed from flash  |
-| void | **[Fls_SSU_claimFlashSemaphore](../Modules/group___f_l_s.md#function-fls_ssu_claimflashsemaphore)**(void )| Claims flash semaphore.  |
-| void | **[Fls_SSU_releaseFlashSemaphore](../Modules/group___f_l_s.md#function-fls_ssu_releaseflashsemaphore)**(void )| Release flash semaphore.  |
-| void | **[Fls_processJobs](../Modules/group___f_l_s.md#function-fls_processjobs)**([Fls_JobType](../Modules/group___f_l_s.md#enum-fls_jobtype) job)| This function invoke Fls_F29Compare,Fls_F29BankErase,Fls_F29SectorErase,Fls_F29ChipErase, Fls_F29Read,Fls_F29Write and Fls_F29BlankCheck function. it will perform any one function based on job type.  |
-| void | **[Fls_resetDrvObj](../Modules/group___f_l_s.md#function-fls_resetdrvobj)**([Fls_DriverObjType](../Classes/struct_fls___driver_obj_type.md) * drvObj)| Reset driver parameters during initialize time.  |
-| void | **[Fls_copyConfig](../Modules/group___f_l_s.md#function-fls_copyconfig)**([Fls_DriverObjType](../Classes/struct_fls___driver_obj_type.md) * drvObj, const Fls_ConfigType * cfgPtr)| Configuration parameters are copied to drvObj,this function included with Fls_init.  |
 
 
 
@@ -378,6 +208,8 @@ Writes one or more complete flash pages.
   
 * **TargetAddress** Target address in flash memory. This address offset will be added to the flash memory base address. 
   
+* **SourceAddressPtr** Pointer to source address 
+  
 * **Length** - Number of bytes to write 
 
 
@@ -414,7 +246,7 @@ Reads from flash memory.
 **Parameters**: 
 
   
-* **TargetAddress** Target address in flash memory. This address offset will be added to the flash memory base address. 
+* **SourceAddress** Source address 
   
 * **Length** - Number of bytes to read 
   
@@ -493,7 +325,7 @@ The function Fls_BlankCheck shall verify, whether a given memory area has been e
 **Parameters**: 
 
   
-* **TargetAddress** Address in flash memory from which the blank check should be started. 
+* **Address** Address in flash memory from which the blank check should be started. 
   
 * **Length** - Number of bytes to be checked for erase pattern 
 
@@ -526,12 +358,6 @@ MemIf_StatusType Fls_GetStatus(
 **Brief**: 
 Returns the driver state. 
 
-**Parameters**: 
-
-  
-* **None** 
-
-
 **Return**: MemIf_StatusType 
 
 **Precondition**: Preconditions - Driver not already initialized 
@@ -553,9 +379,7 @@ Returns the version information of this module.
 **Parameters**: 
 
   
-* **None** 
-  
-* **VersioninfoPtr** Pointer to where to store the version information of this module. 
+* **versioninfo** Pointer to where to store the version information of this module. 
 
 
 **Return**: None 
@@ -576,16 +400,6 @@ MemIf_JobResultType Fls_GetJobResult(
 **Brief**: 
 Returns the result of the last job. 
 
-**Parameters**: 
-
-  
-* **None** 
-  
-* **None** 
-  
-* **None** 
-
-
 **Return**: MemIf_JobResultType 
 
 **Precondition**: Preconditions - None 
@@ -603,16 +417,6 @@ void Fls_MainFunction(
 
 **Brief**: 
 Performs the processing of jobs. 
-
-**Parameters**: 
-
-  
-* **None** 
-  
-* **None** 
-  
-* **None** 
-
 
 **Return**: None 
 
@@ -632,16 +436,6 @@ void Fls_Cancel(
 **Brief**: 
 Cancels an ongoing job. 
 
-**Parameters**: 
-
-  
-* **None** 
-  
-* **None** 
-  
-* **None** 
-
-
 **Return**: None 
 
 **Precondition**: Preconditions - None 
@@ -659,16 +453,6 @@ void Fls_SetMode(
 
 **Brief**: 
 Sets the flash driver's operation mode. This is a dummy API which is not supported and added for integration purposes. 
-
-**Parameters**: 
-
-  
-* **Mode** 
-  
-* **None** 
-  
-* **None** 
-
 
 **Return**: None 
 
@@ -692,10 +476,6 @@ Sets the parameters required in application, based on the erase type parameter p
 
   
 * **erasetype** 
-  
-* **None** 
-  
-* **None** 
 
 
 **Return**: Sector or bank size 
@@ -703,624 +483,6 @@ Sets the parameters required in application, based on the erase type parameter p
 **Precondition**: Preconditions - None 
 
 **Postcondition**: Postconditions - None 
-
-### function Fls_Fapi_getFsmStatus
-
-```
-Fls_FapiFlashStatus Fls_Fapi_getFsmStatus(
-    void 
-)
-```
-
-
-**Brief**: 
-This api will read STATCMD status register value from the Flash Wrapper. 
-
-**Parameters**: 
-
-  
-* **None** 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **STATCMD** status register value 
-<br> 
-
-
-**Return**: Returns the STATCMD status register value 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_checkFsmForReady
-
-```
-Fls_FapiStatusType Fls_Fapi_checkFsmForReady(
-    void 
-)
-```
-
-
-**Brief**: 
-Returns the status of the Flash State Machine. 
-
-**Parameters**: 
-
-  
-* **None** 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_FsmBusy** FSM is busy and cannot accept new command except for suspend commands 
-<br> 
-  
-* **Fapi_Status_FsmReady** FSM is ready to accept new command 
-<br> 
-
-
-**Return**: Returns the status of the Flash State Machine 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_setupBankSectorEnable
-
-```
-Fls_FapiStatusType Fls_Fapi_setupBankSectorEnable(
-    uint32 reg_address,
-    uint32 value
-)
-```
-
-
-**Brief**: 
-Configures Write(program)/Erase protection for the sectors. 
-
-**Parameters**: 
-
-  
-* **reg_address** 
-  
-* **value** 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_Success** Success 
-<br> 
-
-
-**Return**: Configures write/ erase protection for sectors and return success 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_issueAsyncCommandWithAddress
-
-```
-Fls_FapiStatusType Fls_Fapi_issueAsyncCommandWithAddress(
-    Fls_FlashStateCmdType oCommand,
-    uint32 * pu32StartAddress
-)
-```
-
-
-**Brief**: 
-Issues an erase sector command to the Flash State Machine for the user-provided sector address. 
-
-**Parameters**: 
-
-  
-* **oCommand** Command to issue to the FSM. Use Fapi_EraseSector. 
-  
-* **pu32StartAddress** Flash sector address for erase operation 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_Success** Success 
-<br> 
-  
-* **Fapi_Status_FsmBusy** FSM busy 
-<br> 
-  
-* **Fapi_Error_FeatureNotAvailable** User requested a command that is not supported 
-<br> 
-  
-* **Fapi_Error_FlashRegsNotWritable** Flash register write failed 
-<br> 
-  
-* **Fapi_Error_InvalidAddress** User provided an invalid address 
-<br> 
-
-
-**Return**: Returns the status of command 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_issueAsyncCommand
-
-```
-Fls_FapiStatusType Fls_Fapi_issueAsyncCommand(
-    Fls_FlashStateCmdType oCommand
-)
-```
-
-
-**Brief**: 
-Issues a command (Clear Status) to FSM. 
-
-**Parameters**: 
-
-  
-* **oCommand** Command to issue to the FSM. Use Fapi_EraseSector. 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_Success** Success 
-<br> 
-  
-* **Fapi_Status_FsmBusy** FSM busy 
-<br> 
-  
-* **Fapi_Error_FeatureNotAvailable** User requested a command that is not supported 
-<br> 
-
-
-**Return**: clears the STATCMD register of flash state machine 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_issueBankEraseCommand
-
-```
-Fls_FapiStatusType Fls_Fapi_issueBankEraseCommand(
-    uint32 * pu32StartAddress
-)
-```
-
-
-**Brief**: 
-Issues a bank erase command to the Flash State Machine along with a user-provided sector mask. 
-
-**Parameters**: 
-
-  
-* **pu32StartAddress** Flash bank address for bank erase operation 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_Success** Success 
-<br> 
-  
-* **Fapi_Error_InvalidHclkValue** System clock does not match specified wait value 
-<br> 
-  
-* **Fapi_Error_FlashRegsNotWritable** Flash register write failed 
-<br> 
-
-
-**Return**: returns success or failure status 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_initializeAPI
-
-```
-Fls_FapiStatusType Fls_Fapi_initializeAPI(
-    uint32 u32HclkFrequency
-)
-```
-
-
-**Brief**: 
-Initializes the API for first use or frequency change. 
-
-**Parameters**: 
-
-  
-* **u32HclkFrequency** System clock frequency in MHz 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_Success** Success 
-<br> 
-  
-* **Fapi_Status_FsmBusy** FSM busy 
-<br> 
-  
-* **Fapi_Error_FlashRegsNotWritable** Flash register write failed 
-<br> 
-  
-* **Fapi_Error_InvalidAddress** User provided an invalid address 
-<br> 
-
-
-**Return**: returns success or failure status 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_doBlankCheck
-
-```
-Fls_FapiStatusType Fls_Fapi_doBlankCheck(
-    uint32 * pu32StartAddress,
-    uint32 u32Length,
-    Fls_FlashStatusWordType * poFlashStatusWord
-)
-```
-
-
-**Brief**: 
-Verifies region specified is erased value. 
-
-**Parameters**: 
-
-  
-* **pu32StartAddress** Start address for region to blank check 
-  
-* **u32Length** Length of region in 32-bit words to blank check 
-  
-* **poFlashStatusWord** Returns the status of the operation if result is not Fapi_Status_Success au32StatusWord[0] Address of first non-blank location au32StatusWord[1] Data read at first non-blank location au32StatusWord[2] Value of compare data (always 0xFFFFFFFF) au32StatusWord[3] NA 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_Success** Success 
-<br> 
-  
-* **Fapi_Error_Fail** region specified is not blank 
-<br> 
-  
-* **Fapi_Error_InvalidAddress** User provided an invalid address 
-<br> 
-
-
-**Return**: returns success or failure status 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_doVerify
-
-```
-Fls_FapiStatusType Fls_Fapi_doVerify(
-    uint32 * pu32StartAddress,
-    uint32 u32Length,
-    uint32 * pu32CheckValueBuffer,
-    Fls_FlashStatusWordType * poFlashStatusWord
-)
-```
-
-
-**Brief**: 
-Verifies region specified against provided data. 
-
-**Parameters**: 
-
-  
-* **pu32StartAddress** Start address for region to verify 
-  
-* **u32Length** Length of region in 32-bit words to verify 
-  
-* **pu32CheckValueBuffer** address of buffer to verify region against. Data buffer should be 128-bit aligned. 
-  
-* **poFlashStatusWord** Returns the status of the operation if result is not Fapi_Status_Success au32StatusWord[0] Address of first verify failure location au32StatusWord[1] Data read at first verify failure location au32StatusWord[2] Value of compare data au32StatusWord[3] NA 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_Success** Success 
-<br> 
-  
-* **Fapi_Error_Fail** region specified is not blank 
-<br> 
-  
-* **Fapi_Error_InvalidAddress** User provided an invalid address 
-<br> 
-
-
-**Return**: returns success or failure status 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_doVerifyByByte
-
-```
-Fls_FapiStatusType Fls_Fapi_doVerifyByByte(
-    uint8 * pu8StartAddress,
-    uint32 u32Length,
-    uint8 * pu8CheckValueBuffer,
-    Fls_FlashStatusWordType * poFlashStatusWord
-)
-```
-
-
-**Brief**: 
-Verifies specified Flash memory range against supplied values by byte. 
-
-**Parameters**: 
-
-  
-* **pu32StartAddress** Start address for region to verify 
-  
-* **u32Length** length of region in bytes to verify 
-  
-* **pu8CheckValueBuffer** address of buffer to verify region against. Data buffer should be 128-bit aligned. 
-  
-* **poFlashStatusWord** Returns the status of the operation if result is not Fapi_Status_Success au32StatusWord[0] Address of first verify failure location au32StatusWord[1] Data read at first verify failure location au32StatusWord[2] Value of compare data au32StatusWord[3] NA 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_Success** Success 
-<br> 
-  
-* **Fapi_Error_Fail** region specified is not blank 
-<br> 
-  
-* **Fapi_Error_InvalidAddress** User provided an invalid address 
-<br> 
-
-
-**Return**: returns success or failure status 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Fapi_issueProgrammingCommand
-
-```
-Fls_FapiStatusType Fls_Fapi_issueProgrammingCommand(
-    uint32 * pu32StartAddress,
-    uint8 * pu8DataBuffer,
-    uint8 u8DataBufferSizeInBytes
-)
-```
-
-
-**Brief**: 
-Sets up data and issues program command to valid flash memory addresses. 
-
-**Parameters**: 
-
-  
-* **pu32StartAddress** Start address in Flash for the data to be programmed. The start address should always be even. 
-  
-* **pu8DataBuffer** Pointer to the Data buffer address. Data buffer should be 64-bit aligned. 
-  
-* **u8DataBufferSizeInBytes** Number of bytes in the Data buffer 
-  
-* **None** 
-
-
-**Returns**: 
-
-  
-* **Fapi_Status_Success** Success 
-<br> 
-  
-* **Fapi_Status_FsmBusy** FSM busy 
-<br> 
-  
-* **Fapi_Error_FlashRegsNotWritable** Flash register write failed 
-<br> 
-  
-* **Fapi_Error_AsyncIncorrectDataBufferLength** Data buffer size specified is incorrect. 
-<br> 
-  
-* **Fapi_Error_InvalidAddress** User provided an invalid address 
-<br> 
-
-
-**Return**: returns success or failure status 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_Update_WaitStates
-
-```
-void Fls_Update_WaitStates(
-    uint16 waitstates
-)
-```
-
-
-**Brief**: 
-configures read wait states and enable data cache, code cache, prefetch, and data preread to improve performance of code executed from flash 
-
-**Parameters**: 
-
-  
-* **waitstates** waitstates according to frequency 
-  
-* **None** 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_SSU_claimFlashSemaphore
-
-```
-void Fls_SSU_claimFlashSemaphore(
-    void 
-)
-```
-
-
-**Brief**: 
-Claims flash semaphore. 
-
-**Parameters**: 
-
-  
-* **None** 
-  
-* **None** 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_SSU_releaseFlashSemaphore
-
-```
-void Fls_SSU_releaseFlashSemaphore(
-    void 
-)
-```
-
-
-**Brief**: 
-Release flash semaphore. 
-
-**Parameters**: 
-
-  
-* **None** 
-  
-* **None** 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_processJobs
-
-```
-void Fls_processJobs(
-    Fls_JobType job
-)
-```
-
-
-**Brief**: 
-This function invoke Fls_F29Compare,Fls_F29BankErase,Fls_F29SectorErase,Fls_F29ChipErase, Fls_F29Read,Fls_F29Write and Fls_F29BlankCheck function. it will perform any one function based on job type. 
-
-**Parameters**: 
-
-  
-* **job** job type to perform operation 
-  
-* **None** 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_resetDrvObj
-
-```
-void Fls_resetDrvObj(
-    Fls_DriverObjType * drvObj
-)
-```
-
-
-**Brief**: 
-Reset driver parameters during initialize time. 
-
-**Parameters**: 
-
-  
-* **drvObj** Input configuration parameters 
-  
-* **None** 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Fls_copyConfig
-
-```
-void Fls_copyConfig(
-    Fls_DriverObjType * drvObj,
-    const Fls_ConfigType * cfgPtr
-)
-```
-
-
-**Brief**: 
-Configuration parameters are copied to drvObj,this function included with Fls_init. 
-
-**Parameters**: 
-
-  
-* **drvObj** configuration parameters are copied to this object 
-  
-* **cfgPtr** Input configuration parameters 
-  
-* **None** 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
 
 
 ## Detailed Description

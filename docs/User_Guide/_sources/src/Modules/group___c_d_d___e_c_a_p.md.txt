@@ -11,23 +11,74 @@ title: Cdd_Ecap public API GUIDE Header file
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
-|enum| **[Cdd_Ecap_ModeType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_modetype)** | This type defines a range of mode type.  | 
+|enum| **[Cdd_Ecap_HrCap_CalibrationClockSource](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_hrcap_calibrationclocksource)** | This type defines clock sources for HR mode.  | 
+|enum| **[Cdd_Ecap_HrCap_ContinuousCalibrationMode](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_hrcap_continuouscalibrationmode)** | This type defines continuous calibration mode enabled or not.  | 
+|enum| **[Cdd_Ecap_HrCap_CalStatus](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_hrcap_calstatus)** | This type defines the source of interrupt.  | 
+|enum| **[Cdd_Ecap_ModeType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_modetype)** | This type defines the source of interrupt.  | 
 |enum| **[Cdd_Ecap_InputStateType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_inputstatetype)** | This type defines a input state of CDD_ECAP driver.  | 
 |enum| **[Cdd_Ecap_ActivationType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_activationtype)** | This type defines Activation range.  | 
+|enum| **[Cdd_Ecap_EmulationMode](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_emulationmode)** | This defines the available emulation modes.  | 
 |enum| **[Cdd_Ecap_IntrCapSelect](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_intrcapselect)** | This type defines the source of interrupt.  | 
 |enum| **[Cdd_Ecap_MeasurementModeType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_measurementmodetype)** | This type defines available measurement modes.  | 
 |enum| **[Cdd_Ecap_SignalMeasurementPropertyType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_signalmeasurementpropertytype)** | This type defines Signal Measurement Property range.  | 
 |enum| **[Cdd_Ecap_TimestampBufferType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_timestampbuffertype)** | This type defines TimeStamp Property range.  | 
 |enum| **[Cdd_Ecap_StartLevelType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_startleveltype)** | This type defines the edge to start the edge capturing.  | 
-|enum| **[Cdd_Ecap_CounterRstType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_counterrsttype)** | This type defines Counter Reset Mode.  | 
-|enum| **[Cdd_Ecap_EmulationMode](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_emulationmode)** | This defines the available emulation modes.  | 
 |enum| **[Cdd_Ecap_InputSelect](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_inputselect)** | This type defines Xbar input to select.  | 
 |typedef uint32  | **[Cdd_Ecap_ValueType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_valuetype)** | This type defines Value type.  | 
 |typedef uint32  | **[Cdd_Ecap_IndexType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_indextype)** | This type defines return value Cdd_Ecap_GetTimeStampIndex.  | 
 |typedef uint32  | **[Cdd_Ecap_EdgeNumberType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_edgenumbertype)** | This type defines return value of Cdd_Ecap_GetEdgeNumbers.  | 
 |typedef uint8  | **[Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype)** | This type defines Channel type.  | 
 |typedef uint8  | **[Cdd_Ecap_ChannelPrescalerType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channelprescalertype)** | This type defines Prescaler type.  | 
+|typedef float32  | **[Cdd_Ecap_ChannelHrScaleType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channelhrscaletype)** | This type defines the scale-factor type for HR mode.  | 
+|typedef uint16  | **[Cdd_Ecap_ChannelHrInterruptType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channelhrinterrupttype)** | This type defines the interrupt flags type for HR mode.  | 
 |typedef void(*)(void)  | **[Cdd_Ecap_NotifyFuncType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_notifyfunctype)** | Notification callback function pointer  | 
+
+
+
+### enum Cdd_Ecap_HrCap_CalibrationClockSource
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_HRCAP_CALIBRATION_CLOCK_SYSCLK | 0x0| Use SYSCLK for period match.   |
+| CDD_ECAP_HRCAP_CALIBRATION_CLOCK_HRCLK | 0x4| Use HRCLK for period match.   |
+
+
+
+
+**Brief**: 
+This type defines clock sources for HR mode. 
+
+
+
+### enum Cdd_Ecap_HrCap_ContinuousCalibrationMode
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_HRCAP_CONTINUOUS_CALIBRATION_DISABLED | 0x00| Continuous calibration disabled.   |
+| CDD_ECAP_HRCAP_CONTINUOUS_CALIBRATION_ENABLED | 0x20| Continuous calibration enabled.   |
+
+
+
+
+**Brief**: 
+This type defines continuous calibration mode enabled or not. 
+
+
+
+### enum Cdd_Ecap_HrCap_CalStatus
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_HRCAP_HRCALCAL_STATUS_DONE_ISR | =
+        ( (0x2U) \| (0x1U) )| Calibration status done flag.   |
+| CDD_ECAP_HRCAP_HRCALCAL_STATUS_PERIOD_OVERFLOW_ISR | =
+        ( (0x2U) \| (0x1U) \|
+         (0x4U) )| Calibration period overflow flag.   |
+| CDD_ECAP_HRCAP_HRCALCAL_CALIBRATION_FLAGS | =
+        ( (0x2U) \| (0x4U) )| Calibration status done flag and period overflow flag.   |
+
+
+
+
+**Brief**: 
+This type defines the source of interrupt. 
 
 
 
@@ -41,7 +92,7 @@ title: Cdd_Ecap public API GUIDE Header file
 
 
 **Brief**: 
-This type defines a range of mode type. 
+This type defines the source of interrupt. 
 
 
 
@@ -71,6 +122,21 @@ This type defines a input state of CDD_ECAP driver.
 
 **Brief**: 
 This type defines Activation range. 
+
+
+
+### enum Cdd_Ecap_EmulationMode
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_ECAP_EMULATION_STOP | 0x0U| TSCTR is stopped on emulation suspension.   |
+| CDD_ECAP_EMULATION_RUN_TO_ZERO | 0x1U| runs until 0 before stopping on emulation suspension   |
+| CDD_ECAP_EMULATION_FREE_RUN | 0x2U| is not affected by emulation suspension   |
+
+
+
+
+**Brief**: 
+This defines the available emulation modes. 
 
 
 
@@ -123,7 +189,6 @@ This type defines available measurement modes.
 | CDD_ECAP_LOW_TIME | | Signal Low time.   |
 | CDD_ECAP_HIGH_TIME | | Signal High time.   |
 | CDD_ECAP_PERIOD_TIME | | Signal Period time.   |
-| CDD_ECAP_DUTY_CYCLE | | Signal Duty Cycle time.   |
 
 
 
@@ -158,35 +223,6 @@ This type defines TimeStamp Property range.
 
 **Brief**: 
 This type defines the edge to start the edge capturing. 
-
-
-
-### enum Cdd_Ecap_CounterRstType
-| Enumerator | Value | Description |
-| ---------- | ----- | ----------- |
-| CDD_ECAP_ABSOLUTE_MODE | |   |
-| CDD_ECAP_DELTA_MODE | | Don't Reset counter upon counter event.  Reset upon counter capture event  |
-
-
-
-
-**Brief**: 
-This type defines Counter Reset Mode. 
-
-
-
-### enum Cdd_Ecap_EmulationMode
-| Enumerator | Value | Description |
-| ---------- | ----- | ----------- |
-| CDD_ECAP_EMULATION_STOP | 0x0U| TSCTR is stopped on emulation suspension.   |
-| CDD_ECAP_EMULATION_RUN_TO_ZERO | 0x1U| runs until 0 before stopping on emulation suspension   |
-| CDD_ECAP_EMULATION_FREE_RUN | 0x2U| is not affected by emulation suspension   |
-
-
-
-
-**Brief**: 
-This defines the available emulation modes. 
 
 
 
@@ -461,6 +497,28 @@ This type defines Prescaler type.
 
 
 
+### typedef Cdd_Ecap_ChannelHrScaleType
+```
+typedef float32 Cdd_Ecap_ChannelHrScaleType;
+```
+
+
+**Brief**: 
+This type defines the scale-factor type for HR mode. 
+
+
+
+### typedef Cdd_Ecap_ChannelHrInterruptType
+```
+typedef uint16 Cdd_Ecap_ChannelHrInterruptType;
+```
+
+
+**Brief**: 
+This type defines the interrupt flags type for HR mode. 
+
+
+
 ### typedef Cdd_Ecap_NotifyFuncType
 ```
 typedef void(* Cdd_Ecap_NotifyFuncType) (void);
@@ -479,7 +537,6 @@ Notification callback function pointer
 | **[Cdd_Ecap_DutyCycleType](../Classes/struct_cdd___ecap___duty_cycle_type.md)** | This type defines Duty Cycle struct.  |
 | **[Cdd_Ecap_ChannelConfigType](../Classes/struct_cdd___ecap___channel_config_type.md)** | CDD_ECAP Channel Config Structure.  |
 | **[Cdd_Ecap_ConfigType](../Classes/struct_cdd___ecap___config_type.md)** | CDD_ECAP Config Structure.  |
-| **[Cdd_Ecap_ChObjType](../Classes/struct_cdd___ecap___ch_obj_type.md)** | CDD ECAP configuration structure internal to driver.  |
 
 
 
@@ -510,6 +567,8 @@ Notification callback function pointer
 | CDD_ECAP_ENABLEEDGEDETECTION_ID   | Cdd_Ecap_EnableEdgeDetection() API Service ID.  |
 | CDD_ECAP_DISABLEEDGEDETECTION_ID   | Cdd_Ecap_DisableEdgeDetection() API Service ID.  |
 | CDD_ECAP_SETSTARTLEVELCONDITION_ID   | Cdd_Ecap_SetStartLevelCondition() API Service ID.  |
+| CDD_ECAP_HRSCALEFACTOR_ID   | Cdd_Ecap_GetHrScaleFactor API Service ID.  |
+| CDD_ECAP_HRTIMESTAMP_ID   | Cdd_Ecap_GetHrScaleFactor API Service ID.  |
 | CDD_ECAP_E_PARAM_POINTER   | API service called with invalid pointer.  |
 | CDD_ECAP_E_PARAM_CHANNEL   | API service called with invalid channel identifier or channel not configured.  |
 | CDD_ECAP_E_PARAM_ACTIVATION   | API service called with an invalid or not feasible activation.  |
@@ -523,12 +582,17 @@ Notification callback function pointer
 | CDD_ECAP_E_PARAM_NOTIFY_INTERVAL   | API service called when notify interval is invalid.  |
 | CDD_ECAP_E_PARAM_VINFO   | API service Cdd_Ecap_GetVersionInfo called and parameter is invalid.  |
 | CDD_ECAP_E_PARAM_START_LEVEL   | API service called with an invalid or not feasible start level.  |
+| CDD_ECAP_E_HR_CHANNEL   | API service called with an invalid channel in the HR mode.  |
 | CDD_ECAP_STATUS_UNINIT   | CDD_ECAP driver Status uninitialized.  |
 | CDD_ECAP_STATUS_INIT   | CDD_ECAP driver Status Initialized.  |
+| CDD_ECAP_SF_NOTREADY   | CDD_ECAP Scalefactor is not ready.  |
 | CDD_ECAP_ECEINT_CEVT1   | Capture Event 1 Interrupt Enable.  |
 | CDD_ECAP_ECEINT_CEVT2   | Capture Event 2 Interrupt Enable.  |
 | CDD_ECAP_ECEINT_CEVT3   | Capture Event 3 Interrupt Enable.  |
 | CDD_ECAP_ECEINT_CEVT4   | Capture Event 4 Interrupt Enable.  |
+| CDD_ECAP_HRCAP_GLOBAL_CALIBRATION_INTERRUPT   | Global calibration interrupt flag.  |
+| CDD_ECAP_HRCAP_CALIBRATION_DONE   | Calibration done flag.  |
+| CDD_ECAP_HRCAP_CALIBRATION_PERIOD_OVERFLOW   | Calibration period overflow flag.  |
 | CDD_ECAP_VENDOR_ID   | Texas Instruments Vendor ID.  |
 | CDD_ECAP_MODULE_ID   | CDD ECAP Driver Module ID.  |
 | CDD_ECAP_INSTANCE_ID   | CDD ECAP Driver Instance ID.  |
@@ -538,19 +602,8 @@ Notification callback function pointer
 | CDD_ECAP_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by CDD_ECAP Driver.  |
 | CDD_ECAP_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by CDD_ECAP Driver.  |
 | CDD_ECAP_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by CDD_ECAP Driver.  |
-| CDD_ECAPTIMER_MAX_RESOLUTION   |  |
-| CDD_ECAPTICKMAXVALUE   |  |
-| CDD_ECAP_EVENT_1   |  |
-| CDD_ECAP_EVENT_2   |  |
-| CDD_ECAP_EVENT_3   |  |
-| CDD_ECAP_EVENT_4   |  |
-| CDD_ECAP_CONTINUOUS_CAPTURE_MODE   |  |
-| CDD_ECAP_ONE_SHOT_CAPTURE_MODE   |  |
-| CDD_ECAP_COUNTER_STOP   |  |
-| CDD_ECAP_COUNTER_FREE_RUNNING   |  |
-| CDD_ECAP_CAPTURE_MODE   |  |
-| CDD_ECAP_APWM_MODE   |  |
-| CDD_ECAP_MAX_PRESCALER_VALUE   |  |
+| CDD_ECAP_HRCAP_HRCAPCAL_OVERFLOW   |  |
+| CDD_ECAP_HRCAP_HRCAPCAL_INV_OVERFLOW   |  |
 | CDD_ECAP_CFG_MAJOR_VERSION   |  |
 | CDD_ECAP_CFG_MINOR_VERSION   |  |
 | CDD_ECAP_CFG_PATCH_VERSION   |  |
@@ -564,6 +617,7 @@ Notification callback function pointer
 | CDD_ECAP_GET_VERSION_INFO_API   | Enable/Disable Get Version Info API.  |
 | CDD_ECAP_SIGNAL_MEASUREMENT_API   | Enable/Disable Signal Measurement API.  |
 | CDD_ECAP_TIMESTAMP_API   | Enable/Disable Timestamp API.  |
+| CDD_ECAP_HR_API   | Enable/Disable High Resolution API.  |
 | CDD_ECAP_DEV_ERROR_DETECT   | Enable/Disable Development error detet.  |
 | CDD_ECAP_MAX_NUM_CHANNELS   | Maximum number of Cdd_Ecap channels.  |
 | CDD_ECAP_INIT_CONFIG_PC   | Pre Compile config macro name.  |
@@ -609,20 +663,8 @@ Notification callback function pointer
 | [Cdd_Ecap_ValueType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_valuetype) | **[Cdd_Ecap_GetTimeElapsed](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_gettimeelapsed)**([Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype) Channel)| Service for reading the time elapsed between the edges of a channel.  |
 | void | **[Cdd_Ecap_GetDutyCycleValues](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_getdutycyclevalues)**([Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype) Channel, [Cdd_Ecap_DutyCycleType](../Classes/struct_cdd___ecap___duty_cycle_type.md) * DutyCycleValues)| Service for reading the active time and period.  |
 | void | **[Cdd_Ecap_GetVersionInfo](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| service that returns the version information of the module.  |
-| void | **[Cdd_Ecap_ResetChObj](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_resetchobj)**([Cdd_Ecap_ChObjType](../Classes/struct_cdd___ecap___ch_obj_type.md) * chObj)| This API will reset CDD ECAP s/w channel object.  |
-| void | **[Cdd_Ecap_CopyConfig](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_copyconfig)**([Cdd_Ecap_ChObjType](../Classes/struct_cdd___ecap___ch_obj_type.md) * chObj, const [Cdd_Ecap_ChannelConfigType](../Classes/struct_cdd___ecap___channel_config_type.md) * chCfg)| This API will copy all channel configuration into local ECAP Object.  |
-| void | **[Cdd_Ecap_HwUnitInit](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_hwunitinit)**([Cdd_Ecap_ChObjType](../Classes/struct_cdd___ecap___ch_obj_type.md) * chObj)| This API will initialize ECAP channel object associated with logical channel.  |
-| void | **[Cdd_Ecap_SignalMeasurement_Init](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_signalmeasurement_init)**([Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype) Channel)| This API will Clears the Signal Measurment API Structure.  |
-| void | **[Cdd_Ecap_TimeStamp_Init](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_timestamp_init)**([Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype) Channel, [Cdd_Ecap_ValueType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_valuetype) * StartPtr, uint16 Size, uint16 NotifyInterval)| This API will Init the Timestamp API Structure.  |
-| void | **[Cdd_Ecap_Timestamp_ISR](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_timestamp_isr)**([Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype) Channel)| This API will be called by ISR for timestamp API.  |
-| void | **[Cdd_Ecap_TimeStamp_Clear](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_timestamp_clear)**([Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype) Channel)| This API will clear the timestamp structure.  |
-| void | **[Cdd_Ecap_ConfigEcap](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_configecap)**(uint32 baseAddr, [Cdd_Ecap_ActivationType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_activationtype) activation, [Cdd_Ecap_CounterRstType](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_counterrsttype) cntRst, boolean interruptEnable, [Cdd_Ecap_IntrCapSelect](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_intrcapselect) capture, uint32 Channel)| This API will configure the ECAP module.  |
-| void | **[Cdd_Ecap_ChannelISR](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_channelisr)**([Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype) ChannelNumber)| This is the Channel ISR.  |
-| void | **[Cdd_Ecap_selectECAPInput](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_selectecapinput)**(uint32 base, [Cdd_Ecap_InputSelect](../Modules/group___c_d_d___e_c_a_p.md#enum-cdd_ecap_inputselect) input)| This will select ECAP Input.  |
-| void | **[Cdd_Ecap_captureLoadingDisable](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_captureloadingdisable)**(uint32 baseAddr)| This function disables capture loading.  |
-| void | **[Cdd_Ecap_intrDisable](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_intrdisable)**(uint32 baseAddr, uint32 flag)| This function disables the specified interrupts.  |
-| void | **[Cdd_Ecap_intrStatusClear](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_intrstatusclear)**(uint32 baseAddr, uint16 flag)| This function clears of the status specified interrupts.  |
-| void | **[Cdd_Ecap_reArm](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_rearm)**(uint32 baseAddr)| This function resets the MOD counter of the given channel.  |
+| [Cdd_Ecap_ChannelHrScaleType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channelhrscaletype) | **[Cdd_Ecap_GetHrScaleFactor](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_gethrscalefactor)**([Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype) Channel)| Service to retrieve the scale factor for high resolution capability.  |
+| [Cdd_Ecap_ChannelHrScaleType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channelhrscaletype) | **[Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_converthrtimestamptoecaptimestamp)**([Cdd_Ecap_ChannelType](../Modules/group___c_d_d___e_c_a_p.md#typedef-cdd_ecap_channeltype) Channel, uint32 timeStamp)| Service to convert the event timestamp to nanoseconds for high resolution capability.  |
 | void | **[Cdd_Ecap_TimeStampNotify](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_timestampnotify)**(void )|  |
 | void | **[Cdd_Ecap_SignalNotify](../Modules/group___c_d_d___e_c_a_p.md#function-cdd_ecap_signalnotify)**(void )|  |
 
@@ -675,12 +717,6 @@ void Cdd_Ecap_DeInit(
 Service to De-initialize Cdd Ecap driver. 
 
 This service De-initializes all the ECAP HW units.
-
-
-**Parameters**: 
-
-  
-* **None** 
 
 
 **Returns**: 
@@ -754,7 +790,7 @@ This service sets the start level condition of a channel (Rising or Falling). In
   
 * **Channel** CDD_ECAP Channel in use 
   
-* **Activation** Activation condition or Edge to be selected 
+* **StartLevel** Start level condition or Edge to be selected 
 
 
 **Returns**: 
@@ -1310,6 +1346,8 @@ This service reads the active time and period of a given channel.
 
   
 * **Channel** CDD_ECAP Channel in use 
+  
+* **DutyCycleValues** Duty cycle values 
 
 
 **Returns**: 
@@ -1359,107 +1397,25 @@ This service returns the version information of the Cdd Ecap module.
 
 **Postcondition**: None 
 
-### function Cdd_Ecap_ResetChObj
+### function Cdd_Ecap_GetHrScaleFactor
 
 ```
-void Cdd_Ecap_ResetChObj(
-    Cdd_Ecap_ChObjType * chObj
-)
-```
-
-
-**Brief**: 
-This API will reset CDD ECAP s/w channel object. 
-
-**Parameters**: 
-
-  
-* **chObj** Pointer to channel object.
-
-
-**Return**: None. 
-
-### function Cdd_Ecap_CopyConfig
-
-```
-void Cdd_Ecap_CopyConfig(
-    Cdd_Ecap_ChObjType * chObj,
-    const Cdd_Ecap_ChannelConfigType * chCfg
-)
-```
-
-
-**Brief**: 
-This API will copy all channel configuration into local ECAP Object. 
-
-**Parameters**: 
-
-  
-* **chObj** Pointer to driver object. 
-  
-* **chCfg** Pointer to configuration object sent by application. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_HwUnitInit
-
-```
-void Cdd_Ecap_HwUnitInit(
-    Cdd_Ecap_ChObjType * chObj
-)
-```
-
-
-**Brief**: 
-This API will initialize ECAP channel object associated with logical channel. 
-
-**Parameters**: 
-
-  
-* **chObj** Pointer to channel object. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_SignalMeasurement_Init
-
-```
-void Cdd_Ecap_SignalMeasurement_Init(
+Cdd_Ecap_ChannelHrScaleType Cdd_Ecap_GetHrScaleFactor(
     Cdd_Ecap_ChannelType Channel
 )
 ```
 
 
 **Brief**: 
-This API will Clears the Signal Measurment API Structure. 
+Service to retrieve the scale factor for high resolution capability. 
+
+This service retrieves the scale factor for high resolution capability.
+
 
 **Parameters**: 
 
   
-* **Channel** CDD ECAP Channel in Use 
+* **Channel** CDD_ECAP Channel in use. 
 
 
 **Returns**: 
@@ -1475,326 +1431,28 @@ This API will Clears the Signal Measurment API Structure.
 
 **Postcondition**: None 
 
-### function Cdd_Ecap_TimeStamp_Init
+### function Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp
 
 ```
-void Cdd_Ecap_TimeStamp_Init(
+Cdd_Ecap_ChannelHrScaleType Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp(
     Cdd_Ecap_ChannelType Channel,
-    Cdd_Ecap_ValueType * StartPtr,
-    uint16 Size,
-    uint16 NotifyInterval
+    uint32 timeStamp
 )
 ```
 
 
 **Brief**: 
-This API will Init the Timestamp API Structure. 
+Service to convert the event timestamp to nanoseconds for high resolution capability. 
+
+This service converts the event timestamp to nanoseconds for high resolution capability.
+
 
 **Parameters**: 
 
   
-* **Channel** CDD ECAP Channel in Use 
+* **Channel** CDD_ECAP Channel in use 
   
-* **StartPtr** Start of the Buffer ptr 
-  
-* **Size** Size of the Buffer to use 
-  
-* **NotifyInterval** Notify Inerval 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_Timestamp_ISR
-
-```
-void Cdd_Ecap_Timestamp_ISR(
-    Cdd_Ecap_ChannelType Channel
-)
-```
-
-
-**Brief**: 
-This API will be called by ISR for timestamp API. 
-
-**Parameters**: 
-
-  
-* **Channel** ECAP Channel in Use 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_TimeStamp_Clear
-
-```
-void Cdd_Ecap_TimeStamp_Clear(
-    Cdd_Ecap_ChannelType Channel
-)
-```
-
-
-**Brief**: 
-This API will clear the timestamp structure. 
-
-**Parameters**: 
-
-  
-* **Channel** ECAP Channel in Use 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_ConfigEcap
-
-```
-void Cdd_Ecap_ConfigEcap(
-    uint32 baseAddr,
-    Cdd_Ecap_ActivationType activation,
-    Cdd_Ecap_CounterRstType cntRst,
-    boolean interruptEnable,
-    Cdd_Ecap_IntrCapSelect capture,
-    uint32 Channel
-)
-```
-
-
-**Brief**: 
-This API will configure the ECAP module. 
-
-**Parameters**: 
-
-  
-* **baseAddr** Baseaddress of channel 
-  
-* **activation** Activation Edge type 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_ChannelISR
-
-```
-void Cdd_Ecap_ChannelISR(
-    Cdd_Ecap_ChannelType ChannelNumber
-)
-```
-
-
-**Brief**: 
-This is the Channel ISR. 
-
-**Parameters**: 
-
-  
-* **Channel** Channel number 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_selectECAPInput
-
-```
-void Cdd_Ecap_selectECAPInput(
-    uint32 base,
-    Cdd_Ecap_InputSelect input
-)
-```
-
-
-**Brief**: 
-This will select ECAP Input. 
-
-**Parameters**: 
-
-  
-* **input** Cdd Ecap Input 
-  
-* **base** Baseaddress of channel 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_captureLoadingDisable
-
-```
-void Cdd_Ecap_captureLoadingDisable(
-    uint32 baseAddr
-)
-```
-
-
-**Brief**: 
-This function disables capture loading. 
-
-**Parameters**: 
-
-  
-* **baseAddr** It is the Memory address of the ECAP instance used. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_intrDisable
-
-```
-void Cdd_Ecap_intrDisable(
-    uint32 baseAddr,
-    uint32 flag
-)
-```
-
-
-**Brief**: 
-This function disables the specified interrupts. 
-
-**Parameters**: 
-
-  
-* **baseAddr** It is the Memory address of the ECAP instance used. 
-  
-* **flag** It is the value which specifies the interrupts to be disabled. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_intrStatusClear
-
-```
-void Cdd_Ecap_intrStatusClear(
-    uint32 baseAddr,
-    uint16 flag
-)
-```
-
-
-**Brief**: 
-This function clears of the status specified interrupts. 
-
-**Parameters**: 
-
-  
-* **baseAddr** It is the Memory address of the ECAP instance used. 
-  
-* **flag** It is the value which specifies the status of interrupts to be cleared. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Cdd_Ecap_reArm
-
-```
-void Cdd_Ecap_reArm(
-    uint32 baseAddr
-)
-```
-
-
-**Brief**: 
-This function resets the MOD counter of the given channel. 
-
-**Parameters**: 
-
-  
-* **baseAddr** It is the Memory address of the ECAP instance used. 
+* **timeStamp** Event timestamp 
 
 
 **Returns**: 

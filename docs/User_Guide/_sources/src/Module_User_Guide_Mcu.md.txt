@@ -317,6 +317,27 @@ The associated Mcu driver configuration generated source files are **Mcu_Cfg.c**
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
+#### Migration Guide to v02.00.00 from v01.01.00 or any older versions
+
+In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Mcu_Init function will need to use the new configuration structure name. For example:
+
+```c
+/* Old code (v01.01.00 or any older versions) */
+Mcu_Init(&McuConf*);
+
+/* New code (v02.00.00) */
+Mcu_Init(&Mcu_Config*);
+```
+
+```{NOTE}
+The name of the configuration structures depends on the clock source being used.
+```
+
+This change ensures compliance with AUTOSAR naming conventions.
+
+To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
+
 
 
 #### McuGeneralConfiguration
@@ -531,7 +552,7 @@ This container defines a reference point in the Mcu Clock tree. It defines the f
 | Item ||
 |--------|---------------|
 | **Name** | McuClockReferencePointFrequency |
-| **Description** | This is the frequency for the specific instance of the McuClockReferencePoint container. It shall be given in Hz. |
+| **Description** | This is the frequency for the specific instance of the McuClockReferencePoint container. It shall be given in Hz. This will not be autocalulated based on the configured divider. The user has to take care of calculating the value based on the clock source and divider value |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | true |
 | **Value-Configuration-Class** | -- |
@@ -1325,7 +1346,7 @@ The example application demonstrates use of Mcu module, the list below identifie
 * Mcu_Example_Clock
   * EcuM_Init()
     * Initializes clock to 200 MHz using Mcu_Init()
-    * Initializes pins as GPIO Outpus and GPIO Inputs using Port_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
   * Validate the clock value from register values
   * Measure the XCLKOUT hardware pin GPIO73 using Oscilloscope or logic analyzer and expected value to be 25Mhz
 
@@ -1371,7 +1392,7 @@ Mcu XCLK Output
 * Mcu_Example_PowerMode
   * EcuM_Init()
     * Initializes clock to 200 MHz using Mcu_Init()
-    * Initializes pins as GPIO Outpus and GPIO Inputs using Port_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
   * Activate low power modes (standby mode)
   * Wakeup from standby mode using configured GPIO wakeup Pins
 
@@ -1409,7 +1430,7 @@ Mcu XCLK Output
 * Mcu_Example_Ram
   * EcuM_Init()
     * Initializes clock to 200 MHz using Mcu_Init()
-    * Initializes pins as GPIO Outpus and GPIO Inputs using Port_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
   * Initializes the Ram sectors
   * Validate the Ram sectors
 
@@ -1448,7 +1469,7 @@ Mcu XCLK Output
 * Mcu_Example_Reset
   * EcuM_Init()
     * Initializes clock to 200 MHz using Mcu_Init()
-    * Initializes pins as GPIO Outpus and GPIO Inputs using Port_Init()
+    * Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
   * Get reset reason value for POR, XRS and SW Resets
   * Perform simulated external reset
 
@@ -1508,7 +1529,7 @@ Mcu XCLK Output
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┗ 📜**Mcu_Cfg.h** : *Contains the generated pre-complier configuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Mcu_Cfg.h** : *Contains the generated pre-compiler configuration header.*\
  ┃ ┃ ┃ ┃ ┣ 📂src\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\

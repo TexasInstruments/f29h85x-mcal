@@ -22,7 +22,7 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="5. API guide" href="api_guide.html" />
+    <link rel="next" title="4.17. RTDMA Module" href="Module_User_Guide_Rtdma.html" />
     <link rel="prev" title="4.15. CDD XBAR Module" href="Module_User_Guide_Cdd_Xbar.html" /> 
 </head>
 
@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -109,9 +109,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.16.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cdduartconfigset">4.16.9.1. CddUartConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cdduartgeneral">4.16.9.2. CddUartGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-uart-module">4.16.9.3. Steps To Configure Cdd Uart Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#migration-guide-to-v02-00-00-from-v01-00-00-or-any-older-versions">4.16.9.1. Migration Guide to v02.00.00 from v01.00.00 or any older versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdduartconfigset">4.16.9.2. CddUartConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdduartgeneral">4.16.9.3. CddUartGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-cdd-uart-module">4.16.9.4. Steps To Configure Cdd Uart Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.16.10. Examples</a><ul>
@@ -124,6 +125,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -234,7 +236,7 @@
 <figure class="align-center" id="id1">
 <img alt="CDD_UART MCAL AUTOSAR" src="../_images/Cdd_Uart_Autosar_CDD.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.71 </span><span class="caption-text">CDD_UART MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.77 </span><span class="caption-text">CDD_UART MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>This document details AUTOSAR BSW CDD_UART module implementation</p>
@@ -304,7 +306,7 @@ loading</p></li>
 <figure class="align-center" id="id2">
 <img alt="Cdd_Uart Block diagram" src="../_images/Cdd_Uart_Block_Diagram.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.72 </span><span class="caption-text">Cdd_Uart Block Diagram</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.78 </span><span class="caption-text">Cdd_Uart Block Diagram</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -356,7 +358,7 @@ loading</p></li>
 <figure class="align-center" id="id3">
 <img alt="Cdd_Uart Header File Structure" src="../_images/Cdd_Uart_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.73 </span><span class="caption-text">Cdd_Uart Header File Structure</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.79 </span><span class="caption-text">Cdd_Uart Header File Structure</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -436,23 +438,23 @@ Interrupt and the category should be selected in the Cdd_Uart plugin.The Interru
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Uart0</p></td>
-<td><p>Cdd_Uart_0_ISR</p></td>
+<tr class="row-even"><td><p>UartA</p></td>
+<td><p>Cdd_Uart_A_ISR</p></td>
 </tr>
-<tr class="row-odd"><td><p>Uart1</p></td>
-<td><p>Cdd_Uart_1_ISR</p></td>
+<tr class="row-odd"><td><p>UartB</p></td>
+<td><p>Cdd_Uart_B_ISR</p></td>
 </tr>
-<tr class="row-even"><td><p>Uart2</p></td>
-<td><p>Cdd_Uart_2_ISR</p></td>
+<tr class="row-even"><td><p>UartC</p></td>
+<td><p>Cdd_Uart_C_ISR</p></td>
 </tr>
-<tr class="row-odd"><td><p>Uart3</p></td>
-<td><p>Cdd_Uart_3_ISR</p></td>
+<tr class="row-odd"><td><p>UartD</p></td>
+<td><p>Cdd_Uart_D_ISR</p></td>
 </tr>
-<tr class="row-even"><td><p>Uart4</p></td>
-<td><p>Cdd_Uart_4_ISR</p></td>
+<tr class="row-even"><td><p>UartE</p></td>
+<td><p>Cdd_Uart_E_ISR</p></td>
 </tr>
-<tr class="row-odd"><td><p>Uart5</p></td>
-<td><p>Cdd_Uart_5_ISR</p></td>
+<tr class="row-odd"><td><p>UartF</p></td>
+<td><p>Cdd_Uart_F_ISR</p></td>
 </tr>
 </tbody>
 </table>
@@ -484,7 +486,7 @@ Interrupt and the category should be selected in the Cdd_Uart plugin.The Interru
 <figure class="align-center" id="id4">
 <img alt="Cdd_Uart HW/SW Mapping" src="../_images/Cdd_Uart_Hw_Sw_Mapping.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.74 </span><span class="caption-text">Cdd_Uart HW/SW Mapping</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.80 </span><span class="caption-text">Cdd_Uart HW/SW Mapping</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -513,9 +515,14 @@ The detection of development errors is configurable ON/OFF. The switch UART_CFG_
 </thead>
 <tbody>
 <tr class="row-even"><td><p>CDD_UART_EXCLUSIVE_AREA_0</p></td>
-<td><p>Cdd_Uart_Read<br>Cdd_Uart_Write<br>Cdd_Uart_CancelWrite<br>Cdd_Uart_CancelRead<br>Cdd_Uart_GetWriteStatus<br>Cdd_Uart_GetReadStatus</p></td>
+<td><p>Cdd_Uart_Write<br>Cdd_Uart_CancelWrite<br>Cdd_Uart_GetWriteStatus</p></td>
 <td><p>To protect against multiple access for shared resources which can lead to race condition</p></td>
-<td><p><strong>ALL_INTERRUPT_BLOCKING</strong> : All interrupts should be blocked as this API’s can be called in the interrupts</p></td>
+<td><p><strong>ALL_INTERRUPT_BLOCKING</strong> : All interrupts should be blocked if these API’s are called in the interrupts.<br> <strong>OS_RESOURCE</strong> : If the CDD UART APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_EXCLUSIVE_AREA_1</p></td>
+<td><p>Cdd_Uart_Read<br>Cdd_Uart_CancelRead<br>Cdd_Uart_GetReadStatus</p></td>
+<td><p>To protect against multiple access for shared resources which can lead to race condition</p></td>
+<td><p><strong>ALL_INTERRUPT_BLOCKING</strong> : All interrupts should be blocked if these API’s are called in the interrupts. <br> <strong>OS_RESOURCE</strong> : If the CDD UART APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.</p></td>
 </tr>
 </tbody>
 </table>
@@ -547,14 +554,35 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 <p class="admonition-title">Note</p>
 <p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
 </div>
+<section id="migration-guide-to-v02-00-00-from-v01-00-00-or-any-older-versions">
+<h3><span class="section-number">4.16.9.1. </span>Migration Guide to v02.00.00 from v01.00.00 or any older versions<a class="headerlink" href="#migration-guide-to-v02-00-00-from-v01-00-00-or-any-older-versions" title="Link to this heading"></a></h3>
+<p>In version v02.00.00, there are two major changes that require attention when migrating from v01.00.00 or any older versions:</p>
+<section id="uart-instance-name-changes">
+<h4><span class="section-number">4.16.9.1.1. </span>UART INSTANCE Name Changes<a class="headerlink" href="#uart-instance-name-changes" title="Link to this heading"></a></h4>
+<p>In this version, the names of the UART instance got updated, which impacts the values of other configuration parameters as well, because the range of values of other parameters are computed using these parameters. Due to these naming changes, UART configurations created with v01.00.00 or older versions are not directly compatible with v02.00.00.</p>
+<p>When migrating existing configurations:</p>
+<ul class="simple">
+<li><p>Open your existing configuration in the latest plugin version</p></li>
+<li><p>The plugin will automatically flag incompatible UART instance configurations</p></li>
+<li><p>Configure the corresponding UART with the instance name by choosing values from the plugin</p></li>
+<li><p>Run the auto-calculate wizard to update the UART base address</p></li>
+<li><p>Verify and update all affected configurations</p></li>
+<li><p>In order to migrate to the latest version, the values of UART instance need to be chosen from the plugin</p></li>
+</ul>
+</section>
+<section id="uart-clock-frequency-selection">
+<h4><span class="section-number">4.16.9.1.2. </span>UART Clock Frequency Selection<a class="headerlink" href="#uart-clock-frequency-selection" title="Link to this heading"></a></h4>
+<p>The UART Clock frequency must be referenced to the Mcu system clock. In older releases, the clock frequency was hardcoded.</p>
+</section>
+</section>
 <section id="cdduartconfigset">
-<h3><span class="section-number">4.16.9.1. </span>CddUartConfigSet<a class="headerlink" href="#cdduartconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.16.9.2. </span>CddUartConfigSet<a class="headerlink" href="#cdduartconfigset" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the CddUart module.</p>
 <section id="cdduartconfig">
-<h4><span class="section-number">4.16.9.1.1. </span>CddUartConfig<a class="headerlink" href="#cdduartconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.9.2.1. </span>CddUartConfig<a class="headerlink" href="#cdduartconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddUart HW units.</p>
 <section id="cdduartinstance">
-<h5><span class="section-number">4.16.9.1.1.1. </span>CddUartInstance<a class="headerlink" href="#cdduartinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.1. </span>CddUartInstance<a class="headerlink" href="#cdduartinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -581,16 +609,16 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
-<td><p>UART0</p></td>
+<td><p>UARTA</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p>UART0<br>UART1<br>UART2<br>UART3<br>UART4<br>UART5</p></td>
+<td><p>UARTA<br>UARTB<br>UARTC<br>UARTD<br>UARTE<br>UARTF</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="cdduartbaseaddress">
-<h5><span class="section-number">4.16.9.1.1.2. </span>CddUartBaseAddress<a class="headerlink" href="#cdduartbaseaddress" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.2. </span>CddUartBaseAddress<a class="headerlink" href="#cdduartbaseaddress" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -629,7 +657,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduarthwunitid">
-<h5><span class="section-number">4.16.9.1.1.3. </span>CddUartHWUnitId<a class="headerlink" href="#cdduarthwunitid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.3. </span>CddUartHWUnitId<a class="headerlink" href="#cdduarthwunitid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -667,47 +695,8 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </tbody>
 </table>
 </section>
-<section id="cdduartclockfreq">
-<h5><span class="section-number">4.16.9.1.1.4. </span>CddUartClockFreq<a class="headerlink" href="#cdduartclockfreq" title="Link to this heading"></a></h5>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Item</p></th>
-<th class="head"><p></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>CddUartClockFreq</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>This parameter takes the input value of clock frequency</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Origin</strong></p></td>
-<td><p>Texas Instruments</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
-<td><p>0</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Max-value</strong></p></td>
-<td><p>200000000</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Min-value</strong></p></td>
-<td><p>0</p></td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="cdduartbaudrate">
-<h5><span class="section-number">4.16.9.1.1.5. </span>CddUartBaudRate<a class="headerlink" href="#cdduartbaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.4. </span>CddUartBaudRate<a class="headerlink" href="#cdduartbaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -746,7 +735,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartprocessingmode">
-<h5><span class="section-number">4.16.9.1.1.6. </span>CddUartProcessingMode<a class="headerlink" href="#cdduartprocessingmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.5. </span>CddUartProcessingMode<a class="headerlink" href="#cdduartprocessingmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -782,7 +771,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartfifomodeenable">
-<h5><span class="section-number">4.16.9.1.1.7. </span>CddUartFIFOModeEnable<a class="headerlink" href="#cdduartfifomodeenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.6. </span>CddUartFIFOModeEnable<a class="headerlink" href="#cdduartfifomodeenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -815,7 +804,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartinterupttype">
-<h5><span class="section-number">4.16.9.1.1.8. </span>CddUartInteruptType<a class="headerlink" href="#cdduartinterupttype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.7. </span>CddUartInteruptType<a class="headerlink" href="#cdduartinterupttype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -860,7 +849,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartparitymodeenable">
-<h5><span class="section-number">4.16.9.1.1.9. </span>CddUartParityModeEnable<a class="headerlink" href="#cdduartparitymodeenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.8. </span>CddUartParityModeEnable<a class="headerlink" href="#cdduartparitymodeenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -893,7 +882,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartparitybit">
-<h5><span class="section-number">4.16.9.1.1.10. </span>CddUartParityBit<a class="headerlink" href="#cdduartparitybit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.9. </span>CddUartParityBit<a class="headerlink" href="#cdduartparitybit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -932,7 +921,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartstopbit">
-<h5><span class="section-number">4.16.9.1.1.11. </span>CddUartStopBit<a class="headerlink" href="#cdduartstopbit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.10. </span>CddUartStopBit<a class="headerlink" href="#cdduartstopbit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -968,7 +957,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartwordlength">
-<h5><span class="section-number">4.16.9.1.1.12. </span>CddUartWordLength<a class="headerlink" href="#cdduartwordlength" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.11. </span>CddUartWordLength<a class="headerlink" href="#cdduartwordlength" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1004,7 +993,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartenablewrite">
-<h5><span class="section-number">4.16.9.1.1.13. </span>CddUartEnableWrite<a class="headerlink" href="#cdduartenablewrite" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.12. </span>CddUartEnableWrite<a class="headerlink" href="#cdduartenablewrite" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1037,7 +1026,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartenableread">
-<h5><span class="section-number">4.16.9.1.1.14. </span>CddUartEnableRead<a class="headerlink" href="#cdduartenableread" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.13. </span>CddUartEnableRead<a class="headerlink" href="#cdduartenableread" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1070,7 +1059,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartloopbackmodeenable">
-<h5><span class="section-number">4.16.9.1.1.15. </span>CddUartLoopBackModeEnable<a class="headerlink" href="#cdduartloopbackmodeenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.1.14. </span>CddUartLoopBackModeEnable<a class="headerlink" href="#cdduartloopbackmodeenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1102,12 +1091,42 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </tbody>
 </table>
 </section>
+<section id="cdduartclockfreq">
+<h5><span class="section-number">4.16.9.2.1.15. </span>CddUartClockFreq<a class="headerlink" href="#cdduartclockfreq" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddUartClockFreq</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter takes the input value of clock frequency</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 <section id="cdduartwriteconfig">
-<h4><span class="section-number">4.16.9.1.2. </span>CddUartWriteConfig<a class="headerlink" href="#cdduartwriteconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.9.2.2. </span>CddUartWriteConfig<a class="headerlink" href="#cdduartwriteconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddUart Write</p>
 <section id="cdduartwritenotificationhandler">
-<h5><span class="section-number">4.16.9.1.2.1. </span>CddUartWriteNotificationHandler<a class="headerlink" href="#cdduartwritenotificationhandler" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.2.1. </span>CddUartWriteNotificationHandler<a class="headerlink" href="#cdduartwritenotificationhandler" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1149,7 +1168,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduarttriggerlevelwritefifo">
-<h5><span class="section-number">4.16.9.1.2.2. </span>CddUartTriggerLevelWriteFIFO<a class="headerlink" href="#cdduarttriggerlevelwritefifo" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.2.2. </span>CddUartTriggerLevelWriteFIFO<a class="headerlink" href="#cdduarttriggerlevelwritefifo" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1189,10 +1208,10 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </section>
 </section>
 <section id="cdduartreadconfig">
-<h4><span class="section-number">4.16.9.1.3. </span>CddUartReadConfig<a class="headerlink" href="#cdduartreadconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.9.2.3. </span>CddUartReadConfig<a class="headerlink" href="#cdduartreadconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CddUart Read</p>
 <section id="cdduartreadnotificationhandler">
-<h5><span class="section-number">4.16.9.1.3.1. </span>CddUartReadNotificationHandler<a class="headerlink" href="#cdduartreadnotificationhandler" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.3.1. </span>CddUartReadNotificationHandler<a class="headerlink" href="#cdduartreadnotificationhandler" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1234,7 +1253,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduarterrornotificationhandler">
-<h5><span class="section-number">4.16.9.1.3.2. </span>CddUartErrorNotificationHandler<a class="headerlink" href="#cdduarterrornotificationhandler" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.3.2. </span>CddUartErrorNotificationHandler<a class="headerlink" href="#cdduarterrornotificationhandler" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1276,7 +1295,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduarttriggerlevelreadfifo">
-<h5><span class="section-number">4.16.9.1.3.3. </span>CddUartTriggerLevelReadFIFO<a class="headerlink" href="#cdduarttriggerlevelreadfifo" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.16.9.2.3.3. </span>CddUartTriggerLevelReadFIFO<a class="headerlink" href="#cdduarttriggerlevelreadfifo" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1317,10 +1336,10 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </section>
 </section>
 <section id="cdduartgeneral">
-<h3><span class="section-number">4.16.9.2. </span>CddUartGeneral<a class="headerlink" href="#cdduartgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.16.9.3. </span>CddUartGeneral<a class="headerlink" href="#cdduartgeneral" title="Link to this heading"></a></h3>
 <p>General CddUart` module configuration parameters.</p>
 <section id="cdduartmainfunctionwriteperiod">
-<h4><span class="section-number">4.16.9.2.1. </span>CddUartMainFunctionWritePeriod<a class="headerlink" href="#cdduartmainfunctionwriteperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.9.3.1. </span>CddUartMainFunctionWritePeriod<a class="headerlink" href="#cdduartmainfunctionwriteperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1359,7 +1378,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cdduartdeverrordetect">
-<h4><span class="section-number">4.16.9.2.2. </span>CddUartDevErrorDetect<a class="headerlink" href="#cdduartdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.16.9.3.2. </span>CddUartDevErrorDetect<a class="headerlink" href="#cdduartdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1393,7 +1412,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 </section>
 </section>
 <section id="steps-to-configure-cdd-uart-module">
-<h3><span class="section-number">4.16.9.3. </span>Steps To Configure Cdd Uart Module<a class="headerlink" href="#steps-to-configure-cdd-uart-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.16.9.4. </span>Steps To Configure Cdd Uart Module<a class="headerlink" href="#steps-to-configure-cdd-uart-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Cdd_Uart module. Select the Precompile Config Variant.</p></li>
 <li><p>Configure the required parameters.</p></li>
@@ -1450,7 +1469,7 @@ The associated Cdd Uart driver configuration generated source file is <strong>Cd
 <span class="o">---------------------</span>
 <span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
 <span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
-<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="nl">Cdd_Uart_Example_Loopback</span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Completes</span><span class="w"> </span><span class="n">successfully</span><span class="w"> </span><span class="o">!!!</span>
@@ -1505,7 +1524,7 @@ demonstrating the reliability and functionality of the Cdd_Uart driver in interr
 <span class="o">---------------------</span>
 <span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
 <span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
-<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">T</span>
@@ -1570,7 +1589,7 @@ demonstrating the reliability and functionality of the Cdd_Uart driver in interr
 <span class="o">---------------------</span>
 <span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
 <span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
-<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="nl">Cdd_Uart_Example_Write_Interrupt</span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Completes</span><span class="w"> </span><span class="n">successfully</span><span class="w"> </span><span class="o">!!!</span>
@@ -1634,7 +1653,7 @@ demonstrating the reliability and functionality of the Cdd_Uart driver in pollin
 <span class="o">---------------------</span>
 <span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
 <span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
-<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="nl">Cdd_Uart_Example_Write_Polling</span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Completes</span><span class="w"> </span><span class="n">successfully</span><span class="w"> </span><span class="o">!!!</span>
@@ -1709,14 +1728,14 @@ demonstrating the reliability and functionality of the Cdd_Uart driver in pollin
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Module_User_Guide_Cdd_Xbar.html" class="btn btn-neutral float-left" title="4.15. CDD XBAR Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="api_guide.html" class="btn btn-neutral float-right" title="5. API guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Module_User_Guide_Rtdma.html" class="btn btn-neutral float-right" title="4.17. RTDMA Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1733,7 +1752,7 @@ demonstrating the reliability and functionality of the Cdd_Uart driver in pollin
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

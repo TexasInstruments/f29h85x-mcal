@@ -46,7 +46,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -69,6 +69,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#cdd-sent-driver">6.1.2. CDD SENT Driver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lin-driver">6.1.3. LIN Driver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#spi-driver">6.1.4. SPI Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fls-driver">6.1.5. FLS Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdd-ipc-driver">6.1.6. CDD IPC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdd-adc-driver">6.1.7. CDD ADC Driver</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#memory-footprints">6.2. Memory Footprints</a><ul>
@@ -134,42 +137,42 @@
 <tbody>
 <tr class="row-even"><td><p>Transmission time in polling</p></td>
 <td><p>NA</p></td>
-<td><p>202 us</p></td>
+<td><p>142 us</p></td>
 <td><p>Classic CAN : 8 byte : 1 Mbps</p></td>
 </tr>
 <tr class="row-odd"><td><p>Reception time in polling</p></td>
 <td><p>NA</p></td>
-<td><p>198 us</p></td>
+<td><p>140 us</p></td>
 <td><p>Classic CAN : 8 byte : 1 Mbps</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmission time in Interrupt</p></td>
 <td><p>NA</p></td>
-<td><p>134 us</p></td>
+<td><p>123 us</p></td>
 <td><p>Classic CAN : 8 byte : 1 Mbps</p></td>
 </tr>
 <tr class="row-odd"><td><p>Reception time in Interrupt</p></td>
 <td><p>NA</p></td>
-<td><p>130 us</p></td>
+<td><p>120 us</p></td>
 <td><p>Classic CAN : 8 byte : 1 Mbps</p></td>
 </tr>
 <tr class="row-even"><td><p>Maximum packets Transmission per second in polling</p></td>
 <td><p>9010</p></td>
-<td><p>8182</p></td>
+<td><p>8232</p></td>
 <td><p>Classic CAN : 8 byte : 1 Mbps</p></td>
 </tr>
 <tr class="row-odd"><td><p>Maximum packets Transmission per second in polling</p></td>
 <td><p>7270</p></td>
-<td><p>6042</p></td>
+<td><p>5976</p></td>
 <td><p>CAN FD : 64 byte : 5 Mbps</p></td>
 </tr>
 <tr class="row-even"><td><p>Maximum packets Transmission per second in Interrupt</p></td>
 <td><p>9010</p></td>
-<td><p>8389</p></td>
+<td><p>8326</p></td>
 <td><p>Classic CAN : 8 byte : 1 Mbps</p></td>
 </tr>
 <tr class="row-odd"><td><p>Maximum packets Transmission per second in Interrupt</p></td>
 <td><p>7270</p></td>
-<td><p>5853</p></td>
+<td><p>5725</p></td>
 <td><p>CAN FD : 64 byte : 5 Mbps</p></td>
 </tr>
 </tbody>
@@ -199,7 +202,7 @@
 <tr class="row-even"><td><p>MTP MODE trigger transmit time</p></td>
 <td><p>NA</p></td>
 <td><p>8154 us</p></td>
-<td><p>In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the responce, process sensor data, send the data to the PDU router.</p></td>
+<td><p>In MTP MODE, the total time it takes for the Cdd_Sent module to trigger the sensor, Waiting for the response, process sensor data, send the data to the PDU router.</p></td>
 </tr>
 </tbody>
 </table>
@@ -216,13 +219,13 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Lin Master Response Performance</p></td>
-<td><p>758784 us</p></td>
-<td><p>868807 us</p></td>
+<td><p>845312 us</p></td>
+<td><p>867612 us</p></td>
 <td><p>Total time taken to send 8 Bytes of data 128 times ~ 1MB</p></td>
 </tr>
 <tr class="row-odd"><td><p>Lin Slave Response Performance</p></td>
-<td><p>5928 us</p></td>
-<td><p>7270 us</p></td>
+<td><p>6874 us</p></td>
+<td><p>7269 us</p></td>
 <td><p>Total time taken to receive 8 Bytes of data</p></td>
 </tr>
 </tbody>
@@ -241,27 +244,27 @@
 <tbody>
 <tr class="row-even"><td><p>Transmit 112000 words with 8 bit data width</p></td>
 <td><p>179200</p></td>
-<td><p>179209</p></td>
+<td><p>179208</p></td>
 <td><p>BaudRate 5MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 8 bit data width</p></td>
 <td><p>179200</p></td>
-<td><p>179211</p></td>
+<td><p>179209</p></td>
 <td><p>BaudRate 5MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 112000 words with 16 bit data width</p></td>
 <td><p>358400</p></td>
-<td><p>358408</p></td>
+<td><p>358407</p></td>
 <td><p>BaudRate 5MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 16 bit data width</p></td>
 <td><p>358400</p></td>
-<td><p>358409</p></td>
+<td><p>358408</p></td>
 <td><p>BaudRate 5MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 112000 words with 8 bit data width</p></td>
 <td><p>89600</p></td>
-<td><p>89608</p></td>
+<td><p>89607</p></td>
 <td><p>BaudRate 10MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 8 bit data width</p></td>
@@ -271,32 +274,32 @@
 </tr>
 <tr class="row-even"><td><p>Transmit 112000 words with 16 bit data width</p></td>
 <td><p>179200</p></td>
-<td><p>179208</p></td>
+<td><p>179207</p></td>
 <td><p>BaudRate 10MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 16 bit data width</p></td>
 <td><p>179200</p></td>
-<td><p>179209</p></td>
+<td><p>179208</p></td>
 <td><p>BaudRate 10MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 112000 words with 8 bit data width</p></td>
 <td><p>17920</p></td>
-<td><p>23770</p></td>
+<td><p>23916</p></td>
 <td><p>BaudRate 50MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 8 bit data width</p></td>
 <td><p>17920</p></td>
-<td><p>29425</p></td>
+<td><p>29686</p></td>
 <td><p>BaudRate 50MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 112000 words with 16 bit data width</p></td>
 <td><p>35840</p></td>
-<td><p>36553</p></td>
+<td><p>35848</p></td>
 <td><p>BaudRate 50MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 16 bit data width</p></td>
 <td><p>35840</p></td>
-<td><p>39701</p></td>
+<td><p>36113</p></td>
 <td><p>BaudRate 50MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 56000 words with 8 bit data width</p></td>
@@ -306,7 +309,7 @@
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 8 bit data width</p></td>
 <td><p>89600</p></td>
-<td><p>89607</p></td>
+<td><p>89606</p></td>
 <td><p>BaudRate 5MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 56000 words with 16 bit data width</p></td>
@@ -316,7 +319,7 @@
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 16 bit data width</p></td>
 <td><p>179200</p></td>
-<td><p>179206</p></td>
+<td><p>179205</p></td>
 <td><p>BaudRate 5MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 56000 words with 8 bit data width</p></td>
@@ -336,28 +339,114 @@
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 16 bit data width</p></td>
 <td><p>89600</p></td>
-<td><p>89606</p></td>
+<td><p>89605</p></td>
 <td><p>BaudRate 10MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 56000 words with 8 bit data width</p></td>
 <td><p>8960</p></td>
-<td><p>11886</p></td>
+<td><p>11959</p></td>
 <td><p>BaudRate 50MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 8 bit data width</p></td>
 <td><p>8960</p></td>
-<td><p>14723</p></td>
+<td><p>14863</p></td>
 <td><p>BaudRate 50MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 56000 words with 16 bit data width</p></td>
 <td><p>17920</p></td>
-<td><p>18277</p></td>
+<td><p>17925</p></td>
 <td><p>BaudRate 50MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 16 bit data width</p></td>
 <td><p>17920</p></td>
-<td><p>19883</p></td>
+<td><p>17926</p></td>
 <td><p>BaudRate 50MHz, Async Transmit</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="fls-driver">
+<h3><span class="section-number">6.1.5. </span>FLS Driver<a class="headerlink" href="#fls-driver" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Performance Test</p></th>
+<th class="head"><p>Theoretical value (min)</p></th>
+<th class="head"><p>Theoretical value (max)</p></th>
+<th class="head"><p>Measured value</p></th>
+<th class="head"><p>Remarks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Sector erase time (2KB)</p></td>
+<td><p>3 ms</p></td>
+<td><p>10 ms</p></td>
+<td><p>3.520 ms</p></td>
+<td><p>2048 bytes : 200Mhz</p></td>
+</tr>
+<tr class="row-odd"><td><p>Program 128-bit + 16 ECC bits</p></td>
+<td><p>62.5 us</p></td>
+<td><p>625 us</p></td>
+<td><p>1649 us</p></td>
+<td><p>16 byte :  200Mhz</p></td>
+</tr>
+<tr class="row-even"><td><p>Program Sector (2KB)</p></td>
+<td><p>8 ms</p></td>
+<td><p>80 ms</p></td>
+<td><p>8.455 ms</p></td>
+<td><p>2048 bytes : 200Mhz</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The erase and program times are approximate due to unavailability of the flash characterization data. This table will be updated in the next release.</p>
+<p>Please note that in the Fls module, once the erase, program or read job is accepted, it is processed through Fls_MainFunction cyclically until the job is finished, thereby adding additional function call overhead time compared to theoretical value.</p>
+</div>
+</section>
+<section id="cdd-ipc-driver">
+<h3><span class="section-number">6.1.6. </span>CDD IPC Driver<a class="headerlink" href="#cdd-ipc-driver" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Performance Test</p></th>
+<th class="head"><p>Measured value (bytes)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Data transmitted per second</p></td>
+<td><p>2380956</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please note that this performance result depends on, when the remote core acknowledges the data. This performance result is measured using a single channel in polling mode.</p>
+</div>
+</section>
+<section id="cdd-adc-driver">
+<h3><span class="section-number">6.1.7. </span>CDD ADC Driver<a class="headerlink" href="#cdd-adc-driver" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Performance Test</p></th>
+<th class="head"><p>Theoretical value (max)</p></th>
+<th class="head"><p>Measured value</p></th>
+<th class="head"><p>Remarks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>12-bit ADC with SW triggers</p></td>
+<td><p>3.84 Msps at 57MHz</p></td>
+<td><p>3.846 Msps (99.909760%) With 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>12-bit ADC with HW triggers</p></td>
+<td><p>3.84 Msps at 57MHz</p></td>
+<td><p>3.836 Msps (99.636093%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>16-bit ADC with SW triggers</p></td>
+<td><p>1.19 Msps at 57MHz</p></td>
+<td><p>1.183 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -377,24 +466,24 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Can_Example_Classic_FD</p></td>
-<td><p>59949</p></td>
+<td><p>57685</p></td>
 <td><p>0</p></td>
-<td><p>8580</p></td>
+<td><p>8568</p></td>
 </tr>
 <tr class="row-odd"><td><p>Can_Example_Icom</p></td>
-<td><p>60621</p></td>
+<td><p>58293</p></td>
 <td><p>0</p></td>
-<td><p>8852</p></td>
+<td><p>8840</p></td>
 </tr>
 <tr class="row-even"><td><p>Can_Example_loopback</p></td>
-<td><p>58333</p></td>
+<td><p>56053</p></td>
 <td><p>0</p></td>
-<td><p>8516</p></td>
+<td><p>8504</p></td>
 </tr>
 <tr class="row-odd"><td><p>Can_Example_Wakeup</p></td>
-<td><p>59077</p></td>
+<td><p>56805</p></td>
 <td><p>0</p></td>
-<td><p>8600</p></td>
+<td><p>8588</p></td>
 </tr>
 </tbody>
 </table>
@@ -411,7 +500,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Dio_Example_Read_Write_All</p></td>
-<td><p>44229</p></td>
+<td><p>41237</p></td>
 <td><p>0</p></td>
 <td><p>4656</p></td>
 </tr>
@@ -430,7 +519,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Fls_App_Example</p></td>
-<td><p>56189</p></td>
+<td><p>52669</p></td>
 <td><p>0</p></td>
 <td><p>13020</p></td>
 </tr>
@@ -449,27 +538,27 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Gpt_Example_Timers</p></td>
-<td><p>47349</p></td>
+<td><p>44389</p></td>
 <td><p>0</p></td>
 <td><p>4732</p></td>
 </tr>
 <tr class="row-odd"><td><p>Gpt_Example_OneShotMode</p></td>
-<td><p>48605</p></td>
+<td><p>45644</p></td>
 <td><p>0</p></td>
 <td><p>4720</p></td>
 </tr>
 <tr class="row-even"><td><p>Gpt_Example_MixedMode</p></td>
-<td><p>46541</p></td>
+<td><p>43581</p></td>
 <td><p>0</p></td>
 <td><p>4704</p></td>
 </tr>
 <tr class="row-odd"><td><p>Gpt_Example_InterruptTimeout</p></td>
-<td><p>47957</p></td>
+<td><p>44997</p></td>
 <td><p>0</p></td>
 <td><p>4708</p></td>
 </tr>
 <tr class="row-even"><td><p>Gpt_Example_ContinuousMode</p></td>
-<td><p>48549</p></td>
+<td><p>45573</p></td>
 <td><p>0</p></td>
 <td><p>4720</p></td>
 </tr>
@@ -488,17 +577,17 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Lin_Example_Init_Sleep_Wakeup</p></td>
-<td><p>47581</p></td>
+<td><p>44429</p></td>
 <td><p>0</p></td>
 <td><p>4689</p></td>
 </tr>
 <tr class="row-odd"><td><p>Lin_Example_SendData</p></td>
-<td><p>47845</p></td>
+<td><p>44677</p></td>
 <td><p>0</p></td>
 <td><p>4704</p></td>
 </tr>
 <tr class="row-even"><td><p>Lin_Example_Sleep_Wakeup_Interrupt</p></td>
-<td><p>46637</p></td>
+<td><p>43485</p></td>
 <td><p>0</p></td>
 <td><p>4692</p></td>
 </tr>
@@ -517,22 +606,22 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Mcu_Example_Clock</p></td>
-<td><p>41269</p></td>
+<td><p>38341</p></td>
 <td><p>0</p></td>
 <td><p>4636</p></td>
 </tr>
 <tr class="row-odd"><td><p>Mcu_Example_PowerMode</p></td>
-<td><p>41621</p></td>
+<td><p>38677</p></td>
 <td><p>0</p></td>
 <td><p>4637</p></td>
 </tr>
 <tr class="row-even"><td><p>Mcu_Example_Ram</p></td>
-<td><p>41941</p></td>
+<td><p>38917</p></td>
 <td><p>0</p></td>
 <td><p>4645</p></td>
 </tr>
 <tr class="row-odd"><td><p>Mcu_Example_Reset</p></td>
-<td><p>41301</p></td>
+<td><p>38341</p></td>
 <td><p>0</p></td>
 <td><p>4641</p></td>
 </tr>
@@ -551,7 +640,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Port_Example_Init</p></td>
-<td><p>42653</p></td>
+<td><p>39709</p></td>
 <td><p>0</p></td>
 <td><p>4646</p></td>
 </tr>
@@ -570,22 +659,22 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Spi_Example_Sync_AsyncTransfer</p></td>
-<td><p>56229</p></td>
+<td><p>53293</p></td>
 <td><p>0</p></td>
 <td><p>5688</p></td>
 </tr>
 <tr class="row-odd"><td><p>Spi_Example_AsyncTransfer_Interrupt</p></td>
-<td><p>56509</p></td>
+<td><p>53541</p></td>
 <td><p>0</p></td>
 <td><p>5576</p></td>
 </tr>
 <tr class="row-even"><td><p>Spi_Example_SyncTransfer</p></td>
-<td><p>55709</p></td>
+<td><p>52461</p></td>
 <td><p>0</p></td>
 <td><p>5416</p></td>
 </tr>
 <tr class="row-odd"><td><p>Spi_Example_External_Loopback</p></td>
-<td><p>67117</p></td>
+<td><p>64125</p></td>
 <td><p>0</p></td>
 <td><p>5228</p></td>
 </tr>
@@ -604,12 +693,12 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Wdg_Example_Interrupt</p></td>
-<td><p>43725</p></td>
+<td><p>40765</p></td>
 <td><p>0</p></td>
 <td><p>4696</p></td>
 </tr>
 <tr class="row-odd"><td><p>Wdg_Example_Service</p></td>
-<td><p>43813</p></td>
+<td><p>40989</p></td>
 <td><p>0</p></td>
 <td><p>4696</p></td>
 </tr>
@@ -628,24 +717,24 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Adc_Example_Differential</p></td>
-<td><p>58341</p></td>
+<td><p>55957</p></td>
 <td><p>0</p></td>
-<td><p>5024</p></td>
+<td><p>5048</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Adc_Example_GlbSwTrig</p></td>
-<td><p>59708</p></td>
+<td><p>58061</p></td>
 <td><p>0</p></td>
-<td><p>5580</p></td>
+<td><p>5604</p></td>
 </tr>
 <tr class="row-even"><td><p>Cdd_Adc_Example_Ppb_TrigRepeater</p></td>
-<td><p>60005</p></td>
+<td><p>57925</p></td>
 <td><p>0</p></td>
-<td><p>7304</p></td>
+<td><p>7320</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Adc_Example_TempSensor</p></td>
-<td><p>51773</p></td>
+<td><p>48493</p></td>
 <td><p>0</p></td>
-<td><p>4816</p></td>
+<td><p>4832</p></td>
 </tr>
 </tbody>
 </table>
@@ -662,9 +751,14 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Ecap_Capture_Signal</p></td>
-<td><p>54685</p></td>
+<td><p>52661</p></td>
 <td><p>0</p></td>
-<td><p>5332</p></td>
+<td><p>5156</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Ecap_HrMode</p></td>
+<td><p>50229</p></td>
+<td><p>0</p></td>
+<td><p>4833</p></td>
 </tr>
 </tbody>
 </table>
@@ -681,12 +775,12 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Ipc_Example_Polling_C29x1</p></td>
-<td><p>58869</p></td>
+<td><p>53813</p></td>
 <td><p>0</p></td>
 <td><p>4660</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Ipc_Example_Interrupt_C29x1</p></td>
-<td><p>59181</p></td>
+<td><p>54077</p></td>
 <td><p>0</p></td>
 <td><p>4660</p></td>
 </tr>
@@ -704,10 +798,50 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Cdd_Pwm_Example_UpCountMode</p></td>
-<td><p>48709</p></td>
+<tr class="row-even"><td><p>Cdd_Pwm_Example_Chopper</p></td>
+<td><p>77925</p></td>
 <td><p>0</p></td>
-<td><p>66296</p></td>
+<td><p>66135</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Pwm_Example_DC_EventFilter</p></td>
+<td><p>78637</p></td>
+<td><p>0</p></td>
+<td><p>66141</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_Pwm_Example_Deadband</p></td>
+<td><p>79285</p></td>
+<td><p>0</p></td>
+<td><p>66137</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Pwm_Example_DiodeEmulation</p></td>
+<td><p>79869</p></td>
+<td><p>0</p></td>
+<td><p>66157</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_Pwm_Example_GlobalLoad_And_Link</p></td>
+<td><p>77221</p></td>
+<td><p>0</p></td>
+<td><p>66135</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Pwm_Example_Hrpwm</p></td>
+<td><p>76821</p></td>
+<td><p>0</p></td>
+<td><p>66123</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_Pwm_Example_TripZone</p></td>
+<td><p>79189</p></td>
+<td><p>0</p></td>
+<td><p>4705</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Pwm_Example_UpCountMode</p></td>
+<td><p>46093</p></td>
+<td><p>0</p></td>
+<td><p>66264</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_Pwm_Example_XCmp_MultipleEdges</p></td>
+<td><p>80581</p></td>
+<td><p>0</p></td>
+<td><p>4685</p></td>
 </tr>
 </tbody>
 </table>
@@ -724,12 +858,12 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Sent_Standard</p></td>
-<td><p>47077</p></td>
+<td><p>44101</p></td>
 <td><p>0</p></td>
 <td><p>4740</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Sent_MtpMode</p></td>
-<td><p>47277</p></td>
+<td><p>44317</p></td>
 <td><p>0</p></td>
 <td><p>4744</p></td>
 </tr>
@@ -748,22 +882,22 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Uart_Example_Loopback</p></td>
-<td><p>47077</p></td>
+<td><p>44197</p></td>
 <td><p>0</p></td>
 <td><p>4700</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Uart_Example_Read_Interrupt</p></td>
-<td><p>46757</p></td>
+<td><p>43829</p></td>
 <td><p>0</p></td>
 <td><p>4700</p></td>
 </tr>
 <tr class="row-even"><td><p>Cdd_Uart_Example_Write_Interrupt</p></td>
-<td><p>46949</p></td>
+<td><p>44069</p></td>
 <td><p>0</p></td>
 <td><p>4700</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Uart_Example_Write_Polling</p></td>
-<td><p>46613</p></td>
+<td><p>43749</p></td>
 <td><p>0</p></td>
 <td><p>4700</p></td>
 </tr>
@@ -782,7 +916,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Xbar_GpioToGpio</p></td>
-<td><p>47709</p></td>
+<td><p>44733</p></td>
 <td><p>0</p></td>
 <td><p>4692</p></td>
 </tr>
@@ -807,7 +941,7 @@
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -824,7 +958,7 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

@@ -203,7 +203,7 @@ Interrupt type should be selected in CAN plugin.
 |Can F| Can_6_Int1ISR|
 
 ```{NOTE}
-Same interrupt category should be configured in Os module, 
+Same interrupt category should be configured in Os module. Nesting of CAN interrupts is not allowed. In case nesting of CAN interrupt is enabled, data integrity cannot be ensured.
 ```
 
 #### Instance support
@@ -258,6 +258,12 @@ PORT Module is required to initialize Pin configurations and MUX mode for CAN In
 
 Not Supported
 
+#### General Guidelines
+
+##### Imported Types: Can_HwHandleType
+
+Can_HwHandleType represents the hardware object handles of a CAN hardware unit. MCAN supports configuration of more than 256 hardware object handles. Hence extended range (i.e. uint16 type) must be used. For details of Can_HwHandleType refer AUTOSAR requirement SWS_Can_00429.
+
 ### Configuration
 
 The Can Driver implementation supports multiple configuration variants
@@ -265,6 +271,32 @@ The driver expects generated **Can_Cfg.h** to be present as input file.
 The associated Can driver configuration generated source files are **Can_Cfg.c** and **Can_PBcfg.c** if Post-Build config variant is selected, only **Can_Cfg.c** if Pre-Compile variant is selected
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+#### Migration Guide to v02.00.00 from v01.02.00
+
+v02.00.00 CAN driver is designed to fit MCAN hardware with AUTOSAR concepts. Following are some generic recommendations for v02.00.00 CAN driver configuration.
+
+1. When hardware object handle is configured as BASIC, it uses FIFO in hardware which can store multiple messages as per configured depth. Hardware supports maximum 1 Tx FIFO and 2 Rx FIFOs per controller, hence maximum 1 BASIC transmit hardware object handle and maximum 2 BASIC receive hardware object handles can be configured.
+2. Each BASIC receive hardware object handle can store multiple different CAN messages as per one or more filters configured inside hardware object handle.
+3. When hardware object handle is configured as FULL, it uses dedicated buffer in hardware which can store only one message with specific message Id. Hardware supports maximum 32 Tx dedicated buffers and 64 Rx dedicated buffers per controller, hence maximum 32 FULL transmit hardware object handle and maximum 64 FULL receive hardware object handles can be configured.
+4. Each FULL receive hardware object handle can store only one message at a time as per one or more filters configured inside hardware object handle.
+5. There can be maximum 128 standard filters and 64 extended filters configured per controller.
+6. Total size of Standard filters, Extended filters, Rx messages (FIFO and dedicated buffers), Tx messages (FIFO and dedicated buffers) should not exceed total message RAM area available for controller. For more details, refer to F29x Technical Reference Manual.
+
+In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Can_Init function will need to use the new configuration structure name. For example:
+
+```c
+/* Old code (v01.01.00 or any older versions) */
+Can_Init(&Can_CanConfigSet);
+
+/* New code (v02.00.00) */
+Can_Init(&Can_Config);
+```
+
+This change ensures compliance with AUTOSAR naming conventions.
+
+To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
 
 
 
@@ -1024,7 +1056,7 @@ This container contains the configuration (parameters) of CAN Hardware Objects.
 | Item ||
 |--------|---------------|
 | **Name** | CanHandleType |
-| **Description** | Specifies the type (Full-CAN or Basic-CAN) of a hardware object. |
+| **Description** | Specifies the type (Full-CAN or Basic-CAN) of a hardware object. Basic object uses FIFO in hardware and Full object uses dedicated buffer in hardware. |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | true |
 | **Value-Configuration-Class** | -- |
@@ -1055,9 +1087,9 @@ This container contains the configuration (parameters) of CAN Hardware Objects.
 | Item ||
 |--------|---------------|
 | **Name** | CanHwObjectCount |
-| **Description** | Number of hardware objects used to implement one HOH. In case of a HRH this parameter defines the number of elements in the hardware FIFO or the number of shadow buffers, in case of a HTH it defines the number of hardware objects used for multiplexed transmission or for a hardware FIFO used by a FullCAN HTH. |
+| **Description** | Number of hardware objects used to implement one HOH. In case of Basic object, this parameter defines the depth of FIFO. In case of Full object it must be one. |
 | **Origin** | AUTOSAR_ECUC |
-| **Post-Build-Variant-Value** | false |
+| **Post-Build-Variant-Value** | true |
 | **Value-Configuration-Class** | -- |
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
@@ -1581,7 +1613,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Item ||
 |--------|---------------|
 | **Name** | CanMultiplexedTransmission |
-| **Description** | Specifies if multiplexed transmission shall be supported.ON or OFF |
+| **Description** | Specifies if multiplexed transmission shall be supported.ON or OFF. This parameter is not used. Use of Transmit FIFO is equivalent to multiplexed transmission. |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1665,7 +1697,7 @@ This container contains the parameters related each CAN Driver Unit.
 | Item ||
 |--------|---------------|
 | **Name** | CanOsCounterRef |
-| **Description** | This parameter contains a reference to the OsCounter, which is used by the CAN driver. |
+| **Description** | This parameter contains a reference to the OsCounter, which is used by the CAN driver.                        Note: The CAN driver does not currently utilize this parameter |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1907,7 +1939,7 @@ The example application demonstrates use of Can module, the list below identifie
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm\
  ┃ ┃ ┃ ┃ ┣ 📂include\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Can_Cfg.h** : *Contains the generated pre-complier configuration header.*</i>*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Can_Cfg.h** : *Contains the generated pre-compiler configuration header.*</i>*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\

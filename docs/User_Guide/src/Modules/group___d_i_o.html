@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -84,14 +84,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#function-dio-readchannelgroup">5.2.4.6. function Dio_ReadChannelGroup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-dio-writechannelgroup">5.2.4.7. function Dio_WriteChannelGroup</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-dio-flipchannel">5.2.4.8. function Dio_FlipChannel</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-dio-ischannelvalid">5.2.4.9. function Dio_IsChannelValid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-dio-ischannelgroupvalid">5.2.4.10. function Dio_IsChannelGroupValid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-dio-pinreadpriv">5.2.4.11. function Dio_PinReadPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-dio-pinwritepriv">5.2.4.12. function Dio_PinWritePriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-dio-writeportdatapriv">5.2.4.13. function Dio_WritePortDataPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-dio-writechannelgrouppriv">5.2.4.14. function Dio_WriteChannelGroupPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-dio-readportdatapriv">5.2.4.15. function Dio_ReadPortDataPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-dio-pinflipval">5.2.4.16. function Dio_PinFlipVal</a></li>
 </ul>
 </li>
 </ul>
@@ -289,24 +281,6 @@ If the uC owns ports of different port widths Dio_PortLevelType inherits the siz
 <tr class="row-even"><td><p>DIO_SID_GET_VERSION_INFO</p></td>
 <td><p>Dio_GetVersionInfo()</p></td>
 </tr>
-<tr class="row-odd"><td><p>GPIO_DATA_INDEX</p></td>
-<td><p>Index of GPIO_DATA register for a port registers set.</p></td>
-</tr>
-<tr class="row-even"><td><p>GPIO_TOGGLE_INDEX</p></td>
-<td><p>Index of GPIO_TOGGLE register for a port registers set.</p></td>
-</tr>
-<tr class="row-odd"><td><p>GPIO_CLEAR_INDEX</p></td>
-<td><p>Index of GPIO_CLEAR register for a port registers set.</p></td>
-</tr>
-<tr class="row-even"><td><p>GPIO_SET_INDEX</p></td>
-<td><p>Index of GPIO_SET register for a port registers set.</p></td>
-</tr>
-<tr class="row-odd"><td><p>GPIO_DATA_REGS_STEP</p></td>
-<td><p>Port Data register step size.</p></td>
-</tr>
-<tr class="row-even"><td><p>DIO_PORT_WIDTH</p></td>
-<td><p>Width of GPIO register in this platform.</p></td>
-</tr>
 <tr class="row-odd"><td><p>GPIO_PORT_A</p></td>
 <td><p>GPIO PORT A identifier.</p></td>
 </tr>
@@ -376,38 +350,6 @@ If the uC owns ports of different port widths Dio_PortLevelType inherits the siz
 <td><p><strong><a class="reference internal" href="#function-dio-flipchannel"><span class="std std-ref">Dio_FlipChannel</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> ChannelId)</p></td>
 <td><p>Service to flip the value of a DIO channel.</p></td>
 </tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-ischannelvalid"><span class="std std-ref">Dio_IsChannelValid</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> ChannelId)</p></td>
-<td><p>Checks if the channel ID is valid.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-ischannelgroupvalid"><span class="std std-ref">Dio_IsChannelGroupValid</span></a></strong>(const <a class="reference internal" href="../Classes/struct_dio___channel_group_type.html"><span class="std std-doc">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr)</p></td>
-<td><p>Checks if the channel group is valid.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#typedef-dio-leveltype"><span class="std std-ref">Dio_LevelType</span></a></p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-pinreadpriv"><span class="std std-ref">Dio_PinReadPriv</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> channelId)</p></td>
-<td><p>Reads the value present on the specified pin.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-pinwritepriv"><span class="std std-ref">Dio_PinWritePriv</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> channelId, <a class="reference internal" href="#typedef-dio-leveltype"><span class="std std-ref">Dio_LevelType</span></a> channelVal)</p></td>
-<td><p>Writes a value to the specified pin.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-writeportdatapriv"><span class="std std-ref">Dio_WritePortDataPriv</span></a></strong>(<a class="reference internal" href="#typedef-dio-porttype"><span class="std std-ref">Dio_PortType</span></a> portId, <a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a> portValue)</p></td>
-<td><p>Writes a value to the specified port.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-writechannelgrouppriv"><span class="std std-ref">Dio_WriteChannelGroupPriv</span></a></strong>(const <a class="reference internal" href="../Classes/struct_dio___channel_group_type.html"><span class="std std-doc">Dio_ChannelGroupType</span></a> * ChannelGroupIdPtr, <a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a> PortValue)</p></td>
-<td><p>Writes a subset of the adjoining bits of a port to a specified level.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-readportdatapriv"><span class="std std-ref">Dio_ReadPortDataPriv</span></a></strong>(<a class="reference internal" href="#typedef-dio-porttype"><span class="std std-ref">Dio_PortType</span></a> PortId, <a class="reference internal" href="#typedef-dio-portleveltype"><span class="std std-ref">Dio_PortLevelType</span></a> * PortValue)</p></td>
-<td><p>Reads the data on the specified port.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-dio-pinflipval"><span class="std std-ref">Dio_PinFlipVal</span></a></strong>(<a class="reference internal" href="#typedef-dio-channeltype"><span class="std std-ref">Dio_ChannelType</span></a> ChannelId)</p></td>
-<td><p>Toggles the present value of the specified channel.</p></td>
-</tr>
 </tbody>
 </table>
 <section id="function-dio-getversioninfo">
@@ -422,7 +364,6 @@ Service to get the version information of the module.</p>
 <p>This service writes the version information of this module into the data structure referenced by the parameter. If this parameter references NULL_PTR, a development error is reported to Det. This service is only available if the pre-compile configuration parameter DIO_VERSION_INFO_API is enabled.</p>
 <p><strong>Parameters</strong>:</p>
 <ul class="simple">
-<li><p><strong>Versioninfo</strong></p></li>
 <li><p><strong>Versioninfo</strong> structure that contains the version information parameters.</p></li>
 </ul>
 <p><strong>Returns</strong>:</p>
@@ -603,198 +544,6 @@ Service to flip the value of a DIO channel.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
-<section id="function-dio-ischannelvalid">
-<h3><span class="section-number">5.2.4.9. </span>function Dio_IsChannelValid<a class="headerlink" href="#function-dio-ischannelvalid" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Dio_IsChannelValid</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Dio_ChannelType</span><span class="w"> </span><span class="n">ChannelId</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Checks if the channel ID is valid.</p>
-<p>Checks if the channel_id passed to the API is valid or not by calculating the Port of the Channel and checking if the port is enabled.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ChannelId</strong> specifies the ID of the general-purpose digital</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>value</strong> E_OK: ChannelId is valid. E_NOT_OK: ChannelId is Invalid.
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: This function returns Std_ReturnType</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-dio-ischannelgroupvalid">
-<h3><span class="section-number">5.2.4.10. </span>function Dio_IsChannelGroupValid<a class="headerlink" href="#function-dio-ischannelgroupvalid" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Dio_IsChannelGroupValid</span><span class="p">(</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Dio_ChannelGroupType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ChannelGroupIdPtr</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Checks if the channel group is valid.</p>
-<p>Checks if the channelgroup_id_ptr passed to the API is valid or not by comparing it with the structure pointers of the current configuration.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ChannelGroupIdPtr</strong> for referencing channel group structures.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>E_OK</strong> ChannelGroupIdPtr is valid. E_NOT_OK: ChannelGroupIdPtr is Invalid.
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: This function returns Std_ReturnType</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-dio-pinreadpriv">
-<h3><span class="section-number">5.2.4.11. </span>function Dio_PinReadPriv<a class="headerlink" href="#function-dio-pinreadpriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Dio_LevelType</span><span class="w"> </span><span class="n">Dio_PinReadPriv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Dio_ChannelType</span><span class="w"> </span><span class="n">channelId</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Reads the value present on the specified pin.</p>
-<p>The value at the specified channel is read, as specified by <em>channelId</em> and returned</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>channelId</strong> is the identifying number of the pin.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>STD_HIGH</strong> logic level 1 STD_LOW: logic level 0
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Returns the logic level(value) on a specified DIO pin of type Dio_LevelType.</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-dio-pinwritepriv">
-<h3><span class="section-number">5.2.4.12. </span>function Dio_PinWritePriv<a class="headerlink" href="#function-dio-pinwritepriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Dio_PinWritePriv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Dio_ChannelType</span><span class="w"> </span><span class="n">channelId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Dio_LevelType</span><span class="w"> </span><span class="n">channelVal</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Writes a value to the specified pin.</p>
-<p>Writes the corresponding bit values to the pin specified by <em>channelId</em>. Writing to a channel configured as an input pin has no effect.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>channelId</strong> is the identifying number of the pin.</p></li>
-<li><p><strong>channelVal</strong> is the value to write to the channel.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-dio-writeportdatapriv">
-<h3><span class="section-number">5.2.4.13. </span>function Dio_WritePortDataPriv<a class="headerlink" href="#function-dio-writeportdatapriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Dio_WritePortDataPriv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Dio_PortType</span><span class="w"> </span><span class="n">portId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Dio_PortLevelType</span><span class="w"> </span><span class="n">portValue</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Writes a value to the specified port.</p>
-<p>This function writes the value <em>port_value</em> to the port specified by the <em>portId</em> parameter.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>portId</strong> is the DIO port being accessed.</p></li>
-<li><p><strong>portValue</strong> is the value to write to the port.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-dio-writechannelgrouppriv">
-<h3><span class="section-number">5.2.4.14. </span>function Dio_WriteChannelGroupPriv<a class="headerlink" href="#function-dio-writechannelgrouppriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Dio_WriteChannelGroupPriv</span><span class="p">(</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Dio_ChannelGroupType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ChannelGroupIdPtr</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Dio_PortLevelType</span><span class="w"> </span><span class="n">PortValue</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Writes a subset of the adjoining bits of a port to a specified level.</p>
-<p>This function compute the port value based on the received level, group mask and offset. Then write the computed port value to the specified port based on the portId received in channelGroupPtr.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ChannelGroupIdPtr</strong> for referencing channel group structures.</p></li>
-<li><p><strong>PortValue</strong> is the value to write to the port.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-dio-readportdatapriv">
-<h3><span class="section-number">5.2.4.15. </span>function Dio_ReadPortDataPriv<a class="headerlink" href="#function-dio-readportdatapriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Dio_ReadPortDataPriv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Dio_PortType</span><span class="w"> </span><span class="n">PortId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">Dio_PortLevelType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PortValue</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Reads the data on the specified port.</p>
-<p>The value at the specified port is read, as specified by <em>PortId</em> and writes into the <em>PortValue</em> parameter.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>PortId</strong> is the DIO port being accessed.</p></li>
-<li><p><strong>PortValue</strong> stores the value of the corresponding port being referred.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-dio-pinflipval">
-<h3><span class="section-number">5.2.4.16. </span>function Dio_PinFlipVal<a class="headerlink" href="#function-dio-pinflipval" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Dio_PinFlipVal</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Dio_ChannelType</span><span class="w"> </span><span class="n">ChannelId</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Toggles the present value of the specified channel.</p>
-<p>Toggles the corresponding bit values to the pin specified by <em>ChannelId</em>.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ChannelId</strong> is the identifying number of the pin.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
 </section>
 </section>
 
@@ -810,7 +559,7 @@ Toggles the present value of the specified channel.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -827,7 +576,7 @@ Toggles the present value of the specified channel.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

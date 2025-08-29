@@ -177,12 +177,12 @@ Interrupt and the category should be selected in the Cdd_Uart plugin.The Interru
 
  |Cdd_Uart Instance| Interrupt handler|
 |------------|-----------------|
-|Uart0|Cdd_Uart_0_ISR|
-|Uart1|Cdd_Uart_1_ISR|
-|Uart2|Cdd_Uart_2_ISR|
-|Uart3|Cdd_Uart_3_ISR|
-|Uart4|Cdd_Uart_4_ISR|
-|Uart5|Cdd_Uart_5_ISR|
+|UartA|Cdd_Uart_A_ISR|
+|UartB|Cdd_Uart_B_ISR|
+|UartC|Cdd_Uart_C_ISR|
+|UartD|Cdd_Uart_D_ISR|
+|UartE|Cdd_Uart_E_ISR|
+|UartF|Cdd_Uart_F_ISR|
 
 #### Instance support
 
@@ -222,7 +222,8 @@ For CDD_UART Module, data consistency and exclusive access to critical sections 
 
 | Exclusive Area Functions used | CDD_UART Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
 |-------|-------|-------|-------|
-|CDD_UART_EXCLUSIVE_AREA_0 | Cdd_Uart_Read<br>Cdd_Uart_Write<br>Cdd_Uart_CancelWrite<br>Cdd_Uart_CancelRead<br>Cdd_Uart_GetWriteStatus<br>Cdd_Uart_GetReadStatus| To protect against multiple access for shared resources which can lead to race condition |**ALL_INTERRUPT_BLOCKING** : All interrupts should be blocked as this API's can be called in the interrupts |
+|CDD_UART_EXCLUSIVE_AREA_0 | Cdd_Uart_Write<br>Cdd_Uart_CancelWrite<br>Cdd_Uart_GetWriteStatus| To protect against multiple access for shared resources which can lead to race condition |**ALL_INTERRUPT_BLOCKING** : All interrupts should be blocked if these API's are called in the interrupts.<br> **OS_RESOURCE** : If the CDD UART APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.|
+|CDD_UART_EXCLUSIVE_AREA_1 | Cdd_Uart_Read<br>Cdd_Uart_CancelRead<br>Cdd_Uart_GetReadStatus| To protect against multiple access for shared resources which can lead to race condition |**ALL_INTERRUPT_BLOCKING** : All interrupts should be blocked if these API's are called in the interrupts. <br> **OS_RESOURCE** : If the CDD UART APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management. |
 
 ##### MCU
 
@@ -251,6 +252,27 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
+#### Migration Guide to v02.00.00 from v01.00.00 or any older versions
+
+In version v02.00.00, there are two major changes that require attention when migrating from v01.00.00 or any older versions:
+
+##### UART INSTANCE Name Changes
+
+In this version, the names of the UART instance got updated, which impacts the values of other configuration parameters as well, because the range of values of other parameters are computed using these parameters. Due to these naming changes, UART configurations created with v01.00.00 or older versions are not directly compatible with v02.00.00.
+
+When migrating existing configurations:
+
+* Open your existing configuration in the latest plugin version
+* The plugin will automatically flag incompatible UART instance configurations
+* Configure the corresponding UART with the instance name by choosing values from the plugin
+* Run the auto-calculate wizard to update the UART base address
+* Verify and update all affected configurations
+* In order to migrate to the latest version, the values of UART instance need to be chosen from the plugin
+
+##### UART Clock Frequency Selection
+
+The UART Clock frequency must be referenced to the Mcu system clock. In older releases, the clock frequency was hardcoded.
+
 
 
 #### CddUartConfigSet
@@ -269,8 +291,8 @@ This container contains the configuration parameters of the CddUart HW units.
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | UART0 |
-| **Range** | UART0<br>UART1<br>UART2<br>UART3<br>UART4<br>UART5 |
+| **Default-value** | UARTA |
+| **Range** | UARTA<br>UARTB<br>UARTC<br>UARTD<br>UARTE<br>UARTF |
 
 ###### CddUartBaseAddress
 
@@ -298,20 +320,6 @@ This container contains the configuration parameters of the CddUart HW units.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 0 |
 | **Max-value** | 5 |
-| **Min-value** | 0 |
-
-###### CddUartClockFreq
-
-| Item ||
-|--------|---------------|
-| **Name** | CddUartClockFreq |
-| **Description** | This parameter takes the input value of clock frequency |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 0 |
-| **Max-value** | 200000000 |
 | **Min-value** | 0 |
 
 ###### CddUartBaudRate
@@ -456,6 +464,17 @@ This container contains the configuration parameters of the CddUart HW units.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
+
+###### CddUartClockFreq
+
+| Item ||
+|--------|---------------|
+| **Name** | CddUartClockFreq |
+| **Description** | This parameter takes the input value of clock frequency |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ##### CddUartWriteConfig
 This container contains the configuration parameters of the CddUart Write
@@ -609,7 +628,7 @@ Cdd_Uart MCAL Version Info
 ---------------------
 Vendor ID           : 44
 Module ID           : 255
-SW Major Version    : 1
+SW Major Version    : 2
 SW Minor Version    : 0
 SW Patch Version    : 0
 Cdd_Uart_Example_Loopback: Sample Application - Completes successfully !!!
@@ -651,7 +670,7 @@ Cdd_Uart MCAL Version Info
 ---------------------
 Vendor ID           : 44
 Module ID           : 255
-SW Major Version    : 1
+SW Major Version    : 2
 SW Minor Version    : 0
 SW Patch Version    : 0
 T
@@ -703,7 +722,7 @@ Cdd_Uart MCAL Version Info
 ---------------------
 Vendor ID           : 44
 Module ID           : 255
-SW Major Version    : 1
+SW Major Version    : 2
 SW Minor Version    : 0
 SW Patch Version    : 0
 Cdd_Uart_Example_Write_Interrupt: Sample Application - Completes successfully !!!
@@ -755,7 +774,7 @@ Cdd_Uart MCAL Version Info
 ---------------------
 Vendor ID           : 44
 Module ID           : 255
-SW Major Version    : 1
+SW Major Version    : 2
 SW Minor Version    : 0
 SW Patch Version    : 0
 Cdd_Uart_Example_Write_Polling: Sample Application - Completes successfully !!!

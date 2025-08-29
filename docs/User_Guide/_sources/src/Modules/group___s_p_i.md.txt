@@ -11,7 +11,6 @@ title: Spi API GUIDE Header file
 
 |  Base type   | Type Name  | Brief |
 | -------------| -----------| ----- |
-|enum| **[Spi_BufferWidthType](../Modules/group___s_p_i.md#enum-spi_bufferwidthtype)** | SPI Buffer pointer type.  | 
 |enum| **[Spi_HwInstance](../Modules/group___s_p_i.md#enum-spi_hwinstance)** | This type defines Channel Select Interface with in SPI(SPI instance)  | 
 |enum| **[Spi_StatusType](../Modules/group___s_p_i.md#enum-spi_statustype)** | This type defines a range of specific Driver status for SPI Handler/Driver.  | 
 |enum| **[Spi_JobResultType](../Modules/group___s_p_i.md#enum-spi_jobresulttype)** | This type defines a range of specific Jobs status for SPI Handler/Driver.  | 
@@ -22,7 +21,6 @@ title: Spi API GUIDE Header file
 |enum| **[Spi_CsSelection](../Modules/group___s_p_i.md#enum-spi_csselection)** | Spi Cs Selection - Chip select handling.  | 
 |enum| **[Spi_ClkMode](../Modules/group___s_p_i.md#enum-spi_clkmode)** | SPI Clock Mode - sets the clock polarity and phase. Note: These values are a direct register mapping. So don't change value.  | 
 |enum| **[Spi_JobPriorityType](../Modules/group___s_p_i.md#enum-spi_jobprioritytype)** | SPI Job Priority.  | 
-|typedef uint8  | **[Spi_CsLevelType](../Modules/group___s_p_i.md#typedef-spi_csleveltype)** | These are the possible levels a chip select.  | 
 |typedef uint8  | **[Spi_DataBufferType](../Modules/group___s_p_i.md#typedef-spi_databuffertype)** | Type of application data buffer elements.  | 
 |typedef uint32  | **[Spi_CsGpioType](../Modules/group___s_p_i.md#typedef-spi_csgpiotype)** | GPIO ID type.  | 
 |typedef uint32  | **[Spi_RegisterPtrType](../Modules/group___s_p_i.md#typedef-spi_registerptrtype)** | type for the register pointer  | 
@@ -34,20 +32,6 @@ title: Spi API GUIDE Header file
 |typedef uint8  | **[Spi_SequenceType](../Modules/group___s_p_i.md#typedef-spi_sequencetype)** | Specifies the identification (ID) for a sequence of jobs.  | 
 |typedef uint8  | **[Spi_HWUnitType](../Modules/group___s_p_i.md#typedef-spi_hwunittype)** | Specifies the identification (ID) for a SPI Hardware micro controller peripheral (unit)  | 
 |typedef uint8  | **[Spi_DataDelayType](../Modules/group___s_p_i.md#typedef-spi_datadelaytype)** | Spi_DataDelayType defines the number of SPI serial clock cycles delay between each word in FIFO mode.  | 
-
-
-
-### enum Spi_BufferWidthType
-| Enumerator | Value | Description |
-| ---------- | ----- | ----------- |
-| SPI_8BIT_BUFFER | | SPI 8 bit buffer.   |
-| SPI_16BIT_BUFFER | | SPI 16 bit buffer.   |
-
-
-
-
-**Brief**: 
-SPI Buffer pointer type. 
 
 
 
@@ -204,17 +188,6 @@ SPI Job Priority.
 
 
 
-### typedef Spi_CsLevelType
-```
-typedef uint8 Spi_CsLevelType;
-```
-
-
-**Brief**: 
-These are the possible levels a chip select. 
-
-
-
 ### typedef Spi_DataBufferType
 ```
 typedef uint8 Spi_DataBufferType;
@@ -340,14 +313,6 @@ Spi_DataDelayType defines the number of SPI serial clock cycles delay between ea
 ## Structures
 |   Name         | Brief          |
 | -------------- | -------------- |
-| **[Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md)** | SPI Channel object structure.  |
-| **[Spi_SeqObjType](../Classes/struct_spi___seq_obj_type.md)** | SPI Sequence object structure.  |
-| **[Spi_JobObjType](../Classes/struct_spi___job_obj_type.md)** | SPI Job object structure.  |
-| **[Spi_HwUnitObjType_t](../Classes/struct_spi___hw_unit_obj_type__t.md)** | SPI Hardware unit object structure.  |
-| **[Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md)** | SPI driver object structure.  |
-| **[Spi_UtilsParams](../Classes/struct_spi___utils_params.md)** | Structure for storing node info.  |
-| **[Spi_UtilsNode_t](../Classes/struct_spi___utils_node__t.md)** | Self referential structure for double link list.  |
-| **[Spi_UtilsLinkListObj](../Classes/struct_spi___utils_link_list_obj.md)** | Structure to the link list object information.  |
 | **[Spi_ChannelConfigType](../Classes/struct_spi___channel_config_type.md)** | SPI Channel configuration structure.  |
 | **[Spi_ExternalDeviceConfigType](../Classes/struct_spi___external_device_config_type.md)** | SPI external device specific configuration structure .  |
 | **[Spi_JobConfigType](../Classes/struct_spi___job_config_type.md)** | SPI Job configuration structure.  |
@@ -362,27 +327,12 @@ Spi_DataDelayType defines the number of SPI serial clock cycles delay between ea
 
 | Name           |  Brief     |
 | -------------- | ---------- |
-| SPI_SID_INIT   | Spi_Init() API Service ID.  |
-| SPI_SID_DEINIT   | Spi_DeInit() API Service ID.  |
-| SPI_SID_WRITE_IB   | Spi_WriteIB() API Service ID.  |
-| SPI_SID_ASYNC_TRANSMIT   | Spi_AsyncTransmit() API Service ID.  |
-| SPI_SID_READ_IB   | Spi_ReadIB() API Service ID.  |
-| SPI_SID_SETUP_EB   | Spi_SetupEB() API Service ID.  |
-| SPI_SID_GET_STATUS   | Spi_GetStatus() API Service ID.  |
-| SPI_SID_GET_JOB_RESULT   | Spi_GetJobResult() API Service ID.  |
-| SPI_SID_GET_SEQ_RESULT   | Spi_GetSequenceResult() API Service ID.  |
-| SPI_SID_GET_VERSION_INFO   | Spi_GetVersionInfo() API Service ID.  |
-| SPI_SID_SYNC_TRANSMIT   | Spi_SyncTransmit() API Service ID.  |
-| SPI_SID_GET_HW_UNIT_STATUS   | Spi_GetHWUnitStatus() API Service ID.  |
-| SPI_SID_CANCEL   | Spi_Cancel() API Service ID.  |
-| SPI_SID_SET_ASYNC_MODE   | Spi_SetAsyncMode() API Service ID.  |
-| SPI_SID_MAINFUNCTION_HANDLING   | Spi_MainFunction_Handling() API Service ID.  |
 | SPI_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
 | SPI_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
 | SPI_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
 | SPI_AR_RELEASE_MAJOR_VERSION   | AUTOSAR major version specification implemented by SPI Driver.  |
 | SPI_AR_RELEASE_MINOR_VERSION   | AUTOSAR minor version specification implemented by SPI Driver.  |
-| SPI_AR_RELEASE_PATCH_VERSION   | AUTOSAR patch version specification implemented by SPI Driver.  |
+| SPI_AR_RELEASE_REVISION_VERSION   | AUTOSAR patch version specification implemented by SPI Driver.  |
 | SPI_VENDOR_ID   | Texas Instruments Vendor ID.  |
 | SPI_MODULE_ID   | SPI Driver Module ID.  |
 | SPI_INSTANCE_ID   | SPI Driver Instance ID.  |
@@ -400,65 +350,41 @@ Spi_DataDelayType defines the number of SPI serial clock cycles delay between ea
 | SPI_E_SEQ_IN_PROCESS   | Synchronous transmission service called at wrong time.  |
 | SPI_E_ALREADY_INITIALIZED   | API Spi_Init service called while the SPI driver has already been initialized.  |
 | SPI_E_SEQ_TIMEOUT   | sequence transmission failed with a timeout  |
+| SPI_SID_INIT   | Spi_Init() API Service ID.  |
+| SPI_SID_DEINIT   | Spi_DeInit() API Service ID.  |
+| SPI_SID_WRITE_IB   | Spi_WriteIB() API Service ID.  |
+| SPI_SID_ASYNC_TRANSMIT   | Spi_AsyncTransmit() API Service ID.  |
+| SPI_SID_READ_IB   | Spi_ReadIB() API Service ID.  |
+| SPI_SID_SETUP_EB   | Spi_SetupEB() API Service ID.  |
+| SPI_SID_GET_STATUS   | Spi_GetStatus() API Service ID.  |
+| SPI_SID_GET_JOB_RESULT   | Spi_GetJobResult() API Service ID.  |
+| SPI_SID_GET_SEQ_RESULT   | Spi_GetSequenceResult() API Service ID.  |
+| SPI_SID_GET_VERSION_INFO   | Spi_GetVersionInfo() API Service ID.  |
+| SPI_SID_SYNC_TRANSMIT   | Spi_SyncTransmit() API Service ID.  |
+| SPI_SID_GET_HW_UNIT_STATUS   | Spi_GetHWUnitStatus() API Service ID.  |
+| SPI_SID_CANCEL   | Spi_Cancel() API Service ID.  |
+| SPI_SID_SET_ASYNC_MODE   | Spi_SetAsyncMode() API Service ID.  |
+| SPI_SID_MAINFUNCTION_HANDLING   | Spi_MainFunction_Handling() API Service ID.  |
 
 ## Functions
 
 | Return type    | Function Name           |      Brief        |
 | -------------- | ----------------------- | ----------------- |
-| void | **[Spi_Init](../Modules/group___s_p_i.md#function-spi_init)**(const [Spi_ConfigType](../Classes/struct_spi___config_type.md) * CfgPtr)| Spi_Init : Service for SPI initialization.  |
-| Std_ReturnType | **[Spi_DeInit](../Modules/group___s_p_i.md#function-spi_deinit)**(void )| Spi_DeInit : Service for SPI de-initialization.  |
-| [Spi_StatusType](../Modules/group___s_p_i.md#enum-spi_statustype) | **[Spi_GetStatus](../Modules/group___s_p_i.md#function-spi_getstatus)**(void )| Spi_GetStatus: Service returns the SPI Handler/Driver software module status.  |
-| [Spi_JobResultType](../Modules/group___s_p_i.md#enum-spi_jobresulttype) | **[Spi_GetJobResult](../Modules/group___s_p_i.md#function-spi_getjobresult)**([Spi_JobType](../Modules/group___s_p_i.md#typedef-spi_jobtype) Job)| Spi_GetStatus: Service is to get the result of a specified job.  |
-| [Spi_SeqResultType](../Modules/group___s_p_i.md#enum-spi_seqresulttype) | **[Spi_GetSequenceResult](../Modules/group___s_p_i.md#function-spi_getsequenceresult)**([Spi_SequenceType](../Modules/group___s_p_i.md#typedef-spi_sequencetype) Sequence)| Spi_GetSequenceResult: Service.  |
+| void | **[Spi_Init](../Modules/group___s_p_i.md#function-spi_init)**(const [Spi_ConfigType](../Classes/struct_spi___config_type.md) * CfgPtr)| Service for SPI initialization.  |
+| Std_ReturnType | **[Spi_DeInit](../Modules/group___s_p_i.md#function-spi_deinit)**(void )| Service for SPI de-initialization.  |
+| [Spi_StatusType](../Modules/group___s_p_i.md#enum-spi_statustype) | **[Spi_GetStatus](../Modules/group___s_p_i.md#function-spi_getstatus)**(void )| Service returns the SPI Handler/Driver software module status.  |
+| [Spi_JobResultType](../Modules/group___s_p_i.md#enum-spi_jobresulttype) | **[Spi_GetJobResult](../Modules/group___s_p_i.md#function-spi_getjobresult)**([Spi_JobType](../Modules/group___s_p_i.md#typedef-spi_jobtype) Job)| Service returns the last transmission result of the specified Job.  |
+| [Spi_SeqResultType](../Modules/group___s_p_i.md#enum-spi_seqresulttype) | **[Spi_GetSequenceResult](../Modules/group___s_p_i.md#function-spi_getsequenceresult)**([Spi_SequenceType](../Modules/group___s_p_i.md#typedef-spi_sequencetype) Sequence)| Service returns the last transmission result of the specified Sequence.  |
 | void | **[Spi_GetVersionInfo](../Modules/group___s_p_i.md#function-spi_getversioninfo)**(Std_VersionInfoType * versioninfo)| Service to get the version information of the module.  |
-| [Spi_StatusType](../Modules/group___s_p_i.md#enum-spi_statustype) | **[Spi_GetHWUnitStatus](../Modules/group___s_p_i.md#function-spi_gethwunitstatus)**([Spi_HWUnitType](../Modules/group___s_p_i.md#typedef-spi_hwunittype) HWUnit)| Spi_GetHWUnitStatus: Service to get the status of the SPI hardware unit.  |
-| Std_ReturnType | **[Spi_WriteIB](../Modules/group___s_p_i.md#function-spi_writeib)**([Spi_ChannelType](../Modules/group___s_p_i.md#typedef-spi_channeltype) Channel, const [Spi_DataBufferType](../Modules/group___s_p_i.md#typedef-spi_databuffertype) * DataBufferPtr)| Spi_WriteIB: Service for writing one or more data to an IB SPI Handler/Driver Channel specified by parameter.  |
+| [Spi_StatusType](../Modules/group___s_p_i.md#enum-spi_statustype) | **[Spi_GetHWUnitStatus](../Modules/group___s_p_i.md#function-spi_gethwunitstatus)**([Spi_HWUnitType](../Modules/group___s_p_i.md#typedef-spi_hwunittype) HWUnit)| Service to get the status of the SPI hardware unit.  |
+| Std_ReturnType | **[Spi_WriteIB](../Modules/group___s_p_i.md#function-spi_writeib)**([Spi_ChannelType](../Modules/group___s_p_i.md#typedef-spi_channeltype) Channel, const [Spi_DataBufferType](../Modules/group___s_p_i.md#typedef-spi_databuffertype) * DataBufferPtr)| Service for writing one or more data to an IB SPI Handler/Driver Channel specified by parameter.  |
 | Std_ReturnType | **[Spi_ReadIB](../Modules/group___s_p_i.md#function-spi_readib)**([Spi_ChannelType](../Modules/group___s_p_i.md#typedef-spi_channeltype) Channel, [Spi_DataBufferType](../Modules/group___s_p_i.md#typedef-spi_databuffertype) * DataBufferPointer)| Service for reading data from internal buffers.  |
-| Std_ReturnType | **[Spi_AsyncTransmit](../Modules/group___s_p_i.md#function-spi_asynctransmit)**([Spi_SequenceType](../Modules/group___s_p_i.md#typedef-spi_sequencetype) Sequence)| Spi_AsyncTransmit: Service to transmit data on the SPI bus.  |
-| void | **[Spi_Cancel](../Modules/group___s_p_i.md#function-spi_cancel)**([Spi_SequenceType](../Modules/group___s_p_i.md#typedef-spi_sequencetype) Sequence)| Spi_Cancel: this service is to cancel on going sequence.  |
-| Std_ReturnType | **[Spi_SyncTransmit](../Modules/group___s_p_i.md#function-spi_synctransmit)**([Spi_SequenceType](../Modules/group___s_p_i.md#typedef-spi_sequencetype) Sequence)| Spi_SyncTransmit: Service to transmit data on the SPI bu.  |
+| Std_ReturnType | **[Spi_SetupEB](../Modules/group___s_p_i.md#function-spi_setupeb)**([Spi_ChannelType](../Modules/group___s_p_i.md#typedef-spi_channeltype) Channel, const [Spi_DataBufferType](../Modules/group___s_p_i.md#typedef-spi_databuffertype) * SrcDataBufferPtr, [Spi_DataBufferType](../Modules/group___s_p_i.md#typedef-spi_databuffertype) * DesDataBufferPtr, [Spi_NumberOfDataType](../Modules/group___s_p_i.md#typedef-spi_numberofdatatype) Length)| Service to setup external buffer channels.  |
+| Std_ReturnType | **[Spi_AsyncTransmit](../Modules/group___s_p_i.md#function-spi_asynctransmit)**([Spi_SequenceType](../Modules/group___s_p_i.md#typedef-spi_sequencetype) Sequence)| Service to transmit data on the SPI bus.  |
+| void | **[Spi_Cancel](../Modules/group___s_p_i.md#function-spi_cancel)**([Spi_SequenceType](../Modules/group___s_p_i.md#typedef-spi_sequencetype) Sequence)| Service to cancel on going sequence.  |
+| Std_ReturnType | **[Spi_SyncTransmit](../Modules/group___s_p_i.md#function-spi_synctransmit)**([Spi_SequenceType](../Modules/group___s_p_i.md#typedef-spi_sequencetype) Sequence)| Service to transmit data on the SPI bus.  |
 | Std_ReturnType | **[Spi_SetAsyncMode](../Modules/group___s_p_i.md#function-spi_setasyncmode)**([Spi_AsyncModeType](../Modules/group___s_p_i.md#enum-spi_asyncmodetype) Mode)| Service to set the asynchronous mechanism mode for SPI busses handled asynchronously.  |
 | void | **[Spi_MainFunction_Handling](../Modules/group___s_p_i.md#function-spi_mainfunction_handling)**(void )| Spi_MainFunction_Handling: This function shall polls the SPI interrupts linked to HW Units.  |
-| void | **[Spi_ResetDrvObj](../Modules/group___s_p_i.md#function-spi_resetdrvobj)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj)| function to reset driver object  |
-| void | **[Spi_CopyConfig](../Modules/group___s_p_i.md#function-spi_copyconfig)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](../Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into driver obj  |
-| void | **[Spi_HwUnitInit](../Modules/group___s_p_i.md#function-spi_hwunitinit)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, Spi_HwUnitObjType * hwUnitObj)| function to initialize SPI hardware unit  |
-| void | **[Spi_HwUnitDeInit](../Modules/group___s_p_i.md#function-spi_hwunitdeinit)**(Spi_HwUnitObjType * hwUnitObj)| function to de-initialize SPI hardware unit  |
-| Spi_HwUnitObjType * | **[Spi_GetHwUnitObj](../Modules/group___s_p_i.md#function-spi_gethwunitobj)**([Spi_HWUnitType](../Modules/group___s_p_i.md#typedef-spi_hwunittype) HWUnit, [Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj)| function to get hardware unit object based on HW unit ID  |
-| void | **[Spi_DisableInterrupt](../Modules/group___s_p_i.md#function-spi_disableinterrupt)**(uint32 baseAddr, boolean isFifoEnabled)| function to disable all the interrupts  |
-| void | **[Spi_EnableInterrupt](../Modules/group___s_p_i.md#function-spi_enableinterrupt)**(uint32 baseAddr, boolean isFifoEnabled)| function to enable interrupts  |
-| Std_ReturnType | **[Spi_StartSeqAsync](../Modules/group___s_p_i.md#function-spi_startseqasync)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, [Spi_SeqObjType](../Classes/struct_spi___seq_obj_type.md) * seqObj)| private function to start Asynchronous transmission  |
-| Std_ReturnType | **[Spi_StartSeqSync](../Modules/group___s_p_i.md#function-spi_startseqsync)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, [Spi_SeqObjType](../Classes/struct_spi___seq_obj_type.md) * seqObj)| private function to start synchronous transmission  |
-| void | **[Spi_ProcessRxEvent](../Modules/group___s_p_i.md#function-spi_processrxevent)**([Spi_HWUnitType](../Modules/group___s_p_i.md#typedef-spi_hwunittype) hwUnitId)| process receive interrupt(RXINT/INT)  |
-| void | **[Spi_ProcessChCompletion](../Modules/group___s_p_i.md#function-spi_processchcompletion)**(Spi_HwUnitObjType * hwUnitObj, [Spi_JobResultType](../Modules/group___s_p_i.md#enum-spi_jobresulttype) jobResult, [Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj)| process channel completion  |
-| void | **[Spi_ConfigGpioChipSelect](../Modules/group___s_p_i.md#function-spi_configgpiochipselect)**(const [Spi_JobObjType](../Classes/struct_spi___job_obj_type.md) * jobObj, boolean enable)| function to Enable or Disable chip-select when it is a GPIO  |
-| uint32 | **[Spi_GetHwUnitBaseAddr](../Modules/group___s_p_i.md#function-spi_gethwunitbaseaddr)**([Spi_HWUnitType](../Modules/group___s_p_i.md#typedef-spi_hwunittype) HwUnitId)| function to get HW unit base address  |
-| void | **[Spi_CancelSequence](../Modules/group___s_p_i.md#function-spi_cancelsequence)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, [Spi_SeqObjType](../Classes/struct_spi___seq_obj_type.md) * seqObj)| function to cancel ongoing sequence  |
-| void | **[Spi_PrivIntlBufWrite8](../Modules/group___s_p_i.md#function-spi_privintlbufwrite8)**([Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md) * ChObj, const [Spi_DataBufferType](../Modules/group___s_p_i.md#typedef-spi_databuffertype) * DataBufferPtr)| function to write into internal buffer in 8 bits  |
-| void | **[Spi_PrivIntlBufWrite16](../Modules/group___s_p_i.md#function-spi_privintlbufwrite16)**([Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md) * ChObj, const [Spi_DataBufferType](../Modules/group___s_p_i.md#typedef-spi_databuffertype) * DataBufferPtr)| function to write into internal buffer in 16 bits  |
-| void | **[Spi_PrivReadIB](../Modules/group___s_p_i.md#function-spi_privreadib)**([Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md) * ChObj, const [Spi_DataBufferType](../Modules/group___s_p_i.md#typedef-spi_databuffertype) * DataBufferPtr)| function to read from internal buffer  |
-| [Spi_StatusType](../Modules/group___s_p_i.md#enum-spi_statustype) | **[Spi_PrivGetHWStatus](../Modules/group___s_p_i.md#function-spi_privgethwstatus)**(const Spi_HwUnitObjType * hwUnitObj)| function to get HW Status  |
-| void | **[Spi_PrivProcessTxEvent](../Modules/group___s_p_i.md#function-spi_privprocesstxevent)**(uint32 baseAddr, [Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md) * chObj, uint16 txIntrStatus)| This function process transfer interrupt(TXINT)  |
-| void | **[Spi_PrivJobCopyConfig](../Modules/group___s_p_i.md#function-spi_privjobcopyconfig)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](../Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into Job obj  |
-| void | **[Spi_PrivSeqCopyConfig](../Modules/group___s_p_i.md#function-spi_privseqcopyconfig)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](../Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into Sequence obj  |
-| void | **[Spi_PrivChannelCopyConfig](../Modules/group___s_p_i.md#function-spi_privchannelcopyconfig)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](../Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into Channel obj  |
-| void | **[Spi_PrivHWUnitCopyConfig](../Modules/group___s_p_i.md#function-spi_privhwunitcopyconfig)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](../Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into HWUnit obj  |
-| void | **[Spi_PrivExtDevCopyConfig](../Modules/group___s_p_i.md#function-spi_privextdevcopyconfig)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](../Classes/struct_spi___config_type.md) * cfgPtr)| function to copy configuration into External Device obj  |
-| void | **[Spi_FifoWrite8](../Modules/group___s_p_i.md#function-spi_fifowrite8)**(uint32 baseAddr, [Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md) * chObj, uint32 transferLength, uint16 curTxWords)| function to write into Register in 8 bits  |
-| void | **[Spi_FifoWrite16](../Modules/group___s_p_i.md#function-spi_fifowrite16)**(uint32 baseAddr, [Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md) * chObj, uint32 transferLength, uint16 curTxWords)| function to write into Register in 16 bits  |
-| uint8 * | **[Spi_FifoRead8](../Modules/group___s_p_i.md#function-spi_fiforead8)**(uint32 baseAddr, uint8 * bufPtr, uint32 numWordsToRead, uint16 dataWidthBitMask, uint16 curRxWords)| function to read from Register to bufPtr in 8 bits  |
-| uint16 * | **[Spi_FifoRead16](../Modules/group___s_p_i.md#function-spi_fiforead16)**(uint32 baseAddr, uint16 * bufPtr, uint32 numWordsToRead, uint16 dataWidthBitMask, uint16 curRxWords)| function to read from Register to bufPtr in 16 bits  |
-| void | **[Spi_FifoWriteDefault](../Modules/group___s_p_i.md#function-spi_fifowritedefault)**(uint32 baseAddr, uint32 transferLength, [Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md) * chObj)| function to write Default data into Register  |
-| void | **[Spi_FifoReadDiscard](../Modules/group___s_p_i.md#function-spi_fiforeaddiscard)**(uint32 baseAddr, uint32 transferLength)| function to read from Register and discard  |
-| void | **[Spi_ReadRxBufferNonFifo](../Modules/group___s_p_i.md#function-spi_readrxbuffernonfifo)**([Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md) * chObj, uint32 baseAddr)| function to read from Register to Channel Object  |
-| void | **[Spi_WriteTxBufferNonFifo](../Modules/group___s_p_i.md#function-spi_writetxbuffernonfifo)**([Spi_ChannelObjType](../Classes/struct_spi___channel_obj_type.md) * chObj, uint32 baseAddr)| function to write into Register from Channel Object  |
-| void | **[Spi_ClearPIPEINTFlag](../Modules/group___s_p_i.md#function-spi_clearpipeintflag)**(uint32 intNum)| function to clear PIPE interrupt  |
-| void | **[Spi_PrivInit](../Modules/group___s_p_i.md#function-spi_privinit)**([Spi_DriverObjType](../Classes/struct_spi___driver_obj_type.md) * drvObj, const [Spi_ConfigType](../Classes/struct_spi___config_type.md) * CfgPtr)| Service for SPI initialization.  |
-| void | **[Spi_UtilsInitLinkList](../Modules/group___s_p_i.md#function-spi_utilsinitlinklist)**([Spi_UtilsLinkListObj](../Classes/struct_spi___utils_link_list_obj.md) * llobj)| function to Initialize linked list  |
-| void | **[Spi_UtilsDeInitLinkList](../Modules/group___s_p_i.md#function-spi_utilsdeinitlinklist)**([Spi_UtilsLinkListObj](../Classes/struct_spi___utils_link_list_obj.md) * llobj)| function to De-Initialize linked list  |
-| void | **[Spi_UtilsLinkNodePri](../Modules/group___s_p_i.md#function-spi_utilslinknodepri)**([Spi_UtilsLinkListObj](../Classes/struct_spi___utils_link_list_obj.md) * llobj, Spi_UtilsNode * node, const [Spi_UtilsParams](../Classes/struct_spi___utils_params.md) * params, uint8 currSeqId)| Links a node to the linked list. The memory to the node object should be allocated by the caller. This is used for link list with priority.  |
-| void | **[Spi_UtilsUnLinkNodePri](../Modules/group___s_p_i.md#function-spi_utilsunlinknodepri)**([Spi_UtilsLinkListObj](../Classes/struct_spi___utils_link_list_obj.md) * llobj, Spi_UtilsNode * node)| Unlinks the node from the list. Used for the priority link lists.  |
-| void | **[Spi_UtilsInitNodeObject](../Modules/group___s_p_i.md#function-spi_utilsinitnodeobject)**(Spi_UtilsNode * node)| Initialize the node object with default value.  |
-| Spi_UtilsNode * | **[Spi_UtilsGetHeadNode](../Modules/group___s_p_i.md#function-spi_utilsgetheadnode)**(const [Spi_UtilsLinkListObj](../Classes/struct_spi___utils_link_list_obj.md) * llobj)| Returns the reference to the head node. This does not remove the node from the head.  |
 
 
 
@@ -472,7 +398,7 @@ void Spi_Init(
 
 
 **Brief**: 
-Spi_Init : Service for SPI initialization. 
+Service for SPI initialization. 
 
 This service initializes all the configured Spi channels, jobs, sequences and SPI instances This will set the state of SPI driver to Initialized.
 
@@ -506,7 +432,7 @@ Std_ReturnType Spi_DeInit(
 
 
 **Brief**: 
-Spi_DeInit : Service for SPI de-initialization. 
+Service for SPI de-initialization. 
 
 This service de-initializes all the configured Spi channels, jobs, sequences and SPI instances This will set the state of SPI driver to Un-Initialized.
 
@@ -537,7 +463,7 @@ Spi_StatusType Spi_GetStatus(
 
 
 **Brief**: 
-Spi_GetStatus: Service returns the SPI Handler/Driver software module status. 
+Service returns the SPI Handler/Driver software module status. 
 
 Service returns the SPI Handler/Driver software module status.
 
@@ -571,7 +497,7 @@ Spi_JobResultType Spi_GetJobResult(
 
 
 **Brief**: 
-Spi_GetStatus: Service is to get the result of a specified job. 
+Service returns the last transmission result of the specified Job. 
 
 Service is to get the result of a specified job(queued, pending, failed, success)
 
@@ -614,9 +540,9 @@ Spi_SeqResultType Spi_GetSequenceResult(
 
 
 **Brief**: 
-Spi_GetSequenceResult: Service. 
+Service returns the last transmission result of the specified Sequence. 
 
-Service is to return the status of a specified sequence
+Service is to return the status of a specified sequence(cancelled, pending, failed, success).
 
 
 **Parameters**: 
@@ -665,7 +591,7 @@ This service writes the version information of this module into the data structu
 **Parameters**: 
 
   
-* **Versioninfo** structure that contains the version information parameters. 
+* **versioninfo** structure that contains the version information parameters. 
 
 
 **Returns**: 
@@ -691,7 +617,7 @@ Spi_StatusType Spi_GetHWUnitStatus(
 
 
 **Brief**: 
-Spi_GetHWUnitStatus: Service to get the status of the SPI hardware unit. 
+Service to get the status of the SPI hardware unit. 
 
 This service returns the status of the specified SPI Hardware micro-controller peripheral.
 
@@ -732,7 +658,7 @@ Std_ReturnType Spi_WriteIB(
 
 
 **Brief**: 
-Spi_WriteIB: Service for writing one or more data to an IB SPI Handler/Driver Channel specified by parameter. 
+Service for writing one or more data to an IB SPI Handler/Driver Channel specified by parameter. 
 
 Service for writing one or more data to an IB SPI Handler/Driver Channel specified by parameter.
 
@@ -801,6 +727,52 @@ Service for reading synchronously one or more data from an IB SPI Handler/Driver
 
 **Postcondition**: None 
 
+### function Spi_SetupEB
+
+```
+Std_ReturnType Spi_SetupEB(
+    Spi_ChannelType Channel,
+    const Spi_DataBufferType * SrcDataBufferPtr,
+    Spi_DataBufferType * DesDataBufferPtr,
+    Spi_NumberOfDataType Length
+)
+```
+
+
+**Brief**: 
+Service to setup external buffer channels. 
+
+Service to setup the buffers and the length of data for the EB SPI Handler/Driver Channel specified.
+
+
+**Parameters**: 
+
+  
+* **Channel** Channel Id 
+  
+* **SrcDataBufferPtr** Pointer to source data buffer 
+  
+* **Length** Length (number of data elements) of the data to be transmitted from SrcDataBufferPtr and/or received from DesDataBufferPtr Min.: 1 Max.: Max of data specified at configuration for this channel 
+  
+* **DesDataBufferPtr** Pointer to destination data buffer in RAM. 
+
+
+**Returns**: 
+
+  
+* **E_OK** read command has been accepted 
+<br> 
+  
+* **E_NOT_OK** read command has not been accepted 
+<br> 
+
+
+**Return**: returns whether command has been accepted or rejected 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
 ### function Spi_AsyncTransmit
 
 ```
@@ -811,7 +783,7 @@ Std_ReturnType Spi_AsyncTransmit(
 
 
 **Brief**: 
-Spi_AsyncTransmit: Service to transmit data on the SPI bus. 
+Service to transmit data on the SPI bus. 
 
 Service is to transmit data on SPI bus if the sequence is valid and not pending
 
@@ -848,7 +820,7 @@ void Spi_Cancel(
 
 
 **Brief**: 
-Spi_Cancel: this service is to cancel on going sequence. 
+Service to cancel on going sequence. 
 
 Service cancels the specified on-going sequence transmission.
 
@@ -882,7 +854,7 @@ Std_ReturnType Spi_SyncTransmit(
 
 
 **Brief**: 
-Spi_SyncTransmit: Service to transmit data on the SPI bu. 
+Service to transmit data on the SPI bus. 
 
 Service is to transmit data on SPI bus synchronously
 
@@ -972,1503 +944,6 @@ This function shall polls the SPI interrupts linked to HW Units allocated to the
 
 
 **Return**: returns whether command has been accepted or rejected 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_ResetDrvObj
-
-```
-void Spi_ResetDrvObj(
-    Spi_DriverObjType * drvObj
-)
-```
-
-
-**Brief**: 
-function to reset driver object 
-
-function to reset driver object
-
-
-**Parameters**: 
-
-  
-* **drvObj** pointer to driver object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_CopyConfig
-
-```
-void Spi_CopyConfig(
-    Spi_DriverObjType * drvObj,
-    const Spi_ConfigType * cfgPtr
-)
-```
-
-
-**Brief**: 
-function to copy configuration into driver obj 
-
-function to copy driver object
-
-
-**Parameters**: 
-
-  
-* **drvObj** pointer to driver object 
-  
-* **cfgPtr** pointer to configuration 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_HwUnitInit
-
-```
-void Spi_HwUnitInit(
-    Spi_DriverObjType * drvObj,
-    Spi_HwUnitObjType * hwUnitObj
-)
-```
-
-
-**Brief**: 
-function to initialize SPI hardware unit 
-
-function to initialize SPI hardware unit
-
-
-**Parameters**: 
-
-  
-* **hwUnitObj** pointer to hardware unit object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_HwUnitDeInit
-
-```
-void Spi_HwUnitDeInit(
-    Spi_HwUnitObjType * hwUnitObj
-)
-```
-
-
-**Brief**: 
-function to de-initialize SPI hardware unit 
-
-function to de-initialize SPI hardware unit
-
-
-**Parameters**: 
-
-  
-* **hwUnitObj** pointer to hardware unit object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_GetHwUnitObj
-
-```
-Spi_HwUnitObjType * Spi_GetHwUnitObj(
-    Spi_HWUnitType HWUnit,
-    Spi_DriverObjType * drvObj
-)
-```
-
-
-**Brief**: 
-function to get hardware unit object based on HW unit ID 
-
-function to get hardware unit object based on HW unit ID
-
-
-**Parameters**: 
-
-  
-* **HWUnit** Hw unit ID 
-
-
-**Returns**: 
-
-  
-* **Spi_HwUnitObjType** pointer to HW unit object 
-<br> 
-
-
-**Return**: return found hardware unit object based on HW unit ID 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_DisableInterrupt
-
-```
-void Spi_DisableInterrupt(
-    uint32 baseAddr,
-    boolean isFifoEnabled
-)
-```
-
-
-**Brief**: 
-function to disable all the interrupts 
-
-function to disable all the interrupts
-
-
-**Parameters**: 
-
-  
-* **baseAddr** HW unit base address 
-  
-* **isFifoEnabled** FIFO enhancement mode enabled or disabled 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_EnableInterrupt
-
-```
-void Spi_EnableInterrupt(
-    uint32 baseAddr,
-    boolean isFifoEnabled
-)
-```
-
-
-**Brief**: 
-function to enable interrupts 
-
-function to enable interrupts
-
-
-**Parameters**: 
-
-  
-* **baseAddr** HW unit base address 
-  
-* **isFifoEnabled** FIFO enhancement mode enabled or disabled 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_StartSeqAsync
-
-```
-Std_ReturnType Spi_StartSeqAsync(
-    Spi_DriverObjType * drvObj,
-    Spi_SeqObjType * seqObj
-)
-```
-
-
-**Brief**: 
-private function to start Asynchronous transmission 
-
-private function to start Asynchronous transmission
-
-
-**Parameters**: 
-
-  
-* **seqObj** pointer to sequence object 
-
-
-**Returns**: 
-
-  
-* **E_OK** sequence transfer start in async mode is success 
-<br> 
-  
-* **E_NOT_OK** sequence transfer start in async mode failed 
-<br> 
-
-
-**Return**: returns the status of the async transfer start 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_StartSeqSync
-
-```
-Std_ReturnType Spi_StartSeqSync(
-    Spi_DriverObjType * drvObj,
-    Spi_SeqObjType * seqObj
-)
-```
-
-
-**Brief**: 
-private function to start synchronous transmission 
-
-private function to start synchronous transmission
-
-
-**Parameters**: 
-
-  
-* **seqObj** pointer to sequence object 
-
-
-**Returns**: 
-
-  
-* **E_OK** sequence transfer start in sync mode is success 
-<br> 
-  
-* **E_NOT_OK** sequence transfer start in sync mode failed 
-<br> 
-
-
-**Return**: returns the status of the async transfer start 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_ProcessRxEvent
-
-```
-void Spi_ProcessRxEvent(
-    Spi_HWUnitType hwUnitId
-)
-```
-
-
-**Brief**: 
-process receive interrupt(RXINT/INT) 
-
-function to process receive interrupt
-
-
-**Parameters**: 
-
-  
-* **HwUnitId** Id of Hardware Unit 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_ProcessChCompletion
-
-```
-void Spi_ProcessChCompletion(
-    Spi_HwUnitObjType * hwUnitObj,
-    Spi_JobResultType jobResult,
-    Spi_DriverObjType * drvObj
-)
-```
-
-
-**Brief**: 
-process channel completion 
-
-function to process operations after channel transfer is done
-
-
-**Parameters**: 
-
-  
-* **hwUnitObj** pointer to HW unit object 
-  
-* **jobResult** result of channel completion 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_ConfigGpioChipSelect
-
-```
-void Spi_ConfigGpioChipSelect(
-    const Spi_JobObjType * jobObj,
-    boolean enable
-)
-```
-
-
-**Brief**: 
-function to Enable or Disable chip-select when it is a GPIO 
-
-function to Enable or disable chip-select what it is a GPIO
-
-
-**Parameters**: 
-
-  
-* **jobObj** pointer to Job object 
-  
-* **enable** enable or disable flag 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_GetHwUnitBaseAddr
-
-```
-uint32 Spi_GetHwUnitBaseAddr(
-    Spi_HWUnitType HwUnitId
-)
-```
-
-
-**Brief**: 
-function to get HW unit base address 
-
-function to get HW unit base address
-
-
-**Parameters**: 
-
-  
-* **hwUnitId** HWUnit Id 
-
-
-**Returns**: 
-
-  
-* **base** address of the hardware unit 
-<br> 
-
-
-**Return**: uint32 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_CancelSequence
-
-```
-void Spi_CancelSequence(
-    Spi_DriverObjType * drvObj,
-    Spi_SeqObjType * seqObj
-)
-```
-
-
-**Brief**: 
-function to cancel ongoing sequence 
-
-function to cancel ongoing sequence
-
-
-**Parameters**: 
-
-  
-* **seqObj** pointer to Sequence object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivIntlBufWrite8
-
-```
-void Spi_PrivIntlBufWrite8(
-    Spi_ChannelObjType * ChObj,
-    const Spi_DataBufferType * DataBufferPtr
-)
-```
-
-
-**Brief**: 
-function to write into internal buffer in 8 bits 
-
-function to write into internal buffer
-
-
-**Parameters**: 
-
-  
-* **DataBufferPtr** pointer to Data Buffer 
-  
-* **ChObj** pointer to Channel object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivIntlBufWrite16
-
-```
-void Spi_PrivIntlBufWrite16(
-    Spi_ChannelObjType * ChObj,
-    const Spi_DataBufferType * DataBufferPtr
-)
-```
-
-
-**Brief**: 
-function to write into internal buffer in 16 bits 
-
-function to write into internal buffer
-
-
-**Parameters**: 
-
-  
-* **DataBufferPtr** pointer to Data Buffer 
-  
-* **ChObj** pointer to Channel object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivReadIB
-
-```
-void Spi_PrivReadIB(
-    Spi_ChannelObjType * ChObj,
-    const Spi_DataBufferType * DataBufferPtr
-)
-```
-
-
-**Brief**: 
-function to read from internal buffer 
-
-function to read from internal buffer
-
-
-**Parameters**: 
-
-  
-* **ChObj** pointer to Channel object 
-  
-* **DataBufferPtr** pointer to Data Buffer 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivGetHWStatus
-
-```
-Spi_StatusType Spi_PrivGetHWStatus(
-    const Spi_HwUnitObjType * hwUnitObj
-)
-```
-
-
-**Brief**: 
-function to get HW Status 
-
-function to get HW unit Status
-
-
-**Parameters**: 
-
-  
-* **hwUnitObj** pointer to HWUnit object 
-
-
-**Returns**: 
-
-  
-* **SPI_UNINIT** : The SPI Handler/Driver is not initialized or not usable 
-<br> 
-  
-* **SPI_IDLE** : The SPI Handler/Driver is not currently transmitting any Job 
-<br> 
-  
-* **SPI_BUSY** : The SPI Handler/Driver is performing a SPI Job (transmit) 
-<br> 
-
-
-**Return**: Status of HWUnit 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivProcessTxEvent
-
-```
-void Spi_PrivProcessTxEvent(
-    uint32 baseAddr,
-    Spi_ChannelObjType * chObj,
-    uint16 txIntrStatus
-)
-```
-
-
-**Brief**: 
-This function process transfer interrupt(TXINT) 
-
-function to process transfer interrupt(TXINT)
-
-
-**Parameters**: 
-
-  
-* **baseAddr** Base Address of HWUnit 
-  
-* **ChObj** pointer to Channel object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivJobCopyConfig
-
-```
-void Spi_PrivJobCopyConfig(
-    Spi_DriverObjType * drvObj,
-    const Spi_ConfigType * cfgPtr
-)
-```
-
-
-**Brief**: 
-function to copy configuration into Job obj 
-
-function to reset Job object
-
-
-**Parameters**: 
-
-  
-* **drvObj** pointer to driver object 
-  
-* **cfgPtr** pointer to configuration 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivSeqCopyConfig
-
-```
-void Spi_PrivSeqCopyConfig(
-    Spi_DriverObjType * drvObj,
-    const Spi_ConfigType * cfgPtr
-)
-```
-
-
-**Brief**: 
-function to copy configuration into Sequence obj 
-
-function to reset Sequence object
-
-
-**Parameters**: 
-
-  
-* **drvObj** pointer to driver object 
-  
-* **cfgPtr** pointer to configuration 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivChannelCopyConfig
-
-```
-void Spi_PrivChannelCopyConfig(
-    Spi_DriverObjType * drvObj,
-    const Spi_ConfigType * cfgPtr
-)
-```
-
-
-**Brief**: 
-function to copy configuration into Channel obj 
-
-function to reset Channel object
-
-
-**Parameters**: 
-
-  
-* **drvObj** pointer to driver object 
-  
-* **cfgPtr** pointer to configuration 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivHWUnitCopyConfig
-
-```
-void Spi_PrivHWUnitCopyConfig(
-    Spi_DriverObjType * drvObj,
-    const Spi_ConfigType * cfgPtr
-)
-```
-
-
-**Brief**: 
-function to copy configuration into HWUnit obj 
-
-function to reset HWUnit object
-
-
-**Parameters**: 
-
-  
-* **drvObj** pointer to driver object 
-  
-* **cfgPtr** pointer to configuration 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivExtDevCopyConfig
-
-```
-void Spi_PrivExtDevCopyConfig(
-    Spi_DriverObjType * drvObj,
-    const Spi_ConfigType * cfgPtr
-)
-```
-
-
-**Brief**: 
-function to copy configuration into External Device obj 
-
-function to reset External Device object
-
-
-**Parameters**: 
-
-  
-* **drvObj** pointer to driver object 
-  
-* **cfgPtr** pointer to configuration 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_FifoWrite8
-
-```
-static inline void Spi_FifoWrite8(
-    uint32 baseAddr,
-    Spi_ChannelObjType * chObj,
-    uint32 transferLength,
-    uint16 curTxWords
-)
-```
-
-
-**Brief**: 
-function to write into Register in 8 bits 
-
-function to write into Register
-
-
-**Parameters**: 
-
-  
-* **baseAddr** : BaseAddress of HWUnit 
-  
-* **wordSize** : No.of bits to be shifted while writing into register 
-  
-* **transferLength** : no.of bytes to transfer 
-  
-* **curTxWords** : index of transmitted words in bufPtr 
-  
-* **bufPtr** pointer to Data Buffer 
-
-
-**Returns**: 
-
-  
-* **pointer** to bufPtr 
-<br> 
-
-
-**Return**: pointer to bufPtr 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_FifoWrite16
-
-```
-static inline void Spi_FifoWrite16(
-    uint32 baseAddr,
-    Spi_ChannelObjType * chObj,
-    uint32 transferLength,
-    uint16 curTxWords
-)
-```
-
-
-**Brief**: 
-function to write into Register in 16 bits 
-
-function to write into Register
-
-
-**Parameters**: 
-
-  
-* **baseAddr** : BaseAddress of HWUnit 
-  
-* **wordSize** : No.of bits to be shifted while writing into register 
-  
-* **transferLength** : no.of bytes to transfer 
-  
-* **curTxWords** : index of transmitted words in bufPtr 
-  
-* **bufPtr** pointer to Data Buffer 
-
-
-**Returns**: 
-
-  
-* **pointer** to bufPtr 
-<br> 
-
-
-**Return**: pointer to bufPtr 
-
-**Postcondition**: None 
-
-### function Spi_FifoRead8
-
-```
-static inline uint8 * Spi_FifoRead8(
-    uint32 baseAddr,
-    uint8 * bufPtr,
-    uint32 numWordsToRead,
-    uint16 dataWidthBitMask,
-    uint16 curRxWords
-)
-```
-
-
-**Brief**: 
-function to read from Register to bufPtr in 8 bits 
-
-function to read from Register
-
-
-**Parameters**: 
-
-  
-* **baseAddr** : BaseAddress of HWUnit 
-  
-* **numWordsToRead** : no.of bytes to transfer 
-  
-* **dataWidthBitMask** : Clear unused bits 
-  
-* **curRxWords** : index of received words in bufPtr 
-  
-* **bufPtr** pointer to Data Buffer 
-
-
-**Returns**: 
-
-  
-* **pointer** to bufPtr 
-<br> 
-
-
-**Return**: pointer to bufPtr 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_FifoRead16
-
-```
-static inline uint16 * Spi_FifoRead16(
-    uint32 baseAddr,
-    uint16 * bufPtr,
-    uint32 numWordsToRead,
-    uint16 dataWidthBitMask,
-    uint16 curRxWords
-)
-```
-
-
-**Brief**: 
-function to read from Register to bufPtr in 16 bits 
-
-function to read from Register
-
-
-**Parameters**: 
-
-  
-* **baseAddr** : BaseAddress of HWUnit 
-  
-* **numWordsToRead** : no.of bytes to transfer 
-  
-* **dataWidthBitMask** : Clear unused bits 
-  
-* **curRxWords** : index of received words in bufPtr 
-  
-* **bufPtr** pointer to Data Buffer 
-
-
-**Returns**: 
-
-  
-* **pointer** to bufPtr 
-<br> 
-
-
-**Return**: pointer to bufPtr 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_FifoWriteDefault
-
-```
-static inline void Spi_FifoWriteDefault(
-    uint32 baseAddr,
-    uint32 transferLength,
-    Spi_ChannelObjType * chObj
-)
-```
-
-
-**Brief**: 
-function to write Default data into Register 
-
-function to write default data into Register
-
-
-**Parameters**: 
-
-  
-* **baseAddr** : BaseAddress of HWUnit 
-  
-* **wordSize** : No.of bits to be shifted while writing into register 
-  
-* **transferLength** : no.of bytes to transfer 
-  
-* **defaultTxData** : Default data transmitted into register 
-
-
-**Returns**: 
-
-  
-* **pointer** to bufPtr 
-<br> 
-
-
-**Return**: pointer to bufPtr 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_FifoReadDiscard
-
-```
-static inline void Spi_FifoReadDiscard(
-    uint32 baseAddr,
-    uint32 transferLength
-)
-```
-
-
-**Brief**: 
-function to read from Register and discard 
-
-function to read from Register
-
-
-**Parameters**: 
-
-  
-* **baseAddr** : BaseAddress of HWUnit 
-  
-* **transferLength** : no.of bytes to read 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_ReadRxBufferNonFifo
-
-```
-static inline void Spi_ReadRxBufferNonFifo(
-    Spi_ChannelObjType * chObj,
-    uint32 baseAddr
-)
-```
-
-
-**Brief**: 
-function to read from Register to Channel Object 
-
-function to read from Register
-
-
-**Parameters**: 
-
-  
-* **baseAddr** : BaseAddress of HWUnit 
-  
-* **chObj** pointer to Channel Object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_WriteTxBufferNonFifo
-
-```
-static inline void Spi_WriteTxBufferNonFifo(
-    Spi_ChannelObjType * chObj,
-    uint32 baseAddr
-)
-```
-
-
-**Brief**: 
-function to write into Register from Channel Object 
-
-function to write into Register
-
-
-**Parameters**: 
-
-  
-* **baseAddr** : BaseAddress of HWUnit 
-  
-* **chObj** pointer to Channel Object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_ClearPIPEINTFlag
-
-```
-static inline void Spi_ClearPIPEINTFlag(
-    uint32 intNum
-)
-```
-
-
-**Brief**: 
-function to clear PIPE interrupt 
-
-function to write into Register
-
-
-**Parameters**: 
-
-  
-* **intNum** : Interrupt vector number 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_PrivInit
-
-```
-void Spi_PrivInit(
-    Spi_DriverObjType * drvObj,
-    const Spi_ConfigType * CfgPtr
-)
-```
-
-
-**Brief**: 
-Service for SPI initialization. 
-
-This service initializes all the configured Spi channels, jobs, sequences and SPI instances This will set the state of SPI driver to Initialized.
-
-
-**Parameters**: 
-
-  
-* **CfgPtr** - Pointer to configuration set 
-  
-* **drvObj** - Pointer to Driver Object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: CfgPtr shall be null in Pre-Compile variant, Link-Time variant and shall not be NULL in Post-Build variant 
-
-**Postcondition**: None 
-
-### function Spi_UtilsInitLinkList
-
-```
-void Spi_UtilsInitLinkList(
-    Spi_UtilsLinkListObj * llobj
-)
-```
-
-
-**Brief**: 
-function to Initialize linked list 
-
-function to Initialize linked list
-
-
-**Parameters**: 
-
-  
-* **llobj** pointer to linklist Object 
-  
-* **llobj** pointer to linklist Object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_UtilsDeInitLinkList
-
-```
-void Spi_UtilsDeInitLinkList(
-    Spi_UtilsLinkListObj * llobj
-)
-```
-
-
-**Brief**: 
-function to De-Initialize linked list 
-
-function to De-Initialize linked list
-
-
-**Parameters**: 
-
-  
-* **llobj** pointer to linklist Object 
-  
-* **llobj** pointer to linklist Object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_UtilsLinkNodePri
-
-```
-void Spi_UtilsLinkNodePri(
-    Spi_UtilsLinkListObj * llobj,
-    Spi_UtilsNode * node,
-    const Spi_UtilsParams * params,
-    uint8 currSeqId
-)
-```
-
-
-**Brief**: 
-Links a node to the linked list. The memory to the node object should be allocated by the caller. This is used for link list with priority. 
-
-**Parameters**: 
-
-  
-* **llobj** Link list object. 
-  
-* **node** Node object pointer used for linking. 
-  
-* **data** Data pointer to add to node. 
-  
-* **params** Pointer to node params containing info like data pointer, priority, seqId, seqInterruptible. 
-  
-* **currSeqId** Current sequence ID in progress for the HW unit. 
-  
-* **llobj** Link list object. 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_UtilsUnLinkNodePri
-
-```
-void Spi_UtilsUnLinkNodePri(
-    Spi_UtilsLinkListObj * llobj,
-    Spi_UtilsNode * node
-)
-```
-
-
-**Brief**: 
-Unlinks the node from the list. Used for the priority link lists. 
-
-**Parameters**: 
-
-  
-* **llobj** pointer to linklist Object 
-  
-* **node** pointer to a node in linklist 
-  
-* **llobj** pointer to linklist Object 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_UtilsInitNodeObject
-
-```
-void Spi_UtilsInitNodeObject(
-    Spi_UtilsNode * node
-)
-```
-
-
-**Brief**: 
-Initialize the node object with default value. 
-
-**Parameters**: 
-
-  
-* **node** pointer to a node in linklist 
-
-
-**Returns**: 
-
-  
-* **None** 
-<br> 
-
-
-**Return**: None 
-
-**Precondition**: None 
-
-**Postcondition**: None 
-
-### function Spi_UtilsGetHeadNode
-
-```
-Spi_UtilsNode * Spi_UtilsGetHeadNode(
-    const Spi_UtilsLinkListObj * llobj
-)
-```
-
-
-**Brief**: 
-Returns the reference to the head node. This does not remove the node from the head. 
-
-**Parameters**: 
-
-  
-* **llobj** Link list object. 
-  
-* **llobj** Link list object 
-
-
-**Returns**: 
-
-  
-* **pointer** to a node in linklist 
-<br> 
-
-
-**Return**: Returns the reference to the head node 
 
 **Precondition**: None 
 

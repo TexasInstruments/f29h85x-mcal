@@ -45,7 +45,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -106,7 +106,7 @@ summary: Can mailbox configuration definition.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>uint8</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../Modules/group___c_a_n.html#enum-can-handletype"><span class="std std-ref">Can_HandleType</span></a></p></td>
 <td><p>CanHandleType</p></td>
 <td><p>CanHandleType 0=Full, 1=Basic.</p></td>
 </tr>
@@ -114,45 +114,37 @@ summary: Can mailbox configuration definition.</p>
 <td><p>CanIdType</p></td>
 <td><p>CanIdType 0=standard 1=Extended.</p></td>
 </tr>
-<tr class="row-even"><td><p>uint32</p></td>
-<td><p>CanHwFilterCode</p></td>
-<td><p>ID value extended will have MSB set.</p></td>
-</tr>
-<tr class="row-odd"><td><p>uint16</p></td>
+<tr class="row-even"><td><p>Can_HwHandleType</p></td>
 <td><p>CanObjectId</p></td>
 <td><p>CanObjectId - Holds handle Id.</p></td>
 </tr>
-<tr class="row-even"><td><p>Can_HwHandleType</p></td>
+<tr class="row-odd"><td><p>uint8</p></td>
 <td><p>HwHandle</p></td>
 <td><p>Mailbox - Hw object in the controller.</p></td>
 </tr>
-<tr class="row-odd"><td><p>uint16</p></td>
+<tr class="row-even"><td><p>uint8</p></td>
 <td><p>CanHwObjectCount</p></td>
 <td><p>Number of hardware objects used to implement one HOH.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../Modules/group___c_a_n.html#enum-can-mailboxdirectiontype"><span class="std std-ref">Can_MailboxDirectionType</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../Modules/group___c_a_n.html#enum-can-mailboxdirectiontype"><span class="std std-ref">Can_MailboxDirectionType</span></a></p></td>
 <td><p>CanObjectType</p></td>
 <td><p>CanObjectType - Direction of Mailbox.</p></td>
 </tr>
-<tr class="row-odd"><td><p>const <a class="reference internal" href="struct_can___controller_type.html"><span class="std std-doc">Can_ControllerType</span></a> *</p></td>
+<tr class="row-even"><td><p>const <a class="reference internal" href="struct_can___controller_type.html"><span class="std std-doc">Can_ControllerType</span></a> *</p></td>
 <td><p>CanControllerRef</p></td>
 <td><p>Controller.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="struct_can___mask_type.html"><span class="std std-doc">Can_MaskType</span></a></p></td>
-<td><p>CanHwFilterMask</p></td>
-<td><p>ptr to Mask for the RX filtering</p></td>
+<tr class="row-odd"><td><p>const <a class="reference internal" href="struct_can___hw_filter_type.html"><span class="std std-doc">Can_HwFilterType</span></a> **</p></td>
+<td><p>CanHwFilterList</p></td>
+<td><p>Reference to list of hardware filters HOH is associated to.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../Modules/group___c_a_n.html#enum-can-eventpin"><span class="std std-ref">Can_EventPin</span></a></p></td>
-<td><p>CanEventPin</p></td>
-<td><p>If PduInfo-&gt;SduLength does not match possible DLC values CanDrv will use the next higher valid DLC for transmission with initialization of unused bytes to the value of the corresponding CanFdPaddingValue.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../Modules/group___c_a_n.html#enum-can-standardfiltertype"><span class="std std-ref">Can_StandardFilterType</span></a></p></td>
-<td><p>CanStandardFilterType</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p>uint8</p></td>
+<td><p>CanFilterListCount</p></td>
+<td><p>Reference to list of hardware filters HOH is associated to.</p></td>
 </tr>
 <tr class="row-odd"><td><p>uint8</p></td>
 <td><p>CanFdPaddingValue</p></td>
-<td><p></p></td>
+<td><p>If PduInfo-&gt;SduLength does not match possible DLC values CanDrv will use the next higher valid DLC for transmission with initialization of unused bytes to the value of the corresponding CanFdPaddingValue.</p></td>
 </tr>
 <tr class="row-even"><td><p>boolean</p></td>
 <td><p>CanTriggerTransmitEnable</p></td>
@@ -180,7 +172,7 @@ summary: Can mailbox configuration definition.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -197,7 +189,7 @@ summary: Can mailbox configuration definition.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

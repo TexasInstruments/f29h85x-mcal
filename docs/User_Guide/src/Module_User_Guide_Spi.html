@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -100,10 +100,11 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.8.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#spidemeventparameterrefs">4.8.10.1. SpiDemEventParameterRefs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spidriver">4.8.10.2. SpiDriver</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#spigeneral">4.8.10.3. SpiGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-spi-module">4.8.10.4. Steps To Configure Spi Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#migration-guide-to-v02-00-00-from-v01-01-01-or-any-older-versions">4.8.10.1. Migration Guide to v02.00.00 from v01.01.01 or any older versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spidemeventparameterrefs">4.8.10.2. SpiDemEventParameterRefs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spidriver">4.8.10.3. SpiDriver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spigeneral">4.8.10.4. SpiGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-spi-module">4.8.10.5. Steps To Configure Spi Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.8.11. Examples</a><ul>
@@ -124,6 +125,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -247,7 +249,7 @@ These API’s and components can be used by an application.</p>
 <figure class="align-center" id="id1">
 <img alt="SPI MCAL AUTOSAR" src="../_images/Spi_Autosar_MCAL.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.27 </span><span class="caption-text">SPI MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.28 </span><span class="caption-text">SPI MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>This document details AUTOSAR BSW SPI module implementation</p>
@@ -351,7 +353,7 @@ maximum speed of the I/O buffers used on the SPI pins. See the device data sheet
 <figure class="align-center" id="id2">
 <img alt="Spi_Header_File_Structure" src="../_images/Spi_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.28 </span><span class="caption-text">Spi_Header_File_Structure</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.29 </span><span class="caption-text">Spi_Header_File_Structure</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -517,7 +519,7 @@ SPI Tx Interrupt is not used by SPI driver.</p>
 <figure class="align-center" id="id3">
 <img alt="SPI HW/SW Mapping" src="../_images/Spi_Hw_Sw_Mapping.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.29 </span><span class="caption-text">Spi HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.30 </span><span class="caption-text">Spi HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -581,8 +583,22 @@ The detection of development errors is configurable (ON / OFF), The switch SPI_C
 The driver expects generated <strong>Spi_Cfg.h</strong> to be present as input file.
 The associated Spi driver configuration generated source files are <strong>Spi_LCfg.c</strong> if Link-Time variant is selected and <strong>Spi_PBcfg.c</strong> if Post-Build config variant is selected, only <strong>Spi_Cfg.c</strong> if Pre-Compile variant is selected</p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<section id="migration-guide-to-v02-00-00-from-v01-01-01-or-any-older-versions">
+<h3><span class="section-number">4.8.10.1. </span>Migration Guide to v02.00.00 from v01.01.01 or any older versions<a class="headerlink" href="#migration-guide-to-v02-00-00-from-v01-01-01-or-any-older-versions" title="Link to this heading"></a></h3>
+<p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Spi_Init function will need to use the new configuration structure name. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.01.01 or any older versions) */</span>
+<span class="n">Spi_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Spi_ConfigObj</span><span class="p">);</span>
+
+<span class="cm">/* New code (v02.00.00) */</span>
+<span class="n">Spi_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Spi_Config</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This change ensures compliance with AUTOSAR naming conventions.</p>
+<p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
+</section>
 <section id="spidemeventparameterrefs">
-<h3><span class="section-number">4.8.10.1. </span>SpiDemEventParameterRefs<a class="headerlink" href="#spidemeventparameterrefs" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.8.10.2. </span>SpiDemEventParameterRefs<a class="headerlink" href="#spidemeventparameterrefs" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -596,20 +612,20 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
 <td><p>Reference to configured DEM event to report “Hardware failure”. If the reference is not configured the error shall not be reported.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
+<tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
 </tr>
-<tr class="row-even"><td><p>Link Time</p></td>
+<tr class="row-odd"><td><p>Link Time</p></td>
 <td><p>VARIANT-LINK-TIME</p></td>
 </tr>
-<tr class="row-odd"><td><p>Post-Build Time</p></td>
+<tr class="row-even"><td><p>Post-Build Time</p></td>
 <td><p>VARIANT-POST-BUILD</p></td>
 </tr>
-<tr class="row-even"><td><p>Pre-Compile Time</p></td>
+<tr class="row-odd"><td><p>Pre-Compile Time</p></td>
 <td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Post-build-variant-multiplicity</strong></p></td>
+<td><p>false</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Origin</strong></p></td>
 <td><p>AUTOSAR_ECUC</p></td>
@@ -633,10 +649,10 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidriver">
-<h3><span class="section-number">4.8.10.2. </span>SpiDriver<a class="headerlink" href="#spidriver" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.8.10.3. </span>SpiDriver<a class="headerlink" href="#spidriver" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the AUTOSAR Spi module.</p>
 <section id="spimaxchannel">
-<h4><span class="section-number">4.8.10.2.1. </span>SpiMaxChannel<a class="headerlink" href="#spimaxchannel" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.1. </span>SpiMaxChannel<a class="headerlink" href="#spimaxchannel" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -681,7 +697,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spimaxjob">
-<h4><span class="section-number">4.8.10.2.2. </span>SpiMaxJob<a class="headerlink" href="#spimaxjob" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.2. </span>SpiMaxJob<a class="headerlink" href="#spimaxjob" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -726,7 +742,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spimaxsequence">
-<h4><span class="section-number">4.8.10.2.3. </span>SpiMaxSequence<a class="headerlink" href="#spimaxsequence" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.3. </span>SpiMaxSequence<a class="headerlink" href="#spimaxsequence" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -771,7 +787,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spisequencetimeout">
-<h4><span class="section-number">4.8.10.2.4. </span>SpiSequenceTimeOut<a class="headerlink" href="#spisequencetimeout" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.4. </span>SpiSequenceTimeOut<a class="headerlink" href="#spisequencetimeout" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -816,7 +832,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicounterclockref">
-<h4><span class="section-number">4.8.10.2.5. </span>SpiCounterClockRef<a class="headerlink" href="#spicounterclockref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.5. </span>SpiCounterClockRef<a class="headerlink" href="#spicounterclockref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -852,10 +868,10 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichannel">
-<h4><span class="section-number">4.8.10.2.6. </span>SpiChannel<a class="headerlink" href="#spichannel" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.6. </span>SpiChannel<a class="headerlink" href="#spichannel" title="Link to this heading"></a></h4>
 <p>All data needed to configure one SPI-channel</p>
 <section id="spichannelid">
-<h5><span class="section-number">4.8.10.2.6.1. </span>SpiChannelId<a class="headerlink" href="#spichannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.6.1. </span>SpiChannelId<a class="headerlink" href="#spichannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -900,7 +916,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichanneltype">
-<h5><span class="section-number">4.8.10.2.6.2. </span>SpiChannelType<a class="headerlink" href="#spichanneltype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.6.2. </span>SpiChannelType<a class="headerlink" href="#spichanneltype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -942,7 +958,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidatawidth">
-<h5><span class="section-number">4.8.10.2.6.3. </span>SpiDataWidth<a class="headerlink" href="#spidatawidth" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.6.3. </span>SpiDataWidth<a class="headerlink" href="#spidatawidth" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -987,7 +1003,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidefaultdata">
-<h5><span class="section-number">4.8.10.2.6.4. </span>SpiDefaultData<a class="headerlink" href="#spidefaultdata" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.6.4. </span>SpiDefaultData<a class="headerlink" href="#spidefaultdata" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1047,7 +1063,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiebmaxlength">
-<h5><span class="section-number">4.8.10.2.6.5. </span>SpiEbMaxLength<a class="headerlink" href="#spiebmaxlength" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.6.5. </span>SpiEbMaxLength<a class="headerlink" href="#spiebmaxlength" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1092,7 +1108,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiibnbuffers">
-<h5><span class="section-number">4.8.10.2.6.6. </span>SpiIbNBuffers<a class="headerlink" href="#spiibnbuffers" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.6.6. </span>SpiIbNBuffers<a class="headerlink" href="#spiibnbuffers" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1137,7 +1153,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spitransferstart">
-<h5><span class="section-number">4.8.10.2.6.7. </span>SpiTransferStart<a class="headerlink" href="#spitransferstart" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.6.7. </span>SpiTransferStart<a class="headerlink" href="#spitransferstart" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1180,10 +1196,10 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 </section>
 <section id="spijob">
-<h4><span class="section-number">4.8.10.2.7. </span>SpiJob<a class="headerlink" href="#spijob" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.7. </span>SpiJob<a class="headerlink" href="#spijob" title="Link to this heading"></a></h4>
 <p>All data needed to configure one SPI-Job, amongst others the connection between the internal SPI unit and the special settings for an external device is done.</p>
 <section id="spihwunitsynchronous">
-<h5><span class="section-number">4.8.10.2.7.1. </span>SpiHwUnitSynchronous<a class="headerlink" href="#spihwunitsynchronous" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.7.1. </span>SpiHwUnitSynchronous<a class="headerlink" href="#spihwunitsynchronous" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1240,7 +1256,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spijobendnotification">
-<h5><span class="section-number">4.8.10.2.7.2. </span>SpiJobEndNotification<a class="headerlink" href="#spijobendnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.7.2. </span>SpiJobEndNotification<a class="headerlink" href="#spijobendnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1294,7 +1310,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spijobid">
-<h5><span class="section-number">4.8.10.2.7.3. </span>SpiJobId<a class="headerlink" href="#spijobid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.7.3. </span>SpiJobId<a class="headerlink" href="#spijobid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1339,7 +1355,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spijobpriority">
-<h5><span class="section-number">4.8.10.2.7.4. </span>SpiJobPriority<a class="headerlink" href="#spijobpriority" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.7.4. </span>SpiJobPriority<a class="headerlink" href="#spijobpriority" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1384,7 +1400,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spideviceassignment">
-<h5><span class="section-number">4.8.10.2.7.5. </span>SpiDeviceAssignment<a class="headerlink" href="#spideviceassignment" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.7.5. </span>SpiDeviceAssignment<a class="headerlink" href="#spideviceassignment" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1421,10 +1437,10 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 </section>
 <section id="spichannellist">
-<h4><span class="section-number">4.8.10.2.8. </span>SpiChannelList<a class="headerlink" href="#spichannellist" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.8. </span>SpiChannelList<a class="headerlink" href="#spichannellist" title="Link to this heading"></a></h4>
 <p>References to SPI channels and their order within the Job.</p>
 <section id="spichannelindex">
-<h5><span class="section-number">4.8.10.2.8.1. </span>SpiChannelIndex<a class="headerlink" href="#spichannelindex" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.8.1. </span>SpiChannelIndex<a class="headerlink" href="#spichannelindex" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1469,7 +1485,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichannelassignment">
-<h5><span class="section-number">4.8.10.2.8.2. </span>SpiChannelAssignment<a class="headerlink" href="#spichannelassignment" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.8.2. </span>SpiChannelAssignment<a class="headerlink" href="#spichannelassignment" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1506,10 +1522,10 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 </section>
 <section id="spisequence">
-<h4><span class="section-number">4.8.10.2.9. </span>SpiSequence<a class="headerlink" href="#spisequence" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.9. </span>SpiSequence<a class="headerlink" href="#spisequence" title="Link to this heading"></a></h4>
 <p>All data needed to configure one SPI-sequence</p>
 <section id="spiinterruptiblesequence">
-<h5><span class="section-number">4.8.10.2.9.1. </span>SpiInterruptibleSequence<a class="headerlink" href="#spiinterruptiblesequence" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.9.1. </span>SpiInterruptibleSequence<a class="headerlink" href="#spiinterruptiblesequence" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1548,7 +1564,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiseqendnotification">
-<h5><span class="section-number">4.8.10.2.9.2. </span>SpiSeqEndNotification<a class="headerlink" href="#spiseqendnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.9.2. </span>SpiSeqEndNotification<a class="headerlink" href="#spiseqendnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1602,7 +1618,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spisequenceid">
-<h5><span class="section-number">4.8.10.2.9.3. </span>SpiSequenceId<a class="headerlink" href="#spisequenceid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.9.3. </span>SpiSequenceId<a class="headerlink" href="#spisequenceid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1647,7 +1663,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spijobassignment">
-<h5><span class="section-number">4.8.10.2.9.4. </span>SpiJobAssignment<a class="headerlink" href="#spijobassignment" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.9.4. </span>SpiJobAssignment<a class="headerlink" href="#spijobassignment" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1699,10 +1715,10 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 </section>
 <section id="spiexternaldevice">
-<h4><span class="section-number">4.8.10.2.10. </span>SpiExternalDevice<a class="headerlink" href="#spiexternaldevice" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.10. </span>SpiExternalDevice<a class="headerlink" href="#spiexternaldevice" title="Link to this heading"></a></h4>
 <p>The communication settings of an external device. Closely linked to SpiJob.</p>
 <section id="spiexternaldeviceid">
-<h5><span class="section-number">4.8.10.2.10.1. </span>SpiExternalDeviceId<a class="headerlink" href="#spiexternaldeviceid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.1. </span>SpiExternalDeviceId<a class="headerlink" href="#spiexternaldeviceid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1747,7 +1763,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spibaudrate">
-<h5><span class="section-number">4.8.10.2.10.2. </span>SpiBaudrate<a class="headerlink" href="#spibaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.2. </span>SpiBaudrate<a class="headerlink" href="#spibaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1792,7 +1808,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiclkdivider">
-<h5><span class="section-number">4.8.10.2.10.3. </span>SpiclkDivider<a class="headerlink" href="#spiclkdivider" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.3. </span>SpiclkDivider<a class="headerlink" href="#spiclkdivider" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1837,7 +1853,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicsidentifier">
-<h5><span class="section-number">4.8.10.2.10.4. </span>SpiCsIdentifier<a class="headerlink" href="#spicsidentifier" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.4. </span>SpiCsIdentifier<a class="headerlink" href="#spicsidentifier" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1876,7 +1892,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicspolarity">
-<h5><span class="section-number">4.8.10.2.10.5. </span>SpiCsPolarity<a class="headerlink" href="#spicspolarity" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.5. </span>SpiCsPolarity<a class="headerlink" href="#spicspolarity" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1918,7 +1934,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicsselection">
-<h5><span class="section-number">4.8.10.2.10.6. </span>SpiCsSelection<a class="headerlink" href="#spicsselection" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.6. </span>SpiCsSelection<a class="headerlink" href="#spicsselection" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1975,7 +1991,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidatashiftedge">
-<h5><span class="section-number">4.8.10.2.10.7. </span>SpiDataShiftEdge<a class="headerlink" href="#spidatashiftedge" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.7. </span>SpiDataShiftEdge<a class="headerlink" href="#spidatashiftedge" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2017,7 +2033,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spienablecs">
-<h5><span class="section-number">4.8.10.2.10.8. </span>SpiEnableCs<a class="headerlink" href="#spienablecs" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.8. </span>SpiEnableCs<a class="headerlink" href="#spienablecs" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2056,7 +2072,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spihwunit">
-<h5><span class="section-number">4.8.10.2.10.9. </span>SpiHwUnit<a class="headerlink" href="#spihwunit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.9. </span>SpiHwUnit<a class="headerlink" href="#spihwunit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2098,7 +2114,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spishiftclockidlelevel">
-<h5><span class="section-number">4.8.10.2.10.10. </span>SpiShiftClockIdleLevel<a class="headerlink" href="#spishiftclockidlelevel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.10. </span>SpiShiftClockIdleLevel<a class="headerlink" href="#spishiftclockidlelevel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2140,7 +2156,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spidataworddelay">
-<h5><span class="section-number">4.8.10.2.10.11. </span>SpiDataWordDelay<a class="headerlink" href="#spidataworddelay" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.11. </span>SpiDataWordDelay<a class="headerlink" href="#spidataworddelay" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2185,7 +2201,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spisysclockref">
-<h5><span class="section-number">4.8.10.2.10.12. </span>SpiSysClockRef<a class="headerlink" href="#spisysclockref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.12. </span>SpiSysClockRef<a class="headerlink" href="#spisysclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2221,7 +2237,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spicsgpioref">
-<h5><span class="section-number">4.8.10.2.10.13. </span>SpiCsGpioRef<a class="headerlink" href="#spicsgpioref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.10.13. </span>SpiCsGpioRef<a class="headerlink" href="#spicsgpioref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2273,10 +2289,10 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 </section>
 <section id="spihwunitconfig">
-<h4><span class="section-number">4.8.10.2.11. </span>SpiHwUnitConfig<a class="headerlink" href="#spihwunitconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.3.11. </span>SpiHwUnitConfig<a class="headerlink" href="#spihwunitconfig" title="Link to this heading"></a></h4>
 <p>HW Unit configurations</p>
 <section id="spihwunittype">
-<h5><span class="section-number">4.8.10.2.11.1. </span>SpiHwUnitType<a class="headerlink" href="#spihwunittype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.11.1. </span>SpiHwUnitType<a class="headerlink" href="#spihwunittype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2318,7 +2334,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spihighspeedmode">
-<h5><span class="section-number">4.8.10.2.11.2. </span>SpiHighSpeedMode<a class="headerlink" href="#spihighspeedmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.11.2. </span>SpiHighSpeedMode<a class="headerlink" href="#spihighspeedmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2357,7 +2373,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiloopbackmode">
-<h5><span class="section-number">4.8.10.2.11.3. </span>SpiLoopBackMode<a class="headerlink" href="#spiloopbackmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.11.3. </span>SpiLoopBackMode<a class="headerlink" href="#spiloopbackmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2396,7 +2412,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spififomodeenable">
-<h5><span class="section-number">4.8.10.2.11.4. </span>SpiFifoModeEnable<a class="headerlink" href="#spififomodeenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.11.4. </span>SpiFifoModeEnable<a class="headerlink" href="#spififomodeenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2435,7 +2451,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiirqtype">
-<h5><span class="section-number">4.8.10.2.11.5. </span>SpiIrqType<a class="headerlink" href="#spiirqtype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.8.10.3.11.5. </span>SpiIrqType<a class="headerlink" href="#spiirqtype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2479,10 +2495,10 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 </section>
 <section id="spigeneral">
-<h3><span class="section-number">4.8.10.3. </span>SpiGeneral<a class="headerlink" href="#spigeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.8.10.4. </span>SpiGeneral<a class="headerlink" href="#spigeneral" title="Link to this heading"></a></h3>
 <p>General configuration settings for SPI-Handler</p>
 <section id="spicancelapi">
-<h4><span class="section-number">4.8.10.3.1. </span>SpiCancelApi<a class="headerlink" href="#spicancelapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.1. </span>SpiCancelApi<a class="headerlink" href="#spicancelapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2521,7 +2537,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichannelbuffersallowed">
-<h4><span class="section-number">4.8.10.3.2. </span>SpiChannelBuffersAllowed<a class="headerlink" href="#spichannelbuffersallowed" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.2. </span>SpiChannelBuffersAllowed<a class="headerlink" href="#spichannelbuffersallowed" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2566,7 +2582,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spichannelinternalbuffermaxlength">
-<h4><span class="section-number">4.8.10.3.3. </span>SpiChannelInternalBufferMaxLength<a class="headerlink" href="#spichannelinternalbuffermaxlength" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.3. </span>SpiChannelInternalBufferMaxLength<a class="headerlink" href="#spichannelinternalbuffermaxlength" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2611,7 +2627,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spideverrordetect">
-<h4><span class="section-number">4.8.10.3.4. </span>SpiDevErrorDetect<a class="headerlink" href="#spideverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.4. </span>SpiDevErrorDetect<a class="headerlink" href="#spideverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2650,7 +2666,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spihwstatusapi">
-<h4><span class="section-number">4.8.10.3.5. </span>SpiHwStatusApi<a class="headerlink" href="#spihwstatusapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.5. </span>SpiHwStatusApi<a class="headerlink" href="#spihwstatusapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2689,7 +2705,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiinterruptibleseqallowed">
-<h4><span class="section-number">4.8.10.3.6. </span>SpiInterruptibleSeqAllowed<a class="headerlink" href="#spiinterruptibleseqallowed" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.6. </span>SpiInterruptibleSeqAllowed<a class="headerlink" href="#spiinterruptibleseqallowed" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2728,7 +2744,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spileveldelivered">
-<h4><span class="section-number">4.8.10.3.7. </span>SpiLevelDelivered<a class="headerlink" href="#spileveldelivered" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.7. </span>SpiLevelDelivered<a class="headerlink" href="#spileveldelivered" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2740,7 +2756,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <td><p>SpiLevelDelivered</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Selects the SPI Handler/Driver level of scalable functionality that is</p></td>
+<td><p>Selects the SPI Handler/Driver level of scalable functionality that is available and delivered.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>AUTOSAR_ECUC</p></td>
@@ -2773,7 +2789,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spimainfunctionperiod">
-<h4><span class="section-number">4.8.10.3.8. </span>SpiMainFunctionPeriod<a class="headerlink" href="#spimainfunctionperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.8. </span>SpiMainFunctionPeriod<a class="headerlink" href="#spimainfunctionperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2833,7 +2849,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spisupportconcurrentsynctransmit">
-<h4><span class="section-number">4.8.10.3.9. </span>SpiSupportConcurrentSyncTransmit<a class="headerlink" href="#spisupportconcurrentsynctransmit" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.9. </span>SpiSupportConcurrentSyncTransmit<a class="headerlink" href="#spisupportconcurrentsynctransmit" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2872,7 +2888,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiusercallbackheaderfile">
-<h4><span class="section-number">4.8.10.3.10. </span>SpiUserCallbackHeaderFile<a class="headerlink" href="#spiusercallbackheaderfile" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.10. </span>SpiUserCallbackHeaderFile<a class="headerlink" href="#spiusercallbackheaderfile" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2926,7 +2942,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </table>
 </section>
 <section id="spiversioninfoapi">
-<h4><span class="section-number">4.8.10.3.11. </span>SpiVersionInfoApi<a class="headerlink" href="#spiversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.8.10.4.11. </span>SpiVersionInfoApi<a class="headerlink" href="#spiversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2969,7 +2985,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 </section>
 <section id="steps-to-configure-spi-module">
-<h3><span class="section-number">4.8.10.4. </span>Steps To Configure Spi Module<a class="headerlink" href="#steps-to-configure-spi-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.8.10.5. </span>Steps To Configure Spi Module<a class="headerlink" href="#steps-to-configure-spi-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Port, Mcu, Ecum, Os, Dem and Spi modules</p></li>
 <li><p>Open PORT module plugin and configure required pins as MISO, MOSI, CLK, CS.</p></li>
@@ -3024,26 +3040,29 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 <section id="sample-log-of-spi-example-sync-asynctransfer">
 <h4><span class="section-number">4.8.11.1.4. </span>Sample Log of Spi_Example_Sync_AsyncTransfer<a class="headerlink" href="#sample-log-of-spi-example-sync-asynctransfer" title="Link to this heading"></a></h4>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
-<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
-<span class="w">    </span><span class="o">---------------------</span>
-<span class="w">    </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
-<span class="w">    </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">Setting</span><span class="w"> </span><span class="n">loopback</span><span class="w"> </span><span class="n">mode</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel1</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel2</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">asynchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
-<span class="w">    </span><span class="n">AsyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
-<span class="w">    </span><span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
-<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">sequence_1</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">SPI_SEQ_OK</span><span class="p">.</span>
-<span class="w">    </span><span class="n">De</span><span class="o">-</span><span class="n">initializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">---------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel1</span><span class="p">.</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel2</span><span class="p">.</span>
+<span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">asynchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
+<span class="n">AsyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">synchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
+<span class="n">SyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
+<span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">sequence_1</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">SPI_SEQ_OK</span><span class="p">.</span>
+<span class="n">De</span><span class="o">-</span><span class="n">initializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
+<span class="nl">Spi_Example_Sync_AsyncTransfer</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="n">success</span>
 </pre></div>
 </div>
 </section>
@@ -3089,27 +3108,28 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 <section id="sample-log-of-spi-example-asynctransfer-interrupt">
 <h4><span class="section-number">4.8.11.2.4. </span>Sample Log of Spi_Example_AsyncTransfer_Interrupt<a class="headerlink" href="#sample-log-of-spi-example-asynctransfer-interrupt" title="Link to this heading"></a></h4>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
-<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
-<span class="w">    </span><span class="o">---------------------</span>
-<span class="w">    </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
-<span class="w">    </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel1</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel2</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">asynchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
-<span class="w">    </span><span class="n">ACalled</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
-<span class="w">    </span><span class="n">syncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">Hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">SPI_BUSY</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">sequence_1</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">SPI_SEQ_OK</span><span class="p">.</span>
-<span class="w">    </span><span class="n">De</span><span class="o">-</span><span class="n">initializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">---------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel1</span><span class="p">.</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel2</span><span class="p">.</span>
+<span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">asynchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
+<span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
+<span class="n">Called</span><span class="w"> </span><span class="n">Sequence</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">notification</span><span class="w"> </span><span class="n">function</span>
+<span class="n">AsyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">Hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">SPI_BUSY</span><span class="p">.</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Result</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">sequence_1</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">SPI_SEQ_OK</span><span class="p">.</span>
+<span class="n">De</span><span class="o">-</span><span class="n">initializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
+<span class="nl">Spi_Example_AsyncTransfer_Interrupt</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="n">success</span>
 </pre></div>
 </div>
 </section>
@@ -3155,22 +3175,23 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </section>
 <section id="sample-log-of-spi-example-synctransfer">
 <h4><span class="section-number">4.8.11.3.4. </span>Sample Log of Spi_Example_SyncTransfer<a class="headerlink" href="#sample-log-of-spi-example-synctransfer" title="Link to this heading"></a></h4>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
-<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
-<span class="w">    </span><span class="o">---------------------</span>
-<span class="w">    </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
-<span class="w">    </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">Setting</span><span class="w"> </span><span class="n">loopback</span><span class="w"> </span><span class="n">mode</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel1</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel2</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">synchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
-<span class="w">    </span><span class="n">SyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Deinitializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">---------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel1</span><span class="p">.</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel2</span><span class="p">.</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">synchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
+<span class="n">SyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Deinitializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
+<span class="nl">Spi_Example_SyncTransfer</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="n">success</span>
 </pre></div>
 </div>
 </section>
@@ -3209,7 +3230,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <figure class="align-center" id="id4">
 <img alt="S2 POCI Switch on XDS110 Debugger" src="../_images/S2_POCI_Switch_XDS110.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.30 </span><span class="caption-text">S2 POCI Switch on XDS110 Debugger</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.31 </span><span class="caption-text">S2 POCI Switch on XDS110 Debugger</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ul class="simple">
@@ -3219,7 +3240,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 <figure class="align-center" id="id5">
 <img alt="SPI Example External Loopback Connections" src="../_images/Spi_Example_External_Loopback_Connections.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.31 </span><span class="caption-text">SPI Example External Loopback Connections</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.32 </span><span class="caption-text">SPI Example External Loopback Connections</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ul class="simple">
@@ -3239,26 +3260,26 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note: To visualise the CPU3 source file (in debug mode), load the CPU3.out by clicking on the “Load Symbols” option.</p>
+<p>Note: To visualize the CPU3 source file (in debug mode), load the CPU3.out by clicking on the “Load Symbols” option.</p>
 </div>
 </section>
 <section id="sample-log-of-spi-example-external-loopback">
 <h4><span class="section-number">4.8.11.4.4. </span>Sample Log of Spi_Example_External_Loopback<a class="headerlink" href="#sample-log-of-spi-example-external-loopback" title="Link to this heading"></a></h4>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
-<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
-<span class="w">    </span><span class="o">---------------------</span>
-<span class="w">    </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
-<span class="w">    </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">    </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">    </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
-<span class="w">    </span><span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">synchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
-<span class="w">    </span><span class="n">SyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
-<span class="w">    </span><span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
-<span class="w">    </span><span class="n">SPI</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">successful</span><span class="o">!</span>
-<span class="w">    </span><span class="n">Deinitializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="n">SPI</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">---------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">83</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Writing</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">internal</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="n">channel0</span><span class="p">.</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">hardware</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Transmitting</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">synchronous</span><span class="w"> </span><span class="n">mode</span><span class="p">.</span>
+<span class="n">SyncTransmit</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">Getting</span><span class="w"> </span><span class="n">sequence</span><span class="w"> </span><span class="n">status</span><span class="p">.</span>
+<span class="n">Deinitializing</span><span class="w"> </span><span class="n">SPI</span><span class="p">.</span>
+<span class="nl">Spi_Example_External_Loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="n">success</span>
 </pre></div>
 </div>
 </section>
@@ -3295,7 +3316,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Spi_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header.</em><br />
+┃ ┃ ┃ ┃ ┃ ┗ 📜<strong>Spi_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header.</em><br />
 ┃ ┃ ┃ ┃ ┣ 📂src<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c<br />
@@ -3333,7 +3354,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -3350,7 +3371,7 @@ The associated Spi driver configuration generated source files are <strong>Spi_L
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

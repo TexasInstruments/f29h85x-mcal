@@ -203,7 +203,6 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 |----|-----|-------|
 |GPIO1|Lock Mechanism for Control Registers|Port Pins Pad control register configuration can be locked and locked configurations can be committed. If user calls Port_Init or Port_SetPinMode APIs after committing the locked configuration, it will result in DET error PORT_E_INIT_FAILED or PORT_PIN_MODE_UNCHANGEABLE respectively|
 
-
 ```{NOTE}
 Locked Configurations can be committed by user during runtime. After committing the configurations, user won't be able to change the configurations during runtime. To change the configuration after committing, hard reset will be required.
 More details of Safety Mechanisms can be found in Safety Manual.
@@ -276,6 +275,50 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
+#### Migration Guide to v02.00.00 from v01.01.01 or any older versions
+
+In version v02.00.00, there are two major changes that require attention when migrating from v01.01.01 or any older versions:
+
+##### Port Pin Name Changes
+
+In this version, the names of the range of values of the PortPinName and PortPinPeripheralSignal got updated, which impacts the values of other configuration parameters as well, because the range of values of other parameters are computed using these parameters. This is the most visible change and affects a large number of port pin configurations. Due to these naming changes, Port configurations created with v01.01.01 or older versions are not directly compatible with v02.00.00.
+
+When migrating existing configurations:
+
+* Open your existing configuration in the latest plugin version
+* The plugin will automatically flag incompatible pin configurations
+* Configure the corresponding pins in the new naming convention by choosing values from the plugin
+* Verify and update all affected pin configurations
+* In order to migrate to the latest version, the values of PortPinName and PortPinPeripheralSignal need to be chosen from the plugin
+
+##### Configuration Structure Name Change
+
+The name of the generated configuration structure has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Port_Init function will need to use the new configuration structure name. For example:
+
+```c
+/* Old code (v01.01.01 or any older versions) */
+Port_Init(&Port_PortConfigSet);
+
+/* New code (v02.00.00) */
+Port_Init(&Port_Config);
+```
+
+This change ensures compliance with AUTOSAR naming conventions.
+
+##### Required Actions for Migration
+
+To successfully migrate to v02.00.00:
+
+* Reconfigure existing Port configurations using the latest plugin
+* Update all port pin references to match the new naming convention
+* Update any upper module that references the configuration structures to use the new structure name
+* Verify all pin configurations after migration
+
+```{NOTE}
+It is recommended to completely reconfigure your Port settings using the v02.00.00 plugin rather than attempting to manually update existing configurations, as both the pin naming changes and configuration structure changes are extensive.
+```
+
 #### Configuration Precautions
 
 * For any peripheral pin configuration, make sure to set correct pad configurations or else it will result in unexpected behavior of the module.
@@ -323,6 +366,7 @@ Configuration of the individual port pins.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | GPIO |
+| **Range** | GPIO |
 
 ###### PortPinPeripheralInstance
 
@@ -336,6 +380,7 @@ Configuration of the individual port pins.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | GPIO0 |
+| **Range** | GPIO0 |
 
 ###### PortPinPeripheralSignal
 
@@ -349,6 +394,7 @@ Configuration of the individual port pins.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | GPIO0 |
+| **Range** | GPIO0 |
 
 ###### PortPhysicalPinId
 
@@ -362,6 +408,7 @@ Configuration of the individual port pins.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | A8 |
+| **Range** | A8 |
 
 ###### PortPinName
 
@@ -375,6 +422,7 @@ Configuration of the individual port pins.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | GPIO0 |
+| **Range** | GPIO0 |
 
 ###### PortPinId
 
@@ -388,8 +436,8 @@ Configuration of the individual port pins.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 0 |
-| **Max-value** | 9223372036854775807 |
-| **Min-value** | -9223372036854775808 |
+| **Max-value** | 256 |
+| **Min-value** | 0 |
 
 ###### PortAnalogMode
 
@@ -431,7 +479,7 @@ Configuration of the individual port pins.
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | PORT_PIN_IN |
-| **Range** | PORT_PIN_NA |
+| **Range** | PORT_PIN_IN |
 
 ###### PortPinDirectionChangeable
 
@@ -492,15 +540,15 @@ Configuration of the individual port pins.
 | Item ||
 |--------|---------------|
 | **Name** | PortPinQualificationPeriod |
-| **Description** | Qualification period of the peripheral signals. NOTE: Qualification period can be set for the pair of 8 GPIOs                                 For Instance:                                 Qualification sampling period for GPIO0 to GPIO7:                                  0x00,QUALPRDx = PLLSYSCLK                                  0x01,QUALPRDx = PLLSYSCLK/2                                 0x02,QUALPRDx = PLLSYSCLK/4                                 ....                                 0xFF,QUALPRDx = PLLSYSCLK/510                                 Reset type: SYSRSn |
+| **Description** | Qualification period of the peripheral signals. NOTE: The PortPinQualificationPeriod should be set to the same value for each pair of 8 consecutive GPIOs.                                 For Instance:                                 Qualification sampling period for GPIO0 to GPIO7:                                  0x00,QUALPRDx = PLLSYSCLK                                  0x01,QUALPRDx = PLLSYSCLK/2                                 0x02,QUALPRDx = PLLSYSCLK/4                                 ....                                 0xFF,QUALPRDx = PLLSYSCLK/510                                 Reset type: SYSRSn |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | true |
 | **Value-Configuration-Class** | -- |
 | Post-Build-Time | VARIANT-POST-BUILD |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 1 |
-| **Max-value** | 9223372036854775807 |
-| **Min-value** | -9223372036854775808 |
+| **Max-value** | 510 |
+| **Min-value** | 0 |
 
 ###### PortPinLevelValue
 
@@ -687,42 +735,43 @@ The example application demonstrates use of Port module, the list below identifi
 
 ```{code-block}
 PORT Driver Sample Application - Starts!!!
----------------------------------------------------------------------------
+---------------------------------------------------------------
 
 Test 1: Initialize Port Driver
 Initializing Port Driver...
 API Port_Init executed successfully
 
----------------------------------------------------------------------------
+---------------------------------------------------------------
 
 Test 2: Change direction for PortPin_0
 Direction changed to INPUT for PortPin_0
 API Port_SetPinDirection executed successfully
 
----------------------------------------------------------------------------
+---------------------------------------------------------------
 
 Test 3: Change Mode for PortPin_0
 Mode changed to MCAND_TX for PortPin_0
 API Port_SetPinMode executed successfully
 
----------------------------------------------------------------------------
+---------------------------------------------------------------
 
 Test 4: Refresh Pin direction for direction unchangeable pins
 API Port_RefreshPortDirection executed successfully
 
----------------------------------------------------------------------------
+---------------------------------------------------------------
 
 Test 5: Get Version info for Port
- API Port_GetVersionInfo executed successfully
+ 
+API Port_GetVersionInfo executed successfully
  PORT MCAL Version Info
  ---------------------
  Vendor ID           : 44
  Module ID           : 124
- SW Major Version    : 1
+ SW Major Version    : 2
  SW Minor Version    : 0
  SW Patch Version    : 0
  
----------------------------------------------------------------------------
+---------------------------------------------------------------
 
 Port Example App run is Completed
 Result - PASS!!
@@ -774,4 +823,3 @@ Result - PASS!!
 
 ```{Note}
  Either Port_PBcfg.c OR Port_Cfg.c will be present based on selected config variant by user
- ```

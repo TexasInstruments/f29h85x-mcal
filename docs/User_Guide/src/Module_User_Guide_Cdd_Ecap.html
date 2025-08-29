@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -80,7 +80,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#input-capture-modes-single-shot-capture-mode-and-continuous-capture-mode">4.11.3.1. Input capture modes: Single shot capture mode and Continuous capture mode</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#absolute-time-stamp-capture-and-difference-delta-mode">4.11.3.2. Absolute time-stamp capture and difference (delta) mode</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#capture-registers-and-event-prescaler">4.11.3.3. Capture registers and event prescaler</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#measurement-modes">4.11.3.4. Measurement modes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#high-resolution-capture-mode">4.11.3.4. High Resolution capture mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#measurement-modes">4.11.3.5. Measurement modes</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.11.4. Hardware Features</a><ul>
@@ -119,7 +120,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-cdd-ecap-capture-signal">4.11.10.2. Setup required to run Cdd_Ecap_Capture_Signal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#how-to-run-cdd-ecap-capture-signal">4.11.10.3. How to run Cdd_Ecap_Capture_Signal</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sample-logs-of-cdd-ecap-capture-signal">4.11.10.4. Sample Logs of Cdd_Ecap_Capture_Signal</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.11.10.5. File Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-ecap-hrmode">4.11.10.5. Cdd_Ecap_HrMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-cdd-ecap-hrmode">4.11.10.6. Setup required to run Cdd_Ecap_HrMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-run-cdd-ecap-hrmode">4.11.10.7. How to run Cdd_Ecap_HrMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample-logs-of-cdd-ecap-hrmode">4.11.10.8. Sample Logs of Cdd_Ecap_HrMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.11.10.9. File Structure</a></li>
 </ul>
 </li>
 </ul>
@@ -129,6 +134,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -206,58 +212,61 @@
 <tr class="row-odd"><td><p>ECAP</p></td>
 <td><p>Enhanced Capture</p></td>
 </tr>
-<tr class="row-even"><td><p>ECAP instance</p></td>
+<tr class="row-even"><td><p>HRCAP</p></td>
+<td><p>High resolution Capture</p></td>
+</tr>
+<tr class="row-odd"><td><p>ECAP instance</p></td>
 <td><p>Single ECAP hardware unit</p></td>
 </tr>
-<tr class="row-odd"><td><p>GPIO</p></td>
+<tr class="row-even"><td><p>GPIO</p></td>
 <td><p>General Purpose Input Output</p></td>
 </tr>
-<tr class="row-even"><td><p>High time</p></td>
+<tr class="row-odd"><td><p>High time</p></td>
 <td><p>Time in ticks during which signal level is high</p></td>
 </tr>
-<tr class="row-odd"><td><p>HW</p></td>
+<tr class="row-even"><td><p>HW</p></td>
 <td><p>Hardware</p></td>
 </tr>
-<tr class="row-even"><td><p>IDLE state</p></td>
+<tr class="row-odd"><td><p>IDLE state</p></td>
 <td><p>Input state of an Cdd_Ecap Channel, no activation edge has been detected</p></td>
 </tr>
-<tr class="row-odd"><td><p>Input state</p></td>
+<tr class="row-even"><td><p>Input state</p></td>
 <td><p>Logical input state of an Cdd_Ecap Channel. It can be ACTIVE or IDLE.</p></td>
 </tr>
-<tr class="row-even"><td><p>Linear buffer</p></td>
+<tr class="row-odd"><td><p>Linear buffer</p></td>
 <td><p>An area of memory used to store a stream of data by starting at the beginning of the buffer and stopping at the latest on reaching the end.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Low time</p></td>
+<tr class="row-even"><td><p>Low time</p></td>
 <td><p>Time in ticks during which signal level is low</p></td>
 </tr>
-<tr class="row-even"><td><p>MCU</p></td>
+<tr class="row-odd"><td><p>MCU</p></td>
 <td><p>Microcontroller unit</p></td>
 </tr>
-<tr class="row-odd"><td><p>Measurement mode</p></td>
+<tr class="row-even"><td><p>Measurement mode</p></td>
 <td><p>Measurement mode defines the capability for signal acquisition and evaluation. Possible modes: Signal Edge Detection / Notification, Signal Measurement, Timestamp, Edge Counter</p></td>
 </tr>
-<tr class="row-even"><td><p>Measurement mode, Edge counter</p></td>
+<tr class="row-odd"><td><p>Measurement mode, Edge counter</p></td>
 <td><p>Functionality of an Edge Counter, counting of external edges</p></td>
 </tr>
-<tr class="row-odd"><td><p>Measurement mode, Signal Edge Detection</p></td>
+<tr class="row-even"><td><p>Measurement mode, Signal Edge Detection</p></td>
 <td><p>Notification on signal edges.</p></td>
 </tr>
-<tr class="row-even"><td><p>Measurement mode, Signal Measurement</p></td>
+<tr class="row-odd"><td><p>Measurement mode, Signal Measurement</p></td>
 <td><p>Measurement of elapsed High Time, elapsed Low Time, elapsed Period Time and Duty Cycle of an input signal.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Measurement mode, Timestamp</p></td>
+<tr class="row-even"><td><p>Measurement mode, Timestamp</p></td>
 <td><p>Generation of timestamps for signal edges, see Figure “Cdd_Ecap time stamp”</p></td>
 </tr>
-<tr class="row-even"><td><p>MCAL</p></td>
+<tr class="row-odd"><td><p>MCAL</p></td>
 <td><p>Micro Controller Abstraction Layer</p></td>
 </tr>
-<tr class="row-odd"><td><p>Period time</p></td>
+<tr class="row-even"><td><p>Period time</p></td>
 <td><p>Time in ticks between consecutive rising edges or falling edges</p></td>
 </tr>
-<tr class="row-even"><td><p>RTE</p></td>
+<tr class="row-odd"><td><p>RTE</p></td>
 <td><p>Runtime Environment</p></td>
 </tr>
-<tr class="row-odd"><td><p>SW</p></td>
+<tr class="row-even"><td><p>SW</p></td>
 <td><p>Software</p></td>
 </tr>
 </tbody>
@@ -277,7 +286,7 @@
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/Cdd_Ecap_Autosar_MCAL.png"><img alt="CDD ECAP MCAL AUTOSAR" src="../_images/Cdd_Ecap_Autosar_MCAL.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4.41 </span><span class="caption-text">Cdd Ecap MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.42 </span><span class="caption-text">Cdd Ecap MCAL AUTOSAR</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>This document details AUTOSAR Cdd Ecap module implementation</p>
@@ -327,34 +336,51 @@ Conversely, in difference (delta) mode time-stamp capture, the 32-bit time-base 
 <figure class="align-center" id="id2">
 <img alt="Cdd Ecap Hardware block diagram" src="../_images/Cdd_Ecap_Block_Diagram.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.42 </span><span class="caption-text">Cdd Ecap Hardware Block Diagram</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.43 </span><span class="caption-text">Cdd Ecap Hardware Block Diagram</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Value of the event prescalar other than 1 will make the duty cycle of the signal as 50%. Signal measurement and time-stamp modes are not recommended to use in this case as duty and high time calculation may not give true picture of the actual signal.
+User can refer to the below diagram</p>
+<figure class="align-center" id="id3">
+<img alt="Cdd Ecap Prescale output" src="../_images/Cdd_Ecap_Prescale.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.44 </span><span class="caption-text">Cdd Ecap Prescaled waveform output Diagram.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
+<section id="high-resolution-capture-mode">
+<h3><span class="section-number">4.11.3.4. </span>High Resolution capture mode<a class="headerlink" href="#high-resolution-capture-mode" title="Link to this heading"></a></h3>
+<p>HRCAP (High Resolution Capture) mode is a specialized capability of the ECAP (Enhanced Capture) module that provides higher precision timing measurements. All eCAP hardware is accessible to the HRCAP module. HRCAP module doesn’t work on the eCAP clock(SYSCLK),
+it works on an internal clock called HRCLK(high resolution clock). So, the capture registers will capture the values in HRCLK domain. For this APIs are provided to convert the captured time-stamps from HRCLK domain to SYSCLK domain. HRCAP works on a calibration
+logic which is always running in the background. The calibration logic essentially calculates the scalefactor for timestamp conversion from HRCLK to SYSCLK domain. While capturing pulses using HRCAP, the capture registers also store information about the integer
+as well as the fractional part of the captured pulse. So, the user must use float while dealing with HRCAP calculations and measurements otherwise they will lose the accuracy.</p>
+<p>HRCAP has some variation in performance which results in a probability distribution. Pulse width of the measured signal can affect the accuracy and standard deviation of the measurement by HRCAP.
+For more information user can refer to the device datasheet provided in this link: <a class="reference external" href="https://www.ti.com/lit/ds/symlink/f29h859tu-q1.pdf">datasheet</a></p>
+</section>
 <section id="measurement-modes">
-<h3><span class="section-number">4.11.3.4. </span>Measurement modes<a class="headerlink" href="#measurement-modes" title="Link to this heading"></a></h3>
-<figure class="align-center" id="id3">
+<h3><span class="section-number">4.11.3.5. </span>Measurement modes<a class="headerlink" href="#measurement-modes" title="Link to this heading"></a></h3>
+<figure class="align-center" id="id4">
 <img alt="Cdd Ecap Edge Counting Waveform" src="../_images/Cdd_Ecap_Waveform_Edge_Counting.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.43 </span><span class="caption-text">Cdd Ecap Edge Counting Waveform</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="id4">
-<img alt="Cdd Ecap Timestamping Waveform" src="../_images/Cdd_Ecap_Waveform_Timestamping.png" />
-<figcaption>
-<p><span class="caption-number">Fig. 4.44 </span><span class="caption-text">Cdd Ecap Timestamping Waveform</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.45 </span><span class="caption-text">Cdd Ecap Edge Counting Waveform</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id5">
-<img alt="Cdd Ecap Edge Detection Waveform" src="../_images/Cdd_Ecap_Waveform_Edge_Detection.png" />
+<img alt="Cdd Ecap Timestamping Waveform" src="../_images/Cdd_Ecap_Waveform_Timestamping.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.45 </span><span class="caption-text">Cdd Ecap Edge Detection Waveform</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.46 </span><span class="caption-text">Cdd Ecap Timestamping Waveform</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id6">
+<img alt="Cdd Ecap Edge Detection Waveform" src="../_images/Cdd_Ecap_Waveform_Edge_Detection.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.47 </span><span class="caption-text">Cdd Ecap Edge Detection Waveform</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id7">
 <img alt="Cdd Ecap Signal Measurement Waveform" src="../_images/Cdd_Ecap_Waveform_Signal_Measurement.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.46 </span><span class="caption-text">Cdd Ecap Signal Measurement Waveform</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.48 </span><span class="caption-text">Cdd Ecap Signal Measurement Waveform</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>ECAP configuration for various activation conditions</p>
@@ -404,6 +430,7 @@ Conversely, in difference (delta) mode time-stamp capture, the 32-bit time-base 
 <li><p>Interrupt on either of the four events</p></li>
 <li><p>Continuous mode capture of time stamps in a four-deep circular buffer</p></li>
 <li><p>Difference (Delta) mode time-stamp capture and Absolute time-stamp capture</p></li>
+<li><p>HR mode is supported for high resolution capture of the signals</p></li>
 </ul>
 </section>
 <section id="not-supported-features">
@@ -457,10 +484,10 @@ Conversely, in difference (delta) mode time-stamp capture, the 32-bit time-base 
 ┣ 📂plugins<br />
 ┣ 📜CMakeLists.txt<br />
 ┗ 📜CMakePresets.json</p>
-<figure class="align-center" id="id7">
-<img alt="Cdd Ecap Header File Structure" src="../_images/Cdd_Ecap_HeaderFile_Structure.png" />
+<figure class="align-center" id="id8">
+<img alt="Cdd Ecap Header File Structure" src="../_images/Cdd_Ecap_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.47 </span><span class="caption-text">Cdd Ecap Header File Structure</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.49 </span><span class="caption-text">Cdd Ecap Header File Structure</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -539,6 +566,14 @@ Conversely, in difference (delta) mode time-stamp capture, the 32-bit time-base 
 <td><p>CDD_ECAP_E_PARAM_VINFO</p></td>
 <td><p>0x19U</p></td>
 </tr>
+<tr class="row-even"><td><p>API service called with an invalid or not feasible start level</p></td>
+<td><p>CDD_ECAP_E_PARAM_START_LEVEL</p></td>
+<td><p>0x1AU</p></td>
+</tr>
+<tr class="row-odd"><td><p>API service called with an invalid channel in the HR mode</p></td>
+<td><p>CDD_ECAP_E_HR_CHANNEL</p></td>
+<td><p>0x1BU</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -583,6 +618,14 @@ Interrupt category should be selected in the Cdd_Ecap plugin.</p>
 <td><p>Cdd_Ecap_ch5Notify</p></td>
 <td><p>Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT</p></td>
 </tr>
+<tr class="row-even"><td><p>CDD ECAP Channel 4</p></td>
+<td><p>Cdd_Ecap_HR_ch4Notify</p></td>
+<td><p>Depends on the HRCAP HW instance used for the Cdd ECAP channel. HRCAP5_INT/HRCAP6_INT</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD ECAP Channel 5</p></td>
+<td><p>Cdd_Ecap_HR_ch5Notify</p></td>
+<td><p>Depends on the HRCAP HW instance used for the Cdd ECAP channel.  HRCAP5_INT/HRCAP6_INT</p></td>
+</tr>
 </tbody>
 </table>
 <div class="admonition note">
@@ -614,10 +657,10 @@ Interrupt category should be selected in the Cdd_Ecap plugin.</p>
 <section id="hardware-software-mapping">
 <h3><span class="section-number">4.11.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
 <p>Below image shows Cdd Ecap driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
-<figure class="align-center" id="id8">
+<figure class="align-center" id="id9">
 <a class="reference internal image-reference" href="../_images/Cdd_Ecap_Hw_Sw_Mapping.png"><img alt="Cdd Ecap HW/SW Mapping" src="../_images/Cdd_Ecap_Hw_Sw_Mapping.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4.48 </span><span class="caption-text">Cdd Ecap HW/SW Mapping</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.50 </span><span class="caption-text">Cdd Ecap HW/SW Mapping</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -720,8 +763,44 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </tbody>
 </table>
 </section>
+<section id="cddecapemulationmode">
+<h5><span class="section-number">4.11.9.1.1.2. </span>CddEcapEmulationMode<a class="headerlink" href="#cddecapemulationmode" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapEmulationMode</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Configures the emulation mode of the Cdd Ecap.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_ECAP_EMULATION_FREE_RUN</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_ECAP_EMULATION_STOP<br>CDD_ECAP_EMULATION_RUN_TO_ZERO<br>CDD_ECAP_EMULATION_FREE_RUN</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="cddecapdefaultstartedge">
-<h5><span class="section-number">4.11.9.1.1.2. </span>CddEcapDefaultStartEdge<a class="headerlink" href="#cddecapdefaultstartedge" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.11.9.1.1.3. </span>CddEcapDefaultStartEdge<a class="headerlink" href="#cddecapdefaultstartedge" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -757,7 +836,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapinputselect">
-<h5><span class="section-number">4.11.9.1.1.3. </span>CddEcapInputSelect<a class="headerlink" href="#cddecapinputselect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.11.9.1.1.4. </span>CddEcapInputSelect<a class="headerlink" href="#cddecapinputselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -786,11 +865,14 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
 <td><p>CDD_ECAP_INPUT_INPUTXBAR1</p></td>
 </tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_ECAP_INPUT_INPUTXBAR1<br>CDD_ECAP_INPUT_INPUTXBAR2<br>CDD_ECAP_INPUT_INPUTXBAR3<br>CDD_ECAP_INPUT_INPUTXBAR4<br>CDD_ECAP_INPUT_INPUTXBAR5<br>CDD_ECAP_INPUT_INPUTXBAR6<br>CDD_ECAP_INPUT_INPUTXBAR7<br>CDD_ECAP_INPUT_INPUTXBAR8<br>CDD_ECAP_INPUT_INPUTXBAR9<br>CDD_ECAP_INPUT_INPUTXBAR10<br>CDD_ECAP_INPUT_INPUTXBAR11<br>CDD_ECAP_INPUT_INPUTXBAR12<br>CDD_ECAP_INPUT_INPUTXBAR13<br>CDD_ECAP_INPUT_INPUTXBAR14<br>CDD_ECAP_INPUT_INPUTXBAR15<br>CDD_ECAP_INPUT_INPUTXBAR16<br>CDD_ECAP_INPUT_ECAP0_CLB1_OUT14<br>CDD_ECAP_INPUT_ECAP1_CLB1_OUT14<br>CDD_ECAP_INPUT_ECAP0_CLB1_OUT15<br>CDD_ECAP_INPUT_ECAP1_CLB1_OUT15<br>CDD_ECAP_INPUT_ECAP2_CLB2_OUT14<br>CDD_ECAP_INPUT_ECAP3_CLB2_OUT14<br>CDD_ECAP_INPUT_ECAP4_CLB2_OUT14<br>CDD_ECAP_INPUT_ECAP2_CLB2_OUT15<br>CDD_ECAP_INPUT_ECAP3_CLB2_OUT15<br>CDD_ECAP_INPUT_ECAP4_CLB2_OUT15<br>CDD_ECAP_INPUT_ECAP5_CLB3_OUT14<br>CDD_ECAP_INPUT_ECAP5_CLB3_OUT15<br>CDD_ECAP_INPUT_ECAP5_CLB4_OUT14<br>CDD_ECAP_INPUT_ECAP5_CLB4_OUT15<br>CDD_ECAP_INPUT_ECAP0_CLB5_OUT14<br>CDD_ECAP_INPUT_ECAP1_CLB5_OUT14<br>CDD_ECAP_INPUT_ECAP0_CLB5_OUT15<br>CDD_ECAP_INPUT_ECAP1_CLB5_OUT15<br>CDD_ECAP_INPUT_ECAP2_CLB6_OUT14<br>CDD_ECAP_INPUT_ECAP3_CLB6_OUT14<br>CDD_ECAP_INPUT_ECAP4_CLB6_OUT14<br>CDD_ECAP_INPUT_ECAP2_CLB6_OUT15<br>CDD_ECAP_INPUT_ECAP3_CLB6_OUT15<br>CDD_ECAP_INPUT_ECAP4_CLB6_OUT15<br>CDD_ECAP_INPUT_OUTPUTXBAR1<br>CDD_ECAP_INPUT_OUTPUTXBAR2<br>CDD_ECAP_INPUT_OUTPUTXBAR3<br>CDD_ECAP_INPUT_OUTPUTXBAR4<br>CDD_ECAP_INPUT_OUTPUTXBAR5<br>CDD_ECAP_INPUT_OUTPUTXBAR6<br>CDD_ECAP_INPUT_OUTPUTXBAR7<br>CDD_ECAP_INPUT_OUTPUTXBAR8<br>CDD_ECAP_INPUT_ADC_E_EVENT4<br>CDD_ECAP_INPUT_ADC_E_EVENT3<br>CDD_ECAP_INPUT_ADC_E_EVENT2<br>CDD_ECAP_INPUT_ADC_E_EVENT1<br>CDD_ECAP_INPUT_ADC_D_EVENT4<br>CDD_ECAP_INPUT_ADC_D_EVENT3<br>CDD_ECAP_INPUT_ADC_D_EVENT2<br>CDD_ECAP_INPUT_ADC_D_EVENT1<br>CDD_ECAP_INPUT_ADC_C_EVENT4<br>CDD_ECAP_INPUT_ADC_C_EVENT3<br>CDD_ECAP_INPUT_ADC_C_EVENT2<br>CDD_ECAP_INPUT_ADC_C_EVENT1<br>CDD_ECAP_INPUT_ADC_B_EVENT4<br>CDD_ECAP_INPUT_ADC_B_EVENT3<br>CDD_ECAP_INPUT_ADC_B_EVENT2<br>CDD_ECAP_INPUT_ADC_B_EVENT1<br>CDD_ECAP_INPUT_ADC_A_EVENT4<br>CDD_ECAP_INPUT_ADC_A_EVENT3<br>CDD_ECAP_INPUT_ADC_A_EVENT2<br>CDD_ECAP_INPUT_ADC_A_EVENT1<br>CDD_ECAP_INPUT_FSIA_RX_MSR_LINE<br>CDD_ECAP_INPUT_FSIA_RX_MSR_LINE_RISE<br>CDD_ECAP_INPUT_FSIA_RX_MSR_LINE_FALL<br>CDD_ECAP_INPUT_FSIB_RX_MSR_LINE<br>CDD_ECAP_INPUT_FSIB_RX_MSR_LINE_RISE<br>CDD_ECAP_INPUT_FSIB_RX_MSR_LINE_FALL<br>CDD_ECAP_INPUT_FSIC_RX_MSR_LINE<br>CDD_ECAP_INPUT_FSIC_RX_MSR_LINE_RISE<br>CDD_ECAP_INPUT_FSIC_RX_MSR_LINE_FALL<br>CDD_ECAP_INPUT_FSID_RX_MSR_LINE<br>CDD_ECAP_INPUT_FSID_RX_MSR_LINE_RISE<br>CDD_ECAP_INPUT_FSID_RX_MSR_LINE_FALL<br>CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_ECAP4_ECAP5_DELAY_CLK<br>CDD_ECAP_INPUT_ECAP5_ECAP4_DELAY_CLK<br>CDD_ECAP_INPUT_ECATSYNC0<br>CDD_ECAP_INPUT_ECATSYNC1<br>CDD_ECAP_INPUT_CMPSS1_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS2_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS3_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS4_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS5_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS6_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS7_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS8_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS1_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS2_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS3_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS4_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS5_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS6_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS7_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS8_CTRIP_HIGH<br>CDD_ECAP_INPUT_GPIO8<br>CDD_ECAP_INPUT_GPIO9<br>CDD_ECAP_INPUT_GPIO22<br>CDD_ECAP_INPUT_GPIO23<br>CDD_ECAP_INPUT_CMPSS1_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS2_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS3_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS4_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS5_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS6_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS7_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS8_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_ECAP0_INPUTXBAR7<br>CDD_ECAP_INPUT_ECAP1_INPUTXBAR8<br>CDD_ECAP_INPUT_ECAP2_INPUTXBAR9<br>CDD_ECAP_INPUT_ECAP3_INPUTXBAR10<br>CDD_ECAP_INPUT_ECAP4_INPUTXBAR11<br>CDD_ECAP_INPUT_ECAP5_INPUTXBAR12<br>CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT1_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT2_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT3_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM3_FLT1_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM3_FLT2_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM3_FLT3_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT1_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT2_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT3_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_EPWM18_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM17_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM16_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM15_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM14_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM13_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM12_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM11_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM10_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM9_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM8_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM7_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM6_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM5_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM4_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM3_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM2_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM1_DEL_ACTIVE<br>CDD_ECAP_INPUT_GPIO11<br>CDD_ECAP_INPUT_GPIO12<br>CDD_ECAP_INPUT_GPIO13<br>CDD_ECAP_INPUT_GPIO14<br>CDD_ECAP_INPUT_ECAP0_EPG1_DATAOUT49<br>CDD_ECAP_INPUT_ECAP1_EPG1_DATAOUT50<br>CDD_ECAP_INPUT_ECAP2_EPG1_DATAOUT51<br>CDD_ECAP_INPUT_ECAP3_EPG1_DATAOUT52<br>CDD_ECAP_INPUT_ECAP4_EPG1_DATAOUT53<br>CDD_ECAP_INPUT_ECAP5_EPG1_DATAOUT54</p></td>
+</tr>
 </tbody>
 </table>
 </section>
 <section id="cddecapirqtype">
-<h5><span class="section-number">4.11.9.1.1.4. </span>CddEcapIrqType<a class="headerlink" href="#cddecapirqtype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.11.9.1.1.5. </span>CddEcapIrqType<a class="headerlink" href="#cddecapirqtype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -826,7 +908,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapmeasurementmode">
-<h5><span class="section-number">4.11.9.1.1.5. </span>CddEcapMeasurementMode<a class="headerlink" href="#cddecapmeasurementmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.11.9.1.1.6. </span>CddEcapMeasurementMode<a class="headerlink" href="#cddecapmeasurementmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -862,7 +944,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </table>
 </section>
 <section id="cddecapprescaler">
-<h5><span class="section-number">4.11.9.1.1.6. </span>CddEcapPrescaler<a class="headerlink" href="#cddecapprescaler" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.11.9.1.1.7. </span>CddEcapPrescaler<a class="headerlink" href="#cddecapprescaler" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -891,11 +973,14 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
 <td><p>CDD_ECAP_PRESCALAR_1</p></td>
 </tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_ECAP_PRESCALAR_1<br>CDD_ECAP_PRESCALAR_2<br>CDD_ECAP_PRESCALAR_4<br>CDD_ECAP_PRESCALAR_6<br>CDD_ECAP_PRESCALAR_8<br>CDD_ECAP_PRESCALAR_10<br>CDD_ECAP_PRESCALAR_12<br>CDD_ECAP_PRESCALAR_14<br>CDD_ECAP_PRESCALAR_16<br>CDD_ECAP_PRESCALAR_18<br>CDD_ECAP_PRESCALAR_20<br>CDD_ECAP_PRESCALAR_22<br>CDD_ECAP_PRESCALAR_24<br>CDD_ECAP_PRESCALAR_26<br>CDD_ECAP_PRESCALAR_28<br>CDD_ECAP_PRESCALAR_30<br>CDD_ECAP_PRESCALAR_32<br>CDD_ECAP_PRESCALAR_34<br>CDD_ECAP_PRESCALAR_36<br>CDD_ECAP_PRESCALAR_38<br>CDD_ECAP_PRESCALAR_40<br>CDD_ECAP_PRESCALAR_42<br>CDD_ECAP_PRESCALAR_44<br>CDD_ECAP_PRESCALAR_46<br>CDD_ECAP_PRESCALAR_48<br>CDD_ECAP_PRESCALAR_50<br>CDD_ECAP_PRESCALAR_52<br>CDD_ECAP_PRESCALAR_54<br>CDD_ECAP_PRESCALAR_56<br>CDD_ECAP_PRESCALAR_58<br>CDD_ECAP_PRESCALAR_60<br>CDD_ECAP_PRESCALAR_62</p></td>
+</tr>
 </tbody>
 </table>
 </section>
 <section id="cddecapclkfrequency">
-<h5><span class="section-number">4.11.9.1.1.7. </span>CddEcapClkFrequency<a class="headerlink" href="#cddecapclkfrequency" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.11.9.1.1.8. </span>CddEcapClkFrequency<a class="headerlink" href="#cddecapclkfrequency" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -933,8 +1018,41 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </tbody>
 </table>
 </section>
+<section id="cddecaphrenable">
+<h5><span class="section-number">4.11.9.1.1.9. </span>CddEcapHREnable<a class="headerlink" href="#cddecaphrenable" title="Link to this heading"></a></h5>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapHREnable</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>This parameter enables HR mode for a particular Cdd Ecap channel.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="cddecapfunctionalclock">
-<h5><span class="section-number">4.11.9.1.1.8. </span>CddEcapFunctionalClock<a class="headerlink" href="#cddecapfunctionalclock" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.11.9.1.1.10. </span>CddEcapFunctionalClock<a class="headerlink" href="#cddecapfunctionalclock" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -998,7 +1116,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 <td><p>CDD_ECAP_HIGH_TIME</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Range</strong></p></td>
-<td><p>CDD_ECAP_DUTY_CYCLE<br>CDD_ECAP_HIGH_TIME<br>CDD_ECAP_LOW_TIME<br>CDD_ECAP_PERIOD_TIME</p></td>
+<td><p>CDD_ECAP_HIGH_TIME<br>CDD_ECAP_LOW_TIME<br>CDD_ECAP_PERIOD_TIME</p></td>
 </tr>
 </tbody>
 </table>
@@ -1433,6 +1551,39 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 </tbody>
 </table>
 </section>
+<section id="cddecaptimestampapi">
+<h4><span class="section-number">4.11.9.2.10. </span>CddEcapTimestampApi<a class="headerlink" href="#cddecaptimestampapi" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Name</strong></p></td>
+<td><p>CddEcapTimestampApi</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>Adds / removes all services related to the timestamping functionality as listed below from the code: CddEcap_StartTimestamp(), CddEcap_StopTimestamp(), CddEcap_GetTimestampIndex().</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Origin</strong></p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
+<td><p>–</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 <section id="steps-to-configure-cdd-ecap-module">
 <h3><span class="section-number">4.11.9.3. </span>Steps To Configure Cdd Ecap Module<a class="headerlink" href="#steps-to-configure-cdd-ecap-module" title="Link to this heading"></a></h3>
@@ -1469,7 +1620,7 @@ The associated Cdd Ecap driver configuration generated source file is <strong>Cd
 <td><p>ECAP1, Interrupt 78</p></td>
 <td><p></p></td>
 <td><p></p></td>
-<td><p>Signal Measurement property is Duty Cycle</p></td>
+<td><p>Signal Measurement property is high time</p></td>
 </tr>
 <tr class="row-odd"><td><p>Channel 1</p></td>
 <td><p>Time Stamp Mode</p></td>
@@ -1543,8 +1694,94 @@ PWM signal (EPWM1_A) is generated on the GPIO0.</p>
 </pre></div>
 </div>
 </section>
+<section id="cdd-ecap-hrmode">
+<h3><span class="section-number">4.11.10.5. </span>Cdd_Ecap_HrMode<a class="headerlink" href="#cdd-ecap-hrmode" title="Link to this heading"></a></h3>
+<section id="overview-of-cdd-ecap-hrmode">
+<h4><span class="section-number">4.11.10.5.1. </span>Overview of Cdd_Ecap_HrMode<a class="headerlink" href="#overview-of-cdd-ecap-hrmode" title="Link to this heading"></a></h4>
+<p>This example configures ECAP in HR mode and measures the high time and period time. This example demonstrates the HR mode for precise signal measurement.
+A PWM signal of fixed duty and time period is used for this purpose.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cdd Ecap Channel</p></th>
+<th class="head"><p>Measurement Mode</p></th>
+<th class="head"><p>Input</p></th>
+<th class="head"><p>ECAP Instance and interrupt used</p></th>
+<th class="head"><p>Notification handler</p></th>
+<th class="head"><p>Activation</p></th>
+<th class="head"><p>Other</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Channel 0</p></td>
+<td><p>Signal Measurement Mode</p></td>
+<td><p>INPUTXBAR7</p></td>
+<td><p>ECAP5, HRCAP5, Interrupt 82, 83</p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p>Signal Measurement property is high time</p></td>
+</tr>
+</tbody>
+</table>
+<p>Input Xbar 7 is configured to use GPIO1 as input
+PWM signal (EPWM1_A) is generated on the GPIO0.</p>
+<ul class="simple">
+<li><p>Cdd_Ecap_HrMode</p>
+<ul>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initializes clock to 200 MHz using Mcu_Init().</p></li>
+<li><p>Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()</p></li>
+<li><p>Initializes Cdd_Ecap driver using Cdd_Ecap_Init()</p></li>
+</ul>
+</li>
+<li><p>Cdd_Ecap_StartSignalMeasurement starts signal measurement on Cdd ECAP Channel 0 using ECAP5. Cdd_Ecap_GetDutyCycleValues and Cdd_Ecap_GetTimeElapsed gets duty cycle values.</p></li>
+<li><p>Cdd_Ecap_GetHrScaleFactor returns scalefactor.</p></li>
+<li><p>Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp converts timestamp from HRCLK to SYSCLK domain</p></li>
+<li><p>Cdd_Ecap_DeInit de-initializes Cdd ECAP</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="setup-required-to-run-cdd-ecap-hrmode">
+<h3><span class="section-number">4.11.10.6. </span>Setup required to run Cdd_Ecap_HrMode<a class="headerlink" href="#setup-required-to-run-cdd-ecap-hrmode" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Install Code Composer Studio(CCS) latest version</p></li>
+<li><p>Install latest c29 compiler</p></li>
+<li><p>Connect the hardware (Loopback from GPIO0 to GPIO1. On HSEC dock, this is from HSEC49 to HSEC50) and power up</p></li>
+<li><p>Connect the uart set up to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-cdd-ecap-hrmode">
+<h3><span class="section-number">4.11.10.7. </span>How to run Cdd_Ecap_HrMode<a class="headerlink" href="#how-to-run-cdd-ecap-hrmode" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Open CCS and import Cdd Ecap Example</p></li>
+<li><p>Build project and start debug project</p></li>
+</ul>
+</section>
+<section id="sample-logs-of-cdd-ecap-hrmode">
+<h3><span class="section-number">4.11.10.8. </span>Sample Logs of Cdd_Ecap_HrMode<a class="headerlink" href="#sample-logs-of-cdd-ecap-hrmode" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_Ecap_HrMode</span><span class="w"> </span><span class="n">Example</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="o">!</span>
+
+<span class="n">Cdd</span><span class="w"> </span><span class="n">Ecap</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="n">Info</span>
+<span class="o">--------------------------</span>
+<span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
+<span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="n">Signal</span><span class="w"> </span><span class="n">Measurement</span><span class="w"> </span><span class="n">Start</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">Channel</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">...</span>
+<span class="n">Example</span><span class="w"> </span><span class="n">passed</span><span class="o">!!!</span>
+<span class="n">High</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">signal</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">nano</span><span class="o">-</span><span class="n">secs</span><span class="w"> </span><span class="n">is</span><span class="o">:</span><span class="w"> </span><span class="mf">1251.290649</span>
+<span class="n">Period</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">signal</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">nano</span><span class="o">-</span><span class="n">secs</span><span class="w"> </span><span class="n">is</span><span class="o">:</span><span class="w"> </span><span class="mf">5010.710938</span>
+
+<span class="n">Cdd_Ecap_HrMode</span><span class="w"> </span><span class="n">Example</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ENDS</span><span class="o">!</span>
+</pre></div>
+</div>
+</section>
 <section id="file-structure">
-<h3><span class="section-number">4.11.10.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.11.10.9. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -1624,7 +1861,7 @@ PWM signal (EPWM1_A) is generated on the GPIO0.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1641,7 +1878,7 @@ PWM signal (EPWM1_A) is generated on the GPIO0.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

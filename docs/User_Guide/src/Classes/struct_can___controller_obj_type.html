@@ -45,7 +45,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -110,43 +110,47 @@ summary: Can controller object structure.</p>
 <td><p>canBusOffRecoveryStatus</p></td>
 <td><p>Bus off recovery status.</p></td>
 </tr>
-<tr class="row-odd"><td><p>uint8[KMAX_MB_PER_CONTROLLER]</p></td>
+<tr class="row-odd"><td><p>uint8[KMAX_TX_MB_PER_CONTROLLER]</p></td>
 <td><p>canTxStatus</p></td>
-<td><p>TxRXx Status of Mailbox.</p></td>
+<td><p>TxRXx Status of Message RAM buffer.</p></td>
 </tr>
-<tr class="row-even"><td><p>uint8</p></td>
+<tr class="row-even"><td><p>PduIdType[KMAX_TX_MB_PER_CONTROLLER]</p></td>
+<td><p>canTxRxPduId</p></td>
+<td><p>Tx/Rx Pdu ID Info for Message RAM buffer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>uint8</p></td>
 <td><p>canInterruptCounter</p></td>
 <td><p>Total number of interrupts for this controller.</p></td>
 </tr>
-<tr class="row-odd"><td><p>uint16</p></td>
+<tr class="row-even"><td><p>uint16</p></td>
 <td><p>canBaud</p></td>
 <td><p>Set BRP value.</p></td>
 </tr>
-<tr class="row-even"><td><p>uint8[(64U)]</p></td>
+<tr class="row-odd"><td><p>uint8[((uint8) 64U)]</p></td>
 <td><p>canSduPtr</p></td>
 <td><p>SDU pointer.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="struct_can___controller_type.html"><span class="std std-doc">Can_ControllerType</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="struct_can___controller_type.html"><span class="std std-doc">Can_ControllerType</span></a></p></td>
 <td><p>canControllerConfig</p></td>
 <td><p>Can Controller.</p></td>
 </tr>
-<tr class="row-even"><td><p>uint32</p></td>
+<tr class="row-odd"><td><p>uint16</p></td>
 <td><p>MaxBaudConfigID</p></td>
 <td><p>Max Baud Config Index in BaudRateConfigList.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Can_ControllerStateType</p></td>
+<tr class="row-even"><td><p>Can_ControllerStateType</p></td>
 <td><p>canState</p></td>
 <td><p>State of Can.</p></td>
 </tr>
-<tr class="row-even"><td><p>Can_HwType</p></td>
+<tr class="row-odd"><td><p>Can_HwType</p></td>
 <td><p>mailboxCfg</p></td>
 <td><p>Structure which includes HOH, CAN Controller ID and specific CanId.</p></td>
 </tr>
-<tr class="row-odd"><td><p>PduInfoType</p></td>
+<tr class="row-even"><td><p>PduInfoType</p></td>
 <td><p>pduInfo</p></td>
 <td><p>Structure which includes pointer to the SDU and it’s length.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="struct_can___fd_msg_r_a_m_config_obj_type.html"><span class="std std-doc">Can_FdMsgRAMConfigObjType</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="struct_can___fd_msg_r_a_m_config_obj_type.html"><span class="std std-doc">Can_FdMsgRAMConfigObjType</span></a></p></td>
 <td><p>canFDMsgRamConfig</p></td>
 <td><p>MCAN Message RAM configuration parameters.</p></td>
 </tr>
@@ -164,7 +168,7 @@ summary: Can controller object structure.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -181,7 +185,7 @@ summary: Can controller object structure.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

@@ -265,6 +265,23 @@ The associated Spi driver configuration generated source files are **Spi_LCfg.c*
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
+#### Migration Guide to v02.00.00 from v01.01.01 or any older versions
+
+In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Spi_Init function will need to use the new configuration structure name. For example:
+
+```c
+/* Old code (v01.01.01 or any older versions) */
+Spi_Init(&Spi_ConfigObj);
+
+/* New code (v02.00.00) */
+Spi_Init(&Spi_Config);
+```
+
+This change ensures compliance with AUTOSAR naming conventions.
+
+To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
+
 
 
 #### SpiDemEventParameterRefs
@@ -273,11 +290,11 @@ The generated configuration files should not be modified manually. The config to
 |--------|---------------|
 | **Name** | SpiDemEventParameterRefs |
 | **Description** | Reference to configured DEM event to report "Hardware failure". If the reference is not configured the error shall not be reported. |
-| **Post-build-variant-multiplicity** | false |
 | **Multiplicity-Configuration-Class** | -- |
 | Link Time | VARIANT-LINK-TIME |
 | Post-Build Time | VARIANT-POST-BUILD |
 | Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Post-build-variant-multiplicity** | false |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1049,7 +1066,7 @@ General configuration settings for SPI-Handler
 | Item ||
 |--------|---------------|
 | **Name** | SpiLevelDelivered |
-| **Description** | Selects the SPI Handler/Driver level of scalable functionality that is |
+| **Description** | Selects the SPI Handler/Driver level of scalable functionality that is available and delivered. |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1172,26 +1189,29 @@ The example application demonstrates use of Spi module, the list below identifie
 ##### Sample Log of Spi_Example_Sync_AsyncTransfer
 
 ```{code-block}
-    Sample Application - STARTS !!!
-    SPI MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 83
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    Setting loopback mode
-    Writing to internal buffer channel0.
-    Writing to internal buffer channel1.
-    Writing to external buffer channel2.
-    Transmitting data in asynchronous mode.
-    AsyncTransmit status is 0
-    Getting job status.
-    Called Sequence end notification function
-    Called Sequence end notification function
-    Getting sequence status.
-    Result of sequence_1 is SPI_SEQ_OK.
-    De-initializing SPI.
+Sample Application - STARTS !!!
+SPI MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 83
+SW Major Version    : 2
+SW Minor Version    : 0
+SW Patch Version    : 0
+Writing to internal buffer channel0.
+Writing to internal buffer channel1.
+Writing to external buffer channel2.
+Transmitting data in asynchronous mode.
+AsyncTransmit status is 0
+Transmitting data in synchronous mode.
+SyncTransmit status is 0
+Getting hardware unit status.
+Getting job status.
+Called Sequence end notification function
+Called Sequence end notification function
+Getting sequence status.
+Result of sequence_1 is SPI_SEQ_OK.
+De-initializing SPI.
+Spi_Example_Sync_AsyncTransfer : Sample Application success
 ```
 
 #### Spi_Example_AsyncTransfer_Interrupt
@@ -1224,27 +1244,28 @@ The example application demonstrates use of Spi module, the list below identifie
 ##### Sample Log of Spi_Example_AsyncTransfer_Interrupt
 
 ```{code-block}
-    Sample Application - STARTS !!!
-    SPI MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 83
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    Writing to internal buffer channel0.
-    Writing to internal buffer channel1.
-    Writing to external buffer channel2.
-    Transmitting data in asynchronous mode.
-    Called Sequence end notification function
-    ACalled Sequence end notification function
-    syncTransmit status is 0
-    Getting hardware unit status.
-    Result of Hardware unit is not SPI_BUSY.
-    Getting job status.
-    Getting sequence status.
-    Result of sequence_1 is SPI_SEQ_OK.
-    De-initializing SPI.
+Sample Application - STARTS !!!
+SPI MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 83
+SW Major Version    : 2
+SW Minor Version    : 0
+SW Patch Version    : 0
+Writing to internal buffer channel0.
+Writing to internal buffer channel1.
+Writing to external buffer channel2.
+Transmitting data in asynchronous mode.
+Called Sequence end notification function
+Called Sequence end notification function
+AsyncTransmit status is 0
+Getting hardware unit status.
+Result of Hardware unit is not SPI_BUSY.
+Getting job status.
+Getting sequence status.
+Result of sequence_1 is SPI_SEQ_OK.
+De-initializing SPI.
+Spi_Example_AsyncTransfer_Interrupt : Sample Application success
 ```
 
 #### Spi_Example_SyncTransfer
@@ -1277,24 +1298,24 @@ The example application demonstrates use of Spi module, the list below identifie
 ##### Sample Log of Spi_Example_SyncTransfer
 
 ```{code-block}
-    Sample Application - STARTS !!!
-    SPI MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 83
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    Setting loopback mode
-    Writing to internal buffer channel0.
-    Writing to internal buffer channel1.
-    Writing to external buffer channel2.
-    Transmitting data in synchronous mode.
-    SyncTransmit status is 0
-    Getting sequence status.
-    Deinitializing SPI.
+Sample Application - STARTS !!!
+SPI MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 83
+SW Major Version    : 2
+SW Minor Version    : 0
+SW Patch Version    : 0
+Writing to internal buffer channel0.
+Writing to internal buffer channel1.
+Writing to external buffer channel2.
+Getting hardware unit status.
+Transmitting data in synchronous mode.
+SyncTransmit status is 0
+Getting sequence status.
+Deinitializing SPI.
+Spi_Example_SyncTransfer : Sample Application success
 ```
-
 
 #### Spi_Example_External_Loopback
 
@@ -1305,7 +1326,7 @@ The example application demonstrates use of Spi module, the list below identifie
     * Initializes clock to 200 MHz using Mcu_Init()
     * Initializes required port pins for SPI.
   * Call Spi_Init() to initialize SPI Driver
-  * Initialize Internal and External Buffers.           
+  * Initialize Internal and External Buffers.
   * Transmit data synchronously.
   * Read the data from channels.
   * Received data can be seen in Spi_DestBuf0
@@ -1317,20 +1338,24 @@ The example application demonstrates use of Spi module, the list below identifie
 * Install latest c29 compiler
 * Connect the hardware and power up
 * Makes sure to disable the S2 POCI switch on the XDS110 to OFF (Only when used with SOM EVM) as shown below:
+
 ```{figure} Assets/images/S2_POCI_Switch_XDS110.png
 :alt: S2 POCI Switch on XDS110 Debugger
 :align: center
 
 S2 POCI Switch on XDS110 Debugger
 ```
+
 * Place the SOM on Bank Mode 2 and disable FOTA.
 * Make necessary connections between SPI A and SPI D as shown in the figure below:
+
 ```{figure} Assets/images/Spi_Example_External_Loopback_Connections.png
 :alt: SPI Example External Loopback Connections
 :align: center
 
 SPI Example External Loopback Connections
 ```
+
 * Connect the uart set up to check the log on serial console
 
 ##### How to run Spi_Example_External_Loopback
@@ -1344,27 +1369,27 @@ SPI Example External Loopback Connections
 * Resume CPU1 after CPU3 starts running.
 
  ```{Note}
-Note: To visualise the CPU3 source file (in debug mode), load the CPU3.out by clicking on the "Load Symbols" option.
+Note: To visualize the CPU3 source file (in debug mode), load the CPU3.out by clicking on the "Load Symbols" option.
  ```
 
 ##### Sample Log of Spi_Example_External_Loopback
 
 ```{code-block}
-    Sample Application - STARTS !!!
-    SPI MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 83
-    SW Major Version    : 1
-    SW Minor Version    : 1
-    Patch Version    : 0
-    Writing to internal buffer channel0.
-    Getting hardware unit status.
-    Transmitting data in synchronous mode.
-    SyncTransmit status is 0
-    Getting sequence status.
-    SPI Transmission successful!
-    Deinitializing SPI.
+Sample Application - STARTS !!!
+SPI MCAL Version Info
+---------------------
+Vendor ID           : 44
+Module ID           : 83
+SW Major Version    : 2
+SW Minor Version    : 0
+SW Patch Version    : 0
+Writing to internal buffer channel0.
+Getting hardware unit status.
+Transmitting data in synchronous mode.
+SyncTransmit status is 0
+Getting sequence status.
+Deinitializing SPI.
+Spi_Example_External_Loopback : Sample Application success
 ```
 
 #### File Structure
@@ -1399,7 +1424,7 @@ Note: To visualise the CPU3 source file (in debug mode), load the CPU3.out by cl
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Port_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┗ 📜**Spi_Cfg.h** : *Contains the generated pre-complier configuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜**Spi_Cfg.h** : *Contains the generated pre-compiler configuration header.*\
  ┃ ┃ ┃ ┃ ┣ 📂src\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.c\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.c\

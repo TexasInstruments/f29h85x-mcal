@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -87,15 +87,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#function-wdg-init">5.9.4.2. function Wdg_Init</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-wdg-setmode">5.9.4.3. function Wdg_SetMode</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-wdg-settriggercondition">5.9.4.4. function Wdg_SetTriggerCondition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-wdg-platforminit">5.9.4.5. function Wdg_PlatformInit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-wdg-setmodeconfig">5.9.4.6. function Wdg_SetModeConfig</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-wdg-enablewatchdog">5.9.4.7. function Wdg_EnableWatchdog</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-wdg-disablewatchdog">5.9.4.8. function Wdg_DisableWatchdog</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-wdg-servicewatchdog">5.9.4.9. function Wdg_ServiceWatchdog</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-wdg-generateimmediateevent">5.9.4.10. function Wdg_GenerateImmediateEvent</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-wdg-getwatchdogcountervalue">5.9.4.11. function Wdg_GetWatchdogCounterValue</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-wdg-getmaxtimeout">5.9.4.12. function Wdg_GetMaxTimeout</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-wdg-settriggerconditionpriv">5.9.4.13. function Wdg_SetTriggerConditionPriv</a></li>
 </ul>
 </li>
 </ul>
@@ -410,21 +401,6 @@ Wdg_PreScaler determines the watchdog clock prescaler, which is the second of th
 <tr class="row-even"><td><p>WDG_E_INIT_FAILED</p></td>
 <td><p>Invalid Configuration set selection.</p></td>
 </tr>
-<tr class="row-odd"><td><p>WDG_CHKBITS</p></td>
-<td><p>Shifted pattern for WDCR register’s WDCHK field.</p></td>
-</tr>
-<tr class="row-even"><td><p>WDG_ENRSTKEY</p></td>
-<td><p>Keys for WDKEY field. This key is to enable reset.</p></td>
-</tr>
-<tr class="row-odd"><td><p>WDG_RSTKEY</p></td>
-<td><p>Keys for WDKEY field. This key is to reset .</p></td>
-</tr>
-<tr class="row-even"><td><p>WDG_CHKBITS_RESET</p></td>
-<td><p>Reset pattern for WDCR register’s WDCHK field.</p></td>
-</tr>
-<tr class="row-odd"><td><p>WDG_MAX_8BIT_CNTR_VALUE</p></td>
-<td><p>Maximum 8 bit counter value.</p></td>
-</tr>
 </tbody>
 </table>
 </section>
@@ -454,42 +430,6 @@ Wdg_PreScaler determines the watchdog clock prescaler, which is the second of th
 <td><p><strong><a class="reference internal" href="#function-wdg-settriggercondition"><span class="std std-ref">Wdg_SetTriggerCondition</span></a></strong>(uint16 Timeout)</p></td>
 <td><p>Sets the timeout value for the trigger counter.</p></td>
 </tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-wdg-platforminit"><span class="std std-ref">Wdg_PlatformInit</span></a></strong>(const <a class="reference internal" href="../Classes/struct_wdg___config_type.html"><span class="std std-doc">Wdg_ConfigType</span></a> * ConfigPtr)</p></td>
-<td><p>Initialize the configuration settings.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-wdg-setmodeconfig"><span class="std std-ref">Wdg_SetModeConfig</span></a></strong>(const <a class="reference internal" href="../Classes/struct_wdg___mode_info_type.html"><span class="std std-doc">Wdg_ModeInfoType</span></a> * ModeCfg)</p></td>
-<td><p>Sets the requested Mode configuration settings into Watchdog registers.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-wdg-enablewatchdog"><span class="std std-ref">Wdg_EnableWatchdog</span></a></strong>(void )</p></td>
-<td><p>Enables the watchdog.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-wdg-disablewatchdog"><span class="std std-ref">Wdg_DisableWatchdog</span></a></strong>(void )</p></td>
-<td><p>Disables the watchdog.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-wdg-servicewatchdog"><span class="std std-ref">Wdg_ServiceWatchdog</span></a></strong>(void )</p></td>
-<td><p>Services the watchdog.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-wdg-generateimmediateevent"><span class="std std-ref">Wdg_GenerateImmediateEvent</span></a></strong>(void )</p></td>
-<td><p>Generates the immediate watchdog reset/interrupt.</p></td>
-</tr>
-<tr class="row-even"><td><p>uint16</p></td>
-<td><p><strong><a class="reference internal" href="#function-wdg-getwatchdogcountervalue"><span class="std std-ref">Wdg_GetWatchdogCounterValue</span></a></strong>(void )</p></td>
-<td><p>Gets the watchdog counter value.</p></td>
-</tr>
-<tr class="row-odd"><td><p>uint16</p></td>
-<td><p><strong><a class="reference internal" href="#function-wdg-getmaxtimeout"><span class="std std-ref">Wdg_GetMaxTimeout</span></a></strong>(const <a class="reference internal" href="../Classes/struct_wdg___driver_obj_type.html"><span class="std std-doc">Wdg_DriverObjType</span></a> * Wdg_DrvObjPtr)</p></td>
-<td><p>Gets the watchdog Maximum Timeout value.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-wdg-settriggerconditionpriv"><span class="std std-ref">Wdg_SetTriggerConditionPriv</span></a></strong>(uint16 Time_out)</p></td>
-<td><p>Sets the timeout value for the trigger counter.</p></td>
-</tr>
 </tbody>
 </table>
 <section id="function-wdg-getversioninfo">
@@ -503,7 +443,7 @@ Wdg_PreScaler determines the watchdog clock prescaler, which is the second of th
 This service returns the version information of WDG module.</p>
 <p><strong>Parameters</strong>:</p>
 <ul class="simple">
-<li><p><strong>versioninfo</strong> - Pointer to store the WDG driver version information.</p></li>
+<li><p><strong>Versioninfo</strong> - Pointer to store the WDG driver version information.</p></li>
 </ul>
 <p><strong>Returns</strong>:</p>
 <ul class="simple">
@@ -583,201 +523,6 @@ Sets the timeout value for the trigger counter.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
-<section id="function-wdg-platforminit">
-<h3><span class="section-number">5.9.4.5. </span>function Wdg_PlatformInit<a class="headerlink" href="#function-wdg-platforminit" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Wdg_PlatformInit</span><span class="p">(</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Wdg_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ConfigPtr</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Initialize the configuration settings.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ConfigPtr</strong> pointer to the Watchdog configuration</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>E_OK</strong> command has been accepted
-<br></p></li>
-<li><p><strong>E_NOT_OK</strong> command has not been accepted
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Std_ReturnType</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-wdg-setmodeconfig">
-<h3><span class="section-number">5.9.4.6. </span>function Wdg_SetModeConfig<a class="headerlink" href="#function-wdg-setmodeconfig" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Wdg_SetModeConfig</span><span class="p">(</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Wdg_ModeInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ModeCfg</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Sets the requested Mode configuration settings into Watchdog registers.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ModeCfg</strong> pointer to the Watchdog Mode settings</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>E_OK</strong> command has been accepted
-<br></p></li>
-<li><p><strong>E_NOT_OK</strong> command has not been accepted
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Std_ReturnType</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-wdg-enablewatchdog">
-<h3><span class="section-number">5.9.4.7. </span>function Wdg_EnableWatchdog<a class="headerlink" href="#function-wdg-enablewatchdog" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Wdg_EnableWatchdog</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Enables the watchdog.</p>
-<p>This function enables the watchdog timer.</p>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-wdg-disablewatchdog">
-<h3><span class="section-number">5.9.4.8. </span>function Wdg_DisableWatchdog<a class="headerlink" href="#function-wdg-disablewatchdog" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Wdg_DisableWatchdog</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Disables the watchdog.</p>
-<p>This function disables the watchdog timer.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong></p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-wdg-servicewatchdog">
-<h3><span class="section-number">5.9.4.9. </span>function Wdg_ServiceWatchdog<a class="headerlink" href="#function-wdg-servicewatchdog" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Wdg_ServiceWatchdog</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Services the watchdog.</p>
-<p>This function resets the watchdog counter</p>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-wdg-generateimmediateevent">
-<h3><span class="section-number">5.9.4.10. </span>function Wdg_GenerateImmediateEvent<a class="headerlink" href="#function-wdg-generateimmediateevent" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Wdg_GenerateImmediateEvent</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Generates the immediate watchdog reset/interrupt.</p>
-<p>This function generates the immediate watchdog event</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong></p></li>
-<li><p><strong>None</strong></p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-wdg-getwatchdogcountervalue">
-<h3><span class="section-number">5.9.4.11. </span>function Wdg_GetWatchdogCounterValue<a class="headerlink" href="#function-wdg-getwatchdogcountervalue" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">uint16</span><span class="w"> </span><span class="n">Wdg_GetWatchdogCounterValue</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Gets the watchdog counter value.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong></p></li>
-<li><p><strong>None</strong></p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>Wdg</strong> counter value
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Returns the current value of the 8-bit watchdog counter.</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-wdg-getmaxtimeout">
-<h3><span class="section-number">5.9.4.12. </span>function Wdg_GetMaxTimeout<a class="headerlink" href="#function-wdg-getmaxtimeout" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">uint16</span><span class="w"> </span><span class="n">Wdg_GetMaxTimeout</span><span class="p">(</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Wdg_DriverObjType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">Wdg_DrvObjPtr</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Gets the watchdog Maximum Timeout value.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Wdg_DrvObjPtr</strong> pointer to the Watchdog Driver Object which is initialised in Wdg.c</p></li>
-<li><p><strong>None</strong></p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>Wdg</strong> Maximum Timeout value
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Returns the Watchdog Maximum Timeout Value.</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-wdg-settriggerconditionpriv">
-<h3><span class="section-number">5.9.4.13. </span>function Wdg_SetTriggerConditionPriv<a class="headerlink" href="#function-wdg-settriggerconditionpriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Wdg_SetTriggerConditionPriv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint16</span><span class="w"> </span><span class="n">Time_out</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Sets the timeout value for the trigger counter.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Time_out</strong> Time_out value (milliseconds) for setting the trigger counter</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
 </section>
 </section>
 
@@ -793,7 +538,7 @@ Sets the timeout value for the trigger counter.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -810,7 +555,7 @@ Sets the timeout value for the trigger counter.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -99,10 +99,11 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.4.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#gptchannelconfigset">4.4.9.1. GptChannelConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#gptconfigurationofoptapiservices">4.4.9.2. GptConfigurationOfOptApiServices</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#gptdriverconfiguration">4.4.9.3. GptDriverConfiguration</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-gpt-module">4.4.9.4. Steps To Configure Gpt Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#migration-guide-to-v02-00-00-from-v01-00-02-or-any-older-versions">4.4.9.1. Migration Guide to v02.00.00 from v01.00.02 or any older versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gptchannelconfigset">4.4.9.2. GptChannelConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gptconfigurationofoptapiservices">4.4.9.3. GptConfigurationOfOptApiServices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gptdriverconfiguration">4.4.9.4. GptDriverConfiguration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-gpt-module">4.4.9.5. Steps To Configure Gpt Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.4.10. Examples</a><ul>
@@ -128,6 +129,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -538,11 +540,25 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 <p class="admonition-title">Note</p>
 <p>If CPU Timer2 is used in OS, parameter ‘GptUseTimer2InOS’ should be checked in GPT configurator.</p>
 </div>
+<section id="migration-guide-to-v02-00-00-from-v01-00-02-or-any-older-versions">
+<h3><span class="section-number">4.4.9.1. </span>Migration Guide to v02.00.00 from v01.00.02 or any older versions<a class="headerlink" href="#migration-guide-to-v02-00-00-from-v01-00-02-or-any-older-versions" title="Link to this heading"></a></h3>
+<p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Gpt_Init function will need to use the new configuration structure name. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.00.02 or any older versions) */</span>
+<span class="n">Gpt_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Gpt_ConfigSetptr</span><span class="p">);</span>
+
+<span class="cm">/* New code (v02.00.00) */</span>
+<span class="n">Gpt_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Gpt_Config</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This change ensures compliance with AUTOSAR naming conventions.</p>
+<p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
+</section>
 <section id="gptchannelconfigset">
-<h3><span class="section-number">4.4.9.1. </span>GptChannelConfigSet<a class="headerlink" href="#gptchannelconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.2. </span>GptChannelConfigSet<a class="headerlink" href="#gptchannelconfigset" title="Link to this heading"></a></h3>
 <p>This container is the base of a Configuration Set which contains the configured GPT channels. This way, different configuration sets can be defined for post-build process.</p>
 <section id="gptusetimer2inos">
-<h4><span class="section-number">4.4.9.1.1. </span>GptUseTimer2InOS<a class="headerlink" href="#gptusetimer2inos" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.1. </span>GptUseTimer2InOS<a class="headerlink" href="#gptusetimer2inos" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -578,10 +594,10 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptchannelconfiguration">
-<h4><span class="section-number">4.4.9.1.2. </span>GptChannelConfiguration<a class="headerlink" href="#gptchannelconfiguration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.2. </span>GptChannelConfiguration<a class="headerlink" href="#gptchannelconfiguration" title="Link to this heading"></a></h4>
 <p>Configuration of an individual GPT channel.</p>
 <section id="gptchannelid">
-<h5><span class="section-number">4.4.9.1.2.1. </span>GptChannelId<a class="headerlink" href="#gptchannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.2.1. </span>GptChannelId<a class="headerlink" href="#gptchannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -623,7 +639,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptchannelmode">
-<h5><span class="section-number">4.4.9.1.2.2. </span>GptChannelMode<a class="headerlink" href="#gptchannelmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.2.2. </span>GptChannelMode<a class="headerlink" href="#gptchannelmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -662,7 +678,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptchannelprescalevalue">
-<h5><span class="section-number">4.4.9.1.2.3. </span>GptChannelPrescaleValue<a class="headerlink" href="#gptchannelprescalevalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.2.3. </span>GptChannelPrescaleValue<a class="headerlink" href="#gptchannelprescalevalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -704,7 +720,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptenablewakeup">
-<h5><span class="section-number">4.4.9.1.2.4. </span>GptEnableWakeup<a class="headerlink" href="#gptenablewakeup" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.2.4. </span>GptEnableWakeup<a class="headerlink" href="#gptenablewakeup" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -740,7 +756,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptnotification">
-<h5><span class="section-number">4.4.9.1.2.5. </span>GptNotification<a class="headerlink" href="#gptnotification" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.2.5. </span>GptNotification<a class="headerlink" href="#gptnotification" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -788,7 +804,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptsimulationstatus">
-<h5><span class="section-number">4.4.9.1.2.6. </span>GptSimulationStatus<a class="headerlink" href="#gptsimulationstatus" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.2.6. </span>GptSimulationStatus<a class="headerlink" href="#gptsimulationstatus" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -827,7 +843,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptsimulationmode">
-<h5><span class="section-number">4.4.9.1.2.7. </span>GptSimulationMode<a class="headerlink" href="#gptsimulationmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.2.7. </span>GptSimulationMode<a class="headerlink" href="#gptsimulationmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -866,7 +882,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gpttypeofinterrupt">
-<h5><span class="section-number">4.4.9.1.2.8. </span>GptTypeofInterrupt<a class="headerlink" href="#gpttypeofinterrupt" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.2.8. </span>GptTypeofInterrupt<a class="headerlink" href="#gpttypeofinterrupt" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -905,7 +921,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptchannelclksrcref">
-<h5><span class="section-number">4.4.9.1.2.9. </span>GptChannelClkSrcRef<a class="headerlink" href="#gptchannelclksrcref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.2.9. </span>GptChannelClkSrcRef<a class="headerlink" href="#gptchannelclksrcref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -942,10 +958,10 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </section>
 </section>
 <section id="gptwakeupconfiguration">
-<h4><span class="section-number">4.4.9.1.3. </span>GptWakeupConfiguration<a class="headerlink" href="#gptwakeupconfiguration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.2.3. </span>GptWakeupConfiguration<a class="headerlink" href="#gptwakeupconfiguration" title="Link to this heading"></a></h4>
 <p>Function pointer to callback function (for wakeup notification).</p>
 <section id="gptwakeupsourceref">
-<h5><span class="section-number">4.4.9.1.3.1. </span>GptWakeupSourceRef<a class="headerlink" href="#gptwakeupsourceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.2.3.1. </span>GptWakeupSourceRef<a class="headerlink" href="#gptwakeupsourceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -980,10 +996,10 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </section>
 </section>
 <section id="gptconfigurationofoptapiservices">
-<h3><span class="section-number">4.4.9.2. </span>GptConfigurationOfOptApiServices<a class="headerlink" href="#gptconfigurationofoptapiservices" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.3. </span>GptConfigurationOfOptApiServices<a class="headerlink" href="#gptconfigurationofoptapiservices" title="Link to this heading"></a></h3>
 <p>This container contains all configuration switches for configuring optional API services of the GPT driver.</p>
 <section id="gptdeinitapi">
-<h4><span class="section-number">4.4.9.2.1. </span>GptDeinitApi<a class="headerlink" href="#gptdeinitapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.1. </span>GptDeinitApi<a class="headerlink" href="#gptdeinitapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1019,7 +1035,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptenabledisablenotificationapi">
-<h4><span class="section-number">4.4.9.2.2. </span>GptEnableDisableNotificationApi<a class="headerlink" href="#gptenabledisablenotificationapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.2. </span>GptEnableDisableNotificationApi<a class="headerlink" href="#gptenabledisablenotificationapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1055,7 +1071,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gpttimeelapsedapi">
-<h4><span class="section-number">4.4.9.2.3. </span>GptTimeElapsedApi<a class="headerlink" href="#gpttimeelapsedapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.3. </span>GptTimeElapsedApi<a class="headerlink" href="#gpttimeelapsedapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1091,7 +1107,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gpttimeremainingapi">
-<h4><span class="section-number">4.4.9.2.4. </span>GptTimeRemainingApi<a class="headerlink" href="#gpttimeremainingapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.4. </span>GptTimeRemainingApi<a class="headerlink" href="#gpttimeremainingapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1127,7 +1143,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptversioninfoapi">
-<h4><span class="section-number">4.4.9.2.5. </span>GptVersionInfoApi<a class="headerlink" href="#gptversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.5. </span>GptVersionInfoApi<a class="headerlink" href="#gptversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1163,7 +1179,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptwakeupfunctionalityapi">
-<h4><span class="section-number">4.4.9.2.6. </span>GptWakeupFunctionalityApi<a class="headerlink" href="#gptwakeupfunctionalityapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.6. </span>GptWakeupFunctionalityApi<a class="headerlink" href="#gptwakeupfunctionalityapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1200,10 +1216,10 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </section>
 </section>
 <section id="gptdriverconfiguration">
-<h3><span class="section-number">4.4.9.3. </span>GptDriverConfiguration<a class="headerlink" href="#gptdriverconfiguration" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.4. </span>GptDriverConfiguration<a class="headerlink" href="#gptdriverconfiguration" title="Link to this heading"></a></h3>
 <p>This container contains the module-wide configuration (parameters) of the GPT Driver</p>
 <section id="gptdeverrordetect">
-<h4><span class="section-number">4.4.9.3.1. </span>GptDevErrorDetect<a class="headerlink" href="#gptdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.1. </span>GptDevErrorDetect<a class="headerlink" href="#gptdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1239,7 +1255,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptpredeftimer100us32bitenable">
-<h4><span class="section-number">4.4.9.3.2. </span>GptPredefTimer100us32bitEnable<a class="headerlink" href="#gptpredeftimer100us32bitenable" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.2. </span>GptPredefTimer100us32bitEnable<a class="headerlink" href="#gptpredeftimer100us32bitenable" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1275,7 +1291,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptpredeftimer1usenablinggrade">
-<h4><span class="section-number">4.4.9.3.3. </span>GptPredefTimer1usEnablingGrade<a class="headerlink" href="#gptpredeftimer1usenablinggrade" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.3. </span>GptPredefTimer1usEnablingGrade<a class="headerlink" href="#gptpredeftimer1usenablinggrade" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1314,7 +1330,7 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptreportwakeupsource">
-<h4><span class="section-number">4.4.9.3.4. </span>GptReportWakeupSource<a class="headerlink" href="#gptreportwakeupsource" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.4. </span>GptReportWakeupSource<a class="headerlink" href="#gptreportwakeupsource" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1350,13 +1366,13 @@ The associated Gpt driver configuration generated source files are <strong>Gpt_C
 </table>
 </section>
 <section id="gptclockreferencepoint">
-<h4><span class="section-number">4.4.9.3.5. </span>GptClockReferencePoint<a class="headerlink" href="#gptclockreferencepoint" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.5. </span>GptClockReferencePoint<a class="headerlink" href="#gptclockreferencepoint" title="Link to this heading"></a></h4>
 <p>This container contains a parameter, which represents a reference to a container of the type McuClockReferencePoint (defined in module MCU).
 Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_GPTDriver.pdf">AUTOSAR_SWS_GPTDriver section: 10 Configuration specification</a> for configuration parameters details</p>
 </section>
 </section>
 <section id="steps-to-configure-gpt-module">
-<h3><span class="section-number">4.4.9.4. </span>Steps To Configure Gpt Module<a class="headerlink" href="#steps-to-configure-gpt-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.5. </span>Steps To Configure Gpt Module<a class="headerlink" href="#steps-to-configure-gpt-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool, load Gpt. Select the Config Variant ( Precompile/Post-Build)</p></li>
 <li><p>Go to GptChannelConfiguration Container tab and create a new container.</p></li>
@@ -2006,7 +2022,7 @@ Refer <a class="reference external" href="https://www.autosar.org/fileadmin/stan
 ┃ ┃ ┃ ┃ ┣ 📂include<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header.figuration header.</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header.</em><br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
@@ -2037,7 +2053,7 @@ Refer <a class="reference external" href="https://www.autosar.org/fileadmin/stan
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Dio_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> :<em>Contains the generated pre-complier configuration header.figuration header.</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> :<em>Contains the generated pre-compiler configuration header.</em><br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
@@ -2067,7 +2083,7 @@ Refer <a class="reference external" href="https://www.autosar.org/fileadmin/stan
 ┃ ┃ ┃ ┃ ┣ 📂include<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header.figuration header.</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header.</em><br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
@@ -2096,7 +2112,7 @@ Refer <a class="reference external" href="https://www.autosar.org/fileadmin/stan
 ┃ ┃ ┃ ┃ ┣ 📂include<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> :<em>Contains the generated pre-complier configuration header.figuration header.</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> :<em>Contains the generated pre-compiler configuration header.</em><br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
@@ -2125,7 +2141,7 @@ Refer <a class="reference external" href="https://www.autosar.org/fileadmin/stan
 ┃ ┃ ┃ ┃ ┣ 📂include<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header.figuration header.</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Gpt_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header.</em><br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h<br />
@@ -2165,7 +2181,7 @@ Refer <a class="reference external" href="https://www.autosar.org/fileadmin/stan
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -2182,7 +2198,7 @@ Refer <a class="reference external" href="https://www.autosar.org/fileadmin/stan
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

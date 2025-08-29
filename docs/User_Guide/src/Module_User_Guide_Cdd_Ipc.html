@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -131,6 +131,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -201,11 +202,11 @@
 </section>
 <section id="introduction">
 <h2><span class="section-number">4.12.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
-<p>The Cdd Ipc driver is a Complex Device Driver that provides services that allows core hosting MCAL/AUTOSAR to communicate with other cores hosting SDK based IPC driver. This driver could be used to transmit and receive variable length messages upto 12 bytes between cores, via logical communication channels.</p>
+<p>The Cdd Ipc driver is a Complex Device Driver that provides services that allows core hosting MCAL/AUTOSAR to communicate with other cores hosting SDK based IPC driver. This driver could be used to transmit and receive variable length messages up to 12 bytes between cores, via logical communication channels.</p>
 <figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../_images/CDD_IPC_AUTOSAR_MCAL.png"><img alt="CDD IPC MCAL AUTOSAR" src="../_images/CDD_IPC_AUTOSAR_MCAL.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4.49 </span><span class="caption-text">Cdd Ipc MCAL AUTOSAR</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.51 </span><span class="caption-text">Cdd Ipc MCAL AUTOSAR</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>This document details AUTOSAR Cdd Ipc module implementation</p>
@@ -234,7 +235,7 @@
 <figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../_images/Cdd_Ipc_Module_Architecture.png"><img alt="Cdd Ipc module architecture" src="../_images/Cdd_Ipc_Module_Architecture.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4.50 </span><span class="caption-text">Cdd Ipc module architecture</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.52 </span><span class="caption-text">Cdd Ipc module architecture</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>As depicted in architecture figure above, Cdd Ipc module has multiple IPC instances in each direction(Tx and Rx) between any two CPU cores. Each IPC instance includes 3 command registers in both Tx and Rx directions, with each register having 4-byte width.These command registers are used to transmit data between CPU cores. This architecture allows for the transmission of up to 12 bytes of data between any two CPU core pairs using a single IPC instance.</p>
@@ -351,7 +352,7 @@ In order to achieve this, correct handle Ids should be configured in both Cdd Ip
 <figure class="align-center" id="id6">
 <img alt="Cdd Ipc Header File Structure" src="../_images/Cdd_Ipc_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.51 </span><span class="caption-text">Cdd Ipc Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.53 </span><span class="caption-text">Cdd Ipc Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -498,7 +499,7 @@ Interrupt category should be selected in the Cdd_Ipc plugin.</p>
 <figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../_images/Cdd_Ipc_Hw_Sw_Mapping.png"><img alt="Cdd Ipc HW/SW Mapping" src="../_images/Cdd_Ipc_Hw_Sw_Mapping.png" style="width: 75%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 4.52 </span><span class="caption-text">Cdd Ipc HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.54 </span><span class="caption-text">Cdd Ipc HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -613,6 +614,9 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
 <td><p>CDD_IPC_CPU3</p></td>
 </tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_IPC_CPU3</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -648,6 +652,9 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_IPC_CPU1_L_CPU2_R_INST0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
 <td><p>CDD_IPC_CPU1_L_CPU2_R_INST0</p></td>
 </tr>
 </tbody>
@@ -725,6 +732,9 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 </tr>
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
 <td><p>CDD_IPC_INTERRUPT</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_IPC_INTERRUPT<br>CDD_IPC_POLLING</p></td>
 </tr>
 </tbody>
 </table>
@@ -836,6 +846,9 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 <td><p>VARIANT-PRE-COMPILE</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
+<td><p>CDD_IPC_CPU1_L_CPU2_R_INST0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
 <td><p>CDD_IPC_CPU1_L_CPU2_R_INST0</p></td>
 </tr>
 </tbody>
@@ -1442,6 +1455,9 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 <tr class="row-even"><td><p><strong>Default-value</strong></p></td>
 <td><p>CDD_IPC_CPU1</p></td>
 </tr>
+<tr class="row-odd"><td><p><strong>Range</strong></p></td>
+<td><p>CDD_IPC_CPU1</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -1585,7 +1601,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 <span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">Synchronizing</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
 <span class="n">Synchronized</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
 <span class="n">Transmitting</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
@@ -1648,7 +1664,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 <span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">255</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
-<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
 <span class="n">Synchronizing</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
 <span class="n">Synchronized</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
 <span class="n">Transmitting</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span>
@@ -1657,7 +1673,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 <span class="n">Data</span><span class="w"> </span><span class="n">received</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="n">CPU3</span><span class="o">:</span>
 <span class="n">hello</span><span class="w"> </span><span class="n">CPU1</span>
 <span class="o">=================================================================================</span>
-<span class="nl">PASS</span><span class="p">:</span><span class="w"> </span><span class="n">IPC</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="n">CPU1</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">CPU3</span><span class="w"> </span><span class="n">executed</span><span class="w"> </span><span class="n">successfully</span><span class="w"> </span>
+<span class="nl">PASS</span><span class="p">:</span><span class="w"> </span><span class="n">IPC</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="n">between</span><span class="w"> </span><span class="n">CPU1</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">CPU3</span><span class="w"> </span><span class="n">executed</span><span class="w"> </span><span class="n">successfully</span>
 </pre></div>
 </div>
 </section>
@@ -1733,7 +1749,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1750,7 +1766,7 @@ The associated Cdd Ipc driver configuration generated source file is <strong>Cdd
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

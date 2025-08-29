@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -93,9 +93,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.3.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#flsconfigset">4.3.9.1. FlsConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#flsgeneral">4.3.9.2. FlsGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-fls-module">4.3.9.3. Steps To Configure Fls Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#migration-guide-to-v02-00-00-from-v01-01-00-or-any-older-versions">4.3.9.1. Migration Guide to v02.00.00 from v01.01.00 or any older versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flsconfigset">4.3.9.2. FlsConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flsgeneral">4.3.9.3. FlsGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-fls-module">4.3.9.4. Steps To Configure Fls Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.3.10. Examples</a><ul>
@@ -121,6 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -642,7 +644,7 @@ services:</p>
 <h3><span class="section-number">4.3.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
 <p>Below image shows Fls driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29 Reference Manual.</p>
 <figure class="align-center" id="id3">
-<img alt="Fls HW/SW Mapping" src="../_images/Fls_HW_SW_Mapping.png" />
+<img alt="Fls HW/SW Mapping" src="../_images/Fls_Hw_Sw_Mapping.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 4.10 </span><span class="caption-text">Fls HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
@@ -785,11 +787,25 @@ module DET.</p>
 </tbody>
 </table>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<section id="migration-guide-to-v02-00-00-from-v01-01-00-or-any-older-versions">
+<h3><span class="section-number">4.3.9.1. </span>Migration Guide to v02.00.00 from v01.01.00 or any older versions<a class="headerlink" href="#migration-guide-to-v02-00-00-from-v01-01-00-or-any-older-versions" title="Link to this heading"></a></h3>
+<p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Fls_Init function will need to use the new configuration structure name. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.01.00 or any older versions) */</span>
+<span class="n">Fls_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Fls_FlsConfigSet</span><span class="p">);</span>
+
+<span class="cm">/* New code (v02.00.00) */</span>
+<span class="n">Fls_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Fls_Config</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This change ensures compliance with AUTOSAR naming conventions.</p>
+<p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
+</section>
 <section id="flsconfigset">
-<h3><span class="section-number">4.3.9.1. </span>FlsConfigSet<a class="headerlink" href="#flsconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.3.9.2. </span>FlsConfigSet<a class="headerlink" href="#flsconfigset" title="Link to this heading"></a></h3>
 <p>Container for runtime configuration parameters of the flash driver.</p>
 <section id="flsacerase">
-<h4><span class="section-number">4.3.9.1.1. </span>FlsAcErase<a class="headerlink" href="#flsacerase" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.1. </span>FlsAcErase<a class="headerlink" href="#flsacerase" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -831,7 +847,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsacwrite">
-<h4><span class="section-number">4.3.9.1.2. </span>FlsAcWrite<a class="headerlink" href="#flsacwrite" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.2. </span>FlsAcWrite<a class="headerlink" href="#flsacwrite" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -873,7 +889,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flscallcycle">
-<h4><span class="section-number">4.3.9.1.3. </span>FlsCallCycle<a class="headerlink" href="#flscallcycle" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.3. </span>FlsCallCycle<a class="headerlink" href="#flscallcycle" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -915,7 +931,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsdefaultmode">
-<h4><span class="section-number">4.3.9.1.4. </span>FlsDefaultMode<a class="headerlink" href="#flsdefaultmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.4. </span>FlsDefaultMode<a class="headerlink" href="#flsdefaultmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -954,7 +970,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsjobendnotification">
-<h4><span class="section-number">4.3.9.1.5. </span>FlsJobEndNotification<a class="headerlink" href="#flsjobendnotification" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.5. </span>FlsJobEndNotification<a class="headerlink" href="#flsjobendnotification" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1002,7 +1018,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsjoberrornotification">
-<h4><span class="section-number">4.3.9.1.6. </span>FlsJobErrorNotification<a class="headerlink" href="#flsjoberrornotification" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.6. </span>FlsJobErrorNotification<a class="headerlink" href="#flsjoberrornotification" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1050,7 +1066,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsmaxreadfastmode">
-<h4><span class="section-number">4.3.9.1.7. </span>FlsMaxReadFastMode<a class="headerlink" href="#flsmaxreadfastmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.7. </span>FlsMaxReadFastMode<a class="headerlink" href="#flsmaxreadfastmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1092,7 +1108,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsmaxwritefastmode">
-<h4><span class="section-number">4.3.9.1.8. </span>FlsMaxWriteFastMode<a class="headerlink" href="#flsmaxwritefastmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.8. </span>FlsMaxWriteFastMode<a class="headerlink" href="#flsmaxwritefastmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1134,7 +1150,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsmaxreadnormalmode">
-<h4><span class="section-number">4.3.9.1.9. </span>FlsMaxReadNormalMode<a class="headerlink" href="#flsmaxreadnormalmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.9. </span>FlsMaxReadNormalMode<a class="headerlink" href="#flsmaxreadnormalmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1176,7 +1192,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsmaxwritenormalmode">
-<h4><span class="section-number">4.3.9.1.10. </span>FlsMaxWriteNormalMode<a class="headerlink" href="#flsmaxwritenormalmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.10. </span>FlsMaxWriteNormalMode<a class="headerlink" href="#flsmaxwritenormalmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1218,7 +1234,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsprotection">
-<h4><span class="section-number">4.3.9.1.11. </span>FlsProtection<a class="headerlink" href="#flsprotection" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.11. </span>FlsProtection<a class="headerlink" href="#flsprotection" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1260,7 +1276,7 @@ module DET.</p>
 </table>
 </section>
 <section id="fls-cmdweprota">
-<h4><span class="section-number">4.3.9.1.12. </span>Fls_CMDWEPROTA<a class="headerlink" href="#fls-cmdweprota" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.12. </span>Fls_CMDWEPROTA<a class="headerlink" href="#fls-cmdweprota" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1302,7 +1318,7 @@ module DET.</p>
 </table>
 </section>
 <section id="fls-cmdweprotb">
-<h4><span class="section-number">4.3.9.1.13. </span>Fls_CMDWEPROTB<a class="headerlink" href="#fls-cmdweprotb" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.13. </span>Fls_CMDWEPROTB<a class="headerlink" href="#fls-cmdweprotb" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1344,10 +1360,10 @@ module DET.</p>
 </table>
 </section>
 <section id="flsexternaldriver">
-<h4><span class="section-number">4.3.9.1.14. </span>FlsExternalDriver<a class="headerlink" href="#flsexternaldriver" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.14. </span>FlsExternalDriver<a class="headerlink" href="#flsexternaldriver" title="Link to this heading"></a></h4>
 <p>This container is present for external Flash drivers only. Internal Flash drivers do not use the parameter listed in this container, hence its multiplicity is 0 for internal drivers. Currently, not supported as only internal flash is present.</p>
 <section id="flsspireference">
-<h5><span class="section-number">4.3.9.1.14.1. </span>FlsSpiReference<a class="headerlink" href="#flsspireference" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.3.9.2.14.1. </span>FlsSpiReference<a class="headerlink" href="#flsspireference" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1393,14 +1409,14 @@ module DET.</p>
 </section>
 </section>
 <section id="flssectorlist">
-<h4><span class="section-number">4.3.9.1.15. </span>FlsSectorList<a class="headerlink" href="#flssectorlist" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.15. </span>FlsSectorList<a class="headerlink" href="#flssectorlist" title="Link to this heading"></a></h4>
 <p>List of flashable sectors and pages.</p>
 </section>
 <section id="flssector">
-<h4><span class="section-number">4.3.9.1.16. </span>FlsSector<a class="headerlink" href="#flssector" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.2.16. </span>FlsSector<a class="headerlink" href="#flssector" title="Link to this heading"></a></h4>
 <p>Configuration description of a flashable sector</p>
 <section id="flsnumberofsectors">
-<h5><span class="section-number">4.3.9.1.16.1. </span>FlsNumberOfSectors<a class="headerlink" href="#flsnumberofsectors" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.3.9.2.16.1. </span>FlsNumberOfSectors<a class="headerlink" href="#flsnumberofsectors" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1442,7 +1458,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flspagesize">
-<h5><span class="section-number">4.3.9.1.16.2. </span>FlsPageSize<a class="headerlink" href="#flspagesize" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.3.9.2.16.2. </span>FlsPageSize<a class="headerlink" href="#flspagesize" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1484,7 +1500,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flssectorsize">
-<h5><span class="section-number">4.3.9.1.16.3. </span>FlsSectorSize<a class="headerlink" href="#flssectorsize" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.3.9.2.16.3. </span>FlsSectorSize<a class="headerlink" href="#flssectorsize" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1526,7 +1542,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flssectorstartaddress">
-<h5><span class="section-number">4.3.9.1.16.4. </span>FlsSectorStartaddress<a class="headerlink" href="#flssectorstartaddress" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.3.9.2.16.4. </span>FlsSectorStartaddress<a class="headerlink" href="#flssectorstartaddress" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1570,10 +1586,10 @@ module DET.</p>
 </section>
 </section>
 <section id="flsgeneral">
-<h3><span class="section-number">4.3.9.2. </span>FlsGeneral<a class="headerlink" href="#flsgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.3.9.3. </span>FlsGeneral<a class="headerlink" href="#flsgeneral" title="Link to this heading"></a></h3>
 <p>Container for general parameters of the flash driver. These parameters are always pre-compile.</p>
 <section id="flsdevicevariant">
-<h4><span class="section-number">4.3.9.2.1. </span>FlsDeviceVariant<a class="headerlink" href="#flsdevicevariant" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.1. </span>FlsDeviceVariant<a class="headerlink" href="#flsdevicevariant" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1612,7 +1628,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsacloadonjobstart">
-<h4><span class="section-number">4.3.9.2.2. </span>FlsAcLoadOnJobStart<a class="headerlink" href="#flsacloadonjobstart" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.2. </span>FlsAcLoadOnJobStart<a class="headerlink" href="#flsacloadonjobstart" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1648,7 +1664,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsbaseaddress">
-<h4><span class="section-number">4.3.9.2.3. </span>FlsBaseAddress<a class="headerlink" href="#flsbaseaddress" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.3. </span>FlsBaseAddress<a class="headerlink" href="#flsbaseaddress" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1690,7 +1706,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flstotalsize">
-<h4><span class="section-number">4.3.9.2.4. </span>FlsTotalSize<a class="headerlink" href="#flstotalsize" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.4. </span>FlsTotalSize<a class="headerlink" href="#flstotalsize" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1732,7 +1748,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsnumbanks">
-<h4><span class="section-number">4.3.9.2.5. </span>FlsNumBanks<a class="headerlink" href="#flsnumbanks" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.5. </span>FlsNumBanks<a class="headerlink" href="#flsnumbanks" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1774,7 +1790,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flssectorsizeinbytes">
-<h4><span class="section-number">4.3.9.2.6. </span>FlsSectorSizeInBytes<a class="headerlink" href="#flssectorsizeinbytes" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.6. </span>FlsSectorSizeInBytes<a class="headerlink" href="#flssectorsizeinbytes" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1816,7 +1832,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsblankcheckapi">
-<h4><span class="section-number">4.3.9.2.7. </span>FlsBlankCheckApi<a class="headerlink" href="#flsblankcheckapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.7. </span>FlsBlankCheckApi<a class="headerlink" href="#flsblankcheckapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1852,7 +1868,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flscancelapi">
-<h4><span class="section-number">4.3.9.2.8. </span>FlsCancelApi<a class="headerlink" href="#flscancelapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.8. </span>FlsCancelApi<a class="headerlink" href="#flscancelapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1888,7 +1904,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flscompareapi">
-<h4><span class="section-number">4.3.9.2.9. </span>FlsCompareApi<a class="headerlink" href="#flscompareapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.9. </span>FlsCompareApi<a class="headerlink" href="#flscompareapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1924,7 +1940,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsdeverrordetect">
-<h4><span class="section-number">4.3.9.2.10. </span>FlsDevErrorDetect<a class="headerlink" href="#flsdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.10. </span>FlsDevErrorDetect<a class="headerlink" href="#flsdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1960,7 +1976,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsdriverindex">
-<h4><span class="section-number">4.3.9.2.11. </span>FlsDriverIndex<a class="headerlink" href="#flsdriverindex" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.11. </span>FlsDriverIndex<a class="headerlink" href="#flsdriverindex" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2002,7 +2018,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flseraseverificationenabled">
-<h4><span class="section-number">4.3.9.2.12. </span>FlsEraseVerificationEnabled<a class="headerlink" href="#flseraseverificationenabled" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.12. </span>FlsEraseVerificationEnabled<a class="headerlink" href="#flseraseverificationenabled" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2038,7 +2054,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsgetjobresultapi">
-<h4><span class="section-number">4.3.9.2.13. </span>FlsGetJobResultApi<a class="headerlink" href="#flsgetjobresultapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.13. </span>FlsGetJobResultApi<a class="headerlink" href="#flsgetjobresultapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2074,7 +2090,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsgetstatusapi">
-<h4><span class="section-number">4.3.9.2.14. </span>FlsGetStatusApi<a class="headerlink" href="#flsgetstatusapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.14. </span>FlsGetStatusApi<a class="headerlink" href="#flsgetstatusapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2110,7 +2126,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flssetmodeapi">
-<h4><span class="section-number">4.3.9.2.15. </span>FlsSetModeApi<a class="headerlink" href="#flssetmodeapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.15. </span>FlsSetModeApi<a class="headerlink" href="#flssetmodeapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2146,7 +2162,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flstimeoutsupervisionenabled">
-<h4><span class="section-number">4.3.9.2.16. </span>FlsTimeoutSupervisionEnabled<a class="headerlink" href="#flstimeoutsupervisionenabled" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.16. </span>FlsTimeoutSupervisionEnabled<a class="headerlink" href="#flstimeoutsupervisionenabled" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2182,7 +2198,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flsversioninfoapi">
-<h4><span class="section-number">4.3.9.2.17. </span>FlsVersionInfoApi<a class="headerlink" href="#flsversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.17. </span>FlsVersionInfoApi<a class="headerlink" href="#flsversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2218,7 +2234,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flswriteverificationenabled">
-<h4><span class="section-number">4.3.9.2.18. </span>FlsWriteVerificationEnabled<a class="headerlink" href="#flswriteverificationenabled" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.18. </span>FlsWriteVerificationEnabled<a class="headerlink" href="#flswriteverificationenabled" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2254,7 +2270,7 @@ module DET.</p>
 </table>
 </section>
 <section id="flswaitstates">
-<h4><span class="section-number">4.3.9.2.19. </span>FlsWaitStates<a class="headerlink" href="#flswaitstates" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.19. </span>FlsWaitStates<a class="headerlink" href="#flswaitstates" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2295,44 +2311,8 @@ module DET.</p>
 </tbody>
 </table>
 </section>
-<section id="flssysclockref">
-<h4><span class="section-number">4.3.9.2.20. </span>FlsSysClockRef<a class="headerlink" href="#flssysclockref" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Item</p></th>
-<th class="head"><p></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>FlsSysClockRef</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>This parameter references the SYSCLK to convert timeout values from milliseconds to clock ticks. Users should ensure the correct clock reference point is selected to achieve accurate timeout calculations.</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Origin</strong></p></td>
-<td><p>Texas Instruments</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-even"><td><p>Link-Time</p></td>
-<td><p>VARIANT-LINK-TIME</p></td>
-</tr>
-<tr class="row-odd"><td><p>Post-Build-Time</p></td>
-<td><p>VARIANT-POST-BUILD</p></td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="flscpuclockref">
-<h4><span class="section-number">4.3.9.2.21. </span>FlsCpuClockRef<a class="headerlink" href="#flscpuclockref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.3.20. </span>FlsCpuClockRef<a class="headerlink" href="#flscpuclockref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2369,7 +2349,7 @@ module DET.</p>
 </section>
 </section>
 <section id="steps-to-configure-fls-module">
-<h3><span class="section-number">4.3.9.3. </span>Steps To Configure Fls Module<a class="headerlink" href="#steps-to-configure-fls-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.3.9.4. </span>Steps To Configure Fls Module<a class="headerlink" href="#steps-to-configure-fls-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Mcu, Os, Dem and Fls modules.</p></li>
 <li><p>Open Mcu and Dem Module to Configure Clock and Dem Error for Mcu and Fls.</p></li>
@@ -2378,7 +2358,7 @@ module DET.</p>
 <li><p>Save the configuration and generate the configuration.</p></li>
 </ol>
 <section id="standard-configuration">
-<h4><span class="section-number">4.3.9.3.1. </span>Standard Configuration<a class="headerlink" href="#standard-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.4.1. </span>Standard Configuration<a class="headerlink" href="#standard-configuration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Standard Parameters</strong></p></th>
@@ -2543,7 +2523,7 @@ of the flash driver’s job processing function in normal mode.</p></td>
 </table>
 </section>
 <section id="ip-specific-configuration">
-<h4><span class="section-number">4.3.9.3.2. </span>IP Specific Configuration<a class="headerlink" href="#ip-specific-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.3.9.4.2. </span>IP Specific Configuration<a class="headerlink" href="#ip-specific-configuration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Standard Parameters</strong></p></th>
@@ -2780,7 +2760,7 @@ of the flash driver’s job processing function in normal mode.</p></td>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -2797,7 +2777,7 @@ of the flash driver’s job processing function in normal mode.</p></td>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

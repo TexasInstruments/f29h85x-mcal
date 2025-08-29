@@ -297,7 +297,7 @@ For LIN Module, data consistency and exclusive access to critical sections are r
 
 | Exclusive Area Functions used | LIN Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
 |-------|-------|-------|-------|
-|LIN_EXCLUSIVE_AREA_0| Lin_SendFrame<br>Lin_GoToSleep<br>Lin_GoToSleepInternal<br>Lin_Wakeup<br>Lin_WakeupInternal<br>Lin_GetStatus | To protect against multiple access for shared resources | **OS_RESOURCE** : If the LIN APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If LIN APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+|LIN_EXCLUSIVE_AREA_0| Lin_SendFrame<br>Lin_GoToSleep<br>Lin_GoToSleepInternal<br>Lin_Wakeup<br>Lin_WakeupInternal<br>Lin_GetStatus | To protect against multiple access for shared resources |**ALL_INTERRUPT_BLOCKING** : All interrupts should be blocked to ensure consistent transmission of LIN master response frames. This is important to ensure the proper transmission of master response frames, where header and response are transmitted separately and any interrupt occurring between them can affect the master response in-frame response space. |
 
 ### Configuration
 
@@ -309,6 +309,23 @@ The generated configuration files should not be modified manually. The config to
 ```{Note}
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
+
+#### Migration Guide to v02.00.00 from v01.01.00 or any older versions
+
+In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Lin_Init function will need to use the new configuration structure name. For example:
+
+```c
+/* Old code (v01.01.00 or any older versions) */
+Lin_Init(&Lin_LinGlobalConfig);
+
+/* New code (v02.00.00) */
+Lin_Init(&Lin_Config);
+```
+
+This change ensures compliance with AUTOSAR naming conventions.
+
+To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
 
 #### Configuration Precautions
 
@@ -561,6 +578,24 @@ Refer [AUTOSAR_SWS_LINDriver section: 10 Configuration specification](https://ww
 
 The example application demonstrates use of Lin module, the list below identifies key steps performed in the examples.
 
+#### Hardware Setup Required
+
+* Since there is no inbuilt transceiver, external transceiver needs to be connected. Users can use [TLIN1021DEVM](https://www.ti.com/tool/TLIN1021DEVM) as external transceiver.
+* Refer to the documentation or user manual of the PLIN device and TLIN1021DEVM.
+* For reference, user can follow the connection as per the following image.
+
+```{figure} Assets/images/Lin_extsetup.png
+:alt: LIN External Hardware Setup Required
+:align: center
+LIN External Hardware Setup Required
+```
+
+* Open the PLIN configuration software on your PC. The software is usually provided by the manufacturer of the PLIN device.
+* Establish connection between the software and the PLIN using the "Connect" option.
+* Set the baud rate to 9600 and select mode as Slave.
+* Ensure all connections are secure and properly plugged into their respective connectors on both the PLIN device and the board.
+* While running Lin_Example_SendData example, make sure to configure the LIN frames 20h and 30h as Publisher in the PLIN configuration software.
+
 #### Lin_Example_Init_Sleep_Wakeup
 
 ##### Overview Of Lin_Example_Init_Sleep_Wakeup
@@ -601,7 +636,7 @@ API Lin_GetVersionInfo executed successfully
  ---------------------
  Vendor ID           : 44
  Module ID           : 82
- SW Major Version    : 1
+ SW Major Version    : 2
  SW Minor Version    : 0
  SW Patch Version    : 0
  
@@ -620,6 +655,7 @@ Lin Waking up from Internal Sleep by LinWakeupInternal API is Success !!!
 ---------------------------------------------------------------
 
 Test 5: Lin Module : Sleep
+Sending Go To Sleep Command on Lin Bus...
 Lin Go to Sleep Command is sent on Lin Bus !!!
 Lin going to Sleep is Success !!!
 ---------------------------------------------------------------
@@ -630,7 +666,7 @@ Lin Waking up from Sleep by LinWakeup API is Success !!!
 ---------------------------------------------------------------
 
 ---------------------------------------------------------------
-LIN Example Init Sleep WakeUp Run SUCCESS 
+LIN Example Init Sleep WakeUp Run FINISHED 
 ---------------------------------------------------------------
 ```
 
@@ -700,14 +736,14 @@ Test 2: Lin Send data : LIN Slave Response !!!
 Started Sending Header on Lin Bus For ID : 0x20
 Waiting For Slave to send the data...
 Started receiving Data from Slave...
-Data Received : 0xa5
-Data Received : 0x55
-Data Received : 0xaa
-Data Received : 0x55
-Data Received : 0xaa
-Data Received : 0x55
-Data Received : 0xaa
-Data Received : 0x55
+Data Received : 0x11
+Data Received : 0x22
+Data Received : 0x11
+Data Received : 0x22
+Data Received : 0x11
+Data Received : 0x22
+Data Received : 0x11
+Data Received : 0x22
 Finished Receiving Data
 Lin Send data : LIN Slave Response PASSED!!
 ---------------------------------------------------------------
@@ -774,9 +810,8 @@ LinIf_CheckWakeup Detected WakeUp Pulse on Lin Bus !!!
 Lin Module Wake Up from Sleep by WakeUp Interrupt is Success !!!
 
 ---------------------------------------------------------------
-LIN  Application - Wake Up Interrupt PASSED !!!
+LIN Example Application - Wake Up Interrupt PASSED !!!
 ---------------------------------------------------------------
-
 ```
 
 #### File Structure

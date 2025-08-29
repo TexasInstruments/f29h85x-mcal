@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -113,6 +113,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#information-on-the-f29x-device-family">3.12. Information on the F29x device family</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#f29x-cpu-architecture">3.12.1. F29x CPU Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#f29x-cpu-emulation-api">3.12.2. F29x CPU Emulation API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#emulation-api-usage">3.12.2.1. Emulation API usage</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#boot-modes">3.13. Boot Modes</a></li>
@@ -263,7 +267,7 @@
 ┃ ┃ ┃ ┃ ┣ 📂config<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName.xdm : <em>Generated EB Tresos config file in .xdm format</em><br />
 ┃ ┃ ┃ ┃ ┣ 📂include<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.h : <em>Contains the generated pre-complier configuration header.</em><br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.h : <em>Contains the generated pre-compiler configuration header.</em><br />
 ┃ ┃ ┃ ┃ ┣ 📂src<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜ModuleName_Cfg.c or ModuleName_LCfg.c or ModuleName_PBCfg.c : <em>Contains the pre/Link/Post build configuration parameters.</em><br />
 ┃ ┃ ┃ ┃ ┗ 📜CMakeLists.txt<br />
@@ -307,7 +311,7 @@
 <td><p>Target processor version : <strong>c29.c0</strong></p></td>
 </tr>
 <tr class="row-odd"><td><p>-mfpu</p></td>
-<td><p>Floating-Point Support Option : Use native 32-bit floating-point hardware operations, but emulate 64-bit floating-point operations in software. <br> <strong>none</strong></p></td>
+<td><p>Floating-Point Support Option : Use native 32-bit floating-point hardware operations, but emulate 64-bit floating-point operations in software. <br> <strong>f32</strong></p></td>
 </tr>
 <tr class="row-even"><td><p>-g</p></td>
 <td><p>Debug information : The c29clang compiler generates DWARF debug information if the -g option is selected.</p></td>
@@ -596,7 +600,7 @@
 ┃ ┃ ┣ 📂LinkerCMD<br />
 ┃ ┃ ┣ 📂src<br />
 ┃ ┃ ┃ ┣ 📜<strong>codestartbranch.asm</strong><br />
-┃ ┃ ┃ ┗ 📜<strong>DeviceSupport.c</strong> : <em>Contains functions that Flash intialize wait states</em><br />
+┃ ┃ ┃ ┗ 📜<strong>DeviceSupport.c</strong> : <em>Contains functions that Flash initialize wait states</em><br />
 ┃ ┃ ┣ 📂targetconfigs<br />
 ┃ ┃ ┣ 📜CMakeLists.txt<br />
 ┃ ┃ ┗ 📜makefile.defs<br />
@@ -706,7 +710,7 @@ Refer <a class="reference external" href="https://software-dl.ti.com/codegen/doc
 ┣ 📂plugins<br />
 ┣ 📜<strong>CMakeLists.txt</strong> : <em>Top-level CMake file</em><br />
 ┗ 📜CMakePresets.json</p>
-<p>BSW Stubs provides a set of stubs for various Basic Software (BSW) modules, these stubs mimics the behavior of the actual BSW modules. These stubs allow for the development and testing of MCAL drivers without requiring the actual BSW modules to be implemented. The BSW_Stubs folder contains a collection of subfolders, each representing a specific BSW module. Each of these subfolders contains stub implementations for the corresponding BSW module.</p>
+<p>BSW Stubs provides a set of stubs for various Basic Software (BSW) modules, these stubs mimics the behavior of the actual BSW modules. These stubs allow for the development and testing of MCAL drivers without requiring the actual BSW modules to be implemented. The BSW_Stubs folder contains a collection of sub-folders, each representing a specific BSW module. Each of these sub-folders contains stub implementations for the corresponding BSW module.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>BSW Stubs source code is for reference only, it should not be used as-is in a typical AUTOSAR applications.</p>
@@ -1140,6 +1144,74 @@ It can generate native build files for different platforms and compilers, such a
 </ul>
 <p>You can downloaded TRM from <a class="reference external" href="https://www.ti.com/product/F29H859TU-Q1">ti.com</a></p>
 </section>
+<section id="f29x-cpu-emulation-api">
+<h3><span class="section-number">3.12.2. </span>F29x CPU Emulation API<a class="headerlink" href="#f29x-cpu-emulation-api" title="Link to this heading"></a></h3>
+<p>The F29H85x, F29P58x, and F29P32x are members of the C2000™ real-time microcontroller family
+The device information is available in the datasheet and can be downloaded at <a class="reference external" href="https://www.ti.com/lit/ds/symlink/f29h859tu-q1.pdf">ti.com</a></p>
+<p>Emulation API supports to emulate multiple part number devices on a single device, one at a time.This helps to test softwares for multiple devices on a single device.
+Emulation API restricts the usage of features/resources according to the device being emulated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>F29H85x is the super set device.MCAL will use F29H85x and it needs to be selected as Target / Derivate during EB Tresos project creation irrespective of the subset device being used (device being emulated).</p>
+</div>
+<section id="emulation-api-usage">
+<h4><span class="section-number">3.12.2.1. </span>Emulation API usage<a class="headerlink" href="#emulation-api-usage" title="Link to this heading"></a></h4>
+<p>The Emulation API needs to invoked before ECUM initialization.
+To emulate the device F29P329SM2, below command needs to be invoked</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="w">  </span>DeviceSupport_EmulateDevice<span class="o">(</span>DEVICE_F29P329SM2<span class="o">)</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>To emulate other devices the following macros can be passed as argument to function DeviceSupport_EmulateDevice(partNumber)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Part Number</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DEVICE_F29H859TU8</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEVICE_F29H859TM8</p></td>
+</tr>
+<tr class="row-even"><td><p>DEVICE_F29H859DM6</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEVICE_F29H859DU6</p></td>
+</tr>
+<tr class="row-even"><td><p>DEVICE_F29P589DM5</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEVICE_F29P589DU5</p></td>
+</tr>
+<tr class="row-even"><td><p>DEVICE_F29P329SM2</p></td>
+</tr>
+</tbody>
+</table>
+<p>Once emulation API is invoked, if any feature/resource is accessed which is not avaialble to the emulated device,
+then an exception will occur.</p>
+<p>When exception occurs the program enters wait mode.The wait mode puts the CPU in a loop in the boot ROM code and does not branch to the user application code. The program counter goes to wait point address and stays in wait boot mode.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Program Counter Address Range</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0x1535C</p></td>
+<td><p>In Wait Boot mode</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x14EB0</p></td>
+<td><p>In Wait Boot mode</p></td>
+</tr>
+</tbody>
+</table>
+<p>The device can be recovered by erasing the flash memory and then flashing a correct software.</p>
+<p>Below is an example of the error when an exception occured</p>
+<figure class="align-center" id="id20">
+<img alt="Debug message on exception" src="../_images/Emulation_API_error.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.20 </span><span class="caption-text">Debug message on exception</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
 </section>
 <section id="boot-modes">
 <h2><span class="section-number">3.13. </span>Boot Modes<a class="headerlink" href="#boot-modes" title="Link to this heading"></a></h2>
@@ -1150,28 +1222,28 @@ It can generate native build files for different platforms and compilers, such a
 <ul class="simple">
 <li><p>Create and load the plugins required for the example by following the steps in <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#create-an-eb-project"><span class="std std-ref">Create an EB project</span></a> and <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#load-plugins"><span class="std std-ref">Load plugins</span></a> and close the EB tresos.</p></li>
 </ul>
-<figure class="align-center" id="id20">
+<figure class="align-center" id="id21">
 <img alt="EB Tresos Example Project Created" src="../_images/EB_Tresos_Example_Step1.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 3.20 </span><span class="caption-text">EB Tresos Example Project Created</span><a class="headerlink" href="#id20" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 3.21 </span><span class="caption-text">EB Tresos Example Project Created</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ul class="simple">
 <li><p>Copy the ECU Parameter definition files(.xdm) of the specific example.</p></li>
 </ul>
-<figure class="align-center" id="id21">
+<figure class="align-center" id="id22">
 <img alt="MCAL Example ECU Parameter definition files" src="../_images/EB_Tresos_Example_Step2.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 3.21 </span><span class="caption-text">MCAL Example ECU Parameter definition files</span><a class="headerlink" href="#id21" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 3.22 </span><span class="caption-text">MCAL Example ECU Parameter definition files</span><a class="headerlink" href="#id22" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ul class="simple">
 <li><p>Go to the EB tresos project workspace and replace the generated ECU Parameter definition files (.xdm) with the ECU Parameter definition files of your specific example.</p></li>
 </ul>
-<figure class="align-center" id="id22">
+<figure class="align-center" id="id23">
 <img alt="EB Tresos ECU Parameter definition files" src="../_images/EB_Tresos_Example_Step3.PNG" />
 <figcaption>
-<p><span class="caption-number">Fig. 3.22 </span><span class="caption-text">EB Tresos ECU Parameter definition files</span><a class="headerlink" href="#id22" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 3.23 </span><span class="caption-text">EB Tresos ECU Parameter definition files</span><a class="headerlink" href="#id23" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ul class="simple">
@@ -1192,7 +1264,7 @@ It can generate native build files for different platforms and compilers, such a
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1209,7 +1281,7 @@ It can generate native build files for different platforms and compilers, such a
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

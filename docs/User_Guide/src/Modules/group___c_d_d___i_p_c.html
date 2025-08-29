@@ -47,7 +47,7 @@
             <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -80,8 +80,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#enum-cdd-ipc-coretype">5.12.1.1. enum Cdd_Ipc_CoreType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-cdd-ipc-txprocessingtype">5.12.1.2. enum Cdd_Ipc_TxProcessingType</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#enum-cdd-ipc-instancetype">5.12.1.3. enum Cdd_Ipc_InstanceType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-ipc-remotecoretype">5.12.1.4. typedef Cdd_Ipc_RemoteCoreType</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-ipc-notifytype">5.12.1.5. typedef Cdd_Ipc_NotifyType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-ipc-notifytype">5.12.1.4. typedef Cdd_Ipc_NotifyType</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#structures">5.12.2. Structures</a></li>
@@ -94,21 +93,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-mainfunction-read">5.12.4.5. function Cdd_Ipc_MainFunction_Read</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-istxinstancefree">5.12.4.6. function Cdd_Ipc_IsTxInstanceFree</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-getcounter">5.12.4.7. function Cdd_Ipc_GetCounter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-setcfgobj">5.12.4.8. function Cdd_Ipc_SetCfgObj</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-sync-process">5.12.4.9. function Cdd_Ipc_Sync_Process</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-transmit-priv">5.12.4.10. function Cdd_Ipc_Transmit_Priv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-rxindication">5.12.4.11. function Cdd_Ipc_RxIndication</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-getchannelpollingstatus">5.12.4.12. function Cdd_Ipc_GetChannelPollingStatus</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-readchannelpriv">5.12.4.13. function Cdd_Ipc_ReadChannelPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-writechannelpriv">5.12.4.14. function Cdd_Ipc_WriteChannelPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-acknowledge">5.12.4.15. function Cdd_Ipc_Acknowledge</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-getrxidxpriv">5.12.4.16. function Cdd_Ipc_GetRxIdxPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-getrxchidx">5.12.4.17. function Cdd_Ipc_GetRxChIdx</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-gettxidxpriv">5.12.4.18. function Cdd_Ipc_GetTxIdxPriv</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-processisr">5.12.4.19. function Cdd_Ipc_ProcessIsr</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-ischannelidvalid">5.12.4.20. function Cdd_Ipc_IsChannelIdValid</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-instancestatus">5.12.4.21. function Cdd_Ipc_InstanceStatus</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ipc-readcounter">5.12.4.22. function Cdd_Ipc_ReadCounter</a></li>
 </ul>
 </li>
 </ul>
@@ -170,11 +154,7 @@
 <td><p><strong><a class="reference internal" href="#enum-cdd-ipc-instancetype"><span class="std std-ref">Cdd_Ipc_InstanceType</span></a></strong></p></td>
 <td><p>IPC Instance type.</p></td>
 </tr>
-<tr class="row-odd"><td><p>typedef uint8</p></td>
-<td><p><strong><a class="reference internal" href="#typedef-cdd-ipc-remotecoretype"><span class="std std-ref">Cdd_Ipc_RemoteCoreType</span></a></strong></p></td>
-<td><p>Specifies ID of the remote core</p></td>
-</tr>
-<tr class="row-even"><td><p>typedef void(*)(const PduInfoType *PduInfoPtr)</p></td>
+<tr class="row-odd"><td><p>typedef void(*)(const PduInfoType *PduInfoPtr)</p></td>
 <td><p><strong><a class="reference internal" href="#typedef-cdd-ipc-notifytype"><span class="std std-ref">Cdd_Ipc_NotifyType</span></a></strong></p></td>
 <td><p>Notification callback function pointer.</p></td>
 </tr>
@@ -341,16 +321,8 @@ IPC Tx processing.</p>
 <p><strong>Brief</strong>:
 IPC Instance type.</p>
 </section>
-<section id="typedef-cdd-ipc-remotecoretype">
-<h3><span class="section-number">5.12.1.4. </span>typedef Cdd_Ipc_RemoteCoreType<a class="headerlink" href="#typedef-cdd-ipc-remotecoretype" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Cdd_Ipc_RemoteCoreType</span><span class="p">;</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Specifies ID of the remote core</p>
-</section>
 <section id="typedef-cdd-ipc-notifytype">
-<h3><span class="section-number">5.12.1.5. </span>typedef Cdd_Ipc_NotifyType<a class="headerlink" href="#typedef-cdd-ipc-notifytype" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.12.1.4. </span>typedef Cdd_Ipc_NotifyType<a class="headerlink" href="#typedef-cdd-ipc-notifytype" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_Ipc_NotifyType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">PduInfoType</span><span class="w"> </span><span class="o">*</span><span class="n">PduInfoPtr</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -466,69 +438,6 @@ Notification callback function pointer.</p>
 <tr class="row-odd"><td><p>BIT_SHIFT_BY_8</p></td>
 <td><p>Shift bits by 8 bits.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_IPC_SEND_TO_RCV_STEP</p></td>
-<td><p>Send to receive registers step.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_REG_SET (x)</p></td>
-<td><p>Set register address.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_REG_CLR (x)</p></td>
-<td><p>Clear register address.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_REG_FLG (x)</p></td>
-<td><p>Flag register address.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_REG_SENDCOM (x)</p></td>
-<td><p>Send command register address.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_REG_SENDADDR (x)</p></td>
-<td><p>Send address register address.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_REG_SENDDATA (x)</p></td>
-<td><p>Send data register address.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_REG_STS (x)</p></td>
-<td><p>Status register address.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_REG_ACK (x)</p></td>
-<td><p>Acknowledgement register address.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_REG_RECVCOM (x)</p></td>
-<td><p>Receive command register address.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_REG_RECVADDR (x)</p></td>
-<td><p>Receive address register address.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_REG_RECVDATA (x)</p></td>
-<td><p>Receive data register address.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_FLAG0</p></td>
-<td><p>IPC FLAG 0 - Triggers interrupt.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_FLAG1</p></td>
-<td><p>IPC FLAG 1 - Indicates polling mode.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_FLAG2</p></td>
-<td><p>IPC FLAG 2 - Reserved for syncronization of CPUs \ .</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_COMMBYTE</p></td>
-<td><p>Macro to define the upper byte index that can be transmitted/received in command register.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_ADDRBYTE</p></td>
-<td><p>Macro to define the upper byte index that can be transmitted/received in address register.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_DATABYTE</p></td>
-<td><p>Macro to define the upper byte index that can be transmitted/received in address register.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_COMMANDSIZE</p></td>
-<td><p>Macro to define the no of bytes that can be written to a command register.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CDD_IPC_CHANNELINDEX</p></td>
-<td><p>Macro to define the index of channel ID in flag register.</p></td>
-</tr>
-<tr class="row-even"><td><p>CDD_IPC_LENGTHINDEX</p></td>
-<td><p>Macro to define the index of length in flag register.</p></td>
-</tr>
 </tbody>
 </table>
 </section>
@@ -551,7 +460,7 @@ Notification callback function pointer.</p>
 <td><p>Service to initialize CDD IPC driver.</p></td>
 </tr>
 <tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-sync"><span class="std std-ref">Cdd_Ipc_Sync</span></a></strong>(<a class="reference internal" href="#typedef-cdd-ipc-remotecoretype"><span class="std std-ref">Cdd_Ipc_RemoteCoreType</span></a> RemoteCore)</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ipc-sync"><span class="std std-ref">Cdd_Ipc_Sync</span></a></strong>(<a class="reference internal" href="#enum-cdd-ipc-coretype"><span class="std std-ref">Cdd_Ipc_CoreType</span></a> RemoteCore)</p></td>
 <td><p>Service to synchronise two cores communicating in IPC communication within a preconfigured timeout.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Std_ReturnType</p></td>
@@ -569,66 +478,6 @@ Notification callback function pointer.</p>
 <tr class="row-even"><td><p>uint64</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-ipc-getcounter"><span class="std std-ref">Cdd_Ipc_GetCounter</span></a></strong>(void )</p></td>
 <td><p>Service to read the timestamp counter value.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-setcfgobj"><span class="std std-ref">Cdd_Ipc_SetCfgObj</span></a></strong>(const <a class="reference internal" href="../Classes/struct_cdd___ipc___config_type.html"><span class="std std-doc">Cdd_Ipc_ConfigType</span></a> * ConfigPtr)</p></td>
-<td><p>Sets the configuration pointer.</p></td>
-</tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-sync-process"><span class="std std-ref">Cdd_Ipc_Sync_Process</span></a></strong>(<a class="reference internal" href="#typedef-cdd-ipc-remotecoretype"><span class="std std-ref">Cdd_Ipc_RemoteCoreType</span></a> RemoteCore)</p></td>
-<td><p>Synchronises two cores for inter process communication.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-transmit-priv"><span class="std std-ref">Cdd_Ipc_Transmit_Priv</span></a></strong>(PduIdType ChannelId, const PduInfoType * PduInfoPtr)</p></td>
-<td><p>Requests the transmission of a PDU.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-rxindication"><span class="std std-ref">Cdd_Ipc_RxIndication</span></a></strong>(uint8 Instance_Index, uint8 Channel_Index, const PduInfoType * PduInfoPtr)</p></td>
-<td><p>Indicates a successful reception of a received Cdd Ipc Rx LPDU to the upper layer.</p></td>
-</tr>
-<tr class="row-odd"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-getchannelpollingstatus"><span class="std std-ref">Cdd_Ipc_GetChannelPollingStatus</span></a></strong>(uint8 Instance_Index, uint8 * ChannelIndex)</p></td>
-<td><p>Returns the Rx polling status of the instance.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-readchannelpriv"><span class="std std-ref">Cdd_Ipc_ReadChannelPriv</span></a></strong>(uint8 Instance_Index, const PduInfoType * PduInfoPtr)</p></td>
-<td><p>Copies the received data to the PduInfoPtr.</p></td>
-</tr>
-<tr class="row-odd"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-writechannelpriv"><span class="std std-ref">Cdd_Ipc_WriteChannelPriv</span></a></strong>(uint8 Instance_Index, uint8 Channel_Index, const PduInfoType * PduInfoPtr)</p></td>
-<td><p>Copies the data to be transmitted from PduInfoPtr to command registers.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-acknowledge"><span class="std std-ref">Cdd_Ipc_Acknowledge</span></a></strong>(<a class="reference internal" href="#enum-cdd-ipc-instancetype"><span class="std std-ref">Cdd_Ipc_InstanceType</span></a> Instance)</p></td>
-<td><p>Acknowledges the reception of a PDU.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-getrxidxpriv"><span class="std std-ref">Cdd_Ipc_GetRxIdxPriv</span></a></strong>(<a class="reference internal" href="#enum-cdd-ipc-instancetype"><span class="std std-ref">Cdd_Ipc_InstanceType</span></a> Instance, uint8 * InstanceIndex, uint8 * ChannelIndex)</p></td>
-<td><p>Finds the Rx instance index and Rx channel index for the given instance.</p></td>
-</tr>
-<tr class="row-even"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-getrxchidx"><span class="std std-ref">Cdd_Ipc_GetRxChIdx</span></a></strong>(<a class="reference internal" href="#enum-cdd-ipc-instancetype"><span class="std std-ref">Cdd_Ipc_InstanceType</span></a> Instance, uint8 InstanceIndex, uint8 * ChannelIndex)</p></td>
-<td><p>Finds the Rx channel index for the given instance.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Std_ReturnType</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-gettxidxpriv"><span class="std std-ref">Cdd_Ipc_GetTxIdxPriv</span></a></strong>(PduIdType ChannelId, uint8 * InstanceIndex, uint8 * ChannelIndex)</p></td>
-<td><p>Finds the Tx instance index and Tx channel index for the given Pdu.</p></td>
-</tr>
-<tr class="row-even"><td><p>void</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-processisr"><span class="std std-ref">Cdd_Ipc_ProcessIsr</span></a></strong>(<a class="reference internal" href="#enum-cdd-ipc-instancetype"><span class="std std-ref">Cdd_Ipc_InstanceType</span></a> Instance)</p></td>
-<td><p>Invoked by the respective IPC instance ISR.</p></td>
-</tr>
-<tr class="row-odd"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-ischannelidvalid"><span class="std std-ref">Cdd_Ipc_IsChannelIdValid</span></a></strong>(PduIdType ChannelId)</p></td>
-<td><p>Checks whether the TxPdu is valid or not.</p></td>
-</tr>
-<tr class="row-even"><td><p>boolean</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-instancestatus"><span class="std std-ref">Cdd_Ipc_InstanceStatus</span></a></strong>(PduIdType ChannelId)</p></td>
-<td><p>Returns the status of the instance that is configured for transmitting the PDU.</p></td>
-</tr>
-<tr class="row-odd"><td><p>uint64</p></td>
-<td><p><strong><a class="reference internal" href="#function-cdd-ipc-readcounter"><span class="std std-ref">Cdd_Ipc_ReadCounter</span></a></strong>(void )</p></td>
-<td><p>Returns the timestamp counter value.</p></td>
 </tr>
 </tbody>
 </table>
@@ -674,7 +523,7 @@ Service to initialize CDD IPC driver.</p>
 <section id="function-cdd-ipc-sync">
 <h3><span class="section-number">5.12.4.3. </span>function Cdd_Ipc_Sync<a class="headerlink" href="#function-cdd-ipc-sync" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Ipc_Sync</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_Ipc_RemoteCoreType</span><span class="w"> </span><span class="n">RemoteCore</span>
+<span class="w">    </span><span class="n">Cdd_Ipc_CoreType</span><span class="w"> </span><span class="n">RemoteCore</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -730,10 +579,6 @@ Service to request transmission.</p>
 </div>
 <p><strong>Brief</strong>:
 Service to perform the polling of confgured IPC Rx instances.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong></p></li>
-</ul>
 <p><strong>Returns</strong>:</p>
 <ul class="simple">
 <li><p><strong>None</strong>
@@ -776,358 +621,6 @@ Service to check the status of the instance that is configured for transmitting 
 </div>
 <p><strong>Brief</strong>:
 Service to read the timestamp counter value.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong></p></li>
-</ul>
-<p><strong>Return</strong>: 64-bit timestamp counter value</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-setcfgobj">
-<h3><span class="section-number">5.12.4.8. </span>function Cdd_Ipc_SetCfgObj<a class="headerlink" href="#function-cdd-ipc-setcfgobj" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Ipc_SetCfgObj</span><span class="p">(</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Cdd_Ipc_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ConfigPtr</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Sets the configuration pointer.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ConfigPtr</strong> Configuration pointer</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-sync-process">
-<h3><span class="section-number">5.12.4.9. </span>function Cdd_Ipc_Sync_Process<a class="headerlink" href="#function-cdd-ipc-sync-process" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Ipc_Sync_Process</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_Ipc_RemoteCoreType</span><span class="w"> </span><span class="n">RemoteCore</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Synchronises two cores for inter process communication.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>RemoteCore</strong> is the numeric ID of the remote core that needs to be synchronized</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>E_OK</strong> Synchronization is successfull
-<br></p></li>
-<li><p><strong>E_NOT_OK</strong> Synchronization failed
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Status of synchronization</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-transmit-priv">
-<h3><span class="section-number">5.12.4.10. </span>function Cdd_Ipc_Transmit_Priv<a class="headerlink" href="#function-cdd-ipc-transmit-priv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Ipc_Transmit_Priv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">PduIdType</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">PduInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PduInfoPtr</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Requests the transmission of a PDU.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ChannelId</strong> : When Cdd Ipc is integrated with Autosar Com stack, this parameter is a Pdu identifier used to address the respective channel. When Cdd Ipc is not integrated with Autosar Com stack, this parameter is a channel identifier used to address the respective channel.</p></li>
-<li><p><strong>PduInfoPtr</strong> is the pointer to a struct of type PduInfoType containing the complete data to be transmitted.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>E_OK</strong> Transmit request has been accepted.
-<br></p></li>
-<li><p><strong>E_NOT_OK</strong> Transmit request has not been accepted.
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Cdd_Ipc_Transmit request is accepted or not</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-rxindication">
-<h3><span class="section-number">5.12.4.11. </span>function Cdd_Ipc_RxIndication<a class="headerlink" href="#function-cdd-ipc-rxindication" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Ipc_RxIndication</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Instance_Index</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel_Index</span><span class="p">,</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">PduInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PduInfoPtr</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Indicates a successful reception of a received Cdd Ipc Rx LPDU to the upper layer.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Instance_Index</strong> is the index of the Rx instance in Cdd_Ipc_CfgPtr</p></li>
-<li><p><strong>Channel_Index</strong> is the index of the Rx channel in Cdd_Ipc_CfgPtr</p></li>
-<li><p><strong>PduInfoPtr</strong> Pointer to the received data and it’s length</p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-getchannelpollingstatus">
-<h3><span class="section-number">5.12.4.12. </span>function Cdd_Ipc_GetChannelPollingStatus<a class="headerlink" href="#function-cdd-ipc-getchannelpollingstatus" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">boolean</span><span class="w"> </span><span class="n">Cdd_Ipc_GetChannelPollingStatus</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Instance_Index</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ChannelIndex</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Returns the Rx polling status of the instance.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Instance_Index</strong> is the index of the Rx instance in Cdd_Ipc_CfgPtr</p></li>
-<li><p><strong>ChannelIndex</strong> is pointer to the channel index</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>TRUE</strong> Message is received in the instance
-<br></p></li>
-<li><p><strong>FALSE</strong> Message is not received in the instance
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Rx status of the channel</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-readchannelpriv">
-<h3><span class="section-number">5.12.4.13. </span>function Cdd_Ipc_ReadChannelPriv<a class="headerlink" href="#function-cdd-ipc-readchannelpriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Ipc_ReadChannelPriv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Instance_Index</span><span class="p">,</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">PduInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PduInfoPtr</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Copies the received data to the PduInfoPtr.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Instance_Index</strong> is the index of the Rx instance in Cdd_Ipc_CfgPtr</p></li>
-<li><p><strong>PduInfoPtr</strong> is the pointer to a struct of type PduInfoType where received data needs to be copied</p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-writechannelpriv">
-<h3><span class="section-number">5.12.4.14. </span>function Cdd_Ipc_WriteChannelPriv<a class="headerlink" href="#function-cdd-ipc-writechannelpriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Ipc_WriteChannelPriv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Instance_Index</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">Channel_Index</span><span class="p">,</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">PduInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PduInfoPtr</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Copies the data to be transmitted from PduInfoPtr to command registers.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Instance_Index</strong> is the index of the Rx instance in Cdd_Ipc_CfgPtr</p></li>
-<li><p><strong>Channel_Index</strong> is the index of the Rx channel in Cdd_Ipc_CfgPtr</p></li>
-<li><p><strong>PduInfoPtr</strong> is the pointer to a struct of type PduInfoType where received data needs to be copied</p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-acknowledge">
-<h3><span class="section-number">5.12.4.15. </span>function Cdd_Ipc_Acknowledge<a class="headerlink" href="#function-cdd-ipc-acknowledge" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Ipc_Acknowledge</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_Ipc_InstanceType</span><span class="w"> </span><span class="n">Instance</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Acknowledges the reception of a PDU.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Instance</strong> is the Cdd Ipc Instance</p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-getrxidxpriv">
-<h3><span class="section-number">5.12.4.16. </span>function Cdd_Ipc_GetRxIdxPriv<a class="headerlink" href="#function-cdd-ipc-getrxidxpriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Ipc_GetRxIdxPriv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_Ipc_InstanceType</span><span class="w"> </span><span class="n">Instance</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">InstanceIndex</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ChannelIndex</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Finds the Rx instance index and Rx channel index for the given instance.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Instance</strong> is the Cdd Ipc Instance</p></li>
-<li><p><strong>ChannelIndex</strong> is pointer the channel index</p></li>
-<li><p><strong>InstanceIndex</strong> is pointer the instance index</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>TRUE</strong> Rx instance and channel are configured
-<br></p></li>
-<li><p><strong>FALSE</strong> Rx instance and channel are not configured
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Rx channel is configured or not for the given instance and channel</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-getrxchidx">
-<h3><span class="section-number">5.12.4.17. </span>function Cdd_Ipc_GetRxChIdx<a class="headerlink" href="#function-cdd-ipc-getrxchidx" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Ipc_GetRxChIdx</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_Ipc_InstanceType</span><span class="w"> </span><span class="n">Instance</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">InstanceIndex</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ChannelIndex</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Finds the Rx channel index for the given instance.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Instance</strong> is the Cdd Ipc Instance</p></li>
-<li><p><strong>ChannelIndex</strong> is pointer the channel index</p></li>
-<li><p><strong>InstanceIndex</strong> is instance index</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>TRUE</strong> Rx channel is configured
-<br></p></li>
-<li><p><strong>FALSE</strong> Rx channel is not configured
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Rx channel is configured or not for the given instance and channel</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-gettxidxpriv">
-<h3><span class="section-number">5.12.4.18. </span>function Cdd_Ipc_GetTxIdxPriv<a class="headerlink" href="#function-cdd-ipc-gettxidxpriv" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Ipc_GetTxIdxPriv</span><span class="p">(</span>
-<span class="w">    </span><span class="n">PduIdType</span><span class="w"> </span><span class="n">ChannelId</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">InstanceIndex</span><span class="p">,</span>
-<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ChannelIndex</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Finds the Tx instance index and Tx channel index for the given Pdu.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ChannelId</strong> : Symbolic name of the Tx Pdu to be transmitted when Cdd_Ipc is integrated with Com Stack. Symbolic name Tx channel when Cdd_Ipc is not integrated with Com Stack.</p></li>
-<li><p><strong>ChannelIndex</strong> is pointer the channel index</p></li>
-<li><p><strong>InstanceIndex</strong> is pointer the instance index</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>TRUE</strong> Tx instance and channel are configured for the Pdu
-<br></p></li>
-<li><p><strong>FALSE</strong> Tx instance and channel are not configured for the Pdu
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Tx channel is configured or not for the given instance and channel</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-processisr">
-<h3><span class="section-number">5.12.4.19. </span>function Cdd_Ipc_ProcessIsr<a class="headerlink" href="#function-cdd-ipc-processisr" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Ipc_ProcessIsr</span><span class="p">(</span>
-<span class="w">    </span><span class="n">Cdd_Ipc_InstanceType</span><span class="w"> </span><span class="n">Instance</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Invoked by the respective IPC instance ISR.</p>
-<p>This Interrupt function is invoked when a reception happens in an IPC instance in any of the channel</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>Instance</strong> is the IPC instance</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong>
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: None</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-ischannelidvalid">
-<h3><span class="section-number">5.12.4.20. </span>function Cdd_Ipc_IsChannelIdValid<a class="headerlink" href="#function-cdd-ipc-ischannelidvalid" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">boolean</span><span class="w"> </span><span class="n">Cdd_Ipc_IsChannelIdValid</span><span class="p">(</span>
-<span class="w">    </span><span class="n">PduIdType</span><span class="w"> </span><span class="n">ChannelId</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Checks whether the TxPdu is valid or not.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ChannelId</strong> : When Cdd Ipc is integrated with Autosar Com stack, this parameter is a Pdu identifier used to address the respective channel. When Cdd Ipc is not integrated with Autosar Com stack, this parameter is a channel identifier used to address the respective channel.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>TRUE</strong> PDU is valid
-<br></p></li>
-<li><p><strong>FALSE</strong> PDU is not valid
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Returns whether PDU is valid or not</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-instancestatus">
-<h3><span class="section-number">5.12.4.21. </span>function Cdd_Ipc_InstanceStatus<a class="headerlink" href="#function-cdd-ipc-instancestatus" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">boolean</span><span class="w"> </span><span class="n">Cdd_Ipc_InstanceStatus</span><span class="p">(</span>
-<span class="w">    </span><span class="n">PduIdType</span><span class="w"> </span><span class="n">ChannelId</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Returns the status of the instance that is configured for transmitting the PDU.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>ChannelId</strong> : When Cdd Ipc is integrated with Autosar Com stack, this parameter is a Pdu identifier used to address the respective channel. When Cdd Ipc is not integrated with Autosar Com stack, this parameter is a channel identifier used to address the respective channel.</p></li>
-</ul>
-<p><strong>Returns</strong>:</p>
-<ul class="simple">
-<li><p><strong>TRUE</strong> Tx channel is free
-<br></p></li>
-<li><p><strong>FALSE</strong> Tx channel is busy
-<br></p></li>
-</ul>
-<p><strong>Return</strong>: Status of the instance that is configured for transmitting the PDU</p>
-<p><strong>Precondition</strong>: None</p>
-<p><strong>Postcondition</strong>: None</p>
-</section>
-<section id="function-cdd-ipc-readcounter">
-<h3><span class="section-number">5.12.4.22. </span>function Cdd_Ipc_ReadCounter<a class="headerlink" href="#function-cdd-ipc-readcounter" title="Link to this heading"></a></h3>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">uint64</span><span class="w"> </span><span class="n">Cdd_Ipc_ReadCounter</span><span class="p">(</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Brief</strong>:
-Returns the timestamp counter value.</p>
-<p><strong>Parameters</strong>:</p>
-<ul class="simple">
-<li><p><strong>None</strong></p></li>
-</ul>
 <p><strong>Return</strong>: 64-bit timestamp counter value</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
@@ -1147,7 +640,7 @@ Returns the timestamp counter value.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1164,7 +657,7 @@ Returns the timestamp counter value.</p>
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

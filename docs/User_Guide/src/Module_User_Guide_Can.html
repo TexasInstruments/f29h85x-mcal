@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -91,12 +91,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#integration-description">4.1.9. Integration description</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.1.9.1. Dependent modules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.1.9.2. Multi-core and Resource allocator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-guidelines">4.1.9.3. General Guidelines</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.1.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#canconfigset">4.1.10.1. CanConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cangeneral">4.1.10.2. CanGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-can-module">4.1.10.3. Steps To Configure Can Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#migration-guide-to-v02-00-00-from-v01-02-00">4.1.10.1. Migration Guide to v02.00.00 from v01.02.00</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canconfigset">4.1.10.2. CanConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cangeneral">4.1.10.3. CanGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-can-module">4.1.10.4. Steps To Configure Can Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.1.11. Examples</a><ul>
@@ -123,6 +125,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -515,7 +518,7 @@ Interrupt type should be selected in CAN plugin.</p>
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Same interrupt category should be configured in Os module,</p>
+<p>Same interrupt category should be configured in Os module. Nesting of CAN interrupts is not allowed. In case nesting of CAN interrupt is enabled, data integrity cannot be ensured.</p>
 </div>
 </section>
 <section id="instance-support">
@@ -599,6 +602,13 @@ For CAN Module, data consistency and exclusive access to critical sections are r
 <h3><span class="section-number">4.1.9.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
 <p>Not Supported</p>
 </section>
+<section id="general-guidelines">
+<h3><span class="section-number">4.1.9.3. </span>General Guidelines<a class="headerlink" href="#general-guidelines" title="Link to this heading"></a></h3>
+<section id="imported-types-can-hwhandletype">
+<h4><span class="section-number">4.1.9.3.1. </span>Imported Types: Can_HwHandleType<a class="headerlink" href="#imported-types-can-hwhandletype" title="Link to this heading"></a></h4>
+<p>Can_HwHandleType represents the hardware object handles of a CAN hardware unit. MCAN supports configuration of more than 256 hardware object handles. Hence extended range (i.e. uint16 type) must be used. For details of Can_HwHandleType refer AUTOSAR requirement SWS_Can_00429.</p>
+</section>
+</section>
 </section>
 <section id="configuration">
 <h2><span class="section-number">4.1.10. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
@@ -606,14 +616,37 @@ For CAN Module, data consistency and exclusive access to critical sections are r
 The driver expects generated <strong>Can_Cfg.h</strong> to be present as input file.
 The associated Can driver configuration generated source files are <strong>Can_Cfg.c</strong> and <strong>Can_PBcfg.c</strong> if Post-Build config variant is selected, only <strong>Can_Cfg.c</strong> if Pre-Compile variant is selected</p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
+<section id="migration-guide-to-v02-00-00-from-v01-02-00">
+<h3><span class="section-number">4.1.10.1. </span>Migration Guide to v02.00.00 from v01.02.00<a class="headerlink" href="#migration-guide-to-v02-00-00-from-v01-02-00" title="Link to this heading"></a></h3>
+<p>v02.00.00 CAN driver is designed to fit MCAN hardware with AUTOSAR concepts. Following are some generic recommendations for v02.00.00 CAN driver configuration.</p>
+<ol class="arabic simple">
+<li><p>When hardware object handle is configured as BASIC, it uses FIFO in hardware which can store multiple messages as per configured depth. Hardware supports maximum 1 Tx FIFO and 2 Rx FIFOs per controller, hence maximum 1 BASIC transmit hardware object handle and maximum 2 BASIC receive hardware object handles can be configured.</p></li>
+<li><p>Each BASIC receive hardware object handle can store multiple different CAN messages as per one or more filters configured inside hardware object handle.</p></li>
+<li><p>When hardware object handle is configured as FULL, it uses dedicated buffer in hardware which can store only one message with specific message Id. Hardware supports maximum 32 Tx dedicated buffers and 64 Rx dedicated buffers per controller, hence maximum 32 FULL transmit hardware object handle and maximum 64 FULL receive hardware object handles can be configured.</p></li>
+<li><p>Each FULL receive hardware object handle can store only one message at a time as per one or more filters configured inside hardware object handle.</p></li>
+<li><p>There can be maximum 128 standard filters and 64 extended filters configured per controller.</p></li>
+<li><p>Total size of Standard filters, Extended filters, Rx messages (FIFO and dedicated buffers), Tx messages (FIFO and dedicated buffers) should not exceed total message RAM area available for controller. For more details, refer to F29x Technical Reference Manual.</p></li>
+</ol>
+<p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Can_Init function will need to use the new configuration structure name. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.01.00 or any older versions) */</span>
+<span class="n">Can_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Can_CanConfigSet</span><span class="p">);</span>
+
+<span class="cm">/* New code (v02.00.00) */</span>
+<span class="n">Can_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Can_Config</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This change ensures compliance with AUTOSAR naming conventions.</p>
+<p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
+</section>
 <section id="canconfigset">
-<h3><span class="section-number">4.1.10.1. </span>CanConfigSet<a class="headerlink" href="#canconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.1.10.2. </span>CanConfigSet<a class="headerlink" href="#canconfigset" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the AUTOSAR Can module.</p>
 <section id="cancontroller">
-<h4><span class="section-number">4.1.10.1.1. </span>CanController<a class="headerlink" href="#cancontroller" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.1. </span>CanController<a class="headerlink" href="#cancontroller" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CAN controller(s).</p>
 <section id="canbusoffprocessing">
-<h5><span class="section-number">4.1.10.1.1.1. </span>CanBusoffProcessing<a class="headerlink" href="#canbusoffprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.1. </span>CanBusoffProcessing<a class="headerlink" href="#canbusoffprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -652,7 +685,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrolleractivation">
-<h5><span class="section-number">4.1.10.1.1.2. </span>CanControllerActivation<a class="headerlink" href="#cancontrolleractivation" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.2. </span>CanControllerActivation<a class="headerlink" href="#cancontrolleractivation" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -688,7 +721,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollerinstance">
-<h5><span class="section-number">4.1.10.1.1.3. </span>CanControllerInstance<a class="headerlink" href="#cancontrollerinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.3. </span>CanControllerInstance<a class="headerlink" href="#cancontrollerinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -727,7 +760,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollerbaseaddress">
-<h5><span class="section-number">4.1.10.1.1.4. </span>CanControllerBaseAddress<a class="headerlink" href="#cancontrollerbaseaddress" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.4. </span>CanControllerBaseAddress<a class="headerlink" href="#cancontrollerbaseaddress" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -769,7 +802,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollerid">
-<h5><span class="section-number">4.1.10.1.1.5. </span>CanControllerId<a class="headerlink" href="#cancontrollerid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.5. </span>CanControllerId<a class="headerlink" href="#cancontrollerid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -811,7 +844,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canrxprocessing">
-<h5><span class="section-number">4.1.10.1.1.6. </span>CanRxProcessing<a class="headerlink" href="#canrxprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.6. </span>CanRxProcessing<a class="headerlink" href="#canrxprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -850,7 +883,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cantxprocessing">
-<h5><span class="section-number">4.1.10.1.1.7. </span>CanTxProcessing<a class="headerlink" href="#cantxprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.7. </span>CanTxProcessing<a class="headerlink" href="#cantxprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -889,7 +922,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canwakeupfunctionalityapi">
-<h5><span class="section-number">4.1.10.1.1.8. </span>CanWakeupFunctionalityAPI<a class="headerlink" href="#canwakeupfunctionalityapi" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.8. </span>CanWakeupFunctionalityAPI<a class="headerlink" href="#canwakeupfunctionalityapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -925,7 +958,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canwakeupprocessing">
-<h5><span class="section-number">4.1.10.1.1.9. </span>CanWakeupProcessing<a class="headerlink" href="#canwakeupprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.9. </span>CanWakeupProcessing<a class="headerlink" href="#canwakeupprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -964,7 +997,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canwakeupsupport">
-<h5><span class="section-number">4.1.10.1.1.10. </span>CanWakeupSupport<a class="headerlink" href="#canwakeupsupport" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.10. </span>CanWakeupSupport<a class="headerlink" href="#canwakeupsupport" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1000,7 +1033,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="caninterupttype">
-<h5><span class="section-number">4.1.10.1.1.11. </span>CanInteruptType<a class="headerlink" href="#caninterupttype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.11. </span>CanInteruptType<a class="headerlink" href="#caninterupttype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1039,7 +1072,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollerdefaultbaudrate">
-<h5><span class="section-number">4.1.10.1.1.12. </span>CanControllerDefaultBaudrate<a class="headerlink" href="#cancontrollerdefaultbaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.12. </span>CanControllerDefaultBaudrate<a class="headerlink" href="#cancontrollerdefaultbaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1072,7 +1105,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancpuclockref">
-<h5><span class="section-number">4.1.10.1.1.13. </span>CanCpuClockRef<a class="headerlink" href="#cancpuclockref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.13. </span>CanCpuClockRef<a class="headerlink" href="#cancpuclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1105,7 +1138,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canwakeupsourceref">
-<h5><span class="section-number">4.1.10.1.1.14. </span>CanWakeupSourceRef<a class="headerlink" href="#canwakeupsourceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.1.14. </span>CanWakeupSourceRef<a class="headerlink" href="#canwakeupsourceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1151,10 +1184,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="cancontrollerconfig">
-<h4><span class="section-number">4.1.10.1.2. </span>CanControllerConfig<a class="headerlink" href="#cancontrollerconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.2. </span>CanControllerConfig<a class="headerlink" href="#cancontrollerconfig" title="Link to this heading"></a></h4>
 <p>This container contains CAN Controller specific configuration parameters.</p>
 <section id="canfdmode">
-<h5><span class="section-number">4.1.10.1.2.1. </span>CanFDMode<a class="headerlink" href="#canfdmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.2.1. </span>CanFDMode<a class="headerlink" href="#canfdmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1190,7 +1223,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canloopbackmode">
-<h5><span class="section-number">4.1.10.1.2.2. </span>CanLoopbackMode<a class="headerlink" href="#canloopbackmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.2.2. </span>CanLoopbackMode<a class="headerlink" href="#canloopbackmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1226,7 +1259,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cantransmitpause">
-<h5><span class="section-number">4.1.10.1.2.3. </span>CanTransmitPause<a class="headerlink" href="#cantransmitpause" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.2.3. </span>CanTransmitPause<a class="headerlink" href="#cantransmitpause" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1262,7 +1295,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="candisableautomaticretransmission">
-<h5><span class="section-number">4.1.10.1.2.4. </span>CanDisableAutomaticRetransmission<a class="headerlink" href="#candisableautomaticretransmission" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.2.4. </span>CanDisableAutomaticRetransmission<a class="headerlink" href="#candisableautomaticretransmission" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1299,10 +1332,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="cancontrollerbaudrateconfig">
-<h4><span class="section-number">4.1.10.1.3. </span>CanControllerBaudrateConfig<a class="headerlink" href="#cancontrollerbaudrateconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.3. </span>CanControllerBaudrateConfig<a class="headerlink" href="#cancontrollerbaudrateconfig" title="Link to this heading"></a></h4>
 <p>This container contains bit timing related configuration parameters of the CAN controller(s).</p>
 <section id="cancontrollerbaudrate">
-<h5><span class="section-number">4.1.10.1.3.1. </span>CanControllerBaudRate<a class="headerlink" href="#cancontrollerbaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.3.1. </span>CanControllerBaudRate<a class="headerlink" href="#cancontrollerbaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1344,7 +1377,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollerbaudrateconfigid">
-<h5><span class="section-number">4.1.10.1.3.2. </span>CanControllerBaudRateConfigID<a class="headerlink" href="#cancontrollerbaudrateconfigid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.3.2. </span>CanControllerBaudRateConfigID<a class="headerlink" href="#cancontrollerbaudrateconfigid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1386,7 +1419,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollerpropseg">
-<h5><span class="section-number">4.1.10.1.3.3. </span>CanControllerPropSeg<a class="headerlink" href="#cancontrollerpropseg" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.3.3. </span>CanControllerPropSeg<a class="headerlink" href="#cancontrollerpropseg" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1428,7 +1461,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollerseg1">
-<h5><span class="section-number">4.1.10.1.3.4. </span>CanControllerSeg1<a class="headerlink" href="#cancontrollerseg1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.3.4. </span>CanControllerSeg1<a class="headerlink" href="#cancontrollerseg1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1470,7 +1503,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollerseg2">
-<h5><span class="section-number">4.1.10.1.3.5. </span>CanControllerSeg2<a class="headerlink" href="#cancontrollerseg2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.3.5. </span>CanControllerSeg2<a class="headerlink" href="#cancontrollerseg2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1512,7 +1545,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollersyncjumpwidth">
-<h5><span class="section-number">4.1.10.1.3.6. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#cancontrollersyncjumpwidth" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.3.6. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#cancontrollersyncjumpwidth" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1555,10 +1588,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="cancontrollerfdbaudrateconfig">
-<h4><span class="section-number">4.1.10.1.4. </span>CanControllerFdBaudrateConfig<a class="headerlink" href="#cancontrollerfdbaudrateconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.4. </span>CanControllerFdBaudrateConfig<a class="headerlink" href="#cancontrollerfdbaudrateconfig" title="Link to this heading"></a></h4>
 <p>This optional container contains bit timing related configuration parameters of the CAN controller(s) for payload and CRC of a CAN FD frame. If this container exists the controller supports CAN FD frames.</p>
 <section id="cancontrollerfdbaudrate">
-<h5><span class="section-number">4.1.10.1.4.1. </span>CanControllerFdBaudRate<a class="headerlink" href="#cancontrollerfdbaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.4.1. </span>CanControllerFdBaudRate<a class="headerlink" href="#cancontrollerfdbaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1600,7 +1633,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="id1">
-<h5><span class="section-number">4.1.10.1.4.2. </span>CanControllerPropSeg<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.4.2. </span>CanControllerPropSeg<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1642,7 +1675,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="id2">
-<h5><span class="section-number">4.1.10.1.4.3. </span>CanControllerSeg1<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.4.3. </span>CanControllerSeg1<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1684,7 +1717,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="id3">
-<h5><span class="section-number">4.1.10.1.4.4. </span>CanControllerSeg2<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.4.4. </span>CanControllerSeg2<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1726,7 +1759,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="id4">
-<h5><span class="section-number">4.1.10.1.4.5. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.4.5. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1768,7 +1801,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollertrcvdelaycompensationoffset">
-<h5><span class="section-number">4.1.10.1.4.6. </span>CanControllerTrcvDelayCompensationOffset<a class="headerlink" href="#cancontrollertrcvdelaycompensationoffset" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.4.6. </span>CanControllerTrcvDelayCompensationOffset<a class="headerlink" href="#cancontrollertrcvdelaycompensationoffset" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1822,7 +1855,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollertrcvdelaycompensationfilter">
-<h5><span class="section-number">4.1.10.1.4.7. </span>CanControllerTrcvDelayCompensationFilter<a class="headerlink" href="#cancontrollertrcvdelaycompensationfilter" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.4.7. </span>CanControllerTrcvDelayCompensationFilter<a class="headerlink" href="#cancontrollertrcvdelaycompensationfilter" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1864,7 +1897,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollertxbitrateswitch">
-<h5><span class="section-number">4.1.10.1.4.8. </span>CanControllerTxBitRateSwitch<a class="headerlink" href="#cancontrollertxbitrateswitch" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.4.8. </span>CanControllerTxBitRateSwitch<a class="headerlink" href="#cancontrollertxbitrateswitch" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1901,10 +1934,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="canttcontroller">
-<h4><span class="section-number">4.1.10.1.5. </span>CanTTController<a class="headerlink" href="#canttcontroller" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.5. </span>CanTTController<a class="headerlink" href="#canttcontroller" title="Link to this heading"></a></h4>
 <p>CanTTController is specified in the SWS TTCAN and contains the configuration parameters of the TTCAN controller(s) (which are needed in addition to the configuration parameters of the CAN controller(s)).</p>
 <section id="canttcontrollerapplwatchdoglimit">
-<h5><span class="section-number">4.1.10.1.5.1. </span>CanTTControllerApplWatchdogLimit<a class="headerlink" href="#canttcontrollerapplwatchdoglimit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.1. </span>CanTTControllerApplWatchdogLimit<a class="headerlink" href="#canttcontrollerapplwatchdoglimit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1946,7 +1979,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollercyclecountmax">
-<h5><span class="section-number">4.1.10.1.5.2. </span>CanTTControllerCycleCountMax<a class="headerlink" href="#canttcontrollercyclecountmax" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.2. </span>CanTTControllerCycleCountMax<a class="headerlink" href="#canttcontrollercyclecountmax" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1988,7 +2021,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerexpectedtxtrigger">
-<h5><span class="section-number">4.1.10.1.5.3. </span>CanTTControllerExpectedTxTrigger<a class="headerlink" href="#canttcontrollerexpectedtxtrigger" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.3. </span>CanTTControllerExpectedTxTrigger<a class="headerlink" href="#canttcontrollerexpectedtxtrigger" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2030,7 +2063,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerexternalclocksynchronisation">
-<h5><span class="section-number">4.1.10.1.5.4. </span>CanTTControllerExternalClockSynchronisation<a class="headerlink" href="#canttcontrollerexternalclocksynchronisation" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.4. </span>CanTTControllerExternalClockSynchronisation<a class="headerlink" href="#canttcontrollerexternalclocksynchronisation" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2066,7 +2099,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerglobaltimefiltering">
-<h5><span class="section-number">4.1.10.1.5.5. </span>CanTTControllerGlobalTimeFiltering<a class="headerlink" href="#canttcontrollerglobaltimefiltering" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.5. </span>CanTTControllerGlobalTimeFiltering<a class="headerlink" href="#canttcontrollerglobaltimefiltering" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2102,7 +2135,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerinitialrefoffset">
-<h5><span class="section-number">4.1.10.1.5.6. </span>CanTTControllerInitialRefOffset<a class="headerlink" href="#canttcontrollerinitialrefoffset" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.6. </span>CanTTControllerInitialRefOffset<a class="headerlink" href="#canttcontrollerinitialrefoffset" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2144,7 +2177,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerinterruptenable">
-<h5><span class="section-number">4.1.10.1.5.7. </span>CanTTControllerInterruptEnable<a class="headerlink" href="#canttcontrollerinterruptenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.7. </span>CanTTControllerInterruptEnable<a class="headerlink" href="#canttcontrollerinterruptenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2186,7 +2219,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerlevel2">
-<h5><span class="section-number">4.1.10.1.5.8. </span>CanTTControllerLevel2<a class="headerlink" href="#canttcontrollerlevel2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.8. </span>CanTTControllerLevel2<a class="headerlink" href="#canttcontrollerlevel2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2222,7 +2255,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerntuconfig">
-<h5><span class="section-number">4.1.10.1.5.9. </span>CanTTControllerNTUConfig<a class="headerlink" href="#canttcontrollerntuconfig" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.9. </span>CanTTControllerNTUConfig<a class="headerlink" href="#canttcontrollerntuconfig" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2264,7 +2297,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrolleroperationmode">
-<h5><span class="section-number">4.1.10.1.5.10. </span>CanTTControllerOperationMode<a class="headerlink" href="#canttcontrolleroperationmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.10. </span>CanTTControllerOperationMode<a class="headerlink" href="#canttcontrolleroperationmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2303,7 +2336,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollersyncdeviation">
-<h5><span class="section-number">4.1.10.1.5.11. </span>CanTTControllerSyncDeviation<a class="headerlink" href="#canttcontrollersyncdeviation" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.11. </span>CanTTControllerSyncDeviation<a class="headerlink" href="#canttcontrollersyncdeviation" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2345,7 +2378,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollertimemaster">
-<h5><span class="section-number">4.1.10.1.5.12. </span>CanTTControllerTimeMaster<a class="headerlink" href="#canttcontrollertimemaster" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.12. </span>CanTTControllerTimeMaster<a class="headerlink" href="#canttcontrollertimemaster" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2381,7 +2414,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollertimemasterpriority">
-<h5><span class="section-number">4.1.10.1.5.13. </span>CanTTControllerTimeMasterPriority<a class="headerlink" href="#canttcontrollertimemasterpriority" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.13. </span>CanTTControllerTimeMasterPriority<a class="headerlink" href="#canttcontrollertimemasterpriority" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2423,7 +2456,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerturrestore">
-<h5><span class="section-number">4.1.10.1.5.14. </span>CanTTControllerTURRestore<a class="headerlink" href="#canttcontrollerturrestore" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.14. </span>CanTTControllerTURRestore<a class="headerlink" href="#canttcontrollerturrestore" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2459,7 +2492,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollertxenablewindowlength">
-<h5><span class="section-number">4.1.10.1.5.15. </span>CanTTControllerTxEnableWindowLength<a class="headerlink" href="#canttcontrollertxenablewindowlength" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.15. </span>CanTTControllerTxEnableWindowLength<a class="headerlink" href="#canttcontrollertxenablewindowlength" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2501,7 +2534,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerwatchtriggergaptimemark">
-<h5><span class="section-number">4.1.10.1.5.16. </span>CanTTControllerWatchTriggerGapTimeMark<a class="headerlink" href="#canttcontrollerwatchtriggergaptimemark" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.16. </span>CanTTControllerWatchTriggerGapTimeMark<a class="headerlink" href="#canttcontrollerwatchtriggergaptimemark" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2543,7 +2576,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttcontrollerwatchtriggertimemark">
-<h5><span class="section-number">4.1.10.1.5.17. </span>CanTTControllerWatchTriggerTimeMark<a class="headerlink" href="#canttcontrollerwatchtriggertimemark" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.17. </span>CanTTControllerWatchTriggerTimeMark<a class="headerlink" href="#canttcontrollerwatchtriggertimemark" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2585,7 +2618,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canttirqprocessing">
-<h5><span class="section-number">4.1.10.1.5.18. </span>CanTTIRQProcessing<a class="headerlink" href="#canttirqprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.5.18. </span>CanTTIRQProcessing<a class="headerlink" href="#canttirqprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2625,10 +2658,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="canhardwareobject">
-<h4><span class="section-number">4.1.10.1.6. </span>CanHardwareObject<a class="headerlink" href="#canhardwareobject" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.6. </span>CanHardwareObject<a class="headerlink" href="#canhardwareobject" title="Link to this heading"></a></h4>
 <p>This container contains the configuration (parameters) of CAN Hardware Objects.</p>
 <section id="canfdpaddingvalue">
-<h5><span class="section-number">4.1.10.1.6.1. </span>CanFdPaddingValue<a class="headerlink" href="#canfdpaddingvalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.1. </span>CanFdPaddingValue<a class="headerlink" href="#canfdpaddingvalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2670,7 +2703,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canhandletype">
-<h5><span class="section-number">4.1.10.1.6.2. </span>CanHandleType<a class="headerlink" href="#canhandletype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.2. </span>CanHandleType<a class="headerlink" href="#canhandletype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2682,7 +2715,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 <td><p>CanHandleType</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Specifies the type (Full-CAN or Basic-CAN) of a hardware object.</p></td>
+<td><p>Specifies the type (Full-CAN or Basic-CAN) of a hardware object. Basic object uses FIFO in hardware and Full object uses dedicated buffer in hardware.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>AUTOSAR_ECUC</p></td>
@@ -2709,7 +2742,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canhardwareobjectusespolling">
-<h5><span class="section-number">4.1.10.1.6.3. </span>CanHardwareObjectUsesPolling<a class="headerlink" href="#canhardwareobjectusespolling" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.3. </span>CanHardwareObjectUsesPolling<a class="headerlink" href="#canhardwareobjectusespolling" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2757,7 +2790,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canhwobjectcount">
-<h5><span class="section-number">4.1.10.1.6.4. </span>CanHwObjectCount<a class="headerlink" href="#canhwobjectcount" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.4. </span>CanHwObjectCount<a class="headerlink" href="#canhwobjectcount" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2769,13 +2802,13 @@ The associated Can driver configuration generated source files are <strong>Can_C
 <td><p>CanHwObjectCount</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Number of hardware objects used to implement one HOH. In case of a HRH this parameter defines the number of elements in the hardware FIFO or the number of shadow buffers, in case of a HTH it defines the number of hardware objects used for multiplexed transmission or for a hardware FIFO used by a FullCAN HTH.</p></td>
+<td><p>Number of hardware objects used to implement one HOH. In case of Basic object, this parameter defines the depth of FIFO. In case of Full object it must be one.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>AUTOSAR_ECUC</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
-<td><p>false</p></td>
+<td><p>true</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
@@ -2799,7 +2832,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canidtype">
-<h5><span class="section-number">4.1.10.1.6.5. </span>CanIdType<a class="headerlink" href="#canidtype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.5. </span>CanIdType<a class="headerlink" href="#canidtype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2838,7 +2871,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canobjectid">
-<h5><span class="section-number">4.1.10.1.6.6. </span>CanObjectId<a class="headerlink" href="#canobjectid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.6. </span>CanObjectId<a class="headerlink" href="#canobjectid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2880,7 +2913,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canobjecttype">
-<h5><span class="section-number">4.1.10.1.6.7. </span>CanObjectType<a class="headerlink" href="#canobjecttype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.7. </span>CanObjectType<a class="headerlink" href="#canobjecttype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2919,7 +2952,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cantriggertransmitenable">
-<h5><span class="section-number">4.1.10.1.6.8. </span>CanTriggerTransmitEnable<a class="headerlink" href="#cantriggertransmitenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.8. </span>CanTriggerTransmitEnable<a class="headerlink" href="#cantriggertransmitenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2967,7 +3000,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cancontrollerref">
-<h5><span class="section-number">4.1.10.1.6.9. </span>CanControllerRef<a class="headerlink" href="#cancontrollerref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.9. </span>CanControllerRef<a class="headerlink" href="#cancontrollerref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3000,7 +3033,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canmainfunctionrwperiodref">
-<h5><span class="section-number">4.1.10.1.6.10. </span>CanMainFunctionRWPeriodRef<a class="headerlink" href="#canmainfunctionrwperiodref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.6.10. </span>CanMainFunctionRWPeriodRef<a class="headerlink" href="#canmainfunctionrwperiodref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3034,10 +3067,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="canhwfilter">
-<h4><span class="section-number">4.1.10.1.7. </span>CanHwFilter<a class="headerlink" href="#canhwfilter" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.7. </span>CanHwFilter<a class="headerlink" href="#canhwfilter" title="Link to this heading"></a></h4>
 <p>This container is only valid for HRHs and contains the configuration (parameters) of one hardware filter.</p>
 <section id="canhwfiltercode">
-<h5><span class="section-number">4.1.10.1.7.1. </span>CanHwFilterCode<a class="headerlink" href="#canhwfiltercode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.7.1. </span>CanHwFilterCode<a class="headerlink" href="#canhwfiltercode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3079,7 +3112,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canhwfiltermask">
-<h5><span class="section-number">4.1.10.1.7.2. </span>CanHwFilterMask<a class="headerlink" href="#canhwfiltermask" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.7.2. </span>CanHwFilterMask<a class="headerlink" href="#canhwfiltermask" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3121,7 +3154,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canstandardfiltertype">
-<h5><span class="section-number">4.1.10.1.7.3. </span>CanStandardFilterType<a class="headerlink" href="#canstandardfiltertype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.7.3. </span>CanStandardFilterType<a class="headerlink" href="#canstandardfiltertype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3160,7 +3193,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="caneventpin">
-<h5><span class="section-number">4.1.10.1.7.4. </span>CanEventPin<a class="headerlink" href="#caneventpin" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.7.4. </span>CanEventPin<a class="headerlink" href="#caneventpin" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3200,10 +3233,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="cantthardwareobjecttrigger">
-<h4><span class="section-number">4.1.10.1.8. </span>CanTTHardwareObjectTrigger<a class="headerlink" href="#cantthardwareobjecttrigger" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.8. </span>CanTTHardwareObjectTrigger<a class="headerlink" href="#cantthardwareobjecttrigger" title="Link to this heading"></a></h4>
 <p>CanTTHardwareObjectTrigger is specified in the SWS TTCAN and contains the configuration (parameters) of TTCAN triggers for Hardware Objects, which are additional to the configuration (parameters) of CAN Hardware Objects.</p>
 <section id="cantthardwareobjectbasecycle">
-<h5><span class="section-number">4.1.10.1.8.1. </span>CanTTHardwareObjectBaseCycle<a class="headerlink" href="#cantthardwareobjectbasecycle" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.8.1. </span>CanTTHardwareObjectBaseCycle<a class="headerlink" href="#cantthardwareobjectbasecycle" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3245,7 +3278,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cantthardwareobjectcyclerepetition">
-<h5><span class="section-number">4.1.10.1.8.2. </span>CanTTHardwareObjectCycleRepetition<a class="headerlink" href="#cantthardwareobjectcyclerepetition" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.8.2. </span>CanTTHardwareObjectCycleRepetition<a class="headerlink" href="#cantthardwareobjectcyclerepetition" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3287,7 +3320,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cantthardwareobjecttimemark">
-<h5><span class="section-number">4.1.10.1.8.3. </span>CanTTHardwareObjectTimeMark<a class="headerlink" href="#cantthardwareobjecttimemark" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.8.3. </span>CanTTHardwareObjectTimeMark<a class="headerlink" href="#cantthardwareobjecttimemark" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3329,7 +3362,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cantthardwareobjecttriggerid">
-<h5><span class="section-number">4.1.10.1.8.4. </span>CanTTHardwareObjectTriggerId<a class="headerlink" href="#cantthardwareobjecttriggerid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.8.4. </span>CanTTHardwareObjectTriggerId<a class="headerlink" href="#cantthardwareobjecttriggerid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3371,7 +3404,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cantthardwareobjecttriggertype">
-<h5><span class="section-number">4.1.10.1.8.5. </span>CanTTHardwareObjectTriggerType<a class="headerlink" href="#cantthardwareobjecttriggertype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.8.5. </span>CanTTHardwareObjectTriggerType<a class="headerlink" href="#cantthardwareobjecttriggertype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3411,14 +3444,14 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="canicom">
-<h4><span class="section-number">4.1.10.1.9. </span>CanIcom<a class="headerlink" href="#canicom" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.9. </span>CanIcom<a class="headerlink" href="#canicom" title="Link to this heading"></a></h4>
 <p>This container contains the parameters for configuring pretended networking</p>
 </section>
 <section id="canicomconfig">
-<h4><span class="section-number">4.1.10.1.10. </span>CanIcomConfig<a class="headerlink" href="#canicomconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.10. </span>CanIcomConfig<a class="headerlink" href="#canicomconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the ICOM Configuration.</p>
 <section id="canicomconfigid">
-<h5><span class="section-number">4.1.10.1.10.1. </span>CanIcomConfigId<a class="headerlink" href="#canicomconfigid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.10.1. </span>CanIcomConfigId<a class="headerlink" href="#canicomconfigid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3460,7 +3493,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicomwakeonbusoff">
-<h5><span class="section-number">4.1.10.1.10.2. </span>CanIcomWakeOnBusOff<a class="headerlink" href="#canicomwakeonbusoff" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.10.2. </span>CanIcomWakeOnBusOff<a class="headerlink" href="#canicomwakeonbusoff" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3497,14 +3530,14 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="canicomwakeupcauses">
-<h4><span class="section-number">4.1.10.1.11. </span>CanIcomWakeupCauses<a class="headerlink" href="#canicomwakeupcauses" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.11. </span>CanIcomWakeupCauses<a class="headerlink" href="#canicomwakeupcauses" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the wakeup causes to leave the power saving mode.</p>
 </section>
 <section id="canicomrxmessage">
-<h4><span class="section-number">4.1.10.1.12. </span>CanIcomRxMessage<a class="headerlink" href="#canicomrxmessage" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.12. </span>CanIcomRxMessage<a class="headerlink" href="#canicomrxmessage" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters for the wakeup causes for matching received messages. It has to be configured as often as received messages are defined as wakeup cause.</p>
 <section id="canicomcountervalue">
-<h5><span class="section-number">4.1.10.1.12.1. </span>CanIcomCounterValue<a class="headerlink" href="#canicomcountervalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.12.1. </span>CanIcomCounterValue<a class="headerlink" href="#canicomcountervalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3558,7 +3591,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicommessageid">
-<h5><span class="section-number">4.1.10.1.12.2. </span>CanIcomMessageId<a class="headerlink" href="#canicommessageid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.12.2. </span>CanIcomMessageId<a class="headerlink" href="#canicommessageid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3600,7 +3633,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicommessageidmask">
-<h5><span class="section-number">4.1.10.1.12.3. </span>CanIcomMessageIdMask<a class="headerlink" href="#canicommessageidmask" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.12.3. </span>CanIcomMessageIdMask<a class="headerlink" href="#canicommessageidmask" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3654,7 +3687,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicommissingmessagetimervalue">
-<h5><span class="section-number">4.1.10.1.12.4. </span>CanIcomMissingMessageTimerValue<a class="headerlink" href="#canicommissingmessagetimervalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.12.4. </span>CanIcomMissingMessageTimerValue<a class="headerlink" href="#canicommissingmessagetimervalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3708,7 +3741,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicompayloadlengtherror">
-<h5><span class="section-number">4.1.10.1.12.5. </span>CanIcomPayloadLengthError<a class="headerlink" href="#canicompayloadlengtherror" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.12.5. </span>CanIcomPayloadLengthError<a class="headerlink" href="#canicompayloadlengtherror" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3745,10 +3778,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="canicomrxmessagesignalconfig">
-<h4><span class="section-number">4.1.10.1.13. </span>CanIcomRxMessageSignalConfig<a class="headerlink" href="#canicomrxmessagesignalconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.2.13. </span>CanIcomRxMessageSignalConfig<a class="headerlink" href="#canicomrxmessagesignalconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters for the wakeup causes for matching signals.</p>
 <section id="canicomsignalmask">
-<h5><span class="section-number">4.1.10.1.13.1. </span>CanIcomSignalMask<a class="headerlink" href="#canicomsignalmask" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.13.1. </span>CanIcomSignalMask<a class="headerlink" href="#canicomsignalmask" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3790,7 +3823,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicomsignaloperation">
-<h5><span class="section-number">4.1.10.1.13.2. </span>CanIcomSignalOperation<a class="headerlink" href="#canicomsignaloperation" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.13.2. </span>CanIcomSignalOperation<a class="headerlink" href="#canicomsignaloperation" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3829,7 +3862,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicomsignalvalue">
-<h5><span class="section-number">4.1.10.1.13.3. </span>CanIcomSignalValue<a class="headerlink" href="#canicomsignalvalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.13.3. </span>CanIcomSignalValue<a class="headerlink" href="#canicomsignalvalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3871,7 +3904,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicomsignalref">
-<h5><span class="section-number">4.1.10.1.13.4. </span>CanIcomSignalRef<a class="headerlink" href="#canicomsignalref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.2.13.4. </span>CanIcomSignalRef<a class="headerlink" href="#canicomsignalref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3918,10 +3951,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="cangeneral">
-<h3><span class="section-number">4.1.10.2. </span>CanGeneral<a class="headerlink" href="#cangeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.1.10.3. </span>CanGeneral<a class="headerlink" href="#cangeneral" title="Link to this heading"></a></h3>
 <p>This container contains the parameters related each CAN Driver Unit.</p>
 <section id="candeverrordetect">
-<h4><span class="section-number">4.1.10.2.1. </span>CanDevErrorDetect<a class="headerlink" href="#candeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.1. </span>CanDevErrorDetect<a class="headerlink" href="#candeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3957,7 +3990,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canindex">
-<h4><span class="section-number">4.1.10.2.2. </span>CanIndex<a class="headerlink" href="#canindex" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.2. </span>CanIndex<a class="headerlink" href="#canindex" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3999,7 +4032,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canlpdureceivecalloutfunction">
-<h4><span class="section-number">4.1.10.2.3. </span>CanLPduReceiveCalloutFunction<a class="headerlink" href="#canlpdureceivecalloutfunction" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.3. </span>CanLPduReceiveCalloutFunction<a class="headerlink" href="#canlpdureceivecalloutfunction" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4047,7 +4080,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canmainfunctionbusoffperiod">
-<h4><span class="section-number">4.1.10.2.4. </span>CanMainFunctionBusoffPeriod<a class="headerlink" href="#canmainfunctionbusoffperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.4. </span>CanMainFunctionBusoffPeriod<a class="headerlink" href="#canmainfunctionbusoffperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4101,7 +4134,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canmainfunctionmodeperiod">
-<h4><span class="section-number">4.1.10.2.5. </span>CanMainFunctionModePeriod<a class="headerlink" href="#canmainfunctionmodeperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.5. </span>CanMainFunctionModePeriod<a class="headerlink" href="#canmainfunctionmodeperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4143,7 +4176,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canmainfunctionwakeupperiod">
-<h4><span class="section-number">4.1.10.2.6. </span>CanMainFunctionWakeupPeriod<a class="headerlink" href="#canmainfunctionwakeupperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.6. </span>CanMainFunctionWakeupPeriod<a class="headerlink" href="#canmainfunctionwakeupperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4197,7 +4230,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canmultiplexedtransmission">
-<h4><span class="section-number">4.1.10.2.7. </span>CanMultiplexedTransmission<a class="headerlink" href="#canmultiplexedtransmission" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.7. </span>CanMultiplexedTransmission<a class="headerlink" href="#canmultiplexedtransmission" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4209,7 +4242,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 <td><p>CanMultiplexedTransmission</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Specifies if multiplexed transmission shall be supported.ON or OFF</p></td>
+<td><p>Specifies if multiplexed transmission shall be supported.ON or OFF. This parameter is not used. Use of Transmit FIFO is equivalent to multiplexed transmission.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>AUTOSAR_ECUC</p></td>
@@ -4233,7 +4266,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canpublicicomsupport">
-<h4><span class="section-number">4.1.10.2.8. </span>CanPublicIcomSupport<a class="headerlink" href="#canpublicicomsupport" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.8. </span>CanPublicIcomSupport<a class="headerlink" href="#canpublicicomsupport" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4269,7 +4302,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="caneccsupport">
-<h4><span class="section-number">4.1.10.2.9. </span>CanECCSupport<a class="headerlink" href="#caneccsupport" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.9. </span>CanECCSupport<a class="headerlink" href="#caneccsupport" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4305,7 +4338,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cansetbaudrateapi">
-<h4><span class="section-number">4.1.10.2.10. </span>CanSetBaudrateApi<a class="headerlink" href="#cansetbaudrateapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.10. </span>CanSetBaudrateApi<a class="headerlink" href="#cansetbaudrateapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4353,7 +4386,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cantimeoutduration">
-<h4><span class="section-number">4.1.10.2.11. </span>CanTimeoutDuration<a class="headerlink" href="#cantimeoutduration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.11. </span>CanTimeoutDuration<a class="headerlink" href="#cantimeoutduration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4395,7 +4428,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canversioninfoapi">
-<h4><span class="section-number">4.1.10.2.12. </span>CanVersionInfoApi<a class="headerlink" href="#canversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.12. </span>CanVersionInfoApi<a class="headerlink" href="#canversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4431,7 +4464,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canoscounterref">
-<h4><span class="section-number">4.1.10.2.13. </span>CanOsCounterRef<a class="headerlink" href="#canoscounterref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.13. </span>CanOsCounterRef<a class="headerlink" href="#canoscounterref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4443,7 +4476,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 <td><p>CanOsCounterRef</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>This parameter contains a reference to the OsCounter, which is used by the CAN driver.</p></td>
+<td><p>This parameter contains a reference to the OsCounter, which is used by the CAN driver.                        Note: The CAN driver does not currently utilize this parameter</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Origin</strong></p></td>
 <td><p>AUTOSAR_ECUC</p></td>
@@ -4464,7 +4497,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cansysclockref">
-<h4><span class="section-number">4.1.10.2.14. </span>CanSysClockRef<a class="headerlink" href="#cansysclockref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.14. </span>CanSysClockRef<a class="headerlink" href="#cansysclockref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4497,7 +4530,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="cansupportttcanref">
-<h4><span class="section-number">4.1.10.2.15. </span>CanSupportTTCANRef<a class="headerlink" href="#cansupportttcanref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.15. </span>CanSupportTTCANRef<a class="headerlink" href="#cansupportttcanref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4530,10 +4563,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicomgeneral">
-<h4><span class="section-number">4.1.10.2.16. </span>CanIcomGeneral<a class="headerlink" href="#canicomgeneral" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.16. </span>CanIcomGeneral<a class="headerlink" href="#canicomgeneral" title="Link to this heading"></a></h4>
 <p>This container contains the general configuration parameters of the ICOM Configuration.</p>
 <section id="canicomlevel">
-<h5><span class="section-number">4.1.10.2.16.1. </span>CanIcomLevel<a class="headerlink" href="#canicomlevel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.3.16.1. </span>CanIcomLevel<a class="headerlink" href="#canicomlevel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4584,7 +4617,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </table>
 </section>
 <section id="canicomvariant">
-<h5><span class="section-number">4.1.10.2.16.2. </span>CanIcomVariant<a class="headerlink" href="#canicomvariant" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.3.16.2. </span>CanIcomVariant<a class="headerlink" href="#canicomvariant" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4624,10 +4657,10 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="canmainfunctionrwperiods">
-<h4><span class="section-number">4.1.10.2.17. </span>CanMainFunctionRWPeriods<a class="headerlink" href="#canmainfunctionrwperiods" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.1.10.3.17. </span>CanMainFunctionRWPeriods<a class="headerlink" href="#canmainfunctionrwperiods" title="Link to this heading"></a></h4>
 <p>This container contains the parameter for configuring the period for cyclic call to Can_MainFunction_Read or Can_MainFunction_Write depending on the referring item.</p>
 <section id="canmainfunctionperiod">
-<h5><span class="section-number">4.1.10.2.17.1. </span>CanMainFunctionPeriod<a class="headerlink" href="#canmainfunctionperiod" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.1.10.3.17.1. </span>CanMainFunctionPeriod<a class="headerlink" href="#canmainfunctionperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4674,7 +4707,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 </section>
 </section>
 <section id="steps-to-configure-can-module">
-<h3><span class="section-number">4.1.10.3. </span>Steps To Configure Can Module<a class="headerlink" href="#steps-to-configure-can-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.1.10.4. </span>Steps To Configure Can Module<a class="headerlink" href="#steps-to-configure-can-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Port, Mcu and Can modules</p></li>
 <li><p>Open PORT module plugin and configure required pins as CAN-TX, CAN-RX</p></li>
@@ -4871,7 +4904,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Os.xdm<br />
 ┃ ┃ ┃ ┃ ┃ ┗ 📜Port.xdm<br />
 ┃ ┃ ┃ ┃ ┣ 📂include<br />
-┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Can_Cfg.h</strong> : <em>Contains the generated pre-complier configuration header.</em></i>*<br />
+┃ ┃ ┃ ┃ ┃ ┣ 📜<strong>Can_Cfg.h</strong> : <em>Contains the generated pre-compiler configuration header.</em></i>*<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h<br />
 ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h<br />
@@ -4917,7 +4950,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -4934,7 +4967,7 @@ The associated Can driver configuration generated source files are <strong>Can_C
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

@@ -248,6 +248,23 @@ The generated configuration files should not be modified manually. The config to
 If CPU Timer2 is used in OS, parameter 'GptUseTimer2InOS' should be checked in GPT configurator.
 ```
 
+#### Migration Guide to v02.00.00 from v01.00.02 or any older versions
+
+In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Gpt_Init function will need to use the new configuration structure name. For example:
+
+```c
+/* Old code (v01.00.02 or any older versions) */
+Gpt_Init(&Gpt_ConfigSetptr);
+
+/* New code (v02.00.00) */
+Gpt_Init(&Gpt_Config);
+```
+
+This change ensures compliance with AUTOSAR naming conventions.
+
+To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
+
 
 
 #### GptChannelConfigSet
@@ -1114,7 +1131,7 @@ Result - PASS!!
  ┃ ┃ ┃ ┃ ┣ 📂include\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the generated pre-compiler configuration header.*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
@@ -1145,7 +1162,7 @@ Result - PASS!!
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dio_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** :*Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** :*Contains the generated pre-compiler configuration header.*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
@@ -1175,7 +1192,7 @@ Result - PASS!!
  ┃ ┃ ┃ ┃ ┣ 📂include\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the generated pre-compiler configuration header.*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
@@ -1204,7 +1221,7 @@ Result - PASS!!
  ┃ ┃ ┃ ┃ ┣ 📂include\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** :*Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** :*Contains the generated pre-compiler configuration header.*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\
@@ -1233,7 +1250,7 @@ Result - PASS!!
  ┃ ┃ ┃ ┃ ┣ 📂include\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Dem_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜EcuM_Cfg.h\
- ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the generated pre-complier configuration header.figuration header.*\
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜**Gpt_Cfg.h** : *Contains the generated pre-compiler configuration header.*\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Mcu_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┣ 📜Os_Cfg.h\
  ┃ ┃ ┃ ┃ ┃ ┗ 📜Port_Cfg.h\

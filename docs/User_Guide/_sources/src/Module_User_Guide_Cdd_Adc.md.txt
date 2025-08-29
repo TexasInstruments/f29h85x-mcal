@@ -310,7 +310,9 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files. If edited manually the driver may behavior might deviate from the expected behavior.
 
 #### Migration Guide to v2.0.0 from v1.0.0
-To make v1.0.0 Adc schema(generated .xdm file) compatable with v2.0.0 below changes are required:
+
+To make v1.0.0 Adc schema(generated .xdm file) compatible with v2.0.0 below changes are required:
+
 1. Change 'AR-ELEMENT' name from Cdd_Adc to Cdd.
 2. Update MODULE-CONFIGURATION path from 'ASPath:/TI_F29H85x/Cdd_Adc' to 'ASPath:/TI_F29H85x/Cdd_Adc/Cdd'.
 3. REFERENCE type parameters refers to other parameter by it's schema path. With the schema change in the plugin(.xdm file) the schema path has also changed which requires manual update for the already existing configuration.
@@ -336,2001 +338,1542 @@ Modified new schema:
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc/Cdd"/>
 ```
 
+
+
 #### CddAdcConfigSet
+This container contains the configuration parameters and sub containers of the Cdd Adc module.
 
 ##### CddAdcEnableTemperatureSensor
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcEnableTemperatureSensor|
-|**Parent Container**|CddAdcConfigSet|
-|**Description**|Enables/Disables the temperature sensor.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcEnableTemperatureSensor |
+| **Description** | Enables/Disables the temperature sensor. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### CddAdcLockTemperatureSensor
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcLockTemperatureSensor|
-|**Parent Container**|CddAdcConfigSet|
-|**Description**|Locks the temperature sensor configuration register When enabled.The lock can be cleared through system reset(SYSRSn).This is editable only when the temperature sensor is enabled.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcLockTemperatureSensor |
+| **Description** | Locks the temperature sensor configuration register When enabled .This is editable only when the temperature sensor is enabled. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### CddAdcInternalTestInput
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcInternalTestInput|
-|**Parent Container**|CddAdcConfigSet|
-|**Description**|Selects the input source for the internal test nodes for all the ADC hardware units|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_ADC_TEST_NODE_NO_CONN|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcInternalTestInput |
+| **Description** | Selects the input source for the internal test nodes for the ADC hardware unit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_TEST_NODE_NO_CONN |
+| **Range** | CDD_ADC_TEST_NODE_NO_CONN<br>CDD_ADC_TEST_NODE_VDDCORE<br>CDD_ADC_TEST_NODE_VDDA<br>CDD_ADC_TEST_NODE_VSSA<br>CDD_ADC_TEST_NODE_VREFLOA<br>CDD_ADC_TEST_NODE_VREFLOB<br>CDD_ADC_TEST_NODE_CDAC1H<br>CDD_ADC_TEST_NODE_CDAC1L<br>CDD_ADC_TEST_NODE_CDAC2H<br>CDD_ADC_TEST_NODE_CDAC2L<br>CDD_ADC_TEST_NODE_CDAC3H<br>CDD_ADC_TEST_NODE_CDAC3L<br>CDD_ADC_TEST_NODE_CDAC4H<br>CDD_ADC_TEST_NODE_CDAC4L<br>CDD_ADC_TEST_NODE_CDAC5H<br>CDD_ADC_TEST_NODE_CDAC5L<br>CDD_ADC_TEST_NODE_CDAC6H<br>CDD_ADC_TEST_NODE_CDAC6L<br>CDD_ADC_TEST_NODE_CDAC7H<br>CDD_ADC_TEST_NODE_CDAC7L<br>CDD_ADC_TEST_NODE_CDAC8H<br>CDD_ADC_TEST_NODE_CDAC8L<br>CDD_ADC_TEST_NODE_CDAC9H<br>CDD_ADC_TEST_NODE_CDAC9L<br>CDD_ADC_TEST_NODE_CDAC10H<br>CDD_ADC_TEST_NODE_CDAC10L<br>CDD_ADC_TEST_NODE_CDAC11H<br>CDD_ADC_TEST_NODE_CDAC11L<br>CDD_ADC_TEST_NODE_ENZ_CALIB_GAIN_3P3 |
 
 ##### CddAdcHwUnitAnalogRefABVoltageMode
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwUnitAnalogRefABVoltageMode|
-|**Parent Container**|CddAdcConfigSet|
-|**Description**|This parameter defines the voltage reference mode for ADC A and B hardware instances|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_ADC_REFERENCE_INTERNAL|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwUnitAnalogRefABVoltageMode |
+| **Description** | This parameter defines the voltage reference mode for ADC A and B hardware instances. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_REFERENCE_INTERNAL |
+| **Range** | CDD_ADC_REFERENCE_INTERNAL<br>CDD_ADC_REFERENCE_EXTERNAL |
 
 ##### CddAdcHwUnitAnalogRefABVoltage
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwUnitAnalogRefABVoltage|
-|**Parent Container**|CddAdcConfigSet|
-|**Description**|This parameter defines the reference voltage for A and B instances of the ADC. This parameter is applicable only when the voltage reference mode is INTERNAL.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_ADC_REFERENCE_2_5V|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwUnitAnalogRefABVoltage |
+| **Description** | This parameter defines the reference voltage for A and B instances of the ADC. This paramter is applicable only when the voltage reference mode is INTERNAL. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_REFERENCE_2_5V |
+| **Range** | CDD_ADC_REFERENCE_3_3V<br>CDD_ADC_REFERENCE_2_5V |
 
 ##### CddAdcHwUnitAnalogRefCDEVoltageMode
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwUnitAnalogRefCDEVoltageMode|
-|**Parent Container**|CddAdcConfigSet|
-|**Description**|This parameter defines the voltage reference mode for C,D and E instances of the ADC|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_ADC_REFERENCE_INTERNAL|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwUnitAnalogRefCDEVoltageMode |
+| **Description** | This parameter defines the voltage reference mode for C,D and E instances of the ADC. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_REFERENCE_INTERNAL |
+| **Range** | CDD_ADC_REFERENCE_INTERNAL<br>CDD_ADC_REFERENCE_EXTERNAL |
 
 ##### CddAdcHwUnitAnalogRefCDEVoltage
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwUnitAnalogRefCDEVoltage|
-|**Parent Container**|CddAdcConfigSet|
-|**Description**|This parameter defines the reference voltage for C,D and E instances of the ADC.This parameter is applicable only when the voltage reference mode is INTERNAL.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Default value**|CDD_ADC_REFERENCE_3_3V|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwUnitAnalogRefCDEVoltage |
+| **Description** | This parameter defines the reference voltage for C,D and E instances of the ADC.This paramter is applicable only when the voltage reference mode is INTERNAL. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_REFERENCE_3_3V |
+| **Range** | CDD_ADC_REFERENCE_3_3V<br>CDD_ADC_REFERENCE_2_5V |
 
-#### CddAdcHwUnit
+##### CddAdcHwUnit
+This container contains the driver configuration (parameters) for the ADC Hardware Unit
 
-##### CddAdcHwInstance
+###### CddAdcHwInstance
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwInstance|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter describes the ADC HW Unit instance.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADCA <br> CDD_ADCB <br> CDD_ADCC <br> CDD_ADCD <br> CDD_ADCE|
-|**Default value**|CDD_ADCA|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwInstance |
+| **Description** | This parameter describes the ADC HW Unit instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADCA |
+| **Range** | CDD_ADCA<br>CDD_ADCB<br>CDD_ADCC<br>CDD_ADCD<br>CDD_ADCE |
 
-##### CddAdcHwUnitId
+###### CddAdcHwUnitId
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwUnitId|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter indicates the hardware unit position in the configured CddAdcHwUnit container.This is a calculated value it can't be edited.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0 .. 4|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwUnitId |
+| **Description** | This parameter indicates harware unit index among all the configured hardware units. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4 |
+| **Min-value** | 0 |
 
-##### CddAdcSocPriorityMode
+###### CddAdcSocPriorityMode
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcSocPriorityMode|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter defines the SOC priority of the ADC hardware unit.If the selected priority is 0 then all SOCs are handled in round robin mode,for any other value channels with SOC number below the Priority value are handled in high priority mode and the rest of the SOCs will be handled in round robin mode. By default round robin mode is configured.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0 .. 32|
-|**Default value**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcSocPriorityMode |
+| **Description** | This parameter defines the SOC priority of the ADC hardware unit.                                 If the selected priority is 0 then all SOCs are handled in round robin mode,for any other                                value channels with SOC number below the Priority value are handled in high priority mode and                                  the rest of the SOCs will be handled in round robin mode.                                 By default round robin mode is configured. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 32 |
+| **Min-value** | 0 |
 
-##### CddAdcHwUnitResolution
+###### CddAdcHwUnitResolution
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwUnitResolution|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter defines the resolution of the hardware unit assigned to the group(in bits).Only ADCA and ADCB instance support both 12-bit and 16-bit resolution mode.The resolution can be changed when the hardware is IDLE(no conversions are going on). ADCC,ADCD and ADCE instances support only 12-bit resolution and can't be switched to other resolution modes.User has to make sure that 16-bit resolution is not selected for 12-bit ADCs.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_RESOLUTION_12BIT <br> CDD_ADC_RESOLUTION_16BIT|
-|**Default value**|'CDD_ADC_RESOLUTION_12BIT'|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwUnitResolution |
+| **Description** | This parameter defines the resolution of the hardware unit assigned to the group(in bits). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_RESOLUTION_12BIT |
+| **Range** | CDD_ADC_RESOLUTION_12BIT<br>CDD_ADC_RESOLUTION_16BIT |
 
-```{Note}
-Cdd_Adc_SetResolution API is provided to change the resolution of the ADC hardware unit on runtime. This API is applicable to only ADCA and ADCB instances. Since 3.3V internal reference mode is not supported in 16-bit, SetResolution can't be used to switch from 12-bit to 16-bit in 3.3V internal reference mode. It called a DET runtime error will be reported.
-```
+###### CddAdcHwUnitSignalMode
 
-##### CddAdcHwUnitSignalMode
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwUnitSignalMode |
+| **Description** | This parameter defines the signal mode of the group.Differential mode is supported only for ADC instances A and B. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_MODE_SINGLE_ENDED |
+| **Range** | CDD_ADC_MODE_SINGLE_ENDED<br>CDD_ADC_MODE_DIFFERENTIAL |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwUnitSignalMode|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter defines the signal mode of the group.Differential mode is supported only for ADC instances A and B.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_MODE_SINGLE_ENDED <br> CDD_ADC_MODE_DIFFERENTIAL|
-|**Default value**|CDD_ADC_MODE_SINGLE_ENDED|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddAdcHwUnitClockPrescale
 
-##### CddAdcClockReference
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwUnitClockPrescale |
+| **Description** | This enum describes the clock prescale factor for the ADC Hardware unit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_CLK_DIV_3_5 |
+| **Range** | CDD_ADC_CLK_DIV_1_0<br>CDD_ADC_CLK_DIV_2_0<br>CDD_ADC_CLK_DIV_2_5<br>CDD_ADC_CLK_DIV_3_0<br>CDD_ADC_CLK_DIV_3_5<br>CDD_ADC_CLK_DIV_4_0<br>CDD_ADC_CLK_DIV_4_5<br>CDD_ADC_CLK_DIV_5_0<br>CDD_ADC_CLK_DIV_5_5<br>CDD_ADC_CLK_DIV_6_0<br>CDD_ADC_CLK_DIV_6_5<br>CDD_ADC_CLK_DIV_7_0<br>CDD_ADC_CLK_DIV_7_5<br>CDD_ADC_CLK_DIV_8_0<br>CDD_ADC_CLK_DIV_8_5 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcClockReference|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|Reference to a container of the type McuClockReferencePoint, to select an input clock.|
-|**Multiplicity**|1|
-|**Type**|REFERENCE|
-|**Range**|--|
-|**Default value**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddAdcClock
 
-##### CddAdcHwUnitClockPrescale
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcClock |
+| **Description** | This parameter describes the ADC clock after the clock prescale factor for the ADC Hardware unit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 5.0E7 |
+| **Max-value** | 6.0E7 |
+| **Min-value** | 5000000.0 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwUnitClockPrescale|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This enum describes the clock prescale factor for the ADC Hardware unit.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|--|
-|**Default value**|CDD_ADC_CLK_DIV_3_5|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddAdcHwExternalMuxSelect
 
-##### CddAdcClock
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwExternalMuxSelect |
+| **Description** | This parameter determines whether the external mux channel is enabled for the ADC hardware unit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcClock|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter describes the ADC clock after the clock prescale factor for the ADC Hardware unit.|
-|**Multiplicity**|1|
-|**Type**|FLOAT|
-|**Range**|--|
-|**Default value**|5.0E7|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddAdcHwExternalMuxPreselectEnable
 
-##### CddAdcHwExternalMuxSelect
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwExternalMuxPreselectEnable |
+| **Description** | This parameter determines whether the external mux preset is enabled for the ADC hardware unit. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwExternalMuxSelect|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter determines whether the external mux channel is enabled for the ADC hardware unit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddAdcInterruptPulseMode
 
-##### CddAdcHwExternalMuxPreselectEnable
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcInterruptPulseMode |
+| **Description** | This enumeration defines the interrupt pulse mode of the ADc hardware unit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_PULSE_END_OF_CONV |
+| **Range** | CDD_ADC_PULSE_END_OF_ACQ_WIN<br>CDD_ADC_PULSE_END_OF_CONV |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwExternalMuxSelect|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter determines whether the external mux preset is enabled for the ADC hardware unit.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddAdcInterruptCycleoffset
 
-##### CddAdcInterruptPulseMode
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcInterruptCycleoffset |
+| **Description** | This parameter defines the delay from the fall edge of the SOC and the interrupt to be generated in SYSCLK cycles . |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcInterruptPulseMode|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This enumeration defines the interrupt pulse mode of the ADC hardware unit.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_PULSE_END_OF_CONV <br> CDD_ADC_PULSE_END_OF_ACQ_WIN|
-|**Default value**|CDD_ADC_PULSE_END_OF_CONV|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddAdcOpenShortDetectMode
 
-##### CddAdcInterruptCycleoffset
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcOpenShortDetectMode |
+| **Description** | This parameter defines the opens/shorts detection circuit mode . |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_OSDETECT_MODE_DISABLED |
+| **Range** | CDD_ADC_OSDETECT_MODE_DISABLED<br>CDD_ADC_OSDETECT_MODE_VSSA<br>CDD_ADC_OSDETECT_MODE_VDDA<br>CDD_ADC_OSDETECT_MODE_5BY12_VDDA<br>CDD_ADC_OSDETECT_MODE_7BY12_VDDA<br>CDD_ADC_OSDETECT_MODE_5K_PULLDOWN_TO_VSSA<br>CDD_ADC_OSDETECT_MODE_5K_PULLUP_TO_VDDA<br>CDD_ADC_OSDETECT_MODE_7K_PULLDOWN_TO_VSSA |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcInterruptCycleoffset|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter defines the delay from the fall edge of the SOC and the interrupt to be generated in SYSCLK cycles .This is editable only when CddAdcInterruptPulseMode is CDD_ADC_PULSE_END_OF_ACQ_WIN.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0 - 65535|
-|**Default value**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+###### CddAdcClockReference
 
-##### CddAdcOpenShortDetectMode
-
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcOpenShortDetectMode|
-|**Parent Container**|CddAdcHwUnit|
-|**Description**|This parameter defines the opens/shorts detection circuit mode.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_OSDETECT_MODE_DISABLED <br> CDD_ADC_OSDETECT_MODE_VSSA <br> CDD_ADC_OSDETECT_MODE_VDDA <br> CDD_ADC_OSDETECT_MODE_5BY12_VDDA <br> CDD_ADC_OSDETECT_MODE_7BY12_VDDA <br> CDD_ADC_OSDETECT_MODE_5K_PULLDOWN_TO_VSSA <br> CDD_ADC_OSDETECT_MODE_5K_PULLUP_TO_VDDA <br> CDD_ADC_OSDETECT_MODE_7K_PULLDOWN_TO_VSSA|
-|**Default value**|CDD_ADC_OSDETECT_MODE_DISABLED|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcClockReference |
+| **Description** | Reference to a container of the type McuClockReferencePoint, to select an input clock. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ##### CddAdcGroup
+This container contains the Group configuration (parameters).
 
-##### CddAdcGroupId
+###### CddAdcGroupId
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupId|
-|**Parent Container**|CddAdcGroup|
-|**Description**|Numeric ID of the group. This parameter is the symbolic name to be used on the API. This symbolic name allows accessing Channel Group data. This value will be assigned to the symbolic name derived of the CddAdcGroup container shortName.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-3|
-|**Default**|This value is auto-calculated. It defines the containers position in the group container. |
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupId |
+| **Description** | Numeric ID of the group. This parameter is the symbolic name to be used on the API. This symbolic name allows accessing Channel Group data. This value will be assigned to the symbolic name derived of the CddAdcGroup container shortName. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 3 |
+| **Min-value** | 0 |
 
-##### CddAdcGroupPriority
+###### CddAdcGroupPriority
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupPriority|
-|**Parent Container**|CddAdcGroup|
-|**Description**|Priority of the group.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_HIGH_PRIORITY <br> CDD_ADC_ROUND_ROBIN|
-|**Default**|CDD_ADC_ROUND_ROBIN|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupPriority |
+| **Description** | Priority of the group. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_ROUND_ROBIN |
+| **Range** | CDD_ADC_HIGH_PRIORITY<br>CDD_ADC_ROUND_ROBIN |
 
-##### CddAdcGroupSocMask
+###### CddAdcGroupSocMask
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupSocMask|
-|**Parent Container**|CddAdcGroup|
-|**Description**|SOC mask of the Adc hardware unit of the group. This value is calculated and non-editable. To update the parameter run AutoCalc.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0 - (4294967295)|
-|**Default**|-|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupSocMask |
+| **Description** | SOC mask of the Adc hardware unit of the group. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
 
-##### CddAdcGroupConversionMode
+###### CddAdcGroupConversionMode
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupConversionMode|
-|**Parent Container**|CddAdcGroup|
-|**Description**|This parameter defines the type of conversion mode for the group.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_CONV_MODE_CONTINUOUS <br> CDD_ADC_CONV_MODE_ONESHOT|
-|**Default**|CDD_ADC_CONV_MODE_ONESHOT|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupConversionMode |
+| **Description** | This parameter defines the type of conversion mode for the group. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_CONV_MODE_ONESHOT |
+| **Range** | CDD_ADC_CONV_MODE_CONTINUOUS<br>CDD_ADC_CONV_MODE_ONESHOT |
 
-##### CddAdcGroupTrigSrcType
+###### CddAdcGroupTrigSrcType
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupTrigSrcType|
-|**Parent Container**|CddAdcGroup|
-|**Description**|Type of source event that starts a group conversion.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_TRIGG_SRC_HW <br> CDD_ADC_TRIGG_SRC_SW|
-|**Default**|CDD_ADC_TRIGG_SRC_SW|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupTrigSrcType |
+| **Description** | Type of source event that starts a group conversion. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_TRIGG_SRC_SW |
+| **Range** | CDD_ADC_TRIGG_SRC_HW<br>CDD_ADC_TRIGG_SRC_SW |
 
-##### CddAdcGroupTrigSrc
+###### CddAdcGroupTrigSrc
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupTrigSrc|
-|**Parent Container**|CddAdcGroup|
-|**Description**|Source of the trigger that triggers the start of the conversion of all the channels in the group.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_TRIGGER_CPU1INT0, ....,CDD_ADC_TRIGGER_CPU3INT2|
-|**Default**|CDD_ADC_TRIGGER_SW_ONLY|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupTrigSrc |
+| **Description** | Source of the trigger that triggers the start of the conversion of all the channels in the group. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_TRIGGER_SW_ONLY |
+| **Range** | CDD_ADC_TRIGGER_SW_ONLY |
 
-##### CddAdcTrigRepeaterReference
+###### CddAdcGroupAccessMode
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcTrigRepeaterReference|
-|**Parent Container**|CddAdcGroup|
-|**Description**|Reference to the trigger repeater.|
-|**Multiplicity**|1|
-|**Type**|REFERENCE|
-|**Range**|--|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupAccessMode |
+| **Description** | This parameter defines the access mode of thegroup conversion results. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_ACCESS_MODE_SINGLE |
+| **Range** | CDD_ADC_ACCESS_MODE_SINGLE<br>CDD_ADC_ACCESS_MODE_STREAMING |
 
-##### CddAdcGroupAccessMode
+###### CddAdcGroupHwTrigSignal
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupAccessMode|
-|**Parent Container**|CddAdcGroup|
-|**Description**|This parameter defines the access mode of the group conversion results.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_ACCESS_MODE_SINGLE <br> CDD_ADC_ACCESS_MODE_STREAMING|
-|**Default**|CDD_ADC_ACCESS_MODE_SINGLE|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupHwTrigSignal |
+| **Description** | Configures on which edge of the hardware trigger signal the driver should react, i.e. start the conversion (only if supported by the ADC hardware). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_HW_TRIG_RISING_EDGE |
+| **Range** | CDD_ADC_HW_TRIG_BOTH_EDGES<br>CDD_ADC_HW_TRIG_FALLING_EDGE<br>CDD_ADC_HW_TRIG_RISING_EDGE |
 
-##### CddAdcGroupHwTrigSignal
+###### CddAdcGroupStreamingBufferMode
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupHwTrigSignal|
-|**Parent Container**|CddAdcGroup|
-|**Description**|Configures on which edge of the hardware trigger signal the driver should react. This device supports only rising edge trigger.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_HW_TRIG_BOTH_EDGES <br> CDD_ADC_HW_TRIG_FALLING_EDGE <br> CDD_ADC_HW_TRIG_RISING_EDGE|
-|**Default**|CDD_ADC_HW_TRIG_RISING_EDGE|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupStreamingBufferMode |
+| **Description** | Configure streaming buffer as "linear buffer" (i.e. the ADC Driver stops the conversion as soon as the stream buffer is full) or as "ring buffer" (wraps around if the end of the stream buffer is reached). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_STREAM_BUFFER_LINEAR |
+| **Range** | CDD_ADC_STREAM_BUFFER_CIRCULAR<br>CDD_ADC_STREAM_BUFFER_LINEAR |
 
-##### CddAdcGroupStreamingBufferMode
+###### CddAdcGroupStreamingNumSamples
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupStreamingBufferMode|
-|**Parent Container**|CddAdcGroup|
-|**Description**|Configure streaming buffer as &quot;linear buffer&quot; (i.e. the ADC Driver stops the conversion as soon as the stream buffer is full) or as &quot;ring buffer&quot; (wraps around if the end of the stream buffer is reached)..|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_STREAM_BUFFER_CIRCULAR <br> CDD_ADC_STREAM_BUFFER_LINEAR|
-|**Default**|CDD_ADC_STREAM_BUFFER_LINEAR|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupStreamingNumSamples |
+| **Description** | Number of ADC values to be acquired per channel in streaming access mode. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 1 |
+| **Max-value** | 255 |
+| **Min-value** | 1 |
 
-##### CddAdcGroupStreamingNumSamples
+###### CddAdcInterruptCategory
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupStreamingNumSamples|
-|**Parent Container**|CddAdcGroup|
-|**Description**|Number of ADC values to be acquired per channel in streaming access mode|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-255|
-|**Default**|1|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcInterruptCategory |
+| **Description** | This parameters defines the category of the interrupt. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | ISR_CAT1_RTINT |
+| **Range** | ISR_CAT1_INT<br>ISR_CAT1_RTINT<br>ISR_CAT2_INT |
 
-##### CddAdcInterruptCategory
+###### CddAdcGroupNotification
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcInterruptCategory|
-|**Parent Container**|CddAdcGroup|
-|**Description**|This parameters defines the category of the interrupt|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|ISR_CAT1_INT <br> ISR_CAT1_RTINT <br> ISR_CAT2_INT|
-|**Default**|ISR_CAT1_RTINT|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGroupNotification |
+| **Description** | Callback function for each group |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
 
-##### CddAdcGroupNotification
+###### CddAdcInterruptSelect
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGroupNotification|
-|**Parent Container**|CddAdcGroup|
-|**Description**|Callback function for each group|
-|**Multiplicity**|1|
-|**Type**|FUNCTION-NAME|
-|**Default**|NULL_PTR|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcInterruptSelect |
+| **Description** | This parameter defines to which interrupt the group is linked. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_INT1 |
+| **Range** | CDD_ADC_INT1<br>CDD_ADC_INT2<br>CDD_ADC_INT3<br>CDD_ADC_INT4 |
 
-##### CddAdcInterruptSelect
+###### CddAdcInterruptSocSelect
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcInterruptSelect|
-|**Parent Container**|CddAdcGroup|
-|**Description**|This parameter defines to which interrupt the group is linked|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_INT1 <br> CDD_ADC_INT2 <br>CDD_ADC_INT3 <br> CDD_ADC_INT4|
-|**Default**|CDD_ADC_INT1|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcInterruptSocSelect |
+| **Description** | This parameter allows interrupt as the trigger source of the group in addition to trigger select. This is applicable only for the interrupts CDD_ADC_INT1 and CDD_ADC_INT2. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_INT_SOC_TRIGGER_NONE |
+| **Range** | CDD_ADC_INT_SOC_TRIGGER_NONE<br>CDD_ADC_INT_SOC_TRIGGER_ADCINT1<br>CDD_ADC_INT_SOC_TRIGGER_ADCINT2 |
 
-##### CddAdcContinueToInterruptMode
+###### CddAdcContinueToInterruptMode
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcContinueToInterruptMode|
-|**Parent Container**|CddAdcGroup|
-|**Description**|This parameters enables/disables the continue to interrupt mode for the specified interrupt|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcContinueToInterruptMode |
+| **Description** | This parameters enables/disables the continue to interrupt mode for the specified interrupt. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-###### CddAdcChannel
+###### CddAdcTrigRepeaterReference
 
-##### CddAdcChannelId
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcTrigRepeaterReference |
+| **Description** | Reference to the trigger repeater. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcChannelId|
-|**Parent Container**|CddAdcChannel|
-|**Description**|This parameter defines to the numeric ID of the channel on the ADC hardware unit. Only some channels are brought out on the device.Some of the channels are connected internally. So,while configuring the channel IDs make sure the channels have pin out on the device and are configured in Port.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Default**|0-31|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+##### CddAdcChannel
+This container contains the channel configuration (parameters) depending on the hardware capability.
 
-##### CddAdcSocNumber
+###### CddAdcChannelId
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcSocNumber|
-|**Parent Container**|CddAdcChannel|
-|**Description**|This parameter defines the assignment of the channel to the physical ADC  hardware channel.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Default**|0-31|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcChannelId |
+| **Description** | This parameter defines to the numeric ID of the channel on the ADC hardware unit. Only some channels are brought out on the deive.                                           Some of the channels are connected internally. So,while confguring the channel IDs make sure the channels have pin out on the deivce and are configured in Port.  |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 31 |
+| **Min-value** | 0 |
 
-##### CddAdcSocExternalChannelSelect
+###### CddAdcSocNumber
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcSocExternalChannelSelect|
-|**Parent Container**|CddAdcChannel|
-|**Description**|This parameter defines the assignment of the external channel based on the digital output pins.This is editable only when CddAdcHwExternalMuxSelect is enabled for the ADC hardware unit. |
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Default**|0-15|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcSocNumber |
+| **Description** | This parameter defines the assignment of the channel to the physical ADC  hardware channel. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 31 |
+| **Min-value** | 0 |
 
-##### CddAdcChannelSampleWindow
+###### CddAdcSocExternalChannelSelect
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcChannelSampleWindow|
-|**Parent Container**|CddAdcChannel|
-|**Description**|Configuration of sampling time, i.e. the time during which the value is sampled, (in SYSCLK cycles) for each channel, if supported by hardware. Minimum value should be 15 to meet the minimum acquistsition window duration.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|15-511|
-|**Default**|15 when 12-bit resolution is selected and 64 when 16-bit resolution is selected|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcSocExternalChannelSelect |
+| **Description** | This parameter defines the assignment of the external channel based on the digital output pins. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 15 |
+| **Min-value** | 0 |
+
+###### CddAdcChannelSampleWindow
+
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcChannelSampleWindow |
+| **Description** | Configuration of sampling time, i.e. the time during which the value is sampled, (in SYSCLK cycles) for each channel, if supported by hardware. Minimum value should be 15 to meet the minimum acquistsition window duration. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 15 |
+| **Max-value** | 511 |
+| **Min-value** | 15 |
 
 ##### CddAdcTriggerRepeater
+This container contains the trigger repeater configuration (parameters) depending on the hardware capability. To have this container enabled trigger source type should be hardware, trigger source should be one of the repeaters and trigger repeater should be enabled in the CddAdcGeneral container.
 
-##### CddAdcRepeaterInstance
+###### CddAdcRepeaterInstance
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcRepeaterInstance|
-|**Parent Container**|CddAdcTriggerRepeater|
-|**Description**|Numeric ID of the trigger repeater instance. This ID should be unique for a hardware unit|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-1|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcRepeaterInstance |
+| **Description** | Numeric ID of the trigger repeater instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1 |
+| **Min-value** | 0 |
 
-##### CddAdcRepeaterTriggerSrc
+###### CddAdcRepeaterTriggerSrc
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcRepeaterTriggerSrc|
-|**Parent Container**|CddAdcTriggerRepeater|
-|**Description**| Trigger source of the trigger repeater..|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_TRIGGER_CPU1INT0,.....,CDD_ADC_TRIGGER_CPU3INT2|
-|**Default**|CDD_ADC_TRIGGER_CPU1INT0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcRepeaterTriggerSrc |
+| **Description** | Trigger source of the trigger repeater. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_TRIGGER_CPU1INT0 |
+| **Range** | CDD_ADC_TRIGGER_CPU1INT0<br>CDD_ADC_TRIGGER_CPU1INT1<br>CDD_ADC_TRIGGER_CPU1INT2<br>CDD_ADC_TRIGGER_GPIO<br>CDD_ADC_TRIGGER_EPWM1_SOCA<br>CDD_ADC_TRIGGER_EPWM1_SOCB<br>CDD_ADC_TRIGGER_EPWM2_SOCA<br>CDD_ADC_TRIGGER_EPWM2_SOCB<br>CDD_ADC_TRIGGER_EPWM3_SOCA<br>CDD_ADC_TRIGGER_EPWM3_SOCB<br>CDD_ADC_TRIGGER_EPWM4_SOCA<br>CDD_ADC_TRIGGER_EPWM4_SOCB<br>CDD_ADC_TRIGGER_EPWM5_SOCA<br>CDD_ADC_TRIGGER_EPWM5_SOCB<br>CDD_ADC_TRIGGER_EPWM6_SOCA<br>CDD_ADC_TRIGGER_EPWM6_SOCB<br>CDD_ADC_TRIGGER_EPWM7_SOCA<br>CDD_ADC_TRIGGER_EPWM7_SOCB<br>CDD_ADC_TRIGGER_EPWM8_SOCA<br>CDD_ADC_TRIGGER_EPWM8_SOCB<br>CDD_ADC_TRIGGER_EPWM9_SOCA<br>CDD_ADC_TRIGGER_EPWM9_SOCB<br>CDD_ADC_TRIGGER_EPWM10_SOCA<br>CDD_ADC_TRIGGER_EPWM10_SOCB<br>CDD_ADC_TRIGGER_EPWM11_SOCA<br>CDD_ADC_TRIGGER_EPWM11_SOCB<br>CDD_ADC_TRIGGER_EPWM12_SOCA<br>CDD_ADC_TRIGGER_EPWM12_SOCB<br>CDD_ADC_TRIGGER_CPU2INT0<br>CDD_ADC_TRIGGER_CPU2INT1<br>CDD_ADC_TRIGGER_CPU2INT2<br>CDD_ADC_TRIGGER_ECAP1<br>CDD_ADC_TRIGGER_ECAP2<br>CDD_ADC_TRIGGER_ECAP3<br>CDD_ADC_TRIGGER_ECAP4<br>CDD_ADC_TRIGGER_EPWM13_SOCA<br>CDD_ADC_TRIGGER_EPWM13_SOCB<br>CDD_ADC_TRIGGER_EPWM14_SOCA<br>CDD_ADC_TRIGGER_EPWM14_SOCB<br>CDD_ADC_TRIGGER_EPWM15_SOCA<br>CDD_ADC_TRIGGER_EPWM15_SOCB<br>CDD_ADC_TRIGGER_EPWM16_SOCA<br>CDD_ADC_TRIGGER_EPWM16_SOCB<br>CDD_ADC_TRIGGER_EPWM17_SOCA<br>CDD_ADC_TRIGGER_EPWM17_SOCB<br>CDD_ADC_TRIGGER_EPWM18_SOCA<br>CDD_ADC_TRIGGER_EPWM18_SOCB<br>CDD_ADC_TRIGGER_CPU3INT0<br>CDD_ADC_TRIGGER_CPU3INT1<br>CDD_ADC_TRIGGER_CPU3INT2 |
 
-##### CddAdcRepeaterMode
+###### CddAdcRepeaterMode
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcRepeaterMode|
-|**Parent Container**|CddAdcTriggerRepeater|
-|**Description**|This parameter configures the trigger repeater mode. In oversampling mode (CddAdcTriggerCount+1) triggers are generated and in undersampling mode (CddAdcTriggerCount+1) triggers are suppressed.|
-|**Multiplicity**|1|
-|**Type**|ENUMERATION|
-|**Range**|OVERSAMPLING_MODE <br> OVERSAMPLING_MODE|
-|**Default**|OVERSAMPLING_MODE|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcRepeaterMode |
+| **Description** | This parameter configures the trigger repeater mode. In oversampling mode (CddAdcTriggerCount+1) triggers are generated and in undersampling mode (CddAdcTriggerCount+1) triggers are suppressed.  |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | OVERSAMPLING_MODE |
+| **Range** | OVERSAMPLING_MODE<br>UNDERSAMPLING_MODE |
 
-##### CddAdcTriggerCount
+###### CddAdcTriggerCount
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcTriggerCount|
-|**Parent Container**|CddAdcTriggerRepeater|
-|**Description**| This parameter selects the number of triggers. When 0 is selected 1 trigger is generated (pass-through).|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-127|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcTriggerCount |
+| **Description** | This parameter selects the number of triggers. When 0 is selected 1 trigger is generated (pass-through). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 127 |
+| **Min-value** | 0 |
 
-##### CddAdcTriggerPhaseDelay
+###### CddAdcTriggerPhaseDelay
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcTriggerPhaseDelay|
-|**Parent Container**|CddAdcTriggerRepeater|
-|**Description**| This parameter defines the number of SYSCLK cycles to delay the selected trigger before passing it onto the re-triggering logic|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-65535|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcTriggerPhaseDelay |
+| **Description** | This parameter defines the number of SYSCLKs to delay the selected trigger before passing it onto the re-triggering logic. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
 
-##### CddAdcTriggerSpreadDelay
+###### CddAdcTriggerSpreadDelay
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcTriggerSpreadDelay|
-|**Parent Container**|CddAdcTriggerRepeater|
-|**Description**| This parameter defines the minimum number of SYSCLKs to wait before creating the next repeated trigger to the ADC.This parameter has no effect in undersampling mode or when the TriggerCount is set to 0|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-65535|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcTriggerSpreadDelay |
+| **Description** | This parameter defines the minimum number of SYSCLKs to wait before creating the next repeated trigger to the ADC.                                             This parameter has no effect in undersampling mode or when the TriggerCount is set to 0 |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
 
 ##### CddAdcPpbConfig
+This container contains the PPB configuration (parameters) of the PPB.
 
-##### CddAdcPpbId
+###### CddAdcPpbId
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbId |
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| Numeric ID of the PPB number assigned to the channel|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-3|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbId |
+| **Description** | Numeric ID of the PPB number assigned to the channel. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 3 |
+| **Min-value** | 0 |
 
-##### CddAdcPpbChannel
+###### CddAdcPpbSocNumber
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbChannel |
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|  Reference to the channel|
-|**Multiplicity**|1|
-|**Type**|REFERENCE|
-|**Range**|--|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbSocNumber |
+| **Description** | Soc number of the selected channel. This is a calculated value, it can't be edited. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 31 |
+| **Min-value** | 0 |
 
-##### CddAdcPpbSocNumber
+###### CddAdcPpbCalibrationOffset
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbSocNumber|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|Soc number of the selected channel. This is a calculated value, it can't be edited, Run auto-calc if the reference is changed.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-31|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbCalibrationOffset |
+| **Description** | This parameters configures the offset calibration for the ADC channel.For values from 0 to 511,the configured value will be subtracted from the PPB result.                                  For values from 512,(1024 - CddAdcPpbCalibrationOffset) value will be added to the PPB result. In case multiple PPBs point to the same SOC,                                 only the OFFCAL of the lowest PPB ID will be applied.                                 This offset value will be subtracted from the raw conversion result and stores the value in the ADC result register.                                  The addition/subtraction satureated at o on the low ed and either 4095/65536 on the high end for 12-bit and 16-bit respectively. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1024 |
+| **Min-value** | 0 |
 
-##### CddAdcPpbCalibrationOffset
+###### CddAdcPpbReferenceOffset
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbCalibrationOffset|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|This parameters configures the offset calibration for the ADC channel.For values from 0 to 511,the configured value will be subtracted from the PPB result. For values from 512,(1024 - CddAdcPpbCalibrationOffset) value will be added to the PPB result. In case multiple PPBs point to the same SOC,only the OFFCAL of the lowest PPB ID will be applied.This offset value will be subtracted from the raw conversion result and stores the value in the ADC result register.The addition/subtraction satureated at o on the low ed and either 4095/65536 on the high end for 12-bit and 16-bit respectively.|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-1024|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbReferenceOffset |
+| **Description** | This parameters configures the reference offset value for the ADC channel.In 12-bit mode the reference offset shouldn't exceed                                    4095 in 12-bit and 65535 in 16-bit mode. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
 
-##### CddAdcPpbReferenceOffset
+###### CddAdcPpbDeltaEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbReferenceOffset|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|This parameters configures the reference offset value for the ADC channel.In 12-bit mode the reference offset shouldn't exceed 4095 in 12-bit and 65535 in 16-bit mode..|
-|**Multiplicity**|1|
-|**Type**|INTEGER|
-|**Range**|0-65535|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbDeltaEnable |
+| **Description** | This parameters configures the bit to enable/disable delta enable. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbDeltaEnable
+###### CddAdcPpbEnableTwosComplement
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbDeltaEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|This parameters configures the bit to enable/disable delta enable.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbEnableTwosComplement |
+| **Description** | This parameters configures the bit to enable/disable two's complement. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbEnableTwosComplement
+###### CddAdcPpbAbsoluteEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbEnableTwosComplement|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters configures the bit to enable/disable two's complement.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbAbsoluteEnable |
+| **Description** | This parameters configures the bit to enable/disable absolute value calculation.                                     This is done before the two's complement logic, so enabling both CddAdcPpbEnableTwosComplement and CddAdcPpbAbsoluteEnable will always result in a negative PPB value. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbAbsoluteEnable
+###### CddAdcPpbCyclebyCycleEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbAbsoluteEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters configures the bit to enable/disable absolute value calculation. This is done before the two's complement logic, so enabling both CddAdcPpbEnableTwosComplement and CddAdcPpbAbsoluteEnable will always result in a negative PPB value.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbCyclebyCycleEnable |
+| **Description** | This parameters configures the bit to enable/disable cycle by cycle enable. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbCyclebyCycleEnable
+###### CddAdcPpbCompareSource
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbCyclebyCycleEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters configures the bit to enable/disable cycle by cycle enable |
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbCompareSource |
+| **Description** | This parameters configures the PPB result type used for the zero-crossing detect logic and threshold compare. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_COMPARE_PPBRESULT |
+| **Range** | CDD_ADC_COMPARE_PPBRESULT<br>CDD_ADC_COMPARE_PPBPSUM<br>CDD_ADC_COMPARE_PPBSUM |
 
-##### CddAdcPpbCompareSource
+###### CddAdcPpbTripHighLimit
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbCompareSource|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|  This parameters configures the PPB result type used for the zero-crossing detect logic and threshold compare|
-|**Type**|ENUMERATION|
-|**Range**| CDD_ADC_COMPARE_PPBRESULT <br> CDD_ADC_COMPARE_PPBPSUM <br> CDD_ADC_COMPARE_PPBSUM|
-|**Default**|CDD_ADC_COMPARE_PPBRESULT|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbTripHighLimit |
+| **Description** | High limit - used for limit checking for all types of PB results.                                  When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:TRIPHI[23:17] will be ignored in 16 bit mode and                                  TRIPHI[23:13] will be ignored in 12 bit mode |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 8388607 |
+| **Min-value** | -8388608 |
 
-##### CddAdcPpbTripHighLimit
+###### CddAdcPpbExtendedTripLowEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbTripHighLimit|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| High limit - used for limit checking for all types of PB results |
-|**Type**|INTEGER|
-|**Range**| -8388608 to 8388607|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbExtendedTripLowEnable |
+| **Description** | This parameters configures the extended trip limit low.This value can be used to compare any PPBRESULT.                                                 This is non-editable It is always enabled |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
-##### CddAdcPpbExtendedTripLowEnable
+###### CddAdcPpbTripLowLimit
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbExtendedTripLowEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters configures the extended trip limit low.This value can be used to compare any PPBRESULT.This is non-editable. It is always enabled. |
-|**Type**|BOOELAN|
-|**Default**|true|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbTripLowLimit |
+| **Description** | Extended trip low limit - used for limit checking.When comparing to an ADCPPBxRESULT register, the upper bits will be ignored:                                  TRIPLO2[23:17] will be ignored in 16 bit mode and TRIPLO2[23:13] will be ignored in 12 bit mode |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 8388607 |
+| **Min-value** | -8388608 |
 
-##### CddAdcPpbTripLowLimit
+###### CddAdcPpbTripHighEventEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbTripLowLimit|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| Extended trip low limit - used for limit checking. |
-|**Type**|INTEGER|
-|**Range**| -8388608 to 8388607|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbTripHighEventEnable |
+| **Description** | Enabling this allows the corresponding rising trip high flag in the PPB to activate the event signal to the PWM blocks. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbTripHighEventEnable
+###### CddAdcPpbTripLowEventEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbTripHighEventEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|Enabling this allows the corresponding rising trip high flag in the PPB to activate the event signal to the PWM blocks. |
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbTripLowEventEnable |
+| **Description** | Enabling this allows the corresponding rising trip low flag in the PPB to activate the event signal to the PWM blocks. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbTripLowEventEnable
+###### CddAdcPpbZeroCrossingEventEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbTripLowEventEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|Enabling this allows the corresponding rising trip low flag in the PPB to activate the event signal to the PWM blocks.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbZeroCrossingEventEnable |
+| **Description** | Enabling this allows the corresponding rising zero crossing flag in the PPB to activate the event signal to the PWM blocks. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbZeroCrossingEventEnable
+###### CddAdcPpbTripHighInterruptEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbZeroCrossingEventEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|Enabling this allows the corresponding rising zero crossing flag in the PPB to activate the event signal to the PWM blocks. |
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbTripHighInterruptEnable |
+| **Description** | Enabling this allows the corresponding rising trip high flag in the PPB to activate the event signal to the PIE. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbTripHighInterruptEnable
+###### CddAdcPpbTripLowInterruptEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbTripHighInterruptEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|Enabling this allows the corresponding rising trip high flag in the PPB to activate the event signal to the PIE.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbTripLowInterruptEnable |
+| **Description** | Enabling this allows the corresponding rising trip low flag in the PPB to activate the event signal to the PIE. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbTripLowInterruptEnable
+###### CddAdcPpbZeroCrossingInterruptEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbTripLowInterruptEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|Enabling this allows the corresponding rising trip low flag in the PPB to activate the event signal to the PIE |
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbZeroCrossingInterruptEnable |
+| **Description** | Enabling this allows the corresponding rising zero crossing flag in the PPB to activate the event signal to the PIE. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbZeroCrossingInterruptEnable
+###### CddAdcEventInterruptCategory
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbZeroCrossingInterruptEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| Enabling this allows the corresponding rising zero crossing flag in the PPB to activate the event signal to the PIE.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcEventInterruptCategory |
+| **Description** | This parameters defines the category of the interrupt. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | ISR_CAT1_RTINT |
+| **Range** | ISR_CAT1_INT<br>ISR_CAT1_RTINT<br>ISR_CAT2_INT |
 
-##### CddAdcEventInterruptCategory
+###### CddAdcPpbEventInterruptNotification
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcEventInterruptCategory|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters defines the category of the interrupt..|
-|**Type**|ENUMERATION|
-|**Range**|ISR_CAT1_INT <br> ISR_CAT1_RTINT <br> ISR_CAT2_INT|
-|**Default**|ISR_CAT1_RTINT|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbEventInterruptNotification |
+| **Description** | Callback function for each PPB that generaterd the event interrupt |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | NULL_PTR |
 
-##### CddAdcPpbEventInterruptNotification
+###### CddAdcPpbAccumulationCountLimit
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbEventInterruptNotification|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| Callback function for each PPB that generaterd the event interrupt.|
-|**Type**|FUNCTION-NAME|
-|**Range**|--|
-|**Default**|NULL_PTR|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbAccumulationCountLimit |
+| **Description** | This parameters defines the oversampling limit Defines the number of conversion to accumulate before PSUM is automatically loaded into SUM.                                           The minimum allowed value is zero. The maximum value allowed is the StreamingSamples value of the corresonding channel group.                                           If the hardware unit is configured in 16-bit resolution mode with CddAdcPpbAccumulationCountLimit exceeding 128, it results in overflow in PPB partial sum register |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 1024 |
+| **Min-value** | 0 |
 
-##### CddAdcPpbAccumulationCountLimit
+###### CddAdcPpbRightShift
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbAccumulationCountLimit|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters defines the oversampling limit Defines the number of conversion to accumulate before PSUM is automatically loaded into SUM.The minimum allowed value is zero. The maximum value allowed is the StreamingSamples value of the corresonding channel group.If the hardware unit is configured in 16-bit resolution mode with CddAdcPpbAccumulationCountLimit exceeding 128, it results in overflow in PPB partial sum register|
-|**Type**|INTEGER|
-|**Range**|0-1023 for 12-bit ADC, 128 for 16-bit ADC|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbRightShift |
+| **Description** | The parameter defines the number of bits to right shift partial ppb result(PSUM) before writing to the final PPB result register(SUM).                                         For 0, no right shit. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 10 |
+| **Min-value** | 0 |
 
-##### CddAdcPpbRightShift
+###### CddAdcPpbTripFilterEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbRightShift|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|The parameter defines the number of bits to right shift partial ppb result(PSUM) before writing to the final PPB result register(SUM).For 0, no right shit.|
-|**Type**|INTEGER|
-|**Range**|0-10|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbTripFilterEnable |
+| **Description** | This parameters configures the bit to enable/disable trip filter. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-##### CddAdcPpbTripFilterEnable
+###### CddAdcPpbChannel
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbTripFilterEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters configures the bit to enable/disable trip filter.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbChannel |
+| **Description** | Numeric ID of the channel whose result is to be compared. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ##### CddAdcTripFilterConfig
+This container contains the channel configuration (parameters) depending on the hardware capability.
 
 ###### CddAdcTripFilterClk
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcTripFilterClk|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters configures the clock prescale for the digital trip filter.|
-|**Type**|INTEGER|
-|**Range**|0-65535|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcTripFilterClk |
+| **Description** | This parameters configures the bit to enable/disable trip filter.The effective prescale value is (CddAdcTripFilterClk + 1).                                               This applies to the filter on both the high and low trips. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
 
 ###### CddAdcTripFilterTreshold
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcTripFilterTreshold|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters configures the  trip filter threshold.|
-|**Type**|INTEGER|
-|**Range**|0-63|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcTripFilterTreshold |
+| **Description** | This parameters configures the  trip filter. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 63 |
+| **Min-value** | 0 |
 
 ###### CddAdcTripFilterSampleWindow
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcTripFilterSampleWindow|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**| This parameters configures the sample window for the digital trip filter.|
-|**Type**|INTEGER|
-|**Range**|0-63|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcTripFilterSampleWindow |
+| **Description** | This parameters configures the sample window for the digital trip filter. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 63 |
+| **Min-value** | 0 |
 
 ###### CddAdcTripFilterLowEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcTripFilterLowEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|This parameters configures the bit to enable/disable considering trip low.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcTripFilterLowEnable |
+| **Description** | This parameters configures the bit to enable/disable trip filter. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcTripFilterHighEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcTripFilterLowEnable|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|This parameters configures the bit to enable/disable considering trip high.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcTripFilterHighEnable |
+| **Description** | This parameters configures the bit to enable/disable trip filter. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-#### CddAdcGlobalSwTrigger
+##### CddAdcGlobalSwTrigger
+This container contains the global software triigger Id.
 
-##### CddAdcGlbSwTrigId
+###### CddAdcGlbSwTrigId
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGlbSwTrigId|
-|**Parent Container**|CddAdcPpbConfig|
-|**Description**|Numeric ID of the global software trigger.|
-|**Type**|INTEGER|
-|**Range**|0-255|
-|**Default**|Calculated value, position of the container|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGlbSwTrigId |
+| **Description** | Numeric ID of the safety result checker. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 255 |
+| **Min-value** | 0 |
 
 ##### CddAdcHwGroup
+This container contains the parameter for configuring the hardware for the global software trigger feature.
 
-###### CddAdcHwGroupRef
+##### CddAdcHwUnit
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwGroupRef|
-|**Parent Container**|CddAdcHwGroup|
-|**Description**|This paramter refers to the group to select the SOC numners for the global software trigger.|
-|**Type**|REFERENCE|
-|**Range**|--|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-###### CddAdcHwUnit
-
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwUnit|
-|**Parent Container**|CddAdcHwGroup|
-|**Description**|This parameter refers to the hardware unit to which the group belongs. By default the value will be CDD_ADCA. For proper value use AutoCalc.|
-|**Type**|ENUMERATION|
-|**Range**|--|
-|**Default**|CDD_ADCA|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwUnit |
+| **Description** | This parameter refers to the hardware unit to which the group belongs. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADCA |
 
 ###### CddAdcSocMask
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcSocMask|
-|**Parent Container**|CddAdcHwGroup|
-|**Description**|This parameter refers to the hardware unit to which the group belongs. For proper value use AutoCalc.|
-|**Type**|INTEGER|
-|**Range**|0-4294967295|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcSocMask |
+| **Description** | This parameter refers to the hardware unit to which the group belongs. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 4294967295 |
+| **Min-value** | 0 |
 
-#### CddAdcResultCheckerUnit
+###### CddAdcHwGroupRef
 
-##### CddAdcCheckerId
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwGroupRef |
+| **Description** | This paramter refers to the group to select the SOC numners for the global software trigger. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerId|
-|**Parent Container**|CddAdcResultCheckerUnit|
-|**Description**|Numeric ID of the safety result checker.|
-|**Type**|INTEGER|
-|**Range**|0-9|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+##### CddAdcResultCheckerUnit
+This container contains the safety result checker configuration (parameters).
 
-##### CddAdcCheckerTolerance
+###### CddAdcCheckerId
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerTolerance|
-|**Parent Container**|CddAdcResultCheckerUnit|
-|**Description**|This paramter configures the tolerance for the difference between CHECKRESULT1 and CHECKRESULT2.|
-|**Type**|INTEGER|
-|**Range**|0-167777216|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerId |
+| **Description** | Numeric ID of the safety result checker. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 9 |
+| **Min-value** | 0 |
+
+###### CddAdcCheckerTolerance
+
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerTolerance |
+| **Description** | This paramter configures the tolerance for the difference between CHECKRESULT1 and CHECKRESULT2. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 167777216 |
+| **Min-value** | 0 |
 
 ##### CddAdcSelResConfig1
+This container contains the checker result1 configuration (parameters) whose results will be compared.
 
 ###### CddAdcCheckerResultType
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerResultType|
-|**Parent Container**|CddAdcSelResConfig1|
-|**Description**|This parameter defines thw type of result that is being accessed - a raw result or a processed result.|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_SAFETY_CHECKER_INPUT_SOCx <br> CDD_ADC_SAFETY_CHECKER_INPUT_PPBx <br> CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx|
-|**Default**|CDD_ADC_SAFETY_CHECKER_INPUT_SOCx|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerResultType |
+| **Description** | This parameter defines thw type of result that is being accessed - a raw result or a processed result. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_SAFETY_CHECKER_INPUT_SOC |
+| **Range** | CDD_ADC_SAFETY_CHECKER_INPUT_SOC<br>CDD_ADC_SAFETY_CHECKER_INPUT_PPB<br>CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM |
 
 ###### CddAdcChannelReference
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcChannelReference|
-|**Parent Container**|CddAdcSelResConfig1|
-|**Description**|Reference to the channel whose result is to be compared.This is enabled only when CDD_ADC_SAFETY_CHECKER_INPUT_SOCx is selected.|
-|**Type**|REFERENCE|
-|**Range**|--|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcChannelReference |
+| **Description** | Numeric ID of the channel whose result is to be compared. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ###### CddAdcPpbReference
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbReference|
-|**Parent Container**|CddAdcSelResConfig1|
-|**Description**|Reference to the PPB whose result is to be compared.This is enabled when CDD_ADC_SAFETY_CHECKER_INPUT_PPBx or CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx is selected|
-|**Type**|REFERENCE|
-|**Range**|--|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbReference |
+| **Description** | Numeric ID of the channel whose result is to be compared. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ##### CddAdcSelResConfig2
+This container contains the checker result2 configuration (parameters) whose results will be compared.
 
 ###### CddAdcCheckerResultType
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerResultType|
-|**Parent Container**|CddAdcSelResConfig2|
-|**Description**|This parameter defines thw type of result that is being accessed - a raw result or a processed result.|
-|**Type**|ENUMERATION|
-|**Range**|CDD_ADC_SAFETY_CHECKER_INPUT_SOCx <br> CDD_ADC_SAFETY_CHECKER_INPUT_PPBx <br> CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx|
-|**Default**|CDD_ADC_SAFETY_CHECKER_INPUT_SOCx|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerResultType |
+| **Description** | This parameter defines thw type of result that is being accessed - a raw result or a processed result. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ADC_SAFETY_CHECKER_INPUT_PPB |
+| **Range** | CDD_ADC_SAFETY_CHECKER_INPUT_SOC<br>CDD_ADC_SAFETY_CHECKER_INPUT_PPB<br>CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM |
 
 ###### CddAdcChannelReference
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcChannelReference|
-|**Parent Container**|CddAdcSelResConfig2|
-|**Description**|Reference to the channel whose result is to be compared.This is enabled only when CDD_ADC_SAFETY_CHECKER_INPUT_SOCx is selected.|
-|**Type**|REFERENCE|
-|**Range**|--|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcChannelReference |
+| **Description** | Reference to the channel whose result is to be compared. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ###### CddAdcPpbReference
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbReference|
-|**Parent Container**|CddAdcSelResConfig2|
-|**Description**|Reference to the PPB whose result is to be compared.This is enabled when CDD_ADC_SAFETY_CHECKER_INPUT_PPBx or CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUMx is selected|
-|**Type**|REFERENCE|
-|**Range**|--|
-|**Default**|--|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbReference |
+| **Description** | Reference to the PPB unit whose result is to be compared. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
+| **Origin** | Texas Instruments |
+| **Post-build-variant-multiplicity** | false |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-#### CddAdcCheckerIntEvtConfig
+##### CddAdcCheckerIntEvtConfig
+This container configures the triggers for interrupts and events from the safety checker units.
 
-##### CddAdcIntEvtId
+###### CddAdcIntEvtId
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcIntEvtId |
-|**Parent Container**|CddAdcSelResConfig2|
-|**Description**|Numeric ID of the interrupt event instance.This ID should be unique.|
-|**Type**|INTEGER|
-|**Range**|0-2|
-|**Default**|0|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcIntEvtId |
+| **Description** | Numeric ID of the interrupt event instance.This ID should be unique. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | 0 |
+| **Max-value** | 2 |
+| **Min-value** | 0 |
 
-###### CddAdcCheckerIntEvtConfiguration
+##### CddAdcCheckerIntEvtConfiguration
+Configure interrupts and events for the safety checker instance for the specified interrupt event block.
 
 ###### CddAdcSafetyCheckerInstance
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcSafetyCheckerInstance|
-|**Parent Container**|CddAdcCheckerIntEvtConfiguration|
-|**Description**|Reference to the safety checker instance.|
-|**Type**|REFERENCE|
-|**Range**|--|
-|**Default**|-|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcSafetyCheckerInstance |
+| **Description** | Reference to the safety checker instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
-###### CddAdcCheckerIntSource
+##### CddAdcCheckerIntSource
+This container selects the source of the safety checker interrupt.
 
 ###### CddAdcCheckerRes1Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes1Ovf|
-|**Parent Container**|CddAdcCheckerIntSource|
-|**Description**|This paramter enables the result1 overflow as the source of the safety checker interrupt.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes1Ovf |
+| **Description** | This paramter enables the result1 overflow as the source of the safety checker interrupt. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerRes2Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes2Ovf|
-|**Parent Container**|CddAdcCheckerIntSource|
-|**Description**|This paramter enables the result2 overflow as the source of the safety checker interrupt.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes2Ovf |
+| **Description** | This paramter enables the result2 overflow as the source of the safety checker interrupt. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerOot
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerOot|
-|**Parent Container**|CddAdcCheckerIntSource|
-|**Description**|This paramter enables the out-of-tolerance as the source of the safety checker interrupt.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerOot |
+| **Description** | This paramter enables the out-of-tolerance as the source of the safety checker interrupt. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-###### CddAdcCheckerEvt1Source
+##### CddAdcCheckerEvt1Source
+This container selects the source of the safety checker event signal.
 
 ###### CddAdcCheckerRes1Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes1Ovf|
-|**Parent Container**|CddAdcCheckerEvt1Source|
-|**Description**|This paramter enables the result1 overflow as the source of the safety checker event1 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes1Ovf |
+| **Description** | This paramter enables the result1 overflow as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerRes2Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes2Ovf|
-|**Parent Container**|CddAdcCheckerEvt1Source|
-|**Description**|This paramter enables the result2 overflow as the source of the safety checker event1 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes2Ovf |
+| **Description** | This paramter enables the result2 overflow as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerOot
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerOot|
-|**Parent Container**|CddAdcCheckerEvt1Source|
-|**Description**|This paramter enables the out-of-tolerance as the source of the safety checker  event1 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerOot |
+| **Description** | This paramter enables the out-of-tolerance as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-###### CddAdcCheckerEvt2Source
+##### CddAdcCheckerEvt2Source
+This container selects the source of the safety checker event signal.
 
 ###### CddAdcCheckerRes1Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes1Ovf|
-|**Parent Container**|CddAdcCheckerEvt2Source|
-|**Description**|This paramter enables the result1 overflow as the source of the safety checker  event2 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes1Ovf |
+| **Description** | This paramter enables the result1 overflow as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerRes2Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes2Ovf|
-|**Parent Container**|CddAdcCheckerEvt2Source|
-|**Description**|This paramter enables the result2 overflow as the source of the safety checker  event2 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes2Ovf |
+| **Description** | This paramter enables the result2 overflow as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerOot
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerOot|
-|**Parent Container**|CddAdcCheckerEvt2Source|
-|**Description**|This paramter enables the out-of-tolerance as the source of the safety checker  event2 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerOot |
+| **Description** | This paramter enables the out-of-tolerance as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-###### CddAdcCheckerEvt3Source
+##### CddAdcCheckerEvt3Source
+This container selects the source of the safety checker event signal.
 
 ###### CddAdcCheckerRes1Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes1Ovf|
-|**Parent Container**|CddAdcCheckerEvt3Source|
-|**Description**|This paramter enables the result1 overflow as the source of the safety checker  event3 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes1Ovf |
+| **Description** | This paramter enables the result1 overflow as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerRes2Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes2Ovf|
-|**Parent Container**|CddAdcCheckerEvt3Source|
-|**Description**|This paramter enables the result2 overflow as the source of the safety checker  event3 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes2Ovf |
+| **Description** | This paramter enables the result2 overflow as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerOot
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerOot|
-|**Parent Container**|CddAdcCheckerEvt3Source|
-|**Description**|This paramter enables the out-of-tolerance as the source of the safety checker  event3 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerOot |
+| **Description** | This paramter enables the out-of-tolerance as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
-###### CddAdcCheckerEvt4Source
+##### CddAdcCheckerEvt4Source
+This container selects the source of the safety checker event signal.
 
 ###### CddAdcCheckerRes1Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes1Ovf|
-|**Parent Container**|CddAdcCheckerEvt4Source|
-|**Description**|This paramter enables the result1 overflow as the source of the safety checker  event4 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes1Ovf |
+| **Description** | This paramter enables the result1 overflow as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerRes2Ovf
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerRes2Ovf|
-|**Parent Container**|CddAdcCheckerEvt4Source|
-|**Description**|This paramter enables the result2 overflow as the source of the safety checker  event4 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerRes2Ovf |
+| **Description** | This paramter enables the result2 overflow as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddAdcCheckerOot
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcCheckerOot|
-|**Parent Container**|CddAdcCheckerEvt4Source|
-|**Description**|Description: This paramter enables the out-of-tolerance as the source of the safety checker event4 signal.|
-|**Type**|BOOLEAN|
-|**Default**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerOot |
+| **Description** | This paramter enables the out-of-tolerance as the source of the safety checker event signal. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 #### CddAdcGeneral
+General configuration (parameters) of the ADC Driver software module.
 
 ##### CddAdcDeInitApi
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcDeInitApi|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|Adds / removes the service Cdd_Adc_DeInit() from the code|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|ll Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcDeInitApi |
+| **Description** | Adds / removes the service Cdd_Adc_DeInit() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### CddAdcDevErrorDetect
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcDevErrorDetect|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|Switches the development error detection and notification on or off|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|ll Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcDevErrorDetect |
+| **Description** | Switches the development error detection and notification on or off. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### CddAdcEnableStartStopGroupApi
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcEnableStartStopGroupApi|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|Adds / removes the services Cdd_Adc_StartGroupConversion() and Cdd_Adc_StopGroupConversion() from the code|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|ll Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcEnableStartStopGroupApi |
+| **Description** | Adds / removes the services Cdd_Adc_StartGroupConversion() and Cdd_Adc_StopGroupConversion() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### CddAdcEnableGlobalSoftwareTrigger
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcEnableGlobalSoftwareTrigger|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|Adds / removes the services Cdd_Adc_StartGlobalSwTrig() and Cdd_Adc_StopGlobalSwTrig() from the code|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|ll Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcEnableGlobalSoftwareTrigger |
+| **Description** | Adds / removes the services Cdd_Adc_StartGlobalSwTrig() and Cdd_Adc_StopGlobalSwTrig() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### CddAdcGrpNotifCapability
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcGrpNotifCapability|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|Determines, if the group notification mechanism (the functions to enable and disable the notifications) is available at runtime|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|ll Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcGrpNotifCapability |
+| **Description** | Determines, if the group notification mechanism (the functions to enable and disable the notifications) is available at runtime. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### CddAdcHwTriggerApi
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcHwTriggerApi|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|Adds / removes the services Cdd_Adc_EnableHardwareTrigger() and Cdd_Adc_DisableHardwareTrigger() from the code|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|ll Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwTriggerApi |
+| **Description** | Adds / removes the services Cdd_Adc_EnableHardwareTrigger() and Cdd_Adc_DisableHardwareTrigger() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### CddAdcPpbEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcPpbEnable|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|This parameter enables PPB capability for the module|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|ll Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcPpbEnable |
+| **Description** | This parameter enables safety checker capability for the module. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### CddAdcReadGroupApi
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcReadGroupApi|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|Adds / removes the service Cdd_Adc_ReadGroup() and from the code|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|ll Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcReadGroupApi |
+| **Description** | Adds / removes the service Cdd_Adc_ReadGroup() and from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | true |
 
 ##### CddAdcSafetyCheckerEnable
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcSafetyCheckerEnable|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|This parameter enables safety checker capability for the module|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcSafetyCheckerEnable |
+| **Description** | This parameter enables safety checker capability for the module. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ##### CddAdcSetResolutionApi
 
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcSetResolutionApi|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|Adds / removes the service Cdd_Adc_SetResolution() from the code. This enables changing the ADCA & ADCB resolution on runtime.|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
-##### CddAdcVersionInfoApi
-
-|SWS Item||
-|--------|----------------|
-|**Name**|CddAdcVersionInfoApi|
-|**Parent Container**|CddAdcGeneral|
-|**Description**|Adds / removes the service Cdd_Adc_GetVersionInfo() from the code|
-|**Multiplicity**|1|
-|**Type**|BOOLEAN|
-|**Default value**|false|
-|**Post-Build Variant Value**|false|
-|**Value Configuration Class**||
-|Pre-compile time|All Variants|
-|Link time|--|
-|Post-build time|--|
-|**Scope / Dependency**|scope: local|
-
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcSetResolutionApi |
+| **Description** | Adds / removes the service Cdd_Adc_SetResolution() from the code. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 #### Steps To Configure Cdd_Adc Module
 
 1. Open EB Tresos configurator tool, load Cdd_Adc module. Select the Precompile Config Variant.

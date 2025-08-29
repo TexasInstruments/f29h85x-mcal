@@ -1,0 +1,61 @@
+## RTDMA Module
+
+### Introduction
+
+The F29H85-SDK RTDMA can be integrated with F29H85-MCAL for any RTDMA transfers according to the system requirements. This integration allows to initialize and use RTDMA channels based on the specific application.
+
+CDD DMA driver will be provided in a future release. If customers have a need to use DMA in the meantime, they can use SDK RTDMA as described in this guide. However, please be aware that F29H85-SDK RTDMA is non-AUTOSAR and a Basic Quality driver. This integration is intended as a temporary solution to enable DMA use cases in the absence of CDD DMA. It is recommended to use AUTOSAR drivers on AUTOSAR core whenever possible.
+
+The following example demonstrates a memory to memory data transfer in MCAL using the F29H85X-SDK RTDMA.
+
+#### RTDMA Memory Transfer Example
+
+##### Overview
+
+ Rtdma_Example_Mem_Transfer example demonstrates how to use the F29H85X-SDK RTDMA (Real-Time Direct Memory Access) module with the F29H85X-MCAL. The example performs a memory-to-memory transfer operation using one RTDMA channel.
+
+The example demonstrates:
+
+- How to configure and initialize the RTDMA module.
+- How to set up a memory-to-memory transfer
+- How to trigger DMA transfers in software
+- How to use DMA interrupts to signal transfer completion
+
+##### Software Version Used
+
+- F29H85X-SDK : 1.02.00.00
+
+##### RTDMA Configuration
+
+The example configures RTDMA1 Channel 1 with the following parameters:
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| Burst Size | 4 | Number of words per burst |
+| Transfer Size | 16 | Number of bursts in the transfer |
+| Source/Destination Width | 32-bit | Data width for read/write operations |
+| Trigger Mode | Software | DMA transfers are triggered by software |
+| Interrupt Mode | At End | Interrupt generated at the end of the transfer |
+
+##### Example logs
+
+```{code-block}
+RTDMA Sample Application - Starts!!!
+---------------------------------------------------------------
+Data at source before transfer:
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
+Data at destination before transfer:
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Data at source after transfer:
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
+Data at destination after transfer:
+0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
+===============================================
+
+Transfer successful
+```
+
+### References
+
+- [F29H85X-SDK](https://software-dl.ti.com/C2000/docs/f29h85x-sdk/latest/docs/html/index.html) RTDMA documentation
+- RTDMA example '[rtdma_ex1_mem_transfer](https://www.ti.com/tool/download/F29H85X-SDK/1.01.00.00)' in F29H85X-SDK

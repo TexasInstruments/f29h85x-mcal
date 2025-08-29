@@ -230,7 +230,7 @@ There is no hardware interrupt in Fls.
 
 Below image shows Fls driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29 Reference Manual.
 
-```{figure} Assets/images/Fls_HW_SW_Mapping.png
+```{figure} Assets/images/Fls_Hw_Sw_Mapping.png
 :alt: Fls HW/SW Mapping
 :align: center
 
@@ -313,6 +313,23 @@ The Fls can be configured as **Post-Build** or **Pre-Compile** variant, using EB
 |Pre-Compile | Fls_Cfg.c , Fls_Cfg.h |
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+#### Migration Guide to v02.00.00 from v01.01.00 or any older versions
+
+In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Fls_Init function will need to use the new configuration structure name. For example:
+
+```c
+/* Old code (v01.01.00 or any older versions) */
+Fls_Init(&Fls_FlsConfigSet);
+
+/* New code (v02.00.00) */
+Fls_Init(&Fls_Config);
+```
+
+This change ensures compliance with AUTOSAR naming conventions.
+
+To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
 
 
 
@@ -864,19 +881,6 @@ Container for general parameters of the flash driver. These parameters are alway
 | **Default-value** | 3 |
 | **Max-value** | 3 |
 | **Min-value** | 1 |
-
-##### FlsSysClockRef
-
-| Item ||
-|--------|---------------|
-| **Name** | FlsSysClockRef |
-| **Description** | This parameter references the SYSCLK to convert timeout values from milliseconds to clock ticks. Users should ensure the correct clock reference point is selected to achieve accurate timeout calculations. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| Link-Time | VARIANT-LINK-TIME |
-| Post-Build-Time | VARIANT-POST-BUILD |
 
 ##### FlsCpuClockRef
 

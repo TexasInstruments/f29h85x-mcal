@@ -21,18 +21,16 @@ Can mailbox configuration definition.
 
 |  Member Type   | Member name    | Brief |
 | -------------- | -------------- | ----- |
-|  uint8 | CanHandleType |  CanHandleType 0=Full, 1=Basic.  |
+|  [Can_HandleType](../Modules/group___c_a_n.md#enum-can_handletype) | CanHandleType |  CanHandleType 0=Full, 1=Basic.  |
 |  Can_IdType | CanIdType |  CanIdType 0=standard 1=Extended.  |
-|  uint32 | CanHwFilterCode |  ID value extended will have MSB set.  |
-|  uint16 | CanObjectId |  CanObjectId - Holds handle Id.  |
-|  Can_HwHandleType | HwHandle |  Mailbox - Hw object in the controller.  |
-|  uint16 | CanHwObjectCount |  Number of hardware objects used to implement one HOH.  |
+|  Can_HwHandleType | CanObjectId |  CanObjectId - Holds handle Id.  |
+|  uint8 | HwHandle |  Mailbox - Hw object in the controller.  |
+|  uint8 | CanHwObjectCount |  Number of hardware objects used to implement one HOH.  |
 |  [Can_MailboxDirectionType](../Modules/group___c_a_n.md#enum-can_mailboxdirectiontype) | CanObjectType |  CanObjectType - Direction of Mailbox.  |
 |  const [Can_ControllerType](../Classes/struct_can___controller_type.md) * | CanControllerRef |  Controller.  |
-|  [Can_MaskType](../Classes/struct_can___mask_type.md) | CanHwFilterMask |  ptr to Mask for the RX filtering  |
-|  [Can_EventPin](../Modules/group___c_a_n.md#enum-can_eventpin) | CanEventPin |  If PduInfo->SduLength does not match possible DLC values CanDrv will use the next higher valid DLC for transmission with initialization of unused bytes to the value of the corresponding CanFdPaddingValue.  |
-|  [Can_StandardFilterType](../Modules/group___c_a_n.md#enum-can_standardfiltertype) | CanStandardFilterType |  |
-|  uint8 | CanFdPaddingValue |  |
+|  const [Can_HwFilterType](../Classes/struct_can___hw_filter_type.md) ** | CanHwFilterList |  Reference to list of hardware filters HOH is associated to.  |
+|  uint8 | CanFilterListCount |  Reference to list of hardware filters HOH is associated to.  |
+|  uint8 | CanFdPaddingValue |  If PduInfo->SduLength does not match possible DLC values CanDrv will use the next higher valid DLC for transmission with initialization of unused bytes to the value of the corresponding CanFdPaddingValue.  |
 |  boolean | CanTriggerTransmitEnable |  Trigger Transmit Enable/Disable.  |
 |  boolean | CanHardwareObjectUsesPolling |  Whether HW Object uses polling.  |
 |  [Can_MainFunctionRWPeriodRefType](../Classes/struct_can___main_function_r_w_period_ref_type.md) | CanMainFunctionRWPeriodRef |  Main Function Read/Write Period.  |

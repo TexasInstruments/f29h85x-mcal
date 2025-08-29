@@ -16,6 +16,7 @@
 |Duty cycle                                   |Percentage of High Time to Period Time. (High Time / Period Time) * 100%                       |
 |ECU                                          |Electronic Control Unit                                                                        |
 |ECAP                                         |Enhanced Capture                                                                               |
+|HRCAP                                        |High resolution Capture                                                                        |
 |ECAP instance                                |Single ECAP hardware unit                                                                      |
 |GPIO                                         |General Purpose Input Output                                                                   |
 |High time                                    |Time in ticks during which signal level is high                                                |
@@ -98,6 +99,26 @@ In addition to these capture modes, the eCAP peripheral offers a high degree of 
 Cdd Ecap Hardware Block Diagram
 ```
 
+Value of the event prescalar other than 1 will make the duty cycle of the signal as 50%. Signal measurement and time-stamp modes are not recommended to use in this case as duty and high time calculation may not give true picture of the actual signal.
+User can refer to the below diagram
+
+```{figure} Assets/images/Cdd_Ecap_Prescale.png
+:alt: Cdd Ecap Prescale output
+:align: center
+
+Cdd Ecap Prescaled waveform output Diagram.
+```
+
+#### High Resolution capture mode
+
+HRCAP (High Resolution Capture) mode is a specialized capability of the ECAP (Enhanced Capture) module that provides higher precision timing measurements. All eCAP hardware is accessible to the HRCAP module. HRCAP module doesn't work on the eCAP clock(SYSCLK),
+it works on an internal clock called HRCLK(high resolution clock). So, the capture registers will capture the values in HRCLK domain. For this APIs are provided to convert the captured time-stamps from HRCLK domain to SYSCLK domain. HRCAP works on a calibration
+logic which is always running in the background. The calibration logic essentially calculates the scalefactor for timestamp conversion from HRCLK to SYSCLK domain. While capturing pulses using HRCAP, the capture registers also store information about the integer
+as well as the fractional part of the captured pulse. So, the user must use float while dealing with HRCAP calculations and measurements otherwise they will lose the accuracy.
+
+HRCAP has some variation in performance which results in a probability distribution. Pulse width of the measured signal can affect the accuracy and standard deviation of the measurement by HRCAP.
+For more information user can refer to the device datasheet provided in this link: [datasheet](https://www.ti.com/lit/ds/symlink/f29h859tu-q1.pdf)
+
 #### Measurement modes
 
 ```{figure} Assets/images/Cdd_Ecap_Waveform_Edge_Counting.png
@@ -150,6 +171,7 @@ Features Supported at a high level are:
 - Interrupt on either of the four events
 - Continuous mode capture of time stamps in a four-deep circular buffer
 - Difference (Delta) mode time-stamp capture and Absolute time-stamp capture
+- HR mode is supported for high resolution capture of the signals
 
 #### Not supported Features
 
@@ -200,7 +222,7 @@ None
  ┣ 📜CMakeLists.txt\
  ┗ 📜CMakePresets.json
 
-```{figure} Assets/images/Cdd_Ecap_HeaderFile_Structure.png
+```{figure} Assets/images/Cdd_Ecap_Header_File_Structure.png
 :alt: Cdd Ecap Header File Structure
 :align: center
 
@@ -239,6 +261,8 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 |API service Cdd_Ecap_Init called when module already initialized             |CDD_ECAP_E_ALREADY_INITIALIZED       |0x17U       |
 |API service called when notify interval is invalid                           |CDD_ECAP_E_PARAM_NOTIFY_INTERVAL     |0x18U       |
 |API service Cdd_Ecap_GetVersionInfo called and parameter is invalid          |CDD_ECAP_E_PARAM_VINFO               |0x19U       |
+|API service called with an invalid or not feasible start level               |CDD_ECAP_E_PARAM_START_LEVEL         |0x1AU       |
+|API service called with an invalid channel in the HR mode                    |CDD_ECAP_E_HR_CHANNEL                |0x1BU       |
 
 ### Used resources
 
@@ -259,6 +283,8 @@ Cdd_Ecap driver provides ISRs. The ISRs are implemented in the Cdd_Ecap_Irq.c fi
 | CDD ECAP Channel 3              | Cdd_Ecap_ch3Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
 | CDD ECAP Channel 4              | Cdd_Ecap_ch4Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
 | CDD ECAP Channel 5              | Cdd_Ecap_ch5Notify            | Depends on the ECAP HW instance used for the Cdd ECAP channel. ECAP1_INT/ECAP2_INT/ECAP3_INT/ECAP4_INT/ECAP5_INT/ECAP6_INT    |
+| CDD ECAP Channel 4              | Cdd_Ecap_HR_ch4Notify         | Depends on the HRCAP HW instance used for the Cdd ECAP channel. HRCAP5_INT/HRCAP6_INT                                         |
+| CDD ECAP Channel 5              | Cdd_Ecap_HR_ch5Notify         | Depends on the HRCAP HW instance used for the Cdd ECAP channel.  HRCAP5_INT/HRCAP6_INT                                        |
 
 ```{Note}
 Same Interrupt Category needs to be configured in both Cdd_Ecap and OS Modules.
@@ -348,6 +374,19 @@ Configuration of an individual CDD ECAP channel.
 | **Max-value** | 5 |
 | **Min-value** | 0 |
 
+###### CddEcapEmulationMode
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapEmulationMode |
+| **Description** | Configures the emulation mode of the Cdd Ecap. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | CDD_ECAP_EMULATION_FREE_RUN |
+| **Range** | CDD_ECAP_EMULATION_STOP<br>CDD_ECAP_EMULATION_RUN_TO_ZERO<br>CDD_ECAP_EMULATION_FREE_RUN |
+
 ###### CddEcapDefaultStartEdge
 
 | Item ||
@@ -372,6 +411,7 @@ Configuration of an individual CDD ECAP channel.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ECAP_INPUT_INPUTXBAR1 |
+| **Range** | CDD_ECAP_INPUT_INPUTXBAR1<br>CDD_ECAP_INPUT_INPUTXBAR2<br>CDD_ECAP_INPUT_INPUTXBAR3<br>CDD_ECAP_INPUT_INPUTXBAR4<br>CDD_ECAP_INPUT_INPUTXBAR5<br>CDD_ECAP_INPUT_INPUTXBAR6<br>CDD_ECAP_INPUT_INPUTXBAR7<br>CDD_ECAP_INPUT_INPUTXBAR8<br>CDD_ECAP_INPUT_INPUTXBAR9<br>CDD_ECAP_INPUT_INPUTXBAR10<br>CDD_ECAP_INPUT_INPUTXBAR11<br>CDD_ECAP_INPUT_INPUTXBAR12<br>CDD_ECAP_INPUT_INPUTXBAR13<br>CDD_ECAP_INPUT_INPUTXBAR14<br>CDD_ECAP_INPUT_INPUTXBAR15<br>CDD_ECAP_INPUT_INPUTXBAR16<br>CDD_ECAP_INPUT_ECAP0_CLB1_OUT14<br>CDD_ECAP_INPUT_ECAP1_CLB1_OUT14<br>CDD_ECAP_INPUT_ECAP0_CLB1_OUT15<br>CDD_ECAP_INPUT_ECAP1_CLB1_OUT15<br>CDD_ECAP_INPUT_ECAP2_CLB2_OUT14<br>CDD_ECAP_INPUT_ECAP3_CLB2_OUT14<br>CDD_ECAP_INPUT_ECAP4_CLB2_OUT14<br>CDD_ECAP_INPUT_ECAP2_CLB2_OUT15<br>CDD_ECAP_INPUT_ECAP3_CLB2_OUT15<br>CDD_ECAP_INPUT_ECAP4_CLB2_OUT15<br>CDD_ECAP_INPUT_ECAP5_CLB3_OUT14<br>CDD_ECAP_INPUT_ECAP5_CLB3_OUT15<br>CDD_ECAP_INPUT_ECAP5_CLB4_OUT14<br>CDD_ECAP_INPUT_ECAP5_CLB4_OUT15<br>CDD_ECAP_INPUT_ECAP0_CLB5_OUT14<br>CDD_ECAP_INPUT_ECAP1_CLB5_OUT14<br>CDD_ECAP_INPUT_ECAP0_CLB5_OUT15<br>CDD_ECAP_INPUT_ECAP1_CLB5_OUT15<br>CDD_ECAP_INPUT_ECAP2_CLB6_OUT14<br>CDD_ECAP_INPUT_ECAP3_CLB6_OUT14<br>CDD_ECAP_INPUT_ECAP4_CLB6_OUT14<br>CDD_ECAP_INPUT_ECAP2_CLB6_OUT15<br>CDD_ECAP_INPUT_ECAP3_CLB6_OUT15<br>CDD_ECAP_INPUT_ECAP4_CLB6_OUT15<br>CDD_ECAP_INPUT_OUTPUTXBAR1<br>CDD_ECAP_INPUT_OUTPUTXBAR2<br>CDD_ECAP_INPUT_OUTPUTXBAR3<br>CDD_ECAP_INPUT_OUTPUTXBAR4<br>CDD_ECAP_INPUT_OUTPUTXBAR5<br>CDD_ECAP_INPUT_OUTPUTXBAR6<br>CDD_ECAP_INPUT_OUTPUTXBAR7<br>CDD_ECAP_INPUT_OUTPUTXBAR8<br>CDD_ECAP_INPUT_ADC_E_EVENT4<br>CDD_ECAP_INPUT_ADC_E_EVENT3<br>CDD_ECAP_INPUT_ADC_E_EVENT2<br>CDD_ECAP_INPUT_ADC_E_EVENT1<br>CDD_ECAP_INPUT_ADC_D_EVENT4<br>CDD_ECAP_INPUT_ADC_D_EVENT3<br>CDD_ECAP_INPUT_ADC_D_EVENT2<br>CDD_ECAP_INPUT_ADC_D_EVENT1<br>CDD_ECAP_INPUT_ADC_C_EVENT4<br>CDD_ECAP_INPUT_ADC_C_EVENT3<br>CDD_ECAP_INPUT_ADC_C_EVENT2<br>CDD_ECAP_INPUT_ADC_C_EVENT1<br>CDD_ECAP_INPUT_ADC_B_EVENT4<br>CDD_ECAP_INPUT_ADC_B_EVENT3<br>CDD_ECAP_INPUT_ADC_B_EVENT2<br>CDD_ECAP_INPUT_ADC_B_EVENT1<br>CDD_ECAP_INPUT_ADC_A_EVENT4<br>CDD_ECAP_INPUT_ADC_A_EVENT3<br>CDD_ECAP_INPUT_ADC_A_EVENT2<br>CDD_ECAP_INPUT_ADC_A_EVENT1<br>CDD_ECAP_INPUT_FSIA_RX_MSR_LINE<br>CDD_ECAP_INPUT_FSIA_RX_MSR_LINE_RISE<br>CDD_ECAP_INPUT_FSIA_RX_MSR_LINE_FALL<br>CDD_ECAP_INPUT_FSIB_RX_MSR_LINE<br>CDD_ECAP_INPUT_FSIB_RX_MSR_LINE_RISE<br>CDD_ECAP_INPUT_FSIB_RX_MSR_LINE_FALL<br>CDD_ECAP_INPUT_FSIC_RX_MSR_LINE<br>CDD_ECAP_INPUT_FSIC_RX_MSR_LINE_RISE<br>CDD_ECAP_INPUT_FSIC_RX_MSR_LINE_FALL<br>CDD_ECAP_INPUT_FSID_RX_MSR_LINE<br>CDD_ECAP_INPUT_FSID_RX_MSR_LINE_RISE<br>CDD_ECAP_INPUT_FSID_RX_MSR_LINE_FALL<br>CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM2_FLT1_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT2_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT3_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM2_FLT4_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT1_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_ECAP4_ECAP5_DELAY_CLK<br>CDD_ECAP_INPUT_ECAP5_ECAP4_DELAY_CLK<br>CDD_ECAP_INPUT_ECATSYNC0<br>CDD_ECAP_INPUT_ECATSYNC1<br>CDD_ECAP_INPUT_CMPSS1_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS2_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS3_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS4_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS5_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS6_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS7_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS8_CTRIP_LOW<br>CDD_ECAP_INPUT_CMPSS1_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS2_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS3_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS4_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS5_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS6_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS7_CTRIP_HIGH<br>CDD_ECAP_INPUT_CMPSS8_CTRIP_HIGH<br>CDD_ECAP_INPUT_GPIO8<br>CDD_ECAP_INPUT_GPIO9<br>CDD_ECAP_INPUT_GPIO22<br>CDD_ECAP_INPUT_GPIO23<br>CDD_ECAP_INPUT_CMPSS1_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS2_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS3_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS4_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS5_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS6_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS7_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_CMPSS8_CTRIP_HIGH_OR_LOW<br>CDD_ECAP_INPUT_ECAP0_INPUTXBAR7<br>CDD_ECAP_INPUT_ECAP1_INPUTXBAR8<br>CDD_ECAP_INPUT_ECAP2_INPUTXBAR9<br>CDD_ECAP_INPUT_ECAP3_INPUTXBAR10<br>CDD_ECAP_INPUT_ECAP4_INPUTXBAR11<br>CDD_ECAP_INPUT_ECAP5_INPUTXBAR12<br>CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT1_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT2_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT3_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_Z<br>CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM3_FLT1_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM3_FLT2_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM3_FLT3_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_HIGH<br>CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM4_FLT4_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT1_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT2_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT3_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_SDFM3_FLT4_COMPARE_HIGH_OR_LOW<br>CDD_ECAP_INPUT_EPWM18_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM17_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM16_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM15_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM14_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM13_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM12_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM11_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM10_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM9_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM8_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM7_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM6_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM5_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM4_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM3_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM2_DEL_ACTIVE<br>CDD_ECAP_INPUT_EPWM1_DEL_ACTIVE<br>CDD_ECAP_INPUT_GPIO11<br>CDD_ECAP_INPUT_GPIO12<br>CDD_ECAP_INPUT_GPIO13<br>CDD_ECAP_INPUT_GPIO14<br>CDD_ECAP_INPUT_ECAP0_EPG1_DATAOUT49<br>CDD_ECAP_INPUT_ECAP1_EPG1_DATAOUT50<br>CDD_ECAP_INPUT_ECAP2_EPG1_DATAOUT51<br>CDD_ECAP_INPUT_ECAP3_EPG1_DATAOUT52<br>CDD_ECAP_INPUT_ECAP4_EPG1_DATAOUT53<br>CDD_ECAP_INPUT_ECAP5_EPG1_DATAOUT54 |
 
 ###### CddEcapIrqType
 
@@ -410,6 +450,7 @@ Configuration of an individual CDD ECAP channel.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ECAP_PRESCALAR_1 |
+| **Range** | CDD_ECAP_PRESCALAR_1<br>CDD_ECAP_PRESCALAR_2<br>CDD_ECAP_PRESCALAR_4<br>CDD_ECAP_PRESCALAR_6<br>CDD_ECAP_PRESCALAR_8<br>CDD_ECAP_PRESCALAR_10<br>CDD_ECAP_PRESCALAR_12<br>CDD_ECAP_PRESCALAR_14<br>CDD_ECAP_PRESCALAR_16<br>CDD_ECAP_PRESCALAR_18<br>CDD_ECAP_PRESCALAR_20<br>CDD_ECAP_PRESCALAR_22<br>CDD_ECAP_PRESCALAR_24<br>CDD_ECAP_PRESCALAR_26<br>CDD_ECAP_PRESCALAR_28<br>CDD_ECAP_PRESCALAR_30<br>CDD_ECAP_PRESCALAR_32<br>CDD_ECAP_PRESCALAR_34<br>CDD_ECAP_PRESCALAR_36<br>CDD_ECAP_PRESCALAR_38<br>CDD_ECAP_PRESCALAR_40<br>CDD_ECAP_PRESCALAR_42<br>CDD_ECAP_PRESCALAR_44<br>CDD_ECAP_PRESCALAR_46<br>CDD_ECAP_PRESCALAR_48<br>CDD_ECAP_PRESCALAR_50<br>CDD_ECAP_PRESCALAR_52<br>CDD_ECAP_PRESCALAR_54<br>CDD_ECAP_PRESCALAR_56<br>CDD_ECAP_PRESCALAR_58<br>CDD_ECAP_PRESCALAR_60<br>CDD_ECAP_PRESCALAR_62 |
 
 ###### CddEcapClkFrequency
 
@@ -424,6 +465,18 @@ Configuration of an individual CDD ECAP channel.
 | **Default-value** | 200000000 |
 | **Max-value** | 200000000 |
 | **Min-value** | 2000000 |
+
+###### CddEcapHREnable
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapHREnable |
+| **Description** | This parameter enables HR mode for a particular Cdd Ecap channel. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 
 ###### CddEcapFunctionalClock
 
@@ -450,7 +503,7 @@ This container contains the configuration (parameters) in case the measurement m
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ECAP_HIGH_TIME |
-| **Range** | CDD_ECAP_DUTY_CYCLE<br>CDD_ECAP_HIGH_TIME<br>CDD_ECAP_LOW_TIME<br>CDD_ECAP_PERIOD_TIME |
+| **Range** | CDD_ECAP_HIGH_TIME<br>CDD_ECAP_LOW_TIME<br>CDD_ECAP_PERIOD_TIME |
 
 ##### CddEcapTimestampMeasurement
 This container contains the configuration (parameters) in case the measurement mode is "CddEcapTimestamp"
@@ -611,6 +664,18 @@ Configuration of general CDD ECAP parameters.
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
+
+##### CddEcapTimestampApi
+
+| Item ||
+|--------|---------------|
+| **Name** | CddEcapTimestampApi |
+| **Description** | Adds / removes all services related to the timestamping functionality as listed below from the code: CddEcap_StartTimestamp(), CddEcap_StopTimestamp(), CddEcap_GetTimestampIndex(). |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| **Default-value** | false |
 #### Steps To Configure Cdd Ecap Module
 
 1. Open EB Tresos configurator tool, load Cdd_Ecap module. Select the Precompile Config Variant.
@@ -629,7 +694,7 @@ This example configures 4 channels of Cdd ECAP in different modes and captures a
 
 | Cdd Ecap Channel | Measurement Mode           | Input       | ECAP Instance and interrupt used | Notification handler | Activation      | Other                                             |
 |------------------|----------------------------|-------------|----------------------------------|----------------------|-----------------|---------------------------------------------------|
-| Channel 0        | Signal Measurement Mode    |INPUTXBAR7   | ECAP1, Interrupt 78              |                      |                 | Signal Measurement property is Duty Cycle         |
+| Channel 0        | Signal Measurement Mode    |INPUTXBAR7   | ECAP1, Interrupt 78              |                      |                 | Signal Measurement property is high time          |
 | Channel 1        | Time Stamp Mode            |INPUTXBAR7   | ECAP2, Interrupt 79              |TimeStampNotify       | Rising Edge     | Buffer type is Circular                           |
 | Channel 2        | Edge Counter Mode          |INPUTXBAR7   | ECAP3, Interrupt 80              |                      | Rising Edge     |                                                   |
 | Channel 3        | Signal Edge Detect         |INPUTXBAR7   | ECAP4, Interrupt 81              |SignalNotify          | Rising Edge     |                                                   |
@@ -666,6 +731,63 @@ PWM signal (EPWM1_A) is generated on the GPIO0.
 Executing Cdd_Ecap_Capture_Signal example
 High time of the signal is: 251
 Period of the signal is: 1002
+```
+
+#### Cdd_Ecap_HrMode
+
+##### Overview of Cdd_Ecap_HrMode
+
+This example configures ECAP in HR mode and measures the high time and period time. This example demonstrates the HR mode for precise signal measurement.
+A PWM signal of fixed duty and time period is used for this purpose.
+
+| Cdd Ecap Channel | Measurement Mode           | Input       | ECAP Instance and interrupt used | Notification handler | Activation      | Other                                             |
+|------------------|----------------------------|-------------|----------------------------------|----------------------|-----------------|---------------------------------------------------|
+| Channel 0        | Signal Measurement Mode    |INPUTXBAR7   | ECAP5, HRCAP5, Interrupt 82, 83  |                      |                 | Signal Measurement property is high time          |
+
+Input Xbar 7 is configured to use GPIO1 as input
+PWM signal (EPWM1_A) is generated on the GPIO0.
+
+- Cdd_Ecap_HrMode
+  - EcuM_Init()
+    - Initializes clock to 200 MHz using Mcu_Init().
+    - Initializes pins as GPIO Outputs and GPIO Inputs using Port_Init()
+    - Initializes Cdd_Ecap driver using Cdd_Ecap_Init()
+  - Cdd_Ecap_StartSignalMeasurement starts signal measurement on Cdd ECAP Channel 0 using ECAP5. Cdd_Ecap_GetDutyCycleValues and Cdd_Ecap_GetTimeElapsed gets duty cycle values.
+  - Cdd_Ecap_GetHrScaleFactor returns scalefactor.
+  - Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp converts timestamp from HRCLK to SYSCLK domain
+  - Cdd_Ecap_DeInit de-initializes Cdd ECAP
+
+#### Setup required to run Cdd_Ecap_HrMode
+
+- Install Code Composer Studio(CCS) latest version
+- Install latest c29 compiler
+- Connect the hardware (Loopback from GPIO0 to GPIO1. On HSEC dock, this is from HSEC49 to HSEC50) and power up
+- Connect the uart set up to check the log on serial console
+
+#### How to run Cdd_Ecap_HrMode
+
+- Open CCS and import Cdd Ecap Example
+- Build project and start debug project
+
+#### Sample Logs of Cdd_Ecap_HrMode
+
+```{code-block}
+Cdd_Ecap_HrMode Example Application - STARTS!
+
+Cdd Ecap MCAL Version Info
+--------------------------
+Vendor ID : 44
+Module ID : 255
+SW Major Version : 2
+SW Minor Version : 0
+SW Patch Version : 0
+
+Signal Measurement Start on Channel 0 ...
+Example passed!!!
+High time of the signal in nano-secs is: 1251.290649
+Period of the signal in nano-secs is: 5010.710938
+
+Cdd_Ecap_HrMode Example Application - ENDS!
 ```
 
 #### File Structure

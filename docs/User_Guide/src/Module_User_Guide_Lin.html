@@ -47,7 +47,7 @@
             <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
           </a>
               <div class="version">
-                01.02.01
+                01.03.00
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -96,18 +96,20 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">4.5.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#configuration-precautions">4.5.10.1. Configuration Precautions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#lindemeventparameterrefs">4.5.10.2. LinDemEventParameterRefs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#lingeneral">4.5.10.3. LinGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#linglobalconfig">4.5.10.4. LinGlobalConfig</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-lin-module">4.5.10.5. Steps To Configure Lin Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#migration-guide-to-v02-00-00-from-v01-01-00-or-any-older-versions">4.5.10.1. Migration Guide to v02.00.00 from v01.01.00 or any older versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-precautions">4.5.10.2. Configuration Precautions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lindemeventparameterrefs">4.5.10.3. LinDemEventParameterRefs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lingeneral">4.5.10.4. LinGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linglobalconfig">4.5.10.5. LinGlobalConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-lin-module">4.5.10.6. Steps To Configure Lin Module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#examples">4.5.11. Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#lin-example-init-sleep-wakeup">4.5.11.1. Lin_Example_Init_Sleep_Wakeup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#lin-example-senddata">4.5.11.2. Lin_Example_SendData</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#lin-example-sleep-wakeup-interrupt">4.5.11.3. Lin_Example_Sleep_Wakeup_Interrupt</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.5.11.4. File Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-setup-required">4.5.11.1. Hardware Setup Required</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lin-example-init-sleep-wakeup">4.5.11.2. Lin_Example_Init_Sleep_Wakeup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lin-example-senddata">4.5.11.3. Lin_Example_SendData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lin-example-sleep-wakeup-interrupt">4.5.11.4. Lin_Example_Sleep_Wakeup_Interrupt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.5.11.5. File Structure</a></li>
 </ul>
 </li>
 </ul>
@@ -123,6 +125,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -642,7 +645,7 @@ For LIN Module, data consistency and exclusive access to critical sections are r
 <tr class="row-even"><td><p>LIN_EXCLUSIVE_AREA_0</p></td>
 <td><p>Lin_SendFrame<br>Lin_GoToSleep<br>Lin_GoToSleepInternal<br>Lin_Wakeup<br>Lin_WakeupInternal<br>Lin_GetStatus</p></td>
 <td><p>To protect against multiple access for shared resources</p></td>
-<td><p><strong>OS_RESOURCE</strong> : If the LIN APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br><strong>None</strong>: If LIN APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed.</p></td>
+<td><p><strong>ALL_INTERRUPT_BLOCKING</strong> : All interrupts should be blocked to ensure consistent transmission of LIN master response frames. This is important to ensure the proper transmission of master response frames, where header and response are transmitted separately and any interrupt occurring between them can affect the master response in-frame response space.</p></td>
 </tr>
 </tbody>
 </table>
@@ -658,8 +661,22 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 <p class="admonition-title">Note</p>
 <p>Refer section <a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html#getting-started-with-eb-tresos"><span class="std std-ref">Getting Started with EB Tresos</span></a> of Chapter <strong>MCAL Configuration and EB Tresos</strong> for more information on how to load plugin and generate the configuration files.</p>
 </div>
+<section id="migration-guide-to-v02-00-00-from-v01-01-00-or-any-older-versions">
+<h3><span class="section-number">4.5.10.1. </span>Migration Guide to v02.00.00 from v01.01.00 or any older versions<a class="headerlink" href="#migration-guide-to-v02-00-00-from-v01-01-00-or-any-older-versions" title="Link to this heading"></a></h3>
+<p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
+In case of Post build variant, upper modules that call the Lin_Init function will need to use the new configuration structure name. For example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.01.00 or any older versions) */</span>
+<span class="n">Lin_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Lin_LinGlobalConfig</span><span class="p">);</span>
+
+<span class="cm">/* New code (v02.00.00) */</span>
+<span class="n">Lin_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Lin_Config</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This change ensures compliance with AUTOSAR naming conventions.</p>
+<p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
+</section>
 <section id="configuration-precautions">
-<h3><span class="section-number">4.5.10.1. </span>Configuration Precautions<a class="headerlink" href="#configuration-precautions" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.5.10.2. </span>Configuration Precautions<a class="headerlink" href="#configuration-precautions" title="Link to this heading"></a></h3>
 <p>User should pass the configuration input only from EB Tresos tool. Manual changes in input config files might lead to unexpected behavior.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -667,7 +684,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </div>
 </section>
 <section id="lindemeventparameterrefs">
-<h3><span class="section-number">4.5.10.2. </span>LinDemEventParameterRefs<a class="headerlink" href="#lindemeventparameterrefs" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.5.10.3. </span>LinDemEventParameterRefs<a class="headerlink" href="#lindemeventparameterrefs" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -712,10 +729,10 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="lingeneral">
-<h3><span class="section-number">4.5.10.3. </span>LinGeneral<a class="headerlink" href="#lingeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.5.10.4. </span>LinGeneral<a class="headerlink" href="#lingeneral" title="Link to this heading"></a></h3>
 <p>This container contains the parameters related to each LIN Driver Unit.</p>
 <section id="linindex">
-<h4><span class="section-number">4.5.10.3.1. </span>LinIndex<a class="headerlink" href="#linindex" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.10.4.1. </span>LinIndex<a class="headerlink" href="#linindex" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -757,7 +774,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="lintimeoutduration">
-<h4><span class="section-number">4.5.10.3.2. </span>LinTimeoutDuration<a class="headerlink" href="#lintimeoutduration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.10.4.2. </span>LinTimeoutDuration<a class="headerlink" href="#lintimeoutduration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -799,7 +816,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="lindeverrordetect">
-<h4><span class="section-number">4.5.10.3.3. </span>LinDevErrorDetect<a class="headerlink" href="#lindeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.10.4.3. </span>LinDevErrorDetect<a class="headerlink" href="#lindeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -835,7 +852,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="linversioninfoapi">
-<h4><span class="section-number">4.5.10.3.4. </span>LinVersionInfoApi<a class="headerlink" href="#linversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.10.4.4. </span>LinVersionInfoApi<a class="headerlink" href="#linversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -872,13 +889,13 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </section>
 </section>
 <section id="linglobalconfig">
-<h3><span class="section-number">4.5.10.4. </span>LinGlobalConfig<a class="headerlink" href="#linglobalconfig" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.5.10.5. </span>LinGlobalConfig<a class="headerlink" href="#linglobalconfig" title="Link to this heading"></a></h3>
 <p>This container contains the global configuration parameter of the Lin driver.</p>
 <section id="linchannel">
-<h4><span class="section-number">4.5.10.4.1. </span>LinChannel<a class="headerlink" href="#linchannel" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.10.5.1. </span>LinChannel<a class="headerlink" href="#linchannel" title="Link to this heading"></a></h4>
 <p>This container contains the configuration (parameters) of the LIN Controller(s).</p>
 <section id="linchannelbaudrate">
-<h5><span class="section-number">4.5.10.4.1.1. </span>LinChannelBaudRate<a class="headerlink" href="#linchannelbaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.1.1. </span>LinChannelBaudRate<a class="headerlink" href="#linchannelbaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -920,7 +937,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="linchannelid">
-<h5><span class="section-number">4.5.10.4.1.2. </span>LinChannelId<a class="headerlink" href="#linchannelid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.1.2. </span>LinChannelId<a class="headerlink" href="#linchannelid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -962,7 +979,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="lininstance">
-<h5><span class="section-number">4.5.10.4.1.3. </span>LinInstance<a class="headerlink" href="#lininstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.1.3. </span>LinInstance<a class="headerlink" href="#lininstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1001,7 +1018,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="linloopbackmode">
-<h5><span class="section-number">4.5.10.4.1.4. </span>LinLoopbackMode<a class="headerlink" href="#linloopbackmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.1.4. </span>LinLoopbackMode<a class="headerlink" href="#linloopbackmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1040,7 +1057,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="linchannelwakeupsupport">
-<h5><span class="section-number">4.5.10.4.1.5. </span>LinChannelWakeupSupport<a class="headerlink" href="#linchannelwakeupsupport" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.1.5. </span>LinChannelWakeupSupport<a class="headerlink" href="#linchannelwakeupsupport" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1076,7 +1093,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="linisrtype">
-<h5><span class="section-number">4.5.10.4.1.6. </span>LinISRType<a class="headerlink" href="#linisrtype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.1.6. </span>LinISRType<a class="headerlink" href="#linisrtype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1115,7 +1132,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="lininterruptlineselect">
-<h5><span class="section-number">4.5.10.4.1.7. </span>LinInterruptLineSelect<a class="headerlink" href="#lininterruptlineselect" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.1.7. </span>LinInterruptLineSelect<a class="headerlink" href="#lininterruptlineselect" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1154,7 +1171,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="linchannelecumwakeupsource">
-<h5><span class="section-number">4.5.10.4.1.8. </span>LinChannelEcuMWakeupSource<a class="headerlink" href="#linchannelecumwakeupsource" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.1.8. </span>LinChannelEcuMWakeupSource<a class="headerlink" href="#linchannelecumwakeupsource" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1199,7 +1216,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </table>
 </section>
 <section id="linclockref">
-<h5><span class="section-number">4.5.10.4.1.9. </span>LinClockRef<a class="headerlink" href="#linclockref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.1.9. </span>LinClockRef<a class="headerlink" href="#linclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1233,10 +1250,10 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </section>
 </section>
 <section id="linbaudrateconfig">
-<h4><span class="section-number">4.5.10.4.2. </span>LinBaudrateConfig<a class="headerlink" href="#linbaudrateconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.10.5.2. </span>LinBaudrateConfig<a class="headerlink" href="#linbaudrateconfig" title="Link to this heading"></a></h4>
 <p>This container contains the baudrate configuration parameter of the Lin driver.</p>
 <section id="linchannelprescalar">
-<h5><span class="section-number">4.5.10.4.2.1. </span>LinChannelPrescalar<a class="headerlink" href="#linchannelprescalar" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.5.10.5.2.1. </span>LinChannelPrescalar<a class="headerlink" href="#linchannelprescalar" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1283,7 +1300,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </section>
 </section>
 <section id="steps-to-configure-lin-module">
-<h3><span class="section-number">4.5.10.5. </span>Steps To Configure Lin Module<a class="headerlink" href="#steps-to-configure-lin-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.5.10.6. </span>Steps To Configure Lin Module<a class="headerlink" href="#steps-to-configure-lin-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Port, Mcu, EcuM, Os, Dem and Lin modules.</p></li>
 <li><p>Open PORT module plugin and configure required pins as LINTX, LINRX.</p></li>
@@ -1298,10 +1315,31 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 <section id="examples">
 <h2><span class="section-number">4.5.11. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>The example application demonstrates use of Lin module, the list below identifies key steps performed in the examples.</p>
+<section id="hardware-setup-required">
+<h3><span class="section-number">4.5.11.1. </span>Hardware Setup Required<a class="headerlink" href="#hardware-setup-required" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Since there is no inbuilt transceiver, external transceiver needs to be connected. Users can use <a class="reference external" href="https://www.ti.com/tool/TLIN1021DEVM">TLIN1021DEVM</a> as external transceiver.</p></li>
+<li><p>Refer to the documentation or user manual of the PLIN device and TLIN1021DEVM.</p></li>
+<li><p>For reference, user can follow the connection as per the following image.</p></li>
+</ul>
+<figure class="align-center" id="id5">
+<img alt="LIN External Hardware Setup Required" src="../_images/Lin_extsetup.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.19 </span><span class="caption-text">LIN External Hardware Setup Required</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Open the PLIN configuration software on your PC. The software is usually provided by the manufacturer of the PLIN device.</p></li>
+<li><p>Establish connection between the software and the PLIN using the “Connect” option.</p></li>
+<li><p>Set the baud rate to 9600 and select mode as Slave.</p></li>
+<li><p>Ensure all connections are secure and properly plugged into their respective connectors on both the PLIN device and the board.</p></li>
+<li><p>While running Lin_Example_SendData example, make sure to configure the LIN frames 20h and 30h as Publisher in the PLIN configuration software.</p></li>
+</ul>
+</section>
 <section id="lin-example-init-sleep-wakeup">
-<h3><span class="section-number">4.5.11.1. </span>Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#lin-example-init-sleep-wakeup" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.5.11.2. </span>Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#lin-example-init-sleep-wakeup" title="Link to this heading"></a></h3>
 <section id="overview-of-lin-example-init-sleep-wakeup">
-<h4><span class="section-number">4.5.11.1.1. </span>Overview Of Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#overview-of-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.2.1. </span>Overview Of Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#overview-of-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p><strong>Lin_Example_Init_Sleep_Wakeup</strong></p>
 <ul>
@@ -1330,21 +1368,21 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </ul>
 </section>
 <section id="setup-required-to-run-lin-example-init-sleep-wakeup">
-<h4><span class="section-number">4.5.11.1.2. </span>Setup required to run Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#setup-required-to-run-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.2.2. </span>Setup required to run Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#setup-required-to-run-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest C29 compiler</p></li>
 </ul>
 </section>
 <section id="how-to-run-lin-example-init-sleep-wakeup">
-<h4><span class="section-number">4.5.11.1.3. </span>How to run Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#how-to-run-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.2.3. </span>How to run Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#how-to-run-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and import Lin Example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-lin-example-init-sleep-wakeup">
-<h4><span class="section-number">4.5.11.1.4. </span>Sample Log of Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#sample-log-of-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.2.4. </span>Sample Log of Lin_Example_Init_Sleep_Wakeup<a class="headerlink" href="#sample-log-of-lin-example-init-sleep-wakeup" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">LIN</span><span class="w"> </span><span class="n">Driver</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="o">:</span><span class="w"> </span><span class="n">Lin</span><span class="w"> </span><span class="n">Init</span><span class="w"> </span><span class="n">Sleep</span><span class="w"> </span><span class="n">WakeUp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Starts</span><span class="o">!!!</span>
 
 <span class="o">---------------------------------------------------------------</span>
@@ -1355,7 +1393,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 <span class="w"> </span><span class="o">---------------------</span>
 <span class="w"> </span><span class="n">Vendor</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">44</span>
 <span class="w"> </span><span class="n">Module</span><span class="w"> </span><span class="n">ID</span><span class="w">           </span><span class="o">:</span><span class="w"> </span><span class="mi">82</span>
-<span class="w"> </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w"> </span><span class="n">SW</span><span class="w"> </span><span class="n">Major</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">2</span>
 <span class="w"> </span><span class="n">SW</span><span class="w"> </span><span class="n">Minor</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="w"> </span><span class="n">SW</span><span class="w"> </span><span class="n">Patch</span><span class="w"> </span><span class="n">Version</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="mi">0</span>
 <span class="w"> </span>
@@ -1374,6 +1412,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 <span class="o">---------------------------------------------------------------</span>
 
 <span class="n">Test</span><span class="w"> </span><span class="mi">5</span><span class="o">:</span><span class="w"> </span><span class="n">Lin</span><span class="w"> </span><span class="n">Module</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Sleep</span>
+<span class="n">Sending</span><span class="w"> </span><span class="n">Go</span><span class="w"> </span><span class="n">To</span><span class="w"> </span><span class="n">Sleep</span><span class="w"> </span><span class="n">Command</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">Lin</span><span class="w"> </span><span class="n">Bus</span><span class="p">...</span>
 <span class="n">Lin</span><span class="w"> </span><span class="n">Go</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">Sleep</span><span class="w"> </span><span class="n">Command</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">sent</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">Lin</span><span class="w"> </span><span class="n">Bus</span><span class="w"> </span><span class="o">!!!</span>
 <span class="n">Lin</span><span class="w"> </span><span class="n">going</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">Sleep</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">Success</span><span class="w"> </span><span class="o">!!!</span>
 <span class="o">---------------------------------------------------------------</span>
@@ -1384,16 +1423,16 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 <span class="o">---------------------------------------------------------------</span>
 
 <span class="o">---------------------------------------------------------------</span>
-<span class="n">LIN</span><span class="w"> </span><span class="n">Example</span><span class="w"> </span><span class="n">Init</span><span class="w"> </span><span class="n">Sleep</span><span class="w"> </span><span class="n">WakeUp</span><span class="w"> </span><span class="n">Run</span><span class="w"> </span><span class="n">SUCCESS</span><span class="w"> </span>
+<span class="n">LIN</span><span class="w"> </span><span class="n">Example</span><span class="w"> </span><span class="n">Init</span><span class="w"> </span><span class="n">Sleep</span><span class="w"> </span><span class="n">WakeUp</span><span class="w"> </span><span class="n">Run</span><span class="w"> </span><span class="n">FINISHED</span><span class="w"> </span>
 <span class="o">---------------------------------------------------------------</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="lin-example-senddata">
-<h3><span class="section-number">4.5.11.2. </span>Lin_Example_SendData<a class="headerlink" href="#lin-example-senddata" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.5.11.3. </span>Lin_Example_SendData<a class="headerlink" href="#lin-example-senddata" title="Link to this heading"></a></h3>
 <section id="overview-of-lin-example-senddata">
-<h4><span class="section-number">4.5.11.2.1. </span>Overview Of Lin_Example_SendData<a class="headerlink" href="#overview-of-lin-example-senddata" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.3.1. </span>Overview Of Lin_Example_SendData<a class="headerlink" href="#overview-of-lin-example-senddata" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p><strong>Lin_Example_SendData</strong></p>
 <ul>
@@ -1412,7 +1451,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </ul>
 </section>
 <section id="setup-required-to-run-lin-example-senddata">
-<h4><span class="section-number">4.5.11.2.2. </span>Setup required to run Lin_Example_SendData<a class="headerlink" href="#setup-required-to-run-lin-example-senddata" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.3.2. </span>Setup required to run Lin_Example_SendData<a class="headerlink" href="#setup-required-to-run-lin-example-senddata" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest C29 compiler</p></li>
@@ -1420,7 +1459,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </ul>
 </section>
 <section id="how-to-run-lin-example-senddata">
-<h4><span class="section-number">4.5.11.2.3. </span>How to run Lin_Example_SendData<a class="headerlink" href="#how-to-run-lin-example-senddata" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.3.3. </span>How to run Lin_Example_SendData<a class="headerlink" href="#how-to-run-lin-example-senddata" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and import Lin Example</p></li>
 <li><p>Build project and start debug project</p></li>
@@ -1428,7 +1467,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </ul>
 </section>
 <section id="sample-log-of-lin-example-senddata">
-<h4><span class="section-number">4.5.11.2.4. </span>Sample Log of Lin_Example_SendData<a class="headerlink" href="#sample-log-of-lin-example-senddata" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.3.4. </span>Sample Log of Lin_Example_SendData<a class="headerlink" href="#sample-log-of-lin-example-senddata" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">LIN</span><span class="w"> </span><span class="n">Driver</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="o">:</span><span class="w"> </span><span class="n">Lin</span><span class="w"> </span><span class="n">Send</span><span class="w"> </span><span class="n">Data</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Starts</span><span class="o">!!!</span>
 
 <span class="o">---------------------------------------------------------------</span>
@@ -1467,14 +1506,14 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 <span class="n">Started</span><span class="w"> </span><span class="n">Sending</span><span class="w"> </span><span class="n">Header</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">Lin</span><span class="w"> </span><span class="n">Bus</span><span class="w"> </span><span class="n">For</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x20</span>
 <span class="n">Waiting</span><span class="w"> </span><span class="n">For</span><span class="w"> </span><span class="n">Slave</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">send</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="p">...</span>
 <span class="n">Started</span><span class="w"> </span><span class="n">receiving</span><span class="w"> </span><span class="n">Data</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">Slave</span><span class="p">...</span>
-<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0xa5</span>
-<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x55</span>
-<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0xaa</span>
-<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x55</span>
-<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0xaa</span>
-<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x55</span>
-<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0xaa</span>
-<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x55</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x11</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x22</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x11</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x22</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x11</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x22</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x11</span>
+<span class="n">Data</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">0x22</span>
 <span class="n">Finished</span><span class="w"> </span><span class="n">Receiving</span><span class="w"> </span><span class="n">Data</span>
 <span class="n">Lin</span><span class="w"> </span><span class="n">Send</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LIN</span><span class="w"> </span><span class="n">Slave</span><span class="w"> </span><span class="n">Response</span><span class="w"> </span><span class="n">PASSED</span><span class="o">!!</span>
 <span class="o">---------------------------------------------------------------</span>
@@ -1496,9 +1535,9 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </section>
 </section>
 <section id="lin-example-sleep-wakeup-interrupt">
-<h3><span class="section-number">4.5.11.3. </span>Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.5.11.4. </span>Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h3>
 <section id="overview-of-lin-example-sleep-wakeup-interrupt">
-<h4><span class="section-number">4.5.11.3.1. </span>Overview Of Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#overview-of-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.4.1. </span>Overview Of Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#overview-of-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p><strong>Lin_Example_Sleep_Wakeup_Interrupt</strong></p>
 <ul>
@@ -1522,7 +1561,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </ul>
 </section>
 <section id="setup-required-to-run-lin-example-sleep-wakeup-interrupt">
-<h4><span class="section-number">4.5.11.3.2. </span>Setup required to run Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#setup-required-to-run-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.4.2. </span>Setup required to run Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#setup-required-to-run-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest C29 compiler</p></li>
@@ -1530,7 +1569,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </ul>
 </section>
 <section id="how-to-run-lin-example-sleep-wakeup-interrupt">
-<h4><span class="section-number">4.5.11.3.3. </span>How to run Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#how-to-run-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.4.3. </span>How to run Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#how-to-run-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and import Lin Example</p></li>
 <li><p>Build project and start debug project</p></li>
@@ -1538,7 +1577,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 </ul>
 </section>
 <section id="sample-log-of-lin-example-sleep-wakeup-interrupt">
-<h4><span class="section-number">4.5.11.3.4. </span>Sample Log of Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#sample-log-of-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.5.11.4.4. </span>Sample Log of Lin_Example_Sleep_Wakeup_Interrupt<a class="headerlink" href="#sample-log-of-lin-example-sleep-wakeup-interrupt" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">LIN</span><span class="w"> </span><span class="n">Driver</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="o">:</span><span class="w"> </span><span class="n">Lin</span><span class="w"> </span><span class="n">Sleep</span><span class="w"> </span><span class="n">WakeUp</span><span class="w"> </span><span class="n">Interrupt</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Starts</span><span class="o">!!!</span>
 
 <span class="o">---------------------------------------------------------------</span>
@@ -1556,14 +1595,14 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 <span class="n">Lin</span><span class="w"> </span><span class="n">Module</span><span class="w"> </span><span class="n">Wake</span><span class="w"> </span><span class="n">Up</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">Sleep</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">WakeUp</span><span class="w"> </span><span class="n">Interrupt</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">Success</span><span class="w"> </span><span class="o">!!!</span>
 
 <span class="o">---------------------------------------------------------------</span>
-<span class="n">LIN</span><span class="w">  </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Wake</span><span class="w"> </span><span class="n">Up</span><span class="w"> </span><span class="n">Interrupt</span><span class="w"> </span><span class="n">PASSED</span><span class="w"> </span><span class="o">!!!</span>
+<span class="n">LIN</span><span class="w"> </span><span class="n">Example</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Wake</span><span class="w"> </span><span class="n">Up</span><span class="w"> </span><span class="n">Interrupt</span><span class="w"> </span><span class="n">PASSED</span><span class="w"> </span><span class="o">!!!</span>
 <span class="o">---------------------------------------------------------------</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="file-structure">
-<h3><span class="section-number">4.5.11.4. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.5.11.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -1678,7 +1717,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Jun 09, 2025.
+          <span class="lastupdated" >Last updated on Aug 30, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 
@@ -1695,7 +1734,7 @@ The associated Lin driver configuration generated source file is <strong>Lin_PBc
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"></span>
-       Current Version: 01.02.01
+       Current Version: 01.03.00
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
