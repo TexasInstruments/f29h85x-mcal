@@ -169,7 +169,8 @@ int main(void)
     AppUtils_Printf("SW Patch Version    : %d\r\n", Mcu_VersionInfo.sw_patch_version);
 #endif
 
-    status = Mcu_ApplCheckRamSection(Mcu_Config_Mcu_ModuleConfiguration_0.Mcu_ConfigRamSection[McuRamSectorSettingConf_0]);
+    status =
+        Mcu_ApplCheckRamSection(Mcu_Config_Mcu_ModuleConfiguration_0.Mcu_ConfigRamSection[McuRamSectorSettingConf_0]);
     if (status != TRUE)
     {
         init_ramsection_return = E_NOT_OK;

@@ -129,7 +129,6 @@ int main(void)
 
     for (cycle = 0U; cycle < CDD_UART_EXAMPLE_READ_INTERRUPT_NUM_TEST_CYCLE; cycle++)
     {
-
         for (testNum = 0U; testNum < CDD_UART_EXAMPLE_READ_INTERRUPT_NUM_TESTS; testNum++)
         {
             /* Read data - Non blocking (Async) call */
@@ -141,6 +140,8 @@ int main(void)
             {
                 do
                 {
+                    McalLib_Delay(1U);
+
                 } while ((FALSE == Cdd_Uart_ReadDone) && (FALSE == Cdd_Uart_Error));
             }
             else
@@ -165,7 +166,6 @@ int main(void)
             /* Get read status */
             (void)Cdd_Uart_GetReadStatus(CddUartConf_CddUartConfigSet_CddUartConfig_0, &readStatus);
         } while (E_NOT_OK == readStatus.Cdd_Uart_BusyStatus);
-
     }
     /* CDD UART DeInit */
     Cdd_Uart_Deinit();

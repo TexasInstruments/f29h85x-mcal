@@ -17,7 +17,7 @@
  *  File:         DeviceSupport_Example_Emulate_f29p58x.c
  *  Generator:    None
  *
- *  Description:  This file contains examples for emulation f29p58x device on f29h85x. 
+ *  Description:  This file contains examples for emulation f29p58x device on f29h85x.
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -81,15 +81,15 @@ int main(void)
     /*Read MCUCNF64 register , offset = 0x2BC*/
     regval = MCAL_LIB_REG_READ32((DEVCFG_BASE + 0x2BC));
     /*f29p58x doesnt contain CPU3, hence corresponding bit for cpu3 is 0*/
-    if(regval == 0x8)
+    if (regval == 0x8)
     {
         AppUtils_Printf("Emulated f29p58x successfully !!!\n");
     }
     else
     {
-        AppUtils_Printf("Register value = %x !!!\n",regval);
+        AppUtils_Printf("Register value = %x !!!\n", regval);
         AppUtils_Printf("FAIL :Emulated f29p58x not emulated !!!\n");
-    } 
-    AppUtils_Printf("Emulated f29p58x successfully !!!\n");  
-    return 0;  
+    }
+    AppUtils_Printf("Emulated f29p58x successfully !!!\n");
+    return 0;
 }

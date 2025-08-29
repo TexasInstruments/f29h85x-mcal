@@ -23,7 +23,6 @@
 #ifndef CDD_IPC_PRIV_H
 #define CDD_IPC_PRIV_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -338,7 +337,6 @@ FUNC(uint64, CDD_IPC_CODE) Cdd_Ipc_ReadCounter(void);
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* CDD_IPC_PRIV_H */
 /*********************************************************************************************************************

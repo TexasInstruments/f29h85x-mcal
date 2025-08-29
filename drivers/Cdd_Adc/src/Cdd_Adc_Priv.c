@@ -840,7 +840,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetSafetyCheckerTolerance(uint32 S
  *
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(uint8, CDD_ADC_CODE) Cdd_Adc_GetSafetyCheckStatus(uint32 Base, Cdd_Adc_CheckerType CheckerNumber,
-                                                                      Cdd_Adc_SafetyCheckFlagType CheckerFlag);
+                                                                    Cdd_Adc_SafetyCheckFlagType CheckerFlag);
 
 /** \brief Clears the safety checker flag status for the specified flag
  *
@@ -1114,23 +1114,20 @@ static FUNC(void, CDD_ADC_CODE)
 #include "Cdd_Adc_MemMap.h"
 
 /* Design MCAL-31355 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SelectOffsetTrimMode(uint32 Base, Cdd_Adc_OffsetTrimType TrimMode)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelectOffsetTrimMode(uint32 Base, Cdd_Adc_OffsetTrimType TrimMode)
 {
     /* Select offset trim mode for the ADC hardware instance */
     HWREGH(Base + ADC_O_CTL2) = (HWREGH(Base + ADC_O_CTL2) & ~(ADC_CTL2_OFFTRIMMODE)) | (uint16)TrimMode;
 }
 
 /* Design MCAL-31356 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SetPrescaler(uint32 Base, Cdd_Adc_PrescaleType Prescale)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetPrescaler(uint32 Base, Cdd_Adc_PrescaleType Prescale)
 {
     HWREGH(Base + ADC_O_CTL2) = (HWREGH(Base + ADC_O_CTL2) & ~ADC_CTL2_PRESCALE_M) | (uint16)Prescale;
 }
 
 /* Design MCAL-31358 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SetIntPulseMode(uint32 Base, Cdd_Adc_EocPulseType PulseMode)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetIntPulseMode(uint32 Base, Cdd_Adc_EocPulseType PulseMode)
 {
     /* Set the position of the pulse */
     HWREGH(Base + ADC_O_CTL1) = (HWREGH(Base + ADC_O_CTL1) & ~ADC_CTL1_INTPULSEPOS) | ((uint16)PulseMode);
@@ -1157,8 +1154,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ForceMultipleSoc(uint32 Base, uint
 }
 
 /* Design MCAL-31360 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SetSocPriority(uint32 Base, Cdd_Adc_SocPriorityType PriorityMode)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetSocPriority(uint32 Base, Cdd_Adc_SocPriorityType PriorityMode)
 {
     HWREGH(Base + ADC_O_SOCPRICTL) =
         (HWREGH(Base + ADC_O_SOCPRICTL) & ~ADC_SOCPRICTL_SOCPRIORITY_M) | ((uint16)PriorityMode);
@@ -1203,8 +1199,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SocGlobalSwTrigger(uint32 SocMask)
 #if (CDD_ADC_EXTCHSEL_CAPABILITY == STD_ON)
 
 /* Design MCAL-31365 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SelSocExtChn(uint32 Base, uint8 SocNum, uint8 ExtChannel)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelSocExtChn(uint32 Base, uint8 SocNum, uint8 ExtChannel)
 {
     uint32 ctlreg_addr = Base + ADC_O_SOC0CTL + ((uint32)SocNum * (ADC_SOCXCTL_STEP));
 
@@ -1244,8 +1239,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 }
 
 /* Design MCAL-31369 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_ForceRepeaterTriggerSync(uint32 Base, Cdd_Adc_RepeaterType RepInstance)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ForceRepeaterTriggerSync(uint32 Base, Cdd_Adc_RepeaterType RepInstance)
 {
     uint32 regoffset = Base + ((uint32)RepInstance * (ADC_REPXCTL_STEP)) + ADC_O_REP1CTL;
     /* Force software sync for the trigger repeater block */
@@ -1280,8 +1274,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 }
 
 /* Design MCAL-31373 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_ClearPhaseOvf(uint32 Base, Cdd_Adc_RepeaterType RepInstance)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearPhaseOvf(uint32 Base, Cdd_Adc_RepeaterType RepInstance)
 {
     uint32 regoffset = Base + ((uint32)RepInstance * (ADC_REPXCTL_STEP)) + ADC_O_REP1CTL;
 
@@ -1290,8 +1283,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 }
 
 /* Design MCAL-31374 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_ClearTriggerOvf(uint32 Base, Cdd_Adc_RepeaterType RepInstance)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearTriggerOvf(uint32 Base, Cdd_Adc_RepeaterType RepInstance)
 {
     uint32 regoffset = Base + ((uint32)RepInstance * (ADC_REPXCTL_STEP)) + ADC_O_REP1CTL;
 
@@ -1301,8 +1293,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 #endif
 
 /* Design MCAL-31375 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_ConfigureInterrupt(uint32 Base, Cdd_Adc_IntNumType IntNum, boolean Mode)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureInterrupt(uint32 Base, Cdd_Adc_IntNumType IntNum, boolean Mode)
 {
     uint32 base_addr = Base + ADC_O_INTSEL1N2 + (((uint8)IntNum >> 1U) * ADC_INTSELXNY_STEP);
     uint16 shiftval  = (((uint8)IntNum & (uint16)0x1U) << 3U);
@@ -1336,8 +1327,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 }
 
 /* Design MCAL-31378 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_ClearInterruptFlag(uint32 Base, Cdd_Adc_IntNumType IntNum)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearInterruptFlag(uint32 Base, Cdd_Adc_IntNumType IntNum)
 {
     /* Clear the specified interrupt */
     HWREGH(Base + ADC_O_INTFLGCLR) |= (1U << (uint8)IntNum);
@@ -1351,16 +1341,14 @@ static FUNC(boolean, CDD_ADC_CODE) Cdd_Adc_GetIntOvfStatus(uint32 Base, Cdd_Adc_
 }
 
 /* Design MCAL-31380 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_ClearIntOvfStatus(uint32 Base, Cdd_Adc_IntNumType IntNum)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearIntOvfStatus(uint32 Base, Cdd_Adc_IntNumType IntNum)
 {
     /* Clear the specified interrupt overflow bit */
     HWREGH(Base + ADC_O_INTOVFCLR) |= (1U << (uint8)IntNum);
 }
 
 /* Design MCAL-31381 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SetInterruptCycleOffset(uint32 Base, uint16 CycleOffset)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetInterruptCycleOffset(uint32 Base, uint16 CycleOffset)
 {
     /* Set the position of the pulse.Set the position of the pulse */
     HWREGH(Base + ADC_O_INTCYCLE) = CycleOffset;
@@ -1377,8 +1365,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 }
 
 /* Design MCAL-31383 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SetPpbRefOffset(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 Offset)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetPpbRefOffset(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 Offset)
 {
     /* Write the offset amount */
     HWREGH(Base + (ADC_PPBXOFFREF_STEP * (uint32)PpbNumber) + ADC_O_PPB1OFFREF) = Offset;
@@ -1405,8 +1392,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 }
 
 /* Design MCAL-31386 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_EnablePpbExtendedLowLimit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_EnablePpbExtendedLowLimit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /*Enable PPB extended trip low limit*/
     HWREG(Base + (ADC_PPBXTRIPLO_STEP * (uint32)PpbNumber) + ADC_O_PPB1TRIPLO) |= ADC_PPB1TRIPLO_LIMITLO2EN;
@@ -1427,12 +1413,12 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
     /* Configure digital trip filter */
     uint32 offset  = Base + (ADC_PPBXTRIPFIL_STEP * (uint32)PpbNumber) + ADC_O_PPBTRIP1FILCTL;
     HWREGH(offset) = (HWREGH(offset) & ~(ADC_PPBTRIP1FILCTL_THRESH_M | ADC_PPBTRIP1FILCTL_SAMPWIN_M |
-                                         ADC_PPBTRIP1FILCTL_FILTLOEN | ADC_PPBTRIP1FILCTL_FILTHIEN)) | TripFilCfg;
+                                         ADC_PPBTRIP1FILCTL_FILTLOEN | ADC_PPBTRIP1FILCTL_FILTHIEN)) |
+                     TripFilCfg;
 }
 
 /* Design MCAL-31389 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_TripFilterInit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_TripFilterInit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Enable/disable digital trip filter */
     uint32 offset   = Base + (ADC_PPBXTRIPFIL_STEP * (uint32)PpbNumber) + ADC_O_PPBTRIP1FILCTL;
@@ -1473,16 +1459,14 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 }
 
 /* Design MCAL-31394 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SetPpbCountLimit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 Limit)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetPpbCountLimit(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 Limit)
 {
     /* Set ppb count limit */
     HWREGH(Base + (ADC_PPBXLIMIT_STEP * (uint32)PpbNumber) + ADC_O_PPB1LIMIT) = Limit;
 }
 
 /* Design MCAL-31395 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_ConfigPpb2(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 PpbCfg2)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigPpb2(uint32 Base, Cdd_Adc_PpbIdType PpbNumber, uint16 PpbCfg2)
 {
     /* Get the offset to the appropriate delay */
     uint32 ppboffset = Base + (ADC_PPBXCONFIG2_STEP * (uint32)PpbNumber) + ADC_O_PPB1CONFIG2;
@@ -1523,17 +1507,15 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 }
 
 /* Design MCAL-31401 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_SetSafetyCheckerTolerance(uint32 ScBase, uint32 Tolerance)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetSafetyCheckerTolerance(uint32 ScBase, uint32 Tolerance)
 {
     /* Set safety checker tolerance */
     HWREG(ScBase + ADC_O_TOLERANCE) = Tolerance;
 }
 
 /* Design MCAL-31402 */
-LOCAL_INLINE FUNC(uint8, CDD_ADC_CODE)
-    Cdd_Adc_GetSafetyCheckStatus(uint32 Base, Cdd_Adc_CheckerType CheckerNumber,
-                                 Cdd_Adc_SafetyCheckFlagType CheckerFlag)
+LOCAL_INLINE FUNC(uint8, CDD_ADC_CODE) Cdd_Adc_GetSafetyCheckStatus(uint32 Base, Cdd_Adc_CheckerType CheckerNumber,
+                                                                    Cdd_Adc_SafetyCheckFlagType CheckerFlag)
 {
     /* Get the specified safety checker event status */
     return (uint8)((HWREG(Base + ADC_O_OOTFLG + (uint32)CheckerFlag) >> (uint32)CheckerNumber) & 1U);
@@ -1587,8 +1569,7 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
 #if (STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
 
 /* Design MCAL-31408 */
-LOCAL_INLINE FUNC(void, CDD_ADC_CODE)
-    Cdd_Adc_ConfigOSDetectMode(uint32 Base, Cdd_Adc_OsDetectModeType Mode)
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigOSDetectMode(uint32 Base, Cdd_Adc_OsDetectModeType Mode)
 {
     HWREGH(Base + ADC_O_OSDETECT) = (HWREGH(Base + ADC_O_OSDETECT) & ~(ADC_OSDETECT_DETECTCFG_M)) | (uint16)Mode;
 }
@@ -1636,9 +1617,8 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureConverter(uint32 Base, bo
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_SetMode(uint32 Base, Cdd_Adc_ResolutionType Resolution, Cdd_Adc_SignalModeType SignalMode)
 {
-    HWREGH(Base + ADC_O_CTL2) =
-        (HWREGH(Base + ADC_O_CTL2) & ~(ADC_CTL2_RESOLUTION | ADC_CTL2_SIGNALMODE)) |
-                                                    (((uint16)Resolution << 6U) | (uint16)SignalMode);
+    HWREGH(Base + ADC_O_CTL2) = (HWREGH(Base + ADC_O_CTL2) & ~(ADC_CTL2_RESOLUTION | ADC_CTL2_SIGNALMODE)) |
+                                (((uint16)Resolution << 6U) | (uint16)SignalMode);
     /* Apply INL and offset trims */
     Cdd_Adc_SetINLTrim(Base);
     Cdd_Adc_SetOffsetTrim(Base);
@@ -1655,8 +1635,8 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_SelectInternalTestNode(Cdd_Adc_InternalTestNode
 /* Design MCAL-31425 */
 Cdd_Adc_TriggerType Cdd_Adc_ReadSocTrigSrc(uint32 Base, uint8 SocNum)
 {
-    return (Cdd_Adc_TriggerType)((HWREG(Base + ADC_O_SOC0CTL + (SocNum * ADC_SOCXCTL_STEP)) & \
-                                                                            ADC_SOC0CTL_TRIGSEL_M) >> 20U);
+    return (Cdd_Adc_TriggerType)((HWREG(Base + ADC_O_SOC0CTL + (SocNum * ADC_SOCXCTL_STEP)) & ADC_SOC0CTL_TRIGSEL_M) >>
+                                 20U);
 }
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
@@ -1684,16 +1664,14 @@ FUNC(Cdd_Adc_TriggerSrcType, CDD_ADC_CODE) Cdd_Adc_PrivGetTrigSrc(VAR(Cdd_Adc_Pp
 {
     Cdd_Adc_TriggerSrcType triggersrc_type = CDD_ADC_TRIGG_SRC_SW;
     /* Get the hardware unit index */
-    uint8 hwunitindex = Cdd_Adc_ConfigPtr->ppbcfg[PpbId].hwunitindex;
+    uint8                  hwunitindex = Cdd_Adc_ConfigPtr->ppbcfg[PpbId].hwunitindex;
 
     /* Iterate through each group of the hardware unit and get the trigger source of the group the PPB is linked to */
     for (Cdd_Adc_GroupType group = Cdd_Adc_ConfigPtr->hwunitcfg[hwunitindex].startgroupnum;
-            ((group <= Cdd_Adc_ConfigPtr->hwunitcfg[hwunitindex].lastgroupnum) && (group < CDD_ADC_GROUP_CNT));
-            group++) 
+         ((group <= Cdd_Adc_ConfigPtr->hwunitcfg[hwunitindex].lastgroupnum) && (group < CDD_ADC_GROUP_CNT)); group++)
     {
         /* If PPB is configured for the group */
-        if (((1U << Cdd_Adc_ConfigPtr->ppbcfg[PpbId].soc_num) & 
-                Cdd_Adc_ConfigPtr->groupcfg[group].soc_mask) != 0U)
+        if (((1U << Cdd_Adc_ConfigPtr->ppbcfg[PpbId].soc_num) & Cdd_Adc_ConfigPtr->groupcfg[group].soc_mask) != 0U)
         {
             /* Get the trigger source type of the group */
             triggersrc_type = Cdd_Adc_ConfigPtr->groupcfg[group].trigsrc_type;
@@ -1703,7 +1681,7 @@ FUNC(Cdd_Adc_TriggerSrcType, CDD_ADC_CODE) Cdd_Adc_PrivGetTrigSrc(VAR(Cdd_Adc_Pp
     return triggersrc_type;
 }
 
-/* Design MCAL-31354 */ 
+/* Design MCAL-31354 */
 uint16 Cdd_Adc_GetPpbDelayTimeStamp(uint32 Base, Cdd_Adc_PpbIdType PpbNumber)
 {
     /* Get the offset to the appropriate delay */
@@ -1807,19 +1785,21 @@ uint16 Cdd_Adc_ReadPpbMinIndex(uint32 ResultBase, Cdd_Adc_PpbIdType PpbNumber)
 #if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
 
 /* Design MCAL-31331 */
-FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
-                                                                VAR(Cdd_Adc_ResolutionType, AUTOMATIC) Resolution)
+FUNC(Std_ReturnType, CDD_ADC_CODE)
+Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
+                         VAR(Cdd_Adc_ResolutionType, AUTOMATIC) Resolution)
 {
-    uint32 baseaddr;
+    uint32            baseaddr;
     Cdd_Adc_GroupType group;
-    Std_ReturnType return_value = E_NOT_OK;
+    Std_ReturnType    return_value = E_NOT_OK;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     if ((Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].hwunit_id == CDD_ADCC) ||
-              (Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].hwunit_id == CDD_ADCD) ||
-              (Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].hwunit_id == CDD_ADCE) ||
-                ((Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].voltrefmode == CDD_ADC_REFERENCE_INTERNAL) &&
-               (Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].voltref == CDD_ADC_REFERENCE_3_3V) &&
-                (Resolution == CDD_ADC_RESOLUTION_16BIT))) {
+        (Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].hwunit_id == CDD_ADCD) ||
+        (Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].hwunit_id == CDD_ADCE) ||
+        ((Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].voltrefmode == CDD_ADC_REFERENCE_INTERNAL) &&
+         (Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].voltref == CDD_ADC_REFERENCE_3_3V) &&
+         (Resolution == CDD_ADC_RESOLUTION_16BIT)))
+    {
         /* Report DET error if resolution requested is not supported by the specified ADC and
             internal 3.3V reference mode is not supported in 16-bit resolution mode */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SET_RESOLUTION,
@@ -1828,37 +1808,37 @@ FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitIn
     else
 #endif
     {
-        if (Cdd_Adc_DrvObjPtr->hwunit_obj[HwUnit].cur_resolution == Resolution) {
+        if (Cdd_Adc_DrvObjPtr->hwunit_obj[HwUnit].cur_resolution == Resolution)
+        {
             /* Report DET runtime error if the Adc was already configured with the requested resolution. */
-            (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID,
-                                  CDD_ADC_SID_SET_RESOLUTION, CDD_ADC_E_ALREADY_SET);
+            (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SET_RESOLUTION,
+                                         CDD_ADC_E_ALREADY_SET);
         }
-        else {
+        else
+        {
             /* Report Det runtime error if any of the group is in IDLE state */
             for (group = Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].startgroupnum;
-                 ((group <= Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].lastgroupnum) &&
-                  (group < CDD_ADC_GROUP_CNT));
-                 group++) {
-                    
+                 ((group <= Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].lastgroupnum) && (group < CDD_ADC_GROUP_CNT)); group++)
+            {
                 /* Skip to the next group if the group is in IDLE state */
-                if (Cdd_Adc_DrvObjPtr->group_obj[group].grp_status != CDD_ADC_IDLE) {
+                if (Cdd_Adc_DrvObjPtr->group_obj[group].grp_status != CDD_ADC_IDLE)
+                {
                     /* Check if the group is in IDLE state, else report det runtime error */
-                    (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID,
-                                                 CDD_ADC_SID_SET_RESOLUTION, CDD_ADC_E_BUSY);
+                    (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SET_RESOLUTION,
+                                                 CDD_ADC_E_BUSY);
                     break;
                 }
-                
             }
 
             /* When all the groups are IDLE, the group ID exceeds the last group number of the
              * hardware unit */
-            
+
             /* If any of the groups is BUSY then return the function without any action */
-            if (group > Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].lastgroupnum) {
+            if (group > Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].lastgroupnum)
+            {
                 /* Set the resolution of the specified hardware unit. */
                 baseaddr = Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].base_addr;
-                Cdd_Adc_SetMode(baseaddr, Resolution,
-                                Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].signal_mode);
+                Cdd_Adc_SetMode(baseaddr, Resolution, Cdd_Adc_ConfigPtr->hwunitcfg[HwUnit].signal_mode);
                 Cdd_Adc_DrvObjPtr->hwunit_obj[HwUnit].cur_resolution = Resolution;
                 return_value = E_OK; /* Return E_OK if the resolution configuration is successful */
             }
@@ -1873,39 +1853,44 @@ FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitIn
 /* Design MCAL-31328 */
 FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_CheckGlbTrig(VAR(Cdd_Adc_GlbTrigType, AUTOMATIC) GlbSwTrig)
 {
-    uint16 groupmask;
-    Cdd_Adc_GlbSwCfgType glbsw = Cdd_Adc_ConfigPtr->glbtrigcfg[GlbSwTrig];
-    Cdd_Adc_GroupType group_id = 0U;
-    Std_ReturnType return_val = E_OK;
+    uint16               groupmask;
+    Cdd_Adc_GlbSwCfgType glbsw      = Cdd_Adc_ConfigPtr->glbtrigcfg[GlbSwTrig];
+    Cdd_Adc_GroupType    group_id   = 0U;
+    Std_ReturnType       return_val = E_OK;
 
     for (groupmask = glbsw.group_mask; ((groupmask > 0U) && (group_id < CDD_ADC_GROUP_CNT));
-                                                        (groupmask = groupmask >> 1U)) {
-        if ((groupmask & 1U) != 0U) {
+         (groupmask = groupmask >> 1U))
+    {
+        if ((groupmask & 1U) != 0U)
+        {
             if (((Cdd_Adc_DrvObjPtr->group_obj[group_id].grp_status != CDD_ADC_COMPLETED) &&
-                    (Cdd_Adc_DrvObjPtr->glbsw_obj[GlbSwTrig].status == TRUE)) ||
+                 (Cdd_Adc_DrvObjPtr->glbsw_obj[GlbSwTrig].status == TRUE)) ||
                 ((Cdd_Adc_DrvObjPtr->group_obj[group_id].grp_status != CDD_ADC_IDLE) &&
-                    (Cdd_Adc_DrvObjPtr->glbsw_obj[GlbSwTrig].status == FALSE))) {
+                 (Cdd_Adc_DrvObjPtr->glbsw_obj[GlbSwTrig].status == FALSE)))
+            {
                 /* Report runtime error if the group conversion is not done for the previous API
                     call or when the group is not in IDLE state and the API is called after
                     StopGlobalSwTrig API */
-                (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID,
-                                                CDD_ADC_SID_START_GLBSW_TRIG, CDD_ADC_E_BUSY);
+                (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GLBSW_TRIG,
+                                             CDD_ADC_E_BUSY);
                 return_val = E_NOT_OK;
                 break;
             }
-        #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-            else if (Cdd_Adc_DrvObjPtr->group_obj[group_id].resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR)) {
+#if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
+            else if (Cdd_Adc_DrvObjPtr->group_obj[group_id].resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR))
+            {
                 /* Report DET error if the result buffer is NULL for any one of the groups and
-                    * this check is not when the API is called more than once without calling
-                    * StopGlobalSwTrig API.
-                    */
-                (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID,
-                                        CDD_ADC_SID_START_GLBSW_TRIG, CDD_ADC_E_BUFFER_UNINIT);
+                 * this check is not when the API is called more than once without calling
+                 * StopGlobalSwTrig API.
+                 */
+                (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GLBSW_TRIG,
+                                      CDD_ADC_E_BUFFER_UNINIT);
                 return_val = E_NOT_OK;
                 break;
             }
-        #endif
-            else {
+#endif
+            else
+            {
                 /* Move to the next group if all the checks are passed */
             }
         }
@@ -2000,31 +1985,31 @@ Cdd_Adc_SetDrvObj(Cdd_Adc_DriverObjType *DrvObj, const Cdd_Adc_ConfigType *CfgPt
 /* Reset the driver object to the power on reset mode */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_DrvObjInit(void)
 {
-    uint8 hw_int,hw_index;
-    Cdd_Adc_GroupObjType * group_obj;
+    uint8                 hw_int, hw_index;
+    Cdd_Adc_GroupObjType *group_obj;
 
     for (Cdd_Adc_GroupType grp_id = 0U; grp_id < CDD_ADC_GROUP_CNT; grp_id++)
     {
-        group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[grp_id]);
-        group_obj->grp_status = CDD_ADC_IDLE;   /* Set the group status to IDLE */
+        group_obj                = &(Cdd_Adc_DrvObjPtr->group_obj[grp_id]);
+        group_obj->grp_status    = CDD_ADC_IDLE;                       /* Set the group status to IDLE */
         group_obj->cur_resultptr = (Cdd_Adc_ValueGroupType *)NULL_PTR; /* Set the current result pointer to NULL */
         group_obj->resbuffer     = (Cdd_Adc_ValueGroupType *)NULL_PTR; /* Set the result buffer pointer to NULL */
-        group_obj->implicit_stop = FALSE; /* Set the implicit stop to FALSE */
-        group_obj->grp_active = FALSE; /* Set the group active status to FALSE */
+        group_obj->implicit_stop = FALSE;                              /* Set the implicit stop to FALSE */
+        group_obj->grp_active    = FALSE;                              /* Set the group active status to FALSE */
 
-        #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
+#if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
         group_obj->grp_notification = FALSE;
-        #endif /* #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API) */
+#endif /* #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API) */
 
         group_obj->triggersrc    = CDD_ADC_GRP_TRIGG_SRC_SW; /* Set the trigger source to SW */
-        group_obj->valid_samples = 0U;                      /* Set the valid samples count to zero */
+        group_obj->valid_samples = 0U;                       /* Set the valid samples count to zero */
 
-        /* Group ID for the i th interrupt of j th ADC hardware unit ID is - i + (j*4U). 
-         * This is used to retrieve the group ID when the ISR is executed(ProcessIsr function) 
+        /* Group ID for the i th interrupt of j th ADC hardware unit ID is - i + (j*4U).
+         * This is used to retrieve the group ID when the ISR is executed(ProcessIsr function)
          */
         hw_index = Cdd_Adc_ConfigPtr->groupcfg[grp_id].hwunit_index;
-        hw_int = (((uint8)(Cdd_Adc_ConfigPtr->hwunitcfg[hw_index].hwunit_id)) * 4U) + \
-                                                            ((uint8)(Cdd_Adc_ConfigPtr->groupcfg[grp_id].grp_int));
+        hw_int   = (((uint8)(Cdd_Adc_ConfigPtr->hwunitcfg[hw_index].hwunit_id)) * 4U) +
+                 ((uint8)(Cdd_Adc_ConfigPtr->groupcfg[grp_id].grp_int));
 
         /* Assign the group ID that is linked to the interrupt. */
         Cdd_Adc_DrvObjPtr->interrupt_obj[hw_int] = grp_id;
@@ -2050,15 +2035,15 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DrvObjInit(void)
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
 {
     /* Initialize each HW instance */
-    uint32                base_addr;
-    const Cdd_Adc_HwUnitCfgType  * hwunitcfg;
-    const Cdd_Adc_GroupCfgType  * group_cfg;
-    uint8                 internal_vref = 0U;
+    uint32                       base_addr;
+    const Cdd_Adc_HwUnitCfgType *hwunitcfg;
+    const Cdd_Adc_GroupCfgType  *group_cfg;
+    uint8                        internal_vref = 0U;
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
-    const Cdd_Adc_CheckerResCfgType * checkerunit_cfg;
-    const Cdd_Adc_CheckerIntEvtCfgType * intevt_cfg;
-    const Cdd_Adc_HwUnitCfgType* hwunit_cfg;
+    const Cdd_Adc_CheckerResCfgType    *checkerunit_cfg;
+    const Cdd_Adc_CheckerIntEvtCfgType *intevt_cfg;
+    const Cdd_Adc_HwUnitCfgType        *hwunit_cfg;
 #endif
 
 #if (STD_ON == CDD_ADC_TRIG_REP_ENABLE)
@@ -2095,7 +2080,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
         Cdd_Adc_SetIntPulseMode(hwunitcfg->base_addr, hwunitcfg->intpulsemode);
         /* Configure the interrupt offset */
         Cdd_Adc_SetInterruptCycleOffset(hwunitcfg->base_addr, hwunitcfg->intoffset);
-        internal_vref = (hwunitcfg->voltrefmode == CDD_ADC_REFERENCE_INTERNAL)?(internal_vref + 1U) : (internal_vref);
+        internal_vref = (hwunitcfg->voltrefmode == CDD_ADC_REFERENCE_INTERNAL) ? (internal_vref + 1U) : (internal_vref);
 #if (STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
         /* Set Opens/Shorts dectection circuit mode */
         Cdd_Adc_ConfigOSDetectMode(hwunitcfg->base_addr, hwunitcfg->osdetectmode);
@@ -2180,10 +2165,10 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
         intevt_cfg = &(Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[intevt_id]);
 
         /* Enable interrupt event source flags */
-        Cdd_Adc_ConfigureCheckIntSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_RES1OVF, intevt_cfg->checkevtint.res1ovf,
-                                     TRUE);
-        Cdd_Adc_ConfigureCheckIntSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_RES2OVF, intevt_cfg->checkevtint.res2ovf,
-                                     TRUE);
+        Cdd_Adc_ConfigureCheckIntSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_RES1OVF,
+                                     intevt_cfg->checkevtint.res1ovf, TRUE);
+        Cdd_Adc_ConfigureCheckIntSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_RES2OVF,
+                                     intevt_cfg->checkevtint.res2ovf, TRUE);
         Cdd_Adc_ConfigureCheckIntSrc(intevt_cfg->base_addr, CDD_ADC_SAFETY_CHECK_OOT, intevt_cfg->checkevtint.ootflg,
                                      TRUE);
 
@@ -2212,15 +2197,15 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
     for (uint8 trigrep_id = 0U; trigrep_id < CDD_ADC_TRIG_REP_CNT; trigrep_id++)
     {
         repunitcfg = &(Cdd_Adc_ConfigPtr->repunitcfg[trigrep_id]);
-        base_addr = Cdd_Adc_ConfigPtr->hwunitcfg[(repunitcfg->hwunit_index)].base_addr;
+        base_addr  = Cdd_Adc_ConfigPtr->hwunitcfg[(repunitcfg->hwunit_index)].base_addr;
         Cdd_Adc_ForceRepeaterTriggerSync(base_addr, repunitcfg->repeater_instance);
         Cdd_Adc_ClearTriggerOvf(base_addr, repunitcfg->repeater_instance);
         Cdd_Adc_ClearPhaseOvf(base_addr, repunitcfg->repeater_instance);
-        Cdd_Adc_SelTrigRepTrigger(base_addr, repunitcfg->repeater_instance,repunitcfg->trigger_source);
-        Cdd_Adc_SetTrigRepMode(base_addr, repunitcfg->repeater_instance,repunitcfg->repeater_mode);
-        Cdd_Adc_SetTrigRepCount(base_addr, repunitcfg->repeater_instance,repunitcfg->repeater_count);
-        Cdd_Adc_SetTrigRepPhase(base_addr, repunitcfg->repeater_instance,repunitcfg->repeater_phase);
-        Cdd_Adc_SetTrigRepSpread(base_addr, repunitcfg->repeater_instance,repunitcfg->repeater_spread);
+        Cdd_Adc_SelTrigRepTrigger(base_addr, repunitcfg->repeater_instance, repunitcfg->trigger_source);
+        Cdd_Adc_SetTrigRepMode(base_addr, repunitcfg->repeater_instance, repunitcfg->repeater_mode);
+        Cdd_Adc_SetTrigRepCount(base_addr, repunitcfg->repeater_instance, repunitcfg->repeater_count);
+        Cdd_Adc_SetTrigRepPhase(base_addr, repunitcfg->repeater_instance, repunitcfg->repeater_phase);
+        Cdd_Adc_SetTrigRepSpread(base_addr, repunitcfg->repeater_instance, repunitcfg->repeater_spread);
     }
 #endif /* #if (STD_ON == CDD_ADC_TRIG_REP_ENABLE) */
 }
@@ -2230,10 +2215,10 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitDeinit(void)
 {
     /* De-Init the HW instance */
-    uint32            base_addr;
+    uint32 base_addr;
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
-    uint32  checker_baseaddr,intevt_baseaddr;
+    uint32 checker_baseaddr, intevt_baseaddr;
 #endif
 
     for (Cdd_Adc_HwUnitInstanceType hwunit_id = 0U; hwunit_id < CDD_ADC_HW_CNT; hwunit_id++)
@@ -2242,16 +2227,16 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitDeinit(void)
         /* Disable all the ADC Hardware unit converters */
         Cdd_Adc_ConfigureConverter(base_addr, FALSE);
 
-        #if (STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
+#if (STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
         /* Disable Opens/Shorts dectection circuit mode */
         Cdd_Adc_ConfigOSDetectMode(base_addr, CDD_ADC_OSDETECT_MODE_DISABLED);
-        #endif /* #if (STD_ON == CDD_ADC_GLBSW_TRIG_API) */
+#endif /* #if (STD_ON == CDD_ADC_GLBSW_TRIG_API) */
     }
 
     for (Cdd_Adc_GroupType group_id = 0U; group_id < CDD_ADC_GROUP_CNT; group_id++)
     {
         if (!((FALSE == Cdd_Adc_DrvObjPtr->group_obj[group_id].grp_active) &&
-            (CDD_ADC_IDLE == Cdd_Adc_DrvObjPtr->group_obj[group_id].grp_status)))
+              (CDD_ADC_IDLE == Cdd_Adc_DrvObjPtr->group_obj[group_id].grp_status)))
         {
             /* Stop the group conversion if the group conversion hasnot already stopped before
              * calling DeInit API. */
@@ -2294,7 +2279,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitDeinit(void)
     /* Disable temperature sensor if not locked. */
     if (Cdd_Adc_GetTempSensorLockStatus() == 0U)
     {
-        Cdd_Adc_ConfigureTempSensor(FALSE); 
+        Cdd_Adc_ConfigureTempSensor(FALSE);
     }
 #endif /* #if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE) */
 
@@ -2316,26 +2301,26 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGroup(Cdd_Adc_GroupType Group)
 /* Design MCAL-31325 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
 {
-    const Cdd_Adc_GroupCfgType * groupcfg = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
-    Cdd_Adc_GroupObjType * group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
-    uint8                hwunitindex = Cdd_Adc_ConfigPtr->groupcfg[Group].hwunit_index;
-    uint32               base_addr   = Cdd_Adc_ConfigPtr->hwunitcfg[hwunitindex].base_addr;
+    const Cdd_Adc_GroupCfgType *groupcfg    = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
+    Cdd_Adc_GroupObjType       *group_obj   = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
+    uint8                       hwunitindex = Cdd_Adc_ConfigPtr->groupcfg[Group].hwunit_index;
+    uint32                      base_addr   = Cdd_Adc_ConfigPtr->hwunitcfg[hwunitindex].base_addr;
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
-    Cdd_Adc_PpbType ppb_num,lastppbnum;
-    const Cdd_Adc_PpbUnitCfgType * ppbcfg;
+    Cdd_Adc_PpbType               ppb_num, lastppbnum;
+    const Cdd_Adc_PpbUnitCfgType *ppbcfg;
 #endif
 
     /* Disable the corresponding interrupt for software triggered groups */
     Cdd_Adc_ConfigureInterrupt(base_addr, groupcfg->grp_int, FALSE);
     Cdd_Adc_ConfigureContinueToIntMode(base_addr, groupcfg->grp_int, FALSE);
-    
+
     /* Clear the interrupt flag and the result ready flag */
     Cdd_Adc_ClearInterruptFlag(base_addr, groupcfg->grp_int);
 
     /* Set the group status to Idle */
     group_obj->grp_status = CDD_ADC_IDLE;
-    
+
     /* Set the group active status to FALSE */
     group_obj->grp_active = FALSE;
 
@@ -2345,12 +2330,11 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
 #endif
 
     /* Disable trigger sources and interrupt trigger source */
-    if((groupcfg->trigsrc_type == CDD_ADC_TRIGG_SRC_HW) && 
-            ((group_obj->implicit_stop == FALSE) || 
-            ((group_obj->implicit_stop == TRUE) && 
-            (group_obj->valid_samples != groupcfg->stream_numsamples))))
+    if ((groupcfg->trigsrc_type == CDD_ADC_TRIGG_SRC_HW) &&
+        ((group_obj->implicit_stop == FALSE) ||
+         ((group_obj->implicit_stop == TRUE) && (group_obj->valid_samples != groupcfg->stream_numsamples))))
     {
-        /* Disable trigger and interrupt trigger source for explicitly stopped hardware triggered groups and 
+        /* Disable trigger and interrupt trigger source for explicitly stopped hardware triggered groups and
          * for implicitly stopped groups whose valid samples count is not equal to the streaming samples count
          */
         Cdd_Adc_StopHwGrpTrigger(Group);
@@ -2371,8 +2355,8 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
             /* If any PPB is configured for the channel */
             ppbcfg = &(Cdd_Adc_ConfigPtr->ppbcfg[ppb_num]);
             /* Configure the interrupt and event flags */
-            Cdd_Adc_ConfigPpbEventInterrupt(base_addr, ppbcfg->ppb_id,ppbcfg->tripevtintsel, FALSE);
-            Cdd_Adc_ConfigPpbEvent(base_addr, ppbcfg->ppb_id,ppbcfg->tripevtsel, FALSE);
+            Cdd_Adc_ConfigPpbEventInterrupt(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtintsel, FALSE);
+            Cdd_Adc_ConfigPpbEvent(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtsel, FALSE);
             /* Clear all the PPB event flags */
             Cdd_Adc_ClearPpbEvtStatus(base_addr, ppbcfg->ppb_id, (uint8)ADC_PPBEVTMASK);
         }
@@ -2381,7 +2365,6 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group)
 
     /* Update the trigger source type */
     group_obj->triggersrc = CDD_ADC_GRP_TRIGG_SRC_SW;
-
 }
 
 #if (STD_ON == CDD_ADC_GLBSW_TRIG_API)
@@ -2441,18 +2424,18 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlbTrig(Cdd_Adc_GlbTrigType GlbSwTrig)
 /* Design MCAL-31418 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_PpbEvtIsr(Cdd_Adc_HwUnitType HwUnitId)
 {
-    Cdd_Adc_PpbType ppb_num;
-    const Cdd_Adc_PpbUnitCfgType * ppbcfg;
-    uint8           hwunit_index;
-    uint16          evtintstat;
-    uint32          base_addr;
+    Cdd_Adc_PpbType               ppb_num;
+    const Cdd_Adc_PpbUnitCfgType *ppbcfg;
+    uint8                         hwunit_index;
+    uint16                        evtintstat;
+    uint32                        base_addr;
 
     for (hwunit_index = 0U; hwunit_index < CDD_ADC_HW_CNT; hwunit_index++)
     {
         if (Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_index].hwunit_id == HwUnitId)
         {
             break;
-        }   
+        }
     }
 
     if (hwunit_index != CDD_ADC_HW_CNT)
@@ -2471,10 +2454,11 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_PpbEvtIsr(Cdd_Adc_HwUnitType HwUnitId)
                 ppbcfg = &(Cdd_Adc_ConfigPtr->ppbcfg[ppb_num]);
 
                 /* Clear the flags that triggered the interrupt */
-                Cdd_Adc_ClearPpbEvtStatus(base_addr, ppbcfg->ppb_id,ppbcfg->tripevtintsel);
+                Cdd_Adc_ClearPpbEvtStatus(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtintsel);
 #if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API)
                 /* Call notification function if exists*/
-                if (ppbcfg->ppbevtint_notification != ((Cdd_Adc_PpbNotifyType)NULL_PTR)) {
+                if (ppbcfg->ppbevtint_notification != ((Cdd_Adc_PpbNotifyType)NULL_PTR))
+                {
                     /* Design: MCAL-31138 */
                     ppbcfg->ppbevtint_notification();
                 }
@@ -2490,28 +2474,28 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_PpbEvtIsr(Cdd_Adc_HwUnitType HwUnitId)
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_CheckerIsr(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckFlagStatusType *FlagStatus)
 {
-    Cdd_Adc_CheckerType checker_id, checker_number;
-    uint32              base_addr     = Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].base_addr;
-    const Cdd_Adc_IntSrcType * checkerevtint = &(Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].checkevtint);
+    Cdd_Adc_CheckerType       checker_id, checker_number;
+    uint32                    base_addr     = Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].base_addr;
+    const Cdd_Adc_IntSrcType *checkerevtint = &(Cdd_Adc_ConfigPtr->checkercfg.checkerintevtcfg[IntEvtId].checkevtint);
 
     for (checker_number = 0U; checker_number < CDD_ADC_CHECKER_CNT; checker_number++)
     {
         checker_id = Cdd_Adc_ConfigPtr->checkercfg.checkerunitcfg[checker_number].checker_id;
         /* Check if the interrupt source is configured for the specified safety checker */
-        if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id,CDD_ADC_SAFETY_CHECK_OOT_FLG) &
-                                                (uint8)((checkerevtint->ootflg >> checker_id) & 1U)) != 0U) 
+        if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_OOT_FLG) &
+             (uint8)((checkerevtint->ootflg >> checker_id) & 1U)) != 0U)
         {
             FlagStatus[checker_number] = CDD_ADC_SAFETY_CHECKER_OOT_FLG;
             Cdd_Adc_ClearCheckEvtFlag(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_OOT_FLG);
         }
-        else if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id,CDD_ADC_SAFETY_CHECK_RES1OVF_FLG) &
-                           (uint8)((checkerevtint->res1ovf >> checker_id) & 1U)) != 0U) 
+        else if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES1OVF_FLG) &
+                  (uint8)((checkerevtint->res1ovf >> checker_id) & 1U)) != 0U)
         {
             FlagStatus[checker_number] = CDD_ADC_SAFETY_CHECKER_RES1OVF_FLG;
             Cdd_Adc_ClearCheckEvtFlag(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES1OVF_FLG);
         }
-        else if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id,CDD_ADC_SAFETY_CHECK_RES2OVF_FLG) &
-                           (uint8)((checkerevtint->res2ovf >> checker_id) & 1U)) != 0U) 
+        else if ((Cdd_Adc_GetSafetyCheckStatus(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES2OVF_FLG) &
+                  (uint8)((checkerevtint->res2ovf >> checker_id) & 1U)) != 0U)
         {
             FlagStatus[checker_number] = CDD_ADC_SAFETY_CHECKER_RES2OVF_FLG;
             Cdd_Adc_ClearCheckEvtFlag(base_addr, checker_id, CDD_ADC_SAFETY_CHECK_RES2OVF_FLG);
@@ -2529,7 +2513,7 @@ Cdd_Adc_CheckerIsr(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckFlagStatusTy
 /* Design MCAL-31416 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessIsr(Cdd_Adc_IntNumType IntNum, Cdd_Adc_HwUnitType HwUnitId)
 {
-    Cdd_Adc_GroupType group_id,hwint;
+    Cdd_Adc_GroupType group_id, hwint;
 
     /* Get the interrupt_obj index which stores the group ID */
     hwint = ((Cdd_Adc_GroupType)IntNum) + (((Cdd_Adc_GroupType)HwUnitId) * 4U);
@@ -2537,7 +2521,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessIsr(Cdd_Adc_IntNumType IntNum, Cdd_Adc_H
     /* Get the group ID */
     group_id = Cdd_Adc_DrvObjPtr->interrupt_obj[hwint];
 
-    if(CDD_ADC_GROUP_CNT > group_id)
+    if (CDD_ADC_GROUP_CNT > group_id)
     {
         /* Process the group if the group ID exists */
         Cdd_Adc_ProcessGroup(group_id);
@@ -2552,14 +2536,14 @@ Cdd_Adc_ReadGroupResult(Cdd_Adc_GroupType Group, Cdd_Adc_ValueGroupType *DataPtr
 {
     uint8 channelnum;
     /* Copying the results from the result buffer to read group buffer*/
-    for (channelnum = 0U; channelnum < Cdd_Adc_ConfigPtr->groupcfg[Group].channelcount;channelnum++) 
+    for (channelnum = 0U; channelnum < Cdd_Adc_ConfigPtr->groupcfg[Group].channelcount; channelnum++)
     {
-        *(DataPtr + channelnum) =  *(Cdd_Adc_DrvObjPtr->group_obj[Group].cur_resultptr + \
-                                        (channelnum * Cdd_Adc_ConfigPtr->groupcfg[Group].stream_numsamples));
+        *(DataPtr + channelnum) = *(Cdd_Adc_DrvObjPtr->group_obj[Group].cur_resultptr +
+                                    (channelnum * Cdd_Adc_ConfigPtr->groupcfg[Group].stream_numsamples));
     }
-    
+
     /* If group trigger source is Global software trigger then don't change the group status */
-    if(Cdd_Adc_DrvObjPtr->group_obj[Group].triggersrc != CDD_ADC_GRP_TRIGG_SRC_GLBSW)
+    if (Cdd_Adc_DrvObjPtr->group_obj[Group].triggersrc != CDD_ADC_GRP_TRIGG_SRC_GLBSW)
     {
         /* Update the group status if the group is not called with StartGlobalTrig API */
         Cdd_Adc_UpdateGroupStatus(Group);
@@ -2568,8 +2552,7 @@ Cdd_Adc_ReadGroupResult(Cdd_Adc_GroupType Group, Cdd_Adc_ValueGroupType *DataPtr
 #endif
 
 /* Design MCAL-31327 */
-Cdd_Adc_StreamNumSampleType Cdd_Adc_GetValidSampleCnt(Cdd_Adc_GroupType Group,
-                                                      Cdd_Adc_ValueGroupType **PtrToSamplePtr)
+Cdd_Adc_StreamNumSampleType Cdd_Adc_GetValidSampleCnt(Cdd_Adc_GroupType Group, Cdd_Adc_ValueGroupType **PtrToSamplePtr)
 {
     Cdd_Adc_StreamNumSampleType num_samples = Cdd_Adc_DrvObjPtr->group_obj[Group].valid_samples;
     /* This shall set the pointer, passed as parameter (PtrToSamplePtr) to point in the ADC result
@@ -2580,7 +2563,7 @@ Cdd_Adc_StreamNumSampleType Cdd_Adc_GetValidSampleCnt(Cdd_Adc_GroupType Group,
     *PtrToSamplePtr = (Cdd_Adc_DrvObjPtr->group_obj[Group].cur_resultptr);
 
     /* If group trigger source is Global software trigger then don't change the group status */
-    if(Cdd_Adc_DrvObjPtr->group_obj[Group].triggersrc != CDD_ADC_GRP_TRIGG_SRC_GLBSW)
+    if (Cdd_Adc_DrvObjPtr->group_obj[Group].triggersrc != CDD_ADC_GRP_TRIGG_SRC_GLBSW)
     {
         /* Update the group status if the group is not called with StartGlobalTrig API */
         Cdd_Adc_UpdateGroupStatus(Group);
@@ -2726,9 +2709,9 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetINLTrim(uint32 Base)
 /* Design MCAL-31397 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigPpbUnit(Cdd_Adc_PpbType PpbId)
 {
-    const Cdd_Adc_PpbUnitCfgType * ppbcfg = &Cdd_Adc_ConfigPtr->ppbcfg[PpbId];
-    uint32 base_addr = Cdd_Adc_ConfigPtr->hwunitcfg[(ppbcfg->hwunitindex)].base_addr;
-    
+    const Cdd_Adc_PpbUnitCfgType *ppbcfg    = &Cdd_Adc_ConfigPtr->ppbcfg[PpbId];
+    uint32                        base_addr = Cdd_Adc_ConfigPtr->hwunitcfg[(ppbcfg->hwunitindex)].base_addr;
+
     /* PPB offset configuration */
     Cdd_Adc_ForcePpbSync(base_addr, ppbcfg->ppb_id);
     /* Set the calibration offset for the hardware unit */
@@ -2758,20 +2741,20 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigPpbUnit(Cdd_Adc_PpbType PpbId)
 }
 #endif
 
-
 /* Design MCAL-31420 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGrpTrigger(Cdd_Adc_GroupType Group)
 {
-    const Cdd_Adc_GroupCfgType * group_cfg = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
-    uint8                channel_id;
-    uint32               base_addr = Cdd_Adc_ConfigPtr->hwunitcfg[(group_cfg->hwunit_index)].base_addr;
+    const Cdd_Adc_GroupCfgType *group_cfg = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
+    uint8                       channel_id;
+    uint32                      base_addr = Cdd_Adc_ConfigPtr->hwunitcfg[(group_cfg->hwunit_index)].base_addr;
 
     if (group_cfg->trigsrc_type == CDD_ADC_TRIGG_SRC_HW)
     {
         Cdd_Adc_DrvObjPtr->group_obj[Group].triggersrc = CDD_ADC_GRP_TRIGG_SRC_HW;
         /* Enable trigger sources for hardware trigger groups */
         for (channel_id = group_cfg->startchannelnum;
-             ((channel_id < (group_cfg->channelcount+group_cfg->startchannelnum) && (channel_id < CDD_ADC_CHN_COUNT)));
+             ((channel_id < (group_cfg->channelcount + group_cfg->startchannelnum) &&
+               (channel_id < CDD_ADC_CHN_COUNT)));
              channel_id++)
         {
             /* Assign the soc number to the channel and configure the SOC */
@@ -2802,10 +2785,10 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGrpTrigger(Cdd_Adc_GroupType Group)
 /* Private function to update the status of the group */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_UpdateGroupStatus(Cdd_Adc_GroupType Group)
 {
-    Cdd_Adc_GroupObjType * group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
+    Cdd_Adc_GroupObjType *group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
     /* Groups in IDLE state or in STREAM_COMPLETED state that are stopped implicitly are updated to
      * IDLE state*/
-    if ((group_obj->grp_status == CDD_ADC_IDLE) || 
+    if ((group_obj->grp_status == CDD_ADC_IDLE) ||
         ((group_obj->implicit_stop == TRUE) && (group_obj->grp_status == CDD_ADC_STREAM_COMPLETED)))
     {
         group_obj->grp_status = CDD_ADC_IDLE;
@@ -2820,11 +2803,11 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_UpdateGroupStatus(Cdd_Adc_GroupType Grou
 /* Design MCAL-31414 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopHwGrpTrigger(Cdd_Adc_GroupType Group)
 {
-    const Cdd_Adc_GroupCfgType * group_cfg = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
-    const Cdd_Adc_ChannelCfgType * channelcfg ;
-    uint8 channelnum;
-    uint8 hwunit_index = group_cfg->hwunit_index;
-    uint32 base_addr = Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_index].base_addr;
+    const Cdd_Adc_GroupCfgType   *group_cfg = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
+    const Cdd_Adc_ChannelCfgType *channelcfg;
+    uint8                         channelnum;
+    uint8                         hwunit_index = group_cfg->hwunit_index;
+    uint32                        base_addr    = Cdd_Adc_ConfigPtr->hwunitcfg[hwunit_index].base_addr;
 
     /* Disable trigger sources for the hardware trigger groups which can be stopped impliclitly */
     for (channelnum = group_cfg->startchannelnum;
@@ -2833,14 +2816,13 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopHwGrpTrigger(Cdd_Adc_GroupType Group
     {
         channelcfg = &(Cdd_Adc_ConfigPtr->channelcfg[channelnum]);
         /* Assign the soc number to the channel and configure the SOC.*/
-        Cdd_Adc_SetupSoc(base_addr, channelcfg->soc_num, CDD_ADC_TRIGGER_SW_ONLY,channelcfg->channel_id,
-                                                                                            channelcfg->sample_window);
+        Cdd_Adc_SetupSoc(base_addr, channelcfg->soc_num, CDD_ADC_TRIGGER_SW_ONLY, channelcfg->channel_id,
+                         channelcfg->sample_window);
 
         if (group_cfg->intsocsel != CDD_ADC_INT_SOC_TRIGGER_NONE)
         {
             /* Set the interrupt trigger source */
-            Cdd_Adc_SetIntSocTrigger(base_addr, channelcfg->soc_num,
-                                     CDD_ADC_INT_SOC_TRIGGER_NONE);
+            Cdd_Adc_SetIntSocTrigger(base_addr, channelcfg->soc_num, CDD_ADC_INT_SOC_TRIGGER_NONE);
         }
     }
 }
@@ -2848,14 +2830,14 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopHwGrpTrigger(Cdd_Adc_GroupType Group
 /* Design MCAL-31415 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
 {
-    const Cdd_Adc_GroupCfgType * groupcfg    = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
-    Cdd_Adc_GroupObjType * group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
-    uint8                hwunitindex = groupcfg->hwunit_index;
-    uint32               base_addr   = Cdd_Adc_ConfigPtr->hwunitcfg[(hwunitindex)].base_addr;
+    const Cdd_Adc_GroupCfgType *groupcfg    = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
+    Cdd_Adc_GroupObjType       *group_obj   = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
+    uint8                       hwunitindex = groupcfg->hwunit_index;
+    uint32                      base_addr   = Cdd_Adc_ConfigPtr->hwunitcfg[(hwunitindex)].base_addr;
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
-    Cdd_Adc_PpbType ppb_num, lastppbnum;
-    const Cdd_Adc_PpbUnitCfgType * ppbcfg;
+    Cdd_Adc_PpbType               ppb_num, lastppbnum;
+    const Cdd_Adc_PpbUnitCfgType *ppbcfg;
 #endif
 
     /* Set the valid samples count to Zero. */
@@ -2871,7 +2853,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
     Cdd_Adc_ConfigureInterrupt(base_addr, groupcfg->grp_int, TRUE);
     Cdd_Adc_ConfigureContinueToIntMode(base_addr, groupcfg->grp_int, (boolean)groupcfg->continuetoint);
 
-    #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
+#if (STD_ON == CDD_ADC_ENABLE_PPB_API)
 
     /* Fetch the last PPB ID linked to the ADC instance */
     lastppbnum = (Cdd_Adc_PpbType)(Cdd_Adc_ConfigPtr->hwunitcfg[hwunitindex].ppbcount +
@@ -2883,7 +2865,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
         if (((1U << Cdd_Adc_ConfigPtr->ppbcfg[ppb_num].soc_num) & groupcfg->soc_mask) != 0U)
         {
             ppbcfg = &(Cdd_Adc_ConfigPtr->ppbcfg[ppb_num]);
-            
+
             /* Clear all the PPB event flags */
             Cdd_Adc_ClearPpbEvtStatus(base_addr, Cdd_Adc_ConfigPtr->ppbcfg[ppb_num].ppb_id, (uint8)ADC_PPBEVTMASK);
 
@@ -2891,9 +2873,9 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
             Cdd_Adc_ForcePpbSync(base_addr, ppbcfg->ppb_id);
 
             /* If the group is started */
-            Cdd_Adc_ConfigPpbEvent(base_addr, ppbcfg->ppb_id,ppbcfg->tripevtsel, TRUE);
-            Cdd_Adc_ConfigPpbEventInterrupt(base_addr, ppbcfg->ppb_id,ppbcfg->tripevtintsel, TRUE);
-            
+            Cdd_Adc_ConfigPpbEvent(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtsel, TRUE);
+            Cdd_Adc_ConfigPpbEventInterrupt(base_addr, ppbcfg->ppb_id, ppbcfg->tripevtintsel, TRUE);
+
             /* Don't configure trip filter if not enabled */
             if (ppbcfg->tripfilterenable == TRUE)
             {
@@ -2902,7 +2884,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
         }
     }
 
-    #endif
+#endif
 
     /* Set the group status to Busy */
     group_obj->grp_status = CDD_ADC_BUSY;
@@ -2911,14 +2893,13 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
 /* Design MCAL-31417 */
 static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
 {
-    const Cdd_Adc_GroupCfgType * groupcfg = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
-    Cdd_Adc_GroupObjType * group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
-    uint8  channelnum;
-    uint32 base_addr,result_baseaddr;
+    const Cdd_Adc_GroupCfgType *groupcfg  = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
+    Cdd_Adc_GroupObjType       *group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
+    uint8                       channelnum;
+    uint32                      base_addr, result_baseaddr;
 
-    if(!(((group_obj->implicit_stop == TRUE) &&
-         (group_obj->valid_samples == groupcfg->stream_numsamples)) ||
-            (group_obj->grp_status == CDD_ADC_IDLE)))
+    if (!(((group_obj->implicit_stop == TRUE) && (group_obj->valid_samples == groupcfg->stream_numsamples)) ||
+          (group_obj->grp_status == CDD_ADC_IDLE)))
     {
         base_addr       = Cdd_Adc_ConfigPtr->hwunitcfg[(groupcfg->hwunit_index)].base_addr;
         result_baseaddr = Cdd_Adc_ConfigPtr->hwunitcfg[(groupcfg->hwunit_index)].result_baseaddr;
@@ -2962,8 +2943,7 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
 
         /* Do not disable interrupts for explicitly stopped groups and don't stop if the buffer
                is not completely filled implicitly stopped groups */
-        if ((group_obj->implicit_stop == TRUE) &&
-            (group_obj->valid_samples == groupcfg->stream_numsamples))
+        if ((group_obj->implicit_stop == TRUE) && (group_obj->valid_samples == groupcfg->stream_numsamples))
         {
             /* Disable interrups if the buffer is completely filled for the implicitly stopped
              * groups */
@@ -2976,9 +2956,8 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
         for (channelnum = 0U; channelnum < groupcfg->channelcount; channelnum++)
         {
             /* Read the corresponding SOC result and store it in the group result buffer */
-            *(group_obj->cur_resultptr + (channelnum * (groupcfg->stream_numsamples))) =
-                Cdd_Adc_ReadResult(result_baseaddr,
-                                   Cdd_Adc_ConfigPtr->channelcfg[(channelnum + groupcfg->startchannelnum)].soc_num);
+            *(group_obj->cur_resultptr + (channelnum * (groupcfg->stream_numsamples))) = Cdd_Adc_ReadResult(
+                result_baseaddr, Cdd_Adc_ConfigPtr->channelcfg[(channelnum + groupcfg->startchannelnum)].soc_num);
         }
 
 #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
@@ -2991,15 +2970,13 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
 
         /* Manual re-trigger is necessary only for the software triggered groups */
         if ((group_obj->triggersrc == CDD_ADC_GRP_TRIGG_SRC_SW) &&
-            ((group_obj->implicit_stop == FALSE) ||
-             (group_obj->valid_samples < groupcfg->stream_numsamples)))
+            ((group_obj->implicit_stop == FALSE) || (group_obj->valid_samples < groupcfg->stream_numsamples)))
         {
             /* Retrigger the group conversion if the group doesn't stop implicitly or the buffer is
             not completely filled for implicitly stopped groups */
             Cdd_Adc_ForceMultipleSoc(base_addr, groupcfg->soc_mask);
         }
-        else if ((group_obj->triggersrc == CDD_ADC_GRP_TRIGG_SRC_HW) &&
-                 (group_obj->implicit_stop == TRUE) &&
+        else if ((group_obj->triggersrc == CDD_ADC_GRP_TRIGG_SRC_HW) && (group_obj->implicit_stop == TRUE) &&
                  (group_obj->valid_samples == groupcfg->stream_numsamples))
         {
             /* Disable group trigger sources and interrupt trigger source for the hardware trigger

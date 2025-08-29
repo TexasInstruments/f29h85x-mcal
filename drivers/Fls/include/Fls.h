@@ -163,10 +163,10 @@ typedef uint32 Fls_LengthType;
 #define FLS_E_UNEXPECTED_FLASH_ID ((uint8)0x05U)
 #endif
 
- #ifndef FLS_E_BLANK_CHECK_FAILED
- /** \brief Flash Blank Check Failediin HW */
- #define FLS_E_BLANK_CHECK_FAILED ((uint8)0x0BU)
- #endif
+#ifndef FLS_E_BLANK_CHECK_FAILED
+/** \brief Flash Blank Check Failediin HW */
+#define FLS_E_BLANK_CHECK_FAILED ((uint8)0x0BU)
+#endif
 
 /**
  * FLS Service Ids.

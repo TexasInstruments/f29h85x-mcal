@@ -17,11 +17,11 @@
  *  File:       Port_Pin_Map.h
  *  Generator:  None
  *
- *  Description:  File defines the GPIO MUX values.     
+ *  Description:  File defines the GPIO MUX values.
  *  0x00000003 = MUX register value
  *  0x0000000C = GMUX register value
  *  0x0000FF00 = Shift amount within mux registers
- *  0xFFFF0000 = Offset of MUX register                                                    
+ *  0xFFFF0000 = Offset of MUX register
  *********************************************************************************************************************/
 #ifndef PORT_PIN_MAP_H
 #define PORT_PIN_MAP_H

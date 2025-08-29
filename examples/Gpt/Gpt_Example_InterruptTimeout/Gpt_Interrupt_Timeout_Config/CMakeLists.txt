@@ -1,6 +1,7 @@
 add_library(Gpt_Interrupt_Timeout_Config INTERFACE)
 
-target_include_directories(Gpt_Interrupt_Timeout_Config INTERFACE ${CMAKE_CURRENT_LIST_DIR}/output/include/)
+target_include_directories(Gpt_Interrupt_Timeout_Config
+                           INTERFACE ${CMAKE_CURRENT_LIST_DIR}/output/include/)
 
 target_sources(
     Gpt_Interrupt_Timeout_Config

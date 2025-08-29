@@ -352,7 +352,6 @@ ISR(Cdd_Pwm_Epwm18_IntIsr)
 }
 #endif
 
-
 #if defined(CDD_PWM1_TZINT_ENABLE)
 #if defined(CDD_PWM1_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm1_TzIntIsr)

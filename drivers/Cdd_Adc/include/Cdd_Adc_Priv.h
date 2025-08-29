@@ -23,7 +23,6 @@
 #ifndef CDD_ADC_PRIV_H
 #define CDD_ADC_PRIV_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -148,7 +147,7 @@ typedef struct Cdd_Adc_GroupObjTag
     /** \brief  Determines whether the group stops implicitly or has to be stopped by the user */
     boolean            implicit_stop;
     /** \brief  Determines whether the group stops implicitly or has to be stopped by the user */
-    boolean grp_active;
+    boolean            grp_active;
 #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
     /** \brief  Flag to enable or disable group notify function */
     boolean grp_notification;
@@ -198,7 +197,7 @@ typedef struct Cdd_Adc_DriverObjTag
     /* Design: MCAL-31440 */
     Cdd_Adc_GlbSwObjType glbsw_obj[CDD_ADC_GLBSW_TRIG_CNT];
 #endif
-    Cdd_Adc_GroupType interrupt_obj[CDD_ADC_MAX_HW_UNIT_COUNT*CDD_ADC_MAX_INT_COUNT];
+    Cdd_Adc_GroupType interrupt_obj[CDD_ADC_MAX_HW_UNIT_COUNT * CDD_ADC_MAX_INT_COUNT];
 } Cdd_Adc_DriverObjType;
 
 /*********************************************************************************************************************
@@ -333,8 +332,9 @@ Cdd_Adc_SetMode(uint32 Base, Cdd_Adc_ResolutionType Resolution, Cdd_Adc_SignalMo
  *          E_NOT_OK - If resolution is not updated because of DET errors
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
-                                                                VAR(Cdd_Adc_ResolutionType, AUTOMATIC) Resolution);
+FUNC(Std_ReturnType, CDD_ADC_CODE)
+Cdd_Adc_UpdateResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
+                         VAR(Cdd_Adc_ResolutionType, AUTOMATIC) Resolution);
 #endif
 
 #if (STD_ON == CDD_ADC_READ_GROUP_API)
@@ -376,7 +376,7 @@ Cdd_Adc_GetValidSampleCnt(Cdd_Adc_GroupType Group, Cdd_Adc_ValueGroupType **PtrT
  * This ISR updates the status of the group and call the notification function if enabled for the
  *group. Also clears the interrupt flags and for continuous sofware triggers it triggers the
  *conversion again.
- *  
+ *
  * \param[in]  IntNum   Interrupt number
  * \param[in]  HwUnitId   Hwunit object to which the the group belongs
  * \pre None
@@ -825,7 +825,6 @@ Cdd_Adc_ClearCheckerStatus(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckerEv
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* CDD_ADC_PRIV_H */
 /*********************************************************************************************************************

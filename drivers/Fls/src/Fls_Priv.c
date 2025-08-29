@@ -216,7 +216,8 @@ static FUNC(void, FLS_CODE) Fls_PostProcessAndReportError(uint8 ApiId, uint8 pro
     }
 
 #if (STD_ON == FLS_DEV_ERROR_DETECT)
-    if ((processFailureType == FLS_E_VERIFY_WRITE_FAILED) || (processFailureType == FLS_E_COMPARE_FAILED) || (processFailureType == FLS_E_TIMEOUT))
+    if ((processFailureType == FLS_E_VERIFY_WRITE_FAILED) || (processFailureType == FLS_E_COMPARE_FAILED) ||
+        (processFailureType == FLS_E_TIMEOUT))
     {
         (void)Det_ReportRuntimeError(FLS_MODULE_ID, FLS_INSTANCE_ID, ApiId, processFailureType);
     }
@@ -539,7 +540,6 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Compare(uint32 actualChunkSize)
     if (oReturnCheck != E_OK)
     {
         retVal = E_COMPARE_MISMATCH; /*E_NOT_OK;*/
-
     }
     else
     {

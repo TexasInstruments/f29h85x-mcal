@@ -1,6 +1,7 @@
 add_library(Can_Example_Classic_FD_Config INTERFACE)
 
-target_include_directories(Can_Example_Classic_FD_Config INTERFACE ${CMAKE_CURRENT_LIST_DIR}/output/include/)
+target_include_directories(Can_Example_Classic_FD_Config
+                           INTERFACE ${CMAKE_CURRENT_LIST_DIR}/output/include/)
 
 target_sources(
     Can_Example_Classic_FD_Config

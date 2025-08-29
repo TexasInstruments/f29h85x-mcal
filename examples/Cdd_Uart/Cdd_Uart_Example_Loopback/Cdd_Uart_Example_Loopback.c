@@ -122,7 +122,8 @@ int main(void)
     Cdd_Uart_ReadStatusType  readStatus;
     VAR(McalLib_TickType, MCAL_LIB_DATA) startCount   = (McalLib_TickType)0U;
     VAR(McalLib_TickType, MCAL_LIB_DATA) elapsedCount = (McalLib_TickType)0U;
-    VAR(McalLib_TickType, MCAL_LIB_DATA) uarttimeout   = (McalLib_TickType)26041U;/*in Us for 115200 bdrate and size 300*/
+    VAR(McalLib_TickType, MCAL_LIB_DATA)
+    uarttimeout = (McalLib_TickType)26041U; /*in Us for 115200 bdrate and size 300*/
     VAR(McalLib_TickType, MCAL_LIB_DATA) timerTickCount = (McalLib_TickType)0U;
 
     DeviceSupport_Init();
@@ -146,7 +147,6 @@ int main(void)
 
     for (cycle = 0U; cycle < CDD_UART_EXAMPLE_LOOPBACK_NUM_TEST_CYCLE; cycle++)
     {
-
         for (testNum = 0U; testNum < CDD_UART_EXAMPLE_LOOPBACK_NUM_TEST_CYCLE; testNum++)
         {
             /* Read data */
@@ -217,7 +217,6 @@ int main(void)
             (void)Cdd_Uart_GetWriteStatus(CddUartConf_CddUartConfigSet_CddUartConfig_0, &writeStatus);
             (void)Cdd_Uart_GetReadStatus(CddUartConf_CddUartConfigSet_CddUartConfig_0, &readStatus);
         } while ((E_NOT_OK == writeStatus.Cdd_Uart_BusyStatus) || (E_NOT_OK == readStatus.Cdd_Uart_BusyStatus));
-
     }
     /* CDD UART DeInit */
     Cdd_Uart_Deinit();

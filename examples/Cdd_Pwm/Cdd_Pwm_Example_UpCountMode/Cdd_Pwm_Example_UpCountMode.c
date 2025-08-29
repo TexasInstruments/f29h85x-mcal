@@ -42,8 +42,12 @@
  * instance with Cdd_Pwm_SetPeriod() API and observe the change in the frequency of the generated
  * output waveforms
  *
- * PWM1 Channel A waveform can be observed on the GPIO0 pin and channel B waveform on the GPIO1 pin
- * PWM2 Channel A waveform can be observed on the GPIO2 pin and channel B waveform on the GPIO3 pin
+ * EPWM waveform can be observed on the respective pins configured in EPWM mode
+ * \b External \b Connections \n
+ * - GPIO0 EPWM1A
+ * - GPIO1 EPWM1B
+ * - GPIO2 EPWM2A
+ * - GPIO3 EPWM2B
  *
  *********************************************************************************************************************/
 
@@ -146,15 +150,15 @@ int main()
     Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1);
 
     /* Enable channel notification */
-    Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0,CDD_PWM_EVENT_COUNT);
-    Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1,CDD_PWM_EVENT_COUNT);
+    Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_EVENT_COUNT);
+    Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_EVENT_COUNT);
 
     Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_0_Channel_0, CDD_PWM_RISING_EDGE);
     Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_0_Channel_1, CDD_PWM_RISING_EDGE);
-        
+
     Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0, CDD_PWM_RISING_EDGE);
     Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_RISING_EDGE);
-    
+
     McalLib_Delay(5000000U);
 
     /* Set Duty cycle */
@@ -166,8 +170,6 @@ int main()
     AppUtils_Printf("The duty cycles of the EPWM1 & EPWM2 channels have been modified\r\n");
 
     McalLib_Delay(60000000U);
-
-    AppUtils_Printf("Before\r\n");
 
     AppUtils_Printf(
         "The notification count for EPWM1 instance after calling Cdd_Pwm_SetDutyCycle API is "
@@ -197,7 +199,6 @@ int main()
 
     McalLib_Delay(5000000U);
 
-
     /* Change the period of EPWM1 channels */
     Cdd_Pwm_SetPeriod(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_100HZ_PERIOD);
 
@@ -206,7 +207,7 @@ int main()
     Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_DUTY_CYCLE_50_PERCENT);
 
     AppUtils_Printf("The frequency of EPWM1 has been doubled(period halved)\r\n");
-    AppUtils_Printf("The duty cycles of the EPWM2 channels have been modified\r\n");
+    AppUtils_Printf("The duty cycle of the EPWM2 channels have been modified\r\n");
 
     McalLib_Delay(50000000U);
 
@@ -219,10 +220,15 @@ int main()
         "Time elapsed in US(microsecond) from when the notification is enabled until Deinit is "
         "%d\r\n",
         elapsed_time);
-    AppUtils_Printf("Number of rising edges detected for EPWM1 are %d\r\n",
-                (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0] * CDD_PWM_EVENT_COUNT));
-    AppUtils_Printf("Number of edges detected for EPWM2 are %d\r\n",
-                (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1] * CDD_PWM_EVENT_COUNT));
+
+    AppUtils_Printf(
+        "Number of rising edges detected for EPWM1 are %d\r\n",
+        (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0] * CDD_PWM_EVENT_COUNT));
+    AppUtils_Printf(
+        "Number of edges detected for EPWM2 are %d\r\n",
+        (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1] * CDD_PWM_EVENT_COUNT));
+
+    AppUtils_Printf("Waveforms can be observed on the configured EPWM pins\r\n");
     AppUtils_Printf("Cdd_Pwm_Example_UpCountMode executed successfully\r\n");
 
     return 0;

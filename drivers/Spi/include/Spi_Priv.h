@@ -97,31 +97,31 @@ typedef struct
 
 #if ((SPI_CHANNEL_BUFFERS == SPI_IB) || (SPI_CHANNEL_BUFFERS == SPI_IB_EB))
     /** \brief Internal TX buffer */
-    Spi_DataBufferType txIb[SPI_IB_MAX_LENGTH];
+    volatile Spi_DataBufferType txIb[SPI_IB_MAX_LENGTH];
     /** \brief Internal RX buffer */
-    Spi_DataBufferType rxIb[SPI_IB_MAX_LENGTH];
+    volatile Spi_DataBufferType rxIb[SPI_IB_MAX_LENGTH];
 #endif
     /** \brief Current TX buffer pointer */
-    const uint8         *curTxBufPtr;
+    volatile const uint8 *curTxBufPtr;
     /** \brief Current RX buffer pointer */
-    uint8               *curRxBufPtr;
+    volatile uint8       *curRxBufPtr;
     /** \brief Number of words to transfer */
-    Spi_NumberOfDataType numWordsTxRx;
+    Spi_NumberOfDataType  numWordsTxRx;
     /** \brief   Number of words transmitted. We need separate counters for
      *   TX/RX because when FIFO in enabled, TX writes happen in
      *   advance where as RX will happen on actual received data. */
-    Spi_NumberOfDataType curTxWords;
+    Spi_NumberOfDataType  curTxWords;
     /** \brief Number of words received */
-    Spi_NumberOfDataType curRxWords;
+    Spi_NumberOfDataType  curRxWords;
     /** \brief   Width of buffer in bytes-used for accessing the TX/RX buffer.
      *   When dataWidth < 9,           bufWidth = uint8 (1 bytes)
      *   When dataWidth >= 9  && < 17, bufWidth = uint16 (2 bytes)
      */
-    Spi_BufferWidthType  bufWidth;
+    Spi_BufferWidthType   bufWidth;
     /** \brief Effective TX FIFO depth in words - depends on dataWidth */
-    uint16               effTxFifoDepth;
+    uint16                effTxFifoDepth;
     /** \brief Data width mask depending on SPI word size */
-    uint16               dataWidthBitMask;
+    uint16                dataWidthBitMask;
 
 } Spi_ChannelObjType;
 
@@ -678,9 +678,10 @@ LOCAL_INLINE FUNC(void, SPI_CODE)
  * \retval pointer to bufPtr
  *
  ********************************************************************************************************************/
-LOCAL_INLINE uint8 *Spi_FifoRead8(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(uint8, AUTOMATIC, SPI_CODE) bufPtr,
-                                  VAR(uint32, AUTOMATIC) numWordsToRead, VAR(uint16, AUTOMATIC) dataWidthBitMask,
-                                  VAR(uint16, AUTOMATIC) curRxWords);
+LOCAL_INLINE volatile uint8 *Spi_FifoRead8(VAR(uint32, AUTOMATIC) baseAddr,
+                                           volatile P2VAR(uint8, AUTOMATIC, SPI_CODE) bufPtr,
+                                           VAR(uint32, AUTOMATIC) numWordsToRead,
+                                           VAR(uint16, AUTOMATIC) dataWidthBitMask, VAR(uint16, AUTOMATIC) curRxWords);
 
 /** \brief function to read from Register to bufPtr in 16 bits
  *

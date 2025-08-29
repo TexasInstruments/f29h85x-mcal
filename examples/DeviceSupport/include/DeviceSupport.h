@@ -121,8 +121,7 @@ typedef enum
     DEVICE_F29P589DM5,
     DEVICE_F29P589DU5,
     DEVICE_F29P329SM2,
-}Device_PartNumber;
-
+} Device_PartNumber;
 
 /*********************************************************************************************************************
  * Exported Object Declarations

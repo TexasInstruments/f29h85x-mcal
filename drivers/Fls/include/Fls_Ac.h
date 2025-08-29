@@ -22,7 +22,6 @@
 #ifndef FLS_AC_H_
 #define FLS_AC_H_
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -268,11 +267,10 @@ extern "C" {
 /** \brief Flash status */
 typedef uint32 Fls_FapiFlashStatus;
 
-
 typedef struct Fls_FlashStatusWordTag
 {
     uint32 au32StatusWord[4];
-}Fls_FlashStatusWordType;
+} Fls_FlashStatusWordType;
 
 /** \brief This contains all the possible Flash State Machine commands */
 typedef enum Fls_FlashStateCmdTag
@@ -509,7 +507,6 @@ extern FUNC(void, FLS_CODE) Fls_SSU_releaseFlashSemaphore(void);
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /** end of FLS_AC_H_*/
 

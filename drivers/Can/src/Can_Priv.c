@@ -3801,7 +3801,7 @@ static FUNC(void, CAN_CODE)
     }
     else
     {
-        higherNdatStatus = newDataStatus->statusHigh & (((uint32)1U) << (buffNum - (uint8)32U));
+        higherNdatStatus          = newDataStatus->statusHigh & (((uint32)1U) << (buffNum - (uint8)32U));
         newDataStatus->statusHigh = newDataStatus->statusHigh & (~higherNdatStatus);
     }
     MCAL_LIB_REG_WRITE32((baseAddr + MCAN_NDAT1), lowerNdatStatus);

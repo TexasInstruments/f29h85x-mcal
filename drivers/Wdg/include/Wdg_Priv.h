@@ -22,7 +22,6 @@
 #ifndef WDG_PRIV_H
 #define WDG_PRIV_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif

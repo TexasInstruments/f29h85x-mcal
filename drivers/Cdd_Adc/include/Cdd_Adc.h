@@ -119,7 +119,7 @@ extern "C" {
 #define CDD_ADC_E_INVALID_ID ((uint8)0x22U) /* Design: MCAL-31161 */
 
 /** \brief API service called with invalid hardware unit ID */
-#define CDD_ADC_E_INVALID_RESOLUTION ((uint8)0x23U)  /* Design: MCAL-31162 */
+#define CDD_ADC_E_INVALID_RESOLUTION ((uint8)0x23U) /* Design: MCAL-31162 */
 
 /* The Service Id is one of the argument to Det_ReportError function and is used to identify the
  * source of the error. */
@@ -208,7 +208,7 @@ typedef uint8  Cdd_Adc_CheckerIntEvtType;
 /** \brief Hardware unit instance type */
 typedef uint8  Cdd_Adc_HwUnitInstanceType;
 /** \brief Group end notification function pointer */
-typedef P2FUNC(void, CDD_ADC_CODE, Cdd_Adc_GroupEndNotifyType)(void);  /* Design: MCAL-31119 */
+typedef P2FUNC(void, CDD_ADC_CODE, Cdd_Adc_GroupEndNotifyType)(void); /* Design: MCAL-31119 */
 
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
 /* Design: MCAL-31136 */
@@ -229,14 +229,16 @@ typedef enum
 
 /** \brief Trigger source type */
 /* Design: MCAL-31122 */
-typedef enum {
+typedef enum
+{
     CDD_ADC_TRIGG_SRC_SW, /*!< \brief  Group is triggered by a software API call */
     CDD_ADC_TRIGG_SRC_HW  /*!< \brief  Group is triggered by a hardware event */
 } Cdd_Adc_TriggerSrcType;
 
 /** \brief Stream buffer mode type */
 /* Design: MCAL-31125 */
-typedef enum {
+typedef enum
+{
     /** \brief The ADC Driver stops the conversion as soon as the stream buffer is full (number of
        samples reached) */
     CDD_ADC_STREAM_BUFFER_LINEAR,
@@ -247,14 +249,16 @@ typedef enum {
 
 /** \brief Group access mode type */
 /* Design: MCAL-31124 */
-typedef enum {
+typedef enum
+{
     CDD_ADC_ACCESS_MODE_SINGLE,   /*!< \brief  Single value access mode */
     CDD_ADC_ACCESS_MODE_STREAMING /*!< \brief  Streaming access mode */
 } Cdd_Adc_GroupAccessModeType;
 
 /** \brief Group conversion mode type */
 /* Design: MCAL-31121,MCAL-31116 */
-typedef enum {
+typedef enum
+{
     /** \brief Exactly one conversion of each channel in an ADC channel group is performed after the
        trigger event */
     CDD_ADC_CONV_MODE_ONESHOT,
@@ -523,7 +527,8 @@ typedef struct Cdd_Adc_GlbSwCfgTag
 /** \brief ADC config type */
 
 /* Design: MCAL-31319 */
-typedef struct Cdd_Adc_ConfigTag {
+typedef struct Cdd_Adc_ConfigTag
+{
     /** \brief  Group configurations */
     Cdd_Adc_GroupCfgType   groupcfg[CDD_ADC_GROUP_CNT];
     /** \brief  HW Unit configurations */

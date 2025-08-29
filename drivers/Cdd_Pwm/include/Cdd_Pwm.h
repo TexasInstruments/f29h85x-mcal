@@ -46,95 +46,77 @@ extern "C" {
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
 
-#if(STD_ON == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
 
-#define CDD_PWM_SYNC_OUT_SOURCE_M    ((uint16)EPWM_SYNCOUTEN_SWEN |\
-                                        (uint16)EPWM_SYNCOUTEN_ZEROEN |\
-                                        (uint16)EPWM_SYNCOUTEN_CMPBEN |\
-                                        (uint16)EPWM_SYNCOUTEN_CMPCEN |\
-                                        (uint16)EPWM_SYNCOUTEN_CMPDEN |\
-                                        (uint16)EPWM_SYNCOUTEN_DCAEVT1EN |\
-                                        (uint16)EPWM_SYNCOUTEN_DCBEVT1EN)
+#define CDD_PWM_SYNC_OUT_SOURCE_M                                                                       \
+    ((uint16)EPWM_SYNCOUTEN_SWEN | (uint16)EPWM_SYNCOUTEN_ZEROEN | (uint16)EPWM_SYNCOUTEN_CMPBEN |      \
+     (uint16)EPWM_SYNCOUTEN_CMPCEN | (uint16)EPWM_SYNCOUTEN_CMPDEN | (uint16)EPWM_SYNCOUTEN_DCAEVT1EN | \
+     (uint16)EPWM_SYNCOUTEN_DCBEVT1EN)
 
-#define CDD_PWM_TZSIGNAL_MAX    (uint16)((uint16)CDD_PWM_TZ_SIGNAL_CBC1 | (uint16)CDD_PWM_TZ_SIGNAL_CBC2 | \
-                                            (uint16)CDD_PWM_TZ_SIGNAL_CBC3 | (uint16)CDD_PWM_TZ_SIGNAL_CBC4 | \
-                                            (uint16)CDD_PWM_TZ_SIGNAL_CBC5 | (uint16)CDD_PWM_TZ_SIGNAL_CBC6 | \
-                                            (uint16)CDD_PWM_TZ_SIGNAL_DCAEVT2 | (uint16)CDD_PWM_TZ_SIGNAL_DCBEVT2 | \
-                                            (uint16)CDD_PWM_TZ_SIGNAL_OSHT1 | (uint16)CDD_PWM_TZ_SIGNAL_OSHT2 | \
-                                            (uint16)CDD_PWM_TZ_SIGNAL_OSHT3 | (uint16)CDD_PWM_TZ_SIGNAL_OSHT4 | \
-                                            (uint16)CDD_PWM_TZ_SIGNAL_OSHT5 | (uint16)CDD_PWM_TZ_SIGNAL_OSHT6 | \
-                                            (uint16)CDD_PWM_TZ_SIGNAL_DCAEVT1 | (uint16)CDD_PWM_TZ_SIGNAL_DCBEVT1)
+#define CDD_PWM_TZSIGNAL_MAX                                                                                           \
+    (uint16)((uint16)CDD_PWM_TZ_SIGNAL_CBC1 | (uint16)CDD_PWM_TZ_SIGNAL_CBC2 | (uint16)CDD_PWM_TZ_SIGNAL_CBC3 |        \
+             (uint16)CDD_PWM_TZ_SIGNAL_CBC4 | (uint16)CDD_PWM_TZ_SIGNAL_CBC5 | (uint16)CDD_PWM_TZ_SIGNAL_CBC6 |        \
+             (uint16)CDD_PWM_TZ_SIGNAL_DCAEVT2 | (uint16)CDD_PWM_TZ_SIGNAL_DCBEVT2 | (uint16)CDD_PWM_TZ_SIGNAL_OSHT1 | \
+             (uint16)CDD_PWM_TZ_SIGNAL_OSHT2 | (uint16)CDD_PWM_TZ_SIGNAL_OSHT3 | (uint16)CDD_PWM_TZ_SIGNAL_OSHT4 |     \
+             (uint16)CDD_PWM_TZ_SIGNAL_OSHT5 | (uint16)CDD_PWM_TZ_SIGNAL_OSHT6 | (uint16)CDD_PWM_TZ_SIGNAL_DCAEVT1 |   \
+             (uint16)CDD_PWM_TZ_SIGNAL_DCBEVT1)
 
-#define CDD_PWM_TZINT_SRC_MAX   (uint16)((uint16)CDD_PWM_TZ_INTERRUPT_CBC | (uint16)CDD_PWM_TZ_INTERRUPT_OST | \
-                                        (uint16)CDD_PWM_TZ_INTERRUPT_DCAEVT1 | (uint16)CDD_PWM_TZ_INTERRUPT_DCAEVT2 | \
-                                        (uint16)CDD_PWM_TZ_INTERRUPT_DCBEVT1 | (uint16)CDD_PWM_TZ_INTERRUPT_DCBEVT2 | \
-                                        (uint16)CDD_PWM_TZ_INTERRUPT_CAPEVT)
+#define CDD_PWM_TZINT_SRC_MAX                                                              \
+    (uint16)((uint16)CDD_PWM_TZ_INTERRUPT_CBC | (uint16)CDD_PWM_TZ_INTERRUPT_OST |         \
+             (uint16)CDD_PWM_TZ_INTERRUPT_DCAEVT1 | (uint16)CDD_PWM_TZ_INTERRUPT_DCAEVT2 | \
+             (uint16)CDD_PWM_TZ_INTERRUPT_DCBEVT1 | (uint16)CDD_PWM_TZ_INTERRUPT_DCBEVT2 | \
+             (uint16)CDD_PWM_TZ_INTERRUPT_CAPEVT)
 
-#define CDD_PWM_TZFLAG_MAX    ((uint16)((uint16)CDD_PWM_TZ_INTERRUPT | (uint16)CDD_PWM_TZ_FLAG_CBC | \
-                                (uint16)CDD_PWM_TZ_FLAG_OST | (uint16)CDD_PWM_TZ_FLAG_DCAEVT1 | \
-                                (uint16)CDD_PWM_TZ_FLAG_DCAEVT2 | (uint16)CDD_PWM_TZ_FLAG_DCBEVT1 | \
-                                (uint16)CDD_PWM_TZ_FLAG_DCBEVT2 | (uint16)CDD_PWM_TZ_FLAG_CAPEVT))
+#define CDD_PWM_TZFLAG_MAX                                                                                          \
+    ((uint16)((uint16)CDD_PWM_TZ_INTERRUPT | (uint16)CDD_PWM_TZ_FLAG_CBC | (uint16)CDD_PWM_TZ_FLAG_OST |            \
+              (uint16)CDD_PWM_TZ_FLAG_DCAEVT1 | (uint16)CDD_PWM_TZ_FLAG_DCAEVT2 | (uint16)CDD_PWM_TZ_FLAG_DCBEVT1 | \
+              (uint16)CDD_PWM_TZ_FLAG_DCBEVT2 | (uint16)CDD_PWM_TZ_FLAG_CAPEVT))
 
-#define CDD_PWM_TZCBC_INTFLAGS_MAX      (uint16)((uint16)CDD_PWM_TZ_CBC_FLAG_1 | (uint16)CDD_PWM_TZ_CBC_FLAG_2 | \
-                                                (uint16)CDD_PWM_TZ_CBC_FLAG_3 | (uint16)CDD_PWM_TZ_CBC_FLAG_4 | \
-                                                (uint16)CDD_PWM_TZ_CBC_FLAG_5 | (uint16)CDD_PWM_TZ_CBC_FLAG_6 | \
-                                                (uint16)CDD_PWM_TZ_CBC_FLAG_DCAEVT2 | \
-                                                (uint16)CDD_PWM_TZ_CBC_FLAG_DCBEVT2 | \
-                                                (uint16)CDD_PWM_TZ_CBC_FLAG_CAPEVT)
+#define CDD_PWM_TZCBC_INTFLAGS_MAX                                                                           \
+    (uint16)((uint16)CDD_PWM_TZ_CBC_FLAG_1 | (uint16)CDD_PWM_TZ_CBC_FLAG_2 | (uint16)CDD_PWM_TZ_CBC_FLAG_3 | \
+             (uint16)CDD_PWM_TZ_CBC_FLAG_4 | (uint16)CDD_PWM_TZ_CBC_FLAG_5 | (uint16)CDD_PWM_TZ_CBC_FLAG_6 | \
+             (uint16)CDD_PWM_TZ_CBC_FLAG_DCAEVT2 | (uint16)CDD_PWM_TZ_CBC_FLAG_DCBEVT2 |                     \
+             (uint16)CDD_PWM_TZ_CBC_FLAG_CAPEVT)
 
-#define CDD_PWM_TZOST_INTFLAGS_MAX     (uint16)((uint16)CDD_PWM_TZ_OST_FLAG_OST1 | (uint16)CDD_PWM_TZ_OST_FLAG_OST2 | \
-                                                (uint16)CDD_PWM_TZ_OST_FLAG_OST3 | (uint16)CDD_PWM_TZ_OST_FLAG_OST4 | \
-                                                (uint16)CDD_PWM_TZ_OST_FLAG_OST5 | (uint16)CDD_PWM_TZ_OST_FLAG_OST6 | \
-                                                (uint16)CDD_PWM_TZ_OST_FLAG_DCAEVT1 | \
-                                                (uint16)CDD_PWM_TZ_OST_FLAG_DCBEVT1 | \
-                                                (uint16)CDD_PWM_TZ_OST_FLAG_CAPEVT)
+#define CDD_PWM_TZOST_INTFLAGS_MAX                                                                                    \
+    (uint16)((uint16)CDD_PWM_TZ_OST_FLAG_OST1 | (uint16)CDD_PWM_TZ_OST_FLAG_OST2 | (uint16)CDD_PWM_TZ_OST_FLAG_OST3 | \
+             (uint16)CDD_PWM_TZ_OST_FLAG_OST4 | (uint16)CDD_PWM_TZ_OST_FLAG_OST5 | (uint16)CDD_PWM_TZ_OST_FLAG_OST6 | \
+             (uint16)CDD_PWM_TZ_OST_FLAG_DCAEVT1 | (uint16)CDD_PWM_TZ_OST_FLAG_DCBEVT1 |                              \
+             (uint16)CDD_PWM_TZ_OST_FLAG_CAPEVT)
 
-#define CDD_PWM_TZFRC_FLAGS_MAX     (uint16)((uint16)CDD_PWM_TZ_FORCE_EVENT_CBC | (uint16)CDD_PWM_TZ_FORCE_EVENT_OST |\
-                                    (uint16)CDD_PWM_TZ_FORCE_EVENT_DCAEVT1 | (uint16)CDD_PWM_TZ_FORCE_EVENT_DCAEVT2 |\
-                                    (uint16)CDD_PWM_TZ_FORCE_EVENT_DCBEVT1 | (uint16)CDD_PWM_TZ_FORCE_EVENT_DCBEVT2 |\
-                                    (uint16)CDD_PWM_TZ_FORCE_EVENT_CAPEVT)
+#define CDD_PWM_TZFRC_FLAGS_MAX                                                                \
+    (uint16)((uint16)CDD_PWM_TZ_FORCE_EVENT_CBC | (uint16)CDD_PWM_TZ_FORCE_EVENT_OST |         \
+             (uint16)CDD_PWM_TZ_FORCE_EVENT_DCAEVT1 | (uint16)CDD_PWM_TZ_FORCE_EVENT_DCAEVT2 | \
+             (uint16)CDD_PWM_TZ_FORCE_EVENT_DCBEVT1 | (uint16)CDD_PWM_TZ_FORCE_EVENT_DCBEVT2 | \
+             (uint16)CDD_PWM_TZ_FORCE_EVENT_CAPEVT)
 
-#define CDD_PWM_TZCAPEVTSIG_MAX     (uint16)((uint16)CDD_PWM_TZ_SIGNAL_CAPEVT_CBC | \
-                                            (uint16)CDD_PWM_TZ_SIGNAL_CAPEVT_OST)
+#define CDD_PWM_TZCAPEVTSIG_MAX (uint16)((uint16)CDD_PWM_TZ_SIGNAL_CAPEVT_CBC | (uint16)CDD_PWM_TZ_SIGNAL_CAPEVT_OST)
 
-#define CDD_PWM_AQEVT_ACTION_MAX    (uint16)((uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_ZERO | \
-                                            (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_PERIOD |\
-                                            (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_UP_CMPA |\
-                                            (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_DOWN_CMPA |\
-                                            (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_UP_CMPB |\
-                                            (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_DOWN_CMPB)
+#define CDD_PWM_AQEVT_ACTION_MAX                                                                     \
+    (uint16)((uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_ZERO | (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_PERIOD |       \
+             (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_UP_CMPA | (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_DOWN_CMPA | \
+             (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_UP_CMPB | (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_DOWN_CMPB)
 
-#define CDD_PWM_ADDITIONAL_AQEVT_ACTION_MAX (uint16)((uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_UP_T1 |\
-                                                     (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_DOWN_T1 |\
-                                                     (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_UP_T2 |\
-                                                     (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_DOWN_T2)
+#define CDD_PWM_ADDITIONAL_AQEVT_ACTION_MAX                                                      \
+    (uint16)((uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_UP_T1 | (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_DOWN_T1 | \
+             (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_UP_T2 | (uint16)CDD_PWM_AQ_OUTPUT_TOGGLE_DOWN_T2)
 
-#define CDD_PWM_GLB_LOAD_MAX    (uint16)((uint16)CDD_PWM_GL_REGISTER_TBPRD_TBPRDHR |\
-                                        (uint16)CDD_PWM_GL_REGISTER_CMPA_CMPAHR |\
-                                        (uint16)CDD_PWM_GL_REGISTER_CMPB_CMPBHR |\
-                                        (uint16)CDD_PWM_GL_REGISTER_CMPC |\
-                                        (uint16)CDD_PWM_GL_REGISTER_CMPD |\
-                                        (uint16)CDD_PWM_GL_REGISTER_DBRED_DBREDHR |\
-                                        (uint16)CDD_PWM_GL_REGISTER_DBFED_DBFEDHR |\
-                                        (uint16)CDD_PWM_GL_REGISTER_DBCTL |\
-                                        (uint16)CDD_PWM_GL_REGISTER_AQCTLA_AQCTLA2 |\
-                                        (uint16)CDD_PWM_GL_REGISTER_AQCTLB_AQCTLB2 |\
-                                        (uint16)CDD_PWM_GL_REGISTER_AQCSFRC)
+#define CDD_PWM_GLB_LOAD_MAX                                                                           \
+    (uint16)((uint16)CDD_PWM_GL_REGISTER_TBPRD_TBPRDHR | (uint16)CDD_PWM_GL_REGISTER_CMPA_CMPAHR |     \
+             (uint16)CDD_PWM_GL_REGISTER_CMPB_CMPBHR | (uint16)CDD_PWM_GL_REGISTER_CMPC |              \
+             (uint16)CDD_PWM_GL_REGISTER_CMPD | (uint16)CDD_PWM_GL_REGISTER_DBRED_DBREDHR |            \
+             (uint16)CDD_PWM_GL_REGISTER_DBFED_DBFEDHR | (uint16)CDD_PWM_GL_REGISTER_DBCTL |           \
+             (uint16)CDD_PWM_GL_REGISTER_AQCTLA_AQCTLA2 | (uint16)CDD_PWM_GL_REGISTER_AQCTLB_AQCTLB2 | \
+             (uint16)CDD_PWM_GL_REGISTER_AQCSFRC)
 
-#define CDD_PWM_DC_TRIPINPUT_COMBO_MAX    (uint16)((uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN1 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN2 | \
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN3 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN4 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN5 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN6 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN7 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN8 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN9 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN10 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN11 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN12 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN14 |\
-                                                (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN15)
+#define CDD_PWM_DC_TRIPINPUT_COMBO_MAX                                                               \
+    (uint16)((uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN1 | (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN2 |   \
+             (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN3 | (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN4 |   \
+             (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN5 | (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN6 |   \
+             (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN7 | (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN8 |   \
+             (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN9 | (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN10 |  \
+             (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN11 | (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN12 | \
+             (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN14 | (uint16)CDD_PWM_DC_COMBINATIONAL_TRIPIN15)
 #endif
 
 /* Defines for CDD_PWM Driver version used for compatibility checks.*/
@@ -161,9 +143,8 @@ extern "C" {
 /** \brief CDD PWM Instance ID */
 #define CDD_PWM_INSTANCE_ID ((uint8)0U)
 
-/** \brief API service used without module initialization */ 
-#define CDD_PWM_E_UNINIT                    ((uint8) 0x0AU)
-
+/** \brief API service used without module initialization */
+#define CDD_PWM_E_UNINIT ((uint8)0x0AU)
 
 /** \brief Cdd_Pwm_Init() API Service ID */
 #define CDD_PWM_SID_INIT ((uint8)0x00U)
@@ -172,13 +153,12 @@ extern "C" {
 /** \brief Cdd_Pwm_DisableNotification() API Service ID */
 #define CDD_PWM_SID_DISABLE_NOTIFICATION ((uint8)0xDEU)
 /** \brief Cdd_Pwm_SetInterruptEventCount API Service ID */
-#define CDD_PWM_SID_SET_INTEVTCOUNT        ((uint8) 0xDCU)
+#define CDD_PWM_SID_SET_INTEVTCOUNT ((uint8)0xDCU)
 /** \brief Cdd_Pwm_GetVersionInfo() API Service ID */
 #define CDD_PWM_SID_GET_VERSION_INFO ((uint8)0x07U)
 
-
 /* Error codes returned by Cdd Pwm functions. */
-#if(STD_OFF == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_OFF == CDD_PWM_ADVANCED_MODE_API)
 
 /* The Service Id is one of the argument to Det_ReportError function and is used to identify the
  * source of the error */
@@ -194,667 +174,667 @@ extern "C" {
 #else
 
 /** \brief Cdd_Pwm_SetEmulationMode() API Service ID */
-#define CDD_PWM_SID_SET_EMULATION_MODE  ((uint8) 0x01U)
+#define CDD_PWM_SID_SET_EMULATION_MODE               ((uint8)0x01U)
 
 /** \brief Cdd_Pwm_ConfigureTripZoneNotification() API Service ID */
-#define CDD_PWM_SID_CONFIGURE_TRIPZONE_NOTIFICATION ((uint8) 0x02U)
+#define CDD_PWM_SID_CONFIGURE_TRIPZONE_NOTIFICATION  ((uint8)0x02U)
 
 /** \brief Cdd_Pwm_SetTimeBaseCounter() API Service ID */
-#define CDD_PWM_SID_SET_TB_COUNTER                  ((uint8) 0x03U)
+#define CDD_PWM_SID_SET_TB_COUNTER                   ((uint8)0x03U)
 
-/** \brief Cdd_Pwm_SetCountModeAfterSync() API Service ID */ 
-#define CDD_PWM_SID_SET_COUNTMODE_AFTERSYNC          ((uint8) 0x04U)
+/** \brief Cdd_Pwm_SetCountModeAfterSync() API Service ID */
+#define CDD_PWM_SID_SET_COUNTMODE_AFTERSYNC          ((uint8)0x04U)
 
 /** \brief Cdd_Pwm_SetClockPrescaler() API Service ID */
-#define CDD_PWM_SID_SET_CLOCKPRESCALE         ((uint8) 0x05U)
+#define CDD_PWM_SID_SET_CLOCKPRESCALE                ((uint8)0x05U)
 
 /** \brief Cdd_Pwm_ForceSyncPulse() API Service ID */
-#define CDD_PWM_SID_FORCE_SYNC_PULSE        ((uint8) 0x06U)
+#define CDD_PWM_SID_FORCE_SYNC_PULSE                 ((uint8)0x06U)
 
-/** \brief Cdd_Pwm_SetSyncInPulseSource() API Service ID */ 
-#define CDD_PWM_SID_SET_SYNC_INPULSE_SOURCE ((uint8) 0x07U)
+/** \brief Cdd_Pwm_SetSyncInPulseSource() API Service ID */
+#define CDD_PWM_SID_SET_SYNC_INPULSE_SOURCE          ((uint8)0x07U)
 
 /** \brief Cdd_Pwm_ConfigureSyncOutPulseSource() API Service ID */
-#define CDD_PWM_SID_CONFIGURE_SYNCOUT_PULSE        ((uint8) 0x08U)
+#define CDD_PWM_SID_CONFIGURE_SYNCOUT_PULSE          ((uint8)0x08U)
 
-/** \brief Cdd_Pwm_SetOneShotSyncOutTrigger() API Service ID */ 
-#define CDD_PWM_SID_SET_ONESHOT_SYNCOUT_TRIGGER ((uint8) 0x09U)
+/** \brief Cdd_Pwm_SetOneShotSyncOutTrigger() API Service ID */
+#define CDD_PWM_SID_SET_ONESHOT_SYNCOUT_TRIGGER      ((uint8)0x09U)
 
 /** \brief Cdd_Pwm_SetPeriodLoadMode API Service ID */
-#define CDD_PWM_SID_SET_PRDLOADMODE         ((uint8) 0x4FU)
+#define CDD_PWM_SID_SET_PRDLOADMODE                  ((uint8)0x4FU)
 
 /** \brief Cdd_Pwm_ConfigurePhaseShiftLoad() API Service ID */
-#define CDD_PWM_SID_CONFIGURE_PHSSHIFTLOAD         ((uint8) 0x0AU)
+#define CDD_PWM_SID_CONFIGURE_PHSSHIFTLOAD           ((uint8)0x0AU)
 
 /** \brief Cdd_Pwm_SetTimeBaseCounterMode() API Service ID */
-#define CDD_PWM_SID_SET_TBCOUNTERMODE        ((uint8) 0x0BU)
+#define CDD_PWM_SID_SET_TBCOUNTERMODE                ((uint8)0x0BU)
 
 /** \brief Cdd_Pwm_SelectPeriodLoadEvent() API Service ID */
-#define CDD_PWM_SID_SELECT_PERIODLOADEVT ((uint8) 0x0CU)
+#define CDD_PWM_SID_SELECT_PERIODLOADEVT             ((uint8)0x0CU)
 
 /** \brief Cdd_Pwm_ConfigureOneShotSync() API Service ID */
-#define CDD_PWM_SID_CONFIGURE_ONESHTSYNC                  ((uint8) 0x0DU)
+#define CDD_PWM_SID_CONFIGURE_ONESHTSYNC             ((uint8)0x0DU)
 
-/** \brief Cdd_Pwm_StartOneShotSync() API Service ID */ 
-#define CDD_PWM_SID_SET_START_ONESHTSYNC          ((uint8) 0x0EU)
+/** \brief Cdd_Pwm_StartOneShotSync() API Service ID */
+#define CDD_PWM_SID_SET_START_ONESHTSYNC             ((uint8)0x0EU)
 
 /** \brief Cdd_Pwm_GetTimeBaseCounterValue() API Service ID */
-#define CDD_PWM_SID_GET_TBCOUNTERVAL         ((uint8) 0x0FU)
+#define CDD_PWM_SID_GET_TBCOUNTERVAL                 ((uint8)0x0FU)
 
 /** \brief Cdd_Pwm_GetTimeBaseCounterOverflowStatus() API Service ID */
-#define CDD_PWM_SID_GET_TBCOUNTER_OVFSTATUS       ((uint8) 0x10U)
+#define CDD_PWM_SID_GET_TBCOUNTER_OVFSTATUS          ((uint8)0x10U)
 
 /** \brief Cdd_Pwm_ClearTimeBaseCounterOverflowEvent() API Service ID */
-#define CDD_PWM_SID_CLEAR_TBOVFEVT ((uint8) 0x11U)
+#define CDD_PWM_SID_CLEAR_TBOVFEVT                   ((uint8)0x11U)
 
 /** \brief  Cdd_Pwm_GetSyncStatus API Service ID */
-#define CDD_PWM_SID_GETSYNCSTATUS        ((uint8) 0x12U)
+#define CDD_PWM_SID_GETSYNCSTATUS                    ((uint8)0x12U)
 
-/** \brief Cdd_Pwm_ClearSyncEvent API Service ID */ 
-#define CDD_PWM_SID_SET_CLEARSYNCEVT ((uint8) 0x13U)
+/** \brief Cdd_Pwm_ClearSyncEvent API Service ID */
+#define CDD_PWM_SID_SET_CLEARSYNCEVT                 ((uint8)0x13U)
 
-/** \brief Cdd_Pwm_GetTimeBaseCounterDirection API Service ID */ 
-#define CDD_PWM_SID_GET_TBCNTRDIRECTION          ((uint8) 0x14U)
+/** \brief Cdd_Pwm_GetTimeBaseCounterDirection API Service ID */
+#define CDD_PWM_SID_GET_TBCNTRDIRECTION              ((uint8)0x14U)
 
 /** \brief Cdd_Pwm_SetPhaseShift API Service ID */
-#define CDD_PWM_SID_SET_PHASESHIFT         ((uint8) 0x15U)
+#define CDD_PWM_SID_SET_PHASESHIFT                   ((uint8)0x15U)
 
 /** \brief Cdd_Pwm_SetTimeBasePeriod API Service ID */
-#define CDD_PWM_SID_SET_TB_PERIOD        ((uint8) 0x16U)
+#define CDD_PWM_SID_SET_TB_PERIOD                    ((uint8)0x16U)
 
 /** \brief Cdd_Pwm_GetTimeBasePeriod API Service ID */
-#define CDD_PWM_SID_GET_TB_PERIOD ((uint8) 0x17U)
+#define CDD_PWM_SID_GET_TB_PERIOD                    ((uint8)0x17U)
 
 // /** \brief Cdd_Pwm_ConfigureEpwmXLink API Service ID */
 // #define CDD_PWM_SID_CONFIG_XLINK       ((uint8) 0x18U)
 
-/** \brief Cdd_Pwm_SetCounterCompareShadowLoadMode API Service ID */ 
-#define CDD_PWM_SID_SET_CTRCMP_SHADOWLOADMODE ((uint8) 0x19U)
+/** \brief Cdd_Pwm_SetCounterCompareShadowLoadMode API Service ID */
+#define CDD_PWM_SID_SET_CTRCMP_SHADOWLOADMODE        ((uint8)0x19U)
 
 /** \brief Cdd_Pwm_DisableCounterCompareShadowLoadMode API Service ID */
-#define CDD_PWM_SID_DISABLE_CTRCMP_SHADOWLOADMODE         ((uint8) 0x1AU)
+#define CDD_PWM_SID_DISABLE_CTRCMP_SHADOWLOADMODE    ((uint8)0x1AU)
 
 /** \brief Cdd_Pwm_SetCounterCompareValue API Service ID */
-#define CDD_PWM_SID_SET_CTRCMPVAL         ((uint8) 0x1BU)
+#define CDD_PWM_SID_SET_CTRCMPVAL                    ((uint8)0x1BU)
 
 /** \brief Cdd_Pwm_GetCounterCompareValue API Service ID */
-#define CDD_PWM_SID_GET_CTRCMPVAL ((uint8) 0x1CU)
+#define CDD_PWM_SID_GET_CTRCMPVAL                    ((uint8)0x1CU)
 
 /** \brief Cdd_Pwm_GetCounterCompareShadowStatus API Service ID */
-#define CDD_PWM_SID_GET_CTRCMP_SHDSTATUS                  ((uint8) 0x1DU)
+#define CDD_PWM_SID_GET_CTRCMP_SHDSTATUS             ((uint8)0x1DU)
 
-/** \brief Cdd_Pwm_ConfigureLinkDutyHR API Service ID */ 
-#define CDD_PWM_SID_CONFIGURE_LINKDUTYHR         ((uint8) 0x1EU)
+/** \brief Cdd_Pwm_ConfigureLinkDutyHR API Service ID */
+#define CDD_PWM_SID_CONFIGURE_LINKDUTYHR             ((uint8)0x1EU)
 
 /** \brief Cdd_Pwm_SetActionQualifierShadowLoadMode API Service ID */
-#define CDD_PWM_SID_SET_AQSHDLOADMODE         ((uint8) 0x1FU)
+#define CDD_PWM_SID_SET_AQSHDLOADMODE                ((uint8)0x1FU)
 
 /** \brief Cdd_Pwm_DisableActionQualifierShadowLoadMode API Service ID */
-#define CDD_PWM_SID_DISABLE_AQSHDLOADMODE        ((uint8) 0x20U)
+#define CDD_PWM_SID_DISABLE_AQSHDLOADMODE            ((uint8)0x20U)
 
 /** \brief Cdd_Pwm_SetActionQualifierT1TriggerSource API Service ID */
-#define CDD_PWM_SID_SET_AQT1TRIGSRC ((uint8) 0x21U)
+#define CDD_PWM_SID_SET_AQT1TRIGSRC                  ((uint8)0x21U)
 
 /** \brief Cdd_Pwm_SetActionQualifierT2TriggerSource API Service ID */
-#define CDD_PWM_SID_SET_AQT2TRIGSRC        ((uint8) 0x22U)
+#define CDD_PWM_SID_SET_AQT2TRIGSRC                  ((uint8)0x22U)
 
-/** \brief Cdd_Pwm_SetActionQualifierAction API Service ID */ 
-#define CDD_PWM_SID_SET_AQACTION ((uint8) 0x23U)
+/** \brief Cdd_Pwm_SetActionQualifierAction API Service ID */
+#define CDD_PWM_SID_SET_AQACTION                     ((uint8)0x23U)
 
-/** \brief Cdd_Pwm_SetActionQualifierActionComplete API Service ID */ 
-#define CDD_PWM_SID_SET_AQACTION_COMPLETE          ((uint8) 0x24U)
+/** \brief Cdd_Pwm_SetActionQualifierActionComplete API Service ID */
+#define CDD_PWM_SID_SET_AQACTION_COMPLETE            ((uint8)0x24U)
 
 /** \brief Cdd_Pwm_SetAdditionalActionQualifierActionComplete API Service ID */
-#define CDD_PWM_SID_SET_ADDITIONALAQACTION_COMPLETE         ((uint8) 0x25U)
+#define CDD_PWM_SID_SET_ADDITIONALAQACTION_COMPLETE  ((uint8)0x25U)
 
 /** \brief Cdd_Pwm_SetActionQualifierContSwForceShadowMode API Service ID */
-#define CDD_PWM_SID_SET_AQCNTSWFRC_SHDMODE        ((uint8) 0x26U)
+#define CDD_PWM_SID_SET_AQCNTSWFRC_SHDMODE           ((uint8)0x26U)
 
 /** \brief Cdd_Pwm_SetActionQualifierContSwForceAction API Service ID */
-#define CDD_PWM_SID_SET_AQCNTSWFRC_ACTION ((uint8) 0x27U)
+#define CDD_PWM_SID_SET_AQCNTSWFRC_ACTION            ((uint8)0x27U)
 
 /** \brief Cdd_Pwm_SetActionQualifierSwAction API Service ID */
-#define CDD_PWM_SID_SET_AQSWACTION        ((uint8) 0x28U)
+#define CDD_PWM_SID_SET_AQSWACTION                   ((uint8)0x28U)
 
-/** \brief Cdd_Pwm_ForceActionQualifierSwAction API Service ID */ 
-#define CDD_PWM_SID_FRC_AQSWACTION ((uint8) 0x29U)
+/** \brief Cdd_Pwm_ForceActionQualifierSwAction API Service ID */
+#define CDD_PWM_SID_FRC_AQSWACTION                   ((uint8)0x29U)
 
 /** \brief Cdd_Pwm_SetDeadBandOutputSwapMode API Service ID */
-#define CDD_PWM_SID_SET_DBOUTPUTSWAPMODE         ((uint8) 0x2AU)
+#define CDD_PWM_SID_SET_DBOUTPUTSWAPMODE             ((uint8)0x2AU)
 
 /** \brief Cdd_Pwm_SetDeadBandDelayMode API Service ID */
-#define CDD_PWM_SID_SET_DBODELAYMODE         ((uint8) 0x2BU)
+#define CDD_PWM_SID_SET_DBODELAYMODE                 ((uint8)0x2BU)
 
 /** \brief Cdd_Pwm_SetDeadBandDelayPolarity API Service ID */
-#define CDD_PWM_SID_SET_DBODELAY_POLARITY ((uint8) 0x2CU)
+#define CDD_PWM_SID_SET_DBODELAY_POLARITY            ((uint8)0x2CU)
 
 /** \brief Cdd_Pwm_SetRisingEdgeDeadBandDelayInput API Service ID */
-#define CDD_PWM_SID_SET_REDB_DELAYINPUT                 ((uint8) 0x2DU)
+#define CDD_PWM_SID_SET_REDB_DELAYINPUT              ((uint8)0x2DU)
 
-/** \brief Cdd_Pwm_SetFallingEdgeDeadBandDelayInput API Service ID */ 
-#define CDD_PWM_SID_SET_FEDB_DELAYINPUT          ((uint8) 0x2EU)
+/** \brief Cdd_Pwm_SetFallingEdgeDeadBandDelayInput API Service ID */
+#define CDD_PWM_SID_SET_FEDB_DELAYINPUT              ((uint8)0x2EU)
 
 /** \brief Cdd_Pwm_SetDeadBandControlShadowLoadMode API Service ID */
-#define CDD_PWM_SID_SET_DBCTL_SHDLOADMODE         ((uint8) 0x2FU)
+#define CDD_PWM_SID_SET_DBCTL_SHDLOADMODE            ((uint8)0x2FU)
 
 /** \brief Cdd_Pwm_SetRisingEdgeDelayCountShadowLoadMode API Service ID */
-#define CDD_PWM_SID_SET_RED_COUNTSHDLOADMODE         ((uint8) 0x30U)
+#define CDD_PWM_SID_SET_RED_COUNTSHDLOADMODE         ((uint8)0x30U)
 
 /** \brief Cdd_Pwm_DisableRisingEdgeDelayCountShadowLoadMode API Service ID */
-#define CDD_PWM_SID_DISABLE_RED_COUNTSHDLOADMODE         ((uint8) 0x31U)
+#define CDD_PWM_SID_DISABLE_RED_COUNTSHDLOADMODE     ((uint8)0x31U)
 
 /** \brief Cdd_Pwm_SetFallingEdgeDelayCountShadowLoadMode API Service ID */
-#define CDD_PWM_SID_SET_FED_COUNTSHDLOADMODE ((uint8) 0x32U)
+#define CDD_PWM_SID_SET_FED_COUNTSHDLOADMODE         ((uint8)0x32U)
 
 /** \brief Cdd_Pwm_DisableFallingEdgeDelayCountShadowLoadMode API Service ID */
-#define CDD_PWM_SID_DISABLE_FED_COUNTSHDLOADMODE                  ((uint8) 0x33U)
+#define CDD_PWM_SID_DISABLE_FED_COUNTSHDLOADMODE     ((uint8)0x33U)
 
-/** \brief Cdd_Pwm_SetDeadBandCounterClock API Service ID */ 
-#define CDD_PWM_SID_SET_DBCTRCLK          ((uint8) 0x34U)
+/** \brief Cdd_Pwm_SetDeadBandCounterClock API Service ID */
+#define CDD_PWM_SID_SET_DBCTRCLK                     ((uint8)0x34U)
 
 /** \brief Cdd_Pwm_SetRisingEdgeDelayCount API Service ID */
-#define CDD_PWM_SID_SET_REDCOUNT         ((uint8) 0x35U)
+#define CDD_PWM_SID_SET_REDCOUNT                     ((uint8)0x35U)
 
 /** \brief Cdd_Pwm_SetFallingEdgeDelayCount API Service ID */
-#define CDD_PWM_SID_SET_FEDCOUNT        ((uint8) 0x36U)
+#define CDD_PWM_SID_SET_FEDCOUNT                     ((uint8)0x36U)
 
 /** \brief Cdd_Pwm_ConfigureChopper API Service ID */
-#define CDD_PWM_SID_CONFIGURE_CHOPPER ((uint8) 0x37U)
+#define CDD_PWM_SID_CONFIGURE_CHOPPER                ((uint8)0x37U)
 
 /** \brief Cdd_Pwm_SetChopperDutyCycle API Service ID */
-#define CDD_PWM_SID_SET_CHOPPER_DC       ((uint8) 0x38U)
+#define CDD_PWM_SID_SET_CHOPPER_DC                   ((uint8)0x38U)
 
-/** \brief Cdd_Pwm_SetChopperFreq API Service ID */ 
-#define CDD_PWM_SID_SET_CHOPPER_FREQ ((uint8) 0x39U)
+/** \brief Cdd_Pwm_SetChopperFreq API Service ID */
+#define CDD_PWM_SID_SET_CHOPPER_FREQ                 ((uint8)0x39U)
 
 /** \brief Cdd_Pwm_SetChopperFirstPulseWidth API Service ID */
-#define CDD_PWM_SID_SET_CHOPPER_FIRSTPULWIDTH         ((uint8) 0x3AU)
+#define CDD_PWM_SID_SET_CHOPPER_FIRSTPULWIDTH        ((uint8)0x3AU)
 
 /** \brief Cdd_Pwm_ConfigureTripZoneSignals API Service ID */
-#define CDD_PWM_SID_CONFIGURE_TZSIGNALS         ((uint8) 0x3BU)
+#define CDD_PWM_SID_CONFIGURE_TZSIGNALS              ((uint8)0x3BU)
 
 /** \brief Cdd_Pwm_SetTripZoneDigitalCompareEventCondition API Service ID */
-#define CDD_PWM_SID_SET_TZDC_EVTCONDITION   ((uint8) 0x3CU)
+#define CDD_PWM_SID_SET_TZDC_EVTCONDITION            ((uint8)0x3CU)
 
 /** \brief Cdd_Pwm_ConfigureTripZoneAdvAction API Service ID */
-#define CDD_PWM_SID_CONFIGURE_TZADVACTION                  ((uint8) 0x3DU)
+#define CDD_PWM_SID_CONFIGURE_TZADVACTION            ((uint8)0x3DU)
 
-/** \brief Cdd_Pwm_SetTripZoneAction API Service ID */ 
-#define CDD_PWM_SID_SET_TZACTION          ((uint8) 0x3EU)
+/** \brief Cdd_Pwm_SetTripZoneAction API Service ID */
+#define CDD_PWM_SID_SET_TZACTION                     ((uint8)0x3EU)
 
 /** \brief Cdd_Pwm_SetTripZoneAdvAction API Service ID */
-#define CDD_PWM_SID_SET_TZADVACTION         ((uint8) 0x3FU)
+#define CDD_PWM_SID_SET_TZADVACTION                  ((uint8)0x3FU)
 
 /** \brief Cdd_Pwm_SetTripZoneAdvDigitalCompareAction API Service ID */
-#define CDD_PWM_SID_SET_TZADV_DCACTION        ((uint8) 0x40U)
+#define CDD_PWM_SID_SET_TZADV_DCACTION               ((uint8)0x40U)
 
 /** \brief gCdd_Pwm_ConfigureTripZoneInterrupt API Service ID */
-#define CDD_PWM_SID_CONFIGURE_TZINT ((uint8) 0x41U)
+#define CDD_PWM_SID_CONFIGURE_TZINT                  ((uint8)0x41U)
 
 /** \brief Cdd_Pwm_GetTripZoneFlagStatus  API Service ID */
-#define CDD_PWM_SID_GET_TZFLAGSTATUS        ((uint8) 0x42U)
+#define CDD_PWM_SID_GET_TZFLAGSTATUS                 ((uint8)0x42U)
 
-/** \brief Cdd_Pwm_GetCycleByCycleTripZoneFlagStatus API Service ID */ 
-#define CDD_PWM_SID_GET_CBCTZ_FLAGSTATUS ((uint8) 0x43U)
+/** \brief Cdd_Pwm_GetCycleByCycleTripZoneFlagStatus API Service ID */
+#define CDD_PWM_SID_GET_CBCTZ_FLAGSTATUS             ((uint8)0x43U)
 
-/** \brief Cdd_Pwm_GetOneShotTripZoneFlagStatus API Service ID */ 
-#define CDD_PWM_SID_GET_OSTZ_FLAGSTATUS          ((uint8) 0x44U)
+/** \brief Cdd_Pwm_GetOneShotTripZoneFlagStatus API Service ID */
+#define CDD_PWM_SID_GET_OSTZ_FLAGSTATUS              ((uint8)0x44U)
 
 /** \brief Cdd_Pwm_SelectCycleByCycleTripZoneClearEvent API Service ID */
-#define CDD_PWM_SID_SELECT_CBCTZCLREVT         ((uint8) 0x45U)
+#define CDD_PWM_SID_SELECT_CBCTZCLREVT               ((uint8)0x45U)
 
 /** \brief Cdd_Pwm_ClearTripZoneFlag API Service ID */
-#define CDD_PWM_SID_CLEAR_TZFLAG        ((uint8) 0x46U)
+#define CDD_PWM_SID_CLEAR_TZFLAG                     ((uint8)0x46U)
 
 /** \brief Cdd_Pwm_ClearCycleByCycleTripZoneFlag API Service ID */
-#define CDD_PWM_SID_CLEAR_CBCTZFLAG ((uint8) 0x47U)
+#define CDD_PWM_SID_CLEAR_CBCTZFLAG                  ((uint8)0x47U)
 
 /** \brief Cdd_Pwm_ClearOneShotTripZoneFlag API Service ID */
-#define CDD_PWM_SID_CLEAR_OSTZFLAG        ((uint8) 0x48U)
+#define CDD_PWM_SID_CLEAR_OSTZFLAG                   ((uint8)0x48U)
 
-/** \brief Cdd_Pwm_ForceTripZoneEvent API Service ID */ 
-#define CDD_PWM_SID_FORCE_TZEVT ((uint8) 0x49U)
+/** \brief Cdd_Pwm_ForceTripZoneEvent API Service ID */
+#define CDD_PWM_SID_FORCE_TZEVT                      ((uint8)0x49U)
 
 /** \brief Cdd_Pwm_ConfigureTripOutSource API Service ID */
-#define CDD_PWM_SID_CONFIGURE_TRIPOUTSRC         ((uint8) 0x4AU)
+#define CDD_PWM_SID_CONFIGURE_TRIPOUTSRC             ((uint8)0x4AU)
 
 /** \brief Cdd_Pwm_ConfigureInterrupt API Service ID */
-#define CDD_PWM_SID_CONFIGURE_INTERRUPT         ((uint8) 0x4BU)
+#define CDD_PWM_SID_CONFIGURE_INTERRUPT              ((uint8)0x4BU)
 
 /** \brief Cdd_Pwm_SetInterruptSource API Service ID */
-#define CDD_PWM_SID_SET_INTSRC ((uint8) 0x4CU)
+#define CDD_PWM_SID_SET_INTSRC                       ((uint8)0x4CU)
 
 /** \brief Cdd_Pwm_GetEventTriggerInterruptStatus API Service ID */
-#define CDD_PWM_SID_GET_EVTTRIGINTSTATUS                  ((uint8) 0x4DU)
+#define CDD_PWM_SID_GET_EVTTRIGINTSTATUS             ((uint8)0x4DU)
 
-/** \brief Cdd_Pwm_ClearEventTriggerInterruptFlag API Service ID */ 
-#define CDD_PWM_SID_CLEAR_EVTTRIGINTFLAG          ((uint8) 0x4EU)
+/** \brief Cdd_Pwm_ClearEventTriggerInterruptFlag API Service ID */
+#define CDD_PWM_SID_CLEAR_EVTTRIGINTFLAG             ((uint8)0x4EU)
 
 /** \brief Cdd_Pwm_ConfigureInterruptEventCountInit API Service ID */
-#define CDD_PWM_SID_CONFIGURE_INTEVTCOUNTINIT        ((uint8) 0x50U)
+#define CDD_PWM_SID_CONFIGURE_INTEVTCOUNTINIT        ((uint8)0x50U)
 
 /** \brief Cdd_Pwm_ForceInterruptEventCountInit API Service ID */
-#define CDD_PWM_SID_FORCE_INTEVTCOUNTINIT ((uint8) 0x51U)
+#define CDD_PWM_SID_FORCE_INTEVTCOUNTINIT            ((uint8)0x51U)
 
 /** \brief Cdd_Pwm_SetInterruptEventCountInitValue API Service ID */
-#define CDD_PWM_SID_SET_INTEVTCOUNTINITVAL       ((uint8) 0x52U)
+#define CDD_PWM_SID_SET_INTEVTCOUNTINITVAL           ((uint8)0x52U)
 
-/** \brief Cdd_Pwm_GetInterruptEventCount API Service ID */ 
-#define CDD_PWM_SID_GET_INTEVTCNT ((uint8) 0x53U)
+/** \brief Cdd_Pwm_GetInterruptEventCount API Service ID */
+#define CDD_PWM_SID_GET_INTEVTCNT                    ((uint8)0x53U)
 
-/** \brief Cdd_Pwm_ForceEventTriggerInterrupt API Service ID */ 
-#define CDD_PWM_SID_FORCE_EVTTRIGINT          ((uint8) 0x54U)
+/** \brief Cdd_Pwm_ForceEventTriggerInterrupt API Service ID */
+#define CDD_PWM_SID_FORCE_EVTTRIGINT                 ((uint8)0x54U)
 
 /** \brief Cdd_Pwm_SetMixEvtTriggerSource API Service ID */
-#define CDD_PWM_SID_SET_MIXEVTTRIGSRC         ((uint8) 0x55U)
+#define CDD_PWM_SID_SET_MIXEVTTRIGSRC                ((uint8)0x55U)
 
 /** \brief Cdd_Pwm_ConfigureAdcTrigger API Service ID */
-#define CDD_PWM_SID_CONFIGURE_ADCTRIG        ((uint8) 0x56U)
+#define CDD_PWM_SID_CONFIGURE_ADCTRIG                ((uint8)0x56U)
 
 /** \brief Cdd_Pwm_SetAdcTriggerSource API Service ID */
-#define CDD_PWM_SID_SET_ADCTRIGSRC ((uint8) 0x57U)
+#define CDD_PWM_SID_SET_ADCTRIGSRC                   ((uint8)0x57U)
 
 /** \brief Cdd_Pwm_SetAdcTriggerEventPrescale API Service ID */
-#define CDD_PWM_SID_SET_ADCTRIGEVTPRESCALE        ((uint8) 0x58U)
+#define CDD_PWM_SID_SET_ADCTRIGEVTPRESCALE           ((uint8)0x58U)
 
-/** \brief Cdd_Pwm_GetAdcTriggerFlagStatus API Service ID */ 
-#define CDD_PWM_SID_GET_ADCTRIGFLAGSTATUS ((uint8) 0x59U)
+/** \brief Cdd_Pwm_GetAdcTriggerFlagStatus API Service ID */
+#define CDD_PWM_SID_GET_ADCTRIGFLAGSTATUS            ((uint8)0x59U)
 
 /** \brief Cdd_Pwm_ClearAdcTriggerFlag API Service ID */
-#define CDD_PWM_SID_CLEAR_ADCTRIGFLAG         ((uint8) 0x5AU)
+#define CDD_PWM_SID_CLEAR_ADCTRIGFLAG                ((uint8)0x5AU)
 
 /** \brief Cdd_Pwm_ConfigureAdcTriggerEventCountInit API Service ID */
-#define CDD_PWM_SID_CONFIGURE_ADCTRIGEVTCNTINIT        ((uint8) 0x5BU)
+#define CDD_PWM_SID_CONFIGURE_ADCTRIGEVTCNTINIT      ((uint8)0x5BU)
 
 /** \brief Cdd_Pwm_ForceAdcTriggerEventCountInit API Service ID */
-#define CDD_PWM_SID_FORCE_ADCTRIGEVTCNTINIT ((uint8) 0x5CU)
+#define CDD_PWM_SID_FORCE_ADCTRIGEVTCNTINIT          ((uint8)0x5CU)
 
 /** \brief Cdd_Pwm_SetAdcTriggerEventCountInitValue API Service ID */
-#define CDD_PWM_SID_SET_ADCTRIGEVTCNTINITVAL                 ((uint8) 0x5DU)
+#define CDD_PWM_SID_SET_ADCTRIGEVTCNTINITVAL         ((uint8)0x5DU)
 
-/** \brief Cdd_Pwm_GetAdcTriggerEventCount API Service ID */ 
-#define CDD_PWM_SID_GET_ADCTRIGEVTCNT         ((uint8) 0x5EU)
+/** \brief Cdd_Pwm_GetAdcTriggerEventCount API Service ID */
+#define CDD_PWM_SID_GET_ADCTRIGEVTCNT                ((uint8)0x5EU)
 
 /** \brief Cdd_Pwm_ForceAdcTrigger API Service ID */
-#define CDD_PWM_SID_FORCE_ADCTRIGGER        ((uint8) 0x5FU)
+#define CDD_PWM_SID_FORCE_ADCTRIGGER                 ((uint8)0x5FU)
 
 /** \brief Cdd_Pwm_ConfigureDigitalCompareBlankingWindow API Service ID */
-#define CDD_PWM_SID_CONFIGURE_DC_BLANKWINDOW         ((uint8) 0x60U)
+#define CDD_PWM_SID_CONFIGURE_DC_BLANKWINDOW         ((uint8)0x60U)
 
 /** \brief Cdd_Pwm_ConfigureDigitalCompareWindowInverseMode API Service ID */
-#define CDD_PWM_SID_CONFIGURE_DC_WINDOWINVMODE         ((uint8) 0x61U)
+#define CDD_PWM_SID_CONFIGURE_DC_WINDOWINVMODE       ((uint8)0x61U)
 
 /** \brief Cdd_Pwm_SetDigitalCompareBlankingEvent API Service ID */
-#define CDD_PWM_SID_SET_DC_BLANKEVT ((uint8) 0x62U)
+#define CDD_PWM_SID_SET_DC_BLANKEVT                  ((uint8)0x62U)
 
 /** \brief Cdd_Pwm_SetDigitalCompareFilterInput API Service ID */
-#define CDD_PWM_SID_SET_DC_FILTERINPUT               ((uint8) 0x63U)
+#define CDD_PWM_SID_SET_DC_FILTERINPUT               ((uint8)0x63U)
 
-/** \brief Cdd_Pwm_ConfigureDigitalCompareEdgeFilter API Service ID */ 
-#define CDD_PWM_SID_CONFIGURE_DC_EDGEFILTER          ((uint8) 0x64U)
+/** \brief Cdd_Pwm_ConfigureDigitalCompareEdgeFilter API Service ID */
+#define CDD_PWM_SID_CONFIGURE_DC_EDGEFILTER          ((uint8)0x64U)
 
 /** \brief Cdd_Pwm_SetDigitalCompareEdgeFilterMode API Service ID */
-#define CDD_PWM_SID_SET_DC_EDGEFILMODE         ((uint8) 0x65U)
+#define CDD_PWM_SID_SET_DC_EDGEFILMODE               ((uint8)0x65U)
 
 /** \brief Cdd_Pwm_SetDigitalCompareEdgeFilterEdgeCount API Service ID */
-#define CDD_PWM_SID_SET_DC_EDGEFILEDGECNT       ((uint8) 0x66U)
+#define CDD_PWM_SID_SET_DC_EDGEFILEDGECNT            ((uint8)0x66U)
 
 /** \brief Cdd_Pwm_GetDigitalCompareEdgeFilterEdgeCount API Service ID */
-#define CDD_PWM_SID_GET_DC_EDGEFILEDGECNT ((uint8) 0x67U)
+#define CDD_PWM_SID_GET_DC_EDGEFILEDGECNT            ((uint8)0x67U)
 
 /** \brief Cdd_Pwm_GetDigitalCompareEdgeFilterEdgeStatus API Service ID */
-#define CDD_PWM_SID_GET_DC_EDGEFILEDGESTATUS      ((uint8) 0x68U)
+#define CDD_PWM_SID_GET_DC_EDGEFILEDGESTATUS         ((uint8)0x68U)
 
-/** \brief Cdd_Pwm_SetDigitalCompareWindowOffset API Service ID */ 
-#define CDD_PWM_SID_SET_DC_WINOFFSET ((uint8) 0x69U)
+/** \brief Cdd_Pwm_SetDigitalCompareWindowOffset API Service ID */
+#define CDD_PWM_SID_SET_DC_WINOFFSET                 ((uint8)0x69U)
 
 /** \brief Cdd_Pwm_SetDigitalCompareWindowLength API Service ID */
-#define CDD_PWM_SID_SET_DC_WINLENGTH         ((uint8) 0x6AU)
+#define CDD_PWM_SID_SET_DC_WINLENGTH                 ((uint8)0x6AU)
 
 /** \brief Cdd_Pwm_GetDigitalCompareBlankingWindowOffsetCount API Service ID */
-#define CDD_PWM_SID_GET_DC_BLANKWINOFFSETCNT         ((uint8) 0x6BU)
+#define CDD_PWM_SID_GET_DC_BLANKWINOFFSETCNT         ((uint8)0x6BU)
 
 /** \brief Cdd_Pwm_GetDigitalCompareBlankingWindowLengthCount API Service ID */
-#define CDD_PWM_SID_GET_DC_BLANKWINLENGTH ((uint8) 0x6CU)
+#define CDD_PWM_SID_GET_DC_BLANKWINLENGTH            ((uint8)0x6CU)
 
 /** \brief Cdd_Pwm_SetDigitalCompareEventSource API Service ID */
-#define CDD_PWM_SID_SET_DC_EVTSOURCE                  ((uint8) 0x6DU)
+#define CDD_PWM_SID_SET_DC_EVTSOURCE                 ((uint8)0x6DU)
 
-/** \brief Cdd_Pwm_SetDigitalCompareEventSyncMode API Service ID */ 
-#define CDD_PWM_SID_SET_DC_EVTSYNCMODE          ((uint8) 0x6EU)
+/** \brief Cdd_Pwm_SetDigitalCompareEventSyncMode API Service ID */
+#define CDD_PWM_SID_SET_DC_EVTSYNCMODE               ((uint8)0x6EU)
 
 /** \brief Cdd_Pwm_ConfigureDigitalCompareAdcTrigger API Service ID */
-#define CDD_PWM_SID_CONFIGURE_DC_ADCTRIG         ((uint8) 0x6FU)
+#define CDD_PWM_SID_CONFIGURE_DC_ADCTRIG             ((uint8)0x6FU)
 
 /** \brief Cdd_Pwm_ConfigureDigitalCompareSyncEvent API Service ID */
-#define CDD_PWM_SID_CONFIGURE_DC_SYNCEVENT        ((uint8) 0x70U)
+#define CDD_PWM_SID_CONFIGURE_DC_SYNCEVENT           ((uint8)0x70U)
 
 /** \brief Cdd_Pwm_SetDigitalCompareCBCLatchMode API Service ID */
-#define CDD_PWM_SID_SET_DCCBC_LATCHMODE ((uint8) 0x71U)
+#define CDD_PWM_SID_SET_DCCBC_LATCHMODE              ((uint8)0x71U)
 
 /** \brief Cdd_Pwm_SelectDigitalCompareCBCLatchClearEvent API Service ID */
-#define CDD_PWM_SID_SET_DCCBC_LATCHCLREVT        ((uint8) 0x72U)
+#define CDD_PWM_SID_SET_DCCBC_LATCHCLREVT            ((uint8)0x72U)
 
-/** \brief Cdd_Pwm_GetDigitalCompareCBCLatchStatus API Service ID */ 
-#define CDD_PWM_SID_GET_DCCBC_LATCHSTATUS ((uint8) 0x73U)
+/** \brief Cdd_Pwm_GetDigitalCompareCBCLatchStatus API Service ID */
+#define CDD_PWM_SID_GET_DCCBC_LATCHSTATUS            ((uint8)0x73U)
 
-/** \brief Cdd_Pwm_ConfigureDigitalCompareCounterCapture API Service ID */ 
-#define CDD_PWM_SID_CONFIGURE_DCCTRCAP          ((uint8) 0x74U)
+/** \brief Cdd_Pwm_ConfigureDigitalCompareCounterCapture API Service ID */
+#define CDD_PWM_SID_CONFIGURE_DCCTRCAP               ((uint8)0x74U)
 
 /** \brief Cdd_Pwm_SetDigitalCompareCounterShadowMode API Service ID */
-#define CDD_PWM_SID_SET_DCCTRSHDMODE        ((uint8) 0x75U)
+#define CDD_PWM_SID_SET_DCCTRSHDMODE                 ((uint8)0x75U)
 
 /** \brief Cdd_Pwm_GetDigitalCompareCaptureStatus API Service ID */
-#define CDD_PWM_SID_GET_DCCAPSTATUS       ((uint8) 0x76U)
+#define CDD_PWM_SID_GET_DCCAPSTATUS                  ((uint8)0x76U)
 
 /** \brief Cdd_Pwm_ConfigureDigitalCompareCounterCaptureMode API Service ID */
-#define CDD_PWM_SID_CONFIGURE_DCCTRCAPMODE ((uint8) 0x77U)
+#define CDD_PWM_SID_CONFIGURE_DCCTRCAPMODE           ((uint8)0x77U)
 
 /** \brief Cdd_Pwm_ClearDigitalCompareCaptureStatusFlag API Service ID */
-#define CDD_PWM_SID_CLEAR_DCCAPSTATUSFLAG       ((uint8) 0x78U)
+#define CDD_PWM_SID_CLEAR_DCCAPSTATUSFLAG            ((uint8)0x78U)
 
-/** \brief Cdd_Pwm_GetDigitalCompareCaptureCount API Service ID */ 
-#define CDD_PWM_SID_GET_DCCAPCNT ((uint8) 0x79U)
+/** \brief Cdd_Pwm_GetDigitalCompareCaptureCount API Service ID */
+#define CDD_PWM_SID_GET_DCCAPCNT                     ((uint8)0x79U)
 
 /** \brief Cdd_Pwm_ConfigureDigitalCompareTripCombinationInput API Service ID */
-#define CDD_PWM_SID_CONFIGURE_DCTRIPCOMBINPUT       ((uint8) 0x7AU)
+#define CDD_PWM_SID_CONFIGURE_DCTRIPCOMBINPUT        ((uint8)0x7AU)
 
 /** \brief Cdd_Pwm_ConfigureCaptureInEvent API Service ID */
-#define CDD_PWM_SID_CONFIGURE_CAPINEVT         ((uint8) 0x7BU)
+#define CDD_PWM_SID_CONFIGURE_CAPINEVT               ((uint8)0x7BU)
 
 /** \brief Cdd_Pwm_ConfigCaptureGateInputPolarity API Service ID */
-#define CDD_PWM_SID_CONFIGURE_CAPGATEINPUTPOL ((uint8) 0x7CU)
+#define CDD_PWM_SID_CONFIGURE_CAPGATEINPUTPOL        ((uint8)0x7CU)
 
 /** \brief Cdd_Pwm_InvertCaptureInputPolarity API Service ID */
-#define CDD_PWM_SID_INVERT_CAPGINPUTPOLARITY                  ((uint8) 0x7DU)
+#define CDD_PWM_SID_INVERT_CAPGINPUTPOLARITY         ((uint8)0x7DU)
 
-/** \brief Cdd_Pwm_ConfigureIndependentPulseLogic API Service ID */ 
-#define CDD_PWM_SID_CONFIGURE_INDPULSELOGIC          ((uint8) 0x7EU)
+/** \brief Cdd_Pwm_ConfigureIndependentPulseLogic API Service ID */
+#define CDD_PWM_SID_CONFIGURE_INDPULSELOGIC          ((uint8)0x7EU)
 
 /** \brief Cdd_Pwm_ForceCaptureEventLoad API Service ID */
-#define CDD_PWM_SID_FRC_CAPEVTLOAD         ((uint8) 0x7FU)
+#define CDD_PWM_SID_FRC_CAPEVTLOAD                   ((uint8)0x7FU)
 
 /** \brief Cdd_Pwm_SelectCaptureTripInput API Service ID */
-#define CDD_PWM_SID_SEL_CAPTRIPINPUT       ((uint8) 0x80U)
+#define CDD_PWM_SID_SEL_CAPTRIPINPUT                 ((uint8)0x80U)
 
 /** \brief Cdd_Pwm_ConfigureCaptureTripCombinationInput API Service ID */
-#define CDD_PWM_SID_CONFIGURE_CAPTRIPCOMBINPUT ((uint8) 0x81U)
+#define CDD_PWM_SID_CONFIGURE_CAPTRIPCOMBINPUT       ((uint8)0x81U)
 
 /** \brief Cdd_Pwm_ConfigureValleyCapture API Service ID */
-#define CDD_PWM_SID_CONFIGURE_VALLEYCAPTURE        ((uint8) 0x82U)
+#define CDD_PWM_SID_CONFIGURE_VALLEYCAPTURE          ((uint8)0x82U)
 
-/** \brief Cdd_Pwm_StartValleyCapture API Service ID */ 
-#define CDD_PWM_SID_START_VALLEYCAPTURE ((uint8) 0x83U)
+/** \brief Cdd_Pwm_StartValleyCapture API Service ID */
+#define CDD_PWM_SID_START_VALLEYCAPTURE              ((uint8)0x83U)
 
-/** \brief Cdd_Pwm_SetValleyTriggerSource API Service ID */ 
-#define CDD_PWM_SID_SET_VALLEYTRIGSRC          ((uint8) 0x84U)
+/** \brief Cdd_Pwm_SetValleyTriggerSource API Service ID */
+#define CDD_PWM_SID_SET_VALLEYTRIGSRC                ((uint8)0x84U)
 
 /** \brief Cdd_Pwm_SetValleyTriggerEdgeCounts API Service ID */
-#define CDD_PWM_SID_SET_VALLEYTRIGEDGECNT         ((uint8) 0x85U)
+#define CDD_PWM_SID_SET_VALLEYTRIGEDGECNT            ((uint8)0x85U)
 
 /** \brief Cdd_Pwm_ConfigureValleyHwDelay API Service ID */
-#define CDD_PWM_SID_CONFIGURE_VALLEYHWDELAY        ((uint8) 0x86U)
+#define CDD_PWM_SID_CONFIGURE_VALLEYHWDELAY          ((uint8)0x86U)
 
 /** \brief Cdd_Pwm_SetValleySwDelayValue API Service ID */
-#define CDD_PWM_SID_SET_VALLEYSWDELAYVAL    ((uint8) 0x87U)
+#define CDD_PWM_SID_SET_VALLEYSWDELAYVAL             ((uint8)0x87U)
 
 /** \brief Cdd_Pwm_SetValleyDelayDivider API Service ID */
-#define CDD_PWM_SID_SET_VALLEYDELAYDIVIDER       ((uint8) 0x88U)
+#define CDD_PWM_SID_SET_VALLEYDELAYDIVIDER           ((uint8)0x88U)
 
-/** \brief Cdd_Pwm_GetValleyEdgeStatus API Service ID */ 
-#define CDD_PWM_SID_GET_VALLEYEDGESTATUS ((uint8) 0x89U)
+/** \brief Cdd_Pwm_GetValleyEdgeStatus API Service ID */
+#define CDD_PWM_SID_GET_VALLEYEDGESTATUS             ((uint8)0x89U)
 
 /** \brief Cdd_Pwm_GetValleyCount API Service ID */
-#define CDD_PWM_SID_GET_VALLEYCOUNT         ((uint8) 0x8AU)
+#define CDD_PWM_SID_GET_VALLEYCOUNT                  ((uint8)0x8AU)
 
 /** \brief Cdd_Pwm_GetValleyHwDelay API Service ID */
-#define CDD_PWM_SID_GET_VALLEYHWDELAY         ((uint8) 0x8BU)
+#define CDD_PWM_SID_GET_VALLEYHWDELAY                ((uint8)0x8BU)
 
 /** \brief Cdd_Pwm_ConfigureGlobalLoad API Service ID */
-#define CDD_PWM_SID_CONFIGURE_GLBLOAD ((uint8) 0x8CU)
+#define CDD_PWM_SID_CONFIGURE_GLBLOAD                ((uint8)0x8CU)
 
 /** \brief Cdd_Pwm_SetGlobalLoadTrigger API Service ID */
-#define CDD_PWM_SID_SET_GLBLOADTRIG                  ((uint8) 0x8DU)
+#define CDD_PWM_SID_SET_GLBLOADTRIG                  ((uint8)0x8DU)
 
-/** \brief Cdd_Pwm_SetGlobalLoadEventPrescale API Service ID */ 
-#define CDD_PWM_SID_SET_GLBLOADEVTPRESCALE          ((uint8) 0x8EU)
+/** \brief Cdd_Pwm_SetGlobalLoadEventPrescale API Service ID */
+#define CDD_PWM_SID_SET_GLBLOADEVTPRESCALE           ((uint8)0x8EU)
 
 /** \brief Cdd_Pwm_GetGlobalLoadEventCount API Service ID */
-#define CDD_PWM_SID_GET_GLBLOADEVTCNT         ((uint8) 0x8FU)
+#define CDD_PWM_SID_GET_GLBLOADEVTCNT                ((uint8)0x8FU)
 
 /** \brief Cdd_Pwm_SetGlobalLoadOneShotLatch API Service ID */
-#define CDD_PWM_SID_SET_GLBLOADOSLATCH        ((uint8) 0x90U)
+#define CDD_PWM_SID_SET_GLBLOADOSLATCH               ((uint8)0x90U)
 
 /** \brief Cdd_Pwm_ConfigureGlobalLoadOneShotMode API Service ID */
-#define CDD_PWM_SID_CONFIGURE_GLBLOADOSMODE         ((uint8) 0x91U)
+#define CDD_PWM_SID_CONFIGURE_GLBLOADOSMODE          ((uint8)0x91U)
 
 /** \brief Cdd_Pwm_ForceGlobalLoadOneShotEvent API Service ID */
-#define CDD_PWM_SID_FRC_GLBLOADOSEVT ((uint8) 0x92U)
+#define CDD_PWM_SID_FRC_GLBLOADOSEVT                 ((uint8)0x92U)
 
 /** \brief Cdd_Pwm_ConfigureGlobalLoadRegisters API Service ID */
-#define CDD_PWM_SID_CONFIGURE_GLBLOADREG                  ((uint8) 0x93U)
+#define CDD_PWM_SID_CONFIGURE_GLBLOADREG             ((uint8)0x93U)
 
-/** \brief Cdd_Pwm_LockRegisters API Service ID */ 
-#define CDD_PWM_SID_LOCKREGISTER          ((uint8) 0x94U)
+/** \brief Cdd_Pwm_LockRegisters API Service ID */
+#define CDD_PWM_SID_LOCKREGISTER                     ((uint8)0x94U)
 
 /** \brief Cdd_Pwm_ConfigureXCmpMode API Service ID */
-#define CDD_PWM_SID_CONFIGURE_XCMPMODE         ((uint8) 0x95U)
+#define CDD_PWM_SID_CONFIGURE_XCMPMODE               ((uint8)0x95U)
 
 /** \brief Cdd_Pwm_ConfigureSplitXCmp API Service ID */
-#define CDD_PWM_SID_CONFIGURE_SPLICTXCMP        ((uint8) 0x96U)
+#define CDD_PWM_SID_CONFIGURE_SPLICTXCMP             ((uint8)0x96U)
 
 /** \brief Cdd_Pwm_AllocAXCmp API Service ID */
-#define CDD_PWM_SID_ALLOC_AXCMP ((uint8) 0x97U)
+#define CDD_PWM_SID_ALLOC_AXCMP                      ((uint8)0x97U)
 
 /** \brief Cdd_Pwm_AllocBXCmp API Service ID */
-#define CDD_PWM_SID_ALLOC_BXCMP        ((uint8) 0x98U)
+#define CDD_PWM_SID_ALLOC_BXCMP                      ((uint8)0x98U)
 
-/** \brief Cdd_Pwm_SetXCmpRegValue API Service ID */ 
-#define CDD_PWM_SID_SET_XCMPREGVAL ((uint8) 0x99U)
+/** \brief Cdd_Pwm_SetXCmpRegValue API Service ID */
+#define CDD_PWM_SID_SET_XCMPREGVAL                   ((uint8)0x99U)
 
 /** \brief Cdd_Pwm_SetCmpShadowRegValue API Service ID */
-#define CDD_PWM_SID_SET_CMPSHDREGVAL         ((uint8) 0x9AU)
+#define CDD_PWM_SID_SET_CMPSHDREGVAL                 ((uint8)0x9AU)
 
 /** \brief Cdd_Pwm_SetXMinMaxRegValue API Service ID */
-#define CDD_PWM_SID_SET_XMINMAXREGVAL         ((uint8) 0x9BU)
+#define CDD_PWM_SID_SET_XMINMAXREGVAL                ((uint8)0x9BU)
 
 /** \brief Cdd_Pwm_SetXCmpActionQualifierAction API Service ID */
-#define CDD_PWM_SID_SET_XCMPAQACTION ((uint8) 0x9CU)
+#define CDD_PWM_SID_SET_XCMPAQACTION                 ((uint8)0x9CU)
 
 /** \brief Cdd_Pwm_EnableXLoad API Service ID */
-#define CDD_PWM_SID_ENABLE_XLOAD                  ((uint8) 0x9DU)
+#define CDD_PWM_SID_ENABLE_XLOAD                     ((uint8)0x9DU)
 
-/** \brief Cdd_Pwm_ForceXLoad API Service ID */ 
-#define CDD_PWM_SID_FRC_XLOAD          ((uint8) 0x9EU)
+/** \brief Cdd_Pwm_ForceXLoad API Service ID */
+#define CDD_PWM_SID_FRC_XLOAD                        ((uint8)0x9EU)
 
 /** \brief Cdd_Pwm_SetXCmpLoadMode API Service ID */
-#define CDD_PWM_SID_SET_XCMPLOADMODE         ((uint8) 0x9FU)
+#define CDD_PWM_SID_SET_XCMPLOADMODE                 ((uint8)0x9FU)
 
 /** \brief Cdd_Pwm_SetXCmpShadowLevel API Service ID */
-#define CDD_PWM_SID_SET_XCMPSHDMODE        ((uint8) 0xA0U)
+#define CDD_PWM_SID_SET_XCMPSHDMODE                  ((uint8)0xA0U)
 
 /** \brief Cdd_Pwm_SetXCmpShadowBufPtrLoadOnce API Service ID */
-#define CDD_PWM_SID_SET_XCMPSHDBUFPTR_LOADONCE ((uint8) 0xA1U)
+#define CDD_PWM_SID_SET_XCMPSHDBUFPTR_LOADONCE       ((uint8)0xA1U)
 
 /** \brief Cdd_Pwm_SetXCmpShadowRepeatBufxCount API Service ID */
-#define CDD_PWM_SID_SET_XCMPSHD_REPBUFCOUNT        ((uint8) 0xA2U)
+#define CDD_PWM_SID_SET_XCMPSHD_REPBUFCOUNT          ((uint8)0xA2U)
 
-/** \brief Cdd_Pwm_ConfigureMinimumDeadBand API Service ID */ 
-#define CDD_PWM_SID_CONFIGURE_MINDB ((uint8) 0xA3U)
+/** \brief Cdd_Pwm_ConfigureMinimumDeadBand API Service ID */
+#define CDD_PWM_SID_CONFIGURE_MINDB                  ((uint8)0xA3U)
 
-/** \brief Cdd_Pwm_InvertMinimumDeadBandSignal API Service ID */ 
-#define CDD_PWM_SID_INVERT_MINDB          ((uint8) 0xA4U)
+/** \brief Cdd_Pwm_InvertMinimumDeadBandSignal API Service ID */
+#define CDD_PWM_SID_INVERT_MINDB                     ((uint8)0xA4U)
 
 /** \brief Cdd_Pwm_SelectMinimumDeadBandAndOrLogic API Service ID */
-#define CDD_PWM_SID_SELECT_MINDB_ANDOR_LOGIC         ((uint8) 0xA5U)
+#define CDD_PWM_SID_SELECT_MINDB_ANDOR_LOGIC         ((uint8)0xA5U)
 
 /** \brief Cdd_Pwm_SelectMinimumDeadBandBlockingSignal API Service ID */
-#define CDD_PWM_SID_SELECT_MINDB_BLOCKSIGNAL        ((uint8) 0xA6U)
+#define CDD_PWM_SID_SELECT_MINDB_BLOCKSIGNAL         ((uint8)0xA6U)
 
 /** \brief Cdd_Pwm_SelectMinimumDeadBandReferenceSignal API Service ID */
-#define CDD_PWM_SID_SET_MINDB_BANDREFSIGNAL ((uint8) 0xA7U)
+#define CDD_PWM_SID_SET_MINDB_BANDREFSIGNAL          ((uint8)0xA7U)
 
 /** \brief Cdd_Pwm_DisableDeadBandControlShadowLoadMode API Service ID */
-#define CDD_PWM_SID_DISABLE_DBCTL_SHDLOADMODE        ((uint8) 0xA8U)
+#define CDD_PWM_SID_DISABLE_DBCTL_SHDLOADMODE        ((uint8)0xA8U)
 
-/** \brief Cdd_Pwm_GetMinDeadBandDelay API Service ID */ 
-#define CDD_PWM_SID_GET_MINDB_DELAY ((uint8) 0xA9U)
+/** \brief Cdd_Pwm_GetMinDeadBandDelay API Service ID */
+#define CDD_PWM_SID_GET_MINDB_DELAY                  ((uint8)0xA9U)
 
 /** \brief Cdd_Pwm_SetMinimumDeadBandDelay API Service ID */
-#define CDD_PWM_SID_SET_MINDB_DELAY         ((uint8) 0xAAU)
+#define CDD_PWM_SID_SET_MINDB_DELAY                  ((uint8)0xAAU)
 
 /** \brief Cdd_Pwm_SelectDigitalCompareTripInput API Service ID */
-#define CDD_PWM_SID_SEL_DCTRIPINPUT         ((uint8) 0xABU)
+#define CDD_PWM_SID_SEL_DCTRIPINPUT                  ((uint8)0xABU)
 
 /** \brief Cdd_Pwm_ConfigureIllegalComboLogic API Service ID */
-#define CDD_PWM_SID_CONFIGURE_ICL ((uint8) 0xACU)
+#define CDD_PWM_SID_CONFIGURE_ICL                    ((uint8)0xACU)
 
 /** \brief Cdd_Pwm_SelectXbarInput API Service ID */
-#define CDD_PWM_SID_SELECT_XBARINPUT                  ((uint8) 0xADU)
+#define CDD_PWM_SID_SELECT_XBARINPUT                 ((uint8)0xADU)
 
-/** \brief Cdd_Pwm_SetLutDecX API Service ID */ 
-#define CDD_PWM_SID_SET_LUTDECX          ((uint8) 0xAEU)
+/** \brief Cdd_Pwm_SetLutDecX API Service ID */
+#define CDD_PWM_SID_SET_LUTDECX                      ((uint8)0xAEU)
 
 /** \brief Cdd_Pwm_ConfigureDiodeEmulationMode API Service ID */
-#define CDD_PWM_SID_CONFIGURE_DEMODE         ((uint8) 0xAFU)
+#define CDD_PWM_SID_CONFIGURE_DEMODE                 ((uint8)0xAFU)
 
 /** \brief Cdd_Pwm_SetDiodeEmulationMode API Service ID */
-#define CDD_PWM_SID_SET_DEMODE        ((uint8) 0xB0U)
+#define CDD_PWM_SID_SET_DEMODE                       ((uint8)0xB0U)
 
 /** \brief Cdd_Pwm_SetDiodeEmulationReentryDelay API Service ID */
-#define CDD_PWM_SID_SET_DE_REENTRYDELAY ((uint8) 0xB1U)
+#define CDD_PWM_SID_SET_DE_REENTRYDELAY              ((uint8)0xB1U)
 
 /** \brief Cdd_Pwm_ConfigureDiodeEmulationTripLowSources API Service ID */
-#define CDD_PWM_SID_CONFIGURE_DE_TRIPLOWSRC        ((uint8) 0xB2U)
+#define CDD_PWM_SID_CONFIGURE_DE_TRIPLOWSRC          ((uint8)0xB2U)
 
-/** \brief Cdd_Pwm_ConfigureDiodeEmulationTripHighSources API Service ID */ 
-#define CDD_PWM_SID_CONFIGURE_DE_TRIPHIGHSRC ((uint8) 0xB3U)
+/** \brief Cdd_Pwm_ConfigureDiodeEmulationTripHighSources API Service ID */
+#define CDD_PWM_SID_CONFIGURE_DE_TRIPHIGHSRC         ((uint8)0xB3U)
 
-/** \brief Cdd_Pwm_SelectDiodeEmulationPwmSignal API Service ID */ 
-#define CDD_PWM_SID_SET_DEPWMSIGNAL          ((uint8) 0xB4U)
+/** \brief Cdd_Pwm_SelectDiodeEmulationPwmSignal API Service ID */
+#define CDD_PWM_SID_SET_DEPWMSIGNAL                  ((uint8)0xB4U)
 
 /** \brief Cdd_Pwm_SelectDiodeEmulationTripSignal API Service ID */
-#define CDD_PWM_SID_SET_DETRIPSIG         ((uint8) 0xB5U)
+#define CDD_PWM_SID_SET_DETRIPSIG                    ((uint8)0xB5U)
 
 /** \brief Cdd_Pwm_NoBypassDiodeEmulationLogic API Service ID */
-#define CDD_PWM_SID_NBPDELOGIC        ((uint8) 0xB6U)
+#define CDD_PWM_SID_NBPDELOGIC                       ((uint8)0xB6U)
 
 /** \brief Cdd_Pwm_ByPassDiodeEmulationLogic API Service ID */
-#define CDD_PWM_SID_BPDELOGIC ((uint8) 0xB7U)
+#define CDD_PWM_SID_BPDELOGIC                        ((uint8)0xB7U)
 
 /** \brief Cdd_Pwm_ForceDiodeEmulationActive API Service ID */
-#define CDD_PWM_SID_FORCE_DE_ACTIVE        ((uint8) 0xB8U)
+#define CDD_PWM_SID_FORCE_DE_ACTIVE                  ((uint8)0xB8U)
 
-/** \brief Cdd_Pwm_ConfigureDiodeEmulationMonitorModeControl API Service ID */ 
-#define CDD_PWM_SID_CONFIGURE_DEMONITORMODECTRL ((uint8) 0xB9U)
+/** \brief Cdd_Pwm_ConfigureDiodeEmulationMonitorModeControl API Service ID */
+#define CDD_PWM_SID_CONFIGURE_DEMONITORMODECTRL      ((uint8)0xB9U)
 
 /** \brief Cdd_Pwm_SetDiodeEmulationMonitorModeStep API Service ID */
-#define CDD_PWM_SID_SET_DEMONITORMODESTEP        ((uint8) 0xBAU)
+#define CDD_PWM_SID_SET_DEMONITORMODESTEP            ((uint8)0xBAU)
 
 /** \brief Cdd_Pwm_SetDiodeEmulationMonitorCounterThreshold API Service ID */
-#define CDD_PWM_SID_SET_DE_MONITORCNTRTHRESHOLD        ((uint8) 0xBBU)
+#define CDD_PWM_SID_SET_DE_MONITORCNTRTHRESHOLD      ((uint8)0xBBU)
 
 /** \brief Cdd_Pwm_ClearDiodeEmulationActiveFlag API Service ID */
-#define CDD_PWM_SID_CLEARDEACTIVEFLAG ((uint8) 0xBCU)
+#define CDD_PWM_SID_CLEARDEACTIVEFLAG                ((uint8)0xBCU)
 
 /** \brief Cdd_Pwm_HrpwmSetPhaseShift API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_PHASESHIFT                  ((uint8) 0xBDU)
+#define CDD_PWM_SID_SET_HRPWM_PHASESHIFT             ((uint8)0xBDU)
 
-/** \brief Cdd_Pwm_HrpwmSetHiResPhaseShiftOnly API Service ID */ 
-#define CDD_PWM_SID_SET_HRPWM_HIRESSHIFT          ((uint8) 0xBEU)
+/** \brief Cdd_Pwm_HrpwmSetHiResPhaseShiftOnly API Service ID */
+#define CDD_PWM_SID_SET_HRPWM_HIRESSHIFT             ((uint8)0xBEU)
 
 /** \brief Cdd_Pwm_HrpwmSetTimeBasePeriod API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_TBPRD         ((uint8) 0xBFU)
+#define CDD_PWM_SID_SET_HRPWM_TBPRD                  ((uint8)0xBFU)
 
 /** \brief Cdd_Pwm_HrpwmSetHiResTimeBasePeriodOnly API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_HIRESTBPRD         ((uint8) 0xC0U)
+#define CDD_PWM_SID_SET_HRPWM_HIRESTBPRD             ((uint8)0xC0U)
 
 /** \brief Cdd_Pwm_HrpwmGetTimeBasePeriod API Service ID */
-#define CDD_PWM_GET_HRPWM_TBPRD         ((uint8) 0xC1U)
+#define CDD_PWM_GET_HRPWM_TBPRD                      ((uint8)0xC1U)
 
 /** \brief Cdd_Pwm_HrpwmGetHiResTimeBasePeriodOnly API Service ID */
-#define CDD_PWM_GET_HRPWM_HIRESTBPRD ((uint8) 0xC2U)
+#define CDD_PWM_GET_HRPWM_HIRESTBPRD                 ((uint8)0xC2U)
 
 /** \brief Cdd_Pwm_HrpwmSetMepEdgeSelect API Service ID */
-#define CDD_PWM_SET_HRPWM_MEPEDGESELECT                ((uint8) 0xC3U)
+#define CDD_PWM_SET_HRPWM_MEPEDGESELECT              ((uint8)0xC3U)
 
-/** \brief Cdd_Pwm_HrpwmSetMepControlMode API Service ID */ 
-#define CDD_PWM_SID_SET_HRPWM_MEPCTLMODE          ((uint8) 0xC4U)
+/** \brief Cdd_Pwm_HrpwmSetMepControlMode API Service ID */
+#define CDD_PWM_SID_SET_HRPWM_MEPCTLMODE             ((uint8)0xC4U)
 
 /** \brief Cdd_Pwm_HrpwmSetCounterCompareShadowLoadEvent API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_SETCTRCMPSHDLOADEVT         ((uint8) 0xC5U)
+#define CDD_PWM_SID_SET_HRPWM_SETCTRCMPSHDLOADEVT    ((uint8)0xC5U)
 
 /** \brief Cdd_Pwm_HrpwmSetOutputSwapMode API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_SETOUTPUTSWAPMODE        ((uint8) 0xC6U)
+#define CDD_PWM_SID_SET_HRPWM_SETOUTPUTSWAPMODE      ((uint8)0xC6U)
 
 /** \brief Cdd_Pwm_HrpwmSetChannelBOutputPath API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_SETCHANNELBOUTPATH     ((uint8) 0xC7U)
+#define CDD_PWM_SID_SET_HRPWM_SETCHANNELBOUTPATH     ((uint8)0xC7U)
 
 /** \brief Cdd_Pwm_HrpwmConfigureAutoConversion API Service ID */
-#define CDD_PWM_SID_CONFIGURE_HRPWM_AUTOCONVERSION        ((uint8) 0xC8U)
+#define CDD_PWM_SID_CONFIGURE_HRPWM_AUTOCONVERSION   ((uint8)0xC8U)
 
-/** \brief Cdd_Pwm_HrpwmConfigurePeriodControl API Service ID */ 
-#define CDD_PWM_SID_SET_CONFIGURE_HRPWMPRDCONTROL ((uint8) 0xC9U)
+/** \brief Cdd_Pwm_HrpwmConfigurePeriodControl API Service ID */
+#define CDD_PWM_SID_SET_CONFIGURE_HRPWMPRDCONTROL    ((uint8)0xC9U)
 
 /** \brief Cdd_Pwm_PrivHrpwmConfigurePhaseShiftLoad API Service ID */
-#define CDD_PWM_SID_SET_CONFIGURE_HRPWM_PHSSHIFTLOAD         ((uint8) 0xCAU)
+#define CDD_PWM_SID_SET_CONFIGURE_HRPWM_PHSSHIFTLOAD ((uint8)0xCAU)
 
 /** \brief Cdd_Pwm_HrpwmSetSyncPulseSource API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_SYNCPULSESRC        ((uint8) 0xCBU)
+#define CDD_PWM_SID_SET_HRPWM_SYNCPULSESRC           ((uint8)0xCBU)
 
 /** \brief Cdd_Pwm_HrpwmSetTranslatorRemainder API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_TRANSREM ((uint8) 0xCCU)
+#define CDD_PWM_SID_SET_HRPWM_TRANSREM               ((uint8)0xCCU)
 
 /** \brief Cdd_Pwm_HrpwmSetCounterCompareValue API Service ID */
-#define CDD_PWM_SID_SET_HRPWMCTRCMP                  ((uint8) 0xCDU)
+#define CDD_PWM_SID_SET_HRPWMCTRCMP                  ((uint8)0xCDU)
 
-/** \brief Cdd_Pwm_HrpwmSetHiResCounterCompareValueOnly API Service ID */ 
-#define CDD_PWM_SID_SET_HRPWM_HIRESCTRCMP          ((uint8) 0xCEU)
+/** \brief Cdd_Pwm_HrpwmSetHiResCounterCompareValueOnly API Service ID */
+#define CDD_PWM_SID_SET_HRPWM_HIRESCTRCMP            ((uint8)0xCEU)
 
 /** \brief Cdd_Pwm_HrpwmGetCounterCompareValue API Service ID */
-#define CDD_PWM_SID_GET_HRPWM_CTRCMPVAL         ((uint8) 0xCFU)
+#define CDD_PWM_SID_GET_HRPWM_CTRCMPVAL              ((uint8)0xCFU)
 
 /** \brief Cdd_Pwm_GetHiResCounterCompareValueOnly API Service ID */
-#define CDD_PWM_SID_GET_HRPWM_HIRESCTRCMPVAL        ((uint8) 0xD0U)
+#define CDD_PWM_SID_GET_HRPWM_HIRESCTRCMPVAL         ((uint8)0xD0U)
 
 /** \brief Cdd_Pwm_HrpwmSetRisingEdgeDelay API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_RED    ((uint8) 0xD1U)
+#define CDD_PWM_SID_SET_HRPWM_RED                    ((uint8)0xD1U)
 
 /** \brief Cdd_Pwm_HrpwmSetHiResRisingEdgeDelayOnly API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_HIRESRED        ((uint8) 0xD2U)
+#define CDD_PWM_SID_SET_HRPWM_HIRESRED               ((uint8)0xD2U)
 
-/** \brief Cdd_Pwm_HrpwmSetFallingEdgeDelay API Service ID */ 
-#define CDD_PWM_SID_SET_HRPWM_FED ((uint8) 0xD3U)
+/** \brief Cdd_Pwm_HrpwmSetFallingEdgeDelay API Service ID */
+#define CDD_PWM_SID_SET_HRPWM_FED                    ((uint8)0xD3U)
 
-/** \brief Cdd_Pwm_HrpwmSetHiResFallingEdgeDelayOnly API Service ID */ 
-#define CDD_PWM_SID_SET_HRPWM_HIRESFED          ((uint8) 0xD4U)
+/** \brief Cdd_Pwm_HrpwmSetHiResFallingEdgeDelayOnly API Service ID */
+#define CDD_PWM_SID_SET_HRPWM_HIRESFED               ((uint8)0xD4U)
 
 /** \brief Cdd_Pwm_HrpwmSetMepStep API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_MEPSTEP         ((uint8) 0xD5U)
+#define CDD_PWM_SID_SET_HRPWM_MEPSTEP                ((uint8)0xD5U)
 
 /** \brief Cdd_Pwm_HrpwmSetDeadbandMepEdgeSelect API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_DBMEPEDGESEL        ((uint8) 0xD6U)
+#define CDD_PWM_SID_SET_HRPWM_DBMEPEDGESEL           ((uint8)0xD6U)
 
 /** \brief Cdd_Pwm_HrpwmSetRisingEdgeDelayLoadMode API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_REDLOADMODE   ((uint8) 0xD7U)
+#define CDD_PWM_SID_SET_HRPWM_REDLOADMODE            ((uint8)0xD7U)
 
 /** \brief Cdd_Pwm_HrpwmSetFallingEdgeDelayLoadMode API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_FEDLOADMODE        ((uint8) 0xD8U)
+#define CDD_PWM_SID_SET_HRPWM_FEDLOADMODE            ((uint8)0xD8U)
 
-/** \brief Cdd_Pwm_HrpwmLockRegisters API Service ID */ 
-#define CDD_PWM_SID_SET_HRPWM_LOCKREGISTER ((uint8) 0xD9U)
+/** \brief Cdd_Pwm_HrpwmLockRegisters API Service ID */
+#define CDD_PWM_SID_SET_HRPWM_LOCKREGISTER           ((uint8)0xD9U)
 
 /** \brief Cdd_Pwm_HrpwmSetXCmpRegValue API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_XCMPREGVAL         ((uint8) 0xDAU)
+#define CDD_PWM_SID_SET_HRPWM_XCMPREGVAL             ((uint8)0xDAU)
 
 /** \brief Cdd_Pwm_HrpwmSetHiResXCmpRegValueOnly API Service ID */
-#define CDD_PWM_SID_SET_HRPWM_HIRESXCMPREGVAL        ((uint8) 0xDBU)
+#define CDD_PWM_SID_SET_HRPWM_HIRESXCMPREGVAL        ((uint8)0xDBU)
 
 /** \brief Cdd_Pwm_HrpwmSetHiResXCmpRegValueOnly API Service ID */
-#define CDD_PWM_SID_CONFIGURE_TZ2SIGNALS        ((uint8) 0xDFU)
+#define CDD_PWM_SID_CONFIGURE_TZ2SIGNALS             ((uint8)0xDFU)
 
 /** \brief Cdd_Pwm_Sfo API Service ID */
-#define CDD_PWM_SID_SFO ((uint8)0xE0)
+#define CDD_PWM_SID_SFO                              ((uint8)0xE0)
 
 #endif
 
@@ -878,42 +858,42 @@ extern "C" {
 #define CDD_PWM_E_INVALID_OUTPUT_CHANNEL ((uint8)0x0DU)
 
 /* Errors specific to ADVANCED MODE APIs */
-#if(STD_ON == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
 /** \brief API service called with invalid value */
-#define CDD_PWM_E_INVALID_PRESCALE     ((uint8)0x14U)
+#define CDD_PWM_E_INVALID_PRESCALE ((uint8)0x14U)
 
 /** \brief API service called with invalid value */
-#define CDD_PWM_E_INVALID_CTRCOMPARE     ((uint8)0x15U)
+#define CDD_PWM_E_INVALID_CTRCOMPARE ((uint8)0x15U)
 
 /** \brief API service called with invalid value */
-#define CDD_PWM_E_INVALID_EVENT     ((uint8)0x16U)
+#define CDD_PWM_E_INVALID_EVENT ((uint8)0x16U)
 
 /** \brief API service called with invalid value */
-#define CDD_PWM_E_INVALID_POLARITY     ((uint8)0x17U)
+#define CDD_PWM_E_INVALID_POLARITY ((uint8)0x17U)
 
 /** \brief API service called with invalid value */
-#define CDD_PWM_E_INVALID_ADCSOC_TYPE     ((uint8)0x18U)
+#define CDD_PWM_E_INVALID_ADCSOC_TYPE ((uint8)0x18U)
 
 /** \brief API service called with invalid value */
-#define CDD_PWM_E_INVALID_EVENT_SRC     ((uint8)0x18U)
+#define CDD_PWM_E_INVALID_EVENT_SRC ((uint8)0x18U)
 
 /** \brief API service called with invalid value */
-#define CDD_PWM_E_INVALID_SHDSET     ((uint8)0x19U)
+#define CDD_PWM_E_INVALID_SHDSET ((uint8)0x19U)
 
 #else
 
 /** \brief  API service called for the instance whose channel class is not variable period */
-#define CDD_PWM_E_CHANNEL_CLASS ((uint8)0x0FU)
+#define CDD_PWM_E_CHANNEL_CLASS            ((uint8)0x0FU)
 /** \brief API service called when the notification is already enabled */
-#define CDD_PWM_E_NOTIF_ALREADY_ENABLED ((uint8)0x10U)
+#define CDD_PWM_E_NOTIF_ALREADY_ENABLED    ((uint8)0x10U)
 /** \brief API service called when the channel configured for the notification is invalid */
 #define CDD_PWM_E_INVALID_EDGENOTIFICATION ((uint8)0x11U)
 /** \brief API service called when the edge notification type is not valid */
 // #define CDD_PWM_E_INVALID_NOTIFICATION ((uint8)0x12U)
 /** \brief API service called with the invalid duty cycle value */
-#define CDD_PWM_E_BUSY                  ((uint8)0x15U)
+#define CDD_PWM_E_BUSY                     ((uint8)0x15U)
 /** \brief API service called with the invalid duty cycle value */
-#define CDD_PWM_E_INVALID_DUTY_CYCLE ((uint8)0x14U)
+#define CDD_PWM_E_INVALID_DUTY_CYCLE       ((uint8)0x14U)
 
 #endif
 
@@ -944,7 +924,7 @@ typedef uint16 Cdd_Pwm_DutyCycleType;
 /** \brief Notification function pointer */
 typedef P2FUNC(void, CDD_PWM_CODE, Cdd_Pwm_NotificationType)(void);
 
-#if(STD_ON == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
 /** \brief Trip zone notification function pointer */
 typedef P2FUNC(void, CDD_PWM_CODE, Cdd_Pwm_TripZoneNotificationType)(uint16 TripZoneFlag);
 #endif
@@ -958,18 +938,18 @@ typedef enum
     CDD_PWM_OUTPUT_A = 0U,
     /** \brief Ouput channel B */
     CDD_PWM_OUTPUT_B = 1U
-}Cdd_Pwm_OutputChannelType;
+} Cdd_Pwm_OutputChannelType;
 
 /** \brief Enumeration to define the time base counter mode */
 typedef enum
 {
-    CDD_PWM_COUNTER_MODE_UP = 0U,         /** \brief Up - count mode */
-    CDD_PWM_COUNTER_MODE_DOWN = 1U,       /** \brief Down - count mode */
-    CDD_PWM_COUNTER_MODE_UP_DOWN = 2U,    /** \brief Up - down - count mode */
-    CDD_PWM_COUNTER_MODE_STOP_FREEZE = 3U /** \brief Stop - Freeze counter */
-}Cdd_Pwm_TimeBaseCountModeType;
+    CDD_PWM_COUNTER_MODE_UP          = 0U, /** \brief Up - count mode */
+    CDD_PWM_COUNTER_MODE_DOWN        = 1U, /** \brief Down - count mode */
+    CDD_PWM_COUNTER_MODE_UP_DOWN     = 2U, /** \brief Up - down - count mode */
+    CDD_PWM_COUNTER_MODE_STOP_FREEZE = 3U  /** \brief Stop - Freeze counter */
+} Cdd_Pwm_TimeBaseCountModeType;
 
-#if(STD_OFF == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_OFF == CDD_PWM_ADVANCED_MODE_API)
 /** \brief Output Status type */
 typedef enum
 {
@@ -998,82 +978,82 @@ typedef enum
     CDD_PWM_VARIABLE_PERIOD,
     /** \brief The PWM channel has a fixed period. Only the duty cycle can be changed */
     CDD_PWM_FIXED_PERIOD
-}Cdd_Pwm_ChannelClassType;
+} Cdd_Pwm_ChannelClassType;
 #endif
 
 /** \brief Cdd_Pwm_ActionQualifierOutputEventType output defines the action qualifier event type */
 typedef enum
 {
     /** \brief Time base counter equals zero */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO       = 0U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO = 0U,
     /** \brief T1 event on count up */
-    CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_UP         = 1U,
+    CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_UP = 1U,
     /** \brief Time base counter equals period */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_PERIOD     = 2U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_PERIOD = 2U,
     /** \brief T1 event on count down */
-    CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_DOWN       = 3U,
+    CDD_PWM_AQ_OUTPUT_ON_T1_COUNT_DOWN = 3U,
     /** \brief Time base counter up equals COMPA */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA    = 4U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA = 4U,
     /** \brief T2 event on count up */
-    CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_UP         = 5U,
+    CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_UP = 5U,
     /** \brief Time base counter down equals COMPA */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA  = 6U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA = 6U,
     /** \brief T2 event on count down */
-    CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_DOWN       = 7U,
+    CDD_PWM_AQ_OUTPUT_ON_T2_COUNT_DOWN = 7U,
     /** \brief Time base counter up equals COMPB */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB    = 8U,
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB = 8U,
     /** \brief Time base counter down equals COMPB */
-    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB  = 10U
-}Cdd_Pwm_ActionQualifierOutputEventType;
+    CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB = 10U
+} Cdd_Pwm_ActionQualifierOutputEventType;
 
 /*****************************************************************************
-*
-* Values that can be passed to Cdd_Pwm_SetActionQualifierSWAction(),
-* Cdd_Pwm_SetActionQualifierAction() as the \e outPut parameter.
-*
-*****************************************************************************/
+ *
+ * Values that can be passed to Cdd_Pwm_SetActionQualifierSWAction(),
+ * Cdd_Pwm_SetActionQualifierAction() as the \e outPut parameter.
+ *
+ *****************************************************************************/
 typedef enum
 {
-    CDD_PWM_AQ_OUTPUT_NO_CHANGE = 0U,  /** \brief No change in the output pins */
-    CDD_PWM_AQ_OUTPUT_LOW       = 1U,  /** \brief Set output pins to low */
-    CDD_PWM_AQ_OUTPUT_HIGH      = 2U,  /** \brief Set output pins to High */
-    CDD_PWM_AQ_OUTPUT_TOGGLE    = 3U   /** \brief Toggle the output pins */
-}Cdd_Pwm_ActionQualifierOutputType;
+    CDD_PWM_AQ_OUTPUT_NO_CHANGE = 0U, /** \brief No change in the output pins */
+    CDD_PWM_AQ_OUTPUT_LOW       = 1U, /** \brief Set output pins to low */
+    CDD_PWM_AQ_OUTPUT_HIGH      = 2U, /** \brief Set output pins to High */
+    CDD_PWM_AQ_OUTPUT_TOGGLE    = 3U  /** \brief Toggle the output pins */
+} Cdd_Pwm_ActionQualifierOutputType;
 
 /*****************************************************************************
-*
-* Values that can be passed to Cdd_Pwm_SetClockPrescaler() as the
-* \e prescaler parameter.
-*
-*****************************************************************************/
+ *
+ * Values that can be passed to Cdd_Pwm_SetClockPrescaler() as the
+ * \e prescaler parameter.
+ *
+ *****************************************************************************/
 typedef enum
 {
-    CDD_PWM_CLOCK_DIVIDER_1 = 0U,     /* Divide clock by 1 */
-    CDD_PWM_CLOCK_DIVIDER_2 = 1U,     /* Divide clock by 2 */
-    CDD_PWM_CLOCK_DIVIDER_4 = 2U,     /* Divide clock by 4 */
-    CDD_PWM_CLOCK_DIVIDER_8 = 3U,     /* Divide clock by 8 */
-    CDD_PWM_CLOCK_DIVIDER_16 = 4U,    /* Divide clock by 16 */
-    CDD_PWM_CLOCK_DIVIDER_32 = 5U,    /* Divide clock by 32 */
-    CDD_PWM_CLOCK_DIVIDER_64 = 6U,    /* Divide clock by 64 */
-    CDD_PWM_CLOCK_DIVIDER_128 = 7U    /* Divide clock by 128 */
+    CDD_PWM_CLOCK_DIVIDER_1   = 0U, /* Divide clock by 1 */
+    CDD_PWM_CLOCK_DIVIDER_2   = 1U, /* Divide clock by 2 */
+    CDD_PWM_CLOCK_DIVIDER_4   = 2U, /* Divide clock by 4 */
+    CDD_PWM_CLOCK_DIVIDER_8   = 3U, /* Divide clock by 8 */
+    CDD_PWM_CLOCK_DIVIDER_16  = 4U, /* Divide clock by 16 */
+    CDD_PWM_CLOCK_DIVIDER_32  = 5U, /* Divide clock by 32 */
+    CDD_PWM_CLOCK_DIVIDER_64  = 6U, /* Divide clock by 64 */
+    CDD_PWM_CLOCK_DIVIDER_128 = 7U  /* Divide clock by 128 */
 } Cdd_Pwm_ClockDividerType;
 
 /*****************************************************************************
-*
-* Values that can be passed to Cdd_Pwm_SetClockPrescaler() as the
-* \e highSpeedPrescaler parameter.
-*
-*****************************************************************************/
+ *
+ * Values that can be passed to Cdd_Pwm_SetClockPrescaler() as the
+ * \e highSpeedPrescaler parameter.
+ *
+ *****************************************************************************/
 typedef enum
 {
-    CDD_PWM_HSCLOCK_DIVIDER_1 = 0U,     /* Divide clock by 1 */
-    CDD_PWM_HSCLOCK_DIVIDER_2 = 1U,     /* Divide clock by 2 */
-    CDD_PWM_HSCLOCK_DIVIDER_4 = 2U,     /* Divide clock by 4 */
-    CDD_PWM_HSCLOCK_DIVIDER_6 = 3U,     /* Divide clock by 6 */
-    CDD_PWM_HSCLOCK_DIVIDER_8 = 4U,     /* Divide clock by 8 */
-    CDD_PWM_HSCLOCK_DIVIDER_10 = 5U,    /* Divide clock by 10 */
-    CDD_PWM_HSCLOCK_DIVIDER_12 = 6U,    /* Divide clock by 12 */
-    CDD_PWM_HSCLOCK_DIVIDER_14 = 7U     /* Divide clock by 14 */
+    CDD_PWM_HSCLOCK_DIVIDER_1  = 0U, /* Divide clock by 1 */
+    CDD_PWM_HSCLOCK_DIVIDER_2  = 1U, /* Divide clock by 2 */
+    CDD_PWM_HSCLOCK_DIVIDER_4  = 2U, /* Divide clock by 4 */
+    CDD_PWM_HSCLOCK_DIVIDER_6  = 3U, /* Divide clock by 6 */
+    CDD_PWM_HSCLOCK_DIVIDER_8  = 4U, /* Divide clock by 8 */
+    CDD_PWM_HSCLOCK_DIVIDER_10 = 5U, /* Divide clock by 10 */
+    CDD_PWM_HSCLOCK_DIVIDER_12 = 6U, /* Divide clock by 12 */
+    CDD_PWM_HSCLOCK_DIVIDER_14 = 7U  /* Divide clock by 14 */
 } Cdd_Pwm_HighSpeedClkDivType;
 
 /* Counter Compare Module type */
@@ -1104,7 +1084,7 @@ typedef enum
     CDD_PWM_COMP_LOAD_ON_SYNC_CNTR_ZERO_PERIOD = 6U,
     /* Load on sync only */
     CDD_PWM_COMP_LOAD_ON_SYNC_ONLY = 8U
-}Cdd_Pwm_CounterCompareLoadModeType;
+} Cdd_Pwm_CounterCompareLoadModeType;
 
 /** \brief Enumeration for interrupt source */
 typedef enum
@@ -1154,7 +1134,7 @@ typedef enum
     CDD_PWM_AQ_LOAD_ON_SYNC_CNTR_ZERO_PERIOD = 6U,
     /* Load on sync only */
     CDD_PWM_AQ_LOAD_ON_SYNC_ONLY = 8U
-}Cdd_Pwm_ActionQualifierLoadModeType;
+} Cdd_Pwm_ActionQualifierLoadModeType;
 
 typedef enum
 {
@@ -1166,29 +1146,29 @@ typedef enum
     CDD_PWM_EMULATION_FREE_RUN = 2U
 } Cdd_Pwm_EmulationModeType;
 
-#if(STD_ON == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
 
 /** \brief Enumeration for SFO status */
 typedef enum
 {
-    CDD_PWM_SFO_INCOMPLETE  = 0U,
-    CDD_PWM_SFO_COMPLETE    = 1U,
-    CDD_PWM_SFO_ERROR       = 2U
-}Cdd_Pwm_SfoStatus;
+    CDD_PWM_SFO_INCOMPLETE = 0U,
+    CDD_PWM_SFO_COMPLETE   = 1U,
+    CDD_PWM_SFO_ERROR      = 2U
+} Cdd_Pwm_SfoStatus;
 
 /** \brief Time Base counter synchronization mode */
 typedef enum
 {
-   CDD_PWM_COUNT_MODE_DOWN_AFTER_SYNC = 0U, /* Count down after sync event */
-   CDD_PWM_COUNT_MODE_UP_AFTER_SYNC = 1U    /* Count up after sync event */
-}Cdd_Pwm_SyncCountModeType;
+    CDD_PWM_COUNT_MODE_DOWN_AFTER_SYNC = 0U, /* Count down after sync event */
+    CDD_PWM_COUNT_MODE_UP_AFTER_SYNC   = 1U  /* Count up after sync event */
+} Cdd_Pwm_SyncCountModeType;
 
 typedef enum
 {
     /* Software force generated EPWM sync-out pulse */
-    CDD_PWM_SYNC_OUT_PULSE_ON_SOFTWARE  = EPWM_SYNCOUTEN_SWEN,
+    CDD_PWM_SYNC_OUT_PULSE_ON_SOFTWARE = EPWM_SYNCOUTEN_SWEN,
     /* Counter zero event generates EPWM sync-out pulse */
-    CDD_PWM_SYNC_OUT_PULSE_ON_CNTR_ZERO  = EPWM_SYNCOUTEN_ZEROEN,
+    CDD_PWM_SYNC_OUT_PULSE_ON_CNTR_ZERO = EPWM_SYNCOUTEN_ZEROEN,
     /* Counter equal to CMPB event generates EPWM sync-out pulse */
     CDD_PWM_SYNC_OUT_PULSE_ON_CNTR_COMPARE_B = EPWM_SYNCOUTEN_CMPBEN,
     /* Counter equal to CMPC event generates EPWM sync-out pulse */
@@ -1202,7 +1182,6 @@ typedef enum
     /* All the above sources */
     CDD_PWM_SYNC_OUT_PULSE_ON_ALL = CDD_PWM_SYNC_OUT_SOURCE_M
 } Cdd_Pwm_SyncOutPulseSourceType;
-
 
 /** \brief Values that can be passed to Cdd_Pwm_SetOneShotSyncOutTrigger() as the trigger parameter. */
 typedef enum
@@ -1218,7 +1197,7 @@ typedef enum
     CDD_PWM_PERIOD_SHADOW_LOAD = 0U,
     /* PWM Period register access is directly */
     CDD_PWM_PERIOD_DIRECT_LOAD = 1U
-}Cdd_Pwm_PeriodLoadModeType;
+} Cdd_Pwm_PeriodLoadModeType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SelectPeriodLoadEvent() as the shadowLoadMode parameter. */
 typedef enum
@@ -1228,37 +1207,39 @@ typedef enum
     /* Shadow to active load occurs when time base counter reaches 0 and a SYNC occurs */
     CDD_PWM_SHADOW_LOAD_MODE_COUNTER_SYNC = 1U,
     /* Shadow to active load occurs only when a SYNC occurs */
-    CDD_PWM_SHADOW_LOAD_MODE_SYNC         = 2U
+    CDD_PWM_SHADOW_LOAD_MODE_SYNC = 2U
 } Cdd_Pwm_PeriodShadowLoadModeType;
 
 /** \brief Global load register types. */
-typedef enum{
+typedef enum
+{
     /* Global load TBPRD:TBPRDHR */
-    CDD_PWM_GL_REGISTER_TBPRD_TBPRDHR  = 0x1U,
+    CDD_PWM_GL_REGISTER_TBPRD_TBPRDHR = 0x1U,
     /* Global load CMPA:CMPAHR */
-    CDD_PWM_GL_REGISTER_CMPA_CMPAHR    = 0x2U,
+    CDD_PWM_GL_REGISTER_CMPA_CMPAHR = 0x2U,
     /* Global load CMPB:CMPBHR */
-    CDD_PWM_GL_REGISTER_CMPB_CMPBHR    = 0x4U,
+    CDD_PWM_GL_REGISTER_CMPB_CMPBHR = 0x4U,
     /* Global load CMPC */
-    CDD_PWM_GL_REGISTER_CMPC           = 0x8U,
+    CDD_PWM_GL_REGISTER_CMPC = 0x8U,
     /* Global load CMPD */
-    CDD_PWM_GL_REGISTER_CMPD           = 0x10U,
+    CDD_PWM_GL_REGISTER_CMPD = 0x10U,
     /* Global load DBRED:DBREDHR */
-    CDD_PWM_GL_REGISTER_DBRED_DBREDHR  = 0x20U,
+    CDD_PWM_GL_REGISTER_DBRED_DBREDHR = 0x20U,
     /* Global load DBFED:DBFEDHR */
-    CDD_PWM_GL_REGISTER_DBFED_DBFEDHR  = 0x40U,
+    CDD_PWM_GL_REGISTER_DBFED_DBFEDHR = 0x40U,
     /* Global load DBCTL */
-    CDD_PWM_GL_REGISTER_DBCTL          = 0x80U,
+    CDD_PWM_GL_REGISTER_DBCTL = 0x80U,
     /* Global load AQCTLA/A2 */
     CDD_PWM_GL_REGISTER_AQCTLA_AQCTLA2 = 0x100U,
     /* Global load AQCTLB/B2 */
     CDD_PWM_GL_REGISTER_AQCTLB_AQCTLB2 = 0x200U,
     /* Global load AQCSFRC */
-    CDD_PWM_GL_REGISTER_AQCSFRC        = 0x400U
-}Cdd_Pwm_GlobalLoadType;
+    CDD_PWM_GL_REGISTER_AQCSFRC = 0x400U
+} Cdd_Pwm_GlobalLoadType;
 
 /** \brief Digital compare trip input types. */
-typedef enum{
+typedef enum
+{
     /* Combinational Trip 1 input */
     CDD_PWM_DC_COMBINATIONAL_TRIPIN1 = 0x1U,
     /* Combinational Trip 2 input */
@@ -1287,33 +1268,33 @@ typedef enum{
     CDD_PWM_DC_COMBINATIONAL_TRIPIN14 = 0x2000U,
     /* Combinational Trip 15 input */
     CDD_PWM_DC_COMBINATIONAL_TRIPIN15 = 0x4000U
-}Cdd_Pwm_DcTripInputType;
+} Cdd_Pwm_DcTripInputType;
 
 /* Action Qualifier Module
  *
  */
 
-/** \brief Values that can be passed to Cdd_Pwm_SetActionQualifierT1TriggerSource() and 
+/** \brief Values that can be passed to Cdd_Pwm_SetActionQualifierT1TriggerSource() and
  * Cdd_Pwm_SetActionQualifierT2TriggerSource() as the trigger parameter. */
 typedef enum
 {
-    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DCA_1 = 0U,      /* Digital compare event A 1 */
-    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DCA_2 = 1U,      /* Digital compare event A 2 */
-    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DCB_1 = 2U,      /* Digital compare event B 1 */
-    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DCB_2 = 3U,      /* Digital compare event B 2 */
-    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_1  = 4U,      /* Trip zone 1 */
-    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_2  = 5U,      /* Trip zone 2 */
-    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_3  = 6U,      /* Trip zone 3 */
+    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DCA_1          = 0U, /* Digital compare event A 1 */
+    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DCA_2          = 1U, /* Digital compare event A 2 */
+    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DCB_1          = 2U, /* Digital compare event B 1 */
+    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DCB_2          = 3U, /* Digital compare event B 2 */
+    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_1           = 4U, /* Trip zone 1 */
+    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_2           = 5U, /* Trip zone 2 */
+    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_3           = 6U, /* Trip zone 3 */
     CDD_PWM_AQ_TRIGGER_EVENT_TRIG_CDD_PWM_SYNCIN = 7U, /* CDD_PWM sync */
-    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DC_EVTFILT = 8U  /* Digital compare filter event */
+    CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DC_EVTFILT     = 8U  /* Digital compare filter event */
 } Cdd_Pwm_ActionQualifierTriggerSourceType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetActionQualifierContSWForceAction() as the outPut parameter. */
 typedef enum
 {
-    CDD_PWM_AQ_SW_DISABLED         = 0U,  /* Software forcing disabled */
-    CDD_PWM_AQ_SW_OUTPUT_LOW       = 1U,  /* Set output pins to low */
-    CDD_PWM_AQ_SW_OUTPUT_HIGH      = 2U   /* Set output pins to High */
+    CDD_PWM_AQ_SW_DISABLED    = 0U, /* Software forcing disabled */
+    CDD_PWM_AQ_SW_OUTPUT_LOW  = 1U, /* Set output pins to low */
+    CDD_PWM_AQ_SW_OUTPUT_HIGH = 2U  /* Set output pins to High */
 } Cdd_Pwm_ActionQualifierSwOutputType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetActionQualifierActionComplete() as the action parameter. */
@@ -1323,7 +1304,7 @@ typedef enum
     CDD_PWM_AQ_OUTPUT_NO_CHANGE_ZERO = 0x0U,
     /* Time base counter equals zero and set output pins to low */
     CDD_PWM_AQ_OUTPUT_LOW_ZERO = 0x1U,
-    /* Time base counter equals zero and set output pins to high */ 
+    /* Time base counter equals zero and set output pins to high */
     CDD_PWM_AQ_OUTPUT_HIGH_ZERO = 0x2U,
     /* Time base counter equals zero and toggle the output pins */
     CDD_PWM_AQ_OUTPUT_TOGGLE_ZERO = 0x3U,
@@ -1410,29 +1391,29 @@ typedef enum
 typedef enum
 {
     /** \brief Shadow mode load when counter equals zero */
-    CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_ZERO        = 0U,
+    CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_ZERO = 0U,
     /** \brief Shadow mode load when counter equals period */
-    CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_PERIOD      = 1U,
+    CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_PERIOD = 1U,
     /** \brief Shadow mode load when counter equals zero or period */
     CDD_PWM_AQ_SW_SH_LOAD_ON_CNTR_ZERO_PERIOD = 2U,
     /** \brief No shadow load mode Immediate mode only */
-    CDD_PWM_AQ_SW_IMMEDIATE_LOAD   = 3U
-}Cdd_Pwm_ActionQualifierContForceType;
+    CDD_PWM_AQ_SW_IMMEDIATE_LOAD = 3U
+} Cdd_Pwm_ActionQualifierContForceType;
 
-/** \brief Values that can be passed to Cdd_Pwm_SetDeadBandDelayPolarity(), 
+/** \brief Values that can be passed to Cdd_Pwm_SetDeadBandDelayPolarity(),
  * Cdd_Pwm_SetDeadBandDelayMode() as the delayMode parameter. */
 typedef enum
 {
-    CDD_PWM_DB_FED = 0U,    /* DB FED (Falling Edge Delay) mode  */
-    CDD_PWM_DB_RED = 1U     /* DB RED (Rising Edge Delay) mode */
+    CDD_PWM_DB_FED = 0U, /* DB FED (Falling Edge Delay) mode  */
+    CDD_PWM_DB_RED = 1U  /* DB RED (Rising Edge Delay) mode */
 } Cdd_Pwm_DeadBandDelayModeType;
 
 /** \brief Dead band delay input types. */
 typedef enum
 {
-    CDD_PWM_DB_INPUT_EPWMA = 0U, /* Input signal is EPWMA */
-    CDD_PWM_DB_INPUT_EPWMB = 1U, /* Input signal is EPWMB */
-    CDD_PWM_DB_INPUT_DB_RED = 2U /* Input signal is output of rising edge delay */
+    CDD_PWM_DB_INPUT_EPWMA  = 0U, /* Input signal is EPWMA */
+    CDD_PWM_DB_INPUT_EPWMB  = 1U, /* Input signal is EPWMB */
+    CDD_PWM_DB_INPUT_DB_RED = 2U  /* Input signal is output of rising edge delay */
 } Cdd_Pwm_DeadBandDelayInputType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetDeadBandDelayPolarity as the polarity parameter. */
@@ -1446,24 +1427,24 @@ typedef enum
 typedef enum
 {
     /* Load when counter equals zero */
-    CDD_PWM_DB_LOAD_ON_CNTR_ZERO        = 0U,
+    CDD_PWM_DB_LOAD_ON_CNTR_ZERO = 0U,
     /* Load when counter equals period */
-    CDD_PWM_DB_LOAD_ON_CNTR_PERIOD      = 1U,
+    CDD_PWM_DB_LOAD_ON_CNTR_PERIOD = 1U,
     /* Load when counter equals zero or period */
     CDD_PWM_DB_LOAD_ON_CNTR_ZERO_PERIOD = 2U,
     /* Freeze shadow to active load */
     CDD_PWM_DB_LOAD_FREEZE = 3U
 } Cdd_Pwm_DeadBandControlLoadModeType;
 
-/** \brief Values that can be passed to Cdd_Pwm_SetRisingEdgeDelayCountShadowLoadMode() and 
- * Cdd_Pwm_SetFallingEdgeDelayCountShadowLoadModeas the loadMode parameter. 
+/** \brief Values that can be passed to Cdd_Pwm_SetRisingEdgeDelayCountShadowLoadMode() and
+ * Cdd_Pwm_SetFallingEdgeDelayCountShadowLoadModeas the loadMode parameter.
  */
 typedef enum
 {
     /* Load when counter equals zero */
-    CDD_PWM_DELAY_LOAD_ON_CNTR_ZERO        = 0U,
+    CDD_PWM_DELAY_LOAD_ON_CNTR_ZERO = 0U,
     /* Load when counter equals period */
-    CDD_PWM_DELAY_LOAD_ON_CNTR_PERIOD      = 1U,
+    CDD_PWM_DELAY_LOAD_ON_CNTR_PERIOD = 1U,
     /* Load when counter equals zero or period */
     CDD_PWM_DELAY_LOAD_ON_CNTR_ZERO_PERIOD = 2U,
     /* Freeze shadow to active load */
@@ -1491,13 +1472,14 @@ typedef enum
 } Cdd_Pwm_TripZoneDigitalCompareOutputType;
 
 /** \brief Cycle By Cycle Trip Zone Flag types */
-typedef enum{
+typedef enum
+{
     /* Trip Zone interrupt */
     CDD_PWM_TZ_INTERRUPT = 0x1U,
     /* Trip Zones Cycle By Cycle flag */
-    CDD_PWM_TZ_FLAG_CBC     = 0x2U,
+    CDD_PWM_TZ_FLAG_CBC = 0x2U,
     /* Trip Zones One Shot flag */
-    CDD_PWM_TZ_FLAG_OST     = 0x4U,
+    CDD_PWM_TZ_FLAG_OST = 0x4U,
     /* Digital Compare A Event 1 flag */
     CDD_PWM_TZ_FLAG_DCAEVT1 = 0x8U,
     /* Digital Compare A Event 2 flag */
@@ -1507,11 +1489,12 @@ typedef enum{
     /* Digital Compare B Event 2 flag */
     CDD_PWM_TZ_FLAG_DCBEVT2 = 0x40U,
     /* Trip Zones Capture Event flag */
-    CDD_PWM_TZ_FLAG_CAPEVT  = 0x80U
-}Cdd_Pwm_TripZoneFlagType;
+    CDD_PWM_TZ_FLAG_CAPEVT = 0x80U
+} Cdd_Pwm_TripZoneFlagType;
 
 /** \brief Cycle By Cycle Trip Zone Flag types */
-typedef enum{
+typedef enum
+{
     /* CBC flag 1 */
     CDD_PWM_TZ_CBC_FLAG_1 = 0x1U,
     /* CBC flag 2 */
@@ -1523,17 +1506,18 @@ typedef enum{
     /* CBC flag 5 */
     CDD_PWM_TZ_CBC_FLAG_5 = 0x10U,
     /* CBC flag 6 */
-    CDD_PWM_TZ_CBC_FLAG_6  = 0x20U,
+    CDD_PWM_TZ_CBC_FLAG_6 = 0x20U,
     /* CBC flag Digital compare event A2 */
     CDD_PWM_TZ_CBC_FLAG_DCAEVT2 = 0x40U,
     /* CBC flag Digital compare event B2 */
     CDD_PWM_TZ_CBC_FLAG_DCBEVT2 = 0x80U,
     /* CBC flag capture event */
     CDD_PWM_TZ_CBC_FLAG_CAPEVT = 0x100U
-}Cdd_Pwm_CbcTzFlagType;
+} Cdd_Pwm_CbcTzFlagType;
 
 /** \brief One-shot Trip Zone Flag types */
-typedef enum{
+typedef enum
+{
     /* OST flag OST1 */
     CDD_PWM_TZ_OST_FLAG_OST1 = 0x1U,
     /* OST flag OST2 */
@@ -1547,15 +1531,16 @@ typedef enum{
     /* OST flag OST6 */
     CDD_PWM_TZ_OST_FLAG_OST6 = 0x20U,
     /* OST flag Digital compare event A1 */
-    CDD_PWM_TZ_OST_FLAG_DCAEVT1  = 0x40U,
+    CDD_PWM_TZ_OST_FLAG_DCAEVT1 = 0x40U,
     /* OST flag Digital compare event B1 */
-    CDD_PWM_TZ_OST_FLAG_DCBEVT1  = 0x80U,
+    CDD_PWM_TZ_OST_FLAG_DCBEVT1 = 0x80U,
     /* OST flag capture event */
     CDD_PWM_TZ_OST_FLAG_CAPEVT = 0x100U
-}Cdd_Pwm_OneshotTzFlagType;
+} Cdd_Pwm_OneshotTzFlagType;
 
 /** \brief Trip Zone Force Event types */
-typedef enum{
+typedef enum
+{
     /* Force Cycle By Cycle trip event */
     CDD_PWM_TZ_FORCE_EVENT_CBC = 0x2U,
     /* Force a One-Shot Trip Event */
@@ -1570,57 +1555,56 @@ typedef enum{
     CDD_PWM_TZ_FORCE_EVENT_DCBEVT2 = 0x40U,
     /* Force a Capture Event */
     CDD_PWM_TZ_FORCE_EVENT_CAPEVT = 0x80U
-}Cdd_Pwm_TripZoneForceEventType;
-
+} Cdd_Pwm_TripZoneForceEventType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetTripZoneAction() as the TzEvent parameter. */
 typedef enum
 {
-    CDD_PWM_TZ_ACTION_EVENT_TZA = 0U,     /* TZ1 - TZ6U, DCAEVT2U, DCAEVT1 */
-    CDD_PWM_TZ_ACTION_EVENT_TZB = 1U,     /* TZ1 - TZ6U, DCBEVT2U, DCBEVT1 */
+    CDD_PWM_TZ_ACTION_EVENT_TZA     = 0U, /* TZ1 - TZ6U, DCAEVT2U, DCAEVT1 */
+    CDD_PWM_TZ_ACTION_EVENT_TZB     = 1U, /* TZ1 - TZ6U, DCBEVT2U, DCBEVT1 */
     CDD_PWM_TZ_ACTION_EVENT_DCAEVT1 = 2U, /* DCAEVT1 (Digital Compare A event 1) */
     CDD_PWM_TZ_ACTION_EVENT_DCAEVT2 = 3U, /* DCAEVT2 (Digital Compare A event 2) */
     CDD_PWM_TZ_ACTION_EVENT_DCBEVT1 = 4U, /* DCBEVT1 (Digital Compare B event 1) */
-    CDD_PWM_TZ_ACTION_EVENT_DCBEVT2 = 5U /* DCBEVT2 (Digital Compare B event 2) */
+    CDD_PWM_TZ_ACTION_EVENT_DCBEVT2 = 5U  /* DCBEVT2 (Digital Compare B event 2) */
 } Cdd_Pwm_TripZoneActionEventType;
 
-
-/** \brief Values that can be passed to Cdd_Pwm_EnableTripZoneSignals() and 
+/** \brief Values that can be passed to Cdd_Pwm_EnableTripZoneSignals() and
  * Cdd_Pwm_DisableTripZoneSignals() as the TzSignal parameter. */
-typedef enum{
+typedef enum
+{
     /* TZ1 Cycle By Cycle */
-    CDD_PWM_TZ_SIGNAL_CBC1   = 0x1U,
+    CDD_PWM_TZ_SIGNAL_CBC1 = 0x1U,
     /* TZ2 Cycle By Cycle */
-    CDD_PWM_TZ_SIGNAL_CBC2   = 0x2U, 
+    CDD_PWM_TZ_SIGNAL_CBC2 = 0x2U,
     /* TZ3 Cycle By Cycle */
-    CDD_PWM_TZ_SIGNAL_CBC3   = 0x4U, 
+    CDD_PWM_TZ_SIGNAL_CBC3 = 0x4U,
     /* TZ4 Cycle By Cycle */
-    CDD_PWM_TZ_SIGNAL_CBC4   = 0x8U, 
+    CDD_PWM_TZ_SIGNAL_CBC4 = 0x8U,
     /* TZ5 Cycle By Cycle */
-    CDD_PWM_TZ_SIGNAL_CBC5   = 0x10U, 
+    CDD_PWM_TZ_SIGNAL_CBC5 = 0x10U,
     /* TZ6 Cycle By Cycle */
-    CDD_PWM_TZ_SIGNAL_CBC6   = 0x20U, 
+    CDD_PWM_TZ_SIGNAL_CBC6 = 0x20U,
     /* DCAEVT2 Cycle By Cycle */
-    CDD_PWM_TZ_SIGNAL_DCAEVT2 = 0x40U, 
+    CDD_PWM_TZ_SIGNAL_DCAEVT2 = 0x40U,
     /* DCBEVT2 Cycle By Cycle */
-    CDD_PWM_TZ_SIGNAL_DCBEVT2 = 0x80U, 
+    CDD_PWM_TZ_SIGNAL_DCBEVT2 = 0x80U,
     /* One-shot TZ1 */
-    CDD_PWM_TZ_SIGNAL_OSHT1  = 0x100U, 
+    CDD_PWM_TZ_SIGNAL_OSHT1 = 0x100U,
     /* One-shot TZ2 */
-    CDD_PWM_TZ_SIGNAL_OSHT2  = 0x200U, 
+    CDD_PWM_TZ_SIGNAL_OSHT2 = 0x200U,
     /* One-shot TZ3 */
-    CDD_PWM_TZ_SIGNAL_OSHT3  = 0x400U, 
+    CDD_PWM_TZ_SIGNAL_OSHT3 = 0x400U,
     /* One-shot TZ4 */
-    CDD_PWM_TZ_SIGNAL_OSHT4  = 0x800U, 
+    CDD_PWM_TZ_SIGNAL_OSHT4 = 0x800U,
     /* One-shot TZ5 */
-    CDD_PWM_TZ_SIGNAL_OSHT5  = 0x1000U, 
+    CDD_PWM_TZ_SIGNAL_OSHT5 = 0x1000U,
     /* One-shot TZ6 */
-    CDD_PWM_TZ_SIGNAL_OSHT6  = 0x2000U, 
+    CDD_PWM_TZ_SIGNAL_OSHT6 = 0x2000U,
     /* One-shot DCAEVT1 */
-    CDD_PWM_TZ_SIGNAL_DCAEVT1 = 0x4000U, 
+    CDD_PWM_TZ_SIGNAL_DCAEVT1 = 0x4000U,
     /* One-shot DCBEVT1 */
     CDD_PWM_TZ_SIGNAL_DCBEVT1 = 0x8000U
-}Cdd_Pwm_TzSignalType;
+} Cdd_Pwm_TzSignalType;
 
 /** \brief Enumeration to configure tripzone CAPEVT signal */
 typedef enum
@@ -1629,30 +1613,30 @@ typedef enum
     CDD_PWM_TZ_SIGNAL_CAPEVT_CBC = 0x1U,
     /* One-shot Capture event */
     CDD_PWM_TZ_SIGNAL_CAPEVT_OST = 0x100U
-}Cdd_Pwm_TzCapEvtType;
+} Cdd_Pwm_TzCapEvtType;
 
 /** \brief Values that can be passed to Cdd_Pwm_ConfigureTripZoneInterrupt() and
  *  Cdd_Pwm_DisableTripZoneInterrupt() as the TzInterrupt parameter. */
 typedef enum
 {
-    CDD_PWM_TZ_INTERRUPT_CBC     = 0x2U, /* Trip Zones One Shot interrupt */
-    CDD_PWM_TZ_INTERRUPT_OST     = 0x4U, /* Digital Compare A Event 1 interrupt */
-    CDD_PWM_TZ_INTERRUPT_DCAEVT1 = 0x8U, /* Digital Compare A Event 2 interrupt */
+    CDD_PWM_TZ_INTERRUPT_CBC     = 0x2U,  /* Trip Zones One Shot interrupt */
+    CDD_PWM_TZ_INTERRUPT_OST     = 0x4U,  /* Digital Compare A Event 1 interrupt */
+    CDD_PWM_TZ_INTERRUPT_DCAEVT1 = 0x8U,  /* Digital Compare A Event 2 interrupt */
     CDD_PWM_TZ_INTERRUPT_DCAEVT2 = 0x10U, /* Digital Compare B Event 1 interrupt */
     CDD_PWM_TZ_INTERRUPT_DCBEVT1 = 0x20U, /* Digital Compare B Event 2 interrupt */
     CDD_PWM_TZ_INTERRUPT_DCBEVT2 = 0x40U, /* Trip Zones Capture Event interrupt */
     CDD_PWM_TZ_INTERRUPT_CAPEVT  = 0x80U
-}Cdd_Pwm_TzInterruptSourceType;
+} Cdd_Pwm_TzInterruptSourceType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetTripZoneDigitalCompareEventCondition() as the dcEvent parameter. */
 typedef enum
 {
-    CDD_PWM_TZ_EVENT_DC_DISABLED = 0U,       /* Event is disabled */
-    CDD_PWM_TZ_EVENT_DCXH_LOW    = 1U,       /* Event when DCxH low */
-    CDD_PWM_TZ_EVENT_DCXH_HIGH   = 2U,       /* Event when DCxH high */
-    CDD_PWM_TZ_EVENT_DCXL_LOW    = 3U,       /* Event when DCxL low */
-    CDD_PWM_TZ_EVENT_DCXL_HIGH   = 4U,       /* Event when DCxL high */
-    CDD_PWM_TZ_EVENT_DCXL_HIGH_DCXH_LOW = 5U /* Event when DCxL high DCxH low */
+    CDD_PWM_TZ_EVENT_DC_DISABLED        = 0U, /* Event is disabled */
+    CDD_PWM_TZ_EVENT_DCXH_LOW           = 1U, /* Event when DCxH low */
+    CDD_PWM_TZ_EVENT_DCXH_HIGH          = 2U, /* Event when DCxH high */
+    CDD_PWM_TZ_EVENT_DCXL_LOW           = 3U, /* Event when DCxL low */
+    CDD_PWM_TZ_EVENT_DCXL_HIGH          = 4U, /* Event when DCxL high */
+    CDD_PWM_TZ_EVENT_DCXL_HIGH_DCXH_LOW = 5U  /* Event when DCxL high DCxH low */
 } Cdd_Pwm_TripZoneDigitalCompareOutputEventType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetTripZoneAction() as the TzAction parameter. */
@@ -1678,7 +1662,7 @@ typedef enum
     CDD_PWM_TZ_ADV_ACTION_EVENT_TZB_D = 3U
 } Cdd_Pwm_TripZoneAdvancedEventType;
 
-/** \brief Values that can be passed to Cdd_Pwm_SetTripZoneAdvDigitalCompareActionA(), 
+/** \brief Values that can be passed to Cdd_Pwm_SetTripZoneAdvDigitalCompareActionA(),
  * Cdd_Pwm_SetTripZoneAdvDigitalCompareActionB(), Cdd_Pwm_SetTripZoneAdvAction() as the TzAdvDCAction parameter. */
 typedef enum
 {
@@ -1689,7 +1673,7 @@ typedef enum
     CDD_PWM_TZ_ADV_ACTION_DISABLE = 7U  /* Disable action */
 } Cdd_Pwm_TripZoneAdvancedActionType;
 
-/** \brief Values that can be passed to Cdd_Pwm_SetTripZoneAdvDigitalCompareActionA() and 
+/** \brief Values that can be passed to Cdd_Pwm_SetTripZoneAdvDigitalCompareActionA() and
  * Cdd_Pwm_SetTripZoneAdvDigitalCompareActionB() as the TzAdvDCEvent parameter. */
 typedef enum
 {
@@ -1708,7 +1692,7 @@ typedef enum
 /** \brief Values that can be passed to Cdd_Pwm_SetXCmpRegValue() as the xcmpReg parameter. */
 typedef enum
 {
-     /* XCMP1_ACTIVE */
+    /* XCMP1_ACTIVE */
     CDD_PWM_XCMP1_ACTIVE = 0x0U,
     /* XCMP2_ACTIVE */
     CDD_PWM_XCMP2_ACTIVE = 0x2U,
@@ -1783,20 +1767,20 @@ typedef enum
     CDD_PWM_XCMP8_SHADOW3 = 0xCEU,
     /* XTBPRD_SHADOW3 */
     CDD_PWM_XTBPRD_SHADOW3 = 0xD0U,
-}Cdd_Pwm_XCmpRegType;
+} Cdd_Pwm_XCmpRegType;
 
 /** \brief XCMP shadow set types */
 typedef enum
 {
-/* XCMP set = Active */
-CDD_PWM_XCMP_ACTIVE = 0x0U,
-/* XCMP set = Shadow 1 */
-CDD_PWM_XCMP_SHADOW1 = 0x1U,
-/* XCMP set = Shadow 2 */
-CDD_PWM_XCMP_SHADOW2 = 0x2U,
-/* XCMP set = Shadow 3 */
-CDD_PWM_XCMP_SHADOW3 = 0x3U
-}Cdd_Pwm_XCmpShadowSetType;
+    /* XCMP set = Active */
+    CDD_PWM_XCMP_ACTIVE = 0x0U,
+    /* XCMP set = Shadow 1 */
+    CDD_PWM_XCMP_SHADOW1 = 0x1U,
+    /* XCMP set = Shadow 2 */
+    CDD_PWM_XCMP_SHADOW2 = 0x2U,
+    /* XCMP set = Shadow 3 */
+    CDD_PWM_XCMP_SHADOW3 = 0x3U
+} Cdd_Pwm_XCmpShadowSetType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetCmpShadowRegValue() as the cmpReg parameter. */
 typedef enum
@@ -1814,7 +1798,7 @@ typedef enum
     /* CMPD_SHADOW3 */
     CDD_PWM_CMPD_SHADOW3 = 0x82U
 
-}Cdd_Pwm_XCompareRegType;
+} Cdd_Pwm_XCompareRegType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetXMINMAXRegValue() as the xminmaxReg parameter. */
 typedef enum
@@ -1835,7 +1819,7 @@ typedef enum
     CDD_PWM_XMAX_SHADOW3 = 0xC0U,
     /* XMIN_SHADOW3 */
     CDD_PWM_XMIN_SHADOW3 = 0xC1U
-}Cdd_Pwm_XMinMaxRegType;
+} Cdd_Pwm_XMinMaxRegType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetXCmpActionQualifierAction() as the event parameter. */
 typedef enum
@@ -1879,8 +1863,7 @@ typedef enum
     CDD_PWM_XCMP_7_CMPA = 7U,
     /* Allocate XCMP1 - XCMP8 registers to CMPA */
     CDD_PWM_XCMP_8_CMPA = 8U
-}Cdd_Pwm_XCmp_AllocCmpAType;
-
+} Cdd_Pwm_XCmp_AllocCmpAType;
 
 /** \brief Values that can be passed to Cdd_Pwm_AllocBXCMP() as the alloctype parameter. */
 typedef enum
@@ -1893,7 +1876,7 @@ typedef enum
     CDD_PWM_XCMP_7_CMPB = 7U,
     /* Allocate XCMP5 - XCMP8 registers to CMPB */
     CDD_PWM_XCMP_8_CMPB = 8U
-}Cdd_Pwm_XCmp_AllocCmpBType;
+} Cdd_Pwm_XCmp_AllocCmpBType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetXCmpLoadMode() as the mode parameter. */
 typedef enum
@@ -1902,7 +1885,7 @@ typedef enum
     CDD_PWM_XCMP_LOADONCE = 0U,
     /* Load mode is LOADMULTIPLE */
     CDD_PWM_XCMP_LOADMULTIPLE = 1U
-}Cdd_Pwm_XCmpLoadModeType;
+} Cdd_Pwm_XCmpLoadModeType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetXCmpShadowLevel() as the level parameter. */
 typedef enum
@@ -1915,50 +1898,53 @@ typedef enum
     CDD_PWM_XCMP_SHADOWLEVEL_2 = 2U,
     /* SHDW3U, SHDW2U, SHDW1 and Active registers are available */
     CDD_PWM_XCMP_SHADOWLEVEL_3 = 3U
-}Cdd_Pwm_XCmpShadowLevelType;
+} Cdd_Pwm_XCmpShadowLevelType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SetXCmpShadowBufPtrLoadOnce() as the ptr parameter. */
 typedef enum
 {
     /* No Shadow buffer is in use */
-    CDD_PWM_XCMP_XLOADCTL_SHDWBUFPTR_NULL  = 0U,
+    CDD_PWM_XCMP_XLOADCTL_SHDWBUFPTR_NULL = 0U,
     /* Shadow buffer 1 is in use */
-    CDD_PWM_XCMP_XLOADCTL_SHDWBUFPTR_ONE   = 1U,
+    CDD_PWM_XCMP_XLOADCTL_SHDWBUFPTR_ONE = 1U,
     /* Shadow buffer 2 is in use */
-    CDD_PWM_XCMP_XLOADCTL_SHDWBUFPTR_TWO   = 2U,
+    CDD_PWM_XCMP_XLOADCTL_SHDWBUFPTR_TWO = 2U,
     /* Shadow buffer 3 is in use */
     CDD_PWM_XCMP_XLOADCTL_SHDWBUFPTR_THREE = 3U
-}Cdd_Pwm_XCmpShadowBufPtrType;
-
+} Cdd_Pwm_XCmpShadowBufPtrType;
 
 /** \brief Diode Emulation Enumerations */
 
 /** \brief Diode Emulation trip sources */
-typedef enum{
+typedef enum
+{
     /* Diode emulation Trip H */
     CDD_PWM_DE_SRC_TRIPH = 0x0U,
     /* Diode emulation Trip L */
     CDD_PWM_DE_SRC_TRIPL = 0x1U
-}Cdd_Pwm_DiodeEmulationTripSrcType;
-    
+} Cdd_Pwm_DiodeEmulationTripSrcType;
+
 /** \brief Values that can be passed to Cdd_Pwm_SetDiodeEmulationMode() as the mode parameter. */
-typedef enum{
+typedef enum
+{
     /* Diode Emulation mode is Cycle by Cycle */
     CDD_PWM_DIODE_EMULATION_CBC = 0U,
     /* Diode Emulation mode is One Shot */
     CDD_PWM_DIODE_EMULATION_OST = 1U
-}Cdd_Pwm_DiodeEmulationModeType;
+} Cdd_Pwm_DiodeEmulationModeType;
 
 /** \brief Diode emulation direction types */
-typedef enum{
+typedef enum
+{
     /* Diode emulation count up step size */
     CDD_PWM_DE_COUNT_UP = 0x0U,
     /* Diode emulation count down step size */
     CDD_PWM_DE_COUNT_DOWN = 0x1U
-}Cdd_Pwm_DiodeEmulationDirectionType;
+} Cdd_Pwm_DiodeEmulationDirectionType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SelectDiodeEmulationPwmSignal() as the signal parameter. */
-typedef enum{
+typedef enum
+{
     /* Synchronized version of TRIPH or TRIPL signal */
     CDD_PWM_DE_SYNC_TRIPH_OR_TRIPL = 0U,
     /* Synchronized and inverted version of TRIPH or TRIPL signal */
@@ -1967,7 +1953,7 @@ typedef enum{
     CDD_PWM_DE_LOW = 2U,
     /* A constant high signal */
     CDD_PWM_DE_HIGH = 3U
-}Cdd_Pwm_DiodeEmulationSignalType;
+} Cdd_Pwm_DiodeEmulationSignalType;
 
 /** \brief Values that can be passed to Cdd_Pwm_SelectCycleByCycleTripZoneClearEvent() as the clearMode parameter. */
 typedef enum
@@ -1980,30 +1966,30 @@ typedef enum
     CDD_PWM_TZ_CBC_PULSE_CLR_CNTR_ZERO_PERIOD = 2U
 } Cdd_Pwm_CbcTripZoneClearModeType;
 
-/** \brief Values that can be passed to Cdd_Pwm_EnableTripOutSource() and 
+/** \brief Values that can be passed to Cdd_Pwm_EnableTripOutSource() and
  * Cdd_Pwm_DisableTripOutSource() as the TzTripOut parameter. */
 typedef enum
 {
-    CDD_PWM_TZ_TRIPOUT_OST = 0U, /* OST as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_CBC = 1U, /* CBC as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_TZ1 = 2U, /* TZ1 as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_TZ2 = 3U, /* TZ2 as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_TZ3 = 4U, /* TZ3 as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_TZ4 = 5U, /* TZ4 as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_TZ5 = 6U, /* TZ5 as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_TZ6 = 7U, /* TZ6 as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_DCAEVT1 = 8U, /* DCAEVT1 as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_DCAEVT2 = 9U, /* DCAEVT2 as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_OST     = 0U,  /* OST as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_CBC     = 1U,  /* CBC as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_TZ1     = 2U,  /* TZ1 as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_TZ2     = 3U,  /* TZ2 as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_TZ3     = 4U,  /* TZ3 as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_TZ4     = 5U,  /* TZ4 as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_TZ5     = 6U,  /* TZ5 as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_TZ6     = 7U,  /* TZ6 as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_DCAEVT1 = 8U,  /* DCAEVT1 as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_DCAEVT2 = 9U,  /* DCAEVT2 as TRIPOUT source */
     CDD_PWM_TZ_TRIPOUT_DCBEVT1 = 10U, /* DCBEVT1 as TRIPOUT source */
     CDD_PWM_TZ_TRIPOUT_DCBEVT2 = 11U, /* DCBEVT2 as TRIPOUT source */
-    CDD_PWM_TZ_TRIPOUT_CAPEVT = 12U /* Capture Event as TRIPOUT source */
+    CDD_PWM_TZ_TRIPOUT_CAPEVT  = 12U  /* Capture Event as TRIPOUT source */
 } Cdd_Pwm_SelectTripOutSourceType;
 
 /** \brief ADC Start of Conversion type for PWM module */
 typedef enum
 {
-    CDD_PWM_SOC_A = 0U,  /* SOC A */
-    CDD_PWM_SOC_B = 1U   /* SOC B */
+    CDD_PWM_SOC_A = 0U, /* SOC A */
+    CDD_PWM_SOC_B = 1U  /* SOC B */
 } Cdd_Pwm_AdcStartOfConversionType;
 
 /** \brief ADC Start of Conversion source types */
@@ -2035,34 +2021,33 @@ typedef enum
     CDD_PWM_SOC_TBCTR_D_CMPD = 14U
 } Cdd_Pwm_AdcStartOfConversionSourceType;
 
-
 /** \brief Digital Compare types for PWM module */
 typedef enum
 {
-    CDD_PWM_DC_TYPE_DCAH = 0U,  /* Digital Compare A High */
-    CDD_PWM_DC_TYPE_DCAL = 1U,  /* Digital Compare A Low */
-    CDD_PWM_DC_TYPE_DCBH = 2U,  /* Digital Compare B High */
-    CDD_PWM_DC_TYPE_DCBL = 3U   /* Digital Compare B Low */
+    CDD_PWM_DC_TYPE_DCAH = 0U, /* Digital Compare A High */
+    CDD_PWM_DC_TYPE_DCAL = 1U, /* Digital Compare A Low */
+    CDD_PWM_DC_TYPE_DCBH = 2U, /* Digital Compare B High */
+    CDD_PWM_DC_TYPE_DCBL = 3U  /* Digital Compare B Low */
 } Cdd_Pwm_DigitalCompareType;
 
 /** \brief Digital Compare Trip Input types */
 typedef enum
 {
-    CDD_PWM_DC_TRIP_TRIPIN1 = 0U,   /* Trip 1 */
-    CDD_PWM_DC_TRIP_TRIPIN2 = 1U,   /* Trip 2 */
-    CDD_PWM_DC_TRIP_TRIPIN3 = 2U,   /* Trip 3 */
-    CDD_PWM_DC_TRIP_TRIPIN4 = 3U,   /* Trip 4  */
-    CDD_PWM_DC_TRIP_TRIPIN5 = 4U,   /* Trip 5  */
-    CDD_PWM_DC_TRIP_TRIPIN6 = 5U,   /* Trip 6  */
-    CDD_PWM_DC_TRIP_TRIPIN7 = 6U,   /* Trip 7  */
-    CDD_PWM_DC_TRIP_TRIPIN8 = 7U,   /* Trip 8  */
-    CDD_PWM_DC_TRIP_TRIPIN9 = 8U,   /* Trip 9  */
-    CDD_PWM_DC_TRIP_TRIPIN10 = 9U,  /* Trip 10 */
-    CDD_PWM_DC_TRIP_TRIPIN11 = 10U, /* Trip 11 */
-    CDD_PWM_DC_TRIP_TRIPIN12 = 11U, /* Trip 12 */
-    CDD_PWM_DC_TRIP_TRIPIN14 = 13U, /* Trip 14  */
-    CDD_PWM_DC_TRIP_TRIPIN15 = 14U, /* Trip 15  */
-    CDD_PWM_DC_TRIP_COMBINATION = 15U /* All Trips (Trip1 - Trip 15) are selected */
+    CDD_PWM_DC_TRIP_TRIPIN1     = 0U,  /* Trip 1 */
+    CDD_PWM_DC_TRIP_TRIPIN2     = 1U,  /* Trip 2 */
+    CDD_PWM_DC_TRIP_TRIPIN3     = 2U,  /* Trip 3 */
+    CDD_PWM_DC_TRIP_TRIPIN4     = 3U,  /* Trip 4  */
+    CDD_PWM_DC_TRIP_TRIPIN5     = 4U,  /* Trip 5  */
+    CDD_PWM_DC_TRIP_TRIPIN6     = 5U,  /* Trip 6  */
+    CDD_PWM_DC_TRIP_TRIPIN7     = 6U,  /* Trip 7  */
+    CDD_PWM_DC_TRIP_TRIPIN8     = 7U,  /* Trip 8  */
+    CDD_PWM_DC_TRIP_TRIPIN9     = 8U,  /* Trip 9  */
+    CDD_PWM_DC_TRIP_TRIPIN10    = 9U,  /* Trip 10 */
+    CDD_PWM_DC_TRIP_TRIPIN11    = 10U, /* Trip 11 */
+    CDD_PWM_DC_TRIP_TRIPIN12    = 11U, /* Trip 12 */
+    CDD_PWM_DC_TRIP_TRIPIN14    = 13U, /* Trip 14  */
+    CDD_PWM_DC_TRIP_TRIPIN15    = 14U, /* Trip 15  */
+    CDD_PWM_DC_TRIP_COMBINATION = 15U  /* All Trips (Trip1 - Trip 15) are selected */
 } Cdd_Pwm_DigitalCompareTripInputType;
 
 /** \brief Digital Compare Blanking Pulse types */
@@ -2071,11 +2056,11 @@ typedef enum
     /* Time base counter equals period */
     CDD_PWM_DC_WINDOW_START_TBCTR_PERIOD = 0U,
     /* Time base counter equals zero */
-    CDD_PWM_DC_WINDOW_START_TBCTR_ZERO   = 1U,
+    CDD_PWM_DC_WINDOW_START_TBCTR_ZERO = 1U,
     /* Time base counter equals zero or period */
-    CDD_PWM_DC_WINDOW_START_TBCTR_ZERO_PERIOD  = 2U,
+    CDD_PWM_DC_WINDOW_START_TBCTR_ZERO_PERIOD = 2U,
     /* Blank pulse mix */
-    CDD_PWM_DC_WINDOW_START_BLANK_PULSE_MIX  = 3U
+    CDD_PWM_DC_WINDOW_START_BLANK_PULSE_MIX = 3U
 } Cdd_Pwm_DigitalCompareBlankingPulseType;
 
 /** \brief Digital Compare Filter Input types */
@@ -2118,16 +2103,16 @@ typedef enum
     /* DC cycle-by-cycle(CBC) latch is disabled */
     CDD_PWM_DC_CBC_LATCH_DISABLED = 0x0U,
     /* DC cycle-by-cycle(CBC) latch is enabled */
-    CDD_PWM_DC_CBC_LATCH_ENABLED  = 0x1U
+    CDD_PWM_DC_CBC_LATCH_ENABLED = 0x1U
 } Cdd_Pwm_DigitalCompareCbcLatchModeType;
 
 /** \brief Digital Compare CBC Latch Clear Event types */
 typedef enum
 {
     /* Clear CBC latch when counter equals zero */
-    CDD_PWM_DC_CBC_LATCH_CLR_CNTR_ZERO           = 0x0U,
+    CDD_PWM_DC_CBC_LATCH_CLR_CNTR_ZERO = 0x0U,
     /* Clear CBC latch when counter equals period */
-    CDD_PWM_DC_CBC_LATCH_CLR_ON_CNTR_PERIOD      = 0x1U,
+    CDD_PWM_DC_CBC_LATCH_CLR_ON_CNTR_PERIOD = 0x1U,
     /* Clear CBC latch when counter equals zero or period */
     CDD_PWM_DC_CBC_LATCH_CLR_ON_CNTR_ZERO_PERIOD = 0x2U
 } Cdd_Pwm_DigitalCompareCBCLatchClearEventType;
@@ -2136,22 +2121,22 @@ typedef enum
 typedef enum
 {
     /* Capture gate is always on */
-    CDD_PWM_CAPGATE_INPUT_ALWAYS_ON            = 0U,
+    CDD_PWM_CAPGATE_INPUT_ALWAYS_ON = 0U,
     /* Capture gate is always off */
-    CDD_PWM_CAPGATE_INPUT_ALWAYS_OFF           = 1U,
+    CDD_PWM_CAPGATE_INPUT_ALWAYS_OFF = 1U,
     /* Capture gate input is CAPGATE.sync */
-    CDD_PWM_CAPGATE_INPUT_SYNC                 = 2U,
+    CDD_PWM_CAPGATE_INPUT_SYNC = 2U,
     /* Capture gate input is CAPGATE.sync inverted */
-    CDD_PWM_CAPGATE_INPUT_SYNC_INVERT          = 3U
+    CDD_PWM_CAPGATE_INPUT_SYNC_INVERT = 3U
 } Cdd_Pwm_SelectCaptureGateInputPolarityType;
 
 /** \brief Capture Input Polarity types */
 typedef enum
 {
     /* Capture input is not inverted */
-    CDD_PWM_CAPTURE_INPUT_CAPIN_SYNC            = 0U,
+    CDD_PWM_CAPTURE_INPUT_CAPIN_SYNC = 0U,
     /* Capture input is inverted */
-    CDD_PWM_CAPTURE_INPUT_CAPIN_SYNC_INVERT     = 1U
+    CDD_PWM_CAPTURE_INPUT_CAPIN_SYNC_INVERT = 1U
 } Cdd_Pwm_SelectCaptureInputPolarityType;
 
 /** \brief Capture Input types */
@@ -2224,7 +2209,7 @@ typedef enum
 typedef enum
 {
     /* Delay value equals the offset value defines by software */
-    CDD_PWM_VALLEY_DELAY_MODE_SW_DELAY   = 0U,
+    CDD_PWM_VALLEY_DELAY_MODE_SW_DELAY = 0U,
     /* Delay value equals the sum of the Hardware counter value and the offset value defines by software */
     CDD_PWM_VALLEY_DELAY_MODE_VCNT_DELAY_SW_DELAY = 1U,
     /* Delay value equals the the Hardware counter shifted by (1 + the offset value defines by software) */
@@ -2234,7 +2219,6 @@ typedef enum
     /* Delay value equals the the Hardware counter shifted by (4 + the offset value defines by software) */
     CDD_PWM_VALLEY_DELAY_MODE_VCNT_DELAY_SHIFT_4_SW_DELAY = 4U
 } Cdd_Pwm_ValleyDelayModeType;
-
 
 /** \brief Digital Compare Edge Filter Mode types */
 typedef enum
@@ -2247,14 +2231,14 @@ typedef enum
 /** \brief Digital Compare Edge Filter Edge Count types */
 typedef enum
 {
-    CDD_PWM_DC_EDGEFILT_EDGECNT_0  = 0U, /* Digital Compare Edge filter edge count = 0 */
-    CDD_PWM_DC_EDGEFILT_EDGECNT_1  = 1U, /* Digital Compare Edge filter edge count = 1 */
-    CDD_PWM_DC_EDGEFILT_EDGECNT_2  = 2U, /* Digital Compare Edge filter edge count = 2 */
-    CDD_PWM_DC_EDGEFILT_EDGECNT_3  = 3U, /* Digital Compare Edge filter edge count = 3 */
-    CDD_PWM_DC_EDGEFILT_EDGECNT_4  = 4U, /* Digital Compare Edge filter edge count = 4  */
-    CDD_PWM_DC_EDGEFILT_EDGECNT_5  = 5U, /* Digital Compare Edge filter edge count = 5  */
-    CDD_PWM_DC_EDGEFILT_EDGECNT_6  = 6U, /* Digital Compare Edge filter edge count = 6  */
-    CDD_PWM_DC_EDGEFILT_EDGECNT_7  = 7U  /* Digital Compare Edge filter edge count = 7U  */
+    CDD_PWM_DC_EDGEFILT_EDGECNT_0 = 0U, /* Digital Compare Edge filter edge count = 0 */
+    CDD_PWM_DC_EDGEFILT_EDGECNT_1 = 1U, /* Digital Compare Edge filter edge count = 1 */
+    CDD_PWM_DC_EDGEFILT_EDGECNT_2 = 2U, /* Digital Compare Edge filter edge count = 2 */
+    CDD_PWM_DC_EDGEFILT_EDGECNT_3 = 3U, /* Digital Compare Edge filter edge count = 3 */
+    CDD_PWM_DC_EDGEFILT_EDGECNT_4 = 4U, /* Digital Compare Edge filter edge count = 4  */
+    CDD_PWM_DC_EDGEFILT_EDGECNT_5 = 5U, /* Digital Compare Edge filter edge count = 5  */
+    CDD_PWM_DC_EDGEFILT_EDGECNT_6 = 6U, /* Digital Compare Edge filter edge count = 6  */
+    CDD_PWM_DC_EDGEFILT_EDGECNT_7 = 7U  /* Digital Compare Edge filter edge count = 7U  */
 } Cdd_Pwm_DigitalCompareEdgeFilterEdgeCountType;
 
 /** \brief Mixed Event Interrupt Source types */
@@ -2298,8 +2282,8 @@ typedef enum
 /** \brief Lock Register Group types */
 typedef enum
 {
-    CDD_PWM_REGISTER_GROUP_GLOBAL_LOAD = 0x2U,     /* Global load register group */
-    CDD_PWM_REGISTER_GROUP_TRIP_ZONE = 0x4U,       /* Trip zone register group */
+    CDD_PWM_REGISTER_GROUP_GLOBAL_LOAD     = 0x2U, /* Global load register group */
+    CDD_PWM_REGISTER_GROUP_TRIP_ZONE       = 0x4U, /* Trip zone register group */
     CDD_PWM_REGISTER_GROUP_TRIP_ZONE_CLEAR = 0x8U, /* Trip zone clear group */
     CDD_PWM_REGISTER_GROUP_DIGITAL_COMPARE = 0x10U /* Digital compare group */
 } Cdd_Pwm_LockRegisterGroupType;
@@ -2343,9 +2327,9 @@ typedef enum
 typedef enum
 {
     /* CDD_PWMxB output is normal */
-    CDD_PWM_HRPWM_OUTPUT_ON_B_NORMAL = 0U, 
+    CDD_PWM_HRPWM_OUTPUT_ON_B_NORMAL = 0U,
     /* CDD_PWMxB output is inverted version of EPWMxA signal */
-    CDD_PWM_HRPWM_OUTPUT_ON_B_INV_A  = 1U
+    CDD_PWM_HRPWM_OUTPUT_ON_B_INV_A = 1U
 } Cdd_Pwm_HrpwmChannelBOutputType;
 
 /** \brief HRPWM Sync Pulse Source types */
@@ -2381,41 +2365,41 @@ typedef enum
 /** \brief HRPWM Lock Register Group types */
 typedef enum
 {
-    CDD_PWM_HRPWM_REGISTER_GROUP_HRPWM = 0x1U,           /* HRPWM register group */
-    CDD_PWM_HRPWM_REGISTER_GROUP_GLOBAL_LOAD = 0x2U,     /* Global load register group */
-    CDD_PWM_HRPWM_REGISTER_GROUP_TRIP_ZONE = 0x4U,       /* Trip zone register group */
+    CDD_PWM_HRPWM_REGISTER_GROUP_HRPWM           = 0x1U, /* HRPWM register group */
+    CDD_PWM_HRPWM_REGISTER_GROUP_GLOBAL_LOAD     = 0x2U, /* Global load register group */
+    CDD_PWM_HRPWM_REGISTER_GROUP_TRIP_ZONE       = 0x4U, /* Trip zone register group */
     CDD_PWM_HRPWM_REGISTER_GROUP_TRIP_ZONE_CLEAR = 0x8U, /* Trip zone clear group */
     CDD_PWM_HRPWM_REGISTER_GROUP_DIGITAL_COMPARE = 0x10U /* Digital compare group */
 } Cdd_Pwm_HrpwmLockRegisterGroupType;
 
 #endif
 
-#if(STD_OFF == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_OFF == CDD_PWM_ADVANCED_MODE_API)
 /* PWM Hardware unit configuration */
 typedef struct Cdd_Pwm_HwUnitCfgTag
 {
     /* PWM instance ID */
-    uint8 instance_id;
+    uint8                       instance_id;
     /* Class type of the PWM channel */
-    Cdd_Pwm_ChannelClassType  channelclass;
+    Cdd_Pwm_ChannelClassType    channelclass;
     /* Clock divider */
     Cdd_Pwm_ClockDividerType    clockdivider;
     /* High speed clock divider */
     Cdd_Pwm_HighSpeedClkDivType highspeed_clkdiv;
     /* Default period */
-    Cdd_Pwm_PeriodType        period;
+    Cdd_Pwm_PeriodType          period;
     /* Base address of the PWM channel */
-    uint32                    base_addr;
+    uint32                      base_addr;
     /* Symmetry of the waveform */
-    Cdd_Pwm_OutputSymmetryType symmetry;
+    Cdd_Pwm_OutputSymmetryType  symmetry;
     /* Interrupt enable/disable */
-    boolean                   enable_interrupt;
+    boolean                     enable_interrupt;
     /* Starting channel ID  */
-    uint8                     startchannel;
+    uint8                       startchannel;
     /* Last channel ID */
-    uint8                     lastchannel;
+    uint8                       lastchannel;
     /* Emulation mode */
-    Cdd_Pwm_EmulationModeType emulation_mode;
+    Cdd_Pwm_EmulationModeType   emulation_mode;
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
     /* Idle state of the PWM channel */
     Cdd_Pwm_NotificationType notification;
@@ -2426,15 +2410,15 @@ typedef struct Cdd_Pwm_HwUnitCfgTag
 typedef struct Cdd_Pwm_ChannelCfgTag
 {
     /* PMW instance index*/
-    uint8                    hw_index;
+    uint8                     hw_index;
     /* Output type of the channel */
     Cdd_Pwm_OutputChannelType outputchannel;
     /* Default duty cycle */
-    Cdd_Pwm_DutyCycleType    dutycycle;
+    Cdd_Pwm_DutyCycleType     dutycycle;
     /* Idle state of the PWM channel */
-    Cdd_Pwm_OutputStateType  idlestate;
+    Cdd_Pwm_OutputStateType   idlestate;
     /* Polarity of the PWM channel (Active Low or Active High) */
-    Cdd_Pwm_OutputStateType  polarity;
+    Cdd_Pwm_OutputStateType   polarity;
 } Cdd_Pwm_ChannelCfgType;
 
 /** \brief PWM driver configuration */
@@ -2451,12 +2435,12 @@ typedef struct Cdd_Pwm_ConfigTag
 typedef struct Cdd_Pwm_HwUnitCfgTag
 {
     /* PWM instance ID */
-    uint8   instance_id;
+    uint8  instance_id;
     /* Base address of the PWM channel */
-    uint32                    base_addr;
+    uint32 base_addr;
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
     /* PWM interrupt notification */
-    Cdd_Pwm_NotificationType notification;
+    Cdd_Pwm_NotificationType         notification;
     /* Trip zone interrupt notification */
     Cdd_Pwm_TripZoneNotificationType tripzone_notification;
 #endif
@@ -2466,10 +2450,10 @@ typedef struct Cdd_Pwm_HwUnitCfgTag
 typedef struct Cdd_Pwm_ConfigTag
 {
     /** \brief  PWM hardware instance configurations */
-    Cdd_Pwm_HwUnitCfgType     hwunitcfg[CDD_PWM_HW_AND_XLINK_COUNT];
+    Cdd_Pwm_HwUnitCfgType hwunitcfg[CDD_PWM_HW_AND_XLINK_COUNT];
     /** \brief EPWM XLINK configuration */
-    uint32 xlink_hwmask[CDD_PWM_XLINK_GRP_COUNT];
-}Cdd_Pwm_ConfigType;
+    uint32                xlink_hwmask[CDD_PWM_XLINK_GRP_COUNT];
+} Cdd_Pwm_ConfigType;
 #endif
 
 /*********************************************************************************************************************
@@ -2507,7 +2491,7 @@ FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATICU, CDD_PWM_DATA) VersionInfo);
 #endif
 
-#if(STD_OFF == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_OFF == CDD_PWM_ADVANCED_MODE_API)
 
 #if (STD_ON == CDD_PWM_DEINIT_API)
 /** \brief Service to deinitialize Cdd Pwm driver.
@@ -2587,9 +2571,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetOutputToIdle(VAR(Cdd_Pwm_ChannelType, AUTOMA
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetInterruptEventCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,\
-                                                VAR(uint16,AUTOMATIC) EventCount);
-
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetInterruptEventCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) EventCount);
 
 /** \brief Service to enable the PWM signal edge notification according to notification parameter
  *
@@ -2603,8 +2586,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetInterruptEventCount(VAR(Cdd_Pwm_InstanceType,
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
-                                                VAR(Cdd_Pwm_EdgeNotificationType, AUTOMATIC) EdgeNotification);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
+                           VAR(Cdd_Pwm_EdgeNotificationType, AUTOMATIC) EdgeNotification);
 
 /** \brief Service to disable the PWM signal edge notification
  *
@@ -2617,13 +2601,13 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_EnableNotification(VAR(Cdd_Pwm_ChannelType, AUT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DisableNotification(VAR(Cdd_Pwm_ChannelType,AUTOMATIC) ChannelId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DisableNotification(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId);
 
 #endif
 
 #endif
 
-#if(STD_ON == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
 
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
 /** \brief Service to enable the PWM signal edge notification according to notification parameter
@@ -2665,10 +2649,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DisableNotification(VAR(Cdd_Pwm_InstanceType, A
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_ConfigureTripZoneNotification(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,VAR(boolean, AUTOMATIC) Select);
+Cdd_Pwm_ConfigureTripZoneNotification(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 #endif
-
 
 /** \brief Sets the EPWM interrupt event counts
  *
@@ -2684,18 +2667,18 @@ Cdd_Pwm_ConfigureTripZoneNotification(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Insta
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetInterruptEventCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                            VAR(uint16,AUTOMATIC) EventCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetInterruptEventCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) EventCount);
 
 /** \brief Service to set emulation mode
-*
-* This function sets the emulation behaviours of the time base counter. Valid
-* values for emulationMode are:
-*  - CDD_PWM_EMULATION_STOP_AFTER_NEXT_TB    - Stop after next Time Base counter
-*                                           increment or decrement.
-*  - CDD_PWM_EMULATION_STOP_AFTER_FULL_CYCLE - Stop when counter completes whole
-*                                           cycle
-*  - CDD_PWM_EMULATION_FREE_RUN               - Free run.
+ *
+ * This function sets the emulation behaviours of the time base counter. Valid
+ * values for emulationMode are:
+ *  - CDD_PWM_EMULATION_STOP_AFTER_NEXT_TB    - Stop after next Time Base counter
+ *                                           increment or decrement.
+ *  - CDD_PWM_EMULATION_STOP_AFTER_FULL_CYCLE - Stop when counter completes whole
+ *                                           cycle
+ *  - CDD_PWM_EMULATION_FREE_RUN               - Free run.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance
  * \param[in] EmulationMode   Emulation Mode
@@ -2705,8 +2688,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetInterruptEventCount(VAR(Cdd_Pwm_InstanceType,
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetEmulationMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_EmulationModeType, AUTOMATIC) EmulationMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetEmulationMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                         VAR(Cdd_Pwm_EmulationModeType, AUTOMATIC) EmulationMode);
 
 /** \brief Set the time base count
  *
@@ -2720,8 +2704,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetEmulationMode(VAR(Cdd_Pwm_InstanceType,AUTOMA
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTimeBaseCounter(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                    VAR(uint16,AUTOMATIC) Count);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetTimeBaseCounter(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) Count);
 
 /** \brief Set count mode after phase shift sync
  *
@@ -2739,8 +2723,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTimeBaseCounter(VAR(Cdd_Pwm_InstanceType,AUTO
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetCountModeAfterSync(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_SyncCountModeType,AUTOMATIC) Mode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetCountModeAfterSync(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                              VAR(Cdd_Pwm_SyncCountModeType, AUTOMATIC) Mode);
 
 /** \brief Set the time base clock and the high speed time base clock count pre-scaler
  *
@@ -2764,9 +2749,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetCountModeAfterSync(VAR(Cdd_Pwm_InstanceType,A
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetClockPrescaler(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                    VAR(Cdd_Pwm_ClockDividerType,AUTOMATIC) Prescaler,
-                                                    VAR(Cdd_Pwm_HighSpeedClkDivType,AUTOMATIC) HighSpeedPrescaler);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetClockPrescaler(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                          VAR(Cdd_Pwm_ClockDividerType, AUTOMATIC) Prescaler,
+                          VAR(Cdd_Pwm_HighSpeedClkDivType, AUTOMATIC) HighSpeedPrescaler);
 
 /** \brief Force a software sync pulse
  *
@@ -2781,7 +2767,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetClockPrescaler(VAR(Cdd_Pwm_InstanceType,AUTOM
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceSyncPulse(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ForceSyncPulse(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Set up the source for sync-in pulse
  *
@@ -2810,8 +2796,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceSyncPulse(VAR(Cdd_Pwm_InstanceType,AUTOMATI
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetSyncInPulseSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                    VAR(Cdd_Pwm_SyncInPulseSourceType,AUTOMATIC) Source);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetSyncInPulseSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                             VAR(Cdd_Pwm_SyncInPulseSourceType, AUTOMATIC) Source);
 
 /** \brief Enables sync-out pulse source
  *
@@ -2849,9 +2836,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetSyncInPulseSource(VAR(Cdd_Pwm_InstanceType,AU
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureSyncOutPulseSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                            VAR(Cdd_Pwm_SyncOutPulseSourceType,AUTOMATIC) Source,\
-                                                            VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureSyncOutPulseSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                    VAR(Cdd_Pwm_SyncOutPulseSourceType, AUTOMATIC) Source,
+                                    VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set up the one-shot sync-out trigger source
  *
@@ -2870,8 +2858,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureSyncOutPulseSource(VAR(Cdd_Pwm_Instance
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetOneShotSyncOutTrigger(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OneShotSyncOutTriggerType,AUTOMATIC) Trigger);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetOneShotSyncOutTrigger(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                 VAR(Cdd_Pwm_OneShotSyncOutTriggerType, AUTOMATIC) Trigger);
 
 /** \brief Set PWM period load mode
  *
@@ -2889,8 +2878,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetOneShotSyncOutTrigger(VAR(Cdd_Pwm_InstanceTyp
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetPeriodLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                    VAR(Cdd_Pwm_PeriodLoadModeType,AUTOMATIC) LoadMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetPeriodLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                          VAR(Cdd_Pwm_PeriodLoadModeType, AUTOMATIC) LoadMode);
 
 /** \brief Enable phase shift load
  *
@@ -2904,8 +2894,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetPeriodLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOM
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigurePhaseShiftLoad(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigurePhaseShiftLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set time base counter mode
  *
@@ -2924,8 +2914,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigurePhaseShiftLoad(VAR(Cdd_Pwm_InstanceType
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTimeBaseCounterMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_TimeBaseCountModeType,AUTOMATIC) CounterMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetTimeBaseCounterMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                               VAR(Cdd_Pwm_TimeBaseCountModeType, AUTOMATIC) CounterMode);
 
 /** \brief Set shadow to active period load on sync mode
  *
@@ -2947,8 +2938,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTimeBaseCounterMode(VAR(Cdd_Pwm_InstanceType,
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectPeriodLoadEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                    VAR(Cdd_Pwm_PeriodShadowLoadModeType,AUTOMATIC) ShadowLoadMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectPeriodLoadEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                              VAR(Cdd_Pwm_PeriodShadowLoadModeType, AUTOMATIC) ShadowLoadMode);
 
 /** \brief Enable/disable one shot sync mode
  *
@@ -2962,8 +2954,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectPeriodLoadEvent(VAR(Cdd_Pwm_InstanceType,A
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureOneShotSync(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                     VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureOneShotSync(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Start one shot sync mode
  *
@@ -2976,7 +2968,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureOneShotSync(VAR(Cdd_Pwm_InstanceType,AU
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_StartOneShotSync(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_StartOneShotSync(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Returns time base counter value
  *
@@ -2989,7 +2981,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_StartOneShotSync(VAR(Cdd_Pwm_InstanceType,AUTOMA
  * \retval uint16 Current value of the time base counter
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetTimeBaseCounterValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetTimeBaseCounterValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Return time base counter maximum status
  *
@@ -3002,7 +2994,7 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetTimeBaseCounterValue(VAR(Cdd_Pwm_InstanceTy
  * \retval boolean True if the counter has reached 0xFFFF, false otherwise
  *
  *********************************************************************************************************************/
-FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetTimeBaseCounterOverflowStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(boolean, CDD_PWM_CODE) Cdd_Pwm_GetTimeBaseCounterOverflowStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Clear max time base counter event
  *
@@ -3016,7 +3008,7 @@ FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetTimeBaseCounterOverflowStatus(VAR(Cdd_Pwm_
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearTimeBaseCounterOverflowEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ClearTimeBaseCounterOverflowEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Return external sync signal status
  *
@@ -3029,7 +3021,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearTimeBaseCounterOverflowEvent(VAR(Cdd_Pwm_In
  * \retval boolean True if an external sync signal event occurred, false otherwise
  *
  *********************************************************************************************************************/
-FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetSyncStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(boolean, CDD_PWM_CODE) Cdd_Pwm_GetSyncStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Clear external sync signal event
  *
@@ -3042,7 +3034,7 @@ FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetSyncStatus(VAR(Cdd_Pwm_InstanceType,AUTOMA
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearSyncEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ClearSyncEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Return time base counter direction
  *
@@ -3052,11 +3044,11 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearSyncEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATI
  * \pre None
  * \post None
  * \return Counter direction status
- * \retval uint16 CDD_PWM_TIME_BASE_STATUS_COUNT_UP if counting up or 
+ * \retval uint16 CDD_PWM_TIME_BASE_STATUS_COUNT_UP if counting up or
  *                CDD_PWM_TIME_BASE_STATUS_COUNT_DOWN if counting down
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetTimeBaseCounterDirection(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetTimeBaseCounterDirection(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Sets the phase shift offset counter value
  *
@@ -3073,8 +3065,8 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetTimeBaseCounterDirection(VAR(Cdd_Pwm_Instan
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetPhaseShift(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(uint16,AUTOMATIC) PhaseCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetPhaseShift(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) PhaseCount);
 
 /** \brief Sets the PWM period count
  *
@@ -3093,8 +3085,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetPhaseShift(VAR(Cdd_Pwm_InstanceType,AUTOMATIC
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTimeBasePeriod(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                    VAR(uint16,AUTOMATIC) PeriodCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetTimeBasePeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) PeriodCount);
 
 /** \brief Gets the PWM period count
  *
@@ -3107,7 +3099,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTimeBasePeriod(VAR(Cdd_Pwm_InstanceType,AUTOM
  * \retval uint16 Current period count value
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetTimeBasePeriod(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetTimeBasePeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Sets up the Counter Compare shadow load mode
  *
@@ -3139,9 +3131,10 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetTimeBasePeriod(VAR(Cdd_Pwm_InstanceType,AUT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetCounterCompareShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_CounterCompareModuleType,AUTOMATIC) CompModule,\
-                                                    VAR(Cdd_Pwm_CounterCompareLoadModeType,AUTOMATIC) LoadMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetCounterCompareShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                        VAR(Cdd_Pwm_CounterCompareModuleType, AUTOMATIC) CompModule,
+                                        VAR(Cdd_Pwm_CounterCompareLoadModeType, AUTOMATIC) LoadMode);
 
 /** \brief Disables counter compare shadow load mode
  *
@@ -3161,8 +3154,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetCounterCompareShadowLoadMode(VAR(Cdd_Pwm_Inst
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DisableCounterCompareShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                         VAR(Cdd_Pwm_CounterCompareModuleType,AUTOMATIC) CompModule);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_DisableCounterCompareShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                            VAR(Cdd_Pwm_CounterCompareModuleType, AUTOMATIC) CompModule);
 
 /** \brief Sets counter compare values
  *
@@ -3183,8 +3177,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DisableCounterCompareShadowLoadMode(VAR(Cdd_Pwm_
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetCounterCompareValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                VAR(Cdd_Pwm_CounterCompareModuleType,AUTOMATIC) CompModule,VAR(uint16,AUTOMATIC) CompCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                               VAR(Cdd_Pwm_CounterCompareModuleType, AUTOMATIC) CompModule,
+                               VAR(uint16, AUTOMATIC) CompCount);
 
 /** \brief Gets counter compare values
  *
@@ -3203,8 +3199,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetCounterCompareValue(VAR(Cdd_Pwm_InstanceType,
  * \retval uint16 Counter compare value
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetCounterCompareValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                    VAR(Cdd_Pwm_CounterCompareModuleType,AUTOMATIC) CompModule);
+FUNC(uint16, CDD_PWM_CODE)
+Cdd_Pwm_GetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                               VAR(Cdd_Pwm_CounterCompareModuleType, AUTOMATIC) CompModule);
 
 /** \brief Returns the counter compare shadow register full status
  *
@@ -3222,8 +3219,9 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetCounterCompareValue(VAR(Cdd_Pwm_InstanceTyp
  * \retval FALSE If the shadow register is not full.
  *
  *********************************************************************************************************************/
-FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetCounterCompareShadowStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                     VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OuputChannel);
+FUNC(boolean, CDD_PWM_CODE)
+Cdd_Pwm_GetCounterCompareShadowStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OuputChannel);
 
 /** \brief Enable/disables CMPAHR, CMPBHR register linking
  *
@@ -3238,11 +3236,10 @@ FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetCounterCompareShadowStatus(VAR(Cdd_Pwm_Ins
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureLinkDutyHR(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureLinkDutyHR(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
-
-/** 
+/**
  * Action Qualifier module related APIs
  */
 
@@ -3276,9 +3273,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureLinkDutyHR(VAR(Cdd_Pwm_InstanceType,AUT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                        VAR(Cdd_Pwm_ActionQualifierLoadModeType,AUTOMATIC) LoadMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetActionQualifierShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                         VAR(Cdd_Pwm_ActionQualifierLoadModeType, AUTOMATIC) LoadMode);
 
 /** \brief Disables Action Qualifier shadow load mode
  *
@@ -3296,8 +3294,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierShadowLoadMode(VAR(Cdd_Pwm_Ins
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DisableActionQualifierShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_DisableActionQualifierShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                             VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel);
 
 /** \brief Sets up Action qualifier trigger source for event T1
  *
@@ -3321,8 +3320,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DisableActionQualifierShadowLoadMode(VAR(Cdd_Pwm
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierT1TriggerSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(Cdd_Pwm_ActionQualifierTriggerSourceType,AUTOMATIC) Trigger);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetActionQualifierT1TriggerSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                          VAR(Cdd_Pwm_ActionQualifierTriggerSourceType, AUTOMATIC) Trigger);
 
 /** \brief Sets up Action qualifier trigger source for event T2
  *
@@ -3346,8 +3346,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierT1TriggerSource(VAR(Cdd_Pwm_In
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierT2TriggerSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                    VAR(Cdd_Pwm_ActionQualifierTriggerSourceType,AUTOMATIC) Trigger);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetActionQualifierT2TriggerSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                          VAR(Cdd_Pwm_ActionQualifierTriggerSourceType, AUTOMATIC) Trigger);
 
 /** \brief Sets up Action qualifier outputs
  *
@@ -3391,15 +3392,16 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierT2TriggerSource(VAR(Cdd_Pwm_In
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierAction(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                            VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) EpwmOutput,
-                            VAR(Cdd_Pwm_ActionQualifierOutputType,AUTOMATIC) Output,\
-                            VAR(Cdd_Pwm_ActionQualifierOutputEventType,AUTOMATIC) Event);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetActionQualifierAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                 VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) EpwmOutput,
+                                 VAR(Cdd_Pwm_ActionQualifierOutputType, AUTOMATIC) Output,
+                                 VAR(Cdd_Pwm_ActionQualifierOutputEventType, AUTOMATIC) Event);
 
-
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierActionComplete(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                        VAR(Cdd_Pwm_ActionQualifierEventActionType,AUTOMATIC) Action);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetActionQualifierActionComplete(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                         VAR(Cdd_Pwm_ActionQualifierEventActionType, AUTOMATIC) Action);
 
 /** \brief Sets up Additional action qualifier event outputs
  *
@@ -3462,10 +3464,11 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierActionComplete(VAR(Cdd_Pwm_Ins
  *       scenario.
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) 
-Cdd_Pwm_SetAdditionalActionQualifierActionComplete(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                              VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                               VAR(Cdd_Pwm_AdditionalActionQualifierEventActionType,AUTOMATIC) Action);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetAdditionalActionQualifierActionComplete(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                                   VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                                   VAR(Cdd_Pwm_AdditionalActionQualifierEventActionType, AUTOMATIC)
+                                                       Action);
 
 /** \brief Sets up Action qualifier continuous software load mode
  *
@@ -3489,9 +3492,9 @@ Cdd_Pwm_SetAdditionalActionQualifierActionComplete(VAR(Cdd_Pwm_InstanceType,AUTO
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) 
-Cdd_Pwm_SetActionQualifierContSwForceShadowMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                             VAR(Cdd_Pwm_ActionQualifierContForceType,AUTOMATIC) Mode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetActionQualifierContSwForceShadowMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                                VAR(Cdd_Pwm_ActionQualifierContForceType, AUTOMATIC) Mode);
 
 /** \brief Triggers a continuous software forced event
  *
@@ -3515,9 +3518,10 @@ Cdd_Pwm_SetActionQualifierContSwForceShadowMode(VAR(Cdd_Pwm_InstanceType,AUTOMAT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierContSwForceAction(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                    VAR(Cdd_Pwm_ActionQualifierSwOutputType,AUTOMATIC) Output);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetActionQualifierContSwForceAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                            VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                            VAR(Cdd_Pwm_ActionQualifierSwOutputType, AUTOMATIC) Output);
 
 /** \brief Sets up one time software forced Action qualifier outputs
  *
@@ -3543,9 +3547,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierContSwForceAction(VAR(Cdd_Pwm_
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierSwAction(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                    VAR(Cdd_Pwm_ActionQualifierOutputType,AUTOMATIC) Output);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetActionQualifierSwAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                   VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                   VAR(Cdd_Pwm_ActionQualifierOutputType, AUTOMATIC) Output);
 
 /** \brief Triggers a one time software forced event on Action qualifier
  *
@@ -3563,18 +3568,19 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetActionQualifierSwAction(VAR(Cdd_Pwm_InstanceT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceActionQualifierSwAction(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ForceActionQualifierSwAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                     VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel);
 
 /*
-* Dead Band Module related APIs
-*/
+ * Dead Band Module related APIs
+ */
 
 /** \brief Sets Dead Band signal output swap mode
  *
  * This function sets up the output signal swap mode For example if the
  * output variable is set to CDD_PWM_DB_OUTPUT_A and enableSwapMode is true, then
- * the EPWM A output gets its signal from the EPWM B signal path. 
+ * the EPWM A output gets its signal from the EPWM B signal path.
  *
  * \param[in] InstanceId       Numeric ID of the requested PWM instance
  * \param[in] OutputChannel    The EPWM Dead Band output.
@@ -3585,9 +3591,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceActionQualifierSwAction(VAR(Cdd_Pwm_Instanc
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandOutputSwapMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                                        VAR(boolean,AUTOMATIC) EnableSwapMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDeadBandOutputSwapMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                  VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                  VAR(boolean, AUTOMATIC) EnableSwapMode);
 
 /** \brief Sets Dead Band signal output mode
  *
@@ -3611,8 +3618,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandOutputSwapMode(VAR(Cdd_Pwm_InstanceTy
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandDelayMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                VAR(Cdd_Pwm_DeadBandDelayModeType,AUTOMATIC) DelayMode, VAR(boolean,AUTOMATIC) EnableDelayMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDeadBandDelayMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                             VAR(Cdd_Pwm_DeadBandDelayModeType, AUTOMATIC) DelayMode,
+                             VAR(boolean, AUTOMATIC) EnableDelayMode);
 
 /** \brief Sets Dead Band delay polarity
  *
@@ -3635,8 +3644,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandDelayMode(VAR(Cdd_Pwm_InstanceType,AU
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandDelayPolarity(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-        VAR(Cdd_Pwm_DeadBandDelayModeType,AUTOMATIC) DelayMode,VAR(Cdd_Pwm_DeadBandPolarityType,AUTOMATIC) Polarity);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDeadBandDelayPolarity(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                 VAR(Cdd_Pwm_DeadBandDelayModeType, AUTOMATIC) DelayMode,
+                                 VAR(Cdd_Pwm_DeadBandPolarityType, AUTOMATIC) Polarity);
 
 /** \brief Sets Rising Edge Dead Band delay input
  *
@@ -3655,8 +3666,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandDelayPolarity(VAR(Cdd_Pwm_InstanceTyp
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetRisingEdgeDeadBandDelayInput(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetRisingEdgeDeadBandDelayInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                        VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel);
 
 /** \brief Sets Dead Band delay input
  *
@@ -3678,8 +3690,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetRisingEdgeDeadBandDelayInput(VAR(Cdd_Pwm_Inst
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetFallingEdgeDeadBandDelayInput(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                            VAR(Cdd_Pwm_DeadBandDelayInputType,AUTOMATIC) Input);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetFallingEdgeDeadBandDelayInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(Cdd_Pwm_DeadBandDelayInputType, AUTOMATIC) Input);
 
 /** \brief Set the Dead Band control shadow load mode
  *
@@ -3700,8 +3713,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetFallingEdgeDeadBandDelayInput(VAR(Cdd_Pwm_Ins
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandControlShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                      VAR(Cdd_Pwm_DeadBandControlLoadModeType,AUTOMATIC) LoadMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDeadBandControlShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(Cdd_Pwm_DeadBandControlLoadModeType, AUTOMATIC) LoadMode);
 
 /** \brief Disable Dead Band control shadow load mode
  *
@@ -3715,7 +3729,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandControlShadowLoadMode(VAR(Cdd_Pwm_Ins
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DisableDeadBandControlShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DisableDeadBandControlShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Set the RED (Rising Edge Delay) shadow load mode
  *
@@ -3735,8 +3749,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_DisableDeadBandControlShadowLoadMode(VAR(Cdd_Pwm
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                         VAR(Cdd_Pwm_DeadBandDelayLoadModeType,AUTOMATIC) LoadMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                              VAR(Cdd_Pwm_DeadBandDelayLoadModeType, AUTOMATIC) LoadMode);
 
 /** \brief Disable the RED (Rising Edge Delay) shadow load mode
  *
@@ -3749,8 +3764,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pw
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE)
- Cdd_Pwm_DisableRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_DisableRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Set the FED (Falling Edge Delay) shadow load mode
  *
@@ -3770,8 +3785,9 @@ FUNC(void,CDD_PWM_CODE)
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetFallingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                        VAR(Cdd_Pwm_DeadBandDelayLoadModeType,AUTOMATIC) LoadMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetFallingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                               VAR(Cdd_Pwm_DeadBandDelayLoadModeType, AUTOMATIC) LoadMode);
 
 /** \brief Disables the FED (Falling Edge Delay) shadow load mode
  *
@@ -3784,8 +3800,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetFallingEdgeDelayCountShadowLoadMode(VAR(Cdd_P
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) 
-Cdd_Pwm_DisableFallingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_DisableFallingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Sets Dead Band Counter clock rate
  *
@@ -3805,8 +3821,9 @@ Cdd_Pwm_DisableFallingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType,AUTO
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandCounterClock(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                             VAR(Cdd_Pwm_DeadBandClockModeType,AUTOMATIC) ClockMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDeadBandCounterClock(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                VAR(Cdd_Pwm_DeadBandClockModeType, AUTOMATIC) ClockMode);
 
 /** \brief Set EPWM RED count
  *
@@ -3821,8 +3838,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDeadBandCounterClock(VAR(Cdd_Pwm_InstanceType
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetRisingEdgeDelayCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(uint16,AUTOMATIC) RedCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetRisingEdgeDelayCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) RedCount);
 
 /** \brief Set EPWM FED count
  *
@@ -3837,12 +3854,12 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetRisingEdgeDelayCount(VAR(Cdd_Pwm_InstanceType
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetFallingEdgeDelayCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                    VAR(uint16,AUTOMATIC) FedCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetFallingEdgeDelayCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) FedCount);
 
 /*
-* Chopper module related APIs
-*/
+ * Chopper module related APIs
+ */
 
 /** \brief Enable/disable chopper mode
  *
@@ -3856,8 +3873,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetFallingEdgeDelayCount(VAR(Cdd_Pwm_InstanceTyp
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureChopper(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureChopper(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set chopper duty cycle
  *
@@ -3874,8 +3891,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureChopper(VAR(Cdd_Pwm_InstanceType,AUTOMA
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetChopperDutyCycle(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(uint16,AUTOMATIC) DutyCycleCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetChopperDutyCycle(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) DutyCycleCount);
 
 /** \brief Set chopper clock frequency scaler
  *
@@ -3892,8 +3909,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetChopperDutyCycle(VAR(Cdd_Pwm_InstanceType,AUT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetChopperFreq(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(uint16,AUTOMATIC) FreqDiv);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetChopperFreq(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) FreqDiv);
 
 /** \brief Set chopper first pulse width
  *
@@ -3910,12 +3927,13 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetChopperFreq(VAR(Cdd_Pwm_InstanceType,AUTOMATI
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetChopperFirstPulseWidth(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(uint16,AUTOMATIC) FirstPulseWidth);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetChopperFirstPulseWidth(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                  VAR(uint16, AUTOMATIC) FirstPulseWidth);
 
 /*
-* Trip Zone module related APIs
-*/
+ * Trip Zone module related APIs
+ */
 
 /** \brief Enable/disables Trip Zone signal
  *
@@ -3950,12 +3968,13 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetChopperFirstPulseWidth(VAR(Cdd_Pwm_InstanceTy
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureTripZoneSignals(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-            VAR(Cdd_Pwm_TzSignalType,AUTOMATIC) TzSignal, VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureTripZoneSignals(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                 VAR(Cdd_Pwm_TzSignalType, AUTOMATIC) TzSignal, VAR(boolean, AUTOMATIC) Select);
 
-
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureTripZone2Signals(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-            VAR(Cdd_Pwm_TzCapEvtType,AUTOMATIC) TzSignal, VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureTripZone2Signals(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                  VAR(Cdd_Pwm_TzCapEvtType, AUTOMATIC) TzSignal, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set Digital compare conditions that cause Trip Zone event
  *
@@ -3989,10 +4008,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureTripZone2Signals(VAR(Cdd_Pwm_InstanceTy
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) 
-Cdd_Pwm_SetTripZoneDigitalCompareEventCondition(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                 VAR(Cdd_Pwm_TripZoneDigitalCompareOutputType,AUTOMATIC) DcType,
-                                 VAR(Cdd_Pwm_TripZoneDigitalCompareOutputEventType,AUTOMATIC) DcEvent);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetTripZoneDigitalCompareEventCondition(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                                VAR(Cdd_Pwm_TripZoneDigitalCompareOutputType, AUTOMATIC) DcType,
+                                                VAR(Cdd_Pwm_TripZoneDigitalCompareOutputEventType, AUTOMATIC) DcEvent);
 
 /** \brief Enable/disable advanced Trip Zone event Action
  *
@@ -4008,8 +4027,8 @@ Cdd_Pwm_SetTripZoneDigitalCompareEventCondition(VAR(Cdd_Pwm_InstanceType,AUTOMAT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureTripZoneAdvAction(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureTripZoneAdvAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set Trip Zone Action
  *
@@ -4043,9 +4062,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureTripZoneAdvAction(VAR(Cdd_Pwm_InstanceT
  * \retval None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTripZoneAction(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_TripZoneActionEventType,AUTOMATIC) TzEvent,
-                                                VAR(Cdd_Pwm_TripZoneActionType,AUTOMATIC) TzAction);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetTripZoneAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                          VAR(Cdd_Pwm_TripZoneActionEventType, AUTOMATIC) TzEvent,
+                          VAR(Cdd_Pwm_TripZoneActionType, AUTOMATIC) TzAction);
 
 /** \brief Set Advanced Trip Zone Action
  *
@@ -4072,9 +4092,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTripZoneAction(VAR(Cdd_Pwm_InstanceType,AUTOM
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTripZoneAdvAction(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_TripZoneAdvancedEventType,AUTOMATIC) TzAdvEvent,
-                                                VAR(Cdd_Pwm_TripZoneAdvancedActionType,AUTOMATIC) TzAdvAction);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetTripZoneAdvAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                             VAR(Cdd_Pwm_TripZoneAdvancedEventType, AUTOMATIC) TzAdvEvent,
+                             VAR(Cdd_Pwm_TripZoneAdvancedActionType, AUTOMATIC) TzAdvAction);
 
 /** \brief Set Advanced Digital Compare Trip Zone Action on EPWMA
  *
@@ -4097,15 +4118,16 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTripZoneAdvAction(VAR(Cdd_Pwm_InstanceType,AU
  * \pre None
  * \post None
  * \note This function enables the advanced Trip Zone event.
- * \note Advanced Trip Zone events take into consideration the direction of the counter in addition to 
+ * \note Advanced Trip Zone events take into consideration the direction of the counter in addition to
  *          Digital Compare Trip Zone events.
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTripZoneAdvDigitalCompareAction(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                              VAR(Cdd_Pwm_TripZoneAdvDigitalCompareEventType,AUTOMATIC) TzAdvDCEvent,
-                              VAR(Cdd_Pwm_TripZoneAdvancedActionType,AUTOMATIC) TzAdvDCAction);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetTripZoneAdvDigitalCompareAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                           VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                           VAR(Cdd_Pwm_TripZoneAdvDigitalCompareEventType, AUTOMATIC) TzAdvDCEvent,
+                                           VAR(Cdd_Pwm_TripZoneAdvancedActionType, AUTOMATIC) TzAdvDCAction);
 
 /** \brief Enable/disable Trip Zone interrupts
  *
@@ -4127,8 +4149,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetTripZoneAdvDigitalCompareAction(VAR(Cdd_Pwm_I
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureTripZoneInterrupt(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-            VAR(Cdd_Pwm_TzInterruptSourceType,AUTOMATIC) TzInterrupt,VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureTripZoneInterrupt(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                   VAR(Cdd_Pwm_TzInterruptSourceType, AUTOMATIC) TzInterrupt,
+                                   VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Gets the Trip Zone status flag
  *
@@ -4148,7 +4172,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureTripZoneInterrupt(VAR(Cdd_Pwm_InstanceT
  *         - CDD_PWM_TZ_FLAG_CAPEVT  - Trip Zones Capture Event flag
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetTripZoneFlagStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetTripZoneFlagStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Gets the Trip Zone Cycle by Cycle flag status
  *
@@ -4169,7 +4193,7 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetTripZoneFlagStatus(VAR(Cdd_Pwm_InstanceType
  *         - CDD_PWM_TZ_CBC_FLAG_CAPEVT  - CBC status flag for capture event
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetCycleByCycleTripZoneFlagStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetCycleByCycleTripZoneFlagStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Gets the Trip Zone One Shot flag status
  *
@@ -4190,7 +4214,7 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetCycleByCycleTripZoneFlagStatus(VAR(Cdd_Pwm_
  *         - CDD_PWM_TZ_OST_FLAG_CAPEVT   - OST status flag for capture event
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetOneShotTripZoneFlagStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetOneShotTripZoneFlagStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Set the Trip Zone CBC pulse clear event
  *
@@ -4200,14 +4224,16 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetOneShotTripZoneFlagStatus(VAR(Cdd_Pwm_Insta
  * \param[in] ClearEvent    CBC trip zone clear event with valid values:
  *                          - CDD_PWM_TZ_CBC_PULSE_CLR_CNTR_ZERO         - Clear CBC pulse when counter equals zero
  *                          - CDD_PWM_TZ_CBC_PULSE_CLR_CNTR_PERIOD       - Clear CBC pulse when counter equals period
- *                          - CDD_PWM_TZ_CBC_PULSE_CLR_CNTR_ZERO_PERIOD  - Clear CBC pulse when counter equals zero or period
+ *                          - CDD_PWM_TZ_CBC_PULSE_CLR_CNTR_ZERO_PERIOD  - Clear CBC pulse when counter equals zero or
+ *period
  * \pre None
  * \post None
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectCycleByCycleTripZoneClearEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                 VAR(Cdd_Pwm_CbcTripZoneClearModeType,AUTOMATIC) ClearEvent);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectCycleByCycleTripZoneClearEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                             VAR(Cdd_Pwm_CbcTripZoneClearModeType, AUTOMATIC) ClearEvent);
 
 /** \brief Clear Trip Zone flag
  *
@@ -4229,8 +4255,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectCycleByCycleTripZoneClearEvent(VAR(Cdd_Pwm
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearTripZoneFlag(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_TripZoneFlagType,AUTOMATIC) TzFlags);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ClearTripZoneFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                          VAR(Cdd_Pwm_TripZoneFlagType, AUTOMATIC) TzFlags);
 
 /** \brief Clear the Trip Zone Cycle by Cycle flag
  *
@@ -4252,8 +4279,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearTripZoneFlag(VAR(Cdd_Pwm_InstanceType,AUTOM
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearCycleByCycleTripZoneFlag(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_CbcTzFlagType,AUTOMATIC) TzCbcFlags);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ClearCycleByCycleTripZoneFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(Cdd_Pwm_CbcTzFlagType, AUTOMATIC) TzCbcFlags);
 
 /** \brief Clear the Trip Zone One Shot flag
  *
@@ -4275,8 +4303,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearCycleByCycleTripZoneFlag(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearOneShotTripZoneFlag(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(Cdd_Pwm_OneshotTzFlagType,AUTOMATIC) TzOSTFlags);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ClearOneShotTripZoneFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                 VAR(Cdd_Pwm_OneshotTzFlagType, AUTOMATIC) TzOSTFlags);
 
 /** \brief Force Trip Zone events
  *
@@ -4296,8 +4325,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearOneShotTripZoneFlag(VAR(Cdd_Pwm_InstanceTyp
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceTripZoneEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(Cdd_Pwm_TripZoneForceEventType,AUTOMATIC) TzForceEvent);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ForceTripZoneEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                           VAR(Cdd_Pwm_TripZoneForceEventType, AUTOMATIC) TzForceEvent);
 
 /** \brief Select TRIPOUT signals for the EPWM module
  *
@@ -4319,12 +4349,14 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceTripZoneEvent(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureTripOutSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                        VAR(Cdd_Pwm_SelectTripOutSourceType,AUTOMATIC) TzTripOut,VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureTripOutSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                               VAR(Cdd_Pwm_SelectTripOutSourceType, AUTOMATIC) TzTripOut,
+                               VAR(boolean, AUTOMATIC) Select);
 
 /*
-* Event Trigger related APIs
-*/
+ * Event Trigger related APIs
+ */
 
 /** \brief Enable/disable EPWM interrupt
  *
@@ -4337,8 +4369,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureTripOutSource(VAR(Cdd_Pwm_InstanceType,
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureInterrupt(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureInterrupt(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Sets the EPWM interrupt source
  *
@@ -4364,8 +4396,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureInterrupt(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetInterruptSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_InterruptSourceType,AUTOMATIC) InterruptSource);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetInterruptSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                           VAR(Cdd_Pwm_InterruptSourceType, AUTOMATIC) InterruptSource);
 
 /** \brief Return the interrupt status
  *
@@ -4378,7 +4411,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetInterruptSource(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return Returns true if EPWM interrupt was generated, false if no interrupt was generated
  *
  *********************************************************************************************************************/
-FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetEventTriggerInterruptStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(boolean, CDD_PWM_CODE) Cdd_Pwm_GetEventTriggerInterruptStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Clear interrupt flag
  *
@@ -4390,7 +4423,7 @@ FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetEventTriggerInterruptStatus(VAR(Cdd_Pwm_In
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearEventTriggerInterruptFlag(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ClearEventTriggerInterruptFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Enable/disable Pre-interrupt count load
  *
@@ -4404,8 +4437,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearEventTriggerInterruptFlag(VAR(Cdd_Pwm_Insta
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureInterruptEventCountInit(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureInterruptEventCountInit(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Force a software pre interrupt event counter load
  *
@@ -4419,7 +4453,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureInterruptEventCountInit(VAR(Cdd_Pwm_Ins
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceInterruptEventCountInit(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ForceInterruptEventCountInit(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Set interrupt count
  *
@@ -4434,8 +4468,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceInterruptEventCountInit(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetInterruptEventCountInitValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(uint16,AUTOMATIC) EventCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetInterruptEventCountInitValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                        VAR(uint16, AUTOMATIC) EventCount);
 
 /** \brief Get the interrupt count
  *
@@ -4447,7 +4482,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetInterruptEventCountInitValue(VAR(Cdd_Pwm_Inst
  * \return The interrupt event counts that have occurred
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetInterruptEventCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetInterruptEventCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Force EPWM interrupt
  *
@@ -4459,7 +4494,7 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetInterruptEventCount(VAR(Cdd_Pwm_InstanceTyp
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceEventTriggerInterrupt(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ForceEventTriggerInterrupt(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Sets the mixed event trigger interrupt source
  *
@@ -4486,13 +4521,14 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceEventTriggerInterrupt(VAR(Cdd_Pwm_InstanceT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetMixEvtTriggerSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_EtMixSignalSelectType,AUTOMATIC) EtMixSignal,\
-                                                    VAR(Cdd_Pwm_EvtMixTriggerSourceType,AUTOMATIC) InterruptSource);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetMixEvtTriggerSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                               VAR(Cdd_Pwm_EtMixSignalSelectType, AUTOMATIC) EtMixSignal,
+                               VAR(Cdd_Pwm_EvtMixTriggerSourceType, AUTOMATIC) InterruptSource);
 
 /*
-* Adc SOC configuration related APIs
-*/
+ * Adc SOC configuration related APIs
+ */
 
 /** \brief Enable/disable Adc SOC event
  *
@@ -4508,8 +4544,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetMixEvtTriggerSource(VAR(Cdd_Pwm_InstanceType,
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureAdcTrigger(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-        VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType,VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureAdcTrigger(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                            VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType,
+                            VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Sets the EPWM SOC source
  *
@@ -4535,9 +4573,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureAdcTrigger(VAR(Cdd_Pwm_InstanceType,AUT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetAdcTriggerSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                         VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType,
-                         VAR(Cdd_Pwm_AdcStartOfConversionSourceType,AUTOMATIC) SocSource);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetAdcTriggerSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                            VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType,
+                            VAR(Cdd_Pwm_AdcStartOfConversionSourceType, AUTOMATIC) SocSource);
 
 /** \brief Sets the EPWM SOC event counts
  *
@@ -4556,9 +4595,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetAdcTriggerSource(VAR(Cdd_Pwm_InstanceType,AUT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetAdcTriggerEventPrescale(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType,
-                                VAR(uint16,AUTOMATIC) PreScaleCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetAdcTriggerEventPrescale(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                   VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType,
+                                   VAR(uint16, AUTOMATIC) PreScaleCount);
 
 /** \brief Return the SOC event status
  *
@@ -4574,8 +4614,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetAdcTriggerEventPrescale(VAR(Cdd_Pwm_InstanceT
  *         Returns false if the selected AdcSocType SOC was not generated.
  *
  *********************************************************************************************************************/
-FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetAdcTriggerFlagStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                             VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType);
+FUNC(boolean, CDD_PWM_CODE)
+Cdd_Pwm_GetAdcTriggerFlagStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType);
 
 /** \brief Clear SOC flag
  *
@@ -4590,8 +4631,9 @@ FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetAdcTriggerFlagStatus(VAR(Cdd_Pwm_InstanceT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearAdcTriggerFlag(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                         VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ClearAdcTriggerFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                            VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType);
 
 /** \brief Enable/disable Pre-SOC event count load
  *
@@ -4610,8 +4652,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearAdcTriggerFlag(VAR(Cdd_Pwm_InstanceType,AUT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureAdcTriggerEventCountInit(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                            VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType,VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureAdcTriggerEventCountInit(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                          VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType,
+                                          VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Force a software pre SOC event counter load
  *
@@ -4626,8 +4670,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureAdcTriggerEventCountInit(VAR(Cdd_Pwm_In
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceAdcTriggerEventCountInit(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                   VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ForceAdcTriggerEventCountInit(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType);
 
 /** \brief Set Adc Trigger count values
  *
@@ -4643,9 +4688,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceAdcTriggerEventCountInit(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetAdcTriggerEventCountInitValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                      VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType,
-                                      VAR(uint16,AUTOMATIC) EventCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetAdcTriggerEventCountInitValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType,
+                                         VAR(uint16, AUTOMATIC) EventCount);
 
 /** \brief Get the SOC event count
  *
@@ -4660,8 +4706,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetAdcTriggerEventCountInitValue(VAR(Cdd_Pwm_Ins
  * \return The SOC event counts that have occurred
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetAdcTriggerEventCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                             VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType);
+FUNC(uint16, CDD_PWM_CODE)
+Cdd_Pwm_GetAdcTriggerEventCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType);
 
 /** \brief Force SOC event
  *
@@ -4676,12 +4723,13 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetAdcTriggerEventCount(VAR(Cdd_Pwm_InstanceTy
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceAdcTrigger(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(Cdd_Pwm_AdcStartOfConversionType,AUTOMATIC) AdcSocType);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ForceAdcTrigger(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                        VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType);
 
 /*
-* Digital Compare module related APIs
-*/
+ * Digital Compare module related APIs
+ */
 
 /** \brief Set the DC trip input
  *
@@ -4703,9 +4751,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceAdcTrigger(VAR(Cdd_Pwm_InstanceType,AUTOMAT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectDigitalCompareTripInput(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                   VAR(Cdd_Pwm_DigitalCompareTripInputType,AUTOMATIC) TripInput,\
-                                   VAR(Cdd_Pwm_DigitalCompareType,AUTOMATIC) DcType);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectDigitalCompareTripInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(Cdd_Pwm_DigitalCompareTripInputType, AUTOMATIC) TripInput,
+                                      VAR(Cdd_Pwm_DigitalCompareType, AUTOMATIC) DcType);
 
 /** \brief Enable/disable DC filter blanking window
  *
@@ -4718,8 +4767,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectDigitalCompareTripInput(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareBlankingWindow(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDigitalCompareBlankingWindow(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                              VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Enable/disable Digital Compare Window inverse mode
  *
@@ -4733,9 +4783,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareBlankingWindow(VAR(Cdd_Pw
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) 
-Cdd_Pwm_ConfigureDigitalCompareWindowInverseMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDigitalCompareWindowInverseMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                                 VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set the Digital Compare filter blanking pulse
  *
@@ -4753,8 +4803,9 @@ Cdd_Pwm_ConfigureDigitalCompareWindowInverseMode(VAR(Cdd_Pwm_InstanceType,AUTOMA
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareBlankingEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        Cdd_Pwm_DigitalCompareBlankingPulseType BlankingPulse);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareBlankingEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                       Cdd_Pwm_DigitalCompareBlankingPulseType BlankingPulse);
 
 /** \brief Set up the Digital Compare filter input
  *
@@ -4772,12 +4823,13 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareBlankingEvent(VAR(Cdd_Pwm_Insta
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareFilterInput(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                  VAR(Cdd_Pwm_DigitalCompareFilterInputType,AUTOMATIC) FilterInput);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareFilterInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                     VAR(Cdd_Pwm_DigitalCompareFilterInputType, AUTOMATIC) FilterInput);
 
 /*
-* DC Edge Filter
-*/
+ * DC Edge Filter
+ */
 /** \brief Enable/disable Digital Compare Edge Filter
  *
  * This function Enable/disables the Digital Compare Edge filter to generate event
@@ -4790,8 +4842,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareFilterInput(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareEdgeFilter(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDigitalCompareEdgeFilter(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                          VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set the Digital Compare Edge Filter Mode
  *
@@ -4807,8 +4860,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareEdgeFilter(VAR(Cdd_Pwm_In
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareEdgeFilterMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                     VAR(Cdd_Pwm_DigitalCompareEdgeFilterModeType,AUTOMATIC) EdgeMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareEdgeFilterMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                        VAR(Cdd_Pwm_DigitalCompareEdgeFilterModeType, AUTOMATIC) EdgeMode);
 
 /** \brief Set the Digital Compare Edge Filter Edge Count
  *
@@ -4829,8 +4883,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareEdgeFilterMode(VAR(Cdd_Pwm_Inst
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareEdgeFilterEdgeCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(uint16,AUTOMATIC) EdgeCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareEdgeFilterEdgeCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                             VAR(uint16, AUTOMATIC) EdgeCount);
 
 /** \brief Returns the Digital Compare Edge Filter Edge Count
  *
@@ -4843,7 +4898,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareEdgeFilterEdgeCount(VAR(Cdd_Pwm
  * \return Returns the configured DigitalCompare Edge filter edge count
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareEdgeFilterEdgeCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE)
+Cdd_Pwm_GetDigitalCompareEdgeFilterEdgeCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Returns the Digital Compare Edge filter captured edge count status
  *
@@ -4856,7 +4912,8 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareEdgeFilterEdgeCount(VAR(Cdd_P
  * \return Returns the count of captured edges
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareEdgeFilterEdgeStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE)
+Cdd_Pwm_GetDigitalCompareEdgeFilterEdgeStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Set up the Digital Compare filter window offset
  *
@@ -4870,8 +4927,9 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareEdgeFilterEdgeStatus(VAR(Cdd_
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareWindowOffset(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                        VAR(uint16,AUTOMATIC) WindowOffsetCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareWindowOffset(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(uint16, AUTOMATIC) WindowOffsetCount);
 
 /** \brief Set up the Digital Compare filter window length
  *
@@ -4885,8 +4943,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareWindowOffset(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareWindowLength(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                    VAR(uint16,AUTOMATIC) WindowLengthCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareWindowLength(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(uint16, AUTOMATIC) WindowLengthCount);
 
 /** \brief Return DC filter blanking window offset count
  *
@@ -4898,8 +4957,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareWindowLength(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) 
-Cdd_Pwm_GetDigitalCompareBlankingWindowOffsetCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE)
+Cdd_Pwm_GetDigitalCompareBlankingWindowOffsetCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Return DC filter blanking window length count
  *
@@ -4911,8 +4970,8 @@ Cdd_Pwm_GetDigitalCompareBlankingWindowOffsetCount(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) 
-Cdd_Pwm_GetDigitalCompareBlankingWindowLengthCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE)
+Cdd_Pwm_GetDigitalCompareBlankingWindowLengthCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Set up the Digital Compare Event source
  *
@@ -4939,10 +4998,11 @@ Cdd_Pwm_GetDigitalCompareBlankingWindowLengthCount(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareEventSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                  VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                  VAR(Cdd_Pwm_DigitalCompareEventType,AUTOMATIC) DcEvent,
-                                  VAR(Cdd_Pwm_DigitalCompareEventSourceType,AUTOMATIC) DcEventSource);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareEventSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                     VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                     VAR(Cdd_Pwm_DigitalCompareEventType, AUTOMATIC) DcEvent,
+                                     VAR(Cdd_Pwm_DigitalCompareEventSourceType, AUTOMATIC) DcEventSource);
 
 /** \brief Set up the Digital Compare input sync mode
  *
@@ -4963,10 +5023,11 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareEventSource(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareEventSyncMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                    VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                    VAR(Cdd_Pwm_DigitalCompareEventType,AUTOMATIC) DcEvent,
-                                    VAR(Cdd_Pwm_DigitalCompareSyncModeType,AUTOMATIC) SyncMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareEventSyncMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                       VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                       VAR(Cdd_Pwm_DigitalCompareEventType, AUTOMATIC) DcEvent,
+                                       VAR(Cdd_Pwm_DigitalCompareSyncModeType, AUTOMATIC) SyncMode);
 
 /** \brief Enable/disable Digital Compare to generate Start of Conversion
  *
@@ -4982,8 +5043,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareEventSyncMode(VAR(Cdd_Pwm_Insta
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareAdcTrigger(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDigitalCompareAdcTrigger(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                          VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                          VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Enable/disable Digital Compare to generate sync out pulse
  *
@@ -4999,8 +5062,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareAdcTrigger(VAR(Cdd_Pwm_In
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareSyncEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                            VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDigitalCompareSyncEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                         VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set up the Digital Compare CBC latch mode
  *
@@ -5021,10 +5086,11 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareSyncEvent(VAR(Cdd_Pwm_Ins
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareCBCLatchMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                   VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                   VAR(Cdd_Pwm_DigitalCompareEventType,AUTOMATIC) DcEvent,
-                                   VAR(Cdd_Pwm_DigitalCompareCbcLatchModeType,AUTOMATIC) LatchMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareCBCLatchMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                      VAR(Cdd_Pwm_DigitalCompareEventType, AUTOMATIC) DcEvent,
+                                      VAR(Cdd_Pwm_DigitalCompareCbcLatchModeType, AUTOMATIC) LatchMode);
 
 /** \brief Sets the Digital Compare CBC latch clear event
  *
@@ -5039,19 +5105,20 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareCBCLatchMode(VAR(Cdd_Pwm_Instan
  *                    - CDD_PWM_DC_EVENT_2: Digital Compare Event number 2
  * \param[in] ClearEvent Digital Compare CBC latch clear event
  *                       - CDD_PWM_DC_CBC_LATCH_CLR_CNTR_ZERO: DC CBC latch is cleared when counter is zero
- *                       - CDD_PWM_DC_CBC_LATCH_CLR_ON_CNTR_PERIOD: 
+ *                       - CDD_PWM_DC_CBC_LATCH_CLR_ON_CNTR_PERIOD:
  *                                                          DC CBC latch is cleared when counter is equal to period
- *                       - CDD_PWM_DC_CBC_LATCH_CLR_ON_CNTR_ZERO_PERIOD: 
+ *                       - CDD_PWM_DC_CBC_LATCH_CLR_ON_CNTR_ZERO_PERIOD:
  *                                              DC CBC latch is cleared when either counter is zero or equal to period
  * \pre None
  * \post None
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectDigitalCompareCBCLatchClearEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                              VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                              VAR(Cdd_Pwm_DigitalCompareEventType,AUTOMATIC) DcEvent,
-                              VAR(Cdd_Pwm_DigitalCompareCBCLatchClearEventType,AUTOMATIC) ClearEvent);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectDigitalCompareCBCLatchClearEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                               VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                               VAR(Cdd_Pwm_DigitalCompareEventType, AUTOMATIC) DcEvent,
+                                               VAR(Cdd_Pwm_DigitalCompareCBCLatchClearEventType, AUTOMATIC) ClearEvent);
 
 /** \brief Gets the Digital Compare CBC latch status
  *
@@ -5071,13 +5138,14 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectDigitalCompareCBCLatchClearEvent(VAR(Cdd_P
  *         - false: CBC latch is disabled
  *
  *********************************************************************************************************************/
-FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareCBCLatchStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                     VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                     VAR(Cdd_Pwm_DigitalCompareEventType,AUTOMATIC) DcEvent);
+FUNC(boolean, CDD_PWM_CODE)
+Cdd_Pwm_GetDigitalCompareCBCLatchStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                        VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                        VAR(Cdd_Pwm_DigitalCompareEventType, AUTOMATIC) DcEvent);
 
 /*
-* DC capture mode
-*/
+ * DC capture mode
+ */
 /** \brief Enable/disables the Time Base Counter Capture controller
  *
  * This function Enable/disables the time Base Counter Capture
@@ -5089,8 +5157,9 @@ FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareCBCLatchStatus(VAR(Cdd_Pwm_I
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareCounterCapture(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDigitalCompareCounterCapture(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                              VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set the Time Base Counter Capture mode
  *
@@ -5106,8 +5175,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDigitalCompareCounterCapture(VAR(Cdd_Pw
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareCounterShadowMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                        VAR(boolean,AUTOMATIC) EnableShadowMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDigitalCompareCounterShadowMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                           VAR(boolean, AUTOMATIC) EnableShadowMode);
 
 /** \brief Return the DC Capture event status
  *
@@ -5121,7 +5191,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDigitalCompareCounterShadowMode(VAR(Cdd_Pwm_I
  *         - false: No DC Capture event has occurred
  *
  *********************************************************************************************************************/
-FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareCaptureStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(boolean, CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareCaptureStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Configures DC capture operating mode
  *
@@ -5139,9 +5209,9 @@ FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareCaptureStatus(VAR(Cdd_Pwm_In
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) 
-Cdd_Pwm_ConfigureDigitalCompareCounterCaptureMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                               VAR(boolean,AUTOMATIC) DisableClearMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDigitalCompareCounterCaptureMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                                  VAR(boolean, AUTOMATIC) DisableClearMode);
 
 /** \brief Clears DC capture latched status flag
  *
@@ -5153,7 +5223,7 @@ Cdd_Pwm_ConfigureDigitalCompareCounterCaptureMode(VAR(Cdd_Pwm_InstanceType,AUTOM
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearDigitalCompareCaptureStatusFlag(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ClearDigitalCompareCaptureStatusFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Return the DC Time Base Counter capture value
  *
@@ -5167,7 +5237,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearDigitalCompareCaptureStatusFlag(VAR(Cdd_Pwm
  * \return DC Time Base Counter Capture count value
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareCaptureCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareCaptureCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Enable/disable DC TRIP combinational input
  *
@@ -5187,14 +5257,14 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetDigitalCompareCaptureCount(VAR(Cdd_Pwm_Inst
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) 
-    Cdd_Pwm_ConfigureDigitalCompareTripCombinationInput(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_DcTripInputType,AUTOMATIC) TripInput,
-                                                        VAR(Cdd_Pwm_DigitalCompareType,AUTOMATIC) DcType,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDigitalCompareTripCombinationInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                                    VAR(Cdd_Pwm_DcTripInputType, AUTOMATIC) TripInput,
+                                                    VAR(Cdd_Pwm_DigitalCompareType, AUTOMATIC) DcType,
+                                                    VAR(boolean, AUTOMATIC) Select);
 /*
-* Event capture mode
-*/
+ * Event capture mode
+ */
 
 /** \brief Enable/disables the Capture event
  *
@@ -5208,8 +5278,8 @@ FUNC(void,CDD_PWM_CODE)
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureCaptureInEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureCaptureInEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Polarity selection for capture gate input
  *
@@ -5226,8 +5296,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureCaptureInEvent(VAR(Cdd_Pwm_InstanceType
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigCaptureGateInputPolarity(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                    VAR(Cdd_Pwm_SelectCaptureGateInputPolarityType,AUTOMATIC) PolaritySelect);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigCaptureGateInputPolarity(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                       VAR(Cdd_Pwm_SelectCaptureGateInputPolarityType, AUTOMATIC) PolaritySelect);
 
 /** \brief Polarity selection for capture input
  *
@@ -5242,8 +5313,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigCaptureGateInputPolarity(VAR(Cdd_Pwm_Insta
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_InvertCaptureInputPolarity(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                VAR(Cdd_Pwm_SelectCaptureInputPolarityType,AUTOMATIC) PolaritySelect);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_InvertCaptureInputPolarity(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                   VAR(Cdd_Pwm_SelectCaptureInputPolarityType, AUTOMATIC) PolaritySelect);
 
 /** \brief Enable/disables independent pulse selection for Blanking and Capture Logic
  *
@@ -5256,8 +5328,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_InvertCaptureInputPolarity(VAR(Cdd_Pwm_InstanceT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureIndependentPulseLogic(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureIndependentPulseLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Capture event force load
  *
@@ -5269,7 +5341,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureIndependentPulseLogic(VAR(Cdd_Pwm_Insta
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceCaptureEventLoad(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ForceCaptureEventLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Set the capture trip input
  *
@@ -5280,16 +5352,18 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceCaptureEventLoad(VAR(Cdd_Pwm_InstanceType,A
  * \param[in] TripInput Trip source
  *                     - CDD_PWM_DC_TRIP_TRIPINx: Trip x, where x ranges from 1 to 15 excluding 13U
  *                     - CDD_PWM_DC_TRIP_COMBINATION: selects all the Trip signals whose input
- *                                                  is enabled by the CDD_PWM_enableCaptureTripCombinationInput() function
+ *                                                  is enabled by the CDD_PWM_enableCaptureTripCombinationInput()
+ *function
  * \param[in] DcType Digital Compare type
  *                  - CDD_PWM_CAPTURE_GATE
  *                  - CDD_PWM_CAPTURE_INPUT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectCaptureTripInput(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                            VAR(Cdd_Pwm_DigitalCompareTripInputType,AUTOMATIC) TripInput,
-                            VAR(Cdd_Pwm_CaptureInputType,AUTOMATIC) DcType);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectCaptureTripInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                               VAR(Cdd_Pwm_DigitalCompareTripInputType, AUTOMATIC) TripInput,
+                               VAR(Cdd_Pwm_CaptureInputType, AUTOMATIC) DcType);
 
 /** \brief Enable/disable Capture TRIP combinational input
  *
@@ -5307,10 +5381,11 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectCaptureTripInput(VAR(Cdd_Pwm_InstanceType,
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureCaptureTripCombinationInput(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_DcTripInputType,AUTOMATIC) TripInput,
-                                                        VAR(Cdd_Pwm_CaptureInputType,AUTOMATIC) DcType,
-                                                                    VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureCaptureTripCombinationInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                             VAR(Cdd_Pwm_DcTripInputType, AUTOMATIC) TripInput,
+                                             VAR(Cdd_Pwm_CaptureInputType, AUTOMATIC) DcType,
+                                             VAR(boolean, AUTOMATIC) Select);
 /** \brief Valley switching
  *********************************************************************************************************************/
 
@@ -5325,8 +5400,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureCaptureTripCombinationInput(VAR(Cdd_Pwm
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureValleyCapture(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureValleyCapture(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Start valley capture mode
  *
@@ -5340,7 +5415,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureValleyCapture(VAR(Cdd_Pwm_InstanceType,
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_StartValleyCapture(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_StartValleyCapture(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Set valley capture trigger
  *
@@ -5354,8 +5429,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_StartValleyCapture(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetValleyTriggerSource(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                        VAR(Cdd_Pwm_ValleyTriggerSourceType,AUTOMATIC) Trigger);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetValleyTriggerSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                               VAR(Cdd_Pwm_ValleyTriggerSourceType, AUTOMATIC) Trigger);
 
 /** \brief Set valley capture trigger source count
  *
@@ -5374,8 +5450,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetValleyTriggerSource(VAR(Cdd_Pwm_InstanceType,
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetValleyTriggerEdgeCounts(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                        VAR(uint16,AUTOMATIC) StartCount,VAR(uint16,AUTOMATIC) StopCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetValleyTriggerEdgeCounts(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) StartCount,
+                                   VAR(uint16, AUTOMATIC) StopCount);
 
 /** \brief Enable/disable valley switching delay
  *
@@ -5388,8 +5465,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetValleyTriggerEdgeCounts(VAR(Cdd_Pwm_InstanceT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureValleyHwDelay(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureValleyHwDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set Valley delay values
  *
@@ -5402,8 +5479,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureValleyHwDelay(VAR(Cdd_Pwm_InstanceType,
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetValleySwDelayValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(uint16,AUTOMATIC) DelayOffsetValue);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetValleySwDelayValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) DelayOffsetValue);
 
 /** \brief Set Valley delay mode
  *
@@ -5416,8 +5493,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetValleySwDelayValue(VAR(Cdd_Pwm_InstanceType,A
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetValleyDelayDivider(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(Cdd_Pwm_ValleyDelayModeType,AUTOMATIC) DelayMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetValleyDelayDivider(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                              VAR(Cdd_Pwm_ValleyDelayModeType, AUTOMATIC) DelayMode);
 
 /** \brief Get the valley edge status bit
  *
@@ -5434,8 +5512,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetValleyDelayDivider(VAR(Cdd_Pwm_InstanceType,A
  *         Returns false if the specified edge has not occurred
  *
  *********************************************************************************************************************/
-FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetValleyEdgeStatus(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                VAR(Cdd_Pwm_ValleyCounterEdgeType,AUTOMATIC) Edge);
+FUNC(boolean, CDD_PWM_CODE)
+Cdd_Pwm_GetValleyEdgeStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                            VAR(Cdd_Pwm_ValleyCounterEdgeType, AUTOMATIC) Edge);
 
 /** \brief Get the Valley Counter value
  *
@@ -5450,7 +5529,7 @@ FUNC(boolean,CDD_PWM_CODE) Cdd_Pwm_GetValleyEdgeStatus(VAR(Cdd_Pwm_InstanceType,
  * \return Returns the valley base time count
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetValleyCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetValleyCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Get the Valley delay value
  *
@@ -5462,7 +5541,7 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetValleyCount(VAR(Cdd_Pwm_InstanceType,AUTOMA
  * \return Returns the valley delay count
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetValleyHwDelay(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetValleyHwDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Enable/disable Global shadow load mode
  *
@@ -5477,8 +5556,8 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetValleyHwDelay(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureGlobalLoad(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureGlobalLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set Global load trigger
  *
@@ -5491,8 +5570,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureGlobalLoad(VAR(Cdd_Pwm_InstanceType,AUT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetGlobalLoadTrigger(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(Cdd_Pwm_GlobalLoadTriggerType,AUTOMATIC) LoadTrigger);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetGlobalLoadTrigger(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                             VAR(Cdd_Pwm_GlobalLoadTriggerType, AUTOMATIC) LoadTrigger);
 
 /** \brief Set the number of Global load pulse event counts
  *
@@ -5508,8 +5588,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetGlobalLoadTrigger(VAR(Cdd_Pwm_InstanceType,AU
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetGlobalLoadEventPrescale(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(uint16,AUTOMATIC) PrescalePulseCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetGlobalLoadEventPrescale(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                   VAR(uint16, AUTOMATIC) PrescalePulseCount);
 
 /** \brief Return the number of Global load pulse event counts
  *
@@ -5523,7 +5604,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetGlobalLoadEventPrescale(VAR(Cdd_Pwm_InstanceT
  * \return Number of Global Load pulse events that have occurred
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetGlobalLoadEventCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetGlobalLoadEventCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Enable/disable One shot global shadow to active load
  *
@@ -5538,8 +5619,8 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetGlobalLoadEventCount(VAR(Cdd_Pwm_InstanceTy
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureGlobalLoadOneShotMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureGlobalLoadOneShotMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Enable One shot global shadow to active load
  *
@@ -5553,7 +5634,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureGlobalLoadOneShotMode(VAR(Cdd_Pwm_Insta
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetGlobalLoadOneShotLatch(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetGlobalLoadOneShotLatch(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Force a software One shot global shadow to active load pulse
  *
@@ -5566,7 +5647,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetGlobalLoadOneShotLatch(VAR(Cdd_Pwm_InstanceTy
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceGlobalLoadOneShotEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ForceGlobalLoadOneShotEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Enable/disable a register to be loaded Globally
  *
@@ -5593,9 +5674,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceGlobalLoadOneShotEvent(VAR(Cdd_Pwm_Instance
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureGlobalLoadRegisters(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_GlobalLoadType,AUTOMATIC) LoadRegister,
-                                                            VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureGlobalLoadRegisters(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                     VAR(Cdd_Pwm_GlobalLoadType, AUTOMATIC) LoadRegister,
+                                     VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Lock registers
  *
@@ -5608,8 +5690,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureGlobalLoadRegisters(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_LockRegisters(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                        VAR(Cdd_Pwm_LockRegisterGroupType,AUTOMATIC) RegisterGroup);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_LockRegisters(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                      VAR(Cdd_Pwm_LockRegisterGroupType, AUTOMATIC) RegisterGroup);
 
 /** \brief XCMP related APIs
  */
@@ -5625,8 +5708,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_LockRegisters(VAR(Cdd_Pwm_InstanceType,AUTOMATIC
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureXCmpMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureXCmpMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Enable/disable EPWM XCMP Split
  *
@@ -5639,8 +5722,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureXCmpMode(VAR(Cdd_Pwm_InstanceType,AUTOM
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureSplitXCmp(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureSplitXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Allocates XCMP registers to CMPA
  *
@@ -5663,8 +5746,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureSplitXCmp(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_AllocAXCmp(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(Cdd_Pwm_XCmp_AllocCmpAType,AUTOMATIC) Alloctype);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_AllocAXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                   VAR(Cdd_Pwm_XCmp_AllocCmpAType, AUTOMATIC) Alloctype);
 
 /** \brief Allocates XCMP registers to CMPB
  *
@@ -5682,8 +5766,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_AllocAXCmp(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) I
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_AllocBXCmp(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                            VAR(Cdd_Pwm_XCmp_AllocCmpBType,AUTOMATIC) Alloctype);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_AllocBXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                   VAR(Cdd_Pwm_XCmp_AllocCmpBType, AUTOMATIC) Alloctype);
 
 /** \brief Writes values to XCMP registers
  *
@@ -5704,8 +5789,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_AllocBXCmp(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) I
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                        VAR(Cdd_Pwm_XCmpRegType,AUTOMATIC) XcmpReg,VAR(uint16,AUTOMATIC) XCmpValue);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XcmpReg,
+                        VAR(uint16, AUTOMATIC) XCmpValue);
 
 /** \brief Writes values to CMPx Shadow registers
  *
@@ -5726,8 +5812,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType,AUTOMAT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetCmpShadowRegValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                        VAR(Cdd_Pwm_XCompareRegType,AUTOMATIC) XCmpReg,VAR(uint32,AUTOMATIC) XCmpValue);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetCmpShadowRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                             VAR(Cdd_Pwm_XCompareRegType, AUTOMATIC) XCmpReg, VAR(uint32, AUTOMATIC) XCmpValue);
 
 /** \brief Writes values to XMINMAX registers
  *
@@ -5750,8 +5837,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetCmpShadowRegValue(VAR(Cdd_Pwm_InstanceType,AU
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXMinMaxRegValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-            VAR(Cdd_Pwm_XMinMaxRegType,AUTOMATIC) XMinMaxReg,VAR(uint16,AUTOMATIC) XCmpValue);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetXMinMaxRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                           VAR(Cdd_Pwm_XMinMaxRegType, AUTOMATIC) XMinMaxReg, VAR(uint16, AUTOMATIC) XCmpValue);
 
 /** \brief Set up Action qualifier outputs based on XAQ registers
  *
@@ -5792,11 +5880,12 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXMinMaxRegValue(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpActionQualifierAction(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_XCmpShadowSetType,AUTOMATIC) ShadowSet,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                        VAR(Cdd_Pwm_ActionQualifierOutputType,AUTOMATIC) Output,
-                                                        VAR(Cdd_Pwm_XCmpAqOutputEventType,AUTOMATIC) Event);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetXCmpActionQualifierAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                     VAR(Cdd_Pwm_XCmpShadowSetType, AUTOMATIC) ShadowSet,
+                                     VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                     VAR(Cdd_Pwm_ActionQualifierOutputType, AUTOMATIC) Output,
+                                     VAR(Cdd_Pwm_XCmpAqOutputEventType, AUTOMATIC) Event);
 
 /** \brief Enables EPWM XCMP reload event
  *
@@ -5808,7 +5897,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpActionQualifierAction(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_EnableXLoad(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_EnableXLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Forces register loading from shadow buffers
  *
@@ -5821,7 +5910,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_EnableXLoad(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) 
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceXLoad(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ForceXLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Selects the mode for the XCMP Shadow registers
  *
@@ -5837,8 +5926,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceXLoad(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) I
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_XCmpLoadModeType,AUTOMATIC) Mode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetXCmpLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_XCmpLoadModeType, AUTOMATIC) Mode);
 
 /** \brief Selects the shadow register level allocation
  *
@@ -5856,8 +5945,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpLoadMode(VAR(Cdd_Pwm_InstanceType,AUTOMAT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpShadowLevel(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_XCmpShadowLevelType,AUTOMATIC) Level);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetXCmpShadowLevel(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                           VAR(Cdd_Pwm_XCmpShadowLevelType, AUTOMATIC) Level);
 
 /** \brief Selects which shadow register set is in use
  *
@@ -5875,8 +5965,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpShadowLevel(VAR(Cdd_Pwm_InstanceType,AUTO
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpShadowBufPtrLoadOnce(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                 VAR(Cdd_Pwm_XCmpShadowBufPtrType,AUTOMATIC) Ptr);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetXCmpShadowBufPtrLoadOnce(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                    VAR(Cdd_Pwm_XCmpShadowBufPtrType, AUTOMATIC) Ptr);
 
 /** \brief Chooses how many times Shadow buffer 2 or 3U is applied
  *
@@ -5897,9 +5988,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpShadowBufPtrLoadOnce(VAR(Cdd_Pwm_Instance
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpShadowRepeatBufxCount(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_XCmpShadowSetType,AUTOMATIC) Bufferset,\
-                                                    VAR(uint32,AUTOMATIC) Count);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetXCmpShadowRepeatBufxCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                     VAR(Cdd_Pwm_XCmpShadowSetType, AUTOMATIC) Bufferset, VAR(uint32, AUTOMATIC) Count);
 
 /** \brief Minimum Dead Band Module related APIs
  */
@@ -5920,9 +6011,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetXCmpShadowRepeatBufxCount(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureMinimumDeadBand(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureMinimumDeadBand(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                 VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                 VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Invert the Minimum DeadBand Reference Signal
  *
@@ -5944,11 +6036,11 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureMinimumDeadBand(VAR(Cdd_Pwm_InstanceTyp
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_InvertMinimumDeadBandSignal(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                        VAR(boolean,AUTOMATIC) Invert);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_InvertMinimumDeadBandSignal(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                    VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                    VAR(boolean, AUTOMATIC) Invert);
 
-                                                        
 /** \brief Select signal for AND OR logic of Minimum DeadBand Module
  *
  * This function configures how the signal will be combined with the
@@ -5970,9 +6062,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_InvertMinimumDeadBandSignal(VAR(Cdd_Pwm_Instance
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectMinimumDeadBandAndOrLogic(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                        VAR(boolean,AUTOMATIC) Logic);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectMinimumDeadBandAndOrLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                        VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                        VAR(boolean, AUTOMATIC) Logic);
 
 /** \brief Select Minimum DeadBand Blocking Signal
  *
@@ -5994,9 +6087,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectMinimumDeadBandAndOrLogic(VAR(Cdd_Pwm_Inst
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectMinimumDeadBandBlockingSignal(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                                VAR(boolean,AUTOMATIC) BlockingSignal);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectMinimumDeadBandBlockingSignal(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                            VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                            VAR(boolean, AUTOMATIC) BlockingSignal);
 
 /** \brief Select Minimum DeadBand Reference Signal
  *
@@ -6019,9 +6113,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectMinimumDeadBandBlockingSignal(VAR(Cdd_Pwm_
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectMinimumDeadBandReferenceSignal(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                          VAR(Cdd_Pwm_MindbReferenceSignalType,AUTOMATIC) ReferenceSignal);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectMinimumDeadBandReferenceSignal(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                             VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                             VAR(Cdd_Pwm_MindbReferenceSignalType, AUTOMATIC) ReferenceSignal);
 
 /** \brief Get Minimum DeadBand Delay Value
  *
@@ -6038,8 +6133,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectMinimumDeadBandReferenceSignal(VAR(Cdd_Pwm
  * \return Delay value of the Minimum DeadBand module
  *
  *********************************************************************************************************************/
-FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetMinDeadBandDelay(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel);
+FUNC(uint16, CDD_PWM_CODE)
+Cdd_Pwm_GetMinDeadBandDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                            VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel);
 
 /** \brief Set the Minimum DeadBand Delay Value
  *
@@ -6059,9 +6155,9 @@ FUNC(uint16,CDD_PWM_CODE) Cdd_Pwm_GetMinDeadBandDelay(VAR(Cdd_Pwm_InstanceType,A
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetMinimumDeadBandDelay(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                             VAR(uint16,AUTOMATIC) Delay);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetMinimumDeadBandDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel, VAR(uint16, AUTOMATIC) Delay);
 
 /** \brief Illegal Combo Logic
  *
@@ -6083,9 +6179,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetMinimumDeadBandDelay(VAR(Cdd_Pwm_InstanceType
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureIllegalComboLogic(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureIllegalComboLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                   VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                   VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Select XBAR input for Illegal Combo Logic
  *
@@ -6107,9 +6204,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureIllegalComboLogic(VAR(Cdd_Pwm_InstanceT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectXbarInput(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                VAR(Cdd_Pwm_XbarInputType,AUTOMATIC) XbarInput);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectXbarInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                        VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                        VAR(Cdd_Pwm_XbarInputType, AUTOMATIC) XbarInput);
 
 /** \brief Force Decx values
  *
@@ -6133,9 +6231,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectXbarInput(VAR(Cdd_Pwm_InstanceType,AUTOMAT
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetLutDecX(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                VAR(Cdd_Pwm_LutDecXType,AUTOMATIC) Decx,VAR(uint32,AUTOMATIC) Force);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetLutDecX(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                   VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel, VAR(Cdd_Pwm_LutDecXType, AUTOMATIC) Decx,
+                   VAR(uint32, AUTOMATIC) Force);
 
 /** \brief Diode Emulation logic related APIs
  *
@@ -6152,8 +6251,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetLutDecX(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) I
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDiodeEmulationMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDiodeEmulationMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Selects the mode for the Diode emulation mode
  *
@@ -6170,8 +6269,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDiodeEmulationMode(VAR(Cdd_Pwm_Instance
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDiodeEmulationMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                            VAR(Cdd_Pwm_DiodeEmulationModeType,AUTOMATIC) Mode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDiodeEmulationMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                              VAR(Cdd_Pwm_DiodeEmulationModeType, AUTOMATIC) Mode);
 
 /** \brief Set EPWM diode emulation re-entry delay
  *
@@ -6188,8 +6288,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDiodeEmulationMode(VAR(Cdd_Pwm_InstanceType,A
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDiodeEmulationReentryDelay(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                                VAR(uint16,AUTOMATIC) Delay);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDiodeEmulationReentryDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) Delay);
 
 /** \brief Set EPWM diode emulation trip source for TripL
  *
@@ -6208,8 +6308,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDiodeEmulationReentryDelay(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                     VAR(Cdd_Pwm_DETripLowSourceType,AUTOMATIC) Source);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                              VAR(Cdd_Pwm_DETripLowSourceType, AUTOMATIC) Source);
 
 /** \brief Set EPWM diode emulation trip source for TripH
  *
@@ -6228,8 +6329,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(VAR(Cdd_Pw
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDiodeEmulationTripHighSources(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                    VAR(Cdd_Pwm_DETripHighSourceType,AUTOMATIC) Source);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDiodeEmulationTripHighSources(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                               VAR(Cdd_Pwm_DETripHighSourceType, AUTOMATIC) Source);
 
 /** \brief Selects EPWM diode emulation pwm signal
  *
@@ -6254,9 +6356,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ConfigureDiodeEmulationTripHighSources(VAR(Cdd_P
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectDiodeEmulationPwmSignal(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                VAR(Cdd_Pwm_DiodeEmulationSignalType,AUTOMATIC) DiodeEmuationsignal);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectDiodeEmulationPwmSignal(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                      VAR(Cdd_Pwm_DiodeEmulationSignalType, AUTOMATIC) DiodeEmuationsignal);
 
 /** \brief Selects between TRIPH and TRIPL for an epwm channel in DE mode
  *
@@ -6278,9 +6381,10 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectDiodeEmulationPwmSignal(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectDiodeEmulationTripSignal(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                VAR(Cdd_Pwm_DiodeEmulationTripSrcType,AUTOMATIC) TripSrc);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SelectDiodeEmulationTripSignal(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                       VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                       VAR(Cdd_Pwm_DiodeEmulationTripSrcType, AUTOMATIC) TripSrc);
 
 /** \brief PWMTRIP does not bypass the diode emulation logic
  *
@@ -6292,7 +6396,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SelectDiodeEmulationTripSignal(VAR(Cdd_Pwm_Insta
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_NoBypassDiodeEmulationLogic(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_NoBypassDiodeEmulationLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief PWMTRIP bypasses the diode emulation PWM generation logic
  *
@@ -6304,7 +6408,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_NoBypassDiodeEmulationLogic(VAR(Cdd_Pwm_Instance
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ByPassDiodeEmulationLogic(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ByPassDiodeEmulationLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Forces DEACTIVE flag to 1
  *
@@ -6316,7 +6420,7 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ByPassDiodeEmulationLogic(VAR(Cdd_Pwm_InstanceTy
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceDiodeEmulationActive(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ForceDiodeEmulationActive(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /** \brief Enable/disables DE monitor control mode
  *
@@ -6329,9 +6433,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ForceDiodeEmulationActive(VAR(Cdd_Pwm_InstanceTy
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) 
-Cdd_Pwm_ConfigureDiodeEmulationMonitorModeControl(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                    VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_ConfigureDiodeEmulationMonitorModeControl(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                                  VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Sets the DE monitor counter step size
  *
@@ -6350,8 +6454,10 @@ Cdd_Pwm_ConfigureDiodeEmulationMonitorModeControl(VAR(Cdd_Pwm_InstanceType,AUTOM
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDiodeEmulationMonitorModeStep(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                    VAR(Cdd_Pwm_DiodeEmulationDirectionType,AUTOMATIC) Direction, VAR(uint8,AUTOMATIC) StepSize);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDiodeEmulationMonitorModeStep(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(Cdd_Pwm_DiodeEmulationDirectionType, AUTOMATIC) Direction,
+                                         VAR(uint8, AUTOMATIC) StepSize);
 
 /** \brief Sets the DE monitor counter threshold value
  *
@@ -6366,9 +6472,9 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_SetDiodeEmulationMonitorModeStep(VAR(Cdd_Pwm_Ins
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) 
-Cdd_Pwm_SetDiodeEmulationMonitorCounterThreshold(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                VAR(uint16,AUTOMATIC) Threshold);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_SetDiodeEmulationMonitorCounterThreshold(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                                 VAR(uint16, AUTOMATIC) Threshold);
 
 /** \brief Clears DE mode active flag
  *
@@ -6380,7 +6486,7 @@ Cdd_Pwm_SetDiodeEmulationMonitorCounterThreshold(VAR(Cdd_Pwm_InstanceType,AUTOMA
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearDiodeEmulationActiveFlag(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId);
+FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ClearDiodeEmulationActiveFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId);
 
 /*
  * HRPWM related APIs
@@ -6405,8 +6511,8 @@ FUNC(void,CDD_PWM_CODE) Cdd_Pwm_ClearDiodeEmulationActiveFlag(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetPhaseShift(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,\
-                                                                    VAR(uint32,AUTOMATIC) PhaseCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetPhaseShift(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint32, AUTOMATIC) PhaseCount);
 
 /** \brief Sets only the high resolution phase shift value
  *
@@ -6423,8 +6529,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetPhaseShift(VAR(Cdd_Pwm_InstanceType, AU
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResPhaseShiftOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                VAR(uint16, AUTOMATIC) HrPhaseCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetHiResPhaseShiftOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                    VAR(uint16, AUTOMATIC) HrPhaseCount);
 
 /** \brief Sets the consolidated period of time base counter used in HR mode
  *
@@ -6445,8 +6552,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResPhaseShiftOnly(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetTimeBasePeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                        VAR(uint32,AUTOMATIC) PeriodCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetTimeBasePeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint32, AUTOMATIC) PeriodCount);
 
 /** \brief Sets only the high resolution time base counter
  *
@@ -6465,9 +6572,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetTimeBasePeriod(VAR(Cdd_Pwm_InstanceType
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResTimeBasePeriodOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                    VAR(uint16, AUTOMATIC) HrPeriodCount);
-
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetHiResTimeBasePeriodOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                        VAR(uint16, AUTOMATIC) HrPeriodCount);
 
 /** \brief Gets the consolidated time base period count used in HR mode
  *
@@ -6518,9 +6625,10 @@ FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_HrpwmGetHiResTimeBasePeriodOnly(VAR(Cdd_Pwm_I
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetMepEdgeSelect(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                        VAR(Cdd_Pwm_HrpwmMepEdgeModeType, AUTOMATIC) MepEdgeMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetMepEdgeSelect(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                              VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                              VAR(Cdd_Pwm_HrpwmMepEdgeModeType, AUTOMATIC) MepEdgeMode);
 
 /** \brief Sets the MEP (Micro Edge Positioner) control mode
  *
@@ -6545,9 +6653,10 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetMepEdgeSelect(VAR(Cdd_Pwm_InstanceType,
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetMepControlMode(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                        VAR(Cdd_Pwm_HrpwmMepCtrlModeType, AUTOMATIC) MepCtrlMode);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetMepControlMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                               VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                               VAR(Cdd_Pwm_HrpwmMepCtrlModeType, AUTOMATIC) MepCtrlMode);
 
 /** \brief Sets the high resolution comparator load mode
  *
@@ -6573,9 +6682,10 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetMepControlMode(VAR(Cdd_Pwm_InstanceType
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetCounterCompareShadowLoadEvent(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                        VAR(Cdd_Pwm_HrpwmLoadModeType, AUTOMATIC) LoadEvent);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetCounterCompareShadowLoadEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                              VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                              VAR(Cdd_Pwm_HrpwmLoadModeType, AUTOMATIC) LoadEvent);
 
 /** \brief Sets the high resolution output swap mode
  *
@@ -6590,8 +6700,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetCounterCompareShadowLoadEvent(VAR(Cdd_P
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetOutputSwapMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, 
-                                                        VAR(boolean, AUTOMATIC) EnableOutputSwap);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetOutputSwapMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                               VAR(boolean, AUTOMATIC) EnableOutputSwap);
 
 /** \brief Sets the high resolution output on EPWMxB
  *
@@ -6607,8 +6718,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetOutputSwapMode(VAR(Cdd_Pwm_InstanceType
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetChannelBOutputPath(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, 
-                                                        VAR(Cdd_Pwm_HrpwmChannelBOutputType, AUTOMATIC) OutputOnB);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetChannelBOutputPath(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                   VAR(Cdd_Pwm_HrpwmChannelBOutputType, AUTOMATIC) OutputOnB);
 
 /** \brief Enables MEP (Micro Edge Positioner) automatic scale mode
  *
@@ -6627,8 +6739,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetChannelBOutputPath(VAR(Cdd_Pwm_Instance
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmConfigureAutoConversion(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmConfigureAutoConversion(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Enable high resolution period feature
  *
@@ -6641,8 +6753,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmConfigureAutoConversion(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmConfigurePeriodControl(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmConfigurePeriodControl(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Enable high resolution phase load
  *
@@ -6656,8 +6768,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmConfigurePeriodControl(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmConfigurePhaseShiftLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                VAR(boolean,AUTOMATIC) Select);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmConfigurePhaseShiftLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(boolean, AUTOMATIC) Select);
 
 /** \brief Set high resolution PWMSYNC source
  *
@@ -6681,8 +6793,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmConfigurePhaseShiftLoad(VAR(Cdd_Pwm_Instan
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetSyncPulseSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                        VAR(Cdd_Pwm_HrpwmSyncPulseSourceType, AUTOMATIC) SyncPulseSource);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetSyncPulseSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                VAR(Cdd_Pwm_HrpwmSyncPulseSourceType, AUTOMATIC) SyncPulseSource);
 
 /** \brief Sets the Translator Remainder value
  *
@@ -6695,8 +6808,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetSyncPulseSource(VAR(Cdd_Pwm_InstanceTyp
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetTranslatorRemainder(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                VAR(uint16, AUTOMATIC) TrRemVal);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetTranslatorRemainder(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) TrRemVal);
 
 /** \brief Sets the consolidated counter compare values in HR mode
  *
@@ -6718,9 +6831,10 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetTranslatorRemainder(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetCounterCompareValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                            VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                            VAR(uint32, AUTOMATIC) CompareCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                    VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                    VAR(uint32, AUTOMATIC) CompareCount);
 
 /** \brief Sets only the high resolution counter compare value
  *
@@ -6740,9 +6854,10 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetCounterCompareValue(VAR(Cdd_Pwm_Instanc
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResCounterCompareValueOnly(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel,
-                                                    VAR(uint16, AUTOMATIC) HrCompCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetHiResCounterCompareValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                             VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
+                                             VAR(uint16, AUTOMATIC) HrCompCount);
 
 /** \brief Gets the consolidated counter compare values
  *
@@ -6759,8 +6874,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResCounterCompareValueOnly(VAR(Cdd_Pw
  * \return The consolidated counter compare value
  *
  *********************************************************************************************************************/
-FUNC(uint32, CDD_PWM_CODE) Cdd_Pwm_HrpwmGetCounterCompareValue(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel);
+FUNC(uint32, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmGetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                    VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel);
 
 /** \brief Gets only the high resolution counter compare values
  *
@@ -6777,8 +6893,9 @@ FUNC(uint32, CDD_PWM_CODE) Cdd_Pwm_HrpwmGetCounterCompareValue(VAR(Cdd_Pwm_Insta
  * \return The high resolution counter compare value
  *
  *********************************************************************************************************************/
-FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetHiResCounterCompareValueOnly(VAR(Cdd_Pwm_InstanceType,AUTOMATIC) InstanceId,
-                                                        VAR(Cdd_Pwm_OutputChannelType,AUTOMATIC) OutputChannel);
+FUNC(uint16, CDD_PWM_CODE)
+Cdd_Pwm_GetHiResCounterCompareValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                        VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel);
 
 /** \brief Sets the consolidated RED count in high resolution mode
  *
@@ -6797,8 +6914,8 @@ FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_GetHiResCounterCompareValueOnly(VAR(Cdd_Pwm_I
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetRisingEdgeDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                            VAR(uint32,AUTOMATIC) RedCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetRisingEdgeDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint32, AUTOMATIC) RedCount);
 
 /** \brief Sets the high resolution RED count only
  *
@@ -6815,8 +6932,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetRisingEdgeDelay(VAR(Cdd_Pwm_InstanceTyp
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResRisingEdgeDelayOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                                VAR(uint16, AUTOMATIC) HrRedCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetHiResRisingEdgeDelayOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(uint16, AUTOMATIC) HrRedCount);
 
 /** \brief Sets the consolidated FED value in high resolution mode
  *
@@ -6835,9 +6953,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResRisingEdgeDelayOnly(VAR(Cdd_Pwm_In
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetFallingEdgeDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                        VAR(uint32,AUTOMATIC) FedCount);
-
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetFallingEdgeDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint32, AUTOMATIC) FedCount);
 
 /** \brief Sets the high resolution FED count only
  *
@@ -6854,8 +6971,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetFallingEdgeDelay(VAR(Cdd_Pwm_InstanceTy
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResFallingEdgeDelayOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                                    VAR(uint16, AUTOMATIC) HrFedCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetHiResFallingEdgeDelayOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                          VAR(uint16, AUTOMATIC) HrFedCount);
 
 /** \brief Set high resolution MEP (Micro Edge Positioner) step
  *
@@ -6869,8 +6987,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResFallingEdgeDelayOnly(VAR(Cdd_Pwm_I
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetMepStep(VAR(Cdd_Pwm_HrpwmCalInstanceType, AUTOMATIC) InstanceId,
-                                                                                VAR(uint16, AUTOMATIC) MepCount);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetMepStep(VAR(Cdd_Pwm_HrpwmCalInstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) MepCount);
 
 /** \brief Set high resolution Dead Band MEP (Micro Edge Positioner) control
  *
@@ -6891,8 +7009,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetMepStep(VAR(Cdd_Pwm_HrpwmCalInstanceTyp
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetDeadbandMepEdgeSelect(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                               VAR(Cdd_Pwm_HrpwmMepDeadBandEdgeModeType, AUTOMATIC) MepDbEdge);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetDeadbandMepEdgeSelect(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(Cdd_Pwm_HrpwmMepDeadBandEdgeModeType, AUTOMATIC) MepDbEdge);
 
 /** \brief Set the high resolution Dead Band RED load mode
  *
@@ -6911,8 +7030,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetDeadbandMepEdgeSelect(VAR(Cdd_Pwm_Insta
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetRisingEdgeDelayLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                 VAR(Cdd_Pwm_HrpwmLoadModeType, AUTOMATIC) LoadEvent);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetRisingEdgeDelayLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                        VAR(Cdd_Pwm_HrpwmLoadModeType, AUTOMATIC) LoadEvent);
 
 /** \brief Set the high resolution Dead Band FED load mode
  *
@@ -6931,8 +7051,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetRisingEdgeDelayLoadMode(VAR(Cdd_Pwm_Ins
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetFallingEdgeDelayLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                                            VAR(Cdd_Pwm_HrpwmLoadModeType, AUTOMATIC) LoadEvent);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetFallingEdgeDelayLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                         VAR(Cdd_Pwm_HrpwmLoadModeType, AUTOMATIC) LoadEvent);
 
 /** \brief Lock HRPWM registers
  *
@@ -6945,8 +7066,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetFallingEdgeDelayLoadMode(VAR(Cdd_Pwm_In
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmLockRegisters(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                        VAR(Cdd_Pwm_HrpwmLockRegisterGroupType, AUTOMATIC) RegisterGroup);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmLockRegisters(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                           VAR(Cdd_Pwm_HrpwmLockRegisterGroupType, AUTOMATIC) RegisterGroup);
 
 /** \brief Sets the consolidated XCMP values in HR mode
  *
@@ -6971,8 +7093,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmLockRegisters(VAR(Cdd_Pwm_InstanceType, AU
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                   VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg,VAR(uint32, AUTOMATIC) XCmpValue);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                             VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg, VAR(uint32, AUTOMATIC) XCmpValue);
 
 /** \brief Sets only the high resolution XCMP value
  *
@@ -6994,8 +7117,9 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, 
  * \return None
  *
  *********************************************************************************************************************/
-FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HrpwmSetHiResXCmpRegValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                    VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg,VAR(uint32, AUTOMATIC) HrXCmpValue);
+FUNC(void, CDD_PWM_CODE)
+Cdd_Pwm_HrpwmSetHiResXCmpRegValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
+                                      VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg, VAR(uint32, AUTOMATIC) HrXCmpValue);
 
 /** \brief SFO V8 Calibration Function
  *

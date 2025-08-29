@@ -1,6 +1,7 @@
 add_library(Cdd_Ecap_HrMode_Config INTERFACE)
 
-target_include_directories(Cdd_Ecap_HrMode_Config INTERFACE ${CMAKE_CURRENT_LIST_DIR}/output/include/)
+target_include_directories(Cdd_Ecap_HrMode_Config
+                           INTERFACE ${CMAKE_CURRENT_LIST_DIR}/output/include/)
 
 target_sources(
     Cdd_Ecap_HrMode_Config

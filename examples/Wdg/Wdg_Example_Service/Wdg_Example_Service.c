@@ -23,8 +23,7 @@
  *  Description:  This file contains application for Servicing Watchdog Example
  *
  * This example shows how to service the watchdog.
- * if the function Wdg_SetTriggerCondition is called, wdg servicing happens in loop and never
- expires
+ * If the function Wdg_SetTriggerCondition is called, wdg servicing happens in loop and never expires
  *
  * Wdg_IsrCount  - The number of times entered into the watchdog ISR
  *
@@ -39,6 +38,8 @@
 #include "Platform_Types.h"
 #include "AppUtils.h"
 #include "DeviceSupport.h"
+#include "Mcal_Lib.h"
+
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -46,6 +47,9 @@
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
+
+/* Mcal Lib delay value of 1 second */
+#define WDG_1S_DELAY (50000000)
 
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
@@ -77,6 +81,12 @@ volatile uint32 Wdg_IsrCount;
  * External Functions Definition
  *********************************************************************************************************************/
 
+/* watchdogISR ISR - The interrupt service routine called when the watchdog triggers the wake interrupt signal */
+MCAL_LIB_RTINT_ISR(Wdg_ApplWdgIsr)
+{
+    Wdg_IsrCount++;
+}
+
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/
@@ -95,7 +105,7 @@ int main(void)
     AppUtils_Printf("Sample Application to test Wdg Interrupt & Servicing - STARTS !!!\n");
 
     /* Clear the counters */
-    Wdg_IsrCount = 0;
+    Wdg_IsrCount = 0U;
 
     /*  get version Info */
 #if (STD_ON == WDG_GET_VERSION_INFO_API)
@@ -134,28 +144,30 @@ int main(void)
 
     AppUtils_Printf("Wdg servicing is called in loop, So interrupts will not be generated !!!\n");
 
-    for (;;)
+    /* Service the watchdog for 10 seconds */
+    for (uint8 count = 0U; count < 5U; count++)
     {
-        if (Wdg_IsrCount >= 1)
-        {
-            return_value = E_OK;
-            AppUtils_Printf("Wdg Interrupt is generated after timeout!!!\n");
-            AppUtils_Printf("Wdg Example Interrupt: Sample Application - Completes successfully !!!\n");
-            break;
-        }
-        /* call Wdg_SetTriggerCondition (servicing watchdog) to just loop here*/
-
+        /* call Wdg_SetTriggerCondition (servicing watchdog) to just loop here */
         Wdg_SetTriggerCondition(1U);
+
+        /* Wait for 2000 milliseconds - to service the watchdog before timeout */
+        McalLib_Delay(2U * WDG_1S_DELAY);
+    }
+
+    /* Check if the interrupt count is zero,it means that the watch dog is serviced */
+    if (Wdg_IsrCount == 0U)
+    {
+        return_value = E_OK;
+        AppUtils_Printf("Wdg Example Service: Sample Application - Completes successfully !!!\n");
+    }
+    else
+    {
+        /* Print fail statement incase an interrupt is generated */
+        AppUtils_Printf("Wdg Interrupt is generated after timeout!!!\n");
+        AppUtils_Printf("Wdg Example Service: Sample Application - Failed !!!\n");
     }
 
     return return_value;
-}
-
-/* watchdogISR ISR - The interrupt service routine called when the watchdog
-                  triggers the wake interrupt signal */
-void Wdg_ApplWdgIsr(void)
-{
-    Wdg_IsrCount++;
 }
 
 /*********************************************************************************************************************

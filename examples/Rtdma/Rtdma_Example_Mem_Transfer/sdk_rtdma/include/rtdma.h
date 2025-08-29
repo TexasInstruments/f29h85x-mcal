@@ -1,13 +1,12 @@
-//###########################################################################
+// ###########################################################################
 //
-// FILE:   rtdma.h
+//  FILE:   rtdma.h
 //
-// TITLE:  C29x RTDMA driver
+//  TITLE:  C29x RTDMA driver
 //
-//###########################################################################
-// $Copyright:  $
-//###########################################################################
-
+// ###########################################################################
+//  $Copyright:  $
+// ###########################################################################
 
 #ifndef RTDMA_H
 #define RTDMA_H
@@ -19,8 +18,7 @@
 //
 //*****************************************************************************
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 //*****************************************************************************
@@ -38,11 +36,8 @@ extern "C"
 #include "hw_sysctl.h"
 #include "hw_types.h"
 
-
-#define DMA_TOTAL_MPU     16U  // 16 MPU regions
-#define DMA_TOTAL_CH      10U  // 10 channels in each DMA instance
-
-
+#define DMA_TOTAL_MPU 16U  // 16 MPU regions
+#define DMA_TOTAL_CH  10U  // 10 channels in each DMA instance
 
 //*****************************************************************************
 //
@@ -51,9 +46,9 @@ extern "C"
 //
 //*****************************************************************************
 //! Only one burst transfer performed per trigger.
-#define DMA_CFG_ONESHOT_DISABLE     0U
+#define DMA_CFG_ONESHOT_DISABLE 0U
 //! Burst transfers occur without additional event triggers after the first.
-#define DMA_CFG_ONESHOT_ENABLE      RTDMA_MODE_ONESHOT
+#define DMA_CFG_ONESHOT_ENABLE RTDMA_MODE_ONESHOT
 
 //*****************************************************************************
 //
@@ -62,9 +57,9 @@ extern "C"
 //
 //*****************************************************************************
 //! DMA channel will be disabled at the end of a transfer.
-#define DMA_CFG_CONTINUOUS_DISABLE  0U
+#define DMA_CFG_CONTINUOUS_DISABLE 0U
 //! DMA reinitializes when the transfer count is zero and waits for a trigger.
-#define DMA_CFG_CONTINUOUS_ENABLE   RTDMA_MODE_CONTINUOUS
+#define DMA_CFG_CONTINUOUS_ENABLE RTDMA_MODE_CONTINUOUS
 
 //*****************************************************************************
 //
@@ -72,10 +67,10 @@ extern "C"
 //! parameter to configure the DMA transfer read data size.
 //
 //*****************************************************************************
-#define DMA_CFG_READ_SIZE_8BIT   0x0U       // DMA reads 8 bits at a time.
-#define DMA_CFG_READ_SIZE_16BIT  0x20000U   // DMA reads 16 bits at a time.
-#define DMA_CFG_READ_SIZE_32BIT  0x40000U   // DMA reads 32 bits at a time.
-#define DMA_CFG_READ_SIZE_64BIT  0x60000U   // DMA reads 64 bits at a time.
+#define DMA_CFG_READ_SIZE_8BIT  0x0U      // DMA reads 8 bits at a time.
+#define DMA_CFG_READ_SIZE_16BIT 0x20000U  // DMA reads 16 bits at a time.
+#define DMA_CFG_READ_SIZE_32BIT 0x40000U  // DMA reads 32 bits at a time.
+#define DMA_CFG_READ_SIZE_64BIT 0x60000U  // DMA reads 64 bits at a time.
 
 //*****************************************************************************
 //
@@ -83,10 +78,10 @@ extern "C"
 //! parameter to configure the DMA write data size.
 //
 //*****************************************************************************
-#define DMA_CFG_WRT_SIZE_8BIT   0x0U        // DMA writes 8 bits at a time.
-#define DMA_CFG_WRT_SIZE_16BIT  0x100000U   // DMA writes 16 bits at a time.
-#define DMA_CFG_WRT_SIZE_32BIT  0x200000U   // DMA writes 32 bits at a time.
-#define DMA_CFG_WRT_SIZE_64BIT  0x300000U   // DMA writes 64 bits at a time.
+#define DMA_CFG_WRT_SIZE_8BIT  0x0U       // DMA writes 8 bits at a time.
+#define DMA_CFG_WRT_SIZE_16BIT 0x100000U  // DMA writes 16 bits at a time.
+#define DMA_CFG_WRT_SIZE_32BIT 0x200000U  // DMA writes 32 bits at a time.
+#define DMA_CFG_WRT_SIZE_64BIT 0x300000U  // DMA writes 64 bits at a time.
 
 //*****************************************************************************
 //
@@ -94,10 +89,10 @@ extern "C"
 //! parameter to configure both the DMA read data size and write data size.
 //
 //*****************************************************************************
-#define DMA_CFG_SIZE_8BIT   (DMA_CFG_READ_SIZE_8BIT | DMA_CFG_WRT_SIZE_8BIT)
-#define DMA_CFG_SIZE_16BIT  (DMA_CFG_READ_SIZE_16BIT | DMA_CFG_WRT_SIZE_16BIT)
-#define DMA_CFG_SIZE_32BIT  (DMA_CFG_READ_SIZE_32BIT | DMA_CFG_WRT_SIZE_32BIT)
-#define DMA_CFG_SIZE_64BIT  (DMA_CFG_READ_SIZE_64BIT | DMA_CFG_WRT_SIZE_64BIT)
+#define DMA_CFG_SIZE_8BIT  (DMA_CFG_READ_SIZE_8BIT | DMA_CFG_WRT_SIZE_8BIT)
+#define DMA_CFG_SIZE_16BIT (DMA_CFG_READ_SIZE_16BIT | DMA_CFG_WRT_SIZE_16BIT)
+#define DMA_CFG_SIZE_32BIT (DMA_CFG_READ_SIZE_32BIT | DMA_CFG_WRT_SIZE_32BIT)
+#define DMA_CFG_SIZE_64BIT (DMA_CFG_READ_SIZE_64BIT | DMA_CFG_WRT_SIZE_64BIT)
 
 //*****************************************************************************
 //
@@ -105,17 +100,16 @@ extern "C"
 //! the DMA_MPUConfigParams structure.
 //
 //*****************************************************************************
-#define DMA_MPU_CH1_ENABLE  0x0001U // Enable DMA Channel 1 for the MPU region.
-#define DMA_MPU_CH2_ENABLE  0x0002U // Enable DMA Channel 2 for the MPU region.
-#define DMA_MPU_CH3_ENABLE  0x0004U // Enable DMA Channel 3 for the MPU region.
-#define DMA_MPU_CH4_ENABLE  0x0008U // Enable DMA Channel 4 for the MPU region.
-#define DMA_MPU_CH5_ENABLE  0x0010U // Enable DMA Channel 5 for the MPU region.
-#define DMA_MPU_CH6_ENABLE  0x0020U // Enable DMA Channel 6 for the MPU region.
-#define DMA_MPU_CH7_ENABLE  0x0040U // Enable DMA Channel 7 for the MPU region.
-#define DMA_MPU_CH8_ENABLE  0x0080U // Enable DMA Channel 8 for the MPU region.
-#define DMA_MPU_CH9_ENABLE  0x0100U // Enable DMA Channel 9 for the MPU region.
-#define DMA_MPU_CH10_ENABLE 0x0200U //Enable DMA Channel 10 for the MPU region.
-
+#define DMA_MPU_CH1_ENABLE  0x0001U  // Enable DMA Channel 1 for the MPU region.
+#define DMA_MPU_CH2_ENABLE  0x0002U  // Enable DMA Channel 2 for the MPU region.
+#define DMA_MPU_CH3_ENABLE  0x0004U  // Enable DMA Channel 3 for the MPU region.
+#define DMA_MPU_CH4_ENABLE  0x0008U  // Enable DMA Channel 4 for the MPU region.
+#define DMA_MPU_CH5_ENABLE  0x0010U  // Enable DMA Channel 5 for the MPU region.
+#define DMA_MPU_CH6_ENABLE  0x0020U  // Enable DMA Channel 6 for the MPU region.
+#define DMA_MPU_CH7_ENABLE  0x0040U  // Enable DMA Channel 7 for the MPU region.
+#define DMA_MPU_CH8_ENABLE  0x0080U  // Enable DMA Channel 8 for the MPU region.
+#define DMA_MPU_CH9_ENABLE  0x0100U  // Enable DMA Channel 9 for the MPU region.
+#define DMA_MPU_CH10_ENABLE 0x0200U  // Enable DMA Channel 10 for the MPU region.
 
 //*****************************************************************************
 //
@@ -124,208 +118,207 @@ extern "C"
 //*****************************************************************************
 typedef enum
 {
-	DMA_TRIGGER_SOFTWARE                    = 0,	//!TRIGGER SOFTWARE
-	DMA_TRIGGER_ADCA1		                = 1,	//!TRIGGER ADCA1
-	DMA_TRIGGER_ADCA2		                = 2,	//!TRIGGER ADCA2
-	DMA_TRIGGER_ADCA3		                = 3,	//!TRIGGER ADCA3
-	DMA_TRIGGER_ADCA4		                = 4,	//!TRIGGER ADCA4
-	DMA_TRIGGER_ADCAEVT		                = 5,	//!TRIGGER ADCAEVT
-	DMA_TRIGGER_ADCB1		                = 6,	//!TRIGGER ADCB1
-	DMA_TRIGGER_ADCB2		                = 7,	//!TRIGGER ADCB2
-	DMA_TRIGGER_ADCB3		                = 8,	//!TRIGGER ADCB3
-	DMA_TRIGGER_ADCB4		                = 9,	//!TRIGGER ADCB4
-	DMA_TRIGGER_ADCBEVT		                = 10,	//!TRIGGER ADCBEVT
-	DMA_TRIGGER_ADCC1		                = 11,	//!TRIGGER ADCC1
-	DMA_TRIGGER_ADCC2		                = 12,	//!TRIGGER ADCC2
-	DMA_TRIGGER_ADCC3		                = 13,	//!TRIGGER ADCC3
-	DMA_TRIGGER_ADCC4		                = 14,	//!TRIGGER ADCC4
-	DMA_TRIGGER_ADCCEVT		                = 15,	//!TRIGGER ADCCEVT
-	DMA_TRIGGER_ADCD1		                = 16,	//!TRIGGER ADCD1
-	DMA_TRIGGER_ADCD2		                = 17,	//!TRIGGER ADCD2
-	DMA_TRIGGER_ADCD3		                = 18,	//!TRIGGER ADCD3
-	DMA_TRIGGER_ADCD4		                = 19,	//!TRIGGER ADCD4
-	DMA_TRIGGER_ADCDEVT		                = 20,	//!TRIGGER ADCDEVT
-	DMA_TRIGGER_ADCE1		                = 21,	//!TRIGGER ADCE1
-	DMA_TRIGGER_ADCE2		                = 22,	//!TRIGGER ADCE2
-	DMA_TRIGGER_ADCE3		                = 23,	//!TRIGGER ADCE3
-	DMA_TRIGGER_ADCE4		                = 24,	//!TRIGGER ADCE4
-	DMA_TRIGGER_ADCEEVT		                = 25,	//!TRIGGER ADCEEVT
-	DMA_TRIGGER_CPU1_XINT1		            = 31, //!TRIGGER CPU1 XINT1
-	DMA_TRIGGER_CPU1_XINT2		            = 32, //!TRIGGER CPU1 XINT2
-	DMA_TRIGGER_CPU1_XINT3		            = 33, //!TRIGGER CPU1 XINT3
-	DMA_TRIGGER_CPU1_XINT4		            = 34, //!TRIGGER CPU1 XINT4
-	DMA_TRIGGER_CPU1_XINT5		            = 35, //!TRIGGER CPU1 XINT5
-	DMA_TRIGGER_CPU2_XINT1		            = 36, //!TRIGGER CPU2 XINT1
-	DMA_TRIGGER_CPU2_XINT2		            = 37, //!TRIGGER CPU2 XINT2
-	DMA_TRIGGER_CPU2_XINT3		            = 38, //!TRIGGER CPU2 XINT3
-	DMA_TRIGGER_CPU2_XINT4		            = 39, //!TRIGGER CPU2 XINT4
-	DMA_TRIGGER_CPU2_XINT5		            = 40, //!TRIGGER CPU2 XINT5
-	DMA_TRIGGER_CPU3_XINT1		            = 41, //!TRIGGER CPU3 XINT1
-	DMA_TRIGGER_CPU3_XINT2		            = 42, //!TRIGGER CPU3 XINT2
-	DMA_TRIGGER_CPU3_XINT3		            = 43, //!TRIGGER CPU3 XINT3
-	DMA_TRIGGER_CPU3_XINT4		            = 44, //!TRIGGER CPU3 XINT4
-	DMA_TRIGGER_CPU3_XINT5		            = 45, //!TRIGGER CPU3 XINT5
-	DMA_TRIGGER_EPWM1SOCA		            = 46,	//!TRIGGER EPWM1SOCA
-	DMA_TRIGGER_EPWM1SOCB		            = 47,	//!TRIGGER EPWM1SOCB
-	DMA_TRIGGER_EPWM2SOCA		            = 48,	//!TRIGGER EPWM2SOCA
-	DMA_TRIGGER_EPWM2SOCB		            = 49,	//!TRIGGER EPWM2SOCB
-	DMA_TRIGGER_EPWM3SOCA		            = 50,	//!TRIGGER EPWM3SOCA
-	DMA_TRIGGER_EPWM3SOCB		            = 51,	//!TRIGGER EPWM3SOCB
-	DMA_TRIGGER_EPWM4SOCA		            = 52,	//!TRIGGER EPWM4SOCA
-	DMA_TRIGGER_EPWM4SOCB		            = 53,	//!TRIGGER EPWM4SOCB
-	DMA_TRIGGER_EPWM5SOCA		            = 54,	//!TRIGGER EPWM5SOCA
-	DMA_TRIGGER_EPWM5SOCB		            = 55,	//!TRIGGER EPWM5SOCB
-	DMA_TRIGGER_EPWM6SOCA		            = 56,	//!TRIGGER EPWM6SOCA
-	DMA_TRIGGER_EPWM6SOCB		            = 57,	//!TRIGGER EPWM6SOCB
-	DMA_TRIGGER_EPWM7SOCA		            = 58,	//!TRIGGER EPWM7SOCA
-	DMA_TRIGGER_EPWM7SOCB		            = 59,	//!TRIGGER EPWM7SOCB
-	DMA_TRIGGER_EPWM8SOCA		            = 60,	//!TRIGGER EPWM8SOCA
-	DMA_TRIGGER_EPWM8SOCB		            = 61,	//!TRIGGER EPWM8SOCB
-	DMA_TRIGGER_EPWM9SOCA		            = 62,	//!TRIGGER EPWM9SOCA
-	DMA_TRIGGER_EPWM9SOCB		            = 63,	//!TRIGGER EPWM9SOCB
-	DMA_TRIGGER_EPWM10SOCA		            = 64,	//!TRIGGER EPWM10SOCA
-	DMA_TRIGGER_EPWM10SOCB		            = 65,	//!TRIGGER EPWM10SOCB
-	DMA_TRIGGER_EPWM11SOCA		            = 66,	//!TRIGGER EPWM11SOCA
-	DMA_TRIGGER_EPWM11SOCB		            = 67,	//!TRIGGER EPWM11SOCB
-	DMA_TRIGGER_EPWM12SOCA		            = 68,	//!TRIGGER EPWM12SOCA
-	DMA_TRIGGER_EPWM12SOCB		            = 69,	//!TRIGGER EPWM12SOCB
-	DMA_TRIGGER_EPWM13SOCA		            = 70,	//!TRIGGER EPWM13SOCA
-	DMA_TRIGGER_EPWM13SOCB		            = 71,	//!TRIGGER EPWM13SOCB
-	DMA_TRIGGER_EPWM14SOCA		            = 72,	//!TRIGGER EPWM14SOCA
-	DMA_TRIGGER_EPWM14SOCB		            = 73,	//!TRIGGER EPWM14SOCB
-	DMA_TRIGGER_EPWM15SOCA		            = 74,	//!TRIGGER EPWM15SOCA
-	DMA_TRIGGER_EPWM15SOCB		            = 75,	//!TRIGGER EPWM15SOCB
-	DMA_TRIGGER_EPWM16SOCA		            = 76,	//!TRIGGER EPWM16SOCA
-	DMA_TRIGGER_EPWM16SOCB		            = 77,	//!TRIGGER EPWM16SOCB
-	DMA_TRIGGER_EPWM17SOCA		            = 78,	//!TRIGGER EPWM17SOCA
-	DMA_TRIGGER_EPWM17SOCB		            = 79,	//!TRIGGER EPWM17SOCB
-	DMA_TRIGGER_EPWM18SOCA		            = 80,	//!TRIGGER EPWM18SOCA
-	DMA_TRIGGER_EPWM18SOCB		            = 81,	//!TRIGGER EPWM18SOCB
-	DMA_TRIGGER_TINT0		                = 94,	//!TRIGGER CPU1 TINT0
-	DMA_TRIGGER_TINT1		                = 95,	//!TRIGGER CPU1 TINT1
-	DMA_TRIGGER_TINT2		                = 96,	//!TRIGGER CPU1 TINT2
-	DMA_TRIGGER_CPU2_TINT0		            = 97, //!TRIGGER CPU2 TINT0
-	DMA_TRIGGER_CPU2_TINT1		            = 98, //!TRIGGER CPU2 TINT1
-	DMA_TRIGGER_CPU2_TINT2		            = 99, //!TRIGGER CPU2 TINT2
-	DMA_TRIGGER_CPU3_TINT0		            = 100, //!TRIGGER CPU3 TINT0
-	DMA_TRIGGER_CPU3_TINT1		            = 101, //!TRIGGER CPU3 TINT1
-	DMA_TRIGGER_CPU3_TINT2		            = 102, //!TRIGGER CPU3 TINT2
-	DMA_TRIGGER_ECAP1		                = 112, //!TRIGGER ECAP1
-	DMA_TRIGGER_ECAP2		                = 113, //!TRIGGER ECAP2
-	DMA_TRIGGER_ECAP3		                = 114, //!TRIGGER ECAP3
-	DMA_TRIGGER_ECAP4		                = 115, //!TRIGGER ECAP4
-	DMA_TRIGGER_ECAP5		                = 116, //!TRIGGER ECAP5
-	DMA_TRIGGER_ECAP6		                = 117, //!TRIGGER ECAP6
-	DMA_TRIGGER_LINATX		                = 120, //!TRIGGER LINATX
-	DMA_TRIGGER_LINARX		                = 121, //!TRIGGER LINARX
-	DMA_TRIGGER_LINBTX		                = 122, //!TRIGGER LINBTX
-	DMA_TRIGGER_LINBRX		                = 123, //!TRIGGER LINBRX
-	DMA_TRIGGER_SYNC		                = 124, //!TRIGGER SYNC
-	DMA_TRIGGER_SPIATX		                = 125, //!TRIGGER SPIATX
-	DMA_TRIGGER_SPIARX		                = 126, //!TRIGGER SPIARX
-	DMA_TRIGGER_SPIBTX		                = 127, //!TRIGGER SPIBTX
-	DMA_TRIGGER_SPIBRX		                = 128, //!TRIGGER SPIBRX
-	DMA_TRIGGER_SPICTX		                = 129, //!TRIGGER SPICTX
-	DMA_TRIGGER_SPICRX		                = 130, //!TRIGGER SPICRX
-	DMA_TRIGGER_SPIDTX		                = 131, //!TRIGGER SPIDTX
-	DMA_TRIGGER_SPIDRX		                = 132, //!TRIGGER SPIDRX
-	DMA_TRIGGER_SPIETX		                = 133, //!TRIGGER SPIETX
-	DMA_TRIGGER_SPIERX		                = 134, //!TRIGGER SPIERX
-	DMA_TRIGGER_CLB1INT		                = 135, //!TRIGGER CLB1INT
-	DMA_TRIGGER_CLB2INT		                = 136, //!TRIGGER CLB2INT
-	DMA_TRIGGER_CLB3INT		                = 137, //!TRIGGER CLB3INT
-	DMA_TRIGGER_CLB4INT		                = 138, //!TRIGGER CLB4INT
-	DMA_TRIGGER_CLB5INT		                = 139, //!TRIGGER CLB5INT
-	DMA_TRIGGER_CLB6INT		                = 140, //!TRIGGER CLB6INT
-	DMA_TRIGGER_FSITXA		                = 143, //!TRIGGER FSITXA
-	DMA_TRIGGER_FSIRXA		                = 144, //!TRIGGER FSIRXA
-	DMA_TRIGGER_FSIA_DATA_TAG_MATCH		    = 145, //!TRIGGER FSIA DATA TAG MATCH
-	DMA_TRIGGER_FSIA_PING_TAG_MATCH		    = 146, //!TRIGGER FSIA PING TAG MATCH
-	DMA_TRIGGER_FSIRXB		                = 148, //!TRIGGER FSIRXB
-	DMA_TRIGGER_FSITXB		                = 147, //!TRIGGER FSITXB
-	DMA_TRIGGER_FSIB_DATA_TAG_MATCH		    = 149, //!TRIGGER FSIB DATA TAG MATCH
-	DMA_TRIGGER_FSIB_PING_TAG_MATCH		    = 150, //!TRIGGER FSIB PING TAG MATCH
-	DMA_TRIGGER_FSIRXC		                = 152, //!TRIGGER FSIRXC
-	DMA_TRIGGER_FSITXC		                = 151, //!TRIGGER FSITXC
-	DMA_TRIGGER_FSIC_DATA_TAG_MATCH		    = 153, //!TRIGGER FSIC DATA TAG MATCH
-	DMA_TRIGGER_FSIC_PING_TAG_MATCH		    = 154, //!TRIGGER FSIC PING TAG MATCH
-	DMA_TRIGGER_FSITXD		                = 155, //!TRIGGER FSITXD
-	DMA_TRIGGER_FSIRXD		                = 156, //!TRIGGER FSIRXD
-	DMA_TRIGGER_FSID_DATA_TAG_MATCH		    = 157, //!TRIGGER FSID DATA TAG MATCH
-	DMA_TRIGGER_FSID_PING_TAG_MATCH		    = 158, //!TRIGGER FSID PING TAG MATCH
-	DMA_TRIGGER_CPU1_DLT		            = 161, //!TRIGGER CPU1 DLT
-	DMA_TRIGGER_CPU3_DLT		            = 163, //!TRIGGER CPU3 DLT
-	DMA_TRIGGER_CPU2_DLT		            = 162, //!TRIGGER CPU2 DLT
-	DMA_TRIGGER_UARTARX		                = 167, //!TRIGGER UARTARX
-	DMA_TRIGGER_UARTATX		                = 168, //!TRIGGER UARTATX
-	DMA_TRIGGER_UARTBTX		                = 169, //!TRIGGER UARTBTX
-	DMA_TRIGGER_UARTBRX		                = 170, //!TRIGGER UARTBRX
-	DMA_TRIGGER_UARTCTX		                = 171, //!TRIGGER UARTCTX
-	DMA_TRIGGER_UARTCRX		                = 172, //!TRIGGER UARTCRX
-	DMA_TRIGGER_UARTDTX		                = 173, //!TRIGGER UARTDTX
-	DMA_TRIGGER_UARTDRX		                = 174, //!TRIGGER UARTDRX
-	DMA_TRIGGER_UARTETX		                = 175, //!TRIGGER UARTETX
-	DMA_TRIGGER_UARTERX		                = 176, //!TRIGGER UARTERX
-	DMA_TRIGGER_UARTFTX		                = 177, //!TRIGGER UARTFTX
-	DMA_TRIGGER_UARTFRX		                = 178, //!TRIGGER UARTFRX
-	DMA_TRIGGER_DTHE_SHA_DMA_S_CTXIN_REQ    = 179, //!TRIGGER DTHE SHA DMA S CTXIN REQ
-	DMA_TRIGGER_DTHE_SHA_DMA_S_DATAIN_REQ	= 180, //!TRIGGER DTHE SHA DMA S DATAIN REQ
-	DMA_TRIGGER_DTHE_SHA_DMA_S_CTXOUT_REQ	= 181, //!TRIGGER DTHE SHA DMA S CTXOUT REQ
-	DMA_TRIGGER_DTHE_SHA_DMA_P_CTXIN_REQ	= 182, //!TRIGGER DTHE SHA DMA P CTXIN REQ
-	DMA_TRIGGER_DTHE_SHA_DMA_P_DATAIN_REQ	= 183, //!TRIGGER DTHE SHA DMA P DATAIN REQ
-	DMA_TRIGGER_DTHE_SHA_DMA_P_CTXOUT_REQ	= 184, //!TRIGGER DTHE SHA DMA P CTXOUT REQ
-	DMA_TRIGGER_DTHE_AES_DMA_S_CTXIN_REQ	= 185, //!TRIGGER DTHE AES DMA S CTXIN REQ
-	DMA_TRIGGER_DTHE_AES_DMA_S_DATAIN_REQ	= 186, //!TRIGGER DTHE AES DMA S DATAIN REQ
-	DMA_TRIGGER_DTHE_AES_DMA_S_DATAOUT_REQ	= 187, //!TRIGGER DTHE AES DMA S DATAOUT REQ
-	DMA_TRIGGER_DTHE_AES_DMA_S_CTXOUT_REQ	= 188, //!TRIGGER DTHE AES DMA S CTXOUT REQ
-	DMA_TRIGGER_DTHE_AES_DMA_P_CTXIN_REQ	= 189, //!TRIGGER DTHE AES DMA P CTXIN REQ
-	DMA_TRIGGER_DTHE_AES_DMA_P_DATAIN_REQ	= 190, //!TRIGGER DTHE AES DMA P DATAIN REQ
-	DMA_TRIGGER_DTHE_AES_DMA_P_DATAOUT_REQ	= 191, //!TRIGGER DTHE AES DMA P DATAOUT REQ
-	DMA_TRIGGER_DTHE_AES_DMA_P_CTXOUT_REQ	= 192, //!TRIGGER DTHE AES DMA P CTXOUT REQ
-	DMA_TRIGGER_DTHE_SM3_CTXIN_REQ		    = 193, //!TRIGGER DTHE SM3 CTXIN REQ
-	DMA_TRIGGER_DTHE_SM3_DATAIN_REQ		    = 194, //!TRIGGER DTHE SM3 DATAIN REQ
-	DMA_TRIGGER_DTHE_SM3_CTXOUT_REQ		    = 195, //!TRIGGER DTHE SM3 CTXOUT REQ
-	DMA_TRIGGER_DTHE_SM4_CTXIN_REQ		    = 196, //!TRIGGER DTHE SM4 CTXIN REQ
-	DMA_TRIGGER_DTHE_SM4_DATAIN_REQ		    = 197, //!TRIGGER DTHE SM4 DATAIN REQ
-	DMA_TRIGGER_DTHE_SM4_DATAOUT_REQ	    = 198, //!TRIGGER DTHE SM4 DATAOUT REQ
-	DMA_TRIGGER_DTHE_SM4_CTXOUT_REQ		    = 199, //!TRIGGER DTHE SM4 CTXOUT REQ
-	DMA_TRIGGER_EPG		                    = 200, //!TRIGGER EPG
-	DMA_TRIGGER_SDFM1FLT1		            = 201, //!TRIGGER SDFM1FLT1
-	DMA_TRIGGER_SDFM1FLT2		            = 202, //!TRIGGER SDFM1FLT2
-	DMA_TRIGGER_SDFM1FLT3		            = 203, //!TRIGGER SDFM1FLT3
-	DMA_TRIGGER_SDFM1FLT4		            = 204, //!TRIGGER SDFM1FLT4
-	DMA_TRIGGER_SDFM2FLT1		            = 205, //!TRIGGER SDFM2FLT1
-	DMA_TRIGGER_SDFM2FLT2		            = 206, //!TRIGGER SDFM2FLT2
-	DMA_TRIGGER_SDFM2FLT3		            = 207, //!TRIGGER SDFM2FLT3
-	DMA_TRIGGER_SDFM2FLT4		            = 208, //!TRIGGER SDFM2FLT4
-	DMA_TRIGGER_SDFM3FLT1		            = 209, //!TRIGGER SDFM3FLT1
-	DMA_TRIGGER_SDFM3FLT2		            = 210, //!TRIGGER SDFM3FLT2
-	DMA_TRIGGER_SDFM3FLT3		            = 211, //!TRIGGER SDFM3FLT3
-	DMA_TRIGGER_SDFM3FLT4		            = 212, //!TRIGGER SDFM3FLT4
-	DMA_TRIGGER_SDFM4FLT1		            = 213, //!TRIGGER SDFM4FLT1
-	DMA_TRIGGER_SDFM4FLT2		            = 214, //!TRIGGER SDFM4FLT2
-	DMA_TRIGGER_SDFM4FLT3		            = 215, //!TRIGGER SDFM4FLT3
-	DMA_TRIGGER_SDFM4FLT4		            = 216, //!TRIGGER SDFM4FLT4
-	DMA_TRIGGER_SENT1		                = 217, //!TRIGGER SENT1
-	DMA_TRIGGER_SENT2		                = 218, //!TRIGGER SENT2
-	DMA_TRIGGER_SENT3		                = 219, //!TRIGGER SENT3
-	DMA_TRIGGER_SENT4		                = 220, //!TRIGGER SENT4
-	DMA_TRIGGER_SENT5		                = 221, //!TRIGGER SENT5
-	DMA_TRIGGER_SENT6		                = 222, //!TRIGGER SENT6
-	DMA_TRIGGER_WADI1		                = 223, //!TRIGGER WADI1
-	DMA_TRIGGER_WADI2		                = 224, //!TRIGGER WADI2
-	DMA_TRIGGER_RTDMA_CH1INT		        = 240, //!TRIGGER RTDMA CH1INT
-	DMA_TRIGGER_RTDMA_CH2INT		        = 241, //!TRIGGER RTDMA CH2INT
-	DMA_TRIGGER_RTDMA_CH3INT		        = 242, //!TRIGGER RTDMA CH3INT
-	DMA_TRIGGER_RTDMA_CH4INT		        = 243, //!TRIGGER RTDMA CH4INT
-	DMA_TRIGGER_RTDMA_CH5INT		        = 244, //!TRIGGER RTDMA CH5INT
-	DMA_TRIGGER_RTDMA_CH6INT		        = 245, //!TRIGGER RTDMA CH6INT
-	DMA_TRIGGER_RTDMA_CH7INT		        = 246, //!TRIGGER RTDMA CH7INT
-	DMA_TRIGGER_RTDMA_CH8INT		        = 247, //!TRIGGER RTDMA CH8INT
-	DMA_TRIGGER_RTDMA_CH9INT		        = 248, //!TRIGGER RTDMA CH9INT
-	DMA_TRIGGER_RTDMA_CH10INT		        = 249  //!TRIGGER RTDMA CH10INT
+    DMA_TRIGGER_SOFTWARE                   = 0,    //! TRIGGER SOFTWARE
+    DMA_TRIGGER_ADCA1                      = 1,    //! TRIGGER ADCA1
+    DMA_TRIGGER_ADCA2                      = 2,    //! TRIGGER ADCA2
+    DMA_TRIGGER_ADCA3                      = 3,    //! TRIGGER ADCA3
+    DMA_TRIGGER_ADCA4                      = 4,    //! TRIGGER ADCA4
+    DMA_TRIGGER_ADCAEVT                    = 5,    //! TRIGGER ADCAEVT
+    DMA_TRIGGER_ADCB1                      = 6,    //! TRIGGER ADCB1
+    DMA_TRIGGER_ADCB2                      = 7,    //! TRIGGER ADCB2
+    DMA_TRIGGER_ADCB3                      = 8,    //! TRIGGER ADCB3
+    DMA_TRIGGER_ADCB4                      = 9,    //! TRIGGER ADCB4
+    DMA_TRIGGER_ADCBEVT                    = 10,   //! TRIGGER ADCBEVT
+    DMA_TRIGGER_ADCC1                      = 11,   //! TRIGGER ADCC1
+    DMA_TRIGGER_ADCC2                      = 12,   //! TRIGGER ADCC2
+    DMA_TRIGGER_ADCC3                      = 13,   //! TRIGGER ADCC3
+    DMA_TRIGGER_ADCC4                      = 14,   //! TRIGGER ADCC4
+    DMA_TRIGGER_ADCCEVT                    = 15,   //! TRIGGER ADCCEVT
+    DMA_TRIGGER_ADCD1                      = 16,   //! TRIGGER ADCD1
+    DMA_TRIGGER_ADCD2                      = 17,   //! TRIGGER ADCD2
+    DMA_TRIGGER_ADCD3                      = 18,   //! TRIGGER ADCD3
+    DMA_TRIGGER_ADCD4                      = 19,   //! TRIGGER ADCD4
+    DMA_TRIGGER_ADCDEVT                    = 20,   //! TRIGGER ADCDEVT
+    DMA_TRIGGER_ADCE1                      = 21,   //! TRIGGER ADCE1
+    DMA_TRIGGER_ADCE2                      = 22,   //! TRIGGER ADCE2
+    DMA_TRIGGER_ADCE3                      = 23,   //! TRIGGER ADCE3
+    DMA_TRIGGER_ADCE4                      = 24,   //! TRIGGER ADCE4
+    DMA_TRIGGER_ADCEEVT                    = 25,   //! TRIGGER ADCEEVT
+    DMA_TRIGGER_CPU1_XINT1                 = 31,   //! TRIGGER CPU1 XINT1
+    DMA_TRIGGER_CPU1_XINT2                 = 32,   //! TRIGGER CPU1 XINT2
+    DMA_TRIGGER_CPU1_XINT3                 = 33,   //! TRIGGER CPU1 XINT3
+    DMA_TRIGGER_CPU1_XINT4                 = 34,   //! TRIGGER CPU1 XINT4
+    DMA_TRIGGER_CPU1_XINT5                 = 35,   //! TRIGGER CPU1 XINT5
+    DMA_TRIGGER_CPU2_XINT1                 = 36,   //! TRIGGER CPU2 XINT1
+    DMA_TRIGGER_CPU2_XINT2                 = 37,   //! TRIGGER CPU2 XINT2
+    DMA_TRIGGER_CPU2_XINT3                 = 38,   //! TRIGGER CPU2 XINT3
+    DMA_TRIGGER_CPU2_XINT4                 = 39,   //! TRIGGER CPU2 XINT4
+    DMA_TRIGGER_CPU2_XINT5                 = 40,   //! TRIGGER CPU2 XINT5
+    DMA_TRIGGER_CPU3_XINT1                 = 41,   //! TRIGGER CPU3 XINT1
+    DMA_TRIGGER_CPU3_XINT2                 = 42,   //! TRIGGER CPU3 XINT2
+    DMA_TRIGGER_CPU3_XINT3                 = 43,   //! TRIGGER CPU3 XINT3
+    DMA_TRIGGER_CPU3_XINT4                 = 44,   //! TRIGGER CPU3 XINT4
+    DMA_TRIGGER_CPU3_XINT5                 = 45,   //! TRIGGER CPU3 XINT5
+    DMA_TRIGGER_EPWM1SOCA                  = 46,   //! TRIGGER EPWM1SOCA
+    DMA_TRIGGER_EPWM1SOCB                  = 47,   //! TRIGGER EPWM1SOCB
+    DMA_TRIGGER_EPWM2SOCA                  = 48,   //! TRIGGER EPWM2SOCA
+    DMA_TRIGGER_EPWM2SOCB                  = 49,   //! TRIGGER EPWM2SOCB
+    DMA_TRIGGER_EPWM3SOCA                  = 50,   //! TRIGGER EPWM3SOCA
+    DMA_TRIGGER_EPWM3SOCB                  = 51,   //! TRIGGER EPWM3SOCB
+    DMA_TRIGGER_EPWM4SOCA                  = 52,   //! TRIGGER EPWM4SOCA
+    DMA_TRIGGER_EPWM4SOCB                  = 53,   //! TRIGGER EPWM4SOCB
+    DMA_TRIGGER_EPWM5SOCA                  = 54,   //! TRIGGER EPWM5SOCA
+    DMA_TRIGGER_EPWM5SOCB                  = 55,   //! TRIGGER EPWM5SOCB
+    DMA_TRIGGER_EPWM6SOCA                  = 56,   //! TRIGGER EPWM6SOCA
+    DMA_TRIGGER_EPWM6SOCB                  = 57,   //! TRIGGER EPWM6SOCB
+    DMA_TRIGGER_EPWM7SOCA                  = 58,   //! TRIGGER EPWM7SOCA
+    DMA_TRIGGER_EPWM7SOCB                  = 59,   //! TRIGGER EPWM7SOCB
+    DMA_TRIGGER_EPWM8SOCA                  = 60,   //! TRIGGER EPWM8SOCA
+    DMA_TRIGGER_EPWM8SOCB                  = 61,   //! TRIGGER EPWM8SOCB
+    DMA_TRIGGER_EPWM9SOCA                  = 62,   //! TRIGGER EPWM9SOCA
+    DMA_TRIGGER_EPWM9SOCB                  = 63,   //! TRIGGER EPWM9SOCB
+    DMA_TRIGGER_EPWM10SOCA                 = 64,   //! TRIGGER EPWM10SOCA
+    DMA_TRIGGER_EPWM10SOCB                 = 65,   //! TRIGGER EPWM10SOCB
+    DMA_TRIGGER_EPWM11SOCA                 = 66,   //! TRIGGER EPWM11SOCA
+    DMA_TRIGGER_EPWM11SOCB                 = 67,   //! TRIGGER EPWM11SOCB
+    DMA_TRIGGER_EPWM12SOCA                 = 68,   //! TRIGGER EPWM12SOCA
+    DMA_TRIGGER_EPWM12SOCB                 = 69,   //! TRIGGER EPWM12SOCB
+    DMA_TRIGGER_EPWM13SOCA                 = 70,   //! TRIGGER EPWM13SOCA
+    DMA_TRIGGER_EPWM13SOCB                 = 71,   //! TRIGGER EPWM13SOCB
+    DMA_TRIGGER_EPWM14SOCA                 = 72,   //! TRIGGER EPWM14SOCA
+    DMA_TRIGGER_EPWM14SOCB                 = 73,   //! TRIGGER EPWM14SOCB
+    DMA_TRIGGER_EPWM15SOCA                 = 74,   //! TRIGGER EPWM15SOCA
+    DMA_TRIGGER_EPWM15SOCB                 = 75,   //! TRIGGER EPWM15SOCB
+    DMA_TRIGGER_EPWM16SOCA                 = 76,   //! TRIGGER EPWM16SOCA
+    DMA_TRIGGER_EPWM16SOCB                 = 77,   //! TRIGGER EPWM16SOCB
+    DMA_TRIGGER_EPWM17SOCA                 = 78,   //! TRIGGER EPWM17SOCA
+    DMA_TRIGGER_EPWM17SOCB                 = 79,   //! TRIGGER EPWM17SOCB
+    DMA_TRIGGER_EPWM18SOCA                 = 80,   //! TRIGGER EPWM18SOCA
+    DMA_TRIGGER_EPWM18SOCB                 = 81,   //! TRIGGER EPWM18SOCB
+    DMA_TRIGGER_TINT0                      = 94,   //! TRIGGER CPU1 TINT0
+    DMA_TRIGGER_TINT1                      = 95,   //! TRIGGER CPU1 TINT1
+    DMA_TRIGGER_TINT2                      = 96,   //! TRIGGER CPU1 TINT2
+    DMA_TRIGGER_CPU2_TINT0                 = 97,   //! TRIGGER CPU2 TINT0
+    DMA_TRIGGER_CPU2_TINT1                 = 98,   //! TRIGGER CPU2 TINT1
+    DMA_TRIGGER_CPU2_TINT2                 = 99,   //! TRIGGER CPU2 TINT2
+    DMA_TRIGGER_CPU3_TINT0                 = 100,  //! TRIGGER CPU3 TINT0
+    DMA_TRIGGER_CPU3_TINT1                 = 101,  //! TRIGGER CPU3 TINT1
+    DMA_TRIGGER_CPU3_TINT2                 = 102,  //! TRIGGER CPU3 TINT2
+    DMA_TRIGGER_ECAP1                      = 112,  //! TRIGGER ECAP1
+    DMA_TRIGGER_ECAP2                      = 113,  //! TRIGGER ECAP2
+    DMA_TRIGGER_ECAP3                      = 114,  //! TRIGGER ECAP3
+    DMA_TRIGGER_ECAP4                      = 115,  //! TRIGGER ECAP4
+    DMA_TRIGGER_ECAP5                      = 116,  //! TRIGGER ECAP5
+    DMA_TRIGGER_ECAP6                      = 117,  //! TRIGGER ECAP6
+    DMA_TRIGGER_LINATX                     = 120,  //! TRIGGER LINATX
+    DMA_TRIGGER_LINARX                     = 121,  //! TRIGGER LINARX
+    DMA_TRIGGER_LINBTX                     = 122,  //! TRIGGER LINBTX
+    DMA_TRIGGER_LINBRX                     = 123,  //! TRIGGER LINBRX
+    DMA_TRIGGER_SYNC                       = 124,  //! TRIGGER SYNC
+    DMA_TRIGGER_SPIATX                     = 125,  //! TRIGGER SPIATX
+    DMA_TRIGGER_SPIARX                     = 126,  //! TRIGGER SPIARX
+    DMA_TRIGGER_SPIBTX                     = 127,  //! TRIGGER SPIBTX
+    DMA_TRIGGER_SPIBRX                     = 128,  //! TRIGGER SPIBRX
+    DMA_TRIGGER_SPICTX                     = 129,  //! TRIGGER SPICTX
+    DMA_TRIGGER_SPICRX                     = 130,  //! TRIGGER SPICRX
+    DMA_TRIGGER_SPIDTX                     = 131,  //! TRIGGER SPIDTX
+    DMA_TRIGGER_SPIDRX                     = 132,  //! TRIGGER SPIDRX
+    DMA_TRIGGER_SPIETX                     = 133,  //! TRIGGER SPIETX
+    DMA_TRIGGER_SPIERX                     = 134,  //! TRIGGER SPIERX
+    DMA_TRIGGER_CLB1INT                    = 135,  //! TRIGGER CLB1INT
+    DMA_TRIGGER_CLB2INT                    = 136,  //! TRIGGER CLB2INT
+    DMA_TRIGGER_CLB3INT                    = 137,  //! TRIGGER CLB3INT
+    DMA_TRIGGER_CLB4INT                    = 138,  //! TRIGGER CLB4INT
+    DMA_TRIGGER_CLB5INT                    = 139,  //! TRIGGER CLB5INT
+    DMA_TRIGGER_CLB6INT                    = 140,  //! TRIGGER CLB6INT
+    DMA_TRIGGER_FSITXA                     = 143,  //! TRIGGER FSITXA
+    DMA_TRIGGER_FSIRXA                     = 144,  //! TRIGGER FSIRXA
+    DMA_TRIGGER_FSIA_DATA_TAG_MATCH        = 145,  //! TRIGGER FSIA DATA TAG MATCH
+    DMA_TRIGGER_FSIA_PING_TAG_MATCH        = 146,  //! TRIGGER FSIA PING TAG MATCH
+    DMA_TRIGGER_FSIRXB                     = 148,  //! TRIGGER FSIRXB
+    DMA_TRIGGER_FSITXB                     = 147,  //! TRIGGER FSITXB
+    DMA_TRIGGER_FSIB_DATA_TAG_MATCH        = 149,  //! TRIGGER FSIB DATA TAG MATCH
+    DMA_TRIGGER_FSIB_PING_TAG_MATCH        = 150,  //! TRIGGER FSIB PING TAG MATCH
+    DMA_TRIGGER_FSIRXC                     = 152,  //! TRIGGER FSIRXC
+    DMA_TRIGGER_FSITXC                     = 151,  //! TRIGGER FSITXC
+    DMA_TRIGGER_FSIC_DATA_TAG_MATCH        = 153,  //! TRIGGER FSIC DATA TAG MATCH
+    DMA_TRIGGER_FSIC_PING_TAG_MATCH        = 154,  //! TRIGGER FSIC PING TAG MATCH
+    DMA_TRIGGER_FSITXD                     = 155,  //! TRIGGER FSITXD
+    DMA_TRIGGER_FSIRXD                     = 156,  //! TRIGGER FSIRXD
+    DMA_TRIGGER_FSID_DATA_TAG_MATCH        = 157,  //! TRIGGER FSID DATA TAG MATCH
+    DMA_TRIGGER_FSID_PING_TAG_MATCH        = 158,  //! TRIGGER FSID PING TAG MATCH
+    DMA_TRIGGER_CPU1_DLT                   = 161,  //! TRIGGER CPU1 DLT
+    DMA_TRIGGER_CPU3_DLT                   = 163,  //! TRIGGER CPU3 DLT
+    DMA_TRIGGER_CPU2_DLT                   = 162,  //! TRIGGER CPU2 DLT
+    DMA_TRIGGER_UARTARX                    = 167,  //! TRIGGER UARTARX
+    DMA_TRIGGER_UARTATX                    = 168,  //! TRIGGER UARTATX
+    DMA_TRIGGER_UARTBTX                    = 169,  //! TRIGGER UARTBTX
+    DMA_TRIGGER_UARTBRX                    = 170,  //! TRIGGER UARTBRX
+    DMA_TRIGGER_UARTCTX                    = 171,  //! TRIGGER UARTCTX
+    DMA_TRIGGER_UARTCRX                    = 172,  //! TRIGGER UARTCRX
+    DMA_TRIGGER_UARTDTX                    = 173,  //! TRIGGER UARTDTX
+    DMA_TRIGGER_UARTDRX                    = 174,  //! TRIGGER UARTDRX
+    DMA_TRIGGER_UARTETX                    = 175,  //! TRIGGER UARTETX
+    DMA_TRIGGER_UARTERX                    = 176,  //! TRIGGER UARTERX
+    DMA_TRIGGER_UARTFTX                    = 177,  //! TRIGGER UARTFTX
+    DMA_TRIGGER_UARTFRX                    = 178,  //! TRIGGER UARTFRX
+    DMA_TRIGGER_DTHE_SHA_DMA_S_CTXIN_REQ   = 179,  //! TRIGGER DTHE SHA DMA S CTXIN REQ
+    DMA_TRIGGER_DTHE_SHA_DMA_S_DATAIN_REQ  = 180,  //! TRIGGER DTHE SHA DMA S DATAIN REQ
+    DMA_TRIGGER_DTHE_SHA_DMA_S_CTXOUT_REQ  = 181,  //! TRIGGER DTHE SHA DMA S CTXOUT REQ
+    DMA_TRIGGER_DTHE_SHA_DMA_P_CTXIN_REQ   = 182,  //! TRIGGER DTHE SHA DMA P CTXIN REQ
+    DMA_TRIGGER_DTHE_SHA_DMA_P_DATAIN_REQ  = 183,  //! TRIGGER DTHE SHA DMA P DATAIN REQ
+    DMA_TRIGGER_DTHE_SHA_DMA_P_CTXOUT_REQ  = 184,  //! TRIGGER DTHE SHA DMA P CTXOUT REQ
+    DMA_TRIGGER_DTHE_AES_DMA_S_CTXIN_REQ   = 185,  //! TRIGGER DTHE AES DMA S CTXIN REQ
+    DMA_TRIGGER_DTHE_AES_DMA_S_DATAIN_REQ  = 186,  //! TRIGGER DTHE AES DMA S DATAIN REQ
+    DMA_TRIGGER_DTHE_AES_DMA_S_DATAOUT_REQ = 187,  //! TRIGGER DTHE AES DMA S DATAOUT REQ
+    DMA_TRIGGER_DTHE_AES_DMA_S_CTXOUT_REQ  = 188,  //! TRIGGER DTHE AES DMA S CTXOUT REQ
+    DMA_TRIGGER_DTHE_AES_DMA_P_CTXIN_REQ   = 189,  //! TRIGGER DTHE AES DMA P CTXIN REQ
+    DMA_TRIGGER_DTHE_AES_DMA_P_DATAIN_REQ  = 190,  //! TRIGGER DTHE AES DMA P DATAIN REQ
+    DMA_TRIGGER_DTHE_AES_DMA_P_DATAOUT_REQ = 191,  //! TRIGGER DTHE AES DMA P DATAOUT REQ
+    DMA_TRIGGER_DTHE_AES_DMA_P_CTXOUT_REQ  = 192,  //! TRIGGER DTHE AES DMA P CTXOUT REQ
+    DMA_TRIGGER_DTHE_SM3_CTXIN_REQ         = 193,  //! TRIGGER DTHE SM3 CTXIN REQ
+    DMA_TRIGGER_DTHE_SM3_DATAIN_REQ        = 194,  //! TRIGGER DTHE SM3 DATAIN REQ
+    DMA_TRIGGER_DTHE_SM3_CTXOUT_REQ        = 195,  //! TRIGGER DTHE SM3 CTXOUT REQ
+    DMA_TRIGGER_DTHE_SM4_CTXIN_REQ         = 196,  //! TRIGGER DTHE SM4 CTXIN REQ
+    DMA_TRIGGER_DTHE_SM4_DATAIN_REQ        = 197,  //! TRIGGER DTHE SM4 DATAIN REQ
+    DMA_TRIGGER_DTHE_SM4_DATAOUT_REQ       = 198,  //! TRIGGER DTHE SM4 DATAOUT REQ
+    DMA_TRIGGER_DTHE_SM4_CTXOUT_REQ        = 199,  //! TRIGGER DTHE SM4 CTXOUT REQ
+    DMA_TRIGGER_EPG                        = 200,  //! TRIGGER EPG
+    DMA_TRIGGER_SDFM1FLT1                  = 201,  //! TRIGGER SDFM1FLT1
+    DMA_TRIGGER_SDFM1FLT2                  = 202,  //! TRIGGER SDFM1FLT2
+    DMA_TRIGGER_SDFM1FLT3                  = 203,  //! TRIGGER SDFM1FLT3
+    DMA_TRIGGER_SDFM1FLT4                  = 204,  //! TRIGGER SDFM1FLT4
+    DMA_TRIGGER_SDFM2FLT1                  = 205,  //! TRIGGER SDFM2FLT1
+    DMA_TRIGGER_SDFM2FLT2                  = 206,  //! TRIGGER SDFM2FLT2
+    DMA_TRIGGER_SDFM2FLT3                  = 207,  //! TRIGGER SDFM2FLT3
+    DMA_TRIGGER_SDFM2FLT4                  = 208,  //! TRIGGER SDFM2FLT4
+    DMA_TRIGGER_SDFM3FLT1                  = 209,  //! TRIGGER SDFM3FLT1
+    DMA_TRIGGER_SDFM3FLT2                  = 210,  //! TRIGGER SDFM3FLT2
+    DMA_TRIGGER_SDFM3FLT3                  = 211,  //! TRIGGER SDFM3FLT3
+    DMA_TRIGGER_SDFM3FLT4                  = 212,  //! TRIGGER SDFM3FLT4
+    DMA_TRIGGER_SDFM4FLT1                  = 213,  //! TRIGGER SDFM4FLT1
+    DMA_TRIGGER_SDFM4FLT2                  = 214,  //! TRIGGER SDFM4FLT2
+    DMA_TRIGGER_SDFM4FLT3                  = 215,  //! TRIGGER SDFM4FLT3
+    DMA_TRIGGER_SDFM4FLT4                  = 216,  //! TRIGGER SDFM4FLT4
+    DMA_TRIGGER_SENT1                      = 217,  //! TRIGGER SENT1
+    DMA_TRIGGER_SENT2                      = 218,  //! TRIGGER SENT2
+    DMA_TRIGGER_SENT3                      = 219,  //! TRIGGER SENT3
+    DMA_TRIGGER_SENT4                      = 220,  //! TRIGGER SENT4
+    DMA_TRIGGER_SENT5                      = 221,  //! TRIGGER SENT5
+    DMA_TRIGGER_SENT6                      = 222,  //! TRIGGER SENT6
+    DMA_TRIGGER_WADI1                      = 223,  //! TRIGGER WADI1
+    DMA_TRIGGER_WADI2                      = 224,  //! TRIGGER WADI2
+    DMA_TRIGGER_RTDMA_CH1INT               = 240,  //! TRIGGER RTDMA CH1INT
+    DMA_TRIGGER_RTDMA_CH2INT               = 241,  //! TRIGGER RTDMA CH2INT
+    DMA_TRIGGER_RTDMA_CH3INT               = 242,  //! TRIGGER RTDMA CH3INT
+    DMA_TRIGGER_RTDMA_CH4INT               = 243,  //! TRIGGER RTDMA CH4INT
+    DMA_TRIGGER_RTDMA_CH5INT               = 244,  //! TRIGGER RTDMA CH5INT
+    DMA_TRIGGER_RTDMA_CH6INT               = 245,  //! TRIGGER RTDMA CH6INT
+    DMA_TRIGGER_RTDMA_CH7INT               = 246,  //! TRIGGER RTDMA CH7INT
+    DMA_TRIGGER_RTDMA_CH8INT               = 247,  //! TRIGGER RTDMA CH8INT
+    DMA_TRIGGER_RTDMA_CH9INT               = 248,  //! TRIGGER RTDMA CH9INT
+    DMA_TRIGGER_RTDMA_CH10INT              = 249   //! TRIGGER RTDMA CH10INT
 } DMA_Trigger;
-
 
 //*****************************************************************************
 //
@@ -352,7 +345,6 @@ typedef enum
     DMA_MPUR16 = 15
 } DMA_MPURegion;
 
-
 //*****************************************************************************
 //
 //! DMA channels
@@ -372,7 +364,6 @@ typedef enum
     DMA_CH10 = 10,
 } DMA_Channel;
 
-
 //*****************************************************************************
 //
 //! DMA channel prioritites
@@ -380,12 +371,11 @@ typedef enum
 //*****************************************************************************
 typedef enum
 {
-    DMA_CHPRIORITY0,    //! DMA channel has Priority 0.
-    DMA_CHPRIORITY1,    //! DMA channel has Priority 1.
-    DMA_CHPRIORITY2,    //! DMA channel has Priority 2.
-    DMA_CHPRIORITY3     //! DMA channel has Priority 3.
+    DMA_CHPRIORITY0,  //! DMA channel has Priority 0.
+    DMA_CHPRIORITY1,  //! DMA channel has Priority 1.
+    DMA_CHPRIORITY2,  //! DMA channel has Priority 2.
+    DMA_CHPRIORITY3   //! DMA channel has Priority 3.
 } DMA_ChannelPriority;
-
 
 //*****************************************************************************
 //
@@ -401,7 +391,6 @@ typedef enum
     DMA_INT_AT_END
 } DMA_InterruptMode;
 
-
 //*****************************************************************************
 //
 //! Values that can be passed to DMA_setEmulationMode() as the \e mode
@@ -415,7 +404,6 @@ typedef enum
     //! Continue DMA operation regardless of emulation suspend
     DMA_EMULATION_FREE_RUN
 } DMA_EmulationMode;
-
 
 //*****************************************************************************
 //
@@ -431,7 +419,6 @@ typedef enum
     DMA_PRIORITY_SOFTWARE_CONFIG
 } DMA_PriorityMode;
 
-
 //*****************************************************************************
 //
 //! Values that can be passed to DMA_setBurstMode() as the \e mode
@@ -441,11 +428,10 @@ typedef enum
 typedef enum
 {
     //! Burst signaling disabled. Last=First=1 though the burst (FIFOs)
-    DMA_BURST_SIGNALING_DISABLE  = 0U,
+    DMA_BURST_SIGNALING_DISABLE = 0U,
     //! Burst signaling enabled and can't be interrupted (can use with EMIF)
-    DMA_BURST_SIGNALING_ENABLE_NO_INT  = 2U,
+    DMA_BURST_SIGNALING_ENABLE_NO_INT = 2U,
 } DMA_BurstSignalingMode;
-
 
 //*****************************************************************************
 //
@@ -463,7 +449,6 @@ typedef enum
     DMA_MPU_READ_WRITE_ACCESS
 } DMA_MPUAccessPermission;
 
-
 //*****************************************************************************
 //
 //! Values that can be passed to DMA_configChannel() as the
@@ -472,40 +457,39 @@ typedef enum
 //*****************************************************************************
 typedef struct
 {
-    DMA_Trigger         transferTrigger;  //DMA transfer triggers
-    DMA_InterruptMode   interruptMode;    //Channel interrupt mode
-    bool                enableInterrupt;  //Enable/Disable interrupt mode
-    uint32_t            configSize;       //Data bus width (16 or 32 bits)
-    uint32_t            wrtDatasize;      //Size of write accesses
-    uint32_t            transferMode;     //Burst transfer mode
-    uint32_t            reinitMode;       //DMA reinitialization mode
-    uint32_t            channelPriority;  //Priority of the DMA channel
-    uint32_t            burstSize;      //Number of words transferred per burst
-    uint32_t            transferSize;   //Number of bursts per transfer
+    DMA_Trigger       transferTrigger;  // DMA transfer triggers
+    DMA_InterruptMode interruptMode;    // Channel interrupt mode
+    bool              enableInterrupt;  // Enable/Disable interrupt mode
+    uint32_t          configSize;       // Data bus width (16 or 32 bits)
+    uint32_t          wrtDatasize;      // Size of write accesses
+    uint32_t          transferMode;     // Burst transfer mode
+    uint32_t          reinitMode;       // DMA reinitialization mode
+    uint32_t          channelPriority;  // Priority of the DMA channel
+    uint32_t          burstSize;        // Number of words transferred per burst
+    uint32_t          transferSize;     // Number of bursts per transfer
     //! Number of bursts to be transferred before a wrap of the source address
     //! occurs.
-    uint32_t            srcWrapSize;
+    uint32_t          srcWrapSize;
     //! Number of bursts to be transferred before a wrap of the destination
     //! address occurs.
-    uint32_t            destWrapSize;
-    uint32_t            destAddr;         //destination address
-    uint32_t            srcAddr;          //source address
+    uint32_t          destWrapSize;
+    uint32_t          destAddr;  // destination address
+    uint32_t          srcAddr;   // source address
     //! Amount to inc or dec the source address after each word of a burst
-    int16_t             srcBurstStep;
+    int16_t           srcBurstStep;
     //! Amount to inc or dec the destination address after each word of a burst
-    int16_t             destBurstStep;
+    int16_t           destBurstStep;
     //! Amount to inc or dec the source address after each burst of a transfer
-    int16_t             srcTransferStep;
+    int16_t           srcTransferStep;
     //! Amount to inc or dec the destination address after each burst of a
     //! transfer
-    int16_t             destTransferStep;
+    int16_t           destTransferStep;
     //! Amount to inc or dec the source address when the wrap occurs
-    int16_t             srcWrapStep;
+    int16_t           srcWrapStep;
     //! Amount to inc or dec the destination address when the wrap occurs
-    int16_t             destWrapStep;
+    int16_t           destWrapStep;
 
 } DMA_ConfigParams;
-
 
 //*****************************************************************************
 //
@@ -520,17 +504,15 @@ typedef struct
 typedef struct
 {
     //! MPU region start address (granularity of 4KB)
-    uint32_t                 startAddr;
+    uint32_t                startAddr;
     //! MPU region end address (end of the 4KB granular region)
-    uint32_t                 endAddr;
+    uint32_t                endAddr;
     //! Enable/ disable specific channel accesses using channel mask bits. It
     //! can be OR of the DMA_MPU_CH(#)_ENABLE macros
-    uint16_t                 channelMask;
+    uint16_t                channelMask;
     //! Region access permissions
-    DMA_MPUAccessPermission  accessPermission;
+    DMA_MPUAccessPermission accessPermission;
 } DMA_MPUConfigParams;
-
-
 
 //*****************************************************************************
 //
@@ -551,64 +533,49 @@ typedef struct
 //
 //*****************************************************************************
 #ifdef DEBUG
-__attribute__((always_inline))
-static inline bool
-DMA_isBaseValid(uint32_t base)
+__attribute__((always_inline)) static inline bool DMA_isBaseValid(uint32_t base)
 {
     //
     // Check if the base address of the 2 RTDMA instance is valid
     //
-    return(
-           (base == RTDMA1_BASE) ||
-           (base == RTDMA2_BASE)
-          );
+    return ((base == RTDMA1_BASE) || (base == RTDMA2_BASE));
 }
 
-__attribute__((always_inline))
-static inline bool
-DMA_MPU_isBaseValid(uint32_t base)
+__attribute__((always_inline)) static inline bool DMA_MPU_isBaseValid(uint32_t base)
 {
     //
     // Check if the base address of the MPU registers is valid
     //
-    return(
-           (base == RTDMA1_MPU_BASE) ||
-           (base == RTDMA2_MPU_BASE)
-          );
+    return ((base == RTDMA1_MPU_BASE) || (base == RTDMA2_MPU_BASE));
 }
 
-__attribute__((always_inline))
-static inline bool
-DMA_CH_isBaseValid(uint32_t base)
+__attribute__((always_inline)) static inline bool DMA_CH_isBaseValid(uint32_t base)
 {
     //
     // Check if the base address of the DMA channel control registers is valid
     //
-    return(
-           ((base & BASE_ADDR_MASK) == RTDMA1CH1_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA1CH2_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA1CH3_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA1CH4_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA1CH5_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA1CH6_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA1CH7_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA1CH8_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA1CH9_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA1CH10_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH1_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH2_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH3_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH4_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH5_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH6_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH7_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH8_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH9_BASE_FRAME(0U)) ||
-           ((base & BASE_ADDR_MASK) == RTDMA2CH10_BASE_FRAME(0U))
-          );
+    return (((base & BASE_ADDR_MASK) == RTDMA1CH1_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA1CH2_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA1CH3_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA1CH4_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA1CH5_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA1CH6_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA1CH7_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA1CH8_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA1CH9_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA1CH10_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH1_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH2_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH3_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH4_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH5_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH6_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH7_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH8_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH9_BASE_FRAME(0U)) ||
+            ((base & BASE_ADDR_MASK) == RTDMA2CH10_BASE_FRAME(0U)));
 }
 #endif
-
 
 //*****************************************************************************
 //
@@ -623,9 +590,7 @@ DMA_CH_isBaseValid(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_initController")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_initController"))) __attribute__((always_inline)) static inline void
 DMA_initController(uint32_t base)
 {
     //
@@ -640,7 +605,6 @@ DMA_initController(uint32_t base)
     NOP;
 }
 
-
 //*****************************************************************************
 //
 //! Channel Soft Reset
@@ -652,9 +616,7 @@ DMA_initController(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_triggerSoftReset(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_triggerSoftReset(uint32_t base)
 {
     //
     // Check the arguments
@@ -664,10 +626,9 @@ DMA_triggerSoftReset(uint32_t base)
     //
     // Set the soft reset bit. One NOP is required after SOFTRESET
     //
-    HWREGB(base + RTDMA_O_CONTROL) = RTDMA_CONTROL_SOFTRESET;    // HWREGH
+    HWREGB(base + RTDMA_O_CONTROL) = RTDMA_CONTROL_SOFTRESET;  // HWREGH
     NOP;
 }
-
 
 //*****************************************************************************
 //
@@ -687,9 +648,7 @@ DMA_triggerSoftReset(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_setEmulationMode")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_setEmulationMode"))) __attribute__((always_inline)) static inline void
 DMA_setEmulationMode(uint32_t base, DMA_EmulationMode mode)
 {
     //
@@ -700,7 +659,7 @@ DMA_setEmulationMode(uint32_t base, DMA_EmulationMode mode)
     //
     // Set Emulation mode
     //
-    if(mode == DMA_EMULATION_STOP)
+    if (mode == DMA_EMULATION_STOP)
     {
         HWREGH(base + RTDMA_O_DEBUGCTRL) &= ~(uint16_t)RTDMA_DEBUGCTRL_FREE;
     }
@@ -709,7 +668,6 @@ DMA_setEmulationMode(uint32_t base, DMA_EmulationMode mode)
         HWREGH(base + RTDMA_O_DEBUGCTRL) |= (uint16_t)RTDMA_DEBUGCTRL_FREE;
     }
 }
-
 
 //*****************************************************************************
 //
@@ -729,9 +687,7 @@ DMA_setEmulationMode(uint32_t base, DMA_EmulationMode mode)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_setPriorityMode")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_setPriorityMode"))) __attribute__((always_inline)) static inline void
 DMA_setPriorityMode(uint32_t base, DMA_PriorityMode priorityMode)
 {
     //
@@ -742,7 +698,7 @@ DMA_setPriorityMode(uint32_t base, DMA_PriorityMode priorityMode)
     //
     // Set Priority mode
     //
-    if(priorityMode == DMA_PRIORITY_SOFTWARE_CONFIG)
+    if (priorityMode == DMA_PRIORITY_SOFTWARE_CONFIG)
     {
         HWREG(base + RTDMA_O_DMACTRL) |= RTDMA_DMACTRL_PRIORITYSEL;
     }
@@ -751,7 +707,6 @@ DMA_setPriorityMode(uint32_t base, DMA_PriorityMode priorityMode)
         HWREG(base + RTDMA_O_DMACTRL) &= ~RTDMA_DMACTRL_PRIORITYSEL;
     }
 }
-
 
 //*****************************************************************************
 //
@@ -768,30 +723,24 @@ DMA_setPriorityMode(uint32_t base, DMA_PriorityMode priorityMode)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_setChannelPriority")))
-__attribute__((always_inline))
-static inline void
-DMA_setChannelPriority(uint32_t base, DMA_Channel channel,
-                               DMA_ChannelPriority chPriority)
+__attribute__((section(".text.link2.DMA_setChannelPriority"))) __attribute__((always_inline)) static inline void
+DMA_setChannelPriority(uint32_t base, DMA_Channel channel, DMA_ChannelPriority chPriority)
 {
     //
     // Check the arguments
     //
     ASSERT(DMA_isBaseValid(base));
-    if((uint8_t)channel < 9U)
+    if ((uint8_t)channel < 9U)
     {
-        HWREG(base + RTDMA_O_SWPRI1) =  (HWREG(base + RTDMA_O_SWPRI1) &
-                    ~(0xFU << (4U * ((uint32_t)channel - 1U)))) |
-                    ((uint32_t)chPriority << (4U * ((uint32_t)channel - 1U)));
+        HWREG(base + RTDMA_O_SWPRI1) = (HWREG(base + RTDMA_O_SWPRI1) & ~(0xFU << (4U * ((uint32_t)channel - 1U)))) |
+                                       ((uint32_t)chPriority << (4U * ((uint32_t)channel - 1U)));
     }
     else
     {
-        HWREG(base + RTDMA_O_SWPRI2) =  (HWREG(base + RTDMA_O_SWPRI2) &
-                    ~(0xFU << (4U * ((uint32_t)channel - 9U)))) |
-                    ((uint32_t)chPriority << (4U * ((uint32_t)channel - 9U)));
+        HWREG(base + RTDMA_O_SWPRI2) = (HWREG(base + RTDMA_O_SWPRI2) & ~(0xFU << (4U * ((uint32_t)channel - 9U)))) |
+                                       ((uint32_t)chPriority << (4U * ((uint32_t)channel - 9U)));
     }
 }
-
 
 //*****************************************************************************
 //
@@ -810,9 +759,7 @@ DMA_setChannelPriority(uint32_t base, DMA_Channel channel,
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_resetPriority")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_resetPriority"))) __attribute__((always_inline)) static inline void
 DMA_resetPriority(uint32_t base)
 {
     //
@@ -826,7 +773,6 @@ DMA_resetPriority(uint32_t base)
     HWREGB(base + RTDMA_O_DMACTRL) = RTDMA_DMACTRL_PRIORITYRESET;
 }
 
-
 //*****************************************************************************
 //
 //! Enables peripherals to trigger a DMA transfer.
@@ -839,9 +785,7 @@ DMA_resetPriority(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_enableTrigger(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_enableTrigger(uint32_t base)
 {
     //
     // Check the arguments.
@@ -853,7 +797,6 @@ DMA_enableTrigger(uint32_t base)
     //
     HWREGH(base + RTDMA_O_MODE) |= RTDMA_MODE_PERINTE;
 }
-
 
 //*****************************************************************************
 //
@@ -868,9 +811,7 @@ DMA_enableTrigger(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_disableTrigger(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_disableTrigger(uint32_t base)
 {
     //
     // Check the arguments.
@@ -882,7 +823,6 @@ DMA_disableTrigger(uint32_t base)
     //
     HWREGH(base + RTDMA_O_MODE) &= ~RTDMA_MODE_PERINTE;
 }
-
 
 //*****************************************************************************
 //
@@ -897,9 +837,7 @@ DMA_disableTrigger(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_forceTrigger(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_forceTrigger(uint32_t base)
 {
     //
     // Check the arguments.
@@ -911,7 +849,6 @@ DMA_forceTrigger(uint32_t base)
     //
     HWREGB(base + RTDMA_O_CONTROL) = RTDMA_CONTROL_PERINTFRC;
 }
-
 
 //*****************************************************************************
 //
@@ -926,9 +863,7 @@ DMA_forceTrigger(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_clearTriggerFlag(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_clearTriggerFlag(uint32_t base)
 {
     //
     // Check the arguments.
@@ -940,7 +875,6 @@ DMA_clearTriggerFlag(uint32_t base)
     //
     HWREGB(base + RTDMA_O_CONTROL) = RTDMA_CONTROL_PERINTCLR;
 }
-
 
 //*****************************************************************************
 //
@@ -957,9 +891,7 @@ DMA_clearTriggerFlag(uint32_t base)
 //! \b false otherwise.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline bool
-DMA_getTransferStatusFlag(uint32_t base)
+__attribute__((always_inline)) static inline bool DMA_getTransferStatusFlag(uint32_t base)
 {
     //
     // Check the arguments.
@@ -969,9 +901,8 @@ DMA_getTransferStatusFlag(uint32_t base)
     //
     // Read the Transfer Status Flag and return appropriately.
     //
-    return((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_TRANSFERSTS) != 0U);
+    return ((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_TRANSFERSTS) != 0U);
 }
-
 
 //*****************************************************************************
 //
@@ -988,9 +919,7 @@ DMA_getTransferStatusFlag(uint32_t base)
 //! otherwise.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline bool
-DMA_getBurstStatusFlag(uint32_t base)
+__attribute__((always_inline)) static inline bool DMA_getBurstStatusFlag(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1000,9 +929,8 @@ DMA_getBurstStatusFlag(uint32_t base)
     //
     // Read the Burst Status Flag and return appropriately.
     //
-    return((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_BURSTSTS) != 0U);
+    return ((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_BURSTSTS) != 0U);
 }
-
 
 //*****************************************************************************
 //
@@ -1020,9 +948,7 @@ DMA_getBurstStatusFlag(uint32_t base)
 //! otherwise.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline bool
-DMA_getRunStatusFlag(uint32_t base)
+__attribute__((always_inline)) static inline bool DMA_getRunStatusFlag(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1032,9 +958,8 @@ DMA_getRunStatusFlag(uint32_t base)
     //
     // Read the Run Status Flag and return appropriately.
     //
-    return((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_RUNSTS) != 0U);
+    return ((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_RUNSTS) != 0U);
 }
-
 
 //*****************************************************************************
 //
@@ -1052,9 +977,7 @@ DMA_getRunStatusFlag(uint32_t base)
 //! otherwise.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline bool
-DMA_getOverflowFlag(uint32_t base)
+__attribute__((always_inline)) static inline bool DMA_getOverflowFlag(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1064,9 +987,8 @@ DMA_getOverflowFlag(uint32_t base)
     //
     // Read the Overflow Flag and return appropriately.
     //
-    return((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_OVRFLG) != 0U);
+    return ((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_OVRFLG) != 0U);
 }
-
 
 //*****************************************************************************
 //
@@ -1082,9 +1004,7 @@ DMA_getOverflowFlag(uint32_t base)
 //! flag is set. Returns \b false otherwise.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline bool
-DMA_getTriggerFlagStatus(uint32_t base)
+__attribute__((always_inline)) static inline bool DMA_getTriggerFlagStatus(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1094,9 +1014,8 @@ DMA_getTriggerFlagStatus(uint32_t base)
     //
     // Read the peripheral trigger flag and return appropriately.
     //
-    return((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_PERINTFLG) != 0U);
+    return ((HWREGH(base + RTDMA_O_CONTROL) & RTDMA_CONTROL_PERINTFLG) != 0U);
 }
-
 
 //*****************************************************************************
 //
@@ -1111,9 +1030,7 @@ DMA_getTriggerFlagStatus(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_startChannel(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_startChannel(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1125,7 +1042,6 @@ DMA_startChannel(uint32_t base)
     //
     HWREGB(base + RTDMA_O_CONTROL) = RTDMA_CONTROL_RUN;
 }
-
 
 //*****************************************************************************
 //
@@ -1139,9 +1055,7 @@ DMA_startChannel(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_stopChannel(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_stopChannel(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1153,7 +1067,6 @@ DMA_stopChannel(uint32_t base)
     //
     HWREGB(base + RTDMA_O_CONTROL) = RTDMA_CONTROL_HALT;
 }
-
 
 //*****************************************************************************
 //
@@ -1173,9 +1086,7 @@ DMA_stopChannel(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_setInterruptMode(uint32_t base, DMA_InterruptMode mode)
+__attribute__((always_inline)) static inline void DMA_setInterruptMode(uint32_t base, DMA_InterruptMode mode)
 {
     //
     // Check the arguments.
@@ -1185,7 +1096,7 @@ DMA_setInterruptMode(uint32_t base, DMA_InterruptMode mode)
     //
     // Write the selected interrupt generation mode to the register.
     //
-    if(mode == DMA_INT_AT_END)
+    if (mode == DMA_INT_AT_END)
     {
         HWREG(base + RTDMA_O_MODE) |= RTDMA_MODE_CHINTMODE;
     }
@@ -1194,7 +1105,6 @@ DMA_setInterruptMode(uint32_t base, DMA_InterruptMode mode)
         HWREG(base + RTDMA_O_MODE) &= ~RTDMA_MODE_CHINTMODE;
     }
 }
-
 
 //*****************************************************************************
 //
@@ -1207,9 +1117,7 @@ DMA_setInterruptMode(uint32_t base, DMA_InterruptMode mode)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_enableInterrupt(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_enableInterrupt(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1222,7 +1130,6 @@ DMA_enableInterrupt(uint32_t base)
     HWREG(base + RTDMA_O_MODE) |= RTDMA_MODE_CHINTE;
 }
 
-
 //*****************************************************************************
 //
 //! Disables a DMA channel interrupt source.
@@ -1234,9 +1141,7 @@ DMA_enableInterrupt(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_disableInterrupt(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_disableInterrupt(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1248,7 +1153,6 @@ DMA_disableInterrupt(uint32_t base)
     //
     HWREG(base + RTDMA_O_MODE) &= ~RTDMA_MODE_CHINTE;
 }
-
 
 //*****************************************************************************
 //
@@ -1263,9 +1167,7 @@ DMA_disableInterrupt(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_lockDMAConfig")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_lockDMAConfig"))) __attribute__((always_inline)) static inline void
 DMA_lockDMAConfig(uint32_t base)
 {
     //
@@ -1278,7 +1180,6 @@ DMA_lockDMAConfig(uint32_t base)
     //
     HWREGB(base + RTDMA_O_DMACFG_LOCK) = RTDMA_DMACFG_LOCK_LOCK;
 }
-
 
 //*****************************************************************************
 //
@@ -1293,9 +1194,7 @@ DMA_lockDMAConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_unlockDMAConfig")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_unlockDMAConfig"))) __attribute__((always_inline)) static inline void
 DMA_unlockDMAConfig(uint32_t base)
 {
     //
@@ -1309,7 +1208,6 @@ DMA_unlockDMAConfig(uint32_t base)
     HWREGB(base + RTDMA_O_DMACFG_LOCK) = 0U;
 }
 
-
 //*****************************************************************************
 //
 //! Commits the DMA configuration registers
@@ -1322,9 +1220,7 @@ DMA_unlockDMAConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_commitDMAConfig")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_commitDMAConfig"))) __attribute__((always_inline)) static inline void
 DMA_commitDMAConfig(uint32_t base)
 {
     //
@@ -1337,7 +1233,6 @@ DMA_commitDMAConfig(uint32_t base)
     //
     HWREGB(base + RTDMA_O_DMACFG_COMMIT) = RTDMA_DMACFG_COMMIT_COMMIT;
 }
-
 
 //*****************************************************************************
 //
@@ -1358,9 +1253,7 @@ DMA_commitDMAConfig(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_enableOverrunInterrupt(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_enableOverrunInterrupt(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1372,7 +1265,6 @@ DMA_enableOverrunInterrupt(uint32_t base)
     //
     HWREGH(base + RTDMA_O_MODE) |= RTDMA_MODE_OVRINTE;
 }
-
 
 //*****************************************************************************
 //
@@ -1386,9 +1278,7 @@ DMA_enableOverrunInterrupt(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_disableOverrunInterrupt(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_disableOverrunInterrupt(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1400,7 +1290,6 @@ DMA_disableOverrunInterrupt(uint32_t base)
     //
     HWREGH(base + RTDMA_O_MODE) &= ~(uint16_t)RTDMA_MODE_OVRINTE;
 }
-
 
 //*****************************************************************************
 //
@@ -1414,9 +1303,7 @@ DMA_disableOverrunInterrupt(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_clearErrorFlag(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_clearErrorFlag(uint32_t base)
 {
     //
     // Check the arguments
@@ -1428,7 +1315,6 @@ DMA_clearErrorFlag(uint32_t base)
     //
     HWREGB(base + RTDMA_O_CONTROL) = RTDMA_CONTROL_ERRCLR;
 }
-
 
 //*****************************************************************************
 //
@@ -1442,9 +1328,7 @@ DMA_clearErrorFlag(uint32_t base)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_configSourceAddress(uint32_t base, const void *srcAddr)
+__attribute__((always_inline)) static inline void DMA_configSourceAddress(uint32_t base, const void *srcAddr)
 {
     //
     // Check the arguments.
@@ -1458,7 +1342,6 @@ DMA_configSourceAddress(uint32_t base, const void *srcAddr)
     HWREG(base + RTDMA_O_SRC_ADDR_SHADOW)     = (uint32_t)srcAddr;
 }
 
-
 //*****************************************************************************
 //
 //! Configures the destination address for the DMA channel
@@ -1471,9 +1354,7 @@ DMA_configSourceAddress(uint32_t base, const void *srcAddr)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_configDestAddress(uint32_t base, const void *destAddr)
+__attribute__((always_inline)) static inline void DMA_configDestAddress(uint32_t base, const void *destAddr)
 {
     //
     // Check the arguments.
@@ -1486,7 +1367,6 @@ DMA_configDestAddress(uint32_t base, const void *destAddr)
     HWREG(base + RTDMA_O_DST_BEG_ADDR_SHADOW) = (uint32_t)destAddr;
     HWREG(base + RTDMA_O_DST_ADDR_SHADOW)     = (uint32_t)destAddr;
 }
-
 
 //*****************************************************************************
 //
@@ -1502,9 +1382,7 @@ DMA_configDestAddress(uint32_t base, const void *destAddr)
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_setBurstSignalingMode(uint32_t base, DMA_BurstSignalingMode mode)
+__attribute__((always_inline)) static inline void DMA_setBurstSignalingMode(uint32_t base, DMA_BurstSignalingMode mode)
 {
     //
     // Check the arguments
@@ -1515,9 +1393,7 @@ DMA_setBurstSignalingMode(uint32_t base, DMA_BurstSignalingMode mode)
     // Configure the Burst mode operation
     //
     HWREGB(base + RTDMA_O_BURST_INTF_CTRL) = (uint8_t)mode;
-
 }
-
 
 //*****************************************************************************
 //
@@ -1534,16 +1410,14 @@ DMA_setBurstSignalingMode(uint32_t base, DMA_BurstSignalingMode mode)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_lockAllChannelConfig(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_lockAllChannelConfig(uint32_t base)
 {
     //
     // Check the arguments
     //
     ASSERT(DMA_CH_isBaseValid(base));
 
-    uint8_t i;
+    uint8_t  i;
     uint32_t base_ch;
 
     for (i = 0U; i < (uint8_t)DMA_TOTAL_CH; i++)
@@ -1556,7 +1430,6 @@ DMA_lockAllChannelConfig(uint32_t base)
         HWREGB(base_ch + RTDMA_O_CHCFG_LOCK) = RTDMA_CHCFG_LOCK_LOCK;
     }
 }
-
 
 //*****************************************************************************
 //
@@ -1573,16 +1446,14 @@ DMA_lockAllChannelConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_unlockAllChannelConfig(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_unlockAllChannelConfig(uint32_t base)
 {
     //
     // Check the arguments
     //
     ASSERT((base == RTDMA1CH1_BASE) || (base == RTDMA2CH1_BASE));
 
-    uint8_t i;
+    uint8_t  i;
     uint32_t base_ch;
 
     for (i = 0U; i < (uint8_t)DMA_TOTAL_CH; i++)
@@ -1597,7 +1468,6 @@ DMA_unlockAllChannelConfig(uint32_t base)
     }
 }
 
-
 //*****************************************************************************
 //
 //! Commits the channel configuration registers of all DMA channels
@@ -1611,9 +1481,7 @@ DMA_unlockAllChannelConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_commitAllChannelConfig(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_commitAllChannelConfig(uint32_t base)
 {
     //
     // Check the arguments
@@ -1635,7 +1503,6 @@ DMA_commitAllChannelConfig(uint32_t base)
     }
 }
 
-
 //*****************************************************************************
 //
 //! Locks the DMA channel configuration registers
@@ -1651,9 +1518,7 @@ DMA_commitAllChannelConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_lockChannelConfig(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_lockChannelConfig(uint32_t base)
 {
     //
     // Check the arguments.
@@ -1665,7 +1530,6 @@ DMA_lockChannelConfig(uint32_t base)
     //
     HWREGB(base + RTDMA_O_CHCFG_LOCK) = RTDMA_CHCFG_LOCK_LOCK;
 }
-
 
 //*****************************************************************************
 //
@@ -1682,9 +1546,7 @@ DMA_lockChannelConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_unlockChannelConfig(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_unlockChannelConfig(uint32_t base)
 {
     //
     // Check the arguments
@@ -1696,7 +1558,6 @@ DMA_unlockChannelConfig(uint32_t base)
     //
     HWREGB(base + RTDMA_O_CHCFG_LOCK) = 0U;
 }
-
 
 //*****************************************************************************
 //
@@ -1710,9 +1571,7 @@ DMA_unlockChannelConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((always_inline))
-static inline void
-DMA_commitChannelConfig(uint32_t base)
+__attribute__((always_inline)) static inline void DMA_commitChannelConfig(uint32_t base)
 {
     //
     // Check the arguments
@@ -1725,7 +1584,6 @@ DMA_commitChannelConfig(uint32_t base)
     HWREGB(base + RTDMA_O_CHCFG_COMMIT) = RTDMA_CHCFG_COMMIT_COMMIT;
 }
 
-
 //*****************************************************************************
 //
 //! Enables the MPU function
@@ -1737,10 +1595,8 @@ DMA_commitChannelConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_enableMPU")))
-__attribute__((always_inline))
-static inline void
-DMA_enableMPU(uint32_t base)
+__attribute__((section(".text.link2.DMA_enableMPU"))) __attribute__((always_inline)) static inline void DMA_enableMPU(
+    uint32_t base)
 {
     //
     // Check the arguments.
@@ -1753,7 +1609,6 @@ DMA_enableMPU(uint32_t base)
     HWREGB(base + RTDMA_O_MPUCTRL) |= RTDMA_MPUCTRL_MPUEN;
 }
 
-
 //*****************************************************************************
 //
 //! Disables the MPU function
@@ -1765,10 +1620,8 @@ DMA_enableMPU(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_disableMPU")))
-__attribute__((always_inline))
-static inline void
-DMA_disableMPU(uint32_t base)
+__attribute__((section(".text.link2.DMA_disableMPU"))) __attribute__((always_inline)) static inline void DMA_disableMPU(
+    uint32_t base)
 {
     //
     // Check the arguments.
@@ -1780,7 +1633,6 @@ DMA_disableMPU(uint32_t base)
     //
     HWREGB(base + RTDMA_O_MPUCTRL) &= ~RTDMA_MPUCTRL_MPUEN;
 }
-
 
 //*****************************************************************************
 //
@@ -1794,9 +1646,7 @@ DMA_disableMPU(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_lockMPUConfig")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_lockMPUConfig"))) __attribute__((always_inline)) static inline void
 DMA_lockMPUConfig(uint32_t base)
 {
     //
@@ -1810,7 +1660,6 @@ DMA_lockMPUConfig(uint32_t base)
     HWREGB(base + RTDMA_O_MPUCFG_LOCK) = RTDMA_MPUCFG_LOCK_LOCK;
 }
 
-
 //*****************************************************************************
 //
 //! Unlocks the MPU configuration register
@@ -1823,9 +1672,7 @@ DMA_lockMPUConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_unlockMPUConfig")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_unlockMPUConfig"))) __attribute__((always_inline)) static inline void
 DMA_unlockMPUConfig(uint32_t base)
 {
     //
@@ -1839,7 +1686,6 @@ DMA_unlockMPUConfig(uint32_t base)
     HWREGB(base + RTDMA_O_MPUCFG_LOCK) = 0U;
 }
 
-
 //*****************************************************************************
 //
 //! Commits the MPU configuration register.
@@ -1852,9 +1698,7 @@ DMA_unlockMPUConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_commitMPUConfig")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_commitMPUConfig"))) __attribute__((always_inline)) static inline void
 DMA_commitMPUConfig(uint32_t base)
 {
     //
@@ -1867,7 +1711,6 @@ DMA_commitMPUConfig(uint32_t base)
     //
     HWREGB(base + RTDMA_O_MPUCFG_COMMIT) = RTDMA_MPUCFG_COMMIT_COMMIT;
 }
-
 
 //*****************************************************************************
 //
@@ -1882,9 +1725,7 @@ DMA_commitMPUConfig(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_lockAllMPURegion")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_lockAllMPURegion"))) __attribute__((always_inline)) static inline void
 DMA_lockAllMPURegion(uint32_t base)
 {
     //
@@ -1903,7 +1744,6 @@ DMA_lockAllMPURegion(uint32_t base)
     }
 }
 
-
 //*****************************************************************************
 //
 //! Unlocks the registers of all MPU regions
@@ -1916,9 +1756,7 @@ DMA_lockAllMPURegion(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_unlockAllMPURegion")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_unlockAllMPURegion"))) __attribute__((always_inline)) static inline void
 DMA_unlockAllMPURegion(uint32_t base)
 {
     //
@@ -1929,14 +1767,12 @@ DMA_unlockAllMPURegion(uint32_t base)
 
     for (i = 0U; i < (uint8_t)DMA_TOTAL_MPU; i++)
     {
-
         //
         // Unlock the MPU configuration
         //
         HWREGB(base + RTDMA_O_MPUR_LOCK(i)) = 0U;
     }
 }
-
 
 //*****************************************************************************
 //
@@ -1951,9 +1787,7 @@ DMA_unlockAllMPURegion(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_commitAllMPURegion")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_commitAllMPURegion"))) __attribute__((always_inline)) static inline void
 DMA_commitAllMPURegion(uint32_t base)
 {
     //
@@ -1972,7 +1806,6 @@ DMA_commitAllMPURegion(uint32_t base)
     }
 }
 
-
 //*****************************************************************************
 //
 //! Locks the registers of an MPU region.
@@ -1987,9 +1820,7 @@ DMA_commitAllMPURegion(uint32_t base)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_lockMPURegion")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_lockMPURegion"))) __attribute__((always_inline)) static inline void
 DMA_lockMPURegion(uint32_t base, DMA_MPURegion MPURegion)
 {
     //
@@ -2002,7 +1833,6 @@ DMA_lockMPURegion(uint32_t base, DMA_MPURegion MPURegion)
     //
     HWREGB(base + RTDMA_O_MPUR_LOCK((uint32_t)MPURegion)) = 1U;
 }
-
 
 //*****************************************************************************
 //
@@ -2017,9 +1847,7 @@ DMA_lockMPURegion(uint32_t base, DMA_MPURegion MPURegion)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_unlockMPURegion")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_unlockMPURegion"))) __attribute__((always_inline)) static inline void
 DMA_unlockMPURegion(uint32_t base, DMA_MPURegion MPURegion)
 {
     //
@@ -2032,7 +1860,6 @@ DMA_unlockMPURegion(uint32_t base, DMA_MPURegion MPURegion)
     //
     HWREGB(base + RTDMA_O_MPUR_LOCK((uint32_t)MPURegion)) = 0U;
 }
-
 
 //*****************************************************************************
 //
@@ -2047,9 +1874,7 @@ DMA_unlockMPURegion(uint32_t base, DMA_MPURegion MPURegion)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_commitMPURegion")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_commitMPURegion"))) __attribute__((always_inline)) static inline void
 DMA_commitMPURegion(uint32_t base, DMA_MPURegion MPURegion)
 {
     //
@@ -2063,7 +1888,6 @@ DMA_commitMPURegion(uint32_t base, DMA_MPURegion MPURegion)
     HWREGB(base + RTDMA_O_MPUR_COMMIT((uint32_t)MPURegion)) = 1U;
 }
 
-
 //*****************************************************************************
 //
 //! Commits all the DMA module configurations including the DMA configuration
@@ -2076,9 +1900,7 @@ DMA_commitMPURegion(uint32_t base, DMA_MPURegion MPURegion)
 //! \return None
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_commitAllDMASettings")))
-__attribute__((always_inline))
-static inline void
+__attribute__((section(".text.link2.DMA_commitAllDMASettings"))) __attribute__((always_inline)) static inline void
 DMA_commitAllDMASettings(void)
 {
     //
@@ -2087,7 +1909,7 @@ DMA_commitAllDMASettings(void)
     HWREGB(RTDMA1_BASE + RTDMA_O_DMACFG_COMMIT) = 0x1U;
     HWREGB(RTDMA2_BASE + RTDMA_O_DMACFG_COMMIT) = 0x1U;
 
-    uint8_t i;
+    uint8_t  i;
     uint32_t base;
 
     for (i = 0U; i < (uint8_t)DMA_TOTAL_CH; i++)
@@ -2133,7 +1955,6 @@ DMA_commitAllDMASettings(void)
     }
 }
 
-
 //*****************************************************************************
 //
 //! Setup DMA to transfer data on the specified channel.
@@ -2147,9 +1968,7 @@ DMA_commitAllDMASettings(void)
 //! \return None.
 //
 //*****************************************************************************
-extern void
-DMA_configChannel(uint32_t base, const DMA_ConfigParams *transfParams);
-
+extern void DMA_configChannel(uint32_t base, const DMA_ConfigParams *transfParams);
 
 //*****************************************************************************
 //
@@ -2165,9 +1984,7 @@ DMA_configChannel(uint32_t base, const DMA_ConfigParams *transfParams);
 //! \return None.
 //
 //*****************************************************************************
-extern void
-DMA_configAddresses(uint32_t base, const void *destAddr, const void *srcAddr);
-
+extern void DMA_configAddresses(uint32_t base, const void *destAddr, const void *srcAddr);
 
 //*****************************************************************************
 //
@@ -2196,10 +2013,7 @@ DMA_configAddresses(uint32_t base, const void *destAddr, const void *srcAddr);
 //! \return None.
 //
 //*****************************************************************************
-extern void
-DMA_configBurst(uint32_t base, uint16_t size, int16_t srcStep,
-                            int16_t destStep);
-
+extern void DMA_configBurst(uint32_t base, uint16_t size, int16_t srcStep, int16_t destStep);
 
 //*****************************************************************************
 //
@@ -2231,10 +2045,7 @@ DMA_configBurst(uint32_t base, uint16_t size, int16_t srcStep,
 //! \return None.
 //
 //*****************************************************************************
-extern void
-DMA_configTransfer(uint32_t base, uint32_t transferSize, int16_t srcStep,
-                   int16_t destStep);
-
+extern void DMA_configTransfer(uint32_t base, uint32_t transferSize, int16_t srcStep, int16_t destStep);
 
 //*****************************************************************************
 //
@@ -2266,10 +2077,8 @@ DMA_configTransfer(uint32_t base, uint32_t transferSize, int16_t srcStep,
 //! \return None.
 //
 //*****************************************************************************
-extern void
-DMA_configWrap(uint32_t base, uint32_t srcWrapSize, int16_t srcStep,
-               uint32_t destWrapSize, int16_t destStep);
-
+extern void DMA_configWrap(uint32_t base, uint32_t srcWrapSize, int16_t srcStep, uint32_t destWrapSize,
+                           int16_t destStep);
 
 //*****************************************************************************
 //
@@ -2307,9 +2116,7 @@ DMA_configWrap(uint32_t base, uint32_t srcWrapSize, int16_t srcStep,
 //! \return None.
 //
 //*****************************************************************************
-extern void
-DMA_configMode(uint32_t base, DMA_Trigger trigger, uint32_t config);
-
+extern void DMA_configMode(uint32_t base, DMA_Trigger trigger, uint32_t config);
 
 //*****************************************************************************
 //
@@ -2324,10 +2131,8 @@ DMA_configMode(uint32_t base, DMA_Trigger trigger, uint32_t config);
 //! \return None.
 //
 //*****************************************************************************
-__attribute__((section(".text.link2.DMA_configMPURegion")))
-extern void
-DMA_configMPURegion(uint32_t base, DMA_MPURegion MPURegion,
-                    const DMA_MPUConfigParams *configParams);
+__attribute__((section(".text.link2.DMA_configMPURegion"))) extern void DMA_configMPURegion(
+    uint32_t base, DMA_MPURegion MPURegion, const DMA_MPUConfigParams *configParams);
 
 //*****************************************************************************
 //
@@ -2335,7 +2140,6 @@ DMA_configMPURegion(uint32_t base, DMA_MPURegion MPURegion,
 //! @}
 //
 //*****************************************************************************
-
 
 //*****************************************************************************
 //
@@ -2346,4 +2150,4 @@ DMA_configMPURegion(uint32_t base, DMA_MPURegion MPURegion,
 }
 #endif
 
-#endif // RTDMA_H
+#endif  // RTDMA_H

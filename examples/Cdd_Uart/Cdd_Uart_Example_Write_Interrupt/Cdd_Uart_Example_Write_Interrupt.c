@@ -120,10 +120,11 @@ int main(void)
         'r', 'u', 'm',  'e', 'n', 't',  's', ' ', '\n', 'H', 'e', 'l',  'l', 'o', 'W',  'o', 'r', 'l',  'd', ' ', 'T',
         'e', 'x', 'a',  's', ' ', 'I',  'n', 's', 't',  'r', 'u', 'm',  'e', 'n', 't',  's', ' ', '\n'};
     uint32 uartWriteSize[CDD_UART_EXAMPLE_WRITE_INTERRUPT_NUM_TESTS] = {1U, 2U, 3U, 4U, 6U, 8U, 50U, 100U, 200U, 270U};
-    VAR(McalLib_TickType, MCAL_LIB_DATA) startCount   = (McalLib_TickType)0U;
-    VAR(McalLib_TickType, MCAL_LIB_DATA) elapsedCount = (McalLib_TickType)0U;
+    VAR(McalLib_TickType, MCAL_LIB_DATA) startCount                  = (McalLib_TickType)0U;
+    VAR(McalLib_TickType, MCAL_LIB_DATA) elapsedCount                = (McalLib_TickType)0U;
     Cdd_Uart_WriteStatusType writeStatus;
-    VAR(McalLib_TickType, MCAL_LIB_DATA) uarttimeout   = (McalLib_TickType)26041U;/*in Us for 115200 bdrate and size 300*/
+    VAR(McalLib_TickType, MCAL_LIB_DATA)
+    uarttimeout = (McalLib_TickType)26041U; /*in Us for 115200 bdrate and size 300*/
     VAR(McalLib_TickType, MCAL_LIB_DATA) timerTickCount = (McalLib_TickType)0U;
 
     DeviceSupport_Init();
@@ -146,7 +147,6 @@ int main(void)
 
     for (cycle = 0U; cycle < CDD_UART_EXAMPLE_WRITE_INTERRUPT_NUM_TEST_CYCLE; cycle++)
     {
-
         for (testNum = 0U; testNum < CDD_UART_EXAMPLE_WRITE_INTERRUPT_NUM_TESTS; testNum++)
         {
             /* Write data - Non blocking (Async) call */
@@ -185,7 +185,6 @@ int main(void)
             /* Get write status */
             (void)Cdd_Uart_GetWriteStatus(CddUartConf_CddUartConfigSet_CddUartConfig_0, &writeStatus);
         } while (E_NOT_OK == writeStatus.Cdd_Uart_BusyStatus);
-
     }
     /* CDD UART DeInit */
     Cdd_Uart_Deinit();

@@ -613,9 +613,10 @@ LOCAL_INLINE void Spi_FifoWrite16(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(Spi_Cha
 }
 
 /* Design: MCAL-28314 */
-LOCAL_INLINE uint8 *Spi_FifoRead8(VAR(uint32, AUTOMATIC) baseAddr, P2VAR(uint8, AUTOMATIC, SPI_CODE) bufPtr,
-                                  VAR(uint32, AUTOMATIC) numWordsToRead, VAR(uint16, AUTOMATIC) dataWidthBitMask,
-                                  VAR(uint16, AUTOMATIC) curRxWords)
+LOCAL_INLINE volatile uint8 *Spi_FifoRead8(VAR(uint32, AUTOMATIC) baseAddr,
+                                           volatile P2VAR(uint8, AUTOMATIC, SPI_CODE) bufPtr,
+                                           VAR(uint32, AUTOMATIC) numWordsToRead,
+                                           VAR(uint16, AUTOMATIC) dataWidthBitMask, VAR(uint16, AUTOMATIC) curRxWords)
 {
     VAR(uint16, AUTOMATIC) rxData;
     VAR(uint32, AUTOMATIC) i;
@@ -878,7 +879,7 @@ Spi_HwUnitInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
 
     /* Configure Emulation soft run*/
     McalLib_RegBitSet16(hwUnitObj->baseAddr + SPI_O_PRI, SPI_PRI_SOFT);
-    
+
     hwUnitObj->hwUnitDemState = E_OK;
 
     return;
@@ -1184,7 +1185,7 @@ static FUNC(void, SPI_CODE) Spi_ScheduleJob(P2VAR(Spi_JobObjType, AUTOMATIC, SPI
            null pointer check, As channel object  is initialized before it's usage channel object
            can't be null pointer in any case.Hence these lines can't be covered */
         {
-           /* Do Nothing */
+            /* Do Nothing */
         }
         /* TI_COVERAGE_GAP_STOP */
         else
@@ -1501,7 +1502,8 @@ static FUNC(Spi_JobResultType, SPI_CODE) Spi_TransferJob(P2VAR(Spi_HwUnitObjType
                 if (SPI_CFG_TIMEOUT_CLOCK_CYCLES <= elapsedCount)
                 {
                     jobResult = SPI_JOB_FAILED;
-                    (void)Det_ReportRuntimeError(SPI_MODULE_ID, SPI_INSTANCE_ID, SPI_SID_SYNC_TRANSMIT, SPI_E_SEQ_TIMEOUT);
+                    (void)Det_ReportRuntimeError(SPI_MODULE_ID, SPI_INSTANCE_ID, SPI_SID_SYNC_TRANSMIT,
+                                                 SPI_E_SEQ_TIMEOUT);
                     break;
                 }
                 else
@@ -1585,7 +1587,7 @@ LOCAL_INLINE FUNC(void, SPI_CODE)
 {
     P2VAR(uint8, AUTOMATIC, SPI_CODE) rxBufferPtr8;
     P2VAR(uint16, AUTOMATIC, SPI_CODE) rxBufferPtr16;
-    VAR(uint16, AUTOMATIC) rxData;
+    volatile VAR(uint16, AUTOMATIC) rxData;
     if (NULL_PTR != chObj->curRxBufPtr)
     {
         if (SPI_8BIT_BUFFER == chObj->bufWidth)
@@ -1782,7 +1784,7 @@ Spi_ProcessChCompletion(P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj,
            null pointer check, As channel object  is initialized before it's usage channel object
            can't be null pointer in any case.Hence these lines can't be covered */
         {
-           /* Do Nothing */
+            /* Do Nothing */
         }
         /* TI_COVERAGE_GAP_STOP */
         else
@@ -2505,7 +2507,7 @@ Spi_PrivInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
         Spi_HwUnitInit(Spi_DrvObj, &(Spi_DrvObj->hwUnitObj[index]));
     }
     /* Initialize driver status and object */
-    Spi_DrvStatus = SPI_IDLE;
+    Spi_DrvStatus    = SPI_IDLE;
     Spi_DriverObjPtr = Spi_DrvObj;
 }
 /* Design: MCAL-28346 */

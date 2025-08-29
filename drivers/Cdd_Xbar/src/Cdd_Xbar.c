@@ -1041,7 +1041,8 @@ Cdd_Xbar_OutInvBeforeLatch(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit, VAR(boole
         if (CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
             Cdd_Xbar_OutputInvLatch(
-                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine, &Selection);
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
+                &Selection);
         }
     }
 
@@ -1709,9 +1710,9 @@ static FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_Input_Xbar_Init_Priv(void)
         else if ((E_OK != Cdd_Xbar_Type_Input_Valid_Firstgroup(CddXbarConf_CddXbarInputXbar,
                                                                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].inputLine,
                                                                CDD_XBAR_SID_INIT)) ||
-                 (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(CddXbarConf_CddXbarInputXbar,
-                                                                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].inputLine,
-                                                                CDD_XBAR_SID_INIT)))
+                 (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(
+                              CddXbarConf_CddXbarInputXbar, &Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[config].inputLine,
+                              CDD_XBAR_SID_INIT)))
         {
             /* This function will throw DET for invalid inputs */
         }
@@ -1771,12 +1772,12 @@ static FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_Output_Priv(VAR(uint8, AUTOMATIC) conf
     for (input = 0U; input < Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].input_count; input++)
     {
 #if (STD_ON == CDD_XBAR_DEV_ERROR_DETECT)
-        if ((E_OK != Cdd_Xbar_Type_Input_Valid_Firstgroup(CddXbarConf_CddXbarOutputXbar,
-                                                          &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].inputLine[input],
-                                                          CDD_XBAR_SID_INIT)) ||
+        if ((E_OK != Cdd_Xbar_Type_Input_Valid_Firstgroup(
+                         CddXbarConf_CddXbarOutputXbar,
+                         &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].inputLine[input], CDD_XBAR_SID_INIT)) ||
             (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(
-                         CddXbarConf_CddXbarOutputXbar, &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].inputLine[input],
-                         CDD_XBAR_SID_INIT)))
+                         CddXbarConf_CddXbarOutputXbar,
+                         &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].inputLine[input], CDD_XBAR_SID_INIT)))
         {
             /* This function will throw DET for invalid inputs */
         }
@@ -1855,12 +1856,12 @@ static FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_Epwm_Priv(VAR(uint8, AUTOMATIC) config
     for (input = 0U; input < Cdd_Xbar_ConfigPtr->Cdd_Xbar_EpwmCfg[config].input_count; input++)
     {
 #if (STD_ON == CDD_XBAR_DEV_ERROR_DETECT)
-        if ((E_OK != Cdd_Xbar_Type_Input_Valid_Firstgroup(CddXbarConf_CddXbarEpwmXbar,
-                                                          &Cdd_Xbar_ConfigPtr->Cdd_Xbar_EpwmCfg[config].inputLine[input],
-                                                          CDD_XBAR_SID_INIT)) ||
-            (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(CddXbarConf_CddXbarEpwmXbar,
-                                                           &Cdd_Xbar_ConfigPtr->Cdd_Xbar_EpwmCfg[config].inputLine[input],
-                                                           CDD_XBAR_SID_INIT)))
+        if ((E_OK != Cdd_Xbar_Type_Input_Valid_Firstgroup(
+                         CddXbarConf_CddXbarEpwmXbar, &Cdd_Xbar_ConfigPtr->Cdd_Xbar_EpwmCfg[config].inputLine[input],
+                         CDD_XBAR_SID_INIT)) ||
+            (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(
+                         CddXbarConf_CddXbarEpwmXbar, &Cdd_Xbar_ConfigPtr->Cdd_Xbar_EpwmCfg[config].inputLine[input],
+                         CDD_XBAR_SID_INIT)))
         {
             /* This function will throw DET for invalid inputs */
         }
@@ -1915,9 +1916,9 @@ static FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_Clb_Priv(VAR(uint8, AUTOMATIC) config)
         if ((E_OK != Cdd_Xbar_Type_Input_Valid_Firstgroup(CddXbarConf_CddXbarClbXbar,
                                                           &Cdd_Xbar_ConfigPtr->Cdd_Xbar_ClbCfg[config].inputLine[input],
                                                           CDD_XBAR_SID_INIT)) ||
-            (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(CddXbarConf_CddXbarClbXbar,
-                                                           &Cdd_Xbar_ConfigPtr->Cdd_Xbar_ClbCfg[config].inputLine[input],
-                                                           CDD_XBAR_SID_INIT)))
+            (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(
+                         CddXbarConf_CddXbarClbXbar, &Cdd_Xbar_ConfigPtr->Cdd_Xbar_ClbCfg[config].inputLine[input],
+                         CDD_XBAR_SID_INIT)))
         {
             /* This function will throw DET for invalid inputs */
         }
@@ -1969,12 +1970,12 @@ static FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_Mindb_Priv(VAR(uint8, AUTOMATIC) confi
     for (input = 0U; input < Cdd_Xbar_ConfigPtr->Cdd_Xbar_MindbCfg[config].input_count; input++)
     {
 #if (STD_ON == CDD_XBAR_DEV_ERROR_DETECT)
-        if ((E_OK != Cdd_Xbar_Type_Input_Valid_Firstgroup(CddXbarConf_CddXbarMindbXbar,
-                                                          &Cdd_Xbar_ConfigPtr->Cdd_Xbar_MindbCfg[config].inputLine[input],
-                                                          CDD_XBAR_SID_INIT)) ||
-            (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(CddXbarConf_CddXbarMindbXbar,
-                                                           &Cdd_Xbar_ConfigPtr->Cdd_Xbar_MindbCfg[config].inputLine[input],
-                                                           CDD_XBAR_SID_INIT)))
+        if ((E_OK != Cdd_Xbar_Type_Input_Valid_Firstgroup(
+                         CddXbarConf_CddXbarMindbXbar, &Cdd_Xbar_ConfigPtr->Cdd_Xbar_MindbCfg[config].inputLine[input],
+                         CDD_XBAR_SID_INIT)) ||
+            (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(
+                         CddXbarConf_CddXbarMindbXbar, &Cdd_Xbar_ConfigPtr->Cdd_Xbar_MindbCfg[config].inputLine[input],
+                         CDD_XBAR_SID_INIT)))
         {
             /* This function will throw DET for invalid inputs */
         }
@@ -2029,9 +2030,9 @@ static FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_Icl_Priv(VAR(uint8, AUTOMATIC) config)
         if ((E_OK != Cdd_Xbar_Type_Input_Valid_Firstgroup(CddXbarConf_CddXbarIclXbar,
                                                           &Cdd_Xbar_ConfigPtr->Cdd_Xbar_IclCfg[config].inputLine[input],
                                                           CDD_XBAR_SID_INIT)) ||
-            (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(CddXbarConf_CddXbarIclXbar,
-                                                           &Cdd_Xbar_ConfigPtr->Cdd_Xbar_IclCfg[config].inputLine[input],
-                                                           CDD_XBAR_SID_INIT)))
+            (E_OK != Cdd_Xbar_Type_Input_Valid_Secondgroup(
+                         CddXbarConf_CddXbarIclXbar, &Cdd_Xbar_ConfigPtr->Cdd_Xbar_IclCfg[config].inputLine[input],
+                         CDD_XBAR_SID_INIT)))
         {
             /* This function will throw DET for invalid inputs */
         }
@@ -2073,8 +2074,9 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
     {
         if (CDD_XBAR_INPUT_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
-            Cdd_Xbar_InSelect(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].inputSelect,
-                              &InputLine, Selection);
+            Cdd_Xbar_InSelect(
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_InputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].inputSelect,
+                &InputLine, Selection);
             retval = E_OK;
         }
     }
@@ -2106,8 +2108,8 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
         if (CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
             Cdd_Xbar_OutSelect(
-                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine, &InputLine,
-                Selection);
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
+                &InputLine, Selection);
             retval = E_OK;
         }
     }
@@ -2138,8 +2140,9 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
     {
         if (CDD_XBAR_EPWM_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
-            Cdd_Xbar_EpwmSelect(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_EpwmCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
-                                &InputLine, Selection);
+            Cdd_Xbar_EpwmSelect(
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_EpwmCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine, &InputLine,
+                Selection);
             retval = E_OK;
         }
     }
@@ -2170,8 +2173,9 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
     {
         if (CDD_XBAR_CLB_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
-            Cdd_Xbar_ClbSelect(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_ClbCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
-                               &InputLine, Selection);
+            Cdd_Xbar_ClbSelect(
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_ClbCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine, &InputLine,
+                Selection);
             retval = E_OK;
         }
     }
@@ -2202,8 +2206,9 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
     {
         if (CDD_XBAR_MINDB_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
-            Cdd_Xbar_MdlSelect(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_MindbCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
-                               &InputLine, Selection);
+            Cdd_Xbar_MdlSelect(
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_MindbCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine, &InputLine,
+                Selection);
             retval = E_OK;
         }
     }
@@ -2234,8 +2239,9 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
     {
         if (CDD_XBAR_ICL_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
-            Cdd_Xbar_IclSelect(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_IclCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
-                               &InputLine, Selection);
+            Cdd_Xbar_IclSelect(
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_IclCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine, &InputLine,
+                Selection);
             retval = E_OK;
         }
     }
@@ -2267,7 +2273,8 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
         if (CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
             Cdd_Xbar_OutOutputInvert(
-                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine, &Selection);
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
+                &Selection);
             retval = E_OK;
         }
     }
@@ -2363,7 +2370,8 @@ static FUNC(Std_ReturnType, CDD_XBAR_CODE)
         if (CDD_XBAR_MINDB_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
             Cdd_Xbar_MdlOutputInvert(
-                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_MindbCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine, &Selection);
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_MindbCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
+                &Selection);
             retval = E_OK;
         }
     }

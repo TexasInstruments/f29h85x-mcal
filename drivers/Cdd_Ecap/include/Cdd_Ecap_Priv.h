@@ -22,7 +22,6 @@
 #ifndef CDD_ECAP_PRIV_H
 #define CDD_ECAP_PRIV_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -606,7 +605,6 @@ Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 baseAddr, uint32 timestamp, float32 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* CDD_ECAP_PRIV_H */
 /*********************************************************************************************************************

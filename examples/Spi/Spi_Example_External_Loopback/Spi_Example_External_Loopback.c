@@ -22,7 +22,8 @@
  *
  *  Note:        Note that when runing this example on SOM board, please note that the S2 POCI switch on the XDS110
  *               board should be set to OFF.
- *               For FLASH configuration, this example is run in FLASH BANKMODE2, where CPU3 has access to FLASH (FRI-2). 
+ *               For FLASH configuration, this example is run in FLASH BANKMODE2, where CPU3 has access to FLASH
+ (FRI-2).
  *               Refer to the Flash Plugin documentation to know about changing FLASH BANKMODEs and more.
  *
  *  When using CCS for debugging this Multi-core example, after launching the

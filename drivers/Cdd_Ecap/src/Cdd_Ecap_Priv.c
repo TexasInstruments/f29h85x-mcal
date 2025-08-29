@@ -550,7 +550,7 @@ void Cdd_Ecap_HRCAP_forceCalibrationFlags(uint32 baseAddr, uint16 flags)
 
 void Cdd_Ecap_HRCAP_setCalibrationPeriod(uint32 baseAddr, uint32 sysclkHz)
 {
-    HWREG(baseAddr + ECAP_O_HRCALPRD) = (sysclkHz * 1600000000U) / 1000U;
+    HWREG(baseAddr + ECAP_O_HRCALPRD) = (sysclkHz * 1600000U);
     return;
 }
 
@@ -915,7 +915,7 @@ static FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_Timestamp_ISRProcess(Cdd_Ecap_ChannelT
 /*******************************************************************************
  *   Function Name : Cdd_Ecap_ChannelISR
  ******************************************************************************/
-/*! 
+/*!
  *  \brief Interrupt Subroutine for Notification
  *
  *  \details Function is called from interrupt level

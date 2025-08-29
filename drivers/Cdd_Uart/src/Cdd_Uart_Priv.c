@@ -503,15 +503,13 @@ static FUNC(void, CDD_UART_CODE)
     Cdd_Uart_CfgBrd(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj)
 {
     uint32 uartBaseAddr = UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_BaseAddr;
-    uint32 uartFbrDiv = UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_BaudRateCfg;
-
+    uint32 uartFbrDiv   = UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_BaudRateCfg;
 
     /* Baudrate configuration */
     if (UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_HighSpeedEnable == TRUE)
     {
         /* Enable high speed mode */
         HWREG(uartBaseAddr + UART_O_CTL) |= UART_CTL_HSE;
-
     }
     else
     {

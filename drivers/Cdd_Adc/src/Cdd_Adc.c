@@ -103,12 +103,13 @@ P2CONST(Cdd_Adc_ConfigType, AUTOMATIC, CDD_ADC_CONST) Cdd_Adc_CfgPtr = NULL_PTR;
  * \pre None
  * \post None
  * \return None
- * \retval None 
+ * \retval None
  *
  *********************************************************************************************************************/
-static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_BufferPtrDetCheck(VAR(Cdd_Adc_GroupType,AUTOMATIC) Group,\
-    P2CONST(Cdd_Adc_ValueGroupType, AUTOMATIC, CDD_ADC_DATA) DataBufferPtr,VAR(uint8,AUTOMATIC) ApiId);
-
+static FUNC(Std_ReturnType, CDD_ADC_CODE)
+    Cdd_Adc_BufferPtrDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
+                              P2CONST(Cdd_Adc_ValueGroupType, AUTOMATIC, CDD_ADC_DATA) DataBufferPtr,
+                              VAR(uint8, AUTOMATIC) ApiId);
 
 #if (STD_ON == CDD_ADC_ENABLE_START_STOP_GROUP_API)
 /** \brief This function detects det errors in the Cdd_Adc_StartGroupConversion & Cdd_Adc_StopGroupConversion APIs
@@ -120,13 +121,12 @@ static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_BufferPtrDetCheck(VAR(Cdd_Adc_G
  * \pre None
  * \post None
  * \return None
- * \retval None 
+ * \retval None
  *
  *********************************************************************************************************************/
-static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_SwGrpConvDetCheck(VAR(Cdd_Adc_GroupType,AUTOMATIC) Group,\
-                                                                    VAR(uint8,AUTOMATIC) ApiId);
+static FUNC(Std_ReturnType, CDD_ADC_CODE)
+    Cdd_Adc_SwGrpConvDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group, VAR(uint8, AUTOMATIC) ApiId);
 #endif
-
 
 #if (CDD_ADC_HW_TRIGGER_API == STD_ON)
 
@@ -139,11 +139,11 @@ static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_SwGrpConvDetCheck(VAR(Cdd_Adc_G
  * \pre None
  * \post None
  * \return None
- * \retval None 
+ * \retval None
  *
  *********************************************************************************************************************/
-static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_HwGrpConvDetCheck(VAR(Cdd_Adc_GroupType,AUTOMATIC) Group,\
-                                                                    VAR(uint8,AUTOMATIC) ApiId);
+static FUNC(Std_ReturnType, CDD_ADC_CODE)
+    Cdd_Adc_HwGrpConvDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group, VAR(uint8, AUTOMATIC) ApiId);
 
 /** \brief This function detects det errors in the Cdd_Adc_EnableHardwareTrigger API
  *
@@ -153,10 +153,10 @@ static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_HwGrpConvDetCheck(VAR(Cdd_Adc_G
  * \pre None
  * \post None
  * \return None
- * \retval None 
+ * \retval None
  *
  *********************************************************************************************************************/
-static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_HwGrpDetErrCheck(VAR(Cdd_Adc_GroupType,AUTOMATIC) Group);
+static FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_HwGrpDetErrCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group);
 #endif
 
 /** \brief This function detects det errors in the Cdd_Adc_GetStreamLastPointer API
@@ -172,9 +172,9 @@ static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_HwGrpDetErrCheck(VAR(Cdd_Adc_Gr
  * \retval  E_NOT_OK: operation failed or development error occured
  *
  *********************************************************************************************************************/
-static FUNC(Std_ReturnType, CDD_ADC_CODE) 
-Cdd_Adc_GetStreamPtrDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,\
-                                        P2VAR(Cdd_Adc_ValueGroupType, AUTOMATIC, CDD_ADC_DATA) *PtrToSamplePtr);
+static FUNC(Std_ReturnType, CDD_ADC_CODE)
+    Cdd_Adc_GetStreamPtrDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
+                                 P2VAR(Cdd_Adc_ValueGroupType, AUTOMATIC, CDD_ADC_DATA) * PtrToSamplePtr);
 #endif
 
 /*********************************************************************************************************************
@@ -183,26 +183,29 @@ Cdd_Adc_GetStreamPtrDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,\
 
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
 static FUNC(Std_ReturnType, CDD_ADC_CODE)
-Cdd_Adc_GetStreamPtrDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,\
-                                        P2VAR(Cdd_Adc_ValueGroupType, AUTOMATIC, CDD_ADC_DATA) *PtrToSamplePtr)
+    Cdd_Adc_GetStreamPtrDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
+                                 P2VAR(Cdd_Adc_ValueGroupType, AUTOMATIC, CDD_ADC_DATA) * PtrToSamplePtr)
 {
     Std_ReturnType return_value = E_NOT_OK;
-    if (FALSE == Cdd_Adc_IsInitialized) {
-        *PtrToSamplePtr = (Cdd_Adc_ValueGroupType*)NULL_PTR;
+    if (FALSE == Cdd_Adc_IsInitialized)
+    {
+        *PtrToSamplePtr = (Cdd_Adc_ValueGroupType *)NULL_PTR;
         /* Report DET error if the driver is uninitialized */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID,
-                              CDD_ADC_SID_GET_STREAM_LAST_POINTER, CDD_ADC_E_UNINIT);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_STREAM_LAST_POINTER,
+                              CDD_ADC_E_UNINIT);
     }
-    else if (Group >= CDD_ADC_GROUP_CNT) {
-        *PtrToSamplePtr = (Cdd_Adc_ValueGroupType*)NULL_PTR;
+    else if (Group >= CDD_ADC_GROUP_CNT)
+    {
+        *PtrToSamplePtr = (Cdd_Adc_ValueGroupType *)NULL_PTR;
         /* Report DET error if the group ID doesn't exist */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID,
-                              CDD_ADC_SID_GET_STREAM_LAST_POINTER, CDD_ADC_E_PARAM_GROUP);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_STREAM_LAST_POINTER,
+                              CDD_ADC_E_PARAM_GROUP);
     }
-    else if (PtrToSamplePtr == NULL_PTR) {
+    else if (PtrToSamplePtr == NULL_PTR)
+    {
         /* Report DET error if the PtrToSamplePtr is NULL_PTR */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID,
-                              CDD_ADC_SID_GET_STREAM_LAST_POINTER, CDD_ADC_E_PARAM_POINTER);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_STREAM_LAST_POINTER,
+                              CDD_ADC_E_PARAM_POINTER);
     }
     else
     {
@@ -211,24 +214,26 @@ Cdd_Adc_GetStreamPtrDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,\
     return return_value;
 }
 
-static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_BufferPtrDetCheck(VAR(Cdd_Adc_GroupType,AUTOMATIC) Group,\
-    P2CONST(Cdd_Adc_ValueGroupType, AUTOMATIC, CDD_ADC_DATA) DataBufferPtr,VAR(uint8,AUTOMATIC) ApiId)
+static FUNC(Std_ReturnType, CDD_ADC_CODE)
+    Cdd_Adc_BufferPtrDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
+                              P2CONST(Cdd_Adc_ValueGroupType, AUTOMATIC, CDD_ADC_DATA) DataBufferPtr,
+                              VAR(uint8, AUTOMATIC) ApiId)
 {
     Std_ReturnType return_value = E_NOT_OK;
     if (FALSE == Cdd_Adc_IsInitialized)
     {
         /* Report DET error if the driver not initialised */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,ApiId,CDD_ADC_E_UNINIT);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, ApiId, CDD_ADC_E_UNINIT);
     }
     else if (Group >= CDD_ADC_GROUP_CNT)
     {
         /* Report DET error if the group ID doesn't exist */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,ApiId,CDD_ADC_E_PARAM_GROUP);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, ApiId, CDD_ADC_E_PARAM_GROUP);
     }
     else if (NULL_PTR == DataBufferPtr)
     {
         /* Report DET error if data buffer pointer is NULL */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,ApiId,CDD_ADC_E_PARAM_POINTER);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, ApiId, CDD_ADC_E_PARAM_POINTER);
     }
     else
     {
@@ -237,26 +242,25 @@ static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_BufferPtrDetCheck(VAR(Cdd_Adc_G
     return return_value;
 }
 
-
 #if (STD_ON == CDD_ADC_ENABLE_START_STOP_GROUP_API)
-static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_SwGrpConvDetCheck(VAR(Cdd_Adc_GroupType,AUTOMATIC) Group,\
-                                                                    VAR(uint8,AUTOMATIC) ApiId)
+static FUNC(Std_ReturnType, CDD_ADC_CODE)
+    Cdd_Adc_SwGrpConvDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group, VAR(uint8, AUTOMATIC) ApiId)
 {
     Std_ReturnType return_value = E_NOT_OK;
     if (FALSE == Cdd_Adc_IsInitialized)
     {
         /* Report DET error if the driver not initialised before calling Cdd_Adc_StartGroupConversion */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,ApiId,CDD_ADC_E_UNINIT);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, ApiId, CDD_ADC_E_UNINIT);
     }
     else if (Group >= CDD_ADC_GROUP_CNT)
     {
         /* Report DET error if the group ID doesn't exist */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,ApiId,CDD_ADC_E_PARAM_GROUP); 
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, ApiId, CDD_ADC_E_PARAM_GROUP);
     }
     else if (CDD_ADC_TRIGG_SRC_HW == Cdd_Adc_CfgPtr->groupcfg[Group].trigsrc_type)
     {
         /* Report DET when Cdd_Adc_StartGroupConversion is called on a group with hardware trigger source */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,ApiId,CDD_ADC_E_WRONG_TRIGG_SRC);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, ApiId, CDD_ADC_E_WRONG_TRIGG_SRC);
     }
     else
     {
@@ -268,24 +272,24 @@ static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_SwGrpConvDetCheck(VAR(Cdd_Adc_G
 
 #if (CDD_ADC_HW_TRIGGER_API == STD_ON)
 
-static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_HwGrpConvDetCheck(VAR(Cdd_Adc_GroupType,AUTOMATIC) Group,\
-                                                                    VAR(uint8,AUTOMATIC) ApiId)
+static FUNC(Std_ReturnType, CDD_ADC_CODE)
+    Cdd_Adc_HwGrpConvDetCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group, VAR(uint8, AUTOMATIC) ApiId)
 {
     Std_ReturnType return_value = E_NOT_OK;
     if (FALSE == Cdd_Adc_IsInitialized)
     {
         /* Report DET error if the driver not initialised */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,ApiId,CDD_ADC_E_UNINIT);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, ApiId, CDD_ADC_E_UNINIT);
     }
     else if (Group >= CDD_ADC_GROUP_CNT)
     {
         /* Report DET error if the group ID doesn't exist */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,ApiId,CDD_ADC_E_PARAM_GROUP);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, ApiId, CDD_ADC_E_PARAM_GROUP);
     }
     else if (CDD_ADC_TRIGG_SRC_SW == Cdd_Adc_CfgPtr->groupcfg[Group].trigsrc_type)
     {
         /* Report DET error if trigger source is wrong*/
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,ApiId,CDD_ADC_E_WRONG_TRIGG_SRC);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, ApiId, CDD_ADC_E_WRONG_TRIGG_SRC);
     }
     else
     {
@@ -294,20 +298,20 @@ static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_HwGrpConvDetCheck(VAR(Cdd_Adc_G
     return return_value;
 }
 
-static FUNC(Std_ReturnType,CDD_ADC_CODE) Cdd_Adc_HwGrpDetErrCheck(VAR(Cdd_Adc_GroupType,AUTOMATIC) Group)
+static FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_HwGrpDetErrCheck(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group)
 {
     Std_ReturnType return_value = E_NOT_OK;
     if (CDD_ADC_CONV_MODE_CONTINUOUS == Cdd_Adc_CfgPtr->groupcfg[Group].conversion_mode)
     {
         /* Report DET error if trigger source is wrong*/
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,CDD_ADC_SID_ENABLE_HARDWARE_TRIGGER,\
-                                CDD_ADC_E_WRONG_CONV_MODE);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_ENABLE_HARDWARE_TRIGGER,
+                              CDD_ADC_E_WRONG_CONV_MODE);
     }
     else if (Cdd_Adc_DrvObj.group_obj[Group].resbuffer == NULL_PTR)
     {
         /* Report DET error if result buffer is NULL when Cdd_Adc_EnableHardwareTrigger is called*/
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,CDD_ADC_SID_ENABLE_HARDWARE_TRIGGER,\
-                                CDD_ADC_E_BUFFER_UNINIT); 
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_ENABLE_HARDWARE_TRIGGER,
+                              CDD_ADC_E_BUFFER_UNINIT);
     }
     else
     {
@@ -334,27 +338,27 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_Init(P2CONST(Cdd_Adc_ConfigType, AUTOMATIC, CDD
         /* Report Det error if the driver is already initialized */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_INIT, CDD_ADC_E_ALREADY_INITIALIZED);
     }
-    #if(STD_ON == CDD_ADC_PRE_COMPILE_VARIANT)
+#if (STD_ON == CDD_ADC_PRE_COMPILE_VARIANT)
     else if (CfgPtr != NULL_PTR)
     {
         /* Report Det error if the passed configuration pointer is not NULL_PTR */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_INIT, CDD_ADC_E_PARAM_POINTER);
     }
-    #else
+#else
     else if (CfgPtr == NULL_PTR)
     {
         /* Report Det error if the passed configuration pointer is not NULL_PTR */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_INIT, CDD_ADC_E_PARAM_POINTER);
     }
-    #endif /* #if(STD_ON == CDD_ADC_PRE_COMPILE_VARIANT) */
+#endif /* #if(STD_ON == CDD_ADC_PRE_COMPILE_VARIANT) */
     else
 #endif
     {
-        #if(STD_ON == CDD_ADC_PRE_COMPILE_VARIANT)
-            Cdd_Adc_CfgPtr = &CDD_ADC_CONFIG_PC;
-        #else
-            Cdd_Adc_CfgPtr = CfgPtr;
-        #endif /* #if(STD_ON == CDD_ADC_PRE_COMPILE_VARIANT) */
+#if (STD_ON == CDD_ADC_PRE_COMPILE_VARIANT)
+        Cdd_Adc_CfgPtr = &CDD_ADC_CONFIG_PC;
+#else
+        Cdd_Adc_CfgPtr = CfgPtr;
+#endif /* #if(STD_ON == CDD_ADC_PRE_COMPILE_VARIANT) */
 
         Cdd_Adc_SetDrvObj(&Cdd_Adc_DrvObj, Cdd_Adc_CfgPtr);
         /* Initialize the driver object */
@@ -373,10 +377,10 @@ Cdd_Adc_SetupResultBuffer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
     Std_ReturnType return_val = E_NOT_OK;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     /* Check the return values of DET error check function */
-    Std_ReturnType det_returnval = Cdd_Adc_BufferPtrDetCheck(Group,DataBufferPtr,CDD_ADC_SID_SETUP_RESULT_BUFFER);
+    Std_ReturnType det_returnval = Cdd_Adc_BufferPtrDetCheck(Group, DataBufferPtr, CDD_ADC_SID_SETUP_RESULT_BUFFER);
 
     /* If no det error is reported then configure the result buffer pointer */
-    if(det_returnval == E_OK)
+    if (det_returnval == E_OK)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -391,7 +395,7 @@ Cdd_Adc_SetupResultBuffer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
             /* Set the result buffer pointer */
             Cdd_Adc_DrvObj.group_obj[Group].resbuffer = DataBufferPtr;
             Cdd_Adc_DrvObj.group_obj[Group].cur_resultptr =
-                (Cdd_Adc_ValueGroupType*)(Cdd_Adc_DrvObj.group_obj[Group].resbuffer);
+                (Cdd_Adc_ValueGroupType *)(Cdd_Adc_DrvObj.group_obj[Group].resbuffer);
             return_val = E_OK;
         }
         SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -451,25 +455,26 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DeInit(void)
 
 /* Design: MCAL-31316 */
 #if (STD_ON == CDD_ADC_ENABLE_START_STOP_GROUP_API)
-/* 
+/*
  * Design: MCAL-31186,MCAL-31185,MCAL-31184,MCAL-31183,MCAL-31182,MCAL-31181,MCAL-31180,MCAL-31179,
- * MCAL-31178,MCAL-31177 
+ * MCAL-31178,MCAL-31177
  */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGroupConversion(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group)
 {
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-    Std_ReturnType return_value = Cdd_Adc_SwGrpConvDetCheck(Group,CDD_ADC_SID_START_GROUP_CONVERSION);
+    Std_ReturnType return_value = Cdd_Adc_SwGrpConvDetCheck(Group, CDD_ADC_SID_START_GROUP_CONVERSION);
 
-    if ((E_OK == return_value) && (Cdd_Adc_DrvObj.group_obj[Group].resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR)) ) {
+    if ((E_OK == return_value) && (Cdd_Adc_DrvObj.group_obj[Group].resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR)))
+    {
         /* Report DET error if result buffer is NULL when Cdd_Adc_StartGroupConversion is called*/
-        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID,
-                              CDD_ADC_SID_START_GROUP_CONVERSION, CDD_ADC_E_BUFFER_UNINIT);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GROUP_CONVERSION,
+                              CDD_ADC_E_BUFFER_UNINIT);
         /* Update the DET error check return value */
         return_value = E_NOT_OK;
     }
 
     /* When no DET errors are reported */
-    if(E_OK == return_value)
+    if (E_OK == return_value)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -492,16 +497,16 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGroupConversion(VAR(Cdd_Adc_GroupType, AUT
     }
 }
 
-/* 
+/*
   Design: MCAL-31196,MCAL-31195,MCAL-31194,MCAL-31193,MCAL-31192,MCAL-31191,MCAL-31190,MCAL-31189,
-  MCAL-31188,MCAL-31187 
+  MCAL-31188,MCAL-31187
  */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroupConversion(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group)
 {
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-    Std_ReturnType return_value = Cdd_Adc_SwGrpConvDetCheck(Group,CDD_ADC_SID_STOP_GROUP_CONVERSION);
+    Std_ReturnType return_value = Cdd_Adc_SwGrpConvDetCheck(Group, CDD_ADC_SID_STOP_GROUP_CONVERSION);
 
-    if(E_OK == return_value)
+    if (E_OK == return_value)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -540,8 +545,7 @@ Cdd_Adc_StartGlobalSwTrig(VAR(Cdd_Adc_GlbTrigType, AUTOMATIC) GlbSwTrig)
     if (FALSE == Cdd_Adc_IsInitialized)
     {
         /* Report DET error if the driver is uninitialized */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GLBSW_TRIG,
-                              CDD_ADC_E_UNINIT);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GLBSW_TRIG, CDD_ADC_E_UNINIT);
     }
     else if (GlbSwTrig >= CDD_ADC_GLBSW_TRIG_CNT)
     {
@@ -556,7 +560,8 @@ Cdd_Adc_StartGlobalSwTrig(VAR(Cdd_Adc_GlbTrigType, AUTOMATIC) GlbSwTrig)
         return_val = Cdd_Adc_CheckGlbTrig(GlbSwTrig);
 
         /* Corresponding errors are reported in Cdd_Adc_CheckGlbTrig function in case of return_val =  E_NOT_OK */
-        if (return_val == E_OK) {
+        if (return_val == E_OK)
+        {
             /* Trigger the global software trigger for the configured hardware units if no errors
              * are reported. */
             Cdd_Adc_StartGlbTrig(GlbSwTrig);
@@ -569,8 +574,8 @@ Cdd_Adc_StartGlobalSwTrig(VAR(Cdd_Adc_GlbTrigType, AUTOMATIC) GlbSwTrig)
 /* Design: MCAL-31296,MCAL-31295,MCAL-31294 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlobalSwTrig(VAR(Cdd_Adc_GlbTrigType, AUTOMATIC) GlbSwTrig)
 {
-    Std_ReturnType return_val = E_NOT_OK;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
+    Std_ReturnType return_val = E_NOT_OK;
     if (FALSE == Cdd_Adc_IsInitialized)
     {
         /* Report DET error if the driver is uninitialized */
@@ -588,7 +593,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlobalSwTrig(VAR(Cdd_Adc_GlbTrigType, AUTOM
     }
 
     /* When no det errors are reported */
-    if(E_OK == return_val)
+    if (E_OK == return_val)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -615,14 +620,14 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGlobalSwTrig(VAR(Cdd_Adc_GlbTrigType, AUTOM
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_EnableHardwareTrigger(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group)
 {
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-    Std_ReturnType return_value = Cdd_Adc_HwGrpConvDetCheck(Group,CDD_ADC_SID_ENABLE_HARDWARE_TRIGGER);
+    Std_ReturnType return_value = Cdd_Adc_HwGrpConvDetCheck(Group, CDD_ADC_SID_ENABLE_HARDWARE_TRIGGER);
 
-    if(E_OK == return_value)
+    if (E_OK == return_value)
     {
         return_value = Cdd_Adc_HwGrpDetErrCheck(Group);
     }
 
-    if(E_OK == return_value)
+    if (E_OK == return_value)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -648,17 +653,17 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_DisableHardwareTrigger(VAR(Cdd_Adc_GroupType, A
 {
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = E_NOT_OK;
-    return_value = Cdd_Adc_HwGrpConvDetCheck(Group,CDD_ADC_SID_DISABLE_HARDWARE_TRIGGER);
+    return_value                = Cdd_Adc_HwGrpConvDetCheck(Group, CDD_ADC_SID_DISABLE_HARDWARE_TRIGGER);
 
     if ((E_OK == return_value) && (CDD_ADC_CONV_MODE_CONTINUOUS == Cdd_Adc_CfgPtr->groupcfg[Group].conversion_mode))
     {
         /* Report DET error if trigger source is wrong*/
-        (void)Det_ReportError(CDD_ADC_MODULE_ID,CDD_ADC_INSTANCE_ID,CDD_ADC_SID_DISABLE_HARDWARE_TRIGGER,\
-                                CDD_ADC_E_WRONG_CONV_MODE);
-        return_value =  E_NOT_OK;
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_DISABLE_HARDWARE_TRIGGER,
+                              CDD_ADC_E_WRONG_CONV_MODE);
+        return_value = E_NOT_OK;
     }
-    
-    if(E_OK == return_value)
+
+    if (E_OK == return_value)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -704,7 +709,7 @@ FUNC(Cdd_Adc_StatusType, CDD_ADC_CODE) Cdd_Adc_GetGroupStatus(VAR(Cdd_Adc_GroupT
         SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
     return group_status;
-} 
+}
 
 #if (STD_ON == CDD_ADC_READ_GROUP_API)
 
@@ -715,8 +720,8 @@ Cdd_Adc_ReadGroup(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
 {
     Std_ReturnType return_val = E_NOT_OK;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-    Std_ReturnType det_retval = Cdd_Adc_BufferPtrDetCheck(Group,DataBufferPtr,CDD_ADC_SID_READ_GROUP);
-    if(E_OK == det_retval)
+    Std_ReturnType det_retval = Cdd_Adc_BufferPtrDetCheck(Group, DataBufferPtr, CDD_ADC_SID_READ_GROUP);
+    if (E_OK == det_retval)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -821,10 +826,10 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
     Cdd_Adc_StreamNumSampleType num_samples = 0U;
     Cdd_Adc_StatusType          grp_status;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-    Std_ReturnType return_val = Cdd_Adc_GetStreamPtrDetCheck(Group,PtrToSamplePtr);
+    Std_ReturnType return_val = Cdd_Adc_GetStreamPtrDetCheck(Group, PtrToSamplePtr);
 
     /* If no det error is reported */
-    if(E_OK == return_val)
+    if (E_OK == return_val)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -839,7 +844,7 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
         }
         else if ((grp_status == CDD_ADC_IDLE) && (Cdd_Adc_DrvObj.group_obj[Group].valid_samples == 0U))
         {
-            *PtrToSamplePtr = (Cdd_Adc_ValueGroupType*)NULL_PTR;
+            *PtrToSamplePtr = (Cdd_Adc_ValueGroupType *)NULL_PTR;
             /* Report DET error if the ADC is IDLE and no results are available from previous
              * conversions */
             (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_STREAM_LAST_POINTER,
@@ -849,7 +854,7 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
         {
             /* If group status id IDLE or BUSY then return 0(valid samples) and set the
              * PtrToSamplePtr to NULL_PTR */
-            *PtrToSamplePtr = (Cdd_Adc_ValueGroupType*)NULL_PTR;
+            *PtrToSamplePtr = (Cdd_Adc_ValueGroupType *)NULL_PTR;
         }
         SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
@@ -877,19 +882,19 @@ Cdd_Adc_SetResolution(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
     else if (HwUnit >= CDD_ADC_HW_CNT)
     {
         /* Report DET error if the specified hardware unit ID doesn't exist */
-        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SET_RESOLUTION,CDD_ADC_E_INVALID_ID);
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SET_RESOLUTION, CDD_ADC_E_INVALID_ID);
     }
-    else if(CDD_ADC_RESOLUTION_NONE <= Resolution)
+    else if (CDD_ADC_RESOLUTION_NONE <= Resolution)
     {
         /* Report DET error if the specified hardware unit ID doesn't exist */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SET_RESOLUTION,
-                                                                        CDD_ADC_E_INVALID_RESOLUTION);
+                              CDD_ADC_E_INVALID_RESOLUTION);
     }
     else
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
-        return_value = Cdd_Adc_UpdateResolution(HwUnit,Resolution);
+        return_value = Cdd_Adc_UpdateResolution(HwUnit, Resolution);
         SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
     return return_value;
@@ -904,7 +909,8 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartResultChecker(VAR(Cdd_Adc_CheckerType, AUT
     uint32 base_addr = 0U;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = E_NOT_OK;
-    if (FALSE == Cdd_Adc_IsInitialized) {
+    if (FALSE == Cdd_Adc_IsInitialized)
+    {
         /* Report DET error if the driver is not initialised */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_RESULT_CHECKER,
                               CDD_ADC_E_UNINIT);
@@ -915,12 +921,12 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartResultChecker(VAR(Cdd_Adc_CheckerType, AUT
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_RESULT_CHECKER,
                               CDD_ADC_E_INVALID_ID);
     }
-    else{
+    else
+    {
         return_value = E_OK;
     }
 
-    
-    if(E_OK == return_value)
+    if (E_OK == return_value)
 #endif
     {
         /* Base address of the safety checker unit */
@@ -949,7 +955,8 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopResultChecker(VAR(Cdd_Adc_CheckerType, AUTO
     uint32 base_addr = 0U;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = E_NOT_OK;
-    if (FALSE == Cdd_Adc_IsInitialized) {
+    if (FALSE == Cdd_Adc_IsInitialized)
+    {
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_STOP_RESULT_CHECKER,
                               CDD_ADC_E_UNINIT);
@@ -960,13 +967,13 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopResultChecker(VAR(Cdd_Adc_CheckerType, AUTO
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_STOP_RESULT_CHECKER,
                               CDD_ADC_E_INVALID_ID);
     }
-    else{
+    else
+    {
         /* Do nothing */
         return_value = E_OK;
     }
 
-    
-    if(E_OK == return_value)
+    if (E_OK == return_value)
 #endif
     {
         /*Base address of the safety checker unit*/
@@ -996,7 +1003,8 @@ Cdd_Adc_ReadCheckerStatus(VAR(Cdd_Adc_CheckerIntEvtType, AUTOMATIC) IntEvt,
     uint16 status;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = E_NOT_OK;
-    if (FALSE == Cdd_Adc_IsInitialized) {
+    if (FALSE == Cdd_Adc_IsInitialized)
+    {
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_READ_RESULT_CHECKER,
                               CDD_ADC_E_UNINIT);
@@ -1007,20 +1015,21 @@ Cdd_Adc_ReadCheckerStatus(VAR(Cdd_Adc_CheckerIntEvtType, AUTOMATIC) IntEvt,
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_READ_RESULT_CHECKER,
                               CDD_ADC_E_INVALID_ID);
     }
-    else if ((CheckerFlag == (Cdd_Adc_CheckFlagStatusType *)NULL_PTR) || \
-                ((CheckerFlag + CDD_ADC_CHECKER_CNT) == (Cdd_Adc_CheckFlagStatusType *)NULL_PTR))
+    else if ((CheckerFlag == (Cdd_Adc_CheckFlagStatusType *)NULL_PTR) ||
+             ((CheckerFlag + CDD_ADC_CHECKER_CNT) == (Cdd_Adc_CheckFlagStatusType *)NULL_PTR))
     {
         /* Report DET error if the passed pointer is NULL and the buffer doesn't have enough space
          */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_READ_RESULT_CHECKER,
                               CDD_ADC_E_PARAM_POINTER);
     }
-    else{
+    else
+    {
         /* Do nothing */
         return_value = E_OK;
     }
-    
-    if(E_OK == return_value)
+
+    if (E_OK == return_value)
 #endif
     {
         status = Cdd_Adc_GetSafetyCheckIntStatus(Cdd_Adc_CfgPtr->checkercfg.checkerintevtcfg[IntEvt].base_addr);
@@ -1029,10 +1038,6 @@ Cdd_Adc_ReadCheckerStatus(VAR(Cdd_Adc_CheckerIntEvtType, AUTOMATIC) IntEvt,
         {
             /* This functions returns the interrupt source event flag for each safety checker */
             Cdd_Adc_CheckerIsr(IntEvt, CheckerFlag);
-        }
-        else
-        {
-            /* Don't perform any action if the interrupt flag is not set */
         }
     }
 }
@@ -1046,7 +1051,8 @@ Cdd_Adc_ClearCheckerEvt(VAR(Cdd_Adc_CheckerIntEvtType, AUTOMATIC) IntEvt,
 {
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = E_NOT_OK;
-    if (FALSE == Cdd_Adc_IsInitialized) {
+    if (FALSE == Cdd_Adc_IsInitialized)
+    {
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_CLEAR_CHECKER_EVT, CDD_ADC_E_UNINIT);
     }
@@ -1062,12 +1068,13 @@ Cdd_Adc_ClearCheckerEvt(VAR(Cdd_Adc_CheckerIntEvtType, AUTOMATIC) IntEvt,
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_CLEAR_CHECKER_EVT,
                               CDD_ADC_E_PARAM_CONFIG);
     }
-    else{
+    else
+    {
         /* Do nothing */
         return_value = E_OK;
     }
-    
-    if(E_OK == return_value)
+
+    if (E_OK == return_value)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -1202,11 +1209,12 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearPpbEvt(VAR(Cdd_Adc_PpbType, AUTOMATIC) Ppb
 /* Design: MCAL-31276,MCAL-31275,MCAL-31274,MCAL-31273 */
 FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_GetDelayStamp(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId)
 {
-    uint16 delay_stamp = 0U;
-    uint32 base_addr = 0U;
+    uint16                 delay_stamp     = 0U;
+    uint32                 base_addr       = 0U;
     Cdd_Adc_TriggerSrcType triggersrc_type = CDD_ADC_TRIGG_SRC_SW;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-    if (FALSE == Cdd_Adc_IsInitialized) {
+    if (FALSE == Cdd_Adc_IsInitialized)
+    {
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_DELAY_STAMP, CDD_ADC_E_UNINIT);
     }
@@ -1251,7 +1259,8 @@ Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
     float32 vref = 0.0f, temp = 0.0f;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = E_NOT_OK;
-    if (FALSE == Cdd_Adc_IsInitialized) {
+    if (FALSE == Cdd_Adc_IsInitialized)
+    {
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_TEMPERATURE_C, CDD_ADC_E_UNINIT);
     }
@@ -1260,12 +1269,13 @@ Cdd_Adc_GetTemperatureC(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_TEMPERATURE_C,
                               CDD_ADC_E_INVALID_ID);
     }
-    else{
+    else
+    {
         /* Do nothing */
         return_value = E_OK;
     }
-    
-    if(E_OK == return_value)
+
+    if (E_OK == return_value)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
@@ -1294,7 +1304,8 @@ Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
     float32 vref = 0.0f, temp = 0.0f;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = E_NOT_OK;
-    if (FALSE == Cdd_Adc_IsInitialized) {
+    if (FALSE == Cdd_Adc_IsInitialized)
+    {
         /* Report DET error if the driver not initialised */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_TEMPERATURE_K, CDD_ADC_E_UNINIT);
     }
@@ -1303,12 +1314,13 @@ Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_TEMPERATURE_K,
                               CDD_ADC_E_INVALID_ID);
     }
-    else{
+    else
+    {
         /* Do nothing */
         return_value = E_OK;
     }
-    
-    if(E_OK == return_value)
+
+    if (E_OK == return_value)
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();

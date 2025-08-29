@@ -33,53 +33,41 @@
  * - Initialize pins in EPWM mode with Port_Init()
  * - Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
  * - Configure Cdd_Pwm hardware using Cdd_Pwm_ConfigureHw() to configure EPWM instances as follows
- * 
+ *
  * Diode Emulation configuration:
  *  - For EPWM1 A & B outputs the AQ actions are configured to HIGH & LOW respectively.
  *      And the diode emulation trip signals are set to opposite of the configured polarities respectively,
  *      EPWM1A is set to HIGH and EPWM1B set to LOW during DE
- * 
+ *
  *  - For EPWM2 A & B outputs the AQ actions are configured to LOW & HIGH respectively.
  *      And the diode emulation trip signals are set to opposite of the configured polarities respectively,
  *      EPWM2A is set to LOW and EPWM2B set to HIGH during DE
- * 
- *  - EPWM1 & EPWM2 are configured in one-shot diode emulation mode, 
- *    TripH = CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT1, linked to DioConf_DioChannel_DioChannel_6 and
- *    TripL = CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT1
- *    Since a TRIPH_OR_TRIPL triggers DE entry, only either of them is used for demo
  *
- *  - EPWM2 is configured with a re-entry delay
- *      - Re-entry delay = 255 EPWMSYNCPER cycles = 5 ms
- * 
- *  - EPWM3 is configured same as EPWM1 with no reentry-delay and in CBC(cycle-by-cycle) DE mode
- *    TripH = CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT1 and
- *    TripL = CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT3, linked to DioConf_DioChannel_DioChannel_7
- *      In the Cycle-by-cycle clear mode, TRIPH_OR_TRIPL is evaluated on every EPWMxSYNCPER and if the trip 
+ *  - EPWM1 & EPWM2 are configured in one-shot diode emulation mode,
+ *    Force diode emulation active flag to enter diode emulation mode
+ *
+ *  - EPWM3 is configured same as EPWM1 but in CBC(cycle-by-cycle) DE mode
+ *    Force diode emulation active flag to enter diode emulation mode
+ *      In the Cycle-by-cycle clear mode, trip condition is evaluated on every EPWMxSYNCPER and if the trip
  *      condition is not present, then DEACTIVE flag is cleared (exiting of DE mode).
- * 
- * Pull Dio channel 6 to HIGH and wait until EPWM1 & EPWM2 outputs are changed to the 
+ *
+ * Force diode emulation active flag for both EPWM1 & EPWM2 and wait until EPWM1 & EPWM2 outputs are changed to the
  * configured state (EPWM1A to HIGH, EPWM1B to LOW, EPWM2A to LOW & EPWM2B to HIGH).
- * 
- * Pull Dio channel 6 back to LOW
- * 
+ *
  * Clear active diode emulation flags for both EPWM1 & EPWM2 instances to exit DE mode.
- * 
- * Pull Dio channel 6 to HIGH to test the re-entry delay functionality.
- * 
- * Only EPWM1 should enter DE mode because the trip has happened in the reentry delay window.
+ *
+ * Force diode emulation active flag for EPWM1
+ *
  * Wait until EPWM1 enters the DE mode and check if the EPWM2 has entered the DE mode.
- * The execution will stay in the loop if the expected condition is achieved.
- * 
- * Pull back the Dio channel 6 to LOW immediately so that the trip doesn't enter the no- reentry delay window.
- * 
- * Clear active diode emulation flags for both EPWM1 & EPWM2 instances to exit DE mode.
- * 
- * Pull Dio channel 7 to HIGH and wait until EPWM3 outputs are changed to the 
- * configured state (EPWM3A to HIGH & EPWM3B to LOW).
- * 
- * Pull Dio channel 7 back to LOW
- * 
- * Wait until the CBC clear the active flag and instance exits the DE mode.
+ * The execution will stay in the loop if the expected condition is not achieved.
+ *
+ * Clear active diode emulation flags for both EPWM1 to exit DE mode.
+ *
+ * Force diode emulation active flag for EPWM3
+ *
+ * Wait until EPWM3 outputs are changed to the configured state (EPWM3A to HIGH & EPWM3B to LOW).
+ *
+ * Wait until the CBC clear the active flag and the EPWM instance exits the DE mode.
  *
  *  EPWM waveform and DE intput trip signals can be monitored on the respective pins configured
  * \b External \b Connections \n
@@ -89,8 +77,6 @@
  * - GPIO3 EPWM2B
  * - GPIO4 EPWM3A
  * - GPIO5 EPWM3B
- * - GPIO12 is linked to DioConf_DioChannel_DioChannel_6 & CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT1
- * - GPIO13 is linked to DioConf_DioChannel_DioChannel_7 & CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT3
  *
  *********************************************************************************************************************/
 
@@ -172,81 +158,122 @@ void Cdd_Pwm_HwUnit2Notification()
 void Cdd_Pwm_ConfigureHw()
 {
     /* EPWM1 instance */
-    Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_CLOCK_DIVIDER_128, CDD_PWM_HSCLOCK_DIVIDER_14);	
-    Cdd_Pwm_SetTimeBaseCounterMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_COUNTER_MODE_UP);	
+    Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_CLOCK_DIVIDER_128,
+                              CDD_PWM_HSCLOCK_DIVIDER_14);
+    Cdd_Pwm_SetTimeBaseCounterMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_COUNTER_MODE_UP);
     Cdd_Pwm_SetTimeBasePeriod(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, 65535U);
     Cdd_Pwm_SetTimeBaseCounter(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, 0U);
     Cdd_Pwm_SetSyncInPulseSource(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_SYNC_IN_PULSE_SRC_DISABLE);
-    Cdd_Pwm_ConfigureSyncOutPulseSource(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_SYNC_OUT_PULSE_ON_ALL,TRUE);
-    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_COUNTER_COMPARE_A, 30000U);
-    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_COUNTER_COMPARE_A, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
-    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_COUNTER_COMPARE_B, 30000U);
-    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_COUNTER_COMPARE_B, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
+    Cdd_Pwm_ConfigureSyncOutPulseSource(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0,
+                                        CDD_PWM_SYNC_OUT_PULSE_ON_ALL, TRUE);
+    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_COUNTER_COMPARE_A,
+                                   30000U);
+    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0,
+                                            CDD_PWM_COUNTER_COMPARE_A, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
+    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_COUNTER_COMPARE_B,
+                                   30000U);
+    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0,
+                                            CDD_PWM_COUNTER_COMPARE_B, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
 
-    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_A, CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
-    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B, CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
+    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_A,
+                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
+    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B,
+                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
 
-    Cdd_Pwm_ConfigureDiodeEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0,TRUE);
+    Cdd_Pwm_ConfigureDiodeEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, TRUE);
     Cdd_Pwm_NoBypassDiodeEmulationLogic(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0);
     Cdd_Pwm_SetDiodeEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_DIODE_EMULATION_OST);
     Cdd_Pwm_SetDiodeEmulationReentryDelay(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, 0U);
-    Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT1);
-    Cdd_Pwm_ConfigureDiodeEmulationTripHighSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_DE_TRIPH_SRC_INPUTXBAR_OUT3);
-    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_A, CDD_PWM_DE_SRC_TRIPL);
-    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_A, CDD_PWM_DE_HIGH);
-    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B, CDD_PWM_DE_SRC_TRIPH);
-    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B, CDD_PWM_DE_LOW);
+    Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0,
+                                                  CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT1);
+    Cdd_Pwm_ConfigureDiodeEmulationTripHighSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0,
+                                                   CDD_PWM_DE_TRIPH_SRC_INPUTXBAR_OUT3);
+    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_A,
+                                           CDD_PWM_DE_SRC_TRIPL);
+    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_A,
+                                          CDD_PWM_DE_HIGH);
+    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B,
+                                           CDD_PWM_DE_SRC_TRIPH);
+    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B,
+                                          CDD_PWM_DE_LOW);
 
     /* EPWM2 instance */
-    Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_CLOCK_DIVIDER_128, CDD_PWM_HSCLOCK_DIVIDER_14);	
-    Cdd_Pwm_SetTimeBaseCounterMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_MODE_UP);	
+    Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_CLOCK_DIVIDER_128,
+                              CDD_PWM_HSCLOCK_DIVIDER_14);
+    Cdd_Pwm_SetTimeBaseCounterMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_MODE_UP);
     Cdd_Pwm_SetTimeBasePeriod(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, 65535U);
     Cdd_Pwm_SetTimeBaseCounter(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, 0U);
     Cdd_Pwm_SetSyncInPulseSource(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_SYNC_IN_PULSE_SRC_DISABLE);
-    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_COMPARE_A, 30000U);	
-    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_COMPARE_A, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);	
-    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_COMPARE_B, 30000U);	
-    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_COMPARE_B, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
+    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_COMPARE_A,
+                                   30000U);
+    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1,
+                                            CDD_PWM_COUNTER_COMPARE_A, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
+    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_COMPARE_B,
+                                   30000U);
+    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1,
+                                            CDD_PWM_COUNTER_COMPARE_B, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
 
-    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_A, CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
-    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_B, CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
+    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_A,
+                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
+    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_B,
+                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
 
-    Cdd_Pwm_ConfigureDiodeEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1,TRUE);
+    Cdd_Pwm_ConfigureDiodeEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, TRUE);
     Cdd_Pwm_NoBypassDiodeEmulationLogic(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1);
     Cdd_Pwm_SetDiodeEmulationReentryDelay(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, 255U);
     Cdd_Pwm_SetDiodeEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_DIODE_EMULATION_OST);
-    Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT1);	
-    Cdd_Pwm_ConfigureDiodeEmulationTripHighSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_DE_TRIPH_SRC_INPUTXBAR_OUT3);	
-    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_A, CDD_PWM_DE_SRC_TRIPL);	
-    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_A, CDD_PWM_DE_LOW);	
-    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_B, CDD_PWM_DE_SRC_TRIPH);	
-    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_B, CDD_PWM_DE_HIGH);
+    Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1,
+                                                  CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT1);
+    Cdd_Pwm_ConfigureDiodeEmulationTripHighSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1,
+                                                   CDD_PWM_DE_TRIPH_SRC_INPUTXBAR_OUT3);
+    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_A,
+                                           CDD_PWM_DE_SRC_TRIPL);
+    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_A,
+                                          CDD_PWM_DE_LOW);
+    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_B,
+                                           CDD_PWM_DE_SRC_TRIPH);
+    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_B,
+                                          CDD_PWM_DE_HIGH);
 
     /* EPWM3 instance */
-    Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_CLOCK_DIVIDER_128, CDD_PWM_HSCLOCK_DIVIDER_14);	
+    Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_CLOCK_DIVIDER_128,
+                              CDD_PWM_HSCLOCK_DIVIDER_14);
     Cdd_Pwm_SetTimeBaseCounterMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_COUNTER_MODE_UP);
     Cdd_Pwm_SetTimeBasePeriod(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, 65535U);
     Cdd_Pwm_SetTimeBaseCounter(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, 0U);
-    Cdd_Pwm_SetSyncInPulseSource(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_SYNC_IN_PULSE_SRC_DISABLE);	
-    Cdd_Pwm_ConfigureSyncOutPulseSource(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_SYNC_OUT_PULSE_ON_ALL,TRUE);	
-    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_COUNTER_COMPARE_A, 30000U);	
-    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_COUNTER_COMPARE_A, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);	
-    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_COUNTER_COMPARE_B, 30000U);	
-    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_COUNTER_COMPARE_B, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
+    Cdd_Pwm_SetSyncInPulseSource(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_SYNC_IN_PULSE_SRC_DISABLE);
+    Cdd_Pwm_ConfigureSyncOutPulseSource(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2,
+                                        CDD_PWM_SYNC_OUT_PULSE_ON_ALL, TRUE);
+    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_COUNTER_COMPARE_A,
+                                   30000U);
+    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2,
+                                            CDD_PWM_COUNTER_COMPARE_A, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
+    Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_COUNTER_COMPARE_B,
+                                   30000U);
+    Cdd_Pwm_SetCounterCompareShadowLoadMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2,
+                                            CDD_PWM_COUNTER_COMPARE_B, CDD_PWM_COMP_LOAD_ON_CNTR_ZERO);
 
-    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_A, CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
-    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_B, CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
+    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_A,
+                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
+    Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_B,
+                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);
 
-    Cdd_Pwm_ConfigureDiodeEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2,TRUE);
+    Cdd_Pwm_ConfigureDiodeEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, TRUE);
     Cdd_Pwm_NoBypassDiodeEmulationLogic(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2);
     Cdd_Pwm_SetDiodeEmulationMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_DIODE_EMULATION_CBC);
     Cdd_Pwm_SetDiodeEmulationReentryDelay(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, 0U);
-    Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT2);
-    Cdd_Pwm_ConfigureDiodeEmulationTripHighSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_DE_TRIPH_SRC_INPUTXBAR_OUT3);
-    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_A, CDD_PWM_DE_SRC_TRIPL);
-    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_A, CDD_PWM_DE_HIGH);
-    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_B, CDD_PWM_DE_SRC_TRIPH);
-    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_B, CDD_PWM_DE_LOW);
+    Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2,
+                                                  CDD_PWM_DE_TRIPL_SRC_INPUTXBAR_OUT2);
+    Cdd_Pwm_ConfigureDiodeEmulationTripHighSources(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2,
+                                                   CDD_PWM_DE_TRIPH_SRC_INPUTXBAR_OUT3);
+    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_A,
+                                           CDD_PWM_DE_SRC_TRIPL);
+    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_A,
+                                          CDD_PWM_DE_HIGH);
+    Cdd_Pwm_SelectDiodeEmulationTripSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_B,
+                                           CDD_PWM_DE_SRC_TRIPH);
+    Cdd_Pwm_SelectDiodeEmulationPwmSignal(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_B,
+                                          CDD_PWM_DE_LOW);
 }
 
 int main()
@@ -261,57 +288,72 @@ int main()
     /* Configure EPWM hardware instances */
     Cdd_Pwm_ConfigureHw();
 
-    /* No change in GPIOs trigger no DE mode */
     McalLib_Delay(50000000U);
 
-    /* Now trigger the TRIPH to high and the EPWM instance should enter DE mode */
+    AppUtils_Printf("Force diode emulation active flags for EPWM1 & EPWM2 instances\r\n");
+
+    /* Now force the active flag to high and the EPWM instances should enter DE mode */
     Cdd_Pwm_ForceDiodeEmulationActive(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0);
     Cdd_Pwm_ForceDiodeEmulationActive(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1);
-    // Dio_WriteChannel(DioConf_DioChannel_DioChannel_6,STD_HIGH); /* Change XBAR1 */
 
     /* Check if the states are changing */
-    while (!((STD_HIGH == Dio_ReadChannel(DioConf_DioChannel_DioChannel_0)) && \
-                        (STD_LOW == Dio_ReadChannel(DioConf_DioChannel_DioChannel_1))))
-    {}
+    while (!((STD_HIGH == Dio_ReadChannel(DioConf_DioChannel_DioChannel_0)) &&
+             (STD_LOW == Dio_ReadChannel(DioConf_DioChannel_DioChannel_1))))
+    {
+    }
 
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]++;
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1]++;
 
-    // Dio_WriteChannel(DioConf_DioChannel_DioChannel_6,STD_LOW); /* Change XBAR1 */
+    AppUtils_Printf("EPWM1A output is HIGH\r\n");
+    AppUtils_Printf("EPWM2A output is LOW\r\n");
 
+    /* Clear diode emulation active flags */
     Cdd_Pwm_ClearDiodeEmulationActiveFlag(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0);
     Cdd_Pwm_ClearDiodeEmulationActiveFlag(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1);
 
-    // Dio_WriteChannel(DioConf_DioChannel_DioChannel_6,STD_HIGH); /* Change XBAR1 */
-    // Cdd_Pwm_ForceDiodeEmulationActive(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1);
+    AppUtils_Printf("Cleared diode emulation active flags for EPWM1 & EPWM2 instances\r\n");
+
+    AppUtils_Printf("Force diode emulation active flags for EPWM1 instance\r\n");
+
+    /* Force the active flag for EPWM1 and only EPWM1 instances should enter DE mode */
     Cdd_Pwm_ForceDiodeEmulationActive(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0);
 
-    /* Now the TRIP H is still active */
     /* Read the Dio channel levels/states */
-    while (!((STD_HIGH == Dio_ReadChannel(DioConf_DioChannel_DioChannel_1)) && \
-                        (STD_HIGH == Dio_ReadChannel(DioConf_DioChannel_DioChannel_0))))
-    {}
+    while (!((STD_HIGH == Dio_ReadChannel(DioConf_DioChannel_DioChannel_1)) &&
+             (STD_HIGH == Dio_ReadChannel(DioConf_DioChannel_DioChannel_0))))
+    {
+    }
 
-    // Dio_WriteChannel(DioConf_DioChannel_DioChannel_6,STD_LOW); /* Change XBAR1 */
+    AppUtils_Printf("EPWM1A output is HIGH\r\n");
+    AppUtils_Printf("EPWM2A output is HIGH\r\n");
 
+    /* Clear diode emulation active flag */
     Cdd_Pwm_ClearDiodeEmulationActiveFlag(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0);
-    Cdd_Pwm_ClearDiodeEmulationActiveFlag(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1);
+
+    AppUtils_Printf("Cleared diode emulation active flags for EPWM1 instance\r\n");
 
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]++;
 
-    /* Now trigger the TRIPH to high and the EPWM instance should enter DE mode */
-    // Dio_WriteChannel(DioConf_DioChannel_DioChannel_7,STD_HIGH); /* Change XBAR1 */
+    AppUtils_Printf("Force diode emulation active flags for EPWM3 instance\r\n");
+    /* Force the active flag for EPWM3 and only EPWM3 instances should enter DE mode */
     Cdd_Pwm_ForceDiodeEmulationActive(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2);
 
     McalLib_Delay(500U);
 
-    while(STD_LOW == Dio_ReadChannel(DioConf_DioChannel_DioChannel_2)){}
+    while (STD_LOW == Dio_ReadChannel(DioConf_DioChannel_DioChannel_2))
+    {
+    }
+
+    AppUtils_Printf("EPWM3A output is HIGH\r\n");
 
     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2]++;
 
-    // Dio_WriteChannel(DioConf_DioChannel_DioChannel_7,STD_LOW);
+    while (STD_HIGH == Dio_ReadChannel(DioConf_DioChannel_DioChannel_2))
+    {
+    }
 
-    while(STD_HIGH == Dio_ReadChannel(DioConf_DioChannel_DioChannel_2)){}
+    AppUtils_Printf("Diode emulation active flag has been cleared by hardware\r\n");
 
     McalLib_Delay(50000000);
 

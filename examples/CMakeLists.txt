@@ -8,16 +8,18 @@ macro(SUBDIRLIST subdirlist curdir)
     set(dirlist "")
     foreach(subdir ${subdirectories})
         if(IS_DIRECTORY ${curdir}/${subdir})
-          if(EXISTS ${curdir}/${subdir}/CMakeLists.txt)
-            add_subdirectory(${curdir}/${subdir} ${CMAKE_BINARY_DIR}/${subdir})
-            # Only add to dirlist if it's a target and not an INTERFACE library
-            if(TARGET ${subdir})
-                get_target_property(target_type ${subdir} TYPE)
-                if(NOT target_type STREQUAL "INTERFACE_LIBRARY")
-                    list(APPEND dirlist ${subdir})
+            if(EXISTS ${curdir}/${subdir}/CMakeLists.txt)
+                add_subdirectory(${curdir}/${subdir}
+                                 ${CMAKE_BINARY_DIR}/${subdir})
+                # Only add to dirlist if it's a target and not an INTERFACE
+                # library
+                if(TARGET ${subdir})
+                    get_target_property(target_type ${subdir} TYPE)
+                    if(NOT target_type STREQUAL "INTERFACE_LIBRARY")
+                        list(APPEND dirlist ${subdir})
+                    endif()
                 endif()
             endif()
-          endif()
         endif()
     endforeach()
     set(${subdirlist} ${dirlist})
@@ -47,20 +49,21 @@ set(example_list "")
 
 foreach(example ${module_list})
 
-    message("Adding ${example} subdirectory")
+    message(STATUS "Adding ${example} subdirectory")
     subdirlist(subdir_${example} ${CMAKE_CURRENT_SOURCE_DIR}/${example})
 
     list(APPEND example_list ${subdir_${example}})
 
-    # Add custom target to build all the examples of a module. Example: To run all the examples of the Mcu
-    # module give the below command: cmake --build <path/to/the/artefacts> -t Mcu_Examples Use --clean-first
-    # after the path, to clean before building another target.
+    # Add custom target to build all the examples of a module. Example: To run
+    # all the examples of the Mcu module give the below command: cmake --build
+    # <path/to/the/artefacts> -t Mcu_Examples Use --clean-first after the path,
+    # to clean before building another target.
     add_custom_target(${example}_Examples DEPENDS ${subdir_${example}})
 
 endforeach()
 
-# Add custom target examples to build all the examples. Run cmake --build <path/to/the/artefacts> -t examples
-# to build all the examples.
+# Add custom target examples to build all the examples. Run cmake --build
+# <path/to/the/artefacts> -t examples to build all the examples.
 add_custom_target(examples DEPENDS ${example_list})
 
 # Save the example_list to a file
