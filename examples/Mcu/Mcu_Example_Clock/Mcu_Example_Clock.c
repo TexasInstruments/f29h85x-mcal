@@ -26,7 +26,7 @@
  *  and the XCLKOUT divider is set to 8.
  *  Expected frequency of XCLKOUT = (PLLSYSCLK freq)/8 = 200/8 = 25MHz.
  *
- *  View the XCLKOUT on GPIO73 using an oscilloscope.
+ *  View the XCLKOUT on GPIO219 using an oscilloscope.
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
