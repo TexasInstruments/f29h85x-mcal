@@ -97,6 +97,11 @@ extern "C" {
 /** \brief LIN DEM Event Configuration: LIN Timeout Duration*/
 #define LIN_TIMEOUT_DURATION            [!"LinGeneral/LinTimeoutDuration"!]U
 
+/** \brief LIN ID used to transmit a header instead of a wakeup signal. 
+ *   The hardware enters an undefined state when a standard wakeup signal is transmitted. 
+ *   To mitigate this limitation, a header frame is utilized as the wakeup signal, which conforms to the LIN2.1 specification*/
+#define LIN_WAKEUP_ID            0x[!"text:toupper(substring-after(num:inttohex(LinGeneral/LinWakeupId),'0x'))"!]U
+
 [!VAR "SysClock"="num:i(node:ref(LinGeneral/SysClockRef)/McuClockReferencePointFrequency)"!][!//
 [!VAR "SysClock"="num:i(num:div((num:div(1,65535)), num:div(15,$SysClock)))"!][!//
 /** \brief LIN Delay to Mcal Lib */
@@ -125,7 +130,7 @@ extern "C" {
  * Design: MCAL-25663
  */
 [!LOOP "LinGlobalConfig/LinChannel/*"!][!//
-#define [!"LinInstance"!]                    [!"LinChannelId"!]
+#define LIN_INSTANCE_[!"(node:ref(LinInstance)/InstanceName)"!]                    [!"LinChannelId"!]
 [!ENDLOOP!][!//
 
 /*****************************************************************************
@@ -143,7 +148,7 @@ extern "C" {
  *
  *****************************************************************************/
 [!LOOP "LinGlobalConfig/LinChannel/*"!][!//
-#define [!"LinInstance"!]_[!"substring-after(LinInterruptLineSelect, 'LIN_INTERRUPT_')"!]                  
+#define LIN_INSTANCE_[!"(node:ref(LinInstance)/InstanceName)"!]_[!"substring-after(LinInterruptLineSelect, 'LIN_INTERRUPT_')"!]                  
 [!ENDLOOP!][!//
 
 /*****************************************************************************
@@ -155,7 +160,7 @@ extern "C" {
  * Design: MCAL-25665
  */
 [!LOOP "LinGlobalConfig/LinChannel/*"!][!//
-#define [!"LinInstance"!]_ISR_TYPE           [!"LinISRType"!]
+#define LIN_INSTANCE_[!"(node:ref(LinInstance)/InstanceName)"!]_ISR_TYPE           [!"LinISRType"!]
 [!ENDLOOP!][!//
 
 

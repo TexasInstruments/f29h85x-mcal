@@ -402,8 +402,8 @@ static inline void Interrupt_SetThreshold(uint8 Threshold)
 static inline void OS_TimerPrescaler(Os_PrescalerType Prescaler)
 {
     /* Clear TSS bit of register TCR */
-    HWREG(DEVCFG_BASE + SYSCTL_O_TMR2CLKCTL) = \
-    (HWREG(DEVCFG_BASE + SYSCTL_O_TMR2CLKCTL) & \
+    HWREG(CPUSYS_BASE + SYSCTL_O_TMR2CLKCTL) = \
+    (HWREG(CPUSYS_BASE + SYSCTL_O_TMR2CLKCTL) & \
         ~(SYSCTL_TMR2CLKCTL_TMR2CLKPRESCALE_M)) | \
         ((uint8)Prescaler << SYSCTL_TMR2CLKCTL_TMR2CLKPRESCALE_S);
 }

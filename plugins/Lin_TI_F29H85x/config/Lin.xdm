@@ -136,7 +136,26 @@
                   </a:da>
 				  <a:da name="DEFAULT" value="65535"/>
                 </v:var>
-				
+                <v:var name="LinWakeupId" type="INTEGER">
+                  <a:a name="DESC" 
+                       value="EN: Specifies the LIN ID used to transmit a header instead of a wakeup signal due to hardware constraints. The hardware enters an undefined state when a standard wakeup signal is transmitted. To mitigate this limitation, an unused header frame is utilized as the wakeup signal, which conforms to the LIN2.1 specification"/>
+                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                       type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                  </a:a>
+                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                  <a:a name="SCOPE" value="LOCAL"/>
+                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                  <a:a name="UUID" value="bd40b2db-2e4f-41ca-9784-ac048f6667d2"/>
+				          <a:da name="ENABLE" value="true"/>
+                  <a:a name="DEFAULT_RADIX" value="HEX"/>
+                  <a:da name="INVALID" type="Range">
+                    <a:tst expr="&lt;=63"/>
+                    <a:tst expr="&gt;=0"/>
+                  </a:da>
+				          <a:da name="DEFAULT" value="63"/>
+                </v:var>
 				<v:var name="LinDevErrorDetect" type="BOOLEAN">
                   <a:a name="DESC" 
                        value="EN: Switches the development error detection and notification on or off."/>
@@ -225,25 +244,26 @@
                         <a:da name="DEFAULT" value="0"/>
                         </v:var>
 						
-						<v:var name="LinInstance" type="ENUMERATION">
-                      <a:a name="DESC" 
-                          value="EN: Selects Lin Instance."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                          type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" 
-                           value="622169ea-b5cc-44ac-819e-06eadc631230"/>
-                      <a:da name="DEFAULT" value="LIN_INSTANCE_A"/>
-                      <a:da name="RANGE">
-                        <a:v>LIN_INSTANCE_A</a:v>
-                        <a:v>LIN_INSTANCE_B</a:v>
-                      </a:da>
-                      <a:da name="INVALID" type="XPath" expr="text:uniq((../..//*[@name='LinInstance']),node:value(.))" false="Lin Instance selection has to be unique across all containers"/>
-                     </v:var>
+						<v:ref name="LinInstance" type="REFERENCE">
+						                 <a:a name="DESC"
+						                     value="EN: Reference to the LIN Instance."/>
+						                 <a:a name="IMPLEMENTATIONCONFIGCLASS"
+						                     type="IMPLEMENTATIONCONFIGCLASS">
+						                   <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+						                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+						                 </a:a>
+						                 <a:a name="ORIGIN" value="Texas Instruments"/>
+						                 <a:a name="UUID"
+						                      value="622169ea-b5cc-44ac-819e-06eadc631230"/>
+						                 <a:da name="REF"
+                                  value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Lin/LinAllocatedInstance"/>
+                                <a:da name="RANGE" type="XPath">
+                                  <a:tst expr="node:paths(//LinAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                              </a:da>
+						                 <a:da name="INVALID" type="XPath">
+						                    <a:tst expr="text:uniq((../../..//*[@name='LinInstance']),node:value(.))" false="LinInstance selection has to be unique across all containers. Each of LINA and LINB can only be used once."/>
+						                 </a:da>
+						                </v:ref>
 					 
 					 <v:var name="LinLoopbackMode" type="ENUMERATION">
                       <a:a name="DESC" 

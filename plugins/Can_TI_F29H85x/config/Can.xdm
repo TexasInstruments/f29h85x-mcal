@@ -56,7 +56,7 @@
                 <a:a name="UUID" value="ce853594-3c43-430b-b981-2654cbd3bc6b"/>
                 <v:lst name="CanController" type="MAP">
                   <a:da name="MIN" value="1"/>
-                  <a:da name="MAX" value="6"/>
+                  <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.CanInstanceName')))&quot;,'6')"/>
                   <v:ctr name="CanController" type="IDENTIFIABLE">
                     <a:a name="DESC" 
                          value="EN: This container contains the configuration parameters of the CAN controller(s)."/>
@@ -101,36 +101,30 @@
                       <a:a name="UUID" 
                            value="80022cac-cd3b-41d7-b963-0056c07bdc36"/>
                     </v:var>
-                    <v:var name="CanControllerInstance" type="ENUMERATION">
-                          <a:a name="DESC" 
-                               value="EN: Selects Can Controller Instance."/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                               type="IMPLEMENTATIONCONFIGCLASS">
-                            <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
-                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                          </a:a>
-                          <a:a name="ORIGIN" value="Texas Instruments"/>
-                          <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="f5fc8a52-e7fc-4313-992c-6658a80560aa"/>
-                          <a:da name="RANGE">
-                            <a:v>MCAN1</a:v>
-                            <a:v>MCAN2</a:v>
-                            <a:v>MCAN3</a:v>
-                            <a:v>MCAN4</a:v>
-                            <a:v>MCAN5</a:v>
-                            <a:v>MCAN6</a:v>
-                          </a:da>
-                          <a:da name="DEFAULT" value="MCAN1"/>
-                          <a:da name="INVALID" type="XPath">
-                             <a:tst expr="text:uniq((../../..//*[@name='CanControllerInstance']),node:value(.))" false="CanControllerInstance selection has to be unique across all containers"/>
-                          </a:da>
-                    </v:var>
-                    <v:var name="CanControllerBaseAddress" type="INTEGER">
-                      <a:a name="DESC" 
+                    <v:ref name="CanControllerInstance" type="REFERENCE">
+                      <a:a name="DESC"
+                          value="EN: Reference to the CAN Controller Instance."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                          type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="UUID"
+                           value="f5fc8a52-e7fc-4313-992c-6658a80560aa"/>
+                      <a:da name="REF"
+                            value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Can/CanAllocatedInstance"/>
+                      <a:da name="RANGE" type="XPath">
+                        <a:tst expr="node:paths(//CanAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                      </a:da>
+                      <a:da name="INVALID" type="XPath">
+                         <a:tst expr="text:uniq((../../..//*[@name='CanControllerInstance']),node:value(.))" false="CanControllerInstance selection has to be unique across all containers."/>
+                      </a:da>
+                    </v:ref>
+                    <v:var name="CanControllerBaseAddress" type="STRING">
+                      <a:a name="DESC"
                            value="EN: Specifies the CAN controller base address."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
                            type="IMPLEMENTATIONCONFIGCLASS">
                         <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -138,17 +132,15 @@
                       <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" 
+                      <a:a name="UUID"
                            value="d8d59799-43f5-44ef-af99-81769742d5ad"/>
-                      <a:da name="INVALID" type="Range">
-                        <a:tst expr="&lt;=4294967295"/>
-                        <a:tst expr="&gt;=0"/>
-                      </a:da>
-                      <a:a name="DEFAULT_RADIX" value="HEX"/>
                       <a:da name="DEFAULT" type="XPath">
-                      <a:tst expr="node:fallback(&quot;->(num:inttohex((substring-after(node:value(../CanControllerInstance),'MCAN') - 1 )*32768+1610743808))&quot;,num:i(0))"   />
+                         <a:tst expr="node:fallback(&quot;->node:value(node:ref(../CanControllerInstance)/BaseAddr)&quot;,'MCANA_DRIVER_BASE_FRAME(0)')"/>
                       </a:da>
-                      <a:da name="EDITABLE" value="false"/>
+                      <a:a name="EDITABLE" value="false"/>
+                      <a:da name="INVALID" type="XPath">
+                         <a:tst expr="text:uniq((../../..//*[@name='CanControllerBaseAddress']),node:value(.))" false="CanControllerBaseAddress selection has to be unique across all containers. Each base address can only be used once."/>
+                      </a:da>
                     </v:var>
                     <v:var name="CanControllerId" type="INTEGER">
                       <a:a name="DESC" 

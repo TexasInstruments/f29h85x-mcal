@@ -1,0 +1,696 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
+        <d:lst type="ELEMENTS">
+          <d:chc name="ResourceAllocator" type="AR-ELEMENT" value="MODULE-DEF">
+            <v:ctr type="MODULE-DEF">
+              <a:a name="ADMIN-DATA" type="ADMIN-DATA">
+                <ad:ADMIN-DATA>
+                  <ad:DOC-REVISIONS>
+                    <ad:DOC-REVISION>
+                      <ad:REVISION-LABEL>4.3.1</ad:REVISION-LABEL>
+                      <ad:ISSUED-BY>AUTOSAR</ad:ISSUED-BY>
+                    </ad:DOC-REVISION>
+                  </ad:DOC-REVISIONS>
+                </ad:ADMIN-DATA>
+              </a:a>
+              <a:a name="DESC" 
+                   value="EN: Configuration of the Resource Allocator which maps resources such as hardware instances, channels, memory etc. to each CPU within Mcu."/>
+              <a:a name="LOWER-MULTIPLICITY" value="1"/>
+              <a:a name="UPPER-MULTIPLICITY" value="1"/>
+              <a:a name="RELEASE" value="asc:4.3.1"/>
+              <a:a name="UUID" value="e04b8819-b5ea-45b3-9ac5-c3cca68e5ae1"/>
+              <v:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION">
+                <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                     type="IMPLEMENTATIONCONFIGCLASS">
+                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                </a:a>
+                <a:a name="LABEL" value="Config Variant"/>
+                <a:a name="UUID" value="e246b135-0ad1-4147-ada9-09f790148c81"/>
+                <a:da name="DEFAULT" value="VariantPreCompile"/>
+                <a:da name="RANGE">
+                  <a:v>VariantPreCompile</a:v>
+                </a:da>
+              </v:var>
+              <v:ctr name="ResourceAllocatorGeneral" type="IDENTIFIABLE">
+                    <a:a name="DESC" 
+                          value="EN: General configuration (parameters) of the Resource Allocator module."/>
+                    <a:a name="UUID" value="4e899e5c-d224-4766-9802-de4f1278e2a5"/>
+                  <v:var name="Mode" type="ENUMERATION">
+                    <a:a name="DESC"><a:v><![CDATA[
+                    <html>
+                      <h3>Selects Mode being used:</h3>
+                      <ul>
+                      <li><b>SETUP mode:</b> Board designers define system-level settings and allocate resources to cores</li>
+                      <li><b>CONFIGURE mode:</b> Application developers use only resources allocated to their core</li>
+                      </ul>
+                    </html>
+                    ]]></a:v></a:a>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                      type="IMPLEMENTATIONCONFIGCLASS">
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="Texas Instruments"/>
+                    <a:a name="SCOPE" value="LOCAL"/>
+                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                    <a:a name="UUID" value="fa69d494-e36b-4f5b-ae35-aa24db88212f"/>
+                    <a:da name="RANGE">
+                      <a:v>CONFIGURE</a:v>
+                      <a:v>SETUP</a:v>
+                    </a:da>
+                    <a:da name="DEFAULT" value="CONFIGURE"/>
+                  </v:var>
+                  <v:var name="Device" type="ENUMERATION">
+                    <a:a name="DESC" 
+                          value="EN: Selects Device being used."/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                      type="IMPLEMENTATIONCONFIGCLASS">                                                          
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="Texas Instruments"/>
+                    <a:a name="SCOPE" value="LOCAL"/>
+                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                    <a:a name="UUID" value="cb063eaa-5690-4f5c-bcea-7497ca3aeb04"/>
+                    <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
+                    <!--
+                      The following expression ecu:parameters('subderivate') collects the
+                      values of each parameter with name "subderivate" that is assigned 
+                      to a resource properties file (extension point
+                      "dreisoft.tresos.autosar2.api.plugin.ecuresource").
+                      -->
+                    <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Device')&quot;,'F29H859TU_Q1')"/>
+                    <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Device')[1]&quot;,'F29H859TU_Q1')"/>
+                  </v:var>
+                  <v:var name="Variant" type="ENUMERATION">
+                    <a:a name="DESC"
+                          value="EN: Selects Variant being used."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                      type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="Texas Instruments"/>
+                    <a:a name="SCOPE" value="LOCAL"/>
+                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                    <a:a name="UUID" value="f4de5bf5-d60b-4bdb-9cb8-fbefef516e7e"/>
+                    <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
+                    <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Variant_',node:value(../Device)))&quot;,'F29H859TU8_Q')"/>
+                    <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Variant_',node:value(../Device)))[last()]&quot;,'F29H859TU8_Q')"/>
+                  </v:var>
+                  <v:var name="Package" type="ENUMERATION">
+                    <a:a name="DESC" 
+                          value="EN: Selects Package being used."/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                      type="IMPLEMENTATIONCONFIGCLASS">                                                          
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="Texas Instruments"/>
+                    <a:a name="SCOPE" value="LOCAL"/>
+                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                    <a:a name="UUID" value="c11bf99d-7cbd-473a-951d-27e59527da99"/>
+                    <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
+                    <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Package_',node:value(../Variant)))&quot;,'F29H859TU_Q_256ZEX')"/>
+                    <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Package_',node:value(../Variant)))[last()]&quot;,'F29H859TU_Q_256ZEX')"/>
+                  </v:var>
+                  <v:ref name="CurrentContext" type="REFERENCE">
+                    <a:a name="DESC" value="EN: Selects Current Context to be used for this MCAL instance."/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                      type="IMPLEMENTATIONCONFIGCLASS">                                                        
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="Texas Instruments"/>
+                    <a:a name="SCOPE" value="LOCAL"/>
+                    <a:a name="UUID" value="3dd263ac-c22c-4ccb-ba18-f0e8ba5121cc"/>
+                    <a:da name="REF" value="ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/Context"/>
+                  </v:ref>
+                  <v:var name="CPU1_Lockstep" type="BOOLEAN">
+                    <a:a name="DESC" 
+                          value="EN: Selects whether lockstep mode is enabled or not."/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                      type="IMPLEMENTATIONCONFIGCLASS">                                                          
+                      <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
+                    <a:a name="ORIGIN" value="Texas Instruments"/>
+                    <a:a name="SCOPE" value="LOCAL"/>
+                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                    <a:a name="UUID" value="59674618-2b2d-4287-baf6-1da96cc79a33"/>
+                    <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
+                    <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->contains(string(ecu:list(concat('ResourceAllocator_F29H85x.Context_',node:value(../Device)))), 'CPU2')&quot;,false())"/>
+                    <a:da name="INVALID" type="XPath" expr="(not(node:value(.) = 'true')) or (contains(string(ecu:list(concat('ResourceAllocator_F29H85x.Context_',node:value(../Device)))), 'CPU2'))"
+                          false="CPU1_Lockstep can only be enabled when CPU2 is available for the selected device."/>
+                  </v:var>
+                  <v:lst name="Context" type="MAP">
+                    <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
+                    <a:da name="MIN" value="1"/>
+                    <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list(concat('ResourceAllocator_F29H85x.Context_',node:value(../../Device))))&quot;,num:i(3))"/>
+                    <v:ctr name="Context" type="IDENTIFIABLE">
+                      <a:a name="EDITABLE" type="XPath" expr="node:value(../../Mode) = 'SETUP'"/>
+                      <a:a name="DESC"
+                            value="EN: This container contains the driver configuration (parameters) for the Context"/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                        
+                          <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="UUID" value="f931b858-c027-4062-935e-d3a91d8e6bd2"/>
+
+                      <v:var name="Core" type="ENUMERATION">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="DESC"
+                              value="EN: Selects Core for which this Context is configured."/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                          type="IMPLEMENTATIONCONFIGCLASS">                                                          
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <a:a name="ORIGIN" value="Texas Instruments"/>
+                        <a:a name="SCOPE" value="LOCAL"/>
+                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>                  
+                        <a:a name="UUID" value="9b72652e-8d96-4772-b0a2-71e6c9c9bd70"/>
+                        <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Context_',node:value(../../../Device)))&quot;,'CPU1')"/>
+                        <a:da name="DEFAULT" value="CPU1"/>
+                        <a:da name="INVALID" type="Multi">
+                          <mt:xpath expr="text:uniq(../.././/*[@name = 'Core'],node:value(.))"
+                                    false="Every Context must select different Core IDs."/>
+                          <mt:xpath expr="not(node:value(.) = 'CPU2' and node:value(../../../*[@name = 'CPU1_Lockstep']) = 'true')"
+                                    false="CPU2 cannot be selected when CPU1_Lockstep is enabled."/>
+                        </a:da>
+                      </v:var>
+                      
+                      <v:lst name="Can" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Can" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Can module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="31a19584-041c-4d10-a4a3-c438e121aef8"/>
+                          
+                          <v:lst name="CanAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.CanInstanceName')))&quot;,'255')"/>
+                            
+                            <v:ctr name="CanAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Can instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="9cae0d17-38e8-4635-ae26-a9319f792c8f"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Can instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="fdfd778d-195d-49ed-95ca-884c62dd0aaa"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.CanInstanceName')&quot;,'MCANA')"/>
+                                <a:da name="DEFAULT" value="MCANA"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Can instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="2f3c6b2e-2ec9-4840-baf0-5499d5ec050d"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Can instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="61c77aa1-09cf-434b-9d30-3131372d4456"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_DRIVER_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;, 'MCANA_DRIVER_BASE_FRAME(0)')"/>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:ctr name="Wdg" type="IDENTIFIABLE">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="TAB" value="Wdg"/>
+                        <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Wdg module."/>
+                        <a:a name="UUID" value="88a9112a-aafd-4c4a-bd07-47fb66b37957"/>
+                        <!-- Empty content as specified in the task -->
+                      </v:ctr>
+                      
+                      <v:lst name="Spi" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Spi" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Spi module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="2d3d1d3b-e999-4ef4-8e73-ee4eb2d9d5c7"/>
+                          
+                          <v:lst name="SpiAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.SpiInstanceName')))&quot;,'255')"/>
+                            
+                            <v:ctr name="SpiAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Spi instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="a26e2de7-187c-405e-b76b-2a51734092c9"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.SpiInstanceName')&quot;,'SPIA')"/>
+                                <a:da name="DEFAULT" value="SPIA"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Spi instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="496056b4-6e82-4177-b77c-88cc5017762a"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Spi instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="314eff49-74b1-4e6d-bdf2-14deb2d1bcc7"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'SPIA_BASE_FRAME(0)')"/>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Lin" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Lin" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Lin module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="06e44981-a914-4434-bc79-392f9d65d85b"/>
+                          
+                          <v:lst name="LinAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.LinInstanceName')))&quot;,'255')"/>
+                            
+                              <v:ctr name="LinAllocatedInstance" type="IDENTIFIABLE">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                                
+                                <v:var name="InstanceName" type="ENUMERATION">
+                                  <a:a name="DESC" value="EN: Selects the Lin instance to be allocated."/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="9865a650-6c62-4855-84cd-a5cf7b3d5183"/>
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.LinInstanceName')&quot;,'LINA')"/>
+                                  <a:da name="DEFAULT" value="LINA"/>
+                                  <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                          false="Every Lin instance must be allocated only once."/>
+                                  </a:da>
+                                </v:var>
+
+                                <v:var name="Frame" type="ENUMERATION">
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="2a52635e-85ff-4660-8b87-971ca5313fba"/>
+                                  <a:da name="RANGE">
+                                    <a:v>FRAME0</a:v>
+                                    <a:v>FRAME1</a:v>
+                                    <a:v>FRAME2</a:v>
+                                    <a:v>FRAME3</a:v>
+                                  </a:da>
+                                  <a:da name="DEFAULT" value="FRAME0"/>
+                                </v:var>
+                                
+                                <v:var name="BaseAddr" type="STRING">
+                                  <a:a name="DESC" value="EN: Base address of the Lin instance. This field represents the macro as defined in hw_memmap.h"/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="UUID" value="83dcdc1e-d645-4d80-9a40-559242a23e98"/>
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'LINA_BASE_FRAME(0)')"/>
+                                </v:var>
+                              </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+
+                      <v:ctr name="Cdd_Adc" type="IDENTIFIABLE">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="TAB" value="Cdd_Adc"/>
+                        <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Adc module."/>
+                        <a:a name="UUID" value="51ede142-03cb-4dba-bf95-e23a97084baf"/>
+                        <!-- Empty content as specified in the task -->
+                      </v:ctr>
+
+                      <v:lst name="Cdd_Ecap" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Cdd_Ecap" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Ecap module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="10c889e2-8149-456d-9fa3-c0d7b0aabe3b"/>
+                          
+                          <v:lst name="Cdd_EcapAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_EcapInstanceName')))&quot;,'6')"/>
+                            
+                              <v:ctr name="Cdd_EcapAllocatedInstance" type="IDENTIFIABLE">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Configuration for Cdd_Ecap Instance."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="UUID" value="d0cfc391-692a-4e24-ae65-516bc602fa32"/>
+                                
+                                <v:var name="InstanceName" type="ENUMERATION">
+                                  <a:a name="DESC" value="EN: Selects the Cdd_Ecap instance to be allocated."/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="04000ad0-9276-477b-96da-c2f3727f7f74"/>
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_EcapInstanceName')&quot;,'ECAP1')"/>
+                                  <a:da name="DEFAULT" value="ECAP1"/>
+                                  <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                          false="Every Cdd_Ecap instance must be allocated only once."/>
+                                  </a:da>
+                                </v:var>
+
+                                <v:var name="Frame" type="ENUMERATION">
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="4b9fd54e-19d6-4bd0-8aa3-70d02368d312"/>
+                                  <a:da name="RANGE">
+                                    <a:v>FRAME0</a:v>
+                                    <a:v>FRAME1</a:v>
+                                    <a:v>FRAME2</a:v>
+                                    <a:v>FRAME3</a:v>
+                                  </a:da>
+                                  <a:da name="DEFAULT" value="FRAME0"/>
+                                </v:var>
+                                
+                                <v:var name="BaseAddr" type="STRING">
+                                  <a:a name="DESC" value="EN: Base address of the Cdd_Ecap instance. This field represents the macro as defined in hw_memmap.h"/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="UUID" value="37ffe184-5234-4c58-b734-3d8946d554fd"/>
+                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'ECAP1_BASE_FRAME(0)')"/>
+                                </v:var>
+                              </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:ctr name="Cdd_Ipc" type="IDENTIFIABLE">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="TAB" value="Cdd_Ipc"/>
+                        <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Ipc module."/>
+                        <a:a name="UUID" value="6c996ca9-1215-46c5-9446-7fbb3da59e69"/>
+                        <!-- Empty content as specified in the task -->
+                      </v:ctr>
+                      
+                      <v:ctr name="Cdd_Pwm" type="IDENTIFIABLE">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="TAB" value="Cdd_Pwm"/>
+                        <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Pwm module."/>
+                        <a:a name="UUID" value="cf21aa19-ee6f-4e71-913b-bd0ee0be08c8"/>
+                        <!-- Empty content as specified in the task -->
+                      </v:ctr>
+                      
+                      <v:lst name="Cdd_Sent" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Cdd_Sent" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Sent module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="606dd6ba-334a-4348-961e-cac1aa9208aa"/>
+                          
+                          <v:lst name="Cdd_SentAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_SentInstanceName')))&quot;,'255')"/>
+                            
+                            <v:ctr name="Cdd_SentAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Cdd_Sent instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="c2554c08-8422-4297-8f9b-49f636b1ea23"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Cdd_Sent instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="64acc9ed-8215-47de-b89a-0557148d1fb8"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_SentInstanceName')&quot;,'SENT')"/>
+                                <a:da name="DEFAULT" value="SENT1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Cdd_Sent instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="62b10973-6947-4c84-a9f3-9e7540bc0c23"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Sent instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="47196d3f-e6d3-42df-9929-bb6e614588cb"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'SENT1_BASE_FRAME(0)')"/>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                      <v:lst name="Cdd_Uart" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Cdd_Uart" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Uart module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="7f4e7647-0146-4261-ad92-a585b9c582f6"/>
+                          
+                          <v:lst name="Cdd_UartAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_UartInstanceName')))&quot;,'255')"/>
+                            
+                            <v:ctr name="Cdd_UartAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of a Cdd_Uart instance allocated to this context."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="a05da631-d60a-4256-bcb5-57b26db3b551"/>
+                              
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Cdd_Uart instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="65e4febd-4d31-44de-a8aa-ad0a7bca7828"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_UartInstanceName')&quot;,'UARTA')"/>
+                                <a:da name="DEFAULT" value="UARTA"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Cdd_Uart instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="de6a8648-6857-4f01-bcfc-9c6183fb014d"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Uart instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="c86779ed-2baf-4bbe-8aa5-d576063caf14"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'UARTA_BASE_FRAME(0)')"/>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+                      
+                    </v:ctr>
+                  </v:lst>
+              </v:ctr>
+            </v:ctr>
+          </d:chc>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

@@ -254,15 +254,7 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClock(Mcu_ClockType ClockSetting)
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
-#if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
-        /* Unlocks all Clock configuration registers */
-        Mcu_UnlockClockConfigRegisters();
-#endif
-
-#if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
-        /* Unlocks all Cpu Peripheral configuration registers */
-        Mcu_UnlockCpuPeripheralConfigRegisters();
-#endif
+        /* Assuming the CLKCFG, CPUx_PER_CFG registers are unlocked after a reset. */
 
         /* Initialize the clock */
         return_value = Mcu_SetClock(clk_config_ptr);
@@ -451,10 +443,7 @@ FUNC(void, MCU_CODE) Mcu_SetMode(Mcu_ModeType McuMode)
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
-#if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
-        /* Unlocks Cpu system register: LPMCR */
-        Mcu_UnlockCpuSysRegisters();
-#endif
+        /* Assuming CPUSYSLOCK Register is unlocked after Reset: */
 
         /* Sets and Enter in to low power modes*/
         Mcu_EnterLowPowerMode(mode_config_ptr);

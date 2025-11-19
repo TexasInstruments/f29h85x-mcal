@@ -211,7 +211,10 @@
                 <a:da name="INVALID" type="Multi">
                   <mt:xpath expr="node:value(.) = node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),concat(concat('_PackagePin_',node:value(../PortPhysicalPinId)),'.pinNumber')))&quot;,'0')" false="PortPinId value is invalid. Please recalculate the value."/>
                   <mt:range>
-                    <mt:tst expr="&lt;= node:fallback(&quot;-> ecu:get(concat(concat('Port_',node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Port/ELEMENTS/Port/PortGeneral/PortDeviceVariant)),'.numberOfPins'))&quot;,num:i(256))"/>
+                    <!-- Upper limit of 256 is set because there are multiple pin packages that could have port pin IDs
+                         ranging from 1 to 255. Each pin package could have different port pin IDs in this range.
+                         This upper limit could be changed in future if the number of pins available in the packages exceed 255 -->
+                    <mt:tst expr="&lt;=256"/>
                     <mt:tst expr="&gt;=0"/>
                   </mt:range>
                 </a:da>

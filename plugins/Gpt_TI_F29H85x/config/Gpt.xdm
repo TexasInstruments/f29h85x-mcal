@@ -131,7 +131,7 @@
                            value="9d255b83-966f-4980-996c-19aebed69784"/>
                       <a:da name="DEFAULT" value="0"/>
                       <a:da name="WARNING" type="Multi">
-                        <mt:xpath expr="(../GptChannelId ='2')" true = " Timer 2 supports different clock configuration. User need to update this prescalar values based upon  clock source referenced in GptChannelClkSrcRef parameter."/>
+                        <mt:xpath expr="(../GptChannelId ='2')" true = " Timer 2 supports different clock configuration. User need to update this prescalar values based upon clock source referenced in McuCpuTimerClkConfig in Mcu module."/>
                       </a:da>
                       <a:da name="INVALID" type="Range">
                         <a:tst expr="&lt;=65535"/>
@@ -237,8 +237,8 @@
                            value="cb5b9d2e-2c21-4620-a685-195ddca94a27"/>
                       <a:da name="REF" 
                             value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Gpt/GptDriverConfiguration/GptClockReferencePoint"/>
-                      <a:da name="VISIBLE"  value="true"/>
-                      <a:da name="EDITABLE"  value="true"/>
+                      <a:da name="VISIBLE"  value="false"/>
+                      <a:da name="EDITABLE"  value="false"/>
                       <a:da name="ENABLE" type="XPath" expr="(../GptChannelId  = '2')"/> 
                     </v:ref>
                     <v:var name="GptSimulationStatus" type="ENUMERATION">
@@ -498,7 +498,9 @@
                 </v:var>
                 <v:lst name="GptClockReferencePoint" type="MAP">
                   <a:da name="MIN" value="1"/>
-                  <a:da name="MAX" value="3"/>
+                  <a:da name="MAX" value="1"/>
+				          <a:da name="EDITABLE" value="false"/>
+				          <a:da name="VISIBLE"  value="false"/>
                   <v:ctr name="GptClockReferencePoint" type="IDENTIFIABLE">
                     <a:a name="DESC" 
                          value="EN: This container contains a parameter, which represents a reference to a container of the type McuClockReferencePoint (defined in module MCU)."/>
@@ -519,7 +521,7 @@
                       <a:da name="REF" 
                             value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
                     </v:ref>
-                    <a:da name="VISIBLE"  value="true"/>
+                    <a:da name="VISIBLE"  value="false"/>
                     <a:da name="EDITABLE"  value="false"/>
                   </v:ctr>
                 </v:lst>

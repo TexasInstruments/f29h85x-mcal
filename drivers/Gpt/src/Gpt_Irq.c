@@ -26,6 +26,7 @@
 /*
  *Design: MCAL-21954
  */
+#include "Gpt.h"
 #include "Gpt_Priv.h"
 #include "Mcal_Lib_Cpu.h"
 #include "Os.h"

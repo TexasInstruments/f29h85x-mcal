@@ -141,7 +141,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
         }[!IF "not(node:islast())"!],[!CR!][!ELSE!][!ENDIF!][!//
         [!NOCODE!][!VAR "PpbCount" = "num:i($PpbCount + num:i(count(CddAdcPpbConfig/*)))"!][!//
         [!VAR "HwGroupCount" = "num:i($HwGroupCount + num:i(count(CddAdcGroup/*)))"!][!ENDNOCODE!][!ENDLOOP!]
-    },    
+    },
     .groupcfg  =
     {[!//
         [!VAR "channelnum"="num:i(0)"!][!LOOP "CddAdcConfigSet/CddAdcHwUnit/*"!][!LOOP "CddAdcGroup/*"!]
@@ -164,7 +164,8 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .startchannelnum = (uint8)([!"num:i($channelnum)"!]U),
             .channelcount = (uint8)([!"num:i(count(CddAdcChannel/*))"!]U),
             .soc_mask =  (uint32)([!"num:i(CddAdcGroupSocMask)"!]U),
-            .lastsocnum = (uint8)([!"num:i(num:max(CddAdcChannel/*/CddAdcSocNumber))"!]U)
+            .lastsocnum = (uint8)([!"num:i(num:max(CddAdcChannel/*/CddAdcSocNumber))"!]U),
+            .dma_mode = ((boolean)([!"num:i(node:when((CddAdcEnableDma = 'false'),0,1))"!]U))
         }[!VAR "channelnum"="$channelnum+num:i(count(CddAdcChannel/*))"!][!VAR "GroupCount" = "$GroupCount+1"!][!IF "$GroupCount < num:i(count(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*))"!],[!CR!][!ELSE!][!ENDIF!][!//
         [!ENDLOOP!][!ENDLOOP!]
     },[!//
@@ -395,7 +396,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
         }[!VAR "RepCount" = "num:i($RepCount+1)"!][!IF "($RepCount != $TrigRepEnable)"!],[!CR!][!ELSE!][!ENDIF!][!ENDLOOP!]
     },[!//
 [!ENDIF!]
-    .test_input = (Cdd_Adc_InternalTestNodeType)[!"node:value(CddAdcConfigSet/CddAdcInternalTestInput)"!],
+    .test_input = (Cdd_Adc_InternalTestNodeType)[!"node:value(CddAdcConfigSet/CddAdcInternalTestInput)"!]
 };[!//
 [!ENDSELECT!]
 

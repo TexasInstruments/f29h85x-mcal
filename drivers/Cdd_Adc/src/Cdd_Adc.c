@@ -307,7 +307,8 @@ static FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_HwGrpDetErrCheck(VAR(Cdd_Adc_G
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_ENABLE_HARDWARE_TRIGGER,
                               CDD_ADC_E_WRONG_CONV_MODE);
     }
-    else if (Cdd_Adc_DrvObj.group_obj[Group].resbuffer == NULL_PTR)
+    else if ((Cdd_Adc_DrvObj.group_obj[Group].resbuffer == NULL_PTR) &&
+             (FALSE == Cdd_Adc_CfgPtr->groupcfg[Group].dma_mode))
     {
         /* Report DET error if result buffer is NULL when Cdd_Adc_EnableHardwareTrigger is called*/
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_ENABLE_HARDWARE_TRIGGER,
@@ -378,6 +379,14 @@ Cdd_Adc_SetupResultBuffer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     /* Check the return values of DET error check function */
     Std_ReturnType det_returnval = Cdd_Adc_BufferPtrDetCheck(Group, DataBufferPtr, CDD_ADC_SID_SETUP_RESULT_BUFFER);
+
+    if ((E_OK == det_returnval) && (TRUE == Cdd_Adc_CfgPtr->groupcfg[Group].dma_mode))
+    {
+        /* Report error if the group is configured for DMA */
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_SETUP_RESULT_BUFFER,
+                              CDD_ADC_E_WRONG_PROCESSING_MODE);
+        det_returnval = E_NOT_OK;
+    }
 
     /* If no det error is reported then configure the result buffer pointer */
     if (det_returnval == E_OK)
@@ -464,7 +473,8 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGroupConversion(VAR(Cdd_Adc_GroupType, AUT
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_value = Cdd_Adc_SwGrpConvDetCheck(Group, CDD_ADC_SID_START_GROUP_CONVERSION);
 
-    if ((E_OK == return_value) && (Cdd_Adc_DrvObj.group_obj[Group].resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR)))
+    if ((E_OK == return_value) && (Cdd_Adc_DrvObj.group_obj[Group].resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR)) &&
+        (FALSE == Cdd_Adc_CfgPtr->groupcfg[Group].dma_mode))
     {
         /* Report DET error if result buffer is NULL when Cdd_Adc_StartGroupConversion is called*/
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GROUP_CONVERSION,
@@ -721,6 +731,15 @@ Cdd_Adc_ReadGroup(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
     Std_ReturnType return_val = E_NOT_OK;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType det_retval = Cdd_Adc_BufferPtrDetCheck(Group, DataBufferPtr, CDD_ADC_SID_READ_GROUP);
+
+    if ((E_OK == det_retval) && (TRUE == Cdd_Adc_CfgPtr->groupcfg[Group].dma_mode))
+    {
+        /* Report error if the group is configured for DMA */
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_READ_GROUP,
+                              CDD_ADC_E_WRONG_PROCESSING_MODE);
+        det_retval = E_NOT_OK;
+    }
+
     if (E_OK == det_retval)
 #endif
     {
@@ -728,22 +747,24 @@ Cdd_Adc_ReadGroup(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
         if (((CDD_ADC_IDLE == Cdd_Adc_DrvObj.group_obj[Group].grp_status) &&
              (Cdd_Adc_DrvObj.group_obj[Group].valid_samples == 0U)))
         {
-            /*Report DET error if required group to read is IDLE */
+            /* Report DET error if required group to read is in IDLE state and
+             * the group conversion is not started (no results are available from previous conversions)
+             */
             (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_READ_GROUP,
                                          CDD_ADC_E_IDLE);
         }
         else if ((Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_COMPLETED) ||
-                 (Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_STREAM_COMPLETED))
+                 (Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_STREAM_COMPLETED) ||
+                 (Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_IDLE))
         {
-            /* If the group is not in COMPLETED or STREAM_COMPLETED state then read the group result
+            /* If the group is not in COMPLETED or STREAM_COMPLETED or IDLE state then read the group result
              */
             Cdd_Adc_ReadGroupResult(Group, DataBufferPtr);
             return_val = E_OK;
         }
         else
         {
-            /* If no conversion results are available return E_NOT_OK when group is in IDLE & BUSY
-             * state */
+            /* If no conversion results are available return E_NOT_OK when group is in BUSY state */
         }
         SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
@@ -827,6 +848,14 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
     Cdd_Adc_StatusType          grp_status;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     Std_ReturnType return_val = Cdd_Adc_GetStreamPtrDetCheck(Group, PtrToSamplePtr);
+
+    if ((E_OK == return_val) && (TRUE == Cdd_Adc_CfgPtr->groupcfg[Group].dma_mode))
+    {
+        /* Report error if the group is configured for DMA */
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_STREAM_LAST_POINTER,
+                              CDD_ADC_E_WRONG_PROCESSING_MODE);
+        return_val = E_NOT_OK;
+    }
 
     /* If no det error is reported */
     if (E_OK == return_val)
@@ -1209,9 +1238,8 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearPpbEvt(VAR(Cdd_Adc_PpbType, AUTOMATIC) Ppb
 /* Design: MCAL-31276,MCAL-31275,MCAL-31274,MCAL-31273 */
 FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_GetDelayStamp(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId)
 {
-    uint16                 delay_stamp     = 0U;
-    uint32                 base_addr       = 0U;
-    Cdd_Adc_TriggerSrcType triggersrc_type = CDD_ADC_TRIGG_SRC_SW;
+    uint16 delay_stamp = 0U;
+    uint32 base_addr   = 0U;
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
     if (FALSE == Cdd_Adc_IsInitialized)
     {
@@ -1224,26 +1252,19 @@ FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_GetDelayStamp(VAR(Cdd_Adc_PpbType, AUTOMATIC)
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_DELAY_STAMP,
                               CDD_ADC_E_INVALID_ID);
     }
+    else if (CDD_ADC_TRIGG_SRC_HW != Cdd_Adc_PrivGetTrigSrc(PpbId))
+    {
+        /* This function should be called only for the SOCs configured for the hardware trigger source. */
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_DELAY_STAMP,
+                              CDD_ADC_E_WRONG_TRIGG_SRC);
+    }
     else
 #endif
     {
         base_addr = Cdd_Adc_CfgPtr->hwunitcfg[Cdd_Adc_CfgPtr->ppbcfg[PpbId].hwunitindex].base_addr;
-
-        triggersrc_type = Cdd_Adc_PrivGetTrigSrc(PpbId);
-
-        if (CDD_ADC_TRIGG_SRC_HW != triggersrc_type)
-        {
-            /* This function should be called only for the SOCs configured for the hardware trigger
-             * source. */
-            (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_DELAY_STAMP,
-                                         CDD_ADC_E_WRONG_TRIGG_SRC);
-        }
-        else
-        {
-            SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
-            delay_stamp = Cdd_Adc_GetPpbDelayTimeStamp(base_addr, Cdd_Adc_CfgPtr->ppbcfg[PpbId].ppb_id);
-            SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
-        }
+        SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
+        delay_stamp = Cdd_Adc_GetPpbDelayTimeStamp(base_addr, Cdd_Adc_CfgPtr->ppbcfg[PpbId].ppb_id);
+        SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
     return delay_stamp;
 }
@@ -1364,6 +1385,14 @@ Cdd_Adc_SetInternalTestNode(VAR(Cdd_Adc_InternalTestNodeType, AUTOMATIC) TestNod
         Cdd_Adc_SelectInternalTestNode(TestNode);
         SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
+}
+
+/* Design:  */
+FUNC(void, CDD_ADC_CODE)
+Cdd_Adc_UpdateStatusThroughDma(VAR(Cdd_Adc_HwUnitType, AUTOMATIC) HwUnitId, VAR(Cdd_Adc_IntNumType, AUTOMATIC) IntNum)
+{
+    /* Update the status of the group that is linked to the specified interrupt of the ADC instance */
+    Cdd_Adc_PrivUpdateStatusThroughDma(IntNum, HwUnitId);
 }
 
 #define CDD_ADC_STOP_SEC_CODE

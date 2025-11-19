@@ -20,7 +20,7 @@
             [!ENDIF!]
             [!IF "node:value(.) = 'CDD_ADC_INT2'"!]            
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Adc_TI_F29H85x/Cdd_Adc_ModuleEntry/Cdd_Adc_ADCA_Int1Isr</BSW-MODULE-ENTRY-REF>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Adc_TI_F29H85x/Cdd_Adc_ModuleEntry/Cdd_Adc_ADCA_Int2Isr</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             [!ENDIF!]
             [!IF "node:value(.) = 'CDD_ADC_INT3'"!]
@@ -249,6 +249,9 @@
             [!ENDIF!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Adc_TI_F29H85x/Cdd_Adc_ModuleEntry/Cdd_Adc_Init</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Adc_TI_F29H85x/Cdd_Adc_ModuleEntry/Cdd_Adc_UpdateStatusThroughDma</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             [!IF "CddAdcGeneral/CddAdcReadGroupApi = 'true'"!]
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -741,18 +744,14 @@
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Adc_TI_F29H85x/Cdd_Adc/Cdd_Adc_Behavior/CDD_ADC_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  <CALL-POINTS>
                   [!IF "CddAdcGeneral/CddAdcDevErrorDetect  = 'true'"!]
+                  <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
                     </BSW-DIRECT-CALL-POINT>
-                  [!ENDIF!]
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>Det_Runtime</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportRuntimeError</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>  
                   </CALL-POINTS>
+                  [!ENDIF!]
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Adc_TI_F29H85x/Cdd_Adc_ModuleEntry/Cdd_Adc_ClearPpbEvt</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 <BSW-CALLED-ENTITY UUID="22b574ad-51da-4567-bfe3-0639a985f25e">
@@ -761,18 +760,14 @@
                     <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Adc_TI_F29H85x/Cdd_Adc/Cdd_Adc_Behavior/CDD_ADC_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
                   </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  <CALL-POINTS>
                   [!IF "CddAdcGeneral/CddAdcDevErrorDetect  = 'true'"!]
+                  <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det</SHORT-NAME>
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportError</CALLED-ENTRY-REF>
                     </BSW-DIRECT-CALL-POINT>
-                  [!ENDIF!]
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>Det_Runtime</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportRuntimeError</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>  
                   </CALL-POINTS>
+                  [!ENDIF!]
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Adc_TI_F29H85x/Cdd_Adc_ModuleEntry/Cdd_Adc_GetDelayStamp</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 <BSW-CALLED-ENTITY UUID="ec11fd99-da4f-4dd9-ad0e-2d2b2562badb">
@@ -824,9 +819,6 @@
                 [!IF "CddAdcGeneral/CddAdcDeInitApi = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="651bbd50-7d63-4d59-965e-17dff3fd0f04">
                   <SHORT-NAME>Cdd_Adc_DeInit</SHORT-NAME>
-                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
-                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Adc_TI_F29H85x/Cdd_Adc/Cdd_Adc_Behavior/CDD_ADC_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
-                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                 [!IF "CddAdcGeneral/CddAdcDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
@@ -1018,9 +1010,6 @@
                 [!ENDIF!]
                 <BSW-CALLED-ENTITY UUID="12cf18e0-9183-4e55-839b-57fe386a0627">
                   <SHORT-NAME>Cdd_Adc_Init</SHORT-NAME>
-                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
-                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Adc_TI_F29H85x/Cdd_Adc/Cdd_Adc_Behavior/CDD_ADC_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
-                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                 [!IF "CddAdcGeneral/CddAdcDevErrorDetect  = 'true'"!]
                   <CALL-POINTS>
@@ -1031,6 +1020,17 @@
                   </CALL-POINTS>
                 [!ENDIF!]
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Adc_TI_F29H85x/Cdd_Adc_ModuleEntry/Cdd_Adc_Init</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="11cf18e0-9183-4e55-839b-57fe386a0627">
+                  <SHORT-NAME>Cdd_Adc_UpdateStatusThroughDma</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Adc_TI_F29H85x/Cdd_Adc_ModuleEntry/Cdd_Adc_UpdateStatusThroughDma</IMPLEMENTED-ENTRY-REF>
+                  <CALL-POINTS>  
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_Runtime</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportRuntimeError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>  
+                  </CALL-POINTS>
                 </BSW-CALLED-ENTITY>
                 [!IF "CddAdcGeneral/CddAdcReadGroupApi = 'true'"!]
                 <BSW-CALLED-ENTITY UUID="e72f7886-1549-4bb6-b596-6aaf3e811fce">
@@ -1745,6 +1745,7 @@
               <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
@@ -1754,6 +1755,7 @@
               <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
@@ -1861,7 +1863,7 @@
               <SHORT-NAME>Cdd_Adc_GetVersionInfo</SHORT-NAME>
               <SERVICE-ID>10</SERVICE-ID>
               <IS-REENTRANT>true</IS-REENTRANT>
-              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
@@ -1877,13 +1879,23 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="71e9925f-06c4-4a36-a512-6ce2f23bbc28">
+              <SHORT-NAME>Cdd_Adc_UpdateStatusThroughDma</SHORT-NAME>
+              <SERVICE-ID>28</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
             <BSW-MODULE-ENTRY UUID="410173d9-6d41-4c6d-8fe7-ea29f9732b9a">
               <SHORT-NAME>Cdd_Adc_ReadCheckerStatus</SHORT-NAME>
               <SERVICE-ID>15</SERVICE-ID>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
-              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
@@ -2026,4 +2038,3 @@
   </AR-PACKAGES>
 </AUTOSAR>
 [!ENDSELECT!]
-

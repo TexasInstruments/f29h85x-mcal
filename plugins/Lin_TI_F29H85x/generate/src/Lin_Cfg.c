@@ -79,7 +79,7 @@ CONST(Lin_ConfigType, LIN_CFG) Lin_Config =
     {
         .linControllerConfig =
         {
-            .CntrAddr = (uint32)[!IF "LinInstance='LIN_INSTANCE_A'"!]0x60060000[!ELSEIF "LinInstance='LIN_INSTANCE_B'"!]0x60061000[!ELSE!][!ENDIF!],
+            .CntrAddr = (uint32)[!"node:value(node:ref(LinInstance)/BaseAddr)"!],
             .IntrLineNum = [!"LinInterruptLineSelect"!],
             .LoopbackMode = [!"LinLoopbackMode"!]
         },

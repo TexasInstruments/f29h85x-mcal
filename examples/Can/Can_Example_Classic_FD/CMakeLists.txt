@@ -85,7 +85,7 @@ endif()
 
 if(NOT TARGET Can_Example_Classic_FD_Config)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/Can_Example_Classic_FD_Config/
+        ${CMAKE_CURRENT_SOURCE_DIR}/${BUILD_DEVICE}/Can_Example_Classic_FD_Config/
         ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Can_Example_Classic_FD_Config
     )
 endif()
@@ -102,15 +102,7 @@ add_link_options(
 )
 add_link_options(-Wl,-m=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map)
 
-if(BUILD_CONFIGURATION MATCHES "RAM")
-    add_link_options(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_ram_lnk_cpu1.cmd
-    )
-else()
-    add_link_options(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_flash_lnk_cpu1.cmd
-    )
-endif()
+select_linker_file("DEFAULT" "cpu1")
 
 # This command is used to move the .out file
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY

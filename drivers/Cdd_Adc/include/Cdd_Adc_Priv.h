@@ -387,6 +387,20 @@ Cdd_Adc_GetValidSampleCnt(Cdd_Adc_GroupType Group, Cdd_Adc_ValueGroupType **PtrT
  *********************************************************************************************************************/
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessIsr(Cdd_Adc_IntNumType IntNum, Cdd_Adc_HwUnitType HwUnitId);
 
+/** \brief Function to update the status of the group that is linked the specified interrupt of ADC instance
+ *
+ * This function to update the status of the group that is linked the specified interrupt of ADC instance
+ *
+ * \param[in]  IntNum     Interrupt ID of the ADC instance
+ * \param[in]  HwUnitId   ADC instance ID
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ADC_CODE) Cdd_Adc_PrivUpdateStatusThroughDma(Cdd_Adc_IntNumType IntNum, Cdd_Adc_HwUnitType HwUnitId);
+
 #if (STD_ON == CDD_ADC_ENABLE_PPB_API)
 /** \brief Ppb ISR function
  *

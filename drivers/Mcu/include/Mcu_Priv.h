@@ -271,15 +271,6 @@ FUNC(void, MCU_CODE) Mcu_EnterLowPowerMode(Mcu_ModeConfigPtrType ModeConfigPtr);
 FUNC(void, MCU_CODE) Mcu_FillRamSection(Mcu_RamConfigPtrType RamSectionConfigPtr);
 
 #if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
-/** \brief Unlocks all Clock configuration registers
- *
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-FUNC(void, MCU_CODE) Mcu_UnlockClockConfigRegisters(void);
 
 /** \brief Locks all Clock configuration registers
  *
@@ -293,16 +284,6 @@ FUNC(void, MCU_CODE) Mcu_LockClockConfigRegisters(void);
 #endif /*MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS*/
 
 #if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
-/** \brief Unlocks all Cpu Peripheral configuration registers
- *
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-FUNC(void, MCU_CODE) Mcu_UnlockCpuPeripheralConfigRegisters(void);
-
 /** \brief Locks all Cpu Peripheral configuration registers
  *
  * \pre None
@@ -315,16 +296,6 @@ FUNC(void, MCU_CODE) Mcu_LockCpuPeripheralConfigRegisters(void);
 #endif /*MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS*/
 
 #if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
-/** \brief Unlocks Cpu system registers
- *
- * \pre None
- * \post None
- * \return None
- * \retval None
- *
- *********************************************************************************************************************/
-FUNC(void, MCU_CODE) Mcu_UnlockCpuSysRegisters(void);
-
 /** \brief Locks Cpu system registers
  *
  * \pre None

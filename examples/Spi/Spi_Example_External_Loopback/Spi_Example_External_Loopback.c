@@ -17,13 +17,19 @@
  *  File:        Spi_Example_External_Loopback.c
  *  Generator:   None
  *
- *  Description: This file contains SPI example to transmit data synchronously in LEVEL 0,
+ *  Description: This file contains SPI example to transmit data asynchronously in LEVEL 2,
  *               and validate the receive data with respect to the expected data.
+ *               This example demonstrates how to configure SPI and establish communication between
+ *               C29x1 running MCAL (as master) and C29x3 running SDK (as slave). The master transmits
+ *               data in incremental order (128 bytes) and the slave responds with the same data.
+ *               This example will be run on C29x1 with a corresponding SDK example application running on C29x3.
+ *               The SDK example application files can be found at: './Cpu3App/spi_slave_tester.syscfg'
+ *               and './Cpu3App/spi_slave_tester.c'.
  *
  *  Note:        Note that when runing this example on SOM board, please note that the S2 POCI switch on the XDS110
  *               board should be set to OFF.
  *               For FLASH configuration, this example is run in FLASH BANKMODE2, where CPU3 has access to FLASH
- (FRI-2).
+ *               (FRI-2).
  *               Refer to the Flash Plugin documentation to know about changing FLASH BANKMODEs and more.
  *
  *  When using CCS for debugging this Multi-core example, after launching the
@@ -40,7 +46,7 @@
  *              Data Width is 16 bits.
  *
  * Slave functionality:
- *              -> slave sends data in incremental order starts from 0 (60 bytes)
+ *              -> slave sends data in incremental order starts from 0 (128 bytes)
  *
  *  SPI Slave Pins configured as:
  *    SPI-D instance
@@ -61,12 +67,12 @@
  *                2. Init clock using MCU module
  *                3. Init UART pins using PORT module
  *                4. Call Spi_Init() to initialize SPI Driver
- *                5. Initialize Internal and External Buffers using Spi_WriteIB()
- *                       and Spi_SetupEB() respectively.
- *                6.  Call Spi_SyncTransmit() with sequence ID.
- *                7. validate Job and sequence results.
- *                8. Validate the receive data with respect to the expected data.
- *                9. received data can be seen in Spi_DestBuf0.
+ *                5. Initialize Internal Buffer using Spi_WriteIB().
+ *                6. Call Spi_AsyncTransmit() with sequence ID.
+ *                7. Validate Job and sequence results.
+ *                8. Read data from Internal Buffer using Spi_ReadIB().
+ *                9. Validate the receive data with respect to the expected data.
+ *                10. Received data can be seen in Spi_DestBuf0.
  *
 
  *********************************************************************************************************************/
@@ -89,6 +95,7 @@
  * Local Preprocessor #define Macros
  *********************************************************************************************************************/
 #define READ_WRITE_WAIT_TIME 200000000U
+#define SPI_BUFF_LENGTH      128U
 /*********************************************************************************************************************
  * Local Type Declarations
  *********************************************************************************************************************/
@@ -105,12 +112,8 @@
 Std_VersionInfoType Spi_VersionInfo;
 #endif
 
-Spi_DataBufferType Spi_SrcBuf0[60] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B,
-                                      0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
-                                      0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23,
-                                      0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
-                                      0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B};
-Spi_DataBufferType Spi_DestBuf0[60];
+Spi_DataBufferType Spi_SrcBuf0[SPI_BUFF_LENGTH];
+Spi_DataBufferType Spi_DestBuf0[SPI_BUFF_LENGTH];
 /*********************************************************************************************************************
  *  Local Function Prototypes
  *********************************************************************************************************************/
@@ -133,6 +136,12 @@ int main(void)
     uint32         i;
     VAR(McalLib_TickType, MCAL_LIB_DATA) startTime   = (McalLib_TickType)0U;
     VAR(McalLib_TickType, MCAL_LIB_DATA) elapsedTime = (McalLib_TickType)0U;
+    /* Initialize Spi_SrcBuf0 with values from 0x00 to 0x7F */
+    for (i = 0; i < SPI_BUFF_LENGTH; i++)
+    {
+        Spi_SrcBuf0[i] = (Spi_DataBufferType)i;
+    }
+
     DeviceSupport_Init();
 
     /* initialize MCU PORT and SPI in ECU init */
@@ -171,7 +180,7 @@ int main(void)
     }
 #endif
     /* Transmit data */
-    AppUtils_Printf("Transmitting data in synchronous mode.\n");
+    AppUtils_Printf("Transmitting data in asynchronous mode.\n");
     syncTransmitStatus = Spi_AsyncTransmit(SpiConf_SpiSequence_SpiSequence_0);
     AppUtils_Printf("SyncTransmit status is %d\n", syncTransmitStatus);
 
@@ -207,7 +216,7 @@ int main(void)
         returnValue = E_NOT_OK;
     }
     Spi_ReadIB((Spi_ChannelType)SpiConf_SpiChannel_SpiChannel_0, Spi_DestBuf0);
-    for (i = 0; i < 60U; i++)
+    for (i = 0; i < SPI_BUFF_LENGTH; i++)
     {
         if (Spi_DestBuf0[i] != Spi_SrcBuf0[i])
         {

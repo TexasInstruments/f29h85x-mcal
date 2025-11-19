@@ -94,7 +94,6 @@ int main(void)
 {
     /* INITIALIZATIONS*/
     Std_ReturnType returnValue = E_NOT_OK;
-
     DeviceSupport_Init();
     /* EcuM_Init() will Initialize Port with the provided configuration. Below API will call
     Port_Init(&Port_Config) and will Initialize the Port and Mcu Driver */

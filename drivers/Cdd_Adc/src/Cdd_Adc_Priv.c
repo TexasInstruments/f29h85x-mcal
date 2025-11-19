@@ -199,6 +199,20 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ForceMultipleSoc(uint32 Base, uint
  *********************************************************************************************************************/
 LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetSocPriority(uint32 Base, Cdd_Adc_SocPriorityType PriorityMode);
 
+/** \brief Enable/disable alternate DMA timing
+ *
+ * This function enable/disables alternate DMA timing
+ *
+ * \param[in]  Base     Base address of the ADC hardware unit
+ * \param[in]  Mode     Enable/disable alternate DMA timing
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureAltDmaTiming(uint32 Base, boolean Mode);
+
 /** \brief Read SOC result function
  *
  * This reads the ADC conversion result for the specified SOC ID of an ADC hardware unit
@@ -1160,6 +1174,21 @@ LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetSocPriority(uint32 Base, Cdd_Ad
         (HWREGH(Base + ADC_O_SOCPRICTL) & ~ADC_SOCPRICTL_SOCPRIORITY_M) | ((uint16)PriorityMode);
 }
 
+LOCAL_INLINE FUNC(void, CDD_ADC_CODE) Cdd_Adc_ConfigureAltDmaTiming(uint32 Base, boolean Mode)
+{
+    /* Enable/Disable the Alternate DMA timings */
+    if (TRUE == Mode)
+    {
+        /* DMA is always triggered at tDMA regardless or whether the ADC is in early interrupt mode */
+        HWREGH(Base + ADC_O_CTL1) |= ADC_CTL1_TDMAEN;
+    }
+    else
+    {
+        /* DMA is triggered at the same time as the CPU interrupt */
+        HWREGH(Base + ADC_O_CTL1) &= ~ADC_CTL1_TDMAEN;
+    }
+}
+
 /* Design MCAL-31361 */
 static FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_ReadResult(uint32 ResultBase, uint8 SocNumber)
 {
@@ -1877,7 +1906,8 @@ FUNC(Std_ReturnType, CDD_ADC_CODE) Cdd_Adc_CheckGlbTrig(VAR(Cdd_Adc_GlbTrigType,
                 break;
             }
 #if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
-            else if (Cdd_Adc_DrvObjPtr->group_obj[group_id].resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR))
+            else if ((Cdd_Adc_DrvObjPtr->group_obj[group_id].resbuffer == ((Cdd_Adc_ValueGroupType *)NULL_PTR)) &&
+                     (FALSE == Cdd_Adc_ConfigPtr->groupcfg[group_id].dma_mode))
             {
                 /* Report DET error if the result buffer is NULL for any one of the groups and
                  * this check is not when the API is called more than once without calling
@@ -2087,6 +2117,9 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_HwUnitInit(void)
 #endif
         /* Set SOC Priority mode for each hardware unit*/
         Cdd_Adc_SetSocPriority(hwunitcfg->base_addr, hwunitcfg->socpriority);
+
+        /* Always trigger DMA at tDMA regardless or whether the ADC is in early interrupt mode orlate interrupt mode */
+        Cdd_Adc_ConfigureAltDmaTiming(hwunitcfg->base_addr, TRUE);
 
         /* Configure external mux preselect configuration */
 #if (STD_ON == CDD_ADC_EXTCHSEL_CAPABILITY)
@@ -2510,6 +2543,33 @@ Cdd_Adc_CheckerIsr(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckFlagStatusTy
 }
 #endif
 
+FUNC(void, CDD_ADC_CODE) Cdd_Adc_PrivUpdateStatusThroughDma(Cdd_Adc_IntNumType IntNum, Cdd_Adc_HwUnitType HwUnitId)
+{
+    Cdd_Adc_GroupType group_id, hwint;
+
+    /* Get the interrupt_obj index which stores the group ID */
+    hwint = ((Cdd_Adc_GroupType)IntNum) + (((Cdd_Adc_GroupType)HwUnitId) * 4U);
+
+    /* Get the group ID */
+    group_id = Cdd_Adc_DrvObjPtr->interrupt_obj[hwint];
+
+    /* Check if group ID is in range */
+    if (CDD_ADC_GROUP_CNT > group_id)
+    {
+        if (FALSE == Cdd_Adc_ConfigPtr->groupcfg[group_id].dma_mode)
+        {
+            /* Report Det runtime error if the group is not configured for DMA mode */
+            (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_UPDATE_STATUS_THROUGH_DMA,
+                                         CDD_ADC_E_WRONG_PROCESSING_MODE);
+        }
+        else
+        {
+            /* Process the group if the group ID exists */
+            Cdd_Adc_ProcessGroup(group_id);
+        }
+    }
+}
+
 /* Design MCAL-31416 */
 FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessIsr(Cdd_Adc_IntNumType IntNum, Cdd_Adc_HwUnitType HwUnitId)
 {
@@ -2842,8 +2902,14 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_SetGroup(Cdd_Adc_GroupType Group)
 
     /* Set the valid samples count to Zero. */
     group_obj->valid_samples = 0U;
-    /* Reset the internal result buffer pointer. */
-    group_obj->cur_resultptr = (Cdd_Adc_ValueGroupType *)(group_obj->resbuffer);
+
+    /* Update the current result pointer only if DMA is not enabled for the group */
+    if (FALSE == Cdd_Adc_ConfigPtr->groupcfg[Group].dma_mode)
+    {
+        /* Reset the internal result buffer pointer. */
+        group_obj->cur_resultptr = (Cdd_Adc_ValueGroupType *)(group_obj->resbuffer);
+    }
+
     /* Set the group active status to TRUE */
     group_obj->grp_active = TRUE;
 
@@ -2895,8 +2961,8 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
 {
     const Cdd_Adc_GroupCfgType *groupcfg  = &(Cdd_Adc_ConfigPtr->groupcfg[Group]);
     Cdd_Adc_GroupObjType       *group_obj = &(Cdd_Adc_DrvObjPtr->group_obj[Group]);
-    uint8                       channelnum;
-    uint32                      base_addr, result_baseaddr;
+
+    uint32 base_addr, result_baseaddr;
 
     if (!(((group_obj->implicit_stop == TRUE) && (group_obj->valid_samples == groupcfg->stream_numsamples)) ||
           (group_obj->grp_status == CDD_ADC_IDLE)))
@@ -2907,15 +2973,26 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
         /* Continue with ISR execution */
         if ((group_obj->valid_samples == groupcfg->stream_numsamples) || (group_obj->valid_samples == 0U))
         {
-            /* If the buffer is filled wrap around the buffer */
-            group_obj->cur_resultptr = (Cdd_Adc_ValueGroupType *)(group_obj->resbuffer);
             /* Valid samples has become equal to maximum streaming number of samples for the group */
             group_obj->valid_samples = 1U;
         }
         else
         {
-            group_obj->cur_resultptr++; /* Update the current result buffer pointer */
             group_obj->valid_samples++; /* Number of valid samples per channel */
+        }
+
+        /* Update the current result pointer only if DMA is not enabled for the group */
+        if (FALSE == groupcfg->dma_mode)
+        {
+            if ((group_obj->valid_samples == groupcfg->stream_numsamples) || (group_obj->valid_samples == 0U))
+            {
+                /* If the buffer is filled wrap around the buffer */
+                group_obj->cur_resultptr = (Cdd_Adc_ValueGroupType *)(group_obj->resbuffer);
+            }
+            else
+            {
+                group_obj->cur_resultptr++; /* Update the current result buffer pointer */
+            }
         }
 
         /* Update the group status to CDD_ADC_COMPLETED when global software trigger is the source
@@ -2952,12 +3029,15 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
             Cdd_Adc_ConfigureContinueToIntMode(base_addr, groupcfg->grp_int, FALSE);
         }
 
-        /* Copy the results to the result buffer of the group */
-        for (channelnum = 0U; channelnum < groupcfg->channelcount; channelnum++)
+        /* Copy the results to the result buffer of the group if DMA is not enabled for the group */
+        if (FALSE == groupcfg->dma_mode)
         {
-            /* Read the corresponding SOC result and store it in the group result buffer */
-            *(group_obj->cur_resultptr + (channelnum * (groupcfg->stream_numsamples))) = Cdd_Adc_ReadResult(
-                result_baseaddr, Cdd_Adc_ConfigPtr->channelcfg[(channelnum + groupcfg->startchannelnum)].soc_num);
+            for (uint8 channelnum = 0U; channelnum < groupcfg->channelcount; channelnum++)
+            {
+                /* Read the corresponding SOC result and store it in the group result buffer */
+                *(group_obj->cur_resultptr + (channelnum * (groupcfg->stream_numsamples))) = Cdd_Adc_ReadResult(
+                    result_baseaddr, Cdd_Adc_ConfigPtr->channelcfg[(channelnum + groupcfg->startchannelnum)].soc_num);
+            }
         }
 
 #if (STD_ON == CDD_ADC_GRP_NOTIF_CAPABILITY_API)
@@ -2994,7 +3074,6 @@ static FUNC(void, CDD_ADC_CODE) Cdd_Adc_ProcessGroup(Cdd_Adc_GroupType Group)
                conversion */
         }
     }
-    return;
 }
 
 /*********************************************************************************************************************

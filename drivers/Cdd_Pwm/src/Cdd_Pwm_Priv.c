@@ -2946,10 +2946,10 @@ Cdd_Pwm_PrivAllocBXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                            VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XcmpReg, VAR(uint16, AUTOMATIC) XCmpValue)
+                            VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg, VAR(uint16, AUTOMATIC) XCmpValue)
 {
     uint32 base   = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    uint32 offset = base + EPWM_O_XCMP + EPWM_O_XCMP1_ACTIVE + ((uint32)XcmpReg * 2U);
+    uint32 offset = base + EPWM_O_XCMP + EPWM_O_XCMP1_ACTIVE + ((uint32)XCmpReg * 2U);
     /* Write to the XCMP registers. */
     HWREGH(offset + 2U) = XCmpValue;
 }
@@ -4103,11 +4103,11 @@ Cdd_Pwm_PrivHrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
 
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivHrpwmSetHiResXCmpRegValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                          VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XcmpReg,
+                                          VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg,
                                           VAR(uint32, AUTOMATIC) HrXCmpValue)
 {
     uint32 base   = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    uint32 offset = base + EPWM_O_XCMP + EPWM_O_XCMP1_ACTIVE + ((uint32)XcmpReg * 2U);
+    uint32 offset = base + EPWM_O_XCMP + EPWM_O_XCMP1_ACTIVE + ((uint32)XCmpReg * 2U);
 
     /* Write to the XCMP registers. */
     HWREGH(offset) = HrXCmpValue;

@@ -1,0 +1,112 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="Cdd_Ecap" type="AR-PACKAGE">
+        <d:lst type="ELEMENTS">
+          <d:chc name="Cdd" type="AR-ELEMENT" value="MODULE-CONFIGURATION">
+            <d:ctr type="MODULE-CONFIGURATION">
+              <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Ecap/Cdd"/>
+              <d:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION" 
+                     value="VariantPreCompile">
+                <a:a name="IMPORTER_INFO" value="@DEF"/>
+              </d:var>
+              <d:ctr name="CddEcapConfigSet" type="IDENTIFIABLE">
+                <d:var name="CddEcapMaxChannel" type="INTEGER" value="1">
+                  <a:a name="IMPORTER_INFO" value="@DEF"/>
+                </d:var>
+                <d:lst name="CddEcapChannel" type="MAP">
+                  <d:ctr name="CddEcapChannel_0" type="IDENTIFIABLE">
+                    <d:ref name="CddEcapChannelRef" type="REFERENCE" 
+                           value="ASPath:/ResourceAllocator/ResourceAllocator/ResourceAllocatorGeneral/Context_0/Cdd_Ecap_0/ECAP5"/>
+                    <d:var name="CddEcapChannelId" type="STRING" value="4">
+                      <a:a name="IMPORTER_INFO">
+                        <a:v>@DEF</a:v>
+                        <a:v>@CALC</a:v>
+                      </a:a>
+                    </d:var>
+                    <d:var name="CddEcapEmulationMode" type="ENUMERATION" 
+                           value="CDD_ECAP_EMULATION_FREE_RUN">
+                      <a:a name="IMPORTER_INFO" value="@DEF"/>
+                    </d:var>
+                    <d:var name="CddEcapDefaultStartEdge" type="ENUMERATION" 
+                           value="CDD_ECAP_BOTH_EDGES"/>
+                    <d:var name="CddEcapInputSelect" type="ENUMERATION" 
+                           value="CDD_ECAP_INPUT_INPUTXBAR7"/>
+                    <d:var name="CddEcapIrqType" type="ENUMERATION" 
+                           value="ISR_CAT1_INT"/>
+                    <d:var name="CddEcapMeasurementMode" type="ENUMERATION" 
+                           value="CDD_ECAP_MODE_SIGNAL_MEASUREMENT"/>
+                    <d:var name="CddEcapPrescaler" type="ENUMERATION" 
+                           value="CDD_ECAP_PRESCALAR_1"/>
+                    <d:ref name="CddEcapFunctionalClock" type="REFERENCE" 
+                           value="ASPath:/Mcu/Mcu/Mcu_ModuleConfiguration_0/McuClockSettingConfig_XtalSE/SYSCLK"/>
+                    <d:var name="CddEcapClkFrequency" type="INTEGER" 
+                           value="200000000">
+                      <a:a name="IMPORTER_INFO">
+                        <a:v>@DEF</a:v>
+                        <a:v>@CALC</a:v>
+                      </a:a>
+                    </d:var>
+                    <d:var name="CddEcapHREnable" type="BOOLEAN" value="true"/>
+                    <d:ctr name="CddEcapSignalMeasurement" type="IDENTIFIABLE">
+                      <d:var name="CddEcapSignalMeasurementProperty" 
+                             type="ENUMERATION" value="CDD_ECAP_HIGH_TIME"/>
+                    </d:ctr>
+                    <d:ctr name="CddEcapTimestampMeasurement" 
+                           type="IDENTIFIABLE">
+                      <d:var name="CddEcapTimestampMeasurementProperty" 
+                             type="ENUMERATION" value="CDD_ECAP_CIRCULAR_BUFFER"/>
+                      <d:var name="CddEcapTimestampNotification" 
+                             type="FUNCTION-NAME" value="NotifyTime">
+                        <a:a name="ENABLE" value="false"/>
+                      </d:var>
+                    </d:ctr>
+                    <d:ctr name="CddEcapSignalEdgeDetection" 
+                           type="IDENTIFIABLE">
+                      <d:var name="CddEcapSignalNotification" 
+                             type="FUNCTION-NAME" value="NULL_PTR">
+                        <a:a name="ENABLE" value="true"/>
+                      </d:var>
+                    </d:ctr>
+                  </d:ctr>
+                </d:lst>
+              </d:ctr>
+              <d:ctr name="CddEcapGeneral" type="IDENTIFIABLE">
+                <d:var name="CddEcapDevErrorDetect" type="BOOLEAN" value="true"/>
+                <d:var name="CddEcapDeInitApi" type="BOOLEAN" value="true"/>
+                <d:var name="CddEcapEdgeCountApi" type="BOOLEAN" value="true"/>
+                <d:var name="CddEcapEdgeDetectApi" type="BOOLEAN" value="true"/>
+                <d:var name="CddEcapGetDutyCycleValuesApi" type="BOOLEAN" 
+                       value="true"/>
+                <d:var name="CddEcapGetInputStateApi" type="BOOLEAN" 
+                       value="true"/>
+                <d:var name="CddEcapGetTimeElapsedApi" type="BOOLEAN" 
+                       value="true"/>
+                <d:var name="CddEcapGetVersionInfoApi" type="BOOLEAN" 
+                       value="true"/>
+                <d:var name="CddEcapSignalMeasurementApi" type="BOOLEAN" 
+                       value="true"/>
+                <d:var name="CddEcapTimestampApi" type="BOOLEAN" value="true"/>
+                <d:var name="CddEcapHRConfigApi" type="BOOLEAN" value="true"/>
+              </d:ctr>
+            </d:ctr>
+          </d:chc>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

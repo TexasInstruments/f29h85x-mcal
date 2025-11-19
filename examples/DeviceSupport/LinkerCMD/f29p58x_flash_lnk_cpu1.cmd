@@ -25,14 +25,14 @@ SECTIONS
     codestart           : {} > 0x10001000,    palign(8)
     cert                : {} > CERT,          palign(8)
 
-    CODE:
-    {
-        *(.*_CODE)
-    } > FLASH_RP0,     palign(8)
-
     ISR_CODE:
     {
         *(.*_ISR_CODE)
+    } > FLASH_RP0,     palign(8)
+
+    CODE:
+    {
+        *(.*_CODE)
     } > FLASH_RP0,     palign(8)
 
     CONFIG_DATA:

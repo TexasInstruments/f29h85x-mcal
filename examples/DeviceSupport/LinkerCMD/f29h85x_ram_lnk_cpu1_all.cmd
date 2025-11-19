@@ -24,14 +24,14 @@ SECTIONS
 {
     codestart           : {} > 0x20100000
 
-    CODE:
-    {
-        *(.*_CODE)
-    } >> SRAM_LPAx | SRAM_CPA0 | SRAM_CPA1
-
     ISR_CODE:
     {
         *(.*_ISR_CODE)
+    } >> SRAM_LPAx | SRAM_CPA0 | SRAM_CPA1
+
+    CODE:
+    {
+        *(.*_CODE)
     } >> SRAM_LPAx | SRAM_CPA0 | SRAM_CPA1
 
     CONFIG_DATA:

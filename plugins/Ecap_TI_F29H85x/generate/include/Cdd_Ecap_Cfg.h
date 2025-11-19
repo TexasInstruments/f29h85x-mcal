@@ -144,30 +144,30 @@ typedef enum
     CDD_ECAP_INPUT_INPUTXBAR14                          = 13,   //!GPIO Input Crossbar output signal-14
     CDD_ECAP_INPUT_INPUTXBAR15                          = 14,   //!GPIO Input Crossbar output signal-15
     CDD_ECAP_INPUT_INPUTXBAR16                          = 15,   //!GPIO Input Crossbar output signal-16
-    CDD_ECAP_INPUT_ECAP0_CLB1_OUT14                     = 16,   //!CLB1 OUT14
     CDD_ECAP_INPUT_ECAP1_CLB1_OUT14                     = 16,   //!CLB1 OUT14
-    CDD_ECAP_INPUT_ECAP0_CLB1_OUT15                     = 17,   //!CLB1 OUT15
+    CDD_ECAP_INPUT_ECAP2_CLB1_OUT14                     = 16,   //!CLB1 OUT14
     CDD_ECAP_INPUT_ECAP1_CLB1_OUT15                     = 17,   //!CLB1 OUT15
-    CDD_ECAP_INPUT_ECAP2_CLB2_OUT14                     = 16,   //!CLB2 OUT14
+    CDD_ECAP_INPUT_ECAP2_CLB1_OUT15                     = 17,   //!CLB1 OUT15
     CDD_ECAP_INPUT_ECAP3_CLB2_OUT14                     = 16,   //!CLB2 OUT14
     CDD_ECAP_INPUT_ECAP4_CLB2_OUT14                     = 16,   //!CLB2 OUT14
-    CDD_ECAP_INPUT_ECAP2_CLB2_OUT15                     = 17,   //!CLB2 OUT15
+    CDD_ECAP_INPUT_ECAP5_CLB2_OUT14                     = 16,   //!CLB2 OUT14
     CDD_ECAP_INPUT_ECAP3_CLB2_OUT15                     = 17,   //!CLB2 OUT15
     CDD_ECAP_INPUT_ECAP4_CLB2_OUT15                     = 17,   //!CLB2 OUT15
-    CDD_ECAP_INPUT_ECAP5_CLB3_OUT14                     = 16,   //!CLB3 OUT14
-    CDD_ECAP_INPUT_ECAP5_CLB3_OUT15                     = 17,   //!CLB3 OUT15
-    CDD_ECAP_INPUT_ECAP5_CLB4_OUT14                     = 18,   //!CLB4 OUT14
-    CDD_ECAP_INPUT_ECAP5_CLB4_OUT15                     = 19,   //!CLB4 OUT15
-    CDD_ECAP_INPUT_ECAP0_CLB5_OUT14                     = 18,   //!CLB5 OUT14
+    CDD_ECAP_INPUT_ECAP5_CLB2_OUT15                     = 17,   //!CLB2 OUT15
+    CDD_ECAP_INPUT_ECAP6_CLB3_OUT14                     = 16,   //!CLB3 OUT14
+    CDD_ECAP_INPUT_ECAP6_CLB3_OUT15                     = 17,   //!CLB3 OUT15
+    CDD_ECAP_INPUT_ECAP6_CLB4_OUT14                     = 18,   //!CLB4 OUT14
+    CDD_ECAP_INPUT_ECAP6_CLB4_OUT15                     = 19,   //!CLB4 OUT15
     CDD_ECAP_INPUT_ECAP1_CLB5_OUT14                     = 18,   //!CLB5 OUT14
-    CDD_ECAP_INPUT_ECAP0_CLB5_OUT15                     = 19,   //!CLB5 OUT15
+    CDD_ECAP_INPUT_ECAP2_CLB5_OUT14                     = 18,   //!CLB5 OUT14
     CDD_ECAP_INPUT_ECAP1_CLB5_OUT15                     = 19,   //!CLB5 OUT15
-    CDD_ECAP_INPUT_ECAP2_CLB6_OUT14                     = 18,   //!CLB6 OUT14
+    CDD_ECAP_INPUT_ECAP2_CLB5_OUT15                     = 19,   //!CLB5 OUT15
     CDD_ECAP_INPUT_ECAP3_CLB6_OUT14                     = 18,   //!CLB6 OUT14
     CDD_ECAP_INPUT_ECAP4_CLB6_OUT14                     = 18,   //!CLB6 OUT14
-    CDD_ECAP_INPUT_ECAP2_CLB6_OUT15                     = 19,   //!CLB6 OUT15
+    CDD_ECAP_INPUT_ECAP5_CLB6_OUT14                     = 18,   //!CLB6 OUT14
     CDD_ECAP_INPUT_ECAP3_CLB6_OUT15                     = 19,   //!CLB6 OUT15
     CDD_ECAP_INPUT_ECAP4_CLB6_OUT15                     = 19,   //!CLB6 OUT15
+    CDD_ECAP_INPUT_ECAP5_CLB6_OUT15                     = 19,   //!CLB6 OUT15
     CDD_ECAP_INPUT_OUTPUTXBAR1                          = 20,   //!Output Xbar Output-1
     CDD_ECAP_INPUT_OUTPUTXBAR2                          = 21,   //!Output Xbar Output-2
     CDD_ECAP_INPUT_OUTPUTXBAR3                          = 22,   //!Output Xbar Output-3
@@ -240,8 +240,8 @@ typedef enum
     CDD_ECAP_INPUT_SDFM1_FLT2_COMPARE_HIGH_OR_LOW       = 89,   //!SDFM-1 Filter-2 Compare High Trip or Low Trip
     CDD_ECAP_INPUT_SDFM1_FLT3_COMPARE_HIGH_OR_LOW       = 90,   //!SDFM-1 Filter-3 Compare High Trip or Low Trip
     CDD_ECAP_INPUT_SDFM1_FLT4_COMPARE_HIGH_OR_LOW       = 91,   //!SDFM-1 Filter-4 Compare High Trip or Low Trip
-    CDD_ECAP_INPUT_ECAP4_ECAP5_DELAY_CLK                = 92,   //!Delay clock for measurement
-    CDD_ECAP_INPUT_ECAP5_ECAP4_DELAY_CLK                = 93,   //!Delay clock for measurement
+    CDD_ECAP_INPUT_ECAP5_ECAP6_DELAY_CLK                = 92,   //!Delay clock for measurement
+    CDD_ECAP_INPUT_ECAP6_ECAP5_DELAY_CLK                = 93,   //!Delay clock for measurement
     CDD_ECAP_INPUT_ECATSYNC0                            = 94,   //!Ethercat Sync0
     CDD_ECAP_INPUT_ECATSYNC1                            = 95,   //!Ethercat Sync1
     CDD_ECAP_INPUT_CMPSS1_CTRIP_LOW                     = 96,   //!Compare Subsystem-1 Low Trip
@@ -272,12 +272,12 @@ typedef enum
     CDD_ECAP_INPUT_CMPSS6_CTRIP_HIGH_OR_LOW             = 124,  //!Compare Subsystem-5 High Trip or Low Trip
     CDD_ECAP_INPUT_CMPSS7_CTRIP_HIGH_OR_LOW             = 125,  //!Compare Subsystem-6 High Trip or Low Trip
     CDD_ECAP_INPUT_CMPSS8_CTRIP_HIGH_OR_LOW             = 126,  //!Compare Subsystem-7 High Trip or Low Trip
-    CDD_ECAP_INPUT_ECAP0_INPUTXBAR7                     = 127,  //!GPIO Input Crossbar output signal-7
-    CDD_ECAP_INPUT_ECAP1_INPUTXBAR8                     = 127,  //!GPIO Input Crossbar output signal-8
-    CDD_ECAP_INPUT_ECAP2_INPUTXBAR9                     = 127,  //!GPIO Input Crossbar output signal-9
-    CDD_ECAP_INPUT_ECAP3_INPUTXBAR10                    = 127,  //!GPIO Input Crossbar output signal-10
-    CDD_ECAP_INPUT_ECAP4_INPUTXBAR11                    = 127,  //!GPIO Input Crossbar output signal-11
-    CDD_ECAP_INPUT_ECAP5_INPUTXBAR12                    = 127,  //!GPIO Input Crossbar output signal-12
+    CDD_ECAP_INPUT_ECAP1_INPUTXBAR7                     = 127,  //!GPIO Input Crossbar output signal-7
+    CDD_ECAP_INPUT_ECAP2_INPUTXBAR8                     = 127,  //!GPIO Input Crossbar output signal-8
+    CDD_ECAP_INPUT_ECAP3_INPUTXBAR9                     = 127,  //!GPIO Input Crossbar output signal-9
+    CDD_ECAP_INPUT_ECAP4_INPUTXBAR10                    = 127,  //!GPIO Input Crossbar output signal-10
+    CDD_ECAP_INPUT_ECAP5_INPUTXBAR11                    = 127,  //!GPIO Input Crossbar output signal-11
+    CDD_ECAP_INPUT_ECAP6_INPUTXBAR12                    = 127,  //!GPIO Input Crossbar output signal-12
     CDD_ECAP_INPUT_SDFM4_FLT1_COMPARE_LOW               = 128,  //!SDFM-4 Filter-1 Compare Low Trip
     CDD_ECAP_INPUT_SDFM4_FLT2_COMPARE_LOW               = 129,  //!SDFM-4 Filter-2 Compare Low Trip
     CDD_ECAP_INPUT_SDFM4_FLT3_COMPARE_LOW               = 130,  //!SDFM-4 Filter-3 Compare Low Trip
@@ -326,12 +326,12 @@ typedef enum
     CDD_ECAP_INPUT_GPIO12                               = 252,  //!GPIO12
     CDD_ECAP_INPUT_GPIO13                               = 253,  //!GPIO13
     CDD_ECAP_INPUT_GPIO14                               = 254,  //!GPIO14
-    CDD_ECAP_INPUT_ECAP0_EPG1_DATAOUT49                 = 255,  //!EPG-1 Data Output-49 Connection
-    CDD_ECAP_INPUT_ECAP1_EPG1_DATAOUT50                 = 255,  //!EPG-1 Data Output-50 Connection
-    CDD_ECAP_INPUT_ECAP2_EPG1_DATAOUT51                 = 255,  //!EPG-1 Data Output-51 Connection
-    CDD_ECAP_INPUT_ECAP3_EPG1_DATAOUT52                 = 255,  //!EPG-1 Data Output-52 Connection
-    CDD_ECAP_INPUT_ECAP4_EPG1_DATAOUT53                 = 255,  //!EPG-1 Data Output-53 Connection
-    CDD_ECAP_INPUT_ECAP5_EPG1_DATAOUT54                 = 255   //!EPG-1 Data Output-54 Connection
+    CDD_ECAP_INPUT_ECAP1_EPG1_DATAOUT49                 = 255,  //!EPG-1 Data Output-49 Connection
+    CDD_ECAP_INPUT_ECAP2_EPG1_DATAOUT50                 = 255,  //!EPG-1 Data Output-50 Connection
+    CDD_ECAP_INPUT_ECAP3_EPG1_DATAOUT51                 = 255,  //!EPG-1 Data Output-51 Connection
+    CDD_ECAP_INPUT_ECAP4_EPG1_DATAOUT52                 = 255,  //!EPG-1 Data Output-52 Connection
+    CDD_ECAP_INPUT_ECAP5_EPG1_DATAOUT53                 = 255,  //!EPG-1 Data Output-53 Connection
+    CDD_ECAP_INPUT_ECAP6_EPG1_DATAOUT54                 = 255   //!EPG-1 Data Output-54 Connection
 } Cdd_Ecap_InputSelect;
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -379,7 +379,8 @@ extern const struct Cdd_Ecap_ConfigTag Cdd_Ecap_Config;
 #define CDD_ECAP_CHANNEL[!"num:i(CddEcapChannelId)"!]_INT_[!"CddEcapIrqType"!]
 
 [!IF "CddEcapHREnable = 'true'"!]
-[!IF "num:i(CddEcapChannelId) < num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex'))"!][!ERROR "HR mode is not supported for channel id less than num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex'))"!]
+[!IF "ecu:get('ResourceAllocator_F29H85x.Cdd_Ecap_HrEnable') = 'FALSE'"!][!ERROR "HR mode is not enabled for this device."!]
+[!ELSEIF "not(text:contains(concat(',', ecu:get('ResourceAllocator_F29H85x.Cdd_Ecap_HrSupportId'), ','), concat(',', CddEcapChannelId, ',')))"!][!ERROR!]HR mode is not supported for ECAP [!"num:i(CddEcapChannelId + 1)"!][!ENDERROR!]
 [!ELSE!]
 #define CDD_ECAP_HR_CHANNEL[!"num:i(CddEcapChannelId)"!]_INT_ENABLE
 

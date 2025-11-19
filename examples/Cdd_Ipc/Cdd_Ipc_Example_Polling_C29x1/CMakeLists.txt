@@ -84,7 +84,8 @@ if(NOT TARGET DeviceSupport)
                      ${CMAKE_BINARY_DIR}/DeviceSupport)
 endif()
 
-add_compile_options(-DMULTICORE_ENABLE_CPU3)
+# Define MULTICORE_ENABLE_CPU3 macro and only for C and CXX files
+add_compile_options($<$<COMPILE_LANGUAGE:C,CXX>:-DMULTICORE_ENABLE_CPU3>)
 
 add_link_options(-Wl,--stack_size=0x1000)
 add_link_options(

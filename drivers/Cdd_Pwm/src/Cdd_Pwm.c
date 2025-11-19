@@ -301,7 +301,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] TripInput Digital compare trip input type
- * \param[in] DcType Digital compare type
+ * \param[in] ApiId Api ID
  * \pre None
  * \post None
  * \return Std_ReturnType
@@ -420,7 +420,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] TripInput     Trip number
- * \param[in] DcType        Digital Compare module
+ * \param[in] ApiId         API ID
  * \pre None
  * \post None
  * \return Std_ReturnType
@@ -5670,7 +5670,7 @@ Cdd_Pwm_AllocBXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 }
 
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XcmpReg,
+Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg,
                         VAR(uint16, AUTOMATIC) XCmpValue)
 {
 #if (STD_ON == CDD_PWM_DEV_ERROR_DETECT)
@@ -5684,7 +5684,7 @@ Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_XCMPREGVAL, CDD_PWM_E_INVALID_ID);
     }
-    else if (CDD_PWM_XTBPRD_SHADOW3 < XcmpReg)
+    else if (CDD_PWM_XTBPRD_SHADOW3 < XCmpReg)
     {
         /* Report DET error if the channel ID doesn't exist */
         (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_XCMPREGVAL,
@@ -5693,7 +5693,7 @@ Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd
     else
 #endif
     {
-        Cdd_Pwm_PrivSetXCmpRegValue(InstanceId, XcmpReg, XCmpValue);
+        Cdd_Pwm_PrivSetXCmpRegValue(InstanceId, XCmpReg, XCmpValue);
     }
 }
 

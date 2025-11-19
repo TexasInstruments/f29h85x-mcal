@@ -1898,7 +1898,7 @@ Spi_ConfigGpioChipSelect(P2CONST(Spi_JobObjType, AUTOMATIC, SPI_CODE) jobObj, VA
     {
         if ((Spi_CsLevelType)STD_LOW == (Spi_CsLevelType)jobObj->extDevCfg->csPolarity)
         {
-            if (FALSE == enable)
+            if (TRUE == enable)
             {
                 Dio_WriteChannel(gpioCsId, STD_LOW);
             }
@@ -1909,7 +1909,7 @@ Spi_ConfigGpioChipSelect(P2CONST(Spi_JobObjType, AUTOMATIC, SPI_CODE) jobObj, VA
         }
         else
         {
-            if (FALSE == enable)
+            if (TRUE == enable)
             {
                 Dio_WriteChannel(gpioCsId, STD_HIGH);
             }
@@ -2498,6 +2498,9 @@ Spi_PrivInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
              P2CONST(Spi_ConfigType, AUTOMATIC, SPI_CONFIG_DATA) ConfigPtr)
 {
     VAR(uint32, AUTOMATIC) index;
+#if (STD_ON == SPI_CS_VIA_GPIO)
+    VAR(uint32, AUTOMATIC) jobindex;
+#endif
     Spi_ResetDrvObj(Spi_DrvObj);
     Spi_CopyConfig(Spi_DrvObj, ConfigPtr);
 
@@ -2506,6 +2509,18 @@ Spi_PrivInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) Spi_DrvObj,
     {
         Spi_HwUnitInit(Spi_DrvObj, &(Spi_DrvObj->hwUnitObj[index]));
     }
+#if (STD_ON == SPI_CS_VIA_GPIO)
+    /* Init Gpio Chip Select Pins */
+    for (jobindex = ((uint8)0U); jobindex < SPI_MAX_JOBS; jobindex++)
+    {
+        /* UnSet chip select, if GPIO */
+        if ((Spi_CsSelection)CS_VIA_GPIO == Spi_DrvObj->jobObj[jobindex].jobCfg->csSelect)
+        {
+            /* Set initial state of the GPIO CS */
+            Spi_ConfigGpioChipSelect(&Spi_DrvObj->jobObj[jobindex], FALSE);
+        }
+    }
+#endif
     /* Initialize driver status and object */
     Spi_DrvStatus    = SPI_IDLE;
     Spi_DriverObjPtr = Spi_DrvObj;

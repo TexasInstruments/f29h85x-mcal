@@ -2,18 +2,21 @@
 
 ## Introduction
 
-The purpose of this User Guide is to provide detailed information regarding the usage of MCAL configurator/generator package. Each MCAL driver has a driver implementation portion and a configurator/generator portion. The configurator portion is described in this user guide.
+### Purpose and Scope
 
-The TI MCAL uses [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) for configuration of MCAL modules.\
-MCAL module’s ECU parameter definition is captured in Elektrobit xdm format. MCAL modules are delivered in the form of EB Tresos plugins.
-The configuration of the MCAL modules can be done using the Elektrobit Tresos Configuration Editor. Once the configuration is complete, code can be generated for supported variants of the drivers.
+This comprehensive User Guide provides detailed instructions and best practices for utilizing the MCAL (Microcontroller Abstraction Layer) configurator and code generator package. Each MCAL driver has a driver implementation portion and a configurator/generator portion. The configurator portion is described in this user guide.
+
+### Overview of MCAL Configurator
+
+Texas Instruments MCAL implementation leverages [Elektrobit Tresos Studio](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) as the primary configuration platform for all MCAL modules.
 
 ## Software Dependencies
 
-### Access to EB Tresos Tool and License
+### Requesting access to EB Tresos Tool and License
 
-All required configurator installer are packaged with the configurator package.
-These installers are present at [MCAL Configuration Install Directory](https://www.ti.com/drr/opn/PROCESSOR-SDK-MCAL-EB-TRESOS)
+Customers can request access to the complete EB Tresos configurator installer package and licensing materials by visiting the following link [MCAL-EB-TRESOS](https://www.ti.com/drr/opn/PROCESSOR-SDK-MCAL-EB-TRESOS) and follow the access request procedures.
+
+Once your access request is approved, you will be able to download the complete configurator package, which includes all required installers and licensing components needed for MCAL configuration and code generation.
 
 |Document | Description|
 |---------|------------|
@@ -24,25 +27,25 @@ These installers are present at [MCAL Configuration Install Directory](https://w
 |EB_Tresos_Activation_Customer_License_TexasInstruments.pdf | **Activation Key** for License Administrator Setup|
 
 ```{Note}
-Refer Release Notes or Getting Started section for more details on EB Tresos version related information. Only the required version of EB tresos as given in Release Notes shall be installed.
+Please consult the Release Notes or Getting Started documentation for specific EB Tresos version requirements for your target platform. It is critical to install only the EB Tresos version specified in the Release Notes to ensure compatibility with your MCAL package.
 ```
 
 ## Tool Installation and Activation
 
 EB Tresos Installation can be segregated into three major steps:
 
-- Installation of Client License Administrator as it requires an activation key for machine where EB would be installed.
+- Installation of Client License Administrator as it requires an activation key for the machine where EB would be installed.
 - Installation of EB Tresos installer
 - Elektrobit Tresos License Troubleshooting ( *Optional step in case of any license related issues* )
 
 ### Client License Administrator Installation
 
-- **EB_Client_License_Administrator_1_5_1_Setup.exe**
-  1. Install the executable as an administrator. On successful installation you should see icon “EB Client License Administrator X.Y.Z” on your desktop.
+- **EB_Client_License_Administrator_X_Y_Z_Setup.exe**
+  1. Install the executable as an administrator. On successful installation, you should see the icon "EB Client License Administrator X.Y.Z" on your desktop.
   2. Launch EB Client License Administrator.
-  3. Enter the activation key provided. There can be one or more activation key provided. However user needs only one successfull activation of either key.
-  4. Click “Activate” button.
-  5. Check the status of the license activation sequence. If successful your license is ready to use.
+  3. Enter the activation key provided. There can be one or more activation keys provided. However, the user needs only one successful activation of any key.
+  4. Click the "Activate" button.
+  5. Check the status of the license activation sequence. If successful, your license is ready to use.
 
 ```{figure} Assets/images/EBTresos_License_Activation.png
 :alt: EB Tresos License Activation
@@ -52,15 +55,15 @@ EB Tresos License Activation
 ```
 
 ```{Note}
- For details refer LicensingUsersGuide.pdf Chapter 5 ({Installation Drive}/EB/EB_Client_License_Administrator/Doc/LicensingUsersGuide.pdf)
+For details, refer to LicensingUsersGuide.pdf Chapter 5 ({EB_INSTALLATION_PATH}/EB_Client_License_Administrator/Doc/LicensingUsersGuide.pdf)
  ```
 
 ### EB Tresos Tool Installation
 
 - **EB_Tresos_ACGX.X.X_Installer.zip**
-  - Contains an self installing exe
+  - Contains a self-installing exe
   - Ensure to install as an administrator
-  - On successful installation, an icon "Tresos Studio XX" would be created.
+  - On successful installation, an icon "Tresos Studio XX" will be created.
 
 ```{figure} Assets/images/EB_Tresos_Tool_Installation.png
 :alt: EB Tresos Tool Installation
@@ -76,28 +79,41 @@ EB Tresos Tool Installation
 
 ### Elektrobit Tresos License Troubleshooting
 
-In cases where License Error are seen (post successful installation of Client License Administrator Client License Administrator), please try following steps
+In cases where License Errors are seen (post successful installation of Client License Administrator), please try the following steps:
 
 1. Check if “Flexnet Licensing Service” service is started in the Windows Service Manager Panel (Control Panel -> Administrative Tools -> Services). If it is not started, please start it manually.
-2. Disable any "Anti Virus" software on the machine
-3. In cases where "Anti Virus" software cannot be disabled, please add user defined exceptions in "Anti Virus" software to the following folders (*With the assumption that EB is installed in C Drive*):
+2. Disable any "Antivirus" software on the machine
+3. In cases where "Antivirus" software cannot be disabled, please add user-defined exceptions in "Antivirus" software to the following folders (*With the assumption that EB is installed on C Drive*):
 
     - C:\ProgramData\Flexnet\
     - C:\EB\
 
-4. If license issues are still not resolved, contact EB support via Help->EB tresos support in EB tresos tool.
+4. If license issues are still not resolved, contact EB support via Help->EB tresos support in the EB tresos tool.
 
 ## Getting started with EB Tresos
 
-### Importing plugin to EB Tresos
+```{Note}
+**For New Users:** If you are using EB Tresos Studio for the first time, it is highly recommended to familiarize yourself with the tool by referring to the documentation provided by EB Tresos in local tool installation directory:
+{EB_INSTALLATION_PATH}/tresos/doc/2.0_EB_tresos_Studio/2.1_Studio_documentation_users_guide.pdf**
+You can refer to following chapters for basic understanding:
+- **Chapter 4: Using EB tresos Studio for the first time**
+- **Chapter 5: The graphical user interface (GUI)**
 
-Copy all the plugins from MCAL installation directory to *{EB_TRESOS_INSTALL_DIRECTORY}\plugins folder.
+This will help you understand the basic navigation, interface elements, and fundamental concepts before proceeding with MCAL configuration.
+```
+
+### Importing plugins to EB Tresos
+
+Copy the entire contents of the MCAL plugins directory, e.g. {MCAL_INSTALL_PATH}\plugins, to the {EB_INSTALLATION_PATH}/tresos/plugins folder.
+
+
+
 
 ### Create an EB project
 
-Follow the below steps to Create EB Tresos project
+Follow the steps below to create an EB Tresos project:
 
-- Launch the EB Tresos tool. On the Welcome Screen, Click on Start Icon
+- Launch the EB Tresos tool. On the Welcome Screen, click on the Start Icon
 
 ```{figure} Assets/images/EB_Tresos_Launch.png
 :alt: EB Tresos Launch
@@ -106,7 +122,7 @@ Follow the below steps to Create EB Tresos project
 EB Tresos Launch - Welcome Screen
 ```
 
-- Now Click on File->New->Configuration Project to create a new project in the workspace
+- Now click on File->New->Configuration Project to create a new project in the workspace
 
 ```{figure} Assets/images/EB_New_Configuration_Project.png
 :alt: New Configuration Project
@@ -115,9 +131,9 @@ EB Tresos Launch - Welcome Screen
 New Configuration Project
 ```
 
-- Enter the Project name and select the location. Then Click on **Next >** Button
+- Enter the Project name and select the location. Then click on the **Next >** button
 
->>***Use Default Location** checkbox can be unchecked and custom location for the project can be provided*
+>>*The **Use Default Location** checkbox can be unchecked and a custom location for the project can be provided*
 
 ```{figure} Assets/images/EB_Project_Name.png
 :alt: Project Wizard Window
@@ -126,8 +142,8 @@ New Configuration Project
 Project Wizard Window
 ```
 
-- In the Configuration Project Data Window, Enter the appropriate name for the ECU instance for the configuration.
-- Select the Target from the list as F29H85x and then Click on **Next >** Button
+- In the Configuration Project Data Window, enter the appropriate name for the ECU instance for the configuration.
+- Select the Target from the list as F29H85x and then click on the **Next >** button
 
 ```{figure} Assets/images/EB_Project_Config_Data.png
 :alt: EB Project Configuration Data
@@ -138,7 +154,7 @@ EB Project Configuration Data
 
 ### Load plugins
 
-- In the Module Configuration Window, Select all the required plugins listed and add to module configuration.
+- In the Module Configuration Window, select all the required plugins listed and add them to the module configuration.
 
 ```{figure} Assets/images/EB_Module_Add.png
 :alt: EB Module Configuration
@@ -148,12 +164,12 @@ EB Module Configuration
 ```
 
 ```{Note}
-- If any Default configuration is present for the selected module, Ensure that Default Recommended Configuration is selected in Recommended Configuration section
+- If any default configuration is present for the selected module, ensure that Default Recommended Configuration is selected in the Recommended Configuration section
 - If the EB Tresos project already exists and you need to add or remove modules, right-click on the EB Tresos project and select 'Module Configurations' to manage the project's modules.
 ```
 
-- Once All the required modules are added, click on next and then click on  **Finish** Button to create the project.
-- Created project and Modules can be seen in Project Explorer tab once the project created is completed
+- Once all the required modules are added, click on next and then click on the **Finish** button to create the project.
+- The created project and modules can be seen in the Project Explorer tab once the project creation is completed
 
 ```{figure} Assets/images/EB_Project_Created.png
 :alt: EB Project Created
@@ -164,8 +180,8 @@ EB Project Created
 
 ### Generate plugins
 
-- Load the Modules and configure according to the requirement and save the project.
-- Click on Settings button down arrow button ->  Unattended wizard configurations.
+- Load the modules and configure according to the requirements and save the project.
+- Click on the Settings button down arrow -> Unattended wizard configurations.
 
 ```{figure} Assets/images/EB_Unattended_Wizard_Configuration.png
 :alt: EB Unattended Wizard Configuration
@@ -174,7 +190,7 @@ EB Project Created
 EB Unattended Wizard Configuration
 ```
 
-- Check AutoCalc (Calculate Derivable Values) checkbox and select default values and calculated values checkbox and click on Run to auto-calculate derivable values.
+- Check the AutoCalc (Calculate Derivable Values) checkbox and select the default values and calculated values checkbox, then click on Run to auto-calculate derivable values.
 
 ```{figure} Assets/images/EB_Unattended_Wizard_Config_Dialog.png
 :alt: EB Unattended Wizard Config Dialog
@@ -184,10 +200,10 @@ EB Unattended Wizard Config Dialog
 ```
 
 ```{Note}
-Unattended wizard configurations settings needs to be configured once during configuration of project where AutoCalc (Calculate Derivable Values) checkbox needs to be set. Post settings are done just clicking on the settings icon->AutoCalc will auto calculate all the values and any other configuration updates in the project.
+Unattended wizard configuration settings need to be configured once during project configuration where the AutoCalc (Calculate Derivable Values) checkbox needs to be set. Once the settings are done, just clicking on the settings icon->AutoCalc will auto-calculate all the values and any other configuration updates in the project.
 ```
 
-- Right Click on the project in the Project explorer and choose *Verify Project* to see any errors or warnings in the configuration.
+- Right-click on the project in the Project explorer and choose *Verify Project* to see any errors or warnings in the configuration.
 
 ```{figure} Assets/images/EB_Generate_Configuration.png
 :alt: EB Generate Configuration
@@ -196,14 +212,14 @@ Unattended wizard configurations settings needs to be configured once during con
 EB Generate Configuration
 ```
 
-- Next Right Click on the project in the Project explorer and choose *Generate Project* to generate the Output Files.
-- Generated Files will be present in output folder.
+- Next, right-click on the project in the Project explorer and choose *Generate Project* to generate the output files.
+- Generated files will be present in the output folder.
 
-*For more details on how to configure AUTOSAR modules using EB tresos studio, Refer 2.1_Studio_documentation_users_guide.*
+*For more details on how to configure AUTOSAR modules using EB tresos studio, refer to 2.1_Studio_documentation_users_guide.*
 
 ### Generate BSWMD
 
-- To generate BSWMD file, right click on on the Project created/ or the module for which you want to generate the file, and click on Build Project->Generate_SWC-T
+- To generate a BSWMD file, right-click on the project created or the module for which you want to generate the file, and click on Build Project->Generate_SWC-T
 
 ```{figure} Assets/images/EB_BSWMD_Generate.png
 :alt: Generate BSWMD File
@@ -224,7 +240,7 @@ Output Files
 
 ### Module Plugin Directory Structure
 
-A typical module plugin would contain following files:
+A typical module plugin would contain the following files:
 
 📦ModuleName_TI_DeviceName\
  ┣ 📂config\
@@ -242,7 +258,7 @@ A typical module plugin would contain following files:
  ┃ ┃ ┗ 📜ModuleName_PBcfg.c : *Provides template to generate Post Build module configurations*\
  ┣ 📂generate_swcd\
  ┃ ┗ 📂swcd\
- ┃ ┃ ┗ 📜ModuleName_BSWMD.arxml : *Base Software Module Description : Contains details such exclusive area, Module Entries, Interrupts, MemMap etc...*\
+ ┃ ┃ ┗ 📜ModuleName_BSWMD.arxml : *Base Software Module Description : Contains details such as exclusive area, Module Entries, Interrupts, MemMap etc...*\
  ┣ 📂META-INF\
  ┃ ┣ 📜MANIFEST.MF : *Licensing and module include information*\
  ┃ ┣ 📜CRYPTOMANIFEST.MF : *Contains Signature for the files in Plugin*\
@@ -253,17 +269,17 @@ A typical module plugin would contain following files:
 
 |Document | Description | Link|
 |---------|-------------|-----|
-|2.1_Studio_documentation_users_guide.pdf   | EB Tresos user guide. This document can be used to understand how to use EB tresos for configuration and code generation. | {Installation Drive}/EB/tresos/doc/2.0_EB_tresos_Studio/2.1_Studio_documentation_users_guide.pdf|
-|LicensingUsersGuide.pdf | Details activation of EB license and use of EB Client License Administrator tool | {Installation Drive}/EB/EB_Client_License_Administrator/Doc/LicensingUsersGuide.pdf|
-|fnp_LicAdmin.pdf | Document from Flexnet explaining usage of Flexnet licensing tools | {Installation Drive}/EB/EB_Client_License_Administrator/Doc/fnp_LicAdmin.pdf|
+|2.1_Studio_documentation_users_guide.pdf   | EB Tresos user guide. This document can be used to understand how to use EB tresos for configuration and code generation. | {EB_INSTALLATION_PATH}/tresos/doc/2.0_EB_tresos_Studio/2.1_Studio_documentation_users_guide.pdf|
+|LicensingUsersGuide.pdf | Details the activation of EB license and use of EB Client License Administrator tool | {EB_INSTALLATION_PATH}/EB_Client_License_Administrator/Doc/LicensingUsersGuide.pdf|
+|fnp_LicAdmin.pdf | Document from Flexnet explaining the usage of Flexnet licensing tools | {EB_INSTALLATION_PATH}/EB_Client_License_Administrator/Doc/fnp_LicAdmin.pdf|
 
 ## Run Export
 
-The Configurations generated in EB Tresos can be exported to other configuration tools like DaVinci Configurator, ETAS ISOLAR-AB etc.
+The configurations generated in EB Tresos can be exported to other configuration tools like DaVinci Configurator, ETAS ISOLAR-AB, etc.
 
-To export the configuration from EB to AUTOSAR XML (ARXML) format, following steps can be followed :
+To export the configuration from EB to AUTOSAR XML (ARXML) format, the following steps can be followed:
 
-- Right-Click the EB Project from the workspace which needs to be exported
+- Right-click the EB Project from the workspace which needs to be exported
 - Click on **Im- and Exporters...**
 
 ```{figure} Assets/images/EB_Export_1.png
@@ -273,7 +289,7 @@ To export the configuration from EB to AUTOSAR XML (ARXML) format, following ste
 Export configurations
 ```
 
-- Click on Create new Im- or Exporter button (**+** Symbol)
+- Click on the Create new Im- or Exporter button (**+** Symbol)
 
 ```{figure} Assets/images/EB_Create_New_Exporter.png
 :alt: Create New Exporter
@@ -282,7 +298,7 @@ Export configurations
 Create New Exporter
 ```
 
-- Fill the Name and select Mode as Export Only and Click on Next Button.
+- Fill in the Name and select Mode as Export Only, then click on the Next button.
 
 ```{figure} Assets/images/EB_Exporter_Name.png
 :alt: Exporter Name
@@ -291,7 +307,7 @@ Create New Exporter
 Exporter Name
 ```
 
-- In the next window, click on browse and select the file
+- In the next window, click on Browse and select the file
 
 ```{figure} Assets/images/EB_Export_Select_File.png
 :alt: Exporter Select File
@@ -300,7 +316,7 @@ Exporter Name
 Exporter Select File
 ```
 
-- Select Autosar version as 4.3.1, and Click Finish.
+- Select AUTOSAR version as 4.3.1, and click Finish.
 
 ```{figure} Assets/images/EB_Export_AS_Version_Select.png
 :alt: AS Version Select
@@ -309,7 +325,7 @@ Exporter Select File
 AS Version Select
 ```
 
-- Select the exporter and click on Run Exporter button.
+- Select the exporter and click on the Run Exporter button.
 
 ```{figure} Assets/images/EB_Run_Exporter_Select.png
 :alt: EB Run Exporter
@@ -319,5 +335,5 @@ EB Run Exporter
 ```
 
 ```{Note}
-Once the Exporter run is successful, the generated arxml file can be used as the input file to the other configurator tools.
+Once the exporter run is successful, the generated ARXML file can be used as the input file for other configurator tools.
 ```

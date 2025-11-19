@@ -941,11 +941,6 @@ FUNC(void, MCU_CODE) Mcu_FillRamSection(Mcu_RamConfigPtrType RamSectionConfigPtr
 }
 
 #if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
-FUNC(void, MCU_CODE) Mcu_UnlockClockConfigRegisters(void)
-{
-    HWREG(DEVCFG_BASE + SYSCTL_O_CLKCFGLOCK1) = 0U;
-}
-
 FUNC(void, MCU_CODE) Mcu_LockClockConfigRegisters(void)
 {
     HWREG(DEVCFG_BASE + SYSCTL_O_CLKCFGLOCK1) = 0xFFFFFFFFU;
@@ -953,11 +948,6 @@ FUNC(void, MCU_CODE) Mcu_LockClockConfigRegisters(void)
 #endif /*MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS*/
 
 #if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
-FUNC(void, MCU_CODE) Mcu_UnlockCpuPeripheralConfigRegisters(void)
-{
-    HWREG(CPUPERCFG_BASE + SYSCTL_O_CPUPERCFGLOCK1) = 0U;
-}
-
 FUNC(void, MCU_CODE) Mcu_LockCpuPeripheralConfigRegisters(void)
 {
     HWREG(CPUPERCFG_BASE + SYSCTL_O_CPUPERCFGLOCK1) = 0xFFFFFFFFU;
@@ -965,13 +955,6 @@ FUNC(void, MCU_CODE) Mcu_LockCpuPeripheralConfigRegisters(void)
 #endif /*MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS*/
 
 #if (STD_ON == MCU_CPU_SYSTEM_LOCK_CRITICAL_REGISTERS)
-FUNC(void, MCU_CODE) Mcu_UnlockCpuSysRegisters(void)
-{
-    /* LPMCR Register */
-    VAR(uint32, AUTOMATIC) reg = ((uint32)(CPUSYS_BASE + SYSCTL_O_CPUSYSLOCK1) | 0x2U);
-    HWREG((uint32)reg)         = (uint32)reg & 0U;
-}
-
 FUNC(void, MCU_CODE) Mcu_LockCpuSysRegisters(void)
 {
     /* LOCK LPMCR Register */

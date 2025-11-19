@@ -1,0 +1,410 @@
+---
+title: Dio API GUIDE Header file
+
+---
+
+# DIO
+
+
+
+## Types
+
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|typedef uint32  | **[Dio_ChannelType](../Modules/group__DIO.md#typedef-dio_channeltype)** | Numeric ID of a DIO channel.  | 
+|typedef uint32  | **[Dio_PortType](../Modules/group__DIO.md#typedef-dio_porttype)** | Numeric ID of a DIO port.  | 
+|typedef uint8  | **[Dio_LevelType](../Modules/group__DIO.md#typedef-dio_leveltype)** | These are the possible levels a DIO channel can have (input or output).  | 
+|typedef uint32  | **[Dio_PortLevelType](../Modules/group__DIO.md#typedef-dio_portleveltype)** | If the uC owns ports of different port widths Dio_PortLevelType inherits the size of the largest port.  | 
+
+
+
+### typedef Dio_ChannelType
+```
+typedef uint32 Dio_ChannelType;
+```
+
+
+**Brief**: 
+Numeric ID of a DIO channel. 
+
+
+
+### typedef Dio_PortType
+```
+typedef uint32 Dio_PortType;
+```
+
+
+**Brief**: 
+Numeric ID of a DIO port. 
+
+
+
+### typedef Dio_LevelType
+```
+typedef uint8 Dio_LevelType;
+```
+
+
+**Brief**: 
+These are the possible levels a DIO channel can have (input or output). 
+
+
+
+### typedef Dio_PortLevelType
+```
+typedef uint32 Dio_PortLevelType;
+```
+
+
+**Brief**: 
+If the uC owns ports of different port widths Dio_PortLevelType inherits the size of the largest port. 
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Dio_ChannelGroupType](../Classes/structDio__ChannelGroupType.md)** | Type definition for identifying channel groups (meaning a set of pins in one port).  |
+
+
+
+
+## Defines
+
+| Name           |  Brief     |
+| -------------- | ---------- |
+| DIO_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
+| DIO_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| DIO_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| DIO_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by DIO Driver.  |
+| DIO_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by DIO Driver.  |
+| DIO_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by DIO Driver.  |
+| DIO_VENDOR_ID   | Texas Instruments Vendor ID.  |
+| DIO_MODULE_ID   | DIO Driver Module ID.  |
+| DIO_INSTANCE_ID   | DIO Driver Instance ID.  |
+| DIO_E_PARAM_INVALID_CHANNEL_ID   | API service called with invalid channel ID.  |
+| DIO_E_PARAM_INVALID_PORT_ID   | API service called with invalid port ID.  |
+| DIO_E_PARAM_INVALID_GROUP   | API service called with invalid channel group ID.  |
+| DIO_E_PARAM_POINTER   | Dio_GetVersionInfo() called with NULL_PTR as parameter.  |
+| DIO_SID_READ_CHANNEL   | Dio_ReadChannel()  |
+| DIO_SID_WRITE_CHANNEL   | Dio_WriteChannel()  |
+| DIO_SID_READ_PORT   | Dio_ReadPort()  |
+| DIO_SID_WRITE_PORT   | Dio_WritePort()  |
+| DIO_SID_READ_CHANNEL_GROUP   | Dio_ReadChannelGroup()  |
+| DIO_SID_WRITE_CHANNEL_GROUP   | Dio_WriteChannelGroup()  |
+| DIO_SID_FLIP_CHANNEL   | Dio_FlipChannel()  |
+| DIO_SID_GET_VERSION_INFO   | Dio_GetVersionInfo()  |
+| GPIO_PORT_A   | GPIO PORT A identifier.  |
+| GPIO_PORT_B   | GPIO PORT B identifier.  |
+| GPIO_PORT_C   | GPIO PORT C identifier.  |
+| GPIO_PORT_D   | GPIO PORT D identifier.  |
+| GPIO_PORT_E   | GPIO PORT E identifier.  |
+| GPIO_PORT_F   | GPIO PORT F identifier.  |
+| GPIO_PORT_G   | GPIO PORT G identifier.  |
+| GPIO_PORT_H   | GPIO PORT H identifier.  |
+
+## Functions
+
+| Return type    | Function Name           |      Brief        |
+| -------------- | ----------------------- | ----------------- |
+| void | **[Dio_GetVersionInfo](../Modules/group__DIO.md#function-dio_getversioninfo)**(Std_VersionInfoType * Versioninfo)| Service to get the version information of the module.  |
+| [Dio_LevelType](../Modules/group__DIO.md#typedef-dio_leveltype) | **[Dio_ReadChannel](../Modules/group__DIO.md#function-dio_readchannel)**([Dio_ChannelType](../Modules/group__DIO.md#typedef-dio_channeltype) ChannelId)| Returns the value of the specified DIO channel.  |
+| void | **[Dio_WriteChannel](../Modules/group__DIO.md#function-dio_writechannel)**([Dio_ChannelType](../Modules/group__DIO.md#typedef-dio_channeltype) ChannelId, [Dio_LevelType](../Modules/group__DIO.md#typedef-dio_leveltype) Level)| Service to set a level of a channel.  |
+| [Dio_PortLevelType](../Modules/group__DIO.md#typedef-dio_portleveltype) | **[Dio_ReadPort](../Modules/group__DIO.md#function-dio_readport)**([Dio_PortType](../Modules/group__DIO.md#typedef-dio_porttype) PortId)| Returns the level of all channels of that port.  |
+| void | **[Dio_WritePort](../Modules/group__DIO.md#function-dio_writeport)**([Dio_PortType](../Modules/group__DIO.md#typedef-dio_porttype) PortId, [Dio_PortLevelType](../Modules/group__DIO.md#typedef-dio_portleveltype) Level)| Service to set a value of the port.  |
+| [Dio_PortLevelType](../Modules/group__DIO.md#typedef-dio_portleveltype) | **[Dio_ReadChannelGroup](../Modules/group__DIO.md#function-dio_readchannelgroup)**(const [Dio_ChannelGroupType](../Classes/structDio__ChannelGroupType.md) * ChannelGroupIdPtr)| This Service reads a subset of the adjoining bits of a port.  |
+| void | **[Dio_WriteChannelGroup](../Modules/group__DIO.md#function-dio_writechannelgroup)**(const [Dio_ChannelGroupType](../Classes/structDio__ChannelGroupType.md) * ChannelGroupIdPtr, [Dio_PortLevelType](../Modules/group__DIO.md#typedef-dio_portleveltype) Level)| Service to set a subset of the adjoining bits of a port to a specified level.  |
+| [Dio_LevelType](../Modules/group__DIO.md#typedef-dio_leveltype) | **[Dio_FlipChannel](../Modules/group__DIO.md#function-dio_flipchannel)**([Dio_ChannelType](../Modules/group__DIO.md#typedef-dio_channeltype) ChannelId)| Service to flip the value of a DIO channel.  |
+
+
+
+### function Dio_GetVersionInfo
+
+```
+void Dio_GetVersionInfo(
+    Std_VersionInfoType * Versioninfo
+)
+```
+
+
+**Brief**: 
+Service to get the version information of the module. 
+
+This service writes the version information of this module into the data structure referenced by the parameter. If this parameter references NULL_PTR, a development error is reported to Det. This service is only available if the pre-compile configuration parameter DIO_VERSION_INFO_API is enabled.
+
+
+**Parameters**: 
+
+  
+* **Versioninfo** structure that contains the version information parameters. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Dio_ReadChannel
+
+```
+Dio_LevelType Dio_ReadChannel(
+    Dio_ChannelType ChannelId
+)
+```
+
+
+**Brief**: 
+Returns the value of the specified DIO channel. 
+
+This service is to read from a specified DIO channel. If the channel specified is not valid, a development error is reported to Det. The value for the DIO channel is read and returned.
+
+
+**Parameters**: 
+
+  
+* **ChannelId** specifies the ID of the general-purpose digital input/output pin. 
+
+
+**Returns**: 
+
+  
+* **STD_HIGH** logic level 1 
+<br> 
+  
+* **STD_LOW** logic level 0 
+<br> 
+
+
+**Return**: Returns the logic level(value) on a specified DIO pin of type Dio_LevelType. 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Dio_WriteChannel
+
+```
+void Dio_WriteChannel(
+    Dio_ChannelType ChannelId,
+    Dio_LevelType Level
+)
+```
+
+
+**Brief**: 
+Service to set a level of a channel. 
+
+This service is to set a specified level of a particular DIO channel. If the channel specified is not valid, a development error is reported to Det. The value is written to the specified DIO channel.
+
+
+**Parameters**: 
+
+  
+* **ChannelId** specifies the ID of the general-purpose digital input/output pin. 
+  
+* **Level** specifies the value to be written to the channel. Value can be STD_HIGH or STD_LOW. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Dio_ReadPort
+
+```
+Dio_PortLevelType Dio_ReadPort(
+    Dio_PortType PortId
+)
+```
+
+
+**Brief**: 
+Returns the level of all channels of that port. 
+
+This service reads the value of a DIO port. If the port is not enabled, a development error is reported to Det. The value of the port of which the ID is specified is read and returned.
+
+
+**Parameters**: 
+
+  
+* **PortId** specifies the ID of the grouped Input/Output channels. 
+
+
+**Returns**: 
+
+  
+* **Value** of type Dio_PortLevelType 
+<br> 
+
+
+**Return**: level of all the channels of the specified port 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Dio_WritePort
+
+```
+void Dio_WritePort(
+    Dio_PortType PortId,
+    Dio_PortLevelType Level
+)
+```
+
+
+**Brief**: 
+Service to set a value of the port. 
+
+This service sets a specified value of a DIO port. If the port is not enabled, a development error is reported to Det. The value is written to the specified DIO port.
+
+
+**Parameters**: 
+
+  
+* **PortId** specifies the ID of the grouped Input/Output channels. 
+  
+* **Level** Value consisting of level of all the channels of the specified port. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Dio_ReadChannelGroup
+
+```
+Dio_PortLevelType Dio_ReadChannelGroup(
+    const Dio_ChannelGroupType * ChannelGroupIdPtr
+)
+```
+
+
+**Brief**: 
+This Service reads a subset of the adjoining bits of a port. 
+
+This service reads the value of the subset of the bits of a port. If this parameter references NULL_PTR, a development error is reported to Det. The value of the level of the channel group is read and returned.
+
+
+**Parameters**: 
+
+  
+* **ChannelGroupIdPtr** for referencing channel group structures. 
+
+
+**Returns**: 
+
+  
+* **value** of type Dio_PortLevelType 
+<br> 
+
+
+**Return**: levels of the specified channel group. 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Dio_WriteChannelGroup
+
+```
+void Dio_WriteChannelGroup(
+    const Dio_ChannelGroupType * ChannelGroupIdPtr,
+    Dio_PortLevelType Level
+)
+```
+
+
+**Brief**: 
+Service to set a subset of the adjoining bits of a port to a specified level. 
+
+This service writes the specified value to a subset of the bits of a port. If this parameter references NULL_PTR, a development error is reported to Det. The information of the channel group is in the referenced channel group structure.The data is then written to the port.
+
+
+**Parameters**: 
+
+  
+* **ChannelGroupIdPtr** for referencing channel group structures. 
+  
+* **Level** Value consisting of levels of the specified channel group. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Dio_FlipChannel
+
+```
+Dio_LevelType Dio_FlipChannel(
+    Dio_ChannelType ChannelId
+)
+```
+
+
+**Brief**: 
+Service to flip the value of a DIO channel. 
+
+This service is to change the value of the corresponding DIO channel.If the channel specified is not valid, a development error is reported to Det. The value of the specified channel is flipped.This service is only available if the pre-compile configuration parameter DIO_FLIP_CHANNEL_API is enabled.
+
+
+**Parameters**: 
+
+  
+* **ChannelId** specifies the ID of the general-purpose digital input/output pin. 
+
+
+**Returns**: 
+
+  
+* **STD_HIGH** logic level 1 STD_LOW: logic level 0 
+<br> 
+
+
+**Return**: Value consisting of level of the specified channel after flip of type Dio_LevelType. 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+
+
+
+

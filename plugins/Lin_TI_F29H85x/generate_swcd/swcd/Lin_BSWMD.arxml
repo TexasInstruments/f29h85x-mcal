@@ -13,29 +13,17 @@
           <CATEGORY>BSW_MODULE</CATEGORY>
           <IMPLEMENTED-ENTRYS>
 [!LOOP "LinGlobalConfig/LinChannel/*"!][!//
-[!IF "LinInstance='LIN_INSTANCE_A'"!][!//
+[!VAR "InstanceName" = "node:ref(LinInstance)/InstanceName"!][!//
+[!VAR "InstanceLetter" = "substring-after($InstanceName, 'LIN')"!][!//
 [!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_0'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_A_Int0ISR</BSW-MODULE-ENTRY-REF>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_[!"$InstanceLetter"!]_Int0ISR</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
 [!ENDIF!][!//
 [!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_1'"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_A_Int1ISR</BSW-MODULE-ENTRY-REF>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_[!"$InstanceLetter"!]_Int1ISR</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-[!ENDIF!][!//
-[!ENDIF!][!//
-[!IF "LinInstance='LIN_INSTANCE_B'"!][!//
-[!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_0'"!][!//
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_B_Int0ISR</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-[!ENDIF!][!//
-[!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_1'"!][!//
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_B_Int1ISR</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-[!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDLOOP!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -129,10 +117,12 @@
               </EXCLUSIVE-AREAS>
               <ENTITYS>
 [!LOOP "LinGlobalConfig/LinChannel/*"!][!//
-[!IF "LinInstance='LIN_INSTANCE_A'"!][!//
+[!VAR "InstanceName" = "node:ref(LinInstance)/InstanceName"!][!//
+[!VAR "InstanceLetter" = "substring-after($InstanceName, 'LIN')"!][!//
+[!VAR "InstanceLetterLower" = "translate($InstanceLetter, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"!][!//
 [!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_0'"!][!//
-                <BSW-INTERRUPT-ENTITY UUID="8859c13f-9fe5-4c20-9e0a-59a217331704">
-                  <SHORT-NAME>Lin_A_Int0ISR</SHORT-NAME>
+                <BSW-INTERRUPT-ENTITY UUID="8859c13f-9fe5-4c20-9e0a-59a21733170[!"$InstanceLetterLower"!]">
+                  <SHORT-NAME>Lin_[!"$InstanceLetter"!]_Int0ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
@@ -144,7 +134,7 @@
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_LinIf/BSWModuleEntry/LinIf_WakeupConfirmation</CALLED-ENTRY-REF>
                     </BSW-DIRECT-CALL-POINT>
                   </CALL-POINTS>
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_A_Int0ISR</IMPLEMENTED-ENTRY-REF>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_[!"$InstanceLetter"!]_Int0ISR</IMPLEMENTED-ENTRY-REF>
 [!IF "LinISRType = 'LIN_ISR_CAT2'"!][!//
                   <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
 [!ELSE!][!//
@@ -153,8 +143,8 @@
                 </BSW-INTERRUPT-ENTITY>
 [!ENDIF!][!//
 [!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_1'"!][!//
-                <BSW-INTERRUPT-ENTITY UUID="9e52ece5-3aa7-4f8c-8532-8d30294472f3">
-                  <SHORT-NAME>Lin_A_Int1ISR</SHORT-NAME>
+                <BSW-INTERRUPT-ENTITY UUID="9e52ece5-3aa7-4f8c-8532-8d30294472f[!"$InstanceLetterLower"!]">
+                  <SHORT-NAME>Lin_[!"$InstanceLetter"!]_Int1ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
@@ -166,60 +156,13 @@
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_LinIf/BSWModuleEntry/LinIf_WakeupConfirmation</CALLED-ENTRY-REF>
                     </BSW-DIRECT-CALL-POINT>
                   </CALL-POINTS>
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_A_Int1ISR</IMPLEMENTED-ENTRY-REF>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_[!"$InstanceLetter"!]_Int1ISR</IMPLEMENTED-ENTRY-REF>
 [!IF "LinISRType = 'LIN_ISR_CAT2'"!][!//
                   <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
 [!ELSE!][!//
                   <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
 [!ENDIF!][!//
                 </BSW-INTERRUPT-ENTITY>
-[!ENDIF!][!//
-[!ENDIF!][!//
-[!IF "LinInstance='LIN_INSTANCE_B'"!][!//
-[!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_0'"!][!//
-                <BSW-INTERRUPT-ENTITY UUID="04a0de24-fa24-4da6-9823-8e546bed0d13">
-                  <SHORT-NAME>Lin_B_Int0ISR</SHORT-NAME>
-                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>EcuM_CheckWakeup</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_EcuM/BSWModuleEntry/EcuM_CheckWakeup</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>LinIf_WakeupConfirmation</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_LinIf/BSWModuleEntry/LinIf_WakeupConfirmation</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_B_Int0ISR</IMPLEMENTED-ENTRY-REF>
-[!IF "LinISRType = 'LIN_ISR_CAT2'"!][!//
-                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
-[!ELSE!][!//
-                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
-[!ENDIF!][!//
-                </BSW-INTERRUPT-ENTITY>
-[!ENDIF!][!//
-[!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_1'"!][!//
-                <BSW-INTERRUPT-ENTITY UUID="4167523e-3914-4c1c-9e59-0cd2e7e195c9">
-                  <SHORT-NAME>Lin_B_Int1ISR</SHORT-NAME>
-                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>EcuM_CheckWakeup</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_EcuM/BSWModuleEntry/EcuM_CheckWakeup</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>LinIf_WakeupConfirmation</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_LinIf/BSWModuleEntry/LinIf_WakeupConfirmation</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/LIN_TI_F29H85x/BSWModuleEntry/Lin_B_Int1ISR</IMPLEMENTED-ENTRY-REF>
-[!IF "LinISRType = 'LIN_ISR_CAT2'"!][!//
-                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
-[!ELSE!][!//
-                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
-[!ENDIF!][!//
-                </BSW-INTERRUPT-ENTITY>
-[!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDLOOP!][!//
                 <BSW-CALLED-ENTITY UUID="59d15a53-49a9-4a06-92f8-503af4b30fd8">
@@ -482,10 +425,12 @@
           <SHORT-NAME>BSWModuleEntry</SHORT-NAME>
           <ELEMENTS>
 [!LOOP "LinGlobalConfig/LinChannel/*"!][!//
-[!IF "LinInstance='LIN_INSTANCE_A'"!][!//
+[!VAR "InstanceName" = "node:ref(LinInstance)/InstanceName"!][!//
+[!VAR "InstanceLetter" = "substring-after($InstanceName, 'LIN')"!][!//
+[!VAR "InstanceLetterLower" = "translate($InstanceLetter, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"!][!//
 [!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_0'"!][!//
-            <BSW-MODULE-ENTRY UUID="9c41d5c9-252c-48f8-bd14-b09e3f421f36">
-              <SHORT-NAME>Lin_A_Int0ISR</SHORT-NAME>
+            <BSW-MODULE-ENTRY UUID="9c41d5c9-252c-48f8-bd14-b09e3f421f3[!"$InstanceLetterLower"!]">
+              <SHORT-NAME>Lin_[!"$InstanceLetter"!]_Int0ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
@@ -499,8 +444,8 @@
             </BSW-MODULE-ENTRY>
 [!ENDIF!][!//
 [!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_1'"!][!//
-            <BSW-MODULE-ENTRY S="" UUID="d9ed3927-25d5-40cd-a3d7-0236cd753e16">
-              <SHORT-NAME>Lin_A_Int1ISR</SHORT-NAME>
+            <BSW-MODULE-ENTRY S="" UUID="d9ed3927-25d5-40cd-a3d7-0236cd753e1[!"$InstanceLetterLower"!]">
+              <SHORT-NAME>Lin_[!"$InstanceLetter"!]_Int1ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
@@ -512,39 +457,6 @@
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
-[!ENDIF!][!//
-[!ENDIF!][!//
-[!IF "LinInstance='LIN_INSTANCE_B'"!][!//
-[!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_0'"!][!//
-            <BSW-MODULE-ENTRY S="" UUID="60f5888f-3edb-4824-bd28-d4f591727ad1">
-              <SHORT-NAME>Lin_B_Int0ISR</SHORT-NAME>
-              <IS-REENTRANT>false</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>INTERRUPT</CALL-TYPE>
-[!IF "LinISRType = 'LIN_ISR_CAT2'"!][!//
-              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
-[!ELSE!][!//
-              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
-[!ENDIF!][!//
-              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
-              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
-            </BSW-MODULE-ENTRY>
-[!ENDIF!][!//
-[!IF "LinInterruptLineSelect='LIN_INTERRUPT_LINE_NUM_1'"!][!//
-            <BSW-MODULE-ENTRY S="" UUID="100aca39-6f8d-4038-855e-cf9a6ce896d4">
-              <SHORT-NAME>Lin_B_Int1ISR</SHORT-NAME>
-              <IS-REENTRANT>false</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>INTERRUPT</CALL-TYPE>
-[!IF "LinISRType = 'LIN_ISR_CAT2'"!][!//
-              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
-[!ELSE!][!//
-              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
-[!ENDIF!][!//
-              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
-              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
-            </BSW-MODULE-ENTRY>
-[!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDLOOP!][!//
             <BSW-MODULE-ENTRY UUID="47e22b38-7f85-47d7-8b91-c9e49d647ba8">

@@ -118,7 +118,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .base_addr = (uint32)( ADCA_BASE + CDD_ADC_BASEADDR_STEP*(2U)),
             .result_baseaddr = (uint32)( ADCARESULT_BASE + CDD_ADC_RESULTBASEADDR_STEP*(2U))
         }        
-    },    
+    },
     .groupcfg  =
     {        
         [0] =
@@ -140,7 +140,8 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .startchannelnum = (uint8)(0U),
             .channelcount = (uint8)(1U),
             .soc_mask =  (uint32)(1U),
-            .lastsocnum = (uint8)(0U)
+            .lastsocnum = (uint8)(0U),
+            .dma_mode = ((boolean)(0U))
         },
         
         [1] =
@@ -162,7 +163,8 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .startchannelnum = (uint8)(1U),
             .channelcount = (uint8)(1U),
             .soc_mask =  (uint32)(1U),
-            .lastsocnum = (uint8)(0U)
+            .lastsocnum = (uint8)(0U),
+            .dma_mode = ((boolean)(0U))
         }        
     },
     .channelcfg =
@@ -189,7 +191,7 @@ CONST(struct Cdd_Adc_ConfigTag, CDD_ADC_CONFIG_DATA) Cdd_Adc_Config =
             .soc_num =  (uint8)(0U)
         }        
     },
-    .test_input = (Cdd_Adc_InternalTestNodeType)CDD_ADC_TEST_NODE_NO_CONN,
+    .test_input = (Cdd_Adc_InternalTestNodeType)CDD_ADC_TEST_NODE_NO_CONN
 };
 
 

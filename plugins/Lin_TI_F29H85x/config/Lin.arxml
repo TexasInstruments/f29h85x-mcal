@@ -130,6 +130,29 @@
                   <MAX>65535</MAX>
                   <MIN>0</MIN>
                 </ECUC-INTEGER-PARAM-DEF>
+                <ECUC-INTEGER-PARAM-DEF UUID="bd40b2db-2e4f-41ca-9784-ac048f6667d2">
+                  <SHORT-NAME>LinWakeupId</SHORT-NAME>
+                  <DESC>
+                    <L-2 L="EN">Specifies the LIN ID used to transmit a header instead of a wakeup signal due to hardware constraints. The hardware enters an undefined state when a standard wakeup signal is transmitted. To mitigate this limitation, an unused header frame is utilized as the wakeup signal, which conforms to the LIN2.1 specification</L-2>
+                  </DESC>
+                  <SCOPE>LOCAL</SCOPE>
+                  <ORIGIN>Texas Instruments</ORIGIN>
+                  <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                  <VALUE-CONFIG-CLASSES>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                    <ECUC-VALUE-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-VALUE-CONFIGURATION-CLASS>
+                  </VALUE-CONFIG-CLASSES>
+                  <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                  <DEFAULT-VALUE>63</DEFAULT-VALUE>
+                  <MAX>63</MAX>
+                  <MIN>0</MIN>
+                </ECUC-INTEGER-PARAM-DEF>
                 <ECUC-BOOLEAN-PARAM-DEF UUID="d79383fc-aeed-4a1c-916e-41bbf7fd60e7">
                   <SHORT-NAME>LinDevErrorDetect</SHORT-NAME>
                   <DESC>
@@ -257,36 +280,6 @@
                       <MAX>1</MAX>
                       <MIN>0</MIN>
                     </ECUC-INTEGER-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="622169ea-b5cc-44ac-819e-06eadc631230">
-                      <SHORT-NAME>LinInstance</SHORT-NAME>
-                      <DESC>
-                        <L-2 L="EN">Selects Lin Instance.</L-2>
-                      </DESC>
-                      <ORIGIN>Texas Instruments</ORIGIN>
-                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
-                      <VALUE-CONFIG-CLASSES>
-                        <ECUC-VALUE-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                          <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                        </ECUC-VALUE-CONFIGURATION-CLASS>
-                        <ECUC-VALUE-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                        </ECUC-VALUE-CONFIGURATION-CLASS>
-                      </VALUE-CONFIG-CLASSES>
-                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                      <DEFAULT-VALUE>LIN_INSTANCE_A</DEFAULT-VALUE>
-                      <LITERALS>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>LIN_INSTANCE_A</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>LIN_INSTANCE_B</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                      </LITERALS>
-                    </ECUC-ENUMERATION-PARAM-DEF>
                     <ECUC-ENUMERATION-PARAM-DEF UUID="b5895bf4-8bd3-43b2-aecb-579bb555e4d4">
                       <SHORT-NAME>LinLoopbackMode</SHORT-NAME>
                       <DESC>
@@ -408,6 +401,25 @@
                     </ECUC-ENUMERATION-PARAM-DEF>
                   </PARAMETERS>
                   <REFERENCES>
+                    <ECUC-REFERENCE-DEF UUID="622169ea-b5cc-44ac-819e-06eadc631230">
+                      <SHORT-NAME>LinInstance</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Reference to the LIN Instance.</L-2>
+                      </DESC>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Lin/LinAllocatedInstance</DESTINATION-REF>
+                    </ECUC-REFERENCE-DEF>
                     <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="61dd7f89-7975-4a06-bd7b-2a381fd4b447">
                       <SHORT-NAME>LinChannelEcuMWakeupSource</SHORT-NAME>
                       <DESC>

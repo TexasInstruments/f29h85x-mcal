@@ -121,6 +121,8 @@ typedef enum
     DEVICE_F29P589DM5,
     DEVICE_F29P589DU5,
     DEVICE_F29P329SM2,
+    DEVICE_F29P329SM1,
+    DEVICE_F29P329SJ1
 } Device_PartNumber;
 
 /*********************************************************************************************************************

@@ -73,6 +73,7 @@ extern "C" {
 [!VAR "Index" = "0"!]
 [!VAR "Index1" = "0"!]
 [!VAR "Ticks" = "0"!]
+[!VAR "DeviceName" = "node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/Device'))"!]
 
 [!IF "(IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile')"!]
 [!VAR "Index" = "0"!]
@@ -113,13 +114,14 @@ extern "C" {
             [!ENDIF!]
             .instanceClkMHz = [!"num:i(num:div(num:i(CddEcapClkFrequency), 1000000))"!]U,
             .prescaler = (uint8)[!"num:i(num:div(substring-after(CddEcapPrescaler,'CDD_ECAP_PRESCALAR_'), 2))"!]U, /* prescale */
-            .base_addr = (uint32)(ECAP1_BASE + (CDD_ECAP_BASEADDR_STEP*[!"num:i(num:i(CddEcapChannelId))"!]U)), /* Base address of the channel */
+            .base_addr = (uint32)[!"node:value(node:ref(CddEcapChannelRef)/BaseAddr)"!], /* Base address of the channel */
             [!IF "CddEcapHREnable = 'true'"!]
-            [!IF "num:i(CddEcapChannelId) < num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex'))"!][!ERROR "HR mode is not supported for channel id less than num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex'))"!]
+            [!IF "ecu:get('ResourceAllocator_F29H85x.Cdd_Ecap_HrEnable') = 'FALSE'"!][!ERROR "HR mode is not enabled for this device."!]
+            [!ELSEIF "not(text:contains(concat(',', ecu:get('ResourceAllocator_F29H85x.Cdd_Ecap_HrSupportId'), ','), concat(',', CddEcapChannelId, ',')))"!][!ERROR!]HR mode is not supported for ECAP [!"num:i(CddEcapChannelId + 1)"!][!ENDERROR!]
             [!ELSE!]
             .hr_enable = (boolean)TRUE,
-            .hr_base_addr = (uint32)(HRCAP5_BASE + (CDD_ECAP_HR_BASEADDR_STEP*[!"num:i(num:i(num:sub(CddEcapChannelId, num:i(ecu:get('Cdd_Ecap_F29H85x_HrIndex')))))"!]U)) /* Base address of the 
-                                                                                             high resolution channel */
+            [!VAR "baseAddr" = "node:value(node:ref(CddEcapChannelRef)/BaseAddr)"!]
+            .hr_base_addr = (uint32)[!"concat('HR', substring-after($baseAddr, 'E'))"!] /* Base address of the high resolution channel */
             [!ENDIF!]
             [!ENDIF!]
         }[!VAR "Index1" = "$Index1+1"!][!IF "not(node:islast())"!],[!ENDIF!][!CR!][!ENDLOOP!]

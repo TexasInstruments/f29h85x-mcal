@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.15. CDD_SENT &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.16. CDD_XBAR" href="group__CDD__XBAR.html" />
+    <link rel="prev" title="5.14. CDD_UART" href="group__CDD__UART.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="group__CAN.html">5.1. CAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__DIO.html">5.2. DIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__FLS.html">5.3. FLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__GPT.html">5.4. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__LIN.html">5.5. LIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__MCU.html">5.6. MCU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__PORT.html">5.7. PORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__SPI.html">5.8. SPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__WDG.html">5.9. WDG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ADC.html">5.10. CDD_ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ECAP.html">5.11. CDD_ECAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__IPC.html">5.12. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__PWM.html">5.13. CDD_PWM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__UART.html">5.14. CDD_UART</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.15. CDD_SENT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">5.15.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentinstance">5.15.1.1. enum Cdd_SentInstance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sent-datanumber">5.15.1.2. enum Cdd_Sent_DataNumber</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentnibblenumber">5.15.1.3. enum Cdd_SentNibbleNumber</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentnibble">5.15.1.4. enum Cdd_SentNibble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentcrctype">5.15.1.5. enum Cdd_SentCRCType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentcrcwidth">5.15.1.6. enum Cdd_SentCRCWidth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentfifomode">5.15.1.7. enum Cdd_SentFIFOMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-senttriggerlevel">5.15.1.8. enum Cdd_SentTriggerLevel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentcrcwithstatus">5.15.1.9. enum Cdd_SentCRCWithStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentdatanibblescount">5.15.1.10. enum Cdd_SentDataNibblesCount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentsensortype">5.15.1.11. enum Cdd_SentSensorType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-sentchanneltype">5.15.1.12. enum Cdd_SentChannelType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cddsent-valuetype">5.15.1.13. typedef CddSent_ValueType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-sent-notifytype">5.15.1.14. typedef Cdd_Sent_NotifyType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-sent-errornotifytype">5.15.1.15. typedef Cdd_Sent_ErrorNotifyType</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">5.15.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">5.15.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">5.15.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-sent-getversioninfo">5.15.4.1. function Cdd_Sent_GetVersionInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-sent-init">5.15.4.2. function Cdd_Sent_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-sent-deinit">5.15.4.3. function Cdd_Sent_Deinit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-sent-transmit">5.15.4.4. function Cdd_Sent_Transmit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-sent-enable-interrupts">5.15.4.5. function Cdd_Sent_Enable_Interrupts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-sent-disable-interrupts">5.15.4.6. function Cdd_Sent_Disable_Interrupts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__XBAR.html">5.16. CDD_XBAR</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api_guide.html"><span class="section-number">5. </span>API guide</a> &raquo;</li>
+      <li><span class="section-number">5.15. </span>CDD_SENT</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-sent">
+<h1><span class="section-number">5.15. </span>CDD_SENT<a class="headerlink" href="#cdd-sent" title="Link to this heading"></a></h1>
+<section id="types">
+<h2><span class="section-number">5.15.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Base type</p></th>
+<th class="head"><p>Type Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentinstance"><span class="std std-ref">Cdd_SentInstance</span></a></strong></p></td>
+<td><p>Type for Cdd_Sent Instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sent-datanumber"><span class="std std-ref">Cdd_Sent_DataNumber</span></a></strong></p></td>
+<td><p>Type for Receiver Data.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentnibblenumber"><span class="std std-ref">Cdd_SentNibbleNumber</span></a></strong></p></td>
+<td><p>Type for Receiver Data Nibble Number.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentnibble"><span class="std std-ref">Cdd_SentNibble</span></a></strong></p></td>
+<td><p>Type for Receiver Data Nibble.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentcrctype"><span class="std std-ref">Cdd_SentCRCType</span></a></strong></p></td>
+<td><p>Type for SENT CRC Type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentcrcwidth"><span class="std std-ref">Cdd_SentCRCWidth</span></a></strong></p></td>
+<td><p>Type for SENT CRC Width.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentfifomode"><span class="std std-ref">Cdd_SentFIFOMode</span></a></strong></p></td>
+<td><p>Sent Data mode type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-senttriggerlevel"><span class="std std-ref">Cdd_SentTriggerLevel</span></a></strong></p></td>
+<td><p>Type for Trigger Level.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentcrcwithstatus"><span class="std std-ref">Cdd_SentCRCWithStatus</span></a></strong></p></td>
+<td><p>Type for SENT CRC includes status or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentdatanibblescount"><span class="std std-ref">Cdd_SentDataNibblesCount</span></a></strong></p></td>
+<td><p>Type for SENT number of data nibbles count.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentsensortype"><span class="std std-ref">Cdd_SentSensorType</span></a></strong></p></td>
+<td><p>Type for SENT Sensor type.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-sentchanneltype"><span class="std std-ref">Cdd_SentChannelType</span></a></strong></p></td>
+<td><p>Sent Channel Type.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint32</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-cddsent-valuetype"><span class="std std-ref">CddSent_ValueType</span></a></strong></p></td>
+<td><p>Type for reading and setting the channel index.</p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef void(*)(PduIdType id, const PduInfoType *PduInfoPtr)</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-cdd-sent-notifytype"><span class="std std-ref">Cdd_Sent_NotifyType</span></a></strong></p></td>
+<td><p>Notification callback function pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef void(*)(void)</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-cdd-sent-errornotifytype"><span class="std std-ref">Cdd_Sent_ErrorNotifyType</span></a></strong></p></td>
+<td><p>Error Notification callback function pointer.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="enum-cdd-sentinstance">
+<h3><span class="section-number">5.15.1.1. </span>enum Cdd_SentInstance<a class="headerlink" href="#enum-cdd-sentinstance" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_INSTANCE_SENT1</p></td>
+<td><p></p></td>
+<td><p>SENT instance 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_INSTANCE_SENT2</p></td>
+<td><p></p></td>
+<td><p>SENT instance 2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_INSTANCE_SENT3</p></td>
+<td><p></p></td>
+<td><p>SENT instance 3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_INSTANCE_SENT4</p></td>
+<td><p></p></td>
+<td><p>SENT instance 4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_INSTANCE_SENT5</p></td>
+<td><p></p></td>
+<td><p>SENT instance 5.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_INSTANCE_SENT6</p></td>
+<td><p></p></td>
+<td><p>SENT instance 6.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for Cdd_Sent Instance.</p>
+</section>
+<section id="enum-cdd-sent-datanumber">
+<h3><span class="section-number">5.15.1.2. </span>enum Cdd_Sent_DataNumber<a class="headerlink" href="#enum-cdd-sent-datanumber" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_RECEIVER_DATA0</p></td>
+<td><p>0x0U</p></td>
+<td><p>Receiver Data 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_RECEIVER_DATA1</p></td>
+<td><p>0x1U</p></td>
+<td><p>Receiver Data 1.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for Receiver Data.</p>
+</section>
+<section id="enum-cdd-sentnibblenumber">
+<h3><span class="section-number">5.15.1.3. </span>enum Cdd_SentNibbleNumber<a class="headerlink" href="#enum-cdd-sentnibblenumber" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_DATAX_NIB0</p></td>
+<td><p>0x0U</p></td>
+<td><p>DataX Nibble Number 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_DATAX_NIB1</p></td>
+<td><p>0x1U</p></td>
+<td><p>DataX Nibble Number 1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_DATAX_NIB2</p></td>
+<td><p>0x2U</p></td>
+<td><p>DataX Nibble Number 2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_DATAX_NIB3</p></td>
+<td><p>0x3U</p></td>
+<td><p>DataX Nibble Number 3.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_DATAX_NIB4</p></td>
+<td><p>0x4U</p></td>
+<td><p>DataX Nibble Number 4.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_DATAX_NIB5</p></td>
+<td><p>0x5U</p></td>
+<td><p>DataX Nibble Number 5.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_DATAX_NIB6</p></td>
+<td><p>0x6U</p></td>
+<td><p>DataX Nibble Number 6.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_DATAX_NIB7</p></td>
+<td><p>0x7U</p></td>
+<td><p>DataX Nibble Number 7.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for Receiver Data Nibble Number.</p>
+</section>
+<section id="enum-cdd-sentnibble">
+<h3><span class="section-number">5.15.1.4. </span>enum Cdd_SentNibble<a class="headerlink" href="#enum-cdd-sentnibble" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_NO_NIBBLE</p></td>
+<td><p>0x0U</p></td>
+<td><p>No Nibble Selected.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_DATA_NIBBLE1</p></td>
+<td><p>0x1U</p></td>
+<td><p>Data Nibble 1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_DATA_NIBBLE2</p></td>
+<td><p>0x2U</p></td>
+<td><p>Data Nibble 2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_DATA_NIBBLE3</p></td>
+<td><p>0x3U</p></td>
+<td><p>Data Nibble 3.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_DATA_NIBBLE4</p></td>
+<td><p>0x4U</p></td>
+<td><p>Data Nibble 4.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_DATA_NIBBLE5</p></td>
+<td><p>0x5U</p></td>
+<td><p>Data Nibble 5.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_DATA_NIBBLE6</p></td>
+<td><p>0x6U</p></td>
+<td><p>Data Nibble 6.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_DATA_NIBBLE7</p></td>
+<td><p>0x7U</p></td>
+<td><p>Data Nibble 7.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_DATA_NIBBLE8</p></td>
+<td><p>0x8U</p></td>
+<td><p>Data Nibble 8.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_CRC_NIBBLE1</p></td>
+<td><p>0xAU</p></td>
+<td><p>Crc Nibble 1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_CRC_NIBBLE2</p></td>
+<td><p>0xBU</p></td>
+<td><p>Crc Nibble 2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_STATUS_NIBBLE</p></td>
+<td><p>0xFU</p></td>
+<td><p>status Nibble</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for Receiver Data Nibble.</p>
+</section>
+<section id="enum-cdd-sentcrctype">
+<h3><span class="section-number">5.15.1.5. </span>enum Cdd_SentCRCType<a class="headerlink" href="#enum-cdd-sentcrctype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_CRC_LEGACY_2007</p></td>
+<td><p>0x800U</p></td>
+<td><p>legacy CRC 2007</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_CRC_RECOMENDED_2010</p></td>
+<td><p>0x000U</p></td>
+<td><p>Recommended CRC 2010.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_CRC_NONE</p></td>
+<td><p>0xFFFU</p></td>
+<td><p>CRC Disable.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for SENT CRC Type.</p>
+</section>
+<section id="enum-cdd-sentcrcwidth">
+<h3><span class="section-number">5.15.1.6. </span>enum Cdd_SentCRCWidth<a class="headerlink" href="#enum-cdd-sentcrcwidth" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_CRC_4_BIT</p></td>
+<td><p>0</p></td>
+<td><p>4 Bit CRC</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_CRC_6_BIT</p></td>
+<td><p>1</p></td>
+<td><p>6 Bit CRC</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_CRC_8_BIT</p></td>
+<td><p>2</p></td>
+<td><p>8 Bit CRC</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for SENT CRC Width.</p>
+</section>
+<section id="enum-cdd-sentfifomode">
+<h3><span class="section-number">5.15.1.7. </span>enum Cdd_SentFIFOMode<a class="headerlink" href="#enum-cdd-sentfifomode" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SENT_DIRECT_MEMMAPPED</p></td>
+<td><p>0U</p></td>
+<td><p>Direct Mapping Mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_FIFOMODE_FIFO</p></td>
+<td><p>1U</p></td>
+<td><p>Fifo Mode.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Sent Data mode type.</p>
+</section>
+<section id="enum-cdd-senttriggerlevel">
+<h3><span class="section-number">5.15.1.8. </span>enum Cdd_SentTriggerLevel<a class="headerlink" href="#enum-cdd-senttriggerlevel" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_TRIGDISABLE</p></td>
+<td><p>0U</p></td>
+<td><p>Trigger disable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_TRIGLEV3</p></td>
+<td><p>3U</p></td>
+<td><p>Trigger level 3.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_TRIGLEV4</p></td>
+<td><p>4U</p></td>
+<td><p>Trigger level 4.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_TRIGLEV5</p></td>
+<td><p>5U</p></td>
+<td><p>Trigger level 5.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_TRIGLEV6</p></td>
+<td><p>6U</p></td>
+<td><p>Trigger level 6.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_TRIGLEV7</p></td>
+<td><p>7U</p></td>
+<td><p>Trigger level 7.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_TRIGLEV8</p></td>
+<td><p>8U</p></td>
+<td><p>Trigger level 8.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_TRIGLEV9</p></td>
+<td><p>9U</p></td>
+<td><p>Trigger level 9.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_TRIGLEV10</p></td>
+<td><p>10</p></td>
+<td><p>Trigger level 10.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_TRIGLEV11</p></td>
+<td><p>11U</p></td>
+<td><p>Trigger level 11.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_TRIGLEV12</p></td>
+<td><p>12U</p></td>
+<td><p>Trigger level 12.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_TRIGLEV13</p></td>
+<td><p>13U</p></td>
+<td><p>Trigger level 13.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_TRIGLEV14</p></td>
+<td><p>14U</p></td>
+<td><p>Trigger level 14.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_TRIGLEV15</p></td>
+<td><p>15U</p></td>
+<td><p>Trigger level 15.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_TRIGLEV16</p></td>
+<td><p>16U</p></td>
+<td><p>Trigger level 16.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for Trigger Level.</p>
+</section>
+<section id="enum-cdd-sentcrcwithstatus">
+<h3><span class="section-number">5.15.1.9. </span>enum Cdd_SentCRCWithStatus<a class="headerlink" href="#enum-cdd-sentcrcwithstatus" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_CRC_WITH_STATUS</p></td>
+<td><p>0x400</p></td>
+<td><p>Calculation of CRC includes Status nibble.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_CRC_WITHOUT_STATUS</p></td>
+<td><p>0x000</p></td>
+<td><p>Calculation of CRC excludes Status nibble.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for SENT CRC includes status or not.</p>
+</section>
+<section id="enum-cdd-sentdatanibblescount">
+<h3><span class="section-number">5.15.1.10. </span>enum Cdd_SentDataNibblesCount<a class="headerlink" href="#enum-cdd-sentdatanibblescount" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_1_DATA_NIBBLES</p></td>
+<td><p>1</p></td>
+<td><p>1 data nibble per-frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_2_DATA_NIBBLES</p></td>
+<td><p>2</p></td>
+<td><p>2 data nibble per-frame</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_3_DATA_NIBBLES</p></td>
+<td><p>3</p></td>
+<td><p>3 data nibble per-frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_4_DATA_NIBBLES</p></td>
+<td><p>4</p></td>
+<td><p>4 data nibble per-frame</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_5_DATA_NIBBLES</p></td>
+<td><p>5</p></td>
+<td><p>5 data nibble per-frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_6_DATA_NIBBLES</p></td>
+<td><p>6</p></td>
+<td><p>6 data nibble per-frame</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_7_DATA_NIBBLES</p></td>
+<td><p>7</p></td>
+<td><p>7 data nibble per-frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_8_DATA_NIBBLES</p></td>
+<td><p>8</p></td>
+<td><p>8 data nibble per-frame</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for SENT number of data nibbles count.</p>
+</section>
+<section id="enum-cdd-sentsensortype">
+<h3><span class="section-number">5.15.1.11. </span>enum Cdd_SentSensorType<a class="headerlink" href="#enum-cdd-sentsensortype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_CHANNEL_BROADCAST</p></td>
+<td><p></p></td>
+<td><p>Broadcast sensor trigger.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_CHANNEL_SENSOR_1</p></td>
+<td><p></p></td>
+<td><p>sensor trigger 1</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_CHANNEL_SENSOR_2</p></td>
+<td><p></p></td>
+<td><p>sensor trigger 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_CHANNEL_SENSOR_3</p></td>
+<td><p></p></td>
+<td><p>sensor trigger 3</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_CHANNEL_SENSOR_4</p></td>
+<td><p></p></td>
+<td><p>sensor trigger 4</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_CHANNEL_STANDARD_SENSOR</p></td>
+<td><p></p></td>
+<td><p>Standard sensor trigger</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Type for SENT Sensor type.</p>
+</section>
+<section id="enum-cdd-sentchanneltype">
+<h3><span class="section-number">5.15.1.12. </span>enum Cdd_SentChannelType<a class="headerlink" href="#enum-cdd-sentchanneltype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_CHANNEL_STANDARD_SENSOR_FAST_CHANNEL</p></td>
+<td><p></p></td>
+<td><p>Fast channel for Stanadard sensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_CHANNEL_SENSOR_1_FAST_CHANNEL</p></td>
+<td><p></p></td>
+<td><p>Fast channel for sensor 1.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_CHANNEL_SENSOR_2_FAST_CHANNEL</p></td>
+<td><p></p></td>
+<td><p>Fast channel for sensor 2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_CHANNEL_SENSOR_3_FAST_CHANNEL</p></td>
+<td><p></p></td>
+<td><p>Fast channel for sensor 3.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_CHANNEL_SENSOR_4_FAST_CHANNEL</p></td>
+<td><p></p></td>
+<td><p>Fast channel for sensor 4.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SHORT_SERIAL_ENHANCED_SERIAL_12BIT_SLOW_CHANNEL</p></td>
+<td><p></p></td>
+<td><p>Short serial and Enhanced serial 12 slow channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>ENHANCED_SERIAL_16BIT_SLOW_CHANNEL</p></td>
+<td><p></p></td>
+<td><p>enhanced serial 16 bit slowc channel</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Sent Channel Type.</p>
+</section>
+<section id="typedef-cddsent-valuetype">
+<h3><span class="section-number">5.15.1.13. </span>typedef CddSent_ValueType<a class="headerlink" href="#typedef-cddsent-valuetype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">CddSent_ValueType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Type for reading and setting the channel index.</p>
+</section>
+<section id="typedef-cdd-sent-notifytype">
+<h3><span class="section-number">5.15.1.14. </span>typedef Cdd_Sent_NotifyType<a class="headerlink" href="#typedef-cdd-sent-notifytype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_Sent_NotifyType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="n">PduIdType</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">PduInfoType</span><span class="w"> </span><span class="o">*</span><span class="n">PduInfoPtr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Notification callback function pointer.</p>
+</section>
+<section id="typedef-cdd-sent-errornotifytype">
+<h3><span class="section-number">5.15.1.15. </span>typedef Cdd_Sent_ErrorNotifyType<a class="headerlink" href="#typedef-cdd-sent-errornotifytype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_Sent_ErrorNotifyType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Error Notification callback function pointer.</p>
+</section>
+</section>
+<section id="structures">
+<h2><span class="section-number">5.15.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Sent__Data__Buffer.html"><span class="std std-doc">Cdd_Sent_Data_Buffer</span></a></strong></p></td>
+<td><p>Sent Data Buffer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Sent__MTPConfigType.html"><span class="std std-doc">Cdd_Sent_MTPConfigType</span></a></strong></p></td>
+<td><p>Configuration per HW unit.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Sent__ChannelConfigType.html"><span class="std std-doc">Cdd_Sent_ChannelConfigType</span></a></strong></p></td>
+<td><p>Configuration per HW unit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Sent__HWUnitType.html"><span class="std std-doc">Cdd_Sent_HWUnitType</span></a></strong></p></td>
+<td><p>Configuration per HW unit.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Sent__ConfigType.html"><span class="std std-doc">Cdd_Sent_ConfigType</span></a></strong></p></td>
+<td><p>Configuration per HW unit.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Sent__DriverObjType.html"><span class="std std-doc">Cdd_Sent_DriverObjType</span></a></strong></p></td>
+<td><p>Cdd_Sent driver object type structure.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="defines">
+<h2><span class="section-number">5.15.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_SENT_SW_MAJOR_VERSION</p></td>
+<td><p>Driver Implementation Major Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_SW_MINOR_VERSION</p></td>
+<td><p>Driver Implementation Minor Version.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_SW_PATCH_VERSION</p></td>
+<td><p>Driver Implementation Patch Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_AR_RELEASE_MAJOR_VERSION</p></td>
+<td><p>AUTOSAR major version specification implemented by Cdd_Sent Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_AR_RELEASE_MINOR_VERSION</p></td>
+<td><p>AUTOSAR minor version specification implemented by Cdd_Sent Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_AR_RELEASE_REVISION_VERSION</p></td>
+<td><p>AUTOSAR Patch version specification implemented by Cdd_Sent Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_VENDOR_ID</p></td>
+<td><p>Texas Instruments Vendor ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_MODULE_ID</p></td>
+<td><p>Cdd_Sent Driver Module ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_INSTANCE_ID</p></td>
+<td><p>Cdd_Sent Driver Instance ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_E_PARAM_POINTER</p></td>
+<td><p>API parameter checking: invalid pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_E_PARAM_CHANNEL</p></td>
+<td><p>API parameter checking: invalid value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_E_ALREADY_INITIALIZED</p></td>
+<td><p>API service for initialization called when already initialized.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_E_UNINIT</p></td>
+<td><p>API service called without module initialization.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_SID_GET_VERSION_INFO</p></td>
+<td><p>Cdd_Sent_GetVersionInfo().</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_SID_INIT</p></td>
+<td><p>Cdd_Sent_Init().</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_SID_DEINIT</p></td>
+<td><p>Cdd_Sent_Deinit().</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_SID_TRANSMIT</p></td>
+<td><p>Cdd_Sent_Transmit().</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_SENT_SID_ENABLE_INTERRUPT</p></td>
+<td><p>Cdd_Sent_Enable_Interrupts().</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_SENT_SID_DISABLE_INTERRUPT</p></td>
+<td><p>Cdd_Sent_Disable_Interrupts().</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIMESTAMP_MEMDATA</p></td>
+<td><p>TIMESTAMP MEMDATA.</p></td>
+</tr>
+<tr class="row-even"><td><p>DATA0_MEMDATA</p></td>
+<td><p>DATA0 MEMDATA.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SENT_DATAXMAP_STEP</p></td>
+<td><p>Data offsent for data1 and data 0.</p></td>
+</tr>
+<tr class="row-even"><td><p>SENT_MTP_SWTR_STEP</p></td>
+<td><p>software trigger step</p></td>
+</tr>
+<tr class="row-odd"><td><p>SENT_MTP_TIMEOUT_STEP</p></td>
+<td><p>Mtp Timeout step.</p></td>
+</tr>
+<tr class="row-even"><td><p>MAXIMUM_NUMBER_OF_SENSORS</p></td>
+<td><p>maximum number of sensors</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2><span class="section-number">5.15.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Return type</p></th>
+<th class="head"><p>Function Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-sent-getversioninfo"><span class="std std-ref">Cdd_Sent_GetVersionInfo</span></a></strong>(Std_VersionInfoType * VersionInfoPtr)</p></td>
+<td><p>Cdd_Sent_GetVersionInfo : Returns the Cdd sent Version Info.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-sent-init"><span class="std std-ref">Cdd_Sent_Init</span></a></strong>(const <a class="reference internal" href="../Classes/structCdd__Sent__ConfigType.html"><span class="std std-doc">Cdd_Sent_ConfigType</span></a> * ConfigPtr)</p></td>
+<td><p>Cdd_Sent_Init : Initializes the CDD_SENT module.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-sent-deinit"><span class="std std-ref">Cdd_Sent_Deinit</span></a></strong>(void )</p></td>
+<td><p>Cdd_Sent_Deinit : De-initializes the CDD_SENT module.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-sent-transmit"><span class="std std-ref">Cdd_Sent_Transmit</span></a></strong>(const PduInfoType * PduInfoPtr, PduIdType TxPduId)</p></td>
+<td><p>Cdd_Sent_Transmit : Triggers the MTP.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-sent-enable-interrupts"><span class="std std-ref">Cdd_Sent_Enable_Interrupts</span></a></strong>(<a class="reference internal" href="#enum-cdd-sentinstance"><span class="std std-ref">Cdd_SentInstance</span></a> SentInstance)</p></td>
+<td><p>Cdd_Sent_Enable_Interrupts : Enable Interrupts.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-sent-disable-interrupts"><span class="std std-ref">Cdd_Sent_Disable_Interrupts</span></a></strong>(<a class="reference internal" href="#enum-cdd-sentinstance"><span class="std std-ref">Cdd_SentInstance</span></a> SentInstance)</p></td>
+<td><p>Cdd_Sent_Disable_Interrupts : Disable Interrupts.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="function-cdd-sent-getversioninfo">
+<h3><span class="section-number">5.15.4.1. </span>function Cdd_Sent_GetVersionInfo<a class="headerlink" href="#function-cdd-sent-getversioninfo" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Sent_GetVersionInfo</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Std_VersionInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">VersionInfoPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cdd_Sent_GetVersionInfo : Returns the Cdd sent Version Info.</p>
+<p>This service returns the version information of this module.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>VersionInfoPtr</strong></p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-sent-init">
+<h3><span class="section-number">5.15.4.2. </span>function Cdd_Sent_Init<a class="headerlink" href="#function-cdd-sent-init" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Sent_Init</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Cdd_Sent_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ConfigPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cdd_Sent_Init : Initializes the CDD_SENT module.</p>
+<p>This service initializes the configured HW units.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ConfigPtr</strong> Pointer to CDD_SENT driver configuration set</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-sent-deinit">
+<h3><span class="section-number">5.15.4.3. </span>function Cdd_Sent_Deinit<a class="headerlink" href="#function-cdd-sent-deinit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Sent_Deinit</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cdd_Sent_Deinit : De-initializes the CDD_SENT module.</p>
+<p>This service deinitialize the CDD_SENT driver</p>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: Cdd_Sent_Init should be called first before calling this service.</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-sent-transmit">
+<h3><span class="section-number">5.15.4.4. </span>function Cdd_Sent_Transmit<a class="headerlink" href="#function-cdd-sent-transmit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Sent_Transmit</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">PduInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PduInfoPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">PduIdType</span><span class="w"> </span><span class="n">TxPduId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cdd_Sent_Transmit : Triggers the MTP.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>PduInfoPtr</strong> Pointer to PDU Information. If PduInfoPtr-&gt;SduDataPtr[0] is 0, Will disbale HW trigger If PduInfoPtr-&gt;SduDataPtr[0] is 1, Will configure HW trigger to configuration value If PduInfoPtr-&gt;SduDataPtr[0] is 2, Will trigger SW trigger</p></li>
+<li><p><strong>TxPduId</strong> : When Cdd Sent is integrated with Autosar Com stack, this TxPduId parameter is a Pdu identifier used to address the respective sensor. When Cdd Sent is not integrated with Autosar Com stack, this TxPduId parameter is a device identifier used to address the respective sensor.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Std_ReturnType</p>
+<p><strong>Precondition</strong>: Cdd_Sent_Init should be called first before calling this service.</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-sent-enable-interrupts">
+<h3><span class="section-number">5.15.4.5. </span>function Cdd_Sent_Enable_Interrupts<a class="headerlink" href="#function-cdd-sent-enable-interrupts" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Sent_Enable_Interrupts</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Cdd_SentInstance</span><span class="w"> </span><span class="n">SentInstance</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cdd_Sent_Enable_Interrupts : Enable Interrupts.</p>
+<p>This service will enable interrupts.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>SentInstance</strong> id of Sent HW unit.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: Cdd_Sent_Init should be called first before calling this service.</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-sent-disable-interrupts">
+<h3><span class="section-number">5.15.4.6. </span>function Cdd_Sent_Disable_Interrupts<a class="headerlink" href="#function-cdd-sent-disable-interrupts" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Sent_Disable_Interrupts</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Cdd_SentInstance</span><span class="w"> </span><span class="n">SentInstance</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cdd_Sent_Disable_Interrupts : Disable Interrupts.</p>
+<p>This service will Disable interrupts and ignore any received data as there is no polling API for Cdd_Sent.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>SentInstance</strong> id of Sent HW unit.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: Cdd_Sent_Init should be called first before calling this service.</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="group__CDD__UART.html" class="btn btn-neutral float-left" title="5.14. CDD_UART" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group__CDD__XBAR.html" class="btn btn-neutral float-right" title="5.16. CDD_XBAR" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Nov 19, 2025.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

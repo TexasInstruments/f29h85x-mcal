@@ -68,67 +68,67 @@
 #define LIN_START_SEC_ISR_CODE
 #include "Lin_MemMap.h"
 
-#if defined(LIN_INSTANCE_A_LINE_NUM_0)
-#if (LIN_INSTANCE_A_ISR_TYPE == LIN_ISR_CAT1_RTINT)
+#if defined(LIN_INSTANCE_LINA_LINE_NUM_0)
+#if (LIN_INSTANCE_LINA_ISR_TYPE == LIN_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Lin_A_Int0ISR)
-#elif (LIN_INSTANCE_A_ISR_TYPE == LIN_ISR_CAT1_INT)
+#elif (LIN_INSTANCE_LINA_ISR_TYPE == LIN_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Lin_A_Int0ISR)
-#elif (LIN_INSTANCE_A_ISR_TYPE == LIN_ISR_CAT2)
+#elif (LIN_INSTANCE_LINA_ISR_TYPE == LIN_ISR_CAT2)
 ISR(Lin_A_Int0ISR)
 #else
 #error "Invalid interrupt category for Lin Instance A"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Lin_ProcessISR(LIN_INSTANCE_A);
+    Lin_ProcessISR(LIN_INSTANCE_LINA);
 }
 #endif
 
-#if defined(LIN_INSTANCE_A_LINE_NUM_1)
-#if (LIN_INSTANCE_A_ISR_TYPE == LIN_ISR_CAT1_RTINT)
+#if defined(LIN_INSTANCE_LINA_LINE_NUM_1)
+#if (LIN_INSTANCE_LINA_ISR_TYPE == LIN_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Lin_A_Int1ISR)
-#elif (LIN_INSTANCE_A_ISR_TYPE == LIN_ISR_CAT1_INT)
+#elif (LIN_INSTANCE_LINA_ISR_TYPE == LIN_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Lin_A_Int1ISR)
-#elif (LIN_INSTANCE_A_ISR_TYPE == LIN_ISR_CAT2)
+#elif (LIN_INSTANCE_LINA_ISR_TYPE == LIN_ISR_CAT2)
 ISR(Lin_A_Int1ISR)
 #else
 #error "Invalid interrupt category for Lin Instance A"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Lin_ProcessISR(LIN_INSTANCE_A);
+    Lin_ProcessISR(LIN_INSTANCE_LINA);
 }
 #endif
 
-#if defined(LIN_INSTANCE_B_LINE_NUM_0)
-#if (LIN_INSTANCE_B_ISR_TYPE == LIN_ISR_CAT1_RTINT)
+#if defined(LIN_INSTANCE_LINB_LINE_NUM_0)
+#if (LIN_INSTANCE_LINB_ISR_TYPE == LIN_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Lin_B_Int0ISR)
-#elif (LIN_INSTANCE_B_ISR_TYPE == LIN_ISR_CAT1_INT)
+#elif (LIN_INSTANCE_LINB_ISR_TYPE == LIN_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Lin_B_Int0ISR)
-#elif (LIN_INSTANCE_B_ISR_TYPE == LIN_ISR_CAT2)
+#elif (LIN_INSTANCE_LINB_ISR_TYPE == LIN_ISR_CAT2)
 ISR(Lin_B_Int0ISR)
 #else
 #error "Invalid interrupt category for Lin Instance B"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Lin_ProcessISR(LIN_INSTANCE_B);
+    Lin_ProcessISR(LIN_INSTANCE_LINB);
 }
 #endif
 
-#if defined(LIN_INSTANCE_B_LINE_NUM_1)
-#if (LIN_INSTANCE_B_ISR_TYPE == LIN_ISR_CAT1_RTINT)
+#if defined(LIN_INSTANCE_LINB_LINE_NUM_1)
+#if (LIN_INSTANCE_LINB_ISR_TYPE == LIN_ISR_CAT1_RTINT)
 MCAL_LIB_RTINT_ISR(Lin_B_Int1ISR)
-#elif (LIN_INSTANCE_B_ISR_TYPE == LIN_ISR_CAT1_INT)
+#elif (LIN_INSTANCE_LINB_ISR_TYPE == LIN_ISR_CAT1_INT)
 MCAL_LIB_INT_ISR(Lin_B_Int1ISR)
-#elif (LIN_INSTANCE_B_ISR_TYPE == LIN_ISR_CAT2)
+#elif (LIN_INSTANCE_LINB_ISR_TYPE == LIN_ISR_CAT2)
 ISR(Lin_B_Int1ISR)
 #else
 #error "Invalid interrupt category for Lin Instance B"
 #endif
 {
     /* Call the internal ISR notify function to handle interrupt */
-    Lin_ProcessISR(LIN_INSTANCE_B);
+    Lin_ProcessISR(LIN_INSTANCE_LINB);
 }
 #endif
 

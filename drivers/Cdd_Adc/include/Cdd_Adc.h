@@ -112,14 +112,20 @@ extern "C" {
 /** \brief One or more ADC safety checker are BUSY */
 #define CDD_ADC_E_CHECKER_BUSY ((uint8)0x20U) /* Design: MCAL-31159 */
 
-/** \brief API service called with invalid hardware unit ID */
+/** \brief API service called when the resolution is already set to the requested resolution for the ADC instance */
 #define CDD_ADC_E_ALREADY_SET ((uint8)0x21U) /* Design: MCAL-31160 */
 
 /** \brief API service called with invalid hardware unit ID */
 #define CDD_ADC_E_INVALID_ID ((uint8)0x22U) /* Design: MCAL-31161 */
 
-/** \brief API service called with invalid hardware unit ID */
+/** \brief API service called with invalid resolution */
 #define CDD_ADC_E_INVALID_RESOLUTION ((uint8)0x23U) /* Design: MCAL-31162 */
+
+/** \brief API service called with invalid interrupt ID */
+#define CDD_ADC_E_INVALID_INTERRUPT_ID ((uint8)0x24U)
+
+/** \brief API service called with invalid interrupt ID */
+#define CDD_ADC_E_WRONG_PROCESSING_MODE ((uint8)0x25U)
 
 /* The Service Id is one of the argument to Det_ReportError function and is used to identify the
  * source of the error. */
@@ -179,6 +185,8 @@ extern "C" {
 #define CDD_ADC_SID_GET_TEMPERATURE_K ((uint8)0x1AU)
 /** \brief Cdd_Adc_SetInternalTestNode() service ID */
 #define CDD_ADC_SID_INTERNAL_TEST_NODE ((uint8)0x1BU)
+/** \brief Cdd_Adc_UpdateStatus() service ID */
+#define CDD_ADC_SID_UPDATE_STATUS_THROUGH_DMA ((uint8)0x1CU)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -396,6 +404,8 @@ typedef struct Cdd_Adc_GroupCfgTag
     uint32                       soc_mask;
     /** \brief  Last SOC number of the group to be assigned to the interrupt */
     uint8                        lastsocnum;
+    /** \brief  Determines whether DA is enabled for the group or not */
+    boolean                      dma_mode;
 } Cdd_Adc_GroupCfgType;
 
 /* Design MCAL-31427 */
@@ -834,7 +844,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopResultChecker(VAR(Cdd_Adc_CheckerType, AUTO
 /** \brief service to get the safety checker status
  *
  * This service returns the safety checker status and clears the interrupt flags. This API needs to
- *be called inside ESM ISR. This shouldn't be called directly.
+ * be called inside ESM ISR. This shouldn't be called directly.
  *
  * \param[in] IntEvt    is the numeric ID of the interrupt event instance ID
  * \param[in] CheckerFlag    Pointer to the array of the status flag
@@ -1006,6 +1016,21 @@ Cdd_Adc_GetTemperatureK(VAR(Cdd_Adc_HwUnitInstanceType, AUTOMATIC) HwUnit,
  *********************************************************************************************************************/
 FUNC(void, CDD_ADC_CODE)
 Cdd_Adc_SetInternalTestNode(VAR(Cdd_Adc_InternalTestNodeType, AUTOMATIC) TestNode);
+
+/** \brief service to update the group status in DMA mode for the specified group
+ *
+ * This service to update the group status in DMA mode for the specified group
+ *
+ * \param[in]  IntNum     Interrupt ID of the ADC instance
+ * \param[in]  HwUnitId   ADC instance ID
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ADC_CODE)
+Cdd_Adc_UpdateStatusThroughDma(VAR(Cdd_Adc_HwUnitType, AUTOMATIC) HwUnitId, VAR(Cdd_Adc_IntNumType, AUTOMATIC) IntNum);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.8. SPI &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.9. WDG" href="group__WDG.html" />
+    <link rel="prev" title="5.7. PORT" href="group__PORT.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="group__CAN.html">5.1. CAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__DIO.html">5.2. DIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__FLS.html">5.3. FLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__GPT.html">5.4. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__LIN.html">5.5. LIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__MCU.html">5.6. MCU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__PORT.html">5.7. PORT</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.8. SPI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">5.8.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-hwinstance">5.8.1.1. enum Spi_HwInstance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-statustype">5.8.1.2. enum Spi_StatusType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-jobresulttype">5.8.1.3. enum Spi_JobResultType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-seqresulttype">5.8.1.4. enum Spi_SeqResultType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-hwunitresulttype">5.8.1.5. enum Spi_HwUnitResultType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-asyncmodetype">5.8.1.6. enum Spi_AsyncModeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-transfertype">5.8.1.7. enum Spi_TransferType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-csselection">5.8.1.8. enum Spi_CsSelection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-clkmode">5.8.1.9. enum Spi_ClkMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-spi-jobprioritytype">5.8.1.10. enum Spi_JobPriorityType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-databuffertype">5.8.1.11. typedef Spi_DataBufferType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-csgpiotype">5.8.1.12. typedef Spi_CsGpioType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-registerptrtype">5.8.1.13. typedef Spi_RegisterPtrType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-numberofdatatype">5.8.1.14. typedef Spi_NumberOfDataType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-channeltype">5.8.1.15. typedef Spi_ChannelType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-jobtype">5.8.1.16. typedef Spi_JobType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-jobendnotifytype">5.8.1.17. typedef Spi_JobEndNotifyType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-seqendnotifytype">5.8.1.18. typedef Spi_SeqEndNotifyType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-sequencetype">5.8.1.19. typedef Spi_SequenceType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-hwunittype">5.8.1.20. typedef Spi_HWUnitType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-spi-datadelaytype">5.8.1.21. typedef Spi_DataDelayType</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">5.8.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">5.8.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">5.8.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-init">5.8.4.1. function Spi_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-deinit">5.8.4.2. function Spi_DeInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-getstatus">5.8.4.3. function Spi_GetStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-getjobresult">5.8.4.4. function Spi_GetJobResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-getsequenceresult">5.8.4.5. function Spi_GetSequenceResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-getversioninfo">5.8.4.6. function Spi_GetVersionInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-gethwunitstatus">5.8.4.7. function Spi_GetHWUnitStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-writeib">5.8.4.8. function Spi_WriteIB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-readib">5.8.4.9. function Spi_ReadIB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-setupeb">5.8.4.10. function Spi_SetupEB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-asynctransmit">5.8.4.11. function Spi_AsyncTransmit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-cancel">5.8.4.12. function Spi_Cancel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-synctransmit">5.8.4.13. function Spi_SyncTransmit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-setasyncmode">5.8.4.14. function Spi_SetAsyncMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-spi-mainfunction-handling">5.8.4.15. function Spi_MainFunction_Handling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group__WDG.html">5.9. WDG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ADC.html">5.10. CDD_ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ECAP.html">5.11. CDD_ECAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__IPC.html">5.12. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__PWM.html">5.13. CDD_PWM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__UART.html">5.14. CDD_UART</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__SENT.html">5.15. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__XBAR.html">5.16. CDD_XBAR</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api_guide.html"><span class="section-number">5. </span>API guide</a> &raquo;</li>
+      <li><span class="section-number">5.8. </span>SPI</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spi">
+<h1><span class="section-number">5.8. </span>SPI<a class="headerlink" href="#spi" title="Link to this heading"></a></h1>
+<section id="types">
+<h2><span class="section-number">5.8.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Base type</p></th>
+<th class="head"><p>Type Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-hwinstance"><span class="std std-ref">Spi_HwInstance</span></a></strong></p></td>
+<td><p>This type defines Channel Select Interface with in SPI(SPI instance)</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-statustype"><span class="std std-ref">Spi_StatusType</span></a></strong></p></td>
+<td><p>This type defines a range of specific Driver status for SPI Handler/Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-jobresulttype"><span class="std std-ref">Spi_JobResultType</span></a></strong></p></td>
+<td><p>This type defines a range of specific Jobs status for SPI Handler/Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-seqresulttype"><span class="std std-ref">Spi_SeqResultType</span></a></strong></p></td>
+<td><p>This type defines a range of specific Sequences status for SPI Handler/Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-hwunitresulttype"><span class="std std-ref">Spi_HwUnitResultType</span></a></strong></p></td>
+<td><p>This type defines a range of specific HW unit status for SPI Handler/Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-asyncmodetype"><span class="std std-ref">Spi_AsyncModeType</span></a></strong></p></td>
+<td><p>Specifies the asynchronous mechanism mode for SPI busses handled asynchronously in LEVEL 2.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-transfertype"><span class="std std-ref">Spi_TransferType</span></a></strong></p></td>
+<td><p>Word transfer order - MSB first or LSB first.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-csselection"><span class="std std-ref">Spi_CsSelection</span></a></strong></p></td>
+<td><p>Spi Cs Selection - Chip select handling.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-clkmode"><span class="std std-ref">Spi_ClkMode</span></a></strong></p></td>
+<td><p>SPI Clock Mode - sets the clock polarity and phase. Note: These values are a direct register mapping. So don’t change value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-spi-jobprioritytype"><span class="std std-ref">Spi_JobPriorityType</span></a></strong></p></td>
+<td><p>SPI Job Priority.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint8</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-databuffertype"><span class="std std-ref">Spi_DataBufferType</span></a></strong></p></td>
+<td><p>Type of application data buffer elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef uint32</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-csgpiotype"><span class="std std-ref">Spi_CsGpioType</span></a></strong></p></td>
+<td><p>GPIO ID type.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint32</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-registerptrtype"><span class="std std-ref">Spi_RegisterPtrType</span></a></strong></p></td>
+<td><p>type for the register pointer</p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef uint16</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-numberofdatatype"><span class="std std-ref">Spi_NumberOfDataType</span></a></strong></p></td>
+<td><p>Type for defining the number of data elements of the type Spi_DataBufferType to send and / or receive by Channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint8</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-channeltype"><span class="std std-ref">Spi_ChannelType</span></a></strong></p></td>
+<td><p>Specifies the identification (ID) for a Channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef uint16</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-jobtype"><span class="std std-ref">Spi_JobType</span></a></strong></p></td>
+<td><p>Specifies the identification (ID) for a Job.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef void(*)(void)</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-jobendnotifytype"><span class="std std-ref">Spi_JobEndNotifyType</span></a></strong></p></td>
+<td><p>Typedef for job end notification function pointer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef void(*)(void)</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-seqendnotifytype"><span class="std std-ref">Spi_SeqEndNotifyType</span></a></strong></p></td>
+<td><p>Typedef for sequence end notification function pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint8</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-sequencetype"><span class="std std-ref">Spi_SequenceType</span></a></strong></p></td>
+<td><p>Specifies the identification (ID) for a sequence of jobs.</p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef uint8</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-hwunittype"><span class="std std-ref">Spi_HWUnitType</span></a></strong></p></td>
+<td><p>Specifies the identification (ID) for a SPI Hardware micro controller peripheral (unit)</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint8</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-spi-datadelaytype"><span class="std std-ref">Spi_DataDelayType</span></a></strong></p></td>
+<td><p>Spi_DataDelayType defines the number of SPI serial clock cycles delay between each word in FIFO mode.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="enum-spi-hwinstance">
+<h3><span class="section-number">5.8.1.1. </span>enum Spi_HwInstance<a class="headerlink" href="#enum-spi-hwinstance" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_UNIT_SPIA</p></td>
+<td><p></p></td>
+<td><p>SPIA instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_UNIT_SPIB</p></td>
+<td><p></p></td>
+<td><p>SPIB instance.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_UNIT_SPIC</p></td>
+<td><p></p></td>
+<td><p>SPIC instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_UNIT_SPID</p></td>
+<td><p></p></td>
+<td><p>SPID instance.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_UNIT_SPIE</p></td>
+<td><p></p></td>
+<td><p>SPIE instance.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+This type defines Channel Select Interface with in SPI(SPI instance)</p>
+</section>
+<section id="enum-spi-statustype">
+<h3><span class="section-number">5.8.1.2. </span>enum Spi_StatusType<a class="headerlink" href="#enum-spi-statustype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_UNINIT</p></td>
+<td><p>0U</p></td>
+<td><p>The SPI Handler/Driver is not initialized or not usable.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_IDLE</p></td>
+<td><p>1U</p></td>
+<td><p>The SPI Handler/Driver is not currently transmitting any Job.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_BUSY</p></td>
+<td><p>2U</p></td>
+<td><p>The SPI Handler/Driver is performing a SPI Job (transmit)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+This type defines a range of specific Driver status for SPI Handler/Driver.</p>
+</section>
+<section id="enum-spi-jobresulttype">
+<h3><span class="section-number">5.8.1.3. </span>enum Spi_JobResultType<a class="headerlink" href="#enum-spi-jobresulttype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_JOB_OK</p></td>
+<td><p>0U</p></td>
+<td><p>The last transmission of the Job has been finished successfully.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_JOB_PENDING</p></td>
+<td><p>1U</p></td>
+<td><p>The SPI Handler/Driver is performing a SPI Job. The meaning of this status is equal to SPI_BUSY.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_JOB_FAILED</p></td>
+<td><p>2U</p></td>
+<td><p>The last transmission of the Job has failed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_JOB_QUEUED</p></td>
+<td><p>3U</p></td>
+<td><p>An asynchronous transmit Job has been accepted, while actual transmission for this Job has not started yet.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+This type defines a range of specific Jobs status for SPI Handler/Driver.</p>
+</section>
+<section id="enum-spi-seqresulttype">
+<h3><span class="section-number">5.8.1.4. </span>enum Spi_SeqResultType<a class="headerlink" href="#enum-spi-seqresulttype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_SEQ_OK</p></td>
+<td><p>0U</p></td>
+<td><p>The last transmission of the Sequence has been finished successfully.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SEQ_PENDING</p></td>
+<td><p>1U</p></td>
+<td><p>The SPI Handler/Driver is performing a SPI Sequence. The meaning of this status is equal to SPI_BUSY.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_SEQ_FAILED</p></td>
+<td><p>2U</p></td>
+<td><p>The last transmission of the Sequence has failed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SEQ_CANCELLED</p></td>
+<td><p>3U</p></td>
+<td><p>The last transmission of the Sequence has been canceled by user.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+This type defines a range of specific Sequences status for SPI Handler/Driver.</p>
+</section>
+<section id="enum-spi-hwunitresulttype">
+<h3><span class="section-number">5.8.1.5. </span>enum Spi_HwUnitResultType<a class="headerlink" href="#enum-spi-hwunitresulttype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_HW_UNIT_OK</p></td>
+<td><p>0U</p></td>
+<td><p>HW unit result is ok.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_HW_UNIT_PENDING</p></td>
+<td><p>1U</p></td>
+<td><p>HW unit result is pending.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_HW_UNIT_FAILED</p></td>
+<td><p>2U</p></td>
+<td><p>HW unit result is failed.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+This type defines a range of specific HW unit status for SPI Handler/Driver.</p>
+</section>
+<section id="enum-spi-asyncmodetype">
+<h3><span class="section-number">5.8.1.6. </span>enum Spi_AsyncModeType<a class="headerlink" href="#enum-spi-asyncmodetype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_POLLING_MODE</p></td>
+<td><p>0U</p></td>
+<td><p>The asynchronous mechanism is ensured by polling, so interrupts related to SPI busses handled asynchronously are disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_INTERRUPT_MODE</p></td>
+<td><p>1U</p></td>
+<td><p>The asynchronous mechanism is ensured by interrupt, so interrupts related to SPI busses handled asynchronously are enabled.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Specifies the asynchronous mechanism mode for SPI busses handled asynchronously in LEVEL 2.</p>
+</section>
+<section id="enum-spi-transfertype">
+<h3><span class="section-number">5.8.1.7. </span>enum Spi_TransferType<a class="headerlink" href="#enum-spi-transfertype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_MSB</p></td>
+<td><p>0U</p></td>
+<td><p>MSB is transferred first. Only this is supported.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_LSB</p></td>
+<td><p>1U</p></td>
+<td><p>LSB is transferred first. This is not supported.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Word transfer order - MSB first or LSB first.</p>
+</section>
+<section id="enum-spi-csselection">
+<h3><span class="section-number">5.8.1.8. </span>enum Spi_CsSelection<a class="headerlink" href="#enum-spi-csselection" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CS_VIA_GPIO</p></td>
+<td><p></p></td>
+<td><p>chip select is handled via general purpose IO by Spi driver</p></td>
+</tr>
+<tr class="row-odd"><td><p>CS_VIA_PERIPHERAL_ENGINE</p></td>
+<td><p></p></td>
+<td><p>chip select is handled automatically by Peripheral HW engine</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Spi Cs Selection - Chip select handling.</p>
+</section>
+<section id="enum-spi-clkmode">
+<h3><span class="section-number">5.8.1.9. </span>enum Spi_ClkMode<a class="headerlink" href="#enum-spi-clkmode" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_CLK_MODE_0</p></td>
+<td><p>0x00U</p></td>
+<td><p>SPI Clock Phase = 0 Polarity = 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_CLK_MODE_1</p></td>
+<td><p>0x01U</p></td>
+<td><p>SPI Clock Phase = 1 Polarity = 0</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_CLK_MODE_2</p></td>
+<td><p>0x02U</p></td>
+<td><p>SPI Clock Phase = 0 Polarity = 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_CLK_MODE_3</p></td>
+<td><p>0x03U</p></td>
+<td><p>SPI Clock Phase = 1 Polarity = 1</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+SPI Clock Mode - sets the clock polarity and phase. Note: These values are a direct register mapping. So don’t change value.</p>
+</section>
+<section id="enum-spi-jobprioritytype">
+<h3><span class="section-number">5.8.1.10. </span>enum Spi_JobPriorityType<a class="headerlink" href="#enum-spi-jobprioritytype" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_JOB_PRIORITY_0</p></td>
+<td><p></p></td>
+<td><p>Job priority 0 - low.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_JOB_PRIORITY_1</p></td>
+<td><p></p></td>
+<td><p>Job priority 1.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_JOB_PRIORITY_2</p></td>
+<td><p></p></td>
+<td><p>Job priority 2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_JOB_PRIORITY_3</p></td>
+<td><p></p></td>
+<td><p>Job priority 3 - High.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+SPI Job Priority.</p>
+</section>
+<section id="typedef-spi-databuffertype">
+<h3><span class="section-number">5.8.1.11. </span>typedef Spi_DataBufferType<a class="headerlink" href="#typedef-spi-databuffertype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Spi_DataBufferType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Type of application data buffer elements.</p>
+</section>
+<section id="typedef-spi-csgpiotype">
+<h3><span class="section-number">5.8.1.12. </span>typedef Spi_CsGpioType<a class="headerlink" href="#typedef-spi-csgpiotype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Spi_CsGpioType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+GPIO ID type.</p>
+</section>
+<section id="typedef-spi-registerptrtype">
+<h3><span class="section-number">5.8.1.13. </span>typedef Spi_RegisterPtrType<a class="headerlink" href="#typedef-spi-registerptrtype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint32</span><span class="w"> </span><span class="n">Spi_RegisterPtrType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+type for the register pointer</p>
+</section>
+<section id="typedef-spi-numberofdatatype">
+<h3><span class="section-number">5.8.1.14. </span>typedef Spi_NumberOfDataType<a class="headerlink" href="#typedef-spi-numberofdatatype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint16</span><span class="w"> </span><span class="n">Spi_NumberOfDataType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Type for defining the number of data elements of the type Spi_DataBufferType to send and / or receive by Channel.</p>
+</section>
+<section id="typedef-spi-channeltype">
+<h3><span class="section-number">5.8.1.15. </span>typedef Spi_ChannelType<a class="headerlink" href="#typedef-spi-channeltype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Spi_ChannelType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Specifies the identification (ID) for a Channel.</p>
+</section>
+<section id="typedef-spi-jobtype">
+<h3><span class="section-number">5.8.1.16. </span>typedef Spi_JobType<a class="headerlink" href="#typedef-spi-jobtype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint16</span><span class="w"> </span><span class="n">Spi_JobType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Specifies the identification (ID) for a Job.</p>
+</section>
+<section id="typedef-spi-jobendnotifytype">
+<h3><span class="section-number">5.8.1.17. </span>typedef Spi_JobEndNotifyType<a class="headerlink" href="#typedef-spi-jobendnotifytype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Spi_JobEndNotifyType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Typedef for job end notification function pointer.</p>
+</section>
+<section id="typedef-spi-seqendnotifytype">
+<h3><span class="section-number">5.8.1.18. </span>typedef Spi_SeqEndNotifyType<a class="headerlink" href="#typedef-spi-seqendnotifytype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Spi_SeqEndNotifyType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Typedef for sequence end notification function pointer.</p>
+</section>
+<section id="typedef-spi-sequencetype">
+<h3><span class="section-number">5.8.1.19. </span>typedef Spi_SequenceType<a class="headerlink" href="#typedef-spi-sequencetype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Spi_SequenceType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Specifies the identification (ID) for a sequence of jobs.</p>
+</section>
+<section id="typedef-spi-hwunittype">
+<h3><span class="section-number">5.8.1.20. </span>typedef Spi_HWUnitType<a class="headerlink" href="#typedef-spi-hwunittype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Spi_HWUnitType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Specifies the identification (ID) for a SPI Hardware micro controller peripheral (unit)</p>
+</section>
+<section id="typedef-spi-datadelaytype">
+<h3><span class="section-number">5.8.1.21. </span>typedef Spi_DataDelayType<a class="headerlink" href="#typedef-spi-datadelaytype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Spi_DataDelayType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Spi_DataDelayType defines the number of SPI serial clock cycles delay between each word in FIFO mode.</p>
+</section>
+</section>
+<section id="structures">
+<h2><span class="section-number">5.8.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structSpi__ChannelConfigType.html"><span class="std std-doc">Spi_ChannelConfigType</span></a></strong></p></td>
+<td><p>SPI Channel configuration structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structSpi__ExternalDeviceConfigType.html"><span class="std std-doc">Spi_ExternalDeviceConfigType</span></a></strong></p></td>
+<td><p>SPI external device specific configuration structure .</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structSpi__JobConfigType.html"><span class="std std-doc">Spi_JobConfigType</span></a></strong></p></td>
+<td><p>SPI Job configuration structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structSpi__SeqConfigType.html"><span class="std std-doc">Spi_SeqConfigType</span></a></strong></p></td>
+<td><p>SPI Sequence configuration structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structSpi__HwUnitConfigType.html"><span class="std std-doc">Spi_HwUnitConfigType</span></a></strong></p></td>
+<td><p>SPI Hardware unit configuration structure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structSpi__ConfigType.html"><span class="std std-doc">Spi_ConfigType</span></a></strong></p></td>
+<td><p>SPI config structure.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="defines">
+<h2><span class="section-number">5.8.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPI_SW_MAJOR_VERSION</p></td>
+<td><p>Driver Implementation Major Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SW_MINOR_VERSION</p></td>
+<td><p>Driver Implementation Minor Version.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_SW_PATCH_VERSION</p></td>
+<td><p>Driver Implementation Patch Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_AR_RELEASE_MAJOR_VERSION</p></td>
+<td><p>AUTOSAR major version specification implemented by SPI Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_AR_RELEASE_MINOR_VERSION</p></td>
+<td><p>AUTOSAR minor version specification implemented by SPI Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_AR_RELEASE_REVISION_VERSION</p></td>
+<td><p>AUTOSAR patch version specification implemented by SPI Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_VENDOR_ID</p></td>
+<td><p>Texas Instruments Vendor ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_MODULE_ID</p></td>
+<td><p>SPI Driver Module ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_INSTANCE_ID</p></td>
+<td><p>SPI Driver Instance ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_IB</p></td>
+<td><p>Buffer definitions IB - internal buffers.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_EB</p></td>
+<td><p>Buffer definitions EB - external buffers. Only this is supported.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_IB_EB</p></td>
+<td><p>Buffer definitions IB/EB - internal/external buffers.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_E_PARAM_CHANNEL</p></td>
+<td><p>SPI Error Codes. Error codes returned by SPI functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_E_PARAM_JOB</p></td>
+<td><p>API service called with wrong parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_E_PARAM_SEQ</p></td>
+<td><p>API service called with wrong parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_E_PARAM_LENGTH</p></td>
+<td><p>API service called with wrong parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_E_PARAM_UNIT</p></td>
+<td><p>API service called with wrong parameter.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_E_PARAM_POINTER</p></td>
+<td><p>APIs called with a Null Pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_E_UNINIT</p></td>
+<td><p>API service used without module initialization.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_E_SEQ_PENDING</p></td>
+<td><p>Services called in a wrong sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_E_SEQ_IN_PROCESS</p></td>
+<td><p>Synchronous transmission service called at wrong time.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_E_ALREADY_INITIALIZED</p></td>
+<td><p>API Spi_Init service called while the SPI driver has already been initialized.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_E_SEQ_TIMEOUT</p></td>
+<td><p>sequence transmission failed with a timeout</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SID_INIT</p></td>
+<td><p>Spi_Init() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_SID_DEINIT</p></td>
+<td><p>Spi_DeInit() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SID_WRITE_IB</p></td>
+<td><p>Spi_WriteIB() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_SID_ASYNC_TRANSMIT</p></td>
+<td><p>Spi_AsyncTransmit() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SID_READ_IB</p></td>
+<td><p>Spi_ReadIB() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_SID_SETUP_EB</p></td>
+<td><p>Spi_SetupEB() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SID_GET_STATUS</p></td>
+<td><p>Spi_GetStatus() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_SID_GET_JOB_RESULT</p></td>
+<td><p>Spi_GetJobResult() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SID_GET_SEQ_RESULT</p></td>
+<td><p>Spi_GetSequenceResult() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_SID_GET_VERSION_INFO</p></td>
+<td><p>Spi_GetVersionInfo() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SID_SYNC_TRANSMIT</p></td>
+<td><p>Spi_SyncTransmit() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_SID_GET_HW_UNIT_STATUS</p></td>
+<td><p>Spi_GetHWUnitStatus() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SID_CANCEL</p></td>
+<td><p>Spi_Cancel() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI_SID_SET_ASYNC_MODE</p></td>
+<td><p>Spi_SetAsyncMode() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI_SID_MAINFUNCTION_HANDLING</p></td>
+<td><p>Spi_MainFunction_Handling() API Service ID.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2><span class="section-number">5.8.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Return type</p></th>
+<th class="head"><p>Function Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-init"><span class="std std-ref">Spi_Init</span></a></strong>(const <a class="reference internal" href="../Classes/structSpi__ConfigType.html"><span class="std std-doc">Spi_ConfigType</span></a> * CfgPtr)</p></td>
+<td><p>Service for SPI initialization.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-deinit"><span class="std std-ref">Spi_DeInit</span></a></strong>(void )</p></td>
+<td><p>Service for SPI de-initialization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#enum-spi-statustype"><span class="std std-ref">Spi_StatusType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-getstatus"><span class="std std-ref">Spi_GetStatus</span></a></strong>(void )</p></td>
+<td><p>Service returns the SPI Handler/Driver software module status.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#enum-spi-jobresulttype"><span class="std std-ref">Spi_JobResultType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-getjobresult"><span class="std std-ref">Spi_GetJobResult</span></a></strong>(<a class="reference internal" href="#typedef-spi-jobtype"><span class="std std-ref">Spi_JobType</span></a> Job)</p></td>
+<td><p>Service returns the last transmission result of the specified Job.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#enum-spi-seqresulttype"><span class="std std-ref">Spi_SeqResultType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-getsequenceresult"><span class="std std-ref">Spi_GetSequenceResult</span></a></strong>(<a class="reference internal" href="#typedef-spi-sequencetype"><span class="std std-ref">Spi_SequenceType</span></a> Sequence)</p></td>
+<td><p>Service returns the last transmission result of the specified Sequence.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-getversioninfo"><span class="std std-ref">Spi_GetVersionInfo</span></a></strong>(Std_VersionInfoType * versioninfo)</p></td>
+<td><p>Service to get the version information of the module.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#enum-spi-statustype"><span class="std std-ref">Spi_StatusType</span></a></p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-gethwunitstatus"><span class="std std-ref">Spi_GetHWUnitStatus</span></a></strong>(<a class="reference internal" href="#typedef-spi-hwunittype"><span class="std std-ref">Spi_HWUnitType</span></a> HWUnit)</p></td>
+<td><p>Service to get the status of the SPI hardware unit.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-writeib"><span class="std std-ref">Spi_WriteIB</span></a></strong>(<a class="reference internal" href="#typedef-spi-channeltype"><span class="std std-ref">Spi_ChannelType</span></a> Channel, const <a class="reference internal" href="#typedef-spi-databuffertype"><span class="std std-ref">Spi_DataBufferType</span></a> * DataBufferPtr)</p></td>
+<td><p>Service for writing one or more data to an IB SPI Handler/Driver Channel specified by parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-readib"><span class="std std-ref">Spi_ReadIB</span></a></strong>(<a class="reference internal" href="#typedef-spi-channeltype"><span class="std std-ref">Spi_ChannelType</span></a> Channel, <a class="reference internal" href="#typedef-spi-databuffertype"><span class="std std-ref">Spi_DataBufferType</span></a> * DataBufferPointer)</p></td>
+<td><p>Service for reading data from internal buffers.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-setupeb"><span class="std std-ref">Spi_SetupEB</span></a></strong>(<a class="reference internal" href="#typedef-spi-channeltype"><span class="std std-ref">Spi_ChannelType</span></a> Channel, const <a class="reference internal" href="#typedef-spi-databuffertype"><span class="std std-ref">Spi_DataBufferType</span></a> * SrcDataBufferPtr, <a class="reference internal" href="#typedef-spi-databuffertype"><span class="std std-ref">Spi_DataBufferType</span></a> * DesDataBufferPtr, <a class="reference internal" href="#typedef-spi-numberofdatatype"><span class="std std-ref">Spi_NumberOfDataType</span></a> Length)</p></td>
+<td><p>Service to setup external buffer channels.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-asynctransmit"><span class="std std-ref">Spi_AsyncTransmit</span></a></strong>(<a class="reference internal" href="#typedef-spi-sequencetype"><span class="std std-ref">Spi_SequenceType</span></a> Sequence)</p></td>
+<td><p>Service to transmit data on the SPI bus.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-cancel"><span class="std std-ref">Spi_Cancel</span></a></strong>(<a class="reference internal" href="#typedef-spi-sequencetype"><span class="std std-ref">Spi_SequenceType</span></a> Sequence)</p></td>
+<td><p>Service to cancel on going sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-synctransmit"><span class="std std-ref">Spi_SyncTransmit</span></a></strong>(<a class="reference internal" href="#typedef-spi-sequencetype"><span class="std std-ref">Spi_SequenceType</span></a> Sequence)</p></td>
+<td><p>Service to transmit data on the SPI bus.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-setasyncmode"><span class="std std-ref">Spi_SetAsyncMode</span></a></strong>(<a class="reference internal" href="#enum-spi-asyncmodetype"><span class="std std-ref">Spi_AsyncModeType</span></a> Mode)</p></td>
+<td><p>Service to set the asynchronous mechanism mode for SPI busses handled asynchronously.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-spi-mainfunction-handling"><span class="std std-ref">Spi_MainFunction_Handling</span></a></strong>(void )</p></td>
+<td><p>Spi_MainFunction_Handling: This function shall polls the SPI interrupts linked to HW Units.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="function-spi-init">
+<h3><span class="section-number">5.8.4.1. </span>function Spi_Init<a class="headerlink" href="#function-spi-init" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Spi_Init</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Spi_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">CfgPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service for SPI initialization.</p>
+<p>This service initializes all the configured Spi channels, jobs, sequences and SPI instances This will set the state of SPI driver to Initialized.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>CfgPtr</strong> - Pointer to configuration set</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: CfgPtr shall be null in Pre-Compile variant, Link-Time variant and shall not be NULL in Post-Build variant</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-deinit">
+<h3><span class="section-number">5.8.4.2. </span>function Spi_DeInit<a class="headerlink" href="#function-spi-deinit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Spi_DeInit</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service for SPI de-initialization.</p>
+<p>This service de-initializes all the configured Spi channels, jobs, sequences and SPI instances This will set the state of SPI driver to Un-Initialized.</p>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> de-initialisation command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> de-initialisation command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns whether the de-init command is accepted or not.</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-getstatus">
+<h3><span class="section-number">5.8.4.3. </span>function Spi_GetStatus<a class="headerlink" href="#function-spi-getstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Spi_StatusType</span><span class="w"> </span><span class="n">Spi_GetStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service returns the SPI Handler/Driver software module status.</p>
+<p>Service returns the SPI Handler/Driver software module status.</p>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>SPI_UNINIT</strong> The SPI Handler/Driver is not initialized or not usable
+<br></p></li>
+<li><p><strong>SPI_IDLE</strong> : The SPI Handler/Driver is not currently transmitting any Job
+<br></p></li>
+<li><p><strong>SPI_BUSY</strong> : The SPI Handler/Driver is performing a SPI Job (transmit)
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns SPI driver status</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-getjobresult">
+<h3><span class="section-number">5.8.4.4. </span>function Spi_GetJobResult<a class="headerlink" href="#function-spi-getjobresult" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Spi_JobResultType</span><span class="w"> </span><span class="n">Spi_GetJobResult</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_JobType</span><span class="w"> </span><span class="n">Job</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service returns the last transmission result of the specified Job.</p>
+<p>Service is to get the result of a specified job(queued, pending, failed, success)</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Job</strong> job Id</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>SPI_JOB_OK</strong> The last transmission of the Job has been finished successfully
+<br></p></li>
+<li><p><strong>SPI_JOB_PENDING</strong> The SPI Handler/Driver is performing a SPI Job.
+<br></p></li>
+<li><p><strong>SPI_JOB_FAILED</strong> The last transmission of the Job has failed
+<br></p></li>
+<li><p><strong>SPI_JOB_QUEUED</strong> An asynchronous transmit Job has been accepted, while actual transmission for this Job has not started yet
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns the status of a job</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-getsequenceresult">
+<h3><span class="section-number">5.8.4.5. </span>function Spi_GetSequenceResult<a class="headerlink" href="#function-spi-getsequenceresult" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Spi_SeqResultType</span><span class="w"> </span><span class="n">Spi_GetSequenceResult</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_SequenceType</span><span class="w"> </span><span class="n">Sequence</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service returns the last transmission result of the specified Sequence.</p>
+<p>Service is to return the status of a specified sequence(cancelled, pending, failed, success).</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Sequence</strong> sequence ID</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>SPI_SEQ_OK</strong> The last transmission of the Sequence has been finished successfully
+<br></p></li>
+<li><p><strong>SPI_SEQ_PENDING</strong> The SPI Handler/Driver is performing a SPI Sequence. The meaning of this status is equal to SPI_BUSY
+<br></p></li>
+<li><p><strong>SPI_SEQ_FAILED</strong> The last transmission of the Sequence has failed
+<br></p></li>
+<li><p><strong>SPI_SEQ_CANCELLED</strong> The last transmission of the Sequence has been canceled by user
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns the status of a sequence</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-getversioninfo">
+<h3><span class="section-number">5.8.4.6. </span>function Spi_GetVersionInfo<a class="headerlink" href="#function-spi-getversioninfo" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Spi_GetVersionInfo</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Std_VersionInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">versioninfo</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to get the version information of the module.</p>
+<p>This service writes the version information of this module into the data structure referenced by the parameter. If this parameter references NULL_PTR, a development error is reported to Det. This service is only available if the pre-compile configuration parameter SPI_VERSION_INFO_API is enabled.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>versioninfo</strong> structure that contains the version information parameters.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-gethwunitstatus">
+<h3><span class="section-number">5.8.4.7. </span>function Spi_GetHWUnitStatus<a class="headerlink" href="#function-spi-gethwunitstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Spi_StatusType</span><span class="w"> </span><span class="n">Spi_GetHWUnitStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_HWUnitType</span><span class="w"> </span><span class="n">HWUnit</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to get the status of the SPI hardware unit.</p>
+<p>This service returns the status of the specified SPI Hardware micro-controller peripheral.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HWUnit</strong> SPI Hardware micro-controller peripheral (unit) ID.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>SPI_UNINIT</strong> The SPI HW unit is not initialized or not usable
+<br></p></li>
+<li><p><strong>SPI_IDLE</strong> : The SPI HW unit is not currently transmitting any Job
+<br></p></li>
+<li><p><strong>SPI_BUSY</strong> : The SPI HW unit is performing a SPI Job (transmit)
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns the status of the specified SPI HW unit</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-writeib">
+<h3><span class="section-number">5.8.4.8. </span>function Spi_WriteIB<a class="headerlink" href="#function-spi-writeib" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Spi_WriteIB</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_ChannelType</span><span class="w"> </span><span class="n">Channel</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Spi_DataBufferType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DataBufferPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service for writing one or more data to an IB SPI Handler/Driver Channel specified by parameter.</p>
+<p>Service for writing one or more data to an IB SPI Handler/Driver Channel specified by parameter.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> Channel ID.</p></li>
+<li><p><strong>DataBufferPtr</strong> Pointer to source data buffer. If this pointer is null, it is assumed that the data to be transmitted is not relevant and the default transmit value of this channel will be used instead</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> write command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> write command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns whether command has been accepted or rejected</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-readib">
+<h3><span class="section-number">5.8.4.9. </span>function Spi_ReadIB<a class="headerlink" href="#function-spi-readib" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Spi_ReadIB</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_ChannelType</span><span class="w"> </span><span class="n">Channel</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Spi_DataBufferType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DataBufferPointer</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service for reading data from internal buffers.</p>
+<p>Service for reading synchronously one or more data from an IB SPI Handler/Driver Channel specified by parameter.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> Channel ID</p></li>
+<li><p><strong>DataBufferPointer</strong> Pointer to destination data buffer in RAM</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> read command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> read command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns whether command has been accepted or rejected</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-setupeb">
+<h3><span class="section-number">5.8.4.10. </span>function Spi_SetupEB<a class="headerlink" href="#function-spi-setupeb" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Spi_SetupEB</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_ChannelType</span><span class="w"> </span><span class="n">Channel</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Spi_DataBufferType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">SrcDataBufferPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Spi_DataBufferType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DesDataBufferPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Spi_NumberOfDataType</span><span class="w"> </span><span class="n">Length</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to setup external buffer channels.</p>
+<p>Service to setup the buffers and the length of data for the EB SPI Handler/Driver Channel specified.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> Channel Id</p></li>
+<li><p><strong>SrcDataBufferPtr</strong> Pointer to source data buffer</p></li>
+<li><p><strong>Length</strong> Length (number of data elements) of the data to be transmitted from SrcDataBufferPtr and/or received from DesDataBufferPtr Min.: 1 Max.: Max of data specified at configuration for this channel</p></li>
+<li><p><strong>DesDataBufferPtr</strong> Pointer to destination data buffer in RAM.</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> read command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> read command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns whether command has been accepted or rejected</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-asynctransmit">
+<h3><span class="section-number">5.8.4.11. </span>function Spi_AsyncTransmit<a class="headerlink" href="#function-spi-asynctransmit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Spi_AsyncTransmit</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_SequenceType</span><span class="w"> </span><span class="n">Sequence</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to transmit data on the SPI bus.</p>
+<p>Service is to transmit data on SPI bus if the sequence is valid and not pending</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Sequence</strong> Sequence ID</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> read command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> read command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns whether command has been accepted or rejected</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-cancel">
+<h3><span class="section-number">5.8.4.12. </span>function Spi_Cancel<a class="headerlink" href="#function-spi-cancel" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Spi_Cancel</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_SequenceType</span><span class="w"> </span><span class="n">Sequence</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to cancel on going sequence.</p>
+<p>Service cancels the specified on-going sequence transmission.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Sequence</strong> Sequence ID</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-synctransmit">
+<h3><span class="section-number">5.8.4.13. </span>function Spi_SyncTransmit<a class="headerlink" href="#function-spi-synctransmit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Spi_SyncTransmit</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_SequenceType</span><span class="w"> </span><span class="n">Sequence</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to transmit data on the SPI bus.</p>
+<p>Service is to transmit data on SPI bus synchronously</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Sequence</strong> Sequence ID</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> read command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> read command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns whether command has been accepted or rejected</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-setasyncmode">
+<h3><span class="section-number">5.8.4.14. </span>function Spi_SetAsyncMode<a class="headerlink" href="#function-spi-setasyncmode" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Spi_SetAsyncMode</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Spi_AsyncModeType</span><span class="w"> </span><span class="n">Mode</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to set the asynchronous mechanism mode for SPI busses handled asynchronously.</p>
+<p>Service to set the asynchronous mechanism mode for SPI busses handled asynchronously.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Mode</strong> New mode required</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> read command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> read command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns whether command has been accepted or rejected</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-spi-mainfunction-handling">
+<h3><span class="section-number">5.8.4.15. </span>function Spi_MainFunction_Handling<a class="headerlink" href="#function-spi-mainfunction-handling" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Spi_MainFunction_Handling</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Spi_MainFunction_Handling: This function shall polls the SPI interrupts linked to HW Units.</p>
+<p>This function shall polls the SPI interrupts linked to HW Units allocated to the transmission of SPI sequences to enable the evolution of transmission state machine</p>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> read command has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> read command has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: returns whether command has been accepted or rejected</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="group__PORT.html" class="btn btn-neutral float-left" title="5.7. PORT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group__WDG.html" class="btn btn-neutral float-right" title="5.9. WDG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Nov 19, 2025.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

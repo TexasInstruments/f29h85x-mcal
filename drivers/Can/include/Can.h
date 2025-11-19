@@ -245,17 +245,17 @@ typedef enum
 typedef enum
 {
     /** \brief MCANA Controller Instance */
-    CAN_CONTROLLER_INSTANCE_MCAN1 = 0x0U,
+    CAN_CONTROLLER_INSTANCE_MCANA = 0x0U,
     /** \brief MCANB Controller Instance */
-    CAN_CONTROLLER_INSTANCE_MCAN2 = 0x1U,
+    CAN_CONTROLLER_INSTANCE_MCANB = 0x1U,
     /** \brief MCANC Controller Instance */
-    CAN_CONTROLLER_INSTANCE_MCAN3 = 0x2U,
+    CAN_CONTROLLER_INSTANCE_MCANC = 0x2U,
     /** \brief MCAND Controller Instance */
-    CAN_CONTROLLER_INSTANCE_MCAN4 = 0x3U,
+    CAN_CONTROLLER_INSTANCE_MCAND = 0x3U,
     /** \brief MCANE Controller Instance */
-    CAN_CONTROLLER_INSTANCE_MCAN5 = 0x4U,
+    CAN_CONTROLLER_INSTANCE_MCANE = 0x4U,
     /** \brief MCANF Controller Instance */
-    CAN_CONTROLLER_INSTANCE_MCAN6 = 0x5U,
+    CAN_CONTROLLER_INSTANCE_MCANF = 0x5U,
 
 } Can_ControllerInstance;
 

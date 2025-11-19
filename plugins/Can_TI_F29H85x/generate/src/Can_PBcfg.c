@@ -233,84 +233,84 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ENDIF!][!//
 [!IF "CanHandleType = 'FULL'"!][!//
 [!IF "CanObjectType = 'TRANSMIT'"!][!//
-[!IF "'MCAN1' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!IF "'MCANA' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt0)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt0" = "$TxCnt0+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN2' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANB' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt1)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt1" = "$TxCnt1+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN3' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANC' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt2)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt2" = "$TxCnt2+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN4' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCAND' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt3)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt3" = "$TxCnt3+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN5' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANE' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt4)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt4" = "$TxCnt4+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN6' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANF' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($TxCnt5)"!]U, /* HwHandle */ /* Tx Message buffer number*/
 [!VAR "TxCnt5" = "$TxCnt5+node:value(CanHwObjectCount)"!][!//
 [!ENDIF!][!//
 [!ELSE!][!//
-[!IF "'MCAN1' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!IF "'MCANA' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt0)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt0" = "$RxCnt0+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN2' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANB' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt1)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt1" = "$RxCnt1+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN3' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANC' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt2)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt2" = "$RxCnt2+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN4' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCAND' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt3)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt3" = "$RxCnt3+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN5' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANE' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt4)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt4" = "$RxCnt4+node:value(CanHwObjectCount)"!][!//
-[!ELSEIF "'MCAN6' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANF' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i($RxCnt5)"!]U, /* HwHandle */ /* Rx Message buffer number*/
 [!VAR "RxCnt5" = "$RxCnt5+node:value(CanHwObjectCount)"!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//
 [!ELSE!][!//
 [!IF "CanObjectType = 'TRANSMIT'"!][!//
-[!IF "'MCAN1' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!IF "'MCANA' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt0) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt0" = "$TxFIFOCnt0 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN2' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANB' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt1) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt1" = "$TxFIFOCnt1 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN3' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANC' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt2) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt2" = "$TxFIFOCnt2 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN4' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCAND' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt3) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt3" = "$TxFIFOCnt3 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN5' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANE' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt4) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt4" = "$TxFIFOCnt4 + node:value(CanHwObjectCount)"!][!//
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 1 transmit FIFO, hence there can be maximum 1 transmit BASIC Hardware Object"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN6' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANF' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($TxFIFOCnt5) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Tx FIFO number*/
 [!VAR "TxFIFOCnt5" = "$TxFIFOCnt5 + node:value(CanHwObjectCount)"!][!//
@@ -319,7 +319,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ENDIF!][!//
 [!ENDIF!][!//
 [!ELSE!][!//
-[!IF "'MCAN1' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!IF "'MCANA' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt0) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt0" = "$RxFIFO0Cnt0 + node:value(CanHwObjectCount)"!][!//
@@ -329,7 +329,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN2' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANB' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt1) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt1" = "$RxFIFO0Cnt1 + node:value(CanHwObjectCount)"!][!//
@@ -339,7 +339,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN3' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANC' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt2) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt2" = "$RxFIFO0Cnt2 + node:value(CanHwObjectCount)"!][!//
@@ -349,7 +349,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN4' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCAND' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt3) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt3" = "$RxFIFO0Cnt3 + node:value(CanHwObjectCount)"!][!//
@@ -359,7 +359,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN5' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANE' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt4) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt4" = "$RxFIFO0Cnt4 + node:value(CanHwObjectCount)"!][!//
@@ -369,7 +369,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ELSE!][!//
 [!ERROR "Hardware supports maximum 2 receive FIFOs, hence there can be maximum 2 receive BASIC Hardware Objects"!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN6' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANF' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "num:i($RxFIFO0Cnt5) = 0"!][!//
     .HwHandle = (Can_HwHandleType )[!"num:i(0)"!]U, /* HwHandle */ /* Rx FIFO number*/
 [!VAR "RxFIFO0Cnt5" = "$RxFIFO0Cnt5 + node:value(CanHwObjectCount)"!][!//
@@ -399,7 +399,7 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ELSE!][!//
     .CanMainFunctionRWPeriodRef = {(uint16 )[!"node:name(node:ref(CanMainFunctionRWPeriodRef))"!]},
 [!ENDIF!][!//
-[!IF "'MCAN1' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!IF "'MCANA' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "CanObjectType = 'RECEIVE'"!][!//
 [!IF "num:i(count(CanHwFilter/*)) = 0"!][!//
 [!ERROR "Receive Hardware Object must have filter configured"!][!ENDIF!][!//
@@ -424,11 +424,11 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!IF "(num:i($NoOfStdFilter0)) > 128"!][!ERROR "Hardware supports maximum 128 standard filters"!][!ENDIF!][!//
 [!IF "(num:i($NoOfExtdFilter0)) > 64"!][!ERROR "Hardware supports maximum 64 extended filters"!][!ENDIF!][!//
 [!IF "'true' = node:ref(node:current()/CanControllerRef)/CanControllerConfig/CanFDMode"!][!//
-[!IF "( ((num:i($TxCnt0) + num:i($TxFIFOCnt0) + num:i($RxCnt0) + num:i($RxFIFO0Cnt0) + num:i($RxFIFO1Cnt0)) * 18) + num:i($NoOfStdFilter0) + (num:i($NoOfExtdFilter0) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN1"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt0) + num:i($TxFIFOCnt0) + num:i($RxCnt0) + num:i($RxFIFO0Cnt0) + num:i($RxFIFO1Cnt0)) * 18) + num:i($NoOfStdFilter0) + (num:i($NoOfExtdFilter0) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANA"!][!ENDIF!][!//
 [!ELSE!][!//
-[!IF "( ((num:i($TxCnt0) + num:i($TxFIFOCnt0) + num:i($RxCnt0) + num:i($RxFIFO0Cnt0) + num:i($RxFIFO1Cnt0)) * 4) + num:i($NoOfStdFilter0) + (num:i($NoOfExtdFilter0) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN1"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt0) + num:i($TxFIFOCnt0) + num:i($RxCnt0) + num:i($RxFIFO0Cnt0) + num:i($RxFIFO1Cnt0)) * 4) + num:i($NoOfStdFilter0) + (num:i($NoOfExtdFilter0) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANA"!][!ENDIF!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN2' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANB' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "CanObjectType = 'RECEIVE'"!][!//
 [!IF "num:i(count(CanHwFilter/*)) = 0"!][!//
 [!ERROR "Receive Hardware Object must have filter configured"!][!ENDIF!][!//
@@ -454,11 +454,11 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!IF "(num:i($NoOfStdFilter1)) > 128"!][!ERROR "Hardware supports maximum 128 standard filters"!][!ENDIF!][!//
 [!IF "(num:i($NoOfExtdFilter1)) > 64"!][!ERROR "Hardware supports maximum 64 extended filters"!][!ENDIF!][!//
 [!IF "'true' = node:ref(node:current()/CanControllerRef)/CanControllerConfig/CanFDMode"!][!//
-[!IF "( ((num:i($TxCnt1) + num:i($TxFIFOCnt1) + num:i($RxCnt1) + num:i($RxFIFO0Cnt1) + num:i($RxFIFO1Cnt1)) * 18) + num:i($NoOfStdFilter1) + (num:i($NoOfExtdFilter1) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN2"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt1) + num:i($TxFIFOCnt1) + num:i($RxCnt1) + num:i($RxFIFO0Cnt1) + num:i($RxFIFO1Cnt1)) * 18) + num:i($NoOfStdFilter1) + (num:i($NoOfExtdFilter1) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANB"!][!ENDIF!][!//
 [!ELSE!][!//
-[!IF "( ((num:i($TxCnt1) + num:i($TxFIFOCnt1) + num:i($RxCnt1) + num:i($RxFIFO0Cnt1) + num:i($RxFIFO1Cnt1)) * 4) + num:i($NoOfStdFilter1) + (num:i($NoOfExtdFilter1) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN2"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt1) + num:i($TxFIFOCnt1) + num:i($RxCnt1) + num:i($RxFIFO0Cnt1) + num:i($RxFIFO1Cnt1)) * 4) + num:i($NoOfStdFilter1) + (num:i($NoOfExtdFilter1) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANB"!][!ENDIF!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN3' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANC' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "CanObjectType = 'RECEIVE'"!][!//
 [!IF "num:i(count(CanHwFilter/*)) = 0"!][!//
 [!ERROR "Receive Hardware Object must have filter configured"!][!ENDIF!][!//
@@ -483,11 +483,11 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!IF "(num:i($NoOfStdFilter2)) > 128"!][!ERROR "Hardware supports maximum 128 standard filters"!][!ENDIF!][!//
 [!IF "(num:i($NoOfExtdFilter2)) > 64"!][!ERROR "Hardware supports maximum 64 extended filters"!][!ENDIF!][!//
 [!IF "'true' = node:ref(node:current()/CanControllerRef)/CanControllerConfig/CanFDMode"!][!//
-[!IF "( ((num:i($TxCnt2) + num:i($TxFIFOCnt2) + num:i($RxCnt2) + num:i($RxFIFO0Cnt2) + num:i($RxFIFO1Cnt2)) * 18) + num:i($NoOfStdFilter2) + (num:i($NoOfExtdFilter2) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN3"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt2) + num:i($TxFIFOCnt2) + num:i($RxCnt2) + num:i($RxFIFO0Cnt2) + num:i($RxFIFO1Cnt2)) * 18) + num:i($NoOfStdFilter2) + (num:i($NoOfExtdFilter2) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANC"!][!ENDIF!][!//
 [!ELSE!][!//
-[!IF "( ((num:i($TxCnt2) + num:i($TxFIFOCnt2) + num:i($RxCnt2) + num:i($RxFIFO0Cnt2) + num:i($RxFIFO1Cnt2)) * 4) + num:i($NoOfStdFilter2) + (num:i($NoOfExtdFilter2) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN3"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt2) + num:i($TxFIFOCnt2) + num:i($RxCnt2) + num:i($RxFIFO0Cnt2) + num:i($RxFIFO1Cnt2)) * 4) + num:i($NoOfStdFilter2) + (num:i($NoOfExtdFilter2) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANC"!][!ENDIF!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN4' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCAND' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "CanObjectType = 'RECEIVE'"!][!//
 [!IF "num:i(count(CanHwFilter/*)) = 0"!][!//
 [!ERROR "Receive Hardware Object must have filter configured"!][!ENDIF!][!//
@@ -512,11 +512,11 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!IF "(num:i($NoOfStdFilter3)) > 128"!][!ERROR "Hardware supports maximum 128 standard filters"!][!ENDIF!][!//
 [!IF "(num:i($NoOfExtdFilter3)) > 64"!][!ERROR "Hardware supports maximum 64 extended filters"!][!ENDIF!][!//
 [!IF "'true' = node:ref(node:current()/CanControllerRef)/CanControllerConfig/CanFDMode"!][!//
-[!IF "( ((num:i($TxCnt3) + num:i($TxFIFOCnt3) + num:i($RxCnt3) + num:i($RxFIFO0Cnt3) + num:i($RxFIFO1Cnt3)) * 18) + num:i($NoOfStdFilter3) + (num:i($NoOfExtdFilter3) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN4"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt3) + num:i($TxFIFOCnt3) + num:i($RxCnt3) + num:i($RxFIFO0Cnt3) + num:i($RxFIFO1Cnt3)) * 18) + num:i($NoOfStdFilter3) + (num:i($NoOfExtdFilter3) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAND"!][!ENDIF!][!//
 [!ELSE!][!//
-[!IF "( ((num:i($TxCnt3) + num:i($TxFIFOCnt3) + num:i($RxCnt3) + num:i($RxFIFO0Cnt3) + num:i($RxFIFO1Cnt3)) * 4) + num:i($NoOfStdFilter3) + (num:i($NoOfExtdFilter3) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN4"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt3) + num:i($TxFIFOCnt3) + num:i($RxCnt3) + num:i($RxFIFO0Cnt3) + num:i($RxFIFO1Cnt3)) * 4) + num:i($NoOfStdFilter3) + (num:i($NoOfExtdFilter3) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAND"!][!ENDIF!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN5' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANE' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "CanObjectType = 'RECEIVE'"!][!//
 [!IF "num:i(count(CanHwFilter/*)) = 0"!][!//
 [!ERROR "Receive Hardware Object must have filter configured"!][!ENDIF!][!//
@@ -541,11 +541,11 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!IF "(num:i($NoOfStdFilter4)) > 128"!][!ERROR "Hardware supports maximum 128 standard filters"!][!ENDIF!][!//
 [!IF "(num:i($NoOfExtdFilter4)) > 64"!][!ERROR "Hardware supports maximum 64 extended filters"!][!ENDIF!][!//
 [!IF "'true' = node:ref(node:current()/CanControllerRef)/CanControllerConfig/CanFDMode"!][!//
-[!IF "( ((num:i($TxCnt4) + num:i($TxFIFOCnt4) + num:i($RxCnt4) + num:i($RxFIFO0Cnt4) + num:i($RxFIFO1Cnt4)) * 18) + num:i($NoOfStdFilter4) + (num:i($NoOfExtdFilter4) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN5"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt4) + num:i($TxFIFOCnt4) + num:i($RxCnt4) + num:i($RxFIFO0Cnt4) + num:i($RxFIFO1Cnt4)) * 18) + num:i($NoOfStdFilter4) + (num:i($NoOfExtdFilter4) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANE"!][!ENDIF!][!//
 [!ELSE!][!//
-[!IF "( ((num:i($TxCnt4) + num:i($TxFIFOCnt4) + num:i($RxCnt4) + num:i($RxFIFO0Cnt4) + num:i($RxFIFO1Cnt4)) * 4) + num:i($NoOfStdFilter4) + (num:i($NoOfExtdFilter4) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN5"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt4) + num:i($TxFIFOCnt4) + num:i($RxCnt4) + num:i($RxFIFO0Cnt4) + num:i($RxFIFO1Cnt4)) * 4) + num:i($NoOfStdFilter4) + (num:i($NoOfExtdFilter4) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANE"!][!ENDIF!][!//
 [!ENDIF!][!//
-[!ELSEIF "'MCAN6' = node:value(node:ref(node:current()/CanControllerRef)/CanControllerInstance)"!][!//
+[!ELSEIF "'MCANF' = node:value(node:ref(node:ref(node:current()/CanControllerRef)/CanControllerInstance)/InstanceName)"!][!//
 [!IF "CanObjectType = 'RECEIVE'"!][!//
 [!IF "num:i(count(CanHwFilter/*)) = 0"!][!//
 [!ERROR "Receive Hardware Object must have filter configured"!][!ENDIF!][!//
@@ -570,9 +570,9 @@ CONST(Can_MailboxType, CAN_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!IF "(num:i($NoOfStdFilter5)) > 128"!][!ERROR "Hardware supports maximum 128 standard filters"!][!ENDIF!][!//
 [!IF "(num:i($NoOfExtdFilter5)) > 64"!][!ERROR "Hardware supports maximum 64 extended filters"!][!ENDIF!][!//
 [!IF "'true' = node:ref(node:current()/CanControllerRef)/CanControllerConfig/CanFDMode"!][!//
-[!IF "( ((num:i($TxCnt5) + num:i($TxFIFOCnt5) + num:i($RxCnt5) + num:i($RxFIFO0Cnt5) + num:i($RxFIFO1Cnt5)) * 18) + num:i($NoOfStdFilter5) + (num:i($NoOfExtdFilter5) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN6"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt5) + num:i($TxFIFOCnt5) + num:i($RxCnt5) + num:i($RxFIFO0Cnt5) + num:i($RxFIFO1Cnt5)) * 18) + num:i($NoOfStdFilter5) + (num:i($NoOfExtdFilter5) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANF"!][!ENDIF!][!//
 [!ELSE!][!//
-[!IF "( ((num:i($TxCnt5) + num:i($TxFIFOCnt5) + num:i($RxCnt5) + num:i($RxFIFO0Cnt5) + num:i($RxFIFO1Cnt5)) * 4) + num:i($NoOfStdFilter5) + (num:i($NoOfExtdFilter5) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCAN6"!][!ENDIF!][!//
+[!IF "( ((num:i($TxCnt5) + num:i($TxFIFOCnt5) + num:i($RxCnt5) + num:i($RxFIFO0Cnt5) + num:i($RxFIFO1Cnt5)) * 4) + num:i($NoOfStdFilter5) + (num:i($NoOfExtdFilter5) * 2) ) > 1024"!][!ERROR "Message RAM area overflow for MCANF"!][!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//
 };

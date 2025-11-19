@@ -40,6 +40,7 @@ set(module_list
     "Cdd_Uart"
     "Cdd_Adc"
     "Cdd_Ecap"
+    "Cdd_I2c"
     "Cdd_Pwm"
     "Cdd_Ipc"
     "Fls"

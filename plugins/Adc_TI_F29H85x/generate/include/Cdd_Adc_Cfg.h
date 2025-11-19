@@ -60,10 +60,10 @@ extern "C" {
 #define CDD_ADC_CHN_COUNT                   ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*/CddAdcChannel/*))"!]U)
 
 /* Macro to define the total number of ADC instances supported */
-#define CDD_ADC_MAX_HW_UNIT_COUNT           ((uint8)[!"num:i(ecu:get('Cdd_Adc_F29H85x_HwInstances'))"!])
+#define CDD_ADC_MAX_HW_UNIT_COUNT           ((uint8)[!"num:i(ecu:get('Cdd_Adc_F29H85x_HwInstances'))"!]U)
 
 /* Macro to define the total number of interrupts supported */
-#define CDD_ADC_MAX_INT_COUNT               ((uint8)[!"num:i(ecu:get('Cdd_Adc_F29H85x_IntCntPerHw'))"!])
+#define CDD_ADC_MAX_INT_COUNT               ((uint8)[!"num:i(ecu:get('Cdd_Adc_F29H85x_IntCntPerHw'))"!]U)
 
 /* Development error detection macro */
 #define CDD_ADC_DEV_ERROR_DETECT            [!IF "CddAdcGeneral/CddAdcDevErrorDetect  = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
@@ -225,15 +225,16 @@ extern "C" {
  *********************************************************************************************************************/
 [!//
 [!LOOP "CddAdcConfigSet/CddAdcHwUnit/*"!][!//
-[!LOOP "CddAdcGroup/*"!]
+[!LOOP "CddAdcGroup/*"!][!//
+[!IF "CddAdcEnableDma = 'false'"!]
 #define [!"node:value(../../CddAdcHwInstance)"!]_INT[!"substring-after(node:value(CddAdcInterruptSelect),'CDD_ADC_INT')"!]_ENABLE
 
 #define [!"node:value(../../CddAdcHwInstance)"!]_INT[!"substring-after(node:value(CddAdcInterruptSelect),'CDD_ADC_INT')"!]_[!"CddAdcInterruptCategory"!]
+[!ENDIF!][!//
 [!ENDLOOP!][!//
-
+[!//
 [!LOOP "CddAdcPpbConfig/*"!][!//
 [!IF "(CddAdcPpbTripHighInterruptEnable = 'true' or CddAdcPpbTripLowInterruptEnable = 'true' or CddAdcPpbZeroCrossingInterruptEnable = 'true')"!]
-
 #define [!"node:value(../../CddAdcHwInstance)"!]_EVTINT_ENABLE
 
 #define [!"node:value(../../CddAdcHwInstance)"!]_EVTINT_[!"CddAdcEventInterruptCategory"!]
@@ -333,7 +334,7 @@ typedef enum
 typedef enum
 {
     CDD_ADC_RESOLUTION_12BIT = 0x00U,    /* 12-bit conversion resolution */
-    CDD_ADC_RESOLUTION_16BIT = 0x1U,     /* 16-bit conversion resolution */
+    CDD_ADC_RESOLUTION_16BIT = 0x01U,     /* 16-bit conversion resolution */
     CDD_ADC_RESOLUTION_NONE
 }Cdd_Adc_ResolutionType;
 

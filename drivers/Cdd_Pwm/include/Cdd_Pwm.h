@@ -5782,7 +5782,7 @@ Cdd_Pwm_AllocBXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *    CDD_PWM_XTBPRD_SHADOW3                              -XTBPRD_SHADOW3
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] XcmpReg XCMP register offset
+ * \param[in] XCmpReg XCMP register offset
  * \param[in] XCmpValue Value to be written to XCMP registers
  * \pre None
  * \post None
@@ -5790,7 +5790,7 @@ Cdd_Pwm_AllocBXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XcmpReg,
+Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg,
                         VAR(uint16, AUTOMATIC) XCmpValue);
 
 /** \brief Writes values to CMPx Shadow registers
@@ -5805,8 +5805,8 @@ Cdd_Pwm_SetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd
  *    CDD_PWM_CMPD_SHADOW3                             -CMPD_SHADOW3
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] CmpReg CMP register offset
- * \param[in] CmpValue Value to be written to CMPC/D shadow registers
+ * \param[in] XCmpReg CMP register offset
+ * \param[in] XCmpValue Value to be written to CMPC/D shadow registers
  * \pre None
  * \post None
  * \return None
@@ -6302,7 +6302,6 @@ Cdd_Pwm_SetDiodeEmulationReentryDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Insta
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] Source Trip source
- * \param[in] Select Enable/disable selection for the trip source
  * \pre None
  * \post None
  * \return None
@@ -6323,7 +6322,6 @@ Cdd_Pwm_ConfigureDiodeEmulationTripLowSources(VAR(Cdd_Pwm_InstanceType, AUTOMATI
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] Source Trip source
- * \param[in] Select Enable/disable selection for the trip source
  * \pre None
  * \post None
  * \return None
@@ -6375,7 +6373,7 @@ Cdd_Pwm_SelectDiodeEmulationPwmSignal(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Insta
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] OutputChannel EPWM output channel
- * \param[in] DiodeEmulationsignal Signal selected by the TRIPSEL[A/B]
+ * \param[in] TripSrc Diode Emulation trip sources signal
  * \pre None
  * \post None
  * \return None
@@ -7074,7 +7072,7 @@ Cdd_Pwm_HrpwmLockRegisters(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *
  * This function sets the consolidated counter compare(XCMPx:XCMPxHR) value
  * required in high resolution mode for XCMP registers.
- * Valid values for XcmpReg are:
+ * Valid values for XCmpReg are:
  *    EPWM_XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *                          -XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *    EPWM_XTBPRD_ACTIVE                               -XTBPRD_ACTIVE
@@ -7086,7 +7084,7 @@ Cdd_Pwm_HrpwmLockRegisters(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *          XCmpValue = 0x03E80064
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] XcmpReg The XCMP register offset
+ * \param[in] XCmpReg The XCMP register offset
  * \param[in] XCmpValue The consolidated value to be written to XCMP registers
  * \pre None
  * \post None
@@ -7101,7 +7099,7 @@ Cdd_Pwm_HrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *
  * This function sets the high resolution counter compare value(XCMPx_HR) for
  * XCMP registers.
- * Valid values for XcmpReg are:
+ * Valid values for XCmpReg are:
  *    EPWM_XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *                          -XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *    EPWM_XTBPRD_ACTIVE                               -XTBPRD_ACTIVE
@@ -7110,7 +7108,7 @@ Cdd_Pwm_HrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *    EPWM_XTBPRD_SHADOW3                              -XTBPRD_SHADOW3
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] XcmpReg The XCMP register offset
+ * \param[in] XCmpReg The XCMP register offset
  * \param[in] HrXCmpValue The HR value to be written to XCMP registers
  * \pre None
  * \post None

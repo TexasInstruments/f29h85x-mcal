@@ -53,7 +53,7 @@
 #define I2C_IER_XRDY      0x10U     // Transmit-data-ready interrupt enable
 #define I2C_IER_SCD       0x20U     // Stop condition detected interrupt enable
 #define I2C_IER_AAT       0x40U     // Addressed as TARGET interrupt enable
-#define I2C_IER_SCL_ECS   0x8000U   // SCL Auto Clock Stretch interrupt enable
+#define I2C_IER_SCL_ECS   0x8000U   // SCL Extended Automatic Clock Stretch interrupt enable
 
 //*************************************************************************************************
 //
@@ -74,7 +74,7 @@
 #define I2C_STR_BB         0x1000U   // Bus busy bit.
 #define I2C_STR_NACKSNT    0x2000U   // NACK sent bit.
 #define I2C_STR_TDIR       0x4000U   // TARGET direction bit
-#define I2C_STR_SCL_ECS    0x8000U   // SCL Auto Clock Stretch Status
+#define I2C_STR_SCL_ECS    0x8000U   // SCL Extended Automatic Clock Stretch Status
 
 //*************************************************************************************************
 //
@@ -137,10 +137,10 @@
 //*************************************************************************************************
 #define I2C_EMDR_BC         0x1U     // Backwards compatibility mode
 #define I2C_EMDR_FCM        0x2U     // Forward Compatibility for Tx behav in Type1
-#define I2C_EMDR_ECS        0x4U     // Extended automatic clock stretching mode
-#define I2C_EMDR_MCS        0x8U     // Manual Override mode
+#define I2C_EMDR_ECS        0x4U     // Extended Automatic Clock Stretching mode
+#define I2C_EMDR_MCS        0x8U     // Manual Clock Stretching mode
 #define I2C_EMDR_SCLKEY_S   4U
-#define I2C_EMDR_SCLKEY_M   0xF0U    // Key to enable SCL (Clock Override)
+#define I2C_EMDR_SCLKEY_M   0xF0U    // KEY
 #define I2C_EMDR_NACK_CM    0x100U   // NACK Compatibility mode
 
 //*************************************************************************************************

@@ -1,0 +1,856 @@
+---
+title: Mcu API GUIDE Header file
+
+---
+
+# MCU
+
+
+
+## Types
+
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|enum| **[Mcu_PllStatusType](../Modules/group__MCU.md#enum-mcu_pllstatustype)** | This is a status value returned by the function Mcu_GetPllStatus of the MCU module.  | 
+|enum| **[Mcu_ResetType](../Modules/group__MCU.md#enum-mcu_resettype)** | This is the type of the reset enumerator containing the subset of reset types.  | 
+|enum| **[Mcu_RamStateType](../Modules/group__MCU.md#enum-mcu_ramstatetype)** | This is a status value returned by the function Mcu_GetRamState of the MCU module.  | 
+|enum| **[Mcu_ClkSourceIdType](../Modules/group__MCU.md#enum-mcu_clksourceidtype)** | Type of the clock sources.  | 
+|enum| **[Mcu_CpuTimerClkSrc](../Modules/group__MCU.md#enum-mcu_cputimerclksrc)** | The following are clock sources available for Cpu Timer module.  | 
+|enum| **[Mcu_MCanClkSrc](../Modules/group__MCU.md#enum-mcu_mcanclksrc)** | The following are clock sources available for MCAN module.  | 
+|enum| **[Mcu_MCANClkDivider](../Modules/group__MCU.md#enum-mcu_mcanclkdivider)** | The following are dividers available for MCAN module.  | 
+|enum| **[Mcu_MCANInstance](../Modules/group__MCU.md#enum-mcu_mcaninstance)** | The following are instances available for MCAN module.  | 
+|enum| **[Mcu_ExternalClockOutClkSrc](../Modules/group__MCU.md#enum-mcu_externalclockoutclksrc)** | The following are clock sources available for XCLKOUT module.  | 
+|enum| **[Mcu_ExternalClockOutDiv](../Modules/group__MCU.md#enum-mcu_externalclockoutdiv)** | The following are dividers available for XCLKOUT.  | 
+|enum| **[Mcu_EthercatClockDiv](../Modules/group__MCU.md#enum-mcu_ethercatclockdiv)** | The following are dividers available for Ethercat clock.  | 
+|enum| **[Mcu_EthercatPhyClk](../Modules/group__MCU.md#enum-mcu_ethercatphyclk)** | The following are values available to set enable/disable for EthcatPhyClock.  | 
+|enum| **[Mcu_HsmClockDiv](../Modules/group__MCU.md#enum-mcu_hsmclockdiv)** | The following are dividers available for HSM clock.  | 
+|enum| **[Mcu_EPWMClkDivider](../Modules/group__MCU.md#enum-mcu_epwmclkdivider)** | The following are dividers available for EPWM clock.  | 
+|enum| **[Mcu_EMIFClkDivider](../Modules/group__MCU.md#enum-mcu_emifclkdivider)** | The following are dividers available for EMIF clock.  | 
+|enum| **[Mcu_LINClkDivider](../Modules/group__MCU.md#enum-mcu_linclkdivider)** | The following are dividers available for LIN clock.  | 
+|enum| **[Mcu_LINInstance](../Modules/group__MCU.md#enum-mcu_lininstance)** | The following are instances available for LIN module.  | 
+|enum| **[Mcu_LowPowerModeType](../Modules/group__MCU.md#enum-mcu_lowpowermodetype)** | List of low power modes.  | 
+|typedef uint8  | **[Mcu_ClockType](../Modules/group__MCU.md#typedef-mcu_clocktype)** | This type specifies the identification (ID) for a ClockType status used by Mcu_InitClock.  | 
+|typedef uint32  | **[Mcu_RawResetType](../Modules/group__MCU.md#typedef-mcu_rawresettype)** | This type specifies the identification (ID) for a RAW reset status returned by Mcu_GetResetRawValue.  | 
+|typedef uint8  | **[Mcu_ModeType](../Modules/group__MCU.md#typedef-mcu_modetype)** | This type specifies the identification (ID) for a MCU low power mode used in Mcu_SetMode.  | 
+|typedef uint8  | **[Mcu_RamSectionType](../Modules/group__MCU.md#typedef-mcu_ramsectiontype)** | This type specifies the identification (ID) for a RAM section used in Mcu_InitRamSection.  | 
+|typedef const [Mcu_RamSectionConfigType](../Classes/structMcu__RamSectionConfigType.md) *  | **[Mcu_RamConfigPtrType](../Modules/group__MCU.md#typedef-mcu_ramconfigptrtype)** 
+|typedef const [Mcu_PeripheralClkRegConfigType](../Classes/structMcu__PeripheralClkRegConfigType.md) *  | **[Mcu_PeripheralClkRegConfigPtrType](../Modules/group__MCU.md#typedef-mcu_peripheralclkregconfigptrtype)** 
+|typedef const [Mcu_PeripheralResetRegConfigType](../Classes/structMcu__PeripheralResetRegConfigType.md) *  | **[Mcu_PeripheralResetRegConfigPtrType](../Modules/group__MCU.md#typedef-mcu_peripheralresetregconfigptrtype)** 
+|typedef const [Mcu_MCanClkConfigType](../Classes/structMcu__MCanClkConfigType.md) *  | **[Mcu_MCanClkConfigPtrType](../Modules/group__MCU.md#typedef-mcu_mcanclkconfigptrtype)** 
+|typedef const [Mcu_LinClkConfigType](../Classes/structMcu__LinClkConfigType.md) *  | **[Mcu_LinClkConfigPtrType](../Modules/group__MCU.md#typedef-mcu_linclkconfigptrtype)** 
+|typedef const [Mcu_ClockConfigType](../Classes/structMcu__ClockConfigType.md) *  | **[Mcu_ClockConfigPtrType](../Modules/group__MCU.md#typedef-mcu_clockconfigptrtype)** 
+|typedef const [Mcu_ModeConfigType](../Classes/structMcu__ModeConfigType.md) *  | **[Mcu_ModeConfigPtrType](../Modules/group__MCU.md#typedef-mcu_modeconfigptrtype)** 
+
+
+
+### enum Mcu_PllStatusType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_PLL_LOCKED | 0U| PLL status Locked.   |
+| MCU_PLL_UNLOCKED | 1U| PLL status Unlocked.   |
+| MCU_PLL_STATUS_UNDEFINED | 2U| PLL status undefined.   |
+
+
+
+
+**Brief**: 
+This is a status value returned by the function Mcu_GetPllStatus of the MCU module. 
+
+
+
+### enum Mcu_ResetType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_POWER_ON_RESET | 0U| Power On reset.   |
+| MCU_EXTERNAL_RESET | 1U| External reset.   |
+| MCU_ESM_NMI_WATCHDOG_RESET | 2U| NMI Watchdog reset.   |
+| MCU_WATCHDOG_RESET | 3U| Watchdog reset   |
+| MCU_SW_RESET | 4U| Simulation of external reset   |
+| MCU_ESM_RESET | 5U| ESM reset   |
+| MCU_RESET_UNDEFINED | 6U| UNDEFINED reset   |
+
+
+
+
+**Brief**: 
+This is the type of the reset enumerator containing the subset of reset types. 
+
+
+
+### enum Mcu_RamStateType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_RAMSTATE_INVALID | 0U| Ram state status invalid   |
+| MCU_RAMSTATE_VALID | 1U| Ram state status valid   |
+
+
+
+
+**Brief**: 
+This is a status value returned by the function Mcu_GetRamState of the MCU module. 
+
+
+
+### enum Mcu_ClkSourceIdType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_CLKSRC_OSC2 | 0x00| Internal Oscillator 2   |
+| MCU_CLKSRC_XTAL | 0x01| External XTAL   |
+| MCU_CLKSRC_XTAL_SE | 0x11| External XTAL Single-ended mode   |
+| MCU_CLKSRC_OSC1 | 0x02| Internal Oscillator 1   |
+
+
+
+
+**Brief**: 
+Type of the clock sources. 
+
+
+
+### enum Mcu_CpuTimerClkSrc
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_CPUTIMERCLKSRC_SYSCLK | 0U| SYSCLK (default on reset)   |
+| MCU_CPUTIMERCLKSRC_INTOSC1 | 1U| Internal Oscillator 1   |
+| MCU_CPUTIMERCLKSRC_INTOSC2 | 2U| Internal Oscillator 2   |
+| MCU_CPUTIMERCLKSRC_XTAL | 3U| External Oscillator (XTAL)   |
+| MCU_CPUTIMERCLKSRC_MAX | |   |
+
+
+
+
+**Brief**: 
+The following are clock sources available for Cpu Timer module. 
+
+
+
+### enum Mcu_MCanClkSrc
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_MCANCLKSRC_PERxSYSCLK | 0U| SYSCLK (default on reset)   |
+| MCU_MCANCLKSRC_AUXCLKIN | 2U| SYSCLK (default on reset)   |
+| MCU_MCANCLKSRC_PLLRAWCLK | 3U| Raw PLL Clock   |
+| MCU_MCANCLKSRC_MAX | |   |
+
+
+
+
+**Brief**: 
+The following are clock sources available for MCAN module. 
+
+
+
+### enum Mcu_MCANClkDivider
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_MCANCLK_DIV_1 | 0x0| MCAN clock = MCAN clock source / 1.   |
+| MCU_MCANCLK_DIV_2 | 0x1| MCAN clock = MCAN clock source / 2.   |
+| MCU_MCANCLK_DIV_3 | 0x2| MCAN clock = MCAN clock source / 3.   |
+| MCU_MCANCLK_DIV_4 | 0x3| MCAN clock = MCAN clock source / 4.   |
+| MCU_MCANCLK_DIV_5 | 0x4| MCAN clock = MCAN clock source / 5.   |
+| MCU_MCANCLK_DIV_6 | 0x5| MCAN clock = MCAN clock source / 6.   |
+| MCU_MCANCLK_DIV_7 | 0x6| MCAN clock = MCAN clock source / 7.   |
+| MCU_MCANCLK_DIV_8 | 0x7| MCAN clock = MCAN clock source / 8.   |
+| MCU_MCANCLK_DIV_9 | 0x8| MCAN clock = MCAN clock source / 9.   |
+| MCU_MCANCLK_DIV_10 | 0x9| MCAN clock = MCAN clock source / 10.   |
+| MCU_MCANCLK_DIV_11 | 0xA| MCAN clock = MCAN clock source / 11.   |
+| MCU_MCANCLK_DIV_12 | 0xB| MCAN clock = MCAN clock source / 12.   |
+| MCU_MCANCLK_DIV_13 | 0xC| MCAN clock = MCAN clock source / 13.   |
+| MCU_MCANCLK_DIV_14 | 0xD| MCAN clock = MCAN clock source / 14.   |
+| MCU_MCANCLK_DIV_15 | 0xE| MCAN clock = MCAN clock source / 15.   |
+| MCU_MCANCLK_DIV_16 | 0xF| MCAN clock = MCAN clock source / 16.   |
+| MCU_MCANCLK_DIV_17 | 0x10| MCAN clock = MCAN clock source / 17.   |
+| MCU_MCANCLK_DIV_18 | 0x11| MCAN clock = MCAN clock source / 18.   |
+| MCU_MCANCLK_DIV_19 | 0x12| MCAN clock = MCAN clock source / 19.   |
+| MCU_MCANCLK_DIV_20 | 0x13| MCAN clock = MCAN clock source / 20.   |
+
+
+
+
+**Brief**: 
+The following are dividers available for MCAN module. 
+
+
+
+### enum Mcu_MCANInstance
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_MCAN_A | 0U| MCAN Instance A.   |
+| MCU_MCAN_B | 1U| MCAN Instance B.   |
+| MCU_MCAN_C | 2U| MCAN Instance C.   |
+| MCU_MCAN_D | 3U| MCAN Instance D.   |
+| MCU_MCAN_E | 4U| MCAN Instance E.   |
+| MCU_MCAN_F | 5U| MCAN Instance F.   |
+
+
+
+
+**Brief**: 
+The following are instances available for MCAN module. 
+
+
+
+### enum Mcu_ExternalClockOutClkSrc
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_XCLKOUTSRC_PLLSYS | 0U| PLL System Clock post SYSCLKDIV   |
+| MCU_XCLKOUTSRC_CPU1CLK | 1U| CPU1.CLOCK   |
+| MCU_XCLKOUTSRC_CPU2CLK | 2U| CPU2.CLOCK   |
+| MCU_XCLKOUTSRC_CPU3CLK | 3U| CPU3.CLOCK   |
+| MCU_XCLKOUTSRC_INTOSC1 | 5U| Internal Oscillator 1   |
+| MCU_XCLKOUTSRC_INTOSC2 | 6U| Internal Oscillator 2   |
+| MCU_XCLKOUTSRC_XTALOSC | 7U| External Oscillator   |
+
+
+
+
+**Brief**: 
+The following are clock sources available for XCLKOUT module. 
+
+
+
+### enum Mcu_ExternalClockOutDiv
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_XCLKOUT_DIV_1 | 0U| divided by 1   |
+| MCU_XCLKOUT_DIV_2 | 1U| divided by 2   |
+| MCU_XCLKOUT_DIV_4 | 2U| divided by 4   |
+| MCU_XCLKOUT_DIV_8 | 3U| divided by 8   |
+
+
+
+
+**Brief**: 
+The following are dividers available for XCLKOUT. 
+
+
+
+### enum Mcu_EthercatClockDiv
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_ECATCLKOUT_DIV_1 | 0U| divided by 1   |
+| MCU_ECATCLKOUT_DIV_2 | 1U| divided by 2   |
+| MCU_ECATCLKOUT_DIV_3 | 2U| divided by 3   |
+| MCU_ECATCLKOUT_DIV_4 | 3U| divided by 4   |
+| MCU_ECATCLKOUT_DIV_5 | 4U| divided by 5   |
+| MCU_ECATCLKOUT_DIV_6 | 5U| divided by 6   |
+| MCU_ECATCLKOUT_DIV_7 | 6U| divided by 7   |
+| MCU_ECATCLKOUT_DIV_8 | 7U| divided by 8   |
+
+
+
+
+**Brief**: 
+The following are dividers available for Ethercat clock. 
+
+
+
+### enum Mcu_EthercatPhyClk
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_ECAT_PHYCLK_ENABLE | 0x100U| Enable value 0x100.   |
+| MCU_ECAT_PHYCLK_DISABLE | 0U| Disable value 0.   |
+
+
+
+
+**Brief**: 
+The following are values available to set enable/disable for EthcatPhyClock. 
+
+
+
+### enum Mcu_HsmClockDiv
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_HSMCLK_DIV_1 | 0U| divided by 1   |
+| MCU_HSMCLK_DIV_2 | 1U| divided by 2   |
+| MCU_HSMCLK_DIV_4 | 2U| divided by 4   |
+| MCU_HSMCLK_DIV_8 | 3U| divided by 8   |
+| MCU_HSMCLK_DIV_16 | 4U| divided by 16   |
+
+
+
+
+**Brief**: 
+The following are dividers available for HSM clock. 
+
+
+
+### enum Mcu_EPWMClkDivider
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_EPWMCLK_DIV_1 | 0U| EPWMCLK = PLLSYSCLK / 1.   |
+| MCU_EPWMCLK_DIV_2 | 1U| EPWMCLK = PLLSYSCLK / 2.   |
+
+
+
+
+**Brief**: 
+The following are dividers available for EPWM clock. 
+
+
+
+### enum Mcu_EMIFClkDivider
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_EMIFCLK_DIV_1 | 0U| EMIF1CLK = PLLSYSCLK / 1.   |
+| MCU_EMIFCLK_DIV_2 | 1U| EMIF1CLK = PLLSYSCLK / 2.   |
+| MCU_EMIFCLK_DIV_4 | 2U| EMIF1CLK = PLLSYSCLK / 4.   |
+
+
+
+
+**Brief**: 
+The following are dividers available for EMIF clock. 
+
+
+
+### enum Mcu_LINClkDivider
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_LINCLK_DIV_1 | 0U| LINCLK = PLLSYSCLK / 1.   |
+| MCU_LINCLK_DIV_2 | 1U| LINCLK = PLLSYSCLK / 2.   |
+| MCU_LINCLK_DIV_4 | 2U| LINCLK = PLLSYSCLK / 4.   |
+
+
+
+
+**Brief**: 
+The following are dividers available for LIN clock. 
+
+
+
+### enum Mcu_LINInstance
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_LIN_A | 0U| LIN Instance A.   |
+| MCU_LIN_B | 1U| LIN Instance B.   |
+
+
+
+
+**Brief**: 
+The following are instances available for LIN module. 
+
+
+
+### enum Mcu_LowPowerModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| MCU_IDLE_MODE |  0U| MCU Idle mode.   |
+| MCU_STANDBY_MODE |  1U| MCU Standby mode.   |
+| MCU_MODE_MAX | |   |
+
+
+
+
+**Brief**: 
+List of low power modes. 
+
+
+
+### typedef Mcu_ClockType
+```
+typedef uint8 Mcu_ClockType;
+```
+
+
+**Brief**: 
+This type specifies the identification (ID) for a ClockType status used by Mcu_InitClock. 
+
+
+
+### typedef Mcu_RawResetType
+```
+typedef uint32 Mcu_RawResetType;
+```
+
+
+**Brief**: 
+This type specifies the identification (ID) for a RAW reset status returned by Mcu_GetResetRawValue. 
+
+
+
+### typedef Mcu_ModeType
+```
+typedef uint8 Mcu_ModeType;
+```
+
+
+**Brief**: 
+This type specifies the identification (ID) for a MCU low power mode used in Mcu_SetMode. 
+
+
+
+### typedef Mcu_RamSectionType
+```
+typedef uint8 Mcu_RamSectionType;
+```
+
+
+**Brief**: 
+This type specifies the identification (ID) for a RAM section used in Mcu_InitRamSection. 
+
+
+
+### typedef Mcu_RamConfigPtrType
+```
+typedef const Mcu_RamSectionConfigType* Mcu_RamConfigPtrType;
+```
+
+
+
+
+### typedef Mcu_PeripheralClkRegConfigPtrType
+```
+typedef const Mcu_PeripheralClkRegConfigType* Mcu_PeripheralClkRegConfigPtrType;
+```
+
+
+
+
+### typedef Mcu_PeripheralResetRegConfigPtrType
+```
+typedef const Mcu_PeripheralResetRegConfigType* Mcu_PeripheralResetRegConfigPtrType;
+```
+
+
+
+
+### typedef Mcu_MCanClkConfigPtrType
+```
+typedef const Mcu_MCanClkConfigType* Mcu_MCanClkConfigPtrType;
+```
+
+
+
+
+### typedef Mcu_LinClkConfigPtrType
+```
+typedef const Mcu_LinClkConfigType* Mcu_LinClkConfigPtrType;
+```
+
+
+
+
+### typedef Mcu_ClockConfigPtrType
+```
+typedef const Mcu_ClockConfigType* Mcu_ClockConfigPtrType;
+```
+
+
+
+
+### typedef Mcu_ModeConfigPtrType
+```
+typedef const Mcu_ModeConfigType* Mcu_ModeConfigPtrType;
+```
+
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Mcu_ConfigType](../Classes/structMcu__ConfigType.md)** | MCU CONFIG ROOT structure.  |
+| **[Mcu_RamSectionConfigType](../Classes/structMcu__RamSectionConfigType.md)** | Structure for data pre-setting to be initialized.  |
+| **[Mcu_LinClkConfigType](../Classes/structMcu__LinClkConfigType.md)** | Structure for LIN clock register setting.  |
+| **[Mcu_EthercatClkConfigType](../Classes/structMcu__EthercatClkConfigType.md)** | Structure for EtherCat clock setting.  |
+| **[Mcu_MCanClkConfigType](../Classes/structMcu__MCanClkConfigType.md)** | Structure for MCAN clock register setting.  |
+| **[Mcu_CpuTimerClkConfigType](../Classes/structMcu__CpuTimerClkConfigType.md)** | Structure for Cpu Timer clock register setting.  |
+| **[Mcu_ExternalClkOutConfigType](../Classes/structMcu__ExternalClkOutConfigType.md)** | Structure for External Clock Output setting.  |
+| **[Mcu_PeripheralClkRegConfigType](../Classes/structMcu__PeripheralClkRegConfigType.md)** | Structure for peripheral clock register setting.  |
+| **[Mcu_PeripheralResetRegConfigType](../Classes/structMcu__PeripheralResetRegConfigType.md)** | Structure for peripheral Reset register setting.  |
+| **[Mcu_ClockConfigType](../Classes/structMcu__ClockConfigType.md)** | Structure for device clock setting.  |
+| **[Mcu_ModeConfigType](../Classes/structMcu__ModeConfigType.md)** | Structure for Mcu low power mode configuration type.  |
+
+
+
+
+## Defines
+
+| Name           |  Brief     |
+| -------------- | ---------- |
+| MCU_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
+| MCU_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| MCU_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| MCU_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by MCU Driver.  |
+| MCU_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by MCU Driver.  |
+| MCU_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by MCU Driver.  |
+| MCU_VENDOR_ID   | Texas Instruments Vendor ID.  |
+| MCU_MODULE_ID   | MCU Driver Module ID.  |
+| MCU_INSTANCE_ID   | MCU Instance ID.  |
+| MCU_SID_INIT   | Service ID for Mcu_Init.  |
+| MCU_SID_INIT_RAMSECTION   | Service ID for Mcu_InitRamSection.  |
+| MCU_SID_INIT_CLOCK   | Service ID for Mcu_InitClock.  |
+| MCU_SID_DISTRIBUTE_PLL_CLOCK   | Service ID for Mcu_DistributePllClock.  |
+| MCU_SID_GET_PLL_STATUS   | Service ID for Mcu_GetPllStatus.  |
+| MCU_SID_GET_RESET_REASON   | Service ID for Mcu_GetResetReason.  |
+| MCU_SID_GET_RESET_RAW_VALUE   | Service ID for Mcu_GetResetRawValue.  |
+| MCU_SID_PERFORM_RESET   | Service ID for Mcu_PerformReset.  |
+| MCU_SID_SET_MODE   | Service ID for Mcu_SetMode.  |
+| MCU_SID_GET_VERSION_INFO   | Service ID for Mcu_GetVersionInfo.  |
+| MCU_SID_GET_RAM_STATE   | Service ID for Mcu_GetRamState.  |
+| MCU_E_PARAM_CONFIG   | Mcu_Init config param invalid.  |
+| MCU_E_PARAM_CLOCK   | Mcu_InitClock clockid param invalid.  |
+| MCU_E_PARAM_MODE   | Mcu_SetMode modeid param invalid.  |
+| MCU_E_PARAM_RAMSECTION   | Mcu_InitRamSection ramSect param invalid.  |
+| MCU_E_PLL_NOT_LOCKED   | PLL not locked.  |
+| MCU_E_UNINIT   | API invoked without performing Mcu_Init.  |
+| MCU_E_PARAM_POINTER   | NULL_PTR passed to MCU driver APIs.  |
+| MCU_E_INIT_FAILED   | Mcu Initialization failed.  |
+| MCU_ERRORRST_MASK   | Define indicating invalid raw reset value.  |
+
+## Functions
+
+| Return type    | Function Name           |      Brief        |
+| -------------- | ----------------------- | ----------------- |
+| void | **[Mcu_GetVersionInfo](../Modules/group__MCU.md#function-mcu_getversioninfo)**(Std_VersionInfoType * versioninfo)| This service provides the version information of MCU module.  |
+| void | **[Mcu_Init](../Modules/group__MCU.md#function-mcu_init)**(const [Mcu_ConfigType](../Classes/structMcu__ConfigType.md) * CfgPtr)| This service initializes the MCU driver.  |
+| Std_ReturnType | **[Mcu_InitRamSection](../Modules/group__MCU.md#function-mcu_initramsection)**([Mcu_RamSectionType](../Modules/group__MCU.md#typedef-mcu_ramsectiontype) RamSection)| This service initializes the RAM section wise with default values supplied in configuration set.  |
+| Std_ReturnType | **[Mcu_InitClock](../Modules/group__MCU.md#function-mcu_initclock)**([Mcu_ClockType](../Modules/group__MCU.md#typedef-mcu_clocktype) ClockSetting)| This service initializes the PLL and other MCU specific clock options.  |
+| [Mcu_PllStatusType](../Modules/group__MCU.md#enum-mcu_pllstatustype) | **[Mcu_GetPllStatus](../Modules/group__MCU.md#function-mcu_getpllstatus)**(void )| This service provides the lock status of the PLL.  |
+| [Mcu_ResetType](../Modules/group__MCU.md#enum-mcu_resettype) | **[Mcu_GetResetReason](../Modules/group__MCU.md#function-mcu_getresetreason)**(void )| The service reads the reset reason from the hardware.  |
+| [Mcu_RawResetType](../Modules/group__MCU.md#typedef-mcu_rawresettype) | **[Mcu_GetResetRawValue](../Modules/group__MCU.md#function-mcu_getresetrawvalue)**(void )| The service reads the raw reset value from the hardware register.  |
+| void | **[Mcu_PerformReset](../Modules/group__MCU.md#function-mcu_performreset)**(void )| The service performs a microcontroller reset.  |
+| void | **[Mcu_SetMode](../Modules/group__MCU.md#function-mcu_setmode)**([Mcu_ModeType](../Modules/group__MCU.md#typedef-mcu_modetype) McuMode)| The service activates low power modes.  |
+| [Mcu_RamStateType](../Modules/group__MCU.md#enum-mcu_ramstatetype) | **[Mcu_GetRamState](../Modules/group__MCU.md#function-mcu_getramstate)**(void )| This service provides the actual status of the microcontroller Ram.  |
+
+
+
+### function Mcu_GetVersionInfo
+
+```
+void Mcu_GetVersionInfo(
+    Std_VersionInfoType * versioninfo
+)
+```
+
+
+**Brief**: 
+This service provides the version information of MCU module. 
+
+**Parameters**: 
+
+  
+* **versioninfo** - Pointer to MCU driver version information. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: This API is available only if MCU_CFG_GET_VERSION_INFO_API is STD_ON 
+
+**Postcondition**: None 
+
+### function Mcu_Init
+
+```
+void Mcu_Init(
+    const Mcu_ConfigType * CfgPtr
+)
+```
+
+
+**Brief**: 
+This service initializes the MCU driver. 
+
+This API is used to configure MCU settings for PLL and clock. This API is used to configure RAM section settings and Power mode settings.
+
+
+**Parameters**: 
+
+  
+* **CfgPtr** - Pointer to MCU driver configuration set. 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Mcu_InitRamSection
+
+```
+Std_ReturnType Mcu_InitRamSection(
+    Mcu_RamSectionType RamSection
+)
+```
+
+
+**Brief**: 
+This service initializes the RAM section wise with default values supplied in configuration set. 
+
+This service initializes the RAM section wise.
+
+
+**Parameters**: 
+
+  
+* **RamSection** Selects RAM memory section provided in configuration set 
+
+
+**Returns**: 
+
+  
+* **E_OK** command has been accepted 
+<br> 
+  
+* **E_NOT_OK** command has not been accepted 
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Mcu_InitClock
+
+```
+Std_ReturnType Mcu_InitClock(
+    Mcu_ClockType ClockSetting
+)
+```
+
+
+**Brief**: 
+This service initializes the PLL and other MCU specific clock options. 
+
+This API is used to initializate clock & PLL This API is used to Set CPU timer clock, XCLKOUT, Ethercat clock, Peripheral clocks, MCAN module clocks
+
+
+**Parameters**: 
+
+  
+* **ClockSetting** Selects clock section details provided in configuration set 
+
+
+**Returns**: 
+
+  
+* **E_OK** command has been accepted. 
+<br> 
+  
+* **E_NOT_OK** command has not been accepted 
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: This API is available only if MCU_CFG_INIT_CLOCK_API is STD_ON 
+
+**Postcondition**: None 
+
+### function Mcu_GetPllStatus
+
+```
+Mcu_PllStatusType Mcu_GetPllStatus(
+    void 
+)
+```
+
+
+**Brief**: 
+This service provides the lock status of the PLL. 
+
+**Returns**: 
+
+  
+* **MCU_PLL_LOCKED** PLL is in locked state. MCU_PLL_UNLOCKED: PLL is in unlocked state. MCU_PLL_STATUS_UNDEFINED: Pre-compile McuNoPll is set to true. 
+<br> 
+
+
+**Return**: Mcu_PllStatusType - PLL Status 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Mcu_GetResetReason
+
+```
+Mcu_ResetType Mcu_GetResetReason(
+    void 
+)
+```
+
+
+**Brief**: 
+The service reads the reset reason from the hardware. 
+
+This API reads the reset value from hardware and returns from the list of reset types defined in Mcu_ResetType.
+
+
+**Returns**: 
+
+  
+* **MCU_POWER_ON_RESET** Power On reset 
+<br> 
+  
+* **MCU_EXTERNAL_RESET** External reset 
+<br> 
+  
+* **MCU_ESM_NMI_WATCHDOG_RESET** NMI Watchdog reset 
+<br> 
+  
+* **MCU_WATCHDOG_RESET** Watchdog reset 
+<br> 
+  
+* **MCU_SW_RESET** Simulation of external reset 
+<br> 
+  
+* **MCU_ESM_RESET** ESM reset 
+<br> 
+  
+* **MCU_RESET_UNDEFINED** UNDEFINED reset 
+<br> 
+
+
+**Return**: Mcu_ResetType - Reset Type 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Mcu_GetResetRawValue
+
+```
+Mcu_RawResetType Mcu_GetResetRawValue(
+    void 
+)
+```
+
+
+**Brief**: 
+The service reads the raw reset value from the hardware register. 
+
+This API reads the reset value from hardware and returns it.
+
+
+**Returns**: 
+
+  
+* **Reset** raw value 
+<br> 
+
+
+**Return**: Mcu_RawResetType - Reset raw value 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Mcu_PerformReset
+
+```
+void Mcu_PerformReset(
+    void 
+)
+```
+
+
+**Brief**: 
+The service performs a microcontroller reset. 
+
+This API perform simulation of external reset only
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: This API is available only if MCU_CFG_PERFORM_RESET_API is STD_ON 
+
+**Postcondition**: None 
+
+### function Mcu_SetMode
+
+```
+void Mcu_SetMode(
+    Mcu_ModeType McuMode
+)
+```
+
+
+**Brief**: 
+The service activates low power modes. 
+
+This API is used to activate the low power modes IDLE & STANDBY
+
+
+**Parameters**: 
+
+  
+* **McuMode** - ID to select one MCU mode setting from the list provided in configuration set 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Mcu_GetRamState
+
+```
+Mcu_RamStateType Mcu_GetRamState(
+    void 
+)
+```
+
+
+**Brief**: 
+This service provides the actual status of the microcontroller Ram. 
+
+This API is not checking actual RAM status. So no actions are performed and returns RAM VALID
+
+
+**Returns**: 
+
+  
+* **MCU_RAMSTATE_INVALID** Invalid Ram status 
+<br> 
+  
+* **MCU_RAMSTATE_VALID** Valid Ram status 
+<br> 
+
+
+**Return**: Mcu_RamStateType - Ram State Type 
+
+**Precondition**: This API is available only if MCU_CFG_GET_RAM_STATE_API is STD_ON 
+
+**Postcondition**: None 
+
+
+
+
+

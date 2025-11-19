@@ -59,10 +59,10 @@ extern "C" {
 #define CDD_ADC_CHN_COUNT                   ((uint8)2U)
 
 /* Macro to define the total number of ADC instances supported */
-#define CDD_ADC_MAX_HW_UNIT_COUNT           ((uint8)5)
+#define CDD_ADC_MAX_HW_UNIT_COUNT           ((uint8)5U)
 
 /* Macro to define the total number of interrupts supported */
-#define CDD_ADC_MAX_INT_COUNT               ((uint8)4)
+#define CDD_ADC_MAX_INT_COUNT               ((uint8)4U)
 
 /* Development error detection macro */
 #define CDD_ADC_DEV_ERROR_DETECT            (STD_ON)
@@ -173,11 +173,9 @@ extern "C" {
 
 #define CDD_ADCA_INT1_ISR_CAT1_INT
 
-
 #define CDD_ADCC_INT1_ENABLE
 
 #define CDD_ADCC_INT1_ISR_CAT1_RTINT
-
 
 /*********************************************************************************************************************
  * Exported Type Declarations
@@ -270,7 +268,7 @@ typedef enum
 typedef enum
 {
     CDD_ADC_RESOLUTION_12BIT = 0x00U,    /* 12-bit conversion resolution */
-    CDD_ADC_RESOLUTION_16BIT = 0x1U,     /* 16-bit conversion resolution */
+    CDD_ADC_RESOLUTION_16BIT = 0x01U,     /* 16-bit conversion resolution */
     CDD_ADC_RESOLUTION_NONE
 }Cdd_Adc_ResolutionType;
 

@@ -80,7 +80,7 @@
 					<!--Design: MCAL-12039,MCAL-12016-->
                     <v:lst name="CddEcapChannel" type="MAP">
                       <a:da name="MIN" value="1"/>
-                      <a:da name="MAX" value="6"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_EcapInstanceName')))&quot;,'6')"/>
                       <v:ctr name="CddEcapChannel" type="IDENTIFIABLE">
                         <a:a name="DESC"
                              value="EN: Configuration of an individual CDD ECAP channel."/>
@@ -90,8 +90,28 @@
                          </a:a>
                         <a:a name="UUID"
                              value="ECUC:74f0ce69-2156-4784-bae9-57ea4699e6e4"/>
-                        <v:var name="CddEcapChannelId" type="INTEGER">
-                        <a:da name="DEFAULT" value="1"/>
+                        <v:ref name="CddEcapChannelRef" type="REFERENCE">
+                         <a:a name="DESC"
+                              value="EN: Reference to the ECAP Channel."/>
+                         <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                         </a:a>
+                         <a:a name="ORIGIN" value="Texas Instruments"/>
+                         <a:a name="UUID"
+                              value="3e518668-f29a-463d-b183-d4b4d1c28768"/>
+                         <a:da name="REF"
+                              value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Ecap/Cdd_EcapAllocatedInstance"/>
+                         <a:da name="RANGE" type="XPath">
+                         <a:tst expr="node:paths(//Cdd_EcapAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                         </a:da>
+                         <a:da name="INVALID" type="XPath">
+                              <a:tst expr="text:uniq((../../..//*[@name='CddEcapChannelRef']),node:value(.))" false="CddEcapChannelRef selection has to be unique across all containers."/>
+                         </a:da>
+                        </v:ref>
+                        <v:var name="CddEcapChannelId" type="STRING">
+                        <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(number(substring-after(node:value(node:ref(../CddEcapChannelRef)/InstanceName), 'ECAP'))-1)&quot;,'255')"/>
+                        <a:da name="EDITABLE" value="FALSE"/>
                           <a:a name="DESC"
                                value="EN: Channel Id of the CDD ECAP channel. This value will be assigned to the symbolic name derived of the CddEcapChannel container short name."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS"
@@ -163,7 +183,7 @@
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="UUID" 
                                value="65dd023a-7022-4985-bf5f-872a6bd48c84"/>
-                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Ecap_F29H85x_InputSelect')&quot;,'CDD_ECAP_INPUT_INPUTXBAR1')"/>
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_Ecap_InputSelect')&quot;,'CDD_ECAP_INPUT_INPUTXBAR1')"/>
                           <a:da name="DEFAULT" value="CDD_ECAP_INPUT_INPUTXBAR1"/>
                         </v:var>
                         <v:var name="CddEcapIrqType" type="ENUMERATION">
@@ -223,7 +243,7 @@
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:a name="UUID" 
                                value="dc64c0a7-1e67-4d3f-a78b-acb8b629e571"/>
-                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Ecap_F29H85x_Prescalar')&quot;,'CDD_ECAP_PRESCALAR_1')"/>
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_Ecap_Prescalar')&quot;,'CDD_ECAP_PRESCALAR_1')"/>
                           <a:da name="DEFAULT" value="CDD_ECAP_PRESCALAR_1"/>
                         </v:var>
                       <v:ref name="CddEcapFunctionalClock" type="REFERENCE">
@@ -254,9 +274,9 @@
                    </a:da>
                     </v:var>
                         <v:var name="CddEcapHREnable" type="BOOLEAN">
-                              <a:a name="DESC" 
+                              <a:a name="DESC"
                               value="EN: This parameter enables HR mode for a particular Cdd Ecap channel."/>
-                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS"> 
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
@@ -264,7 +284,8 @@
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID"
                                    value="ECUC:dd5a6572-bc3a-4853-985d-753d3392a786"/>
-                              <a:da name="DEFAULT" value="false"/> 
+                              <a:da name="DEFAULT" value="false"/>
+                              <a:da name="EDITABLE" type="XPath" expr="ecu:get('ResourceAllocator_F29H85x.Cdd_Ecap_HrEnable') = 'TRUE'"/>
                          </v:var>
                           <v:ctr name="CddEcapSignalMeasurement"
                                  type="IDENTIFIABLE">

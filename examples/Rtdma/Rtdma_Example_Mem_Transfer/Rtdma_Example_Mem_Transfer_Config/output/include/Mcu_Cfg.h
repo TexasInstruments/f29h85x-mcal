@@ -23,7 +23,7 @@
 #define MCU_CFG_H
 
 /**
- * \addtogroup MCU Mcu API GUIDE configurator header file
+ * \addtogroup MCU
  * @{
  */
 

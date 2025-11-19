@@ -419,11 +419,31 @@ FUNC(Std_ReturnType, LIN_CODE) Lin_CheckWakeupInternal(uint8 Channel)
 FUNC(Std_ReturnType, LIN_CODE) Lin_WakeupProcess(uint8 Channel)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_NOT_OK;
+
     if ((uint8)LIN_CHANNEL_SLEEP == (uint8)Lin_Channel_Status[Channel].linChannelNetworkStatus)
     {
-        Lin_SendWakeupSignal(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr);
         Lin_EnterLowPowerMode(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr, FALSE);
         Lin_Channel_Status[Channel].linChannelNetworkStatus = LIN_CHANNEL_OPERATIONAL;
+
+        /* Enable transmit and receive bits. */
+        McalLib_RegWriteRaw32(
+            (Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr + LIN_O_SCIGCR1),
+            (uint32)McalLib_RegReadRaw32(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr +
+                                         LIN_O_SCIGCR1) |
+                (uint32)LIN_SCIGCR1_TXENA | (uint32)LIN_SCIGCR1_RXENA);
+
+        /* Set Mask ID for TX to not Send any message*/
+        Lin_SetTxMask(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr, 0x00U);
+
+        /* Set Mask ID for RX */
+        Lin_SetRxMask(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr, 0x00U);
+
+        /*
+         * Set the message ID to initiate a header transmission.
+         * This causes the ID to be written to the bus followed by the
+         * data in the transmit buffers.
+         */
+        Lin_SetIDByte(Lin_Drv_Config_Ptr->linChannelCfg[Channel].linControllerConfig.CntrAddr, LIN_WAKEUP_ID);
 
         return_value = E_OK;
     }

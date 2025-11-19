@@ -106,6 +106,21 @@ uint32        Can_WakeUp_Signal = 0;
  *  Local Functions Definition
  *********************************************************************************************************************/
 #define READ_WRITE_WAIT_TIME 100000U
+#define READ_WRITE_WAIT_TIME 100000U
+#define READ_WRITE_WAIT_TIME 100000U
+#define VARIANT_F29H85X      0
+#define VARIANT_F29P58X      1
+#define VARIANT_F29P32X      2
+
+#ifdef BUILD_DEVICE_F29P32X
+#define VARIANT 2
+#endif
+#ifdef BUILD_DEVICE_F29P58X
+#define VARIANT 1
+#endif
+#ifdef BUILD_DEVICE_F29H85X
+#define VARIANT 0
+#endif
 
 /* main function */
 int main(void)

@@ -323,25 +323,25 @@ extern boolean [!"CanGeneral/CanLPduReceiveCalloutFunction"!](Can_HwHandleType H
  *****************************************************************************/
 [!IF "node:refexists(CanGeneral/CanDemEventParameterRefs/CAN_E_HARDWARE_ERROR) or node:refexists(CanGeneral/CanDemEventParameterRefs/CAN_E_SAFTEY_BEU_ERROR )"!]
 [!LOOP "CanConfigSet/CanController/*"!][!//
-#define CAN_[!"CanControllerInstance"!]_ENABLE
+#define CAN_[!"(node:ref(CanControllerInstance)/InstanceName)"!]_ENABLE
 [!IF "CanInteruptType = 'CAN_ISR_CAT1_RTINT'"!][!//
-#define CAN_[!"CanControllerInstance"!]_ISR_CAT1_RTINT
+#define CAN_[!"(node:ref(CanControllerInstance)/InstanceName)"!]_ISR_CAT1_RTINT
 [!ELSEIF "CanInteruptType = 'CAN_ISR_CAT1_INT'"!][!//
-#define CAN_[!"CanControllerInstance"!]_ISR_CAT1_INT
+#define CAN_[!"(node:ref(CanControllerInstance)/InstanceName)"!]_ISR_CAT1_INT
 [!ELSE!][!//
-#define CAN_[!"CanControllerInstance"!]_ISR_CAT2
+#define CAN_[!"(node:ref(CanControllerInstance)/InstanceName)"!]_ISR_CAT2
 [!ENDIF!][!//
 [!ENDLOOP!][!//
 [!ELSE!][!//
 [!LOOP "CanConfigSet/CanController/*"!][!//
 [!IF "CanRxProcessing !='POLLING' or CanTxProcessing !='POLLING' or CanBusoffProcessing ='INTERRUPT' or CanWakeupProcessing ='INTERRUPT'"!]
-#define CAN_[!"CanControllerInstance"!]_ENABLE
+#define CAN_[!"(node:ref(CanControllerInstance)/InstanceName)"!]_ENABLE
 [!IF "CanInteruptType = 'CAN_ISR_CAT1_RTINT'"!][!//
-#define CAN_[!"CanControllerInstance"!]_ISR_CAT1_RTINT
+#define CAN_[!"(node:ref(CanControllerInstance)/InstanceName)"!]_ISR_CAT1_RTINT
 [!ELSEIF "CanInteruptType = 'CAN_ISR_CAT1_INT'"!][!//
-#define CAN_[!"CanControllerInstance"!]_ISR_CAT1_INT
+#define CAN_[!"(node:ref(CanControllerInstance)/InstanceName)"!]_ISR_CAT1_INT
 [!ELSE!][!//
-#define CAN_[!"CanControllerInstance"!]_ISR_CAT2
+#define CAN_[!"(node:ref(CanControllerInstance)/InstanceName)"!]_ISR_CAT2
 [!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDLOOP!][!//

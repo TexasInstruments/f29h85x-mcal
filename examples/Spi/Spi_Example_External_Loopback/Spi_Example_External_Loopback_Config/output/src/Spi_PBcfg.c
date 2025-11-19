@@ -83,7 +83,7 @@ extern "C" {
  */
 CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_Config =
 {
-    .maxChannels = 2U,
+    .maxChannels = 1U,
     .maxJobs = 1U,
     .maxSeq  = 1U,
     .maxHwUnit = 1U,
@@ -96,16 +96,7 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_Config =
                 .channelBufType = SPI_IB,
                 .dataWidth = 16U,
                 .defaultTxData = 65535U,
-                .maxBufLength = 30U,
-                .transferType = SPI_MSB,
-            },
-            [1] =
-            {
-                .channelId = SpiConf_SpiChannel_SpiChannel_1,
-                .channelBufType = SPI_IB,
-                .dataWidth = 16U,
-                .defaultTxData = 65535U,
-                .maxBufLength = 30U,
+                .maxBufLength = 64U,
                 .transferType = SPI_MSB,
             },
         },
@@ -117,7 +108,7 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_Config =
                 .jobPriority = SPI_JOB_PRIORITY_1,
                 .Spi_JobEndNotification = NULL_PTR,
                 .externalDeviceCfgId = (uint8)0,
-                .csSelect = CS_VIA_PERIPHERAL_ENGINE,
+                .csSelect = CS_VIA_GPIO,
                 .csGpioId = SpiConf_SpiExternalDevice_SpiExternalDevice_0_CS,
                 .hwUnitId = (Spi_HwInstance) SPI_UNIT_SPIA,
                 .channelPerJob = 1U,
@@ -157,7 +148,7 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_Config =
             [0] =
             {
                 .externalDeviceId = (uint8)0U,
-                .csEnable = (uint16) FALSE,
+                .csEnable = (uint16) TRUE,
                 .csPolarity = STD_LOW,
                 .clkDivider = (uint32) 99U,
                 .clkMode = (Spi_ClkMode) SPI_CLK_MODE_0,

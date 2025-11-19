@@ -49,6 +49,7 @@ extern "C" {
 * Design:MCAL-25114
 */
 
+#include "Dio.h"
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -100,7 +101,7 @@ extern "C" {
 /*
  * Design : MCAL-25162
  */
-#define SPI_IB_MAX_LENGTH          ((uint8)(64U))
+#define SPI_IB_MAX_LENGTH          ((uint8)(128U))
 
 /** \brief Enable/disable SPI dev detect error */
 /*
@@ -156,7 +157,7 @@ extern "C" {
 /*
  * Design : MCAL-25149
  */
-#define SPI_MAX_CHANNELS            ((uint16)(2U))
+#define SPI_MAX_CHANNELS            ((uint16)(1U))
 
 /** \brief Maximum jobs across all sequence/hwunit */
 /*
@@ -231,8 +232,6 @@ extern "C" {
 
 /** \brief Symbolic Name Channel Id  - 0 SpiChannel_0 */
 #define SpiConf_SpiChannel_SpiChannel_0  ((Spi_ChannelType)  0U)  /*~ASR~*/
-/** \brief Symbolic Name Channel Id  - 1 SpiChannel_1 */
-#define SpiConf_SpiChannel_SpiChannel_1  ((Spi_ChannelType)  1U)  /*~ASR~*/
 /*
  * Design : MCAL-25138, MCAL-25140
  */
@@ -248,13 +247,14 @@ extern "C" {
 /** \brief macro for invalid CS Identifier to which is greater than max channels supported */
 #define SPI_PERIPHERAL_CS_IDENTIFIER      256U
 
-/** \brief Symbolic Name Chip Select  - SPI_PERIPHERAL_CS_IDENTIFIER */
-#define SpiConf_SpiExternalDevice_SpiExternalDevice_0_CS (SPI_PERIPHERAL_CS_IDENTIFIER) /*~ASR~*/
+/** \brief Symbolic Name Chip Select  - DioConf_DioChannel_DioChannel_0 */
+#define SpiConf_SpiExternalDevice_SpiExternalDevice_0_CS (DioConf_DioChannel_DioChannel_0) /*~ASR~*/
+
 
 
 
 /** \brief Macro to ON/OFF CS_VIA_GPIO using DIO module */
-#define SPI_CS_VIA_GPIO       STD_OFF
+#define SPI_CS_VIA_GPIO       STD_ON
 /** \brief Symbolic Name for the SPI Dem no event */
 #define DemConf_DemEventParameter_SPI_DEM_NO_EVENT (0xFFFFU)                /*~ASR~*/
 /** \brief Symbolic Name for the SPI Dem no event */

@@ -24,14 +24,14 @@ SECTIONS
     cpu3_resetvector    : {} > 0x20118000, START(CPU3_RESET_VECTOR)
     codestart           : {} > 0x20100000
 
-    CODE:
-    {
-        *(.*_CODE)
-    } >> SRAM_LPAx | SRAM_CPA0
-
     ISR_CODE:
     {
         *(.*_ISR_CODE)
+    } >> SRAM_LPAx | SRAM_CPA0
+
+    CODE:
+    {
+        *(.*_CODE)
     } >> SRAM_LPAx | SRAM_CPA0
 
     CONFIG_DATA:

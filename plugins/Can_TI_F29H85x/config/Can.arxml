@@ -111,54 +111,7 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>true</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="f5fc8a52-e7fc-4313-992c-6658a80560aa">
-                      <SHORT-NAME>CanControllerInstance</SHORT-NAME>
-                      <DESC>
-                        <L-2 L="EN">Selects Can Controller Instance.</L-2>
-                      </DESC>
-                      <SCOPE>LOCAL</SCOPE>
-                      <ORIGIN>Texas Instruments</ORIGIN>
-                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
-                      <VALUE-CONFIG-CLASSES>
-                        <ECUC-VALUE-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                          <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
-                        </ECUC-VALUE-CONFIGURATION-CLASS>
-                        <ECUC-VALUE-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                        </ECUC-VALUE-CONFIGURATION-CLASS>
-                      </VALUE-CONFIG-CLASSES>
-                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                      <DEFAULT-VALUE>MCAN1</DEFAULT-VALUE>
-                      <LITERALS>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>MCAN1</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>MCAN2</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>MCAN3</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>MCAN4</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>MCAN5</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>MCAN6</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                      </LITERALS>
-                    </ECUC-ENUMERATION-PARAM-DEF>
-                    <ECUC-INTEGER-PARAM-DEF UUID="d8d59799-43f5-44ef-af99-81769742d5ad">
+                    <ECUC-STRING-PARAM-DEF UUID="d8d59799-43f5-44ef-af99-81769742d5ad">
                       <SHORT-NAME>CanControllerBaseAddress</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Specifies the CAN controller base address.</L-2>
@@ -177,10 +130,12 @@
                         </ECUC-VALUE-CONFIGURATION-CLASS>
                       </VALUE-CONFIG-CLASSES>
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                      <DEFAULT-VALUE>0</DEFAULT-VALUE>
-                      <MAX>4294967295</MAX>
-                      <MIN>0</MIN>
-                    </ECUC-INTEGER-PARAM-DEF>
+                      <ECUC-STRING-PARAM-DEF-VARIANTS>
+                        <ECUC-STRING-PARAM-DEF-CONDITIONAL>
+                          <DEFAULT-VALUE>MCANA_DRIVER_BASE_FRAME(0)</DEFAULT-VALUE>
+                        </ECUC-STRING-PARAM-DEF-CONDITIONAL>
+                      </ECUC-STRING-PARAM-DEF-VARIANTS>
+                    </ECUC-STRING-PARAM-DEF>
                     <ECUC-INTEGER-PARAM-DEF UUID="9e16aca9-03fd-47a2-a039-fed6d6040499">
                       <SHORT-NAME>CanControllerId</SHORT-NAME>
                       <DESC>
@@ -383,6 +338,25 @@
                     </ECUC-ENUMERATION-PARAM-DEF>
                   </PARAMETERS>
                   <REFERENCES>
+                    <ECUC-REFERENCE-DEF UUID="f5fc8a52-e7fc-4313-992c-6658a80560aa">
+                      <SHORT-NAME>CanControllerInstance</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Reference to the CAN Controller Instance.</L-2>
+                      </DESC>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Can/CanAllocatedInstance</DESTINATION-REF>
+                    </ECUC-REFERENCE-DEF>
                     <ECUC-REFERENCE-DEF UUID="c16ce860-da83-465d-8173-9bd3e947ef6c">
                       <SHORT-NAME>CanControllerDefaultBaudrate</SHORT-NAME>
                       <DESC>

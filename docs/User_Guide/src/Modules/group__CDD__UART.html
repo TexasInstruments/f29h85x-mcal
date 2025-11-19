@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.14. CDD_UART &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.15. CDD_SENT" href="group__CDD__SENT.html" />
+    <link rel="prev" title="5.13. CDD_PWM" href="group__CDD__PWM.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="group__CAN.html">5.1. CAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__DIO.html">5.2. DIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__FLS.html">5.3. FLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__GPT.html">5.4. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__LIN.html">5.5. LIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__MCU.html">5.6. MCU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__PORT.html">5.7. PORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__SPI.html">5.8. SPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__WDG.html">5.9. WDG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ADC.html">5.10. CDD_ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ECAP.html">5.11. CDD_ECAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__IPC.html">5.12. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__PWM.html">5.13. CDD_PWM</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.14. CDD_UART</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types">5.14.1. Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-uart-instance">5.14.1.1. enum Cdd_Uart_Instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-uart-wordlength">5.14.1.2. enum Cdd_Uart_WordLength</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-uart-stopbits">5.14.1.3. enum Cdd_Uart_StopBits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-uart-mode">5.14.1.4. enum Cdd_Uart_Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enum-cdd-uart-fifolevel">5.14.1.5. enum Cdd_Uart_FifoLevel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-uart-callbacktype">5.14.1.6. typedef Cdd_Uart_CallbackType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typedef-cdd-uart-databuffertype">5.14.1.7. typedef Cdd_Uart_DataBufferType</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#structures">5.14.2. Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defines">5.14.3. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">5.14.4. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-getversioninfo">5.14.4.1. function Cdd_Uart_GetVersionInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-init">5.14.4.2. function Cdd_Uart_Init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-deinit">5.14.4.3. function Cdd_Uart_Deinit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-write">5.14.4.4. function Cdd_Uart_Write</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-read">5.14.4.5. function Cdd_Uart_Read</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-cancelwrite">5.14.4.6. function Cdd_Uart_CancelWrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-cancelread">5.14.4.7. function Cdd_Uart_CancelRead</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-getwritestatus">5.14.4.8. function Cdd_Uart_GetWriteStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-getreadstatus">5.14.4.9. function Cdd_Uart_GetReadStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-mainfunction-write">5.14.4.10. function Cdd_Uart_MainFunction_Write</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-poll-read">5.14.4.11. function Cdd_Uart_Poll_Read</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__SENT.html">5.15. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__XBAR.html">5.16. CDD_XBAR</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api_guide.html"><span class="section-number">5. </span>API guide</a> &raquo;</li>
+      <li><span class="section-number">5.14. </span>CDD_UART</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-uart">
+<h1><span class="section-number">5.14. </span>CDD_UART<a class="headerlink" href="#cdd-uart" title="Link to this heading"></a></h1>
+<section id="types">
+<h2><span class="section-number">5.14.1. </span>Types<a class="headerlink" href="#types" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Base type</p></th>
+<th class="head"><p>Type Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-uart-instance"><span class="std std-ref">Cdd_Uart_Instance</span></a></strong></p></td>
+<td><p>Uart Configuration Instance ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-uart-wordlength"><span class="std std-ref">Cdd_Uart_WordLength</span></a></strong></p></td>
+<td><p>UART Word Length.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-uart-stopbits"><span class="std std-ref">Cdd_Uart_StopBits</span></a></strong></p></td>
+<td><p>UART Stop Bits.</p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-uart-mode"><span class="std std-ref">Cdd_Uart_Mode</span></a></strong></p></td>
+<td><p>UART Mode.</p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td><p><strong><a class="reference internal" href="#enum-cdd-uart-fifolevel"><span class="std std-ref">Cdd_Uart_FifoLevel</span></a></strong></p></td>
+<td><p>UART FIFO Level.</p></td>
+</tr>
+<tr class="row-odd"><td><p>typedef void(*)(void)</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-cdd-uart-callbacktype"><span class="std std-ref">Cdd_Uart_CallbackType</span></a></strong></p></td>
+<td><p>Cdd Uart Callback type.</p></td>
+</tr>
+<tr class="row-even"><td><p>typedef uint8</p></td>
+<td><p><strong><a class="reference internal" href="#typedef-cdd-uart-databuffertype"><span class="std std-ref">Cdd_Uart_DataBufferType</span></a></strong></p></td>
+<td><p>Typedef for the data buffer elements.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="enum-cdd-uart-instance">
+<h3><span class="section-number">5.14.1.1. </span>enum Cdd_Uart_Instance<a class="headerlink" href="#enum-cdd-uart-instance" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_UART_INSTANCE_UARTA</p></td>
+<td><p>0U</p></td>
+<td><p>UARTA Config Instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_INSTANCE_UARTB</p></td>
+<td><p>1U</p></td>
+<td><p>UARTB Config Instance.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_INSTANCE_UARTC</p></td>
+<td><p>2U</p></td>
+<td><p>UARTC Config Instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_INSTANCE_UARTD</p></td>
+<td><p>3U</p></td>
+<td><p>UARTD Config Instance.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_INSTANCE_UARTE</p></td>
+<td><p>4U</p></td>
+<td><p>UARTE Config Instance.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_INSTANCE_UARTF</p></td>
+<td><p>5U</p></td>
+<td><p>UARTF Config Instance.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+Uart Configuration Instance ID.</p>
+</section>
+<section id="enum-cdd-uart-wordlength">
+<h3><span class="section-number">5.14.1.2. </span>enum Cdd_Uart_WordLength<a class="headerlink" href="#enum-cdd-uart-wordlength" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_UART_WORD_LENGTH_5</p></td>
+<td><p>0U</p></td>
+<td><p>UART Word Length 5 bits.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_WORD_LENGTH_6</p></td>
+<td><p>1U</p></td>
+<td><p>UART Word Length 6 bits.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_WORD_LENGTH_7</p></td>
+<td><p>2U</p></td>
+<td><p>UART Word Length 7 bits.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_WORD_LENGTH_8</p></td>
+<td><p>3U</p></td>
+<td><p>UART Word Length 8 bits.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+UART Word Length.</p>
+</section>
+<section id="enum-cdd-uart-stopbits">
+<h3><span class="section-number">5.14.1.3. </span>enum Cdd_Uart_StopBits<a class="headerlink" href="#enum-cdd-uart-stopbits" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_UART_STOP_BITS_1</p></td>
+<td><p>0U</p></td>
+<td><p>UART Stop Bits 1 bit.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_STOP_BITS_2</p></td>
+<td><p>1U</p></td>
+<td><p>UART Stop Bits 2 bits.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+UART Stop Bits.</p>
+</section>
+<section id="enum-cdd-uart-mode">
+<h3><span class="section-number">5.14.1.4. </span>enum Cdd_Uart_Mode<a class="headerlink" href="#enum-cdd-uart-mode" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_UART_MODE_POLLING</p></td>
+<td><p>0U</p></td>
+<td><p>UART Mode Polling.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_MODE_INTERRUPT</p></td>
+<td><p>1U</p></td>
+<td><p>UART Mode Interrupt.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+UART Mode.</p>
+</section>
+<section id="enum-cdd-uart-fifolevel">
+<h3><span class="section-number">5.14.1.5. </span>enum Cdd_Uart_FifoLevel<a class="headerlink" href="#enum-cdd-uart-fifolevel" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Enumerator</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_UART_FIFO_LEVEL_1_8</p></td>
+<td><p>0U</p></td>
+<td><p>UART FIFO Level 1/8.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_FIFO_LEVEL_1_4</p></td>
+<td><p>1U</p></td>
+<td><p>UART FIFO Level 1/4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_FIFO_LEVEL_1_2</p></td>
+<td><p>2U</p></td>
+<td><p>UART FIFO Level 1/2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_FIFO_LEVEL_3_4</p></td>
+<td><p>3U</p></td>
+<td><p>UART FIFO Level 3/4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_FIFO_LEVEL_7_8</p></td>
+<td><p>4U</p></td>
+<td><p>UART FIFO Level 7/8.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Brief</strong>:
+UART FIFO Level.</p>
+</section>
+<section id="typedef-cdd-uart-callbacktype">
+<h3><span class="section-number">5.14.1.6. </span>typedef Cdd_Uart_CallbackType<a class="headerlink" href="#typedef-cdd-uart-callbacktype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="w"> </span><span class="n">Cdd_Uart_CallbackType</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cdd Uart Callback type.</p>
+</section>
+<section id="typedef-cdd-uart-databuffertype">
+<h3><span class="section-number">5.14.1.7. </span>typedef Cdd_Uart_DataBufferType<a class="headerlink" href="#typedef-cdd-uart-databuffertype" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span><span class="w"> </span><span class="n">uint8</span><span class="w"> </span><span class="n">Cdd_Uart_DataBufferType</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Typedef for the data buffer elements.</p>
+</section>
+</section>
+<section id="structures">
+<h2><span class="section-number">5.14.2. </span>Structures<a class="headerlink" href="#structures" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Uart__CfgType.html"><span class="std std-doc">Cdd_Uart_CfgType</span></a></strong></p></td>
+<td><p>UART configuration data structure for a channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Uart__ConfigType.html"><span class="std std-doc">Cdd_Uart_ConfigType</span></a></strong></p></td>
+<td><p>UART configuration structure for all channels in use.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Uart__WriteStatusType.html"><span class="std std-doc">Cdd_Uart_WriteStatusType</span></a></strong></p></td>
+<td><p>Typedef for the Write Status.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Uart__ReadStatusType.html"><span class="std std-doc">Cdd_Uart_ReadStatusType</span></a></strong></p></td>
+<td><p>Typedef for the Read Status.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="defines">
+<h2><span class="section-number">5.14.3. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_UART_SW_MAJOR_VERSION</p></td>
+<td><p>Driver Implementation Major Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_SW_MINOR_VERSION</p></td>
+<td><p>Driver Implementation Minor Version.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_SW_PATCH_VERSION</p></td>
+<td><p>Driver Implementation Patch Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_AR_RELEASE_MAJOR_VERSION</p></td>
+<td><p>AUTOSAR Major version specification implemented by CDD_UART Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_AR_RELEASE_MINOR_VERSION</p></td>
+<td><p>AUTOSAR Minor version specification implemented by CDD_UART Driver.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_AR_RELEASE_REVISION_VERSION</p></td>
+<td><p>AUTOSAR Patch version specification implemented by CDD_UART Driver.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_VENDOR_ID</p></td>
+<td><p>Texas Instruments Vendor ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_MODULE_ID</p></td>
+<td><p>CDD UART Driver Module ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_INSTANCE_ID</p></td>
+<td><p>CDD UART Instance ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_E_UNINIT</p></td>
+<td><p>API service used without module initialization.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_E_ALREADY_INITIALIZED</p></td>
+<td><p>API Cdd_Uart_Init service called while the UART driver has already been initialized.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_E_PARAM_VALUE</p></td>
+<td><p>API service called with invalid parameter value.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_E_PARAM_POINTER</p></td>
+<td><p>API service called with invalid data buffer pointer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_E_PARAM_HWINDEX</p></td>
+<td><p>API service called with invalid hardware index.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_E_NOT_INITIALIZED</p></td>
+<td><p>API Service Called without initialization.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_E_BUSY</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_SID_GET_VERSION_INFO</p></td>
+<td><p>Cdd_Uart_GetVersionInfo API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_SID_INIT</p></td>
+<td><p>Cdd_Uart_Init() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_SID_DEINIT</p></td>
+<td><p>Cdd_Uart_DeInit() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_SID_WRITE</p></td>
+<td><p>Cdd_Uart_Write() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_SID_READ</p></td>
+<td><p>Cdd_Uart_Read() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_SID_CANCEL_WRITE</p></td>
+<td><p>Cdd_Uart_CancelWrite() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_SID_CANCEL_READ</p></td>
+<td><p>Cdd_Uart_CancelRead() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_SID_GET_WRITE_STATUS</p></td>
+<td><p>Cdd_Uart_GetWriteStatus() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_SID_GET_READ_STATUS</p></td>
+<td><p>Cdd_Uart_GetReadStatus() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_SID_MAIN_FUN_WRITE</p></td>
+<td><p>Cdd_Uart_MainFunction_Write() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_SID_POLL_READ</p></td>
+<td><p>Cdd_Uart_Poll_Read() API Service ID.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2><span class="section-number">5.14.4. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Return type</p></th>
+<th class="head"><p>Function Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-getversioninfo"><span class="std std-ref">Cdd_Uart_GetVersionInfo</span></a></strong>(Std_VersionInfoType * VersionInfoPtr)</p></td>
+<td><p>Service to provide the version information of Cdd Uart module.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-init"><span class="std std-ref">Cdd_Uart_Init</span></a></strong>(const <a class="reference internal" href="../Classes/structCdd__Uart__ConfigType.html"><span class="std std-doc">Cdd_Uart_ConfigType</span></a> * ConfigPtr)</p></td>
+<td><p>Cdd_Uart_Init : Initializes the CDD_UART module.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-deinit"><span class="std std-ref">Cdd_Uart_Deinit</span></a></strong>(void )</p></td>
+<td><p>Cdd_Uart_Deinit : De-initializes the CDD_UART module.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-write"><span class="std std-ref">Cdd_Uart_Write</span></a></strong>(uint8 HwUnitId, const <a class="reference internal" href="#typedef-cdd-uart-databuffertype"><span class="std std-ref">Cdd_Uart_DataBufferType</span></a> * SrcBufferPtr, uint32 Count)</p></td>
+<td><p>Service to transmit data.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-read"><span class="std std-ref">Cdd_Uart_Read</span></a></strong>(uint8 HwUnitId, <a class="reference internal" href="#typedef-cdd-uart-databuffertype"><span class="std std-ref">Cdd_Uart_DataBufferType</span></a> * DestBufferPtr, uint32 Count)</p></td>
+<td><p>Service to reception of data.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-cancelwrite"><span class="std std-ref">Cdd_Uart_CancelWrite</span></a></strong>(uint8 HwUnitId)</p></td>
+<td><p>Service to cancel the ongoing transmission.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-cancelread"><span class="std std-ref">Cdd_Uart_CancelRead</span></a></strong>(uint8 HwUnitId)</p></td>
+<td><p>Service to cancel the ongoing transmission.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-getwritestatus"><span class="std std-ref">Cdd_Uart_GetWriteStatus</span></a></strong>(uint8 HwUnitId, <a class="reference internal" href="../Classes/structCdd__Uart__WriteStatusType.html"><span class="std std-doc">Cdd_Uart_WriteStatusType</span></a> * WriteStatus)</p></td>
+<td><p>Service to get the status of the ongoing transmission.</p></td>
+</tr>
+<tr class="row-even"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-getreadstatus"><span class="std std-ref">Cdd_Uart_GetReadStatus</span></a></strong>(uint8 HwUnitId, <a class="reference internal" href="../Classes/structCdd__Uart__ReadStatusType.html"><span class="std std-doc">Cdd_Uart_ReadStatusType</span></a> * ReadStatus)</p></td>
+<td><p>Service to get the status of the ongoing transmission.</p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-mainfunction-write"><span class="std std-ref">Cdd_Uart_MainFunction_Write</span></a></strong>(void )</p></td>
+<td><p>Service to auto perform the polling of configured UART Write channel.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-poll-read"><span class="std std-ref">Cdd_Uart_Poll_Read</span></a></strong>(void )</p></td>
+<td><p>Service to perform the polling of confgured UART Read channel by user.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="function-cdd-uart-getversioninfo">
+<h3><span class="section-number">5.14.4.1. </span>function Cdd_Uart_GetVersionInfo<a class="headerlink" href="#function-cdd-uart-getversioninfo" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Uart_GetVersionInfo</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Std_VersionInfoType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">VersionInfoPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to provide the version information of Cdd Uart module.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>VersionInfoPtr</strong> is the pointer to CDD UART driver version information</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: This API is available only if CDD_UART_GET_VERSION_INFO_API is STD_ON</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-init">
+<h3><span class="section-number">5.14.4.2. </span>function Cdd_Uart_Init<a class="headerlink" href="#function-cdd-uart-init" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Uart_Init</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Cdd_Uart_ConfigType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ConfigPtr</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cdd_Uart_Init : Initializes the CDD_UART module.</p>
+<p>This service initialize the CDD_UART driver</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>ConfigPtr</strong> Pointer to CDD_UART driver configuration set</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-deinit">
+<h3><span class="section-number">5.14.4.3. </span>function Cdd_Uart_Deinit<a class="headerlink" href="#function-cdd-uart-deinit" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Uart_Deinit</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Cdd_Uart_Deinit : De-initializes the CDD_UART module.</p>
+<p>This service deinitialize the CDD_UART driver</p>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: Cdd_Uart_Init should be called first, before calling this service.</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-write">
+<h3><span class="section-number">5.14.4.4. </span>function Cdd_Uart_Write<a class="headerlink" href="#function-cdd-uart-write" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Uart_Write</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwUnitId</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">Cdd_Uart_DataBufferType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">SrcBufferPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">Count</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to transmit data.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwUnitId</strong> number to be used for writing data</p></li>
+<li><p><strong>SrcBufferPtr</strong> - Pointer to source data buffer</p></li>
+<li><p><strong>Count</strong> - number of data elements to be transmitted from SrcBufferPtr</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Write request has been accepted.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Write request has not been accepted.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Cdd_Uart_Write request is accepted or not</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-read">
+<h3><span class="section-number">5.14.4.5. </span>function Cdd_Uart_Read<a class="headerlink" href="#function-cdd-uart-read" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Uart_Read</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwUnitId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Uart_DataBufferType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">DestBufferPtr</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">Count</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to reception of data.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwUnitId</strong> number to be used for writing data</p></li>
+<li><p><strong>DestBufferPtr</strong> - Pointer to dest data buffer</p></li>
+<li><p><strong>Count</strong> - number of data elements to be read into DestBufferPtr</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Read request has been accepted.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Read request has not been accepted.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Cdd_Uart_Read request is accepted or not</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-cancelwrite">
+<h3><span class="section-number">5.14.4.6. </span>function Cdd_Uart_CancelWrite<a class="headerlink" href="#function-cdd-uart-cancelwrite" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Uart_CancelWrite</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwUnitId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to cancel the ongoing transmission.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwUnitId</strong> number to be used for cancellation of Write</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> CancelWrite request has been accepted.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> CancelWrite request has not been accepted.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Cdd_Uart_CancelWrite request is accepted or not</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-cancelread">
+<h3><span class="section-number">5.14.4.7. </span>function Cdd_Uart_CancelRead<a class="headerlink" href="#function-cdd-uart-cancelread" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Uart_CancelRead</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwUnitId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to cancel the ongoing transmission.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwUnitId</strong> number to be used for cancellation of Write</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> CancelRead request has been accepted.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> CancelRead request has not been accepted.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Cdd_Uart_CancelRead request is accepted or not</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-getwritestatus">
+<h3><span class="section-number">5.14.4.8. </span>function Cdd_Uart_GetWriteStatus<a class="headerlink" href="#function-cdd-uart-getwritestatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Uart_GetWriteStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwUnitId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Uart_WriteStatusType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">WriteStatus</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to get the status of the ongoing transmission.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwUnitId</strong> hw id to be used for status of Write</p></li>
+<li><p><strong>WriteStatus</strong> pointer to Cdd_Uart_WriteStatusType</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> GetWriteStatus request has been accepted.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> GetWriteStatus request has not been accepted.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Cdd_Uart_GetWriteStatus request is accepted or not</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-getreadstatus">
+<h3><span class="section-number">5.14.4.9. </span>function Cdd_Uart_GetReadStatus<a class="headerlink" href="#function-cdd-uart-getreadstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Uart_GetReadStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwUnitId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Uart_ReadStatusType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ReadStatus</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to get the status of the ongoing transmission.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwUnitId</strong> hw id to be used for status of Read</p></li>
+<li><p><strong>ReadStatus</strong> pointer to Cdd_Uart_ReadStatusType</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> GetReadStatus request has been accepted.
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> GetReadStatus request has not been accepted.
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Cdd_Uart_GetReadStatus request is accepted or not</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-mainfunction-write">
+<h3><span class="section-number">5.14.4.10. </span>function Cdd_Uart_MainFunction_Write<a class="headerlink" href="#function-cdd-uart-mainfunction-write" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Uart_MainFunction_Write</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to auto perform the polling of configured UART Write channel.</p>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-poll-read">
+<h3><span class="section-number">5.14.4.11. </span>function Cdd_Uart_Poll_Read<a class="headerlink" href="#function-cdd-uart-poll-read" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Uart_Poll_Read</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to perform the polling of confgured UART Read channel by user.</p>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="group__CDD__PWM.html" class="btn btn-neutral float-left" title="5.13. CDD_PWM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group__CDD__SENT.html" class="btn btn-neutral float-right" title="5.15. CDD_SENT" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Nov 19, 2025.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

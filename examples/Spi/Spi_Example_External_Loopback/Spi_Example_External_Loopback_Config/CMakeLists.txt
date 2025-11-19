@@ -10,4 +10,5 @@ target_sources(
               ${CMAKE_CURRENT_LIST_DIR}/output/src/EcuM_Cfg.c
               ${CMAKE_CURRENT_LIST_DIR}/output/src/Spi_PBcfg.c
               ${CMAKE_CURRENT_LIST_DIR}/output/src/Port_PBcfg.c
-              ${CMAKE_CURRENT_LIST_DIR}/output/src/Mcu_PBcfg.c)
+              ${CMAKE_CURRENT_LIST_DIR}/output/src/Mcu_PBcfg.c
+              ${CMAKE_CURRENT_LIST_DIR}/output/src/Dio_Lcfg.c)

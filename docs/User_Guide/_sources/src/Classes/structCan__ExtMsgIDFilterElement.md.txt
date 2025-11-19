@@ -1,0 +1,29 @@
+---
+orphan: true
+---
+
+---
+title: Can_ExtMsgIDFilterElement
+summary: Structure for MCAN Extended Message ID Filter Element. 
+
+---
+
+# Can_ExtMsgIDFilterElement
+
+
+
+Structure for MCAN Extended Message ID Filter Element. 
+
+
+`#include <Can_Priv.h>`
+
+## Structure Members
+
+|  Member Type   | Member name    | Brief |
+| -------------- | -------------- | ----- |
+|  uint32 | efid1 |  Extended Filter ID 1.  |
+|  uint32 | efec |  Extended Filter Element Configuration 000 = Disable filter element 001 = Store in Rx FIFO 0 if filter matches 010 = Store in Rx FIFO 1 if filter matches 011 = Reject ID if filter matches 100 = Set priority if filter matches 101 = Set priority and store in FIFO 0 if filter matches 110 = Set priority and store in FIFO 1 if filter matches 111 = Store into Rx Buffer or as debug message, configuration of SFT[1:0] ignored. If EFEC = “100”, “101”, or “110” a match sets high priority message event is generated.  |
+|  uint32 | efid2 |  Extended Filter ID 2.  |
+|  uint32 | eft |  Extended Filter Type 00 = Range filter from EFID1 to EFID2 (EFID2 ≥ EFID1) 01 = Dual ID filter for EFID1 or EFID2 10 = Classic filter: EFID1 = filter, EFID2 = mask 11 = Range filter from EFID1 to EFID2 (EFID2 ≥ EFID1), XIDAM mask not applied.  |
+
+

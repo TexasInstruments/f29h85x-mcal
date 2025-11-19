@@ -51,6 +51,11 @@ if(NOT TARGET Port)
                      ${CMAKE_BINARY_DIR}/Port)
 endif()
 
+if(NOT TARGET Dio)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Dio
+                     ${CMAKE_BINARY_DIR}/Dio)
+endif()
+
 if(NOT TARGET Mcu)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcu
                      ${CMAKE_BINARY_DIR}/Mcu)
@@ -85,7 +90,8 @@ endif()
 
 include_directories("${CMAKE_CURRENT_LIST_DIR}/drivers/hw_include/f29h85x/"
                     "${CMAKE_CURRENT_SOURCE_DIR}/")
-add_compile_options(-DMULTICORE_ENABLE_CPU3)
+# Define MULTICORE_ENABLE_CPU3 macro and only for C and CXX files
+add_compile_options($<$<COMPILE_LANGUAGE:C,CXX>:-DMULTICORE_ENABLE_CPU3>)
 add_link_options(-Wl,--stack_size=0x1000)
 add_link_options(
     -Wl,--xml_link_info=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_linkInfo.xml
@@ -125,6 +131,7 @@ target_link_libraries(
             AppUtils
             DeviceSupport
             Port
+            Dio
             SchM_Port)
 
 # This command is used to move the .xml and .map files

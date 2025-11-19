@@ -592,7 +592,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_ProcessTripZoneIsr(Cdd_Pwm_InstanceType Instanc
  * pre-interrupt value that is to be loaded. The maximum value of eventCount
  * is 15.
  *
- * \param[in] Base              Base address of the PWM instance
+ * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] EventCount    The ePWM interrupt count value
  * \pre None
  * \post None
@@ -3618,7 +3618,7 @@ Cdd_Pwm_PrivAllocBXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 /** \brief Writes values to XCMP registers
  *
  * This function writes xcmpvalue to XCMP registers.
- * Valid values for xcmpReg are:
+ * Valid values for XCmpReg are:
  *    CDD_PWM_XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *                          -XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *    CDD_PWM_XTBPRD_ACTIVE                               -XTBPRD_ACTIVE
@@ -3627,7 +3627,7 @@ Cdd_Pwm_PrivAllocBXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *    CDD_PWM_XTBPRD_SHADOW3                              -XTBPRD_SHADOW3
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] XcmpReg XCMP register offset
+ * \param[in] XCmpReg XCMP register offset
  * \param[in] XCmpValue Value to be written to XCMP registers
  * \pre None
  * \post None
@@ -3636,7 +3636,7 @@ Cdd_Pwm_PrivAllocBXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                            VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XcmpReg, VAR(uint16, AUTOMATIC) XCmpValue);
+                            VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg, VAR(uint16, AUTOMATIC) XCmpValue);
 
 /** \brief Writes values to CMPx Shadow registers
  *
@@ -3650,8 +3650,8 @@ Cdd_Pwm_PrivSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *    CDD_PWM_CMPD_SHADOW3                             -CMPD_SHADOW3
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] CmpReg CMP register offset
- * \param[in] CmpValue Value to be written to CMPC/D shadow registers
+ * \param[in] XCmpReg CMP register offset
+ * \param[in] XCmpValue Value to be written to CMPC/D shadow registers
  * \pre None
  * \post None
  * \return None
@@ -4151,7 +4151,6 @@ Cdd_Pwm_PrivSetDiodeEmulationReentryDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] Source Trip source
- * \param[in] Select Enable/disable selection for the trip source
  * \pre None
  * \post None
  * \return None
@@ -4172,7 +4171,6 @@ Cdd_Pwm_PrivConfigureDiodeEmulationTripLowSources(VAR(Cdd_Pwm_InstanceType, AUTO
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] Source Trip source
- * \param[in] Select Enable/disable selection for the trip source
  * \pre None
  * \post None
  * \return None
@@ -4224,7 +4222,7 @@ Cdd_Pwm_PrivSelectDiodeEmulationPwmSignal(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] OutputChannel EPWM output channel
- * \param[in] DiodeEmulationsignal Signal selected by the TRIPSEL[A/B]
+ * \param[in] TripSrc Diode Emulation trip sources signal
  * \pre None
  * \post None
  * \return None
@@ -4830,7 +4828,7 @@ Cdd_Pwm_PrivHrpwmSetHiResFallingEdgeDelayOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATI
  * This function sets the high resolution MEP (Micro Edge Positioner) step
  * count. The maximum value for the MEP count step is 255.
  *
- * \param[in] Cdd_Pwm_HrpwmCalInstanceType    Numeric ID of the requested HRPWMCAL instance
+ * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] MepCount The high resolution MEP (Micro Edge Positioner) step count
  * \pre None
  * \post None
@@ -4924,7 +4922,7 @@ Cdd_Pwm_PrivHrpwmLockRegisters(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *
  * This function sets the consolidated counter compare(XCMPx:XCMPxHR) value
  * required in high resolution mode for XCMP registers.
- * Valid values for XcmpReg are:
+ * Valid values for XCmpReg are:
  *    EPWM_XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *                          -XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *    EPWM_XTBPRD_ACTIVE                               -XTBPRD_ACTIVE
@@ -4936,7 +4934,7 @@ Cdd_Pwm_PrivHrpwmLockRegisters(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  *          XCmpValue = 0x03E80064
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] XcmpReg The XCMP register offset
+ * \param[in] XCmpReg The XCMP register offset
  * \param[in] XCmpValue The consolidated value to be written to XCMP registers
  * \pre None
  * \post None
@@ -4951,7 +4949,7 @@ Cdd_Pwm_PrivHrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
  *
  * This function sets the high resolution counter compare value(XCMPx_HR) for
  * XCMP registers.
- * Valid values for XcmpReg are:
+ * Valid values for XCmpReg are:
  *    EPWM_XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *                          -XCMP[1-8]_[ACTIVE/SHADOW1/SHADOW2/SHADOW3]
  *    EPWM_XTBPRD_ACTIVE                               -XTBPRD_ACTIVE
@@ -4960,7 +4958,7 @@ Cdd_Pwm_PrivHrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
  *    EPWM_XTBPRD_SHADOW3                              -XTBPRD_SHADOW3
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
- * \param[in] XcmpReg The XCMP register offset
+ * \param[in] XCmpReg The XCMP register offset
  * \param[in] HrXCmpValue The HR value to be written to XCMP registers
  * \pre None
  * \post None
