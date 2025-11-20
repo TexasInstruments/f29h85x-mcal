@@ -79,10 +79,11 @@ extern "C" {
 #define CDD_UART_E_PARAM_POINTER ((uint8)0x04U)
 /** \brief  API service called with invalid hardware index */
 #define CDD_UART_E_PARAM_HWINDEX ((uint8)0x05U)
-/** \brief API Service Called without initialization */
-#define CDD_UART_E_NOT_INITIALIZED ((uint8)0x06U)
 /* \brief API service called when UART is busy*/
-#define CDD_UART_E_BUSY ((uint8)0x07U)
+#define CDD_UART_E_BUSY ((uint8)0x06U)
+
+/* No Error*/
+#define CDD_UART_NO_ERROR ((uint8)0x00U)
 
 /* The Service Id is one of the argument to Det_ReportError function and is used to identify the
  * source of the error. */
@@ -108,6 +109,10 @@ extern "C" {
 #define CDD_UART_SID_MAIN_FUN_WRITE ((uint8)0x09U)
 /** \brief Cdd_Uart_Poll_Read() API Service ID */
 #define CDD_UART_SID_POLL_READ ((uint8)0x0AU)
+/** \brief Cdd_Uart_GetErrorStatus() API Service ID */
+#define CDD_UART_SID_ERROR_STATUS ((uint8)0x0BU)
+/** \brief Cdd_Uart_FlushReadFIFO() API Service ID */
+#define CDD_UART_SID_FLUSH_READ_BUFFER ((uint8)0x0CU)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -401,6 +406,33 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_MainFunction_Write(void);
  *
  *****************************************************************************/
 FUNC(void, CDD_UART_CODE) Cdd_Uart_Poll_Read(void);
+
+/** \brief Service to get the status of the Uart error.
+ * User can use this service in the Error callback implementation to fetch the
+ * exact Uart Error
+ *
+ * \param[in] HwUnitId hw id to be used for status of Error
+ * \param[in] ErrorStatus pointer to Cdd_Uart_Error type
+ * \pre None
+ * \post None
+ * \return Uart error : PE,OE,BE,FE
+ * \retval E_OK: Error status request has been accepted
+ * \retval E_NOT_OK: Error status request has not been accepted
+ *****************************************************************************/
+FUNC(Std_ReturnType, CDD_UART_CODE)
+Cdd_Uart_GetErrorStatus(uint8 HwUnitId, uint8* ErrorStatus);
+
+/** \brief Service to flush the read buffer.
+ * User can use this service to flush the readbuffer incase of any unread data after any
+ * Uart Error
+ *
+ * \param[in] HwUnitId hw id to be used to flush the read buffer
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *****************************************************************************/
+FUNC(void, CDD_UART_CODE) Cdd_Uart_FlushReadFIFO(uint8 HwUnitId);
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

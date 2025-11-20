@@ -196,7 +196,7 @@ Cdd_Uart_IsReadBusy(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) Ua
 }
 
 FUNC(void, CDD_UART_CODE)
-Cdd_Uart_FlushReadFifo(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj)
+Cdd_Uart_PrivFlushReadFifo(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj)
 {
     uint8  depth        = 0U;
     uint32 uartBaseAddr = UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_BaseAddr;
@@ -368,9 +368,17 @@ Cdd_Uart_CheckReadErrors(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DAT
 {
     uint32         uartBaseAddr = UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_BaseAddr;
     Std_ReturnType ret_value    = E_OK;
+    uint8          errBits      = CDD_UART_NO_ERROR;
+    uint32         readStatusReg;
 
-    if (0U != (HWREG(uartBaseAddr + UART_O_RSR) & (UART_RSR_BE | UART_RSR_FE | UART_RSR_OE | UART_RSR_PE)))
+    readStatusReg = HWREG(uartBaseAddr + UART_O_RSR);
+    errBits       = (uint8)(readStatusReg & (UART_RSR_BE | UART_RSR_FE | UART_RSR_OE | UART_RSR_PE));
+
+    if (0U != errBits)
     {
+        /* Store the detected errors*/
+        UartHwUnitObj->Cdd_Uart_Error = errBits;
+        /*Return NOT OK if any error occurred*/
         ret_value = E_NOT_OK;
     }
 
@@ -424,7 +432,7 @@ Cdd_Uart_ErrorInterruptHandler(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_AP
     Cdd_Uart_EnableReadIntr(UartHwUnitObj, FALSE);
 
     /* Flush read fifo */
-    Cdd_Uart_FlushReadFifo(UartHwUnitObj);
+    Cdd_Uart_PrivFlushReadFifo(UartHwUnitObj);
 
     /* Error callback */
     if (NULL_PTR != UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_ErrorCb)
@@ -447,6 +455,8 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_ProcessISR(Cdd_Uart_Instance UartInstId)
     /* Error interrupt */
     if (0U != (uartIntStatus & (UART_IM_FEIM | UART_IM_PEIM | UART_IM_BEIM | UART_IM_OEIM)))
     {
+        /* Read the error to update the Errorstatus pointer */
+        Cdd_Uart_CheckReadErrors(UartHwUnitObj);
         /* Error Handler */
         Cdd_Uart_ErrorInterruptHandler(UartHwUnitObj);
     }

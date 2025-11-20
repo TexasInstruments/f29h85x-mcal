@@ -26,9 +26,7 @@
 #include "SchM_Cdd_Ecap.h"
 #include "Cdd_Ecap.h"
 #include "Cdd_Ecap_Priv.h"
-#if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
 #include "Det.h"
-#endif
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -458,10 +456,8 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_StopTimestamp(Cdd_Ecap_ChannelType Channel)
     {
         if ((FALSE == Cdd_Ecap_ChObj.chObj[Channel].IsActive) && (FALSE == Cdd_Ecap_ChObj.chObj[Channel].IsRunning))
         {
-#if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
             (void)Det_ReportRuntimeError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_STOPTIMESTAMP_ID,
                                          CDD_ECAP_E_NOT_STARTED);
-#endif
         }
         else
         {

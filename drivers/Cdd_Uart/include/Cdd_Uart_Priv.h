@@ -89,6 +89,14 @@ typedef struct Cdd_Uart_ObjectTag
     Cdd_Uart_WriteTransactionType Cdd_Uart_WriteTransaction;
     /**< Read status object */
     Cdd_Uart_ReadTransactionType  Cdd_Uart_ReadTransaction;
+    /**<Uart Error */
+    /* RSR Register bit details
+     * Bit 0 - FE: Frame Error
+     * Bit 1 - PE: Parity Error
+     * Bit 2 - BE: Break Error
+     * Bit 3 - OE: OverRun Error
+     */
+    uint8                         Cdd_Uart_Error;
 } Cdd_Uart_ObjectType;
 
 /*********************************************************************************************************************
@@ -160,7 +168,7 @@ Cdd_Uart_IsWriteBusy(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) U
 FUNC(Std_ReturnType, CDD_UART_CODE)
 Cdd_Uart_IsReadBusy(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj);
 
-/** \brief Cdd_Uart_FlushReadFifo : Flush the read fifo.
+/** \brief Cdd_Uart_PrivFlushReadFifo : Flush the read fifo.
  *
  * This service checks status of the CDD_UART driver
  *
@@ -171,7 +179,7 @@ Cdd_Uart_IsReadBusy(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) Ua
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_UART_CODE)
-Cdd_Uart_FlushReadFifo(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj);
+Cdd_Uart_PrivFlushReadFifo(P2VAR(Cdd_Uart_ObjectType, AUTOMATIC, CDD_UART_APPL_DATA) UartHwUnitObj);
 
 /** \brief Cdd_Uart_ConfigWriteTrans : Reset the Write transaction structure.
  *

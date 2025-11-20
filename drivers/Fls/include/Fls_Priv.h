@@ -40,9 +40,7 @@ extern "C" {
 #include "Fls_Ac.h"
 #include "Mcal_Lib.h"
 
-#if (FLS_DEV_ERROR_DETECT == STD_ON)
 #include "Det.h"
-#endif
 
 /*********************************************************************************************************************
  * Version Check (if required)

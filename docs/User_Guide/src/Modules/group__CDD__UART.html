@@ -102,6 +102,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-getreadstatus">5.14.4.9. function Cdd_Uart_GetReadStatus</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-mainfunction-write">5.14.4.10. function Cdd_Uart_MainFunction_Write</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-poll-read">5.14.4.11. function Cdd_Uart_Poll_Read</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-geterrorstatus">5.14.4.12. function Cdd_Uart_GetErrorStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-uart-flushreadfifo">5.14.4.13. function Cdd_Uart_FlushReadFIFO</a></li>
 </ul>
 </li>
 </ul>
@@ -422,10 +424,10 @@ Typedef for the data buffer elements.</p>
 <tr class="row-odd"><td><p>CDD_UART_E_PARAM_HWINDEX</p></td>
 <td><p>API service called with invalid hardware index.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_UART_E_NOT_INITIALIZED</p></td>
-<td><p>API Service Called without initialization.</p></td>
+<tr class="row-even"><td><p>CDD_UART_E_BUSY</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_UART_E_BUSY</p></td>
+<tr class="row-odd"><td><p>CDD_UART_NO_ERROR</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p>CDD_UART_SID_GET_VERSION_INFO</p></td>
@@ -460,6 +462,12 @@ Typedef for the data buffer elements.</p>
 </tr>
 <tr class="row-even"><td><p>CDD_UART_SID_POLL_READ</p></td>
 <td><p>Cdd_Uart_Poll_Read() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_UART_SID_ERROR_STATUS</p></td>
+<td><p>Cdd_Uart_GetErrorStatus() API Service ID.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_UART_SID_FLUSH_READ_BUFFER</p></td>
+<td><p>Cdd_Uart_FlushReadFIFO() API Service ID.</p></td>
 </tr>
 </tbody>
 </table>
@@ -517,6 +525,14 @@ Typedef for the data buffer elements.</p>
 <tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-uart-poll-read"><span class="std std-ref">Cdd_Uart_Poll_Read</span></a></strong>(void )</p></td>
 <td><p>Service to perform the polling of confgured UART Read channel by user.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Std_ReturnType</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-geterrorstatus"><span class="std std-ref">Cdd_Uart_GetErrorStatus</span></a></strong>(uint8 HwUnitId, uint8 * ErrorStatus)</p></td>
+<td><p>Service to get the status of the Uart error. User can use this service in the Error callback implementation to fetch the exact Uart Error.</p></td>
+</tr>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-uart-flushreadfifo"><span class="std std-ref">Cdd_Uart_FlushReadFIFO</span></a></strong>(uint8 HwUnitId)</p></td>
+<td><p>Service to flush the read buffer. User can use this service to flush the readbuffer incase of any unread data after any Uart Error.</p></td>
 </tr>
 </tbody>
 </table>
@@ -776,6 +792,54 @@ Service to perform the polling of confgured UART Read channel by user.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
+<section id="function-cdd-uart-geterrorstatus">
+<h3><span class="section-number">5.14.4.12. </span>function Cdd_Uart_GetErrorStatus<a class="headerlink" href="#function-cdd-uart-geterrorstatus" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Std_ReturnType</span><span class="w"> </span><span class="n">Cdd_Uart_GetErrorStatus</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwUnitId</span><span class="p">,</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ErrorStatus</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to get the status of the Uart error. User can use this service in the Error callback implementation to fetch the exact Uart Error.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwUnitId</strong> hw id to be used for status of Error</p></li>
+<li><p><strong>ErrorStatus</strong> pointer to Cdd_Uart_Error type</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>E_OK</strong> Error status request has been accepted
+<br></p></li>
+<li><p><strong>E_NOT_OK</strong> Error status request has not been accepted
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Uart error : PE,OE,BE,FE</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
+<section id="function-cdd-uart-flushreadfifo">
+<h3><span class="section-number">5.14.4.13. </span>function Cdd_Uart_FlushReadFIFO<a class="headerlink" href="#function-cdd-uart-flushreadfifo" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Uart_FlushReadFIFO</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">HwUnitId</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+Service to flush the read buffer. User can use this service to flush the readbuffer incase of any unread data after any Uart Error.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>HwUnitId</strong> hw id to be used to flush the read buffer</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
 </section>
 </section>
 
@@ -791,7 +855,7 @@ Service to perform the polling of confgured UART Read channel by user.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Nov 19, 2025.
+          <span class="lastupdated" >Last updated on Nov 20, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

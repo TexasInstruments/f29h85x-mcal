@@ -152,8 +152,8 @@ Typedef for the data buffer elements.
 | CDD_UART_E_PARAM_VALUE   | API service called with invalid parameter value.  |
 | CDD_UART_E_PARAM_POINTER   | API service called with invalid data buffer pointer.  |
 | CDD_UART_E_PARAM_HWINDEX   | API service called with invalid hardware index.  |
-| CDD_UART_E_NOT_INITIALIZED   | API Service Called without initialization.  |
 | CDD_UART_E_BUSY   |  |
+| CDD_UART_NO_ERROR   |  |
 | CDD_UART_SID_GET_VERSION_INFO   | Cdd_Uart_GetVersionInfo API Service ID.  |
 | CDD_UART_SID_INIT   | Cdd_Uart_Init() API Service ID.  |
 | CDD_UART_SID_DEINIT   | Cdd_Uart_DeInit() API Service ID.  |
@@ -165,6 +165,8 @@ Typedef for the data buffer elements.
 | CDD_UART_SID_GET_READ_STATUS   | Cdd_Uart_GetReadStatus() API Service ID.  |
 | CDD_UART_SID_MAIN_FUN_WRITE   | Cdd_Uart_MainFunction_Write() API Service ID.  |
 | CDD_UART_SID_POLL_READ   | Cdd_Uart_Poll_Read() API Service ID.  |
+| CDD_UART_SID_ERROR_STATUS   | Cdd_Uart_GetErrorStatus() API Service ID.  |
+| CDD_UART_SID_FLUSH_READ_BUFFER   | Cdd_Uart_FlushReadFIFO() API Service ID.  |
 
 ## Functions
 
@@ -181,6 +183,8 @@ Typedef for the data buffer elements.
 | Std_ReturnType | **[Cdd_Uart_GetReadStatus](../Modules/group__CDD__UART.md#function-cdd_uart_getreadstatus)**(uint8 HwUnitId, [Cdd_Uart_ReadStatusType](../Classes/structCdd__Uart__ReadStatusType.md) * ReadStatus)| Service to get the status of the ongoing transmission.  |
 | void | **[Cdd_Uart_MainFunction_Write](../Modules/group__CDD__UART.md#function-cdd_uart_mainfunction_write)**(void )| Service to auto perform the polling of configured UART Write channel.  |
 | void | **[Cdd_Uart_Poll_Read](../Modules/group__CDD__UART.md#function-cdd_uart_poll_read)**(void )| Service to perform the polling of confgured UART Read channel by user.  |
+| Std_ReturnType | **[Cdd_Uart_GetErrorStatus](../Modules/group__CDD__UART.md#function-cdd_uart_geterrorstatus)**(uint8 HwUnitId, uint8 * ErrorStatus)| Service to get the status of the Uart error. User can use this service in the Error callback implementation to fetch the exact Uart Error.  |
+| void | **[Cdd_Uart_FlushReadFIFO](../Modules/group__CDD__UART.md#function-cdd_uart_flushreadfifo)**(uint8 HwUnitId)| Service to flush the read buffer. User can use this service to flush the readbuffer incase of any unread data after any Uart Error.  |
 
 
 
@@ -535,6 +539,74 @@ void Cdd_Uart_Poll_Read(
 
 **Brief**: 
 Service to perform the polling of confgured UART Read channel by user. 
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Uart_GetErrorStatus
+
+```
+Std_ReturnType Cdd_Uart_GetErrorStatus(
+    uint8 HwUnitId,
+    uint8 * ErrorStatus
+)
+```
+
+
+**Brief**: 
+Service to get the status of the Uart error. User can use this service in the Error callback implementation to fetch the exact Uart Error. 
+
+**Parameters**: 
+
+  
+* **HwUnitId** hw id to be used for status of Error 
+  
+* **ErrorStatus** pointer to Cdd_Uart_Error type 
+
+
+**Returns**: 
+
+  
+* **E_OK** Error status request has been accepted 
+<br> 
+  
+* **E_NOT_OK** Error status request has not been accepted 
+<br> 
+
+
+**Return**: Uart error : PE,OE,BE,FE 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Uart_FlushReadFIFO
+
+```
+void Cdd_Uart_FlushReadFIFO(
+    uint8 HwUnitId
+)
+```
+
+
+**Brief**: 
+Service to flush the read buffer. User can use this service to flush the readbuffer incase of any unread data after any Uart Error. 
+
+**Parameters**: 
+
+  
+* **HwUnitId** hw id to be used to flush the read buffer 
+
 
 **Returns**: 
 

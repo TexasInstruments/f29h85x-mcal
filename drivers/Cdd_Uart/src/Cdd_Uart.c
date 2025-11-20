@@ -266,8 +266,7 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_Deinit(void)
     {
 #if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
         /* If the UART is not initialized, report an error */
-        (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_DEINIT,
-                              CDD_UART_E_NOT_INITIALIZED);
+        (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_DEINIT, CDD_UART_E_UNINIT);
 #endif
     }
 }
@@ -549,8 +548,70 @@ FUNC(void, CDD_UART_CODE) Cdd_Uart_Poll_Read(void)
         else
 #endif
         {
-            Cdd_Uart_Poll_PrivRead(UartHwUnitObj);
+            if (CDD_UART_MODE_POLLING == UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_IoMode)
+            {
+                Cdd_Uart_Poll_PrivRead(UartHwUnitObj);
+            }
         }
+    }
+}
+
+FUNC(Std_ReturnType, CDD_UART_CODE)
+Cdd_Uart_GetErrorStatus(uint8 HwUnitId, uint8 *ErrorStatus)
+{
+    Std_ReturnType       retVal        = E_NOT_OK;
+    Cdd_Uart_ObjectType *UartHwUnitObj = NULL_PTR;
+
+#if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
+    if (FALSE == Cdd_Uart_IsInitialized)
+    {
+        (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_ERROR_STATUS, CDD_UART_E_UNINIT);
+    }
+    else if (NULL_PTR == ErrorStatus)
+    {
+        (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_ERROR_STATUS,
+                              CDD_UART_E_PARAM_POINTER);
+    }
+    else if (HwUnitId >= CDD_UART_MAX_NUM_HWUNIT)
+    {
+        (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_ERROR_STATUS,
+                              CDD_UART_E_PARAM_HWINDEX);
+    }
+    else
+#endif
+
+    {
+        UartHwUnitObj = &Cdd_Uart_Obj[HwUnitId];
+        /* Read the error value*/
+        *ErrorStatus = UartHwUnitObj->Cdd_Uart_Error;
+
+        retVal = E_OK;
+    }
+
+    return retVal;
+}
+
+FUNC(void, CDD_UART_CODE) Cdd_Uart_FlushReadFIFO(uint8 HwUnitId)
+{
+    Cdd_Uart_ObjectType *UartHwUnitObj = NULL_PTR;
+
+#if (STD_ON == CDD_UART_CFG_DEV_ERROR_DETECT)
+    if (FALSE == Cdd_Uart_IsInitialized)
+    {
+        (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_FLUSH_READ_BUFFER,
+                              CDD_UART_E_UNINIT);
+    }
+    else if (HwUnitId >= CDD_UART_MAX_NUM_HWUNIT)
+    {
+        (void)Det_ReportError(CDD_UART_MODULE_ID, CDD_UART_INSTANCE_ID, CDD_UART_SID_FLUSH_READ_BUFFER,
+                              CDD_UART_E_PARAM_HWINDEX);
+    }
+    else
+#endif
+    {
+        UartHwUnitObj = &Cdd_Uart_Obj[HwUnitId];
+        /* Flush read fifo */
+        Cdd_Uart_PrivFlushReadFifo(UartHwUnitObj);
     }
 }
 
@@ -644,7 +705,6 @@ static FUNC(void, CDD_UART_CODE)
     else
     {
         if ((TRUE == UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_ReadEnable) &&
-            (CDD_UART_MODE_POLLING == UartHwUnitObj->Cdd_Uart_HwUnitCfg->Cdd_Uart_IoMode) &&
             (NULL_PTR != UartHwUnitObj->Cdd_Uart_ReadTransaction.Cdd_Uart_ReadBuf))
         {
             /* Pull from Read fifo */

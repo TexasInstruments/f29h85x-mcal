@@ -36,9 +36,7 @@
 #if (CAN_CFG_DEM_ENABLE == STD_ON)
 #include "Dem.h"
 #endif
-#if (STD_ON == CAN_CFG_DEV_ERROR_DETECT)
 #include "Det.h"
-#endif
 #include "CanIf_Cbk.h"
 #include "Mcal_Lib.h"
 #include "Mcal_Lib_RegAccess.h"
@@ -1886,14 +1884,13 @@ Can_ProcessLine1ISR(Can_ControllerInstance canInstance, uint32 lineSelect)
         current execution is completed as nesting is not allowed */
         Can_ClearIntrStatusPriv(baseAddr, intrStatus & MCANSS_INTR_LINE_1_MASK, lineSelect);
 
-#if (CAN_CFG_DEV_ERROR_DETECT == STD_ON)
         if (((uint32)MCAN_IR_RF0L_MASK == (intrStatus & (uint32)MCAN_IR_RF0L_MASK)) ||
             ((uint32)MCAN_IR_RF1L_MASK == (intrStatus & (uint32)MCAN_IR_RF1L_MASK)))
         {
             /* data lost error*/
             (void)Det_ReportRuntimeError(CAN_MODULE_ID, CAN_INSTANCE_ID, CAN_SID_PROCESSISR, CAN_E_DATALOST);
         }
-#endif
+
 #if (CAN_CFG_DEM_ENABLE == STD_ON)
         /* Process FIFO0 and FIFO1 full interrupt*/
         if ((uint32)MCAN_IR_RF0F_MASK == (intrStatus & (uint32)MCAN_IR_RF0F_MASK) ||
@@ -3656,13 +3653,12 @@ static FUNC(void, CAN_CODE)
 
     if ((canMailbox->mailBoxConfig.HwHandle == (uint8)0) || (canMailbox->mailBoxConfig.HwHandle == (uint8)1))
     {
-#if (CAN_CFG_DEV_ERROR_DETECT == STD_ON)
         if (fifoStatus->msgLost == TRUE)
         {
             /* data lost error*/
             (void)Det_ReportRuntimeError(CAN_MODULE_ID, CAN_INSTANCE_ID, CAN_SID_MAINFUNC_READ, CAN_E_DATALOST);
         }
-#endif
+
         fill_Lvl = fifoStatus->fillLvl;
         /* Loop through all received messages in FIFO0*/
         for (loop_Cnt = ((uint8)0U); loop_Cnt < fill_Lvl; loop_Cnt++)

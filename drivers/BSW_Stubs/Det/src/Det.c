@@ -24,6 +24,7 @@
  * Header Files
  *********************************************************************************************************************/
 #include "Det.h"
+#include "AppUtils.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -77,7 +78,11 @@
 FUNC(Std_ReturnType, DET_CODE) Det_ReportError(VAR(uint16, DET_DATA) ModuleId, VAR(uint8, DET_DATA) InstanceId, \
 VAR(uint8, DET_DATA) ApiId, VAR(uint8, DET_DATA) ErrorId)
 {
-    //TODO : Add AppUtils_Print
+    AppUtils_Printf(" Module ID         : %u\n\r", ModuleId);
+    AppUtils_Printf(" Instance ID       : %u\n\r", InstanceId);
+    AppUtils_Printf(" Api Id            : %u\n\r", ApiId);
+    AppUtils_Printf(" ErrorId           : %u\n\r", ErrorId);
+    AppUtils_Printf(" \n\r");
     while(1);
     return E_OK;
 }
@@ -85,16 +90,24 @@ VAR(uint8, DET_DATA) ApiId, VAR(uint8, DET_DATA) ErrorId)
 FUNC(Std_ReturnType, DET_CODE) Det_ReportRuntimeError(VAR(uint16, DET_DATA) ModuleId, VAR(uint8, DET_DATA) InstanceId, \
 VAR(uint8, DET_DATA) ApiId, VAR(uint8, DET_DATA) ErrorId)
 {
-    //TODO : Add AppUtils_Print
-    while(1);
+    /* System Integrator may implement additional handling for this Run time Error */
+    AppUtils_Printf(" Module ID         : %u\n\r", ModuleId);
+    AppUtils_Printf(" Instance ID       : %u\n\r", InstanceId);
+    AppUtils_Printf(" Api Id            : %u\n\r", ApiId);
+    AppUtils_Printf(" ErrorId           : %u\n\r", ErrorId);
+    AppUtils_Printf(" \n\r");
     return E_OK;
 }
 
 FUNC(Std_ReturnType, DET_CODE) Det_ReportTransientFault(VAR(uint16, DET_DATA) ModuleId, VAR(uint8, DET_DATA) InstanceId, \
 VAR(uint8, DET_DATA) ApiId, VAR(uint8, DET_DATA) FaultId)
 {
-    //TODO : Add AppUtils_Print
-    while(1);
+    /* System Integrator may implement additional handling for this Transient Fault */
+    AppUtils_Printf(" Module Id         : %u\n\r", ModuleId);
+    AppUtils_Printf(" Instance Id       : %u\n\r", InstanceId);
+    AppUtils_Printf(" Api Id            : %u\n\r", ApiId);
+    AppUtils_Printf(" Fault Id          : %u\n\r", FaultId);
+    AppUtils_Printf(" \n\r");
     return (E_OK);
 }
 

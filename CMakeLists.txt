@@ -128,7 +128,6 @@ macro(CPU3MERGE PROJECT_NAME PROJECT_BIN_PATH CPU3_PROJECT_NAME CPU3_OUT_PATH)
 
 endmacro()
 
-
 # Settings specific for FLASH build configuration
 if(BUILD_CONFIGURATION MATCHES "FLASH")
 

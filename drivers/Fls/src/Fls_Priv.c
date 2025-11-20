@@ -215,7 +215,6 @@ static FUNC(void, FLS_CODE) Fls_PostProcessAndReportError(uint8 ApiId, uint8 pro
         Fls_DrvObj.jobResultType = MEMIF_JOB_FAILED;
     }
 
-#if (STD_ON == FLS_DEV_ERROR_DETECT)
     if ((processFailureType == FLS_E_VERIFY_WRITE_FAILED) || (processFailureType == FLS_E_COMPARE_FAILED) ||
         (processFailureType == FLS_E_TIMEOUT))
     {
@@ -225,8 +224,6 @@ static FUNC(void, FLS_CODE) Fls_PostProcessAndReportError(uint8 ApiId, uint8 pro
     {
         (void)Det_ReportTransientFault(FLS_MODULE_ID, FLS_INSTANCE_ID, ApiId, processFailureType);
     }
-
-#endif
 
     if (Fls_DrvObj.Fls_JobErrorNotification != NULL_PTR)
     {
