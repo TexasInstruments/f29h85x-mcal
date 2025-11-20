@@ -224,9 +224,9 @@ The data consistency mechanism that has to be applied to an ExclusiveArea might 
 applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter **RteExclusiveAreaImplMechanism**. This parameter is an input for RTE generator. \
 For GPT Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
 
-| Exclusive Area Functions used | Port Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
+| Exclusive Area Functions used | Gpt Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
 |-------|-------|-------|-------|
-|PORT_EXCLUSIVE_AREA_0 | Gpt_StartTimer<br>Gpt_StopTimer<br>Gpt_EnableNotification<br>Gpt_DisableNotification| To protect against multiple access for shared resources, *i.e.  Timer Registers*, which can lead to race condition | **OS_RESOURCE** : If the Gpt APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If Gpt APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+|GPT_EXCLUSIVE_AREA_0 | Gpt_StartTimer<br>Gpt_StopTimer<br>Gpt_EnableNotification<br>Gpt_DisableNotification| To protect against multiple access for shared resources, *i.e.  Timer Registers*, which can lead to race condition | **OS_RESOURCE** : If the Gpt APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If Gpt APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
 
 ##### MCU
 

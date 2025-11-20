@@ -506,13 +506,13 @@ For GPT Module, data consistency and exclusive access to critical sections are r
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Exclusive Area Functions used</p></th>
-<th class="head"><p>Port Function calling Exclusive Area</p></th>
+<th class="head"><p>Gpt Function calling Exclusive Area</p></th>
 <th class="head"><p>Need for Exclusive Area</p></th>
 <th class="head"><p>Recommended Exclusive Area Mapping</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>PORT_EXCLUSIVE_AREA_0</p></td>
+<tr class="row-even"><td><p>GPT_EXCLUSIVE_AREA_0</p></td>
 <td><p>Gpt_StartTimer<br>Gpt_StopTimer<br>Gpt_EnableNotification<br>Gpt_DisableNotification</p></td>
 <td><p>To protect against multiple access for shared resources, <em>i.e.  Timer Registers</em>, which can lead to race condition</p></td>
 <td><p><strong>OS_RESOURCE</strong> : If the Gpt APIs are only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br><strong>None</strong>: If Gpt APIs are only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed.</p></td>
