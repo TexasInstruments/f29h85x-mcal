@@ -1029,9 +1029,9 @@ static FUNC(void, CAN_CODE) Can_EccConfigPriv(uint32 baseAddr)
     Can_EccLoadRegister(baseAddr, MCAN_O_ERR_CTRL);
 #if (CAN_CFG_ECC == STD_ON)
     VAR(uint32, AUTOMATIC) regVal  = 0U;
-    regVal                        |= MCAN_ERR_CTRL_ECC_ENABLE;
-    regVal                        |= MCAN_ERR_CTRL_ECC_CHECK;
-    regVal                        |= MCAN_ERR_CTRL_CHECK_SVBUS_TIMEOUT;
+    regVal                        |= MCAN_ECC_AGGR_CONTROL_ECC_ENABLE_MASK;
+    regVal                        |= MCAN_ECC_AGGR_CONTROL_ECC_CHECK_MASK;
+    regVal                        |= MCAN_ECC_AGGR_CONTROL_CHECK_SVBUS_TIMEOUT_MASK;
     MCAL_LIB_REG_WRITE32((baseAddr + MCAN_ECC_AGGR_CONTROL), regVal);
 #else
     MCAL_LIB_REG_WRITE32((baseAddr + MCAN_ECC_AGGR_CONTROL), 0U);
@@ -2015,11 +2015,14 @@ Can_MsgRamConfigPriv(uint32 baseAddr, P2VAR(Can_FdMsgRAMConfigObjType, AUTOMATIC
 
     txMbNum = (canFDMsgRamConfig->txBuffNum + canFDMsgRamConfig->txFIFONum);
 
+    /* TI_COVERAGE_GAP_START [Branch/MC-DC Coverage] This cannot be covered as check for max config is
+    implemented in plugin*/
     if (((uint8)MCAN_TX_BUFFER_MAX_NUM >= txMbNum) &&
         (((uint8)MCAN_RX_BUFFER_MAX_NUM) >= canFDMsgRamConfig->rxBuffNum) &&
         (((uint8)MCAN_RX_FIFO_0_MAX_NUM) >= canFDMsgRamConfig->configParams.rxFIFO0size) &&
         (((uint8)MCAN_RX_FIFO_1_MAX_NUM) >= canFDMsgRamConfig->configParams.rxFIFO1size))
     {
+        /* TI_COVERAGE_GAP_STOP */
         /* Calculate Start Address for Message RAM sections */
         /* Start address of standard filters*/
         if ((uint8)0U < canFDMsgRamConfig->stdFilterNum)

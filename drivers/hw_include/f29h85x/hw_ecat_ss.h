@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the ECAT_SS registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_ECAT_SS_H
@@ -41,9 +73,7 @@
 #define ECAT_SS_O_ESCSS_SYNC_IO_CONFIG    0xCU    // SYNC Signals IO configurations
 #define ECAT_SS_O_ESCSS_LATCH_IO_CONFIG   0x10U   // LATCH inputs IO pad select
 #define ECAT_SS_O_ESCSS_GPIN_SEL          0x14U   // GPIN Select between IO PAD & tieoff
-#define ECAT_SS_O_ESCSS_GPIN_IOPAD_SEL    0x18U   // GPIN IO pad Select
 #define ECAT_SS_O_ESCSS_GPOUT_SEL         0x1CU   // GPOUT IO pad connect select
-#define ECAT_SS_O_ESCSS_GPOUT_IOPAD_SEL   0x20U   // GPOUT IO pad select
 #define ECAT_SS_O_ESCSS_LED_CONFIG        0x24U   // Selection of LED o/p connect to IO pad
 #define ECAT_SS_O_ESCSS_MISC_CONFIG       0x28U   // Miscelleneous Configuration
 
@@ -254,47 +284,36 @@
 // The following are defines for the bit fields in the ESCSS_PHY_IO_CONFIG register
 //
 //*************************************************************************************************
-#define ECAT_SS_ESCSS_PHY_IO_CONFIG_PHY_PORT_CNT_S         2U
-#define ECAT_SS_ESCSS_PHY_IO_CONFIG_PHY_PORT_CNT_M         0xCU      // Number of PHY port counts
-#define ECAT_SS_ESCSS_PHY_IO_CONFIG_PHY_INTF_IOPAD_SEL_S   4U
-#define ECAT_SS_ESCSS_PHY_IO_CONFIG_PHY_INTF_IOPAD_SEL_M   0x30U     // IO Combination select for
-                                                                     // PHY Interface
-#define ECAT_SS_ESCSS_PHY_IO_CONFIG_TX_CLK_AUTO_COMP       0x40U     // Selects TX_CLK IO to do
-                                                                     // Auto compensation
-#define ECAT_SS_ESCSS_PHY_IO_CONFIG_WRITE_KEY_S            8U
-#define ECAT_SS_ESCSS_PHY_IO_CONFIG_WRITE_KEY_M            0xFF00U   // Key to enable writing lock
+#define ECAT_SS_ESCSS_PHY_IO_CONFIG_PHY_PORT_CNT_S     2U
+#define ECAT_SS_ESCSS_PHY_IO_CONFIG_PHY_PORT_CNT_M     0xCU      // Number of PHY port counts
+#define ECAT_SS_ESCSS_PHY_IO_CONFIG_TX_CLK_AUTO_COMP   0x40U     // Selects TX_CLK IO to do Auto
+                                                                 // compensation
+#define ECAT_SS_ESCSS_PHY_IO_CONFIG_WRITE_KEY_S        8U
+#define ECAT_SS_ESCSS_PHY_IO_CONFIG_WRITE_KEY_M        0xFF00U   // Key to enable writing lock
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the ESCSS_SYNC_IO_CONFIG register
 //
 //*************************************************************************************************
-#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_SYNC0_IOPAD_SEL_S   0U
-#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_SYNC0_IOPAD_SEL_M   0x3U      // SYNC0 IO PAD select option
-#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_SYNC0_GPIO_EN       0x8U      // SYNC0 connection to OUT pad
-                                                                   // enabled
-#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_SYNC1_IOPAD_SEL_S   4U
-#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_SYNC1_IOPAD_SEL_M   0x30U     // SYNC1 IO PAD select option
-#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_SYNC1_GPIO_EN       0x80U     // SYNC1 connection to OUT pad
-                                                                   // enabled
-#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_WRITE_KEY_S         8U
-#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_WRITE_KEY_M         0xFF00U   // Key to enable writing lock
+#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_SYNC0_GPIO_EN   0x8U      // SYNC0 connection to OUT pad
+                                                               // enabled
+#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_SYNC1_GPIO_EN   0x80U     // SYNC1 connection to OUT pad
+                                                               // enabled
+#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_WRITE_KEY_S     8U
+#define ECAT_SS_ESCSS_SYNC_IO_CONFIG_WRITE_KEY_M     0xFF00U   // Key to enable writing lock
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the ESCSS_LATCH_IO_CONFIG register
 //
 //*************************************************************************************************
-#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_LATCH0_IOPAD_SEL_S   0U
-#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_LATCH0_IOPAD_SEL_M   0x3U      // LATCH0 IO PAD select option
-#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_LATCH0_GPIO_EN       0x8U      // LATCH0 connection to IN pad
-                                                                     // enabled
-#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_LATCH1_IOPAD_SEL_S   4U
-#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_LATCH1_IOPAD_SEL_M   0x30U     // LATCH1 IO PAD select option
-#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_LATCH1_GPIO_EN       0x80U     // LATCH1 connection to IN pad
-                                                                     // enabled
-#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_WRITE_KEY_S          8U
-#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_WRITE_KEY_M          0xFF00U   // Key to enable writing lock
+#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_LATCH0_GPIO_EN   0x8U      // LATCH0 connection to IN pad
+                                                                 // enabled
+#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_LATCH1_GPIO_EN   0x80U     // LATCH1 connection to IN pad
+                                                                 // enabled
+#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_WRITE_KEY_S      8U
+#define ECAT_SS_ESCSS_LATCH_IO_CONFIG_WRITE_KEY_M      0xFF00U   // Key to enable writing lock
 
 //*************************************************************************************************
 //
@@ -303,19 +322,9 @@
 //*************************************************************************************************
 #define ECAT_SS_ESCSS_LED_CONFIG_LINKACT0               0x1U      // GPIO enable for LINKACT0 LED
 #define ECAT_SS_ESCSS_LED_CONFIG_LINKACT1               0x2U      // GPIO enable for LINKACT1 LED
-#define ECAT_SS_ESCSS_LED_CONFIG_STATE                  0x4U      // GPIO enable for STATE LED
-#define ECAT_SS_ESCSS_LED_CONFIG_ERR                    0x8U      // GPIO enable for ERR LED
-#define ECAT_SS_ESCSS_LED_CONFIG_RUN                    0x10U     // GPIO enable for RUN LED
-#define ECAT_SS_ESCSS_LED_CONFIG_LINKACT0_IOPAD_SEL_S   6U
-#define ECAT_SS_ESCSS_LED_CONFIG_LINKACT0_IOPAD_SEL_M   0xC0U     // LINKACT0 LED IO PAD select
-#define ECAT_SS_ESCSS_LED_CONFIG_LINKACT1_IOPAD_SEL_S   8U
-#define ECAT_SS_ESCSS_LED_CONFIG_LINKACT1_IOPAD_SEL_M   0x300U    // LINKACT1 LED IO PAD select
-#define ECAT_SS_ESCSS_LED_CONFIG_STATE_IOPAD_SEL_S      10U
-#define ECAT_SS_ESCSS_LED_CONFIG_STATE_IOPAD_SEL_M      0xC00U    // STATE LED IO PAD select
-#define ECAT_SS_ESCSS_LED_CONFIG_ERR_IOPAD_SEL_S        12U
-#define ECAT_SS_ESCSS_LED_CONFIG_ERR_IOPAD_SEL_M        0x3000U   // ERROR LED IO PAD select
-#define ECAT_SS_ESCSS_LED_CONFIG_RUN_IOPAD_SEL_S        14U
-#define ECAT_SS_ESCSS_LED_CONFIG_RUN_IOPAD_SEL_M        0xC000U   // RUN LED IO PAD select
+#define ECAT_SS_ESCSS_LED_CONFIG_STATE   0x4U    // GPIO enable for STATE LED
+#define ECAT_SS_ESCSS_LED_CONFIG_ERR     0x8U    // GPIO enable for ERR LED
+#define ECAT_SS_ESCSS_LED_CONFIG_RUN     0x10U   // GPIO enable for RUN LED
 
 //*************************************************************************************************
 //

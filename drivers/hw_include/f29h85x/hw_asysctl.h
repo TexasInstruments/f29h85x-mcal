@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the ASYSCTL registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_ASYSCTL_H
@@ -18,7 +50,6 @@
 //*************************************************************************************************
 #define ASYSCTL_O_PMMVREGTRIM       0x44U    // Power Management Module VREG Trim Register
 #define ASYSCTL_O_CTLTRIMSTS        0x70U    // HWCTL TRIM Error Status register
-#define ASYSCTL_O_CTLTRIMSTSCLR     0x74U    // HWCTL TRIM Error Status CLEAR register
 #define ASYSCTL_O_REFBUFCONFIGCDE   0x154U   // Config register for analog reference CDE
 #define ASYSCTL_O_INTERNALTESTCTL   0x1A8U   // INTERNALTEST Node Control Register
 #define ASYSCTL_O_CONFIGLOCK        0x1E8U   // Lock Register for all the config registers.
@@ -75,22 +106,6 @@
 
 //*************************************************************************************************
 //
-// The following are defines for the bit fields in the CTLTRIMSTSCLR register
-//
-//*************************************************************************************************
-#define ASYSCTL_CTLTRIMSTSCLR_CTLSTS    0x1U       // TRIM Load Complete
-#define ASYSCTL_CTLTRIMSTSCLR_SBERR     0x80U      // Single-bit error detected while reading from
-                                                   // Flash
-#define ASYSCTL_CTLTRIMSTSCLR_SCANERR   0x100U     // Wrong scan chain signature
-#define ASYSCTL_CTLTRIMSTSCLR_CTLINT    0x200U     // CTL Interrupted Error
-#define ASYSCTL_CTLTRIMSTSCLR_TWOBERR   0x400U     // Two-bit error detected
-#define ASYSCTL_CTLTRIMSTSCLR_TIMEOUT   0x800U     // Timeout Error
-#define ASYSCTL_CTLTRIMSTSCLR_INVKEY1   0x10000U   // Invalid key read during TLC1
-#define ASYSCTL_CTLTRIMSTSCLR_INVKEY2   0x20000U   // Invalid key read during TLC2
-#define ASYSCTL_CTLTRIMSTSCLR_INVKEY3   0x40000U   // Invalid key read during TLC3
-
-//*************************************************************************************************
-//
 // The following are defines for the bit fields in the REFBUFCONFIGCDE register
 //
 //*************************************************************************************************
@@ -137,11 +152,13 @@
 #define ASYSCTL_INTERNALTESTCTL_KEY_S       16U
 #define ASYSCTL_INTERNALTESTCTL_KEY_M       0xFFFF0000U   // Key to Enable writes
 
+
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the CONFIGLOCK register
 //
 //*************************************************************************************************
+#define ASYSCTL_CONFIGLOCK_LOCKBIT       0x1U   // Locks analog subsystem config
 #define ASYSCTL_CONFIGLOCK_AGPIOFILTER   0x2U   // Locks AGPIOFILTER Register
 #define ASYSCTL_CONFIGLOCK_AGPIOCTRL     0x8U   // Locks all AGPIOCTRL Register
 
@@ -157,10 +174,10 @@
 // The following are defines for the bit fields in the ANAREFCTL register
 //
 //*************************************************************************************************
-#define ASYSCTL_ANAREFCTL_ANAREFABSEL      0x1U     // Analog Reference ADC-A/B Select
-#define ASYSCTL_ANAREFCTL_ANAREFCDESEL     0x2U     // Analog Reference ADC-C/D/E Select
-#define ASYSCTL_ANAREFCTL_ANAREF1_2P5SEL   0x100U   // Analog Reference Select
-#define ASYSCTL_ANAREFCTL_ANAREF2_2P5SEL   0x200U   // Analog Reference B Select
+#define ASYSCTL_ANAREFCTL_ANAREFABSEL        0x1U     // Analog Reference ADC-A/B Select
+#define ASYSCTL_ANAREFCTL_ANAREFCDESEL       0x2U     // Analog Reference ADC-C/D/E Select
+#define ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL    0x100U   // Analog Reference Select
+#define ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL   0x200U   // Analog Reference B Select
 
 //*************************************************************************************************
 //

@@ -199,7 +199,7 @@ static FUNC(void,OS_CODE) Interrupt_InitModule(void)
     HWREG(PIPE_BASE + PIPE_O_MMR_CLR) = 0x3U;
 
     /* Initialize the memory and wait for completion */
-    HWREG(PIPE_BASE + PIPE_O_MEM_INIT) = PIPE_MEM_INIT_WRITE_ENABLE_KEY | 0x3U;
+    HWREG(PIPE_BASE + PIPE_O_MEM_INIT) = PIPE_MEM_INIT_KEY | 0x3U;
     while(HWREG(PIPE_BASE + PIPE_O_MEM_INIT_STS) != 0x2U);
 
     /*Set INTSP to STACK2 */

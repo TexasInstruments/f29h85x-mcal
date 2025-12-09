@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the ERROR_AGGREGATOR registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_ERROR_AGGREGATOR_H
@@ -292,7 +324,7 @@
 //*************************************************************************************************
 #define ERROR_AGGREGATOR_HSM_ERROR_TYPE_SECURITY_VIO      0x1U          // Security violation
 #define ERROR_AGGREGATOR_HSM_ERROR_TYPE_ACC_TIMEOUT_ERR   0x10U         // Access timeout error
-#define ERROR_AGGREGATOR_HSM_ERROR_TYPE_ACC_ACC_ERR       0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_HSM_ERROR_TYPE_ACC_ACK_ERR       0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_HSM_ERROR_TYPE_UNCERR            0x40U         // Uncorrectable error
 #define ERROR_AGGREGATOR_HSM_ERROR_TYPE_CERR              0x80U         // Correctable error
 #define ERROR_AGGREGATOR_HSM_ERROR_TYPE_ACC_TYPE_READ     0x4000U       // Access type Read
@@ -311,7 +343,7 @@
                                                                             // force
 #define ERROR_AGGREGATOR_HSM_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR   0x10U         // Access timeout error
                                                                             // force
-#define ERROR_AGGREGATOR_HSM_ERROR_TYPE_FRC_ACC_ACC_ERR       0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_HSM_ERROR_TYPE_FRC_ACC_ACK_ERR       0x20U         // Access ACK error
                                                                             // force
 #define ERROR_AGGREGATOR_HSM_ERROR_TYPE_FRC_UNCERR            0x40U         // Uncorrectable error
                                                                             // force
@@ -335,7 +367,7 @@
                                                                             // clear
 #define ERROR_AGGREGATOR_HSM_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR   0x10U         // Access timeout error
                                                                             // clear
-#define ERROR_AGGREGATOR_HSM_ERROR_TYPE_CLR_ACC_ACC_ERR       0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_HSM_ERROR_TYPE_CLR_ACC_ACK_ERR       0x20U         // Access ACK error
                                                                             // clear
 #define ERROR_AGGREGATOR_HSM_ERROR_TYPE_CLR_UNCERR            0x40U         // Uncorrectable error
                                                                             // clear
@@ -365,7 +397,7 @@
 #define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_MAX_PSP_ERR           0x8U          //  MAX PSP error
 #define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_ACC_TIMEOUT_ERR       0x10U         // Access timeout
                                                                                 // error
-#define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_ACC_ACC_ERR           0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_ACC_ACK_ERR           0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_UNCERR                0x40U         // Uncorrectable
                                                                                 // error
 #define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_CERR                  0x80U         // Correctable
@@ -398,7 +430,7 @@
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR       0x10U         // Access
                                                                                     // timeout error force
-#define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_FRC_ACC_ACC_ERR           0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_FRC_ACC_ACK_ERR           0x20U         // Access ACK
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_FRC_UNCERR                0x40U         //
                                                                                     // Uncorrectable error force
@@ -433,7 +465,7 @@
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR       0x10U         // Access
                                                                                     // timeout error clear
-#define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_CLR_ACC_ACC_ERR           0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_CLR_ACC_ACK_ERR           0x20U         // Access ACK
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU1_PR_ERROR_TYPE_CLR_UNCERR                0x40U         //
                                                                                     // Uncorrectable error clear
@@ -461,7 +493,7 @@
                                                                                 // violation
 #define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_ACC_TIMEOUT_ERR      0x10U         // Access timeout
                                                                                 // error
-#define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_ACC_ACC_ERR          0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_ACC_ACK_ERR          0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_UNCERR               0x40U         // Uncorrectable
                                                                                 // error
 #define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_CERR                 0x80U         // Correctable
@@ -482,7 +514,7 @@
                                                                                     // violation force
 #define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error force
-#define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_FRC_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_FRC_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_FRC_UNCERR               0x40U         //
                                                                                     // Uncorrectable error force
@@ -504,7 +536,7 @@
                                                                                     // violation clear
 #define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error clear
-#define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_CLR_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_CLR_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU1_DR1_ERROR_TYPE_CLR_UNCERR               0x40U         //
                                                                                     // Uncorrectable error clear
@@ -526,7 +558,7 @@
                                                                                 // violation
 #define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_ACC_TIMEOUT_ERR      0x10U         // Access timeout
                                                                                 // error
-#define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_ACC_ACC_ERR          0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_ACC_ACK_ERR          0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_UNCERR               0x40U         // Uncorrectable
                                                                                 // error
 #define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_CERR                 0x80U         // Correctable
@@ -547,7 +579,7 @@
                                                                                     // violation force
 #define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error force
-#define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_FRC_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_FRC_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_FRC_UNCERR               0x40U         //
                                                                                     // Uncorrectable error force
@@ -569,7 +601,7 @@
                                                                                     // violation clear
 #define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error clear
-#define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_CLR_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_CLR_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU1_DR2_ERROR_TYPE_CLR_UNCERR               0x40U         //
                                                                                     // Uncorrectable error clear
@@ -591,7 +623,7 @@
                                                                                // violation
 #define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_ACC_TIMEOUT_ERR      0x10U         // Access timeout
                                                                                // error
-#define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_ACC_ACC_ERR          0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_ACC_ACK_ERR          0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_UNCERR               0x40U         // Uncorrectable
                                                                                // error
 #define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_CERR                 0x80U         // Correctable error
@@ -611,7 +643,7 @@
                                                                                    // violation force
 #define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                    // timeout error force
-#define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_FRC_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_FRC_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                    // error force
 #define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_FRC_UNCERR               0x40U         // Uncorrectable
                                                                                    // error force
@@ -633,7 +665,7 @@
                                                                                    // violation clear
 #define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                    // timeout error clear
-#define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_CLR_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_CLR_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                    // error clear
 #define ERROR_AGGREGATOR_CPU1_DW_ERROR_TYPE_CLR_UNCERR               0x40U         // Uncorrectable
                                                                                    // error clear
@@ -697,12 +729,10 @@
 #define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_NMI_CONTEXT_RESTORE_VECT_UNCERR     0x200000U     //
                                                                                                // NMI Context restore Uncorrectable
                                                                                                // vector error
-#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_SCRUB_VECT_CERR                     0x400000U     //
-                                                                                               // Scrubbing / vector init Correctable
-                                                                                               // error
-#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_SCRUB_VECT_UNCERR                   0x800000U     //
-                                                                                               // Scrubbing / vector init
-                                                                                               // Uncorrectable error
+#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_VECT_CERR                           0x400000U     //
+                                                                                               // Vector Correctable error
+#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_VECT_UNCERR                         0x800000U     //
+                                                                                               // Vector Uncorrectable error
 #define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_WARNISP                             0x1000000U    //
                                                                                                // warnisp
 #define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_MAXISP                              0x2000000U    //
@@ -773,12 +803,10 @@
 #define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_FRC_NMI_CONTEXT_RESTORE_VECT_UNCERR     0x200000U     //
                                                                                                    // NMI Context restore Uncorrectable
                                                                                                    // vector error force
-#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_FRC_SCRUB_VECT_CERR                     0x400000U     //
-                                                                                                   // Scrubbing / vector init Correctable
-                                                                                                   // error force
-#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_FRC_SCRUB_VECT_UNCERR                   0x800000U     //
-                                                                                                   // Scrubbing / vector init
-                                                                                                   // Uncorrectable error force
+#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_FRC_VECT_CERR                           0x400000U     //
+                                                                                                   // Vector Correctable error force
+#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_FRC_VECT_UNCERR                         0x800000U     //
+                                                                                                   // Vector Uncorrectable error force
 #define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_FRC_WARNISP                             0x1000000U    //
                                                                                                    // warnisp force
 #define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_FRC_MAXISP                              0x2000000U    //
@@ -850,12 +878,10 @@
 #define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_CLR_NMI_CONTEXT_RESTORE_VECT_UNCERR     0x200000U     //
                                                                                                    // NMI Context restore Uncorrectable
                                                                                                    // vector error clear
-#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_CLR_SCRUB_VECT_CERR                     0x400000U     //
-                                                                                                   // Scrubbing / vector init Correctable
-                                                                                                   // error clear
-#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_CLR_SCRUB_VECT_UNCERR                   0x800000U     //
-                                                                                                   // Scrubbing / vector init
-                                                                                                   // Uncorrectable error clear
+#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_CLR_VECT_CERR                           0x400000U     //
+                                                                                                   // Vector Correctable error clear
+#define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_CLR_VECT_UNCERR                         0x800000U     //
+                                                                                                   // Vector Uncorrectable error clear
 #define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_CLR_WARNISP                             0x1000000U    //
                                                                                                    // warnisp clear
 #define ERROR_AGGREGATOR_CPU1_INT_ERROR_TYPE_CLR_MAXISP                              0x2000000U    //
@@ -888,7 +914,7 @@
 #define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_MAX_PSP_ERR           0x8U          //  MAX PSP error
 #define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_ACC_TIMEOUT_ERR       0x10U         // Access timeout
                                                                                 // error
-#define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_ACC_ACC_ERR           0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_ACC_ACK_ERR           0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_UNCERR                0x40U         // Uncorrectable
                                                                                 // error
 #define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_CERR                  0x80U         // Correctable
@@ -921,7 +947,7 @@
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR       0x10U         // Access
                                                                                     // timeout error force
-#define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_FRC_ACC_ACC_ERR           0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_FRC_ACC_ACK_ERR           0x20U         // Access ACK
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_FRC_UNCERR                0x40U         //
                                                                                     // Uncorrectable error force
@@ -956,7 +982,7 @@
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR       0x10U         // Access
                                                                                     // timeout error clear
-#define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_CLR_ACC_ACC_ERR           0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_CLR_ACC_ACK_ERR           0x20U         // Access ACK
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU2_PR_ERROR_TYPE_CLR_UNCERR                0x40U         //
                                                                                     // Uncorrectable error clear
@@ -984,7 +1010,7 @@
                                                                                 // violation
 #define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_ACC_TIMEOUT_ERR      0x10U         // Access timeout
                                                                                 // error
-#define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_ACC_ACC_ERR          0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_ACC_ACK_ERR          0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_UNCERR               0x40U         // Uncorrectable
                                                                                 // error
 #define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_CERR                 0x80U         // Correctable
@@ -1005,7 +1031,7 @@
                                                                                     // violation force
 #define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error force
-#define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_FRC_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_FRC_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_FRC_UNCERR               0x40U         //
                                                                                     // Uncorrectable error force
@@ -1027,7 +1053,7 @@
                                                                                     // violation clear
 #define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error clear
-#define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_CLR_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_CLR_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU2_DR1_ERROR_TYPE_CLR_UNCERR               0x40U         //
                                                                                     // Uncorrectable error clear
@@ -1049,7 +1075,7 @@
                                                                                 // violation
 #define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_ACC_TIMEOUT_ERR      0x10U         // Access timeout
                                                                                 // error
-#define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_ACC_ACC_ERR          0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_ACC_ACK_ERR          0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_UNCERR               0x40U         // Uncorrectable
                                                                                 // error
 #define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_CERR                 0x80U         // Correctable
@@ -1070,7 +1096,7 @@
                                                                                     // violation force
 #define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error force
-#define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_FRC_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_FRC_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_FRC_UNCERR               0x40U         //
                                                                                     // Uncorrectable error force
@@ -1092,7 +1118,7 @@
                                                                                     // violation clear
 #define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error clear
-#define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_CLR_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_CLR_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU2_DR2_ERROR_TYPE_CLR_UNCERR               0x40U         //
                                                                                     // Uncorrectable error clear
@@ -1114,7 +1140,7 @@
                                                                                // violation
 #define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_ACC_TIMEOUT_ERR      0x10U         // Access timeout
                                                                                // error
-#define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_ACC_ACC_ERR          0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_ACC_ACK_ERR          0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_UNCERR               0x40U         // Uncorrectable
                                                                                // error
 #define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_CERR                 0x80U         // Correctable error
@@ -1134,7 +1160,7 @@
                                                                                    // violation force
 #define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                    // timeout error force
-#define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_FRC_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_FRC_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                    // error force
 #define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_FRC_UNCERR               0x40U         // Uncorrectable
                                                                                    // error force
@@ -1156,7 +1182,7 @@
                                                                                    // violation clear
 #define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                    // timeout error clear
-#define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_CLR_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_CLR_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                    // error clear
 #define ERROR_AGGREGATOR_CPU2_DW_ERROR_TYPE_CLR_UNCERR               0x40U         // Uncorrectable
                                                                                    // error clear
@@ -1220,12 +1246,10 @@
 #define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_NMI_CONTEXT_RESTORE_VECT_UNCERR     0x200000U     //
                                                                                                // NMI Context restore Uncorrectable
                                                                                                // vector error
-#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_SCRUB_VECT_CERR                     0x400000U     //
-                                                                                               // Scrubbing / vector init Correctable
-                                                                                               // error
-#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_SCRUB_VECT_UNCERR                   0x800000U     //
-                                                                                               // Scrubbing / vector init
-                                                                                               // Uncorrectable error
+#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_VECT_CERR                           0x400000U     //
+                                                                                               // Vector Correctable error
+#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_VECT_UNCERR                         0x800000U     //
+                                                                                               // Vector Uncorrectable error
 #define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_WARNISP                             0x1000000U    //
                                                                                                // warnisp
 #define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_MAXISP                              0x2000000U    //
@@ -1296,12 +1320,10 @@
 #define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_FRC_NMI_CONTEXT_RESTORE_VECT_UNCERR     0x200000U     //
                                                                                                    // NMI Context restore Uncorrectable
                                                                                                    // vector error force
-#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_FRC_SCRUB_VECT_CERR                     0x400000U     //
-                                                                                                   // Scrubbing / vector init Correctable
-                                                                                                   // error force
-#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_FRC_SCRUB_VECT_UNCERR                   0x800000U     //
-                                                                                                   // Scrubbing / vector init
-                                                                                                   // Uncorrectable error force
+#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_FRC_VECT_CERR                           0x400000U     //
+                                                                                                   // Vector Correctable error force
+#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_FRC_VECT_UNCERR                         0x800000U     //
+                                                                                                   // Vector Uncorrectable error force
 #define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_FRC_WARNISP                             0x1000000U    //
                                                                                                    // warnisp force
 #define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_FRC_MAXISP                              0x2000000U    //
@@ -1373,12 +1395,10 @@
 #define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_CLR_NMI_CONTEXT_RESTORE_VECT_UNCERR     0x200000U     //
                                                                                                    // NMI Context restore Uncorrectable
                                                                                                    // vector error clear
-#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_CLR_SCRUB_VECT_CERR                     0x400000U     //
-                                                                                                   // Scrubbing / vector init Correctable
-                                                                                                   // error clear
-#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_CLR_SCRUB_VECT_UNCERR                   0x800000U     //
-                                                                                                   // Scrubbing / vector init
-                                                                                                   // Uncorrectable error clear
+#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_CLR_VECT_CERR                           0x400000U     //
+                                                                                                   // Vector Correctable error clear
+#define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_CLR_VECT_UNCERR                         0x800000U     //
+                                                                                                   // Vector Uncorrectable error clear
 #define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_CLR_WARNISP                             0x1000000U    //
                                                                                                    // warnisp clear
 #define ERROR_AGGREGATOR_CPU2_INT_ERROR_TYPE_CLR_MAXISP                              0x2000000U    //
@@ -1411,7 +1431,7 @@
 #define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_MAX_PSP_ERR           0x8U          //  MAX PSP error
 #define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_ACC_TIMEOUT_ERR       0x10U         // Access timeout
                                                                                 // error
-#define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_ACC_ACC_ERR           0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_ACC_ACK_ERR           0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_UNCERR                0x40U         // Uncorrectable
                                                                                 // error
 #define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_CERR                  0x80U         // Correctable
@@ -1444,7 +1464,7 @@
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR       0x10U         // Access
                                                                                     // timeout error force
-#define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_FRC_ACC_ACC_ERR           0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_FRC_ACC_ACK_ERR           0x20U         // Access ACK
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_FRC_UNCERR                0x40U         //
                                                                                     // Uncorrectable error force
@@ -1479,7 +1499,7 @@
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR       0x10U         // Access
                                                                                     // timeout error clear
-#define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_CLR_ACC_ACC_ERR           0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_CLR_ACC_ACK_ERR           0x20U         // Access ACK
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU3_PR_ERROR_TYPE_CLR_UNCERR                0x40U         //
                                                                                     // Uncorrectable error clear
@@ -1507,7 +1527,7 @@
                                                                                 // violation
 #define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_ACC_TIMEOUT_ERR      0x10U         // Access timeout
                                                                                 // error
-#define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_ACC_ACC_ERR          0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_ACC_ACK_ERR          0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_UNCERR               0x40U         // Uncorrectable
                                                                                 // error
 #define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_CERR                 0x80U         // Correctable
@@ -1528,7 +1548,7 @@
                                                                                     // violation force
 #define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error force
-#define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_FRC_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_FRC_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_FRC_UNCERR               0x40U         //
                                                                                     // Uncorrectable error force
@@ -1550,7 +1570,7 @@
                                                                                     // violation clear
 #define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error clear
-#define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_CLR_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_CLR_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU3_DR1_ERROR_TYPE_CLR_UNCERR               0x40U         //
                                                                                     // Uncorrectable error clear
@@ -1572,7 +1592,7 @@
                                                                                 // violation
 #define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_ACC_TIMEOUT_ERR      0x10U         // Access timeout
                                                                                 // error
-#define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_ACC_ACC_ERR          0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_ACC_ACK_ERR          0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_UNCERR               0x40U         // Uncorrectable
                                                                                 // error
 #define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_CERR                 0x80U         // Correctable
@@ -1593,7 +1613,7 @@
                                                                                     // violation force
 #define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error force
-#define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_FRC_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_FRC_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error force
 #define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_FRC_UNCERR               0x40U         //
                                                                                     // Uncorrectable error force
@@ -1615,7 +1635,7 @@
                                                                                     // violation clear
 #define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                     // timeout error clear
-#define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_CLR_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_CLR_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                     // error clear
 #define ERROR_AGGREGATOR_CPU3_DR2_ERROR_TYPE_CLR_UNCERR               0x40U         //
                                                                                     // Uncorrectable error clear
@@ -1637,7 +1657,7 @@
                                                                                // violation
 #define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_ACC_TIMEOUT_ERR      0x10U         // Access timeout
                                                                                // error
-#define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_ACC_ACC_ERR          0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_ACC_ACK_ERR          0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_UNCERR               0x40U         // Uncorrectable
                                                                                // error
 #define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_CERR                 0x80U         // Correctable error
@@ -1657,7 +1677,7 @@
                                                                                    // violation force
 #define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                    // timeout error force
-#define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_FRC_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_FRC_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                    // error force
 #define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_FRC_UNCERR               0x40U         // Uncorrectable
                                                                                    // error force
@@ -1679,7 +1699,7 @@
                                                                                    // violation clear
 #define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR      0x10U         // Access
                                                                                    // timeout error clear
-#define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_CLR_ACC_ACC_ERR          0x20U         // Access ACK
+#define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_CLR_ACC_ACK_ERR          0x20U         // Access ACK
                                                                                    // error clear
 #define ERROR_AGGREGATOR_CPU3_DW_ERROR_TYPE_CLR_UNCERR               0x40U         // Uncorrectable
                                                                                    // error clear
@@ -1743,12 +1763,10 @@
 #define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_NMI_CONTEXT_RESTORE_VECT_UNCERR     0x200000U     //
                                                                                                // NMI Context restore Uncorrectable
                                                                                                // vector error
-#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_SCRUB_VECT_CERR                     0x400000U     //
-                                                                                               // Scrubbing / vector init Correctable
-                                                                                               // error
-#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_SCRUB_VECT_UNCERR                   0x800000U     //
-                                                                                               // Scrubbing / vector init
-                                                                                               // Uncorrectable error
+#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_VECT_CERR                           0x400000U     //
+                                                                                               // Vector Correctable error
+#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_VECT_UNCERR                         0x800000U     //
+                                                                                               // Vector Uncorrectable error
 #define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_WARNISP                             0x1000000U    //
                                                                                                // warnisp
 #define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_MAXISP                              0x2000000U    //
@@ -1819,12 +1837,10 @@
 #define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_FRC_NMI_CONTEXT_RESTORE_VECT_UNCERR     0x200000U     //
                                                                                                    // NMI Context restore Uncorrectable
                                                                                                    // vector error force
-#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_FRC_SCRUB_VECT_CERR                     0x400000U     //
-                                                                                                   // Scrubbing / vector init Correctable
-                                                                                                   // error force
-#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_FRC_SCRUB_VECT_UNCERR                   0x800000U     //
-                                                                                                   // Scrubbing / vector init
-                                                                                                   // Uncorrectable error force
+#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_FRC_VECT_CERR                           0x400000U     //
+                                                                                                   // Vector Correctable error force
+#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_FRC_VECT_UNCERR                         0x800000U     //
+                                                                                                   // Vector Uncorrectable error force
 #define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_FRC_WARNISP                             0x1000000U    //
                                                                                                    // warnisp force
 #define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_FRC_MAXISP                              0x2000000U    //
@@ -1896,12 +1912,10 @@
 #define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_CLR_NMI_CONTEXT_RESTORE_VECT_UNCERR     0x200000U     //
                                                                                                    // NMI Context restore Uncorrectable
                                                                                                    // vector error clear
-#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_CLR_SCRUB_VECT_CERR                     0x400000U     //
-                                                                                                   // Scrubbing / vector init Correctable
-                                                                                                   // error clear
-#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_CLR_SCRUB_VECT_UNCERR                   0x800000U     //
-                                                                                                   // Scrubbing / vector init
-                                                                                                   // Uncorrectable error clear
+#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_CLR_VECT_CERR                           0x400000U     //
+                                                                                                   // Vector Correctable error clear
+#define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_CLR_VECT_UNCERR                         0x800000U     //
+                                                                                                   // Vector Uncorrectable error clear
 #define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_CLR_WARNISP                             0x1000000U    //
                                                                                                    // warnisp clear
 #define ERROR_AGGREGATOR_CPU3_INT_ERROR_TYPE_CLR_MAXISP                              0x2000000U    //
@@ -1928,7 +1942,7 @@
 #define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_SECURITY_VIO      0x1U          // Security violation
 #define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                               // error
-#define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_ACC_ACC_ERR       0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_ACC_ACK_ERR       0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_UNCERR            0x40U         // Uncorrectable
                                                                               // error
 #define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_CERR              0x80U         // Correctable error
@@ -1946,7 +1960,7 @@
                                                                                   // violation force
 #define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                                   // error force
-#define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_FRC_ACC_ACC_ERR       0x20U         // Access ACK
+#define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_FRC_ACC_ACK_ERR       0x20U         // Access ACK
                                                                                   // error force
 #define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_FRC_UNCERR            0x40U         // Uncorrectable
                                                                                   // error force
@@ -1966,7 +1980,7 @@
                                                                                   // violation clear
 #define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                                   // error clear
-#define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_CLR_ACC_ACC_ERR       0x20U         // Access ACK
+#define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_CLR_ACC_ACK_ERR       0x20U         // Access ACK
                                                                                   // error clear
 #define ERROR_AGGREGATOR_RTDMA1_DR_ERROR_TYPE_CLR_UNCERR            0x40U         // Uncorrectable
                                                                                   // error clear
@@ -1985,7 +1999,7 @@
 #define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_SECURITY_VIO      0x1U          // Security violation
 #define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                               // error
-#define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_ACC_ACC_ERR       0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_ACC_ACK_ERR       0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_UNCERR            0x40U         // Uncorrectable
                                                                               // error
 #define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_CERR              0x80U         // Correctable error
@@ -2003,7 +2017,7 @@
                                                                                   // violation force
 #define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                                   // error force
-#define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_FRC_ACC_ACC_ERR       0x20U         // Access ACK
+#define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_FRC_ACC_ACK_ERR       0x20U         // Access ACK
                                                                                   // error force
 #define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_FRC_UNCERR            0x40U         // Uncorrectable
                                                                                   // error force
@@ -2023,7 +2037,7 @@
                                                                                   // violation clear
 #define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                                   // error clear
-#define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_CLR_ACC_ACC_ERR       0x20U         // Access ACK
+#define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_CLR_ACC_ACK_ERR       0x20U         // Access ACK
                                                                                   // error clear
 #define ERROR_AGGREGATOR_RTDMA1_DW_ERROR_TYPE_CLR_UNCERR            0x40U         // Uncorrectable
                                                                                   // error clear
@@ -2042,7 +2056,7 @@
 #define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_SECURITY_VIO      0x1U          // Security violation
 #define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                               // error
-#define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_ACC_ACC_ERR       0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_ACC_ACK_ERR       0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_UNCERR            0x40U         // Uncorrectable
                                                                               // error
 #define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_CERR              0x80U         // Correctable error
@@ -2060,7 +2074,7 @@
                                                                                   // violation force
 #define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                                   // error force
-#define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_FRC_ACC_ACC_ERR       0x20U         // Access ACK
+#define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_FRC_ACC_ACK_ERR       0x20U         // Access ACK
                                                                                   // error force
 #define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_FRC_UNCERR            0x40U         // Uncorrectable
                                                                                   // error force
@@ -2080,7 +2094,7 @@
                                                                                   // violation clear
 #define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                                   // error clear
-#define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_CLR_ACC_ACC_ERR       0x20U         // Access ACK
+#define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_CLR_ACC_ACK_ERR       0x20U         // Access ACK
                                                                                   // error clear
 #define ERROR_AGGREGATOR_RTDMA2_DR_ERROR_TYPE_CLR_UNCERR            0x40U         // Uncorrectable
                                                                                   // error clear
@@ -2099,7 +2113,7 @@
 #define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_SECURITY_VIO      0x1U          // Security violation
 #define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                               // error
-#define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_ACC_ACC_ERR       0x20U         // Access ACK error
+#define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_ACC_ACK_ERR       0x20U         // Access ACK error
 #define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_UNCERR            0x40U         // Uncorrectable
                                                                               // error
 #define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_CERR              0x80U         // Correctable error
@@ -2117,7 +2131,7 @@
                                                                                   // violation force
 #define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_FRC_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                                   // error force
-#define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_FRC_ACC_ACC_ERR       0x20U         // Access ACK
+#define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_FRC_ACC_ACK_ERR       0x20U         // Access ACK
                                                                                   // error force
 #define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_FRC_UNCERR            0x40U         // Uncorrectable
                                                                                   // error force
@@ -2137,7 +2151,7 @@
                                                                                   // violation clear
 #define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_CLR_ACC_TIMEOUT_ERR   0x10U         // Access timeout
                                                                                   // error clear
-#define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_CLR_ACC_ACC_ERR       0x20U         // Access ACK
+#define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_CLR_ACC_ACK_ERR       0x20U         // Access ACK
                                                                                   // error clear
 #define ERROR_AGGREGATOR_RTDMA2_DW_ERROR_TYPE_CLR_UNCERR            0x40U         // Uncorrectable
                                                                                   // error clear

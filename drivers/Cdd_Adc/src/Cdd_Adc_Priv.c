@@ -2659,34 +2659,34 @@ static FUNC(void, CDD_ADC_CODE)
     switch (Base)
     {
         case ADCA_BASE:
-            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFABSEL;    /* Select Analog Reference Select for ADC A & B */
-            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREF1_2P5SEL; /* Select Analog Voltage Reference
+            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFABSEL;     /* Select Analog Reference Select for ADC A & B */
+            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL; /* Select Analog Voltage Reference
                                                                     for ADC A & B */
             break;
         case ADCB_BASE:
-            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFABSEL;    /* Select Analog Reference Select for ADC A & B */
-            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREF1_2P5SEL; /* Select Analog Voltage Reference
+            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFABSEL;     /* Select Analog Reference Select for ADC A & B */
+            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL; /* Select Analog Voltage Reference
                                                                     for ADC A & B */
             break;
         case ADCC_BASE:
-            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFCDESEL;   /* Select Analog Reference Select for ADC C,D & E */
-            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREF2_2P5SEL; /*Select Analog Voltage Reference
+            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFCDESEL;     /* Select Analog Reference Select for ADC C,D & E */
+            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL; /*Select Analog Voltage Reference
                                                                     for ADC C,D & E*/
             break;
         case ADCD_BASE:
-            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFCDESEL;   /* Select Analog Reference Select for ADC C,D & E */
-            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREF2_2P5SEL; /*Select Analog Voltage Reference
+            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFCDESEL;     /* Select Analog Reference Select for ADC C,D & E */
+            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL; /*Select Analog Voltage Reference
                                                                     for ADC C,D & E*/
             break;
         case ADCE_BASE:
-            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFCDESEL;   /* Select Analog Reference Select for ADC C,D & E */
-            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREF2_2P5SEL; /*Select Analog Voltage Reference
+            analogrefsel     = ASYSCTL_ANAREFCTL_ANAREFCDESEL;     /* Select Analog Reference Select for ADC C,D & E */
+            analogrefvoltsel = ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL; /*Select Analog Voltage Reference
                                                                     for ADC C,D & E*/
             break;
         default:
             /* By default configure all the ADCs with the same configuration  */
             analogrefsel     = (ASYSCTL_ANAREFCTL_ANAREFABSEL | ASYSCTL_ANAREFCTL_ANAREFCDESEL);
-            analogrefvoltsel = (ASYSCTL_ANAREFCTL_ANAREF1_2P5SEL | ASYSCTL_ANAREFCTL_ANAREF2_2P5SEL);
+            analogrefvoltsel = (ASYSCTL_ANAREFCTL_ANAREFAB_2P5SEL | ASYSCTL_ANAREFCTL_ANAREFCDE_2P5SEL);
             break;
     }
     /* Configure the reference mode (internal or external) */

@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the XBAR registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_XBAR_H
@@ -367,48 +399,48 @@
 // The following are defines for the bit fields in the XBARFLG11 register
 //
 //*************************************************************************************************
-#define XBAR_FLG11_ETPWM1_A0_SCLK    0x1U          // Input Flag for ETPWM1_A0_sclk Signal
-#define XBAR_FLG11_ETPWM1_B0_SCLK    0x2U          // Input Flag for ETPWM1_B0_sclk Signal
-#define XBAR_FLG11_ETPWM2_A0_SCLK    0x4U          // Input Flag for ETPWM2_A0_sclk Signal
-#define XBAR_FLG11_ETPWM2_B0_SCLK    0x8U          // Input Flag for ETPWM2_B0_sclk Signal
-#define XBAR_FLG11_ETPWM3_A0_SCLK    0x10U         // Input Flag for ETPWM3_A0_sclk Signal
-#define XBAR_FLG11_ETPWM3_B0_SCLK    0x20U         // Input Flag for ETPWM3_B0_sclk Signal
-#define XBAR_FLG11_ETPWM4_A0_SCLK    0x40U         // Input Flag for ETPWM4_A0_sclk Signal
-#define XBAR_FLG11_ETPWM4_B0_SCLK    0x80U         // Input Flag for ETPWM4_B0_sclk Signal
-#define XBAR_FLG11_ETPWM5_A0_SCLK    0x100U        // Input Flag for ETPWM5_A0_sclk Signal
-#define XBAR_FLG11_ETPWM5_B0_SCLK    0x200U        // Input Flag for ETPWM5_B0_sclk Signal
-#define XBAR_FLG11_ETPWM6_A0_SCLK    0x400U        // Input Flag for ETPWM6_A0_sclk Signal
-#define XBAR_FLG11_ETPWM6_B0_SCLK    0x800U        // Input Flag for ETPWM6_B0_sclk Signal
-#define XBAR_FLG11_ETPWM7_A0_SCLK    0x1000U       // Input Flag for ETPWM7_A0_sclk Signal
-#define XBAR_FLG11_ETPWM7_B0_SCLK    0x2000U       // Input Flag for ETPWM7_B0_sclk Signal
-#define XBAR_FLG11_ETPWM8_A0_SCLK    0x4000U       // Input Flag for ETPWM8_A0_sclk Signal
-#define XBAR_FLG11_ETPWM8_B0_SCLK    0x8000U       // Input Flag for ETPWM8_B0_sclk Signal
-#define XBAR_FLG11_ETPWM9_A0_SCLK    0x10000U      // Input Flag for ETPWM9_A0_sclk Signal
-#define XBAR_FLG11_ETPWM9_B0_SCLK    0x20000U      // Input Flag for ETPWM9_B0_sclk Signal
-#define XBAR_FLG11_ETPWM10_A0_SCLK   0x40000U      // Input Flag for ETPWM10_A0_sclk Signal
-#define XBAR_FLG11_ETPWM10_B0_SCLK   0x80000U      // Input Flag for ETPWM10_B0_sclk Signal
-#define XBAR_FLG11_ETPWM11_A0_SCLK   0x100000U     // Input Flag for ETPWM11_A0_sclk Signal
-#define XBAR_FLG11_ETPWM11_B0_SCLK   0x200000U     // Input Flag for ETPWM11_B0_sclk Signal
-#define XBAR_FLG11_ETPWM12_A0_SCLK   0x400000U     // Input Flag for ETPWM12_A0_sclk Signal
-#define XBAR_FLG11_ETPWM12_B0_SCLK   0x800000U     // Input Flag for ETPWM12_B0_sclk Signal
-#define XBAR_FLG11_ETPWM13_A0_SCLK   0x1000000U    // Input Flag for ETPWM13_A0_sclk Signal
-#define XBAR_FLG11_ETPWM13_B0_SCLK   0x2000000U    // Input Flag for ETPWM13_B0_sclk Signal
-#define XBAR_FLG11_ETPWM14_A0_SCLK   0x4000000U    // Input Flag for ETPWM14_A0_sclk Signal
-#define XBAR_FLG11_ETPWM14_B0_SCLK   0x8000000U    // Input Flag for ETPWM14_B0_sclk Signal
-#define XBAR_FLG11_ETPWM15_A0_SCLK   0x10000000U   // Input Flag for ETPWM15_A0_sclk Signal
-#define XBAR_FLG11_ETPWM15_B0_SCLK   0x20000000U   // Input Flag for ETPWM15_B0_sclk Signal
-#define XBAR_FLG11_ETPWM16_A0_SCLK   0x40000000U   // Input Flag for ETPWM16_A0_sclk Signal
-#define XBAR_FLG11_ETPWM16_B0_SCLK   0x80000000U   // Input Flag for ETPWM16_B0_sclk Signal
+#define XBAR_FLG11_EPWM1_A0_SCLK    0x1U          // Input Flag for EPWM1_A0_sclk Signal
+#define XBAR_FLG11_EPWM1_B0_SCLK    0x2U          // Input Flag for EPWM1_B0_sclk Signal
+#define XBAR_FLG11_EPWM2_A0_SCLK    0x4U          // Input Flag for EPWM2_A0_sclk Signal
+#define XBAR_FLG11_EPWM2_B0_SCLK    0x8U          // Input Flag for EPWM2_B0_sclk Signal
+#define XBAR_FLG11_EPWM3_A0_SCLK    0x10U         // Input Flag for EPWM3_A0_sclk Signal
+#define XBAR_FLG11_EPWM3_B0_SCLK    0x20U         // Input Flag for EPWM3_B0_sclk Signal
+#define XBAR_FLG11_EPWM4_A0_SCLK    0x40U         // Input Flag for EPWM4_A0_sclk Signal
+#define XBAR_FLG11_EPWM4_B0_SCLK    0x80U         // Input Flag for EPWM4_B0_sclk Signal
+#define XBAR_FLG11_EPWM5_A0_SCLK    0x100U        // Input Flag for EPWM5_A0_sclk Signal
+#define XBAR_FLG11_EPWM5_B0_SCLK    0x200U        // Input Flag for EPWM5_B0_sclk Signal
+#define XBAR_FLG11_EPWM6_A0_SCLK    0x400U        // Input Flag for EPWM6_A0_sclk Signal
+#define XBAR_FLG11_EPWM6_B0_SCLK    0x800U        // Input Flag for EPWM6_B0_sclk Signal
+#define XBAR_FLG11_EPWM7_A0_SCLK    0x1000U       // Input Flag for EPWM7_A0_sclk Signal
+#define XBAR_FLG11_EPWM7_B0_SCLK    0x2000U       // Input Flag for EPWM7_B0_sclk Signal
+#define XBAR_FLG11_EPWM8_A0_SCLK    0x4000U       // Input Flag for EPWM8_A0_sclk Signal
+#define XBAR_FLG11_EPWM8_B0_SCLK    0x8000U       // Input Flag for EPWM8_B0_sclk Signal
+#define XBAR_FLG11_EPWM9_A0_SCLK    0x10000U      // Input Flag for EPWM9_A0_sclk Signal
+#define XBAR_FLG11_EPWM9_B0_SCLK    0x20000U      // Input Flag for EPWM9_B0_sclk Signal
+#define XBAR_FLG11_EPWM10_A0_SCLK   0x40000U      // Input Flag for EPWM10_A0_sclk Signal
+#define XBAR_FLG11_EPWM10_B0_SCLK   0x80000U      // Input Flag for EPWM10_B0_sclk Signal
+#define XBAR_FLG11_EPWM11_A0_SCLK   0x100000U     // Input Flag for EPWM11_A0_sclk Signal
+#define XBAR_FLG11_EPWM11_B0_SCLK   0x200000U     // Input Flag for EPWM11_B0_sclk Signal
+#define XBAR_FLG11_EPWM12_A0_SCLK   0x400000U     // Input Flag for EPWM12_A0_sclk Signal
+#define XBAR_FLG11_EPWM12_B0_SCLK   0x800000U     // Input Flag for EPWM12_B0_sclk Signal
+#define XBAR_FLG11_EPWM13_A0_SCLK   0x1000000U    // Input Flag for EPWM13_A0_sclk Signal
+#define XBAR_FLG11_EPWM13_B0_SCLK   0x2000000U    // Input Flag for EPWM13_B0_sclk Signal
+#define XBAR_FLG11_EPWM14_A0_SCLK   0x4000000U    // Input Flag for EPWM14_A0_sclk Signal
+#define XBAR_FLG11_EPWM14_B0_SCLK   0x8000000U    // Input Flag for EPWM14_B0_sclk Signal
+#define XBAR_FLG11_EPWM15_A0_SCLK   0x10000000U   // Input Flag for EPWM15_A0_sclk Signal
+#define XBAR_FLG11_EPWM15_B0_SCLK   0x20000000U   // Input Flag for EPWM15_B0_sclk Signal
+#define XBAR_FLG11_EPWM16_A0_SCLK   0x40000000U   // Input Flag for EPWM16_A0_sclk Signal
+#define XBAR_FLG11_EPWM16_B0_SCLK   0x80000000U   // Input Flag for EPWM16_B0_sclk Signal
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the XBARFLG12 register
 //
 //*************************************************************************************************
-#define XBAR_FLG12_ETPWM17_A0_SCLK   0x1U   // Input Flag for ETPWM17_A0_sclk Signal
-#define XBAR_FLG12_ETPWM17_B0_SCLK   0x2U   // Input Flag for ETPWM17_B0_sclk Signal
-#define XBAR_FLG12_ETPWM18_A0_SCLK   0x4U   // Input Flag for ETPWM18_A0_sclk Signal
-#define XBAR_FLG12_ETPWM18_B0_SCLK   0x8U   // Input Flag for ETPWM18_B0_sclk Signal
+#define XBAR_FLG12_EPWM17_A0_SCLK   0x1U   // Input Flag for EPWM17_A0_sclk Signal
+#define XBAR_FLG12_EPWM17_B0_SCLK   0x2U   // Input Flag for EPWM17_B0_sclk Signal
+#define XBAR_FLG12_EPWM18_A0_SCLK   0x4U   // Input Flag for EPWM18_A0_sclk Signal
+#define XBAR_FLG12_EPWM18_B0_SCLK   0x8U   // Input Flag for EPWM18_B0_sclk Signal
 
 //*************************************************************************************************
 //
@@ -724,6 +756,10 @@
 #define XBAR_CLR5_ADCAEVT1            0x1U          // Input Flag Clear for ADCAEVT1 Signal
 #define XBAR_CLR5_ADCAEVT2            0x2U          // Input Flag Clear for ADCAEVT2 Signal
 #define XBAR_CLR5_ADCAEVT3            0x4U          // Input Flag Clear for ADCAEVT3 Signal
+#define XBAR_CLR5_ADCAEVT4            0x8U          // Input Flag Clear for ADCAEVT4 Signal
+#define XBAR_CLR5_ADCBEVT1            0x10U         // Input Flag Clear for ADCBEVT1 Signal
+#define XBAR_CLR5_ADCBEVT2            0x20U         // Input Flag Clear for ADCBEVT2 Signal
+#define XBAR_CLR5_ADCBEVT3            0x40U         // Input Flag Clear for ADCBEVT3 Signal
 #define XBAR_CLR5_ADCBEVT4            0x80U         // Input Flag Clear for ADCBEVT4 Signal
 #define XBAR_CLR5_ADCCEVT1            0x100U        // Input Flag Clear for ADCCEVT1 Signal
 #define XBAR_CLR5_ADCCEVT2            0x200U        // Input Flag Clear for ADCCEVT2 Signal
@@ -783,6 +819,14 @@
 #define XBAR_CLR6_FSIB_RX_TRIG1   0x20000U      // Input Flag Clear for FSIB_RX_TRIG1 Signal
 #define XBAR_CLR6_FSIC_RX_TRIG1   0x40000U      // Input Flag Clear for FSIC_RX_TRIG1 Signal
 #define XBAR_CLR6_FSID_RX_TRIG1   0x80000U      // Input Flag Clear for FSID_RX_TRIG1 Signal
+#define XBAR_CLR6_WADI1OUT0       0x400000U     // Input Flag Clear for WADI1OUT0 Signal
+#define XBAR_CLR6_WADI1OUT1       0x800000U     // Input Flag Clear for WADI1OUT1 Signal
+#define XBAR_CLR6_WADI1OUT2       0x1000000U    // Input Flag Clear for WADI1OUT2 Signal
+#define XBAR_CLR6_WADI1OUT3       0x2000000U    // Input Flag Clear for WADI1OUT3 Signal
+#define XBAR_CLR6_WADI1OUT4       0x4000000U    // Input Flag Clear for WADI1OUT4 Signal
+#define XBAR_CLR6_WADI1OUT5       0x8000000U    // Input Flag Clear for WADI1OUT5 Signal
+#define XBAR_CLR6_WADI1OUT6       0x10000000U   // Input Flag Clear for WADI1OUT6 Signal
+#define XBAR_CLR6_WADI1OUT7       0x20000000U   // Input Flag Clear for WADI1OUT7 Signal
 #define XBAR_CLR6_ECATSYNC0       0x40000000U   // Input Flag Clear for ECATSYNC0 Signal
 #define XBAR_CLR6_ECATSYNC1       0x80000000U   // Input Flag Clear for ECATSYNC1 Signal
 
@@ -807,14 +851,14 @@
 #define XBAR_CLR7_ADCSOCB         0x20000U      // Input Flag Clear for ADCSOCB Signal
 #define XBAR_CLR7_ESMGENEVT       0x40000U      // Input Flag Clear for ESMGENEVT Signal
 #define XBAR_CLR7_EXTSYNCOUT      0x80000U      // Input Flag Clear for EXTSYNCOUT Signal
-#define XBAR_CLR7_WADIOUT0        0x1000000U    // Input Flag Clear for WADIOUT0 Signal
-#define XBAR_CLR7_WADIOUT1        0x2000000U    // Input Flag Clear for WADIOUT1 Signal
-#define XBAR_CLR7_WADIOUT2        0x4000000U    // Input Flag Clear for WADIOUT2 Signal
-#define XBAR_CLR7_WADIOUT3        0x8000000U    // Input Flag Clear for WADIOUT3 Signal
-#define XBAR_CLR7_WADIOUT4        0x10000000U   // Input Flag Clear for WADIOUT4 Signal
-#define XBAR_CLR7_WADIOUT5        0x20000000U   // Input Flag Clear for WADIOUT5 Signal
-#define XBAR_CLR7_WADIOUT6        0x40000000U   // Input Flag Clear for WADIOUT6 Signal
-#define XBAR_CLR7_WADIOUT7        0x80000000U   // Input Flag Clear for WADIOUT7 Signal
+#define XBAR_CLR7_WADI2OUT0       0x1000000U    // Input Flag Clear for WADI2OUT0 Signal
+#define XBAR_CLR7_WADI2OUT1       0x2000000U    // Input Flag Clear for WADI2OUT1 Signal
+#define XBAR_CLR7_WADI2OUT2       0x4000000U    // Input Flag Clear for WADI2OUT2 Signal
+#define XBAR_CLR7_WADI2OUT3       0x8000000U    // Input Flag Clear for WADI2OUT3 Signal
+#define XBAR_CLR7_WADI2OUT4       0x10000000U   // Input Flag Clear for WADI2OUT4 Signal
+#define XBAR_CLR7_WADI2OUT5       0x20000000U   // Input Flag Clear for WADI2OUT5 Signal
+#define XBAR_CLR7_WADI2OUT6       0x40000000U   // Input Flag Clear for WADI2OUT6 Signal
+#define XBAR_CLR7_WADI2OUT7       0x80000000U   // Input Flag Clear for WADI2OUT7 Signal
 
 //*************************************************************************************************
 //
@@ -893,48 +937,48 @@
 // The following are defines for the bit fields in the XBARCLR11 register
 //
 //*************************************************************************************************
-#define XBAR_CLR11_ETPWM1_A0_SCLK    0x1U          // Input Flag clear for ETPWM1_A0_sclk Signal
-#define XBAR_CLR11_ETPWM1_B0_SCLK    0x2U          // Input Flag clear for ETPWM1_B0_sclk Signal
-#define XBAR_CLR11_ETPWM2_A0_SCLK    0x4U          // Input Flag clear for ETPWM2_A0_sclk Signal
-#define XBAR_CLR11_ETPWM2_B0_SCLK    0x8U          // Input Flag clear for ETPWM2_B0_sclk Signal
-#define XBAR_CLR11_ETPWM3_A0_SCLK    0x10U         // Input Flag clear for ETPWM3_A0_sclk Signal
-#define XBAR_CLR11_ETPWM3_B0_SCLK    0x20U         // Input Flag clear for ETPWM3_B0_sclk Signal
-#define XBAR_CLR11_ETPWM4_A0_SCLK    0x40U         // Input Flag clear for ETPWM4_A0_sclk Signal
-#define XBAR_CLR11_ETPWM4_B0_SCLK    0x80U         // Input Flag clear for ETPWM4_B0_sclk Signal
-#define XBAR_CLR11_ETPWM5_A0_SCLK    0x100U        // Input Flag clear for ETPWM5_A0_sclk Signal
-#define XBAR_CLR11_ETPWM5_B0_SCLK    0x200U        // Input Flag clear for ETPWM5_B0_sclk Signal
-#define XBAR_CLR11_ETPWM6_A0_SCLK    0x400U        // Input Flag clear for ETPWM6_A0_sclk Signal
-#define XBAR_CLR11_ETPWM6_B0_SCLK    0x800U        // Input Flag clear for ETPWM6_B0_sclk Signal
-#define XBAR_CLR11_ETPWM7_A0_SCLK    0x1000U       // Input Flag clear for ETPWM7_A0_sclk Signal
-#define XBAR_CLR11_ETPWM7_B0_SCLK    0x2000U       // Input Flag clear for ETPWM7_B0_sclk Signal
-#define XBAR_CLR11_ETPWM8_A0_SCLK    0x4000U       // Input Flag clear for ETPWM8_A0_sclk Signal
-#define XBAR_CLR11_ETPWM8_B0_SCLK    0x8000U       // Input Flag clear for ETPWM8_B0_sclk Signal
-#define XBAR_CLR11_ETPWM9_A0_SCLK    0x10000U      // Input Flag clear for ETPWM9_A0_sclk Signal
-#define XBAR_CLR11_ETPWM9_B0_SCLK    0x20000U      // Input Flag clear for ETPWM9_B0_sclk Signal
-#define XBAR_CLR11_ETPWM10_A0_SCLK   0x40000U      // Input Flag clear for ETPWM10_A0_sclk Signal
-#define XBAR_CLR11_ETPWM10_B0_SCLK   0x80000U      // Input Flag clear for ETPWM10_B0_sclk Signal
-#define XBAR_CLR11_ETPWM11_A0_SCLK   0x100000U     // Input Flag clear for ETPWM11_A0_sclk Signal
-#define XBAR_CLR11_ETPWM11_B0_SCLK   0x200000U     // Input Flag clear for ETPWM11_B0_sclk Signal
-#define XBAR_CLR11_ETPWM12_A0_SCLK   0x400000U     // Input Flag clear for ETPWM12_A0_sclk Signal
-#define XBAR_CLR11_ETPWM12_B0_SCLK   0x800000U     // Input Flag clear for ETPWM12_B0_sclk Signal
-#define XBAR_CLR11_ETPWM13_A0_SCLK   0x1000000U    // Input Flag clear for ETPWM13_A0_sclk Signal
-#define XBAR_CLR11_ETPWM13_B0_SCLK   0x2000000U    // Input Flag clear for ETPWM13_B0_sclk Signal
-#define XBAR_CLR11_ETPWM14_A0_SCLK   0x4000000U    // Input Flag clear for ETPWM14_A0_sclk Signal
-#define XBAR_CLR11_ETPWM14_B0_SCLK   0x8000000U    // Input Flag clear for ETPWM14_B0_sclk Signal
-#define XBAR_CLR11_ETPWM15_A0_SCLK   0x10000000U   // Input Flag clear for ETPWM15_A0_sclk Signal
-#define XBAR_CLR11_ETPWM15_B0_SCLK   0x20000000U   // Input Flag clear for ETPWM15_B0_sclk Signal
-#define XBAR_CLR11_ETPWM16_A0_SCLK   0x40000000U   // Input Flag clear for ETPWM16_A0_sclk Signal
-#define XBAR_CLR11_ETPWM16_B0_SCLK   0x80000000U   // Input Flag clear for ETPWM16_B0_sclk Signal
+#define XBAR_CLR11_EPWM1_A0_SCLK    0x1U          // Input Flag clear for EPWM1_A0_sclk Signal
+#define XBAR_CLR11_EPWM1_B0_SCLK    0x2U          // Input Flag clear for EPWM1_B0_sclk Signal
+#define XBAR_CLR11_EPWM2_A0_SCLK    0x4U          // Input Flag clear for EPWM2_A0_sclk Signal
+#define XBAR_CLR11_EPWM2_B0_SCLK    0x8U          // Input Flag clear for EPWM2_B0_sclk Signal
+#define XBAR_CLR11_EPWM3_A0_SCLK    0x10U         // Input Flag clear for EPWM3_A0_sclk Signal
+#define XBAR_CLR11_EPWM3_B0_SCLK    0x20U         // Input Flag clear for EPWM3_B0_sclk Signal
+#define XBAR_CLR11_EPWM4_A0_SCLK    0x40U         // Input Flag clear for EPWM4_A0_sclk Signal
+#define XBAR_CLR11_EPWM4_B0_SCLK    0x80U         // Input Flag clear for EPWM4_B0_sclk Signal
+#define XBAR_CLR11_EPWM5_A0_SCLK    0x100U        // Input Flag clear for EPWM5_A0_sclk Signal
+#define XBAR_CLR11_EPWM5_B0_SCLK    0x200U        // Input Flag clear for EPWM5_B0_sclk Signal
+#define XBAR_CLR11_EPWM6_A0_SCLK    0x400U        // Input Flag clear for EPWM6_A0_sclk Signal
+#define XBAR_CLR11_EPWM6_B0_SCLK    0x800U        // Input Flag clear for EPWM6_B0_sclk Signal
+#define XBAR_CLR11_EPWM7_A0_SCLK    0x1000U       // Input Flag clear for EPWM7_A0_sclk Signal
+#define XBAR_CLR11_EPWM7_B0_SCLK    0x2000U       // Input Flag clear for EPWM7_B0_sclk Signal
+#define XBAR_CLR11_EPWM8_A0_SCLK    0x4000U       // Input Flag clear for EPWM8_A0_sclk Signal
+#define XBAR_CLR11_EPWM8_B0_SCLK    0x8000U       // Input Flag clear for EPWM8_B0_sclk Signal
+#define XBAR_CLR11_EPWM9_A0_SCLK    0x10000U      // Input Flag clear for EPWM9_A0_sclk Signal
+#define XBAR_CLR11_EPWM9_B0_SCLK    0x20000U      // Input Flag clear for EPWM9_B0_sclk Signal
+#define XBAR_CLR11_EPWM10_A0_SCLK   0x40000U      // Input Flag clear for EPWM10_A0_sclk Signal
+#define XBAR_CLR11_EPWM10_B0_SCLK   0x80000U      // Input Flag clear for EPWM10_B0_sclk Signal
+#define XBAR_CLR11_EPWM11_A0_SCLK   0x100000U     // Input Flag clear for EPWM11_A0_sclk Signal
+#define XBAR_CLR11_EPWM11_B0_SCLK   0x200000U     // Input Flag clear for EPWM11_B0_sclk Signal
+#define XBAR_CLR11_EPWM12_A0_SCLK   0x400000U     // Input Flag clear for EPWM12_A0_sclk Signal
+#define XBAR_CLR11_EPWM12_B0_SCLK   0x800000U     // Input Flag clear for EPWM12_B0_sclk Signal
+#define XBAR_CLR11_EPWM13_A0_SCLK   0x1000000U    // Input Flag clear for EPWM13_A0_sclk Signal
+#define XBAR_CLR11_EPWM13_B0_SCLK   0x2000000U    // Input Flag clear for EPWM13_B0_sclk Signal
+#define XBAR_CLR11_EPWM14_A0_SCLK   0x4000000U    // Input Flag clear for EPWM14_A0_sclk Signal
+#define XBAR_CLR11_EPWM14_B0_SCLK   0x8000000U    // Input Flag clear for EPWM14_B0_sclk Signal
+#define XBAR_CLR11_EPWM15_A0_SCLK   0x10000000U   // Input Flag clear for EPWM15_A0_sclk Signal
+#define XBAR_CLR11_EPWM15_B0_SCLK   0x20000000U   // Input Flag clear for EPWM15_B0_sclk Signal
+#define XBAR_CLR11_EPWM16_A0_SCLK   0x40000000U   // Input Flag clear for EPWM16_A0_sclk Signal
+#define XBAR_CLR11_EPWM16_B0_SCLK   0x80000000U   // Input Flag clear for EPWM16_B0_sclk Signal
 
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the XBARCLR12 register
 //
 //*************************************************************************************************
-#define XBAR_CLR12_ETPWM17_A0_SCLK   0x1U   // Input Flag clear for ETPWM17_A0_sclk Signal
-#define XBAR_CLR12_ETPWM17_B0_SCLK   0x2U   // Input Flag clear for ETPWM17_B0_sclk Signal
-#define XBAR_CLR12_ETPWM18_A0_SCLK   0x4U   // Input Flag clear for ETPWM18_A0_sclk Signal
-#define XBAR_CLR12_ETPWM18_B0_SCLK   0x8U   // Input Flag clear for ETPWM18_B0_sclk Signal
+#define XBAR_CLR12_EPWM17_A0_SCLK   0x1U   // Input Flag clear for EPWM17_A0_sclk Signal
+#define XBAR_CLR12_EPWM17_B0_SCLK   0x2U   // Input Flag clear for EPWM17_B0_sclk Signal
+#define XBAR_CLR12_EPWM18_A0_SCLK   0x4U   // Input Flag clear for EPWM18_A0_sclk Signal
+#define XBAR_CLR12_EPWM18_B0_SCLK   0x8U   // Input Flag clear for EPWM18_B0_sclk Signal
 
 //*************************************************************************************************
 //

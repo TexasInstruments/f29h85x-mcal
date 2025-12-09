@@ -527,7 +527,7 @@ void Cdd_Sent_ProcessISR(Cdd_SentInstance SentInstance)
 LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) Cdd_Sent_getMessageID(Cdd_SentInstance SentInstance)
 {
     VAR(uint32, AUTOMATIC)
-    Sent_Base                             = ((uint32)SENT1CSENT_BASE) + (((uint32)SentInstance) * 0x1000U);
+    Sent_Base                             = ((uint32)SENT1_BASE) + (((uint32)SentInstance) * 0x1000U);
     VAR(uint32, AUTOMATIC) Slow_Data_Base = HWREG(Sent_Base + SENT_O_RSDATA);
     VAR(uint32, AUTOMATIC)
     MessageID = (Slow_Data_Base & SENT_RSDATA_MESSAGEID_M) >> SENT_RSDATA_MESSAGEID_S;
@@ -540,7 +540,7 @@ LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) Cdd_Sent_getMessageID(Cdd_SentInstance 
 LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) Cdd_Sent_getSlowData(Cdd_SentInstance SentInstance)
 {
     VAR(uint32, AUTOMATIC)
-    Sent_Base                             = ((uint32)SENT1CSENT_BASE) + (((uint32)SentInstance) * 0x1000U);
+    Sent_Base                             = ((uint32)SENT1_BASE) + (((uint32)SentInstance) * 0x1000U);
     VAR(uint32, AUTOMATIC) Slow_Data_Base = HWREG(Sent_Base + SENT_O_RSDATA);
     VAR(uint32, AUTOMATIC) Slow_Data      = (Slow_Data_Base & SENT_RSDATA_DATA_M) >> SENT_RSDATA_DATA_S;
     return Slow_Data;

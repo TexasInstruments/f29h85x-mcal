@@ -490,8 +490,8 @@ FUNC(uint64, CDD_IPC_CODE) Cdd_Ipc_ReadCounter(void)
 {
     // Get the Counter High and Low values. Read to the Counter low register
     // saves the value of Counter High register.
-    uint32 ctrL = HWREG(IPCCOUNTERREGS_BASE + IPC_O_COUNTERL);
-    uint32 ctrH = HWREG(IPCCOUNTERREGS_BASE + IPC_O_COUNTERH);
+    uint32 ctrL = HWREG(IPCCOUNTER_BASE + IPC_O_COUNTERL);
+    uint32 ctrH = HWREG(IPCCOUNTER_BASE + IPC_O_COUNTERH);
 
     // Return the 64-bit value of the counter
     return (((uint64)ctrH << 32U) | ((uint64)ctrL));

@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the SSU registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_SSU_H
@@ -20,10 +52,6 @@
 #define SSU_O_UPP_REVISION               0x4U     // User Protection Policy Revision
 #define SSU_O_MODE                       0x8U     // Safety and Security Operational Mode
 #define SSU_O_LINK2_AP_OVERRIDE          0xCU     // LINK2 Access Protection Override Register
-#define SSU_O_UID_31_0                   0x10U    // Unique ID Bits 31:0
-#define SSU_O_UID_63_32                  0x14U    // Unique ID Bits 63:32
-#define SSU_O_UID_95_64                  0x18U    // Unique ID Bits 95:64
-#define SSU_O_UID_127_96                 0x1CU    // Unique ID Bits 127:96
 #define SSU_O_BOOTMODE_STAT              0x2CU    // User Boot Mode Status Register
 #define SSU_O_EMU_BOOTPIN_CONFIG         0x30U    // User Emulation Boot Pin Configuration
 #define SSU_O_EMU_BOOT_DIAG              0x34U    // User Emulation Boot Options
@@ -116,17 +144,17 @@
 #define SSU_O_EMU_DECODER_ADDR_IN   0xA8U   // SW ZONE Decoder Address Input
 #define SSU_O_EMU_DECODER_OUT       0xACU   // SW ZONE Decoder Output
 
-#define SSU_O_AP_CFG(i)      (0x0U + ((i) * 32))    // (0 <= i < 64) Access Protection 
+#define SSU_O_AP_CFG(i)      (0x0U + ((i) * 32U))    // (0 <= i < 64) Access Protection 
                                                         // Configuration
-#define SSU_O_AP_START(i)    (0x4U + ((i) * 32))    // (0 <= i < 64) Access Protection  Start
+#define SSU_O_AP_START(i)    (0x4U + ((i) * 32U))    // (0 <= i < 64) Access Protection  Start
                                                         // Address
-#define SSU_O_AP_END(i)      (0x8U + ((i) * 32))    // (0 <= i < 64) Access Protection  End
+#define SSU_O_AP_END(i)      (0x8U + ((i) * 32U))    // (0 <= i < 64) Access Protection  End
                                                         // Address
-#define SSU_O_AP_LOCK(i)     (0xCU + ((i) * 32))    // (0 <= i < 64) Access Protection 
+#define SSU_O_AP_LOCK(i)     (0xCU + ((i) * 32U))    // (0 <= i < 64) Access Protection 
                                                         // Temporary Lock
-#define SSU_O_AP_COMMIT(i)   (0x10U + ((i) * 32))   // (0 <= i < 64) Access Protection 
+#define SSU_O_AP_COMMIT(i)   (0x10U + ((i) * 32U))   // (0 <= i < 64) Access Protection 
                                                         // Permanent Commit
-#define SSU_O_AP_ACCESS(i)   (0x14U + ((i) * 32))   // (0 <= i < 64) Access Protection  R/W
+#define SSU_O_AP_ACCESS(i)   (0x14U + ((i) * 32U))   // (0 <= i < 64) Access Protection  R/W
                                                         // Access Permissions
 
 
@@ -1215,7 +1243,6 @@
 // The following are defines for the bit fields in the RAMOPENSTAT register
 //
 //*************************************************************************************************
-#define SSU_RAMOPENSTAT_LINK0_RAMOPENS   0x1U   // LINK0 RAM Open Status Bit
 #define SSU_RAMOPENSTAT_LINK1_RAMOPENS   0x2U   // LINK1 RAM Open Status Bit
 
 //*************************************************************************************************
@@ -1223,8 +1250,6 @@
 // The following are defines for the bit fields in the RAMOPENFRC register
 //
 //*************************************************************************************************
-#define SSU_RAMOPENFRC_SET_LINK0           0x1U      // Set LINK0 RAM Open Request
-#define SSU_RAMOPENFRC_WIPE_ON_LINK0_CLR   0x10U     // Wipe LINK0 RAM on Clear Request
 #define SSU_RAMOPENFRC_SET_LINK1           0x100U    // Set LINK1 RAM Open Request
 #define SSU_RAMOPENFRC_WIPE_ON_LINK1_CLR   0x1000U   // Wipe LINK1 RAM on Clear Request
 
@@ -1233,7 +1258,6 @@
 // The following are defines for the bit fields in the RAMOPENCLR register
 //
 //*************************************************************************************************
-#define SSU_RAMOPENCLR_CLEAR_LINK0   0x1U   // Clear LINK0 RAM Open Request
 #define SSU_RAMOPENCLR_CLEAR_LINK1   0x2U   // Clear LINK1 RAM Open Request
 
 //*************************************************************************************************
@@ -1261,7 +1285,6 @@
 #define SSU_DECODER_OUT_APR_M     0x7F0000U     // Access Protection Region
 #define SSU_DECODER_OUT_INVALID   0x80000000U   // Decoder Output Invalid
 
-
 //*************************************************************************************************
 //
 // The following are defines for the bit fields in the EMU_DECODER_ADDR_IN register
@@ -1271,7 +1294,6 @@
 #define SSU_EMU_DECODER_ADDR_IN_ADDR_L_M   0xF000U       // Address Bits 15:12
 #define SSU_EMU_DECODER_ADDR_IN_ADDR_H_S   16U
 #define SSU_EMU_DECODER_ADDR_IN_ADDR_H_M   0xFFFF0000U   // Address Bits 31:16
-
 
 //*************************************************************************************************
 //

@@ -5,7 +5,39 @@
 // TITLE:   Macros defining the memory map of the C28x.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_MEMMAP_H
@@ -61,14 +93,13 @@
 #define SSUCPU1AP_BASE                       0x30087000U
 #define SSUCPU2AP_BASE                       0x30088000U
 #define SSUCPU3AP_BASE                       0x30089000U
-#define SSUINTERNAL_BASE                     0x3008F000U
 #define FLASHCONTROLLER1_BASE                0x30100000U
 #define FLASHCONTROLLER2_BASE                0x30110000U
 #define HSMERRORAGGREGATOR_BASE              0x30120000U
 #define DEVCFG_BASE                          0x30180000U
 #define ANALOGSUBSYS_BASE                    0x30182000U
 #define GPIOCTRL_BASE                        0x30190000U
-#define IPCCOUNTERREGS_BASE                  0x301B0000U
+#define IPCCOUNTER_BASE                      0x301B0000U
 #define RTDMA1_BASE                          0x301C0000U
 #define RTDMA1_DIAG_BASE                     0x301C0800U
 #define RTDMA1_SELFTEST_BASE                 0x301C0C00U
@@ -81,9 +112,7 @@
 #define MEMSSLCFG_BASE                       0x301D8000U
 #define MEMSSCCFG_BASE                       0x301D8400U
 #define MEMSSMCFG_BASE                       0x301D8800U
-#define MEMSSROMCFG_BASE                     0x301D8C00U
 #define MEMSSMISCI_BASE                      0x301D8E00U
-#define MEMSSROMPATCH_BASE                   0x301D9000U
 #define SYNCBRIDGEMPU_BASE                   0x301E0000U
 #define INPUTXBAR_BASE                       0x301E8000U
 #define EPWMXBAR_BASE                        0x301E9000U
@@ -127,95 +156,89 @@
 #define ADCERESULT_BASE                      0x303C4000U
 #define EMIF1_BASE                           0x30800000U
 
-#define RTDMA1CH1_BASE_FRAME(i)              (0x60000000U + (i) * 0x400000U)
-#define RTDMA1CH2_BASE_FRAME(i)              (0x60001000U + (i) * 0x400000U)
-#define RTDMA1CH3_BASE_FRAME(i)              (0x60002000U + (i) * 0x400000U)
-#define RTDMA1CH4_BASE_FRAME(i)              (0x60003000U + (i) * 0x400000U)
-#define RTDMA1CH5_BASE_FRAME(i)              (0x60004000U + (i) * 0x400000U)
-#define RTDMA1CH6_BASE_FRAME(i)              (0x60005000U + (i) * 0x400000U)
-#define RTDMA1CH7_BASE_FRAME(i)              (0x60006000U + (i) * 0x400000U)
-#define RTDMA1CH8_BASE_FRAME(i)              (0x60007000U + (i) * 0x400000U)
-#define RTDMA1CH9_BASE_FRAME(i)              (0x60008000U + (i) * 0x400000U)
-#define RTDMA1CH10_BASE_FRAME(i)             (0x60009000U + (i) * 0x400000U)
-#define RTDMA2CH1_BASE_FRAME(i)              (0x60010000U + (i) * 0x400000U)
-#define RTDMA2CH2_BASE_FRAME(i)              (0x60011000U + (i) * 0x400000U)
-#define RTDMA2CH3_BASE_FRAME(i)              (0x60012000U + (i) * 0x400000U)
-#define RTDMA2CH4_BASE_FRAME(i)              (0x60013000U + (i) * 0x400000U)
-#define RTDMA2CH5_BASE_FRAME(i)              (0x60014000U + (i) * 0x400000U)
-#define RTDMA2CH6_BASE_FRAME(i)              (0x60015000U + (i) * 0x400000U)
-#define RTDMA2CH7_BASE_FRAME(i)              (0x60016000U + (i) * 0x400000U)
-#define RTDMA2CH8_BASE_FRAME(i)              (0x60017000U + (i) * 0x400000U)
-#define RTDMA2CH9_BASE_FRAME(i)              (0x60018000U + (i) * 0x400000U)
-#define RTDMA2CH10_BASE_FRAME(i)             (0x60019000U + (i) * 0x400000U)
+#define RTDMA1CH1_BASE_FRAME(i)              (0x60000000U + ((i) * 0x400000U))
+#define RTDMA1CH2_BASE_FRAME(i)              (0x60001000U + ((i) * 0x400000U))
+#define RTDMA1CH3_BASE_FRAME(i)              (0x60002000U + ((i) * 0x400000U))
+#define RTDMA1CH4_BASE_FRAME(i)              (0x60003000U + ((i) * 0x400000U))
+#define RTDMA1CH5_BASE_FRAME(i)              (0x60004000U + ((i) * 0x400000U))
+#define RTDMA1CH6_BASE_FRAME(i)              (0x60005000U + ((i) * 0x400000U))
+#define RTDMA1CH7_BASE_FRAME(i)              (0x60006000U + ((i) * 0x400000U))
+#define RTDMA1CH8_BASE_FRAME(i)              (0x60007000U + ((i) * 0x400000U))
+#define RTDMA1CH9_BASE_FRAME(i)              (0x60008000U + ((i) * 0x400000U))
+#define RTDMA1CH10_BASE_FRAME(i)             (0x60009000U + ((i) * 0x400000U))
+#define RTDMA2CH1_BASE_FRAME(i)              (0x60010000U + ((i) * 0x400000U))
+#define RTDMA2CH2_BASE_FRAME(i)              (0x60011000U + ((i) * 0x400000U))
+#define RTDMA2CH3_BASE_FRAME(i)              (0x60012000U + ((i) * 0x400000U))
+#define RTDMA2CH4_BASE_FRAME(i)              (0x60013000U + ((i) * 0x400000U))
+#define RTDMA2CH5_BASE_FRAME(i)              (0x60014000U + ((i) * 0x400000U))
+#define RTDMA2CH6_BASE_FRAME(i)              (0x60015000U + ((i) * 0x400000U))
+#define RTDMA2CH7_BASE_FRAME(i)              (0x60016000U + ((i) * 0x400000U))
+#define RTDMA2CH8_BASE_FRAME(i)              (0x60017000U + ((i) * 0x400000U))
+#define RTDMA2CH9_BASE_FRAME(i)              (0x60018000U + ((i) * 0x400000U))
+#define RTDMA2CH10_BASE_FRAME(i)             (0x60019000U + ((i) * 0x400000U))
 #define MCANA_DRIVER_BASE_FRAME(i)           (0x60020000U + ((i) * 0x400000U))
-#define MCANSSA_BASE_FRAME(i)                (0x60024000U + ((i) * 0x400000U))
+#define MCANASS_BASE_FRAME(i)                (0x60024000U + ((i) * 0x400000U))
 #define MCANA_BASE_FRAME(i)                  (0x60024600U + ((i) * 0x400000U))
 #define MCANA_ERROR_BASE_FRAME(i)            (0x60024800U + ((i) * 0x400000U))
-#define MCANB_DRIVER_BASE_FRAME(i)           (0x60028000U + (i) * 0x400000U)
-#define MCANBSS_BASE_FRAME(i)                (0x6002C000U + (i) * 0x400000U)
-#define MCANB_BASE_FRAME(i)                  (0x6002C600U + (i) * 0x400000U)
-#define MCANB_ERROR_BASE_FRAME(i)            (0x6002C800U + (i) * 0x400000U)
-#define MCANC_DRIVER_BASE_FRAME(i)           (0x60030000U + (i) * 0x400000U)
-#define MCANCSS_BASE_FRAME(i)                (0x60034000U + (i) * 0x400000U)
-#define MCANC_BASE_FRAME(i)                  (0x60034600U + (i) * 0x400000U)
-#define MCANC_ERROR_BASE_FRAME(i)            (0x60034800U + (i) * 0x400000U)
-#define MCAND_DRIVER_BASE_FRAME(i)           (0x60038000U + (i) * 0x400000U)
-#define MCANDSS_BASE_FRAME(i)                (0x6003C000U + (i) * 0x400000U)
-#define MCAND_BASE_FRAME(i)                  (0x6003C600U + (i) * 0x400000U)
-#define MCAND_ERROR_BASE_FRAME(i)            (0x6003C800U + (i) * 0x400000U)
-#define MCANE_DRIVER_BASE_FRAME(i)           (0x60040000U + (i) * 0x400000U)
-#define MCANESS_BASE_FRAME(i)                (0x60044000U + (i) * 0x400000U)
-#define MCANE_BASE_FRAME(i)                  (0x60044600U + (i) * 0x400000U)
-#define MCANE_ERROR_BASE_FRAME(i)            (0x60044800U + (i) * 0x400000U)
-#define MCANF_DRIVER_BASE_FRAME(i)           (0x60048000U + (i) * 0x400000U)
-#define MCANFSS_BASE_FRAME(i)                (0x6004C000U + (i) * 0x400000U)
-#define MCANF_BASE_FRAME(i)                  (0x6004C600U + (i) * 0x400000U)
-#define MCANF_ERROR_BASE_FRAME(i)            (0x6004C800U + (i) * 0x400000U)
-#define LINA_BASE_FRAME(i)                   (0x60060000U + (i) * 0x400000U)
-#define LINB_BASE_FRAME(i)                   (0x60061000U + (i) * 0x400000U)
-#define SENT1CSENT_BASE_FRAME(i)             (0x60068000U + (i) * 0x400000U)
-#define SENT1MEM_BASE_FRAME(i)               (0x60068400U + (i) * 0x400000U)
-#define SENT1MTPG_BASE_FRAME(i)              (0x60068800U + (i) * 0x400000U)
-#define SENT2CSENT_BASE_FRAME(i)             (0x60069000U + (i) * 0x400000U)
-#define SENT2MEM_BASE_FRAME(i)               (0x60069400U + (i) * 0x400000U)
-#define SENT2MTPG_BASE_FRAME(i)              (0x60069800U + (i) * 0x400000U)
-#define SENT3CSENT_BASE_FRAME(i)             (0x6006A000U + (i) * 0x400000U)
-#define SENT3MEM_BASE_FRAME(i)               (0x6006A400U + (i) * 0x400000U)
-#define SENT3MTPG_BASE_FRAME(i)              (0x6006A800U + (i) * 0x400000U)
-#define SENT4CSENT_BASE_FRAME(i)             (0x6006B000U + (i) * 0x400000U)
-#define SENT4MEM_BASE_FRAME(i)               (0x6006B400U + (i) * 0x400000U)
-#define SENT4MTPG_BASE_FRAME(i)              (0x6006B800U + (i) * 0x400000U)
-#define SENT5CSENT_BASE_FRAME(i)             (0x6006C000U + (i) * 0x400000U)
-#define SENT5MEM_BASE_FRAME(i)               (0x6006C400U + (i) * 0x400000U)
-#define SENT5MTPG_BASE_FRAME(i)              (0x6006C800U + (i) * 0x400000U)
-#define SENT6CSENT_BASE_FRAME(i)             (0x6006D000U + (i) * 0x400000U)
-#define SENT6MEM_BASE_FRAME(i)               (0x6006D400U + (i) * 0x400000U)
-#define SENT6MTPG_BASE_FRAME(i)              (0x6006D800U + (i) * 0x400000U)
-#define UARTA_WRITE_BASE_FRAME(i)            (0x60070000U + (i) * 0x400000U)
-#define UARTA_BASE_FRAME(i)                  (0x60070000U + (i) * 0x400000U)
-#define UARTB_WRITE_BASE_FRAME(i)            (0x60072000U + (i) * 0x400000U)
-#define UARTB_BASE_FRAME(i)                  (0x60072000U + (i) * 0x400000U)
-#define UARTC_WRITE_BASE_FRAME(i)            (0x60074000U + (i) * 0x400000U)
-#define UARTC_BASE_FRAME(i)                  (0x60074000U + (i) * 0x400000U)
-#define UARTD_WRITE_BASE_FRAME(i)            (0x60076000U + (i) * 0x400000U)
-#define UARTD_BASE_FRAME(i)                  (0x60076000U + (i) * 0x400000U)
-#define UARTE_WRITE_BASE_FRAME(i)            (0x60078000U + (i) * 0x400000U)
-#define UARTE_BASE_FRAME(i)                  (0x60078000U + (i) * 0x400000U)
-#define UARTF_WRITE_BASE_FRAME(i)            (0x6007A000U + (i) * 0x400000U)
-#define UARTF_BASE_FRAME(i)                  (0x6007A000U + (i) * 0x400000U)
-#define DCC1_BASE_FRAME(i)                   (0x60080000U + (i) * 0x400000U)
-#define DCC2_BASE_FRAME(i)                   (0x60081000U + (i) * 0x400000U)
-#define DCC3_BASE_FRAME(i)                   (0x60082000U + (i) * 0x400000U)
-#define ERRORAGGREGATOR_BASE_FRAME(i)        (0x6008C000U + (i) * 0x400000U)
-#define ESMCPU1_BASE_FRAME(i)                (0x60090000U + (i) * 0x400000U)
-#define ESMCPU2_BASE_FRAME(i)                (0x60091000U + (i) * 0x400000U)
-#define ESMCPU3_BASE_FRAME(i)                (0x60092000U + (i) * 0x400000U)
-#define ESMSYSTEM_BASE_FRAME(i)              (0x6009F000U + (i) * 0x400000U)
-#define ESMSAFETYAGG_BASE_FRAME(i)           (0x600A0000U + (i) * 0x400000U)
-#define WADI1CONFIG_BASE_FRAME(i)            (0x600B0000U + (i) * 0x400000U)
-#define WADI1OPERSSS_BASE_FRAME(i)           (0x600B1000U + (i) * 0x400000U)
-#define WADI2CONFIG_BASE_FRAME(i)            (0x600B2000U + (i) * 0x400000U)
-#define WADI2OPERSSS_BASE_FRAME(i)           (0x600B3000U + (i) * 0x400000U)
+#define MCANB_DRIVER_BASE_FRAME(i)           (0x60028000U + ((i) * 0x400000U))
+#define MCANBSS_BASE_FRAME(i)                (0x6002C000U + ((i) * 0x400000U))
+#define MCANB_BASE_FRAME(i)                  (0x6002C600U + ((i) * 0x400000U))
+#define MCANB_ERROR_BASE_FRAME(i)            (0x6002C800U + ((i) * 0x400000U))
+#define MCANC_DRIVER_BASE_FRAME(i)           (0x60030000U + ((i) * 0x400000U))
+#define MCANCSS_BASE_FRAME(i)                (0x60034000U + ((i) * 0x400000U))
+#define MCANC_BASE_FRAME(i)                  (0x60034600U + ((i) * 0x400000U))
+#define MCANC_ERROR_BASE_FRAME(i)            (0x60034800U + ((i) * 0x400000U))
+#define MCAND_DRIVER_BASE_FRAME(i)           (0x60038000U + ((i) * 0x400000U))
+#define MCANDSS_BASE_FRAME(i)                (0x6003C000U + ((i) * 0x400000U))
+#define MCAND_BASE_FRAME(i)                  (0x6003C600U + ((i) * 0x400000U))
+#define MCAND_ERROR_BASE_FRAME(i)            (0x6003C800U + ((i) * 0x400000U))
+#define MCANE_DRIVER_BASE_FRAME(i)           (0x60040000U + ((i) * 0x400000U))
+#define MCANESS_BASE_FRAME(i)                (0x60044000U + ((i) * 0x400000U))
+#define MCANE_BASE_FRAME(i)                  (0x60044600U + ((i) * 0x400000U))
+#define MCANE_ERROR_BASE_FRAME(i)            (0x60044800U + ((i) * 0x400000U))
+#define MCANF_DRIVER_BASE_FRAME(i)           (0x60048000U + ((i) * 0x400000U))
+#define MCANFSS_BASE_FRAME(i)                (0x6004C000U + ((i) * 0x400000U))
+#define MCANF_BASE_FRAME(i)                  (0x6004C600U + ((i) * 0x400000U))
+#define MCANF_ERROR_BASE_FRAME(i)            (0x6004C800U + ((i) * 0x400000U))
+#define LINA_BASE_FRAME(i)                   (0x60060000U + ((i) * 0x400000U))
+#define LINB_BASE_FRAME(i)                   (0x60061000U + ((i) * 0x400000U))
+#define SENT1_BASE_FRAME(i)                  (0x60068000U + ((i) * 0x400000U))
+#define SENT2_BASE_FRAME(i)                  (0x60069000U + ((i) * 0x400000U))
+#define SENT3_BASE_FRAME(i)                  (0x6006A000U + ((i) * 0x400000U))
+#define SENT4_BASE_FRAME(i)                  (0x6006B000U + ((i) * 0x400000U))
+#define SENT5_BASE_FRAME(i)                  (0x6006C000U + ((i) * 0x400000U))
+#define SENT6_BASE_FRAME(i)                  (0x6006D000U + ((i) * 0x400000U))
+#define UARTA_WRITE_BASE_FRAME(i)            (0x60070000U + ((i) * 0x400000U))
+#define UARTA_BASE_FRAME(i)                  (0x60070000U + ((i) * 0x400000U))
+#define UARTB_WRITE_BASE_FRAME(i)            (0x60072000U + ((i) * 0x400000U))
+#define UARTB_BASE_FRAME(i)                  (0x60072000U + ((i) * 0x400000U))
+#define UARTC_WRITE_BASE_FRAME(i)            (0x60074000U + ((i) * 0x400000U))
+#define UARTC_BASE_FRAME(i)                  (0x60074000U + ((i) * 0x400000U))
+#define UARTD_WRITE_BASE_FRAME(i)            (0x60076000U + ((i) * 0x400000U))
+#define UARTD_BASE_FRAME(i)                  (0x60076000U + ((i) * 0x400000U))
+#define UARTE_WRITE_BASE_FRAME(i)            (0x60078000U + ((i) * 0x400000U))
+#define UARTE_BASE_FRAME(i)                  (0x60078000U + ((i) * 0x400000U))
+#define UARTF_WRITE_BASE_FRAME(i)            (0x6007A000U + ((i) * 0x400000U))
+#define UARTF_BASE_FRAME(i)                  (0x6007A000U + ((i) * 0x400000U))
+#define DCC1_BASE_FRAME(i)                   (0x60080000U + ((i) * 0x400000U))
+#define DCC2_BASE_FRAME(i)                   (0x60081000U + ((i) * 0x400000U))
+#define DCC3_BASE_FRAME(i)                   (0x60082000U + ((i) * 0x400000U))
+#define ERRORAGGREGATOR_BASE_FRAME(i)        (0x6008C000U + ((i) * 0x400000U))
+#define ESMCPU1_BASE_FRAME(i)                (0x60090000U + ((i) * 0x400000U))
+#define ESMCPU2_BASE_FRAME(i)                (0x60091000U + ((i) * 0x400000U))
+#define ESMCPU3_BASE_FRAME(i)                (0x60092000U + ((i) * 0x400000U))
+#define ESMSYSTEM_BASE_FRAME(i)              (0x6009F000U + ((i) * 0x400000U))
+#define ESMSAFETYAGG_BASE_FRAME(i)           (0x600A0000U + ((i) * 0x400000U))
+#define WADI1BLK1CONFIG_BASE_FRAME(i)        (0x600B0000U + ((i) * 0x400000U))
+#define WADI1BLK2CONFIG_BASE_FRAME(i)        (0x600B0100U + ((i) * 0x400000U))
+#define WADI1BLK3CONFIG_BASE_FRAME(i)        (0x600B0200U + ((i) * 0x400000U))
+#define WADI1BLK4CONFIG_BASE_FRAME(i)        (0x600B0300U + ((i) * 0x400000U))
+#define WADI1OPERSSS_BASE_FRAME(i)           (0x600B1000U + ((i) * 0x400000U))
+#define WADI2BLK1CONFIG_BASE_FRAME(i)        (0x600B2000U + ((i) * 0x400000U))
+#define WADI2BLK2CONFIG_BASE_FRAME(i)        (0x600B2100U + ((i) * 0x400000U))
+#define WADI2BLK3CONFIG_BASE_FRAME(i)        (0x600B2200U + ((i) * 0x400000U))
+#define WADI2BLK4CONFIG_BASE_FRAME(i)        (0x600B2300U + ((i) * 0x400000U))
+#define WADI2OPERSSS_BASE_FRAME(i)           (0x600B3000U + ((i) * 0x400000U))
 #define OUTPUTXBAR1_FLAGS_BASE_FRAME(i)      (0x600C0000U + ((i) * 0x400000U))
 #define OUTPUTXBAR2_FLAGS_BASE_FRAME(i)      (0x600C1000U + ((i) * 0x400000U))
 #define OUTPUTXBAR3_FLAGS_BASE_FRAME(i)      (0x600C2000U + ((i) * 0x400000U))
@@ -233,9 +256,9 @@
 #define OUTPUTXBAR15_FLAGS_BASE_FRAME(i)     (0x600CE000U + ((i) * 0x400000U))
 #define OUTPUTXBAR16_FLAGS_BASE_FRAME(i)     (0x600CF000U + ((i) * 0x400000U))
 #define XBAR_BASE_FRAME(i)                   (0x600E0000U + ((i) * 0x400000U))
-#define CPU1DLTFIFO_BASE_FRAME(i)            (0x600F8000U + (i) * 0x400000U)
-#define CPU2DLTFIFO_BASE_FRAME(i)            (0x600FA000U + (i) * 0x400000U)
-#define CPU3DLTFIFO_BASE_FRAME(i)            (0x600FC000U + (i) * 0x400000U)
+#define CPU1DLTFIFO_BASE_FRAME(i)            (0x600F8000U + ((i) * 0x400000U))
+#define CPU2DLTFIFO_BASE_FRAME(i)            (0x600FA000U + ((i) * 0x400000U))
+#define CPU3DLTFIFO_BASE_FRAME(i)            (0x600FC000U + ((i) * 0x400000U))
 #define EPWM1_BASE_FRAME(i)                  (0x70000000U + ((i) * 0x400000U))
 #define EPWM1XCMP_BASE_FRAME(i)              (0x70000400U + ((i) * 0x400000U))
 #define EPWM1DE_BASE_FRAME(i)                (0x70000800U + ((i) * 0x400000U))
@@ -383,16 +406,16 @@
 #define HRPWMCAL1_BASE_FRAME(i)              (0x70080000U + ((i) * 0x400000U))
 #define HRPWMCAL2_BASE_FRAME(i)              (0x70081000U + ((i) * 0x400000U))
 #define HRPWMCAL3_BASE_FRAME(i)              (0x70082000U + ((i) * 0x400000U))
-#define EQEP1_BASE_FRAME(i)                  (0x70088000U + (i) * 0x400000U)
-#define EQEP2_BASE_FRAME(i)                  (0x70089000U + (i) * 0x400000U)
-#define EQEP3_BASE_FRAME(i)                  (0x7008A000U + (i) * 0x400000U)
-#define EQEP4_BASE_FRAME(i)                  (0x7008B000U + (i) * 0x400000U)
-#define EQEP5_BASE_FRAME(i)                  (0x7008C000U + (i) * 0x400000U)
-#define EQEP6_BASE_FRAME(i)                  (0x7008D000U + (i) * 0x400000U)
-#define SDFM1_BASE_FRAME(i)                  (0x70090000U + (i) * 0x400000U)
-#define SDFM2_BASE_FRAME(i)                  (0x70091000U + (i) * 0x400000U)
-#define SDFM3_BASE_FRAME(i)                  (0x70092000U + (i) * 0x400000U)
-#define SDFM4_BASE_FRAME(i)                  (0x70093000U + (i) * 0x400000U)
+#define EQEP1_BASE_FRAME(i)                  (0x70088000U + ((i) * 0x400000U))
+#define EQEP2_BASE_FRAME(i)                  (0x70089000U + ((i) * 0x400000U))
+#define EQEP3_BASE_FRAME(i)                  (0x7008A000U + ((i) * 0x400000U))
+#define EQEP4_BASE_FRAME(i)                  (0x7008B000U + ((i) * 0x400000U))
+#define EQEP5_BASE_FRAME(i)                  (0x7008C000U + ((i) * 0x400000U))
+#define EQEP6_BASE_FRAME(i)                  (0x7008D000U + ((i) * 0x400000U))
+#define SDFM1_BASE_FRAME(i)                  (0x70090000U + ((i) * 0x400000U))
+#define SDFM2_BASE_FRAME(i)                  (0x70091000U + ((i) * 0x400000U))
+#define SDFM3_BASE_FRAME(i)                  (0x70092000U + ((i) * 0x400000U))
+#define SDFM4_BASE_FRAME(i)                  (0x70093000U + ((i) * 0x400000U))
 #define ADCA_BASE_FRAME(i)                   (0x700A0000U + ((i) * 0x400000U))
 #define ADCB_BASE_FRAME(i)                   (0x700A1000U + ((i) * 0x400000U))
 #define ADCC_BASE_FRAME(i)                   (0x700A2000U + ((i) * 0x400000U))
@@ -412,76 +435,76 @@
 #define ADCSAFETYCHECKINTEVT2_BASE_FRAME(i)  (0x700C1000U + ((i) * 0x400000U))
 #define ADCSAFETYCHECKINTEVT3_BASE_FRAME(i)  (0x700C2000U + ((i) * 0x400000U))
 #define ADCGLOBAL_BASE_FRAME(i)              (0x700C8000U + ((i) * 0x400000U))
-#define DACA_BASE_FRAME(i)                   (0x700D0000U + (i) * 0x400000U)
-#define DACB_BASE_FRAME(i)                   (0x700D1000U + (i) * 0x400000U)
-#define CMPSS1_BASE_FRAME(i)                 (0x700E0000U + (i) * 0x400000U)
-#define CMPSS2_BASE_FRAME(i)                 (0x700E1000U + (i) * 0x400000U)
-#define CMPSS3_BASE_FRAME(i)                 (0x700E2000U + (i) * 0x400000U)
-#define CMPSS4_BASE_FRAME(i)                 (0x700E3000U + (i) * 0x400000U)
-#define CMPSS5_BASE_FRAME(i)                 (0x700E4000U + (i) * 0x400000U)
-#define CMPSS6_BASE_FRAME(i)                 (0x700E5000U + (i) * 0x400000U)
-#define CMPSS7_BASE_FRAME(i)                 (0x700E6000U + (i) * 0x400000U)
-#define CMPSS8_BASE_FRAME(i)                 (0x700E7000U + (i) * 0x400000U)
-#define CMPSS9_BASE_FRAME(i)                 (0x700E8000U + (i) * 0x400000U)
-#define CMPSS10_BASE_FRAME(i)                (0x700E9000U + (i) * 0x400000U)
-#define CMPSS11_BASE_FRAME(i)                (0x700EA000U + (i) * 0x400000U)
-#define CMPSS12_BASE_FRAME(i)                (0x700EB000U + (i) * 0x400000U)
-#define ECAP1_BASE_FRAME(i)                  (0x70100000U + (i) * 0x400000U)
-#define ECAP1SIGNALMONITORING_BASE_FRAME(i)  (0x70100080U + (i) * 0x400000U)
-#define ECAP2_BASE_FRAME(i)                  (0x70101000U + (i) * 0x400000U)
-#define ECAP2SIGNALMONITORING_BASE_FRAME(i)  (0x70101080U + (i) * 0x400000U)
-#define ECAP3_BASE_FRAME(i)                  (0x70102000U + (i) * 0x400000U)
-#define ECAP3SIGNALMONITORING_BASE_FRAME(i)  (0x70102080U + (i) * 0x400000U)
-#define ECAP4_BASE_FRAME(i)                  (0x70103000U + (i) * 0x400000U)
-#define ECAP4SIGNALMONITORING_BASE_FRAME(i)  (0x70103080U + (i) * 0x400000U)
-#define ECAP5_BASE_FRAME(i)                  (0x70104000U + (i) * 0x400000U)
-#define HRCAP5_BASE_FRAME(i)                 (0x70104040U + (i) * 0x400000U)
-#define ECAP5SIGNALMONITORING_BASE_FRAME(i)  (0x70104080U + (i) * 0x400000U)
-#define ECAP6_BASE_FRAME(i)                  (0x70105000U + (i) * 0x400000U)
-#define HRCAP6_BASE_FRAME(i)                 (0x70105040U + (i) * 0x400000U)
-#define ECAP6SIGNALMONITORING_BASE_FRAME(i)  (0x70105080U + (i) * 0x400000U)
-#define CLB1_BASE_FRAME(i)                   (0x70120000U + (i) * 0x400000U)
-#define CLB1_LOGICCFG_BASE_FRAME(i)          (0x70120000U + (i) * 0x400000U)
-#define CLB1_LOGICCTRL_BASE_FRAME(i)         (0x70120200U + (i) * 0x400000U)
-#define CLB1_DATAEXCH_BASE_FRAME(i)          (0x70120300U + (i) * 0x400000U)
-#define CLB2_BASE_FRAME(i)                   (0x70121000U + (i) * 0x400000U)
-#define CLB2_LOGICCFG_BASE_FRAME(i)          (0x70121000U + (i) * 0x400000U)
-#define CLB2_LOGICCTRL_BASE_FRAME(i)         (0x70121200U + (i) * 0x400000U)
-#define CLB2_DATAEXCH_BASE_FRAME(i)          (0x70121300U + (i) * 0x400000U)
-#define CLB3_BASE_FRAME(i)                   (0x70122000U + (i) * 0x400000U)
-#define CLB3_LOGICCFG_BASE_FRAME(i)          (0x70122000U + (i) * 0x400000U)
-#define CLB3_LOGICCTRL_BASE_FRAME(i)         (0x70122200U + (i) * 0x400000U)
-#define CLB3_DATAEXCH_BASE_FRAME(i)          (0x70122300U + (i) * 0x400000U)
-#define CLB4_BASE_FRAME(i)                   (0x70123000U + (i) * 0x400000U)
-#define CLB4_LOGICCFG_BASE_FRAME(i)          (0x70123000U + (i) * 0x400000U)
-#define CLB4_LOGICCTRL_BASE_FRAME(i)         (0x70123200U + (i) * 0x400000U)
-#define CLB4_DATAEXCH_BASE_FRAME(i)          (0x70123300U + (i) * 0x400000U)
-#define CLB5_BASE_FRAME(i)                   (0x70124000U + (i) * 0x400000U)
-#define CLB5_LOGICCFG_BASE_FRAME(i)          (0x70124000U + (i) * 0x400000U)
-#define CLB5_LOGICCTRL_BASE_FRAME(i)         (0x70124200U + (i) * 0x400000U)
-#define CLB5_DATAEXCH_BASE_FRAME(i)          (0x70124300U + (i) * 0x400000U)
-#define CLB6_BASE_FRAME(i)                   (0x70125000U + (i) * 0x400000U)
-#define CLB6_LOGICCFG_BASE_FRAME(i)          (0x70125000U + (i) * 0x400000U)
-#define CLB6_LOGICCTRL_BASE_FRAME(i)         (0x70125200U + (i) * 0x400000U)
-#define CLB6_DATAEXCH_BASE_FRAME(i)          (0x70125300U + (i) * 0x400000U)
-#define PMBUSA_BASE_FRAME(i)                 (0x70148000U + (i) * 0x400000U)
-#define I2CA_BASE_FRAME(i)                   (0x70150000U + (i) * 0x400000U)
-#define I2CB_BASE_FRAME(i)                   (0x70151000U + (i) * 0x400000U)
-#define SPIA_BASE_FRAME(i)                   (0x70158000U + (i) * 0x400000U)
-#define SPIB_BASE_FRAME(i)                   (0x70159000U + (i) * 0x400000U)
-#define SPIC_BASE_FRAME(i)                   (0x7015A000U + (i) * 0x400000U)
-#define SPID_BASE_FRAME(i)                   (0x7015B000U + (i) * 0x400000U)
-#define SPIE_BASE_FRAME(i)                   (0x7015C000U + (i) * 0x400000U)
-#define FSITXA_BASE_FRAME(i)                 (0x70180000U + (i) * 0x400000U)
-#define FSITXB_BASE_FRAME(i)                 (0x70181000U + (i) * 0x400000U)
-#define FSITXC_BASE_FRAME(i)                 (0x70182000U + (i) * 0x400000U)
-#define FSITXD_BASE_FRAME(i)                 (0x70183000U + (i) * 0x400000U)
-#define FSIRXA_BASE_FRAME(i)                 (0x70188000U + (i) * 0x400000U)
-#define FSIRXB_BASE_FRAME(i)                 (0x70189000U + (i) * 0x400000U)
-#define FSIRXC_BASE_FRAME(i)                 (0x7018A000U + (i) * 0x400000U)
-#define FSIRXD_BASE_FRAME(i)                 (0x7018B000U + (i) * 0x400000U)
-#define EPG_BASE_FRAME(i)                    (0x701C0000U + (i) * 0x400000U)
-#define EPGMUX_BASE_FRAME(i)                 (0x701C0200U + (i) * 0x400000U)
+#define DACA_BASE_FRAME(i)                   (0x700D0000U + ((i) * 0x400000U))
+#define DACB_BASE_FRAME(i)                   (0x700D1000U + ((i) * 0x400000U))
+#define CMPSS1_BASE_FRAME(i)                 (0x700E0000U + ((i) * 0x400000U))
+#define CMPSS2_BASE_FRAME(i)                 (0x700E1000U + ((i) * 0x400000U))
+#define CMPSS3_BASE_FRAME(i)                 (0x700E2000U + ((i) * 0x400000U))
+#define CMPSS4_BASE_FRAME(i)                 (0x700E3000U + ((i) * 0x400000U))
+#define CMPSS5_BASE_FRAME(i)                 (0x700E4000U + ((i) * 0x400000U))
+#define CMPSS6_BASE_FRAME(i)                 (0x700E5000U + ((i) * 0x400000U))
+#define CMPSS7_BASE_FRAME(i)                 (0x700E6000U + ((i) * 0x400000U))
+#define CMPSS8_BASE_FRAME(i)                 (0x700E7000U + ((i) * 0x400000U))
+#define CMPSS9_BASE_FRAME(i)                 (0x700E8000U + ((i) * 0x400000U))
+#define CMPSS10_BASE_FRAME(i)                (0x700E9000U + ((i) * 0x400000U))
+#define CMPSS11_BASE_FRAME(i)                (0x700EA000U + ((i) * 0x400000U))
+#define CMPSS12_BASE_FRAME(i)                (0x700EB000U + ((i) * 0x400000U))
+#define ECAP1_BASE_FRAME(i)                  (0x70100000U + ((i) * 0x400000U))
+#define ECAP1SIGNALMONITORING_BASE_FRAME(i)  (0x70100080U + ((i) * 0x400000U))
+#define ECAP2_BASE_FRAME(i)                  (0x70101000U + ((i) * 0x400000U))
+#define ECAP2SIGNALMONITORING_BASE_FRAME(i)  (0x70101080U + ((i) * 0x400000U))
+#define ECAP3_BASE_FRAME(i)                  (0x70102000U + ((i) * 0x400000U))
+#define ECAP3SIGNALMONITORING_BASE_FRAME(i)  (0x70102080U + ((i) * 0x400000U))
+#define ECAP4_BASE_FRAME(i)                  (0x70103000U + ((i) * 0x400000U))
+#define ECAP4SIGNALMONITORING_BASE_FRAME(i)  (0x70103080U + ((i) * 0x400000U))
+#define ECAP5_BASE_FRAME(i)                  (0x70104000U + ((i) * 0x400000U))
+#define HRCAP5_BASE_FRAME(i)                 (0x70104040U + ((i) * 0x400000U))
+#define ECAP5SIGNALMONITORING_BASE_FRAME(i)  (0x70104080U + ((i) * 0x400000U))
+#define ECAP6_BASE_FRAME(i)                  (0x70105000U + ((i) * 0x400000U))
+#define HRCAP6_BASE_FRAME(i)                 (0x70105040U + ((i) * 0x400000U))
+#define ECAP6SIGNALMONITORING_BASE_FRAME(i)  (0x70105080U + ((i) * 0x400000U))
+#define CLB1_BASE_FRAME(i)                   (0x70120000U + ((i) * 0x400000U))
+#define CLB1_LOGICCFG_BASE_FRAME(i)          (0x70120000U + ((i) * 0x400000U))
+#define CLB1_LOGICCTRL_BASE_FRAME(i)         (0x70120200U + ((i) * 0x400000U))
+#define CLB1_DATAEXCH_BASE_FRAME(i)          (0x70120300U + ((i) * 0x400000U))
+#define CLB2_BASE_FRAME(i)                   (0x70121000U + ((i) * 0x400000U))
+#define CLB2_LOGICCFG_BASE_FRAME(i)          (0x70121000U + ((i) * 0x400000U))
+#define CLB2_LOGICCTRL_BASE_FRAME(i)         (0x70121200U + ((i) * 0x400000U))
+#define CLB2_DATAEXCH_BASE_FRAME(i)          (0x70121300U + ((i) * 0x400000U))
+#define CLB3_BASE_FRAME(i)                   (0x70122000U + ((i) * 0x400000U))
+#define CLB3_LOGICCFG_BASE_FRAME(i)          (0x70122000U + ((i) * 0x400000U))
+#define CLB3_LOGICCTRL_BASE_FRAME(i)         (0x70122200U + ((i) * 0x400000U))
+#define CLB3_DATAEXCH_BASE_FRAME(i)          (0x70122300U + ((i) * 0x400000U))
+#define CLB4_BASE_FRAME(i)                   (0x70123000U + ((i) * 0x400000U))
+#define CLB4_LOGICCFG_BASE_FRAME(i)          (0x70123000U + ((i) * 0x400000U))
+#define CLB4_LOGICCTRL_BASE_FRAME(i)         (0x70123200U + ((i) * 0x400000U))
+#define CLB4_DATAEXCH_BASE_FRAME(i)          (0x70123300U + ((i) * 0x400000U))
+#define CLB5_BASE_FRAME(i)                   (0x70124000U + ((i) * 0x400000U))
+#define CLB5_LOGICCFG_BASE_FRAME(i)          (0x70124000U + ((i) * 0x400000U))
+#define CLB5_LOGICCTRL_BASE_FRAME(i)         (0x70124200U + ((i) * 0x400000U))
+#define CLB5_DATAEXCH_BASE_FRAME(i)          (0x70124300U + ((i) * 0x400000U))
+#define CLB6_BASE_FRAME(i)                   (0x70125000U + ((i) * 0x400000U))
+#define CLB6_LOGICCFG_BASE_FRAME(i)          (0x70125000U + ((i) * 0x400000U))
+#define CLB6_LOGICCTRL_BASE_FRAME(i)         (0x70125200U + ((i) * 0x400000U))
+#define CLB6_DATAEXCH_BASE_FRAME(i)          (0x70125300U + ((i) * 0x400000U))
+#define PMBUSA_BASE_FRAME(i)                 (0x70148000U + ((i) * 0x400000U))
+#define I2CA_BASE_FRAME(i)                   (0x70150000U + ((i) * 0x400000U))
+#define I2CB_BASE_FRAME(i)                   (0x70151000U + ((i) * 0x400000U))
+#define SPIA_BASE_FRAME(i)                   (0x70158000U + ((i) * 0x400000U))
+#define SPIB_BASE_FRAME(i)                   (0x70159000U + ((i) * 0x400000U))
+#define SPIC_BASE_FRAME(i)                   (0x7015A000U + ((i) * 0x400000U))
+#define SPID_BASE_FRAME(i)                   (0x7015B000U + ((i) * 0x400000U))
+#define SPIE_BASE_FRAME(i)                   (0x7015C000U + ((i) * 0x400000U))
+#define FSITXA_BASE_FRAME(i)                 (0x70180000U + ((i) * 0x400000U))
+#define FSITXB_BASE_FRAME(i)                 (0x70181000U + ((i) * 0x400000U))
+#define FSITXC_BASE_FRAME(i)                 (0x70182000U + ((i) * 0x400000U))
+#define FSITXD_BASE_FRAME(i)                 (0x70183000U + ((i) * 0x400000U))
+#define FSIRXA_BASE_FRAME(i)                 (0x70188000U + ((i) * 0x400000U))
+#define FSIRXB_BASE_FRAME(i)                 (0x70189000U + ((i) * 0x400000U))
+#define FSIRXC_BASE_FRAME(i)                 (0x7018A000U + ((i) * 0x400000U))
+#define FSIRXD_BASE_FRAME(i)                 (0x7018B000U + ((i) * 0x400000U))
+#define EPG_BASE_FRAME(i)                    (0x701C0000U + ((i) * 0x400000U))
+#define EPGMUX_BASE_FRAME(i)                 (0x701C0200U + ((i) * 0x400000U))
 
 #ifdef USE_PERIPHERAL_FRAMES
     #include "peripheral_frame_mapping.h"
@@ -553,8 +576,8 @@
 #ifndef MCANA_DRIVER_BASE
     #define MCANA_DRIVER_BASE                MCANA_DRIVER_BASE_FRAME(0U)
 #endif
-#ifndef MCANSSA_BASE
-    #define MCANSSA_BASE                     MCANSSA_BASE_FRAME(0U)
+#ifndef MCANASS_BASE
+    #define MCANASS_BASE                     MCANASS_BASE_FRAME(0U)
 #endif
 #ifndef MCANA_BASE
     #define MCANA_BASE                       MCANA_BASE_FRAME(0U)
@@ -628,59 +651,23 @@
 #ifndef LINB_BASE
     #define LINB_BASE                        LINB_BASE_FRAME(0U)
 #endif
-#ifndef SENT1CSENT_BASE
-    #define SENT1CSENT_BASE                  SENT1CSENT_BASE_FRAME(0U)
+#ifndef SENT1_BASE
+    #define SENT1_BASE                       SENT1_BASE_FRAME(0U)
 #endif
-#ifndef SENT1MEM_BASE
-    #define SENT1MEM_BASE                    SENT1MEM_BASE_FRAME(0U)
+#ifndef SENT2_BASE
+    #define SENT2_BASE                       SENT2_BASE_FRAME(0U)
 #endif
-#ifndef SENT1MTPG_BASE
-    #define SENT1MTPG_BASE                   SENT1MTPG_BASE_FRAME(0U)
+#ifndef SENT3_BASE
+    #define SENT3_BASE                       SENT3_BASE_FRAME(0U)
 #endif
-#ifndef SENT2CSENT_BASE
-    #define SENT2CSENT_BASE                  SENT2CSENT_BASE_FRAME(0U)
+#ifndef SENT4_BASE
+    #define SENT4_BASE                       SENT4_BASE_FRAME(0U)
 #endif
-#ifndef SENT2MEM_BASE
-    #define SENT2MEM_BASE                    SENT2MEM_BASE_FRAME(0U)
+#ifndef SENT5_BASE
+    #define SENT5_BASE                       SENT5_BASE_FRAME(0U)
 #endif
-#ifndef SENT2MTPG_BASE
-    #define SENT2MTPG_BASE                   SENT2MTPG_BASE_FRAME(0U)
-#endif
-#ifndef SENT3CSENT_BASE
-    #define SENT3CSENT_BASE                  SENT3CSENT_BASE_FRAME(0U)
-#endif
-#ifndef SENT3MEM_BASE
-    #define SENT3MEM_BASE                    SENT3MEM_BASE_FRAME(0U)
-#endif
-#ifndef SENT3MTPG_BASE
-    #define SENT3MTPG_BASE                   SENT3MTPG_BASE_FRAME(0U)
-#endif
-#ifndef SENT4CSENT_BASE
-    #define SENT4CSENT_BASE                  SENT4CSENT_BASE_FRAME(0U)
-#endif
-#ifndef SENT4MEM_BASE
-    #define SENT4MEM_BASE                    SENT4MEM_BASE_FRAME(0U)
-#endif
-#ifndef SENT4MTPG_BASE
-    #define SENT4MTPG_BASE                   SENT4MTPG_BASE_FRAME(0U)
-#endif
-#ifndef SENT5CSENT_BASE
-    #define SENT5CSENT_BASE                  SENT5CSENT_BASE_FRAME(0U)
-#endif
-#ifndef SENT5MEM_BASE
-    #define SENT5MEM_BASE                    SENT5MEM_BASE_FRAME(0U)
-#endif
-#ifndef SENT5MTPG_BASE
-    #define SENT5MTPG_BASE                   SENT5MTPG_BASE_FRAME(0U)
-#endif
-#ifndef SENT6CSENT_BASE
-    #define SENT6CSENT_BASE                  SENT6CSENT_BASE_FRAME(0U)
-#endif
-#ifndef SENT6MEM_BASE
-    #define SENT6MEM_BASE                    SENT6MEM_BASE_FRAME(0U)
-#endif
-#ifndef SENT6MTPG_BASE
-    #define SENT6MTPG_BASE                   SENT6MTPG_BASE_FRAME(0U)
+#ifndef SENT6_BASE
+    #define SENT6_BASE                       SENT6_BASE_FRAME(0U)
 #endif
 #ifndef UARTA_WRITE_BASE
     #define UARTA_WRITE_BASE                 UARTA_WRITE_BASE_FRAME(0U)
@@ -745,14 +732,32 @@
 #ifndef ESMSAFETYAGG_BASE
     #define ESMSAFETYAGG_BASE                ESMSAFETYAGG_BASE_FRAME(0U)
 #endif
-#ifndef WADI1CONFIG_BASE
-    #define WADI1CONFIG_BASE                 WADI1CONFIG_BASE_FRAME(0U)
+#ifndef WADI1BLK1CONFIG_BASE
+    #define WADI1BLK1CONFIG_BASE             WADI1BLK1CONFIG_BASE_FRAME(0U)
+#endif
+#ifndef WADI1BLK2CONFIG_BASE
+    #define WADI1BLK2CONFIG_BASE             WADI1BLK2CONFIG_BASE_FRAME(0U)
+#endif
+#ifndef WADI1BLK3CONFIG_BASE
+    #define WADI1BLK3CONFIG_BASE             WADI1BLK3CONFIG_BASE_FRAME(0U)
+#endif
+#ifndef WADI1BLK4CONFIG_BASE
+    #define WADI1BLK4CONFIG_BASE             WADI1BLK4CONFIG_BASE_FRAME(0U)
 #endif
 #ifndef WADI1OPERSSS_BASE
     #define WADI1OPERSSS_BASE                WADI1OPERSSS_BASE_FRAME(0U)
 #endif
-#ifndef WADI2CONFIG_BASE
-    #define WADI2CONFIG_BASE                 WADI2CONFIG_BASE_FRAME(0U)
+#ifndef WADI2BLK1CONFIG_BASE
+    #define WADI2BLK1CONFIG_BASE             WADI2BLK1CONFIG_BASE_FRAME(0U)
+#endif
+#ifndef WADI2BLK2CONFIG_BASE
+    #define WADI2BLK2CONFIG_BASE             WADI2BLK2CONFIG_BASE_FRAME(0U)
+#endif
+#ifndef WADI2BLK3CONFIG_BASE
+    #define WADI2BLK3CONFIG_BASE             WADI2BLK3CONFIG_BASE_FRAME(0U)
+#endif
+#ifndef WADI2BLK4CONFIG_BASE
+    #define WADI2BLK4CONFIG_BASE             WADI2BLK4CONFIG_BASE_FRAME(0U)
 #endif
 #ifndef WADI2OPERSSS_BASE
     #define WADI2OPERSSS_BASE                WADI2OPERSSS_BASE_FRAME(0U)

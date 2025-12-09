@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the CPU registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_CPU_H
@@ -16,28 +48,23 @@
 // The following are defines for the CPU register offsets
 //
 //*************************************************************************************************
-#define CPU_O_Y0I_DATA(i)     (0x0U + ((i) * 0x4U))      // (0 <= i < 1152) TMU ROM Y0i Data
-#define CPU_O_Y0I_PARITY(i)   (0x2000U + ((i) * 0x4U))   // (0 <= i < 1152) TMU ROM Y0i Parity
-#define CPU_O_S1I_DATA(i)     (0x4000U + ((i) * 0x4U))   // (0 <= i < 1152) TMU ROM S1i Data
-#define CPU_O_S2I_DATA(i)     (0x6000U + ((i) * 0x4U))   // (0 <= i < 1152) TMU ROM S2i Data
+#define CPU_O_RTINT_STACK_DATA0(i)   (0x0U + ((i) * 64U))    // (0 <= i < 128) RTINT stack Data0
+#define CPU_O_RTINT_STACK_DATA1(i)   (0x4U + ((i) * 64U))    // (0 <= i < 128) RTINT stack Data1
+#define CPU_O_RTINT_STACK_DATA2(i)   (0x8U + ((i) * 64U))    // (0 <= i < 128) RTINT stack Data2
+#define CPU_O_RTINT_STACK_DATA3(i)   (0xCU + ((i) * 64U))    // (0 <= i < 128) RTINT stack Data3
+#define CPU_O_RTINT_STACK_DATA4(i)   (0x10U + ((i) * 64U))   // (0 <= i < 128) RTINT stack Data4
+#define CPU_O_RTINT_STACK_DATA5(i)   (0x14U + ((i) * 64U))   // (0 <= i < 128) RTINT stack Data5
+#define CPU_O_RTINT_STACK_DATA6(i)   (0x18U + ((i) * 64U))   // (0 <= i < 128) RTINT stack Data6
+#define CPU_O_RTINT_STACK_DATA7(i)   (0x1CU + ((i) * 64U))   // (0 <= i < 128) RTINT stack Data7
+#define CPU_O_RTINT_STACK_DATA8(i)   (0x20U + ((i) * 64U))   // (0 <= i < 128) RTINT stack Data8
+#define CPU_O_RTINT_STACK_ECC0(i)    (0x24U + ((i) * 64U))   // (0 <= i < 128) RTINT stack ECC0
+#define CPU_O_RTINT_STACK_ECC1(i)    (0x28U + ((i) * 64U))   // (0 <= i < 128) RTINT stack ECC1
+#define CPU_O_RTINT_STACK_ECC2(i)    (0x2CU + ((i) * 64U))   // (0 <= i < 128) RTINT stack ECC2
+#define CPU_O_RTINT_STACK_ECC3(i)    (0x30U + ((i) * 64U))   // (0 <= i < 128) RTINT stack ECC3
 
-#define CPU_O_RTINT_STACK_DATA0(i)   (0x0U + ((i) * 64))    // (0 <= i < 256) RTINT stack Data0
-#define CPU_O_RTINT_STACK_DATA1(i)   (0x4U + ((i) * 64))    // (0 <= i < 256) RTINT stack Data1
-#define CPU_O_RTINT_STACK_DATA2(i)   (0x8U + ((i) * 64))    // (0 <= i < 256) RTINT stack Data2
-#define CPU_O_RTINT_STACK_DATA3(i)   (0xCU + ((i) * 64))    // (0 <= i < 256) RTINT stack Data3
-#define CPU_O_RTINT_STACK_DATA4(i)   (0x10U + ((i) * 64))   // (0 <= i < 256) RTINT stack Data4
-#define CPU_O_RTINT_STACK_DATA5(i)   (0x14U + ((i) * 64))   // (0 <= i < 256) RTINT stack Data5
-#define CPU_O_RTINT_STACK_DATA6(i)   (0x18U + ((i) * 64))   // (0 <= i < 256) RTINT stack Data6
-#define CPU_O_RTINT_STACK_DATA7(i)   (0x1CU + ((i) * 64))   // (0 <= i < 256) RTINT stack Data7
-#define CPU_O_RTINT_STACK_DATA8(i)   (0x20U + ((i) * 64))   // (0 <= i < 256) RTINT stack Data8
-#define CPU_O_RTINT_STACK_ECC0(i)    (0x24U + ((i) * 64))   // (0 <= i < 256) RTINT stack ECC0
-#define CPU_O_RTINT_STACK_ECC1(i)    (0x28U + ((i) * 64))   // (0 <= i < 256) RTINT stack ECC1
-#define CPU_O_RTINT_STACK_ECC2(i)    (0x2CU + ((i) * 64))   // (0 <= i < 256) RTINT stack ECC2
-#define CPU_O_RTINT_STACK_ECC3(i)    (0x30U + ((i) * 64))   // (0 <= i < 256) RTINT stack ECC3
-
-#define CPU_O_SECCALL_STACK_DATA0(i)   (0x0U + ((i) * 16))   // (0 <= i < 17) SECCALL stack Data0
-#define CPU_O_SECCALL_STACK_DATA1(i)   (0x4U + ((i) * 16))   // (0 <= i < 17) SECCALL stack Data1
-#define CPU_O_SECCALL_STACK_DATA2(i)   (0x8U + ((i) * 16))   // (0 <= i < 17) SECCALL stack Data2
+#define CPU_O_SECCALL_STACK_DATA0(i)   (0x0U + ((i) * 16U))   // (0 <= i < 17) SECCALL stack Data0
+#define CPU_O_SECCALL_STACK_DATA1(i)   (0x4U + ((i) * 16U))   // (0 <= i < 17) SECCALL stack Data1
+#define CPU_O_SECCALL_STACK_DATA2(i)   (0x8U + ((i) * 16U))   // (0 <= i < 17) SECCALL stack Data2
 
 #define CPU_O_SECSP0            0x0U    // Secure Stackpointer 0
 #define CPU_O_SECSP1            0x4U    // Secure Stackpointer 1
@@ -47,14 +74,6 @@
 #define CPU_O_SECSP5            0x14U   // Secure Stackpointer 5
 #define CPU_O_SECSP6            0x18U   // Secure Stackpointer 6
 #define CPU_O_SECSP7            0x1CU   // Secure Stackpointer 7
-#define CPU_O_SECSP8            0x20U   // Secure Stackpointer 8
-#define CPU_O_SECSP9            0x24U   // Secure Stackpointer 9
-#define CPU_O_SECSP10           0x28U   // Secure Stackpointer 10
-#define CPU_O_SECSP11           0x2CU   // Secure Stackpointer 11
-#define CPU_O_SECSP12           0x30U   // Secure Stackpointer 12
-#define CPU_O_SECSP13           0x34U   // Secure Stackpointer 13
-#define CPU_O_SECSP14           0x38U   // Secure Stackpointer 14
-#define CPU_O_SECSP15           0x3CU   // Secure Stackpointer 15
 #define CPU_O_PSP               0x80U   // Protected call stack pointer
 #define CPU_O_WARNPSP           0x84U   // Warning level register for protected call stack pointer
 #define CPU_O_MAXPSP            0x88U   // Maximum levels of protected calls supported by the HW
@@ -76,35 +95,6 @@
 #define CPU_O_SELFTEST_DIAG_CONTROL      0x28U   // Diagnostic test enable
 #define CPU_O_SELFTEST_DIAG_STATUS       0x2CU   // Diagnostic status register
 #define CPU_O_SELFTEST_DIAG_STATUS_CLR   0x30U   // Diagnostic status clear register
-
-
-//*************************************************************************************************
-//
-// The following are defines for the bit fields in the Y0i_PARITY register
-//
-//*************************************************************************************************
-#define CPU_Y0I_PARITY_Y0_PARITY_S   0U
-#define CPU_Y0I_PARITY_Y0_PARITY_M   0xFU   // TMU ROM Y0i PARITY
-
-//*************************************************************************************************
-//
-// The following are defines for the bit fields in the S1i_DATA register
-//
-//*************************************************************************************************
-#define CPU_S1I_DATA_S1_DATA_S     0U
-#define CPU_S1I_DATA_S1_DATA_M     0xFFFFFFU    // TMU ROM S1i Data
-#define CPU_S1I_DATA_S1_PARITY_S   24U
-#define CPU_S1I_DATA_S1_PARITY_M   0x7000000U   // TMU ROM S1i Parity
-
-//*************************************************************************************************
-//
-// The following are defines for the bit fields in the S2i_DATA register
-//
-//*************************************************************************************************
-#define CPU_S2I_DATA_S2_DATA_S     0U
-#define CPU_S2I_DATA_S2_DATA_M     0xFFFFFU    // TMU ROM S2i Data
-#define CPU_S2I_DATA_S2_PARITY_S   20U
-#define CPU_S2I_DATA_S2_PARITY_M   0x700000U   // TMU ROM S2i Parity
 
 
 //*************************************************************************************************

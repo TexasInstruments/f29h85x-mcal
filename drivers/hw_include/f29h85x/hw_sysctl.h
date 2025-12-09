@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the SYSCTL registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_SYSCTL_H
@@ -27,9 +59,9 @@
                                                       // Number
 #define SYSCTL_O_REVID                       0x28U    // Device Revision Number
 #define SYSCTL_O_MCUCNF1                     0x1C0U   // MCUCNF Capability: EMIF Customization
-#define SYSCTL_O_MCUCNF2                     0x1C4U   // MCUCNF Capability: ETPWM
+#define SYSCTL_O_MCUCNF2                     0x1C4U   // MCUCNF Capability: EPWM
 #define SYSCTL_O_MCUCNF4                     0x1CCU   // MCUCNF Capability: EQEP
-#define SYSCTL_O_MCUCNF7                     0x1D8U   // MCUCNF Capability: SCI, UART
+#define SYSCTL_O_MCUCNF7                     0x1D8U   // MCUCNF Capability: UART
 #define SYSCTL_O_MCUCNF10                    0x1E4U   // MCUCNF Capability: CAN, MCAN
 #define SYSCTL_O_MCUCNF13                    0x1F0U   // MCUCNF Capability: AMCUCNF
 #define SYSCTL_O_MCUCNF14                    0x1F4U   // MCUCNF Capability: CMPSS
@@ -55,7 +87,7 @@
 #define SYSCTL_O_MCUCNFLOCK1                 0x33CU   // Lock bit for MCUCNFx registers
 #define SYSCTL_O_MCUCNFLOCK3                 0x344U   // Lock bit for MCUCNFx registers
 #define SYSCTL_O_LSEN                        0x348U   // Lockstep enable configuration
-#define SYSCTL_O_EPWMXLINKCFG                0x37CU   // Confugure which EPWM module instaces are
+#define SYSCTL_O_EPWMXLINKCFG                0x37CU   // Configure which EPWM module instaces are
                                                       // linked in the XLINK scheme
 #define SYSCTL_O_SICCONFIG                   0x384U   // Safety Interconnect(SIC) Configuration -
                                                       // Enable and READY TIMEOUT value
@@ -126,164 +158,266 @@
 #define SYSCTL_O_ETHERCATCTL                 0x5ACU   // ETHERCAT control register.
 #define SYSCTL_O_SYNCBUSY                    0x5B0U   // Pulse Transfer Sync Busy Status register
 #define SYSCTL_O_ESMXRSNCTL                  0x5C0U   // Enable ESM reset outputs for XRSn
-#define SYSCTL_O_EPWM1                       0x5C8U   // Peripheral System Configuration for EPWM1
-#define SYSCTL_O_EPWM2                       0x5CCU   // Peripheral System Configuration for EPWM2
-#define SYSCTL_O_EPWM3                       0x5D0U   // Peripheral System Configuration for EPWM3
-#define SYSCTL_O_EPWM4                       0x5D4U   // Peripheral System Configuration for EPWM4
-#define SYSCTL_O_EPWM5                       0x5D8U   // Peripheral System Configuration for EPWM5
-#define SYSCTL_O_EPWM6                       0x5DCU   // Peripheral System Configuration for EPWM6
-#define SYSCTL_O_EPWM7                       0x5E0U   // Peripheral System Configuration for EPWM7
-#define SYSCTL_O_EPWM8                       0x5E4U   // Peripheral System Configuration for EPWM8
-#define SYSCTL_O_EPWM9                       0x5E8U   // Peripheral System Configuration for EPWM9
-#define SYSCTL_O_EPWM10                      0x5ECU   // Peripheral System Configuration for EPWM10
-#define SYSCTL_O_EPWM11                      0x5F0U   // Peripheral System Configuration for EPWM11
-#define SYSCTL_O_EPWM12                      0x5F4U   // Peripheral System Configuration for EPWM12
-#define SYSCTL_O_EPWM13                      0x5F8U   // Peripheral System Configuration for EPWM13
-#define SYSCTL_O_EPWM14                      0x5FCU   // Peripheral System Configuration for EPWM14
-#define SYSCTL_O_EPWM15                      0x600U   // Peripheral System Configuration for EPWM15
-#define SYSCTL_O_EPWM16                      0x604U   // Peripheral System Configuration for EPWM16
-#define SYSCTL_O_EPWM17                      0x608U   // Peripheral System Configuration for EPWM17
-#define SYSCTL_O_EPWM18                      0x60CU   // Peripheral System Configuration for EPWM18
-#define SYSCTL_O_HRCAL0                      0x614U   // Peripheral System Configuration for HRCAL0
-#define SYSCTL_O_HRCAL1                      0x618U   // Peripheral System Configuration for HRCAL1
-#define SYSCTL_O_HRCAL2                      0x61CU   // Peripheral System Configuration for HRCAL2
-#define SYSCTL_O_ECAP1                       0x620U   // Peripheral System Configuration for ECAP1
-#define SYSCTL_O_ECAP2                       0x624U   // Peripheral System Configuration for ECAP2
-#define SYSCTL_O_ECAP3                       0x628U   // Peripheral System Configuration for ECAP3
-#define SYSCTL_O_ECAP4                       0x62CU   // Peripheral System Configuration for ECAP4
-#define SYSCTL_O_ECAP5                       0x630U   // Peripheral System Configuration for ECAP5
-#define SYSCTL_O_ECAP6                       0x634U   // Peripheral System Configuration for ECAP6
-#define SYSCTL_O_EQEP1                       0x638U   // Peripheral System Configuration for EQEP1
-#define SYSCTL_O_EQEP2                       0x63CU   // Peripheral System Configuration for EQEP2
-#define SYSCTL_O_EQEP3                       0x640U   // Peripheral System Configuration for EQEP3
-#define SYSCTL_O_EQEP4                       0x644U   // Peripheral System Configuration for EQEP4
-#define SYSCTL_O_EQEP5                       0x648U   // Peripheral System Configuration for EQEP5
-#define SYSCTL_O_EQEP6                       0x64CU   // Peripheral System Configuration for EQEP6
-#define SYSCTL_O_SDFM1                       0x650U   // Peripheral System Configuration for SDFM1
-#define SYSCTL_O_SDFM2                       0x654U   // Peripheral System Configuration for SDFM2
-#define SYSCTL_O_SDFM3                       0x658U   // Peripheral System Configuration for SDFM3
-#define SYSCTL_O_SDFM4                       0x65CU   // Peripheral System Configuration for SDFM4
-#define SYSCTL_O_UARTA                       0x660U   // Peripheral System Configuration for UARTA
-#define SYSCTL_O_UARTB                       0x664U   // Peripheral System Configuration for UARTB
-#define SYSCTL_O_UARTC                       0x668U   // Peripheral System Configuration for UARTC
-#define SYSCTL_O_UARTD                       0x66CU   // Peripheral System Configuration for UARTD
-#define SYSCTL_O_UARTE                       0x670U   // Peripheral System Configuration for UARTE
-#define SYSCTL_O_UARTF                       0x674U   // Peripheral System Configuration for UARTF
-#define SYSCTL_O_SPIA                        0x678U   // Peripheral System Configuration for SPIA
-#define SYSCTL_O_SPIB                        0x67CU   // Peripheral System Configuration for SPIB
-#define SYSCTL_O_SPIC                        0x680U   // Peripheral System Configuration for SPIC
-#define SYSCTL_O_SPID                        0x684U   // Peripheral System Configuration for SPID
-#define SYSCTL_O_SPIE                        0x688U   // Peripheral System Configuration for SPIE
-#define SYSCTL_O_I2CA                        0x68CU   // Peripheral System Configuration for I2CA
-#define SYSCTL_O_I2CB                        0x690U   // Peripheral System Configuration for I2CB
-#define SYSCTL_O_PMBUSA                      0x694U   // Peripheral System Configuration for PMBUSA
-#define SYSCTL_O_LINA                        0x698U   // Peripheral System Configuration for LINA
-#define SYSCTL_O_LINB                        0x69CU   // Peripheral System Configuration for LINB
-#define SYSCTL_O_MCANA                       0x6A0U   // Peripheral System Configuration for MCANA
-#define SYSCTL_O_MCANB                       0x6A4U   // Peripheral System Configuration for MCANB
-#define SYSCTL_O_MCANC                       0x6A8U   // Peripheral System Configuration for MCANC
-#define SYSCTL_O_MCAND                       0x6ACU   // Peripheral System Configuration for MCAND
-#define SYSCTL_O_MCANE                       0x6B0U   // Peripheral System Configuration for MCANE
-#define SYSCTL_O_MCANF                       0x6B4U   // Peripheral System Configuration for MCANF
-#define SYSCTL_O_ADCA                        0x6B8U   // Peripheral System Configuration for ADCA
-#define SYSCTL_O_ADCB                        0x6BCU   // Peripheral System Configuration for ADCB
-#define SYSCTL_O_ADCC                        0x6C0U   // Peripheral System Configuration for ADCC
-#define SYSCTL_O_ADCD                        0x6C4U   // Peripheral System Configuration for ADCD
-#define SYSCTL_O_ADCE                        0x6C8U   // Peripheral System Configuration for ADCE
-#define SYSCTL_O_CMPSS1                      0x6CCU   // Peripheral System Configuration for CMPSS1
-#define SYSCTL_O_CMPSS2                      0x6D0U   // Peripheral System Configuration for CMPSS2
-#define SYSCTL_O_CMPSS3                      0x6D4U   // Peripheral System Configuration for CMPSS3
-#define SYSCTL_O_CMPSS4                      0x6D8U   // Peripheral System Configuration for CMPSS4
-#define SYSCTL_O_CMPSS5                      0x6DCU   // Peripheral System Configuration for CMPSS5
-#define SYSCTL_O_CMPSS6                      0x6E0U   // Peripheral System Configuration for CMPSS6
-#define SYSCTL_O_CMPSS7                      0x6E4U   // Peripheral System Configuration for CMPSS7
-#define SYSCTL_O_CMPSS8                      0x6E8U   // Peripheral System Configuration for CMPSS8
-#define SYSCTL_O_CMPSS9                      0x6ECU   // Peripheral System Configuration for CMPSS9
-#define SYSCTL_O_CMPSS10                     0x6F0U   // Peripheral System Configuration for
-                                                      // CMPSS10
-#define SYSCTL_O_CMPSS11                     0x6F4U   // Peripheral System Configuration for
-                                                      // CMPSS11
-#define SYSCTL_O_CMPSS12                     0x6F8U   // Peripheral System Configuration for
-                                                      // CMPSS12
-#define SYSCTL_O_DACA                        0x6FCU   // Peripheral System Configuration for DACA
-#define SYSCTL_O_DACB                        0x700U   // Peripheral System Configuration for DACB
-#define SYSCTL_O_CLB1                        0x704U   // Peripheral System Configuration for CLB1
-#define SYSCTL_O_CLB2                        0x708U   // Peripheral System Configuration for CLB2
-#define SYSCTL_O_CLB3                        0x70CU   // Peripheral System Configuration for CLB3
-#define SYSCTL_O_CLB4                        0x710U   // Peripheral System Configuration for CLB4
-#define SYSCTL_O_CLB5                        0x714U   // Peripheral System Configuration for CLB5
-#define SYSCTL_O_CLB6                        0x718U   // Peripheral System Configuration for CLB6
-#define SYSCTL_O_FSITXA                      0x71CU   // Peripheral System Configuration for FSITXA
-#define SYSCTL_O_FSITXB                      0x720U   // Peripheral System Configuration for FSITXB
-#define SYSCTL_O_FSITXC                      0x724U   // Peripheral System Configuration for FSITXC
-#define SYSCTL_O_FSITXD                      0x728U   // Peripheral System Configuration for FSITXD
-#define SYSCTL_O_FSIRXA                      0x72CU   // Peripheral System Configuration for FSIRXA
-#define SYSCTL_O_FSIRXB                      0x730U   // Peripheral System Configuration for FSIRXB
-#define SYSCTL_O_FSIRXC                      0x734U   // Peripheral System Configuration for FSIRXC
-#define SYSCTL_O_FSIRXD                      0x738U   // Peripheral System Configuration for FSIRXD
-#define SYSCTL_O_DCC1                        0x73CU   // Peripheral System Configuration for DCC1
-#define SYSCTL_O_DCC2                        0x740U   // Peripheral System Configuration for DCC2
-#define SYSCTL_O_DCC3                        0x744U   // Peripheral System Configuration for DCC3
-#define SYSCTL_O_ETHERCATA                   0x748U   // Peripheral System Configuration for
-                                                      // ETHERCATA
-#define SYSCTL_O_EPG1                        0x74CU   // Peripheral System Configuration for EPG1
-#define SYSCTL_O_SENT1                       0x750U   // Peripheral System Configuration for SENT1
-#define SYSCTL_O_SENT2                       0x754U   // Peripheral System Configuration for SENT2
-#define SYSCTL_O_SENT3                       0x758U   // Peripheral System Configuration for SENT3
-#define SYSCTL_O_SENT4                       0x75CU   // Peripheral System Configuration for SENT4
-#define SYSCTL_O_SENT5                       0x760U   // Peripheral System Configuration for SENT5
-#define SYSCTL_O_SENT6                       0x764U   // Peripheral System Configuration for SENT6
-#define SYSCTL_O_ADCCHECKER1                 0x768U   // Peripheral System Configuration for
-                                                      // ADCCHECKER1
-#define SYSCTL_O_ADCCHECKER2                 0x76CU   // Peripheral System Configuration for
-                                                      // ADCCHECKER2
-#define SYSCTL_O_ADCCHECKER3                 0x770U   // Peripheral System Configuration for
-                                                      // ADCCHECKER3
-#define SYSCTL_O_ADCCHECKER4                 0x774U   // Peripheral System Configuration for
-                                                      // ADCCHECKER4
-#define SYSCTL_O_ADCCHECKER5                 0x778U   // Peripheral System Configuration for
-                                                      // ADCCHECKER5
-#define SYSCTL_O_ADCCHECKER6                 0x77CU   // Peripheral System Configuration for
-                                                      // ADCCHECKER6
-#define SYSCTL_O_ADCCHECKER7                 0x780U   // Peripheral System Configuration for
-                                                      // ADCCHECKER7
-#define SYSCTL_O_ADCCHECKER8                 0x784U   // Peripheral System Configuration for
-                                                      // ADCCHECKER8
-#define SYSCTL_O_ADCCHECKER9                 0x788U   // Peripheral System Configuration for
-                                                      // ADCCHECKER9
-#define SYSCTL_O_ADCCHECKER10                0x78CU   // Peripheral System Configuration for
-                                                      // ADCCHECKER10
-#define SYSCTL_O_ADCSEAGGRCPU1               0x790U   // Peripheral System Configuration for
-                                                      // ADCSEAGGRCPU1
-#define SYSCTL_O_ADCSEAGGRCPU2               0x794U   // Peripheral System Configuration for
-                                                      // ADCSEAGGRCPU2
-#define SYSCTL_O_ADCSEAGGRCPU3               0x798U   // Peripheral System Configuration for
-                                                      // ADCSEAGGRCPU3
-#define SYSCTL_O_RTDMA1CH                    0x7A8U   // Peripheral System Configuration for
-                                                      // RTDMA1CH
-#define SYSCTL_O_RTDMA2CH                    0x7ACU   // Peripheral System Configuration for
-                                                      // RTDMA2CH
-#define SYSCTL_O_WADI1                       0x7B0U   // Peripheral System Configuration for WADI1
-#define SYSCTL_O_WADI2                       0x7B4U   // Peripheral System Configuration for WADI2
-#define SYSCTL_O_INPUTXBARFLAGS              0x7B8U   // Peripheral System Configuration for
-                                                      // INPUTXBARFlags
-#define SYSCTL_O_OUTPUTXBARFLAGS             0x7BCU   // Peripheral System Configuration for
-                                                      // OUTPUTXBARFlags
-#define SYSCTL_O_DLTFIFOREGS                 0x7C0U   // Peripheral System Configuration for
-                                                      // DLTFIFORegs
-#define SYSCTL_O_ADC_GLOBAL_REGS             0x7C4U   // Peripheral System Configuration for
-                                                      // ADC_GLOBAL_REGS
-#define SYSCTL_O_ERROR_AGGREGATOR            0x7C8U   // Peripheral System Configuration for
-                                                      // Error_Aggregator
-#define SYSCTL_O_ESM                         0x7CCU   // Peripheral System Configuration for ESM
-                                                      // ESMCPU1/2/3 and ESMSYS
+#define SYSCTL_O_EPWM1                       0x5C8U   // PER2SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM1
+#define SYSCTL_O_EPWM2                       0x5CCU   // PER3SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM2
+#define SYSCTL_O_EPWM3                       0x5D0U   // PER4SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM3
+#define SYSCTL_O_EPWM4                       0x5D4U   // PER5SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM4
+#define SYSCTL_O_EPWM5                       0x5D8U   // PER6SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM5
+#define SYSCTL_O_EPWM6                       0x5DCU   // PER7SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM6
+#define SYSCTL_O_EPWM7                       0x5E0U   // PER8SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM7
+#define SYSCTL_O_EPWM8                       0x5E4U   // PER9SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM8
+#define SYSCTL_O_EPWM9                       0x5E8U   // PER10SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM9
+#define SYSCTL_O_EPWM10                      0x5ECU   // PER11SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM10
+#define SYSCTL_O_EPWM11                      0x5F0U   // PER12SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM11
+#define SYSCTL_O_EPWM12                      0x5F4U   // PER13SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM12
+#define SYSCTL_O_EPWM13                      0x5F8U   // PER14SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM13
+#define SYSCTL_O_EPWM14                      0x5FCU   // PER15SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM14
+#define SYSCTL_O_EPWM15                      0x600U   // PER16SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM15
+#define SYSCTL_O_EPWM16                      0x604U   // PER17SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM16
+#define SYSCTL_O_EPWM17                      0x608U   // PER18SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM17
+#define SYSCTL_O_EPWM18                      0x60CU   // PER19SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPWM18
+#define SYSCTL_O_HRCAL0                      0x614U   // PER21SYSCONFIG -  Peripheral System
+                                                      // Configuration for HRCAL0
+#define SYSCTL_O_HRCAL1                      0x618U   // PER22SYSCONFIG -  Peripheral System
+                                                      // Configuration for HRCAL1
+#define SYSCTL_O_HRCAL2                      0x61CU   // PER23SYSCONFIG -  Peripheral System
+                                                      // Configuration for HRCAL2
+#define SYSCTL_O_ECAP1                       0x620U   // PER24SYSCONFIG -  Peripheral System
+                                                      // Configuration for ECAP1
+#define SYSCTL_O_ECAP2                       0x624U   // PER25SYSCONFIG -  Peripheral System
+                                                      // Configuration for ECAP2
+#define SYSCTL_O_ECAP3                       0x628U   // PER26SYSCONFIG -  Peripheral System
+                                                      // Configuration for ECAP3
+#define SYSCTL_O_ECAP4                       0x62CU   // PER27SYSCONFIG -  Peripheral System
+                                                      // Configuration for ECAP4
+#define SYSCTL_O_ECAP5                       0x630U   // PER28SYSCONFIG -  Peripheral System
+                                                      // Configuration for ECAP5
+#define SYSCTL_O_ECAP6                       0x634U   // PER29SYSCONFIG -  Peripheral System
+                                                      // Configuration for ECAP6
+#define SYSCTL_O_EQEP1                       0x638U   // PER30SYSCONFIG -  Peripheral System
+                                                      // Configuration for EQEP1
+#define SYSCTL_O_EQEP2                       0x63CU   // PER31SYSCONFIG -  Peripheral System
+                                                      // Configuration for EQEP2
+#define SYSCTL_O_EQEP3                       0x640U   // PER32SYSCONFIG -  Peripheral System
+                                                      // Configuration for EQEP3
+#define SYSCTL_O_EQEP4                       0x644U   // PER33SYSCONFIG -  Peripheral System
+                                                      // Configuration for EQEP4
+#define SYSCTL_O_EQEP5                       0x648U   // PER34SYSCONFIG -  Peripheral System
+                                                      // Configuration for EQEP5
+#define SYSCTL_O_EQEP6                       0x64CU   // PER35SYSCONFIG -  Peripheral System
+                                                      // Configuration for EQEP6
+#define SYSCTL_O_SDFM1                       0x650U   // PER36SYSCONFIG -  Peripheral System
+                                                      // Configuration for SDFM1
+#define SYSCTL_O_SDFM2                       0x654U   // PER37SYSCONFIG -  Peripheral System
+                                                      // Configuration for SDFM2
+#define SYSCTL_O_SDFM3                       0x658U   // PER38SYSCONFIG -  Peripheral System
+                                                      // Configuration for SDFM3
+#define SYSCTL_O_SDFM4                       0x65CU   // PER39SYSCONFIG -  Peripheral System
+                                                      // Configuration for SDFM4
+#define SYSCTL_O_UARTA                       0x660U   // PER40SYSCONFIG -  Peripheral System
+                                                      // Configuration for UARTA
+#define SYSCTL_O_UARTB                       0x664U   // PER41SYSCONFIG -  Peripheral System
+                                                      // Configuration for UARTB
+#define SYSCTL_O_UARTC                       0x668U   // PER42SYSCONFIG -  Peripheral System
+                                                      // Configuration for UARTC
+#define SYSCTL_O_UARTD                       0x66CU   // PER43SYSCONFIG -  Peripheral System
+                                                      // Configuration for UARTD
+#define SYSCTL_O_UARTE                       0x670U   // PER44SYSCONFIG -  Peripheral System
+                                                      // Configuration for UARTE
+#define SYSCTL_O_UARTF                       0x674U   // PER45SYSCONFIG -  Peripheral System
+                                                      // Configuration for UARTF
+#define SYSCTL_O_SPIA                        0x678U   // PER46SYSCONFIG -  Peripheral System
+                                                      // Configuration for SPIA
+#define SYSCTL_O_SPIB                        0x67CU   // PER47SYSCONFIG -  Peripheral System
+                                                      // Configuration for SPIB
+#define SYSCTL_O_SPIC                        0x680U   // PER48SYSCONFIG -  Peripheral System
+                                                      // Configuration for SPIC
+#define SYSCTL_O_SPID                        0x684U   // PER49SYSCONFIG -  Peripheral System
+                                                      // Configuration for SPID
+#define SYSCTL_O_SPIE                        0x688U   // PER50SYSCONFIG -  Peripheral System
+                                                      // Configuration for SPIE
+#define SYSCTL_O_I2CA                        0x68CU   // PER51SYSCONFIG -  Peripheral System
+                                                      // Configuration for I2CA
+#define SYSCTL_O_I2CB                        0x690U   // PER52SYSCONFIG -  Peripheral System
+                                                      // Configuration for I2CB
+#define SYSCTL_O_PMBUSA                      0x694U   // PER53SYSCONFIG -  Peripheral System
+                                                      // Configuration for PMBUSA
+#define SYSCTL_O_LINA                        0x698U   // PER54SYSCONFIG -  Peripheral System
+                                                      // Configuration for LINA
+#define SYSCTL_O_LINB                        0x69CU   // PER55SYSCONFIG -  Peripheral System
+                                                      // Configuration for LINB
+#define SYSCTL_O_MCANA                       0x6A0U   // PER56SYSCONFIG -  Peripheral System
+                                                      // Configuration for MCANA
+#define SYSCTL_O_MCANB                       0x6A4U   // PER57SYSCONFIG -  Peripheral System
+                                                      // Configuration for MCANB
+#define SYSCTL_O_MCANC                       0x6A8U   // PER58SYSCONFIG -  Peripheral System
+                                                      // Configuration for MCANC
+#define SYSCTL_O_MCAND                       0x6ACU   // PER59SYSCONFIG -  Peripheral System
+                                                      // Configuration for MCAND
+#define SYSCTL_O_MCANE                       0x6B0U   // PER60SYSCONFIG -  Peripheral System
+                                                      // Configuration for MCANE
+#define SYSCTL_O_MCANF                       0x6B4U   // PER61SYSCONFIG -  Peripheral System
+                                                      // Configuration for MCANF
+#define SYSCTL_O_ADCA                        0x6B8U   // PER62SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCA
+#define SYSCTL_O_ADCB                        0x6BCU   // PER63SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCB
+#define SYSCTL_O_ADCC                        0x6C0U   // PER64SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCC
+#define SYSCTL_O_ADCD                        0x6C4U   // PER65SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCD
+#define SYSCTL_O_ADCE                        0x6C8U   // PER66SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCE
+#define SYSCTL_O_CMPSS1                      0x6CCU   // PER67SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS1
+#define SYSCTL_O_CMPSS2                      0x6D0U   // PER68SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS2
+#define SYSCTL_O_CMPSS3                      0x6D4U   // PER69SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS3
+#define SYSCTL_O_CMPSS4                      0x6D8U   // PER70SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS4
+#define SYSCTL_O_CMPSS5                      0x6DCU   // PER71SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS5
+#define SYSCTL_O_CMPSS6                      0x6E0U   // PER72SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS6
+#define SYSCTL_O_CMPSS7                      0x6E4U   // PER73SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS7
+#define SYSCTL_O_CMPSS8                      0x6E8U   // PER74SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS8
+#define SYSCTL_O_CMPSS9                      0x6ECU   // PER75SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS9
+#define SYSCTL_O_CMPSS10                     0x6F0U   // PER76SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS10
+#define SYSCTL_O_CMPSS11                     0x6F4U   // PER77SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS11
+#define SYSCTL_O_CMPSS12                     0x6F8U   // PER78SYSCONFIG -  Peripheral System
+                                                      // Configuration for CMPSS12
+#define SYSCTL_O_DACA                        0x6FCU   // PER79SYSCONFIG -  Peripheral System
+                                                      // Configuration for DACA
+#define SYSCTL_O_DACB                        0x700U   // PER80SYSCONFIG -  Peripheral System
+                                                      // Configuration for DACB
+#define SYSCTL_O_CLB1                        0x704U   // PER81SYSCONFIG -  Peripheral System
+                                                      // Configuration for CLB1
+#define SYSCTL_O_CLB2                        0x708U   // PER82SYSCONFIG -  Peripheral System
+                                                      // Configuration for CLB2
+#define SYSCTL_O_CLB3                        0x70CU   // PER83SYSCONFIG -  Peripheral System
+                                                      // Configuration for CLB3
+#define SYSCTL_O_CLB4                        0x710U   // PER84SYSCONFIG -  Peripheral System
+                                                      // Configuration for CLB4
+#define SYSCTL_O_CLB5                        0x714U   // PER85SYSCONFIG -  Peripheral System
+                                                      // Configuration for CLB5
+#define SYSCTL_O_CLB6                        0x718U   // PER86SYSCONFIG -  Peripheral System
+                                                      // Configuration for CLB6
+#define SYSCTL_O_FSITXA                      0x71CU   // PER87SYSCONFIG -  Peripheral System
+                                                      // Configuration for FSITXA
+#define SYSCTL_O_FSITXB                      0x720U   // PER88SYSCONFIG -  Peripheral System
+                                                      // Configuration for FSITXB
+#define SYSCTL_O_FSITXC                      0x724U   // PER89SYSCONFIG -  Peripheral System
+                                                      // Configuration for FSITXC
+#define SYSCTL_O_FSITXD                      0x728U   // PER90SYSCONFIG -  Peripheral System
+                                                      // Configuration for FSITXD
+#define SYSCTL_O_FSIRXA                      0x72CU   // PER91SYSCONFIG -  Peripheral System
+                                                      // Configuration for FSIRXA
+#define SYSCTL_O_FSIRXB                      0x730U   // PER92SYSCONFIG -  Peripheral System
+                                                      // Configuration for FSIRXB
+#define SYSCTL_O_FSIRXC                      0x734U   // PER93SYSCONFIG -  Peripheral System
+                                                      // Configuration for FSIRXC
+#define SYSCTL_O_FSIRXD                      0x738U   // PER94SYSCONFIG -  Peripheral System
+                                                      // Configuration for FSIRXD
+#define SYSCTL_O_DCC1                        0x73CU   // PER95SYSCONFIG -  Peripheral System
+                                                      // Configuration for DCC1
+#define SYSCTL_O_DCC2                        0x740U   // PER96SYSCONFIG -  Peripheral System
+                                                      // Configuration for DCC2
+#define SYSCTL_O_DCC3                        0x744U   // PER97SYSCONFIG -  Peripheral System
+                                                      // Configuration for DCC3
+#define SYSCTL_O_ETHERCATA                   0x748U   // PER98SYSCONFIG -  Peripheral System
+                                                      // Configuration for ETHERCATA
+#define SYSCTL_O_EPG1                        0x74CU   // PER99SYSCONFIG -  Peripheral System
+                                                      // Configuration for EPG1
+#define SYSCTL_O_SENT1                       0x750U   // PER100SYSCONFIG -  Peripheral System
+                                                      // Configuration for SENT1
+#define SYSCTL_O_SENT2                       0x754U   // PER101SYSCONFIG -  Peripheral System
+                                                      // Configuration for SENT2
+#define SYSCTL_O_SENT3                       0x758U   // PER102SYSCONFIG -  Peripheral System
+                                                      // Configuration for SENT3
+#define SYSCTL_O_SENT4                       0x75CU   // PER103SYSCONFIG -  Peripheral System
+                                                      // Configuration for SENT4
+#define SYSCTL_O_SENT5                       0x760U   // PER104SYSCONFIG -  Peripheral System
+                                                      // Configuration for SENT5
+#define SYSCTL_O_SENT6                       0x764U   // PER105SYSCONFIG -  Peripheral System
+                                                      // Configuration for SENT6
+#define SYSCTL_O_ADCCHECKER1                 0x768U   // PER106SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER1
+#define SYSCTL_O_ADCCHECKER2                 0x76CU   // PER107SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER2
+#define SYSCTL_O_ADCCHECKER3                 0x770U   // PER108SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER3
+#define SYSCTL_O_ADCCHECKER4                 0x774U   // PER109SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER4
+#define SYSCTL_O_ADCCHECKER5                 0x778U   // PER110SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER5
+#define SYSCTL_O_ADCCHECKER6                 0x77CU   // PER111SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER6
+#define SYSCTL_O_ADCCHECKER7                 0x780U   // PER112SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER7
+#define SYSCTL_O_ADCCHECKER8                 0x784U   // PER113SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER8
+#define SYSCTL_O_ADCCHECKER9                 0x788U   // PER114SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER9
+#define SYSCTL_O_ADCCHECKER10                0x78CU   // PER115SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCCHECKER10
+#define SYSCTL_O_ADCSEAGGRCPU1               0x790U   // PER116SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCSEAGGRCPU1
+#define SYSCTL_O_ADCSEAGGRCPU2               0x794U   // PER117SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCSEAGGRCPU2
+#define SYSCTL_O_ADCSEAGGRCPU3               0x798U   // PER118SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADCSEAGGRCPU3
+#define SYSCTL_O_RTDMA1CH                    0x7A8U   // PER122SYSCONFIG -  Peripheral System
+                                                      // Configuration for RTDMA1CH
+#define SYSCTL_O_RTDMA2CH                    0x7ACU   // PER123SYSCONFIG -  Peripheral System
+                                                      // Configuration for RTDMA2CH
+#define SYSCTL_O_WADI1                       0x7B0U   // PER124SYSCONFIG -  Peripheral System
+                                                      // Configuration for WADI1
+#define SYSCTL_O_WADI2                       0x7B4U   // PER125SYSCONFIG -  Peripheral System
+                                                      // Configuration for WADI2
+#define SYSCTL_O_INPUTXBARFLAGS              0x7B8U   // PER126SYSCONFIG -  Peripheral System
+                                                      // Configuration for INPUTXBARFlags
+#define SYSCTL_O_OUTPUTXBARFLAGS             0x7BCU   // PER127SYSCONFIG -  Peripheral System
+                                                      // Configuration for OUTPUTXBARFlags
+#define SYSCTL_O_DLTFIFOREGS                 0x7C0U   // PER128SYSCONFIG -  Peripheral System
+                                                      // Configuration for DLTFIFORegs
+#define SYSCTL_O_ADC_GLOBAL_REGS             0x7C4U   // PER129SYSCONFIG -  Peripheral System
+                                                      // Configuration for ADC_GLOBAL_REGS
+#define SYSCTL_O_ERROR_AGGREGATOR            0x7C8U   // PER130SYSCONFIG -  Peripheral System
+                                                      // Configuration for Error_Aggregator
+#define SYSCTL_O_ESM                         0x7CCU   // PER131SYSCONFIG -  Peripheral System
+                                                      // Configuration for ESM ESMCPU1/2/3 and
+                                                      // ESMSYS
 #define SYSCTL_O_PARITY_TEST                 0x7E4U   // Enables parity test
 
 #define SYSCTL_O_CPUPERCFGLOCK1     0x0U     // Lock bit for CPUx_PER_CFG registers
 #define SYSCTL_O_CPUPERCFGLOCK2     0x4U     // Lock bit for CPUx_PER_CFG registers
 #define SYSCTL_O_PCLKCR0            0x10U    // Peripheral Clock Gating Registers
 #define SYSCTL_O_PCLKCR1            0x14U    // Peripheral Clock Gating Register - EMIF
-#define SYSCTL_O_PCLKCR2            0x18U    // Peripheral Clock Gating Register - ETPWM
+#define SYSCTL_O_PCLKCR2            0x18U    // Peripheral Clock Gating Register - EPWM
 #define SYSCTL_O_PCLKCR3            0x1CU    // Peripheral Clock Gating Register - ECAP
 #define SYSCTL_O_PCLKCR4            0x20U    // Peripheral Clock Gating Register - EQEP
 #define SYSCTL_O_PCLKCR6            0x28U    // Peripheral Clock Gating Register - SDFM
@@ -941,12 +1075,8 @@
 // The following are defines for the bit fields in the RSTSTAT register
 //
 //*************************************************************************************************
-#define SYSCTL_RSTSTAT_CPU2           0x1U    // CPU2 Reset Status bit
-#define SYSCTL_RSTSTAT_CPU3           0x2U    // CPU3 Reset Status bit
-#define SYSCTL_RSTSTAT_CPU2NMIWDRST   0x20U   // Indicates whether a CPUx.NMIWD reset was issued to
-                                              // CPUx
-#define SYSCTL_RSTSTAT_CPU3NMIWDRST   0x40U   // Indicates whether a CPUx.NMIWD reset was issued to
-                                              // CPUx
+#define SYSCTL_RSTSTAT_CPU2   0x1U   // CPU2 Reset Status bit
+#define SYSCTL_RSTSTAT_CPU3   0x2U   // CPU3 Reset Status bit
 
 //*************************************************************************************************
 //
@@ -1172,7 +1302,7 @@
 #define SYSCTL_CLKSRCCTL2_MCANEBCLKSEL_S   18U
 #define SYSCTL_CLKSRCCTL2_MCANEBCLKSEL_M   0xC0000U    // MCANE Bit Clock Source Select Bit
 #define SYSCTL_CLKSRCCTL2_MCANFBCLKSEL_S   20U
-#define SYSCTL_CLKSRCCTL2_MCANFBCLKSEL_M   0x300000U   // MCAND Bit Clock Source Select Bit
+#define SYSCTL_CLKSRCCTL2_MCANFBCLKSEL_M   0x300000U   // MCANF Bit Clock Source Select Bit
 
 //*************************************************************************************************
 //

@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the RTDMA registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_RTDMA_H
@@ -25,16 +57,16 @@
 #define RTDMA_O_DMACFG_LOCK     0x40U   // Channel Configuration Temporary Lock
 #define RTDMA_O_DMACFG_COMMIT   0x44U   // Channel Configuration Permanent Commit
 
-#define RTDMA_O_MPUR_CHMASK(i)   (0x0U + ((i) * 32))    // (0 <= i < 15) MPU Region Configuration
-#define RTDMA_O_MPUR_START(i)    (0x4U + ((i) * 32))    // (0 <= i < 15) MPU Region Start Address
-#define RTDMA_O_MPUR_END(i)      (0x8U + ((i) * 32))    // (0 <= i < 15) MPU Region End Address
-#define RTDMA_O_MPUR_LOCK(i)     (0xCU + ((i) * 32))    // (0 <= i < 15) MPU Temporary Lock
-#define RTDMA_O_MPUR_COMMIT(i)   (0x10U + ((i) * 32))   // (0 <= i < 15) MPU Permanent Commit
-#define RTDMA_O_MPUR_ACCESS(i)   (0x14U + ((i) * 32))   // (0 <= i < 15) MPU Region R/W Access
-                                                        // Permissions
-#define RTDMA_O_MPUCTRL          0x800U                 // MPU Control Register
-#define RTDMA_O_MPUCFG_LOCK      0x820U                 // Channel Configuration Temporary Lock
-#define RTDMA_O_MPUCFG_COMMIT    0x824U                 // Channel Configuration Permanent Commit
+#define RTDMA_O_MPUR_CHMASK(i)   (0x0U + ((i) * 32U))    // (0 <= i < 16) MPU Region Configuration
+#define RTDMA_O_MPUR_START(i)    (0x4U + ((i) * 32U))    // (0 <= i < 16) MPU Region Start Address
+#define RTDMA_O_MPUR_END(i)      (0x8U + ((i) * 32U))    // (0 <= i < 16) MPU Region End Address
+#define RTDMA_O_MPUR_LOCK(i)     (0xCU + ((i) * 32U))    // (0 <= i < 16) MPU Temporary Lock
+#define RTDMA_O_MPUR_COMMIT(i)   (0x10U + ((i) * 32U))   // (0 <= i < 16) MPU Permanent Commit
+#define RTDMA_O_MPUR_ACCESS(i)   (0x14U + ((i) * 32U))   // (0 <= i < 16) MPU Region R/W Access
+                                                         // Permissions
+#define RTDMA_O_MPUCTRL          0x800U                  // MPU Control Register
+#define RTDMA_O_MPUCFG_LOCK      0x820U                  // Channel Configuration Temporary Lock
+#define RTDMA_O_MPUCFG_COMMIT    0x824U                  // Channel Configuration Permanent Commit
 
 #define RTDMA_O_MODE                  0x0U     // Mode Register
 #define RTDMA_O_CONTROL               0x4U     // Control Register
@@ -478,7 +510,7 @@
 //
 //*************************************************************************************************
 #define RTDMA_FLTEMU_BITSEL_BITSEL_S   0U
-#define RTDMA_FLTEMU_BITSEL_BITSEL_M   0x7FU   // Fault emulation bitselection
+#define RTDMA_FLTEMU_BITSEL_BITSEL_M   0x7FU   // Fault emulation bit selection
 
 
 //*************************************************************************************************
@@ -505,7 +537,7 @@
 //*************************************************************************************************
 #define RTDMA_SELFTEST_DIAG_CONTROL_DIAG_TEST_EN_S       0U
 #define RTDMA_SELFTEST_DIAG_CONTROL_DIAG_TEST_EN_M       0xFU          // Diagnostic test enable
-#define RTDMA_SELFTEST_DIAG_CONTROL_DIAG_SAFETY_SEL      0x40U         // Diagnostic safetly
+#define RTDMA_SELFTEST_DIAG_CONTROL_DIAG_SAFETY_SEL      0x40U         // Diagnostic safety
                                                                        // selection
 #define RTDMA_SELFTEST_DIAG_CONTROL_DIAG_CHECKER_SEL_S   8U
 #define RTDMA_SELFTEST_DIAG_CONTROL_DIAG_CHECKER_SEL_M   0x300U        // ECC checker selection
@@ -536,7 +568,7 @@
 // The following are defines for the bit fields in the SELFTEST_DIAG_STATUS_CLR register
 //
 //*************************************************************************************************
-#define RTDMA_SELFTEST_DIAG_STATUS_CLR_DIAG_TEST_DONE   0x2U   // Clear selftest done status flag
+#define RTDMA_SELFTEST_DIAG_STATUS_CLR_DIAG_TEST_DONE   0x2U   // Clear self test done status flag
 #define RTDMA_SELFTEST_DIAG_STATUS_CLR_DIAG_TEST_FAIL   0x4U   // Clear test failed status flags
 
 

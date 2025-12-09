@@ -68,9 +68,7 @@ extern "C" {
 
 #define CDD_IPC_FLAG0 0x00000001U /*!< \brief   IPC FLAG 0 - Triggers interrupt */
 #define CDD_IPC_FLAG1 0x00000002U /*!< \brief   IPC FLAG 1 - Indicates polling mode */
-#define CDD_IPC_FLAG2                                                            \
-    0x00000004U /*!< \brief   IPC FLAG 2 - Reserved for syncronization of CPUs \ \
-                 */
+#define CDD_IPC_FLAG2 0x00000004U /*!< \brief   IPC FLAG 2 - Reserved for syncronization of CPUs */
 
 /** \brief Macro to define the upper byte index that can be transmitted/received in command register
  */

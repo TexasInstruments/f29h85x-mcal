@@ -32,7 +32,6 @@ extern "C" {
  * Header Files
  *********************************************************************************************************************/
 #include "hw_mcanss.h"
-#include "hw_mcan.h"
 #include "Mcal_Lib.h"
 
 /*********************************************************************************************************************
@@ -128,6 +127,9 @@ extern "C" {
 
 /** \brief MCAN Interrupt line 0 */
 #define MCAN_INT_LINE_1 (2U)
+
+/** \brief  MCAN ECC Control */
+#define MCAN_O_ERR_CTRL (MCAN_ECC_AGGR_CONTROL - MCAN_ERROR_REGS)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros

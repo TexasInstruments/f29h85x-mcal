@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the ESM_CPU registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_ESM_CPU_H
@@ -67,25 +99,25 @@
                                                                      // Influence Lock Register
 #define ESM_CPU_O_MMR_CONFIG_LOCK            0x120U                  // MMR Config Lock Register
 #define ESM_CPU_O_MMR_CONFIG_COMMIT          0x124U                  // MMR Config Commit Register
-#define ESM_CPU_O_RAW(i)                     (0x400U + ((i) * 32))   // (0 <= i < 8) Error Group N
+#define ESM_CPU_O_RAW(i)                     (0x400U + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Event Raw Status/Set Register
-#define ESM_CPU_O_STS(i)                     (0x404U + ((i) * 32))   // (0 <= i < 8) Error Group N
+#define ESM_CPU_O_STS(i)                     (0x404U + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Interrupt Enable Status/Clear
                                                                      // Register
-#define ESM_CPU_O_INTR_EN_SET(i)             (0x408U + ((i) * 32))   // (0 <= i < 8) Error Group N
+#define ESM_CPU_O_INTR_EN_SET(i)             (0x408U + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Interrupt Enable Set Register
-#define ESM_CPU_O_INTR_EN_CLR(i)             (0x40CU + ((i) * 32))   // (0 <= i < 8) Error Group N
+#define ESM_CPU_O_INTR_EN_CLR(i)             (0x40CU + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Interrupt Enabled Clear Register
-#define ESM_CPU_O_INT_PRIO(i)                (0x410U + ((i) * 32))   // (0 <= i < 8) Error Group N
+#define ESM_CPU_O_INT_PRIO(i)                (0x410U + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Interrupt Priority Register
-#define ESM_CPU_O_PIN_EN_SET(i)              (0x414U + ((i) * 32))   // (0 <= i < 8) Error Group N
+#define ESM_CPU_O_PIN_EN_SET(i)              (0x414U + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Error Pin Influence Set Register
-#define ESM_CPU_O_PIN_EN_CLR(i)              (0x418U + ((i) * 32))   // (0 <= i < 8) Error Group N
+#define ESM_CPU_O_PIN_EN_CLR(i)              (0x418U + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Error Pin Influence Clear Register
-#define ESM_CPU_O_CRIT_EN_SET(i)             (0x800U + ((i) * 32))   // (0 <= i < 8) Error Group N
+#define ESM_CPU_O_CRIT_EN_SET(i)             (0x800U + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Critical Priority Interrupt
                                                                      // Influence Set Register
-#define ESM_CPU_O_CRIT_EN_CLR(i)             (0x804U + ((i) * 32))   // (0 <= i < 8) Error Group N
+#define ESM_CPU_O_CRIT_EN_CLR(i)             (0x804U + ((i) * 32U))  // (0 <= i < 8) Error Group N
                                                                      // Critical Priority Interrupt
                                                                      // Influence Clear Register
 

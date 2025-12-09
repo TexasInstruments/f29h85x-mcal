@@ -94,8 +94,8 @@ void McalLib_GetCounterValue(P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) s
 {
     uint32 regValL;
     uint32 regValH;
-    regValL    = *(volatile uint32 *)(IPCCOUNTERREGS_BASE + IPC_O_COUNTERL);
-    regValH    = *(volatile uint32 *)(IPCCOUNTERREGS_BASE + IPC_O_COUNTERH);
+    regValL    = *(volatile uint32 *)(IPCCOUNTER_BASE + IPC_O_COUNTERL);
+    regValH    = *(volatile uint32 *)(IPCCOUNTER_BASE + IPC_O_COUNTERH);
     *startTime = (McalLib_TickType)(((McalLib_TickType)regValH << 32) | (McalLib_TickType)regValL);
     return;
 }
@@ -106,8 +106,8 @@ void McalLib_GetElapsedValue(CONSTP2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DA
     McalLib_TickType cur_val;
     uint32           regValL;
     uint32           regValH;
-    regValL      = *(volatile uint32 *)(IPCCOUNTERREGS_BASE + IPC_O_COUNTERL);
-    regValH      = *(volatile uint32 *)(IPCCOUNTERREGS_BASE + IPC_O_COUNTERH);
+    regValL      = *(volatile uint32 *)(IPCCOUNTER_BASE + IPC_O_COUNTERL);
+    regValH      = *(volatile uint32 *)(IPCCOUNTER_BASE + IPC_O_COUNTERH);
     cur_val      = (McalLib_TickType)(((McalLib_TickType)regValH << 32) | (McalLib_TickType)regValL);
     *elapsedTime = (cur_val - *startTime);
     return;

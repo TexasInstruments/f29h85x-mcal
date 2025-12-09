@@ -5,7 +5,39 @@
 // TITLE:   Definitions for the ERAD registers.
 //
 //###########################################################################
-// $Copyright:  $
+// //
+//	Copyright: Copyright (C) Texas Instruments Incorporated
+//	All rights reserved not granted herein.
+//
+//  Redistribution and use in source and binary forms, with or without 
+//  modification, are permitted provided that the following conditions 
+//  are met:
+//
+//  Redistributions of source code must retain the above copyright 
+//  notice, this list of conditions and the following disclaimer.
+//
+//  Redistributions in binary form must reproduce the above copyright
+//  notice, this list of conditions and the following disclaimer in the 
+//  documentation and/or other materials provided with the   
+//  distribution.
+//
+//  Neither the name of Texas Instruments Incorporated nor the names of
+//  its contributors may be used to endorse or promote products derived
+//  from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+//  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+
 //###########################################################################
 
 #ifndef HW_ERAD_H
@@ -19,57 +51,57 @@
 #define ERAD_O_GLBL_ERAD_ID                0x0U                       // Debug Peripheral ID
 #define ERAD_O_GLBL_EVENT_STAT             0x4U                       // Global Event Status
                                                                       // Register
-#define ERAD_O_EBC_OWNER(i)                (0x40U + ((i) * 64))       // (0 <= i < 8) EBC Owner
+#define ERAD_O_EBC_OWNER(i)                (0x40U + ((i) * 64U))      // (0 <= i < 8) EBC Owner
                                                                       // Register
-#define ERAD_O_EBC_CNTL(i)                 (0x44U + ((i) * 64))       // (0 <= i < 8) EBC Control
+#define ERAD_O_EBC_CNTL(i)                 (0x44U + ((i) * 64U))      // (0 <= i < 8) EBC Control
                                                                       // Register
-#define ERAD_O_EBC_STATUS(i)               (0x48U + ((i) * 64))       // (0 <= i < 8) EBC Status
+#define ERAD_O_EBC_STATUS(i)               (0x48U + ((i) * 64U))      // (0 <= i < 8) EBC Status
                                                                       // Register
-#define ERAD_O_EBC_STATUSCLEAR(i)          (0x4CU + ((i) * 64))       // (0 <= i < 8) EBC Clear
+#define ERAD_O_EBC_STATUSCLEAR(i)          (0x4CU + ((i) * 64U))      // (0 <= i < 8) EBC Clear
                                                                       // Register
-#define ERAD_O_EBC_REFL(i)                 (0x50U + ((i) * 64))       // (0 <= i < 8) EBC Reference
+#define ERAD_O_EBC_REFL(i)                 (0x50U + ((i) * 64U))      // (0 <= i < 8) EBC Reference
                                                                       // Low Register
-#define ERAD_O_EBC_REFH(i)                 (0x54U + ((i) * 64))       // (0 <= i < 8) EBC Reference
+#define ERAD_O_EBC_REFH(i)                 (0x54U + ((i) * 64U))      // (0 <= i < 8) EBC Reference
                                                                       // High Register
-#define ERAD_O_EBC_MASKL(i)                (0x58U + ((i) * 64))       // (0 <= i < 8) EBC Mask Low
+#define ERAD_O_EBC_MASKL(i)                (0x58U + ((i) * 64U))      // (0 <= i < 8) EBC Mask Low
                                                                       // Register
-#define ERAD_O_EBC_MASKH(i)                (0x5CU + ((i) * 64))       // (0 <= i < 8) EBC Mask High
+#define ERAD_O_EBC_MASKH(i)                (0x5CU + ((i) * 64U))      // (0 <= i < 8) EBC Mask High
                                                                       // Register
-#define ERAD_O_EBC_WP_PC(i)                (0x60U + ((i) * 64))       // (0 <= i < 8) EBC
+#define ERAD_O_EBC_WP_PC(i)                (0x60U + ((i) * 64U))      // (0 <= i < 8) EBC
                                                                       // Watchpoint PC Register
-#define ERAD_O_SEC_OWNER(i)                (0x440U + ((i) * 64))      // (0 <= i < 4) SEC Owner
+#define ERAD_O_SEC_OWNER(i)                (0x440U + ((i) * 64U))     // (0 <= i < 4) SEC Owner
                                                                       // Register
-#define ERAD_O_SEC_CNTL(i)                 (0x444U + ((i) * 64))      // (0 <= i < 4) SEC Control
+#define ERAD_O_SEC_CNTL(i)                 (0x444U + ((i) * 64U))     // (0 <= i < 4) SEC Control
                                                                       // Register
-#define ERAD_O_SEC_STATUS(i)               (0x448U + ((i) * 64))      // (0 <= i < 4) SEC Status
+#define ERAD_O_SEC_STATUS(i)               (0x448U + ((i) * 64U))     // (0 <= i < 4) SEC Status
                                                                       // Register
-#define ERAD_O_SEC_STATUSCLEAR(i)          (0x44CU + ((i) * 64))      // (0 <= i < 4) SEC Clear
+#define ERAD_O_SEC_STATUSCLEAR(i)          (0x44CU + ((i) * 64U))     // (0 <= i < 4) SEC Clear
                                                                       // Register
-#define ERAD_O_SEC_REF(i)                  (0x450U + ((i) * 64))      // (0 <= i < 4) SEC Reference
+#define ERAD_O_SEC_REF(i)                  (0x450U + ((i) * 64U))     // (0 <= i < 4) SEC Reference
                                                                       // Register
-#define ERAD_O_SEC_INPUT_SEL1(i)           (0x454U + ((i) * 64))      // (0 <= i < 4) SEC Input
+#define ERAD_O_SEC_INPUT_SEL1(i)           (0x454U + ((i) * 64U))     // (0 <= i < 4) SEC Input
                                                                       // Select Register1
-#define ERAD_O_SEC_INPUT_SEL2(i)           (0x458U + ((i) * 64))      // (0 <= i < 4) SEC Input
+#define ERAD_O_SEC_INPUT_SEL2(i)           (0x458U + ((i) * 64U))     // (0 <= i < 4) SEC Input
                                                                       // Select Register2
-#define ERAD_O_SEC_INPUT_COND(i)           (0x45CU + ((i) * 64))      // (0 <= i < 4) SEC Input
+#define ERAD_O_SEC_INPUT_COND(i)           (0x45CU + ((i) * 64U))     // (0 <= i < 4) SEC Input
                                                                       // Conditioning Register
-#define ERAD_O_SEC_COUNT(i)                (0x460U + ((i) * 64))      // (0 <= i < 4) SEC Counter
+#define ERAD_O_SEC_COUNT(i)                (0x460U + ((i) * 64U))     // (0 <= i < 4) SEC Counter
                                                                       // Register
-#define ERAD_O_SEC_MAX_COUNT(i)            (0x464U + ((i) * 64))      // (0 <= i < 4) SEC Max Count
+#define ERAD_O_SEC_MAX_COUNT(i)            (0x464U + ((i) * 64U))     // (0 <= i < 4) SEC Max Count
                                                                       // Register
-#define ERAD_O_SEC_MIN_COUNT(i)            (0x468U + ((i) * 64))      // (0 <= i < 4) SEC Min Count
+#define ERAD_O_SEC_MIN_COUNT(i)            (0x468U + ((i) * 64U))     // (0 <= i < 4) SEC Min Count
                                                                       // Register
-#define ERAD_O_AND_MASK_OWNER(i)           (0x640U + ((i) * 32))      // (0 <= i < 4) AND Owner
+#define ERAD_O_AND_MASK_OWNER(i)           (0x640U + ((i) * 32U))     // (0 <= i < 4) AND Owner
                                                                       // Register
-#define ERAD_O_AND_MASK_CTL(i)             (0x644U + ((i) * 32))      // (0 <= i < 4) AND Control
+#define ERAD_O_AND_MASK_CTL(i)             (0x644U + ((i) * 32U))     // (0 <= i < 4) AND Control
                                                                       // Register
-#define ERAD_O_EVENT_AND_MASK(i)           (0x648U + ((i) * 32))      // (0 <= i < 4) AND Event
+#define ERAD_O_EVENT_AND_MASK(i)           (0x648U + ((i) * 32U))     // (0 <= i < 4) AND Event
                                                                       // Selection Register
-#define ERAD_O_OR_MASK_OWNER(i)            (0x740U + ((i) * 32))      // (0 <= i < 4) OR Owner
+#define ERAD_O_OR_MASK_OWNER(i)            (0x740U + ((i) * 32U))     // (0 <= i < 4) OR Owner
                                                                       // Register
-#define ERAD_O_OR_MASK_CTL(i)              (0x744U + ((i) * 32))      // (0 <= i < 4) OR Control
+#define ERAD_O_OR_MASK_CTL(i)              (0x744U + ((i) * 32U))     // (0 <= i < 4) OR Control
                                                                       // Register
-#define ERAD_O_EVENT_OR_MASK(i)            (0x748U + ((i) * 32))      // (0 <= i < 4) OR Event
+#define ERAD_O_EVENT_OR_MASK(i)            (0x748U + ((i) * 32U))     // (0 <= i < 4) OR Event
                                                                       // Selection Register
 #define ERAD_O_PCTRACE_OWNER               0x840U                     // Owner Register
 #define ERAD_O_PCTRACE_GLOBAL              0x844U                     // Global Control Register
@@ -90,20 +122,14 @@
 // The following are defines for the bit fields in the GLBL_ERAD_ID register
 //
 //*************************************************************************************************
-#define ERAD_GLBL_ERAD_ID_MINOR_S           0U
-#define ERAD_GLBL_ERAD_ID_MINOR_M           0x3FU         // Minor
-#define ERAD_GLBL_ERAD_ID_CUSTOM_S          6U
-#define ERAD_GLBL_ERAD_ID_CUSTOM_M          0xC0U         // Custom
-#define ERAD_GLBL_ERAD_ID_MAJOR_S           8U
-#define ERAD_GLBL_ERAD_ID_MAJOR_M           0x700U        // Major
-#define ERAD_GLBL_ERAD_ID_RTL_S             11U
-#define ERAD_GLBL_ERAD_ID_RTL_M             0xF800U       // RTL
-#define ERAD_GLBL_ERAD_ID_FUNC_S            16U
-#define ERAD_GLBL_ERAD_ID_FUNC_M            0xFFF0000U    // Func
-#define ERAD_GLBL_ERAD_ID_BUSINESS_UNIT_S   28U
-#define ERAD_GLBL_ERAD_ID_BUSINESS_UNIT_M   0x30000000U   // Business Unit
-#define ERAD_GLBL_ERAD_ID_SCHEME_S          30U
-#define ERAD_GLBL_ERAD_ID_SCHEME_M          0xC0000000U   // Scheme
+#define ERAD_GLBL_ERAD_ID_MINOR_S    0U
+#define ERAD_GLBL_ERAD_ID_MINOR_M    0x3FU        // Minor
+#define ERAD_GLBL_ERAD_ID_CUSTOM_S   6U
+#define ERAD_GLBL_ERAD_ID_CUSTOM_M   0xC0U        // Custom
+#define ERAD_GLBL_ERAD_ID_MAJOR_S    8U
+#define ERAD_GLBL_ERAD_ID_MAJOR_M    0x700U       // Major
+#define ERAD_GLBL_ERAD_ID_FUNC_S     16U
+#define ERAD_GLBL_ERAD_ID_FUNC_M     0xFFF0000U   // Func
 
 //*************************************************************************************************
 //
