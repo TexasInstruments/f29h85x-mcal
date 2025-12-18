@@ -62,9 +62,6 @@ extern "C" {
 /** \brief CDD XBar development error detection */
 #define CDD_XBAR_DEV_ERROR_DETECT  [!"'              '"!] [!IF "CddXbarGeneral/CddXbarDevErrorDetect"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
 
-/** \brief Switches the CDD XBAR functions ON or OFF */
-#define CDD_XBAR_API_ENABLE  [!"'                     '"!][!IF "CddXbarGeneral/CddXbarAPIEnable = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
-
 /** \brief Switches the Cdd_Xbar_GetVersionInfo function ON or OFF */
 #define CDD_XBAR_GET_VERSION_INFO_API  [!"'           '"!][!IF "CddXbarGeneral/CddXbarVersionInfoApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!]
 
@@ -91,22 +88,22 @@ extern "C" {
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /** \brief Number of input crossbar output lines */
-#define CDD_XBAR_INPUT_SELECT_COUNT               [!"ecu:get('Input_Xbar_SelectCount')"!]U
+#define CDD_XBAR_INPUT_SELECT_COUNT               [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_Input_Xbar_SelectCount')"!]U
 
 /** \brief Number of output crossbar output lines */
-#define CDD_XBAR_OUTPUT_XBAR_OUTPUT_COUNT         [!"ecu:get('Output_Xbar_OutputLineCount')"!]U
+#define CDD_XBAR_OUTPUT_XBAR_OUTPUT_COUNT         [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_Output_Xbar_OutputLineCount')"!]U
 
 /** \brief Number of EPWM crossbar output lines */
-#define CDD_XBAR_EPWM_XBAR_OUTPUT_COUNT           [!"ecu:get('EPWM_Xbar_OutputLineCount')"!]U
+#define CDD_XBAR_EPWM_XBAR_OUTPUT_COUNT           [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_EPWM_Xbar_OutputLineCount')"!]U
 
 /** \brief Number of CLB crossbar output lines */
-#define CDD_XBAR_CLB_XBAR_OUTPUT_COUNT            [!"ecu:get('CLB_Xbar_OutputLineCount')"!]U
+#define CDD_XBAR_CLB_XBAR_OUTPUT_COUNT            [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_CLB_Xbar_OutputLineCount')"!]U
 
 /** \brief Number of MinDB crossbar output lines */
-#define CDD_XBAR_MINDB_XBAR_OUTPUT_COUNT          [!"ecu:get('MinDB_Xbar_OutputLineCount')"!]U
+#define CDD_XBAR_MINDB_XBAR_OUTPUT_COUNT          [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_MinDB_Xbar_OutputLineCount')"!]U
 
 /** \brief Number of ICL crossbar output lines */
-#define CDD_XBAR_ICL_XBAR_OUTPUT_COUNT            [!"ecu:get('ICL_Xbar_OutputLineCount')"!]U
+#define CDD_XBAR_ICL_XBAR_OUTPUT_COUNT            [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_ICL_Xbar_OutputLineCount')"!]U
 
 [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!] 
 /** \brief Switches the pre compile variant ON or OFF */
@@ -119,22 +116,22 @@ extern "C" {
 [!ENDIF!]
 
 /** \brief Number of output crossbar input groups */
-#define CDD_XBAR_OUTPUT_XBAR_MAX_GROUP            [!"ecu:get('CDD_XBAR_OUTPUT_XBAR_MAX_GROUP')"!]U
+#define CDD_XBAR_OUTPUT_XBAR_MAX_GROUP            [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_Output_Xbar_Max_Group')"!]U
 
 /** \brief Number of EPWM crossbar input groups */
-#define CDD_XBAR_EPWM_XBAR_MAX_GROUP              [!"ecu:get('CDD_XBAR_EPWM_XBAR_MAX_GROUP')"!]U
+#define CDD_XBAR_EPWM_XBAR_MAX_GROUP              [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_Epwm_Xbar_Max_Group')"!]U
 
 /** \brief Number of CLB crossbar input groups */
-#define CDD_XBAR_CLB_XBAR_MAX_GROUP               [!"ecu:get('CDD_XBAR_CLB_XBAR_MAX_GROUP')"!]U
+#define CDD_XBAR_CLB_XBAR_MAX_GROUP               [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_Clb_Xbar_Max_Group')"!]U
 
 /** \brief Number of MINDB crossbar input groups */
-#define CDD_XBAR_MINDB_XBAR_MAX_GROUP             [!"ecu:get('CDD_XBAR_MINDB_XBAR_MAX_GROUP')"!]U
+#define CDD_XBAR_MINDB_XBAR_MAX_GROUP             [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_Mindb_Xbar_Max_Group')"!]U
 
 /** \brief Number of ICL crossbar input groups */
-#define CDD_XBAR_ICL_XBAR_MAX_GROUP               [!"ecu:get('CDD_XBAR_ICL_XBAR_MAX_GROUP')"!]U
+#define CDD_XBAR_ICL_XBAR_MAX_GROUP               [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_Icl_Xbar_Max_Group')"!]U
 
 /** \brief Number of input lines in each group in a crossbar */
-#define CDD_XBAR_MAX_INPUT_LINES                  [!"ecu:get('CDD_XBAR_MAX_INPUT_LINES')"!]U
+#define CDD_XBAR_MAX_INPUT_LINES                  [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_Max_Input_Lines')"!]U
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 [!IF "num:i(count(CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*))>0"!]
@@ -303,7 +300,7 @@ typedef enum
 /** \brief CDD Xbar Input Group Type */
 typedef enum 
 {
-[!FOR "i" = "0" TO "ecu:get('Xbar_InputGroups')-1"!] 
+[!FOR "i" = "0" TO "ecu:get('ResourceAllocator_F29H85x.Cdd_Xbar_InputGroups')-1"!] 
     CDD_XBAR_INPUT_GROUP_[!"$i"!] = [!"$i"!]U,       /*!< \brief Input Group [!"$i"!]  */ 
 [!ENDFOR!] 
 } Cdd_Xbar_InputGroupType;
@@ -1718,6 +1715,14 @@ typedef struct
     boolean mindbConfigLock;    /* Design: MCAL-25711 */
     /** \brief ICL Crossbar Lock */
     boolean iclConfigLock;      /* Design: MCAL-25712 */
+    #if (0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS)
+    /** \brief Output crossbar flag base address */
+    uint32 outputXbarFlagBaseAddress;
+    #endif
+    #if (CDD_XBAR_INPUT_FLAG_API == STD_ON)
+    /** \brief Crossbar input flag base address*/
+    uint32 inputFlagBaseAddress;
+    #endif
 } Cdd_Xbar_ConfigType;
 
 /* CDD XBar Configuration struct extern declaration */

@@ -150,14 +150,13 @@ int main(void)
     AppUtils_Printf("Can_Example_Wakeup : Can Controller: MCAN A\n\r");
     PduInfo = &Pdu;
     hth     = 0U;
-    Can_EnableControllerInterrupts(0U);
+
     /* Set Controller Mode for controller 0U */
     status = Can_SetControllerMode(0U, CAN_CS_STARTED);
     if (status != E_OK)
     {
         gTestPassed = E_NOT_OK;
     }
-    Can_EnableControllerInterrupts(0U);
 
     AppUtils_Printf("Can_Example_Wakeup : Transmitted ID value: 0x%x and length : %d \n\r", PduInfo->id,
                     PduInfo->length);

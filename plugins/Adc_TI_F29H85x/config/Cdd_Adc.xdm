@@ -37,6 +37,7 @@
                   <a:a name="LOWER-MULTIPLICITY" value="0"/>
                   <a:a name="UPPER-MULTIPLICITY" value="1"/>
                   <a:a name="RELEASE" value="asc:4.3.1"/>
+                  <a:a name="API-SERVICE-PREFIX" value="Cdd_Adc"/>
                   <a:a name="UUID" value="176aad71-7a67-42cf-8fa2-a08a838d2fc8"/>
                   <v:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION">
                     <a:a name="LABEL" value="Config Variant"/>
@@ -60,7 +61,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="ec2711be-2211-4269-ac07-b48382eac33b"/>
                       <a:da name="DEFAULT" value="false"/>
@@ -73,7 +73,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="8190cb4e-49bd-40ff-9866-6a01a05580e2"/>
                       <a:da name="DEFAULT" value="false"/>
@@ -89,11 +88,10 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="7f3be298-e27e-4e53-ab7c-257c8f8a1c68"/>
-                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_InternalTestInput')&quot;,'CDD_ADC_TEST_NODE_NO_CONN')"/>
-                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_InternalTestInput')[1]&quot;,'CDD_ADC_TEST_NODE_NO_CONN')"/>
+                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcInternalTestInput')&quot;,'CDD_ADC_TEST_NODE_NO_CONN')"/>
+                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcInternalTestInput')[1]&quot;,'CDD_ADC_TEST_NODE_NO_CONN')"/>
                     </v:var>
                     <v:var name="CddAdcHwUnitAnalogRefABVoltageMode" type="ENUMERATION">
                       <a:a name="DESC" 
@@ -103,7 +101,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="d7c09360-b312-43a3-88f9-3409b6a01474"/>
                       <a:da name="RANGE">
@@ -120,7 +117,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="9879253a-6d57-4127-90d0-ba2f0a1a8302"/>
                       <a:da name="RANGE">
@@ -138,7 +134,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="0e0fc054-e6bd-4c3c-8a45-5e3bd982972f"/>
                       <a:da name="RANGE">
@@ -155,7 +150,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="64d37daf-7d71-4d02-864f-2f7074d61db4"/>
                       <a:da name="RANGE">
@@ -167,7 +161,7 @@
                     </v:var>
                     <v:lst name="CddAdcHwUnit" type="MAP">
                       <a:da name="MIN" value="1"/>
-                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_Adc_F29H85x_HwInstances')&quot;,num:i(5))"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('ResourceAllocator_F29H85x.Cdd_AdcHwInstances')&quot;,num:i(5))"/>
                       <v:ctr name="CddAdcHwUnit" type="IDENTIFIABLE">
                         <a:a name="DESC" 
                               value="EN: This container contains the driver configuration (parameters) for the ADC Hardware Unit"/>
@@ -176,7 +170,26 @@
                         </a:a>
                         <a:a name="UUID" 
                              value="8cc5482e-bf7c-4399-a751-2976c8bf06ea"/>
-                        <v:var name="CddAdcHwInstance" type="ENUMERATION">
+                        <v:ref name="CddAdcHwInstanceRef" type="REFERENCE">
+                          <a:a name="DESC" 
+                                value="EN: This parameter refers to the ADC HW Unit instance."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="UUID" 
+                               value="4bc948a9-9197-4d6c-ad22-597a368fe6b9"/>
+                          <a:da name="REF"
+                                value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Adc/Cdd_AdcAllocatedInstance"/>
+                          <a:da name="RANGE" type="XPath">
+                            <a:tst expr="node:paths(//Cdd_AdcAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                          </a:da>
+                          <a:da name="INVALID" type="XPath">
+                                <a:tst expr="text:uniq((../../..//*[@name='CddAdcHwInstanceRef']),node:value(.))" false="CddAdcHwInstanceRef selection has to be unique across all containers."/>
+                          </a:da>
+                        </v:ref>
+                        <v:var name="CddAdcHwInstance" type="STRING">
                           <a:a name="DESC" 
                                 value="EN: This parameter describes the ADC HW Unit instance."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
@@ -184,17 +197,16 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="4bc948a9-9197-4d6d-ad22-597a368fe6b9"/>
-                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_HwUnitId')&quot;,'CDD_ADCA')"/>
-                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_HwUnitId')[1]&quot;,'CDD_ADCA')"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:value(concat(node:path(node:ref(../CddAdcHwInstanceRef)),'/InstanceName'))&quot;,'CDD_ADCA')"/>
+                          <a:da name="EDITABLE" value="false"/>
                           <a:da name="INVALID" type="XPath">
                             <a:tst expr="text:uniq(../.././/*[@name = 'CddAdcHwInstance'],node:value(.))"
                                   false="Every hardware instance must have different hardware unit IDs."/>
                           </a:da> 
                         </v:var>
-                        <v:var name="CddAdcHwUnitId" type="INTEGER">
+                        <v:var name="CddAdcHwUnitId" type="STRING">
                           <a:a name="DESC" 
                                 value="EN: This parameter indicates harware unit index among all the configured hardware units."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
@@ -202,13 +214,13 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="true"/>
                           <a:a name="UUID" 
                                value="e36cda66-e2bd-46b1-a281-fdeaa0242bde"/>
-                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:pos(../.)&quot;,num:i(0))"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,num:i(0))"/>
                           <a:da name="EDITABLE" value="false"/>
                           <a:da name="INVALID" type="Range">
-                            <a:tst expr="&lt;=4"/>
+                            <a:tst expr="&lt;node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcHwInstances'))&quot;,num:i(5))"/>
                             <a:tst expr="&gt;=0"/>
                           </a:da>
                         </v:var>
@@ -224,7 +236,6 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="8fcf10fb-39da-47c1-bf66-c0804c9bdcd3"/>
                           <a:da name="INVALID" type="Range">
@@ -242,20 +253,16 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="f2d78fb4-3929-40e9-aac5-b32d7cc6fab0"/>
-                          <a:da name="RANGE">
-                            <a:v>CDD_ADC_RESOLUTION_12BIT</a:v>
-                            <a:v>CDD_ADC_RESOLUTION_16BIT</a:v>
-                          </a:da>
-                          <a:da name="EDITABLE" type="XPath" expr="((../CddAdcHwInstance = 'CDD_ADCA') or (../CddAdcHwInstance = 'CDD_ADCB'))"/>                          
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcResolution')&quot;,'CDD_ADC_RESOLUTION_12BIT')"/>
+                          <a:da name="EDITABLE" type="XPath" expr="text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Adc16Bit_Instances'),node:value(../CddAdcHwInstance))"/>                          
                           <a:da name="DEFAULT" value="CDD_ADC_RESOLUTION_12BIT"/>
                           <a:da name="INVALID" type="XPath">
                             <a:tst expr="not(node:value(../../../CddAdcHwUnitAnalogRefABVoltage) = 'CDD_ADC_REFERENCE_3_3V' and  node:value(../../../CddAdcHwUnitAnalogRefABVoltageMode) = 'CDD_ADC_REFERENCE_INTERNAL' and node:value(.) = 'CDD_ADC_RESOLUTION_16BIT')"
                                   false="1.65V internal reference mode is not supported when the ADC is configured for 16-bit resolution mode."/>
-                            <a:tst expr="not(((../CddAdcHwInstance = 'CDD_ADCC') or (../CddAdcHwInstance = 'CDD_ADCD') or (../CddAdcHwInstance = 'CDD_ADCE')) and (. = 'CDD_ADC_RESOLUTION_16BIT'))" false="16-bit resolution is not supported for ADCC,ADCD and ADCE hardware instances"/>
-                          </a:da>                         
+                            <a:tst expr="not((text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Adc12Bit_Instances'),node:value(../CddAdcHwInstance))) and (. = 'CDD_ADC_RESOLUTION_16BIT'))" false="16-bit resolution is not supported for ADCC,ADCD and ADCE hardware instances"/>
+                          </a:da>
                         </v:var>
                         <v:var name="CddAdcHwUnitSignalMode" type="ENUMERATION">
                           <a:a name="DESC" 
@@ -266,15 +273,11 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="6a10e4f0-66f5-42ab-9703-4a81bf4676fd"/>
-                          <a:da name="RANGE">
-                              <a:v>CDD_ADC_MODE_SINGLE_ENDED</a:v>
-                              <a:v>CDD_ADC_MODE_DIFFERENTIAL</a:v>
-                          </a:da>
-                          <a:da name="EDITABLE" type="XPath" expr="(../CddAdcHwInstance = 'CDD_ADCA') or (../CddAdcHwInstance = 'CDD_ADCB')" />
-                          <a:da name="DEFAULT" value="CDD_ADC_MODE_SINGLE_ENDED"/>    
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcSignalMode')&quot;,'CDD_ADC_MODE_SINGLE_ENDED')"/> 
+                          <a:da name="EDITABLE" type="XPath" expr="text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_Adc16Bit_Instances'),node:value(../CddAdcHwInstance))"/>
+                          <a:da name="DEFAULT" value="CDD_ADC_MODE_SINGLE_ENDED"/>
                         </v:var>
                         <v:ref name="CddAdcClockReference" type="REFERENCE">
                           <a:a name="DESC" value="EN: Reference to a container of the type McuClockReferencePoint, to select an input clock."/>
@@ -295,11 +298,10 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="c6afeed4-8330-44c5-9b24-2dde9744c892"/>
-                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_Prescale')&quot;,'CDD_ADC_CLK_DIV_3_5')"/> 
-                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_Prescale')[5]&quot;,'CDD_ADC_CLK_DIV_3_5')"/>
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcPrescale')&quot;,'CDD_ADC_CLK_DIV_3_5')"/> 
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcPrescale')[5]&quot;,'CDD_ADC_CLK_DIV_3_5')"/>
                         </v:var>
                         <v:var name="CddAdcClock" type="FLOAT">
                           <a:a name="DESC" value="EN: This parameter describes the ADC clock after the clock prescale factor for the ADC Hardware unit."/>
@@ -308,7 +310,6 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="c3c17b00-9e8a-4116-9046-1345b3fb2518"/>
                           <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:f(node:value(concat(node:path(node:ref(../CddAdcClockReference)),'/McuClockReferencePointFrequency'))) div num:f(text:replace(substring-after(node:value(../CddAdcHwUnitClockPrescale),'CDD_ADC_CLK_DIV_'),'_','.'))&quot;,num:f('5.0E7'))"/>
@@ -326,7 +327,6 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="148b73b9-91a2-48cf-8373-c33a4ffe8965"/>
                           <a:da name="DEFAULT" value="false"/> 
@@ -340,7 +340,6 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                  value="62fd24f6-8447-4d3b-9963-c6579c2e45c3"/>
                           <a:da name="DEFAULT" value="false"/>
@@ -355,11 +354,10 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="885d2ec8-880c-48a9-89c6-d552fe1d684b"/>
-                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_InterruptPulseMode')&quot;,'CDD_ADC_PULSE_END_OF_CONV')"/>
-                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_InterruptPulseMode')[2]&quot;,'CDD_ADC_PULSE_END_OF_CONV')"/>
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcInterruptPulseMode')&quot;,'CDD_ADC_PULSE_END_OF_CONV')"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcInterruptPulseMode')[2]&quot;,'CDD_ADC_PULSE_END_OF_CONV')"/>
                         </v:var>
                         <v:var name="CddAdcInterruptCycleoffset" type="INTEGER">
                           <a:a name="DESC" 
@@ -369,8 +367,7 @@
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
-                          <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>                   
+                          <a:a name="SCOPE" value="LOCAL"/>                   
                           <a:a name="UUID" 
                                value="c8472f0e-c6b6-43fe-9b25-968969f2b225"/>
                           <a:da name="EDITABLE" type="XPath" expr="(../CddAdcInterruptPulseMode = 'CDD_ADC_PULSE_END_OF_ACQ_WIN')"/>
@@ -388,42 +385,25 @@
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
-                          <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>                   
+                          <a:a name="SCOPE" value="LOCAL"/>                   
                           <a:a name="UUID" 
                                value="095a3beb-7db1-4775-a7cc-bfdcd2c98c7b"/>
-                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_OSDetectMode')&quot;,'CDD_ADC_OSDETECT_MODE_DISABLED')"/>
-                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_OSDetectMode')[1]&quot;,'CDD_ADC_OSDETECT_MODE_DISABLED')"/>
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcOSDetectMode')&quot;,'CDD_ADC_OSDETECT_MODE_DISABLED')"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcOSDetectMode')[1]&quot;,'CDD_ADC_OSDETECT_MODE_DISABLED')"/>
                         </v:var>
                         <v:lst name="CddAdcGroup" type="MAP">
                           <a:da name="MIN" value="1"/>
-                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_Adc_F29H85x_IntCntPerHw')&quot;,num:i(4))"/>
+                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('ResourceAllocator_F29H85x.Cdd_AdcIntCntPerHw')&quot;,num:i(4))"/>
                           <v:ctr name="CddAdcGroup" type="IDENTIFIABLE">
                             <a:a name="DESC" 
                                   value="EN: This container contains the Group configuration (parameters)."/>
                             <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                 <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                             </a:a>
+                            <a:da name="INVALID" type="XPath" expr="text:uniq((../../../*/CddAdcGroup/*/@name), @name)" 
+                              false="Group channel name has to be unique across all the hardware containers"/>
                             <a:a name="UUID" 
                                  value="38b22746-592b-4428-900b-11479f65a6d3"/>
-                            <v:var name="CddAdcGroupId" type="INTEGER">
-                              <a:a name="DESC"
-                                    value="EN: Numeric ID of the group. This parameter is the symbolic name to be used on the API. This symbolic name allows accessing Channel Group data. This value will be assigned to the symbolic name derived of the CddAdcGroup container shortName."/>
-                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                              
-                                <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                              </a:a>
-                              <a:a name="ORIGIN" value="Texas Instruments"/>
-                              <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                              <a:a name="UUID" 
-                                   value="a2ec93f8-282e-4aa2-922c-f9c3293a74e1"/>
-                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,num:i(0))"/>
-                              <a:da name="EDITABLE" value="false"/>
-                              <a:da name="INVALID" type="Range">
-                                <a:tst expr="&lt;=3"/>
-                                <a:tst expr="&gt;=0"/>
-                              </a:da>
-                            </v:var>
                             <v:var name="CddAdcGroupPriority" type="ENUMERATION">
                               <a:a name="DESC"
                                     value="EN: Priority of the group."/>
@@ -432,7 +412,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="430f8def-c2c6-4298-bcd1-aa6cda6f95b4"/>
                               <a:da name="RANGE">
@@ -449,7 +428,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="e760c014-6ab7-4b49-8f3e-c485a1f6a45b"/>
                               <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(num:sum(node:foreach(../CddAdcChannel/*/CddAdcSocNumber,'val','num:i(bit:bitset(0,num:i($val)))')))&quot;,num:i('0'))"/>
@@ -467,7 +445,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="6f3bf6bd-41e9-4cf5-b5d8-197acae17e64"/>
                               <a:da name="RANGE">
@@ -484,7 +461,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="eb72a9cc-3201-40c9-96d2-fd377d316f96"/>
                               <a:da name="RANGE">
@@ -502,11 +478,10 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="77bb5b10-0407-4919-8db0-ceb8835bd090"/>
-                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->node:when((../CddAdcGroupTrigSrcType = 'CDD_ADC_TRIGG_SRC_SW'),ecu:list('Cdd_Adc_F29H85x_SOC_SwTrigger'),ecu:list('Cdd_Adc_F29H85x_SOC_HwTrigger'))&quot;,'CDD_ADC_TRIGGER_SW_ONLY')"/>
-                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:when((../CddAdcGroupTrigSrcType = 'CDD_ADC_TRIGG_SRC_SW'),ecu:list('Cdd_Adc_F29H85x_SOC_SwTrigger')[1],ecu:list('Cdd_Adc_F29H85x_SOC_HwTrigger')[1])&quot;,'CDD_ADC_TRIGGER_SW_ONLY')"/>
+                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->node:when((../CddAdcGroupTrigSrcType = 'CDD_ADC_TRIGG_SRC_SW'),ecu:list('ResourceAllocator_F29H85x.Cdd_AdcSOC_SwTrigger'),ecu:list('ResourceAllocator_F29H85x.Cdd_AdcSOC_HwTrigger'))&quot;,'CDD_ADC_TRIGGER_SW_ONLY')"/>
+                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:when((../CddAdcGroupTrigSrcType = 'CDD_ADC_TRIGG_SRC_SW'),ecu:list('ResourceAllocator_F29H85x.Cdd_AdcSOC_SwTrigger')[1],ecu:list('ResourceAllocator_F29H85x.Cdd_AdcSOC_HwTrigger')[1])&quot;,'CDD_ADC_TRIGGER_SW_ONLY')"/>
                               <a:da name="INVALID" type="XPath">
                                 <a:tst expr="not(../CddAdcGroupTrigSrcType = 'CDD_ADC_TRIGG_SRC_SW'  and . != 'CDD_ADC_TRIGGER_SW_ONLY')" false="When the trigger source type is SW only SW trigger source should be selected."/>
                                 <a:tst expr="not(../CddAdcGroupTrigSrcType = 'CDD_ADC_TRIGG_SRC_HW'  and . = 'CDD_ADC_TRIGGER_SW_ONLY')" false="When the trigger source type is HW only HW trigger sources should be selected."/>
@@ -540,7 +515,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="f7d73a8a-1962-4777-9c51-38fd1151c727"/>                
                               <a:da name="RANGE">
@@ -559,7 +533,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="e29a9105-5352-4a00-8bf6-5c9683033daa"/>
                               <a:da name="ENABLE" value="true"/>
@@ -579,7 +552,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="94813c17-4b9b-4fa5-b01b-542e7dbe5781"/>
                               <a:da name="RANGE">
@@ -597,7 +569,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="3b755ee5-391d-4f7f-9f5f-1e862f4cc452"/>                             
                               <a:da name="INVALID" type="Range">
@@ -615,7 +586,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                   value="1190cb4e-49bd-40ff-9866-6a01a05580e2"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -627,7 +597,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="06cb45d9-0198-49d1-9558-512e9089dd7c"/>
                               <a:da name="DEFAULT" value="ISR_CAT1_RTINT"/>
@@ -645,13 +614,17 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                      value="cc5359b4-7cf0-4d6e-a191-be48df500d34"/>
                               <a:a name="OPTIONAL" value="true"/>
                               <a:a name="DEFAULT" value="NULL_PTR"/>
-                              <a:da name="INVALID" type="XPath" expr="(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcGeneral/CddAdcGrpNotifCapability)" 
-                                false="To provide group notification function then group notification capability(CddAdcGrpNotifCapability parameter) should be enabled"/>
+                              <a:da name="INVALID" type="XPath">
+                                <a:tst expr="(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcGeneral/CddAdcNotifCapability)" 
+                                  false="To provide group notification function then group notification capability(CddAdcNotifCapability parameter) should be enabled"/>
+                                <a:tst expr="not(. = 'NULL_PTR')" false="Notification should not be NULL_PTR"/>
+                              </a:da>
+                              <a:da name="WARNING" type="XPath" expr="not((node:exists(.) = 'true') and (node:empty(.) = 'true'))" 
+                                      false="No notification function is provided."/>
                             </v:var>
                             <v:var name="CddAdcInterruptSelect" type="ENUMERATION">
                               <a:a name="DESC" 
@@ -661,11 +634,10 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="02e0c7b4-f11e-4271-87c6-cae5a48293ea"/>
-                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_Int')&quot;,'CDD_ADC_INT1')"/>
-                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_Int')[1]&quot;,'CDD_ADC_INT1')"/>
+                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcInt')&quot;,'CDD_ADC_INT1')"/>
+                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcInt')[1]&quot;,'CDD_ADC_INT1')"/>
                               <a:da name="INVALID" type="XPath">
                                 <a:tst expr="text:uniq(../../.././/*[@name = 'CddAdcInterruptSelect'],node:value(.))" 
                                 false="If the group is configured for the interrupt mode then the interrupt number should be unique among the same hardware unit."/>
@@ -679,7 +651,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="c5176863-3086-460c-9588-0dfe51f7fdef"/>
                               <a:da name="RANGE">
@@ -700,14 +671,13 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="10703d29-04f9-42f1-8c5e-411d64c15d6a"/>
                               <a:da name="DEFAULT" value="false"/>
                             </v:var>
                             <v:lst name="CddAdcChannel" type="MAP">
                               <a:da name="MIN" value="1"/>
-                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_Adc_F29H85x_Channels')&quot;,num:i('32'))"/>
+                              <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('ResourceAllocator_F29H85x.Cdd_AdcChannels')&quot;,num:i('32'))"/>
                               <v:ctr name="CddAdcChannel" type="IDENTIFIABLE">
                                 <a:a name="DESC" 
                                   value="EN: This container contains the channel configuration (parameters) depending on the hardware capability."/>
@@ -717,27 +687,27 @@
                                 <a:a name="UUID" 
                                      value="03df0320-f2b5-4343-9ff1-cfd323446a7a"/>
                                 <a:da name="INVALID" type="XPath">
-                                  <a:tst expr="num:i(count(../../.././/*[@name = 'CddAdcChannelId'])) &lt;=ecu:get('Cdd_Adc_F29H85x_Channels')" false="Atmost only 32 channels are allowed in a hardware units."/>
+                                  <a:tst expr="num:i(count(../../.././/*[@name = 'CddAdcChannelId'])) &lt;=ecu:get('ResourceAllocator_F29H85x.Cdd_AdcChannels')" false="Atmost only 32 channels are allowed in a hardware units."/>
                                 </a:da>
                                 <v:var name="CddAdcChannelId" type="INTEGER">
-                                  <a:a name="DESC" value="EN: This parameter defines to the numeric ID of the channel on the ADC hardware unit. Only some channels are brought out on the deive.
-                                          Some of the channels are connected internally. So,while confguring the channel IDs make sure the channels have pin out on the deivce and are configured in Port. "/>
+                                  <a:a name="DESC" value="EN: This parameter defines to the numeric ID of the channel on the ADC hardware unit. Only some channels are brought out on the device.
+                                          Some of the channels are connected internally. So,while confguring the channel IDs make sure the channels have pin out on the deivce and are configured in Port.
+                                          A particular channel is reserved for temperature sensor in every device. For example, in F29H85x device channel 20 is reserved for temperature sensor."/>
                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                                   
                                     <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                                   </a:a>
                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                   <a:a name="SCOPE" value="LOCAL"/>
-                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                   <a:a name="UUID" 
                                        value="d9f0bcf2-994a-4b18-a454-d7bd2c2a0fa1"/>
                                   <a:da name="INVALID" type="Multi">
                                     <mt:range>
-                                      <mt:tst expr="&lt;=31"/>
+                                      <mt:tst expr="&lt;node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcChannels'))&quot;,num:i(32))"/>
                                       <mt:tst expr="&gt;=0"/>
                                     </mt:range>
-                                    <mt:xpath expr="not(../../../../../CddAdcHwUnitResolution = 'CDD_ADC_RESOLUTION_16BIT' and . ='20')"
-                                      false="Channel Id 20 is a temperature sensor. When enabling temperature sensor the ADC hardware unit shouldn't be in 16-bit mode. Being in 16-bit mode might produce incorrect conversion results."/>
-                                    <mt:xpath expr="node:when(((../../../../../CddAdcHwInstance = 'CDD_ADCA' or ../../../../../CddAdcHwInstance = 'CDD_ADCC') and . ='20'),(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcEnableTemperatureSensor),'true')" 
+                                    <mt:xpath expr="not(../../../../../CddAdcHwUnitResolution = 'CDD_ADC_RESOLUTION_16BIT' and (num:i(node:value(.)) = num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcTempSensorChannel'))))"
+                                      false="Channel Id 20 is reserved for temperature sensor in F29H85x device. When enabling temperature sensor the ADC hardware unit shouldn't be in 16-bit mode. Being in 16-bit mode might produce incorrect conversion results."/>
+                                    <mt:xpath expr="node:when((text:contains(ecu:list('ResourceAllocator_F29H85x.Cdd_AdcTempSensor_Instances'),node:value(../../../../../CddAdcHwInstance)) and (num:i(node:value(.)) = num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcTempSensorChannel')))),(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcEnableTemperatureSensor),'true')" 
                                     false="When temperature sensor is used CddAdcEnableTemperatureSensor should be set to true." />
                                   </a:da>
                                   <a:da name="DEFAULT" value="0"/>
@@ -750,7 +720,6 @@
                                   </a:a>
                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                   <a:a name="SCOPE" value="LOCAL"/>
-                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                   <a:a name="UUID" 
                                        value="4a107b17-1b31-4151-acc2-794b10c68c30"/>
                                   <a:a name="INVALID" type="Multi">
@@ -765,8 +734,8 @@
                                     <mt:xpath expr="node:when((../../../CddAdcGroupPriority = 'CDD_ADC_HIGH_PRIORITY'),(node:value(.)&lt;node:value(../../../../../CddAdcSocPriorityMode)),'true')"
                                       false="The SOC number alloted to the channel should be less than/below the SocPriorityMode value configured for the corresponding group when the group is in high priority mode"/>
                                   </a:a>
-                                  <a:da name="DEFAULT" value="0"/>
-                                </v:var>                              
+                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,num:i(0))"/>
+                                </v:var>
                                 <v:var name="CddAdcSocExternalChannelSelect" type="INTEGER">
                                   <a:a name="DESC" 
                                     value="EN: This parameter defines the assignment of the external channel based on the digital output pins."/>
@@ -775,7 +744,6 @@
                                   </a:a>
                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                   <a:a name="SCOPE" value="LOCAL"/>
-                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                   <a:a name="UUID" 
                                        value="091e6d27-8d5f-4eeb-853f-e58aacbc7e91"/>
                                   <a:da name="DEFAULT" value="0"/>
@@ -793,7 +761,6 @@
                                   </a:a>
                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                   <a:a name="SCOPE" value="LOCAL"/>
-                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                   <a:a name="UUID" 
                                        value="e8f18ee7-0ca7-495e-af03-ba6775e0b61b"/>
                                   <a:da name="INVALID" type="Multi">
@@ -811,7 +778,7 @@
                         </v:lst>
                         <v:lst name="CddAdcTriggerRepeater" type="MAP">
                           <a:da name="MIN" value="0"/>
-                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_Adc_F29H85x_TrigRepeatersPerHw')&quot;,num:i(2))"/>
+                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('ResourceAllocator_F29H85x.Cdd_AdcTrigRepeatersPerHw')&quot;,num:i(2))"/>
                           <v:ctr name="CddAdcTriggerRepeater" type="IDENTIFIABLE">
                             <a:a name="DESC" 
                               value="EN: This container contains the trigger repeater configuration (parameters) depending on the hardware capability. To have this container enabled trigger source type should be hardware, trigger source should be one of the repeaters and trigger repeater should be enabled in the CddAdcGeneral container."/>
@@ -828,11 +795,10 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="4a38d780-3901-4922-be67-2c30129511ad"/>
                               <a:da name="INVALID" type="Range">
-                                <a:tst expr="&lt;=1" false="Trigger repeater ID should be within the range"/>
+                                <a:tst expr="&lt;node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcTrigRepeatersPerHw'))&quot;,num:i(2))" false="Trigger repeater ID should be within the range"/>
                                 <a:tst expr="&gt;=0" false="Minimum allowed trigger repeater Id is 0"/>
                               </a:da>
                               <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:pos(../.)&quot;,num:i(0))"/>
@@ -848,11 +814,10 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="ca5ee0f7-9031-48a4-b485-6d503d57a194"/>    
-                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_Repeater_Trigger')&quot;,'CDD_ADC_TRIGGER_CPU1INT0')"/>
-                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_Repeater_Trigger')[1]&quot;,'CDD_ADC_TRIGGER_CPU1INT0')"/>                             
+                              <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcRepeater_Trigger')&quot;,'CDD_ADC_TRIGGER_CPU1INT0')"/>
+                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcRepeater_Trigger')[1]&quot;,'CDD_ADC_TRIGGER_CPU1INT0')"/>                             
                             </v:var>
                             <v:var name="CddAdcRepeaterMode" type="ENUMERATION">
                               <a:a name="DESC" 
@@ -862,7 +827,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="062b002a-198d-4ed0-a2ed-48144f745dd9"/>
                               <a:da name="RANGE">
@@ -878,7 +842,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="9a8e1cb9-288c-45ca-9262-3b8d7c05662e"/>
                               <a:da name="INVALID" type="Range">
@@ -896,7 +859,6 @@
                               <a:a name="ORIGIN" value="Texas Instruments"/>
 
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="1baec3ab-5d73-4aff-a7df-36b68451fb76"/>
                               <a:da name="INVALID" type="Range">
@@ -914,7 +876,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="3f0bdde1-59d6-4676-a36f-d173640630c6"/>
                               <a:da name="EDITABLE" type="XPath" expr="(../CddAdcRepeaterMode = 'OVERSAMPLING_MODE') and (../CddAdcTriggerCount != 0)"/>
@@ -927,30 +888,32 @@
                           </v:ctr>
                         </v:lst>
                         <v:lst name="CddAdcPpbConfig" type="MAP">
-                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_MaxPpbPerHw')&quot;,num:i(4))"/>
+                          <a:da name="MIN" value="0"/>
+                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcMaxPpbPerHw'))&quot;,num:i(4))"/>
                           <v:ctr name="CddAdcPpbConfig" type="IDENTIFIABLE">
                             <a:a name="DESC" value="EN: This container contains the PPB configuration (parameters) of the PPB."/>
                             <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                        
                                 <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
-                            </a:a>                        
+                            </a:a>
+                            <a:da name="INVALID" type="XPath" expr="text:uniq((../../../*/CddAdcPpbConfig/*/@name), @name)" 
+                              false="PPB name has to be unique across all the hardware containers"/>
                             <a:a name="UUID" 
-                                 value="2b62c3a6-92e4-4fc5-a03c-342af49a58df"/>
-                            <v:var name="CddAdcPpbId" type="INTEGER">
+                                value="2b62c3a6-92e4-4fc5-a03c-342af49a58df"/>
+                            <v:var name="CddAdcPpbInstance" type="INTEGER">
                               <a:a name="DESC" value="EN: Numeric ID of the PPB number assigned to the channel."/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                 <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="75f2870d-31b2-4b06-af9b-407b8e64c34a"/>
                               <a:da name="INVALID" type="Range">
-                                <a:tst expr="&lt;=3" false="Maximum allowed PPB ID is 3"/>
+                                <a:tst expr="&lt;node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcMaxPpbPerHw'))&quot;,num:i(4))" false="Maximum allowed PPB ID is 3"/>
                                 <a:tst expr="&gt;=0" false="Minimum allowed PPB ID is 0"/>
                               </a:da>
                               <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,num:i(0))"/>
-                              <a:da name="INVALID" type="XPath" expr="text:uniq(../.././/*[@name='CddAdcPpbId'],node:value(.))" false="PPB ID should be unique"/>
+                              <a:da name="INVALID" type="XPath" expr="text:uniq(../.././/*[@name='CddAdcPpbInstance'],node:value(.))" false="PPB ID should be unique"/>
                             </v:var>                                                   
                             <v:ref name="CddAdcPpbChannel" type="REFERENCE">
                               <a:a name="DESC" value="EN: Numeric ID of the channel whose result is to be compared."/>
@@ -995,7 +958,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="14051697-6b45-4b83-8d12-4a4e673e0ef5"/>
                               <a:da name="INVALID" type="Range">
@@ -1013,7 +975,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="23b5cfd7-2695-4d06-b6d9-6ee87328f09a"/>
                               <a:da name="DEFAULT" value="0"/>
@@ -1033,7 +994,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="80bd71c4-00c9-430c-b248-35ad83173353"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -1046,7 +1006,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="e54c7457-1028-4c32-a566-a9684e955b46"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -1060,7 +1019,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="785e25e9-588b-47a9-a0b1-b9a5495b56a1"/>
                               <a:da name="DEFAULT" value="false"/>                         
@@ -1073,7 +1031,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="c91e77dd-0a45-477c-93ee-ac6f8df3f46b"/>
                               <a:da name="DEFAULT" value="false"/>                                
@@ -1086,7 +1043,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="4262d13a-f457-4b61-ad3d-48fdf29a3419"/>
                               <a:da name="RANGE">
@@ -1105,7 +1061,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="5e21c7d0-f903-415c-988c-54b5b18caf8e"/>
                               <a:da name="INVALID" type="Range">
@@ -1122,7 +1077,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="d9c5c4c0-898a-4931-ab64-a1111a434bb5"/>
                               <a:da name="DEFAULT" value="true"/>
@@ -1137,7 +1091,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="56ece229-7e0f-4dbe-8473-dd858adaa651"/>
                               <a:da name="INVALID" type="Range">
@@ -1153,7 +1106,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="b696f77a-3737-480c-9f2f-8cbfc6aa01a5"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -1165,7 +1117,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="c7d48552-9b68-42fd-ba48-cbbf8eb2cbd2"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -1177,7 +1128,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="b5f75ed8-d4a2-4014-8803-934ff6ade02f"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -1189,7 +1139,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="f634330c-3313-45c2-b29e-5e8aab5ded9b"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -1201,7 +1150,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="0321aff9-f2a4-4cc4-a9e9-ca2306432b52"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -1213,7 +1161,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="5e7e39bd-adfc-49ed-b916-d5bc68c93591"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -1226,7 +1173,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                      value="e339baee-0461-441e-8421-de8e9f9d2753"/>
                               <a:da name="DEFAULT" value="ISR_CAT1_RTINT"/>
@@ -1247,18 +1193,20 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                      value="84463b2a-104a-4ebb-ac41-1fcd4d6d1ce5"/>
                               <a:a name="OPTIONAL" value="true"/>
                               <a:a name="DEFAULT" value="NULL_PTR"/>
-                              <a:da name="ENABLE" type="XPath" expr="(../CddAdcPpbTripHighInterruptEnable = 'true' or ../CddAdcPpbTripLowInterruptEnable = 'true' or ../CddAdcPpbZeroCrossingInterruptEnable = 'true')"/>
                               <a:da name="INVALID" type="XPath">
-                                <a:tst expr="node:when((../CddAdcPpbTripHighInterruptEnable = 'true' or ../CddAdcPpbTripLowInterruptEnable = 'true' or ../CddAdcPpbZeroCrossingInterruptEnable = 'true'),not(node:empty(.)),node:empty(.))" 
-                                  false="When the CddAdcPpbEventInterruptNotification is enabled notification function must be provided."/>
-                                <a:tst expr="not(not(node:empty(.)) and node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Cdd_Adc/ELEMENTS/Cdd/CddAdcGeneral/CddAdcGrpNotifCapability) = 'false')" 
-                                  false="When the CddAdcPpbEventInterruptNotification is enabled the CddAdcGrpNotifCapability parameter under the CddAdcConfigSet container should be enabled."/>
+                                <a:tst expr="node:when((node:value(.) != 'NULL_PTR'),(../CddAdcPpbTripHighInterruptEnable = 'true' or ../CddAdcPpbTripLowInterruptEnable = 'true' or ../CddAdcPpbZeroCrossingInterruptEnable = 'true'),'true')" 
+                                        false="When the CddAdcPpbEventInterruptNotification is non NULL_PTR then interrupt must be enabled."/>
+                                <a:tst expr="node:fallback(&quot;->node:when(node:exists(.),(node:value(.) != 'NULL_PTR'),'true')&quot;,'true')" 
+                                        false="Notification function shouldn't be NULL_PTR when enabled"/>
+                                <a:tst expr="not(not(node:empty(.)) and node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/Cdd_Adc/ELEMENTS/Cdd/CddAdcGeneral/CddAdcNotifCapability) = 'false')" 
+                                  false="When the CddAdcPpbEventInterruptNotification is enabled the CddAdcNotifCapability parameter under the CddAdcConfigSet container should be enabled."/>
                               </a:da>
+                              <a:da name="WARNING" type="XPath" expr="not((node:exists(.) = 'true') and (node:empty(.) = 'true'))" 
+                                      false="No notification function is provided."/>
                             </v:var>
                             <v:var name="CddAdcPpbAccumulationCountLimit" type="INTEGER">
                               <a:a name="DESC" 
@@ -1270,7 +1218,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="fc10bc24-763f-4977-9760-b0ff0e417d27"/>
                               <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:value(node:path(concat(node:path(node:ref(../CddAdcPpbChannel)),'/../../CddAdcGroupStreamingNumSamples')))&quot;,num:i(0))"/>
@@ -1290,7 +1237,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="f9209f27-2ca9-45ba-90a0-9cbe0e98281d"/>
                               <a:da name="INVALID" type="Range">
@@ -1307,7 +1253,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="e8f88414-030d-4ca4-97c2-dde43897a6cb"/>
                               <a:da name="DEFAULT" value="false"/>
@@ -1330,7 +1275,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                        value="b0543500-b8a7-47a9-8232-f93029638227"/>
                                 <a:da name="DEFAULT" value="0"/>
@@ -1349,7 +1293,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                        value="ff9367b3-6cb3-4a34-8963-15fc1fee9ee4"/>
                                 <a:da name="DEFAULT" value="0"/>
@@ -1368,7 +1311,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                        value="96e78c98-5eda-4578-a00e-bb21c125fef6"/>
                                 <a:da name="DEFAULT" value="0"/>
@@ -1387,7 +1329,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                        value="4c0b5c1b-e34c-4c03-9d76-e93d6f66dae1"/>
                                 <a:da name="DEFAULT" value="false"/>                                    
@@ -1401,7 +1342,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                        value="adc8933b-9dd7-4e5b-aebd-53e601c13553"/>
                                 <a:da name="DEFAULT" value="false"/>                                    
@@ -1413,32 +1353,43 @@
                     </v:lst>
                     <v:lst name="CddAdcGlobalSwTrigger" type="MAP">
                       <a:da name="MIN" value="0"/>
+                      <a:da name="MAX" value="255"/>
                       <v:ctr name="CddAdcGlobalSwTrigger" type="IDENTIFIABLE">
                         <a:a name="DESC" 
-                              value="EN: This container contains the global software triigger Id."/>
+                              value="EN: This container configures the global software trigger.When configured Soc mask of all added ADC instances should match."/>
                         <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                        
                             <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>                    
+                        </a:a>
+                        <a:da name="INVALID" type="XPath" 
+                            expr="node:when((num:i(count(../*)) > 0),(num:i(count(/AUTOSAR/TOP-LEVEL-PACKAGES/ResourceAllocator/ELEMENTS/ResourceAllocator/ResourceAllocatorGeneral/Context/*/Cdd_Adc/*/CddAdcGlobalSoftwareForce/*)) > 0),'true')" 
+                              false="When global software trigger is configured then CddAdcGlobalSoftwareForce must be configured in ResourceAllocator plugin"/>                
                         <a:a name="UUID" 
                              value="c1938742-4220-4cf7-96cb-e74bcaca4a55"/>
                         <v:var name="CddAdcGlbSwTrigId" type="INTEGER">
                           <a:a name="DESC" 
-                                value="EN: Numeric ID of the safety result checker."/>
+                                value="EN: Numeric ID of global software trigger.This parameter is used for symbolic name generation."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>                         
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="5003bba8-1cea-4e2e-8e84-7b46f16e8947"/>
                           <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,num:i(0))"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="true"/>
                           <a:da name="EDITABLE" value="false"/>
                           <a:da name="INVALID" type="Range">
                             <a:tst expr="&lt;=255"/>
                             <a:tst expr="&gt;=0"/>
                           </a:da>
-                          
+                          <a:da name="INVALID" type="Multi">
+                            <mt:range>
+                              <mt:tst expr="&lt;=255" false="Maximum allowed value is 255"/>
+                              <mt:tst expr="&gt;=0" false="Minimum allowed value is 0"/>
+                            </mt:range>
+                            <mt:xpath expr="text:uniq(../.././/*[@name = 'CddAdcGlbSwTrigId'],node:value(.))" 
+                              false="Global software trigger symbolic handle ID should be unique"/>
+                          </a:da>
                         </v:var>
                         <v:lst name="CddAdcHwGroup" type="MAP">
                           <v:ctr name="CddAdcHwGroup" type="IDENTIFIABLE">
@@ -1473,7 +1424,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>                         
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="5ba7ace8-c1fc-4f01-9d2b-fa650c852eea"/>
                               <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:value(concat(node:path(node:ref(../CddAdcHwGroupRef)),'/../../CddAdcHwInstance'))&quot;,'CDD_ADCA')"/>
@@ -1491,7 +1441,6 @@
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>                         
                               <a:a name="SCOPE" value="LOCAL"/>
-                              <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="ffd4d574-2454-4625-9c09-8293f241b5b9"/>
                               <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:value(concat(node:path(node:ref(../CddAdcHwGroupRef)),'/CddAdcGroupSocMask')))&quot;,num:i(0))"/>
@@ -1507,7 +1456,7 @@
                     </v:lst>
                     <v:lst name="CddAdcResultCheckerUnit" type="MAP">
                       <a:da name="MIN" value="0"/>
-                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_Adc_F29H85x_ResultChecker')&quot;,num:i(10))"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcResultChecker'))&quot;,num:i(10))"/>
                       <v:ctr name="CddAdcResultCheckerUnit" type="IDENTIFIABLE">
                         <a:a name="DESC" 
                               value="EN: This container contains the safety result checker configuration (parameters)."/>
@@ -1515,22 +1464,43 @@
                             <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                         </a:a>                          
                         <a:a name="UUID" 
-                             value="f84ee7f8-4bf0-4038-ae2b-2c91c540dfa6"/>>
-                        <v:var name="CddAdcCheckerId" type="INTEGER">
+                             value="f84ee7f8-4bf0-4038-ae2b-2c91c540dfa6"/>
+                        <v:ref name="CddAdcCheckerInstanceRef" type="REFERENCE">
                           <a:a name="DESC" 
-                                value="EN: Numeric ID of the safety result checker."/>
+                                value="EN: This parameter refers to the ADC safety checker instances."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="UUID" 
+                               value="4bc948a9-9197-4c6c-ad22-597c368fe6b9"/>
+                          <a:da name="REF"
+                                value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Adc/CddAdcSafetyCheckerInstance"/>
+                          <a:da name="RANGE" type="XPath">
+                            <a:tst expr="node:paths(//CddAdcSafetyCheckerInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                          </a:da>
+                          <a:da name="INVALID" type="XPath">
+                                <a:tst expr="text:uniq((../../..//*[@name='CddAdcCheckerInstanceRef']),node:value(.))" false="CddAdcCheckerInstanceRef selection has to be unique across all containers."/>
+                          </a:da>
+                        </v:ref>
+                        <v:var name="CddAdcCheckerId" type="STRING">
+                          <a:a name="DESC" 
+                                value="EN: Symbolic ID for a safety result checker instance.This ID should be unique."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>                         
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="true"/>
                           <a:a name="UUID" 
                                value="5b363a2d-2425-4e02-aea3-04c580b8ec91"/>
-                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,num:i(0))"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,'0')"/>
+                          <a:da name="EDITABLE" value="false"/>
                           <a:da name="INVALID" type="Multi">
                             <mt:range>
-                              <mt:tst expr="&lt;=9" false="Maximum safety checker ID should be 9"/>
+                              <mt:tst expr="&lt;node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcResultChecker'))&quot;,num:i(10))" 
+                                  false="Maximum safety checker symbolic ID should be less than ecu:get('ResourceAllocator_F29H85x.Cdd_AdcResultChecker')"/>
                               <mt:tst expr="&gt;=0" false="Minimum safety checker ID should be 0"/>
                             </mt:range>
                             <mt:xpath expr="text:uniq(../.././/*[@name = 'CddAdcCheckerId'],node:value(.))" false="Safety checker ID should be unique"/>
@@ -1544,7 +1514,6 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>                         
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="1efd14ab-025d-4ff7-bcc4-0d4eadb57934"/>
                           <a:da name="INVALID" type="Range">
@@ -1566,12 +1535,11 @@
                             </a:a>
                             <a:a name="ORIGIN" value="Texas Instruments"/>
                             <a:a name="SCOPE" value="LOCAL"/>
-                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                             <a:a name="UUID" 
                                  value="1daf49f8-2550-41e2-9dc9-f66361d20d83"/>
                             <a:da name="ENABLE" value="true"/>
-                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_CheckerResType')&quot;,'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
-                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_CheckerResType')[1]&quot;,'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
+                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcCheckerResType')&quot;,'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
+                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcCheckerResType')[1]&quot;,'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
                             <a:da name="WARNING" type="XPath" expr="(../../CddAdcSelResConfig2/CddAdcCheckerResultType = .)" false="Result type is different for both checker results."/>                          
                           </v:var>
                           <v:ref name="CddAdcChannelReference" type="REFERENCE">
@@ -1588,7 +1556,8 @@
                             <a:da name="REF" value="ASPathDataOfSchema:/TI_F29H85x/Cdd_Adc/Cdd/CddAdcConfigSet/CddAdcHwUnit/CddAdcGroup/CddAdcChannel"/>
                             <a:da name="ENABLE" type="XPath" expr="(../CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
                             <a:da name="WARNING" type="XPath">
-                              <a:tst expr="not(node:path(node:ref(.)) = node:path(node:ref(../../CddAdcSelResConfig2/CddAdcChannelReference)))" false="Same channel is provided for two results of the safety checker unit"/>
+                              <a:tst expr="node:fallback(&quot;->not(node:path(node:ref(.)) = node:path(node:ref(../../CddAdcSelResConfig2/CddAdcChannelReference)))&quot;,'true')" 
+                                false="Same channel is provided for two results of the safety checker unit"/>
                             </a:da>
                           </v:ref>
                           <v:ref name="CddAdcPpbReference" type="REFERENCE">
@@ -1605,7 +1574,8 @@
                             <a:da name="REF" value="ASPathDataOfSchema:/TI_F29H85x/Cdd_Adc/Cdd/CddAdcConfigSet/CddAdcHwUnit/CddAdcPpbConfig"/>
                             <a:da name="ENABLE" type="XPath" expr="(../CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPB' or ../CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM')"/>
                             <a:da name="WARNING" type="XPath">
-                              <a:tst expr="text:uniq(../.././/*[@name='CddAdcHwGroupRef'],node:value(.))" false="Same PPB is procided for two results of the safety checker unit"/>
+                              <a:tst expr="node:fallback(&quot;->not(node:path(node:ref(.)) = node:path(node:ref(../../CddAdcSelResConfig2/CddAdcPpbReference)))&quot;,'true')" 
+                                false="Same PPB is provided for two results of the safety checker unit"/>
                             </a:da>
                           </v:ref>
                         </v:ctr>
@@ -1622,12 +1592,11 @@
                             </a:a>
                             <a:a name="ORIGIN" value="Texas Instruments"/>
                             <a:a name="SCOPE" value="LOCAL"/>
-                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                             <a:a name="UUID" 
                                  value="9c1b9190-5b93-4122-a8f2-0ff0a302bc58"/>
                             <a:da name="ENABLE" value="true"/>
-                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_CheckerResType')&quot;,'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
-                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Adc_F29H85x_CheckerResType')[2]&quot;,'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
+                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcCheckerResType')&quot;,'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
+                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcCheckerResType')[1]&quot;,'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
                             <a:da name="WARNING" type="XPath" expr="(../../CddAdcSelResConfig1/CddAdcCheckerResultType = .)" false="Result type is different for both checker results."/>                          
                           </v:var>
                           <v:ref name="CddAdcChannelReference" type="REFERENCE">
@@ -1644,7 +1613,8 @@
                             <a:da name="REF" value="ASPathDataOfSchema:/TI_F29H85x/Cdd_Adc/Cdd/CddAdcConfigSet/CddAdcHwUnit/CddAdcGroup/CddAdcChannel"/>
                             <a:da name="ENABLE" type="XPath" expr="(../CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_SOC')"/>
                             <a:da name="WARNING" type="XPath">
-                              <a:tst expr="not(node:path(node:ref(.)) = node:path(node:ref(../../CddAdcSelResConfig1/CddAdcChannelReference)))" false="Same channel is provided for two results of the safety checker unit"/>
+                              <a:tst expr="node:fallback(&quot;->not(node:path(node:ref(.)) = node:path(node:ref(../../CddAdcSelResConfig1/CddAdcChannelReference)))&quot;,'true')" 
+                              false="Same channel is provided for two results of the safety checker unit"/>
                             </a:da>
                           </v:ref>
                           <v:ref name="CddAdcPpbReference" type="REFERENCE">
@@ -1661,7 +1631,8 @@
                             <a:da name="REF" value="ASPathDataOfSchema:/TI_F29H85x/Cdd_Adc/Cdd/CddAdcConfigSet/CddAdcHwUnit/CddAdcPpbConfig"/>
                             <a:da name="ENABLE" type="XPath" expr="(../CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPB' or ../CddAdcCheckerResultType = 'CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM')"/>
                             <a:da name="WARNING" type="XPath">
-                              <a:tst expr="not(node:path(node:ref(.)) = node:path(node:ref(../../CddAdcSelResConfig1/CddAdcPpbReference)))" false="Same PPB is provided for two results of the safety checker unit"/>
+                              <a:tst expr="node:fallback(&quot;->not(node:path(node:ref(.)) = node:path(node:ref(../../CddAdcSelResConfig1/CddAdcPpbReference)))&quot;,'true')" 
+                                  false="Same PPB is provided for two results of the safety checker unit"/>
                             </a:da>
                           </v:ref>
                         </v:ctr>
@@ -1669,7 +1640,7 @@
                     </v:lst>
                     <v:lst name="CddAdcCheckerIntEvtConfig" type="MAP">
                       <a:da name="MIN" value="0"/>
-                      <a:da name="MAX" value="3"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcCheckerInterruptEvent'))&quot;,num:i(1))"/>
                       <v:ctr name="CddAdcCheckerIntEvtConfig" type="IDENTIFIABLE">
                         <a:a name="DESC" 
                               value="EN: This container configures the triggers for interrupts and events from the safety checker units."/>
@@ -1678,30 +1649,50 @@
                         </a:a>                    
                         <a:a name="UUID" 
                              value="9c77d667-ab08-4ea2-b6de-db002307f59d"/>
-                        <v:var name="CddAdcIntEvtId" type="INTEGER">
+                        <v:ref name="CddAdcCheckerIntEvtInstanceRef" type="REFERENCE">
                           <a:a name="DESC" 
-                                value="EN: Numeric ID of the interrupt event instance.This ID should be unique."/>
+                                value="EN: This parameter refers to the ADC HW Unit instance."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="UUID" 
+                               value="4bc948a9-9197-4d6c-ad22-597c368fe6b9"/>
+                          <a:da name="REF"
+                                value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Adc/CddAdcCheckerInterruptEvtInstance"/>
+                          <a:da name="RANGE" type="XPath">
+                            <a:tst expr="node:paths(//CddAdcCheckerInterruptEvtInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                          </a:da>
+                          <a:da name="INVALID" type="XPath">
+                                <a:tst expr="text:uniq((../../..//*[@name='CddAdcCheckerIntEvtInstanceRef']),node:value(.))" false="CddAdcCheckerIntEvtInstanceRef selection has to be unique across all containers."/>
+                          </a:da>
+                        </v:ref>
+                        <v:var name="CddAdcIntEvtId" type="STRING">
+                          <a:a name="DESC" 
+                                value="EN: Symbolic ID for safety checker interrupt event instance.This ID should be unique."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                             type="IMPLEMENTATIONCONFIGCLASS">                                                          
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
-                          <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>                     
+                          <a:a name="SCOPE" value="LOCAL"/>  
+                          <a:a name="SYMBOLICNAMEVALUE" value="true"/>                   
                           <a:a name="UUID" 
                                value="3a54ed3d-e88f-4b5e-9c70-995c824ed741"/>
                           <a:da name="INVALID" type="Multi">
                             <mt:range>
-                              <mt:tst expr="&lt;=2" false="Maximum allowed Interrupt event Instance ID is 2"/>
+                              <mt:tst expr="&lt;node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcCheckerInterruptEvent'))&quot;,num:i(3))" false="Maximum allowed Interrupt event Instance ID is 2"/>
                               <mt:tst expr="&gt;=0" false="Minimum allowed Interrupt event Instance ID is 0"/>
                             </mt:range>
                             <mt:xpath expr="node:fallback(&quot;->text:uniq(../.././/*[@name='CddAdcIntEvtId'],node:value(.))&quot;,num:i(0))" false="ID should be unique"/>
                           </a:da>
-                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:pos(../.)&quot;,num:i(0))"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,'0')"/>
+                          <a:da name="EDITABLE" value="false"/>
                         </v:var>
                         <v:lst name="CddAdcCheckerIntEvtConfiguration" type="MAP">
                           <a:da name="MIN" value="0"/>
-                          <a:da name="MAX" value="9"/>
+                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcResultChecker'))&quot;,num:i(10))"/>
                           <v:ctr name="CddAdcCheckerIntEvtConfiguration" type="IDENTIFIABLE">
                             <a:a name="DESC" value="EN: Configure interrupts and events for the safety checker instance for the specified interrupt event block."/>
                             <a:a name="UUID" 
@@ -1713,7 +1704,7 @@
                               <a:a name="DESC" 
                                     value="EN: Reference to the safety checker instance."/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                type="IMPLEMENTATIONCONFIGCLASS">                                                          
+                                type="IMPLEMENTATIONCONFIGCLASS">
                                 <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
@@ -1722,7 +1713,8 @@
                                    value="e07bd7cb-3066-4292-b8e3-e59cdc8a1cb0"/>
                               <a:da name="REF" value="ASPathDataOfSchema:/TI_F29H85x/Cdd_Adc/Cdd/CddAdcConfigSet/CddAdcResultCheckerUnit"/>
                               <a:a name="INVALID" type="XPath">
-                                <a:tst expr="text:uniq(../.././/*[@name='CddAdcSafetyCheckerInstance'],node:value(.))" false="Reference to the safety checker unit should be unique for a single interrupt event instance"/>
+                                <a:tst expr="text:uniq(../.././/*[@name='CddAdcSafetyCheckerInstance'],node:value(.))" 
+                                    false="Reference to the safety checker unit should be unique for a single interrupt event instance"/>
                                 <a:tst expr="not(node:empty(.) = 'true')" false="Reference must be provided to configure interrupt and event flags"/>
                               </a:a> 
                             </v:ref>
@@ -1739,7 +1731,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="3844bf77-d16c-4b43-a24d-b4a982ec6f34"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1752,7 +1743,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="03044906-be14-41b9-91dd-7ab115ea883c"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1765,7 +1755,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="8ffdad46-79d1-4e7a-adfd-ad2f8050a6f1"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1784,7 +1773,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="0f56f5fb-dae9-468f-b8c4-bdaa88636fd8"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1797,7 +1785,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="e9dda4de-b4d5-4153-beec-0f33be0d513b"/>
                                 <a:da name="DEFAULT" value="false"/>                           
@@ -1810,7 +1797,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="614f0ffa-8a30-4776-97de-e0550ba028d5"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1829,7 +1815,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="2e95934c-23ef-45e4-a19d-fd5c01c9d5d2"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1842,7 +1827,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="a4bfbf37-3795-42cf-a0c2-32219a288550"/>
                                 <a:da name="DEFAULT" value="false"/>                           
@@ -1855,7 +1839,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="7d1be0b0-a396-4e12-b463-92861c7dfa78"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1874,7 +1857,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="88ea93b4-e97f-4a4b-93d9-78c4152a2e55"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1887,7 +1869,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="b02ba598-d7d7-42f7-82bd-87345ab636c9"/>
                                 <a:da name="DEFAULT" value="false"/>                           
@@ -1900,7 +1881,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="caa3dc8b-334e-4320-b1f7-c153e893b8c0"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1918,7 +1898,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="63d33673-e3fa-4820-8e9c-960554538b1a"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1931,7 +1910,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="cb9d3529-19ef-4951-adff-b7842520c8d0"/>
                                 <a:da name="DEFAULT" value="false"/>                           
@@ -1944,7 +1922,6 @@
                                 </a:a>
                                 <a:a name="ORIGIN" value="Texas Instruments"/>                         
                                 <a:a name="SCOPE" value="LOCAL"/>
-                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                 <a:a name="UUID" 
                                      value="88545dd7-9986-462e-b0e3-e9aed37b7f58"/>
                                 <a:da name="DEFAULT" value="false"/>
@@ -1969,7 +1946,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:da name="DEFAULT" value="true"/>                      
                       <a:a name="UUID" 
                            value="03712cd2-2520-4e3f-94b8-54055f61716c"/>
@@ -1983,7 +1959,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="f259c633-90d3-4c39-8847-8b38d7e71a27"/>
                       <a:da name="DEFAULT" value="false"/>
@@ -1997,7 +1972,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:da name="DEFAULT" value="true"/>                      
                       <a:a name="UUID" 
                            value="738887f2-2f8d-44a2-ab39-5447bec81f67"/>
@@ -2011,16 +1985,15 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:da name="DEFAULT" value="false"/>                      
                       <a:a name="UUID" 
                            value="fd0ff9a5-4971-42d2-aa37-a72259d7c640"/>
                       <a:da name="INVALID" type="XPath">
-                        <a:tst expr="node:when((. = 'true'),(num:i(count(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcGlobalSwTrigger/*)) > 0),'true')" false="When CddAdcEnableGlobalSoftwareTrigger is enabled then atleast one shild container should be present in the CddAdcGlobalSwTrigger container."/>
+                        <a:tst expr="node:when((. = 'true'),(num:i(count(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcGlobalSwTrigger/*)) > 0),'true')" false="When CddAdcEnableGlobalSoftwareTrigger is enabled then atleast one child container should be present in the CddAdcGlobalSwTrigger container."/>
                         <a:tst expr="node:when((. = 'false'),(num:i(count(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcGlobalSwTrigger/*)) = 0),'true')" false="If CddAdcEnableGlobalSoftwareTrigger is disabled no child container of CddAdcGlobalSwTrigger should be added."/>
                       </a:da>
                     </v:var>
-                    <v:var name="CddAdcGrpNotifCapability" type="BOOLEAN">
+                    <v:var name="CddAdcNotifCapability" type="BOOLEAN">
                       <a:a name="DESC" 
                             value="EN: Determines, if the group notification mechanism (the functions to enable and disable the notifications) is available at runtime."/>
                       <a:a name="IMPLEMENTATIONCONFIGCLASS" 
@@ -2029,7 +2002,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:da name="DEFAULT" value="false"/>
                       <a:a name="UUID" 
                            value="dd26ef59-7ccc-422f-b865-63a8694f89e3"/>
@@ -2043,7 +2015,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:da name="DEFAULT" value="true"/>
                       <a:a name="UUID" 
                            value="f0365175-543b-408a-8d11-7eb76cf32748"/>
@@ -2057,7 +2028,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:da name="DEFAULT" value="false"/>
                       <a:a name="UUID" 
                            value="605b63fa-574a-430b-b0c0-27bbb1cc5fd2"/>
@@ -2075,7 +2045,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:da name="DEFAULT" value="true"/>
                       <a:a name="UUID" 
                            value="ecbd0d68-9333-4a7e-9c6d-e8d26c10eb12"/>
@@ -2089,7 +2058,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:da name="DEFAULT" value="false"/>
                       <a:a name="UUID" 
                            value="7a1d970b-de14-4cf8-9ba0-b5ecab2b17d3"/>
@@ -2107,7 +2075,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="be2c2919-9e8f-4250-b88d-ba19c3c2e41e"/>
                       <a:da name="DEFAULT" value="false"/>
@@ -2121,7 +2088,6 @@
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
                            value="0f82d99e-b3df-41c8-a413-a40bf726217d"/>
                       <a:da name="DEFAULT" value="false"/>

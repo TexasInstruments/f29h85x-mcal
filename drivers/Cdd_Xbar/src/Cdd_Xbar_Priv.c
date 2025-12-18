@@ -65,7 +65,6 @@
 #define CDD_XBAR_START_SEC_CODE
 #include "Cdd_Xbar_MemMap.h"
 
-#if (STD_ON == CDD_XBAR_API_ENABLE)
 /*
  * Design: MCAL-25761
  */
@@ -301,11 +300,12 @@ Cdd_Xbar_OutputLatchSelectSts(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
  * Design: MCAL-28156
  */
 FUNC(boolean, CDD_XBAR_CODE)
-Cdd_Xbar_OutputLatchFlagStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine)
+Cdd_Xbar_OutputLatchFlagStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                               P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress)
 {
     VAR(boolean, AUTOMATIC) latch = FALSE;
     VAR(uint32, AUTOMATIC)
-    outputxflagaddress = (uint32)(OUTPUTXBAR1_FLAGS_BASE + ((*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
+    outputxflagaddress = (uint32)(*OutputXbarFlagBaseAddress + ((*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
                                   OUTPUT_XBAR_O_OUTPUTXBARFLAG);
 
     if ((HWREG(outputxflagaddress) & OUTPUT_XBAR_OUTPUTXBARFLAG_FLG) != 0U)
@@ -320,10 +320,11 @@ Cdd_Xbar_OutputLatchFlagStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputL
  * Design: MCAL-28157
  */
 FUNC(void, CDD_XBAR_CODE)
-Cdd_Xbar_OutputLatchFlagForce(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine)
+Cdd_Xbar_OutputLatchFlagForce(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                              P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress)
 {
     VAR(uint32, AUTOMATIC)
-    outputxflagaddress = (uint32)(OUTPUTXBAR1_FLAGS_BASE + ((*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
+    outputxflagaddress = (uint32)(*OutputXbarFlagBaseAddress + ((*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
                                   OUTPUT_XBAR_O_OUTPUTXBARFLAGFORCE);
 
     HWREG(outputxflagaddress) = OUTPUT_XBAR_OUTPUTXBARFLAGFORCE_FLG;
@@ -335,10 +336,11 @@ Cdd_Xbar_OutputLatchFlagForce(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
  * Design: MCAL-28158
  */
 FUNC(void, CDD_XBAR_CODE)
-Cdd_Xbar_OutputLatchFlagClear(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine)
+Cdd_Xbar_OutputLatchFlagClear(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                              P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress)
 {
     VAR(uint32, AUTOMATIC)
-    outputxflagaddress = (uint32)(OUTPUTXBAR1_FLAGS_BASE + ((*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
+    outputxflagaddress = (uint32)(*OutputXbarFlagBaseAddress + ((*OutputLine - 1U) * XBAR_OUTPUTXBAR_FLAGS_OFFSET) +
                                   OUTPUT_XBAR_O_OUTPUTXBARFLAGCLEAR);
 
     HWREG(outputxflagaddress) = OUTPUT_XBAR_OUTPUTXBARFLAGCLEAR_FLG;
@@ -477,12 +479,14 @@ Cdd_Xbar_OutputStretchGet(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine)
  * Design: MCAL-25779
  */
 FUNC(Cdd_Xbar_OutputlevelType, CDD_XBAR_CODE)
-Cdd_Xbar_OutOutputState(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine)
+Cdd_Xbar_OutOutputState(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                        P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress)
 {
     VAR(Cdd_Xbar_OutputlevelType, AUTOMATIC) output = ((Cdd_Xbar_OutputlevelType)STD_LOW);
     VAR(uint32, AUTOMATIC)
     outputxoutstatusaddress =
-        (uint32)(OUTPUTXBAR1_FLAGS_BASE + (((*OutputLine) - 1U) * (0x1000U)) + OUTPUT_XBAR_O_OUTPUTXBARSTATUS);
+        (uint32)(*OutputXbarFlagBaseAddress + (((*OutputLine) - 1U) * (XBAR_OUTPUTXBAR_FLAGS_OFFSET)) +
+                 OUTPUT_XBAR_O_OUTPUTXBARSTATUS);
 
     /* Check Output status bit for enablement */
     if ((HWREG(outputxoutstatusaddress) & ((uint32)OUTPUT_XBAR_OUTPUTXBARSTATUS_STS)) != 0U)
@@ -920,11 +924,13 @@ Cdd_Xbar_IclOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
 
 #if (STD_ON == CDD_XBAR_INPUT_FLAG_API)
 /* Design: MCAL-28159 */
-FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_InFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag)
+FUNC(boolean, CDD_XBAR_CODE)
+Cdd_Xbar_InFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag,
+                      P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) InputFlagBaseAddress)
 {
     VAR(boolean, AUTOMATIC) status = FALSE;
     VAR(uint32, AUTOMATIC)
-    xbarflagaddress                      = (uint32)(XBAR_BASE + (((CDD_XBAR_INPUT_FLAG_NUMBER(InputFlag))-1U) * 4U));
+    xbarflagaddress = (uint32)(*InputFlagBaseAddress + (((CDD_XBAR_INPUT_FLAG_NUMBER(InputFlag))-1U) * 4U));
     VAR(uint32, AUTOMATIC) inversionmask = (uint32)1U << (CDD_XBAR_INPUT_FLAG_BIT(InputFlag));
 
     if (inversionmask == (HWREG(xbarflagaddress) & inversionmask))
@@ -936,10 +942,13 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_InFlagStatus(VAR(Cdd_Xbar_InputFlagType, A
 }
 
 /* Design: MCAL-28160 */
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag)
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag,
+                     P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) InputFlagBaseAddress)
 {
     VAR(uint32, AUTOMATIC)
-    xbarflagaddress = (uint32)(XBAR_BASE + XBAR_O_CLR1 + (((CDD_XBAR_INPUT_FLAG_NUMBER(InputFlag))-1U) * 4U));
+    xbarflagaddress =
+        (uint32)(*InputFlagBaseAddress + XBAR_O_CLR1 + (((CDD_XBAR_INPUT_FLAG_NUMBER(InputFlag))-1U) * 4U));
     VAR(uint32, AUTOMATIC) inversionmask = (uint32)1U << (CDD_XBAR_INPUT_FLAG_BIT(InputFlag));
 
     /* Set flag clear bit to 1 */
@@ -948,8 +957,6 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOM
     return;
 }
 #endif /* STD_ON == CDD_XBAR_INPUT_FLAG_API */
-
-#endif /* STD_ON == CDD_XBAR_API_ENABLE */
 
 #define CDD_XBAR_STOP_SEC_CODE
 #include "Cdd_Xbar_MemMap.h"

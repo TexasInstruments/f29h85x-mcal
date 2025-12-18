@@ -204,11 +204,19 @@ Std_ReturnType FlsApp(void)
          */
         testAddr = testAddr + i * 4096; /** erase, write, read at differnt location*/
         i        = 1;
+#ifdef BUILD_DEVICE_F29P32X
+        if (testAddr > 0x1FFFF)
+        {
+            testAddr = 0;
+            i        = 0;
+        }
+#else
         if (testAddr > 0x3FFFF)
         {
             testAddr = 0;
             i        = 0;
         }
+#endif
 
         (void)Fls_SetEraseType(FLS_SECTOR_ERASE);
 

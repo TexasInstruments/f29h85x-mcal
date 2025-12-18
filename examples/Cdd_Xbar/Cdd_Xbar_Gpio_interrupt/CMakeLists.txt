@@ -51,8 +51,9 @@ if(NOT TARGET SchM_Port)
 endif()
 
 if(NOT TARGET Cdd_Xbar_Gpio_interrupt_Config)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Cdd_Xbar_Gpio_interrupt_Config/
-                     ${CMAKE_BINARY_DIR}/Cdd_Xbar_Gpio_interrupt_Config)
+    add_subdirectory(
+        ${CMAKE_CURRENT_SOURCE_DIR}/${BUILD_DEVICE}/Cdd_Xbar_Gpio_interrupt_Config/
+        ${CMAKE_BINARY_DIR}/Cdd_Xbar_Gpio_interrupt_Config)
 endif()
 
 if(NOT TARGET EcuM)
@@ -68,6 +69,11 @@ endif()
 if(NOT TARGET Mcu)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcu
                      ${CMAKE_BINARY_DIR}/Mcu)
+endif()
+
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
 endif()
 
 if(NOT TARGET AppUtils)
@@ -117,6 +123,7 @@ target_link_libraries(
             EcuM
             Os
             Mcu
+            SchM_Mcu
             Dem
             AppUtils
             DeviceSupport)

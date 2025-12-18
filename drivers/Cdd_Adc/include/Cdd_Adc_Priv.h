@@ -45,10 +45,13 @@ extern "C" {
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#define CHECKER_EVT_SEL_M                                                                      \
-    (ADC_CHECKINTSEL1_RES1OVF1EN | ADC_CHECKINTSEL1_RES1OVF2EN | ADC_CHECKINTSEL1_RES1OVF3EN | \
-     ADC_CHECKINTSEL1_RES1OVF4EN | ADC_CHECKINTSEL1_RES1OVF5EN | ADC_CHECKINTSEL1_RES1OVF6EN | \
-     ADC_CHECKINTSEL1_RES1OVF7EN | ADC_CHECKINTSEL1_RES1OVF8EN | ADC_CHECKINTSEL1_RES1OVF9EN)
+#define CHECKER_EVT_SEL_M                                                                         \
+    (ADC_CHECKINTSEL1_RES1OVF1EN | ADC_CHECKINTSEL1_RES1OVF2EN | ADC_CHECKINTSEL1_RES1OVF3EN |    \
+     ADC_CHECKINTSEL1_RES1OVF4EN | ADC_CHECKINTSEL1_RES1OVF5EN | ADC_CHECKINTSEL1_RES1OVF6EN |    \
+     ADC_CHECKINTSEL1_RES1OVF7EN | ADC_CHECKINTSEL1_RES1OVF8EN | ADC_CHECKINTSEL1_RES1OVF9EN |    \
+     ADC_CHECKINTSEL1_RES1OVF10EN | ADC_CHECKINTSEL1_RES1OVF11EN | ADC_CHECKINTSEL1_RES1OVF12EN | \
+     ADC_CHECKINTSEL1_RES1OVF13EN | ADC_CHECKINTSEL1_RES1OVF14EN | ADC_CHECKINTSEL1_RES1OVF15EN | \
+     ADC_CHECKINTSEL1_RES1OVF16EN)
 #define CDD_ADC_INT_REF_TSSLOPE  (*(sint16 *)((uint64)0x20000FDC))
 #define CDD_ADC_INT_REF_TSOFFSET (*(sint16 *)((uint64)0x20000FE0))
 #define CDD_ADC_EXT_REF_TSSLOPE  (*(sint16 *)((uint64)0x20000FD4))
@@ -190,6 +193,13 @@ typedef struct Cdd_Adc_DriverObjTag
     /* Design: MCAL-31439 */
     Cdd_Adc_HwUnitObjType hwunit_obj[CDD_ADC_HW_CNT];
 #endif
+
+#if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API) && (STD_ON == CDD_ADC_ENABLE_PPB_API)
+    /** \brief  ADC hw unit objects */
+    /* Design: MCAL-31439 */
+    boolean ppb_obj[CDD_ADC_PPB_CNT];
+#endif
+
     /** \brief  ADC group objects */
     /* Design: MCAL-31438 */
     Cdd_Adc_GroupObjType group_obj[CDD_ADC_GROUP_CNT];
@@ -306,7 +316,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group);
  * This private function disables the further triggers for the SOCs associated with the requested
  *group.
  *
- * \param[in]  Base    Base address of the ADC hardware unit
+ * \param[in]  HwUnitId    Numeric ID of the instance
  * \param[in]  Resolution    Resolution mode of the ADC hardware unit
  * \param[in]  SignalMode    Signal mode of the ADC hardware unit
  * \pre None
@@ -316,7 +326,8 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroup(Cdd_Adc_GroupType Group);
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_ADC_CODE)
-Cdd_Adc_SetMode(uint32 Base, Cdd_Adc_ResolutionType Resolution, Cdd_Adc_SignalModeType SignalMode);
+Cdd_Adc_SetMode(Cdd_Adc_HwUnitInstanceType HwUnitId, Cdd_Adc_ResolutionType Resolution,
+                Cdd_Adc_SignalModeType SignalMode);
 
 #if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
 /** \brief Updates the resolution of the specified ADC hardware unit if no DET errors are reported
@@ -444,20 +455,6 @@ Cdd_Adc_CheckerIsr(Cdd_Adc_CheckerIntEvtType IntEvtId, Cdd_Adc_CheckFlagStatusTy
 /*
  * SOC configuration Functions
  */
-
-/** \brief Returns trigger source of the SOC
- *
- * This function returns trigger source of the specified SOC.
- *
- * \param[in] Base is the Base address of the ADC instance
- * \param[in] SocNum is the number of the start-of-conversion.
- * \pre None
- * \post None
- * \return Trigger source configured for the SOC
- * \retval Cdd_Adc_TriggerType - Returns the value corresponding to the SOC trigger source
- *
- *********************************************************************************************************************/
-FUNC(Cdd_Adc_TriggerType, CDD_ADC_CODE) Cdd_Adc_ReadSocTrigSrc(uint32 Base, uint8 SocNum);
 
 #if (CDD_ADC_GLBSW_TRIG_API == STD_ON)
 

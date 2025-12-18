@@ -39,11 +39,11 @@
 /*********************************************************************************************************************
  * AUTOSAR version information check.
  *********************************************************************************************************************/
-#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (0U)))
+#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (1U)))
     #error "Version numbers of Mcu_PBcfg.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (0U)))
+#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (1U)))
     #error "Version numbers of Mcu_PBcfg.c and Mcu_Cfg.h are inconsistent!"
 #endif
 

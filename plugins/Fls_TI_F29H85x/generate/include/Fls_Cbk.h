@@ -52,6 +52,9 @@ extern "C"
 
 /** \brief Typedef for job end notification function pointer */
 /** Requirements : SWS_FLS_00192 */
+/*
+ *  Design: MCAL-31039
+ */
 typedef P2FUNC (void, FLS_APPL_CODE, Fls_JobEndNotifyType)(void);
 
 /** \brief Typedef for job error notification function pointer */

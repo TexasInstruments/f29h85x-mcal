@@ -446,7 +446,6 @@ This container contains the driver configuration (parameters) for the ADC Hardwa
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ADCA |
-| **Range** | CDD_ADCA<br>CDD_ADCB<br>CDD_ADCC<br>CDD_ADCD<br>CDD_ADCE |
 
 ###### CddAdcHwUnitId
 
@@ -459,8 +458,6 @@ This container contains the driver configuration (parameters) for the ADC Hardwa
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 0 |
-| **Max-value** | 4 |
-| **Min-value** | 0 |
 
 ###### CddAdcSocPriorityMode
 
@@ -596,6 +593,17 @@ This container contains the driver configuration (parameters) for the ADC Hardwa
 | **Default-value** | CDD_ADC_OSDETECT_MODE_DISABLED |
 | **Range** | CDD_ADC_OSDETECT_MODE_DISABLED<br>CDD_ADC_OSDETECT_MODE_VSSA<br>CDD_ADC_OSDETECT_MODE_VDDA<br>CDD_ADC_OSDETECT_MODE_5BY12_VDDA<br>CDD_ADC_OSDETECT_MODE_7BY12_VDDA<br>CDD_ADC_OSDETECT_MODE_5K_PULLDOWN_TO_VSSA<br>CDD_ADC_OSDETECT_MODE_5K_PULLUP_TO_VDDA<br>CDD_ADC_OSDETECT_MODE_7K_PULLDOWN_TO_VSSA |
 
+###### CddAdcHwInstanceRef
+
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcHwInstanceRef |
+| **Description** | This parameter refers to the ADC HW Unit instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
 ###### CddAdcClockReference
 
 | Item ||
@@ -609,20 +617,6 @@ This container contains the driver configuration (parameters) for the ADC Hardwa
 
 ##### CddAdcGroup
 This container contains the Group configuration (parameters).
-
-###### CddAdcGroupId
-
-| Item ||
-|--------|---------------|
-| **Name** | CddAdcGroupId |
-| **Description** | Numeric ID of the group. This parameter is the symbolic name to be used on the API. This symbolic name allows accessing Channel Group data. This value will be assigned to the symbolic name derived of the CddAdcGroup container shortName. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 0 |
-| **Max-value** | 3 |
-| **Min-value** | 0 |
 
 ###### CddAdcGroupPriority
 
@@ -843,7 +837,7 @@ This container contains the channel configuration (parameters) depending on the 
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcChannelId |
-| **Description** | This parameter defines to the numeric ID of the channel on the ADC hardware unit. Only some channels are brought out on the deive.                                           Some of the channels are connected internally. So,while confguring the channel IDs make sure the channels have pin out on the deivce and are configured in Port.  |
+| **Description** | This parameter defines to the numeric ID of the channel on the ADC hardware unit. Only some channels are brought out on the device.                                           Some of the channels are connected internally. So,while confguring the channel IDs make sure the channels have pin out on the deivce and are configured in Port.                                           A particular channel is reserved for temperature sensor in every device. For example, in F29H85x device channel 20 is reserved for temperature sensor. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -922,7 +916,7 @@ This container contains the trigger repeater configuration (parameters) dependin
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | CDD_ADC_TRIGGER_CPU1INT0 |
-| **Range** | CDD_ADC_TRIGGER_CPU1INT0<br>CDD_ADC_TRIGGER_CPU1INT1<br>CDD_ADC_TRIGGER_CPU1INT2<br>CDD_ADC_TRIGGER_GPIO<br>CDD_ADC_TRIGGER_EPWM1_SOCA<br>CDD_ADC_TRIGGER_EPWM1_SOCB<br>CDD_ADC_TRIGGER_EPWM2_SOCA<br>CDD_ADC_TRIGGER_EPWM2_SOCB<br>CDD_ADC_TRIGGER_EPWM3_SOCA<br>CDD_ADC_TRIGGER_EPWM3_SOCB<br>CDD_ADC_TRIGGER_EPWM4_SOCA<br>CDD_ADC_TRIGGER_EPWM4_SOCB<br>CDD_ADC_TRIGGER_EPWM5_SOCA<br>CDD_ADC_TRIGGER_EPWM5_SOCB<br>CDD_ADC_TRIGGER_EPWM6_SOCA<br>CDD_ADC_TRIGGER_EPWM6_SOCB<br>CDD_ADC_TRIGGER_EPWM7_SOCA<br>CDD_ADC_TRIGGER_EPWM7_SOCB<br>CDD_ADC_TRIGGER_EPWM8_SOCA<br>CDD_ADC_TRIGGER_EPWM8_SOCB<br>CDD_ADC_TRIGGER_EPWM9_SOCA<br>CDD_ADC_TRIGGER_EPWM9_SOCB<br>CDD_ADC_TRIGGER_EPWM10_SOCA<br>CDD_ADC_TRIGGER_EPWM10_SOCB<br>CDD_ADC_TRIGGER_EPWM11_SOCA<br>CDD_ADC_TRIGGER_EPWM11_SOCB<br>CDD_ADC_TRIGGER_EPWM12_SOCA<br>CDD_ADC_TRIGGER_EPWM12_SOCB<br>CDD_ADC_TRIGGER_CPU2INT0<br>CDD_ADC_TRIGGER_CPU2INT1<br>CDD_ADC_TRIGGER_CPU2INT2<br>CDD_ADC_TRIGGER_ECAP1<br>CDD_ADC_TRIGGER_ECAP2<br>CDD_ADC_TRIGGER_ECAP3<br>CDD_ADC_TRIGGER_ECAP4<br>CDD_ADC_TRIGGER_EPWM13_SOCA<br>CDD_ADC_TRIGGER_EPWM13_SOCB<br>CDD_ADC_TRIGGER_EPWM14_SOCA<br>CDD_ADC_TRIGGER_EPWM14_SOCB<br>CDD_ADC_TRIGGER_EPWM15_SOCA<br>CDD_ADC_TRIGGER_EPWM15_SOCB<br>CDD_ADC_TRIGGER_EPWM16_SOCA<br>CDD_ADC_TRIGGER_EPWM16_SOCB<br>CDD_ADC_TRIGGER_EPWM17_SOCA<br>CDD_ADC_TRIGGER_EPWM17_SOCB<br>CDD_ADC_TRIGGER_EPWM18_SOCA<br>CDD_ADC_TRIGGER_EPWM18_SOCB<br>CDD_ADC_TRIGGER_CPU3INT0<br>CDD_ADC_TRIGGER_CPU3INT1<br>CDD_ADC_TRIGGER_CPU3INT2 |
+| **Range** | CDD_ADC_TRIGGER_CPU1INT0<br>CDD_ADC_TRIGGER_CPU1INT1<br>CDD_ADC_TRIGGER_CPU1INT2<br>CDD_ADC_TRIGGER_GPIO<br>CDD_ADC_TRIGGER_EPWM1_SOCA<br>CDD_ADC_TRIGGER_EPWM1_SOCB<br>CDD_ADC_TRIGGER_EPWM2_SOCA<br>CDD_ADC_TRIGGER_EPWM2_SOCB<br>CDD_ADC_TRIGGER_EPWM3_SOCA<br>CDD_ADC_TRIGGER_EPWM3_SOCB<br>CDD_ADC_TRIGGER_EPWM4_SOCA<br>CDD_ADC_TRIGGER_EPWM4_SOCB<br>CDD_ADC_TRIGGER_EPWM5_SOCA<br>CDD_ADC_TRIGGER_EPWM5_SOCB<br>CDD_ADC_TRIGGER_EPWM6_SOCA<br>CDD_ADC_TRIGGER_EPWM6_SOCB<br>CDD_ADC_TRIGGER_EPWM7_SOCA<br>CDD_ADC_TRIGGER_EPWM7_SOCB<br>CDD_ADC_TRIGGER_EPWM8_SOCA<br>CDD_ADC_TRIGGER_EPWM8_SOCB<br>CDD_ADC_TRIGGER_EPWM9_SOCA<br>CDD_ADC_TRIGGER_EPWM9_SOCB<br>CDD_ADC_TRIGGER_EPWM10_SOCA<br>CDD_ADC_TRIGGER_EPWM10_SOCB<br>CDD_ADC_TRIGGER_EPWM11_SOCA<br>CDD_ADC_TRIGGER_EPWM11_SOCB<br>CDD_ADC_TRIGGER_EPWM12_SOCA<br>CDD_ADC_TRIGGER_EPWM12_SOCB<br>CDD_ADC_TRIGGER_CPU2INT0<br>CDD_ADC_TRIGGER_CPU2INT1<br>CDD_ADC_TRIGGER_CPU2INT2<br>CDD_ADC_TRIGGER_ECAP1<br>CDD_ADC_TRIGGER_ECAP2<br>CDD_ADC_TRIGGER_ECAP3<br>CDD_ADC_TRIGGER_ECAP4<br>CDD_ADC_TRIGGER_ECAP5<br>CDD_ADC_TRIGGER_ECAP6<br>CDD_ADC_TRIGGER_EPWM13_SOCA<br>CDD_ADC_TRIGGER_EPWM13_SOCB<br>CDD_ADC_TRIGGER_EPWM14_SOCA<br>CDD_ADC_TRIGGER_EPWM14_SOCB<br>CDD_ADC_TRIGGER_EPWM15_SOCA<br>CDD_ADC_TRIGGER_EPWM15_SOCB<br>CDD_ADC_TRIGGER_EPWM16_SOCA<br>CDD_ADC_TRIGGER_EPWM16_SOCB<br>CDD_ADC_TRIGGER_EPWM17_SOCA<br>CDD_ADC_TRIGGER_EPWM17_SOCB<br>CDD_ADC_TRIGGER_EPWM18_SOCA<br>CDD_ADC_TRIGGER_EPWM18_SOCB<br>CDD_ADC_TRIGGER_CPU3INT0<br>CDD_ADC_TRIGGER_CPU3INT1<br>CDD_ADC_TRIGGER_CPU3INT2 |
 
 ###### CddAdcRepeaterMode
 
@@ -982,11 +976,11 @@ This container contains the trigger repeater configuration (parameters) dependin
 ##### CddAdcPpbConfig
 This container contains the PPB configuration (parameters) of the PPB.
 
-###### CddAdcPpbId
+###### CddAdcPpbInstance
 
 | Item ||
 |--------|---------------|
-| **Name** | CddAdcPpbId |
+| **Name** | CddAdcPpbInstance |
 | **Description** | Numeric ID of the PPB number assigned to the channel. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
@@ -1363,14 +1357,14 @@ This container contains the channel configuration (parameters) depending on the 
 | **Default-value** | false |
 
 ##### CddAdcGlobalSwTrigger
-This container contains the global software triigger Id.
+This container configures the global software trigger.When configured Soc mask of all added ADC instances should match.
 
 ###### CddAdcGlbSwTrigId
 
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcGlbSwTrigId |
-| **Description** | Numeric ID of the safety result checker. |
+| **Description** | Numeric ID of global software trigger.This parameter is used for symbolic name generation. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -1427,14 +1421,12 @@ This container contains the safety result checker configuration (parameters).
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcCheckerId |
-| **Description** | Numeric ID of the safety result checker. |
+| **Description** | Symbolic ID for a safety result checker instance.This ID should be unique. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 0 |
-| **Max-value** | 9 |
-| **Min-value** | 0 |
 
 ###### CddAdcCheckerTolerance
 
@@ -1449,6 +1441,17 @@ This container contains the safety result checker configuration (parameters).
 | **Default-value** | 0 |
 | **Max-value** | 167777216 |
 | **Min-value** | 0 |
+
+###### CddAdcCheckerInstanceRef
+
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerInstanceRef |
+| **Description** | This parameter refers to the ADC safety checker instances. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ##### CddAdcSelResConfig1
 This container contains the checker result1 configuration (parameters) whose results will be compared.
@@ -1507,7 +1510,7 @@ This container contains the checker result2 configuration (parameters) whose res
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | CDD_ADC_SAFETY_CHECKER_INPUT_PPB |
+| **Default-value** | CDD_ADC_SAFETY_CHECKER_INPUT_SOC |
 | **Range** | CDD_ADC_SAFETY_CHECKER_INPUT_SOC<br>CDD_ADC_SAFETY_CHECKER_INPUT_PPB<br>CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM |
 
 ###### CddAdcChannelReference
@@ -1546,14 +1549,23 @@ This container configures the triggers for interrupts and events from the safety
 | Item ||
 |--------|---------------|
 | **Name** | CddAdcIntEvtId |
-| **Description** | Numeric ID of the interrupt event instance.This ID should be unique. |
+| **Description** | Symbolic ID for safety checker interrupt event instance.This ID should be unique. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 0 |
-| **Max-value** | 2 |
-| **Min-value** | 0 |
+
+###### CddAdcCheckerIntEvtInstanceRef
+
+| Item ||
+|--------|---------------|
+| **Name** | CddAdcCheckerIntEvtInstanceRef |
+| **Description** | This parameter refers to the ADC HW Unit instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ##### CddAdcCheckerIntEvtConfiguration
 Configure interrupts and events for the safety checker instance for the specified interrupt event block.
@@ -1815,11 +1827,11 @@ General configuration (parameters) of the ADC Driver software module.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | false |
 
-##### CddAdcGrpNotifCapability
+##### CddAdcNotifCapability
 
 | Item ||
 |--------|---------------|
-| **Name** | CddAdcGrpNotifCapability |
+| **Name** | CddAdcNotifCapability |
 | **Description** | Determines, if the group notification mechanism (the functions to enable and disable the notifications) is available at runtime. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |

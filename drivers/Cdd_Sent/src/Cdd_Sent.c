@@ -44,11 +44,11 @@
 #error "AUTOSAR Version Numbers of CDD_SENT are different"
 #endif
 
-#if ((CDD_SENT_SW_MAJOR_VERSION != (2U)) || (CDD_SENT_SW_MINOR_VERSION != (0U)))
+#if ((CDD_SENT_SW_MAJOR_VERSION != (3U)) || (CDD_SENT_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Sent.c and Cdd_Sent.h are inconsistent!"
 #endif
 
-#if ((CDD_SENT_CFG_MAJOR_VERSION != (2U)) || (CDD_SENT_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_SENT_CFG_MAJOR_VERSION != (3U)) || (CDD_SENT_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Sent.c and Cdd_Sent_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -284,7 +284,7 @@ Cdd_Sent_Enable_Interrupts(Cdd_SentInstance SentInstance)
         (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_ENABLE_INTERRUPT,
                               CDD_SENT_E_UNINIT);
     }
-    else if (SENT_MAX_HW_UNITS < instance_index)
+    else if (SENT_MAX_HW_UNITS <= instance_index)
     {
         (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_ENABLE_INTERRUPT,
                               CDD_SENT_E_PARAM_CHANNEL);
@@ -316,7 +316,7 @@ Cdd_Sent_Disable_Interrupts(Cdd_SentInstance SentInstance)
         (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_DISABLE_INTERRUPT,
                               CDD_SENT_E_UNINIT);
     }
-    else if (SENT_MAX_HW_UNITS < instance_index)
+    else if (SENT_MAX_HW_UNITS <= instance_index)
     {
         (void)Det_ReportError(CDD_SENT_MODULE_ID, CDD_SENT_INSTANCE_ID, CDD_SENT_SID_DISABLE_INTERRUPT,
                               CDD_SENT_E_PARAM_CHANNEL);

@@ -20,7 +20,7 @@
  *  Description:  Cdd_I2c configuration header file
  *********************************************************************************************************************/
 /**
- *  \addtogroup CDD_I2C I2C Configuration Header file
+ *  \addtogroup CDD_I2C
  *
  *  This files defines I2C configuration structures
  *  @{
@@ -99,7 +99,7 @@ extern "C" {
 #define CDD_I2C_HW_UNIT_I2CB            ((Cdd_I2c_HwUnitType)1U)
 /** @} */
 /** \brief Maximum supported HW units for the SOC */
-#define CDD_I2C_HW_UNIT_MAX             ([!"num:i(ecu:get('Cdd_I2c_F29H85x_HwInstances'))"!]U)
+#define CDD_I2C_HW_UNIT_MAX             ([!"num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_I2cInstanceName')))"!]U)
 
 [!VAR "varmax" = "0"!][!//
 [!LOOP "CddI2cSeqConfig/*"!][!//
@@ -136,12 +136,12 @@ extern "C" {
  * All below macros are used for enabling a particular hardware.
  */
 [!LOOP "CddI2cHwConfig/*"!][!//
-#define CDD_I2C_HW_UNIT_[!"CddI2cHwUnitType"!]_ACTIVE
+#define CDD_I2C_HW_UNIT_[!"node:value(node:ref(CddI2cHwUnitRef)/InstanceName)"!]_ACTIVE
 [!ENDLOOP!][!//
 
 [!IF "CddI2cGeneral/CddI2cUseInterrupts = 'true' "!]
 [!LOOP "CddI2cHwConfig/*"!][!//
-#define CDD_I2C_HW_UNIT_[!"CddI2cHwUnitType"!]_[!"CddI2cHwIrqType"!]
+#define CDD_I2C_HW_UNIT_[!"node:value(node:ref(CddI2cHwUnitRef)/InstanceName)"!]_[!"CddI2cHwIrqType"!]
 [!ENDLOOP!][!//
 [!ENDIF!]
 

@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
 [!AUTOSPACING!][!//
+[!SELECT "as:modconf('Cdd_Sent/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Sent/Cdd']"!]
+[!VAR "Cat1Instances" = "''"!][!//
+[!LOOP "CddSentConfig"!]
+[!LOOP "CddSentController/*"!][!//
+[!VAR "InstanceName" = "node:ref(CddSentInstanceRef)/InstanceName"!][!//
+[!VAR "InstanceLetter" = "substring-after($InstanceName, 'SENT')"!][!//
+[!// Track CAT1 instances (anything not explicitly CAT2)
+[!IF "node:value(CddSentInterruptType) != 'CDD_SENT_ISR_CAT2'"!][!//
+[!IF "$Cat1Instances = ''"!][!//
+[!VAR "Cat1Instances" = "$InstanceLetter"!][!//
+[!ELSE!][!//
+[!VAR "Cat1Instances" = "concat($Cat1Instances, ',', $InstanceLetter)"!][!//
+[!ENDIF!][!//
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+[!ENDLOOP!][!//
 [!VAR "Cdd_SentDevErrorDetect_Enable"="Cdd_SentGeneral/Cdd_SentDevErrorDetect  = 'true'"!][!//
 [!VAR "Cdd_SentVersionInfoApi_Enable"="Cdd_SentGeneral/Cdd_SentVersionInfoApi  = 'true'"!][!// 
   <AR-PACKAGES>
@@ -23,24 +39,15 @@
 			[!ENDIF!][!//
           </EXPECTED-ENTRYS>
           <IMPLEMENTED-ENTRYS>
+[!LOOP "CddSentConfig"!]
+[!LOOP "CddSentController/*"!][!//
+[!VAR "InstanceName" = "node:ref(CddSentInstanceRef)/InstanceName"!][!//
+[!VAR "InstanceLetter" = "substring-after($InstanceName, 'SENT')"!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Sent_ModuleEntry/Cdd_Sent_1_ISR</BSW-MODULE-ENTRY-REF>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Sent_ModuleEntry/Cdd_Sent_[!"$InstanceLetter"!]_ISR</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Sent_ModuleEntry/Cdd_Sent_2_ISR</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Sent_ModuleEntry/Cdd_Sent_3_ISR</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Sent_ModuleEntry/Cdd_Sent_4_ISR</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Sent_ModuleEntry/Cdd_Sent_5_ISR</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
-            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
-              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Sent_ModuleEntry/Cdd_Sent_6_ISR</BSW-MODULE-ENTRY-REF>
-            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+[!ENDLOOP!][!//
+[!ENDLOOP!][!//
             <BSW-MODULE-ENTRY-REF-CONDITIONAL S="">
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Sent_ModuleEntry/Cdd_Sent_Init</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -57,7 +64,7 @@
               </TARGET-MODULE-REFS>
             </BSW-MODULE-DEPENDENCY>
 		    [!ENDIF!][!//
-        [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
+        [!IF "CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
             <BSW-MODULE-DEPENDENCY UUID="157dd34f-c7a8-4e68-a45a-950108cb05fd">
                 <SHORT-NAME>PduR</SHORT-NAME>
                 <TARGET-MODULE-ID>51</TARGET-MODULE-ID>
@@ -71,10 +78,15 @@
             <BSW-INTERNAL-BEHAVIOR UUID="f22cb3c1-7fd7-46dd-aab0-df4d0397ce2a">
               <SHORT-NAME>Cdd_Sent_Behavior</SHORT-NAME>
               <ENTITYS>
-                <BSW-INTERRUPT-ENTITY UUID="8859c13f-9fe5-4c20-9e0a-59a217331704">
-                  <SHORT-NAME>Cdd_Sent_1_ISR</SHORT-NAME>
+[!LOOP "CddSentConfig"!]
+[!LOOP "CddSentController/*"!][!//
+[!VAR "InstanceName" = "node:ref(CddSentInstanceRef)/InstanceName"!][!//
+[!VAR "InstanceLetter" = "substring-after($InstanceName, 'SENT')"!][!//
+[!VAR "InstanceLetterLower" = "translate($InstanceLetter, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"!][!//
+                <BSW-INTERRUPT-ENTITY UUID="8859c13f-9fe5-4c20-9e0a-59a21733170[!"$InstanceLetterLower"!]">
+                  <SHORT-NAME>Cdd_Sent_[!"$InstanceLetter"!]_ISR</SHORT-NAME>
                   <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
+                  [!IF "../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>PduR_Cdd_Sent_RxIndication</SHORT-NAME>
@@ -82,78 +94,14 @@
                     </BSW-DIRECT-CALL-POINT>
                   </CALL-POINTS>
                   [!ENDIF!][!//
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Cdd_Sent_ModuleEntry/Cdd_Sent_1_ISR</IMPLEMENTED-ENTRY-REF>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Cdd_Sent_ModuleEntry/Cdd_Sent_[!"$InstanceLetter"!]_ISR</IMPLEMENTED-ENTRY-REF>
+[!IF "node:value(CddSentInterruptType) = 'CDD_SENT_ISR_CAT2'"!][!//
+                  <INTERRUPT-CATEGORY>CAT-2</INTERRUPT-CATEGORY>
+[!ELSE!][!//
                   <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
-                </BSW-INTERRUPT-ENTITY>
-                <BSW-INTERRUPT-ENTITY UUID="40040dd7-387e-4a88-9b01-b0e4fec142a9">
-                  <SHORT-NAME>Cdd_Sent_2_ISR</SHORT-NAME>
-                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>PduR_Cdd_Sent_RxIndication</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_PduR/BSWModuleEntry/PduR_Cdd_Sent_RxIndication</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  [!ENDIF!][!//
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Cdd_Sent_ModuleEntry/Cdd_Sent_2_ISR</IMPLEMENTED-ENTRY-REF>
-                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
-                </BSW-INTERRUPT-ENTITY>
-                <BSW-INTERRUPT-ENTITY UUID="d4326308-da3f-40da-be39-c1e748740f84">
-                  <SHORT-NAME>Cdd_Sent_3_ISR</SHORT-NAME>
-                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>PduR_Cdd_Sent_RxIndication</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_PduR/BSWModuleEntry/PduR_Cdd_Sent_RxIndication</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  [!ENDIF!][!//
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Cdd_Sent_ModuleEntry/Cdd_Sent_3_ISR</IMPLEMENTED-ENTRY-REF>
-                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
-                </BSW-INTERRUPT-ENTITY>
-                <BSW-INTERRUPT-ENTITY UUID="959cba56-ac05-4679-ab8d-c4e719bfb8b4">
-                  <SHORT-NAME>Cdd_Sent_4_ISR</SHORT-NAME>
-                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>PduR_Cdd_Sent_RxIndication</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_PduR/BSWModuleEntry/PduR_Cdd_Sent_RxIndication</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  [!ENDIF!][!//
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Cdd_Sent_ModuleEntry/Cdd_Sent_4_ISR</IMPLEMENTED-ENTRY-REF>
-                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
-                </BSW-INTERRUPT-ENTITY>
-                <BSW-INTERRUPT-ENTITY UUID="ae3b2b2e-461b-436d-9121-008a1abcffce">
-                  <SHORT-NAME>Cdd_Sent_5_ISR</SHORT-NAME>
-                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>PduR_Cdd_Sent_RxIndication</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_PduR/BSWModuleEntry/PduR_Cdd_Sent_RxIndication</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  [!ENDIF!][!//
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Cdd_Sent_ModuleEntry/Cdd_Sent_5_ISR</IMPLEMENTED-ENTRY-REF>
-                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
-                </BSW-INTERRUPT-ENTITY>
-                <BSW-INTERRUPT-ENTITY UUID="4ef39306-fddb-4102-be8c-88cf4ea5b950">
-                  <SHORT-NAME>Cdd_Sent_6_ISR</SHORT-NAME>
-                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
-                  [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>PduR_Cdd_Sent_RxIndication</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_PduR/BSWModuleEntry/PduR_Cdd_Sent_RxIndication</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  [!ENDIF!][!//
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Sent_TI_F29H85x/Cdd_Sent_ModuleEntry/Cdd_Sent_6_ISR</IMPLEMENTED-ENTRY-REF>
-                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+[!ENDIF!][!//
+[!ENDLOOP!][!//
+[!ENDLOOP!][!//
                 </BSW-INTERRUPT-ENTITY>
                 <BSW-CALLED-ENTITY UUID="28dcc4b7-ec8c-445e-8633-320f1f61567e">
                   <SHORT-NAME>Cdd_Sent_Deinit</SHORT-NAME>
@@ -316,60 +264,23 @@
         <AR-PACKAGE UUID="e4c1a855-ddc0-4cc4-89d9-693a7f31481c">
           <SHORT-NAME>Cdd_Sent_ModuleEntry</SHORT-NAME>
           <ELEMENTS>
-            <BSW-MODULE-ENTRY UUID="0859b596-bedf-43df-b165-ebc8527ab720">
-              <SHORT-NAME>Cdd_Sent_1_ISR</SHORT-NAME>
+[!LOOP "text:split(ecu:get('ResourceAllocator_F29H85x.Cdd_SentInstanceName'), ',')"!][!//
+[!VAR "RAInstanceName" = "."!][!//
+[!VAR "InstanceLetter" = "substring-after($RAInstanceName, 'SENT')"!][!//
+            <BSW-MODULE-ENTRY UUID="[!"concat('0859b596-bedf-43df-b165-ebc8527ab72', $InstanceLetter)"!]">
+              <SHORT-NAME>Cdd_Sent_[!"$InstanceLetter"!]_ISR</SHORT-NAME>
               <IS-REENTRANT>false</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>INTERRUPT</CALL-TYPE>
+[!IF "text:contains(text:split($Cat1Instances, ','), $InstanceLetter)"!][!//
               <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+[!ELSE!][!//
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-2</EXECUTION-CONTEXT>
+[!ENDIF!][!//
               <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
               <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
             </BSW-MODULE-ENTRY>
-            <BSW-MODULE-ENTRY UUID="2c3c105d-9562-49c1-843a-a7751f380d3b">
-              <SHORT-NAME>Cdd_Sent_2_ISR</SHORT-NAME>
-              <IS-REENTRANT>false</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
-              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
-              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
-            </BSW-MODULE-ENTRY>
-            <BSW-MODULE-ENTRY UUID="936bd3c7-f536-469d-b38d-742ac8e3709a">
-              <SHORT-NAME>Cdd_Sent_3_ISR</SHORT-NAME>
-              <IS-REENTRANT>false</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
-              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
-              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
-            </BSW-MODULE-ENTRY>
-            <BSW-MODULE-ENTRY UUID="895806c5-8ef2-427b-8450-19e7db9cdd0a">
-              <SHORT-NAME>Cdd_Sent_4_ISR</SHORT-NAME>
-              <IS-REENTRANT>false</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
-              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
-              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
-            </BSW-MODULE-ENTRY>
-            <BSW-MODULE-ENTRY UUID="f4332a79-4def-4edd-a31e-80cd7cd16e09">
-              <SHORT-NAME>Cdd_Sent_5_ISR</SHORT-NAME>
-              <IS-REENTRANT>false</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
-              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
-              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
-            </BSW-MODULE-ENTRY>
-            <BSW-MODULE-ENTRY UUID="4f38883b-eaad-4eee-8ff9-f6662cf5a6ff">
-              <SHORT-NAME>Cdd_Sent_6_ISR</SHORT-NAME>
-              <IS-REENTRANT>false</IS-REENTRANT>
-              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
-              <CALL-TYPE>INTERRUPT</CALL-TYPE>
-              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
-              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
-              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
-            </BSW-MODULE-ENTRY>
+[!ENDLOOP!][!//
             <BSW-MODULE-ENTRY UUID="f0d0e534-9d4a-4215-a578-6ac637407677">
               <SHORT-NAME>Cdd_Sent_Deinit</SHORT-NAME>
               <SERVICE-ID>2</SERVICE-ID>
@@ -416,3 +327,4 @@
     </AR-PACKAGE>
   </AR-PACKAGES>
 </AUTOSAR>
+[!ENDSELECT!]

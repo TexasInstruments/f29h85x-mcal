@@ -125,6 +125,20 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
+/** \brief Mcu frequency Structure */
+typedef struct
+{
+    /** \brief Reference Clock : INTOSC1/INTOSC2/XTAL  */
+    uint32 input_clock;
+    /** \brief REFDIV + 1  */
+    uint32 pll_int_clk;
+    /** \brief VCO output clock  */
+    uint32 pll_vco_clk;
+    /** \brief Pll RawClk  */
+    uint32 pll_raw_clk;
+    /** \brief Pll SysClk  */
+    uint32 sys_clk;
+} Mcu_CalClkValueType;
 
 /*********************************************************************************************************************
  * Exported Object Declarations
@@ -139,6 +153,7 @@ extern "C" {
  *
  * \param[in] ClockConfigPtr Pointer to Clock configuration set. (Mcu_ClockConfigPtrType) configured
  *in EB Tresos.
+ * \param[in] CalClockPtr Pointer to calculated output frequency
  * \pre None
  * \post None
  * \return Std_ReturnType
@@ -146,7 +161,8 @@ extern "C" {
  * \retval E_NOT_OK - If there are no errors.
  *
  *********************************************************************************************************************/
-FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClockParamCheck(Mcu_ClockConfigPtrType ClockConfigPtr);
+FUNC(Std_ReturnType, MCU_CODE)
+Mcu_InitClockParamCheck(Mcu_ClockConfigPtrType ClockConfigPtr, const Mcu_CalClkValueType *CalClockPtr);
 #endif
 
 /** \brief Set the Oscillator source, Multiplier and divider to derive the clock.
@@ -185,6 +201,18 @@ FUNC(void, MCU_CODE) Mcu_EnablePll(void);
  *
  *********************************************************************************************************************/
 FUNC(uint16, MCU_CODE) Mcu_IsPllLocked(void);
+
+/** \brief Calculates the output frequency
+ *
+ * \param[in] ClockConfigPtr Points to clock configuration settings
+ * \param[out] CalClockValue Points to the calculated clock values
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, MCU_CODE) Mcu_CalculateClocks(Mcu_ClockConfigPtrType ClockConfigPtr, Mcu_CalClkValueType *CalClockValue);
 
 /** \brief Gets the reason for a reset.
  *

@@ -132,33 +132,28 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_TimeoutVerification(McalLib_TickType s
     tempCount = startCount;
     (void)McalLib_GetElapsedValue(&tempCount, &elapsedCount);
 
-    switch (Fls_DrvObj.jobType)
+    if (Fls_DrvObj.jobType == FLS_JOB_ERASE)
     {
-        case FLS_JOB_ERASE:
-            if (Fls_DrvObj.typeoferase == FLS_SECTOR_ERASE)
-            {
-                /* We have max sector erase time, so we are multiplying it with CPU clock and also
-                   with number of sectors in one bank to get max number of cycles in order to
-                   compare with run time cycles FLS_MAX_ERASE_TIME: sector erase time in us time1:
-                   clock cycles of sector erase
-                */
-                time1 = FLS_MAX_ERASE_TIME * (FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ);
-            }
-            else
-            {
-                /* Based on F28H5x device datasheet, the bank erase takes 40% more than sector
-                   erase: 1003ms vs 1410ms
-                */
-                time1 = (FLS_MAX_ERASE_TIME * 2U) * (FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ);
-            }
-            break;
-
-        case FLS_JOB_WRITE:
-            time1 = FLS_MAX_WRITE_TIME * (FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ);
-            break;
-
-        default:
-            break;
+        if (Fls_DrvObj.typeoferase == FLS_SECTOR_ERASE)
+        {
+            /* We have max sector erase time, so we are multiplying it with CPU clock and also
+                with number of sectors in one bank to get max number of cycles in order to
+                compare with run time cycles FLS_MAX_ERASE_TIME: sector erase time in us time1:
+                clock cycles of sector erase
+            */
+            time1 = FLS_MAX_ERASE_TIME * (FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ);
+        }
+        else
+        {
+            /* Based on F28H5x device datasheet, the bank erase takes 40% more than sector
+                erase: 1003ms vs 1410ms
+            */
+            time1 = (FLS_MAX_ERASE_TIME * 2U) * (FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ);
+        }
+    }
+    else
+    {
+        time1 = FLS_MAX_WRITE_TIME * (FLS_CPU_CLOCK_FREQ / FLS_CONV_TO_MHZ);
     }
 
     if (elapsedCount > time1)
@@ -254,35 +249,22 @@ FUNC(void, FLS_CODE) Fls_processJobs(Fls_JobType job)
     switch (job)
     {
         case FLS_JOB_COMPARE:
-        {
             Fls_Process_JobCompare(chunkSize);
             break;
-        }
         case FLS_JOB_ERASE:
-        {
             Fls_Process_JobErase(chunkSize);
-
             break;
-        }
         case FLS_JOB_READ:
-        {
             Fls_Process_JobRead(chunkSize);
             break;
-        }
         case FLS_JOB_WRITE:
-        {
             Fls_Process_JobWrite(chunkSize);
             break;
-        }
         case FLS_JOB_BLANKCHECK:
-        {
             Fls_Process_JobBlankCheck(chunkSize);
             break;
-        }
         default:
-        {
             break;
-        }
     }
 }
 
@@ -1161,19 +1143,16 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncBankErase_sub(uint32 actualSiz
 FUNC(void, FLS_CODE) Fls_copyConfig(Fls_DriverObjType *drvObj, const Fls_ConfigType *cfgPtr)
 {
     VAR(uint8, AUTOMATIC) sectorcfg_index = (uint8)0U;
-    if ((drvObj != NULL_PTR) && (cfgPtr != NULL_PTR))
+
+    drvObj->Fls_JobEndNotification   = cfgPtr->Fls_JobEndNotification;
+    drvObj->Fls_JobErrorNotification = cfgPtr->Fls_JobErrorNotification;
+    drvObj->FlsMaxReadNormalMode     = cfgPtr->FlsMaxReadNormalMode;
+    drvObj->FlsMaxWriteNormalMode    = cfgPtr->FlsMaxWriteNormalMode;
+    while (sectorcfg_index < FLS_NUMBER_OF_SECTOR_CFG)
     {
-        drvObj->Fls_JobEndNotification   = cfgPtr->Fls_JobEndNotification;
-        drvObj->Fls_JobErrorNotification = cfgPtr->Fls_JobErrorNotification;
-        drvObj->FlsMaxReadNormalMode     = cfgPtr->FlsMaxReadNormalMode;
-        drvObj->FlsMaxWriteNormalMode    = cfgPtr->FlsMaxWriteNormalMode;
-        while (sectorcfg_index < FLS_NUMBER_OF_SECTOR_CFG)
-        {
-            drvObj->sectorList[sectorcfg_index] = cfgPtr->sectorList[sectorcfg_index];
-            sectorcfg_index++;
-        }
+        drvObj->sectorList[sectorcfg_index] = cfgPtr->sectorList[sectorcfg_index];
+        sectorcfg_index++;
     }
-    return;
 }
 /*
  *   Function Name: Fls_resetDrvObj
@@ -1181,24 +1160,20 @@ FUNC(void, FLS_CODE) Fls_copyConfig(Fls_DriverObjType *drvObj, const Fls_ConfigT
  */
 FUNC(void, FLS_CODE) Fls_resetDrvObj(Fls_DriverObjType *drvObj)
 {
-    if (drvObj != NULL_PTR)
-    {
-        drvObj->Fls_JobEndNotification   = NULL;
-        drvObj->Fls_JobErrorNotification = NULL;
-        drvObj->FlsMaxReadNormalMode     = 0x0;
-        drvObj->FlsMaxWriteNormalMode    = 0x0;
-        drvObj->status                   = MEMIF_UNINIT;
-        drvObj->jobResultType            = MEMIF_JOB_OK;
-        drvObj->jobType                  = FLS_JOB_NONE;
-        drvObj->flashAddr                = 0x0;
-        drvObj->ramAddr                  = NULL;
-        drvObj->length                   = 0x0;
-        drvObj->mode                     = MEMIF_MODE_SLOW;
-        drvObj->jobChunkSize             = 0x0;
-        drvObj->transferred              = 0x0;
-        drvObj->typeoferase              = (Fls_EraseType)FLS_SECTOR_ERASE;
-    }
-    return;
+    drvObj->Fls_JobEndNotification   = NULL;
+    drvObj->Fls_JobErrorNotification = NULL;
+    drvObj->FlsMaxReadNormalMode     = 0x0;
+    drvObj->FlsMaxWriteNormalMode    = 0x0;
+    drvObj->status                   = MEMIF_UNINIT;
+    drvObj->jobResultType            = MEMIF_JOB_OK;
+    drvObj->jobType                  = FLS_JOB_NONE;
+    drvObj->flashAddr                = 0x0;
+    drvObj->ramAddr                  = NULL;
+    drvObj->length                   = 0x0;
+    drvObj->mode                     = MEMIF_MODE_SLOW;
+    drvObj->jobChunkSize             = 0x0;
+    drvObj->transferred              = 0x0;
+    drvObj->typeoferase              = (Fls_EraseType)FLS_SECTOR_ERASE;
 }
 
 /*********************************************************************************************************************

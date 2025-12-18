@@ -779,11 +779,6 @@ Spi_CopyConfig(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
 
     return;
 }
-/* Design: MCAL-28300 */
-FUNC(uint32, SPI_CODE) Spi_GetHwUnitBaseAddr(VAR(Spi_HWUnitType, AUTOMATIC) hwUnitId)
-{
-    return (Spi_HwUnitBaseAddr[hwUnitId]);
-}
 
 /*
  * Design : MCAL-24886, MCAL-24894, MCAL-24916, MCAL-28322
@@ -825,7 +820,7 @@ FUNC(void, SPI_CODE)
 Spi_HwUnitInit(P2VAR(Spi_DriverObjType, AUTOMATIC, SPI_CODE) drvObj,
                P2VAR(Spi_HwUnitObjType, AUTOMATIC, SPI_CODE) hwUnitObj)
 {
-    hwUnitObj->baseAddr = Spi_GetHwUnitBaseAddr(hwUnitObj->hwUnitCfg->hwUnitId);
+    hwUnitObj->baseAddr = hwUnitObj->hwUnitCfg->HwUnitBaseAddr;
 
     Spi_UtilsInitLinkList(&hwUnitObj->jobList);
     McalLib_RegBitClear16(hwUnitObj->baseAddr + SPI_O_CCR, SPI_CCR_SPISWRESET);

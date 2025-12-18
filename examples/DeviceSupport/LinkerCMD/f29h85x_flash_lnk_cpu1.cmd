@@ -21,7 +21,6 @@ MEMORY
 
 SECTIONS
 {
-    cpu3_resetvector    : {} > 0x10400000,    palign(8), START(CPU3_RESET_VECTOR)
     codestart           : {} > 0x10001000,    palign(8)
     cert                : {} > CERT,          palign(8)
 

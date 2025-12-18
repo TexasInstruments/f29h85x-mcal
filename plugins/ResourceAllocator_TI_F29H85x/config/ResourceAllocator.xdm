@@ -15,6 +15,7 @@
          xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
     <d:lst type="TOP-LEVEL-PACKAGES">
       <d:ctr name="TI_F29H85x" type="AR-PACKAGE">
+        <a:a name="UUID" value="51cde142-03cb-4dba-bf95-e23a97084baf"/>
         <d:lst type="ELEMENTS">
           <d:chc name="ResourceAllocator" type="AR-ELEMENT" value="MODULE-DEF">
             <v:ctr type="MODULE-DEF">
@@ -155,7 +156,7 @@
                   <v:lst name="Context" type="MAP">
                     <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
                     <a:da name="MIN" value="1"/>
-                    <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list(concat('ResourceAllocator_F29H85x.Context_',node:value(../../Device))))&quot;,num:i(3))"/>
+                    <a:da name="MAX" value="1"/>
                     <v:ctr name="Context" type="IDENTIFIABLE">
                       <a:a name="EDITABLE" type="XPath" expr="node:value(../../Mode) = 'SETUP'"/>
                       <a:a name="DESC"
@@ -166,7 +167,7 @@
                       <a:a name="UUID" value="f931b858-c027-4062-935e-d3a91d8e6bd2"/>
 
                       <v:var name="Core" type="ENUMERATION">
-                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:a name="EDITABLE" value="false"/>
                         <a:a name="DESC"
                               value="EN: Selects Core for which this Context is configured."/>
                         <a:a name="IMPLEMENTATIONCONFIGCLASS" 
@@ -232,7 +233,7 @@
                               </v:var>
 
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="EDITABLE" value="false"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -258,21 +259,17 @@
                                 <a:a name="ORIGIN" value="Texas Instruments"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:a name="UUID" value="61c77aa1-09cf-434b-9d30-3131372d4456"/>
-                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
-                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_DRIVER_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;, 'MCANA_DRIVER_BASE_FRAME(0)')"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_DRIVER_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;, 'MCANA_DRIVER_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                    </a:da>
                               </v:var>
                             </v:ctr>
                           </v:lst>
                         </v:ctr>
                       </v:lst>
-                      
-                      <v:ctr name="Wdg" type="IDENTIFIABLE">
-                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
-                        <a:a name="TAB" value="Wdg"/>
-                        <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Wdg module."/>
-                        <a:a name="UUID" value="88a9112a-aafd-4c4a-bd07-47fb66b37957"/>
-                        <!-- Empty content as specified in the task -->
-                      </v:ctr>
                       
                       <v:lst name="Spi" type="MAP">
                         <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
@@ -294,7 +291,11 @@
                             
                             <v:ctr name="SpiAllocatedInstance" type="IDENTIFIABLE">
                               <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
-                              
+                              <a:a name="DESC" value="EN: Configuration for Spi Instance."/>
+                              <a:a name="UUID" value="51ede142-03cc-4dba-bf95-e23a97084baf"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
                               <v:var name="InstanceName" type="ENUMERATION">
                                 <a:a name="DESC" value="EN: Selects the Spi instance to be allocated."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
@@ -314,7 +315,7 @@
                               </v:var>
 
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="EDITABLE" value="false"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -340,8 +341,12 @@
                                 <a:a name="ORIGIN" value="Texas Instruments"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:a name="UUID" value="314eff49-74b1-4e6d-bdf2-14deb2d1bcc7"/>
-                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
-                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'SPIA_BASE_FRAME(0)')"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'SPIA_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
                               </v:var>
                             </v:ctr>
                           </v:lst>
@@ -368,7 +373,11 @@
                             
                               <v:ctr name="LinAllocatedInstance" type="IDENTIFIABLE">
                                 <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
-                                
+                                <a:a name="DESC" value="EN: Configuration for Lin Instance."/>
+                                <a:a name="UUID" value="51ece142-03cb-4dba-bf95-e23a97084baf"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
                                 <v:var name="InstanceName" type="ENUMERATION">
                                   <a:a name="DESC" value="EN: Selects the Lin instance to be allocated."/>
                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
@@ -388,7 +397,7 @@
                                 </v:var>
 
                                 <v:var name="Frame" type="ENUMERATION">
-                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="EDITABLE" value="false"/>
                                   <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                     <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -414,22 +423,260 @@
                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                   <a:a name="SCOPE" value="LOCAL"/>
                                   <a:a name="UUID" value="83dcdc1e-d645-4d80-9a40-559242a23e98"/>
-                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
-                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'LINA_BASE_FRAME(0)')"/>
+                                  <a:a name="EDITABLE" value="false"/>
+                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'LINA_BASE_FRAME(0U)')"/>
+                                  <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                  </a:da>
                                 </v:var>
                               </v:ctr>
                           </v:lst>
                         </v:ctr>
                       </v:lst>
-
-                      <v:ctr name="Cdd_Adc" type="IDENTIFIABLE">
+                      <v:lst name="Cdd_Adc" type="MAP">
                         <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
-                        <a:a name="TAB" value="Cdd_Adc"/>
-                        <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Adc module."/>
-                        <a:a name="UUID" value="51ede142-03cb-4dba-bf95-e23a97084baf"/>
-                        <!-- Empty content as specified in the task -->
-                      </v:ctr>
-
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        <v:ctr name="Cdd_Adc" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Adc module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="cc21aa19-ee6f-4e71-913b-bd0ee0be08c8"/>
+                          <v:lst name="Cdd_AdcAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcHwInstances'))&quot;,'1')"/>
+                            <v:ctr name="Cdd_AdcAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration for Cdd_Adc Instance."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="b0c656a9-6536-482e-abe4-83a6e4d20b22"/>
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Adc instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="fd3bc8bd-e5b8-4adb-91e2-1a7676f78939"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcHwUnitId')&quot;,'CDD_ADCA')"/>
+                                <a:da name="DEFAULT" value="CDD_ADCA"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Cdd_Adc instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="75c3fbc6-9905-4212-8b16-7ec5deb6254d"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>                                
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Adc instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="8b8c16a9-2f02-4a32-8beb-8ec1a28ef8bb"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(substring-after(node:value(../InstanceName),'CDD_'),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ADCA_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                          <v:lst name="CddAdcSafetyCheckerInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcResultChecker'))&quot;,num:i(1))"/>
+                            <v:ctr name="CddAdcSafetyCheckerInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of ADC safety checker instances."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="b0b656c9-6536-482e-abe4-83a6e4d20b22"/>
+                              <v:var name="SafetyCheckerInstance" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the adc safety checker instances to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="bd3ba8bd-e5b8-4acb-91e2-1a7676f78939"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcCheckerInstances')&quot;,'ADCSAFETYCHECK1')"/>
+                                <a:da name="DEFAULT" value="ADCSAFETYCHECK1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'SafetyCheckerInstance'],node:value(.))"
+                                    false="Safety checker instance should be unique"/>
+                                </a:da>
+                              </v:var>
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="75d3ecd6-9905-4212-8b16-7ec5deb6254d"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>                                
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Adc safety checker instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="8c8c16c9-2f02-4a32-8beb-8ec1a28ed8bb"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(string(node:value(../SafetyCheckerInstance)),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ADCSAFETYCHECK1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                          <v:lst name="CddAdcCheckerInterruptEvtInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcCheckerInterruptEvent'))&quot;,num:i(1))"/>
+                            <v:ctr name="CddAdcCheckerInterruptEvtInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of ADC safety checker interrupt event instances."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="b0a656c9-6536-482e-abe4-83a6e4d20b22"/>
+                              <v:var name="SafetyCheckerIntEvtInstance" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the safety checker interrupt event instances to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="fd3ba8bd-e5b8-4acb-91e2-1a7676f78939"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_AdcCheckerIntEvtInstances')&quot;,'ADCSAFETYCHECKINTEVT1')"/>
+                                <a:da name="DEFAULT" value="ADCSAFETYCHECKINTEVT1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'SafetyCheckerIntEvtInstance'],node:value(.))"
+                                    false="Safety checker instance should be unique"/>
+                                </a:da>
+                              </v:var>
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="75c3ecd6-9905-4212-8b16-7ec5deb6254d"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>                                
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Adc safety checker instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="8a8c1619-2f02-4a32-8beb-8ec1a28ed8bb"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(string(node:value(../SafetyCheckerIntEvtInstance)),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ADCSAFETYCHECKINTEVT1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                          <v:lst name="CddAdcGlobalSoftwareForce" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" value="1"/>
+                            <v:ctr name="CddAdcGlobalSoftwareForce" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of global software force. This is linked to global software trigger feature in ADC. This should be added only once."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:da name="INVALID" type="XPath" expr="not(num:i(count(../../../../../*/Cdd_Adc/*/CddAdcGlobalSoftwareForce/*)) > num:i(1))"
+                                false="Global software force configuration can be configured only once across all CPUs. "/>
+                              <a:a name="UUID" value="b0a666c9-6536-482e-abe4-83a6e4d20b22"/>
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="DESC" value="EN: Selects frmae for global software force registers. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="75c1ecd6-9905-4212-8b16-7ec5deb6254d"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>                                
+                              <v:var name="GlbSwFrcBaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Adc global software force registers. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="8a8c16c9-2f02-4a32-8beb-8ec1a28ed8bb"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat('ADCGLOBAL_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ADCGLOBAL_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
                       <v:lst name="Cdd_Ecap" type="MAP">
                         <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
                         <a:da name="MIN" value="0"/>
@@ -475,7 +722,7 @@
                                 </v:var>
 
                                 <v:var name="Frame" type="ENUMERATION">
-                                  <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                  <a:a name="EDITABLE" value="false"/>
                                   <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                     <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -501,30 +748,255 @@
                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                   <a:a name="SCOPE" value="LOCAL"/>
                                   <a:a name="UUID" value="37ffe184-5234-4c58-b734-3d8946d554fd"/>
+                                  <a:a name="EDITABLE" value="false"/>
+                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'ECAP1_BASE_FRAME(0U)')"/>
+                                  <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                  </a:da>
+                                </v:var>
+                              </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
+
+                      <v:lst name="Cdd_I2c" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        
+                        <v:ctr name="Cdd_I2c" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_I2c module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="c5af45a9-9426-4870-a7d9-899cad8bdce4"/>
+                          
+                          <v:lst name="Cdd_I2cAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_I2cInstanceName')))&quot;,'2')"/>
+                            
+                              <v:ctr name="Cdd_I2cAllocatedInstance" type="IDENTIFIABLE">
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="DESC" value="EN: Configuration for Cdd_I2c Instance."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="UUID" value="de5f47b8-33ae-426d-a679-8170d5220bb8"/>
+                                
+                                <v:var name="InstanceName" type="ENUMERATION">
+                                  <a:a name="DESC" value="EN: Selects the Cdd_I2c instance to be allocated."/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="9773e254-6cc2-4d8b-8644-8d9bd532d228"/>
                                   <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
-                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'ECAP1_BASE_FRAME(0)')"/>
+                                  <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_I2cInstanceName')&quot;,'I2CA')"/>
+                                  <a:da name="DEFAULT" value="I2CA"/>
+                                  <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                          false="Every Cdd_I2c instance must be allocated only once."/>
+                                  </a:da>
+                                </v:var>
+
+                                <v:var name="Frame" type="ENUMERATION">
+                                  <a:a name="EDITABLE" value="false"/>
+                                  <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                  <a:a name="UUID" value="ed3ab77d-b69a-4834-9bd7-318b033c2074"/>
+                                  <a:da name="RANGE">
+                                    <a:v>FRAME0</a:v>
+                                    <a:v>FRAME1</a:v>
+                                    <a:v>FRAME2</a:v>
+                                    <a:v>FRAME3</a:v>
+                                  </a:da>
+                                  <a:da name="DEFAULT" value="FRAME0"/>
+                                </v:var>
+                                
+                                <v:var name="BaseAddr" type="STRING">
+                                  <a:a name="DESC" value="EN: Base address of the Cdd_I2c instance. This field represents the macro as defined in hw_memmap.h"/>
+                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                  </a:a>
+                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                  <a:a name="SCOPE" value="LOCAL"/>
+                                  <a:a name="UUID" value="b32f0c45-6125-4a4a-942d-83f87d8b9d1a"/>
+                                  <a:a name="EDITABLE" value="false"/>
+                                  <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'I2CA_BASE_FRAME(0U)')"/>
+                                  <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                  </a:da>
                                 </v:var>
                               </v:ctr>
                           </v:lst>
                         </v:ctr>
                       </v:lst>
                       
-                      <v:ctr name="Cdd_Ipc" type="IDENTIFIABLE">
+                      <v:lst name="Cdd_Pwm" type="MAP">
                         <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
-                        <a:a name="TAB" value="Cdd_Ipc"/>
-                        <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Ipc module."/>
-                        <a:a name="UUID" value="6c996ca9-1215-46c5-9446-7fbb3da59e69"/>
-                        <!-- Empty content as specified in the task -->
-                      </v:ctr>
-                      
-                      <v:ctr name="Cdd_Pwm" type="IDENTIFIABLE">
-                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
-                        <a:a name="TAB" value="Cdd_Pwm"/>
-                        <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Pwm module."/>
-                        <a:a name="UUID" value="cf21aa19-ee6f-4e71-913b-bd0ee0be08c8"/>
-                        <!-- Empty content as specified in the task -->
-                      </v:ctr>
-                      
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        <v:ctr name="Cdd_Pwm" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration container for Context specific settings for the Cdd_Pwm module."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="cf21aa19-ee6f-4e71-913b-bd0ee0be08c8"/>
+                          <v:lst name="Cdd_PwmAllocatedInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_InstanceCount'))&quot;,num:i(18))"/>
+                            <v:ctr name="Cdd_PwmAllocatedInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration for Cdd_Pwm Instance."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="b0d656a9-6536-482e-abe4-83a6e4d20b22"/>
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Pwm instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="fd3bb8bd-e5b8-4adb-91e2-1a7676f78939"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_PwmInstanceName')&quot;,'EPWM1')"/>
+                                <a:da name="DEFAULT" value="EPWM1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Every Cdd_Pwm instance must be allocated only once."/>
+                                </a:da>
+                              </v:var>
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="75c3fbd6-9905-4212-8b16-7ec5deb6254d"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Pwm instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="8c8c16c9-2f02-4a32-1beb-8ec1a28ef8cb"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'EPWM1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
+                              </v:var>
+                              <v:var name="XlinkBaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Pwm instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="8c8c16c9-2f02-4a32-8beb-8ec1a28ef8cb"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'XLINK_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'EPWM1XLINK_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                          <v:lst name="CddPwmHrpwmCalInstance" type="MAP">
+                            <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../Mode) = 'SETUP'"/>
+                            <a:da name="MIN" value="0"/>
+                            <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_HrpwmCalCount'))&quot;,num:i(3))"/>
+                            <v:ctr name="CddPwmHrpwmCalInstance" type="IDENTIFIABLE">
+                              <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../Mode) = 'SETUP'"/>
+                              <a:a name="DESC" value="EN: Configuration of Hrpwm calibration instances."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="UUID" value="b0d656c9-6536-482e-ade4-83a6e4d20b22"/>
+                              <v:var name="InstanceName" type="ENUMERATION">
+                                <a:a name="DESC" value="EN: Selects the Hrpwm calibration instance instance to be allocated."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="fd3bb8bd-e5b8-4acb-91e2-1a7676d78939"/>
+                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_PwmCalibrationInstanceName')&quot;,'HRPWMCAL1')"/>
+                                <a:da name="DEFAULT" value="HRPWMCAL1"/>
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="text:uniq(../../../../../.././/*[@name = 'InstanceName'],node:value(.))"
+                                        false="Hrpwm calibration instance ID should be unique"/>
+                                </a:da>
+                              </v:var>
+                              <v:var name="Frame" type="ENUMERATION">
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                                <a:a name="UUID" value="75c3dcd6-9905-4212-8b16-7ec5deb6254d"/>
+                                <a:da name="RANGE">
+                                  <a:v>FRAME0</a:v>
+                                  <a:v>FRAME1</a:v>
+                                  <a:v>FRAME2</a:v>
+                                  <a:v>FRAME3</a:v>
+                                </a:da>
+                                <a:da name="DEFAULT" value="FRAME0"/>
+                              </v:var>                                
+                              <v:var name="BaseAddr" type="STRING">
+                                <a:a name="DESC" value="EN: Base address of the Cdd_Pwm instance. This field represents the macro as defined in hw_memmap.h"/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                                <a:a name="ORIGIN" value="Texas Instruments"/>
+                                <a:a name="SCOPE" value="LOCAL"/>
+                                <a:a name="UUID" value="8c8c16c9-2f02-4a32-8beb-8ec1a28ef8bb"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'HRPWMCAL1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
+                              </v:var>
+                            </v:ctr>
+                          </v:lst>
+                        </v:ctr>
+                      </v:lst>
                       <v:lst name="Cdd_Sent" type="MAP">
                         <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
                         <a:da name="MIN" value="0"/>
@@ -550,7 +1022,7 @@
                                 <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="UUID" value="c2554c08-8422-4297-8f9b-49f636b1ea23"/>
-                              
+
                               <v:var name="InstanceName" type="ENUMERATION">
                                 <a:a name="DESC" value="EN: Selects the Cdd_Sent instance to be allocated."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
@@ -570,7 +1042,7 @@
                               </v:var>
 
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="EDITABLE" value="false"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -596,8 +1068,12 @@
                                 <a:a name="ORIGIN" value="Texas Instruments"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:a name="UUID" value="47196d3f-e6d3-42df-9929-bb6e614588cb"/>
-                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
-                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'SENT1_BASE_FRAME(0)')"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'SENT1_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
                               </v:var>
                             </v:ctr>
                           </v:lst>
@@ -649,7 +1125,7 @@
                               </v:var>
 
                               <v:var name="Frame" type="ENUMERATION">
-                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
+                                <a:a name="EDITABLE" value="false"/>
                                 <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
                                 <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -675,14 +1151,148 @@
                                 <a:a name="ORIGIN" value="Texas Instruments"/>
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:a name="UUID" value="c86779ed-2baf-4bbe-8aa5-d576063caf14"/>
-                                <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../../../../Mode) = 'SETUP'"/>
-                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),')')&quot;,'UARTA_BASE_FRAME(0)')"/>
+                                <a:a name="EDITABLE" value="false"/>
+                                <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat(node:value(../InstanceName),'_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;,'UARTA_BASE_FRAME(0U)')"/>
+                                <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								                </a:da>
                               </v:var>
                             </v:ctr>
                           </v:lst>
                         </v:ctr>
                       </v:lst>
-                      
+                    </v:ctr>
+                  </v:lst>
+                  <v:lst name="Cdd_Xbar" type="MAP">
+                    <a:a name="EDITABLE" type="XPath" expr="node:value(../Mode) = 'SETUP'"/>
+                    <a:da name="MIN" value="0"/>
+                    <a:da name="MAX" value="1"/>
+                    <v:ctr name="Cdd_Xbar" type="IDENTIFIABLE">
+                      <a:a name="EDITABLE" type="XPath" expr="node:value(../../Mode) = 'SETUP'"/>
+                      <a:a name="DESC" value="EN: Configuration container for Cdd_Xbar module."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="UUID" value="31a19629-052c-4d10-a4a3-c438e121aef8"/>
+                          
+                      <v:lst name="CddXbarOutputXbarFlag" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        <v:ctr name="CddXbarOutputXbarFlag" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration of a Cdd Xbar Output Xbar flag."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="9cae0d17-38e8-4635-ae26-a73132792ccf"/>
+                          <v:var name="InstanceName" type="STRING">
+                            <a:a name="DESC" value="EN: Cdd Xbar Output Xbar flag."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="fdfc768d-195d-49ed-95ca-88596283062a"/>
+                            <a:a name="EDITABLE" value="false"/>
+                            <a:da name="DEFAULT" value="OUTPUTXBARFlags"/>
+                          </v:var>
+                          <v:var name="Frame" type="ENUMERATION">
+                            <a:a name="EDITABLE" value="false"/>
+                            <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="2f3c6b2e-2ec9-4844-acf0-5499d334050d"/>
+                            <a:da name="RANGE">
+                              <a:v>FRAME0</a:v>
+                              <a:v>FRAME1</a:v>
+                              <a:v>FRAME2</a:v>
+                              <a:v>FRAME3</a:v>
+                            </a:da>
+                            <a:da name="DEFAULT" value="FRAME0"/>
+                          </v:var>
+                          <v:var name="BaseAddr" type="STRING">
+                            <a:a name="DESC" value="EN: Base address of the Cdd_Xbar instance. This field represents the macro as defined in hw_memmap.h"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="UUID" value="61c43aa1-09cf-434b-9d30-3144572d4836"/>
+                            <a:a name="EDITABLE" value="false"/>
+                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat('OUTPUTXBAR1_FLAGS_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;, 'OUTPUTXBAR1_FLAGS_BASE_FRAME(0U)')"/>
+                            <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								            </a:da>
+                          </v:var>
+                        </v:ctr>
+                      </v:lst>
+                      <v:lst name="CddXbarInputFlag" type="MAP">
+                        <a:a name="EDITABLE" type="XPath" expr="node:value(../../../Mode) = 'SETUP'"/>
+                        <a:da name="MIN" value="0"/>
+                        <a:da name="MAX" value="1"/>
+                        <v:ctr name="CddXbarInputFlag" type="IDENTIFIABLE">
+                          <a:a name="EDITABLE" type="XPath" expr="node:value(../../../../Mode) = 'SETUP'"/>
+                          <a:a name="DESC" value="EN: Configuration of a Cdd_Xbar Input flags."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="UUID" value="925e0843-3808-4635-ae26-a73582722c1f"/>
+                          <v:var name="InstanceName" type="STRING">
+                            <a:a name="DESC" value="EN: Cdd Xbar Input flag."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="fdfc558d-195d-49ed-95ca-885962dd0aaa"/>
+                            <a:a name="EDITABLE" value="false"/>
+                            <a:da name="DEFAULT" value="INPUTXBARFlags"/>
+                          </v:var>
+                          <v:var name="Frame" type="ENUMERATION">
+                            <a:a name="EDITABLE" value="false"/>
+                            <a:a name="DESC" value="EN: Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                            <a:a name="UUID" value="2eec6b2e-2ec9-4844-acf0-5499d334050d"/>
+                            <a:da name="RANGE">
+                              <a:v>FRAME0</a:v>
+                              <a:v>FRAME1</a:v>
+                              <a:v>FRAME2</a:v>
+                              <a:v>FRAME3</a:v>
+                            </a:da>
+                            <a:da name="DEFAULT" value="FRAME0"/>
+                          </v:var>
+                              
+                          <v:var name="BaseAddr" type="STRING">
+                            <a:a name="DESC" value="EN: Base address of the Cdd_Xbar input flag. This field represents the macro as defined in hw_memmap.h"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <a:a name="ORIGIN" value="Texas Instruments"/>
+                            <a:a name="SCOPE" value="LOCAL"/>
+                            <a:a name="UUID" value="61c43aa1-09cf-434b-5733-3144572d4836"/>
+                            <a:a name="EDITABLE" value="false"/>
+                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->concat('XBAR_BASE_FRAME(',substring-after(node:value(../Frame),'FRAME'),'U)')&quot;, 'XBAR_BASE_FRAME(0U)')"/>
+                            <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="(contains(node:value(.),concat('(', substring-after(node:value(../Frame),'FRAME'),'U)')))"
+                                          false="Frame and Base address should match. Please run AutoCalc."/>
+								            </a:da>
+                          </v:var>
+                        </v:ctr>
+                      </v:lst>
                     </v:ctr>
                   </v:lst>
               </v:ctr>

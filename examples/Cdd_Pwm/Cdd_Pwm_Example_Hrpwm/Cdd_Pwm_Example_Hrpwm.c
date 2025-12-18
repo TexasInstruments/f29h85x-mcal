@@ -196,7 +196,7 @@ int main()
     float32                      count;
     uint32                       compcount;
     Cdd_Pwm_HrpwmCalInstanceType Cdd_Pwm_HrpwmCalId;
-    Cdd_Pwm_SfoStatus            CddPwmHrcalStatus;
+    Cdd_Pwm_SfoStatusType        CddPwmHrcalStatus;
     float32                      GCddPwmDutyFine;
 
     DeviceSupport_Init();
@@ -210,7 +210,7 @@ int main()
     /* SFO function updates the HRMSTEP register with calibrated Cdd_Pwm_MEP_ScaleFactor.
      * HRMSTEP must be populated with a scale factor prior to enabling high resolution period control
      */
-    Cdd_Pwm_HrpwmCalId = CddPwmConf_CddPwmHrpwmCalConfig_CddPwmHrpwmCal0;
+    Cdd_Pwm_HrpwmCalId = CddPwmConf_CddPwmHrpwmCalConfig_CddPwmHrpwmCalConfig_0;
     do
     {
         CddPwmHrcalStatus = Cdd_Pwm_Sfo(Cdd_Pwm_HrpwmCalId);

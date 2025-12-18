@@ -118,14 +118,14 @@ int main(void)
     AppUtils_Printf("Can_Example_loopback : Can Controller: MCAN A\n\r");
     PduInfo = &Pdu;
     hth     = 0U;
-    Can_EnableControllerInterrupts(0U);
+
     /* Set Controller Mode for controller 0U */
     status = Can_SetControllerMode(0U, CAN_CS_STARTED);
     if (status != E_OK)
     {
         gTestPassed = E_NOT_OK;
     }
-    Can_EnableControllerInterrupts(0U);
+
     /* Do Can Write to send the data on CAN bus */
     AppUtils_Printf("Can_Example_loopback : Can Transmission Started \n\r");
     status = Can_Write(hth, PduInfo);

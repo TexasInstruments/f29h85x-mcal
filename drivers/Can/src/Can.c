@@ -56,11 +56,11 @@
 #error "AUTOSAR Version Numbers of Can are different"
 #endif
 
-#if ((CAN_SW_MAJOR_VERSION != (2U)) || (CAN_SW_MINOR_VERSION != (0U)))
+#if ((CAN_SW_MAJOR_VERSION != (3U)) || (CAN_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Can.c and Can.h are inconsistent!"
 #endif
 
-#if ((CAN_CFG_MAJOR_VERSION != (2U)) || (CAN_CFG_MINOR_VERSION != (0U)))
+#if ((CAN_CFG_MAJOR_VERSION != (3U)) || (CAN_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Can.c and Can_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************
@@ -668,9 +668,6 @@ Can_Write(Can_HwHandleType Hth, P2CONST(Can_PduType, AUTOMATIC, CAN_APPL_CONST) 
 
                     /* Store the transmitted Pdu SWPdu Handle for Tx confirmation */
                     Can_DriverObj.canController[msgController].canTxRxPduId[messageBox] = PduInfo->swPduHandle;
-
-                    /* Set that this object is transmitted */
-                    Can_DriverObj.canController[msgController].canTxStatus[messageBox] = ((uint8)1U);
                 }
                 SchM_Exit_Can_CAN_EXCLUSIVE_AREA_1();
             }
@@ -1188,13 +1185,16 @@ static FUNC(Std_ReturnType, CAN_CODE)
 
     if (msgController < (uint8)KMAX_CONTROLLER)
     {
-        if (((uint8 *)NULL_PTR == pduInfo->sdu) &&
-            (TRUE == Can_DriverObj.canMailbox[mailbox].mailBoxConfig.CanTriggerTransmitEnable) &&
-            (E_OK == CanIf_TriggerTransmit(pduInfo->swPduHandle, &Can_DriverObj.canController[msgController].pduInfo)))
+        if (TRUE == Can_DriverObj.canMailbox[mailbox].mailBoxConfig.CanTriggerTransmitEnable)
         {
-            pduInfo->length = (uint8)Can_DriverObj.canController[msgController].pduInfo.SduLength;
-            pduInfo->sdu    = Can_DriverObj.canController[msgController].pduInfo.SduDataPtr;
-            returnValue     = E_OK;
+            if (((uint8 *)NULL_PTR == pduInfo->sdu) &&
+                (E_OK ==
+                 CanIf_TriggerTransmit(pduInfo->swPduHandle, &Can_DriverObj.canController[msgController].pduInfo)))
+            {
+                pduInfo->length = (uint8)Can_DriverObj.canController[msgController].pduInfo.SduLength;
+                pduInfo->sdu    = Can_DriverObj.canController[msgController].pduInfo.SduDataPtr;
+                returnValue     = E_OK;
+            }
         }
         else if ((uint8 *)NULL_PTR != pduInfo->sdu)
         {

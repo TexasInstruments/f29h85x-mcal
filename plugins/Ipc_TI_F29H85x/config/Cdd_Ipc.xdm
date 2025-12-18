@@ -61,7 +61,7 @@
                     <!--Design: MCAL-30545 -->
                     <v:lst name="CddIpcRemoteCoreConfig" type="MAP">
                       <a:da name="MIN" value="0"/>
-                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('No_of_cores')-1)&quot;,num:i(2))"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Ipc_No_of_cores')-1)&quot;,num:i(2))"/>
                       <v:ctr name="CddIpcRemoteCoreConfig" type="IDENTIFIABLE">
                           <a:a name="DESC" 
                              value="EN: This container contains the configuration parameters of the remote cores."/>
@@ -80,17 +80,18 @@
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                             <a:a name="UUID" 
                                  value="a9918394-3764-42f6-859b-4d3aa86940e8"/>
-                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Remote_Cores','.',../../../../CddIpcGeneral/CddIpcLocalCore))[1]&quot;,'CDD_IPC_CPU3')"/>
-                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list(concat('Remote_Cores','.',../../../../CddIpcGeneral/CddIpcLocalCore))&quot;,'CDD_IPC_CPU3')"/>
-                            <a:da name="INVALID" type="XPath" 
-                                     expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select a remote core only once.">
+                            <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:when(node:value(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CPU1_Lockstep) = 'true', ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Remote_Cores','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core))))[not(. = 'CDD_IPC_CPU2')][1], ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Remote_Cores','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core))))[1])&quot;,'CDD_IPC_CPU3')"/>
+                            <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->node:when(node:value(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CPU1_Lockstep) = 'true', ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Remote_Cores','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core))))[not(. = 'CDD_IPC_CPU2')], ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Remote_Cores','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core)))))&quot;,'CDD_IPC_CPU3')"/>
+                            <a:da name="INVALID" type="Multi">
+                              <mt:xpath expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select a remote core only once."/>
+                              <mt:xpath expr="node:containsValue(node:when(node:value(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CPU1_Lockstep) = 'true', ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Remote_Cores','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core))))[not(. = 'CDD_IPC_CPU2')], ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Remote_Cores','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core))))), node:value(.))" false="The configured value is not valid. Please select a value from the allowed RANGE."/>
                             </a:da>
                           </v:var> 
                           <!--Design: MCAL-30546 -->
                           <v:lst name="CddIpcTxInstanceConfig" type="MAP">
                               <a:da name="MIN" value="0"/>
-                              <a:da name="MAX" type="XPath" 
-                                expr="node:fallback(&quot;->ecu:get('No_of_instances')-node:value(as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcReservedInstances)&quot;,'4')"/>
+                              <a:da name="MAX" type="XPath"
+                                expr="node:fallback(&quot;->ecu:get('ResourceAllocator_F29H85x.Cdd_Ipc_No_of_instances')-node:value(as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcReservedInstances)&quot;,'4')"/>
                               <v:ctr name="CddIpcTxInstanceConfig" type="IDENTIFIABLE">
                                 <a:a name="DESC" 
                                   value="EN: This container contains the configuration parameters of the CddIpc Instances."/>
@@ -109,10 +110,10 @@
                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                   <a:a name="UUID" 
                                        value="7a8be7f7-ce69-4cbd-924b-76e2cbb0cc5a"/>
-                                  <a:da name="DEFAULT" type="XPath" 
-                                    expr="node:fallback(&quot;->ecu:list(concat('Instances','.',../../../../../../CddIpcGeneral/CddIpcLocalCore,'.',../../../CddIpcRemoteCore,'.',../../../../../../CddIpcGeneral/CddIpcReservedInstances))[1]&quot;,'CDD_IPC_CPU1_L_CPU2_R_INST0')"/>
-                                  <a:da name="RANGE" type="XPath" 
-                                    expr="node:fallback(&quot;->ecu:list(concat('Instances','.',../../../../../../CddIpcGeneral/CddIpcLocalCore,'.',../../../CddIpcRemoteCore,'.',../../../../../../CddIpcGeneral/CddIpcReservedInstances))&quot;,'CDD_IPC_CPU1_L_CPU2_R_INST0')"/>
+                                  <a:da name="DEFAULT" type="XPath"
+                                    expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Instances','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core)),'.',../../../CddIpcRemoteCore,'.',../../../../../../CddIpcGeneral/CddIpcReservedInstances))[1]&quot;,'CDD_IPC_CPU1_L_CPU2_R_INST0')"/>
+                                  <a:da name="RANGE" type="XPath"
+                                    expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Instances','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core)),'.',../../../CddIpcRemoteCore,'.',../../../../../../CddIpcGeneral/CddIpcReservedInstances))&quot;,'CDD_IPC_CPU1_L_CPU2_R_INST0')"/>
                                   <a:da name="INVALID" type="XPath" 
                                     expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select a Tx instance only once.">
                                  </a:da>
@@ -171,10 +172,10 @@
                                            value="aab50c6f-cb59-4a55-87a4-553a243d6cee"/>
                                       <a:da name="EDITABLE" value="true"/>
                                       <a:da name="ENABLE" value="true"/>
-                                      <a:da name="DEFAULT" type="XPath" 
-                                        expr="node:fallback(&quot;->ecu:list('Tx_processing')[1]&quot;,'CDD_IPC_INTERRUPT')"/>
-                                      <a:da name="RANGE" type="XPath" 
-                                        expr="node:fallback(&quot;->ecu:list('Tx_processing')&quot;,'CDD_IPC_INTERRUPT')"/>
+                                      <a:da name="DEFAULT" type="XPath"
+                                        expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_Ipc_Tx_processing')[1]&quot;,'CDD_IPC_INTERRUPT')"/>
+                                      <a:da name="RANGE" type="XPath"
+                                        expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_Ipc_Tx_processing')&quot;,'CDD_IPC_INTERRUPT')"/>
                                     </v:var>
                                     <!--Design: MCAL-30562 -->
                                     <v:ref name="CddIpcTxPduID" type="REFERENCE">
@@ -222,7 +223,7 @@
                           <v:lst name="CddIpcRxInstanceConfig" type="MAP">
                               <a:da name="MIN" value="0"/>
                               <a:da name="MAX" type="XPath"
-                                 expr="node:fallback(&quot;->ecu:get('No_of_instances')-node:value(as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcReservedInstances)&quot;,'4')"/>
+                                 expr="node:fallback(&quot;->ecu:get('ResourceAllocator_F29H85x.Cdd_Ipc_No_of_instances')-node:value(as:modconf('Cdd_Ipc/Cdd')/CddIpcGeneral/CddIpcReservedInstances)&quot;,'4')"/>
                               <v:ctr name="CddIpcRxInstanceConfig" type="IDENTIFIABLE">
                                 <a:a name="DESC" 
                                    value="EN: This container contains the configuration parameters of the CddIpc Instances."/>
@@ -241,10 +242,10 @@
                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                   <a:a name="UUID" 
                                        value="fff7928c-5ba8-486d-8106-f6459cd1cd5e"/>
-                                  <a:da name="DEFAULT" type="XPath" 
-                                    expr="node:fallback(&quot;->ecu:list(concat('Instances','.',../../../../../../CddIpcGeneral/CddIpcLocalCore,'.',../../../CddIpcRemoteCore,'.',../../../../../../CddIpcGeneral/CddIpcReservedInstances))[1]&quot;,'CDD_IPC_CPU1_L_CPU2_R_INST0')"/>
-                                  <a:da name="RANGE" type="XPath" 
-                                    expr="node:fallback(&quot;->ecu:list(concat('Instances','.',../../../../../../CddIpcGeneral/CddIpcLocalCore,'.',../../../CddIpcRemoteCore,'.',../../../../../../CddIpcGeneral/CddIpcReservedInstances))&quot;,'CDD_IPC_CPU1_L_CPU2_R_INST0')"/>
+                                  <a:da name="DEFAULT" type="XPath"
+                                    expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Instances','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core)),'.',../../../CddIpcRemoteCore,'.',../../../../../../CddIpcGeneral/CddIpcReservedInstances))[1]&quot;,'CDD_IPC_CPU1_L_CPU2_R_INST0')"/>
+                                  <a:da name="RANGE" type="XPath"
+                                    expr="node:fallback(&quot;->ecu:list(concat('ResourceAllocator_F29H85x.Cdd_Ipc_Instances','.',concat('CDD_IPC_',node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core)),'.',../../../CddIpcRemoteCore,'.',../../../../../../CddIpcGeneral/CddIpcReservedInstances))&quot;,'CDD_IPC_CPU1_L_CPU2_R_INST0')"/>
                                   <a:da name="INVALID" type="XPath" 
                                     expr="text:uniq(../..//*[@name=node:name(.)], node:value(.))" false="Please make sure to select a Rx instance only once.">
                                   </a:da>
@@ -590,29 +591,12 @@
                             <a:tst expr="&gt;=0"/>
                         </a:da>
                     </v:var>
-                    <!--Design: MCAL-30553 -->
-                    <v:var name="CddIpcLocalCore" type="ENUMERATION">
-                      <a:a name="DESC" 
-                           value="EN: The local core for which the configuration is being done"/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                           type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" 
-                           value="790605ef-2d40-48eb-8131-a7222f950715"/>
-                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Local_Cores')[1]&quot;,'CDD_IPC_CPU1')"/>
-                      <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Local_Cores')&quot;,'CDD_IPC_CPU1')"/>
-                    </v:var>
                     <!--Design: MCAL-30554 -->
                     <v:var name="CddIpcMainFunctionReadPeriod" type="FLOAT">
                       <a:a name="DESC" 
                          value="EN: This parameter describes the period for cyclic call to Cdd_Ipc_MainFunction_Read. Unit is seconds."/>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS"
                          type="IMPLEMENTATIONCONFIGCLASS">
-                         <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
                       <a:a name="ORIGIN" value="Texas Instruments"/>

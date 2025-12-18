@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.17. RTDMA Module &mdash; Documentation for F29H85x</title>
+  <title>4.18. RTDMA Module &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -23,7 +23,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="5. API guide" href="api_guide.html" />
-    <link rel="prev" title="4.16. CDD UART Module" href="Module_User_Guide_Cdd_Uart.html" /> 
+    <link rel="prev" title="4.17. CDD UART Module" href="Module_User_Guide_Cdd_Uart.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -74,17 +74,18 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.9. WDG Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.10. CDD ADC Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.11. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.12. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.13. CDD PWM Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.17. RTDMA Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">4.17.1. Introduction</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#rtdma-memory-transfer-example">4.17.1.1. RTDMA Memory Transfer Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">4.12. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.13. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.14. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.15. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.16. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.17. CDD UART Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.18. RTDMA Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.18.1. Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rtdma-memory-transfer-example">4.18.1.1. RTDMA Memory Transfer Example</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#references">4.17.2. References</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">4.18.2. References</a></li>
 </ul>
 </li>
 </ul>
@@ -108,7 +109,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
-      <li><span class="section-number">4.17. </span>RTDMA Module</li>
+      <li><span class="section-number">4.18. </span>RTDMA Module</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -118,16 +119,16 @@
            <div itemprop="articleBody">
              
   <section id="rtdma-module">
-<h1><span class="section-number">4.17. </span>RTDMA Module<a class="headerlink" href="#rtdma-module" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.18. </span>RTDMA Module<a class="headerlink" href="#rtdma-module" title="Link to this heading"></a></h1>
 <section id="introduction">
-<h2><span class="section-number">4.17.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.18.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>The F29H85-SDK RTDMA can be integrated with F29H85-MCAL for any RTDMA transfers according to the system requirements. This integration allows to initialize and use RTDMA channels based on the specific application.</p>
 <p>CDD DMA driver will be provided in a future release. If customers have a need to use DMA in the meantime, they can use SDK RTDMA as described in this guide. However, please be aware that F29H85-SDK RTDMA is non-AUTOSAR and a Basic Quality driver. This integration is intended as a temporary solution to enable DMA use cases in the absence of CDD DMA. It is recommended to use AUTOSAR drivers on AUTOSAR core whenever possible.</p>
 <p>The following example demonstrates a memory to memory data transfer in MCAL using the F29H85X-SDK RTDMA.</p>
 <section id="rtdma-memory-transfer-example">
-<h3><span class="section-number">4.17.1.1. </span>RTDMA Memory Transfer Example<a class="headerlink" href="#rtdma-memory-transfer-example" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.18.1.1. </span>RTDMA Memory Transfer Example<a class="headerlink" href="#rtdma-memory-transfer-example" title="Link to this heading"></a></h3>
 <section id="overview">
-<h4><span class="section-number">4.17.1.1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.18.1.1.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h4>
 <p>Rtdma_Example_Mem_Transfer example demonstrates how to use the F29H85X-SDK RTDMA (Real-Time Direct Memory Access) module with the F29H85X-MCAL. The example performs a memory-to-memory transfer operation using one RTDMA channel.</p>
 <p>The example demonstrates:</p>
 <ul class="simple">
@@ -138,13 +139,13 @@
 </ul>
 </section>
 <section id="software-version-used">
-<h4><span class="section-number">4.17.1.1.2. </span>Software Version Used<a class="headerlink" href="#software-version-used" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.18.1.1.2. </span>Software Version Used<a class="headerlink" href="#software-version-used" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>F29H85X-SDK : 1.02.00.00</p></li>
 </ul>
 </section>
 <section id="rtdma-configuration">
-<h4><span class="section-number">4.17.1.1.3. </span>RTDMA Configuration<a class="headerlink" href="#rtdma-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.18.1.1.3. </span>RTDMA Configuration<a class="headerlink" href="#rtdma-configuration" title="Link to this heading"></a></h4>
 <p>The example configures RTDMA1 Channel 1 with the following parameters:</p>
 <table class="docutils align-default">
 <thead>
@@ -178,7 +179,7 @@
 </table>
 </section>
 <section id="example-logs">
-<h4><span class="section-number">4.17.1.1.4. </span>Example logs<a class="headerlink" href="#example-logs" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.18.1.1.4. </span>Example logs<a class="headerlink" href="#example-logs" title="Link to this heading"></a></h4>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTDMA</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Starts</span><span class="o">!!!</span>
 <span class="o">---------------------------------------------------------------</span>
 <span class="n">Data</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="n">before</span><span class="w"> </span><span class="n">transfer</span><span class="o">:</span>
@@ -198,7 +199,7 @@
 </section>
 </section>
 <section id="references">
-<h2><span class="section-number">4.17.2. </span>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.18.2. </span>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://software-dl.ti.com/C2000/docs/f29h85x-sdk/latest/docs/html/index.html">F29H85X-SDK</a> RTDMA documentation</p></li>
 <li><p>RTDMA example ‘<a class="reference external" href="https://www.ti.com/tool/download/F29H85X-SDK/1.01.00.00">rtdma_ex1_mem_transfer</a>’ in F29H85X-SDK</p></li>
@@ -210,7 +211,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Module_User_Guide_Cdd_Uart.html" class="btn btn-neutral float-left" title="4.16. CDD UART Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Cdd_Uart.html" class="btn btn-neutral float-left" title="4.17. CDD UART Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="api_guide.html" class="btn btn-neutral float-right" title="5. API guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
@@ -218,7 +219,7 @@
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Nov 21, 2025.
+          <span class="lastupdated" >Last updated on Dec 18, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

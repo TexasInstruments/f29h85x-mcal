@@ -472,7 +472,6 @@
                                   <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
                                 </ECUC-VALUE-CONFIGURATION-CLASS>
                               </VALUE-CONFIG-CLASSES>
-                              <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                               <DEFAULT-VALUE>CDD_XBAR_OUTPUT1</DEFAULT-VALUE>
                               <LITERALS>
                                 <ECUC-ENUMERATION-LITERAL-DEF>
@@ -1717,41 +1716,13 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>false</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
-                    <ECUC-BOOLEAN-PARAM-DEF UUID="8f34956c-6633-49e8-a85d-d140e78c2dc1">
-                      <SHORT-NAME>CddXbarAPIEnable</SHORT-NAME>
-                      <DESC>
-                        <L-2 L="EN">Enables or Disables the APIs of this module.</L-2>
-                      </DESC>
-                      <SCOPE>LOCAL</SCOPE>
-                      <ORIGIN>Texas Instruments</ORIGIN>
-                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
-                      <VALUE-CONFIG-CLASSES>
-                        <ECUC-VALUE-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                        </ECUC-VALUE-CONFIGURATION-CLASS>
-                      </VALUE-CONFIG-CLASSES>
-                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                      <DEFAULT-VALUE>true</DEFAULT-VALUE>
-                    </ECUC-BOOLEAN-PARAM-DEF>
                     <ECUC-BOOLEAN-PARAM-DEF UUID="3a786fa6-8638-4eab-92e3-e517169851ac">
                       <SHORT-NAME>CddXbarVersionInfoApi</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Switches the Cdd_Xbar_GetVersionInfo function ON or OFF.</L-2>
                       </DESC>
-                      <!-- @Calculated /TI_F29H85x/Cdd_Xbar/Cdd/CddXbarGeneral/CddXbarVersionInfoApi: ENABLE(XPath: (../CddXbarAPIEnable=&apos;true&apos;))-->
-                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
-                      <!-- @CalculatedEnd -->
-                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                       <SCOPE>LOCAL</SCOPE>
-                      <MULTIPLICITY-CONFIG-CLASSES>
-                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
-                      </MULTIPLICITY-CONFIG-CLASSES>
                       <ORIGIN>Texas Instruments</ORIGIN>
-                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                       <VALUE-CONFIG-CLASSES>
                         <ECUC-VALUE-CONFIGURATION-CLASS>
@@ -1767,7 +1738,26 @@
                       <DESC>
                         <L-2 L="EN">Switches Cdd_Xbar_InputFlagStatus() and Cdd_Xbar_InputFlagClear() ON or OFF.</L-2>
                       </DESC>
-                      <!-- @Calculated /TI_F29H85x/Cdd_Xbar/Cdd/CddXbarGeneral/CddXbarInputFlagApi: ENABLE(XPath: (../CddXbarAPIEnable=&apos;true&apos;))-->
+                      <SCOPE>LOCAL</SCOPE>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>true</DEFAULT-VALUE>
+                    </ECUC-BOOLEAN-PARAM-DEF>
+                  </PARAMETERS>
+                  <REFERENCES>
+                    <ECUC-REFERENCE-DEF UUID="bc34562a-8e29-4e74-9ef1-6a98a29868c">
+                      <SHORT-NAME>CddXbarInputFlag</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Reference to the Cdd Xbar input flag. This flag is used to flag the inputs of the X-Bars to provide software knowledge of the input sources which got triggered</L-2>
+                      </DESC>
+                      <!-- @Calculated /TI_F29H85x/Cdd_Xbar/Cdd/CddXbarGeneral/CddXbarInputFlag: ENABLE(XPath: (../CddXbarInputFlagApi=&apos;true&apos;))-->
                       <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                       <!-- @CalculatedEnd -->
                       <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
@@ -1787,10 +1777,36 @@
                           <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
                         </ECUC-VALUE-CONFIGURATION-CLASS>
                       </VALUE-CONFIG-CLASSES>
-                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                      <DEFAULT-VALUE>true</DEFAULT-VALUE>
-                    </ECUC-BOOLEAN-PARAM-DEF>
-                  </PARAMETERS>
+                      <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Cdd_Xbar/CddXbarInputFlag</DESTINATION-REF>
+                    </ECUC-REFERENCE-DEF>
+                    <ECUC-REFERENCE-DEF UUID="ac34062a-8e29-4743-9ef1-6a98a29868d">
+                      <SHORT-NAME>CddXbarOutputXbarFlag</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Reference to the Cdd Xbar output xbar flag.</L-2>
+                      </DESC>
+                      <!-- @Calculated /TI_F29H85x/Cdd_Xbar/Cdd/CddXbarGeneral/CddXbarOutputXbarFlag: ENABLE(XPath: num:i(count(as:modconf(&apos;Cdd_Xbar/Cdd&apos;)[as:path(node:dtos(.))=&apos;/TI_F29H85x/Cdd_Xbar/Cdd&apos;]/CddXbarConfiguration/CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*)) &gt; 0)-->
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <!-- @CalculatedEnd -->
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <SCOPE>LOCAL</SCOPE>
+                      <MULTIPLICITY-CONFIG-CLASSES>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      </MULTIPLICITY-CONFIG-CLASSES>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Cdd_Xbar/CddXbarOutputXbarFlag</DESTINATION-REF>
+                    </ECUC-REFERENCE-DEF>
+                  </REFERENCES>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
               </CONTAINERS>
             </ECUC-MODULE-DEF>

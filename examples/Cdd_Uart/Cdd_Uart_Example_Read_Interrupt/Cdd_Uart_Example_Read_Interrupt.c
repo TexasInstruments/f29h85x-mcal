@@ -32,8 +32,8 @@
  * demonstrating the reliability and functionality of the Cdd_Uart driver in interrupt mode.
  *
  * \b External \b Connections \n
- *    - Connect GPIO86 (Tx pin) to the target's Rx pin, and connect GPIO77 (Rx pin) to the target's
- *Tx pin.
+ *    - Connect configured UART Tx pin to the target's Rx pin, and connect configured UART Rx pin to the target's
+ *Tx pin. Refer to PORT configuration to identify the configured pins.
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************

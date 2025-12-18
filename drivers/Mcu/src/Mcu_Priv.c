@@ -288,8 +288,7 @@ static FUNC(boolean, MCU_CODE) Mcu_PllSettingsRangeCheck(Mcu_ClockConfigPtrType 
 
 /** \brief Checks the Derived clock frequency ranges
  *
- * \param[in] oscClk Oscillator clock source frequency
- * \param[in] ClockConfigPtr Points to clock configuration settings
+ * \param[in] CalClockPtr Points to calculated output clock values
  * \pre None
  * \post None
  * \return boolean type
@@ -297,7 +296,7 @@ static FUNC(boolean, MCU_CODE) Mcu_PllSettingsRangeCheck(Mcu_ClockConfigPtrType 
  *         FALSE if a failure isn't detected
  *
  *********************************************************************************************************************/
-static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(uint32 oscClk, Mcu_ClockConfigPtrType ClockConfigPtr);
+static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(const Mcu_CalClkValueType* CalClockPtr);
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
 
 /** \brief Converts the controller specific reset reason to AUTOSAR format.
@@ -490,10 +489,10 @@ LOCAL_INLINE FUNC(void, MCU_CODE) Mcu_PollSyncBusy(uint32 mask);
  * Design: MCAL-21921
  */
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
-FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClockParamCheck(Mcu_ClockConfigPtrType ClockConfigPtr)
+FUNC(Std_ReturnType, MCU_CODE)
+Mcu_InitClockParamCheck(Mcu_ClockConfigPtrType ClockConfigPtr, const Mcu_CalClkValueType* CalClockPtr)
 {
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_NOT_OK;
-    VAR(uint32, AUTOMATIC) osc_clk              = (uint32)0U;
 
     /* Check the External Clock Frequency Range,PLL settings and System Clock divider  */
     if ((TRUE == Mcu_XtalFreqRangeCheck(ClockConfigPtr)) || (TRUE == Mcu_PllSettingsRangeCheck(ClockConfigPtr)) ||
@@ -503,20 +502,8 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClockParamCheck(Mcu_ClockConfigPtrType Cl
     }
     else
     {
-        /* Get Clock Source Frequency from Internal Osciallator */
-        if ((MCU_CLKSRC_OSC2 == ClockConfigPtr->Mcu_ClockSourceId) ||
-            (MCU_CLKSRC_OSC1 == ClockConfigPtr->Mcu_ClockSourceId))
-        {
-            osc_clk = MCU_OSC_CLK_FREQ; /* 10 MHz */
-        }
-        else
-        {
-            /* Get Clock Source Frequency from External Oscillator 20 or 25 MHz */
-            osc_clk = ClockConfigPtr->Mcu_ExternalClkFreq;
-        }
-
         /* Derived clocks and range checks */
-        if ((TRUE == Mcu_DerivedClockFreqRangeCheck(osc_clk, ClockConfigPtr)))
+        if ((TRUE == Mcu_DerivedClockFreqRangeCheck(CalClockPtr)))
         {
             /* Invalid Parameters */
         }
@@ -1557,43 +1544,26 @@ static FUNC(boolean, MCU_CODE) Mcu_PllSettingsRangeCheck(Mcu_ClockConfigPtrType 
 /*
  * Design: MCAL-28542
  */
-static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(uint32 oscClk, Mcu_ClockConfigPtrType ClockConfigPtr)
+static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(const Mcu_CalClkValueType* CalClockPtr)
 {
     VAR(boolean, AUTOMATIC) status = FALSE;
 
-    VAR(uint32, AUTOMATIC) pll_raw_clk = (uint32)0U;
-    VAR(uint32, AUTOMATIC) pll_int_clk = (uint32)0U;
-    VAR(uint32, AUTOMATIC) pll_vco_clk = (uint32)0U;
-    VAR(uint32, AUTOMATIC) sys_clk     = (uint32)0U;
-
 #if (STD_OFF == MCU_CFG_NO_PLL)
-    /* Get Internal Clock = (Osc clock / Reference Divider) */
-    pll_int_clk = (oscClk / (uint32)(ClockConfigPtr->Mcu_PllRefDiv)); /* ex: Internal Clock = (10MHz / 1) */
-
-    /* Get Vco Clock = (Internal clock / Integer Multipler) */
-    pll_vco_clk = (pll_int_clk * (uint32)(ClockConfigPtr->Mcu_PllIntMult)); /* ex: Vco Clock  = (10MHz * 40) */
-
-    /* Get Pll RAW Clock = (Vco clock / Output Divider) */
-    pll_raw_clk = (pll_vco_clk / (uint32)(ClockConfigPtr->Mcu_PllOutDiv)); /* ex: Pll Raw Clock  = (400 MHz / 2) */
-#else
-    pll_raw_clk = oscClk;
-#endif /*MCU_CFG_NO_PLL*/
-
-#if (STD_OFF == MCU_CFG_NO_PLL)
-    if (((MCU_PLLINTCLK_MIN > pll_int_clk) || (MCU_PLLINTCLK_MAX < pll_int_clk)) || /* Internal clock range: 2-25 MHz */
-        ((MCU_PLLVCOCLK_MIN > pll_vco_clk) || (MCU_PLLVCOCLK_MAX < pll_vco_clk)) || /* Vco clock range: 220-600 MHz */
-        ((MCU_PLLRAWCLK_MIN > pll_raw_clk) || (MCU_PLLRAWCLK_MAX < pll_raw_clk)))   /* PLL Raw clock range: 6-400 MHz */
+    if (((MCU_PLLINTCLK_MIN > CalClockPtr->pll_int_clk) ||
+         (MCU_PLLINTCLK_MAX < CalClockPtr->pll_int_clk)) || /* Internal clock range: 2-25 MHz */
+        ((MCU_PLLVCOCLK_MIN > CalClockPtr->pll_vco_clk) ||
+         (MCU_PLLVCOCLK_MAX < CalClockPtr->pll_vco_clk)) || /* Vco clock range: 220-600 MHz */
+        ((MCU_PLLRAWCLK_MIN > CalClockPtr->pll_raw_clk) ||
+         (MCU_PLLRAWCLK_MAX < CalClockPtr->pll_raw_clk))) /* PLL Raw clock range: 6-400 MHz */
     {
         /* Invalid Parameters */
         status = TRUE;
     }
 #endif /*MCU_CFG_NO_PLL*/
 
-    /* System clock = (Pll Raw clock / Sys clock divider )*/
-    sys_clk = (pll_raw_clk / (uint32)(ClockConfigPtr->Mcu_SysClkDiv)); /* ex: System Clock  = (200 MHz / 1) */
-
     /* Check Freq ranges */
-    if (((MCU_SYSCLK_MIN > sys_clk) || (MCU_SYSCLK_MAX < sys_clk))) /* System clock range: 2-200 MHz */
+    if (((MCU_SYSCLK_MIN > CalClockPtr->sys_clk) ||
+         (MCU_SYSCLK_MAX < CalClockPtr->sys_clk))) /* System clock range: 2-200 MHz */
     {
         /* Invalid Parameters */
         status = TRUE;
@@ -1602,6 +1572,41 @@ static FUNC(boolean, MCU_CODE) Mcu_DerivedClockFreqRangeCheck(uint32 oscClk, Mcu
     return status;
 }
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
+
+FUNC(void, MCU_CODE) Mcu_CalculateClocks(Mcu_ClockConfigPtrType ClockConfigPtr, Mcu_CalClkValueType* CalClockValue)
+{
+    /* Get Clock Source Frequency from Internal Osciallator */
+    if ((MCU_CLKSRC_OSC2 == ClockConfigPtr->Mcu_ClockSourceId) ||
+        (MCU_CLKSRC_OSC1 == ClockConfigPtr->Mcu_ClockSourceId))
+    {
+        CalClockValue->input_clock = MCU_OSC_CLK_FREQ; /* 10 MHz */
+    }
+    else
+    {
+        /* Get Clock Source Frequency from External Oscillator 20 or 25 MHz */
+        CalClockValue->input_clock = ClockConfigPtr->Mcu_ExternalClkFreq;
+    }
+
+#if (STD_OFF == MCU_CFG_NO_PLL)
+    /* Get Internal Clock = (Osc clock / Reference Divider) */
+    CalClockValue->pll_int_clk =
+        (CalClockValue->input_clock / (uint32)(ClockConfigPtr->Mcu_PllRefDiv)); /* ex: Internal Clock = (10MHz / 1) */
+
+    /* Get Vco Clock = (Internal clock / Integer Multipler) */
+    CalClockValue->pll_vco_clk =
+        (CalClockValue->pll_int_clk * (uint32)(ClockConfigPtr->Mcu_PllIntMult)); /* ex: Vco Clock  = (10MHz * 40) */
+
+    /* Get Pll RAW Clock = (Vco clock / Output Divider) */
+    CalClockValue->pll_raw_clk =
+        (CalClockValue->pll_vco_clk / (uint32)(ClockConfigPtr->Mcu_PllOutDiv)); /* ex: Pll Raw Clock  = (400 MHz / 2) */
+#else
+    CalClockValue->pll_raw_clk = CalClockValue->input_clock;
+#endif /*MCU_CFG_NO_PLL*/
+
+    /* System clock = (Pll Raw clock / Sys clock divider )*/
+    CalClockValue->sys_clk =
+        (CalClockValue->pll_raw_clk / (uint32)(ClockConfigPtr->Mcu_SysClkDiv)); /* ex: System Clock  = (200 MHz / 1) */
+}
 
 /*********************************************************************************************************************
  *  Local Functions Definition

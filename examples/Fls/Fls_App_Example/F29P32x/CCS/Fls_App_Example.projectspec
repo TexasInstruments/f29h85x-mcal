@@ -1,0 +1,165 @@
+<projectSpec>
+  <project
+        title="Fls_App_Example_F29P32x"
+        name="Fls_App_Example_F29P32x"
+        device="F29P329SM2-Q"
+        cgtVersion="2.0.0.STS"
+        outputFormat="ELF"
+        linkerCommandFile=""
+        toolChain="TICLANG"
+        >
+      <configuration name="CPU1_RAM"
+           compilerBuildOptions="
+              -I${PROJECT_ROOT}
+              -I${BSW_STUBS_AUTOSAR_TYPES_INCLUDE}
+              -I${BSW_STUBS_SCHM_FLS_INCLUDE}
+              -I${BSW_STUBS_SCHM_PORT_INCLUDE}
+              -I${BSW_STUBS_SCHM_INCLUDE_MCU}
+              -I${BSW_STUBS_CANIF_INCLUDE}
+              -I${BSW_STUBS_OS_INCLUDE}
+              -I${BSW_STUBS_DET_INCLUDE}
+              -I${BSW_STUBS_DEM_INCLUDE}
+              -I${BSW_STUBS_MEMMAP_INCLUDE}
+              -I${BSW_STUBS_ECUM_INCLUDE}
+              -I${BSW_STUBS_FEE_INCLUDE}
+              -I${F29_HW_INCLUDE}
+              -I${MCAL_MCU_INCLUDE}
+              -I${MCAL_PORT_INCLUDE}
+              -I${MCAL_CAN_INCLUDE}
+              -I${MCAL_CONFIG_INCLUDE}
+              -I${MCAL_EXAMPLE_INCLUDE}
+              -I${MCAL_APP_UTILS_INCLUDE}
+              -I${MCAL_DEVICESUPPORT_INCLUDE}
+              -I${MCAL_MCAL_LIB_INCLUDE}
+              -I${MCAL_FLS_INCLUDE}
+              -g
+              -DRELEASE
+              -DBUILD_DEVICE_F29P32x
+              -cl-single-precision-constant
+              -O2
+              -Wall"
+          linkerBuildOptions="--entry_point code_start --stack_size=0x1000 --heap_size=0x400"
+      ></configuration>
+
+      <configuration name="CPU1_FLASH"
+           compilerBuildOptions="
+              -I${PROJECT_ROOT}
+              -I${BSW_STUBS_AUTOSAR_TYPES_INCLUDE}
+              -I${BSW_STUBS_SCHM_FLS_INCLUDE}
+              -I${BSW_STUBS_SCHM_PORT_INCLUDE}
+              -I${BSW_STUBS_SCHM_INCLUDE_MCU}
+              -I${BSW_STUBS_CANIF_INCLUDE}
+              -I${BSW_STUBS_OS_INCLUDE}
+              -I${BSW_STUBS_DET_INCLUDE}
+              -I${BSW_STUBS_DEM_INCLUDE}
+              -I${BSW_STUBS_MEMMAP_INCLUDE}
+              -I${BSW_STUBS_ECUM_INCLUDE}
+              -I${BSW_STUBS_FEE_INCLUDE}
+              -I${F29_HW_INCLUDE}
+              -I${MCAL_MCU_INCLUDE}
+              -I${MCAL_PORT_INCLUDE}
+              -I${MCAL_CAN_INCLUDE}
+              -I${MCAL_CONFIG_INCLUDE}
+              -I${MCAL_EXAMPLE_INCLUDE}
+              -I${MCAL_APP_UTILS_INCLUDE}
+              -I${MCAL_DEVICESUPPORT_INCLUDE}
+              -I${MCAL_MCAL_LIB_INCLUDE}
+              -I${MCAL_FLS_INCLUDE}
+              -g
+              -DRELEASE
+              -DBUILD_DEVICE_F29P32x
+              -D_FLASH
+              -cl-single-precision-constant
+              -O2
+              -Wall"
+           linkerBuildOptions="--entry_point code_start --stack_size=0x1000 --heap_size=0x400"
+
+           postBuildStep="${CG_TOOL_OBJCOPY}
+              --remove-section=cert --remove-section=.TI.bound:CPU1_Cfg
+              --remove-section=.TI.bound:CPU2_Cfg --remove-section=.TI.bound:CPU3_Cfg -O binary ${ProjName}.out ${ProjName}.bin;
+              $(PYTHON_TOOL) ${F29x_MCAL_INSTALL_DIR}/signing/sign_non_secure.py --b ${ProjName}.bin --c C29 --k ${F29x_MCAL_INSTALL_DIR}/signing/keys/key.pem --o 60 --l 0x10001000;
+              ${CG_TOOL_OBJCOPY} --update-section cert=C29-cert.bin ${ProjName}.out ${ProjName}_cert.out;
+              $(RM) ${ProjName}.out;
+              $(RENAME_TOOL) ${ProjName}_cert.out ${ProjName}.out"
+      ></configuration>
+
+      <pathVariable name="MCAL_DRIVER"     path="../../../../../drivers" scope="project"/>
+      <pathVariable name="MCAL_EXAMPLE"    path="../../../../../examples" scope="project"/>
+
+      <pathVariable name="BSW_STUBS_AUTOSAR_TYPES_INCLUDE"  path="${MCAL_DRIVER}/BSW_Stubs/AUTOSAR_Types/include/"  scope="project"/>
+      <pathVariable name="BSW_STUBS_CANIF_INCLUDE"          path="${MCAL_DRIVER}/BSW_Stubs/CanIf/include/"          scope="project"/>
+      <pathVariable name="BSW_STUBS_DEM_INCLUDE"            path="${MCAL_DRIVER}/BSW_Stubs/Dem/include/"            scope="project"/>
+      <pathVariable name="BSW_STUBS_DET_INCLUDE"            path="${MCAL_DRIVER}/BSW_Stubs/Det/include/"            scope="project"/>
+      <pathVariable name="BSW_STUBS_ECUM_INCLUDE"           path="${MCAL_DRIVER}/BSW_Stubs/EcuM/include/"           scope="project"/>
+      <pathVariable name="BSW_STUBS_FEE_INCLUDE"            path="${MCAL_DRIVER}/BSW_Stubs/Fee/include/"            scope="project"/>
+      <pathVariable name="BSW_STUBS_MEMMAP_INCLUDE"         path="${MCAL_DRIVER}/BSW_Stubs/MemMap/include/"         scope="project"/>
+      <pathVariable name="BSW_STUBS_OS_INCLUDE"             path="${MCAL_DRIVER}/BSW_Stubs/Os/include/"             scope="project"/>
+      <pathVariable name="BSW_STUBS_SCHM_FLS_INCLUDE"       path="${MCAL_DRIVER}/BSW_Stubs/SchM/Fls/include/"       scope="project"/>
+      <pathVariable name="BSW_STUBS_SCHM_PORT_INCLUDE"      path="${MCAL_DRIVER}/BSW_Stubs/SchM/Port/include/"      scope="project"/>
+      <pathVariable name="BSW_STUBS_SCHM_INCLUDE_MCU"       path="${MCAL_DRIVER}/BSW_Stubs/SchM/Mcu/include/"       scope="project"/>
+
+      <pathVariable name="F29_HW_INCLUDE"                        path="${MCAL_DRIVER}/hw_include/f29h85x/"               scope="project"/>
+      <pathVariable name="MCAL_CAN_INCLUDE"                      path="${MCAL_DRIVER}/Can/include/"                      scope="project"/>
+      <pathVariable name="MCAL_FLS_INCLUDE"                      path="${MCAL_DRIVER}/Fls/include/"                      scope="project"/>
+      <pathVariable name="MCAL_MCU_INCLUDE"                      path="${MCAL_DRIVER}/Mcu/include/"                      scope="project"/>
+      <pathVariable name="MCAL_PORT_INCLUDE"                     path="${MCAL_DRIVER}/Port/include/"                     scope="project"/>
+      <pathVariable name="MCAL_CONFIG_INCLUDE"                   path="../Fls_Example_Config/output/include/"            scope="project"/>
+      <pathVariable name="MCAL_EXAMPLE_INCLUDE"                  path="../../"                                              scope="project"/>
+      <pathVariable name="MCAL_MCAL_LIB_INCLUDE"                 path="${MCAL_DRIVER}/Mcal_Lib/include/"                 scope="project"/>
+      <pathVariable name="MCAL_APP_UTILS_INCLUDE"                path="../../../../AppUtils/"                               scope="project"/>
+      <pathVariable name="MCAL_DEVICESUPPORT_INCLUDE"            path="../../../../DeviceSupport/include/"                  scope="project"/>
+      <pathVariable name="F29x_MCAL_INSTALL_DIR"                 path="../../../../../build/toolchain"                      scope="project"/>
+
+      <file action="copy" path="../../../../DeviceSupport/LinkerCMD/f29p32x_ram_lnk_cpu1.cmd"          targetDirectory=""  applicableConfigurations="CPU1_RAM"></file>
+      <file action="copy" path="../../../../DeviceSupport/LinkerCMD/f29p32x_flash_lnk_cpu1.cmd"        targetDirectory=""  applicableConfigurations="CPU1_FLASH"></file>
+      <file action="copy" path="../../../../DeviceSupport/src/codestartbranch.asm"                targetDirectory=""></file>
+      <file action="copy" path="../../../../DeviceSupport/src/DeviceSupport.c"                    targetDirectory=""></file>
+      <file action="copy" path="../../../../DeviceSupport/targetconfigs/F29P329SM2-Q.ccxml"         targetDirectory="targetConfigs"></file>
+      <file action="copy" path="../../../../DeviceSupport/makefile.defs"                          targetDirectory=""></file>
+      <file action="link" path="../../Fls_App.c"                                                  targetDirectory=""></file>
+      <file action="link" path="../../Fls_App.h"                                                  targetDirectory=""></file>
+
+      <file action="link" path="${MCAL_DRIVER}/Mcu/include" openOnCreation="false" excludeFromBuild="false"  targetDirectory="MCAL_Drivers/Mcu"></file>
+      <file action="link" path="${MCAL_DRIVER}/Mcu/src"     openOnCreation="false" excludeFromBuild="false"  targetDirectory="MCAL_Drivers/Mcu"></file>
+      <file action="link" path="${MCAL_DRIVER}/Port/include" openOnCreation="false" excludeFromBuild="false"  targetDirectory="MCAL_Drivers/Port"></file>
+      <file action="link" path="${MCAL_DRIVER}/Port/src"     openOnCreation="false" excludeFromBuild="false"  targetDirectory="MCAL_Drivers/Port"></file>
+      <file action="link" path="${MCAL_DRIVER}/Fls/include" openOnCreation="false" excludeFromBuild="false"  targetDirectory="MCAL_Drivers/Fls"></file>
+      <file action="link" path="${MCAL_DRIVER}/Fls/src"     openOnCreation="false" excludeFromBuild="false"  targetDirectory="MCAL_Drivers/Fls"></file>
+      <file action="link" path="${MCAL_DRIVER}/hw_include"  openOnCreation="false" excludeFromBuild="false"  targetDirectory="MCAL_Drivers/hw_include"></file>
+      <file action="link" path="../Fls_Example_Config/output/include"  openOnCreation="false" excludeFromBuild="false"  targetDirectory="Examples_config/"></file>
+      <file action="link" path="../Fls_Example_Config/output/src"      openOnCreation="false" excludeFromBuild="false"  targetDirectory="Examples_config/"></file>
+
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/AUTOSAR_Types/include" openOnCreation="false" excludeFromBuild="false"   targetDirectory="AutoSar_BSW/AutoSar_Types"></file>
+
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/Det/include"     openOnCreation="false" excludeFromBuild="false"   targetDirectory="AutoSar_BSW/Det"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/Det/src/Det.c"   openOnCreation="false" excludeFromBuild="false"   targetDirectory="AutoSar_BSW/Det"></file>
+
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/Fee/include"   openOnCreation="false" excludeFromBuild="false"   targetDirectory="AutoSar_BSW/Fee"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/Fee/src"       openOnCreation="false" excludeFromBuild="false"   targetDirectory="AutoSar_BSW/Fee"></file>
+
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/Dem/include"       openOnCreation="false" excludeFromBuild="false"   targetDirectory="AutoSar_BSW/Dem"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/Dem/src/Dem.c"     openOnCreation="false" excludeFromBuild="false"   targetDirectory="AutoSar_BSW/Dem"></file>
+
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/EcuM/include"      openOnCreation="false" excludeFromBuild="false"  targetDirectory="AutoSar_BSW/EcuM"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/EcuM/src/EcuM.c"   openOnCreation="false" excludeFromBuild="true"  targetDirectory="AutoSar_BSW/EcuM"></file>
+
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/MemMap/include" openOnCreation="false" excludeFromBuild="false"  targetDirectory="AutoSar_BSW/MemMap"></file>
+
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/SchM/Fls/include" openOnCreation="false" excludeFromBuild="false"  targetDirectory="AutoSar_BSW/SchM/Fls"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/SchM/Fls/src"     openOnCreation="false" excludeFromBuild="false"  targetDirectory="AutoSar_BSW/SchM/Fls"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/SchM/Port/include" openOnCreation="false" excludeFromBuild="false"  targetDirectory="AutoSar_BSW/SchM/Port"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/SchM/Port/src"     openOnCreation="false" excludeFromBuild="false"  targetDirectory="AutoSar_BSW/SchM/Port"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/SchM/Mcu/include" openOnCreation="false" excludeFromBuild="false"  targetDirectory="AutoSar_BSW/SchM/Mcu"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/SchM/Mcu/src"     openOnCreation="false" excludeFromBuild="false"  targetDirectory="AutoSar_BSW/SchM/Mcu"></file>
+
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/Os/include"      openOnCreation="false" excludeFromBuild="false"   targetDirectory="AutoSar_BSW/Os"></file>
+      <file action="link" path="${MCAL_DRIVER}/BSW_Stubs/Os/src/Os.c"     openOnCreation="false" excludeFromBuild="false"   targetDirectory="AutoSar_BSW/Os"></file>
+
+      <file action="link" path="${MCAL_DRIVER}/Mcal_Lib/include"          openOnCreation="false" excludeFromBuild="false"   targetDirectory="Mcal_lib"></file>
+      <file action="link" path="${MCAL_DRIVER}/Mcal_Lib/src/Mcal_Lib.c"   openOnCreation="false" excludeFromBuild="false"   targetDirectory="Mcal_lib"></file>
+      <file action="link" path="${MCAL_DRIVER}/Mcal_Lib/src/Mcal_Lib_BootRom.c"   openOnCreation="false" excludeFromBuild="false"   targetDirectory="Mcal_lib"></file>
+
+      <file action="link" path="../../../../AppUtils/AppUtils.c"     openOnCreation="false" excludeFromBuild="false"   targetDirectory="AppUtils"></file>
+
+  </project>
+</projectSpec>

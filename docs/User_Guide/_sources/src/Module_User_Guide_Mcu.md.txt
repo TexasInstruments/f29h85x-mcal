@@ -305,6 +305,17 @@ The detection of development errors is configurable (ON / OFF), The switch MCU_C
 
 This implementation depends on the DEM in order to report Extended production errors and can be turned OFF. The switch MCU_CFG_DEM_ENABLE will activate or deactivate the detection of all extended production errors. If clock failure notification is enabled in the configuration set and a clock source failure error occurs, the error code MCU_E_CLOCK_FAILURE shall be reported.
 
+##### SchM
+
+If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that MCU module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.
+
+The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter **RteExclusiveAreaImplMechanism**. This parameter is an input for RTE generator.
+For MCU Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
+
+| Exclusive Area Functions used | MCU Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
+|-------|-------|-------|-------|
+|MCU_EXCLUSIVE_AREA_0| Mcu_GetSystemClock| To protect against multiple access for shared resources | **OS_RESOURCE** : If the MCU API is only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br>**None**: If MCU API is only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed. |
+
 #### Multi-core and Resource allocator
 
 Not Supported

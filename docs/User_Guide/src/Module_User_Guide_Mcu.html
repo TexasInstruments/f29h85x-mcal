@@ -120,12 +120,13 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.9. WDG Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.10. CDD ADC Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.11. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.12. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.13. CDD PWM Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">4.12. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.13. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.14. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.15. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.16. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.17. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.18. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -562,6 +563,28 @@ The detection of development errors is configurable (ON / OFF), The switch MCU_C
 <section id="dem">
 <h4><span class="section-number">4.6.9.1.2. </span>DEM<a class="headerlink" href="#dem" title="Link to this heading"></a></h4>
 <p>This implementation depends on the DEM in order to report Extended production errors and can be turned OFF. The switch MCU_CFG_DEM_ENABLE will activate or deactivate the detection of all extended production errors. If clock failure notification is enabled in the configuration set and a clock source failure error occurs, the error code MCU_E_CLOCK_FAILURE shall be reported.</p>
+</section>
+<section id="schm">
+<h4><span class="section-number">4.6.9.1.3. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that MCU module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.</p>
+<p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter <strong>RteExclusiveAreaImplMechanism</strong>. This parameter is an input for RTE generator.
+For MCU Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Exclusive Area Functions used</p></th>
+<th class="head"><p>MCU Function calling Exclusive Area</p></th>
+<th class="head"><p>Need for Exclusive Area</p></th>
+<th class="head"><p>Recommended Exclusive Area Mapping</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MCU_EXCLUSIVE_AREA_0</p></td>
+<td><p>Mcu_GetSystemClock</p></td>
+<td><p>To protect against multiple access for shared resources</p></td>
+<td><p><strong>OS_RESOURCE</strong> : If the MCU API is only called from pre-emptible task context, its recommended to use this mechanism as it takes care of resource access protection and task priority management.<br><strong>None</strong>: If MCU API is only called from non pre-emptible task context or during init, its recommended to use this mechanism as multiple access protection to shared resource is not needed.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="multi-core-and-resource-allocator">
@@ -3567,7 +3590,7 @@ In case of Post build variant, upper modules that call the Mcu_Init function wil
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Nov 21, 2025.
+          <span class="lastupdated" >Last updated on Dec 18, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

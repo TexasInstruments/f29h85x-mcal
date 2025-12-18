@@ -31,24 +31,24 @@ else()
 endif()
 
 # Set FALSE as the BUILD_EMULATE. The selected build configuration for emulation
-# Set BUILD_EMULATE as TRUE along with BUILD_DEVICE to emulate F29P32X and
-# F29P58X
+# Set BUILD_EMULATE as TRUE along with BUILD_DEVICE to emulate F29P32x and
+# F29P58x
 set(BUILD_EMULATE
     "FALSE"
     CACHE STRING "User-option to select TRUE/FALSE BUILD_EMULATE.\n")
 
-# Set F29H85X as the default Variant. The selected build configuration
+# Set F29H85x as the default Variant. The selected build configuration
 set(BUILD_DEVICE
-    "F29H85X"
+    "F29H85x"
     CACHE STRING
-          "User-option to select F29H85X/F29P32X/F29P58X build configuration.\n"
+          "User-option to select F29H85x/F29P32x/F29P58x build configuration.\n"
 )
 
 # Abort CMake build when an invalid BUILD_DEVICE is passed on the
 # terminal/console
-if(BUILD_DEVICE MATCHES "F29H85X"
-   OR BUILD_DEVICE MATCHES "F29P32X"
-   OR BUILD_DEVICE MATCHES "F29P58X")
+if(BUILD_DEVICE MATCHES "F29H85x"
+   OR BUILD_DEVICE MATCHES "F29P32x"
+   OR BUILD_DEVICE MATCHES "F29P58x")
     message(
         STATUS
             "\nSelected ${BUILD_DEVICE} build configuration for all the modules\n"
@@ -56,7 +56,7 @@ if(BUILD_DEVICE MATCHES "F29H85X"
 else()
     message(
         FATAL_ERROR
-            "Only F29H85X, F29P32X & F29P58X build variants are supported. Select either one of them.\n"
+            "Only F29H85x, F29P32x & F29P58x build variants are supported. Select either one of them.\n"
     )
 endif()
 

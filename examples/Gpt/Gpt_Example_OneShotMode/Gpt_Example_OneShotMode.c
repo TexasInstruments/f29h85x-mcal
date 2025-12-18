@@ -17,8 +17,12 @@
  *  File:         Gpt_Example_OneShotMode.c
  *  Generator:    None
  *
- *  Description:  This file contains Gpt examples with Init & DeInit sequence, timers in one shot,
- *                start & stop timers, enable & disable interrupt features.
+ *  Description:  This file contains the configuration and usage of Gpt module operating in one shot mode.
+ *  This example demonstrates:
+ *  - Gpt initialization and de-initialization
+ *  - Starting and stopping of timer channel 0, 1 and 2 for 1s and Max timeout value
+ *  - Reading time elapsed and time remaining values for running timers
+ *  - Enabling interrupt for Notification function and verifying if interrupt occurred in the expected time
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************

@@ -95,6 +95,9 @@ extern "C" {
 #define FLS_CMDWEPROTB                ([!"FlsConfigSet/Fls_CMDWEPROTB"!]U)
 
 /** \brief Number of Sectorlist configured */
+/*
+ * Design: MCAL-31080, MCAL-31081, MCAL-31082, MCAL-31083, MCAL-31084, MCAL-31085
+ */
 [!LOOP "FlsConfigSet"!][!//
 [!VAR "NumOfSectorCfg" = "0"!]
 [!WS "4"!][!LOOP "FlsSectorList/FlsSector/*"!]
@@ -105,12 +108,21 @@ extern "C" {
 #define FLS_NUMBER_OF_SECTOR_CFG             ([!"num:i($NumOfSectorCfg)"!]U)
 
 /** \brief Enable/disable FLS load ram on job start functionality */
+/*
+ * Design: MCAL-31050
+ */
 #define FLS_LOAD_RAM_ON_JOB_START    ([!IF "FlsGeneral/FlsAcLoadOnJobStart = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Flash Base Address */
+/*
+ * Design: MCAL-31051
+ */
 #define FLS_BASE_ADDRESS                ([!"FlsGeneral/FlsBaseAddress "!]UL)
 
 /** \brief Total amount of flash memory in bytes */
+/*
+ * Design: MCAL-31062
+ */
 #define FLS_TOTAL_SIZE                ([!"FlsGeneral/FlsTotalSize"!]U)
 
 /** \brief Number of banks in the device variant */
@@ -120,39 +132,75 @@ extern "C" {
 #define FLS_SECTOR_SIZE               ([!"FlsGeneral/FlsSectorSizeInBytes"!]U)
 
 /** \brief Enable/disable FLS Blank Check API */
+/*
+ * Design: MCAL-31052
+ */
 #define FLS_BLANK_CHECK_API          ([!IF "FlsGeneral/FlsBlankCheckApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/disable FLS cancel API */
+/*
+ * Design: MCAL-31053
+ */
 #define FLS_CANCEL_API              ([!IF "FlsGeneral/FlsCancelApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/disable FLS compare API */
+/*
+ * Design: MCAL-31054
+ */
 #define FLS_COMPARE_API              ([!IF "FlsGeneral/FlsCompareApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/disable FLS dev detect error */
+/*
+ * Design: MCAL-31055
+ */
 #define FLS_DEV_ERROR_DETECT         ([!IF "FlsGeneral/FlsDevErrorDetect = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Index of driver, used by FEE */
+/*
+ * Design: MCAL-31056
+ */
 #define FLS_DRIVER_INDEX             ([!"FlsGeneral/FlsDriverIndex"!]U)
 
 /** \brief Enable/disable FlsEraseVerificationEnabled */
+/*
+ * Design: MCAL-31057
+ */
 #define FLS_ERASE_VERIFICATION_ENABLED    ([!IF "FlsGeneral/FlsEraseVerificationEnabled = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/disable FLS  Fls_GetJobResult function API */
+/*
+ * Design: MCAL-31058
+ */
 #define FLS_GET_JOB_RESULT_API        ([!IF "FlsGeneral/FlsGetJobResultApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/disable FLS  Fls_GetStatus function API */
+/*
+ * Design: MCAL-31059
+ */
 #define FLS_GET_STATUS_API            ([!IF "FlsGeneral/FlsGetStatusApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/disable FLS set mode API*/
+/*
+ * Design: MCAL-31060
+ */
 #define FLS_SETMODE_API                 ([!IF "FlsGeneral/FlsSetModeApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/disable FlsTimeoutSupervisionEnabled */
+/*
+ * Design: MCAL-31061
+ */
 #define FLS_TIMEOUT_SUPERVISION_ENABLED   ([!IF "FlsGeneral/FlsTimeoutSupervisionEnabled = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/disable FLS get version info API */
+/*
+ * Design: MCAL-31064
+ */
 #define FLS_VERSION_INFO_API           ([!IF "FlsGeneral/FlsVersionInfoApi = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief Enable/disable FlsWriteVerificationEnabled */
+/*
+ * Design: MCAL-31065
+ */
 #define FLS_WRITE_VERIFICATION_ENABLED    ([!IF "FlsGeneral/FlsWriteVerificationEnabled = 'true'"!]STD_ON[!ELSE!]STD_OFF[!ENDIF!])
 
 /** \brief CPU clock reference in Hz */
@@ -162,9 +210,17 @@ extern "C" {
 #define FLS_WAIT_STATES         ([!"FlsGeneral/FlsWaitStates"!]U)
 
 /** \brief Max Erase time in microsec*/
+/*
+ * Design: MCAL-31086, MCAL-31087, MCAL-31088, MCAL-31089, MCAL-31090, MCAL-31091,MCAL-31092
+ * Design: MCAL-31093, MCAL-31094, MCAL-31095
+ */
 #define FLS_MAX_ERASE_TIME                ([!"num:i(FlsPublishedInformation/FlsEraseTime)"!]U)
 
 /** \brief Max Write time in microsec*/
+/*
+ * Design: MCAL-31086, MCAL-31087, MCAL-31088, MCAL-31089, MCAL-31090, MCAL-31091,MCAL-31092
+ * Design: MCAL-31093, MCAL-31094, MCAL-31095
+ */
 #define FLS_MAX_WRITE_TIME                ([!"num:i(FlsPublishedInformation/FlsWriteTime)"!]U)
 
 
@@ -185,6 +241,9 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
+/*
+ * Design: MCAL-31045, MCAL-31047
+ */
 [!LOOP "FlsConfigSet"!]
 /** \brief FLS Configuration struct declaration */
 extern const struct Fls_ConfigType_s Fls_Config;

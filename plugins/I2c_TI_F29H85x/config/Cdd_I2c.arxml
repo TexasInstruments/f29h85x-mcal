@@ -126,6 +126,33 @@
                       <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>false</DEFAULT-VALUE>
                     </ECUC-BOOLEAN-PARAM-DEF>
+                    <ECUC-FLOAT-PARAM-DEF UUID="e36d9b26-757d-4f5c-be99-14de29754fad">
+                      <SHORT-NAME>CddI2cMainFunctionPeriod</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">This parameter describes the period for cyclic call to Cdd_I2c_MainFunction. Unit is seconds.</L-2>
+                      </DESC>
+                      <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                      <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <MULTIPLICITY-CONFIG-CLASSES>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      </MULTIPLICITY-CONFIG-CLASSES>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                      <DEFAULT-VALUE>0.01</DEFAULT-VALUE>
+                      <MAX>INF</MAX>
+                      <MIN INTERVAL-TYPE="OPEN">0.0</MIN>
+                    </ECUC-FLOAT-PARAM-DEF>
                   </PARAMETERS>
                 </ECUC-PARAM-CONF-CONTAINER-DEF>
                 <ECUC-PARAM-CONF-CONTAINER-DEF UUID="ECUC:ea0b3275-57db-4645-bf46-8baa9a2e3bd5">
@@ -143,33 +170,6 @@
                   </MULTIPLICITY-CONFIG-CLASSES>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
-                    <ECUC-ENUMERATION-PARAM-DEF UUID="ECUC:3265cb4d-db11-4c59-b3ad-fd0d5aa0040a">
-                      <SHORT-NAME>CddI2cHwUnitType</SHORT-NAME>
-                      <DESC>
-                        <L-2 L="EN">I2c HW unit to use.</L-2>
-                      </DESC>
-                      <SCOPE>LOCAL</SCOPE>
-                      <ORIGIN>Texas Instruments</ORIGIN>
-                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
-                      <VALUE-CONFIG-CLASSES>
-                        <ECUC-VALUE-CONFIGURATION-CLASS>
-                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                        </ECUC-VALUE-CONFIGURATION-CLASS>
-                      </VALUE-CONFIG-CLASSES>
-                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                      <DEFAULT-VALUE>I2CA</DEFAULT-VALUE>
-                      <LITERALS>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>I2CA</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                        <ECUC-ENUMERATION-LITERAL-DEF>
-                          <SHORT-NAME>I2CB</SHORT-NAME>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                        </ECUC-ENUMERATION-LITERAL-DEF>
-                      </LITERALS>
-                    </ECUC-ENUMERATION-PARAM-DEF>
                     <ECUC-INTEGER-PARAM-DEF UUID="1acefcc0-3ecd-4071-a2e1-8becf702d89b">
                       <SHORT-NAME>CddI2cHwBaudrate</SHORT-NAME>
                       <DESC>
@@ -260,6 +260,21 @@
                     </ECUC-ENUMERATION-PARAM-DEF>
                   </PARAMETERS>
                   <REFERENCES>
+                    <ECUC-REFERENCE-DEF UUID="93856cd9-cadb-4e40-8c44-544c95d3d628">
+                      <SHORT-NAME>CddI2cHwUnitRef</SHORT-NAME>
+                      <DESC>
+                        <L-2 L="EN">Reference to I2c HW unit to use.</L-2>
+                      </DESC>
+                      <ORIGIN>Texas Instruments</ORIGIN>
+                      <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                      <VALUE-CONFIG-CLASSES>
+                        <ECUC-VALUE-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-VALUE-CONFIGURATION-CLASS>
+                      </VALUE-CONFIG-CLASSES>
+                      <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_I2c/Cdd_I2cAllocatedInstance</DESTINATION-REF>
+                    </ECUC-REFERENCE-DEF>
                     <ECUC-REFERENCE-DEF UUID="0167f448-375e-4c53-9057-146e3ff63e99">
                       <SHORT-NAME>CddI2cHwFunctionalClock</SHORT-NAME>
                       <DESC>

@@ -42,11 +42,11 @@
 
 /* vendor specific version information check */
 
-#if ((CDD_UART_SW_MAJOR_VERSION != (2U)) || (CDD_UART_SW_MINOR_VERSION != (0U)))
+#if ((CDD_UART_SW_MAJOR_VERSION != (3U)) || (CDD_UART_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Uart.c and Cdd_Uart.h are not matching!"
 #endif
 
-#if ((CDD_UART_CFG_MAJOR_VERSION != (2U)) || (CDD_UART_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_UART_CFG_MAJOR_VERSION != (3U)) || (CDD_UART_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Uart.c and Cdd_Uart_Cfg.h are not matching!"
 #endif
 

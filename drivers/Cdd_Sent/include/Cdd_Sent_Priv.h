@@ -191,27 +191,29 @@ void Cdd_Sent_ProcessISR(Cdd_SentInstance SentInstance);
  *
  * This function get the message id of slow data.
  *
- * \param[in] SentInstance is the base instance of the SENT module.
+ * \param[in] Sent_Instance_Object Configuration pointer to Sent HW Unit.
  * \pre None
  * \post None
  * \return uint32
  * \retval returns message data
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) Cdd_Sent_getMessageID(Cdd_SentInstance SentInstance);
+LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
+    Cdd_Sent_getMessageID(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object);
 
 /** \brief Get slow data.
  *
  * This function fetches slow data.
  *
- * \param[in] SentInstance is the instance of the SENT module.
+ * \param[in] Sent_Instance_Object Configuration pointer to Sent HW Unit.
  * \pre None
  * \post None
  * \return uint32
  * \retval returns slow data
  *
  *********************************************************************************************************************/
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) Cdd_Sent_getSlowData(Cdd_SentInstance SentInstance);
+LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
+    Cdd_Sent_getSlowData(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object);
 
 /** \brief Enable MTP Channel.
  *

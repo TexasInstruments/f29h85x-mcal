@@ -26,6 +26,7 @@
  *********************************************************************************************************************/
  
 #include "Cdd_Xbar.h"
+#include "hw_memmap.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -112,7 +113,7 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
 [!VAR "var1" = "0"!][!LOOP "*/CddXbarOutputXbarInputLine/*"!]
             .inputLine[[!"num:i($var1)"!]] =  [!"node:value(.)"!],
 [!VAR "var1" = "$var1+1"!]
-[!ENDLOOP!]
+[!ENDLOOP!] 
             .outputLine = [!"../CddXbarOutputXbarOutputLine"!],   /* Design: MCAL-25722 */
             .outputStretchPulse = [!"../CddXbarOutputXbarOutputPulseStretch"!],    /* Design: MCAL-25719 */
             .outputInversion = [!"text:toupper(../CddXbarOutputXbarOutputInversion)"!],    /* Design: MCAL-25713 */
@@ -198,6 +199,12 @@ VAR(Cdd_Xbar_ConfigType, CDD_XBAR_CONFIG_DATA) Cdd_Xbar_Config =
         },
 [!ENDLOOP!]
     },
+[!ENDIF!]
+[!IF "num:i(count(CddXbarOutputXbarConfig/CddXbarOutputXbarInstanceConfig/*))>0"!]
+    .outputXbarFlagBaseAddress = (uint32)[!"node:ref(as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']/CddXbarGeneral/CddXbarOutputXbarFlag)/BaseAddr"!],
+[!ENDIF!]
+[!IF "as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']/CddXbarGeneral/CddXbarInputFlagApi = 'true'"!]
+    .inputFlagBaseAddress = (uint32)[!"node:ref(as:modconf('Cdd_Xbar/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Xbar/Cdd']/CddXbarGeneral/CddXbarInputFlag)/BaseAddr"!],
 [!ENDIF!]
 };
 [!ENDSELECT!]

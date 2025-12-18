@@ -38,6 +38,9 @@
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Mcu_TI_F29H85x/Mcu_ModuleEntry/Mcu_SetMode</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Mcu_TI_F29H85x/Mcu_ModuleEntry/Mcu_GetSystemClock</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
           </IMPLEMENTED-ENTRYS>
           <MODULE-ID>101</MODULE-ID>
           <BSW-MODULE-DEPENDENCYS>
@@ -63,11 +66,19 @@
           <INTERNAL-BEHAVIORS>
             <BSW-INTERNAL-BEHAVIOR UUID="168fc1fe-da1e-4e62-a0d1-946138b585cc">
               <SHORT-NAME>Mcu_Behavior</SHORT-NAME>
+              <EXCLUSIVE-AREAS>
+                <EXCLUSIVE-AREA UUID="3f67493c-bb16-4e62-da1e-819b5a82e8fe">
+                  <SHORT-NAME>MCU_EXCLUSIVE_AREA_0</SHORT-NAME>
+                </EXCLUSIVE-AREA>
+              </EXCLUSIVE-AREAS>
               <ENTITYS>
                 <BSW-CALLED-ENTITY UUID="5b2db13b-d177-482f-9a08-d5de59f7a9c0">
                   <SHORT-NAME>Mcu_DistributePllClock</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Mcu_TI_F29H85x/Mcu/Mcu_Behaviour/MCU_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Det_ReportError</SHORT-NAME>
@@ -152,6 +163,9 @@
                   <SHORT-NAME>Mcu_InitClock</SHORT-NAME>
                   <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Mcu_TI_F29H85x/Mcu/Mcu_Behaviour/MCU_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
                       <SHORT-NAME>Dem_SetEventStatus</SHORT-NAME>
@@ -199,6 +213,18 @@
                     </BSW-DIRECT-CALL-POINT>
                   </CALL-POINTS>
                   <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Mcu_TI_F29H85x/Mcu_ModuleEntry/Mcu_SetMode</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="1b02b3f4-e647-a653-a362-d47f66ffeb33">
+                  <SHORT-NAME>Mcu_GetSystemClock</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Mcu_TI_F29H85x/Mcu_ModuleEntry/Mcu_GetSystemClock</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
               </ENTITYS>
             </BSW-INTERNAL-BEHAVIOR>
@@ -285,9 +311,15 @@
                 <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CONST_PBCFG</SW-ADDRMETHOD-REF>
                 <SYMBOL>CONFIG_DATA</SYMBOL>
               </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="098b7980-0d38-4138-97df-2e4034d02f06">
+                <SHORT-NAME>MCU_VAR_INIT_32</SHORT-NAME>
+                <ALIGNMENT>32</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/VAR_INIT</SW-ADDRMETHOD-REF>
+                <SYMBOL>VAR_INIT_32</SYMBOL>
+              </MEMORY-SECTION>
             </MEMORY-SECTIONS>
           </RESOURCE-CONSUMPTION>
-          <SW-VERSION>2.0.0</SW-VERSION>
+          <SW-VERSION>2.1.0</SW-VERSION>
           <VENDOR-ID>44</VENDOR-ID>
           <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
           <BEHAVIOR-REF DEST="BSW-INTERNAL-BEHAVIOR">/Mcu_TI_F29H85x/Mcu/Mcu_Behavior</BEHAVIOR-REF>
@@ -403,6 +435,16 @@
             <BSW-MODULE-ENTRY UUID="8765c46e-ec25-46a6-bf60-f1adc71ebb7f">
               <SHORT-NAME>Mcu_SetMode</SHORT-NAME>
               <SERVICE-ID>8</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="1e4dee27-ec25-bf60-93d7-712173ea618b">
+              <SHORT-NAME>Mcu_GetSystemClock</SHORT-NAME>
+              <SERVICE-ID>11</SERVICE-ID>
               <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>

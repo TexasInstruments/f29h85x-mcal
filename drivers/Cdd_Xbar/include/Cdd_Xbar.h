@@ -43,11 +43,11 @@
  *********************************************************************************************************************/
 
 /** \brief Driver Implementation Major Version. */
-#define CDD_XBAR_SW_MAJOR_VERSION (2U)
+#define CDD_XBAR_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version. */
 #define CDD_XBAR_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version. */
-#define CDD_XBAR_SW_PATCH_VERSION (1U)
+#define CDD_XBAR_SW_PATCH_VERSION (0U)
 
 /** \brief AUTOSAR Release Spec. Major Version. */
 #define CDD_XBAR_AR_RELEASE_MAJOR_VERSION (4U)
@@ -139,7 +139,6 @@
  *  Exported Function Prototypes
  *********************************************************************************************************************/
 
-#if (STD_ON == CDD_XBAR_API_ENABLE)
 #if (STD_ON == CDD_XBAR_GET_VERSION_INFO_API)
 /* Design: MCAL-25737, MCAL-25738 */
 /** \brief Service for getting CDD crossbar driver version information.
@@ -472,8 +471,9 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_LockStatus(VAR(Cdd_Xbar_Type, AUTOMATIC) C
 /* Design: MCAL-28151, MCAL-28152 */
 /** \brief Service for checking status of a crossbar input flag.
  *
- * Returns whether the input flag is triggerred or not. Cdd_Xbar_InputFlagType can be used as an
- *argument to check the input flag status.
+ * Returns whether the input flag is triggerred or not. This is used to flag the inputs of the X-Bars to provide
+ * software knowledge of the input sources which got triggered. Cdd_Xbar_InputFlagType can be used as an argument to
+ * check the input flag status.
  *
  * \param[in] InputFlag is the crossbar input flag type.
  * \pre Preconditions - Driver is already initialized.
@@ -536,7 +536,6 @@ static inline FUNC(uint32, CDD_XBAR_CODE) Cdd_Xbar_Input_Selection_Mask(VAR(uint
 /** \brief Get the bit corresponding to the input in the input flag */
 #define CDD_XBAR_INPUT_FLAG_BIT(InputFlag) ((uint16)InputFlag & 0x00FFU)
 
-#endif /* STD_ON == CDD_XBAR_API_ENABLE */
 /**
  * @}
  */

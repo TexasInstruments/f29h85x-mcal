@@ -55,6 +55,11 @@ if(NOT TARGET Mcu)
                      ${CMAKE_BINARY_DIR}/Mcu)
 endif()
 
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
+endif()
+
 if(NOT TARGET SchM_Port)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Port/
                      ${CMAKE_BINARY_DIR}/Port/SchM_Port)
@@ -115,6 +120,7 @@ target_link_libraries(
             Os
             Port
             Mcu
+            SchM_Mcu
             SchM_Port)
 
 # This command is used to move the .xml and .map files

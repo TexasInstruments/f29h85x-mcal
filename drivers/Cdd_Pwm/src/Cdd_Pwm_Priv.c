@@ -25,7 +25,11 @@
  * Header Files
  *********************************************************************************************************************/
 #include "Cdd_Pwm_Priv.h"
+#if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
+#if (STD_ON == CDD_PWM_HRPWM_SUPPORTED)
 #include "hw_hrpwmcal.h"
+#endif
+#endif
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -39,8 +43,6 @@
 #define CDD_PWM_MEP1   80U
 #define CDD_PWM_MEP2   200U
 #define CDD_PWM_PRDVAL 65535U /* for all elements in testmode */
-
-#define CDD_PWM_HRCAL_BASESTEP (HRPWMCAL2_BASE - HRPWMCAL1_BASE)
 
 #endif
 
@@ -338,6 +340,7 @@ LOCAL_INLINE FUNC(void, CDD_PWM_CODE)
     HWREGH(offset) = ((HWREGH(offset) & ~(3U << (uint16)Event)) | ((uint16)Output << (uint16)Event));
 }
 
+/* Design: MCAL-33892 */
 LOCAL_INLINE FUNC(void, CDD_PWM_CODE)
     Cdd_Pwm_ClearActionQualifierAction(uint32 Base, Cdd_Pwm_OutputChannelType ChannelType)
 {
@@ -346,6 +349,7 @@ LOCAL_INLINE FUNC(void, CDD_PWM_CODE)
     HWREGH(offset) = ((uint16)0U);
 }
 
+/* Design: MCAL-33909 */
 LOCAL_INLINE FUNC(void, CDD_PWM_CODE)
     Cdd_Pwm_SingleActionQualifierAction(uint32 Base, Cdd_Pwm_OutputChannelType ChannelType,
                                         Cdd_Pwm_ActionQualifierOutputType      Output,
@@ -385,7 +389,7 @@ Cdd_Pwm_PrivSetTimeBaseCounterMode(VAR(uint32, AUTOMATIC) Base,
                                    VAR(Cdd_Pwm_TimeBaseCountModeType, AUTOMATIC) CounterMode)
 {
     /* Write to CTRMODE bit */
-    HWREGH(Base + EPWM_O_TBCTL) = ((HWREGH(Base + EPWM_O_TBCTL) & ~(EPWM_TBCTL_CTRMODE_M)) | ((uint8)CounterMode));
+    HWREGH(Base + EPWM_O_TBCTL) = ((HWREGH(Base + EPWM_O_TBCTL) & ~(EPWM_TBCTL_CTRMODE_M)) | ((uint16)CounterMode));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -401,11 +405,12 @@ Cdd_Pwm_PrivSetActionQualifierShadowLoadMode(uint32 Base, VAR(Cdd_Pwm_OutputChan
      * Shadow to active load can also be frozen.
      */
     HWREGH(Base + EPWM_O_AQCTL) =
-        (((HWREGH(Base + EPWM_O_AQCTL) & (~((0x3U << output_channel) | (0x3U << syncoffset)))) |
-          (0x1U << shadowoffset)) |
+        (((HWREGH(Base + EPWM_O_AQCTL) & (~(((uint16)0x3U << output_channel) | ((uint16)0x3U << syncoffset)))) |
+          ((uint16)0x1U << shadowoffset)) |
          ((((uint16)LoadMode >> 2U) << syncoffset) | (((uint16)LoadMode & 0x3U) << output_channel)));
 }
 
+/* Design: MCAL-33936 */
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetInterruptEventCount(VAR(uint32, AUTOMATIC) Base, VAR(uint16, AUTOMATIC) EventCount)
 {
@@ -425,9 +430,6 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivConfigureInterrupt(VAR(uint32, AUTOMATIC) B
     {
         HWREGH(Base + EPWM_O_ETSEL) &= ~EPWM_ETSEL_INTEN;
     }
-
-    // HWREGH(Base + EPWM_O_ETSEL) =
-    //     (HWREGH(Base + EPWM_O_ETSEL) & (~EPWM_ETSEL_INTEN)) | ((uint16)Select * EPWM_ETSEL_INTEN);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -437,11 +439,12 @@ Cdd_Pwm_PrivSetInterruptSource(uint32 Base, VAR(Cdd_Pwm_InterruptSourceType, AUT
     uint16 int_source = (uint16)InterruptSource;
 
 #if (STD_ON == CDD_PWM_DEV_ERROR_DETECT) && (STD_ON == CDD_PWM_ADVANCED_MODE_API)
+    /* Design: MCAL-34215 */
     /* Report DET error if the input is not valid */
-    if (!(((int_source > 0U) && (int_source < 9U)) || (int_source == 10U) || (int_source == 12U) ||
+    if (!(((int_source >= 0U) && (int_source < 9U)) || (int_source == 10U) || (int_source == 12U) ||
           (int_source == 14U)))
     {
-        (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_INTSRC, CDD_PWM_E_UNINIT);
+        (void)Det_ReportError(CDD_PWM_MODULE_ID, CDD_PWM_INSTANCE_ID, CDD_PWM_SID_SET_INTSRC, CDD_PWM_E_INVALID_EVENT);
     }
 #endif
 
@@ -460,7 +463,7 @@ Cdd_Pwm_PrivSetInterruptSource(uint32 Base, VAR(Cdd_Pwm_InterruptSourceType, AUT
         interrupt_source = (uint16)int_source;
 
         /* Enable events based on comp A or comp B */
-        HWREGH(Base + EPWM_O_ETSEL) &= ~EPWM_ETSEL_INTSELCMP;
+        HWREGH(Base + EPWM_O_ETSEL) &= ~((uint16)EPWM_ETSEL_INTSELCMP);
     }
     else
     {
@@ -498,13 +501,13 @@ Cdd_Pwm_PrivSetCounterCompareShadowLoadMode(uint32 Base, VAR(Cdd_Pwm_CounterComp
     }
 
     /* Get the register offset.  EPWM_O_CMPCTL for A&B or EPWM_O_CMPCTL2 for C&D */
-    offset = Base + EPWM_O_CMPCTL + (((uint8)CompModule & 0x1U) * 2U);
+    offset = Base + EPWM_O_CMPCTL + (((uint32)CompModule & 0x1U) * 2U);
 
     /* Set the appropriate sync and load Mode bits and also enable shadow
     load Mode. Shadow to active load can also be frozen */
-    HWREGH(offset) = ((HWREGH(offset) & ~((0x3U << syncoffset) |      // Clear sync Mode
-                                          (0x3U << loadoffset) |      // Clear load Mode
-                                          (0x1U << shadowoffset))) |  // shadow Mode
+    HWREGH(offset) = ((HWREGH(offset) & ~((0x3U << syncoffset) |     /* Clear sync Mode */
+                                          (0x3U << loadoffset) |     /* Clear load Mode */
+                                          (0x1U << shadowoffset))) | /* Shadow Mode */
                       ((((uint16)LoadMode >> 2U) << syncoffset) | (((uint16)LoadMode & 0x3U) << loadoffset)));
 }
 
@@ -514,9 +517,9 @@ Cdd_Pwm_PrivSetClockPrescaler(uint32 Base, Cdd_Pwm_ClockDividerType Prescale,
 {
     uint32 offset = Base + EPWM_O_TBCTL;
     /* Set the time Base clock divider and high speed clock divider for the PWM instance */
-    HWREGH(offset) = ((HWREGH(offset) & ~(EPWM_TBCTL_CLKDIV_M | EPWM_TBCTL_HSPCLKDIV_M)) |
-                      (((uint8)Prescale << (uint8)EPWM_TBCTL_CLKDIV_S) |
-                       ((uint8)HighSpeedPrescaler << (uint8)EPWM_TBCTL_HSPCLKDIV_S)));
+    HWREGH(offset) =
+        ((HWREGH(offset) & ~((uint16)EPWM_TBCTL_CLKDIV_M | (uint16)EPWM_TBCTL_HSPCLKDIV_M)) |
+         (((uint8)Prescale << EPWM_TBCTL_CLKDIV_S) | ((uint8)HighSpeedPrescaler << EPWM_TBCTL_HSPCLKDIV_S)));
 }
 
 FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivSetTimeBaseCounter(uint32 Base, uint16 Count)
@@ -556,17 +559,16 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DrvObjInit(void)
     }
 }
 
+/* Design: MCAL-33894 */
 /* PWM driver initialization */
 FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitInit(void)
 {
-    uint32 mask  = 0U;
-    uint8  hw_id = 0U;
-
-    if (CDD_PWM_XLINK_GRP_COUNT != 0U)
+    if (CDD_PWM_XLINK_GRP_COUNT != ((uint8)0U))
     {
+        uint8 hw_id = 0U;
         for (uint8 xlink_id = 0U; xlink_id < CDD_PWM_XLINK_GRP_COUNT; xlink_id++)
         {
-            for (mask = Cdd_Pwm_ConfigPtr->xlink_hwmask[xlink_id]; mask > 0U; (mask = mask >> 1U))
+            for (uint32 mask = Cdd_Pwm_ConfigPtr->xlink_hwmask[xlink_id]; mask > 0U; (mask = mask >> 1U))
             {
                 /* mask has 1 set at bits whose xlink is enabled, hw_id determines which hwunit's xlink is enabled.
                  * hw_id is the same as the symoblic name ID of the instance in Cfg,h file */
@@ -577,6 +579,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitInit(void)
                 }
                 hw_id++;
             }
+            hw_id = 0U;
         }
     }
 }
@@ -584,6 +587,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitInit(void)
 #endif
 
 #if (STD_OFF == CDD_PWM_ADVANCED_MODE_API)
+
+/* Design: MCAL-33890 */
 FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetDrvObj(Cdd_Pwm_DriverObjType *DrvObj, const Cdd_Pwm_ConfigType *CfgPtr)
 {
     /* Set the global driver object pointer */
@@ -592,6 +597,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetDrvObj(Cdd_Pwm_DriverObjType *DrvObj, const 
     Cdd_Pwm_ConfigPtr = CfgPtr;
 }
 
+/* Design: MCAL-33891 */
 /* Reset the driver object parameters */
 FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DrvObjInit(void)
 {
@@ -622,8 +628,6 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_DrvObjInit(void)
 
     for (Cdd_Pwm_InstanceType hwunit_id = 0U; hwunit_id < CDD_PWM_COUNT; hwunit_id++)
     {
-        base_addr = Cdd_Pwm_ConfigPtr->hwunitcfg[hwunit_id].base_addr;
-
         Cdd_Pwm_DrvObjPtr->hwunitobj[hwunit_id].period = Cdd_Pwm_ConfigPtr->hwunitcfg[hwunit_id].period;
 
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
@@ -652,6 +656,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitInit(void)
     {
         base_addr  = Cdd_Pwm_ConfigPtr->hwunitcfg[hwunit_id].base_addr;
         hwunit_cfg = &(Cdd_Pwm_ConfigPtr->hwunitcfg[hwunit_id]);
+
         /* Time Base counter mode Based on the symmetry of the waveform */
         countmode = (CDD_PWM_ASYMMETRIC_WAVEFORM == hwunit_cfg->symmetry) ? (CDD_PWM_COUNTER_MODE_UP)
                                                                           : (CDD_PWM_COUNTER_MODE_UP_DOWN);
@@ -692,6 +697,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitInit(void)
 }
 
 #if (STD_ON == CDD_PWM_DEINIT_API)
+
+/* Design: MCAL-33898 */
 FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitDeinit(void)
 {
     uint32 base_addr;
@@ -704,6 +711,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitDeinit(void)
 
         /* Set the output to IDLE if the channel is active */
         Cdd_Pwm_SetIdleOutput(channel_id);
+
         /* Reset the counter compare values to Zero */
         Cdd_Pwm_SetCounterCompareValue(base_addr, Cdd_Pwm_ConfigPtr->channelcfg[channel_id].outputchannel, (uint16)0U);
 
@@ -722,6 +730,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitDeinit(void)
         /* Clear all the registers and bring them to the POR(Power-on-reset) state */
         base_addr = Cdd_Pwm_ConfigPtr->hwunitcfg[instance].base_addr;
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
+        /* Design: MCAL-33899 */
         /* Disable all interrupt */
         Cdd_Pwm_PrivConfigureInterrupt(base_addr, FALSE);
         /* Reset the interrupt event count */
@@ -739,6 +748,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_HwUnitDeinit(void)
 #endif
 
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
+
+/* Design: MCAL-33927 */
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_NotificationEnable(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) Channel,
                            VAR(Cdd_Pwm_EdgeNotificationType, AUTOMATIC) EdgeNotification)
@@ -772,6 +783,7 @@ Cdd_Pwm_NotificationEnable(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) Channel,
     Cdd_Pwm_DrvObjPtr->channelobj[Channel].channelnotif_enable = TRUE;
 }
 
+/* Design: MCAL-33934 */
 /* Disable notification for the channel */
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_NotificationDisable(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) Channel)
@@ -779,9 +791,6 @@ Cdd_Pwm_NotificationDisable(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) Channel)
     uint8 hwunit_index = Cdd_Pwm_ConfigPtr->channelcfg[Channel].hw_index;
 
     /* Check if notiifcation is already enabled for the instance, take action only if notification is already enabled */
-    // if(Cdd_Pwm_DrvObjPtr->channelobj[Channel].channelnotif_enable == TRUE)
-    // {
-
     if (TRUE == Cdd_Pwm_DrvObjPtr->channelobj[Channel].channel_active)
     {
         /* Disable notification if it is already enabled */
@@ -791,9 +800,6 @@ Cdd_Pwm_NotificationDisable(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) Channel)
     /* This indicates which channel of the instance has notification enabled.
      * Clear the correspoding bit of the output channel
      */
-    // Cdd_Pwm_DrvObjPtr->hwunitobj[hwunit_index].notification_enable &=
-    //                                     ~(1U << ((uint8)Cdd_Pwm_ConfigPtr->channelcfg[Channel].outputchannel));
-
     if (0U == Cdd_Pwm_DrvObjPtr->hwunitobj[hwunit_index].notification_enable)
     {
         /* Disable the interrupt if no channel notification is enabled */
@@ -807,12 +813,12 @@ Cdd_Pwm_NotificationDisable(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) Channel)
 
     /* Update the notification enable status of the channel */
     Cdd_Pwm_DrvObjPtr->channelobj[Channel].channelnotif_enable = FALSE;
-
-    // }
 }
 #endif
 
 #if (CDD_PWM_SET_PERIOD_API == STD_ON)
+
+/* Design: MCAL-33914 */
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_UpdatePeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_PeriodType, AUTOMATIC) Period)
 {
@@ -836,6 +842,8 @@ Cdd_Pwm_UpdatePeriod(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pw
 #endif
 
 #if (CDD_PWM_SET_OUTPUT_TO_IDLE_API == STD_ON) || (CDD_PWM_DEINIT_API == STD_ON)
+
+/* Design: MCAL-33919 */
 FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetIdleOutput(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId)
 {
     const Cdd_Pwm_ChannelCfgType     *channel_cfg = &(Cdd_Pwm_ConfigPtr->channelcfg[ChannelId]);
@@ -861,6 +869,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_SetIdleOutput(VAR(Cdd_Pwm_ChannelType, AUTOMATI
 }
 #endif
 
+/* Design: MCAL-33906 */
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_UpdateDutyCycle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId, VAR(Cdd_Pwm_DutyCycleType, AUTOMATIC) DutyCycle)
 {
@@ -872,6 +881,7 @@ Cdd_Pwm_UpdateDutyCycle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId, VAR(Cdd_P
 
     uint16 compare_value = Cdd_Pwm_PrivGetCompareValue(ChannelId, DutyCycle);
 
+    /* Design: MCAL-33904 */
     /* Set the duty cycle if the channel is active before this API call */
     if ((CDD_PWM_MAX_DUTY_CYCLE == DutyCycle) && (0U != Cdd_Pwm_DrvObjPtr->hwunitobj[hw_index].period))
     {
@@ -897,6 +907,7 @@ Cdd_Pwm_UpdateDutyCycle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId, VAR(Cdd_P
     }
     else if ((0U == DutyCycle) || (0U == Cdd_Pwm_DrvObjPtr->hwunitobj[hw_index].period) || (0U == compare_value))
     {
+        /* Design: MCAL-33915 */
         /* Get the AQ state based on the polarity of the PWM insance */
         output = (CDD_PWM_LOW == channel_cfg->polarity) ? (CDD_PWM_AQ_OUTPUT_HIGH) : (CDD_PWM_AQ_OUTPUT_LOW);
 
@@ -1030,12 +1041,12 @@ Cdd_Pwm_PrivSetCountModeAfterSync(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceI
     if (Mode == CDD_PWM_COUNT_MODE_UP_AFTER_SYNC)
     {
         /* Set PHSDIR bit */
-        HWREGH(base + EPWM_O_TBCTL) |= EPWM_TBCTL_PHSDIR;
+        HWREGH(base + EPWM_O_TBCTL) |= (uint16)EPWM_TBCTL_PHSDIR;
     }
     else
     {
         /* Clear PHSDIR bit */
-        HWREGH(base + EPWM_O_TBCTL) &= ~EPWM_TBCTL_PHSDIR;
+        HWREGH(base + EPWM_O_TBCTL) &= ~(uint16)EPWM_TBCTL_PHSDIR;
     }
 }
 
@@ -1052,8 +1063,8 @@ Cdd_Pwm_PrivSetSyncInPulseSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
 {
     uint32 base = (Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr);
 
-    HWREGH(base + EPWM_O_SYNCINSEL) =
-        (HWREGH(base + EPWM_O_SYNCINSEL) & ~((uint16)EPWM_SYNCINSEL_SEL_M)) | ((uint16)Source & EPWM_SYNCINSEL_SEL_M);
+    HWREGH(base + EPWM_O_SYNCINSEL) = (HWREGH(base + EPWM_O_SYNCINSEL) & ~((uint16)EPWM_SYNCINSEL_SEL_M)) |
+                                      ((uint16)Source & (uint16)EPWM_SYNCINSEL_SEL_M);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1120,8 +1131,8 @@ Cdd_Pwm_PrivSelectPeriodLoadEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceI
 {
     /* Write to PRDLDSYNC bit */
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_TBCTL2) = ((HWREGH(base + EPWM_O_TBCTL2) & ~(EPWM_TBCTL2_PRDLDSYNC_M)) |
-                                    ((uint16)ShadowLoadMode << EPWM_TBCTL2_PRDLDSYNC_S));
+    HWREGH(base + EPWM_O_TBCTL2) = ((HWREGH(base + EPWM_O_TBCTL2) & ~((uint16)EPWM_TBCTL2_PRDLDSYNC_M)) |
+                                    ((uint8)ShadowLoadMode << EPWM_TBCTL2_PRDLDSYNC_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1225,7 +1236,7 @@ Cdd_Pwm_PrivDisableCounterCompareShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMA
     }
 
     /* Get the register offset.  EPWM_O_CMPCTL for A&B or EPWM_O_CMPCTL2 for C&D */
-    offset = base + EPWM_O_CMPCTL + (((uint8)CompModule & 0x1U) * 2U);
+    offset = base + EPWM_O_CMPCTL + (((uint32)CompModule & 0x1U) * 2U);
 
     /* Disable shadow load Mode */
     HWREGH(offset) |= ((uint16)0x1U << shadowoffset);
@@ -1237,7 +1248,7 @@ Cdd_Pwm_PrivSetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instance
                                    VAR(uint16, AUTOMATIC) CompCount)
 {
     /* Get the register offset for the Counter compare */
-    uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr + EPWM_O_CMPA + ((uint8)CompModule * 2U);
+    uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr + EPWM_O_CMPA + ((uint32)CompModule * 2U);
 
     /* Write to the Counter compare registers. */
     if ((CompModule == CDD_PWM_COUNTER_COMPARE_A) || (CompModule == CDD_PWM_COUNTER_COMPARE_B))
@@ -1260,7 +1271,7 @@ Cdd_Pwm_PrivGetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instance
     uint16 compare_count;
 
     /* Write to COMPC or COMPD bits */
-    base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr + EPWM_O_CMPA + ((uint8)CompModule * 2U);
+    base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr + EPWM_O_CMPA + ((uint32)CompModule * 2U);
 
     /* Write to the Counter compare registers. */
     if ((CompModule == CDD_PWM_COUNTER_COMPARE_A) || (CompModule == CDD_PWM_COUNTER_COMPARE_B))
@@ -1282,11 +1293,11 @@ Cdd_Pwm_PrivConfigureEpwmXLink(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, 
 
     if (TRUE == Select)
     {
-        HWREG(DEVCFG_BASE + SYSCTL_O_EPWMXLINKCFG) |= (1U << hw_id);
+        HWREG(DEVCFG_BASE + SYSCTL_O_EPWMXLINKCFG) |= ((uint32)1U << hw_id);
     }
     else
     {
-        HWREG(DEVCFG_BASE + SYSCTL_O_EPWMXLINKCFG) &= ~(1U << hw_id);
+        HWREG(DEVCFG_BASE + SYSCTL_O_EPWMXLINKCFG) &= ~((uint32)1U << hw_id);
     }
 }
 
@@ -1308,11 +1319,11 @@ Cdd_Pwm_PrivConfigureLinkDutyHR(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     if (TRUE == Mode)
     {
-        HWREGH(base + EPWM_O_CMPCTL) |= EPWM_CMPCTL_LINKDUTYHR;
+        HWREGH(base + EPWM_O_CMPCTL) |= (uint16)EPWM_CMPCTL_LINKDUTYHR;
     }
     else
     {
-        HWREGH(base + EPWM_O_CMPCTL) &= ~EPWM_CMPCTL_LINKDUTYHR;
+        HWREGH(base + EPWM_O_CMPCTL) &= ~(uint16)EPWM_CMPCTL_LINKDUTYHR;
     }
 }
 
@@ -1344,7 +1355,7 @@ Cdd_Pwm_PrivSetActionQualifierT2TriggerSource(VAR(Cdd_Pwm_InstanceType, AUTOMATI
     /* Set T2 Trigger Source */
     uint32 base                     = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     HWREGH(base + EPWM_O_AQTSRCSEL) = ((HWREGH(base + EPWM_O_AQTSRCSEL) & ~((uint16)EPWM_AQTSRCSEL_T2SEL_M)) |
-                                       (uint16)((uint16)Trigger << EPWM_AQTSRCSEL_T2SEL_S));
+                                       ((uint8)Trigger << EPWM_AQTSRCSEL_T2SEL_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1411,7 +1422,7 @@ Cdd_Pwm_PrivSetActionQualifierContSwForceShadowMode(VAR(Cdd_Pwm_InstanceType, AU
     /* Set the Action qualifier software Action reload Mode. Write to RLDCSF bit*/
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     HWREGH(base + EPWM_O_AQSFRC) = ((HWREGH(base + EPWM_O_AQSFRC) & ~((uint16)EPWM_AQSFRC_RLDCSF_M)) |
-                                    (uint16)((uint16)Mode << EPWM_AQSFRC_RLDCSF_S));
+                                    ((uint16)Mode << (uint16)EPWM_AQSFRC_RLDCSF_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1460,11 +1471,11 @@ Cdd_Pwm_PrivForceActionQualifierSwAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) In
 
     if (CDD_PWM_OUTPUT_A == OutputChannel)
     {
-        HWREGH(base + EPWM_O_AQSFRC) |= EPWM_AQSFRC_OTSFA;
+        HWREGH(base + EPWM_O_AQSFRC) |= ((uint16)EPWM_AQSFRC_OTSFA);
     }
     else
     {
-        HWREGH(base + EPWM_O_AQSFRC) |= EPWM_AQSFRC_OTSFB;
+        HWREGH(base + EPWM_O_AQSFRC) |= ((uint16)EPWM_AQSFRC_OTSFB);
     }
 }
 
@@ -1528,12 +1539,10 @@ FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetRisingEdgeDeadBandDelayInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                             VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel)
 {
-    uint16 output_channel = ((uint16)OutputChannel);
-
     /* Set the Rising Edge Delay Input */
-    uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_DBCTL) =
-        ((HWREGH(base + EPWM_O_DBCTL) & ~(1U << (EPWM_DBCTL_IN_MODE_S))) | (output_channel << EPWM_DBCTL_IN_MODE_S));
+    uint32 base                 = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
+    HWREGH(base + EPWM_O_DBCTL) = ((HWREGH(base + EPWM_O_DBCTL) & ~((uint8)1U << (EPWM_DBCTL_IN_MODE_S))) |
+                                   ((uint8)OutputChannel << EPWM_DBCTL_IN_MODE_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1545,16 +1554,16 @@ Cdd_Pwm_PrivSetFallingEdgeDeadBandDelayInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC
     if (Input == CDD_PWM_DB_INPUT_DB_RED)
     {
         /* Set the Falling Edge Delay Input */
-        HWREGH(base + EPWM_O_DBCTL) |= EPWM_DBCTL_DEDB_MODE;
+        HWREGH(base + EPWM_O_DBCTL) |= ((uint16)EPWM_DBCTL_DEDB_MODE);
     }
     else
     {
         /* Set the Falling Edge Delay Input */
-        HWREGH(base + EPWM_O_DBCTL) &= ~EPWM_DBCTL_DEDB_MODE;
+        HWREGH(base + EPWM_O_DBCTL) &= ~((uint16)EPWM_DBCTL_DEDB_MODE);
 
         /* Set the Rising Edge Delay Input */
-        HWREGH(base + EPWM_O_DBCTL) = ((HWREGH(base + EPWM_O_DBCTL) & ~(1U << (EPWM_DBCTL_IN_MODE_S + 1U))) |
-                                       ((uint16)Input << (EPWM_DBCTL_IN_MODE_S + 1U)));
+        HWREGH(base + EPWM_O_DBCTL) = ((HWREGH(base + EPWM_O_DBCTL) & ~((uint8)1U << (EPWM_DBCTL_IN_MODE_S + 1U))) |
+                                       ((uint8)Input << (EPWM_DBCTL_IN_MODE_S + 1U)));
     }
 }
 
@@ -1565,7 +1574,7 @@ Cdd_Pwm_PrivSetDeadBandControlShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC
     /* Enable the shadow Mode and setup the load Event */
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     HWREGH(base + EPWM_O_DBCTL2) = ((HWREGH(base + EPWM_O_DBCTL2) & ~EPWM_DBCTL2_LOADDBCTLMODE_M) |
-                                    (EPWM_DBCTL2_SHDWDBCTLMODE | (uint16)LoadMode));
+                                    ((uint16)EPWM_DBCTL2_SHDWDBCTLMODE | (uint16)LoadMode));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1573,7 +1582,7 @@ Cdd_Pwm_PrivDisableDeadBandControlShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOM
 {
     /* Disable the shadow load Mode. Only immediate load Mode only. */
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_DBCTL2) = (HWREGH(base + EPWM_O_DBCTL2) & ~EPWM_DBCTL2_SHDWDBCTLMODE);
+    HWREGH(base + EPWM_O_DBCTL2) = (HWREGH(base + EPWM_O_DBCTL2) & ~((uint16)EPWM_DBCTL2_SHDWDBCTLMODE));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1582,7 +1591,7 @@ Cdd_Pwm_PrivSetRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTO
 {
     /* Enable the shadow Mode. Set-up the load Mode */
     uint32 base                 = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_DBCTL) = ((HWREGH(base + EPWM_O_DBCTL) & ~EPWM_DBCTL_LOADREDMODE_M) |
+    HWREGH(base + EPWM_O_DBCTL) = ((HWREGH(base + EPWM_O_DBCTL) & ~((uint16)EPWM_DBCTL_LOADREDMODE_M)) |
                                    ((uint16)EPWM_DBCTL_SHDWDBREDMODE | ((uint16)LoadMode << EPWM_DBCTL_LOADREDMODE_S)));
 }
 
@@ -1591,7 +1600,7 @@ Cdd_Pwm_PrivDisableRisingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, 
 {
     /* Disable the shadow Mode. */
     uint32 base                 = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_DBCTL) = (HWREGH(base + EPWM_O_DBCTL) & ~EPWM_DBCTL_SHDWDBREDMODE);
+    HWREGH(base + EPWM_O_DBCTL) = (HWREGH(base + EPWM_O_DBCTL) & ~((uint16)EPWM_DBCTL_SHDWDBREDMODE));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1600,8 +1609,8 @@ Cdd_Pwm_PrivSetFallingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUT
 {
     /* Enable the shadow Mode. Setup the load Mode. */
     uint32 base                 = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_DBCTL) = ((HWREGH(base + EPWM_O_DBCTL) & ~EPWM_DBCTL_LOADFEDMODE_M) |
-                                   (EPWM_DBCTL_SHDWDBFEDMODE | ((uint16)LoadMode << EPWM_DBCTL_LOADFEDMODE_S)));
+    HWREGH(base + EPWM_O_DBCTL) = ((HWREGH(base + EPWM_O_DBCTL) & ~((uint16)EPWM_DBCTL_LOADFEDMODE_M)) |
+                                   ((uint16)EPWM_DBCTL_SHDWDBFEDMODE | ((uint16)LoadMode << EPWM_DBCTL_LOADFEDMODE_S)));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1609,7 +1618,7 @@ Cdd_Pwm_PrivDisableFallingEdgeDelayCountShadowLoadMode(VAR(Cdd_Pwm_InstanceType,
 {
     /* Disable the shadow Mode. */
     uint32 base                 = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_DBCTL) = (HWREGH(base + EPWM_O_DBCTL) & ~EPWM_DBCTL_SHDWDBFEDMODE);
+    HWREGH(base + EPWM_O_DBCTL) = (HWREGH(base + EPWM_O_DBCTL) & ~((uint16)EPWM_DBCTL_SHDWDBFEDMODE));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1617,8 +1626,9 @@ Cdd_Pwm_PrivSetDeadBandCounterClock(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instanc
                                     VAR(Cdd_Pwm_DeadBandClockModeType, AUTOMATIC) ClockMode)
 {
     /* Set the DB clock Mode */
-    uint32 base                 = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_DBCTL) = ((HWREGH(base + EPWM_O_DBCTL) & ~EPWM_DBCTL_HALFCYCLE) | ((uint16)ClockMode << 15U));
+    uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
+    HWREGH(base + EPWM_O_DBCTL) =
+        ((HWREGH(base + EPWM_O_DBCTL) & ~((uint16)EPWM_DBCTL_HALFCYCLE)) | ((uint16)ClockMode << 15U));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1644,11 +1654,11 @@ Cdd_Pwm_PrivConfigureChopper(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VA
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     if (TRUE == Mode)
     {
-        HWREGH(base + EPWM_O_PCCTL) |= EPWM_PCCTL_CHPEN;
+        HWREGH(base + EPWM_O_PCCTL) |= ((uint16)EPWM_PCCTL_CHPEN);
     }
     else
     {
-        HWREGH(base + EPWM_O_PCCTL) &= ~EPWM_PCCTL_CHPEN;
+        HWREGH(base + EPWM_O_PCCTL) &= ~((uint16)EPWM_PCCTL_CHPEN);
     }
 }
 
@@ -1656,9 +1666,9 @@ FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetChopperDutyCycle(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) DutyCycleCount)
 {
     /* Set the chopper duty cycle */
-    uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_PCCTL) =
-        ((HWREGH(base + EPWM_O_PCCTL) & ~EPWM_PCCTL_CHPDUTY_M) | (DutyCycleCount << EPWM_PCCTL_CHPDUTY_S));
+    uint32 base                 = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
+    HWREGH(base + EPWM_O_PCCTL) = ((HWREGH(base + EPWM_O_PCCTL) & ~((uint16)EPWM_PCCTL_CHPDUTY_M)) |
+                                   (DutyCycleCount << (uint16)EPWM_PCCTL_CHPDUTY_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1667,7 +1677,7 @@ Cdd_Pwm_PrivSetChopperFreq(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(
     /* Set the chopper clock */
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     HWREGH(base + EPWM_O_PCCTL) =
-        ((HWREGH(base + EPWM_O_PCCTL) & ~(uint16)EPWM_PCCTL_CHPFREQ_M) | (FreqDiv << EPWM_PCCTL_CHPFREQ_S));
+        ((HWREGH(base + EPWM_O_PCCTL) & ~((uint16)EPWM_PCCTL_CHPFREQ_M)) | (FreqDiv << (uint16)EPWM_PCCTL_CHPFREQ_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1675,9 +1685,9 @@ Cdd_Pwm_PrivSetChopperFirstPulseWidth(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Insta
                                       VAR(uint16, AUTOMATIC) FirstPulseWidth)
 {
     /* Set the chopper clock */
-    uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_PCCTL) =
-        ((HWREGH(base + EPWM_O_PCCTL) & ~(uint16)EPWM_PCCTL_OSHTWTH_M) | (FirstPulseWidth << EPWM_PCCTL_OSHTWTH_S));
+    uint32 base                 = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
+    HWREGH(base + EPWM_O_PCCTL) = ((HWREGH(base + EPWM_O_PCCTL) & ~(uint16)EPWM_PCCTL_OSHTWTH_M) |
+                                   (FirstPulseWidth << (uint16)EPWM_PCCTL_OSHTWTH_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1732,11 +1742,11 @@ Cdd_Pwm_PrivConfigureTripZoneAdvAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Inst
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     if (TRUE == Select)
     {
-        HWREGH(base + EPWM_O_TZCTL2) |= EPWM_TZCTL2_ETZE;
+        HWREGH(base + EPWM_O_TZCTL2) |= ((uint16)EPWM_TZCTL2_ETZE);
     }
     else
     {
-        HWREGH(base + EPWM_O_TZCTL2) &= ~EPWM_TZCTL2_ETZE;
+        HWREGH(base + EPWM_O_TZCTL2) &= ~((uint16)EPWM_TZCTL2_ETZE);
     }
 }
 
@@ -1766,7 +1776,7 @@ Cdd_Pwm_PrivSetTripZoneAdvAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
     HWREGH(base + EPWM_O_TZCTL2) =
         ((HWREGH(base + EPWM_O_TZCTL2) & ~(0x7U << tzadv_event)) | ((uint16)TzAdvAction << tzadv_event));
 
-    HWREGH(base + EPWM_O_TZCTL2) |= EPWM_TZCTL2_ETZE;
+    HWREGH(base + EPWM_O_TZCTL2) |= ((uint16)EPWM_TZCTL2_ETZE);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1783,7 +1793,7 @@ Cdd_Pwm_PrivSetTripZoneAdvDigitalCompareAction(VAR(Cdd_Pwm_InstanceType, AUTOMAT
     HWREGH(base + tripzoneaction) =
         ((HWREGH(base + tripzoneaction) & ~(0x7U << tzadv_dcevent)) | ((uint16)TzAdvDcAction << tzadv_dcevent));
 
-    HWREGH(base + EPWM_O_TZCTL2) |= EPWM_TZCTL2_ETZE;
+    HWREGH(base + EPWM_O_TZCTL2) |= ((uint16)EPWM_TZCTL2_ETZE);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1829,9 +1839,9 @@ Cdd_Pwm_PrivSelectCycleByCycleTripZoneClearEvent(VAR(Cdd_Pwm_InstanceType, AUTOM
                                                  VAR(Cdd_Pwm_CbcTripZoneClearModeType, AUTOMATIC) ClearEvent)
 {
     /* Set the Cycle by Cycle Trip Latch Mode */
-    uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_TZCLR) =
-        ((HWREGH(base + EPWM_O_TZCLR) & ~EPWM_TZCLR_CBCPULSE_M) | ((uint16)ClearEvent << EPWM_TZCLR_CBCPULSE_S));
+    uint32 base                 = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
+    HWREGH(base + EPWM_O_TZCLR) = ((HWREGH(base + EPWM_O_TZCLR) & ~EPWM_TZCLR_CBCPULSE_M) |
+                                   ((uint16)ClearEvent << (uint16)EPWM_TZCLR_CBCPULSE_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1877,11 +1887,11 @@ Cdd_Pwm_PrivConfigureTripOutSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instance
 
     if (TRUE == Select)
     {
-        HWREGH(base + EPWM_O_TZTRIPOUTSEL) |= 1U << (uint32)TzTripOut;
+        HWREGH(base + EPWM_O_TZTRIPOUTSEL) |= ((uint16)1U << (uint16)TzTripOut);
     }
     else
     {
-        HWREGH(base + EPWM_O_TZTRIPOUTSEL) &= ~(1U << (uint32)TzTripOut);
+        HWREGH(base + EPWM_O_TZTRIPOUTSEL) &= ~((uint16)1U << (uint16)TzTripOut);
     }
 }
 
@@ -1902,11 +1912,11 @@ Cdd_Pwm_PrivConfigureInterruptEventCountInit(VAR(Cdd_Pwm_InstanceType, AUTOMATIC
 
     if (TRUE == Select)
     {
-        HWREGH(base + EPWM_O_ETCNTINITCTL) |= EPWM_ETCNTINITCTL_INTINITEN;
+        HWREGH(base + EPWM_O_ETCNTINITCTL) |= ((uint16)EPWM_ETCNTINITCTL_INTINITEN);
     }
     else
     {
-        HWREGH(base + EPWM_O_ETCNTINITCTL) &= ~EPWM_ETCNTINITCTL_INTINITEN;
+        HWREGH(base + EPWM_O_ETCNTINITCTL) &= ~((uint16)EPWM_ETCNTINITCTL_INTINITEN);
     }
 }
 
@@ -1914,7 +1924,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivForceInterruptEventCountInit(VAR(Cdd_Pwm_In
 {
     /* Load the Interrupt Event Counter value */
     uint32 base                         = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_ETCNTINITCTL) |= EPWM_ETCNTINITCTL_INTINITFRC;
+    HWREGH(base + EPWM_O_ETCNTINITCTL) |= ((uint16)EPWM_ETCNTINITCTL_INTINITFRC);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -1950,7 +1960,7 @@ Cdd_Pwm_PrivSetMixEvtTriggerSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instance
     uint32 offset = base + EPWM_O_ETINTMIXEN + ((uint32)EtMixSignal * 4U);
 
     /* Set the ETMIX Source */
-    HWREGH(offset) |= (1U << (uint32)InterruptSource);
+    HWREGH(offset) |= ((uint8)1U << (uint8)InterruptSource);
 }
 
 /*
@@ -2083,7 +2093,7 @@ Cdd_Pwm_PrivClearAdcTriggerFlag(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 {
     /* Clear SOC A/B bit of ETCLR register */
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_ETCLR) |= (1U << ((uint16)AdcSocType + 2U));
+    HWREGH(base + EPWM_O_ETCLR) |= ((uint8)1U << ((uint8)AdcSocType + 2U));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -2095,11 +2105,11 @@ Cdd_Pwm_PrivConfigureAdcTriggerEventCountInit(VAR(Cdd_Pwm_InstanceType, AUTOMATI
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     if (TRUE == Select)
     {
-        HWREGH(base + EPWM_O_ETCNTINITCTL) |= 1U << ((uint16)AdcSocType + 14U);
+        HWREGH(base + EPWM_O_ETCNTINITCTL) |= ((uint16)1U << ((uint8)AdcSocType + 14U));
     }
     else
     {
-        HWREGH(base + EPWM_O_ETCNTINITCTL) &= ~(1U << ((uint16)AdcSocType + 14U));
+        HWREGH(base + EPWM_O_ETCNTINITCTL) &= ~((uint16)1U << ((uint8)AdcSocType + 14U));
     }
 }
 
@@ -2109,7 +2119,7 @@ Cdd_Pwm_PrivForceAdcTriggerEventCountInit(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
 {
     /* Load the Interrupt Event Counter value */
     uint32 base                         = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_ETCNTINITCTL) |= 1U << ((uint16)AdcSocType + 11U);
+    HWREGH(base + EPWM_O_ETCNTINITCTL) |= ((uint8)1U << ((uint8)AdcSocType + 11U));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -2122,7 +2132,7 @@ Cdd_Pwm_PrivSetAdcTriggerEventCountInitValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC
     if (AdcSocType == CDD_PWM_SOC_A)
     {
         HWREGH(base + EPWM_O_ETCNTINIT) = ((HWREGH(base + EPWM_O_ETCNTINIT) & ~EPWM_ETCNTINIT_SOCAINIT_M) |
-                                           (uint16)(EventCount << EPWM_ETCNTINIT_SOCAINIT_S));
+                                           (EventCount << EPWM_ETCNTINIT_SOCAINIT_S));
     }
     else
     {
@@ -2157,7 +2167,7 @@ Cdd_Pwm_PrivForceAdcTrigger(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 {
     /* Set SOC A/B bit of ETFRC register */
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_ETFRC) |= 1U << ((uint16)AdcSocType + 2U);
+    HWREGH(base + EPWM_O_ETFRC) |= ((uint8)1U << ((uint8)AdcSocType + 2U));
 }
 
 /*
@@ -2214,8 +2224,8 @@ Cdd_Pwm_PrivSetDigitalCompareBlankingEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) 
 {
     /* Set DC blanking Event */
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_DCFCTL) = ((HWREGH(base + EPWM_O_DCFCTL) & ~EPWM_DCFCTL_PULSESEL_M) |
-                                    ((uint16)((uint32)BlankingPulse << EPWM_DCFCTL_PULSESEL_S)));
+    HWREGH(base + EPWM_O_DCFCTL) = ((HWREGH(base + EPWM_O_DCFCTL) & ~((uint16)EPWM_DCFCTL_PULSESEL_M)) |
+                                    ((uint16)BlankingPulse << (uint16)EPWM_DCFCTL_PULSESEL_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -2446,21 +2456,21 @@ Cdd_Pwm_PrivGetDigitalCompareCBCLatchStatus(VAR(Cdd_Pwm_InstanceType, AUTOMATIC)
                                             VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
                                             VAR(Cdd_Pwm_DigitalCompareEventType, AUTOMATIC) DcEvent)
 {
-    uint32  base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr + EPWM_O_DCACTL + ((uint8)OutputChannel * 2U);
+    uint32  base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr + EPWM_O_DCACTL + ((uint32)OutputChannel * 2U);
     uint16  status;
     boolean return_value;
 
     /* Get DC CBC Latch Clear Event */
     if (DcEvent == CDD_PWM_DC_EVENT_1)
     {
-        status = HWREGH(base) & EPWM_DCACTL_EVT1LAT;
+        status = HWREGH(base) & ((uint16)EPWM_DCACTL_EVT1LAT);
     }
     else
     {
-        status = HWREGH(base) & EPWM_DCACTL_EVT2LAT;
+        status = HWREGH(base) & ((uint16)EPWM_DCACTL_EVT2LAT);
     }
 
-    return_value = (boolean)(status != 0U);
+    return_value = (boolean)(status != (uint16)0U);
     return return_value;
 }
 
@@ -2477,11 +2487,11 @@ Cdd_Pwm_PrivConfigureDigitalCompareCounterCapture(VAR(Cdd_Pwm_InstanceType, AUTO
 
     if (TRUE == Select)
     {
-        HWREGH(base + EPWM_O_DCCAPCTL) |= EPWM_DCCAPCTL_CAPE;
+        HWREGH(base + EPWM_O_DCCAPCTL) |= ((uint16)EPWM_DCCAPCTL_CAPE);
     }
     else
     {
-        HWREGH(base + EPWM_O_DCCAPCTL) &= ~EPWM_DCCAPCTL_CAPE;
+        HWREGH(base + EPWM_O_DCCAPCTL) &= ~((uint16)EPWM_DCCAPCTL_CAPE);
     }
 }
 
@@ -2493,12 +2503,12 @@ Cdd_Pwm_PrivSetDigitalCompareCounterShadowMode(VAR(Cdd_Pwm_InstanceType, AUTOMAT
     if (TRUE == EnableShadowMode)
     {
         /* Enable DC Counter shadow Mode */
-        HWREGH(base + EPWM_O_DCCAPCTL) &= ~EPWM_DCCAPCTL_SHDWMODE;
+        HWREGH(base + EPWM_O_DCCAPCTL) &= ~((uint16)EPWM_DCCAPCTL_SHDWMODE);
     }
     else
     {
         /* Disable DC Counter shadow Mode */
-        HWREGH(base + EPWM_O_DCCAPCTL) |= EPWM_DCCAPCTL_SHDWMODE;
+        HWREGH(base + EPWM_O_DCCAPCTL) |= ((uint16)EPWM_DCCAPCTL_SHDWMODE);
     }
 }
 
@@ -2519,12 +2529,12 @@ Cdd_Pwm_PrivConfigureDigitalCompareCounterCaptureMode(VAR(Cdd_Pwm_InstanceType, 
     if (TRUE == DisableClearMode)
     {
         /* Disable DC Counter auto-clear on PULSESEL Event */
-        HWREGH(base + EPWM_O_DCCAPCTL) |= EPWM_DCCAPCTL_CAPMODE;
+        HWREGH(base + EPWM_O_DCCAPCTL) |= ((uint16)EPWM_DCCAPCTL_CAPMODE);
     }
     else
     {
         /* Enable DC Counter clear on PULSESEL events */
-        HWREGH(base + EPWM_O_DCCAPCTL) &= ~EPWM_DCCAPCTL_CAPMODE;
+        HWREGH(base + EPWM_O_DCCAPCTL) &= ~((uint16)EPWM_DCCAPCTL_CAPMODE);
     }
 }
 
@@ -2533,7 +2543,7 @@ Cdd_Pwm_PrivClearDigitalCompareCaptureStatusFlag(VAR(Cdd_Pwm_InstanceType, AUTOM
 {
     /* Clear digital compare capture status flag */
     uint32 base                     = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_DCCAPCTL) |= EPWM_DCCAPCTL_CAPCLR;
+    HWREGH(base + EPWM_O_DCCAPCTL) |= ((uint16)EPWM_DCCAPCTL_CAPCLR);
 }
 
 FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_PrivGetDigitalCompareCaptureCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId)
@@ -2556,15 +2566,15 @@ Cdd_Pwm_PrivConfigureDigitalCompareTripCombinationInput(VAR(Cdd_Pwm_InstanceType
     if (TRUE == Select)
     {
         /* Set the DC trip Input */
-        HWREGH(base + offset) = (HWREGH(base + offset) | ((uint16)TripInput));
+        HWREGH(base + offset) = (HWREGH(base + offset) | TripInput);
 
         /* Enable the combination Input */
         HWREGH(base + EPWM_O_DCTRIPSEL) =
-            (HWREGH(base + EPWM_O_DCTRIPSEL) | (0xFU << ((uint16)DcType << 2U)));  // gives 0,4,8 and 12
+            (HWREGH(base + EPWM_O_DCTRIPSEL) | ((uint16)0xFU << ((uint16)DcType << 2U))); /* gives 0,4,8 and 12 */
     }
     else
     {
-        HWREGH(base + offset) = (HWREGH(base + offset) & ~((uint16)TripInput));
+        HWREGH(base + offset) = (HWREGH(base + offset) & ~TripInput);
     }
 }
 
@@ -2579,11 +2589,11 @@ Cdd_Pwm_PrivConfigureCaptureInEvent(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instanc
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     if (TRUE == Select)
     {
-        HWREGH(base + EPWM_O_CAPCTL) |= EPWM_CAPCTL_SRCSEL;
+        HWREGH(base + EPWM_O_CAPCTL) |= ((uint16)EPWM_CAPCTL_SRCSEL);
     }
     else
     {
-        HWREGH(base + EPWM_O_CAPCTL) &= ~EPWM_CAPCTL_SRCSEL;
+        HWREGH(base + EPWM_O_CAPCTL) &= ~((uint16)EPWM_CAPCTL_SRCSEL);
     }
 }
 
@@ -2594,7 +2604,7 @@ Cdd_Pwm_PrivConfigCaptureGateInputPolarity(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) 
     /* Configures Polarity for CAPGATE */
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     HWREGH(base + EPWM_O_CAPCTL) = ((HWREGH(base + EPWM_O_CAPCTL) & ~EPWM_CAPCTL_CAPGATEPOL_M) |
-                                    ((uint32)PolaritySelect << EPWM_CAPCTL_CAPGATEPOL_S));
+                                    ((uint16)PolaritySelect << EPWM_CAPCTL_CAPGATEPOL_S));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -2604,7 +2614,7 @@ Cdd_Pwm_PrivInvertCaptureInputPolarity(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Inst
     /* Configures Polarity for Capture Input */
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     HWREGH(base + EPWM_O_CAPCTL) =
-        ((HWREGH(base + EPWM_O_CAPCTL) & ~EPWM_CAPCTL_CAPINPOL) | ((uint32)PolaritySelect << 3U));
+        ((HWREGH(base + EPWM_O_CAPCTL) & ~EPWM_CAPCTL_CAPINPOL) | ((uint16)PolaritySelect << 3U));
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -2616,11 +2626,11 @@ Cdd_Pwm_PrivConfigureIndependentPulseLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) 
 
     if (TRUE == Select)
     {
-        HWREGH(base + EPWM_O_CAPCTL) |= EPWM_CAPCTL_PULSECTL;
+        HWREGH(base + EPWM_O_CAPCTL) |= ((uint16)EPWM_CAPCTL_PULSECTL);
     }
     else
     {
-        HWREGH(base + EPWM_O_CAPCTL) &= ~EPWM_CAPCTL_PULSECTL;
+        HWREGH(base + EPWM_O_CAPCTL) &= ~((uint16)EPWM_CAPCTL_PULSECTL);
     }
 }
 
@@ -2628,7 +2638,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivForceCaptureEventLoad(VAR(Cdd_Pwm_InstanceT
 {
     /* Force a Capture Event Load */
     uint32 base                   = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    HWREGH(base + EPWM_O_CAPCTL) |= EPWM_CAPCTL_FRCLOAD;
+    HWREGH(base + EPWM_O_CAPCTL) |= ((uint16)EPWM_CAPCTL_FRCLOAD);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -2647,21 +2657,22 @@ Cdd_Pwm_PrivConfigureCaptureTripCombinationInput(VAR(Cdd_Pwm_InstanceType, AUTOM
                                                  VAR(Cdd_Pwm_CaptureInputType, AUTOMATIC) DcType,
                                                  VAR(boolean, AUTOMATIC) Select)
 {
-    uint32 offset = EPWM_O_CAPGATETRIPSEL + ((1U - (uint32)DcType) * 2U);
+    uint32 offset = EPWM_O_CAPGATETRIPSEL + ((uint32)2U * (1U - (uint8)DcType));
 
     /* Set the capture trip Input */
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
 
     if (TRUE == Select)
     {
-        HWREGH(base + offset) = (HWREGH(base + offset) | ((uint16)TripInput));
+        HWREGH(base + offset) = (HWREGH(base + offset) | TripInput);
         /* Enable the combination Input */
-        HWREGH(base + EPWM_O_CAPTRIPSEL) = (HWREGH(base + EPWM_O_CAPTRIPSEL) | (0xFU << ((uint16)DcType << 2U)));
+        HWREGH(base + EPWM_O_CAPTRIPSEL) =
+            (HWREGH(base + EPWM_O_CAPTRIPSEL) | ((uint16)0xFU << ((uint16)DcType << 2U)));
     }
     else
     {
         /* Set the capture trip Input */
-        HWREGH(base + offset) = (HWREGH(base + offset) & ~((uint16)TripInput));
+        HWREGH(base + offset) = (HWREGH(base + offset) & ~TripInput);
     }
 }
 
@@ -2677,12 +2688,12 @@ Cdd_Pwm_PrivConfigureValleyCapture(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instance
     if (TRUE == Select)
     {
         /* Set VCAPE bit */
-        HWREGH(base + EPWM_O_VCAPCTL) |= EPWM_VCAPCTL_VCAPE;
+        HWREGH(base + EPWM_O_VCAPCTL) |= ((uint16)EPWM_VCAPCTL_VCAPE);
     }
     else
     {
         /* Clear VCAPE bit */
-        HWREGH(base + EPWM_O_VCAPCTL) &= ~EPWM_VCAPCTL_VCAPE;
+        HWREGH(base + EPWM_O_VCAPCTL) &= ~((uint16)EPWM_VCAPCTL_VCAPE);
     }
 }
 
@@ -2722,12 +2733,12 @@ Cdd_Pwm_PrivConfigureValleyHwDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instance
     if (TRUE == Select)
     {
         /* Set EDGEFILTDLYSEL bit */
-        HWREGH(base + EPWM_O_VCAPCTL) |= EPWM_VCAPCTL_EDGEFILTDLYSEL;
+        HWREGH(base + EPWM_O_VCAPCTL) |= ((uint16)EPWM_VCAPCTL_EDGEFILTDLYSEL);
     }
     else
     {
         /* Clear EDGEFILTDLYSEL bit */
-        HWREGH(base + EPWM_O_VCAPCTL) &= ~EPWM_VCAPCTL_EDGEFILTDLYSEL;
+        HWREGH(base + EPWM_O_VCAPCTL) &= ~((uint16)EPWM_VCAPCTL_EDGEFILTDLYSEL);
     }
 }
 
@@ -2793,11 +2804,11 @@ Cdd_Pwm_PrivConfigureGlobalLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 
     if (TRUE == Select)
     {
-        HWREGH(base + EPWM_O_GLDCTL) |= EPWM_GLDCTL_GLD;
+        HWREGH(base + EPWM_O_GLDCTL) |= ((uint16)EPWM_GLDCTL_GLD);
     }
     else
     {
-        HWREGH(base + EPWM_O_GLDCTL) &= ~EPWM_GLDCTL_GLD;
+        HWREGH(base + EPWM_O_GLDCTL) &= ~((uint16)EPWM_GLDCTL_GLD);
     }
 }
 
@@ -2836,11 +2847,11 @@ Cdd_Pwm_PrivConfigureGlobalLoadOneShotMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) 
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     if (TRUE == Select)
     {
-        HWREGH(base + EPWM_O_GLDCTL) |= EPWM_GLDCTL_OSHTMODE;
+        HWREGH(base + EPWM_O_GLDCTL) |= ((uint16)EPWM_GLDCTL_OSHTMODE);
     }
     else
     {
-        HWREGH(base + EPWM_O_GLDCTL) &= ~EPWM_GLDCTL_OSHTMODE;
+        HWREGH(base + EPWM_O_GLDCTL) &= ~((uint16)EPWM_GLDCTL_OSHTMODE);
     }
 }
 
@@ -2897,12 +2908,12 @@ Cdd_Pwm_PrivConfigureXCmpMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, V
     if (TRUE == Select)
     {
         /* Enable XCMP compare register operation */
-        HWREGH(offset + EPWM_O_XCMPCTL1) |= EPWM_XCMPCTL1_XCMPEN;
+        HWREGH(offset + EPWM_O_XCMPCTL1) |= ((uint16)EPWM_XCMPCTL1_XCMPEN);
     }
     else
     {
         /* Disable XCMP compare register operation */
-        HWREGH(offset + EPWM_O_XCMPCTL1) &= ~EPWM_XCMPCTL1_XCMPEN;
+        HWREGH(offset + EPWM_O_XCMPCTL1) &= ~((uint16)EPWM_XCMPCTL1_XCMPEN);
     }
 }
 
@@ -2914,11 +2925,11 @@ Cdd_Pwm_PrivConfigureSplitXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, 
 
     if (TRUE == Select)
     {
-        HWREGH(offset + EPWM_O_XCMPCTL1) |= EPWM_XCMPCTL1_XCMPSPLIT;
+        HWREGH(offset + EPWM_O_XCMPCTL1) |= ((uint16)EPWM_XCMPCTL1_XCMPSPLIT);
     }
     else
     {
-        HWREGH(offset + EPWM_O_XCMPCTL1) &= ~EPWM_XCMPCTL1_XCMPSPLIT;
+        HWREGH(offset + EPWM_O_XCMPCTL1) &= ~((uint16)EPWM_XCMPCTL1_XCMPSPLIT);
     }
 }
 
@@ -2930,7 +2941,7 @@ Cdd_Pwm_PrivAllocAXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
     uint32 offset = base + EPWM_O_XCMP + EPWM_O_XCMPCTL1;
 
     HWREGH(offset) =
-        (HWREGH(offset) & ~EPWM_XCMPCTL1_XCMPA_ALLOC_M) | ((uint32)Alloctype << EPWM_XCMPCTL1_XCMPA_ALLOC_S);
+        (HWREGH(offset) & ~EPWM_XCMPCTL1_XCMPA_ALLOC_M) | ((uint16)Alloctype << EPWM_XCMPCTL1_XCMPA_ALLOC_S);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -2941,7 +2952,7 @@ Cdd_Pwm_PrivAllocBXCmp(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
     uint32 offset = base + EPWM_O_XCMP + EPWM_O_XCMPCTL1;
 
     HWREGH(offset) =
-        (HWREGH(offset) & ~EPWM_XCMPCTL1_XCMPB_ALLOC_M) | ((uint32)Alloctype << EPWM_XCMPCTL1_XCMPB_ALLOC_S);
+        (HWREGH(offset) & ~EPWM_XCMPCTL1_XCMPB_ALLOC_M) | ((uint16)Alloctype << EPWM_XCMPCTL1_XCMPB_ALLOC_S);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -2991,22 +3002,22 @@ Cdd_Pwm_PrivSetXCmpActionQualifierAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) In
     if (ShadowSet == CDD_PWM_XCMP_ACTIVE)
     {
         offset                = EPWM_O_XCMP + EPWM_O_XAQCTLA_ACTIVE + output_channel;
-        HWREGH(base + offset) = (HWREGH(base + offset) & ~(3UL << event)) | ((uint32)Output << event);
+        HWREGH(base + offset) = (HWREGH(base + offset) & ~(3U << event)) | ((uint16)Output << event);
     }
     else if (ShadowSet == CDD_PWM_XCMP_SHADOW1)
     {
         offset                = EPWM_O_XCMP + EPWM_O_XAQCTLA_SHDW1 + output_channel;
-        HWREGH(base + offset) = (HWREGH(base + offset) & ~(3UL << event)) | ((uint32)Output << event);
+        HWREGH(base + offset) = (HWREGH(base + offset) & ~(3U << event)) | ((uint16)Output << event);
     }
     else if (ShadowSet == CDD_PWM_XCMP_SHADOW2)
     {
         offset                = EPWM_O_XCMP + EPWM_O_XAQCTLA_SHDW2 + output_channel;
-        HWREGH(base + offset) = (HWREGH(base + offset) & ~(3UL << event)) | ((uint32)Output << event);
+        HWREGH(base + offset) = (HWREGH(base + offset) & ~(3U << event)) | ((uint16)Output << event);
     }
     else
     {
         offset                = EPWM_O_XCMP + EPWM_O_XAQCTLA_SHDW3 + output_channel;
-        HWREGH(base + offset) = (HWREGH(base + offset) & ~(3UL << event)) | ((uint32)Output << event);
+        HWREGH(base + offset) = (HWREGH(base + offset) & ~(3U << event)) | ((uint16)Output << event);
     }
 }
 
@@ -3014,14 +3025,14 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivEnableXLoad(VAR(Cdd_Pwm_InstanceType, AUTOM
 {
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     uint32 offset                = base + EPWM_O_XCMP;
-    HWREG(offset + EPWM_O_XLOAD) = EPWM_XLOAD_STARTLD;
+    HWREG(offset + EPWM_O_XLOAD) = (uint32)EPWM_XLOAD_STARTLD;
 }
 
 FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivForceXLoad(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId)
 {
     uint32 base                  = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     uint32 offset                = base + EPWM_O_XCMP;
-    HWREG(offset + EPWM_O_XLOAD) = EPWM_XLOAD_FRCLD;
+    HWREG(offset + EPWM_O_XLOAD) = (uint32)EPWM_XLOAD_FRCLD;
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -3032,11 +3043,11 @@ Cdd_Pwm_PrivSetXCmpLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
     uint32 offset = base + EPWM_O_XCMP;
     if (Mode == CDD_PWM_XCMP_LOADONCE)
     {
-        HWREG(offset + EPWM_O_XLOADCTL) &= ~EPWM_XLOADCTL_LOADMODE;
+        HWREG(offset + EPWM_O_XLOADCTL) &= ~((uint32)EPWM_XLOADCTL_LOADMODE);
     }
     else
     {
-        HWREG(offset + EPWM_O_XLOADCTL) |= EPWM_XLOADCTL_LOADMODE;
+        HWREG(offset + EPWM_O_XLOADCTL) |= ((uint32)EPWM_XLOADCTL_LOADMODE);
     }
 }
 
@@ -3055,8 +3066,8 @@ Cdd_Pwm_PrivSetXCmpShadowBufPtrLoadOnce(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Ins
 {
     uint32 base   = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     uint32 offset = base + EPWM_O_XCMP + EPWM_O_XLOADCTL;
-    HWREG(offset) =
-        (HWREG(offset) & ~EPWM_XLOADCTL_SHDWBUFPTR_LOADONCE_M) | ((uint32)Ptr << EPWM_XLOADCTL_SHDWBUFPTR_LOADONCE_S);
+    HWREG(offset) = (HWREG(offset) & ~((uint32)EPWM_XLOADCTL_SHDWBUFPTR_LOADONCE_M)) |
+                    ((uint32)Ptr << EPWM_XLOADCTL_SHDWBUFPTR_LOADONCE_S);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -3117,11 +3128,11 @@ Cdd_Pwm_PrivInvertMinimumDeadBandSignal(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Ins
     /* Set the appropriate Output bit to enable minimum dead band Logic */
     if (CDD_PWM_OUTPUT_A == OutputChannel)
     {
-        HWREGH(offset) = (HWREGH(offset) & ~EPWM_MINDBCFG_INVERTA) | (Invert << 2U);
+        HWREGH(offset) = (HWREGH(offset) & ~EPWM_MINDBCFG_INVERTA) | ((uint16)Invert << 2U);
     }
     else
     {
-        HWREG(offset) = (HWREG(offset) & ~EPWM_MINDBCFG_INVERTB) | (Invert << 18U);
+        HWREG(offset) = (HWREG(offset) & ~EPWM_MINDBCFG_INVERTB) | ((uint32)Invert << 18U);
     }
 }
 
@@ -3136,7 +3147,7 @@ Cdd_Pwm_PrivSelectMinimumDeadBandAndOrLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC)
     if (CDD_PWM_OUTPUT_A == OutputChannel)
     {
         /* Configure Logic operation on EPWMA */
-        HWREGH(offset) = (HWREGH(offset) & ~EPWM_MINDBCFG_POLSELA) | ((uint32)Logic << 8U);
+        HWREGH(offset) = (HWREGH(offset) & ~EPWM_MINDBCFG_POLSELA) | ((uint16)Logic << 8U);
     }
     else
     {
@@ -3156,7 +3167,7 @@ Cdd_Pwm_PrivSelectMinimumDeadBandBlockingSignal(VAR(Cdd_Pwm_InstanceType, AUTOMA
     if (CDD_PWM_OUTPUT_A == OutputChannel)
     {
         /* Configure Block signal Source on EPWMA */
-        HWREGH(offset) = (HWREGH(offset) & ~EPWM_MINDBCFG_SELBLOCKA) | ((uint32)BlockingSignal << 3U);
+        HWREGH(offset) = (HWREGH(offset) & ~EPWM_MINDBCFG_SELBLOCKA) | ((uint16)BlockingSignal << 3U);
     }
     else
     {
@@ -3177,7 +3188,7 @@ Cdd_Pwm_PrivSelectMinimumDeadBandReferenceSignal(VAR(Cdd_Pwm_InstanceType, AUTOM
     if (CDD_PWM_OUTPUT_A == OutputChannel)
     {
         /* Select reference Source for minimum dead band on EPWMA */
-        HWREGH(offset) = (HWREGH(offset) & ~EPWM_MINDBCFG_SELA_M) | ((uint32)ReferenceSignal << EPWM_MINDBCFG_SELA_S);
+        HWREGH(offset) = (HWREGH(offset) & ~EPWM_MINDBCFG_SELA_M) | ((uint16)ReferenceSignal << EPWM_MINDBCFG_SELA_S);
     }
     else
     {
@@ -3267,7 +3278,7 @@ Cdd_Pwm_PrivSelectXbarInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
     {
         /* Select one of the 16 outputs of ICL XBAR for EPWMA */
         HWREGH(offset + EPWM_O_LUTCTLA) =
-            (HWREGH(offset + EPWM_O_LUTCTLA) & ~EPWM_LUTCTLA_SELXBAR_M) | ((uint32)XbarInput << EPWM_LUTCTLA_SELXBAR_S);
+            (HWREGH(offset + EPWM_O_LUTCTLA) & ~EPWM_LUTCTLA_SELXBAR_M) | ((uint16)XbarInput << EPWM_LUTCTLA_SELXBAR_S);
     }
     else
     {
@@ -3280,7 +3291,7 @@ Cdd_Pwm_PrivSelectXbarInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetLutDecX(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                        VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
-                       VAR(Cdd_Pwm_LutDecXType, AUTOMATIC) Decx, VAR(uint32, AUTOMATIC) Force)
+                       VAR(Cdd_Pwm_LutDecXType, AUTOMATIC) Decx, VAR(uint16, AUTOMATIC) Force)
 {
     uint32 base   = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     uint32 offset = base + EPWM_O_MINDB;
@@ -3341,12 +3352,12 @@ Cdd_Pwm_PrivSetDiodeEmulationMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceI
 }
 
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_PrivSetDiodeEmulationReentryDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) Delay)
+Cdd_Pwm_PrivSetDiodeEmulationReentryDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint8, AUTOMATIC) Delay)
 {
     uint32 base   = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     uint32 offset = base + EPWM_O_DE;
     HWREGH(offset + EPWM_O_DECTL) =
-        (HWREGH(offset + EPWM_O_DECTL) & ~EPWM_DECTL_REENTRYDLY_M) | (Delay << EPWM_DECTL_REENTRYDLY_S);
+        (HWREGH(offset + EPWM_O_DECTL) & ~EPWM_DECTL_REENTRYDLY_M) | ((uint16)Delay << EPWM_DECTL_REENTRYDLY_S);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -3355,7 +3366,7 @@ Cdd_Pwm_PrivConfigureDiodeEmulationTripLowSources(VAR(Cdd_Pwm_InstanceType, AUTO
 {
     uint32 base   = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     uint32 offset = base + EPWM_O_DE + EPWM_O_DECOMPSEL;
-    HWREG(offset) = (HWREG(offset) & ~EPWM_DECOMPSEL_TRIPL_M) | ((uint16)Source << EPWM_DECOMPSEL_TRIPL_S);
+    HWREG(offset) = (HWREG(offset) & ~EPWM_DECOMPSEL_TRIPL_M) | ((uint32)Source << EPWM_DECOMPSEL_TRIPL_S);
 }
 
 FUNC(void, CDD_PWM_CODE)
@@ -3409,14 +3420,14 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivNoBypassDiodeEmulationLogic(VAR(Cdd_Pwm_Ins
 {
     uint32 base                      = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     uint32 offset                    = base + EPWM_O_DE;
-    HWREG(offset + EPWM_O_DEACTCTL) &= ~EPWM_DEACTCTL_TRIPENABLE;
+    HWREG(offset + EPWM_O_DEACTCTL) &= ~((uint32)EPWM_DEACTCTL_TRIPENABLE);
 }
 
 FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivbypassDiodeEmulationLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId)
 {
     uint32 base                      = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     uint32 offset                    = base + EPWM_O_DE;
-    HWREG(offset + EPWM_O_DEACTCTL) |= EPWM_DEACTCTL_TRIPENABLE;
+    HWREG(offset + EPWM_O_DEACTCTL) |= ((uint32)EPWM_DEACTCTL_TRIPENABLE);
 }
 
 FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivForceDiodeEmulationActive(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId)
@@ -3453,11 +3464,11 @@ Cdd_Pwm_PrivSetDiodeEmulationMonitorModeStep(VAR(Cdd_Pwm_InstanceType, AUTOMATIC
 
     if (CDD_PWM_DE_COUNT_UP == Direction)
     {
-        HWREGH(offset) = (HWREGH(offset) & ~EPWM_DEMONSTEP_INCSTEP_M) | (StepSize << EPWM_DEMONSTEP_INCSTEP_S);
+        HWREGH(offset) = (HWREGH(offset) & ~EPWM_DEMONSTEP_INCSTEP_M) | ((uint16)StepSize << EPWM_DEMONSTEP_INCSTEP_S);
     }
     else
     {
-        HWREG(offset) = (HWREG(offset) & ~EPWM_DEMONSTEP_DECSTEP_M) | (StepSize << EPWM_DEMONSTEP_DECSTEP_S);
+        HWREG(offset) = (HWREG(offset) & ~EPWM_DEMONSTEP_DECSTEP_M) | ((uint32)StepSize << EPWM_DEMONSTEP_DECSTEP_S);
     }
 }
 
@@ -3484,6 +3495,8 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivClearDiodeEmulationActiveFlag(VAR(Cdd_Pwm_I
  *********************************************************************************************************************/
 
 #if (STD_OFF == CDD_PWM_ADVANCED_MODE_API)
+
+/* Design: MCAL-33907 */
 static FUNC(void, CDD_PWM_CODE) Cdd_Pwm_InitDutyCycle(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
                                                       VAR(Cdd_Pwm_DutyCycleType, AUTOMATIC) DutyCycle)
 {
@@ -3547,6 +3560,7 @@ static FUNC(void, CDD_PWM_CODE) Cdd_Pwm_InitDutyCycle(VAR(Cdd_Pwm_ChannelType, A
     channelobj->dutycycle = DutyCycle;
 }
 
+/* Design: MCAL-33908 */
 static FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_PrivGetCompareValue(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
                                                               VAR(Cdd_Pwm_DutyCycleType, AUTOMATIC) DutyCycle)
 {
@@ -3556,7 +3570,7 @@ static FUNC(uint16, CDD_PWM_CODE) Cdd_Pwm_PrivGetCompareValue(VAR(Cdd_Pwm_Channe
     if (CDD_PWM_ASYMMETRIC_WAVEFORM == Cdd_Pwm_ConfigPtr->hwunitcfg[hw_index].symmetry)
     {
         /* For an asymmetric waveform: CMP = ((DutyCycle*(TBPRD+1U))/CDD_PWM_MAX_DUTY_CYCLE) */
-        period = (uint32)(Cdd_Pwm_DrvObjPtr->hwunitobj[hw_index].period + ((uint32)1U));
+        period = (uint32)(((uint32)1U + Cdd_Pwm_DrvObjPtr->hwunitobj[hw_index].period));
 
         /* Update the duty cycle of the channel when the counter is Zero */
         compare_value = (uint16)((period * DutyCycle) / CDD_PWM_MAX_DUTY_CYCLE);
@@ -3598,6 +3612,8 @@ static FUNC(void, CDD_PWM_CODE)
 }
 
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
+
+/* Design: MCAL-33928 */
 static FUNC(void, CDD_PWM_CODE)
     Cdd_Pwm_UpdateNotificationAction(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
                                      VAR(boolean, AUTOMATIC) NotificationMode, VAR(boolean, AUTOMATIC) Mode)
@@ -3637,6 +3653,8 @@ static FUNC(void, CDD_PWM_CODE)
 }
 
 #if (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
+
+/* Design: MCAL-33893 */
 static FUNC(Cdd_Pwm_EvtMixTriggerSourceType, CDD_PWM_CODE)
     Cdd_Pwm_PrivGetEventSource(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
                                VAR(Cdd_Pwm_EdgeNotificationType, AUTOMATIC) EdgeNotification)
@@ -3668,6 +3686,7 @@ static FUNC(Cdd_Pwm_EvtMixTriggerSourceType, CDD_PWM_CODE)
     return eventsource;
 }
 
+/* Design: MCAL-33929 */
 static FUNC(void, CDD_PWM_CODE)
     Cdd_Pwm_UpdateNotification(VAR(Cdd_Pwm_ChannelType, AUTOMATIC) ChannelId,
                                VAR(Cdd_Pwm_EdgeNotificationType, AUTOMATIC) EdgeNotification,
@@ -3736,7 +3755,7 @@ static FUNC(void, CDD_PWM_CODE)
 #endif
 
 #if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
-
+#if (STD_ON == CDD_PWM_HRPWM_SUPPORTED)
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivHrpwmSetPhaseShift(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint32, AUTOMATIC) PhaseCount)
 {
@@ -3977,16 +3996,7 @@ Cdd_Pwm_PrivHrpwmGetCounterCompareValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Ins
     compare_module = (CDD_PWM_OUTPUT_A == OutputChannel) ? (EPWM_O_CMPA) : (EPWM_O_CMPB);
 
     /* Get counter compare value for selected module */
-    if (OutputChannel == CDD_PWM_OUTPUT_A)
-    {
-        /* Read from CMPAHR */
-        compare_count = HWREG(base + compare_module) >> 8U;
-    }
-    else
-    {
-        /* Read from CMPBHR */
-        compare_count = HWREG(base + compare_module) >> 8U;
-    }
+    compare_count = HWREG(base + compare_module) >> 8U;
 
     return (compare_count);
 }
@@ -4045,7 +4055,7 @@ Cdd_Pwm_PrivHrpwmSetHiResFallingEdgeDelayOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATI
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivHrpwmSetMepStep(VAR(Cdd_Pwm_HrpwmCalInstanceType, AUTOMATIC) InstanceId, VAR(uint16, AUTOMATIC) MepCount)
 {
-    uint32 base = HRPWMCAL1_BASE + ((HRPWMCAL2_BASE - HRPWMCAL1_BASE) * InstanceId);
+    uint32 base = Cdd_Pwm_ConfigPtr->hrpwmcal_baseaddr[InstanceId];
 
     /* Set HRPWM MEP count */
     HWREGH(base + HRPWMCAL_O_HRMSTEP) = ((HWREGH(base + HRPWMCAL_O_HRMSTEP) & ~HRPWMCAL_HRMSTEP_HRMSTEP_M) | MepCount);
@@ -4056,7 +4066,7 @@ Cdd_Pwm_PrivHrpwmSetDeadbandMEPEdgeSelect(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
                                           VAR(Cdd_Pwm_HrpwmMepDeadBandEdgeModeType, AUTOMATIC) MepDbEdge)
 {
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    // Set the HRPWM DB edge mode
+    /* Set the HRPWM DB edge mode */
     HWREGH(base + EPWM_O_HRCNFG2) = ((HWREGH(base + EPWM_O_HRCNFG2) & ~EPWM_HRCNFG2_EDGMODEDB_M) | ((uint16)MepDbEdge));
 }
 
@@ -4065,7 +4075,7 @@ Cdd_Pwm_PrivHrpwmSetRisingEdgeDelayLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC)
                                             VAR(Cdd_Pwm_HrpwmLoadModeType, AUTOMATIC) LoadEvent)
 {
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    // Set the HRPWM RED load mode
+    /* Set the HRPWM RED load mode */
     HWREGH(base + EPWM_O_HRCNFG2) = ((HWREGH(base + EPWM_O_HRCNFG2) & ~EPWM_HRCNFG2_CTLMODEDBRED_M) |
                                      ((uint16)LoadEvent << EPWM_HRCNFG2_CTLMODEDBRED_S));
 }
@@ -4075,8 +4085,7 @@ Cdd_Pwm_PrivHrpwmSetFallingEdgeDelayLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC
                                              VAR(Cdd_Pwm_HrpwmLoadModeType, AUTOMATIC) LoadEvent)
 {
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    // Set the HRPWM FED load mode
-
+    /* Set the HRPWM FED load mode */
     HWREGH(base + EPWM_O_HRCNFG2) = ((HWREGH(base + EPWM_O_HRCNFG2) & ~EPWM_HRCNFG2_CTLMODEDBFED_M) |
                                      ((uint16)LoadEvent << EPWM_HRCNFG2_CTLMODEDBFED_S));
 }
@@ -4086,7 +4095,7 @@ Cdd_Pwm_PrivHrpwmLockRegisters(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                VAR(Cdd_Pwm_HrpwmLockRegisterGroupType, AUTOMATIC) RegisterGroup)
 {
     uint32 base = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
-    // Write the Key to EPWMLOCK register
+    /* Write the Key to EPWMLOCK register */
     HWREG(base + EPWM_O_LOCK) = (0xA5A50000UL | ((uint32)RegisterGroup));
 }
 
@@ -4104,7 +4113,7 @@ Cdd_Pwm_PrivHrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivHrpwmSetHiResXCmpRegValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                           VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg,
-                                          VAR(uint32, AUTOMATIC) HrXCmpValue)
+                                          VAR(uint16, AUTOMATIC) HrXCmpValue)
 {
     uint32 base   = Cdd_Pwm_ConfigPtr->hwunitcfg[InstanceId].base_addr;
     uint32 offset = base + EPWM_O_XCMP + EPWM_O_XCMP1_ACTIVE + ((uint32)XCmpReg * 2U);
@@ -4131,21 +4140,19 @@ Cdd_Pwm_PrivHrpwmSetHiResXCmpRegValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
  *              0 - SFO calibration incomplete on selected channel.
  *
  ******************************************************************************/
-FUNC(Cdd_Pwm_SfoStatus, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstanceType Cdd_Pwm_HrpwmCalId)
+FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstanceType Cdd_Pwm_HrpwmCalId)
 {
-    static uint16 hrc1, hrc2; /* holds HRCNT0 count in 65535 HRCNT1 counts */
-    static uint16 taskptr = 0U;
-    uint16        Cdd_Pwm_MEP_SF;
-    uint16        status, numer;
-    float         denom;
+    static uint16         hrc1, hrc2; /* holds HRCNT0 count in 65535 HRCNT1 counts */
+    static uint16         taskptr = 0U;
+    uint16                Cdd_Pwm_MEP_SF, numer;
+    Cdd_Pwm_SfoStatusType status = CDD_PWM_SFO_INCOMPLETE; /* status remains 0 until SFO completes */
+    float32               denom;
 
     /* Initialize the MEP scale factor */
     uint16 Cdd_Pwm_MEP_ScaleFactor = 0U;
 
     /* Hrpwm Cal base address */
-    uint32 Cdd_Pwm_HrCalBase = HRPWMCAL1_BASE + (Cdd_Pwm_HrpwmCalId * CDD_PWM_HRCAL_BASESTEP);
-
-    status = CDD_PWM_SFO_INCOMPLETE; /* status remains 0 until SFO completes */
+    uint32 Cdd_Pwm_HrCalBase = Cdd_Pwm_ConfigPtr->hrpwmcal_baseaddr[Cdd_Pwm_HrpwmCalId];
 
     /* SFO MEP Calibration State Machine */
     switch (taskptr)
@@ -4262,13 +4269,13 @@ FUNC(Cdd_Pwm_SfoStatus, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstanceTy
         case 5: /* Process diagnostics data */
 
             /* Calculate MEP delay time in 1 SYSCLK cycle */
-            denom = ((1 / (float)hrc2) - (1 / (float)hrc1)) * (float)0xFFFF;
+            denom = (((float32)1U / (float32)hrc2) - ((float32)1U / (float32)hrc1)) * (float32)0xFFFF;
 
             /* Calculate # of MEP steps */
             numer = (CDD_PWM_MEP2 - CDD_PWM_MEP1) * 2U;
 
             /* Calculate MEP scale factor */
-            Cdd_Pwm_MEP_SF          = (((float)numer / denom) + 0.5);
+            Cdd_Pwm_MEP_SF          = (uint16)(((float32)numer / denom) + ((float32)0.5));
             Cdd_Pwm_MEP_ScaleFactor = Cdd_Pwm_MEP_SF;
 
             /* Update the task pointer to CDD_PWM_MEP1 calibration initialization task for next call. */
@@ -4309,7 +4316,7 @@ FUNC(Cdd_Pwm_SfoStatus, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstanceTy
     }
     return status;
 }
-
+#endif
 #endif
 
 #define CDD_PWM_STOP_SEC_CODE

@@ -44,10 +44,11 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
-/* TODO: replace with actual value from Mcu based on MCAL-30739 */
-#define MCAL_LIB_TICK_VALUE 5 /* 5ns for 200MHz SYS_CLK*/
 
-#define MCAL_LIB_MAX_TICK_VALUE 0x4189374BC6A7EF /* Uint64_MAX/1000 */
+#define MCAL_LIB_MAX_TICK_VALUE (0x4189374BC6A7EFU) /* Uint64_MAX/1000 */
+/* Default Sysclock value is set to a higher frequency to ensure that the no under-delay occurs if Mcu is not
+ * initialized */
+#define MCAL_LIB_DEFAULT_SYSCLK_HZ (200000000U)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -88,28 +89,24 @@ extern FUNC(void, MCAL_LIB_CODE) McalLib_Delay(VAR(uint32, MCAL_LIB_DATA) count)
 /** \brief Delay function in microseconds.
  *
  * \param[in] delayUsec Number of microseconds of delay
- * \param[in] sysclkHz CPU SYSCLK in Hz
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
-extern FUNC(void, MCAL_LIB_CODE)
-    McalLib_DelayUsec(VAR(McalLib_TickType, MCAL_LIB_DATA) delayUsec, VAR(uint32, MCAL_LIB_DATA) sysclkHz);
+extern FUNC(void, MCAL_LIB_CODE) McalLib_DelayUsec(VAR(McalLib_TickType, MCAL_LIB_DATA) delayUsec);
 
 /** \brief Delay function in milliseconds.
  *
- * \param[in] delayMsec Number of microseconds of delay
- * \param[in] sysclkHz CPU SYSCLK in Hz
+ * \param[in] delayMsec Number of milliseconds of delay
  * \pre None
  * \post None
  * \return None
  * \retval None
  *
  *********************************************************************************************************************/
-extern FUNC(void, MCAL_LIB_CODE)
-    McalLib_DelayMsec(VAR(McalLib_TickType, MCAL_LIB_DATA) delayMsec, VAR(uint32, MCAL_LIB_DATA) sysclkHz);
+extern FUNC(void, MCAL_LIB_CODE) McalLib_DelayMsec(VAR(McalLib_TickType, MCAL_LIB_DATA) delayMsec);
 
 /** \brief This function reads IPC free run timer (64-bit value) and update startTime param
  *
@@ -151,6 +148,7 @@ extern FUNC(void, MCAL_LIB_CODE)
 extern FUNC(Std_ReturnType, MCAL_LIB_CODE)
     McalLib_GetTimerTickFromUs(McalLib_TickType timeOutInUs,
                                P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) tickCounter);
+
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/

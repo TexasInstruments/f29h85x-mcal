@@ -27,6 +27,7 @@
  *********************************************************************************************************************/
 #include "Cdd_Sent.h"
 #include "hw_sent.h"
+#include "hw_memmap.h"
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
@@ -60,14 +61,14 @@
  *********************************************************************************************************************/
 #define CDD_SENT_START_SEC_CONFIG_DATA
 #include "Cdd_Sent_MemMap.h"
-
+[!SELECT "as:modconf('Cdd_Sent/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Sent/Cdd']"!]
 /*
  * Design: MCAL-28716, MCAL-28717, MCAL-28718, MCAL-28719, MCAL-28720, MCAL-28721,
  * Design: MCAL-28722, MCAL-28723, MCAL-28724, MCAL-28725, MCAL-28726, MCAL-28727,
  * Design: MCAL-28728, MCAL-28729, MCAL-28730, MCAL-28709,
  */
 /* MTP Config structures*/
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
+[!LOOP "CddSentConfig"!][!LOOP "CddSentController/*"!][!//
 [!LOOP "CddSentExternalDeviceConfig/*"!][!//
 
 CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!] =
@@ -102,9 +103,9 @@ CONST(Cdd_Sent_MTPConfigType, CDD_SENT_CONFIG_DATA) [!"../../../../@name"!]_[!".
 };
 [!ENDLOOP!][!ENDLOOP!][!ENDLOOP!][!//
 
-[!VAR "NumChannels" = "num:i(count(as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*/CddSentExternalDeviceConfig/*))"!][!//
+[!VAR "NumChannels" = "num:i(count(CddSentConfig/CddSentController/*/CddSentExternalDeviceConfig/*))"!][!//
 /* List of MTP Config structures per instance */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
+[!LOOP "CddSentConfig"!][!LOOP "CddSentController/*"!][!//
 
 CONST(Cdd_Sent_MTPConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_CddSentController_List[[!"$NumChannels"!]] =
 {
@@ -118,7 +119,7 @@ CONST(Cdd_Sent_MTPConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_CddSentCo
  * Design: MCAL-28708, MCAL-28710, MCAL-28712, MCAL-28713,MCAL-28734,MCAL-28732
  */
 /* Channel Config structures*/
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
+[!LOOP "CddSentConfig"!][!LOOP "CddSentController/*"!][!//
 [!LOOP "CddSentChannelObject/*"!][!//
 
 CONST(Cdd_Sent_ChannelConfigType, CDD_SENT_CONFIG_DATA) [!"../../../../@name"!]_[!"../../@name"!]_[!"@name"!] =
@@ -137,10 +138,10 @@ CONST(Cdd_Sent_ChannelConfigType, CDD_SENT_CONFIG_DATA) [!"../../../../@name"!]_
 };
 [!ENDLOOP!][!ENDLOOP!][!ENDLOOP!][!//
 
-[!VAR "Index" = "0"!][!VAR "NumChannels" = "num:i(count(as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*/CddSentChannelObject/*))"!]
+[!VAR "Index" = "0"!][!VAR "NumChannels" = "num:i(count(CddSentConfig/CddSentController/*/CddSentChannelObject/*))"!]
 
 /* Cdd_Sent HW unit structure defined here for all config sets */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!LOOP "CddSentController/*"!][!//
+[!LOOP "CddSentConfig"!][!LOOP "CddSentController/*"!][!//
 
 CONST(Cdd_Sent_ChannelConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_CddSentChannelObject_List[[!"$NumChannels"!]] =
 {
@@ -157,14 +158,14 @@ CONST(Cdd_Sent_ChannelConfigType*, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_CddSe
  * Design: MCAL-28700, MCAL-28701, MCAL-28704, MCAL-28705, MCAL-28706, MCAL-28707,
  * Design: MCAL-28715, MCAL-28711
  */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*"!][!//
+[!LOOP "CddSentConfig/CddSentController/*"!][!//
 
 /* CddSent HW unit structure for [!"../../@name"!]_[!"@name"!]*/
 CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 {
     .CddSentHWUnitId = (uint8 )[!"CddSentHWUnitId"!]U,
-    .CddSentInstance = (Cdd_SentInstance )CDD_SENT_INSTANCE_[!"CddSentInstance"!],
-    .CddSentBaseAddress = (uint32 )[!"num:inttohex(CddSentBaseAddress)"!]U,
+    .CddSentInstance = (Cdd_SentInstance )CDD_SENT_INSTANCE_[!"node:value(node:ref(CddSentInstanceRef)/InstanceName)"!],
+    .CddSentBaseAddress = [!"node:value(node:ref(CddSentInstanceRef)/BaseAddr)"!],
     .CddSentClockTick  = (uint32 )[!"CddSentClockTick"!]U,
     .CddSentCRCType  = (Cdd_SentCRCType )[!"CddSentCRCType"!],
     .CddSentCRCWidth   = (Cdd_SentCRCWidth  )[!"CddSentCRCWidth "!],
@@ -191,7 +192,7 @@ CONST(Cdd_Sent_HWUnitType, CDD_SENT_CONFIG_DATA) [!"../../@name"!]_[!"@name"!] =
 [!ENDLOOP!][!//
 
 /*List of the CddSent HW unit structures */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig"!][!//
+[!LOOP "CddSentConfig"!][!//
 
 CONST(Cdd_Sent_ConfigType, CDD_SENT_CONFIG_DATA) [!"@name"!]_Cdd_SentController_List=
 {
@@ -200,7 +201,7 @@ CONST(Cdd_Sent_ConfigType, CDD_SENT_CONFIG_DATA) [!"@name"!]_Cdd_SentController_
 };
 [!ENDLOOP!][!//
 
-
+[!ENDSELECT!]
 #define CDD_SENT_STOP_SEC_CONFIG_DATA
 #include "Cdd_Sent_MemMap.h"
 

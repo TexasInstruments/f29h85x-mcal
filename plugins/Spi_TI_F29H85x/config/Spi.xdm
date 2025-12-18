@@ -214,7 +214,7 @@
                       <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="true"/>
-                      <a:da name="DEFAULT" value="0"/>
+                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:current()/../@index&quot;,num:i(0))"/>
                       <a:a name="UUID" 
                            value="d61770ab-8eb5-462d-bfc7-addf5bdc02f5"/>
                       <a:da name="INVALID" type="Range">
@@ -456,7 +456,7 @@
                         <a:tst expr="text:uniq((../../../../..//*[@name='SpiJobId']),node:value(.))"
                         false="SpiJobId must be unique across within HWUnit."/>
                       </a:da>
-                      <a:da name="DEFAULT" value="0"/>
+                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:current()/../@index&quot;,num:i(0))"/>
                     </v:var>
                     <v:var name="SpiJobPriority" type="INTEGER">
                       <a:a name="DESC" 
@@ -527,10 +527,12 @@
                               <mt:tst expr="&lt;=255"/>
                               <mt:tst expr="&gt;=0"/>
                             </mt:range>
-                            <mt:xpath expr="text:uniq((../../../SpiChannelList/*[@name='SpiChannelIndex']),node:value(.))"
+                            <mt:xpath expr="node:value(.) = ../@index"
+                                    false="SpiChannelIndex should be arranged sequential."/>
+                            <mt:xpath expr="text:uniq((../../../SpiChannelList//*[@name='SpiChannelIndex']),node:value(.))"
                                     false="SpiChannelIndex must be unique with in a job."/>
                           </a:da>
-                          <a:da name="DEFAULT" value="0"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->node:current()/../@index&quot;,num:i(0))"/>
                         </v:var>
                         <v:ref name="SpiChannelAssignment" type="REFERENCE">
                           <a:a name="DESC" 
@@ -899,15 +901,11 @@
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                            value="e685b943-16b5-45f3-a753-049e8b8ad3ed"/>
-                          <a:da name="RANGE">
-                            <a:v>SPI_UNIT_SPIA</a:v>
-                            <a:v>SPI_UNIT_SPIB</a:v>
-                            <a:v>SPI_UNIT_SPIC</a:v>
-                            <a:v>SPI_UNIT_SPID</a:v>
-                            <a:v>SPI_UNIT_SPIE</a:v>
+                          <a:da name="RANGE" type="XPath">
+                               <a:tst expr="node:fallback(&quot;->node:range((//SpiAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])/InstanceName)&quot;,ecu:list('ResourceAllocator_F29H85x.SpiInstanceName'))"/> -->
                           </a:da>
-                          <a:da name="DEFAULT" value="SPI_UNIT_SPIA" />
-                          <a:da name="INVALID" type="XPath" expr="node:containsValue(../../..//*[@name='SpiHwUnitType'], node:value(.))" false="SpiHwUnit ID must be configured in SpiHwUnitConfig"/>
+                          <a:da name="DEFAULT" value="SPIA" />
+                          <a:da name="INVALID" type="XPath" expr="count(../../../SpiHwUnitConfig/*[node:value(node:ref(SpiHwUnitType)/InstanceName) = node:value(node:current())]) > 0" false="SPI hardware instance configured in SpiHwUnit ID must also be configured in SpiHwUnitConfig"/>
                         </v:var>
                         <v:var name="SpiShiftClockIdleLevel" type="ENUMERATION">
                           <a:a name="DESC" 
@@ -978,7 +976,7 @@
                   </v:ctr>
                 </v:lst>
                 <v:lst name="SpiHwUnitConfig" type="MAP">
-                      <a:da name="MAX" value="5"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.SpiInstanceName')))&quot;,'5')"/>
                       <a:da name="MIN" value="1"/>
                       <v:ctr name="SpiHwUnitConfig" type="IDENTIFIABLE">
                         <a:a name="DESC" value="EN: HW Unit configurations"/>
@@ -990,8 +988,8 @@
                            <icc:v class="PreCompile">VariantPreCompile</icc:v>
                         </a:a>
                         <!-- Design : MCAL-28105 -->
-                        <v:var name="SpiHwUnitType" type="ENUMERATION">
-                          <a:a name="DESC" value="EN: SPI HW unit to use."/>
+                        <v:ref name="SpiHwUnitType" type="REFERENCE">
+                          <a:a name="DESC" value="EN: Reference to the SPI Instance."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS"
                             type="IMPLEMENTATIONCONFIGCLASS">
                             <icc:v vclass="Link">VariantLinkTime</icc:v>
@@ -1000,19 +998,16 @@
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                            value="bd1da8ef-23d8-42c4-b17e-7c4b063f68bc"/>
-                          <a:da name="DEFAULT" value="SPI_UNIT_SPIA"/>
-                          <a:da name="RANGE">
-                          <a:v>SPI_UNIT_SPIA</a:v>
-                          <a:v>SPI_UNIT_SPIB</a:v>
-                          <a:v>SPI_UNIT_SPIC</a:v>
-                          <a:v>SPI_UNIT_SPID</a:v>
-                          <a:v>SPI_UNIT_SPIE</a:v>
+                          <a:a name="UUID" value="bd1da8ef-23d8-42c4-b17e-7c4b063f68bc"/>
+                          <a:da name="REF" 
+                            value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Spi/SpiAllocatedInstance"/>
+                          <a:da name="RANGE" type="XPath">
+                                <a:tst expr="node:paths(//SpiAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
                           </a:da>
-                          <a:da name="INVALID" type="XPath" expr="text:uniq((../../..//*[@name='SpiHwUnitType']),node:value(.))" false="SpiHwUnitType must be unique across SpiHwUnitConfig."/>
-                        </v:var>
+                          <a:da name="INVALID" type="XPath">
+                                <a:tst expr="text:uniq((../../..//*[@name='SpiHwUnitType']),node:value(.))" false="SpiHwUnitType selection has to be unique across all containers."/>
+                          </a:da>
+                        </v:ref>
                         <!-- Design : MCAL-28106 -->
                         <v:var name="SpiHighSpeedMode" type="BOOLEAN">
                           <a:a name="TOOLTIP" value="Enables High speed mode for SPI instance, make sure supported HS pins are selected for this SPI in port, check TRM and data sheet for suported HS pins details"/>

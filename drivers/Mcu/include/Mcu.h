@@ -55,7 +55,7 @@ extern "C" {
 /** \brief Driver Implementation Major Version. */
 #define MCU_SW_MAJOR_VERSION (2U)
 /** \brief Driver Implementation Minor Version. */
-#define MCU_SW_MINOR_VERSION (0U)
+#define MCU_SW_MINOR_VERSION (1U)
 /** \brief Driver Implementation Patch Version. */
 #define MCU_SW_PATCH_VERSION (0U)
 
@@ -109,6 +109,8 @@ extern "C" {
 #define MCU_SID_GET_VERSION_INFO ((uint8)0x09U)
 /** \brief Service ID for Mcu_GetRamState.*/
 #define MCU_SID_GET_RAM_STATE ((uint8)0x0AU)
+/** \brief Service ID for Mcu_GetSystemClock.*/
+#define MCU_SID_GET_SYS_CLOCK ((uint8)0x0BU)
 
 /*********************************************************************************************************************
  * MCU Error Codes returned by Driver functions.
@@ -147,6 +149,10 @@ extern "C" {
 #ifndef MCU_E_INIT_FAILED
 /** \brief Mcu Initialization failed. */
 #define MCU_E_INIT_FAILED ((uint8)0x11U)
+#endif
+#ifndef MCU_E_UNINIT_CLOCK
+/** \brief API invoked without performing Mcu_InitClock. */
+#define MCU_E_UNINIT_CLOCK ((uint8)0x12U)
 #endif
 
 /** \brief Define indicating invalid raw reset value.*/
@@ -349,6 +355,16 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_DistributePllClock(void);
  *         MCU_PLL_STATUS_UNDEFINED: Pre-compile McuNoPll is set to true.
  *********************************************************************************************************************/
 FUNC(Mcu_PllStatusType, MCU_CODE) Mcu_GetPllStatus(void);
+
+/** \brief This service provides the system clock.
+ *
+ * \pre None
+ * \post None
+ * \return Mcu_SysClk - System clock
+ * \retval PllSysclk
+
+ *********************************************************************************************************************/
+FUNC(uint32, MCU_CODE) Mcu_GetSystemClock(void);
 
 /** \brief The service reads the reset reason from the hardware.
  *

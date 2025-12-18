@@ -87,8 +87,8 @@ CONST(Cdd_Uart_ConfigType, CDD_UART_CONFIG_DATA) Cdd_Uart_Config =
         {
 [!VAR "UartClock"="num:i(node:ref(CddUartClockFreq)/McuClockReferencePointFrequency)"!][!//	
 [!VAR "UartBdRt"="CddUartBaudRate"!][!//
-            .Cdd_Uart_Instance = (Cdd_Uart_Instance)CDD_UART_INSTANCE_[!"CddUartInstance"!],
-            .Cdd_Uart_BaseAddr = (uint32)[!"num:inttohex(CddUartBaseAddress)"!]U,
+            .Cdd_Uart_Instance = (Cdd_Uart_Instance)CDD_UART_INSTANCE_[!"(node:ref(CddUartInstance)/InstanceName)"!],
+            .Cdd_Uart_BaseAddr = (uint32)[!"node:value(node:ref(CddUartInstance)/BaseAddr)"!],
             .Cdd_Uart_HWUnitId = (uint8 )[!"CddUartHWUnitId"!]U,
 [!IF "num:i(num:mul($UartBdRt,16)) >= num:i($UartClock)"!][!//
 [!VAR "UartBdRt"="num:i(num:div($UartBdRt,2))"!]

@@ -121,12 +121,13 @@
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.9. WDG Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.10. CDD ADC Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.11. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.12. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.13. CDD PWM Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.14. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.15. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.16. CDD UART Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.17. RTDMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">4.12. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.13. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.14. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.15. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.16. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.17. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.18. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
@@ -1354,7 +1355,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 <td><p>PortPinMode</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Port pin mode from mode list.</p></td>
+<td><p>Port pin mode from mode list. NOTE: While configuring the PortPinMode, ensure that the selected mux mode is available for the specific device variant by checking the datasheet as the pinmuxmode list contains a superset of values for all the variants.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>Multiplicity-Configuration-Class</strong></p></td>
 <td><p>–</p></td>
@@ -1571,42 +1572,6 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 <tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
 <td><p>false</p></td>
 </tr>
-</tbody>
-</table>
-</section>
-<section id="portlockconfiguration">
-<h4><span class="section-number">4.7.10.4.5. </span>PortLockConfiguration<a class="headerlink" href="#portlockconfiguration" title="Link to this heading"></a></h4>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Item</p></th>
-<th class="head"><p></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Name</strong></p></td>
-<td><p>PortLockConfiguration</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Description</strong></p></td>
-<td><p>Lock All pins configuration.</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Origin</strong></p></td>
-<td><p>Texas Instruments</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Post-Build-Variant-Value</strong></p></td>
-<td><p>false</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Value-Configuration-Class</strong></p></td>
-<td><p>–</p></td>
-</tr>
-<tr class="row-odd"><td><p>Post-Build-Time</p></td>
-<td><p>VARIANT-POST-BUILD</p></td>
-</tr>
-<tr class="row-even"><td><p>Pre-Compile-Time</p></td>
-<td><p>VARIANT-PRE-COMPILE</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Default-value</strong></p></td>
-<td><p>false</p></td>
-</tr>
 <tr class="row-even"><td><p>Refer <a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_PortDriver.pdf">AUTOSAR_SWS_PortDriver section: 10 Configuration specification</a> for more configuration parameters details</p></td>
 <td><p></p></td>
 </tr>
@@ -1778,7 +1743,7 @@ In case of Post build variant, upper modules that call the Port_Init function wi
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Nov 21, 2025.
+          <span class="lastupdated" >Last updated on Dec 18, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

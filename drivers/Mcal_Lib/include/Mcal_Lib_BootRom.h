@@ -158,32 +158,32 @@ typedef enum
  *****************************************************************************/
 typedef struct
 {
-    McalLib_Status RamInit : 2;       /* Flow status for RAM Initialization: */
-    McalLib_Status Hwpatch : 2;       /* Flow status for ROM Hardware Patching: */
-    McalLib_Status ErrorStsPin : 2;   /* Flow status for Error status pin configuration: */
-    McalLib_Status Zone0pswd : 2;     /* Flow status for ZONE0 debug passwsrd: */
-    McalLib_Status Uid : 2;           /* Flow status for Unique Id: */
-    McalLib_Status Friws : 2;         /* Flow status for FRI wait states:*/
-    McalLib_Status WdEnable : 2;      /* Flow status for Watchdog enable:*/
-    McalLib_Status Pmmtrim : 2;       /* Flow status for PMM Trim: */
-    McalLib_Status Osctrim : 2;       /* Flow status for OSC Trim: */
-    McalLib_Status Aplltrim : 2;      /* Flow status for APLL Trim: */
-    McalLib_Status Flashtrim : 2;     /* Flow status for Flash Trim: */
-    McalLib_Status Criticaltrim : 2;  /* Flow status for Overall Critical Trim: */
-    McalLib_Status Devconfig : 2;     /* Flow status for Device Configuration: */
-    McalLib_Status LockDcx : 2;       /* Flow status for DCx Lock: */
-    McalLib_Status RescClr : 2;       /* Flow status for Reset Cause Clear: */
-    McalLib_Status FlashTrimLock : 2; /* Flow status for Flash Trim Lock: */
-    McalLib_Status EsmLockCommit : 2; /* Flow status for ESM Lock and Commit Group 0 error events: */
-    McalLib_Status UppRev : 2;        /* Flow status for UPP revision: */
-    McalLib_Status XtalEn : 2;        /* Flow status for external crystal power up:*/
-    McalLib_Status SsuPost : 2;       /* Flow status for SSU post: */
-    McalLib_Status SsuInit : 2;       /* Flow status for SSU Initialization: */
-    McalLib_Status PmmDbgtrim : 2;    /* Flow status for PMM Debug Trim: */
-    McalLib_Status AdcReftrim : 2;    /* Flow status for ADC Reference Trim: */
-    McalLib_Status AdcOfftrim : 2;    /* Flow status for ADC offset Trim: */
-    McalLib_Status AdcInltrim : 2;    /* Flow status for ADCINL Trim: */
-    McalLib_Status DacOfftrim : 2;    /* Flow status for DAC Offset Trim: */
+    uint32 RamInit : 2;       /* Flow status for RAM Initialization: */
+    uint32 Hwpatch : 2;       /* Flow status for ROM Hardware Patching: */
+    uint32 ErrorStsPin : 2;   /* Flow status for Error status pin configuration: */
+    uint32 Zone0pswd : 2;     /* Flow status for ZONE0 debug passwsrd: */
+    uint32 Uid : 2;           /* Flow status for Unique Id: */
+    uint32 Friws : 2;         /* Flow status for FRI wait states:*/
+    uint32 WdEnable : 2;      /* Flow status for Watchdog enable:*/
+    uint32 Pmmtrim : 2;       /* Flow status for PMM Trim: */
+    uint32 Osctrim : 2;       /* Flow status for OSC Trim: */
+    uint32 Aplltrim : 2;      /* Flow status for APLL Trim: */
+    uint32 Flashtrim : 2;     /* Flow status for Flash Trim: */
+    uint32 Criticaltrim : 2;  /* Flow status for Overall Critical Trim: */
+    uint32 Devconfig : 2;     /* Flow status for Device Configuration: */
+    uint32 LockDcx : 2;       /* Flow status for DCx Lock: */
+    uint32 RescClr : 2;       /* Flow status for Reset Cause Clear: */
+    uint32 FlashTrimLock : 2; /* Flow status for Flash Trim Lock: */
+    uint32 EsmLockCommit : 2; /* Flow status for ESM Lock and Commit Group 0 error events: */
+    uint32 UppRev : 2;        /* Flow status for UPP revision: */
+    uint32 XtalEn : 2;        /* Flow status for external crystal power up:*/
+    uint32 SsuPost : 2;       /* Flow status for SSU post: */
+    uint32 SsuInit : 2;       /* Flow status for SSU Initialization: */
+    uint32 PmmDbgtrim : 2;    /* Flow status for PMM Debug Trim: */
+    uint32 AdcReftrim : 2;    /* Flow status for ADC Reference Trim: */
+    uint32 AdcOfftrim : 2;    /* Flow status for ADC offset Trim: */
+    uint32 AdcInltrim : 2;    /* Flow status for ADCINL Trim: */
+    uint32 DacOfftrim : 2;    /* Flow status for DAC Offset Trim: */
 
 } McalLib_Brom;
 
@@ -194,18 +194,18 @@ typedef struct
  ******************************************************************************/
 typedef struct
 {
-    McalLib_Status        BankMgmtCpu1 : 2;    /* Flow status for CPU1 bank mgmt */
-    McalLib_Status        BankMgmtCpu3 : 2;    /* Flow status for CPU3 bank mgmt */
-    McalLib_Status        EccBankMode : 2;     /* Flow status for Bank mode ECC */
-    McalLib_Status        EetBankMode : 2;     /* Flow status for Get bankmode */
-    McalLib_Status        ReadError : 2;       /* Flow status for sector read error */
-    McalLib_Status        EccSsuMode : 2;      /* Flow status for SSU mode ECC */
-    McalLib_Status        GetSsuMode : 2;      /* Flow status for Get SSU mode */
-    McalLib_Status        SecCfgCpu1 : 2;      /* Flow status for CPU1 seccfg */
-    McalLib_Status        SecCfgCpu3 : 2;      /* Flow status for CPU3 seccfg */
-    McalLib_Status        SsuCfgCpu1 : 2;      /* Flow status for CPU1 SSU config */
-    McalLib_Status        SsuCfgCpu3 : 2;      /* Flow status for CPU3 SSU config */
-    McalLib_Status        AprCfg : 2;          /* Flow status for CPU1, CPU2 and CPU3 APR configuration */
+    uint32                BankMgmtCpu1 : 2;    /* Flow status for CPU1 bank mgmt */
+    uint32                BankMgmtCpu3 : 2;    /* Flow status for CPU3 bank mgmt */
+    uint32                EccBankMode : 2;     /* Flow status for Bank mode ECC */
+    uint32                EetBankMode : 2;     /* Flow status for Get bankmode */
+    uint32                ReadError : 2;       /* Flow status for sector read error */
+    uint32                EccSsuMode : 2;      /* Flow status for SSU mode ECC */
+    uint32                GetSsuMode : 2;      /* Flow status for Get SSU mode */
+    uint32                SecCfgCpu1 : 2;      /* Flow status for CPU1 seccfg */
+    uint32                SecCfgCpu3 : 2;      /* Flow status for CPU3 seccfg */
+    uint32                SsuCfgCpu1 : 2;      /* Flow status for CPU1 SSU config */
+    uint32                SsuCfgCpu3 : 2;      /* Flow status for CPU3 SSU config */
+    uint32                AprCfg : 2;          /* Flow status for CPU1, CPU2 and CPU3 APR configuration */
     uint32                WinningBankMgmtCpu1; /* Winning bank mgmt sector found for CPU1 */
     uint32                WinningBankMgmtCpu3; /* Winning bank mgmt sector found for CPU3 */
     uint32                ValidSecCfgCpu1;     /* Valid SECCFG sector found for CPU1 */

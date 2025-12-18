@@ -70,6 +70,11 @@ extern "C" {
 [!AUTOSPACING!]
 /* generation of configuration data */
 [!SELECT "as:modconf('Fls')[as:path(node:dtos(.))='/TI_F29H85x/Fls']"!]
+/*
+ * Design: MCAL-31044, MCAL-31045, MCAL-31046, MCAL-31047, MCAL-31048, MCAL-31049, MCAL-31066,
+ * Design: MCAL-31067, MCAL-31068, MCAL-31069, MCAL-31070, MCAL-31071, MCAL-31072, MCAL-31073,
+ * Design: MCAL-31074, MCAL-31075, MCAL-31076,
+ */
 [!LOOP "FlsConfigSet"!][!//
 CONST(struct Fls_ConfigType_s, FLS_CONFIG_DATA) Fls_Config =
 {

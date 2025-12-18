@@ -1,0 +1,73 @@
+<?xml version='1.0'?>
+<datamodel version="8.0" 
+           xmlns="http://www.tresos.de/_projects/DataModel2/18/root.xsd" 
+           xmlns:a="http://www.tresos.de/_projects/DataModel2/18/attribute.xsd" 
+           xmlns:v="http://www.tresos.de/_projects/DataModel2/06/schema.xsd" 
+           xmlns:d="http://www.tresos.de/_projects/DataModel2/06/data.xsd">
+
+  <d:ctr type="AUTOSAR" factory="autosar" 
+         xmlns:ad="http://www.tresos.de/_projects/DataModel2/08/admindata.xsd" 
+         xmlns:ce="http://www.tresos.de/_projects/DataModel2/18/childenable.xsd" 
+         xmlns:cd="http://www.tresos.de/_projects/DataModel2/08/customdata.xsd" 
+         xmlns:f="http://www.tresos.de/_projects/DataModel2/14/formulaexpr.xsd" 
+         xmlns:icc="http://www.tresos.de/_projects/DataModel2/08/implconfigclass.xsd" 
+         xmlns:mt="http://www.tresos.de/_projects/DataModel2/11/multitest.xsd"  
+         xmlns:variant="http://www.tresos.de/_projects/DataModel2/11/variant.xsd">
+    <d:lst type="TOP-LEVEL-PACKAGES">
+      <d:ctr name="ResourceAllocator" type="AR-PACKAGE">
+        <d:lst type="ELEMENTS">
+          <d:chc name="ResourceAllocator" type="AR-ELEMENT" 
+                 value="MODULE-CONFIGURATION">
+            <d:ctr type="MODULE-CONFIGURATION">
+              <a:a name="DEF" value="ASPath:/TI_F29H85x/ResourceAllocator"/>
+              <d:var name="IMPLEMENTATION_CONFIG_VARIANT" type="ENUMERATION" 
+                     value="VariantPreCompile">
+                <a:a name="IMPORTER_INFO" value="@DEF"/>
+              </d:var>
+              <d:ctr name="ResourceAllocatorGeneral" type="IDENTIFIABLE">
+                <d:var name="Mode" type="ENUMERATION" value="SETUP"/>
+                <d:var name="Device" type="ENUMERATION" value="F29P589DU_Q1"/>
+                <d:var name="Variant" type="ENUMERATION" value="F29P589DU5_Q"/>
+                <d:var name="Package" type="ENUMERATION" 
+                       value="F29P589DU5_Q_256ZEX"/>
+                <d:ref name="CurrentContext" type="REFERENCE" 
+                       value="ASPath:/ResourceAllocator/ResourceAllocator/ResourceAllocatorGeneral/Context_0"/>
+                <d:var name="CPU1_Lockstep" type="BOOLEAN" value="true">
+                  <a:a name="IMPORTER_INFO">
+                    <a:v>@DEF</a:v>
+                    <a:v>@CALC</a:v>
+                  </a:a>
+                </d:var>
+                <d:lst name="Context" type="MAP">
+                  <d:ctr name="Context_0" type="IDENTIFIABLE">
+                    <d:var name="Core" type="ENUMERATION" value="CPU1">
+                      <a:a name="IMPORTER_INFO" value="@DEF"/>
+                    </d:var>
+                    <d:lst name="Can" type="MAP"/>
+                    <d:lst name="Spi" type="MAP"/>
+                    <d:lst name="Lin" type="MAP"/>
+                    <d:lst name="Cdd_Adc" type="MAP">
+                      <d:ctr name="Cdd_Adc" type="IDENTIFIABLE">
+                        <d:lst name="Cdd_AdcAllocatedInstance" type="MAP"/>
+                        <d:lst name="CddAdcSafetyCheckerInstance" type="MAP"/>
+                        <d:lst name="CddAdcCheckerInterruptEvtInstance" 
+                               type="MAP"/>
+                      </d:ctr>
+                    </d:lst>
+                    <d:lst name="Cdd_Ecap" type="MAP"/>
+                    <d:lst name="Cdd_I2c" type="MAP"/>
+                    <d:lst name="Cdd_Pwm" type="MAP"/>
+                    <d:lst name="Cdd_Sent" type="MAP"/>
+                    <d:lst name="Cdd_Uart" type="MAP"/>
+                  </d:ctr>
+                </d:lst>
+                <d:lst name="Cdd_Xbar" type="MAP"/>
+              </d:ctr>
+            </d:ctr>
+          </d:chc>
+        </d:lst>
+      </d:ctr>
+    </d:lst>
+  </d:ctr>
+
+</datamodel>

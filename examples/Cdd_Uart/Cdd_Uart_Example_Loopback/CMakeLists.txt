@@ -10,6 +10,11 @@ if(NOT TARGET Mcu)
                      ${CMAKE_BINARY_DIR}/Mcu)
 endif()
 
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
+endif()
+
 if(NOT TARGET Mcal_Lib)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcal_Lib/
                      ${CMAKE_BINARY_DIR}/Mcal_Lib)
@@ -73,7 +78,7 @@ endif()
 
 if(NOT TARGET Cdd_Uart_Example_Loopback_Config)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/Cdd_Uart_Example_Loopback_Config/
+        ${CMAKE_CURRENT_SOURCE_DIR}/${BUILD_DEVICE}/Cdd_Uart_Example_Loopback_Config/
         ${CMAKE_BINARY_DIR}/Cdd_Uart/Cdd_Uart_Example_Loopback/Cdd_Uart_Example_Loopback_Config
     )
 endif()
@@ -96,15 +101,7 @@ add_link_options(
 )
 add_link_options(-Wl,-m=${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.map)
 
-if(BUILD_CONFIGURATION MATCHES "RAM")
-    add_link_options(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_ram_lnk_cpu1.cmd
-    )
-else()
-    add_link_options(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../DeviceSupport/LinkerCMD/f29h85x_flash_lnk_cpu1.cmd
-    )
-endif()
+select_linker_file("DEFAULT" "cpu1")
 
 # This command is used to move the .out file
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
@@ -117,6 +114,7 @@ target_link_libraries(
     PRIVATE Cdd_Uart_Example_Loopback_Config
             Cdd_Uart
             Mcu
+            SchM_Mcu
             hw_include
             AUTOSAR_Types
             Det

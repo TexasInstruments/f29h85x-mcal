@@ -161,6 +161,32 @@
 #undef MCU_STOP_SEC_CONFIG_DATA
 #undef MEMMAP_ERROR
             
+#elif defined MCU_START_SEC_VAR_INIT_32
+#ifdef MEMMAP_SECTION_OPEN
+    #error "Memory section VAR_INIT_32 is already opened, Cannot reopen section using \
+           MCU_START_SEC_VAR_INIT_32 ."
+#endif
+#define MEMMAP_SECTION_OPEN
+#define MCU_VAR_INIT_32_OPEN
+#pragma clang section data = ".MCU_VAR_INIT_32"
+#undef MCU_START_SEC_VAR_INIT_32
+#undef MEMMAP_ERROR
+
+#elif defined MCU_STOP_SEC_VAR_INIT_32
+#ifndef MEMMAP_SECTION_OPEN
+#error "Memory section VAR_INIT_32 is not open, Cannot close section using \
+         MCU_STOP_SEC_VAR_INIT_32."
+#endif
+#undef MEMMAP_SECTION_OPEN
+#ifndef MCU_VAR_INIT_32_OPEN
+    #error "Memory section VAR_INIT_32 is not open ,Cannot close section using \
+           MCU_STOP_SEC_VAR_INIT_32."
+#endif
+#undef MCU_VAR_INIT_32_OPEN
+#pragma clang section data = ""
+#undef MCU_STOP_SEC_VAR_INIT_32
+#undef MEMMAP_ERROR
+            
 #endif
 
 
@@ -202,6 +228,15 @@
 #ifdef MCU_STOP_SEC_CONFIG_DATA
     #error "multiple memory allocation keywords are defined, Cannot use \
            MCU_STOP_SEC_CONFIG_DATA."
+#endif
+
+#ifdef MCU_START_SEC_VAR_INIT_32
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           MCU_START_SEC_VAR_INIT_32."
+#endif
+#ifdef MCU_STOP_SEC_VAR_INIT_32
+    #error "multiple memory allocation keywords are defined, Cannot use \
+           MCU_STOP_SEC_VAR_INIT_32."
 #endif
 
 /*********************************************************************************************************************

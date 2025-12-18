@@ -1,0 +1,111 @@
+/*********************************************************************************************************************
+ *  COPYRIGHT
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  \verbatim
+ *
+ *                 TEXAS INSTRUMENTS INCORPORATED PROPRIETARY INFORMATION
+ *
+ *                 Property of Texas Instruments, Unauthorized reproduction and/or distribution
+ *                 is strictly prohibited.  This product  is  protected  under  copyright  law
+ *                 and  trade  secret law as an  unpublished work.
+ *                 (C) Copyright 2025 Texas Instruments Inc.  All rights reserved.
+ *
+ *  \endverbatim
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  FILE DESCRIPTION
+ *  ------------------------------------------------------------------------------------------------------------------
+ *  File:       Os_Cfg.h
+ *  Generator:  Elektrobit Tresos
+ *
+ *  Description:  Os configuration header file.
+ *********************************************************************************************************************/
+#ifndef OS_CFG_H
+#define OS_CFG_H
+
+#include "Std_Types.h"
+#include "Mcal_Lib_Cpu.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*********************************************************************************************************************
+ * Header Files
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Version Check (if required)
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Exported Preprocessor #define Constants
+ *********************************************************************************************************************/
+#define OS_CFG_MAJOR_VERSION                 (1U)
+#define OS_CFG_MINOR_VERSION                 (0U)
+#define OS_CFG_PATCH_VERSION                 (0U)
+
+#define OS_PRE_COMPILE_VARIANT   (STD_ON)
+
+#define OS_POST_BUILD_VARIANT    (STD_OFF)
+
+#define OS_CFG_MAX_ISR          (7U)
+
+#define OS_CFG_MAX_COUNTER      (0U)
+
+#define OS_COUNTER_ENABLE       (STD_OFF)
+
+#define RTINT_THRESHOLD          (25U)
+
+#define OS_INIT_CONFIG_PC       Os_Config
+
+/*********************************************************************************************************************
+ * Exported Preprocessor #define Macros
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Exported Type Declarations
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ * Exported Object Declarations
+ *********************************************************************************************************************/
+
+/*********************************************************************************************************************
+ *  Exported Function Prototypes
+ *********************************************************************************************************************/
+/* Category 1 RTINT ISR function prototype. */
+MCAL_LIB_INT_ISR(Cdd_Adc_ADCA_Int1Isr); 
+
+/* Category 1 INT ISR function prototype. */
+MCAL_LIB_RTINT_ISR(Cdd_Adc_ADCA_Int2Isr);
+
+/* Category 1 RTINT ISR function prototype. */
+MCAL_LIB_INT_ISR(Cdd_Adc_ADCB_Int1Isr); 
+
+/* Category 1 INT ISR function prototype. */
+MCAL_LIB_RTINT_ISR(Cdd_Adc_ADCB_Int2Isr);
+
+/* Category 1 RTINT ISR function prototype. */
+MCAL_LIB_INT_ISR(Cdd_Adc_ADCC_Int1Isr); 
+
+/* Category 1 INT ISR function prototype. */
+MCAL_LIB_RTINT_ISR(Cdd_Adc_ADCC_Int2Isr);
+
+/* Category 1 INT ISR function prototype. */
+MCAL_LIB_RTINT_ISR(Cdd_Adc_ADCA_PpbEvtIntIsr);
+
+
+/*********************************************************************************************************************
+ *  Exported Inline Function Definitions and Function-Like Macros
+ *********************************************************************************************************************/
+
+extern const struct Os_ConfigType_s Os_Config;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* OS_CFG_H */
+/*********************************************************************************************************************
+ *  End of File: Os_Cfg.h
+ *********************************************************************************************************************/

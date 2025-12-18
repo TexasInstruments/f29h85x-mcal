@@ -418,6 +418,7 @@
                           <a:tst expr="&lt;=4294967295"/>
                           <a:tst expr="&gt;=0"/>
                         </a:da>
+                        <a:da name="EDITABLE" value="false"/>
                       </v:var>
 
                       <v:var name="FlsSectorSize" type="INTEGER">
@@ -465,25 +466,6 @@
                 <a:a name="DESC"
                      value="EN: Container for general parameters of the flash driver. These parameters are always pre-compile."/>
                 <a:a name="UUID" value="d0c60e33-63ac-4ea9-a77f-04c0643e58c7"/>
-
-                <v:var name="FlsDeviceVariant" type="ENUMERATION">
-                      <a:a name="DESC">
-                          <a:v>EN: Select required Device Variant.</a:v>
-                      </a:a>
-                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                      </a:a>
-                      <a:a name="ORIGIN" value="Texas Instruments"/>
-                      <a:a name="SCOPE" value="LOCAL"/>
-                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                      <a:a name="UUID" value="2c124b17-e519-4eec-ab22-1fb21eeb457a"/>
-                      <a:da name="DEFAULT" value="F29H85x"/>
-                  <a:da name="RANGE">
-                         <a:v>F29H85x</a:v>
-                  </a:da>
-                      <!-- <a:da name="RANGE" type="XPath" expr="ecu:list('Fls_devices')"/> -->
-                </v:var>
 
                 <v:var name="FlsAcLoadOnJobStart" type="BOOLEAN">
                       <a:a name="DESC"
@@ -562,12 +544,7 @@
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" value="96b4e539-f8a2-4558-b1d8-a885fad0f1ab"/>
-                      <!--
-                      <a:da name="DEFAULT" type="XPath" expr="num:i(number(ecu:get(concat('Fls_DataFlash_TotalSize_',node:value(../FlsDeviceVariant  )))))"/>
-                      <a:da name="ENABLE" value = "true"/>
-                      <a:da name="EDITABLE" value="false"/>
-                      -->
-                      <a:da name="DEFAULT" value="262144"/>
+                      <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:get('ResourceAllocator_F29H85x.Fls_TotalSize')&quot;,num:i(262144))"/>
                       <a:da name="INVALID" type="Range">
                         <a:tst expr="&lt;=4294967295"/>
                         <a:tst expr="&gt;=0"/>
@@ -822,7 +799,7 @@
                       <a:a name="UUID" value="5c0bb8fd-3722-4f59-b577-8125ff7d14f3"/>
                       <a:da name="DEFAULT" value="false"/>
                 </v:var>
-                
+
                 <v:var name="FlsIrqType" type="ENUMERATION">
                       <a:a name="DESC">
                           <a:v>EN: Type of Isr function:
@@ -1035,7 +1012,7 @@
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" value="62ee6971-42d9-4da5-b4e7-025aa7a370a4"/>
                       <a:da name="DEFAULT" value="0"/>
-                      <a:da name="EDITABLE" value="false"/>             
+                      <a:da name="EDITABLE" value="false"/>
                 </v:var>
                 <v:var name="FlsSpecifiedEraseCycles" type="INTEGER_LABEL">
                       <a:a name="DESC"

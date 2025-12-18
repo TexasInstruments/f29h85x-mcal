@@ -270,12 +270,12 @@ extern "C" {
 [!LOOP "SpiDriver"!][!//
 [!LOOP "SpiHwUnitConfig/*"!][!//
 /** \brief Enable/disable SPI Instance ISR */
-#define SPI[!"substring-after(node:value(SpiHwUnitType),'SPI')"!]_ACTIVE
+#define SPI_UNIT_[!"node:value(node:ref(SpiHwUnitType)/InstanceName)"!]_ACTIVE
 /*
  * Design : MCAL-25154
  */
 /** \brief Macro defining SPI Instance ISR type */
-#define SPI[!"substring-after(node:value(SpiHwUnitType),'SPI_UNIT')"!][!"substring-after(node:value(SpiIrqType),'SPI')"!]
+#define SPI_[!"node:value(node:ref(SpiHwUnitType)/InstanceName)"!][!"substring-after(node:value(SpiIrqType),'SPI')"!]
 
 [!ENDLOOP!][!//
 [!ENDLOOP!][!//
@@ -299,8 +299,8 @@ extern "C" {
 [!ENDLOOP!][!//
 
 [!LOOP "SpiExternalDevice/*"!][!//
-/** \brief Symbolic Name HW Unit - [!"node:value(SpiHwUnit)"!] */
-#define SpiConf_SpiExternalDevice_[!"@name"!]_HwUnitId[!"@index"!] [!"SpiHwUnit"!] /*~ASR~*/
+/** \brief Symbolic Name HW Unit - SPI_UNIT_[!"node:value(SpiHwUnit)"!] */
+#define SpiConf_SpiExternalDevice_[!"@name"!]_HwUnitId[!"@index"!] SPI_UNIT_[!"SpiHwUnit"!] /*~ASR~*/
 [!ENDLOOP!][!//
 
 /** \brief macro for invalid CS Identifier to which is greater than max channels supported */
@@ -335,7 +335,7 @@ extern "C" {
 /** \brief Mask for the configured Hw Instance */
 #define SPI_CFG_ENABLED_HW_MASK             (0U [!//
 [!LOOP "SpiDriver/SpiHwUnitConfig/*"!]\
-                                                  | (1U << (uint8)[!"SpiHwUnitType"!])[!//
+                                                  | (1U << (uint8)[!"concat('SPI_UNIT_', node:value(node:ref(SpiHwUnitType)/InstanceName))"!])[!//
 [!ENDLOOP!][!//
 )
 #ifndef SPI_E_HARDWARE_ERROR
@@ -710,6 +710,8 @@ typedef struct
 {
     /** \brief SPI HW unit to use */
     Spi_HWUnitType hwUnitId;
+    /** \brief SPI HW unit base address */
+    uint32         HwUnitBaseAddr;
     /** \brief Enables High speed mode for SPI instance */
     boolean        hsModeEnable;
     /** \brief SPI FIFO Enhancements Enable */

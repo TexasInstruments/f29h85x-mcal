@@ -1,0 +1,62 @@
+<projectSpec>
+  <project
+        name="Spi_Example_SyncTransfer_F29H85x"
+        device="F29H850TU9"
+        cgtVersion="2.0.0.STS"
+        outputFormat="ELF"
+        linkerCommandFile=""
+        toolChain="TICLANG"
+        >
+    <configuration name="CPU1_RAM" compilerBuildOptions="-I${PROJECT_ROOT}/Spi_Example_SyncTransfer -I${C2000MCAL_APP_UTILS_INCLUDE} -I${C2000MCAL_BSW_STUBS_SPI_SCHM_INCLUDE} -I${C2000MCAL_DEVICESUPPORT_INCLUDE} -I${C2000MCAL_MCAL_LIB_INCLUDE} -I${C2000MCAL_BSW_STUBS_AUTOSAR_TYPES_INCLUDE} -I${C2000MCAL_BSW_STUBS_OS_INCLUDE} -I${C2000MCAL_BSW_STUBS_DET_INCLUDE} -I${C2000MCAL_BSW_STUBS_DEM_INCLUDE} -I${C2000MCAL_BSW_STUBS_MEMMAP_INCLUDE} -I${C2000MCAL_BSW_STUBS_PORT_SCHM_INCLUDE} -I${C2000MCAL_BSW_STUBS_MCU_SCHM_INCLUDE}  -I${C2000MCAL_BSW_STUBS_ECUM_INCLUDE} -I${C2000MCAL_HW_INCLUDE} -I${C2000MCAL_SPI_INCLUDE} -I${C2000MCAL_MCU_INCLUDE} -I${C2000MCAL_PORT_INCLUDE} -I${C2000MCAL_CONFIG_INCLUDE} -I${C2000MCAL_EXAMPLE_INCLUDE} -g -DDEBUG -DBUILD_DEVICE_F29H85x -cl-single-precision-constant -O0 -Wall -Werror" linkerBuildOptions="--emit_warnings_as_errors --diag_suppress=10068 --diag_suppress=10325 --diag_suppress=10063 --entry_point code_start --stack_size=0x1000 --heap_size=0x1000 "/>
+    <configuration name="CPU1_FLASH" compilerBuildOptions="-I${PROJECT_ROOT}/Spi_Example_SyncTransfer -I${C2000MCAL_APP_UTILS_INCLUDE} -I${C2000MCAL_BSW_STUBS_SPI_SCHM_INCLUDE} -I${C2000MCAL_DEVICESUPPORT_INCLUDE} -I${C2000MCAL_MCAL_LIB_INCLUDE} -I${C2000MCAL_BSW_STUBS_AUTOSAR_TYPES_INCLUDE} -I${C2000MCAL_BSW_STUBS_OS_INCLUDE} -I${C2000MCAL_BSW_STUBS_DET_INCLUDE} -I${C2000MCAL_BSW_STUBS_DEM_INCLUDE} -I${C2000MCAL_BSW_STUBS_MEMMAP_INCLUDE} -I${C2000MCAL_BSW_STUBS_PORT_SCHM_INCLUDE} -I${C2000MCAL_BSW_STUBS_MCU_SCHM_INCLUDE} -I${C2000MCAL_BSW_STUBS_ECUM_INCLUDE} -I${C2000MCAL_HW_INCLUDE} -I${C2000MCAL_SPI_INCLUDE} -I${C2000MCAL_MCU_INCLUDE} -I${C2000MCAL_PORT_INCLUDE} -I${C2000MCAL_CONFIG_INCLUDE} -I${C2000MCAL_EXAMPLE_INCLUDE} -g -DDEBUG -DBUILD_DEVICE_F29H85x -D_FLASH -cl-single-precision-constant -O1 -Wall -Werror" linkerBuildOptions="--emit_warnings_as_errors --diag_suppress=10068 --diag_suppress=10325 --diag_suppress=10063 --entry_point code_start --stack_size=0x1000 --heap_size=0x1000 "
+    postBuildStep=
+       "${CG_TOOL_OBJCOPY} --remove-section=cert --remove-section=.TI.bound:CPU1_Cfg --remove-section=.TI.bound:CPU2_Cfg --remove-section=.TI.bound:CPU3_Cfg -O binary ${ProjName}.out ${ProjName}.bin;
+        $(PYTHON_TOOL) ${F29x_MCAL_INSTALL_DIR}/signing/sign_non_secure.py --b ${ProjName}.bin --c C29 --k ${F29x_MCAL_INSTALL_DIR}/signing/keys/key.pem --o 60 --l 0x10001000;
+        ${CG_TOOL_OBJCOPY} --update-section cert=C29-cert.bin ${ProjName}.out ${ProjName}_cert.out;
+        $(RM) ${ProjName}.out;
+        $(RENAME_TOOL) ${ProjName}_cert.out ${ProjName}.out"
+    />
+
+    <pathVariable name="C2000MCAL_BSW_STUBS_AUTOSAR_TYPES_INCLUDE"  path="../../../../../drivers/BSW_Stubs/AUTOSAR_Types/include/" scope="project"/>
+    <pathVariable name="C2000MCAL_BSW_STUBS_DET_INCLUDE"            path="../../../../../drivers/BSW_Stubs/Det/include/"           scope="project"/>
+    <pathVariable name="C2000MCAL_BSW_STUBS_DEM_INCLUDE"            path="../../../../../drivers/BSW_Stubs/Dem/include/"           scope="project"/>
+    <pathVariable name="C2000MCAL_BSW_STUBS_MEMMAP_INCLUDE"         path="../../../../../drivers/BSW_Stubs/MemMap/include/"        scope="project"/>
+	<pathVariable name="C2000MCAL_BSW_STUBS_PORT_SCHM_INCLUDE"      path="../../../../../drivers/BSW_Stubs/SchM/Port/include/"     scope="project"/>
+    <pathVariable name="C2000MCAL_BSW_STUBS_SPI_SCHM_INCLUDE"       path="../../../../../drivers/BSW_Stubs/SchM/Spi/include/"      scope="project"/>
+    <pathVariable name="C2000MCAL_BSW_STUBS_MCU_SCHM_INCLUDE"       path="../../../../../drivers/BSW_Stubs/SchM/Mcu/include/"              scope="project"/>
+	<pathVariable name="C2000MCAL_BSW_STUBS_ECUM_INCLUDE"           path="../../../../../drivers/BSW_Stubs/EcuM/include/"          scope="project"/>
+	<pathVariable name="C2000MCAL_BSW_STUBS_OS_INCLUDE"             path="../../../../../drivers/BSW_Stubs/Os/include/"            scope="project"/>
+    <pathVariable name="C2000MCAL_HW_INCLUDE"                       path="../../../../../drivers/hw_include/f29h85x/"              scope="project"/>
+    <pathVariable name="C2000MCAL_SPI_INCLUDE"                      path="../../../../../drivers/Spi/include/"                     scope="project"/>
+	<pathVariable name="C2000MCAL_MCU_INCLUDE"                      path="../../../../../drivers/Mcu/include/"                     scope="project"/>
+	<pathVariable name="C2000MCAL_PORT_INCLUDE"                     path="../../../../../drivers/Port/include/"                    scope="project"/>
+    <pathVariable name="C2000MCAL_CONFIG_INCLUDE"                   path="../Spi_Example_SyncTransfer_Config/output/include/"   scope="project"/>
+    <pathVariable name="C2000MCAL_APP_UTILS_INCLUDE"                path="../../../../AppUtils/"                                   scope="project"/>
+    <pathVariable name="C2000MCAL_DEVICESUPPORT_INCLUDE"            path="../../../../DeviceSupport/include/"                      scope="project"/>
+    <pathVariable name="C2000MCAL_EXAMPLE_INCLUDE"                  path="../../"                                                  scope="project"/>
+    <pathVariable name="C2000MCAL_MCAL_LIB_INCLUDE"                 path="../../../../../drivers/Mcal_Lib/include/"                scope="project"/>
+    <pathVariable name="F29x_MCAL_INSTALL_DIR"                      path="../../../../../build/toolchain"                          scope="project"/>
+
+    <file action="copy" path="../../../../DeviceSupport/LinkerCMD/f29h85x_ram_lnk_cpu1.cmd"          targetDirectory=""  applicableConfigurations="CPU1_RAM"/>
+    <file action="copy" path="../../../../DeviceSupport/LinkerCMD/f29h85x_flash_lnk_cpu1.cmd"        targetDirectory=""  applicableConfigurations="CPU1_FLASH"/>
+    <file action="copy" path="../../../../DeviceSupport/src/codestartbranch.asm"                targetDirectory=""/>
+    <file action="copy" path="../../../../DeviceSupport/src/DeviceSupport.c"                    targetDirectory=""/>
+    <file action="copy" path="../../../../DeviceSupport/targetconfigs/F29H850TU9.ccxml"   targetDirectory="targetConfigs"/>
+    <file action="copy" path="../../../../DeviceSupport/makefile.defs"                          targetDirectory=""/>
+    <file action="copy" path="../../Spi_Example_SyncTransfer.c"                                targetDirectory="" />
+    <file action="link" path="../../../../../drivers/Spi/"                                      targetDirectory="mcal" />
+	<file action="link" path="../../../../../drivers/Mcu/"                                      targetDirectory="mcal" />
+	<file action="link" path="../../../../../drivers/Port/"                                     targetDirectory="mcal" />
+    <file action="link" path="../Spi_Example_SyncTransfer_Config/"                           targetDirectory="mcal" />
+    <file action="link" path="../../../../../drivers/BSW_Stubs/Det/src/Det.c"                   targetDirectory="mcal" />
+    <file action="link" path="../../../../../drivers/BSW_Stubs/Dem/src/Dem.c"                   targetDirectory="mcal" />
+	<file action="link" path="../../../../../drivers/BSW_Stubs/SchM/Port/src/SchM_Port.c"       targetDirectory="mcal" />
+    <file action="link" path="../../../../../drivers/BSW_Stubs/SchM/Spi/src/SchM_Spi.c"         targetDirectory="mcal" />
+    <file action="link" path="../../../../../drivers/BSW_Stubs/SchM/Mcu/src/SchM_Mcu.c"        targetDirectory="mcal" />
+	<file action="link" path="../../../../../drivers/BSW_Stubs/EcuM/src/EcuM.c"                 targetDirectory="mcal" />
+	<file action="link" path="../../../../../drivers/BSW_Stubs/Os/src/Os.c"                     targetDirectory="mcal" />
+    <file action="link" path="../../../../../drivers/Mcal_Lib/src/Mcal_Lib.c"                   targetDirectory="mcal" />
+     <file action="link" path="../../../../AppUtils/AppUtils.c"                                 targetDirectory="mcal" />
+    <file action="link" path="../../../../../drivers/Mcal_Lib/src/Mcal_Lib_BootRom.c"         targetDirectory="mcal" />
+  </project>
+</projectSpec>

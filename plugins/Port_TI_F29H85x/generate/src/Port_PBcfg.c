@@ -33,7 +33,6 @@
  /*
  *Design: MCAL-22408
  */
- /* PIN PACKAGE SELECTED = [!"as:modconf('Port')[as:path(node:dtos(.))='/TI_F29H85x/Port']/PortGeneral/PortDeviceVariant"!] */
 
 /*********************************************************************************************************************
  * Header Files
@@ -89,11 +88,25 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
     {
         .Port_AnalogMode = (Port_AnalogModeType)[!"PortAnalogMode"!],
         .Port_InitialMuxMode = (Port_PinType)[!IF "PortAnalogMode='PORT_ANALOG_DISABLED' and PortPinInitialMode='PORT_MUXMODE_NA'"!][!ERROR "PortPinInitialMode cannot be 'PORT_MUXMODE_NA' when analog mode is disabled"!]
+                                             [!ELSEIF "PortAnalogMode='PORT_ANALOG_ENABLED' and PortPinInitialMode!='PORT_MUXMODE_NA'"!][!ERROR "PortPinInitialMode should be 'PORT_MUXMODE_NA' when analog mode is enabled"!]
                                              [!ELSEIF "PortAnalogMode='PORT_ANALOG_ENABLED' and PortPinInitialMode='PORT_MUXMODE_NA'"!]PORT_PIN_MUXMODE_NA[!ELSE!]PORT_PIN_[!"PortPinId"!]_[!"text:toupper(PortPinInitialMode)"!][!ENDIF!],
         .Port_PinPadConfig = (Port_PinPadConfigType)[!"PortPinPadConfig"!][!IF "PortPinPadConfig!= 'PORT_PIN_TYPE_NA' and PortPinPullUpConfig='true'"!]_PULLUP[!ELSE!][!ENDIF!],
         .Port_PinQualification = (Port_PinQualificationMode)[!"PortPinQualificationMode"!],
         .Port_PinQualificationPeriod = (uint32)[!"PortPinQualificationPeriod"!]U,
         .Port_CoreSelect = (Port_PinCoreSelect)[!"PortPinCoreSelect"!],
+[!/* Validate PortIsAnalogModeSupported, PortIsAGPIO, PortIsAIO, PortIsGPIO against ECU Resource Allocator */!][!//
+[!IF "text:tolower(PortIsAnalogModeSupported) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(PortPhysicalPinId)),'.isAnalogModeSupported'))))"!][!//
+[!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
+[!ENDIF!][!//
+[!IF "text:tolower(PortIsAGPIO) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(PortPhysicalPinId)),'.isAGPIO'))))"!][!//
+[!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
+[!ENDIF!][!//
+[!IF "text:tolower(PortIsAIO) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(PortPhysicalPinId)),'.isAIO'))))"!][!//
+[!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
+[!ENDIF!][!//
+[!IF "text:tolower(PortIsGPIO) != text:tolower(ecu:get(concat('ResourceAllocator_F29H85x',concat(concat('_PackagePin_',node:value(PortPhysicalPinId)),'.isGPIO'))))"!][!//
+[!ERROR!]Errors exist. Please run autocalculation.[!ENDERROR!][!//
+[!ENDIF!][!//
         .Port_PinConfigFlags = (Port_PinConfigFlagType)(([!IF "PortIsPinConfigurable='true'"!]1[!ELSE!]0[!ENDIF!]UL<<0U)
                             |([!IF "PortIsAnalogModeSupported='true'"!]1[!ELSE!]0[!ENDIF!]UL<<1U)
                             |([!IF "PortIsAGPIO='true'"!]1[!ELSE!]0[!ENDIF!]UL<<2U)
@@ -114,7 +127,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_[!"@name"!]_PinConfig[[
 
    },
 [!VAR "NumOfPortPin" = "$NumOfPortPin + 1"!][!ENDLOOP!]
-};[!LOOP "PortConfigSet/PortContainer/*"!][!VAR "Test1" = "PortNumberOfPortPins"!][!IF "PortNumberOfPortPins != 0"!][!VAR "Test2" = "num:i(count(PortPin/*))"!][!IF "num:i($Test2) != num:i($Test1)"!][!ERROR "Number of configured pins doesn't match the value configured in PortNumberOfPortPins; make sure to recalculate derivable values before code generation."!][!ENDIF!][!ELSE!][!ENDIF!][!ENDLOOP!]
+};[!LOOP "PortContainer/*"!][!VAR "Test1" = "PortNumberOfPortPins"!][!IF "PortNumberOfPortPins != 0"!][!VAR "Test2" = "num:i(count(PortPin/*))"!][!IF "num:i($Test2) != num:i($Test1)"!][!ERROR "Number of configured pins doesn't match the value configured in PortNumberOfPortPins; make sure to recalculate derivable values before code generation."!][!ENDIF!][!ELSE!][!ENDIF!][!ENDLOOP!]
 [!ENDLOOP!]
 
 [!LOOP "PortConfigSet"!]

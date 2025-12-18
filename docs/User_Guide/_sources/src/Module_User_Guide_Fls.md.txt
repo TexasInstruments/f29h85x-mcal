@@ -261,7 +261,7 @@ The FLS driver uses timer and therefore there is a dependency on the OS, which c
 If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that FLS module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.
 
 The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter **RteExclusiveAreaImplMechanism**. This parameter is an input for RTE generator.
-For LIN Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
+For FLS Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:
 
 | Exclusive Area Functions used | FLS Function calling Exclusive Area | Need for Exclusive Area | Recommended Exclusive Area Mapping |
 |-------|-------|-------|-------|
@@ -621,20 +621,6 @@ Configuration description of a flashable sector
 
 #### FlsGeneral
 Container for general parameters of the flash driver. These parameters are always pre-compile.
-
-##### FlsDeviceVariant
-
-| Item ||
-|--------|---------------|
-| **Name** | FlsDeviceVariant |
-| **Description** | Select required Device Variant. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Post-Build-Time | VARIANT-POST-BUILD |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | F29H85x |
-| **Range** | F29H85x |
 
 ##### FlsAcLoadOnJobStart
 

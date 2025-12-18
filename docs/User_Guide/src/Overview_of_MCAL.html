@@ -160,9 +160,19 @@ Finally, the CDD can serve as a mechanism of migration to introduce existing or 
 </section>
 <section id="csp">
 <h3><span class="section-number">1.4.2. </span>CSP<a class="headerlink" href="#csp" title="Link to this heading"></a></h3>
-<p>The <strong>Software Compliance Support Package</strong> (CSP) is the set of evidence that TI provides and is intended to assist the customer in their certification efforts for the integrated system.
-The provided CSP assists customers to qualify MCAL in their system context. This will be needed if customers modify the SW or change the tooling that will make TI’s functional safety assessment of MCAL void.
-Each HW IP Module MCAL driver will have its individual CSP provided to customers.</p>
+<p><strong>Safety Certification for MCAL and Compiler</strong></p>
+<ul class="simple">
+<li><p>The Safety certification process of TI MCAL is compiler options agnostic and is certified in a systematic approach, i.e. the Safety certification of MCAL will not be violated if the compiler options are changed to a different options other than the ones mentioned in the MCAL user guide.</p></li>
+<li><p>The safety qualification of TI ARM Compiler is done using compiler qualification kit with set of recommended options and flags. The safety qualification can be done again if compiler options are changed.  Refer to this page on our approach of QKIT <a class="reference external" href="https://software-dl.ti.com/ccs/esd/documents/application_notes/appnote-codegen_qualificationkit.html">How to apply the TI Compiler Qualification Kit for functional safety development</a></p></li>
+</ul>
+<p>Steps to follow if compiler options are changed:</p>
+<ul class="simple">
+<li><p>Review the content of the Compiler qualification kit.</p></li>
+<li><p>Revalidate the compiler based on the new options selected.</p></li>
+<li><p>Ensure that compiler qualification test reports are consistent with the reports provided by TI compiler.</p></li>
+<li><p>If any discrepancies are found, reported them to TI compiler team.</p></li>
+<li><p>Validate the use case at the system level with new compiler options and ensure that MCAL functionality is as expected.</p></li>
+</ul>
 </section>
 </section>
 <section id="software-offering">
@@ -195,7 +205,7 @@ Each HW IP Module MCAL driver will have its individual CSP provided to customers
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Nov 21, 2025.
+          <span class="lastupdated" >Last updated on Dec 18, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

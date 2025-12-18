@@ -22,7 +22,6 @@ MEMORY
 
 SECTIONS
 {
-    cpu3_resetvector    : {} > 0x20118000, START(CPU3_RESET_VECTOR)
     codestart           : {} > 0x20100000
 
     ISR_CODE:

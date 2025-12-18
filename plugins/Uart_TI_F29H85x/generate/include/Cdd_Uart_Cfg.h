@@ -75,13 +75,13 @@ extern "C" {
 
 /** \brief CddUart ConfigSet Instance interrupt definition */
 [!LOOP "CddUartConfigSet/CddUartConfig/*"!][!//
-#define CDD_[!"CddUartInstance"!]_ENABLE
+#define CDD_[!"(node:ref(CddUartInstance)/InstanceName)"!]_ENABLE
 [!IF "CddUartInteruptType = 'CDD_UART_ISR_CAT1_RTINT'"!][!//
-#define CDD_[!"CddUartInstance"!]_ISR_CAT1_RTINT
+#define CDD_[!"(node:ref(CddUartInstance)/InstanceName)"!]_ISR_CAT1_RTINT
 [!ELSEIF "CddUartInteruptType = 'CDD_UART_ISR_CAT1_INT'"!][!//
-#define CDD_[!"CddUartInstance"!]_ISR_CAT1_INT
+#define CDD_[!"(node:ref(CddUartInstance)/InstanceName)"!]_ISR_CAT1_INT
 [!ELSE!][!//
-#define CDD_[!"CddUartInstance"!]_ISR_CAT2
+#define CDD_[!"(node:ref(CddUartInstance)/InstanceName)"!]_ISR_CAT2
 [!ENDIF!][!//
 [!ENDLOOP!][!//
 

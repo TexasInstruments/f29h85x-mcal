@@ -42,11 +42,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((CDD_XBAR_SW_MAJOR_VERSION != (2U)) || (CDD_XBAR_SW_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_SW_MAJOR_VERSION != (3U)) || (CDD_XBAR_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Xbar.c and Cdd_Xbar.h are inconsistent!"
 #endif
 
-#if ((CDD_XBAR_CFG_MAJOR_VERSION != (2U)) || (CDD_XBAR_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_XBAR_CFG_MAJOR_VERSION != (3U)) || (CDD_XBAR_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Xbar_Cfg.c and Cdd_Xbar_Cfg.h are inconsistent!"
 #endif
 
@@ -679,7 +679,6 @@ static FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_IclLockStatus_Priv(VAR(Cdd_Xbar_Typ
 #define CDD_XBAR_START_SEC_CODE
 #include "Cdd_Xbar_MemMap.h"
 
-#if (STD_ON == CDD_XBAR_API_ENABLE)
 #if (STD_ON == CDD_XBAR_GET_VERSION_INFO_API)
 /*
  * Design: MCAL-25737, MCAL-25738
@@ -959,7 +958,8 @@ FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_OutLatchFlagStatus(VAR(Cdd_Xbar_Type, AUTO
         if (CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
             status = Cdd_Xbar_OutputLatchFlagStatus(
-                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine);
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
+                &Cdd_Xbar_ConfigPtr->outputXbarFlagBaseAddress);
         }
     }
 
@@ -983,7 +983,8 @@ Cdd_Xbar_OutLatchFlagForce(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit)
         if (CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
             Cdd_Xbar_OutputLatchFlagForce(
-                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine);
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
+                &Cdd_Xbar_ConfigPtr->outputXbarFlagBaseAddress);
         }
     }
 
@@ -1007,7 +1008,8 @@ Cdd_Xbar_OutLatchFlagClear(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit)
         if (CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS > CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit))
         {
             Cdd_Xbar_OutputLatchFlagClear(
-                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine);
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
+                &Cdd_Xbar_ConfigPtr->outputXbarFlagBaseAddress);
         }
     }
 
@@ -1093,7 +1095,8 @@ Cdd_Xbar_OutOutputSignal(VAR(Cdd_Xbar_Type, AUTOMATIC) CrossbarUnit)
         {
             /* Gather output from Output X-Bar Status Flag */
             output = Cdd_Xbar_OutOutputState(
-                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine);
+                &Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[CDD_XBAR_GET_XBAR_INSTANCE(CrossbarUnit)].outputLine,
+                &Cdd_Xbar_ConfigPtr->outputXbarFlagBaseAddress);
         }
     }
 
@@ -1458,7 +1461,7 @@ Cdd_Xbar_InputFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag)
     else
 #endif /* STD_ON == CDD_XBAR_DEV_ERROR_DETECT */
     {
-        status = Cdd_Xbar_InFlagStatus(InputFlag);
+        status = Cdd_Xbar_InFlagStatus(InputFlag, &Cdd_Xbar_ConfigPtr->inputFlagBaseAddress);
     }
 
     return status;
@@ -1486,7 +1489,7 @@ Cdd_Xbar_InputFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag)
     else
 #endif /* STD_ON == CDD_XBAR_DEV_ERROR_DETECT */
     {
-        Cdd_Xbar_InFlagClear(InputFlag);
+        Cdd_Xbar_InFlagClear(InputFlag, &Cdd_Xbar_ConfigPtr->inputFlagBaseAddress);
         retval = E_OK;
     }
 
@@ -1808,12 +1811,14 @@ static FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_Output_Priv(VAR(uint8, AUTOMATIC) conf
     if (CDD_XBAR_OUTPUTCLEARFLAG == Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].outputFlag)
     {
         /* Output crossbar output latch clear during init */
-        Cdd_Xbar_OutputLatchFlagClear(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].outputLine);
+        Cdd_Xbar_OutputLatchFlagClear(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].outputLine,
+                                      &Cdd_Xbar_ConfigPtr->outputXbarFlagBaseAddress);
     }
     else if (CDD_XBAR_OUTPUTFORCEFLAG == Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].outputFlag)
     {
         /* Output crossbar output latch force during init */
-        Cdd_Xbar_OutputLatchFlagForce(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].outputLine);
+        Cdd_Xbar_OutputLatchFlagForce(&Cdd_Xbar_ConfigPtr->Cdd_Xbar_OutputCfg[config].outputLine,
+                                      &Cdd_Xbar_ConfigPtr->outputXbarFlagBaseAddress);
     }
     else
     {
@@ -2821,8 +2826,6 @@ static FUNC(boolean, CDD_XBAR_CODE) Cdd_Xbar_IclLockStatus_Priv(VAR(Cdd_Xbar_Typ
     return status;
 }
 #endif /* 0U < CDD_XBAR_ICL_XBAR_CONFIGURATIONS*/
-
-#endif /* STD_ON == CDD_XBAR_API_ENABLE */
 
 #define CDD_XBAR_STOP_SEC_CODE
 #include "Cdd_Xbar_MemMap.h"

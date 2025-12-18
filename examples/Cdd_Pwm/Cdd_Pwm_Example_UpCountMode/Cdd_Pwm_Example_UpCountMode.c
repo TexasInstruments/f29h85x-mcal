@@ -144,28 +144,28 @@ int main()
     McalLib_Delay(50000000U);
 
     /* Set all channels in the IDLE state */
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_0);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_1);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_2);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_3);
 
     /* Enable channel notification */
     Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_EVENT_COUNT);
     Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_EVENT_COUNT);
 
-    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_0_Channel_0, CDD_PWM_RISING_EDGE);
-    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_0_Channel_1, CDD_PWM_RISING_EDGE);
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_0, CDD_PWM_RISING_EDGE);
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_1, CDD_PWM_RISING_EDGE);
 
-    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0, CDD_PWM_RISING_EDGE);
-    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_RISING_EDGE);
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_2, CDD_PWM_RISING_EDGE);
+    Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_3, CDD_PWM_RISING_EDGE);
 
     McalLib_Delay(5000000U);
 
     /* Set Duty cycle */
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_0, CDD_PWM_DUTY_CYCLE_25_PERCENT);
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_1, CDD_PWM_DUTY_CYCLE_75_PERCENT);
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0, CDD_PWM_DUTY_CYCLE_50_PERCENT);
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_DUTY_CYCLE_25_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_0, CDD_PWM_DUTY_CYCLE_25_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_1, CDD_PWM_DUTY_CYCLE_75_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_2, CDD_PWM_DUTY_CYCLE_50_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_3, CDD_PWM_DUTY_CYCLE_25_PERCENT);
 
     AppUtils_Printf("The duty cycles of the EPWM1 & EPWM2 channels have been modified\r\n");
 
@@ -181,10 +181,10 @@ int main()
         Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1]);
 
     /* Set the output to IDLE */
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_0);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_0_Channel_1);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0);
-    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_0);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_1);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_2);
+    Cdd_Pwm_SetOutputToIdle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_3);
 
     AppUtils_Printf("All the EPWM1 & EPWM2 channels in IDLE state\r\n");
 
@@ -203,8 +203,8 @@ int main()
     Cdd_Pwm_SetPeriod(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_100HZ_PERIOD);
 
     /* Change the duty cycle of EPWM2 channels */
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_0, CDD_PWM_DUTY_CYCLE_25_PERCENT);
-    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmHwUnitConfig_1_Channel_1, CDD_PWM_DUTY_CYCLE_50_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_2, CDD_PWM_DUTY_CYCLE_25_PERCENT);
+    Cdd_Pwm_SetDutyCycle(CddPwmConf_CddPwmOutputChannel_CddPwmOutputChannel_3, CDD_PWM_DUTY_CYCLE_50_PERCENT);
 
     AppUtils_Printf("The frequency of EPWM1 has been doubled(period halved)\r\n");
     AppUtils_Printf("The duty cycle of the EPWM2 channels have been modified\r\n");

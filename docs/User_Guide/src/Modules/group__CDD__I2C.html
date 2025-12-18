@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.12. CDD_I2C &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="5.13. CDD_IPC" href="group__CDD__IPC.html" />
+    <link rel="prev" title="5.11. CDD_ECAP" href="group__CDD__ECAP.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ModuleUserGuide_list.html">4. Module User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_guide.html">5. API guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="group__CAN.html">5.1. CAN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__DIO.html">5.2. DIO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__FLS.html">5.3. FLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__GPT.html">5.4. GPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__LIN.html">5.5. LIN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__MCU.html">5.6. MCU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__PORT.html">5.7. PORT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__SPI.html">5.8. SPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__WDG.html">5.9. WDG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ADC.html">5.10. CDD_ADC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__ECAP.html">5.11. CDD_ECAP</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.12. CDD_I2C</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defines">5.12.1. Defines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions">5.12.2. Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqcomplete">5.12.2.1. function I2c_appSeqComplete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-i2c-appseqfail">5.12.2.2. function I2c_appSeqFail</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#detailed-description">5.12.3. Detailed Description</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__IPC.html">5.13. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__PWM.html">5.14. CDD_PWM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__UART.html">5.15. CDD_UART</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__SENT.html">5.16. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__XBAR.html">5.17. CDD_XBAR</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../api_guide.html"><span class="section-number">5. </span>API guide</a> &raquo;</li>
+      <li><span class="section-number">5.12. </span>CDD_I2C</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cdd-i2c">
+<h1><span class="section-number">5.12. </span>CDD_I2C<a class="headerlink" href="#cdd-i2c" title="Link to this heading"></a></h1>
+<p><a class="reference internal" href="#detailed-description">More…</a></p>
+<section id="defines">
+<h2><span class="section-number">5.12.1. </span>Defines<a class="headerlink" href="#defines" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CDD_I2C_CFG_MAJOR_VERSION</p></td>
+<td><p>I2C configuration Major Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_CFG_MINOR_VERSION</p></td>
+<td><p>I2C configuration Minor Version.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_CFG_PATCH_VERSION</p></td>
+<td><p>I2C configuration Patch Version.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_HW_UNIT_I2CA</p></td>
+<td><p>HW unit 0.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_HW_UNIT_I2CB</p></td>
+<td><p>HW unit 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_PRE_COMPILE_VARIANT</p></td>
+<td><p>I2C Build Variant. Build variants.(i.e Pre Compile and Post Build)</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_CONFIG_PC</p></td>
+<td><p>Precompile variant macro.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_POLLING_MODE</p></td>
+<td><p>Enable/disable Interrupts.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_DEV_ERROR_DETECT</p></td>
+<td><p>Enable/Disable I2C dev detect error.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_VERSION_INFO_API</p></td>
+<td><p>Version info API macro.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_CANCEL_API</p></td>
+<td><p>Check to enable cancel API.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_GET_STATUS_API</p></td>
+<td><p>Check to enable get driver status API.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_HW_UNIT_MAX</p></td>
+<td><p>Maximum supported HW units for the SOC.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_MAX_CH_PER_SEQ</p></td>
+<td><p>Maximum channels allowed per sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_MAX_CH</p></td>
+<td><p>Maximum channels across all sequence/hwunit.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_MAX_SEQ</p></td>
+<td><p>Maximum sequence across all hwunit.</p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_MAX_HW_UNIT</p></td>
+<td><p>Maximum HW unit.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_HW_UNIT_I2CA_ACTIVE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_HW_UNIT_I2CB_ACTIVE</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_I2C_HW_UNIT_I2CA_ISR_CAT2_INT</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>CDD_I2C_HW_UNIT_I2CB_ISR_CAT2_INT</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_0</p></td>
+<td><p>Symbolic Name for I2c Sequence 0.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_1</p></td>
+<td><p>Symbolic Name for I2c Sequence 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_2</p></td>
+<td><p>Symbolic Name for I2c Sequence 2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_3</p></td>
+<td><p>Symbolic Name for I2c Sequence 3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_4</p></td>
+<td><p>Symbolic Name for I2c Sequence 4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_5</p></td>
+<td><p>Symbolic Name for I2c Sequence 5.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_6</p></td>
+<td><p>Symbolic Name for I2c Sequence 6.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cSeqConfig_CddI2cSeqConfig_7</p></td>
+<td><p>Symbolic Name for I2c Sequence 7.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_0</p></td>
+<td><p>Symbolic Name for I2c Channel 0.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_1</p></td>
+<td><p>Symbolic Name for I2c Channel 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_2</p></td>
+<td><p>Symbolic Name for I2c Channel 2.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_3</p></td>
+<td><p>Symbolic Name for I2c Channel 3.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_4</p></td>
+<td><p>Symbolic Name for I2c Channel 4.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_5</p></td>
+<td><p>Symbolic Name for I2c Channel 5.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_6</p></td>
+<td><p>Symbolic Name for I2c Channel 6.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_7</p></td>
+<td><p>Symbolic Name for I2c Channel 7.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_8</p></td>
+<td><p>Symbolic Name for I2c Channel 8.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_9</p></td>
+<td><p>Symbolic Name for I2c Channel 9.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_10</p></td>
+<td><p>Symbolic Name for I2c Channel 10.</p></td>
+</tr>
+<tr class="row-even"><td><p>CddI2cConf_CddI2cChConfig_CddI2cChConfig_11</p></td>
+<td><p>Symbolic Name for I2c Channel 11.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2><span class="section-number">5.12.2. </span>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Return type</p></th>
+<th class="head"><p>Function Name</p></th>
+<th class="head"><p>Brief</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-i2c-appseqcomplete"><span class="std std-ref">I2c_appSeqComplete</span></a></strong>(void )</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-i2c-appseqfail"><span class="std std-ref">I2c_appSeqFail</span></a></strong>(uint8 errorCode)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<section id="function-i2c-appseqcomplete">
+<h3><span class="section-number">5.12.2.1. </span>function I2c_appSeqComplete<a class="headerlink" href="#function-i2c-appseqcomplete" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">I2c_appSeqComplete</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="function-i2c-appseqfail">
+<h3><span class="section-number">5.12.2.2. </span>function I2c_appSeqFail<a class="headerlink" href="#function-i2c-appseqfail" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">I2c_appSeqFail</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uint8</span><span class="w"> </span><span class="n">errorCode</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="detailed-description">
+<h2><span class="section-number">5.12.3. </span>Detailed Description<a class="headerlink" href="#detailed-description" title="Link to this heading"></a></h2>
+<p>This files defines I2C configuration structures</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="group__CDD__ECAP.html" class="btn btn-neutral float-left" title="5.11. CDD_ECAP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="group__CDD__IPC.html" class="btn btn-neutral float-right" title="5.13. CDD_IPC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Dec 18, 2025.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -663,9 +663,9 @@ void Cdd_Ecap_HwUnitInit(void)
         if (Cdd_Ecap_CfgPtr->chCfg[chNum].hr_enable == TRUE)
         {
             Cdd_Ecap_HRCAP_enableHighResolutionClock(Cdd_Ecap_CfgPtr->chCfg[chNum].hr_base_addr);
-            McalLib_DelayUsec(1, CDD_ECAP_SYSCLK);
+            McalLib_DelayUsec(1);
             Cdd_Ecap_HRCAP_enableHighResolution(Cdd_Ecap_CfgPtr->chCfg[chNum].hr_base_addr);
-            McalLib_DelayUsec(1, CDD_ECAP_SYSCLK);
+            McalLib_DelayUsec(1);
         }
 #endif
 

@@ -108,30 +108,30 @@
 #undef CDD_I2C_STOP_SEC_CONFIG_DATA
 #undef MEMMAP_ERROR
 
-#elif defined CDD_I2C_START_SEC_CONST_32
+#elif defined CDD_I2C_START_SEC_CONFIG_CONST_32
 #ifdef MEMMAP_SECTION_OPEN
     #error "Memory section CONST_32 is already opened, Cannot reopen section using \
-           CDD_I2C_START_SEC_CONST_32 ."
+           CDD_I2C_START_SEC_CONFIG_CONST_32 ."
 #endif
 #define MEMMAP_SECTION_OPEN
-#define CDD_I2C_CONST_32_OPEN
-#pragma clang section rodata = ".CDD_I2C_CONST_32"
-#undef CDD_I2C_START_SEC_CONST_32
+#define CDD_I2C_CONFIG_CONST_32_OPEN
+#pragma clang section rodata = ".CDD_I2C_CONFIG_CONST_32"
+#undef CDD_I2C_START_SEC_CONFIG_CONST_32
 #undef MEMMAP_ERROR
 
-#elif defined CDD_I2C_STOP_SEC_CONST_32
+#elif defined CDD_I2C_STOP_SEC_CONFIG_CONST_32
 #ifndef MEMMAP_SECTION_OPEN
 #error "Memory section CONST_32 is not open, Cannot close section using \
-         CDD_I2C_STOP_SEC_CONST_32."
+         CDD_I2C_STOP_SEC_CONFIG_CONST_32."
 #endif
 #undef MEMMAP_SECTION_OPEN
-#ifndef CDD_I2C_CONST_32_OPEN
+#ifndef CDD_I2C_CONFIG_CONST_32_OPEN
     #error "Memory section CONST_32 is not open ,Cannot close section using \
-           CDD_I2C_STOP_SEC_CONST_32."
+           CDD_I2C_STOP_SEC_CONFIG_CONST_32."
 #endif
-#undef CDD_I2C_CONST_32_OPEN
+#undef CDD_I2C_CONFIG_CONST_32_OPEN
 #pragma clang section rodata = ""
-#undef CDD_I2C_STOP_SEC_CONST_32
+#undef CDD_I2C_STOP_SEC_CONFIG_CONST_32
 #undef MEMMAP_ERROR
 
 #elif defined CDD_I2C_START_SEC_ISR_CODE
@@ -263,13 +263,13 @@
            CDD_I2C_STOP_SEC_CONFIG_DATA."
 #endif
 
-#ifdef CDD_I2C_START_SEC_CONST_32
+#ifdef CDD_I2C_START_SEC_CONFIG_CONST_32
     #error "multiple memory allocation keywords are defined, Cannot use \
-           CDD_I2C_START_SEC_CONST_32."
+           CDD_I2C_START_SEC_CONFIG_CONST_32."
 #endif
-#ifdef CDD_I2C_STOP_SEC_CONST_32
+#ifdef CDD_I2C_STOP_SEC_CONFIG_CONST_32
     #error "multiple memory allocation keywords are defined, Cannot use \
-           CDD_I2C_STOP_SEC_CONST_32."
+           CDD_I2C_STOP_SEC_CONFIG_CONST_32."
 #endif
 
 #ifdef CDD_I2C_START_SEC_ISR_CODE

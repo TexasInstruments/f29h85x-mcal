@@ -29,6 +29,8 @@
 #include "Mcu.h"
 #include "Mcu_Priv.h"
 
+#include "SchM_Mcu.h"
+
 /*
  * Design: MCAL-21799,  MCAL-21850, MCAL-21849
  */
@@ -51,11 +53,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (0U)))
+#if ((MCU_SW_MAJOR_VERSION != (2U)) || (MCU_SW_MINOR_VERSION != (1U)))
 #error "Version numbers of Mcu.c and Mcu.h are inconsistent!"
 #endif
 
-#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (0U)))
+#if ((MCU_CFG_MAJOR_VERSION != (2U)) || (MCU_CFG_MINOR_VERSION != (1U)))
 #error "Version numbers of Mcu.c and Mcu_Cfg.h are inconsistent!"
 #endif
 
@@ -81,6 +83,8 @@
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
 /* Global Init Done flag */
 static VAR(boolean, MCU_VAR_INIT) Mcu_InitDone = FALSE;
+/* Global Clock Init Done flag */
+static VAR(boolean, MCU_VAR_INIT) Mcu_ClockInitDone = FALSE;
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
 
 #define MCU_STOP_SEC_VAR_INIT_BOOLEAN
@@ -93,6 +97,17 @@ static VAR(boolean, MCU_VAR_INIT) Mcu_InitDone = FALSE;
 P2CONST(Mcu_ConfigType, MCU_CONFIG_DATA, MCU_CONFIG_DATA) Mcu_ConfigObj = NULL_PTR;
 
 #define MCU_STOP_SEC_VAR_INIT_PTR
+#include "Mcu_MemMap.h"
+
+#define MCU_START_SEC_VAR_INIT_32
+#include "Mcu_MemMap.h"
+
+/* calculated clock values*/
+static VAR(Mcu_CalClkValueType, MCU_VAR_NO_INIT) Mcu_calClock;
+/* Selected system clock value */
+static VAR(uint32, MCU_VAR_NO_INIT) Mcu_sysClock = 0;
+
+#define MCU_STOP_SEC_VAR_INIT_32
 #include "Mcu_MemMap.h"
 
 /*********************************************************************************************************************
@@ -234,6 +249,7 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClock(Mcu_ClockType ClockSetting)
     VAR(Std_ReturnType, AUTOMATIC) return_value = (Std_ReturnType)E_NOT_OK;
     P2CONST(Mcu_ClockConfigType, AUTOMATIC, MCU_APPL_CONST)
     clk_config_ptr = &Mcu_ConfigObj->Mcu_ClockConfig[ClockSetting];
+    Mcu_sysClock   = 0U;
 
 #if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
     if ((boolean)FALSE == Mcu_InitDone)
@@ -246,32 +262,47 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_InitClock(Mcu_ClockType ClockSetting)
         /* API is being called with an invalid parameter */
         (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_INIT_CLOCK, MCU_E_PARAM_CLOCK);
     }
-    else if ((Std_ReturnType)E_NOT_OK == Mcu_InitClockParamCheck(clk_config_ptr))
-    {
-        /* API is being called with an invalid mode parameter */
-        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_INIT_CLOCK, MCU_E_PARAM_CONFIG);
-    }
     else
 #endif /*MCU_CFG_DEV_ERROR_DETECT*/
     {
-        /* Assuming the CLKCFG, CPUx_PER_CFG registers are unlocked after a reset. */
+        Mcu_CalculateClocks(clk_config_ptr, &Mcu_calClock);
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+        if ((Std_ReturnType)E_NOT_OK == Mcu_InitClockParamCheck(clk_config_ptr, &Mcu_calClock))
+        {
+            /* API is being called with an invalid mode parameter */
+            (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_INIT_CLOCK, MCU_E_PARAM_CONFIG);
+        }
+        else
+#endif /*MCU_CFG_DEV_ERROR_DETECT*/
+        {
+            /* Assuming the CLKCFG, CPUx_PER_CFG registers are unlocked after a reset. */
 
-        /* Initialize the clock */
-        return_value = Mcu_SetClock(clk_config_ptr);
+            /* Initialize the clock */
+            return_value = Mcu_SetClock(clk_config_ptr);
 
 #if (STD_ON == MCU_CLOCK_CONFIG_LOCK_CRITICAL_REGISTERS)
-        /* Locks all Clock configuration registers */
-        Mcu_LockClockConfigRegisters();
+            /* Locks all Clock configuration registers */
+            Mcu_LockClockConfigRegisters();
 #endif
 
 #if (STD_ON == MCU_CPU_PERIPHERAL_CONFIG_LOCK_CRITICAL_REGISTERS)
-        /* Locks all Cpu Peripheral configuration registers */
-        Mcu_LockCpuPeripheralConfigRegisters();
+            /* Locks all Cpu Peripheral configuration registers */
+            Mcu_LockCpuPeripheralConfigRegisters();
 #endif
-
-        Mcu_ReportClockFailure(return_value);
+            if (return_value == E_OK)
+            {
+                SchM_Enter_Mcu_MCU_EXCLUSIVE_AREA_0();
+                /* System clock will be the input clock provided, as PLL is not enabled here. */
+                Mcu_sysClock = Mcu_calClock.input_clock;
+                SchM_Exit_Mcu_MCU_EXCLUSIVE_AREA_0();
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+                /* Set Clock Init Done flag */
+                Mcu_ClockInitDone = TRUE;
+#endif
+            }
+            Mcu_ReportClockFailure(return_value);
+        }
     }
-
     return (return_value);
 }
 #endif /*MCU_CFG_INIT_CLOCK_API*/
@@ -302,6 +333,10 @@ FUNC(Std_ReturnType, MCU_CODE) Mcu_DistributePllClock(void)
     {
         /* Enable PLLSYSCLK is fed from system PLL clock */
         Mcu_EnablePll();
+        SchM_Enter_Mcu_MCU_EXCLUSIVE_AREA_0();
+        /* System clock will be the PllSysclk once PLL is enabled. */
+        Mcu_sysClock = Mcu_calClock.sys_clk;
+        SchM_Exit_Mcu_MCU_EXCLUSIVE_AREA_0();
 
         return_value = (Std_ReturnType)E_OK;
     }
@@ -340,6 +375,23 @@ FUNC(Mcu_PllStatusType, MCU_CODE) Mcu_GetPllStatus(void)
     }
 
     return (pll_status);
+}
+
+FUNC(uint32, MCU_CODE) Mcu_GetSystemClock(void)
+{
+    VAR(uint32, AUTOMATIC) return_value = 0U;
+#if (STD_ON == MCU_CFG_DEV_ERROR_DETECT)
+    if ((boolean)FALSE == Mcu_ClockInitDone)
+    {
+        /* API is being called before calling Mcu_Init */
+        (void)Det_ReportError(MCU_MODULE_ID, MCU_INSTANCE_ID, MCU_SID_GET_SYS_CLOCK, MCU_E_UNINIT_CLOCK);
+    }
+    else
+#endif /*MCU_CFG_DEV_ERROR_DETECT*/
+    {
+        return_value = Mcu_sysClock;
+    }
+    return return_value;
 }
 
 /*

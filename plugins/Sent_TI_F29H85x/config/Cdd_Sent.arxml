@@ -50,52 +50,15 @@
                       </DESC>
                       <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
                       <UPPER-MULTIPLICITY>6</UPPER-MULTIPLICITY>
+                      <MULTIPLICITY-CONFIG-CLASSES>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      </MULTIPLICITY-CONFIG-CLASSES>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="9ccd0e6b-208a-49e9-a78a-e0a48956ece7">
-                          <SHORT-NAME>CddSentInstance</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Selects CddSent HW unit Instance.</L-2>
-                          </DESC>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <DEFAULT-VALUE>SENT1</DEFAULT-VALUE>
-                          <LITERALS>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>SENT1</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>SENT2</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>SENT3</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>SENT4</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>SENT5</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>SENT6</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                          </LITERALS>
-                        </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="de8d3c23-0f70-4e30-a3e0-1e43d00023bc">
+                        <ECUC-STRING-PARAM-DEF UUID="de8d3c23-0f70-4e30-a3e0-1e43d00023bc">
                           <SHORT-NAME>CddSentBaseAddress</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Specifies the CddSent HW unit base address.</L-2>
@@ -110,10 +73,12 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <DEFAULT-VALUE>0</DEFAULT-VALUE>
-                          <MAX>4294967295</MAX>
-                          <MIN>0</MIN>
-                        </ECUC-INTEGER-PARAM-DEF>
+                          <ECUC-STRING-PARAM-DEF-VARIANTS>
+                            <ECUC-STRING-PARAM-DEF-CONDITIONAL>
+                              <DEFAULT-VALUE>SENT1_BASE_FRAME(0)</DEFAULT-VALUE>
+                            </ECUC-STRING-PARAM-DEF-CONDITIONAL>
+                          </ECUC-STRING-PARAM-DEF-VARIANTS>
+                        </ECUC-STRING-PARAM-DEF>
                         <ECUC-INTEGER-PARAM-DEF UUID="e8086f46-6ff0-43ab-b48a-4312a8d75e41">
                           <SHORT-NAME>CddSentHWUnitId</SHORT-NAME>
                           <DESC>
@@ -153,7 +118,7 @@
                           <MIN>0</MIN>
                         </ECUC-INTEGER-PARAM-DEF>
                         <ECUC-ENUMERATION-PARAM-DEF UUID="22d753f9-4bdf-4fa9-96a3-f13562fe72aa">
-                          <SHORT-NAME>CddSentInteruptType</SHORT-NAME>
+                          <SHORT-NAME>CddSentInterruptType</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Defines the interrupt type.</L-2>
                           </DESC>
@@ -333,6 +298,12 @@
                           <!-- @CalculatedEnd -->
                           <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -431,7 +402,7 @@
                         <ECUC-FUNCTION-NAME-DEF UUID="da6f3ef5-1a75-475f-9bc6-9ac9915bd9e7">
                           <SHORT-NAME>CddSentUserErrorCallbackFunction</SHORT-NAME>
                           <DESC>
-                            <L-2 L="EN">Call back function for the data</L-2>
+                            <L-2 L="EN">Call back function for the error</L-2>
                           </DESC>
                           <SCOPE>LOCAL</SCOPE>
                           <ORIGIN>Texas Instruments</ORIGIN>
@@ -570,6 +541,21 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                       <REFERENCES>
+                        <ECUC-REFERENCE-DEF UUID="93856cd9-cadb-4e40-8c44-544c95d3d628">
+                          <SHORT-NAME>CddSentInstanceRef</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Selects CddSent HW unit Instance.</L-2>
+                          </DESC>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Sent/Cdd_SentAllocatedInstance</DESTINATION-REF>
+                        </ECUC-REFERENCE-DEF>
                         <ECUC-REFERENCE-DEF UUID="6540c339-2140-4a81-870b-32f73b79dd48">
                           <SHORT-NAME>CddSentCpuClockRef</SHORT-NAME>
                           <DESC>
@@ -595,6 +581,12 @@
                           </DESC>
                           <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
                           <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <PARAMETERS>
                             <ECUC-ENUMERATION-PARAM-DEF UUID="debfc9d7-e066-434d-9361-91c846e2722f">
@@ -699,10 +691,8 @@
                               </VALUE-CONFIG-CLASSES>
                               <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                               <DEFAULT-VALUE>0</DEFAULT-VALUE>
-                              <!-- @Calculated /TI_F29H85x/Cdd_Sent/Cdd/CddSentConfig/CddSentController/CddSentChannelObject/CddSentChannelObjectID: INVALID(XPath: text:uniq((../../../..//*[@name=&apos;CddSentChannelObjectID&apos;]),node:value(.)))-->
-                              <MAX>9223372036854775807</MAX>
-                              <MIN>-9223372036854775808</MIN>
-                              <!-- @CalculatedEnd -->
+                              <MAX>65535</MAX>
+                              <MIN>0</MIN>
                             </ECUC-INTEGER-PARAM-DEF>
                             <ECUC-INTEGER-PARAM-DEF UUID="735e97f7-17e0-4fb4-aa5f-1fdb8178fd36">
                               <SHORT-NAME>CddSentMessageID</SHORT-NAME>
@@ -746,6 +736,12 @@
                               <!-- @CalculatedEnd -->
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>Texas Instruments</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -768,12 +764,18 @@
                           <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                           <!-- @CalculatedEnd -->
                           <UPPER-MULTIPLICITY>5</UPPER-MULTIPLICITY>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <PARAMETERS>
                             <ECUC-ENUMERATION-PARAM-DEF UUID="1d0f05a7-419e-4c52-88eb-4bf0428973df">
                               <SHORT-NAME>CddSentMTPSensorType</SHORT-NAME>
                               <DESC>
-                                <L-2 L="EN">selection of channel types</L-2>
+                                <L-2 L="EN">selection of MTP sensor type</L-2>
                               </DESC>
                               <SCOPE>LOCAL</SCOPE>
                               <ORIGIN>Texas Instruments</ORIGIN>
@@ -1282,6 +1284,12 @@
                               <!-- @CalculatedEnd -->
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>ECU</SCOPE>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>Texas Instruments</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1325,6 +1333,12 @@
                               <!-- @CalculatedEnd -->
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>ECU</SCOPE>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>Texas Instruments</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1366,10 +1380,8 @@
                               </VALUE-CONFIG-CLASSES>
                               <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                               <DEFAULT-VALUE>0</DEFAULT-VALUE>
-                              <!-- @Calculated /TI_F29H85x/Cdd_Sent/Cdd/CddSentConfig/CddSentController/CddSentExternalDeviceConfig/CddSentExternalDeviceID: INVALID(XPath: text:uniq((../..//*[@name=&apos;CddSentExternalDeviceID&apos;]),node:value(.)))-->
-                              <MAX>9223372036854775807</MAX>
-                              <MIN>-9223372036854775808</MIN>
-                              <!-- @CalculatedEnd -->
+                              <MAX>65535</MAX>
+                              <MIN>0</MIN>
                             </ECUC-INTEGER-PARAM-DEF>
                           </PARAMETERS>
                           <REFERENCES>
@@ -1383,6 +1395,12 @@
                               <!-- @CalculatedEnd -->
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>Texas Instruments</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1405,6 +1423,12 @@
                           <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                           <!-- @CalculatedEnd -->
                           <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <PARAMETERS>
                             <ECUC-BOOLEAN-PARAM-DEF UUID="0d4e781e-fc0d-4556-bde6-6c105acc0da8">
@@ -1912,6 +1936,12 @@
                   <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                   <!-- @CalculatedEnd -->
                   <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <MULTIPLICITY-CONFIG-CLASSES>
+                    <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                  </MULTIPLICITY-CONFIG-CLASSES>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <SUB-CONTAINERS>
                     <ECUC-PARAM-CONF-CONTAINER-DEF UUID="81307b2f-8d32-4a0b-bf35-dba047828839">
@@ -1921,6 +1951,12 @@
                       </DESC>
                       <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                       <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                      <MULTIPLICITY-CONFIG-CLASSES>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      </MULTIPLICITY-CONFIG-CLASSES>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <SUB-CONTAINERS>
                         <ECUC-PARAM-CONF-CONTAINER-DEF UUID="c5138c30-b0c5-4bb2-a92a-6803d586582b">
@@ -1930,6 +1966,12 @@
                           </DESC>
                           <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
                           <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <PARAMETERS>
                             <ECUC-ENUMERATION-PARAM-DEF UUID="6e014dd1-7c1e-43f0-886e-92ab29104fe6">
@@ -1939,9 +1981,21 @@
                               </DESC>
                               <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
                               <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                               <DEFAULT-VALUE>IF</DEFAULT-VALUE>
                               <LITERALS>
@@ -1958,9 +2012,21 @@
                               </DESC>
                               <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
                               <SYMBOLIC-NAME-VALUE>true</SYMBOLIC-NAME-VALUE>
                               <DEFAULT-VALUE>0</DEFAULT-VALUE>
                               <MAX>65535</MAX>
@@ -1975,6 +2041,12 @@
                               <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                               <!-- @CalculatedEnd -->
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>Texas Instruments</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -1999,6 +2071,12 @@
                               </DESC>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
                               <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/EcuC/EcucConfigSet/EcucPduCollection/Pdu</DESTINATION-REF>
                             </ECUC-REFERENCE-DEF>
                           </REFERENCES>
@@ -2010,6 +2088,12 @@
                           </DESC>
                           <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                           <UPPER-MULTIPLICITY-INFINITE>1</UPPER-MULTIPLICITY-INFINITE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <PARAMETERS>
                             <ECUC-ENUMERATION-PARAM-DEF UUID="f65cca90-c7f3-47be-b265-dbd84b7c4d15">
@@ -2019,9 +2103,21 @@
                               </DESC>
                               <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
                               <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                               <DEFAULT-VALUE>IF</DEFAULT-VALUE>
                               <LITERALS>
@@ -2038,9 +2134,21 @@
                               </DESC>
                               <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
                               <SYMBOLIC-NAME-VALUE>true</SYMBOLIC-NAME-VALUE>
                               <DEFAULT-VALUE>0</DEFAULT-VALUE>
                               <MAX>65535</MAX>
@@ -2055,6 +2163,12 @@
                               </DESC>
                               <ORIGIN>AUTOSAR_ECUC</ORIGIN>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                              <VALUE-CONFIG-CLASSES>
+                                <ECUC-VALUE-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-VALUE-CONFIGURATION-CLASS>
+                              </VALUE-CONFIG-CLASSES>
                               <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/EcuC/EcucConfigSet/EcucPduCollection/Pdu</DESTINATION-REF>
                             </ECUC-REFERENCE-DEF>
                           </REFERENCES>
@@ -2068,9 +2182,6 @@
                   <DESC>
                     <L-2 L="EN">Contains the general configuration parameters of the module.</L-2>
                   </DESC>
-                  <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
-                  <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
-                  <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <PARAMETERS>
                     <ECUC-INTEGER-PARAM-DEF UUID="78621e5c-a1b1-4421-ba38-83b3f356fd02">
                       <SHORT-NAME>CddInstanceId</SHORT-NAME>
@@ -2078,7 +2189,7 @@
                         <L-2 L="EN">Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0.</L-2>
                       </DESC>
                       <SCOPE>LOCAL</SCOPE>
-                      <ORIGIN>AUTOSAR_ECUC</ORIGIN>
+                      <ORIGIN>Texas Instruments</ORIGIN>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                       <VALUE-CONFIG-CLASSES>
                         <ECUC-VALUE-CONFIGURATION-CLASS>
@@ -2111,7 +2222,7 @@
                     <ECUC-BOOLEAN-PARAM-DEF UUID="130cd397-4722-4985-a11c-614f12612105">
                       <SHORT-NAME>CddSentVersionInfoApi</SHORT-NAME>
                       <DESC>
-                        <L-2 L="EN">Adds / removes the service CddSent_ GetVersionInfo() from the code.</L-2>
+                        <L-2 L="EN">Adds / removes the service CddSent_GetVersionInfo() from the code.</L-2>
                       </DESC>
                       <SCOPE>LOCAL</SCOPE>
                       <ORIGIN>Texas Instruments</ORIGIN>
@@ -2151,10 +2262,16 @@
                   </DESC>
                   <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                   <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                  <MULTIPLICITY-CONFIG-CLASSES>
+                    <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                      <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                    </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                  </MULTIPLICITY-CONFIG-CLASSES>
                   <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                   <REFERENCES>
                     <ECUC-SYMBOLIC-NAME-REFERENCE-DEF UUID="acaa7683-7d07-4ba1-9900-939db2754e20">
-                      <SHORT-NAME>CDD_E_HARDWARE_ERROR</SHORT-NAME>
+                      <SHORT-NAME>CDD_SENT_E_HARDWARE_ERROR</SHORT-NAME>
                       <DESC>
                         <L-2 L="EN">Reference to configured DEM event to report &quot;Hardware failure&quot;.</L-2>
                       </DESC>
@@ -2167,7 +2284,7 @@
                           <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
                         </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
                       </MULTIPLICITY-CONFIG-CLASSES>
-                      <ORIGIN>CddSentDemEventParameterRefs</ORIGIN>
+                      <ORIGIN>Texas Instruments</ORIGIN>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                       <VALUE-CONFIG-CLASSES>

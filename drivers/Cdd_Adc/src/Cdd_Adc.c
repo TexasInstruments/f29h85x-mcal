@@ -39,11 +39,11 @@
 
 /* vendor specific version information check */
 
-#if ((CDD_ADC_SW_MAJOR_VERSION != (2U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_SW_MAJOR_VERSION != (3U)) || (CDD_ADC_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Adc.c and Cdd_Adc.h are not matching!"
 #endif
 
-#if ((CDD_ADC_CFG_MAJOR_VERSION != (2U)) || (CDD_ADC_CFG_MINOR_VERSION != (0U)))
+#if ((CDD_ADC_CFG_MAJOR_VERSION != (3U)) || (CDD_ADC_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Cdd_Adc.c and Cdd_Adc_Cfg.h are not matching!"
 #endif
 
@@ -488,18 +488,22 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StartGroupConversion(VAR(Cdd_Adc_GroupType, AUT
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
-        if ((Cdd_Adc_DrvObj.group_obj[Group].triggersrc == CDD_ADC_GRP_TRIGG_SRC_SW) &&
-            ((Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_IDLE) ||
-             ((Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_STREAM_COMPLETED) &&
-              (Cdd_Adc_DrvObj.group_obj[Group].implicit_stop == TRUE))))
+        if (Cdd_Adc_DrvObj.group_obj[Group].triggersrc != CDD_ADC_GRP_TRIGG_SRC_SW)
+        {
+            /* Report DET error if the group is start by global software trigger */
+            (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GROUP_CONVERSION,
+                                         CDD_ADC_E_WRONG_TRIGG_TYPE);
+        }
+        else if ((Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_IDLE) ||
+                 ((Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_STREAM_COMPLETED) &&
+                  (Cdd_Adc_DrvObj.group_obj[Group].implicit_stop == TRUE)))
         {
             /* Call the start group API only when the trigger source is software */
             Cdd_Adc_StartGroup(Group);
         }
         else
         {
-            /* Report DET error if the ADC is busy or the group is not stopped by global software
-             * trigger after use */
+            /* Report DET error if the ADC is busy */
             (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_START_GROUP_CONVERSION,
                                          CDD_ADC_E_BUSY);
         }
@@ -532,7 +536,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_StopGroupConversion(VAR(Cdd_Adc_GroupType, AUTO
             /* Report DET error if the group is started by global software trigger but stopped using
                 Cdd_Adc_StopGroupConversion API */
             (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_STOP_GROUP_CONVERSION,
-                                         CDD_ADC_E_BUSY);
+                                         CDD_ADC_E_WRONG_TRIGG_TYPE);
         }
         else
         {
@@ -753,9 +757,7 @@ Cdd_Adc_ReadGroup(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
             (void)Det_ReportRuntimeError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_READ_GROUP,
                                          CDD_ADC_E_IDLE);
         }
-        else if ((Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_COMPLETED) ||
-                 (Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_STREAM_COMPLETED) ||
-                 (Cdd_Adc_DrvObj.group_obj[Group].grp_status == CDD_ADC_IDLE))
+        else if (Cdd_Adc_DrvObj.group_obj[Group].grp_status != CDD_ADC_BUSY)
         {
             /* If the group is not in COMPLETED or STREAM_COMPLETED or IDLE state then read the group result
              */
@@ -800,6 +802,7 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_EnableGroupNotification(VAR(Cdd_Adc_GroupType, 
 #endif
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
+        /* Enable group notification */
         Cdd_Adc_DrvObj.group_obj[Group].grp_notification = TRUE;
         SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
@@ -854,6 +857,7 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
         /* Report error if the group is configured for DMA */
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_GET_STREAM_LAST_POINTER,
                               CDD_ADC_E_WRONG_PROCESSING_MODE);
+
         return_val = E_NOT_OK;
     }
 
@@ -863,9 +867,7 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
     {
         SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
         grp_status = Cdd_Adc_DrvObj.group_obj[Group].grp_status;
-        if ((grp_status == CDD_ADC_COMPLETED) || (grp_status == CDD_ADC_STREAM_COMPLETED) ||
-            ((Cdd_Adc_CfgPtr->groupcfg[Group].access_mode == CDD_ADC_ACCESS_MODE_SINGLE) &&
-             (Cdd_Adc_DrvObj.group_obj[Group].valid_samples != 0U)))
+        if ((grp_status == CDD_ADC_COMPLETED) || (grp_status == CDD_ADC_STREAM_COMPLETED))
         {
             /* Get valid samples count only when the group is in COMPLETED or STREAM_COMPLETED state
                or for single access groups if the valid samples are stored in the result buffer */
@@ -887,6 +889,12 @@ Cdd_Adc_GetStreamLastPointer(VAR(Cdd_Adc_GroupType, AUTOMATIC) Group,
         }
         SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
     }
+#if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
+    else
+    {
+        *PtrToSamplePtr = (Cdd_Adc_ValueGroupType *)NULL_PTR;
+    }
+#endif
     return (num_samples);
 }
 
@@ -1044,8 +1052,7 @@ Cdd_Adc_ReadCheckerStatus(VAR(Cdd_Adc_CheckerIntEvtType, AUTOMATIC) IntEvt,
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_READ_RESULT_CHECKER,
                               CDD_ADC_E_INVALID_ID);
     }
-    else if ((CheckerFlag == (Cdd_Adc_CheckFlagStatusType *)NULL_PTR) ||
-             ((CheckerFlag + CDD_ADC_CHECKER_CNT) == (Cdd_Adc_CheckFlagStatusType *)NULL_PTR))
+    else if (CheckerFlag == (Cdd_Adc_CheckFlagStatusType *)NULL_PTR)
     {
         /* Report DET error if the passed pointer is NULL and the buffer doesn't have enough space
          */
@@ -1095,7 +1102,7 @@ Cdd_Adc_ClearCheckerEvt(VAR(Cdd_Adc_CheckerIntEvtType, AUTOMATIC) IntEvt,
     {
         /* Report DET error if the event ID doesn't exist*/
         (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_CLEAR_CHECKER_EVT,
-                              CDD_ADC_E_PARAM_CONFIG);
+                              CDD_ADC_E_PARAM_EVENT);
     }
     else
     {
@@ -1268,6 +1275,43 @@ FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_GetDelayStamp(VAR(Cdd_Adc_PpbType, AUTOMATIC)
     }
     return delay_stamp;
 }
+
+#if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API)
+
+FUNC(void, CDD_ADC_CODE)
+Cdd_Adc_ConfigurePpbNotification(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId, VAR(boolean, AUTOMATIC) Mode)
+{
+#if (STD_ON == CDD_ADC_DEV_ERROR_DETECT)
+    if (FALSE == Cdd_Adc_IsInitialized)
+    {
+        /* Report DET error if the driver not initialised before calling
+         * CDD_Adc_EnableGroupNotification */
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_CONFIGURE_PPB_NOTIFICATION,
+                              CDD_ADC_E_UNINIT);
+    }
+    else if (PpbId >= CDD_ADC_PPB_CNT)
+    {
+        /* Report DET error if the PPB ID doesn't exist*/
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_CONFIGURE_PPB_NOTIFICATION,
+                              CDD_ADC_E_INVALID_ID);
+    }
+    else if ((Cdd_Adc_PpbNotifyType)NULL_PTR == Cdd_Adc_CfgPtr->ppbcfg[PpbId].ppbevtint_notification)
+    {
+        /* Report DET error if the group notification function doesn't exist */
+        (void)Det_ReportError(CDD_ADC_MODULE_ID, CDD_ADC_INSTANCE_ID, CDD_ADC_SID_CONFIGURE_PPB_NOTIFICATION,
+                              CDD_ADC_E_NOTIF_CAPABILITY);
+    }
+    else
+#endif
+    {
+        SchM_Enter_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
+        /* Enable/disable PPB notification */
+        Cdd_Adc_DrvObj.ppb_obj[PpbId] = Mode;
+        SchM_Exit_Cdd_Adc_CDD_ADC_EXCLUSIVE_AREA_0();
+    }
+}
+#endif
+
 #endif
 
 #if (STD_ON == CDD_ADC_TEMPERATURE_SENSOR_ENABLE)

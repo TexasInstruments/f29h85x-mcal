@@ -45,11 +45,11 @@ extern "C" {
  *********************************************************************************************************************/
 /* Defines for CDD_ADC Driver version used for compatibility checks.*/
 /** \brief Driver Implementation Major Version */
-#define CDD_ADC_SW_MAJOR_VERSION (2U)
+#define CDD_ADC_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version */
 #define CDD_ADC_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
-#define CDD_ADC_SW_PATCH_VERSION (1U)
+#define CDD_ADC_SW_PATCH_VERSION (0U)
 
 /*  Defines for CDD_ADC Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_ADC Driver*/
@@ -82,7 +82,7 @@ extern "C" {
 #define CDD_ADC_E_ALREADY_INITIALIZED ((uint8)0x0DU) /* Design: MCAL-31149 */
 
 /** \brief  API service called with incorrect configuration parameter */
-#define CDD_ADC_E_PARAM_CONFIG ((uint8)0x0EU) /* Design: MCAL-31150 */
+#define CDD_ADC_E_PARAM_EVENT ((uint8)0x0EU) /* Design: MCAL-31150 */
 
 /** \brief  API service called with invalid data buffer pointer */
 #define CDD_ADC_E_PARAM_POINTER ((uint8)0x14U) /* Design: MCAL-31151 */
@@ -126,6 +126,9 @@ extern "C" {
 
 /** \brief API service called with invalid interrupt ID */
 #define CDD_ADC_E_WRONG_PROCESSING_MODE ((uint8)0x25U)
+
+/** \brief API service called for group with wrong trigger source type */
+#define CDD_ADC_E_WRONG_TRIGG_TYPE ((uint8)0x26U) /* Design: MCAL-31155 */
 
 /* The Service Id is one of the argument to Det_ReportError function and is used to identify the
  * source of the error. */
@@ -187,6 +190,8 @@ extern "C" {
 #define CDD_ADC_SID_INTERNAL_TEST_NODE ((uint8)0x1BU)
 /** \brief Cdd_Adc_UpdateStatus() service ID */
 #define CDD_ADC_SID_UPDATE_STATUS_THROUGH_DMA ((uint8)0x1CU)
+/** \brief Cdd_Adc_EnablePpbNotification() API Service ID */
+#define CDD_ADC_SID_CONFIGURE_PPB_NOTIFICATION ((uint8)0x1DU)
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -443,10 +448,24 @@ typedef struct Cdd_Adc_HwUnitCfgTag
     Cdd_Adc_PpbType startppbnum;
     Cdd_Adc_PpbType ppbcount;
 #endif
+
+#if (STD_ON == CDD_ADC_SET_RESOLUTION_API)
+    /** \brief  ADC Result Safety Checker Configuration */
+    boolean resolution_update;
+#endif
+
     /** \brief  ADC HW unit result base addr */
-    uint32 base_addr;
+    uint32  base_addr;
     /** \brief  ADC result registers base */
-    uint32 result_baseaddr;
+    uint32  result_baseaddr;
+    /** \brief  Analog reference select */
+    uint16  analogrefsel;
+    /** \brief Analog reference voltage select */
+    uint16  analogrefvoltsel;
+    /** \brief Trim address */
+    uint32 *inltrimaddress;
+    /** \brief INL trim values */
+    uint8   numadc_inltrim;
 } Cdd_Adc_HwUnitCfgType;
 
 #if (STD_ON == CDD_ADC_SAFETY_CHECK_API)
@@ -556,6 +575,8 @@ typedef struct Cdd_Adc_ConfigTag
 #if (STD_ON == CDD_ADC_GLBSW_TRIG_API)
     /** \brief  Global software trigger configuration */
     Cdd_Adc_GlbSwCfgType glbtrigcfg[CDD_ADC_GLBSW_TRIG_CNT];
+    /** \brief  Global software trigger configuration */
+    uint32               glbsw_baseaddr;
 #endif
 #if (STD_ON == CDD_ADC_TRIG_REP_ENABLE)
     /** \brief  Trigger repeater configuration */
@@ -948,6 +969,24 @@ FUNC(void, CDD_ADC_CODE) Cdd_Adc_ClearPpbEvt(VAR(Cdd_Adc_PpbType, AUTOMATIC) Ppb
  *
  *********************************************************************************************************************/
 FUNC(uint16, CDD_ADC_CODE) Cdd_Adc_GetDelayStamp(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId);
+
+#if (STD_ON == CDD_ADC_PPB_NOTIF_CAPABILITY_API)
+/** \brief Enable or disable PPB notification
+ *
+ * This service enables or disables PPB notification for the specified PPB
+ *
+ * \param[in] PpbId       Numeric ID of the PPB unit
+ * \param[in] Mode        Enable/disable select
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *********************************************************************************************************************/
+FUNC(void, CDD_ADC_CODE)
+Cdd_Adc_ConfigurePpbNotification(VAR(Cdd_Adc_PpbType, AUTOMATIC) PpbId, VAR(boolean, AUTOMATIC) Mode);
+#endif
+
 #endif
 
 #if (STD_ON == CDD_ADC_SET_RESOLUTION_API)

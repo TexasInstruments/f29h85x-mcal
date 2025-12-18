@@ -26,6 +26,8 @@
  * - Initialize clock to 200 MHz using Mcu_Init()
  * - Initialize pins using Port_Init() to see the print statements on the console
  * - Initialize Cdd_Adc driver using Cdd_Adc_Init()
+ * - Initialize Gpt driver using Gpt_Init() to use start timer API.
+ *      Timer interrupt acts as a hardware trigger source for ADC sample conversion in this example.
  * Verification of Cdd_Adc temperature sensor values
  * Channel ID 20 on ADCA and ADCC are both connected to the temperature sensor internally.
  * The ADC conversion results can be passed to GetTemperatureC & GetTemperatureC APIs to get the
@@ -103,29 +105,29 @@ void Gpt_Notify_Func_0(void)
 void Cdd_Adc_Group1Notification()
 {
     /* When the group status is IDLE the read the temperature sensor value in temperature */
-    if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
+    if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
     {
         /* Read group results */
         Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
-                          &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
+                          &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_0][0]);
         Cdd_Adc_ADCA_TempC = Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
-                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
+                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_0][0]);
         Cdd_Adc_ADCA_TempK = Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_0,
-                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
+                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_0][0]);
     }
 }
 
 void Cdd_Adc_Group2Notification()
 {
-    if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0) == CDD_ADC_STREAM_COMPLETED)
+    if (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_1) == CDD_ADC_STREAM_COMPLETED)
     {
         /* Read group results */
         Cdd_Adc_ReadGroup(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
-                          &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+                          &Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_1][0]);
         Cdd_Adc_ADCC_TempC = Cdd_Adc_GetTemperatureC(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
-                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_1][0]);
         Cdd_Adc_ADCC_TempK = Cdd_Adc_GetTemperatureK(CddAdcConf_CddAdcHwUnit_CddAdcHwUnit_1,
-                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+                                                     Cdd_Adc_ResultBuffer[CddAdcConf_CddAdcGroup_CddAdcGroup_1][0]);
     }
 }
 
@@ -135,17 +137,17 @@ int main()
     EcuM_Init();
     /* To print the statements */
     AppUtils_Init(200000000U);
-    AppUtils_Printf(" Executing Cdd_Adc_Example_TempSensor example\n");
+    AppUtils_Printf("Executing Cdd_Adc_Example_TempSensor example\n");
 
     /* Set group result buffer */
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0,
-                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0][0]);
-    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0,
-                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcGroup_CddAdcGroup_0,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcGroup_CddAdcGroup_0][0]);
+    Cdd_Adc_SetupResultBuffer(CddAdcConf_CddAdcGroup_CddAdcGroup_1,
+                              &Cdd_Adc_Buffer[CddAdcConf_CddAdcGroup_CddAdcGroup_1][0]);
 
     /* Enable group notification */
-    Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
-    Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0);
+    Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcGroup_CddAdcGroup_0);
+    Cdd_Adc_EnableGroupNotification(CddAdcConf_CddAdcGroup_CddAdcGroup_1);
 
     /* Enable timer interrupt which is the trigger source for the hardware trigger group conversion
      */
@@ -154,13 +156,13 @@ int main()
     Gpt_StartTimer(0U, GPT_COUNT_VALUE_1MS);
 
     /* Start the software group conversion */
-    Cdd_Adc_StartGroupConversion(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
+    Cdd_Adc_StartGroupConversion(CddAdcConf_CddAdcGroup_CddAdcGroup_0);
     /* Start the hardware group conversion */
-    Cdd_Adc_EnableHardwareTrigger(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0);
+    Cdd_Adc_EnableHardwareTrigger(CddAdcConf_CddAdcGroup_CddAdcGroup_1);
 
     /* Wait until both the group conversions are done */
-    while ((Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0) != CDD_ADC_IDLE) ||
-           (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcHwUnit_1_CddAdcGroup_0) != CDD_ADC_IDLE))
+    while ((Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_0) != CDD_ADC_IDLE) ||
+           (Cdd_Adc_GetGroupStatus(CddAdcConf_CddAdcGroup_CddAdcGroup_1) != CDD_ADC_IDLE))
     {
         McalLib_Delay(100);
     }

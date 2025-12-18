@@ -492,6 +492,7 @@ typedef const Mcu_ModeConfigType* Mcu_ModeConfigPtrType;
 | MCU_SID_SET_MODE   | Service ID for Mcu_SetMode.  |
 | MCU_SID_GET_VERSION_INFO   | Service ID for Mcu_GetVersionInfo.  |
 | MCU_SID_GET_RAM_STATE   | Service ID for Mcu_GetRamState.  |
+| MCU_SID_GET_SYS_CLOCK   | Service ID for Mcu_GetSystemClock.  |
 | MCU_E_PARAM_CONFIG   | Mcu_Init config param invalid.  |
 | MCU_E_PARAM_CLOCK   | Mcu_InitClock clockid param invalid.  |
 | MCU_E_PARAM_MODE   | Mcu_SetMode modeid param invalid.  |
@@ -500,6 +501,7 @@ typedef const Mcu_ModeConfigType* Mcu_ModeConfigPtrType;
 | MCU_E_UNINIT   | API invoked without performing Mcu_Init.  |
 | MCU_E_PARAM_POINTER   | NULL_PTR passed to MCU driver APIs.  |
 | MCU_E_INIT_FAILED   | Mcu Initialization failed.  |
+| MCU_E_UNINIT_CLOCK   | API invoked without performing Mcu_InitClock.  |
 | MCU_ERRORRST_MASK   | Define indicating invalid raw reset value.  |
 
 ## Functions
@@ -511,6 +513,7 @@ typedef const Mcu_ModeConfigType* Mcu_ModeConfigPtrType;
 | Std_ReturnType | **[Mcu_InitRamSection](../Modules/group__MCU.md#function-mcu_initramsection)**([Mcu_RamSectionType](../Modules/group__MCU.md#typedef-mcu_ramsectiontype) RamSection)| This service initializes the RAM section wise with default values supplied in configuration set.  |
 | Std_ReturnType | **[Mcu_InitClock](../Modules/group__MCU.md#function-mcu_initclock)**([Mcu_ClockType](../Modules/group__MCU.md#typedef-mcu_clocktype) ClockSetting)| This service initializes the PLL and other MCU specific clock options.  |
 | [Mcu_PllStatusType](../Modules/group__MCU.md#enum-mcu_pllstatustype) | **[Mcu_GetPllStatus](../Modules/group__MCU.md#function-mcu_getpllstatus)**(void )| This service provides the lock status of the PLL.  |
+| uint32 | **[Mcu_GetSystemClock](../Modules/group__MCU.md#function-mcu_getsystemclock)**(void )| This service provides the system clock.  |
 | [Mcu_ResetType](../Modules/group__MCU.md#enum-mcu_resettype) | **[Mcu_GetResetReason](../Modules/group__MCU.md#function-mcu_getresetreason)**(void )| The service reads the reset reason from the hardware.  |
 | [Mcu_RawResetType](../Modules/group__MCU.md#typedef-mcu_rawresettype) | **[Mcu_GetResetRawValue](../Modules/group__MCU.md#function-mcu_getresetrawvalue)**(void )| The service reads the raw reset value from the hardware register.  |
 | void | **[Mcu_PerformReset](../Modules/group__MCU.md#function-mcu_performreset)**(void )| The service performs a microcontroller reset.  |
@@ -678,6 +681,31 @@ This service provides the lock status of the PLL.
 
 
 **Return**: Mcu_PllStatusType - PLL Status 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Mcu_GetSystemClock
+
+```
+uint32 Mcu_GetSystemClock(
+    void 
+)
+```
+
+
+**Brief**: 
+This service provides the system clock. 
+
+**Returns**: 
+
+  
+* **PllSysclk** 
+<br> 
+
+
+**Return**: Mcu_SysClk - System clock 
 
 **Precondition**: None 
 

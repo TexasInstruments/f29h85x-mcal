@@ -88,7 +88,7 @@ CONST(Cdd_Ipc_InstanceType, CDD_IPC__CONST) Cdd_Ipc_Sync_Instances[CDD_IPC_CORE_
 /** \brief CDD Ipc Configuration */
 CONST(struct Cdd_Ipc_ConfigTag, CDD_IPC_CONFIG_DATA) Cdd_Ipc_Config =
 {
-    .Cdd_Ipc_LocalCore = [!"node:value(CddIpcGeneral/CddIpcLocalCore)"!],
+    .Cdd_Ipc_LocalCore = CDD_IPC_[!"node:value(node:ref(as:modconf('ResourceAllocator')/ResourceAllocatorGeneral/CurrentContext)/Core)"!],
 
 [!IF "num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*))>0"!]
     .Cdd_Ipc_TxInstanceConfig = 

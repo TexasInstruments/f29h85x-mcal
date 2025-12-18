@@ -316,19 +316,6 @@ This container contains the configuration parameters and sub containers of the C
 ##### CddSentController
 This container contains the configuration parameters of the CddSent HW units.
 
-###### CddSentInstance
-
-| Item ||
-|--------|---------------|
-| **Name** | CddSentInstance |
-| **Description** | Selects CddSent HW unit Instance. |
-| **Origin** | Texas Instruments |
-| **Post-Build-Variant-Value** | false |
-| **Value-Configuration-Class** | -- |
-| Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | SENT1 |
-| **Range** | SENT1<br>SENT2<br>SENT3<br>SENT4<br>SENT5<br>SENT6 |
-
 ###### CddSentBaseAddress
 
 | Item ||
@@ -339,9 +326,7 @@ This container contains the configuration parameters of the CddSent HW units.
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 0 |
-| **Max-value** | 4294967295 |
-| **Min-value** | 0 |
+| **Default-value** | SENT1_BASE_FRAME(0) |
 
 ###### CddSentHWUnitId
 
@@ -371,11 +356,11 @@ This container contains the configuration parameters of the CddSent HW units.
 | **Max-value** | 600 |
 | **Min-value** | 0 |
 
-###### CddSentInteruptType
+###### CddSentInterruptType
 
 | Item ||
 |--------|---------------|
-| **Name** | CddSentInteruptType |
+| **Name** | CddSentInterruptType |
 | **Description** | Defines the interrupt type. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
@@ -442,6 +427,8 @@ This container contains the configuration parameters of the CddSent HW units.
 |--------|---------------|
 | **Name** | CddSentFIFOTriggerLevel |
 | **Description** | FIFO trigger level expected |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
@@ -467,7 +454,7 @@ This container contains the configuration parameters of the CddSent HW units.
 | Item ||
 |--------|---------------|
 | **Name** | CddSentUserErrorCallbackFunction |
-| **Description** | Call back function for the data |
+| **Description** | Call back function for the error |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -555,6 +542,17 @@ This container contains the configuration parameters of the CddSent HW units.
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | true |
 
+###### CddSentInstanceRef
+
+| Item ||
+|--------|---------------|
+| **Name** | CddSentInstanceRef |
+| **Description** | Selects CddSent HW unit Instance. |
+| **Origin** | Texas Instruments |
+| **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+
 ###### CddSentCpuClockRef
 
 | Item ||
@@ -606,8 +604,8 @@ This container contains the configuration parameters of the CddSent channel obje
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 0 |
-| **Max-value** | 9223372036854775807 |
-| **Min-value** | -9223372036854775808 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
 
 ###### CddSentMessageID
 
@@ -632,6 +630,8 @@ This container contains the configuration parameters of the CddSent channel obje
 |--------|---------------|
 | **Name** | CddSentPduID |
 | **Description** | This parameter will be used when CddSentIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in receive function callback to PduR to address the received Pdu from respective sensor.  |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
@@ -646,7 +646,7 @@ This container contains the configuration parameters of the CddSent MTP triggers
 | Item ||
 |--------|---------------|
 | **Name** | CddSentMTPSensorType |
-| **Description** | selection of channel types |
+| **Description** | selection of MTP sensor type |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
@@ -811,6 +811,8 @@ This container contains the configuration parameters of the CddSent MTP triggers
 |--------|---------------|
 | **Name** | CddSentMTPSensorCompare10 |
 | **Description** | the time (inclock tick unit) of the Channel's Master Trigger Pulse Generator output to be toggled.For non-zero TOGGLETIME, it has to be larger than CddSentMTPSensorCompare9, No toggle if TOGGLETIME = 0. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
@@ -840,6 +842,8 @@ This container contains the configuration parameters of the CddSent MTP triggers
 |--------|---------------|
 | **Name** | CddSentMTPSensorTimeout |
 | **Description** | The parameter CddSentMTPSensorTimeout indicates a time to initiate an interrupt if the sent receiver has not received responce |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
@@ -863,8 +867,8 @@ This container contains the configuration parameters of the CddSent MTP triggers
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 0 |
-| **Max-value** | 9223372036854775807 |
-| **Min-value** | -9223372036854775808 |
+| **Max-value** | 65535 |
+| **Min-value** | 0 |
 
 ###### CddSentMTPSensorPduID
 
@@ -872,6 +876,8 @@ This container contains the configuration parameters of the CddSent MTP triggers
 |--------|---------------|
 | **Name** | CddSentMTPSensorPduID |
 | **Description** | This parameter will be used when CddSentIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in transmit function to address the respective sensor.  |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
@@ -884,6 +890,8 @@ This container contains the configuration parameters of the CddSent MTP triggers
 |--------|---------------|
 | **Name** | CddSentFIFOInterrupts |
 | **Description** | The CPU reads the receiver FIFO when it is empty |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Post-build-variant-multiplicity** | false |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
@@ -978,9 +986,13 @@ This container specifies Rx PDUs that are exchanged between the CDD and the stan
 |--------|---------------|
 | **Name** | CddPduRApiType |
 | **Description** | This parameter configures the type of the CDD interface (IF/TP) |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | IF |
 | **Range** | IF |
 
@@ -990,9 +1002,13 @@ This container specifies Rx PDUs that are exchanged between the CDD and the stan
 |--------|---------------|
 | **Name** | CddPduRLowerLayerHandleId |
 | **Description** | ECU wide unique, symbolic handle for the Pdu. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 0 |
 | **Max-value** | 65535 |
 | **Min-value** | 0 |
@@ -1003,6 +1019,8 @@ This container specifies Rx PDUs that are exchanged between the CDD and the stan
 |--------|---------------|
 | **Name** | CddSentPduRHandle |
 | **Description** | CddSentPduRHandle is a symbolic name of the Pdu with which Cdd_Sent module invokes the receive indication for upper layer. User can modify this parameter to match with the symbolic name used by upper layer. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | Texas Instruments |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
@@ -1018,6 +1036,8 @@ This container specifies Rx PDUs that are exchanged between the CDD and the stan
 | **Description** | Reference to the "global" Pdu structure to allow harmonization of handle IDs in the COM-Stack. |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 ##### CddPduRLowerLayerTxPdu
 This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module.
@@ -1028,9 +1048,13 @@ This container specifies Tx PDUs that are exchanged between the CDD and the stan
 |--------|---------------|
 | **Name** | CddPduRApiType |
 | **Description** | This parameter configures the type of the CDD interface (IF/TP) |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | IF |
 | **Range** | IF |
 
@@ -1040,9 +1064,13 @@ This container specifies Tx PDUs that are exchanged between the CDD and the stan
 |--------|---------------|
 | **Name** | CddPduRLowerLayerHandleId |
 | **Description** | ECU wide unique, symbolic handle for the Pdu. |
+| **Multiplicity-Configuration-Class** | -- |
+| Pre-Compile Time | VARIANT-PRE-COMPILE |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-build-variant-multiplicity** | false |
 | **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 | **Default-value** | 0 |
 | **Max-value** | 65535 |
 | **Min-value** | 0 |
@@ -1055,6 +1083,8 @@ This container specifies Tx PDUs that are exchanged between the CDD and the stan
 | **Description** | Reference to the "global" Pdu structure to allow harmonization of handle IDs in the COM-Stack. |
 | **Origin** | AUTOSAR_ECUC |
 | **Post-Build-Variant-Value** | false |
+| **Value-Configuration-Class** | -- |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
 
 #### CddSentGeneral
 Contains the general configuration parameters of the module.
@@ -1065,7 +1095,7 @@ Contains the general configuration parameters of the module.
 |--------|---------------|
 | **Name** | CddInstanceId |
 | **Description** | Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0. |
-| **Origin** | AUTOSAR_ECUC |
+| **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
@@ -1090,7 +1120,7 @@ Contains the general configuration parameters of the module.
 | Item ||
 |--------|---------------|
 | **Name** | CddSentVersionInfoApi |
-| **Description** | Adds / removes the service CddSent_ GetVersionInfo() from the code. |
+| **Description** | Adds / removes the service CddSent_GetVersionInfo() from the code. |
 | **Origin** | Texas Instruments |
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |

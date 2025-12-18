@@ -61,38 +61,36 @@
                          value="ECUC:b9ea6561-fd73-4381-bdb6-8e027a43ad62"/>
                     <v:lst name="CddSentController" type="MAP">
                       <a:da name="MIN" value="1"/>
-                      <a:da name="MAX" value="6"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_SentInstanceName')))&quot;,'6')"/>
                       <v:ctr name="CddSentController" type="IDENTIFIABLE">
-                        <a:a name="DESC" 
+                         <a:a name="DESC" 
                              value="EN: This container contains the configuration parameters of the CddSent HW units."/>
-                        <a:a name="UUID" 
+                         <a:a name="UUID" 
                              value="ECUC:a79e276f-cf20-496c-8587-edf4d9d2f01b"/>
-                        <v:var name="CddSentInstance" type="ENUMERATION">
-                          <a:a name="DESC" 
-                               value="EN: Selects CddSent HW unit Instance."/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                               type="IMPLEMENTATIONCONFIGCLASS">                           
-                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                          </a:a>
-                          <a:a name="ORIGIN" value="Texas Instruments"/>
-                          <a:a name="SCOPE" value="LOCAL"/>
-                          <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                          <a:a name="UUID" 
-                               value="9ccd0e6b-208a-49e9-a78a-e0a48956ece7"/>
-                          <a:da name="RANGE">
-                            <a:v>SENT1</a:v>
-                            <a:v>SENT2</a:v>
-                            <a:v>SENT3</a:v>
-                            <a:v>SENT4</a:v>
-                            <a:v>SENT5</a:v>
-                            <a:v>SENT6</a:v>
-                          </a:da>
-                          <a:da name="DEFAULT" value="SENT1"/>
-                          <a:da name="INVALID" type="XPath">
-                             <a:tst expr="text:uniq((../../..//*[@name='CddSentInstance']),node:value(.))" false="CddSentInstance selection has to be unique across all containers"/>
-                          </a:da>
-                        </v:var> 
-                        <v:var name="CddSentBaseAddress" type="INTEGER">
+                         <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                         <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                         </a:a>
+                        <v:ref name="CddSentInstanceRef" type="REFERENCE">
+                         <a:a name="DESC"
+                              value="EN: Selects CddSent HW unit Instance."/>
+                         <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                         </a:a>
+                         <a:a name="ORIGIN" value="Texas Instruments"/>
+                         <a:a name="UUID"
+                              value="93856cd9-cadb-4e40-8c44-544c95d3d628"/>
+                         <a:da name="REF"
+                              value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Sent/Cdd_SentAllocatedInstance"/>
+                         <a:da name="RANGE" type="XPath">
+                         <a:tst expr="node:paths(//Cdd_SentAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                         </a:da>
+                         <a:da name="INVALID" type="XPath">
+                              <a:tst expr="text:uniq((../../..//*[@name='CddSentInstanceRef']),node:value(.))" false="CddSentInstanceRef selection has to be unique across all containers."/>
+                         </a:da>
+                        </v:ref>
+                        <v:var name="CddSentBaseAddress" type="STRING">
                           <a:a name="DESC" 
                                value="EN: Specifies the CddSent HW unit base address."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" 
@@ -104,13 +102,8 @@
                           <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                           <a:a name="UUID" 
                                value="de8d3c23-0f70-4e30-a3e0-1e43d00023bc"/>
-                          <a:da name="INVALID" type="Range">
-                            <a:tst expr="&lt;=4294967295"/>
-                            <a:tst expr="&gt;=0"/>
-                          </a:da>
-                          <a:a name="DEFAULT_RADIX" value="HEX"/>
                           <a:da name="DEFAULT" type="XPath">
-                              <a:tst expr="node:fallback(&quot;->(num:inttohex((substring-after(node:value(../CddSentInstance),'SENT') - 1 )*4096+1611038720))&quot;,num:i(0))"   />
+                              <a:tst expr="node:fallback(&quot;->node:value(node:ref(../CddSentInstanceRef)/BaseAddr)&quot;,'SENT1_BASE_FRAME(0)')"/>
                           </a:da>
                           <a:da name="EDITABLE" value="false"/>
                         </v:var>
@@ -154,7 +147,7 @@
                           </a:da>
                          <a:da name="EDITABLE" value="false"/>
                         </v:var>
-                        <v:var name="CddSentInteruptType" type="ENUMERATION">
+                        <v:var name="CddSentInterruptType" type="ENUMERATION">
                           <a:a name="DESC" 
                                value="EN: Defines the interrupt type."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" 
@@ -259,6 +252,7 @@
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                type="IMPLEMENTATIONCONFIGCLASS">
                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
@@ -298,13 +292,16 @@
                                    value="6555cea2-b11a-457f-aa73-6f83460fc912"/>
                               <a:da name="ENABLE" value="true"/>
                               <a:da name="DEFAULT" value="NULL_PTR"/>
-                              <a:da name="INVALID" type="XPath">
-                                   <a:tst expr="../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true' or (node:value(.) != 'NULL_PTR' and not(node:empty(.)))" false="CddSentChannelType selection has to be unique across all containers"/>
+                              <a:da name="INVALID" type="Multi">
+                                   <mt:xpath expr="not(node:empty(.))" false="If user data callback is not required it shall be set to NULL_PTR otherwise valid value shall be provided"/>
+                                   <mt:xpath expr="../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true' or (node:value(.) != 'NULL_PTR')" false="User callback must be configured when not integrating with ASR com stack"/>
+                                   <mt:xpath expr="../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true' or (text:uniq((../..//*[@name='CddSentUserCallbackFunction']),node:value(.)))" false="User callback must be unique across all controllers"/>
+                                   <mt:xpath expr="../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true' or (count(text:grep((../..//*[@name='CddSentUserErrorCallbackFunction']),node:value(.))) = 0.0)" false="User callback and error callback must be unique across all controllers"/>
                               </a:da>
                          </v:var>
                          <v:var name="CddSentUserErrorCallbackFunction" type="FUNCTION-NAME">
                               <a:a name="DESC" 
-                                        value="EN: Call back function for the data"/>
+                                        value="EN: Call back function for the error"/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
@@ -315,8 +312,11 @@
                                    value="da6f3ef5-1a75-475f-9bc6-9ac9915bd9e7"/>
                               <a:da name="ENABLE" value="true"/>
                               <a:da name="DEFAULT" value="NULL_PTR"/>
-                              <a:da name="INVALID" type="XPath">
-                                   <a:tst expr="node:refexists(as:modconf('Cdd_Sent')[1]/CddSentDemEventParameterRefs/CDD_E_HARDWARE_ERROR) or node:value(.) != 'NULL_PTR' or not(node:empty(.))" false="CddSentChannelType selection has to be unique across all containers"/>
+                              <a:da name="INVALID" type="Multi">
+                                   <mt:xpath expr="not(node:empty(.))" false="If user error callback is not required it shall be set to NULL_PTR otherwise valid value shall be provided"/>
+                                   <mt:xpath expr="((node:refexists(../../../../CddSentDemEventParameterRefs/CDD_SENT_E_HARDWARE_ERROR)) = 'true') or (node:value(.) != 'NULL_PTR')" false="Error callback must be configured when not reporting the errors to ASR DEM module"/>
+                                   <mt:xpath expr="((node:refexists(../../../../CddSentDemEventParameterRefs/CDD_SENT_E_HARDWARE_ERROR)) = 'true') or (text:uniq((../..//*[@name='CddSentUserErrorCallbackFunction']),node:value(.)))" false="Error callback must be unique across all controllers"/>
+                                   <mt:xpath expr="((node:refexists(../../../../CddSentDemEventParameterRefs/CDD_SENT_E_HARDWARE_ERROR)) = 'true') or (count(text:grep((../..//*[@name='CddSentUserCallbackFunction']),node:value(.))) = 0.0)" false="User callback and error callback must be unique across all controllers"/>
                               </a:da>
                          </v:var>
                         <v:var name="CddSentSyncTimeout" type="INTEGER">
@@ -438,21 +438,25 @@
                                  value="EN: This container contains the configuration parameters of the CddSent channel object"/>
                             <a:a name="UUID" 
                                  value="ECUC:a69e276f-cf20-496c-8587-edf4d9d2f01b"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
                             <a:da name="INVALID" type="XPath">
                                    <a:tst expr="text:uniq((../../../../CddSentController/*/CddSentChannelObject/*/@name),@name)" false="CddSentChannelObject selection has to be unique across all containers"/>
                             </a:da>
                               <v:var name="CddSentSensorType" type="ENUMERATION">
                                    <a:a name="DESC" 
                                         value="EN: selection of sensor types"/>
-                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                        type="IMPLEMENTATIONCONFIGCLASS">
-                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                                   </a:a>
                                    <a:a name="ORIGIN" value="Texas Instruments"/>
                                    <a:a name="SCOPE" value="LOCAL"/>
                                    <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                    <a:a name="UUID" 
                                         value="debfc9d7-e066-434d-9361-91c846e2722f"/>
+                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                        type="IMPLEMENTATIONCONFIGCLASS">
+                                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                   </a:a>
                                    <a:da name="DEFAULT" value="CDD_SENT_CHANNEL_STANDARD_SENSOR"/>
                                    <a:da name="RANGE">
                                         <a:v>CDD_SENT_CHANNEL_STANDARD_SENSOR</a:v>
@@ -481,7 +485,7 @@
                                     <a:v>CDD_SENT_CHANNEL_SENSOR_2_FAST_CHANNEL</a:v>
                                     <a:v>CDD_SENT_CHANNEL_SENSOR_3_FAST_CHANNEL</a:v>
                                     <a:v>CDD_SENT_CHANNEL_SENSOR_4_FAST_CHANNEL</a:v>
-                                    <a:v>SHORT_SERIAL_ENHANCED_SERIAL_12BIT_SLOW_CHANNEL</a:v>6
+                                    <a:v>SHORT_SERIAL_ENHANCED_SERIAL_12BIT_SLOW_CHANNEL</a:v>
                                     <a:v>ENHANCED_SERIAL_16BIT_SLOW_CHANNEL</a:v>
                               </a:da>
                               <a:da name="INVALID" type="XPath">
@@ -491,8 +495,9 @@
                             <v:ref name="CddSentPduID" type="REFERENCE">
                               <a:a name="DESC" 
                                    value="EN: This parameter will be used when CddSentIntegrationWithAsrComStackEnable is enabled. This Pdu identifier will be used in receive function callback to PduR to address the received Pdu from respective sensor. "/>
-                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">                                                        
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="LOCAL"/>
@@ -500,7 +505,7 @@
                                    value="1129ddd3-bfce-42a3-8f71-a37659b3dfae"/>
                               <a:da name="ENABLE" type="XPath" expr="(../../../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true')"/>
                               <a:da name="INVALID" type="XPath">
-                                   <a:tst expr="text:uniq((../../../..//*[@name='CddSentPduID']),node:value(.)) and not(node:empty(.))" false="CddSentChannelType selection has to be unique across all containers"/>
+                                   <a:tst expr="text:uniq((../../../..//*[@name='CddSentPduID']),node:value(.)) and not(node:empty(.))" false="CddSentPduID selection has to be unique across all containers"/>
                               </a:da>
                               <a:da name="REF" 
                                         value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Cdd/CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerRxPdu"/>
@@ -508,22 +513,24 @@
                             <v:var name="CddSentChannelObjectID" type="INTEGER">
                               <a:a name="DESC" 
                                    value="EN: This parameter will be used when CddSentIntegrationWithAsrComStackEnable is disabled. This channel object identifier will be used in configured receive callback function to  address the received object from respective sensor. "/>
-                              <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                   type="IMPLEMENTATIONCONFIGCLASS">
-                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
-                              </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="ECU"/>
                               <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                               <a:a name="UUID" 
                                    value="490edce1-68ba-49a3-b5c0-a9796125e0e5"/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
                               <a:da name="ENABLE" value="true"/>
                               <a:da name="EDITABLE" value="false"/>
                               <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> (num:i(count(preceding::CddSentChannelObjectID))) &quot;, num:i(0))"/>
-                              <a:da name="INVALID" type="XPath">
-                              <a:tst expr="text:uniq((../../../..//*[@name='CddSentChannelObjectID']),node:value(.))" false="CddSentChannelObjectID selection has to be unique across all containers"/>
-                              </a:da>
+                              <a:a name="INVALID" type="Multi">
+                                   <mt:xpath expr="text:uniq((../../../..//*[@name='CddSentChannelObjectID']),node:value(.))" false="CddSentChannelObjectID selection has to be unique across all containers"/>
+                                   <mt:range>
+                                      <mt:tst expr="&lt;=65535"/>
+                                      <mt:tst expr="&gt;=0"/>
+                                   </mt:range>
+                              </a:a>
                            </v:var>
                            <v:var name="CddSentMessageID" type="INTEGER">
                               <a:a name="DESC" 
@@ -545,7 +552,7 @@
                               <a:tst expr="&gt;=1"/>
                               </a:da>
                               <a:da name="INVALID" type="XPath">
-                                   <a:tst expr="text:uniq((../../..//*[@name='CddSentMessageID']),node:value(.))" false="CddSentChannelType selection has to be unique across all containers"/>
+                                   <a:tst expr="text:uniq((../../..//*[@name='CddSentMessageID']),node:value(.))" false="CddSentMessageID selection has to be unique across all containers"/>
                               </a:da>
                            </v:var>
                           </v:ctr>
@@ -558,10 +565,14 @@
                                  value="EN: This container contains the configuration parameters of the CddSent MTP triggers."/>
                             <a:a name="UUID" 
                                  value="ECUC:a79e276f-cf10-496c-8587-edf4d9d2f01b"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
                             <a:da name="ENABLE" type="XPath" expr="(contains(node:value(../../CddSentMTP), 'true'))"/>
                             <v:var name="CddSentMTPSensorType" type="ENUMERATION">
                               <a:a name="DESC" 
-                                   value="EN: selection of channel types"/>
+                                   value="EN: selection of MTP sensor type"/>
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                    type="IMPLEMENTATIONCONFIGCLASS">
                                 <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -790,6 +801,7 @@
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                    type="IMPLEMENTATIONCONFIGCLASS">
                                 <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="ECU"/>
@@ -827,6 +839,7 @@
                               <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                    type="IMPLEMENTATIONCONFIGCLASS">
                                 <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                               </a:a>
                               <a:a name="ORIGIN" value="Texas Instruments"/>
                               <a:a name="SCOPE" value="ECU"/>
@@ -846,6 +859,7 @@
                                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                         type="IMPLEMENTATIONCONFIGCLASS">
                                    <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                   <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                                    </a:a>
                                    <a:a name="ORIGIN" value="Texas Instruments"/>
                                    <a:a name="SCOPE" value="LOCAL"/>
@@ -873,9 +887,13 @@
                                         value="74cc8fcf-2d78-4be9-85cd-c5c9be4e01a0"/>
                                    <a:da name="ENABLE" type="XPath" expr="((../../../../../../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'false') and not(../CddSentMTPSensorType = 'CDD_SENT_CHANNEL_BROADCAST'))"/>
                                    <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;-> (num:i(count(preceding::CddSentExternalDeviceID))) &quot;, num:i(0))"/>
-                                   <a:da name="INVALID" type="XPath">
-                                        <a:tst expr="text:uniq((../..//*[@name='CddSentExternalDeviceID']),node:value(.))" false="CddSentExternalDeviceID selection has to be unique across all containers"/>
-                                   </a:da>	
+                                   <a:a name="INVALID" type="Multi">
+                                        <mt:xpath expr="text:uniq((../..//*[@name='CddSentExternalDeviceID']),node:value(.))" false="CddSentExternalDeviceID selection has to be unique across all containers"/>
+                                        <mt:range>
+                                             <mt:tst expr="&lt;=65535"/>
+                                             <mt:tst expr="&gt;=0"/>
+                                        </mt:range>
+                                   </a:a>	
                               </v:var>
                           </v:ctr>
                         </v:lst> 
@@ -883,6 +901,10 @@
                         <a:a name="DESC" value="EN: Valid data interrupts"/>
                         <a:a name="UUID" 
                              value="ECUC:a79e276f-cf20-496c-8587-edf5d9d2f01b"/>
+                         <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                   type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                         </a:a>
                         <a:da name="ENABLE" type="XPath" expr="(../CddSentMTP = 'false')"/>
                         <a:a name="TAB" value="CddSentInterruptSources"/>
                         <v:var name="FIFO_Trigger_Event" type="BOOLEAN">
@@ -1294,6 +1316,10 @@
                          value="EN: Contribution of COM Stack modules."/>
                     <a:a name="UUID" 
                          value="85434ef2-9333-4d6d-8f92-b48863de2ba6"/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                         type="IMPLEMENTATIONCONFIGCLASS">
+                         <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                    </a:a>
                     <a:da name="ENABLE" type="XPath" expr="(../CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true')"/>
                     <v:ctr name="CddPduRLowerLayerContribution" 
                            type="IDENTIFIABLE">
@@ -1302,6 +1328,10 @@
                       <a:a name="OPTIONAL" value="true"/>
                       <a:a name="UUID" 
                            value="81307b2f-8d32-4a0b-bf35-dba047828839"/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                         type="IMPLEMENTATIONCONFIGCLASS">
+                         <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
                       <a:da name="ENABLE" value="false"/>
                       <v:lst name="CddPduRLowerLayerRxPdu" type="MAP">
                         <a:da name="MIN" value="1"/>
@@ -1310,7 +1340,11 @@
                           <a:a name="DESC" 
                                value="EN: This container specifies Rx PDUs that are exchanged between the CDD and the standardized BSW module."/>
                           <a:a name="UUID" 
-                               value="c5138c30-b0c5-4bb2-a92a-6803d586582b"/>
+                               value="c5138c30-b0c5-4bb2-a92a-6803d586582b"/>>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                           </a:a>
                           <v:var name="CddPduRApiType" type="ENUMERATION">
                             <a:a name="DESC" 
                                  value="EN: This parameter configures the type of the CDD interface (IF/TP)"/>
@@ -1319,6 +1353,11 @@
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                             <a:a name="UUID" 
                                  value="6e014dd1-7c1e-43f0-886e-92ab29104fe6"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
                            <a:da name="ENABLE" value="false"/>
                            <a:da name="DEFAULT" value="IF"/>
                             <a:da name="EDITABLE" value="false"/>
@@ -1335,6 +1374,11 @@
                             <a:a name="SYMBOLICNAMEVALUE" value="true"/>
                             <a:a name="UUID" 
                                  value="d3f33021-fd40-4259-9ac9-ffc09a3ca5ba"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
                             <a:da name="ENABLE" value="false"/>
                             <a:da name="DEFAULT" value="0"/>
                             <a:da name="INVALID" type="Range">
@@ -1349,6 +1393,10 @@
                             <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                             <a:a name="UUID" 
                                  value="68d06eb7-c37c-4d31-84d6-27513d0674f4"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                             </a:a>
                             <a:da name="INVALID" type="XPath">
                                    <a:tst expr="text:uniq((../../..//*[@name='CddPduRLowerLayerPduRef']),node:value(.)) and not(node:empty(.))" false="CddPduRLowerLayerPduRef selection has to be unique across all containers"/>
                             </a:da>
@@ -1362,6 +1410,7 @@
                             <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                               type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                              </a:a> 
                             <a:a name="ORIGIN" value="Texas Instruments"/>
                             <a:da name="INVALID" type="XPath">
@@ -1382,6 +1431,10 @@
                                value="EN: This container specifies Tx PDUs that are exchanged between the CDD and the standardized BSW module."/>
                           <a:a name="UUID" 
                                value="323667fa-27f1-4855-afee-ad34bb9f401a"/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
                           <v:var name="CddPduRApiType" type="ENUMERATION">
                             <a:a name="DESC" 
                                  value="EN: This parameter configures the type of the CDD interface (IF/TP)"/>
@@ -1390,6 +1443,11 @@
                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                             <a:a name="UUID" 
                                  value="f65cca90-c7f3-47be-b265-dbd84b7c4d15"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                             </a:a>
                             <a:da name="ENABLE" value="false"/>
                            <a:da name="DEFAULT" value="IF"/>
                             <a:da name="EDITABLE" value="false"/>
@@ -1406,6 +1464,11 @@
                             <a:a name="SYMBOLICNAMEVALUE" value="true"/>
                             <a:a name="UUID" 
                                  value="d02f209c-e443-444f-9835-971fa0eff972"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                             </a:a>
                             <a:da name="ENABLE" value="false"/>
                             <a:da name="DEFAULT" value="0"/>
                             <a:da name="INVALID" type="Range">
@@ -1420,6 +1483,10 @@
                             <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                             <a:a name="UUID" 
                                  value="1c6a253b-5a34-4388-8b1c-c0a2dd96c0a1"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                             </a:a>
                             <a:da name="INVALID" type="XPath">
                                    <a:tst expr="text:uniq((../../..//*[@name='CddPduRLowerLayerPduRef']),node:value(.))" false="CddPduRLowerLayerPduRef selection has to be unique across all containers"/>
                             </a:da>
@@ -1433,10 +1500,8 @@
                   <v:ctr name="CddSentGeneral" type="IDENTIFIABLE">
                     <a:a name="DESC" 
                          value="EN: Contains the general configuration parameters of the module."/>
-                    <a:a name="OPTIONAL" value="true"/>
                     <a:a name="UUID" 
                          value="e9825758-8bf4-4d92-bdeb-70878d8182fa"/>
-                    <a:da name="ENABLE" value="false"/>
                     <v:var name="CddInstanceId" type="INTEGER">
                       <a:a name="DESC" 
                            value="EN: Specifies the InstanceId of this module instance. If only one instance is present it shall have the Id 0."/>
@@ -1444,7 +1509,7 @@
                            type="IMPLEMENTATIONCONFIGCLASS">
                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
-                      <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                       <a:a name="UUID" 
@@ -1472,7 +1537,7 @@
                     </v:var>
                     <v:var name="CddSentVersionInfoApi" type="BOOLEAN">
                       <a:a name="DESC" 
-                           value="EN: Adds / removes the service CddSent_ GetVersionInfo() from the code."/>
+                           value="EN: Adds / removes the service CddSent_GetVersionInfo() from the code."/>
                       <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                            type="IMPLEMENTATIONCONFIGCLASS">
                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
@@ -1507,8 +1572,12 @@
                          value="EN: Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter&apos;s DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references."/>
                     <a:a name="OPTIONAL" value="true"/>
                     <a:a name="UUID" value="ddfb49cd-fc6d-4851-bf71-7b6e64407d85"/>
+                    <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                           type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
                     <a:da name="ENABLE" value="false"/>
-                    <v:ref name="CDD_E_HARDWARE_ERROR"
+                    <v:ref name="CDD_SENT_E_HARDWARE_ERROR"
                            type="SYMBOLIC-NAME-REFERENCE">
                       <a:a name="DESC"
                            value="EN: Reference to configured DEM event to report &quot;Hardware failure&quot;."/>
@@ -1518,7 +1587,7 @@
                         <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
                       <a:a name="OPTIONAL" value="true"/>
-                      <a:a name="ORIGIN" value="CddSentDemEventParameterRefs"/>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
                       <a:a name="SCOPE" value="LOCAL"/>
                       <a:a name="UUID"
                            value="acaa7683-7d07-4ba1-9900-939db2754e20"/>

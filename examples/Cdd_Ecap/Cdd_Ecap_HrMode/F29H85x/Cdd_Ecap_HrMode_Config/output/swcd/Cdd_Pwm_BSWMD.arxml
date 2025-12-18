@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE UUID="367937c5-f61a-496f-8737-ac11c6ac205a">
+      <SHORT-NAME>Cdd_Pwm_TI_F29H85x</SHORT-NAME>
+      <ELEMENTS>
+        <BSW-MODULE-DESCRIPTION UUID="5d910eeb-3de8-4ce7-830a-0e4bfc36d1ad">
+          <SHORT-NAME>Cdd_Pwm</SHORT-NAME>
+          <CATEGORY>BSW_MODULE</CATEGORY>
+          <IMPLEMENTED-ENTRYS>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_Init</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetInterruptEventCount</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetDutyCycle</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetPeriod</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_DeInit</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetOutputToIdle</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>
+          </IMPLEMENTED-ENTRYS>
+          <MODULE-ID>255</MODULE-ID>
+          <BSW-MODULE-DEPENDENCYS>
+            <BSW-MODULE-DEPENDENCY UUID="444f21b0-f4a8-46c4-862a-8048f9c96990">
+              <SHORT-NAME>Det</SHORT-NAME>
+              <TARGET-MODULE-ID>15</TARGET-MODULE-ID>
+              <TARGET-MODULE-REFS>
+                <BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+                  <BSW-MODULE-DESCRIPTION-REF DEST="BSW-MODULE-DESCRIPTION">/AUTOSAR_Det/Det</BSW-MODULE-DESCRIPTION-REF>
+                </BSW-MODULE-DESCRIPTION-REF-CONDITIONAL>
+              </TARGET-MODULE-REFS>
+            </BSW-MODULE-DEPENDENCY>
+          </BSW-MODULE-DEPENDENCYS>
+          <INTERNAL-BEHAVIORS>
+            <BSW-INTERNAL-BEHAVIOR UUID="a6980fe6-e16e-469a-9394-903e0a6f33ce">
+              <SHORT-NAME>Cdd_Pwm_Behavior</SHORT-NAME>
+              <EXCLUSIVE-AREAS>
+                <EXCLUSIVE-AREA UUID="9ce6d3c7-4c6c-48aa-8364-0a594d37c05e">
+                  <SHORT-NAME>CDD_PWM_EXCLUSIVE_AREA_0</SHORT-NAME>
+                </EXCLUSIVE-AREA>
+              </EXCLUSIVE-AREAS>
+              <ENTITYS>
+                <BSW-INTERRUPT-ENTITY UUID="470e25d5-7ce7-4bf7-8308-ed9fc0d72215">
+                  <SHORT-NAME>Cdd_Pwm_Epwm1_IntIsr</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_Epwm1_IntIsr</IMPLEMENTED-ENTRY-REF>
+                  <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
+                </BSW-INTERRUPT-ENTITY>
+                <BSW-CALLED-ENTITY UUID="358aa211-d177-466c-929e-7832fe041173">
+                  <SHORT-NAME>Cdd_Pwm_Init</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_Init</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="cc969659-8133-4853-ae59-3e9028252e38">
+                  <SHORT-NAME>Cdd_Pwm_SetInterruptEventCount</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm/Cdd_Pwm_Behavior/CDD_PWM_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                    <BSW-DIRECT-CALL-POINT>
+                      <SHORT-NAME>Det_Runtime</SHORT-NAME>
+                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/Det/Det_ReportRuntimeError</CALLED-ENTRY-REF>
+                    </BSW-DIRECT-CALL-POINT>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetInterruptEventCount</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="754b1fe8-4b41-4404-a489-7a78a8862632">
+                  <SHORT-NAME>Cdd_Pwm_SetDutyCycle</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm/Cdd_Pwm_Behavior/CDD_PWM_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetDutyCycle</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="13a6fb9d-fa67-4678-b2bc-17573156c087">
+                  <SHORT-NAME>Cdd_Pwm_SetPeriod</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm/Cdd_Pwm_Behavior/CDD_PWM_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <CALL-POINTS>
+                  </CALL-POINTS>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetPeriod</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="d85868a2-91fe-4b4b-b023-0de85b614193">
+                  <SHORT-NAME>Cdd_Pwm_SetOutputToIdle</SHORT-NAME>
+                  <CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                    <CAN-ENTER-EXCLUSIVE-AREA-REF DEST="EXCLUSIVE-AREA">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm/Cdd_Pwm_Behavior/CDD_PWM_EXCLUSIVE_AREA_0</CAN-ENTER-EXCLUSIVE-AREA-REF>
+                  </CAN-ENTER-EXCLUSIVE-AREA-REFS>
+                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_SetOutputToIdle</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+                <BSW-CALLED-ENTITY UUID="fc90f7a1-577b-477b-909d-d94511ed7be2">
+                  <SHORT-NAME>Cdd_Pwm_DeInit</SHORT-NAME>
+                  <REENTRANCY-LEVEL>NON-REENTRANT</REENTRANCY-LEVEL>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm_ModuleEntry/Cdd_Pwm_DeInit</IMPLEMENTED-ENTRY-REF>
+                </BSW-CALLED-ENTITY>
+              </ENTITYS>
+            </BSW-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </BSW-MODULE-DESCRIPTION>
+        <BSW-IMPLEMENTATION UUID="5bc712a6-1af2-4efc-8d70-d0e074c69d97">
+          <SHORT-NAME>Cdd_Pwm_Impl</SHORT-NAME>
+          <CODE-DESCRIPTORS>
+            <CODE UUID="29d4d7f9-2016-471b-9fe4-a7380d97eee5">
+              <SHORT-NAME>Files</SHORT-NAME>
+              <ARTIFACT-DESCRIPTORS>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>include::Cdd_Pwm.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>include::Cdd_Pwm_Priv.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Cdd_Pwm.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Cdd_Pwm_Irq.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>src::Cdd_Pwm_Priv.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>generate::src::Cdd_Pwm_Cfg.c</SHORT-LABEL>
+                  <CATEGORY>SWSRC</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>generate::include::Cdd_Pwm_Cfg.h</SHORT-LABEL>
+                  <CATEGORY>SWHDR</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>                                
+              </ARTIFACT-DESCRIPTORS>
+            </CODE>
+          </CODE-DESCRIPTORS>
+          <COMPILERS>
+            <COMPILER UUID="97ecff86-59fa-42e2-987c-df60c60c6581">
+              <SHORT-NAME>TI_C29Clang</SHORT-NAME>
+              <NAME>TI_C29Clang</NAME>
+              <VENDOR>Texas Instruments</VENDOR>
+              <VERSION>2.0.0</VERSION>
+            </COMPILER>
+          </COMPILERS>
+          <LINKERS>
+            <LINKER UUID="45e46c6c-9ee5-4dff-9003-ec572b78564c">
+              <SHORT-NAME>TI_C29Linker</SHORT-NAME>
+              <NAME>TI_C29Linker</NAME>
+              <VENDOR>Texas Instruments</VENDOR>
+              <VERSION>2.0.0</VERSION>
+            </LINKER>
+          </LINKERS>
+          <PROGRAMMING-LANGUAGE>C</PROGRAMMING-LANGUAGE>
+          <RESOURCE-CONSUMPTION UUID="4f4191a6-2e64-40ee-9f7e-39319970bb09">
+            <SHORT-NAME>ResourceConsumption</SHORT-NAME>
+            <MEMORY-SECTIONS>
+              <MEMORY-SECTION UUID="51e3ad2e-bdfe-476d-829b-154b03a8b1c7">
+                <SHORT-NAME>CDD_PWM_CODE</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CODE</SW-ADDRMETHOD-REF>
+                <SYMBOL>CODE</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="a9b40726-4dc2-473c-b0eb-540fbd5c5af8">
+                <SHORT-NAME>CDD_PWM_CONFIG_DATA_UNSPECIFIED</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CONST_PBCFG</SW-ADDRMETHOD-REF>
+                <SYMBOL>CONFIG_DATA_UNSPECIFIED</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="5245a809-ce87-4158-a1ad-ab4f670be35d">
+                <SHORT-NAME>CDD_PWM_VAR_INIT_PTR</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/VAR_INIT</SW-ADDRMETHOD-REF>
+                <SYMBOL>VAR_INIT_PTR</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="b42f251d-6a2f-48ec-b97b-a4905aa77ab3">
+                <SHORT-NAME>CDD_PWM_VAR_NO_INIT_UNSPECIFIED</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/VAR_NO_INIT</SW-ADDRMETHOD-REF>
+                <SYMBOL>VAR_NO_INIT_UNSPECIFIED</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="893ad7b3-ada4-4793-be33-d50e8aa2d7c8">
+                <SHORT-NAME>CDD_PWM_ISR_CODE</SHORT-NAME>
+                <ALIGNMENT>UNSPECIFIED</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/CODE</SW-ADDRMETHOD-REF>
+                <SYMBOL>ISR_CODE</SYMBOL>
+              </MEMORY-SECTION>
+              <MEMORY-SECTION UUID="34e66bd1-73a2-463f-ab2d-96d9049f7db7">
+                <SHORT-NAME>CDD_PWM_VAR_INIT_BOOLEAN</SHORT-NAME>
+                <ALIGNMENT>BOOLEAN</ALIGNMENT>
+                <SW-ADDRMETHOD-REF DEST="SW-ADDR-METHOD">/AUTOSAR_MemMap/SwAddrMethods/VAR_INIT</SW-ADDRMETHOD-REF>
+                <SYMBOL>VAR_INIT_BOOLEAN</SYMBOL>
+              </MEMORY-SECTION>
+            </MEMORY-SECTIONS>
+          </RESOURCE-CONSUMPTION>
+          <SW-VERSION>3.0.0</SW-VERSION>
+          <VENDOR-ID>44</VENDOR-ID>
+          <AR-RELEASE-VERSION>4.3.1</AR-RELEASE-VERSION>
+          <BEHAVIOR-REF DEST="BSW-INTERNAL-BEHAVIOR">/Cdd_Pwm_TI_F29H85x/Cdd_Pwm/Cdd_Pwm_Behavior</BEHAVIOR-REF>
+          <VENDOR-SPECIFIC-MODULE-DEF-REFS>
+            <VENDOR-SPECIFIC-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/TI_F29H85x/Cdd_Pwm/Cdd</VENDOR-SPECIFIC-MODULE-DEF-REF>
+          </VENDOR-SPECIFIC-MODULE-DEF-REFS>
+        </BSW-IMPLEMENTATION>
+      </ELEMENTS>
+      <AR-PACKAGES>
+        <AR-PACKAGE UUID="1f41b693-5c43-49dd-85df-dfb5c345a15b">
+          <SHORT-NAME>Cdd_Pwm_ModuleEntry</SHORT-NAME>
+          <ELEMENTS>
+            <BSW-MODULE-ENTRY UUID="f971b6c5-964a-40ad-a836-66cf7f7523c7">
+              <SHORT-NAME>Cdd_Pwm_Epwm1_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <EXECUTION-CONTEXT>INTERRUPT-CAT-1</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="41c93848-1e12-4fde-b670-b84d0d87096b">
+              <SHORT-NAME>Cdd_Pwm_Epwm2_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="05bfec66-5e55-4510-bcc7-51aaa56389d1">
+              <SHORT-NAME>Cdd_Pwm_Epwm3_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="c4c5eda0-4f89-4502-b42b-466477eedec1">
+              <SHORT-NAME>Cdd_Pwm_Epwm4_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="817714e7-688d-4d70-a031-d60ec5c7869c">
+              <SHORT-NAME>Cdd_Pwm_Epwm5_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="0a32eec9-cdb8-484f-b05a-0136eaf33d8c">
+              <SHORT-NAME>Cdd_Pwm_Epwm6_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="f9f5097a-4ff2-4f59-ac70-afbaeade1ae5">
+              <SHORT-NAME>Cdd_Pwm_Epwm7_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="a0f64028-8582-4d14-862e-fa1a66389e73">
+              <SHORT-NAME>Cdd_Pwm_Epwm8_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="ac24d043-f63b-442c-b2cc-74572b20d0b2">
+              <SHORT-NAME>Cdd_Pwm_Epwm9_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="62f1345f-2ddf-49c0-a7cf-d5f74b99e4b7">
+              <SHORT-NAME>Cdd_Pwm_Epwm10_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="436577ac-39a7-44ca-aa12-52827056e2a0">
+              <SHORT-NAME>Cdd_Pwm_Epwm11_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="92973244-84e2-4760-8bb4-cde2e5788540">
+              <SHORT-NAME>Cdd_Pwm_Epwm12_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="8ce8587d-2ab9-4bef-a93f-a8b7dd5f5f5e">
+              <SHORT-NAME>Cdd_Pwm_Epwm13_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="5d83d20e-007c-4c2a-b20a-e7a0f50c5ec8">
+              <SHORT-NAME>Cdd_Pwm_Epwm14_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="673885cc-5139-4c86-b5d5-70945bdcdbb2">
+              <SHORT-NAME>Cdd_Pwm_Epwm15_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="69287660-0a8a-47b5-b92b-4dbd3a30a3ef">
+              <SHORT-NAME>Cdd_Pwm_Epwm16_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="8831babf-5fc6-441c-847f-5b4c42a55522">
+              <SHORT-NAME>Cdd_Pwm_Epwm17_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="0864ada0-b406-4497-8031-bcabd115b1fd">
+              <SHORT-NAME>Cdd_Pwm_Epwm18_IntIsr</SHORT-NAME>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>INTERRUPT</CALL-TYPE>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="d9bffa22-8052-4207-a458-fca851b138f0">
+              <SHORT-NAME>Cdd_Pwm_EnableNotification</SHORT-NAME>
+              <SERVICE-ID>221</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="d7fc520e-66b9-4048-951d-a28f37296627">
+              <SHORT-NAME>Cdd_Pwm_DisableNotification</SHORT-NAME>
+              <SERVICE-ID>222</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="726b47fb-75a5-471e-b5db-da1fc491cc02">
+              <SHORT-NAME>Cdd_Pwm_Init</SHORT-NAME>
+              <SERVICE-ID>0</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="f9ba4bbe-49e4-4c0d-a1a6-530c7186ff4b">
+              <SHORT-NAME>Cdd_Pwm_GetVersionInfo</SHORT-NAME>
+              <SERVICE-ID>7</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="55ade7bb-a222-4869-b7d6-815e2b48229a">
+              <SHORT-NAME>Cdd_Pwm_SetInterruptEventCount</SHORT-NAME>
+              <SERVICE-ID>220</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>false</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="4c6c4e11-d2ca-432b-8d6b-fbf3276fd688">
+              <SHORT-NAME>Cdd_Pwm_DeInit</SHORT-NAME>
+              <SERVICE-ID>1</SERVICE-ID>
+              <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="85c4ee0e-4bf4-4d95-a300-8e5bd0cc76a2">
+              <SHORT-NAME>Cdd_Pwm_SetOutputToIdle</SHORT-NAME>
+              <SERVICE-ID>4</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="9774502f-8a4c-44eb-bcec-059b656e4a02">
+              <SHORT-NAME>Cdd_Pwm_SetPeriod</SHORT-NAME>
+              <SERVICE-ID>3</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+            <BSW-MODULE-ENTRY UUID="0991deed-261b-410b-ae9b-c34a58a0e489">
+              <SHORT-NAME>Cdd_Pwm_SetDutyCycle</SHORT-NAME>
+              <SERVICE-ID>2</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+              <ARGUMENTS>
+              </ARGUMENTS>
+            </BSW-MODULE-ENTRY>
+          </ELEMENTS>
+        </AR-PACKAGE>
+      </AR-PACKAGES>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

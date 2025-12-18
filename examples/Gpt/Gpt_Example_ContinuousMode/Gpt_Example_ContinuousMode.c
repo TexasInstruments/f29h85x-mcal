@@ -17,8 +17,12 @@
  *  File:         Gpt_Example_ContinuousMode.c
  *  Generator:    None
  *
- *  Description:  This file contains Gpt examples with Init & DeInit sequence, timers in continuous
- *mode, start & stop timers, enable & disable interrupts features.
+ *  Description:  This file contains the configuration and usage of Gpt module operating in continuous mode.
+ *  This example demonstrates:
+ *  - Gpt initialization and de-initialization
+ *  - Starting and stopping of timer channels 0, 1 and 2 for 10ms, 100ms and 1s
+ *  - Reading time elapsed and time remaining values for running timer
+ *  - Enabling interrupt for Notification function and verifying if interrupt occurred in the expected time.
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************
@@ -115,13 +119,13 @@ int main(void)
     Gpt_StartTimer(GPT_CHANNEL_2, GPT_COUNT_VALUE_10MS);
     AppUtils_Printf("Timer started for all channels with 10ms Timeout\n\r");
     AppUtils_Printf("API Gpt_StartTimer executed successfully for all channels\n\n\r");
-    AppUtils_Printf("Wait until all the timers get notified atleast 1 time.\r\n\n");
+    AppUtils_Printf("Wait until all the timers get notified atleast 3 times.\r\n\n");
 
-    /* Wait for 11 milliseconds to complete one iteration*/
-    Time_Delay(0.011);
+    /* Wait for 33 milliseconds to complete three iterations*/
+    Time_Delay(0.033);
 
-    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] >= 1) && (Gpt_InterruptCnt[GPT_CHANNEL_1] >= 1) &&
-        (Gpt_InterruptCnt[GPT_CHANNEL_2] >= 1))
+    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] = 3) && (Gpt_InterruptCnt[GPT_CHANNEL_1] = 3) &&
+        (Gpt_InterruptCnt[GPT_CHANNEL_2] = 3))
     {
         AppUtils_Printf(
             "--------------------------------------------------------------------------------------"
@@ -180,12 +184,12 @@ int main(void)
     Gpt_StartTimer(GPT_CHANNEL_2, GPT_COUNT_VALUE_100MS);
     AppUtils_Printf("Timer started for all channels with 100ms Timeout\n\r");
     AppUtils_Printf("API Gpt_StartTimer executed successfully for all channels\n\n\r");
-    AppUtils_Printf("Wait until all the timers get notified atleast 1 time.\r\n\n");
-    /* Wait for 101 milliseconds to complete one iteration*/
-    Time_Delay(0.101);
+    AppUtils_Printf("Wait until all the timers get notified atleast 3 times.\r\n\n");
+    /* Wait for 303 milliseconds to complete three iterations*/
+    Time_Delay(0.303);
 
-    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 1) && (Gpt_InterruptCnt[GPT_CHANNEL_1] == 1) &&
-        (Gpt_InterruptCnt[GPT_CHANNEL_2] == 1))
+    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 3) && (Gpt_InterruptCnt[GPT_CHANNEL_1] == 3) &&
+        (Gpt_InterruptCnt[GPT_CHANNEL_2] == 3))
     {
         AppUtils_Printf(
             "--------------------------------------------------------------------------------------"
@@ -240,13 +244,13 @@ int main(void)
     Gpt_StartTimer(GPT_CHANNEL_2, GPT_COUNT_VALUE_1S);
     AppUtils_Printf("Timer started for all channels with 1s Timeout\n\r");
     AppUtils_Printf("API Gpt_StartTimer executed successfully for all channels\n\n\r");
-    AppUtils_Printf("Wait until all the timers get notified atleast 1 time.\r\n\n");
+    AppUtils_Printf("Wait until all the timers get notified atleast 3 times.\r\n\n");
 
-    /* Wait for 1.1 seconds to complete one iteration*/
-    Time_Delay(1.10);
+    /* Wait for 3.3 seconds to complete three iterations*/
+    Time_Delay(3.30);
 
-    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 1) && (Gpt_InterruptCnt[GPT_CHANNEL_1] == 1) &&
-        (Gpt_InterruptCnt[GPT_CHANNEL_2] == 1))
+    if ((Gpt_InterruptCnt[GPT_CHANNEL_0] == 3) && (Gpt_InterruptCnt[GPT_CHANNEL_1] == 3) &&
+        (Gpt_InterruptCnt[GPT_CHANNEL_2] == 3))
     {
         AppUtils_Printf(
             "--------------------------------------------------------------------------------------"

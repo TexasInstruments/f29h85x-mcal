@@ -64,7 +64,7 @@ extern "C" {
  * Design: MCAL-25697
  */
 /** \brief Driver Implementation Major Version. */
-#define LIN_SW_MAJOR_VERSION (2U)
+#define LIN_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version. */
 #define LIN_SW_MINOR_VERSION (0U)
 /**  \brief Driver Implementation Patch Version. */

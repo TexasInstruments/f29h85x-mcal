@@ -131,14 +131,11 @@ void Cdd_I2c_UtilsDeInitLinkList(Cdd_I2c_UtilsLinkListObj *llobj);
  *
  *  \param llobj           Link list object.
  *  \param node            Node object pointer used for linking.
- *  \param data            Data pointer to add to node.
  *  \param params          Pointer to node params containing info
  *                         like data
  *                         pointer, priority, seqId, seqInterruptible.
  *  \param currSeqId       Current sequence ID in progress for the HW
-                           unit.
- *
- *  \Note
+ *                         unit.
  */
 void Cdd_I2c_UtilsLinkNodePri(Cdd_I2c_UtilsLinkListObj *llobj, Cdd_I2c_UtilsNode *node,
                               const Cdd_I2c_UtilsParams *params, uint8 currSeqId);

@@ -99,6 +99,7 @@ typedef enum
     CDD_PWM_ETMIX_DCAEVT1 = 0x400U
 } Cdd_Pwm_EvtMixTriggerSourceType;
 
+/* Design: MCAL-33885 */
 /** \brief Channel object structure*/
 typedef struct Cdd_Pwm_ChannelObjTag
 {
@@ -157,6 +158,7 @@ typedef struct Cdd_Pwm_DriverObjTag
 
 #if (STD_ON == CDD_PWM_ADVANCED_MODE_API)
 
+/* Design: MCAL-33886 */
 /** \brief Hardware object structure*/
 typedef struct Cdd_Pwm_HwUnitObjTag
 {
@@ -166,6 +168,7 @@ typedef struct Cdd_Pwm_HwUnitObjTag
 #endif
 } Cdd_Pwm_HwUnitObjType;
 
+/* Design: MCAL-33884 */
 /** \brief Driver object structure*/
 typedef struct Cdd_Pwm_DriverObjTag
 {
@@ -446,8 +449,8 @@ Cdd_Pwm_PrivSetTimeBaseCounterMode(VAR(uint32, AUTOMATIC) Base,
  * This function enables and sets the Action Qualifier shadow load mode.
  * Valid values for the variables are:
  *  - OutputChannel
- *      - EPWM_ACTION_QUALIFIER_A - Action Qualifier A.
- *      - EPWM_ACTION_QUALIFIER_B - Action Qualifier B.
+ *      - CDD_PWM_ACTION_QUALIFIER_A - Action Qualifier A.
+ *      - CDD_PWM_ACTION_QUALIFIER_B - Action Qualifier B.
  *  - LoadMode
  *      - CDD_PWM_AQ_LOAD_ON_CNTR_ZERO - load when counter equals zero
  *      - CDD_PWM_AQ_LOAD_ON_CNTR_PERIOD - load when counter equals period
@@ -489,7 +492,7 @@ Cdd_Pwm_PrivSetActionQualifierShadowLoadMode(VAR(uint32, AUTOMATIC) Base,
  *
  * \return None.
  *
- ******************************************************************************/
+ *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetInterruptEventCount(VAR(uint32, AUTOMATIC) Base, VAR(uint16, AUTOMATIC) EventCount);
 
@@ -512,16 +515,16 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivConfigureInterrupt(VAR(uint32, AUTOMATIC) B
  *
  * \param[in] Base              Base address of the PWM instance
  * \param[in] InterruptSource  ePWM interrupt source with valid values:
- *                             - EPWM_INT_TBCTR_DISABLED       - Time-base counter is disabled
- *                             - EPWM_INT_TBCTR_ZERO           - Time-base counter equal to zero
- *                             - EPWM_INT_TBCTR_PERIOD         - Time-base counter equal to period
- *                             - EPWM_INT_TBCTR_ZERO_OR_PERIOD - Time-base counter equal to zero or period
- *                             - EPWM_INT_TBCTR_ETINTMIX       - Time-base counter based on mixed events (ETINTMIX)
- *                             - EPWM_INT_TBCTR_U_CMPx         - Where x is AU,BU,C or D
+ *                             - CDD_PWM_INT_TBCTR_DISABLED       - Time-base counter is disabled
+ *                             - CDD_PWM_INT_TBCTR_ZERO           - Time-base counter equal to zero
+ *                             - CDD_PWM_INT_TBCTR_PERIOD         - Time-base counter equal to period
+ *                             - CDD_PWM_INT_TBCTR_ZERO_OR_PERIOD - Time-base counter equal to zero or period
+ *                             - CDD_PWM_INT_TBCTR_ETINTMIX       - Time-base counter based on mixed events (ETINTMIX)
+ *                             - CDD_PWM_INT_TBCTR_U_CMP         - Where x is AU,BU,C or D
  *                                                               Time-base counter equal to CMPAU, CMPBU,
  *                                                               CMPC or CMPD (depending the value of x)
  *                                                               when the timer is incrementing
- *                             - EPWM_INT_TBCTR_D_CMPx         - Where x is AU,BU,C or D
+ *                             - CDD_PWM_INT_TBCTR_D_CMP         - Where x is AU,BU,C or D
  *                                                               Time-base counter equal to CMPAU, CMPBU,
  *                                                               CMPC or CMPD (depending the value of x)
  *                                                               when the timer is decrementing
@@ -550,7 +553,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivClearEventTriggerInterruptFlag(VAR(uint32, 
  * This function sets the pre scaler(divider)value for the time base clock
  * counter and the high speed time base clock counter.
  * Valid values for pre-scaler and highSpeedPrescaler are CDD_PWM_CLOCK_DIVIDER_X,
- * where X is 1U,2U,4U,8U,16U,32U,64 or 128.
+ * where X is 1,2,4,8,16,32,64 or 128.
  * The actual numerical values for these macros represent values 0U,1...7.
  * The equation for the output clock is:
  *   TBCLK = EPWMCLK/(highSpeedPrescaler* pre-scaler)
@@ -714,9 +717,9 @@ Cdd_Pwm_PrivConfigureSyncOutPulseSource(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Ins
  *
  * This function sets the one-shot sync-out trigger source.
  * Valid values for param \b Trigger are:
- *  - EPWM_OSHT_SYNC_OUT_TRIG_SYNC - Trigger for one-shot sync-out signal is
+ *  - CDD_PWM_OSHT_SYNC_OUT_TRIG_SYNC - Trigger for one-shot sync-out signal is
  *                                    one-shot sync event.
- *  - EPWM_OSHT_SYNC_OUT_TRIG_RELOAD - Trigger for one-shot sync-out signal is
+ *  - CDD_PWM_OSHT_SYNC_OUT_TRIG_RELOAD - Trigger for one-shot sync-out signal is
  *                                     one-shot reload event.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
@@ -1056,8 +1059,8 @@ Cdd_Pwm_PrivConfigureLinkDutyHR(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  * This function disables the Action Qualifier shadow load mode.
  * Valid values for the variables are:
  *  - OutputChannel
- *      - EPWM_ACTION_QUALIFIER_A - Action Qualifier A.
- *      - EPWM_ACTION_QUALIFIER_B - Action Qualifier B.
+ *      - CDD_PWM_ACTION_QUALIFIER_A - Action Qualifier A.
+ *      - CDD_PWM_ACTION_QUALIFIER_B - Action Qualifier B.
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
  * \param[in] OutputChannel  Action Qualifier module value.
@@ -1082,7 +1085,7 @@ Cdd_Pwm_PrivDisableActionQualifierShadowLoadMode(VAR(Cdd_Pwm_InstanceType, AUTOM
  *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_1        - Trip zone 1
  *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_2        - Trip zone 2
  *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_3U        - Trip zone 3U
- *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_CDD_PWM_SYNCIN - ePWM sync
+ *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_CDD_PWM_SYNCIN - CDD_PWM sync
  *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DC_EVTFILT  - Digital compare filter event
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
@@ -1108,7 +1111,7 @@ Cdd_Pwm_PrivSetActionQualifierT1TriggerSource(VAR(Cdd_Pwm_InstanceType, AUTOMATI
  *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_1        - Trip zone 1
  *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_2        - Trip zone 2
  *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_TZ_3U        - Trip zone 3U
- *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_CDD_PWM_SYNCIN - ePWM sync
+ *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_CDD_PWM_SYNCIN - CDD_PWM sync
  *   - CDD_PWM_AQ_TRIGGER_EVENT_TRIG_DC_EVTFILT  - Digital compare filter event
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
@@ -1129,9 +1132,9 @@ Cdd_Pwm_PrivSetActionQualifierT2TriggerSource(VAR(Cdd_Pwm_InstanceType, AUTOMATI
  * depending on the value of EpwmOutput, to a value specified by Output based
  * on the input events - specified by Event.
  * The following are valid values for the parameters.
- *   - EpwmOutput
- *       - CDD_PWM_AQ_OUTPUT_A          - ePWMxA output
- *       - CDD_PWM_AQ_OUTPUT_B          - ePWMxB output
+ *   - CDD_pwmOutput
+ *       - CDD_PWM_AQ_OUTPUT_A          - CDD_PWMxA output
+ *       - CDD_PWM_AQ_OUTPUT_B          - CDD_PWMxB output
  *   - Output
  *       - CDD_PWM_AQ_OUTPUT_NO_CHANGE  - No change in the output pins
  *       - CDD_PWM_AQ_OUTPUT_LOW        - Set output pins to low
@@ -1179,9 +1182,9 @@ Cdd_Pwm_PrivSetActionQualifierAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instan
 * Valid action param values from different time base counter scenarios should be OR'd together to configure complete
 * action for a pwm output.
 * The following are valid values for the parameters.
-*   - EpwmOutput
-*       - CDD_PWM_AQ_OUTPUT_A          - ePWMxA output
-*       - CDD_PWM_AQ_OUTPUT_B          - ePWMxB output
+*   - CDD_pwmOutput
+*       - CDD_PWM_AQ_OUTPUT_A          - CDD_PWMxA output
+*       - CDD_PWM_AQ_OUTPUT_B          - CDD_PWMxB output
 *
 *   - action
 *       - When time base counter equals zero
@@ -1265,8 +1268,8 @@ Cdd_Pwm_PrivSetActionQualifierActionComplete(VAR(Cdd_Pwm_InstanceType, AUTOMATIC
  * together to configure complete action for a pwm output.
  * The following are valid values for the parameters.
  *   - OutputChannel
- *       - CDD_PWM_AQ_OUTPUT_A          - ePWMxA output
- *       - CDD_PWM_AQ_OUTPUT_B          - ePWMxB output
+ *       - CDD_PWM_AQ_OUTPUT_A          - CDD_PWMxA output
+ *       - CDD_PWM_AQ_OUTPUT_B          - CDD_PWMxB output
  *   - Action
  *       - When T1 event occurs during up-count
  *         - CDD_PWM_AQ_OUTPUT_NO_CHANGE_UP_T1  - T1 event on count up
@@ -1355,8 +1358,8 @@ Cdd_Pwm_PrivSetActionQualifierContSwForceShadowMode(VAR(Cdd_Pwm_InstanceType, AU
  * on ePWM A or B based on the value of OutputChannel.
  * Valid values for the parameters are:
  *   - OutputChannel
- *       - CDD_PWM_AQ_OUTPUT_A          - ePWMxA output
- *       - CDD_PWM_AQ_OUTPUT_B          - ePWMxB output
+ *       - CDD_PWM_AQ_OUTPUT_A          - CDD_PWMxA output
+ *       - CDD_PWM_AQ_OUTPUT_B          - CDD_PWMxB output
  *   - Output
  *       - CDD_PWM_AQ_SW_DISABLED       - Software forcing disabled.
  *       - CDD_PWM_AQ_SW_OUTPUT_LOW     - Set output pins to low
@@ -1383,8 +1386,8 @@ Cdd_Pwm_PrivSetActionQualifierContSwForceAction(VAR(Cdd_Pwm_InstanceType, AUTOMA
  * specified by Output.
  * The following are valid values for the parameters.
  *   - OutputChannel
- *       - CDD_PWM_AQ_OUTPUT_A          - ePWMxA output
- *       - CDD_PWM_AQ_OUTPUT_B          - ePWMxB output
+ *       - CDD_PWM_AQ_OUTPUT_A          - CDD_PWMxA output
+ *       - CDD_PWM_AQ_OUTPUT_B          - CDD_PWMxB output
  *   - Output
  *       - CDD_PWM_AQ_OUTPUT_NO_CHANGE  - No change in the output pins
  *       - CDD_PWM_AQ_OUTPUT_LOW        - Set output pins to low
@@ -1410,8 +1413,8 @@ Cdd_Pwm_PrivSetActionQualifierSwAction(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Inst
  * This function triggers a one time software forced Action Qualifier event
  * on ePWM A or B based on the value of OutputChannel.
  * Valid values for OutputChannel are:
- *   - CDD_PWM_AQ_OUTPUT_A          - ePWMxA output
- *   - CDD_PWM_AQ_OUTPUT_B          - ePWMxB output
+ *   - CDD_PWM_AQ_OUTPUT_A          - CDD_PWMxA output
+ *   - CDD_PWM_AQ_OUTPUT_B          - CDD_PWMxB output
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
  * \param[in] OutputChannel  EPWM output channel (OUTPUT A or OUTPUT B).
@@ -3692,9 +3695,9 @@ Cdd_Pwm_PrivSetXMinMaxRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  * depending on the value of EpwmOutput, to a value specified by outPut based
  * on the input events - specified by event.
  * The following are valid values for the parameters.
- *   - EpwmOutput
- *       - CDD_PWM_AQ_OUTPUT_A          - ePWMxA output
- *       - CDD_PWM_AQ_OUTPUT_B          - ePWMxB output
+ *   - CDD_pwmOutput
+ *       - CDD_PWM_AQ_OUTPUT_A          - CDD_PWMxA output
+ *       - CDD_PWM_AQ_OUTPUT_B          - CDD_PWMxB output
  *   -shadowset
  *       - CDD_PWM_XCMP_ACTIVE          - XCMP set is Active
  *       - CDD_PWM_XCMP_SHADOW1         - XCMP set is Shadow 1
@@ -3847,8 +3850,8 @@ Cdd_Pwm_PrivSetXCmpShadowRepeatBufxCount(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) In
  * This function enables the Minimum DeadBand module.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDBCFG_ENABLEA   - ePWM output A
- *      - EPWM_MINDBCFG_ENABLEB   - ePWM output B
+ *      - CDD_PWM_MINDBCFG_ENABLEA   - CDD_PWM output A
+ *      - CDD_PWM_MINDBCFG_ENABLEB   - CDD_PWM output B
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] OutputChannel Minimum DeadBand Block to be enabled
@@ -3869,11 +3872,11 @@ Cdd_Pwm_PrivConfigureMinimumDeadBand(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Instan
  * signal which is used in the Minimum DeadBand module.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDB_BLOCK_A    - ePWM output A
- *      - EPWM_MINDB_BLOCK_B    - ePWM output B
+ *      - CDD_PWM_MINDB_BLOCK_A    - CDD_PWM output A
+ *      - CDD_PWM_MINDB_BLOCK_B    - CDD_PWM output B
  *  - invert
- *      - EPWM_MINDB_REF_SIG            - No inversion
- *      - EPWM_MINDB_REF_SIG_INVERT     - Invert the signal
+ *      - CDD_PWM_MINDB_REF_SIG            - No inversion
+ *      - CDD_PWM_MINDB_REF_SIG_INVERT     - Invert the signal
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] OutputChannel Minimum DeadBand block to be configured
@@ -3895,11 +3898,11 @@ Cdd_Pwm_PrivInvertMinimumDeadBandSignal(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Ins
  * be ORed with the PWM output.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDB_BLOCK_A    - ePWM output A
- *      - EPWM_MINDB_BLOCK_B    - ePWM output B
+ *      - CDD_PWM_MINDB_BLOCK_A    - CDD_PWM output A
+ *      - CDD_PWM_MINDB_BLOCK_B    - CDD_PWM output B
  *  - logic
- *      - TRUE - EPWM_MINDB_POLSEL_INVERT_LOGICAL_AND   - Invert and Logical AND
- *      - FALSE - EPWM_MINDB_POLSEL_LOGICAL_OR           - Logical OR
+ *      - TRUE - CDD_PWM_MINDB_POLSEL_INVERT_LOGICAL_AND   - Invert and Logical AND
+ *      - FALSE - CDD_PWM_MINDB_POLSEL_LOGICAL_OR           - Logical OR
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] OutputChannel Minimum DeadBand block to be configured
@@ -3920,11 +3923,11 @@ Cdd_Pwm_PrivSelectMinimumDeadBandAndOrLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC)
  * Either of the Block A or Block B signal can be selected as blocking signal.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDB_BLOCK_A    - ePWM output A
- *      - EPWM_MINDB_BLOCK_B    - ePWM output B
+ *      - CDD_PWM_MINDB_BLOCK_A    - CDD_PWM output A
+ *      - CDD_PWM_MINDB_BLOCK_B    - CDD_PWM output B
  *  - blockSrc
- *      - EPWM_MINDB_BLOCKING_SIGNAL_BYPASS    - Block Source same
- *      - EPWM_MINDB_BLOCKING_SIGNAL_SWAPBLOCK - Block Source different
+ *      - CDD_PWM_MINDB_BLOCKING_SIGNAL_BYPASS    - Block Source same
+ *      - CDD_PWM_MINDB_BLOCKING_SIGNAL_SWAPBLOCK - Block Source different
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] OutputChannel Minimum DeadBand block to be configured
@@ -3944,11 +3947,11 @@ Cdd_Pwm_PrivSelectMinimumDeadBandBlockingSignal(VAR(Cdd_Pwm_InstanceType, AUTOMA
  * This function selects the reference signal for Minimum DeadBand module.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDB_BLOCK_A    - ePWM output A
- *      - EPWM_MINDB_BLOCK_B    - ePWM output B
+ *      - CDD_PWM_MINDB_BLOCK_A    - CDD_PWM output A
+ *      - CDD_PWM_MINDB_BLOCK_B    - CDD_PWM output B
  *  - reference
- *      - EPWM_MINDB_DEPWM             - Minimum Dead Band DE reference
- *      - EPWM_MINDB_SEL_OUTXBAR_OUTy  - Output y from PWM Output XBAR
+ *      - CDD_PWM_MINDB_DEPWM             - Minimum Dead Band DE reference
+ *      - CDD_PWM_MINDB_SEL_OUTXBAR_OUTy  - Output y from PWM Output XBAR
  *                                       ('y' can be from 1 to 15)
  *                                       ex. \b EPWM_MINDB_SEL_OUTXBAR_OUT1
  *
@@ -3970,8 +3973,8 @@ Cdd_Pwm_PrivSelectMinimumDeadBandReferenceSignal(VAR(Cdd_Pwm_InstanceType, AUTOM
  * This function returns the delay value for the Minimum DeadBand module.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDB_BLOCK_A    - ePWM output A
- *      - EPWM_MINDB_BLOCK_B    - ePWM output B
+ *      - CDD_PWM_MINDB_BLOCK_A    - CDD_PWM output A
+ *      - CDD_PWM_MINDB_BLOCK_B    - CDD_PWM output B
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] OutputChannel Minimum DeadBand block whose value is needed
@@ -3990,8 +3993,8 @@ Cdd_Pwm_PrivGetMinDeadBandDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  * specified block.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDB_BLOCK_A    - ePWM output A
- *      - EPWM_MINDB_BLOCK_B    - ePWM output B
+ *      - CDD_PWM_MINDB_BLOCK_A    - CDD_PWM output A
+ *      - CDD_PWM_MINDB_BLOCK_B    - CDD_PWM output B
  *  - delay: Minimum dead band delay on ePWM in terms of SYSCLK cycles
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
@@ -4015,8 +4018,8 @@ Cdd_Pwm_PrivSetMinDeadBandDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  * This function enables the Illegal Combo Logic block.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDB_BLOCK_A    - ePWM output A
- *      - EPWM_MINDB_BLOCK_B    - ePWM output B
+ *      - CDD_PWM_MINDB_BLOCK_A    - CDD_PWM output A
+ *      - CDD_PWM_MINDB_BLOCK_B    - CDD_PWM output B
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] OutputChannel Illegal Combo Logic block to be enabled
@@ -4036,10 +4039,10 @@ Cdd_Pwm_PrivConfigureIllegalComboLogic(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) Inst
  * This function selects which Xbar signal feeds into the Illegal Combo Logic.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDB_BLOCK_A    - ePWM output A
- *      - EPWM_MINDB_BLOCK_B    - ePWM output B
+ *      - CDD_PWM_MINDB_BLOCK_A    - CDD_PWM output A
+ *      - CDD_PWM_MINDB_BLOCK_B    - CDD_PWM output B
  *  - xbarInput
- *      - EPWM_MINDB_ICL_XBAR_OUTy - Output y from ICL XBAR
+ *      - CDD_PWM_MINDB_ICL_XBAR_OUTy - Output y from ICL XBAR
  *                                    ('y' can be from 0 to 15)
  *                                    ex. \b EPWM_MINDB_ICL_XBAR_OUT1
  *
@@ -4062,10 +4065,10 @@ Cdd_Pwm_PrivSelectXbarInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
  * Combo Logic module.
  * Valid values for the input variables are:
  *  - block
- *      - EPWM_MINDB_BLOCK_A    - ePWM output A
- *      - EPWM_MINDB_BLOCK_B    - ePWM output B
+ *      - CDD_PWM_MINDB_BLOCK_A    - CDD_PWM output A
+ *      - CDD_PWM_MINDB_BLOCK_B    - CDD_PWM output B
  *  - decx
- *      - EPWM_MINDB_ICL_LUT_DECx - 'x' can be from 0 to 7
+ *      - CDD_PWM_MINDB_ICL_LUT_DECx - 'x' can be from 0 to 7
  *  - force
  *      - value that can be forced can be either 0 or 1
  *
@@ -4081,7 +4084,7 @@ Cdd_Pwm_PrivSelectXbarInput(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivSetLutDecX(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                        VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
-                       VAR(Cdd_Pwm_LutDecXType, AUTOMATIC) Decx, VAR(uint32, AUTOMATIC) Force);
+                       VAR(Cdd_Pwm_LutDecXType, AUTOMATIC) Decx, VAR(uint16, AUTOMATIC) Force);
 
 /** \brief Diode Emulation logic related APIs
  *
@@ -4137,8 +4140,7 @@ Cdd_Pwm_PrivSetDiodeEmulationMode(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceI
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
-Cdd_Pwm_PrivSetDiodeEmulationReentryDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
-                                          VAR(uint16, AUTOMATIC) Delay);
+Cdd_Pwm_PrivSetDiodeEmulationReentryDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint8, AUTOMATIC) Delay);
 
 /** \brief Set ePWM diode emulation trip source for TripL
  *
@@ -4358,6 +4360,7 @@ FUNC(void, CDD_PWM_CODE) Cdd_Pwm_PrivClearDiodeEmulationActiveFlag(VAR(Cdd_Pwm_I
  * \return None
  *
  *********************************************************************************************************************/
+#if (STD_ON == CDD_PWM_HRPWM_SUPPORTED)
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivHrpwmSetPhaseShift(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint32, AUTOMATIC) PhaseCount);
 
@@ -4807,6 +4810,7 @@ Cdd_Pwm_PrivHrpwmSetHiResRisingEdgeDelayOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC
  *********************************************************************************************************************/
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivHrpwmSetFallingEdgeDelay(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(uint32, AUTOMATIC) FedCount);
+
 /** \brief Sets high resolution FED count only.
  *
  * This function sets only the high resolution FED (Falling Edge Delay) count (DBFEDHR)value. The value of hrFedCount
@@ -4968,7 +4972,7 @@ Cdd_Pwm_PrivHrpwmSetXCmpRegValue(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId
 FUNC(void, CDD_PWM_CODE)
 Cdd_Pwm_PrivHrpwmSetHiResXCmpRegValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                           VAR(Cdd_Pwm_XCmpRegType, AUTOMATIC) XCmpReg,
-                                          VAR(uint32, AUTOMATIC) HrXCmpValue);
+                                          VAR(uint16, AUTOMATIC) HrXCmpValue);
 
 /** \brief SFO V8 Calibration Function
  *
@@ -4980,8 +4984,9 @@ Cdd_Pwm_PrivHrpwmSetHiResXCmpRegValueOnly(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) I
  * \return Calibration status
  *
  *********************************************************************************************************************/
-FUNC(Cdd_Pwm_SfoStatus, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstanceType Cdd_Pwm_HrpwmCalId);
+FUNC(Cdd_Pwm_SfoStatusType, CDD_PWM_CODE) Cdd_Pwm_PrivSfo(Cdd_Pwm_HrpwmCalInstanceType Cdd_Pwm_HrpwmCalId);
 
+#endif
 #endif
 
 /*********************************************************************************************************************

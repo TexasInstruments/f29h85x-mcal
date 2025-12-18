@@ -926,7 +926,6 @@ Can_ResetDrvObjPriv(P2VAR(Can_DriverObjType, AUTOMATIC, CAN_APPL_DATA) drvObj)
 #endif
         for (mbIndx = ((uint8)0U); mbIndx < (uint8)KMAX_TX_MB_PER_CONTROLLER; mbIndx++)
         {
-            drvObj->canController[controllerIndx].canTxStatus[mbIndx]  = ((uint8)0U);
             drvObj->canController[controllerIndx].canTxRxPduId[mbIndx] = ((PduIdType)0U);
         }
 
@@ -1486,13 +1485,6 @@ Can_GetFreeTxMsgObjPriv(P2CONST(Can_MailboxType, AUTOMATIC, CAN_CONST) mailboxCf
         {
             returnValue = (Std_ReturnType)CAN_BUSY;
         }
-        /* Maintaining the canTxStatus is necessary, as BRP may get cleared upon lost arbitration,
-        error during transmission etc.*/
-        else if ((((uint8)1U) == canController->canTxStatus[fifoStatus.putIdx]) &&
-                 (FALSE == canController->canControllerConfig.CanConfigParam.CanDisableAutomaticRetransmission))
-        {
-            returnValue = (Std_ReturnType)CAN_BUSY;
-        }
         else
         {
             *msgObj     = fifoStatus.putIdx;
@@ -1601,10 +1593,8 @@ Can_HwUnitTxDonePollingPriv(P2VAR(Can_ControllerObjType, AUTOMATIC, CAN_APPL_DAT
         /* Get the transmission status of dedicated buffers */
         txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
         /* Check if transmission is completed for respective dedicated buffer */
-        if ((((uint8)1U) == canController->canTxStatus[loopCnt]) && (bitPos == (txStatus & bitPos)))
+        if (bitPos == (txStatus & bitPos))
         {
-            /* Clear the status as data is already sent. Status must be cleared before calling Tx confirmation */
-            canController->canTxStatus[loopCnt] = ((uint8)0U);
             /* Call Tx Confirmation */
             CanIf_TxConfirmation(canController->canTxRxPduId[loopCnt]);
         }
@@ -2494,10 +2484,8 @@ Can_HwUnitTxConfirmationPriv(uint8 loopCnt, uint8 buffNum,
         /* Get the status of transmission occurred bit*/
         txStatus = Can_GetTxBufTransStatusPriv(baseAddr);
 
-        if ((((uint8)1U) == canController->canTxStatus[loop_Cnt]) && (bitPos == (txStatus & bitPos)))
+        if (bitPos == (txStatus & bitPos))
         {
-            /* Clear the status as data is already sent */
-            canController->canTxStatus[loop_Cnt] = ((uint8)0U);
             /* Call Tx Confirmation */
             CanIf_TxConfirmation(canController->canTxRxPduId[loop_Cnt]);
         }
@@ -2792,11 +2780,8 @@ static FUNC(void, CAN_CODE)
                 ((canCntrlObj->canControllerConfig.CanTxProcessing == CAN_MIXED) &&
                  (canMailObj[hth].mailBoxConfig.CanHardwareObjectUsesPolling == FALSE)))
             {
-                if ((CAN_TRANSMIT == canMailObj[hth].mailBoxConfig.CanObjectType) &&
-                    (((uint8)1U) == canCntrlObj->canTxStatus[loopCnt]))
+                if (CAN_TRANSMIT == canMailObj[hth].mailBoxConfig.CanObjectType)
                 {
-                    /* Clear the status as data is already sent */
-                    canCntrlObj->canTxStatus[loopCnt] = ((uint8)0U);
                     /* Call Tx Confirmation */
                     CanIf_TxConfirmation(canCntrlObj->canTxRxPduId[loopCnt]);
                 }
@@ -3907,12 +3892,10 @@ static FUNC(Std_ReturnType, CAN_CODE)
                             VAR(uint8, AUTOMATIC) loopCnt, VAR(uint32, AUTOMATIC) baseAddr,
                             P2VAR(uint8, AUTOMATIC, CAN_APPL_DATA) msgObj)
 {
-    VAR(uint8, AUTOMATIC) canTxStatus          = (uint8)0U;
     VAR(uint32, AUTOMATIC) bitIndex            = (uint32)0U;
     VAR(Std_ReturnType, AUTOMATIC) returnValue = E_NOT_OK;
 
-    canTxStatus = canController->canTxStatus[loopCnt];
-    bitIndex    = ((uint32)1U << loopCnt);
+    bitIndex = ((uint32)1U << loopCnt);
 
     /*- Check for pending message:
      *     - pending message, return CAN_BUSY
@@ -3920,13 +3903,6 @@ static FUNC(Std_ReturnType, CAN_CODE)
      */
     /* Check BRP for requested buffer*/
     if (bitIndex == (Can_GetTxBufReqPendPriv(baseAddr) & bitIndex))
-    {
-        returnValue = (Std_ReturnType)CAN_BUSY;
-    }
-    /* Maintaining the canTxStatus is necessary, as BRP may get cleared upon lost arbitration,
-        error during transmission etc.*/
-    else if ((((uint8)1U) == canTxStatus) &&
-             (FALSE == canController->canControllerConfig.CanConfigParam.CanDisableAutomaticRetransmission))
     {
         returnValue = (Std_ReturnType)CAN_BUSY;
     }

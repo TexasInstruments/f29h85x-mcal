@@ -584,14 +584,14 @@ static void Cdd_I2c_SetSeqErrorCode(Cdd_I2c_SeqObjType *seqObj, Cdd_I2c_ChannelR
     /* Fail the sequence if channel fails */
     if (CDD_I2C_CH_RESULT_OK != chResult)
     {
-        seqObj->seqErrorCode = CDD_I2C_E_PARAM_TRANSMISSION_ERROR;
+        seqObj->seqErrorCode = CDD_I2C_E_BUS_FAILURE;
         if (CDD_I2C_CH_RESULT_NACKFAIL == chResult)
         {
-            seqObj->seqErrorCode = CDD_I2C_E_NACK;
+            seqObj->seqErrorCode = CDD_I2C_E_NACK_RECEIVED;
         }
         if (CDD_I2C_CH_RESULT_ARBFAIL == chResult)
         {
-            seqObj->seqErrorCode = CDD_I2C_E_ARBITRATION_LOSS;
+            seqObj->seqErrorCode = CDD_I2C_E_ARBITRATION_FAILURE;
         }
     }
 
@@ -609,11 +609,11 @@ static void Cdd_I2c_SetSeqResult(Cdd_I2c_SeqObjType *seqObj)
     {
         seqObj->seqResult = CDD_I2C_SEQ_FAILED;
         /* Override with specific error code */
-        if (CDD_I2C_E_NACK == seqObj->seqErrorCode)
+        if (CDD_I2C_E_NACK_RECEIVED == seqObj->seqErrorCode)
         {
             seqObj->seqResult = CDD_I2C_SEQ_NACK;
         }
-        if (CDD_I2C_E_ARBITRATION_LOSS == seqObj->seqErrorCode)
+        if (CDD_I2C_E_ARBITRATION_FAILURE == seqObj->seqErrorCode)
         {
             seqObj->seqResult = CDD_I2C_SEQ_ARB;
         }

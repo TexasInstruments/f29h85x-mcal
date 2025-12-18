@@ -9,15 +9,32 @@ macro(SUBDIRLIST subdirlist curdir)
     foreach(subdir ${subdirectories})
         if(IS_DIRECTORY ${curdir}/${subdir})
             if(EXISTS ${curdir}/${subdir}/CMakeLists.txt)
-                add_subdirectory(${curdir}/${subdir}
-                                 ${CMAKE_BINARY_DIR}/${subdir})
-                # Only add to dirlist if it's a target and not an INTERFACE
-                # library
-                if(TARGET ${subdir})
-                    get_target_property(target_type ${subdir} TYPE)
-                    if(NOT target_type STREQUAL "INTERFACE_LIBRARY")
-                        list(APPEND dirlist ${subdir})
+                # Check if any device folders (F29*) exist in the example
+                file(
+                    GLOB device_folders
+                    LIST_DIRECTORIES true
+                    ${curdir}/${subdir}/F29*)
+                list(LENGTH device_folders device_folder_count)
+
+                # Add target if: no device folders exist (device-agnostic
+                # example) OR the selected BUILD_DEVICE folder exists
+                if(device_folder_count EQUAL 0
+                   OR IS_DIRECTORY ${curdir}/${subdir}/${BUILD_DEVICE})
+                    add_subdirectory(${curdir}/${subdir}
+                                     ${CMAKE_BINARY_DIR}/${subdir})
+                    # Only add to dirlist if it's a target and not an INTERFACE
+                    # library
+                    if(TARGET ${subdir})
+                        get_target_property(target_type ${subdir} TYPE)
+                        if(NOT target_type STREQUAL "INTERFACE_LIBRARY")
+                            list(APPEND dirlist ${subdir})
+                        endif()
                     endif()
+                else()
+                    message(
+                        STATUS
+                            "Skipping ${subdir}: Example not supported for '${BUILD_DEVICE}'"
+                    )
                 endif()
             endif()
         endif()

@@ -49,8 +49,8 @@ extern "C" {
 #define CDD_PWM_CFG_MAJOR_VERSION           ([!"substring-before($moduleSoftwareVer,'.')"!]U)
 #define CDD_PWM_CFG_MINOR_VERSION           ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
 #define CDD_PWM_CFG_PATCH_VERSION           ([!"substring-after(substring-after($moduleSoftwareVer,'.'),'.')"!]U)
-
-[!SELECT "as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']"!]
+[!//
+[!SELECT "as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']"!][!//
 
 /* CDD_PWM Build Variant. Pre-compile build Variants */
 [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!]
@@ -65,7 +65,7 @@ extern "C" {
 
 [!VAR "CddPwmHwUnitCount" = "num:i(count(CddPwmConfigSet/CddPwmHwUnitConfig/*))"!]
 /* Macro to define the number of PWM channels supported by the driver */
-#define CDD_PWM_INSTANCE_COUNT    ((Cdd_Pwm_InstanceType)[!"num:i(ecu:get('Cdd_Pwm_InstanceCount'))"!]U)
+#define CDD_PWM_INSTANCE_COUNT    ((Cdd_Pwm_InstanceType)[!"num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_InstanceCount'))"!]U)
 
 /* Macro to define the number of Pwm instances configured */
 #define CDD_PWM_COUNT       ((Cdd_Pwm_InstanceType)[!"num:i($CddPwmHwUnitCount)"!]U)
@@ -75,7 +75,7 @@ extern "C" {
 
 /* Development error detection macro */
 #define CDD_PWM_DEV_ERROR_DETECT            [!IF "CddPwmGeneral/CddPwmDevErrorDetect  = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
-
+[!//
 [!IF "((CddPwmConfigSet/CddPwmAdvancedMode) = 'false')"!]
 /* Macro to define the number of Pwm channels configured */
 #define CDD_PWM_CHANNEL_COUNT       ((Cdd_Pwm_ChannelType)[!"num:i(count(CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmOutputChannel/*))"!]U)
@@ -90,17 +90,23 @@ extern "C" {
 #define CDD_PWM_SET_DUTY_CYCLE_API    [!IF "CddPwmGeneral/CddPwmSetDutyCycle = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Deinitialization Api macro */
-#define CDD_PWM_DEINIT_API      [!IF "CddPwmGeneral/CddPwmDeInitApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
-
+#define CDD_PWM_DEINIT_API      [!IF "CddPwmGeneral/CddPwmDeInitApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!][!//
+[!//
 [!ELSE!]
 /* Macro to define the number of instance id symbolic names */
 #define CDD_PWM_HW_AND_XLINK_COUNT       ((Cdd_Pwm_InstanceType)[!"num:i(num:i($CddPwmHwUnitCount) + num:i(count(CddPwmConfigSet/CddPwmXlinkConfig/*)))"!]U)
 
 /* Macro to define the number of Xlink groups configured */
-#define CDD_PWM_XLINK_GRP_COUNT     (uint8)([!"num:i(count(CddPwmConfigSet/CddPwmXlinkConfig/*))"!]U)[!//
+#define CDD_PWM_XLINK_GRP_COUNT     (uint8)([!"num:i(count(CddPwmConfigSet/CddPwmXlinkConfig/*))"!]U)
 
 /* Macro to define the number of HRPWMCAL */
-#define CDD_PWM_HRPWM_CAL_COUNT     (uint8)([!"num:i(ecu:get('Cdd_Pwm_HrpwmCalCount'))"!]U)[!//
+#define CDD_PWM_HRPWM_CAL_COUNT     (uint8)([!"num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_HrpwmCalCount'))"!]U)
+
+/* Macro to define the number of HRPWMCAL */
+#define CDD_PWM_CONFIG_HRPWMCAL_COUNT     (uint8)([!"num:i(count(CddPwmConfigSet/CddPwmHrpwmCalibrationConfig/*/CddPwmHrpwmCalConfig/*))"!]U)
+
+/* Macro to define HRPWM capability */
+#define CDD_PWM_HRPWM_SUPPORTED    [!IF "(num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_HrpwmCalCount')) > 0)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!][!//
 [!ENDIF!]
 
 /* Version info Api macro */
@@ -110,23 +116,23 @@ extern "C" {
 #define CDD_PWM_NOTIFICATION_SUPPORTED    [!IF "CddPwmGeneral/CddPwmNotificationSupported = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 [!VAR "CddPwmChannelId" = "num:i(0)"!][!//
-[!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*"!][!//
-/* Symbolic name for the PWM instance  [!"CddPwmInstanceId"!] */
-#define CddPwmConf_CddPwmHwUnitConfig_[!"@name"!]   ((Cdd_Pwm_InstanceType)[!"num:i(node:pos(.))"!]U)  /*~ASR~*/
-
+[!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*"!]
+/* Symbolic name for the PWM instance EPWM[!"CddPwmInstance"!] */
+#define CddPwmConf_CddPwmHwUnitConfig_[!"@name"!]   ((Cdd_Pwm_InstanceType)[!"num:i(node:value(CddPwmHwId))"!]U)  /*~ASR~*/
+[!//
 [!IF "((as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode) = 'false')"!][!//
 [!LOOP "CddPwmOutputChannel/*"!][!//
 [!IF "text:contains(node:value(CddPwmChannel),'A')"!]
-/* Symbolic name of the EPWM[!"../../CddPwmInstanceId"!] output channel A */
-#define CddPwmConf_[!"node:name(../../.)"!]_[!"substring-after(@name,'CddPwmOutput')"!]   ((Cdd_Pwm_ChannelType)[!"num:i($CddPwmChannelId)"!]U)  /*~ASR~*/
+/* Symbolic name of the EPWM[!"../../CddPwmInstance"!] output channel A */
+#define CddPwmConf_CddPwmOutputChannel_[!"@name"!]   ((Cdd_Pwm_ChannelType)[!"num:i($CddPwmChannelId)"!]U)  /*~ASR~*/[!//
 [!VAR "CddPwmChannelId" = "num:i($CddPwmChannelId+1)"!][!//
 [!ENDIF!][!//
-
+[!//
 [!IF "text:contains(node:value(CddPwmChannel),'B')"!]
-/* Symbolic name of the EPWM[!"../../CddPwmInstanceId"!] output channel B */
-#define CddPwmConf_[!"node:name(../../.)"!]_[!"substring-after(@name,'CddPwmOutput')"!]   ((Cdd_Pwm_ChannelType)[!"num:i($CddPwmChannelId)"!]U)  /*~ASR~*/[!//
+/* Symbolic name of the EPWM[!"../../CddPwmInstance"!] output channel B */
+#define CddPwmConf_CddPwmOutputChannel_[!"@name"!]   ((Cdd_Pwm_ChannelType)[!"num:i($CddPwmChannelId)"!]U)  /*~ASR~*/[!//
 [!VAR "CddPwmChannelId" = "num:i($CddPwmChannelId+1)"!][!//
-[!ENDIF!][!//
+[!ENDIF!]
 [!ENDLOOP!][!//
 [!ENDIF!][!//
 [!ENDLOOP!][!//
@@ -138,10 +144,10 @@ extern "C" {
 #define CddPwmConf_CddPwmXlinkConfig_[!"@name"!]   ((Cdd_Pwm_InstanceType)[!"num:i(num:i($CddPwmHwUnitCount)+num:i(node:pos(.)))"!]U)  /*~ASR~*/
 [!ENDLOOP!][!//
 
-/* Symbolic names for Hrpwm Cal instances */
-[!FOR "hrpwmcal" = "0" TO "(num:i(ecu:get('Cdd_Pwm_HrpwmCalCount')) - num:i(1))"!]
-#define CddPwmConf_CddPwmHrpwmCalConfig_CddPwmHrpwmCal[!"num:i($hrpwmcal)"!]   ((Cdd_Pwm_HrpwmCalInstanceType)[!"num:i($hrpwmcal)"!]U)  /*~ASR~*/
-[!ENDFOR!][!//
+[!LOOP "CddPwmConfigSet/CddPwmHrpwmCalibrationConfig/*/CddPwmHrpwmCalConfig/*"!]
+/* Symbolic names for Hrpwm Cal instance: [!"node:value(concat(node:path(node:ref(CddPwmHrpwmCalInstanceRef)),'/InstanceName'))"!] */
+#define CddPwmConf_CddPwmHrpwmCalConfig_[!"@name"!]   ((Cdd_Pwm_HrpwmCalInstanceType)[!"num:i(node:pos(.))"!]U)  /*~ASR~*/
+[!ENDLOOP!][!//
 [!ENDIF!][!//
 
 /*********************************************************************************************************************
@@ -150,14 +156,14 @@ extern "C" {
 [!//
 [!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*"!][!//
 [!IF "(node:value(CddPwmInterruptEnable) = 'true')"!]
-#define CDD_PWM[!"CddPwmInstanceId"!]_INT_ENABLE
-#define CDD_PWM[!"CddPwmInstanceId"!]_[!"CddPwmInterruptCategory"!][!//
+#define CDD_PWM[!"CddPwmInstance"!]_INT_ENABLE
+#define CDD_PWM[!"CddPwmInstance"!]_[!"CddPwmInterruptCategory"!][!//
 [!ENDIF!][!//
 
 [!IF "(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode)"!][!//
 [!IF "(node:value(CddPwmTripZoneInterruptEnable) = 'true')"!]
-#define CDD_PWM[!"CddPwmInstanceId"!]_TZINT_ENABLE
-#define CDD_PWM[!"CddPwmInstanceId"!]_[!"CddPwmTripZoneInterruptCategory"!][!//
+#define CDD_PWM[!"CddPwmInstance"!]_TZINT_ENABLE
+#define CDD_PWM[!"CddPwmInstance"!]_[!"CddPwmTripZoneInterruptCategory"!][!//
 [!ENDIF!][!//
 [!ENDIF!][!//
 [!ENDLOOP!]
@@ -173,7 +179,7 @@ typedef enum
     /** \brief Asymmetric waveform */
     CDD_PWM_ASYMMETRIC_WAVEFORM,
     /** \brief Symmetric waveform */
-    CDD_PWM_SYMMETRIC_WAVEFORM,
+    CDD_PWM_SYMMETRIC_WAVEFORM
 }Cdd_Pwm_OutputSymmetryType;
 
 [!ELSE!]
@@ -247,7 +253,7 @@ typedef enum
     /* Sync-in source is FSI RXC trigger1 signal */
     CDD_PWM_SYNC_IN_PULSE_SRC_FSIRXC_TRIG1   = 0x20U,
     /* Sync-in source is FSI RXD trigger1 signal */
-    CDD_PWM_SYNC_IN_PULSE_SRC_FSIRXD_TRIG1   = 0x21U,
+    CDD_PWM_SYNC_IN_PULSE_SRC_FSIRXD_TRIG1   = 0x21U
 } Cdd_Pwm_SyncInPulseSourceType;
 
 /** \brief Enum that defines the diode emulation trip low sources for an EPWM instance */
@@ -544,21 +550,33 @@ extern const struct Cdd_Pwm_ConfigTag Cdd_Pwm_Config;[!//
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-
-[!IF "CddPwmGeneral/CddPwmNotificationSupported = 'true'"!]
-#ifndef DOXYGEN_SHOULD_SKIP_THIS[!//
+[!NOCODE!][!//
+[!VAR "NotificationCount"="num:i(0)"!][!//
+[!VAR "TripZoneNotifCount"="num:i(0)"!][!//
+[!VAR "TotalNotifCount"="num:i(0)"!][!//
+[!LOOP "CddPwmConfigSet/CddPwmHwUnitConfig/*"!]
+    [!IF "not(node:empty(CddPwmInterruptNotification))"!][!VAR "NotificationCount"="num:i($NotificationCount+1)"!][!ENDIF!]
+    [!IF "not(node:empty(CddPwmTripZoneNotification))"!][!VAR "TripZoneNotifCount"="num:i($TripZoneNotifCount+1)"!][!ENDIF!]
+[!ENDLOOP!]
+    [!VAR "TotalNotifCount" = "num:i(num:i($TripZoneNotifCount) + num:i($NotificationCount))"!][!//
+[!ENDNOCODE!][!//
+[!//
+[!IF "(CddPwmGeneral/CddPwmNotificationSupported = 'true') and ($TotalNotifCount > 0)"!]
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #define CDD_PWM_START_SEC_CODE
 #include "Cdd_Pwm_MemMap.h"
 
+[!IF "$NotificationCount > 0"!]
+/* Declaration of the notification functions */[!//
 [!LOOP "(util:distinct(node:foreach(CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmInterruptNotification,'val','$val')))"!]
-/* Declaration of the notification functions */
 extern void [!"."!](void);
 [!ENDLOOP!][!//
+[!ENDIF!][!//
 
-[!IF "(CddPwmConfigSet/CddPwmAdvancedMode)"!][!//
+[!IF "((CddPwmConfigSet/CddPwmAdvancedMode =  'true') and ($TripZoneNotifCount > 0))"!]
+/* Declaration of the trip-zone notification function */[!//
 [!LOOP "(util:distinct(node:foreach(CddPwmConfigSet/CddPwmHwUnitConfig/*/CddPwmTripZoneNotification,'val','$val')))"!]
-/* Declaration of the trip-zone notification function */
 extern void [!"."!](uint16 TripZoneFlag);
 [!ENDLOOP!][!//
 [!ENDIF!][!//

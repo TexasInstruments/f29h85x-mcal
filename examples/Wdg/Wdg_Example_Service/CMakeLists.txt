@@ -10,6 +10,11 @@ if(NOT TARGET Mcu)
                      ${CMAKE_BINARY_DIR}/Mcu)
 endif()
 
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
+endif()
+
 if(NOT TARGET Wdg)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Wdg/
                      ${CMAKE_BINARY_DIR}/Wdg)
@@ -105,6 +110,7 @@ target_link_libraries(
     ${PROJECT_NAME}
     PRIVATE Wdg_Service_Config
             Mcu
+            SchM_Mcu
             Wdg
             Port
             hw_include

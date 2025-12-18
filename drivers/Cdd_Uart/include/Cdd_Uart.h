@@ -46,7 +46,7 @@ extern "C" {
  *********************************************************************************************************************/
 /* Defines for CDD_UART Driver version used for compatibility checks.*/
 /** \brief Driver Implementation Major Version */
-#define CDD_UART_SW_MAJOR_VERSION (2U)
+#define CDD_UART_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version */
 #define CDD_UART_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */

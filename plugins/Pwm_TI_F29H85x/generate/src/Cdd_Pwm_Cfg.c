@@ -30,7 +30,8 @@
 /*********************************************************************************************************************
  * Version Check (if required)
  *********************************************************************************************************************/
-#if ((CDD_PWM_SW_MAJOR_VERSION != (2U)) || CDD_PWM_SW_MINOR_VERSION != (0U))
+#if ((CDD_PWM_SW_MAJOR_VERSION != ([!"substring-before($moduleSoftwareVer,'.')"!]U)) \
+    || (CDD_PWM_SW_MINOR_VERSION != ([!"substring-before(substring-after($moduleSoftwareVer,'.'),'.')"!]U)))
   #error "Version numbers of Cdd_Pwm_Cfg.c and Cdd_Pwm.h are inconsistent!"
 #endif
 
@@ -42,12 +43,6 @@
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
-
-#define CDD_PWM_BASEADDR_STEP             (EPWM2_BASE - EPWM1_BASE)
-
-[!IF "(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode)"!]
-#define CDD_PWM_XLINK_BASEADDR_STEP       (EPWM2XLINK_BASE - EPWM1XLINK_BASE)
-[!ENDIF!]
 
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
@@ -78,15 +73,15 @@ CONST(Cdd_Pwm_ConfigType, CDD_PWM_CONFIG_DATA) Cdd_Pwm_Config =
         [[!"@index"!]] =
         {
 
-            /* HwunitId: EPWM[!"node:value(CddPwmInstanceId)"!] */
-            .instance_id = (uint8)([!"CddPwmInstanceId"!]U),
+            /* HwunitId: EPWM[!"node:value(CddPwmInstance)"!] */
+            .instance_id = (uint8)([!"CddPwmInstance"!]U),
             .channelclass = (Cdd_Pwm_ChannelClassType)[!"CddPwmOutputClass"!],
             .symmetry = [!"CddPwmSymmetry"!],
             .period = (Cdd_Pwm_PeriodType)[!"CddPwmDefaultPeriod"!]U,
             .enable_interrupt = (boolean)([!"num:i(node:when((CddPwmInterruptEnable = 'false'),0,1))"!]U),
             .clockdivider = (Cdd_Pwm_ClockDividerType)[!"CddPwmClockDivider"!],
             .highspeed_clkdiv = (Cdd_Pwm_HighSpeedClkDivType)[!"CddPwmHighSpeedClockDivider"!],
-            .base_addr = (EPWM1_BASE + (CDD_PWM_BASEADDR_STEP*[!"num:i(num:i(CddPwmInstanceId)-num:i(1))"!]U)),
+            .base_addr = (uint32)([!"node:value(node:ref(CddPwmInstanceRef)/BaseAddr)"!]),
             .startchannel = (Cdd_Pwm_ChannelType)([!"num:i($ChannelCount)"!]U),
             .lastchannel = (Cdd_Pwm_ChannelType)([!"num:i($ChannelCount + num:i(count(CddPwmOutputChannel/*))-1)"!]U),
             #if(STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
@@ -100,7 +95,7 @@ CONST(Cdd_Pwm_ConfigType, CDD_PWM_CONFIG_DATA) Cdd_Pwm_Config =
         [!VAR "CddPwmChannelCount"="num:i(0)"!][!LOOP "CddPwmHwUnitConfig/*/CddPwmOutputChannel/*"!]
         [[!"num:i($CddPwmChannelCount)"!]] =
         {
-            /* HwunitId: EPWM[!"node:value(../../CddPwmInstanceId)"!] */
+            /* HwunitId: EPWM[!"node:value(../../CddPwmInstance)"!] */
             .hw_index = (Cdd_Pwm_InstanceType)[!"num:i(node:pos(../../.))"!]U,
             .outputchannel = (Cdd_Pwm_OutputChannelType)[!"CddPwmChannel"!],
             .idlestate = (Cdd_Pwm_OutputStateType)[!"CddPwmIdleState"!],
@@ -123,25 +118,31 @@ CONST(Cdd_Pwm_ConfigType, CDD_PWM_CONFIG_DATA) Cdd_Pwm_Config =
         [!LOOP "CddPwmLinkHwUnit/*"!][!VAR "hw_mask" = "bit:or(bit:bitset(0,num:i(node:pos(node:path(node:ref(CddPwmHwUnit))))),$hw_mask)"!][!ENDLOOP!]
         [[!"@index"!]] = (uint32)([!"num:i($hw_mask)"!]U)[!IF "not(node:islast())"!],[!CR!][!ELSE!][!ENDIF!][!ENDLOOP!]
     },[!ENDIF!]
+    [!IF "(num:i(count(CddPwmHrpwmCalibrationConfig/*)) > 0)"!]
+    .hrpwmcal_baseaddr = 
+    {[!//
+        [!LOOP "CddPwmHrpwmCalibrationConfig/*/CddPwmHrpwmCalConfig/*"!]
+        [[!"@index"!]] = ((uint32)[!"node:value(node:ref(CddPwmHrpwmCalInstanceRef)/BaseAddr)"!])[!IF "not(node:islast())"!],[!CR!][!ELSE!][!ENDIF!][!ENDLOOP!]
+    },[!ENDIF!]
     .hwunitcfg = 
     {[!//
         [!LOOP "CddPwmHwUnitConfig/*"!]
         [[!"@index"!]] =
         {
-            /* HwunitId: EPWM[!"node:value(CddPwmInstanceId)"!] */
-            .instance_id = (uint8)([!"CddPwmInstanceId"!]U),
-            .base_addr = (EPWM1_BASE + (CDD_PWM_BASEADDR_STEP*[!"num:i(num:i(CddPwmInstanceId)-num:i(1))"!]U)),
+            /* HwunitId: EPWM[!"node:value(CddPwmInstance)"!] */
+            .instance_id = (uint8)([!"CddPwmInstance"!]U),
+            .base_addr = (uint32)([!"node:value(node:ref(CddPwmInstanceRef)/BaseAddr)"!]),
             #if(STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
-            .notification = (Cdd_Pwm_NotificationType)([!IF "node:exists(CddPwmInterruptNotification)"!][!"CddPwmInterruptNotification"!][!ELSE!]NULL_PTR[!ENDIF!]),
-            .tripzone_notification = (Cdd_Pwm_TripZoneNotificationType)([!IF "node:exists(CddPwmTripZoneNotification)"!][!"CddPwmTripZoneNotification"!][!ELSE!]NULL_PTR[!ENDIF!])
+            .notification = (Cdd_Pwm_NotificationType)([!IF "not(node:empty(CddPwmInterruptNotification))"!][!"CddPwmInterruptNotification"!][!ELSE!]NULL_PTR[!ENDIF!]),
+            .tripzone_notification = (Cdd_Pwm_TripZoneNotificationType)([!IF "not(node:empty(CddPwmTripZoneNotification))"!][!"CddPwmTripZoneNotification"!][!ELSE!]NULL_PTR[!ENDIF!])
             #endif
         },[!ENDLOOP!][!//
         [!LOOP "CddPwmXlinkConfig/*"!]
         [[!"num:i(num:i(@index) + num:i($CddPwmHwUnitCount))"!]] =
         {
-            /* XLINK HwunitId: EPWM[!"num:i(node:value(node:path(concat(node:path(node:ref(CddPwmLinkHwUnit/*[1]/CddPwmHwUnit)),'/CddPwmInstanceId'))))"!] */
-            .instance_id = (uint8)([!"num:i(node:value(node:path(concat(node:path(node:ref(CddPwmLinkHwUnit/*[1]/CddPwmHwUnit)),'/CddPwmInstanceId'))))"!]U),
-            .base_addr = (EPWM1XLINK_BASE + (CDD_PWM_XLINK_BASEADDR_STEP*[!"num:i(num:i(node:value(node:path(concat(node:path(node:ref(CddPwmLinkHwUnit/*[1]/CddPwmHwUnit)),'/CddPwmInstanceId')))) - 1)"!]U)),
+            /* XLINK HwunitId: [!"node:value(node:ref(CddPwmXlinkInstanceRef)/InstanceName)"!]XLINK */
+            .instance_id = (uint8)([!"num:i(substring-after(node:value(node:ref(CddPwmXlinkInstanceRef)/InstanceName),'EPWM'))"!]U),
+            .base_addr = (uint32)([!"node:value(node:ref(CddPwmXlinkInstanceRef)/XlinkBaseAddr)"!]),
             #if(STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
             .notification = NULL_PTR,
             .tripzone_notification = NULL_PTR

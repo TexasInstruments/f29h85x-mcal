@@ -60,10 +60,10 @@ extern "C" {
 #define CDD_ADC_CHN_COUNT                   ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*/CddAdcChannel/*))"!]U)
 
 /* Macro to define the total number of ADC instances supported */
-#define CDD_ADC_MAX_HW_UNIT_COUNT           ((uint8)[!"num:i(ecu:get('Cdd_Adc_F29H85x_HwInstances'))"!]U)
+#define CDD_ADC_MAX_HW_UNIT_COUNT           ((uint8)[!"num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcHwInstances'))"!]U)
 
 /* Macro to define the total number of interrupts supported */
-#define CDD_ADC_MAX_INT_COUNT               ((uint8)[!"num:i(ecu:get('Cdd_Adc_F29H85x_IntCntPerHw'))"!]U)
+#define CDD_ADC_MAX_INT_COUNT               ((uint8)[!"num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_AdcIntCntPerHw'))"!]U)
 
 /* Development error detection macro */
 #define CDD_ADC_DEV_ERROR_DETECT            [!IF "CddAdcGeneral/CddAdcDevErrorDetect  = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
@@ -86,7 +86,7 @@ extern "C" {
 #define CDD_ADC_GROUP_CNT                   ((Cdd_Adc_GroupType)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*))"!]U)
 
 /* Notification Api macro */
-#define CDD_ADC_GRP_NOTIF_CAPABILITY_API    [!IF "CddAdcGeneral/CddAdcGrpNotifCapability = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_ADC_GRP_NOTIF_CAPABILITY_API    [!IF "CddAdcGeneral/CddAdcNotifCapability = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* Macro to define the number of hardware units configured */
 #define CDD_ADC_HW_CNT                      ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*))"!]U)
@@ -123,7 +123,7 @@ extern "C" {
 #define CDD_ADC_CHECKER_CNT                 (Cdd_Adc_CheckerType)([!"num:i(count(CddAdcConfigSet/CddAdcResultCheckerUnit/*))"!]U)
 
 /* Number of checker events for all the safety checker events. */
-#define CDD_ADC_CHECKER_EVT_CNT             ((uint8)[!"ecu:get('Cdd_Adc_F29H85x_CheckEvtCnt')"!]U)
+#define CDD_ADC_CHECKER_EVT_CNT             ((uint8)[!"ecu:get('ResourceAllocator_F29H85x.Cdd_AdcCheckerEvtCnt')"!]U)
 
 /* Macro to define the number of interrupt event instances configured */
 #define CDD_ADC_CHECKER_INTEVT_CNT          ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcCheckerIntEvtConfig/*))"!]U)
@@ -143,10 +143,10 @@ extern "C" {
 #define CDD_ADC_TRIG_REP_CNT    ((uint8)[!"num:i(count(CddAdcConfigSet/CddAdcHwUnit/*/CddAdcTriggerRepeater/*))"!]U)[!//
 [!ENDIF!][!//
 
-[!NOCODE!]
+[!NOCODE!][!//
 [!VAR "PpbEvtNotification"="num:i(0)"!]
 [!LOOP "CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*"!]
-    [!IF "node:exists(CddAdcPpbEventInterruptNotification)"!]
+    [!IF "not(node:empty(CddAdcPpbEventInterruptNotification))"!]
         [!VAR "PpbEvtNotification"="num:i($PpbEvtNotification+1)"!]
     [!ENDIF!]
 [!ENDLOOP!][!ENDNOCODE!][!//
@@ -164,24 +164,24 @@ extern "C" {
 [!ENDNOCODE!][!//
 [!LOOP "as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet"!][!//
 [!LOOP "CddAdcHwUnit/*"!]
-/* [!"CddAdcHwInstance"!] hardware unit symbolic name */
-#define CddAdcConf_CddAdcHwUnit_[!"@name"!]         ((uint8)[!"CddAdcHwUnitId"!]U) /*~ASR~*/[!//
+/* [!"node:value(CddAdcHwInstance)"!] hardware unit symbolic name */
+#define CddAdcConf_CddAdcHwUnit_[!"@name"!]         ((uint8)[!"num:i(CddAdcHwUnitId)"!]U) /*~ASR~*/[!//
 
 [!NOCODE!][!IF "CddAdcHwExternalMuxSelect = 'true'"!]
 [!VAR "ExtChnsel" = "'true'"!]
 [!ENDIF!][!ENDNOCODE!][!//
 
 [!LOOP "CddAdcGroup/*"!][!//
-/* Group [!"$GroupCount"!] symbolic name */
-#define CddAdcConf_[!"node:name(../../.)"!]_[!"@name"!]    ((Cdd_Adc_GroupType)[!"$GroupCount"!]U)  /*~ASR~*/
+/* ADC:[!"node:value(../../CddAdcHwInstance)"!] Group[!"num:i(node:pos(.))"!] symbolic name */
+#define CddAdcConf_CddAdcGroup_[!"@name"!]    ((Cdd_Adc_GroupType)[!"$GroupCount"!]U)  /*~ASR~*/
 
 [!VAR "GroupCount" = "num:i($GroupCount+1)"!][!//
 [!ENDLOOP!][!//
 
 [!IF "as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcGeneral/CddAdcPpbEnable = 'true'"!]
 [!LOOP "CddAdcPpbConfig/*"!][!//
-/* PPB [!"$PpbCount"!] symbolic name */
-#define CddAdcConf_[!"node:name(../../.)"!]_[!"@name"!]        ((Cdd_Adc_PpbType)[!"$PpbCount"!]U) /*~ASR~*/
+/* ADC:[!"node:value(../../CddAdcHwInstance)"!] PPB[!"num:i(node:value(CddAdcPpbInstance))"!] symbolic name */
+#define CddAdcConf_CddAdcPpbConfig_[!"@name"!]        ((Cdd_Adc_PpbType)[!"$PpbCount"!]U) /*~ASR~*/
 
 [!VAR "PpbCount" = "num:i($PpbCount+1)"!][!//
 [!ENDLOOP!][!//
@@ -191,7 +191,7 @@ extern "C" {
 
 [!IF "num:i(count(CddAdcResultCheckerUnit/*)) > 0"!][!//
 [!LOOP "CddAdcResultCheckerUnit/*"!][!//
-/* Checker unit [!"num:i(CddAdcCheckerId)"!] symbolic names */
+/* Symbolic name for Checker unit [!"node:value(node:ref(CddAdcCheckerInstanceRef)/SafetyCheckerInstance)"!] */
 #define CddAdcConf_CddAdcResultCheckerUnit_[!"@name"!]  ((Cdd_Adc_CheckerType)[!"num:i(CddAdcCheckerId)"!]U) /*~ASR~*/
 
 [!ENDLOOP!][!//
@@ -200,8 +200,8 @@ extern "C" {
 
 [!IF "num:i(count(CddAdcCheckerIntEvtConfig/*)) > 0"!][!//
 [!LOOP "CddAdcCheckerIntEvtConfig/*"!][!//
-/* Symbolic name for the safety checker interrupt event instance [!"CddAdcIntEvtId"!] */
-#define CddAdcConf_CddAdcCheckerIntEvtConfig_[!"@name"!] ((Cdd_Adc_CheckerIntEvtType)[!"CddAdcIntEvtId"!])  /*~ASR~*/
+/* Symbolic name for the safety checker interrupt event instance [!"node:value(node:ref(CddAdcCheckerIntEvtInstanceRef)/SafetyCheckerIntEvtInstance)"!] */
+#define CddAdcConf_CddAdcCheckerIntEvtConfig_[!"@name"!] ((Cdd_Adc_CheckerIntEvtType)[!"num:i(CddAdcIntEvtId)"!]U)  /*~ASR~*/
 
 [!ENDLOOP!][!//
 [!ELSE!][!//
@@ -246,8 +246,24 @@ extern "C" {
 /*********************************************************************************************************************
  * Exported Type Declarations
  *********************************************************************************************************************/
-
-/* Specifies the identification (ID) for a ADC Hardware MC peripheral (unit) */
+/** \brief Specifies the identification (ID) for ADC Hardware instances */[!//
+[!VAR "variant" = "node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/ResourceAllocator/ELEMENTS/ResourceAllocator/ResourceAllocatorGeneral/Variant)"!][!//
+[!IF "($variant = 'F29P329SM2_Q')"!]
+typedef enum
+{
+    CDD_ADCA = 0U,                        /* Select ADCA instance */
+    CDD_ADCB = 1U,                        /* Select ADCB instance */
+    CDD_ADCC = 2U,                        /* Select ADCC instance */
+    CDD_ADCD = 3U                         /* Select ADCD instance */
+}Cdd_Adc_HwUnitType;[!//
+[!ELSEIF "($variant = 'F29P329SJ1_Q' or $variant = 'F29P329SM1_Q')"!]
+typedef enum
+{
+    CDD_ADCA = 0U,                        /* Select ADCA instance */
+    CDD_ADCB = 1U,                        /* Select ADCB instance */
+    CDD_ADCC = 2U                         /* Select ADCC instance */
+}Cdd_Adc_HwUnitType;[!//
+[!ELSE!]
 typedef enum
 {
     CDD_ADCA = 0U,                        /* Select ADCA instance */
@@ -255,8 +271,10 @@ typedef enum
     CDD_ADCC = 2U,                        /* Select ADCC instance */
     CDD_ADCD = 3U,                        /* Select ADCD instance */
     CDD_ADCE = 4U                         /* Select ADCE instance */
-}Cdd_Adc_HwUnitType;
+}Cdd_Adc_HwUnitType;[!//
+[!ENDIF!]
 
+/** \brief Defines supported prescaler values */
 typedef enum
 {
     CDD_ADC_CLK_DIV_1_0 = 0U,            /* ADCCLK = (input clock) / 1.0 */
@@ -276,68 +294,89 @@ typedef enum
     CDD_ADC_CLK_DIV_8_5 = 15U            /* ADCCLK = (input clock) / 8.5 */
 }Cdd_Adc_PrescaleType;
 
+/** \brief Defines supported reference voltage modes */
 typedef enum
 {
     CDD_ADC_REFERENCE_INTERNAL = 0U,
     CDD_ADC_REFERENCE_EXTERNAL = 1U
 }Cdd_Adc_RefModeType;
 
+/** \brief Defines supported reference voltage types */
 typedef enum
 {
     CDD_ADC_REFERENCE_3_3V = 0U,
     CDD_ADC_REFERENCE_2_5V = 1U
 }Cdd_Adc_RefVoltType;
 
+/** \brief Defines supported signal modes types */[!//
+[!IF "(text:contains(node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/ResourceAllocator/ELEMENTS/ResourceAllocator/ResourceAllocatorGeneral/Device),'F29P32') = 'true')"!]
+typedef enum
+{
+    CDD_ADC_MODE_SINGLE_ENDED = 0x00U   /* Sample on single pin with VREFLO */
+}Cdd_Adc_SignalModeType;[!//
+[!ELSE!]
 typedef enum
 {
     CDD_ADC_MODE_SINGLE_ENDED = 0x00U,   /* Sample on single pin with VREFLO */
     CDD_ADC_MODE_DIFFERENTIAL = 0x80U    /* Sample on pair of pins */
-}Cdd_Adc_SignalModeType;
+}Cdd_Adc_SignalModeType;[!//
+[!ENDIF!]
 
+/** \brief Defines supported SOC priority types */
 typedef enum
 {
-    CDD_ADC_PRI_ALL_ROUND_ROBIN   = 0,   /* Round robin mode is used for all        */
-    CDD_ADC_PRI_SOC0_HIPRI        = 1,   /*  SOC 0 hi pri, others in round robin     */
-    CDD_ADC_PRIHRU_SOC1_HIPRI     = 2,   /*  SOC 0-1 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC2_HIPRI     = 3,   /*  SOC 0-2 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC3_HIPRI     = 4,   /*  SOC 0-3 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC4_HIPRI     = 5,   /*  SOC 0-4 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC5_HIPRI     = 6,   /*  SOC 0-5 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC6_HIPRI     = 7,   /*  SOC 0-6 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC7_HIPRI     = 8,   /*  SOC 0-7 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC8_HIPRI     = 9,   /*  SOC 0-8 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC9_HIPRI     = 10,  /*  SOC 0-9 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC10_HIPRI    = 11,  /*  SOC 0-10 hi pri, others in round robin  */
-    CDD_ADC_PRIHRU_SOC11_HIPRI    = 12,  /*  SOC 0-11 hi pri, others in round robin  */
-    CDD_ADC_PRIHRU_SOC12_HIPRI    = 13,  /*  SOC 0-12 hi pri, others in round robin  */
-    CDD_ADC_PRIHRU_SOC13_HIPRI    = 14,  /*  SOC 0-13 hi pri, others in round robin  */
-    CDD_ADC_PRIHRU_SOC14_HIPRI    = 15,  /*  SOC 0-14 hi pri, SOC15 in round robin   */
-    CDD_ADC_PRIHRU_SOC15_HIPRI    = 16,  /*  SOC 0-15 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC16_HIPRI    = 17,  /*  SOC 0-16 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC17_HIPRI    = 18,  /*  SOC 0-17 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC18_HIPRI    = 19,  /*  SOC 0-18 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC19_HIPRI    = 20,  /*  SOC 0-19 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC20_HIPRI    = 21,  /*  SOC 0-20 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC21_HIPRI    = 22,  /*  SOC 0-21 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC22_HIPRI    = 23,  /*  SOC 0-22 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC23_HIPRI    = 24,  /*  SOC 0-23 hi pri, others in round robin   */
-    CDD_ADC_PRIHRU_SOC24_HIPRI    = 25,  /*  SOC 0-24 hi pri, others in round robin  */
-    CDD_ADC_PRIHRU_SOC25_HIPRI    = 26,  /*  SOC 0-25 hi pri, others in round robin  */
-    CDD_ADC_PRIHRU_SOC26_HIPRI    = 27,  /*  SOC 0-26 hi pri, others in round robin  */
-    CDD_ADC_PRIHRU_SOC27_HIPRI    = 28,  /*  SOC 0-27 hi pri, others in round robin  */
-    CDD_ADC_PRIHRU_SOC28_HIPRI    = 29,  /*  SOC 0-28 hi pri, SOC15 in round robin   */
-    CDD_ADC_PRIHRU_SOC29_HIPRI    = 30,  /*  SOC 0-29 hi pri, others in round robin  */
-    CDD_ADC_PRIHRU_SOC30_HIPRI    = 31,  /*  SOC 0-30 hi pri, SOC15 in round robin   */
-    CDD_ADC_PRI_ALL_HIPRI         = 32   /* All priorities based on SOC number      */
+    CDD_ADC_PRI_ALL_ROUND_ROBIN   = 0U,   /* Round robin mode is used for all        */
+    CDD_ADC_PRI_SOC0_HIPRI        = 1U,   /*  SOC 0 hi pri, others in round robin     */
+    CDD_ADC_PRIHRU_SOC1_HIPRI     = 2U,   /*  SOC 0-1 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC2_HIPRI     = 3U,   /*  SOC 0-2 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC3_HIPRI     = 4U,   /*  SOC 0-3 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC4_HIPRI     = 5U,   /*  SOC 0-4 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC5_HIPRI     = 6U,   /*  SOC 0-5 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC6_HIPRI     = 7U,   /*  SOC 0-6 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC7_HIPRI     = 8U,   /*  SOC 0-7 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC8_HIPRI     = 9U,   /*  SOC 0-8 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC9_HIPRI     = 10U,  /*  SOC 0-9 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC10_HIPRI    = 11U,  /*  SOC 0-10 hi pri, others in round robin  */
+    CDD_ADC_PRIHRU_SOC11_HIPRI    = 12U,  /*  SOC 0-11 hi pri, others in round robin  */
+    CDD_ADC_PRIHRU_SOC12_HIPRI    = 13U,  /*  SOC 0-12 hi pri, others in round robin  */
+    CDD_ADC_PRIHRU_SOC13_HIPRI    = 14U,  /*  SOC 0-13 hi pri, others in round robin  */
+    CDD_ADC_PRIHRU_SOC14_HIPRI    = 15U,  /*  SOC 0-14 hi pri, SOC15 in round robin   */
+    CDD_ADC_PRIHRU_SOC15_HIPRI    = 16U,  /*  SOC 0-15 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC16_HIPRI    = 17U,  /*  SOC 0-16 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC17_HIPRI    = 18U,  /*  SOC 0-17 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC18_HIPRI    = 19U,  /*  SOC 0-18 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC19_HIPRI    = 20U,  /*  SOC 0-19 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC20_HIPRI    = 21U,  /*  SOC 0-20 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC21_HIPRI    = 22U,  /*  SOC 0-21 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC22_HIPRI    = 23U,  /*  SOC 0-22 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC23_HIPRI    = 24U,  /*  SOC 0-23 hi pri, others in round robin   */
+    CDD_ADC_PRIHRU_SOC24_HIPRI    = 25U,  /*  SOC 0-24 hi pri, others in round robin  */
+    CDD_ADC_PRIHRU_SOC25_HIPRI    = 26U,  /*  SOC 0-25 hi pri, others in round robin  */
+    CDD_ADC_PRIHRU_SOC26_HIPRI    = 27U,  /*  SOC 0-26 hi pri, others in round robin  */
+    CDD_ADC_PRIHRU_SOC27_HIPRI    = 28U,  /*  SOC 0-27 hi pri, others in round robin  */
+    CDD_ADC_PRIHRU_SOC28_HIPRI    = 29U,  /*  SOC 0-28 hi pri, SOC15 in round robin   */
+    CDD_ADC_PRIHRU_SOC29_HIPRI    = 30U,  /*  SOC 0-29 hi pri, others in round robin  */
+    CDD_ADC_PRIHRU_SOC30_HIPRI    = 31U,  /*  SOC 0-30 hi pri, SOC15 in round robin   */
+    CDD_ADC_PRI_ALL_HIPRI         = 32U   /* All priorities based on SOC number      */
 }Cdd_Adc_SocPriorityType;
 
+/** \brief Defines supported resolution modes */[!//
+[!IF "(text:contains(node:value(/AUTOSAR/TOP-LEVEL-PACKAGES/ResourceAllocator/ELEMENTS/ResourceAllocator/ResourceAllocatorGeneral/Device),'F29P32') = 'true')"!]
+typedef enum
+{
+    CDD_ADC_RESOLUTION_12BIT = 0x00U,    /* 12-bit conversion resolution */
+    CDD_ADC_RESOLUTION_NONE
+}Cdd_Adc_ResolutionType;[!//
+[!ELSE!]
 typedef enum
 {
     CDD_ADC_RESOLUTION_12BIT = 0x00U,    /* 12-bit conversion resolution */
     CDD_ADC_RESOLUTION_16BIT = 0x01U,     /* 16-bit conversion resolution */
     CDD_ADC_RESOLUTION_NONE
-}Cdd_Adc_ResolutionType;
+}Cdd_Adc_ResolutionType;[!//
+[!ENDIF!]
 
+/** \brief Defines interrupts supported per ADC instance */
 typedef enum
 {
     CDD_ADC_INT1 = 0U,        /* ADCINT1 Interrupt */ 
@@ -346,6 +385,7 @@ typedef enum
     CDD_ADC_INT4 = 3U        /* ADCINT4 Interrupt */
 }Cdd_Adc_IntNumType;
 
+/** \brief Defines possible input types to a safety checker unit */
 typedef enum
 {
     CDD_ADC_SAFETY_CHECKER_INPUT_DISABLE  = 0x0U, /* Safety checker i/p disabled    */
@@ -354,6 +394,7 @@ typedef enum
     CDD_ADC_SAFETY_CHECKER_INPUT_PPBSUM   = 0x3U  /* Safety checker i/p is PPBSUM  */
 } Cdd_Adc_CheckerInputType;
 
+/** \brief Defines supported ADC triggers */
 typedef enum{
   /* Trigger Name           TRIGSEL/ BURSTTRIGSEL   Connects to, Trigger
   *                             CONFIGURATION 
@@ -421,18 +462,21 @@ typedef enum{
 	CDD_ADC_TRIGGER_CPU3INT2		 = 0x69U         /* CPU3 Timer 0, TINT2 */
 }Cdd_Adc_TriggerType;
 
+/** \brief Defines modes supported by a trigger repeater */
 typedef enum
 {
     CDD_ADC_REPMODE_OVERSAMPLING   = 0x0U,  /* ADC repeater mode is oversampling */
     CDD_ADC_REPMODE_UNDERSAMPLING  = 0x1U   /* ADC repeater mode is undersampling */
 }Cdd_Adc_RepeaterModeType;
 
+/** \brief Defines repeater instances supported per ADC instance */
 typedef enum
 {
     CDD_ADC_REPINST1 = 0x0U,                /* Select ADC repeater instance 1 */
     CDD_ADC_REPINST2 = 0x1U                /* Select ADC repeater instance 2 */  
 }Cdd_Adc_RepeaterType;
 
+/** \brief Defines PPB instances supported per ADC instance */
 typedef enum
 {
     CDD_ADC_PPB_NUMBER1 = 0,  /* Post-processing block 1*/
@@ -441,6 +485,7 @@ typedef enum
     CDD_ADC_PPB_NUMBER4 = 3   /* Post-processing block 4*/
 }Cdd_Adc_PpbIdType;
 
+/** \brief Defines PPB result compare types */
 typedef enum
 {
     CDD_ADC_COMPARE_PPBRESULT = 0x0U,   /* PPB compare source is ADCRESULT */ 
@@ -448,6 +493,7 @@ typedef enum
     CDD_ADC_COMPARE_PPBSUM    = 0x2U    /* PPB compare source is SUM */ 
 }Cdd_Adc_CompSelType;
 
+/** \brief Defines safety checker flag types */
 typedef enum
 {
     CDD_ADC_SAFETY_CHECK_OOT_FLG     = 0U,   /* Safety Check Out-of-Tolerance Flag */
@@ -455,6 +501,7 @@ typedef enum
     CDD_ADC_SAFETY_CHECK_RES2OVF_FLG = 16U   /* Safety Check Result2 Overflow Flag */
 }Cdd_Adc_SafetyCheckFlagType;
 
+/** \brief Defines safety checker event sources for interrupt or event generation */
 typedef enum
 {
     CDD_ADC_SAFETY_CHECK_RES1OVF = 0U,      /* Safety Check Result1 Overflow */ 
@@ -462,6 +509,7 @@ typedef enum
     CDD_ADC_SAFETY_CHECK_OOT     = 8U       /* Safety Check OOT */ 
 }Cdd_Adc_SafetyCheckEvtSrcType;
 
+/** \brief Defines possible states of a flag of an event generated from a safety checker */
 typedef enum
 {
     CDD_ADC_SAFETY_CHECKER_FLG_NONE,       /* No safety checker flag has been set */
@@ -470,6 +518,7 @@ typedef enum
     CDD_ADC_SAFETY_CHECKER_OOT_FLG,       /* Safety Check Out-of-Tolerance Flag */
 }Cdd_Adc_CheckFlagStatusType;
 
+/** \brief Defines supported events that can be generated from an interrupt event instance */
 typedef enum
 {
     CDD_ADC_CHECKER_EVT_1,          /* Interrupt event instance event 1 */
@@ -478,6 +527,7 @@ typedef enum
     CDD_ADC_CHECKER_EVT_4           /* Interrupt event instance event 4 */
 }Cdd_Adc_CheckerEventType;
 
+/** \brief Defines interrupt trigger sources to SOCs */
 typedef enum
 {
     CDD_ADC_INT_SOC_TRIGGER_NONE    = 0U,   /* No ADCINT will trigger the SOC */ 
@@ -485,6 +535,7 @@ typedef enum
     CDD_ADC_INT_SOC_TRIGGER_ADCINT2 = 2U    /* ADCINT2 will trigger the SOC   */
 }Cdd_Adc_IntSocTriggerType;
 
+/** \brief Defines End-Of-Conversion interrupt pulse modes */
 typedef enum
 {
     /* Occurs at the end of the acquisition window */ 
@@ -493,6 +544,7 @@ typedef enum
     CDD_ADC_PULSE_END_OF_CONV    = 0x04U
 }Cdd_Adc_EocPulseType;
 
+/** \brief Defines supported internal nodes that can be connected to ADC */
 typedef enum
 {
     CDD_ADC_TEST_NODE_NO_CONN            = 0U,
@@ -527,8 +579,8 @@ typedef enum
     CDD_ADC_TEST_NODE_MAX           /* Added to check the valid input to the Cdd_Adc_SetInternalTestNode API */
 }Cdd_Adc_InternalTestNodeType;
 
-
-#if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)   
+#if(STD_ON == CDD_ADC_OPEN_SHORT_DETECTION)
+/** \brief Specifies open/short circuit modes */
 typedef enum
 {
     CDD_ADC_OSDETECT_MODE_DISABLED            = 0x0U,/* Open/Shorts detection circuit(O/S DC) is disabled */
@@ -552,15 +604,31 @@ extern const struct Cdd_Adc_ConfigTag Cdd_Adc_Config;
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-[!IF "CddAdcGeneral/CddAdcGrpNotifCapability = 'true'"!]
+[!NOCODE!][!//
+[!VAR "GrpNotifCount" = "num:i(0)"!][!// 
+[!LOOP "CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*"!]
+    [!IF "not(node:empty(CddAdcGroupNotification))"!]
+        [!VAR "GrpNotifCount"="num:i($GrpNotifCount+1)"!]
+        [!BREAK!]
+    [!ENDIF!]
+[!ENDLOOP!]
+[!VAR "TotalNotifCount" = "num:i(num:i($PpbEvtNotification) + num:i($GrpNotifCount))"!][!//
+[!ENDNOCODE!][!//
+[!//
+[!IF "(CddAdcGeneral/CddAdcNotifCapability = 'true') and ($TotalNotifCount > 0)"!]
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 #define CDD_ADC_START_SEC_CODE
 #include "Cdd_Adc_MemMap.h"
-
+[!//
+[!IF "$GrpNotifCount > 0"!]
+/* Declaration of the group notification functions */[!//
 [!LOOP "(util:distinct(node:foreach(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcGroup/*/CddAdcGroupNotification,'val','$val')))"!]
 extern void [!"."!](void);
-[!ENDLOOP!]
-
-[!IF "$PpbEvtNotification > 0"!][!//
+[!ENDLOOP!][!//
+[!ENDIF!][!//
+[!//
+[!IF "$PpbEvtNotification > 0"!]
+/* Declaration of the PPB notification functions */[!//
 [!LOOP "(util:distinct(node:foreach(as:modconf('Cdd_Adc/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Adc/Cdd']/CddAdcConfigSet/CddAdcHwUnit/*/CddAdcPpbConfig/*/CddAdcPpbEventInterruptNotification,'val','$val')))"!]
 extern void [!"."!](void);
 [!ENDLOOP!][!//
@@ -568,6 +636,7 @@ extern void [!"."!](void);
 
 #define CDD_ADC_STOP_SEC_CODE
 #include "Cdd_Adc_MemMap.h"
+#endif
 [!ENDIF!][!//
 [!ENDSELECT!][!//
 

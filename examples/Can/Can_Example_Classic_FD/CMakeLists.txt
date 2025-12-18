@@ -16,6 +16,11 @@ if(NOT TARGET Port)
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Port)
 endif()
 
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
+endif()
+
 if(NOT TARGET Mcu)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../drivers/Mcu/
                      ${CMAKE_CURRENT_BINARY_DIR}/Can_Example_Classic_FD/Mcu)
@@ -118,6 +123,7 @@ target_link_libraries(
             Port
             SchM_Port
             Mcu
+            SchM_Mcu
             hw_include
             AUTOSAR_Types
             Det

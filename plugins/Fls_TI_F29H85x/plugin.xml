@@ -33,7 +33,7 @@
             specVersionMajor="1"
             specVersionMinor="0"
             specVersionPatch="0"
-            swVersionMajor="2"
+            swVersionMajor="3"
             swVersionMinor="0"
             swVersionPatch="0"
             categoryType="Fls"
@@ -263,33 +263,16 @@
       </generator>
    </extension>
 
-   <extension point="dreisoft.tresos.autosar2.api.plugin.ecuresource">
-      <ecuresource
-          target="C2000"
-          derivate="F29H85x"
-          moduleId="Fls_F29H85x"
-          file="resources/Device_Flash.properties">
-          <parameter
-            name="subderivate"
-            value="F29H85x">
-          </parameter>
-      </ecuresource>
-   </extension> 
-
+   <!-- Defines a new DefaultEcuResourceFinder. The predefined parameters "name" and "path"
+     are registered with this finder. Therefore the given schema path (from parameter "path")
+     is evaluated and the resulting value is checked against the values of parameter
+     "subderivate" of any ecu resource properties with the relevant target and derivate.
+     -->
    <extension
          point="dreisoft.tresos.autosar2.api.plugin.ecuresourcefinder">
       <ecuresourcefinder>
          <finder
-               class="dreisoft.tresos.autosar2.api.ecuresource.DefaultEcuResourceFinder">
-            <parameter
-                  name="name"
-                  value="subderivate">
-            </parameter>
-            <!-- parameter "path" must contain a schema path! -->            
-            <parameter
-                  name="path"
-                  value="/AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Fls/FlsGeneral/FlsDeviceVariant">
-            </parameter>
+            class="dreisoft.tresos.autosar2.api.ecuresource.DefaultEcuResourceFinder">
          </finder>
       </ecuresourcefinder>
    </extension>

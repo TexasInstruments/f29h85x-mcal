@@ -232,6 +232,14 @@ extern "C" {
 /**  \brief  Readback val to protect non-main region sector 0 erase*/
 #define FLS_FLASH_NW_CMDWEPROTNM_READBACK_VAL 1U
 
+/**  \brief  Command WriteErase Protect Non-Main register shift bits*/
+#define FLS_FLASH_NW_CMDADDR_VAL_S 0U
+/**  \brief  Command WriteErase Protect Non-Main register mask bits*/
+#define FLS_FLASH_NW_CMDADDR_VAL_M 0xFFFFFFFFU
+/**  \brief  Readback val to protect non-main region sector 0 erase*/
+#define FLS_FLASH_NW_CMDTYPE_VAL_S 0U
+/**  \brief  Command WriteErase Protect Non-Main register mask bits*/
+#define FLS_FLASH_NW_CMDTYPE_VAL_M 0xFFFFFFFFU
 /*  \brief STATCMD register command done bit*/
 #define FLS_FLASH_NW_STATCMD_CMDDONE 0x1U
 /*  \brief STATCMD register command pass bit*/

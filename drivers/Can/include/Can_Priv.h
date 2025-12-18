@@ -398,8 +398,6 @@ typedef struct Can_ControllerObjType_s
 {
     /** \brief Bus off recovery status */
     boolean                   canBusOffRecoveryStatus;
-    /** \brief TxRXx Status of Message RAM buffer */
-    uint8                     canTxStatus[KMAX_TX_MB_PER_CONTROLLER];
     /** \brief Tx/Rx Pdu ID Info for Message RAM buffer*/
     PduIdType                 canTxRxPduId[KMAX_TX_MB_PER_CONTROLLER];
     /** \brief Total number of interrupts for this controller */

@@ -51,11 +51,11 @@
 #error "SPI: AUTOSAR Version Numbers of SPI are different"
 #endif
 
-#if ((SPI_SW_MAJOR_VERSION != (2U)) || (SPI_SW_MINOR_VERSION != (0U)))
+#if ((SPI_SW_MAJOR_VERSION != (3U)) || (SPI_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Spi.c and Spi.h are inconsistent!"
 #endif
 
-#if ((SPI_CFG_MAJOR_VERSION != (2U)) || (SPI_CFG_MINOR_VERSION != (0U)))
+#if ((SPI_CFG_MAJOR_VERSION != (3U)) || (SPI_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Spi.c and Spi_Cfg.h are inconsistent!"
 #endif
 /*********************************************************************************************************************

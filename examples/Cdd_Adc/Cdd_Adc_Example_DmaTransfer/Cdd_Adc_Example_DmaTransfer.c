@@ -241,7 +241,7 @@ int main()
     /* Start the hardware group conversion.
      * Cdd_Adc_SetupResultBuffer is not required because DMA mode is enabled for the group.
      */
-    Cdd_Adc_EnableHardwareTrigger(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
+    Cdd_Adc_EnableHardwareTrigger(CddAdcConf_CddAdcGroup_CddAdcGroup_0);
 
     /* Continue the data transfer for 5 seconds */
     while (Cdd_Adc_DmaIsrCount < (CDD_ADC_PWM_FREQUENCY * CDD_ADC_SECONDS))
@@ -250,7 +250,7 @@ int main()
     }
 
     /* Disable hardware trigger after 1second */
-    Cdd_Adc_DisableHardwareTrigger(CddAdcConf_CddAdcHwUnit_0_CddAdcGroup_0);
+    Cdd_Adc_DisableHardwareTrigger(CddAdcConf_CddAdcGroup_CddAdcGroup_0);
 
     /* Stop DMA channel */
     DMA_stopChannel(RTDMA1CH1_BASE);

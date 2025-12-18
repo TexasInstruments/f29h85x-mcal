@@ -141,7 +141,7 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_Config =
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].externalDeviceCfgId = (uint8)[!"node:value(node:ref(node:current()/SpiDeviceAssignment)/SpiExternalDeviceId)"!],
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].csSelect = [!IF "node:exists(node:ref(node:current()/SpiDeviceAssignment)/SpiCsSelection)"!][!"node:value(node:ref(node:current()/SpiDeviceAssignment)/SpiCsSelection)"!][!ELSE!]CS_VIA_PERIPHERAL_ENGINE[!ENDIF!],
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].csGpioId = SpiConf_SpiExternalDevice_[!"node:name(node:ref(node:current()/SpiDeviceAssignment))"!]_CS,
-[!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].hwUnitId = (Spi_HwInstance) [!"node:value(node:ref(node:current()/SpiDeviceAssignment)/SpiHwUnit)"!],
+[!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].hwUnitId = (Spi_HwInstance) SPI_UNIT_[!"node:value(node:ref(node:current()/SpiDeviceAssignment)/SpiHwUnit)"!],
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].channelPerJob = [!"num:i(count(SpiChannelList/*))"!]U,
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].channelList =
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!]{
@@ -175,17 +175,12 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_Config =
 [!WS "4"!][!LOOP "SpiHwUnitConfig/*"!]
 [!WS "4"!][!WS "4"!][[!"@index"!]] =
 [!WS "4"!][!WS "4"!][!WS "4"!]{
-[!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].hwUnitId = (Spi_HwInstance) [!"SpiHwUnitType"!],
+[!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].hwUnitId = (Spi_HwInstance) [!"concat('SPI_UNIT_', node:value(node:ref(SpiHwUnitType)/InstanceName))"!],
+[!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].HwUnitBaseAddr = (uint32) [!"node:value(node:ref(SpiHwUnitType)/BaseAddr)"!],
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].hsModeEnable = (boolean) [!IF "SpiHighSpeedMode = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].fifoModeEnable = (boolean) [!IF "SpiFifoModeEnable = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
 [!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].loopBackEnable = (boolean) [!IF "SpiLoopBackMode = 'true'"!]TRUE[!ELSE!]FALSE[!ENDIF!],
-[!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].RxPIPEVectorID = [!IF "SpiHwUnitType = 'SPI_UNIT_SPIA'"!]INT_SPIA_RX[!ELSEIF "SpiHwUnitType = 'SPI_UNIT_SPIB'"!]INT_SPIB_RX[!//
-[!ELSEIF "SpiHwUnitType = 'SPI_UNIT_SPIC'"!]INT_SPIC_RX[!//
-[!ELSEIF "SpiHwUnitType = 'SPI_UNIT_SPID'"!]INT_SPID_RX[!//
-[!ELSEIF "SpiHwUnitType = 'SPI_UNIT_SPIE'"!]INT_SPIE_RX[!//
-[!ELSE!][!//
-[!ERROR "Invalid SpiHwUnitType configured"!][!//
-[!ENDIF!],
+[!WS "4"!][!WS "4"!][!WS "4"!][!WS "4"!].RxPIPEVectorID = INT_[!"node:value(node:ref(SpiHwUnitType)/InstanceName)"!]_RX,
 [!WS "4"!][!WS "4"!][!WS "4"!]},
 [!WS "4"!][!ENDLOOP!]
 [!WS "4"!]},
@@ -218,22 +213,6 @@ CONST(struct Spi_ConfigType_s, SPI_CONFIG_DATA) Spi_Config =
 };
 [!ENDLOOP!][!//
 [!ENDSELECT!]
-
-
-
-/**
- *  \brief This type defines a range of HW SPI Hardware microcontroller
- *         peripheral allocated to this Job
- */
-const uint32 Spi_HwUnitBaseAddr[SPI_HW_UNIT_CNT] =
-{
-   0x70158000 ,      	    /* SPIA */
-   0x70159000 ,      	    /* SPIB */
-   0x7015A000 ,      	    /* SPIC */
-   0x7015B000 ,      	    /* SPID */
-   0x7015C000 ,     	    /* SPIE */
-};
-
 #ifdef __cplusplus
 }
 #endif

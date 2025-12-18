@@ -27,7 +27,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+[!SELECT "as:modconf('Cdd_Sent/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Sent/Cdd']"!]
 #ifndef DOXYGEN_SHOULD_SKIP_THIS 
 /*********************************************************************************************************************
  * Header Files
@@ -53,19 +53,19 @@ extern "C" {
  *Design: MCAL-28714
  */
 /** \brief CDDSENT Build Variant. Build Variants.(i.e Pre-compile,Post-Build or Link time)*/
-#define CDD_SENT_CFG_PRE_COMPILE_VARIANT          [!IF "as:modconf('Cdd_Sent/Cdd')[1]/IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_SENT_CFG_PRE_COMPILE_VARIANT          [!IF "IMPLEMENTATION_CONFIG_VARIANT = 'VariantPreCompile'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /* DEM Error Definitions */
 /* DEM Error Codes */
 /*********************************************************************************************************************
  * \brief Enable/Disable DEM.
  *********************************************************************************************************************/
-#define CDD_SENT_CFG_DEM_ENABLE    [!IF "node:refexists(as:modconf('Cdd_Sent/Cdd')[1]/CddSentDemEventParameterRefs/CDD_E_HARDWARE_ERROR)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_SENT_CFG_DEM_ENABLE    [!IF "node:refexists(CddSentDemEventParameterRefs/CDD_SENT_E_HARDWARE_ERROR)"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 /*
  *Design: MCAL-28684
  */
-[!IF "node:refexists(as:modconf('Cdd_Sent/Cdd')[1]/CddSentDemEventParameterRefs/CDD_E_HARDWARE_ERROR)"!]
-#define CDD_E_HARDWARE_ERROR  (DemConf_DemEventParameter_[!"node:name(node:ref(as:modconf('Cdd_Sent/Cdd')[1]/CddSentDemEventParameterRefs/CDD_E_HARDWARE_ERROR))"!])
+[!IF "node:refexists(CddSentDemEventParameterRefs/CDD_SENT_E_HARDWARE_ERROR)"!]
+#define CDD_SENT_E_HARDWARE_ERROR  (DemConf_DemEventParameter_[!"node:name(node:ref(CddSentDemEventParameterRefs/CDD_SENT_E_HARDWARE_ERROR))"!])
 [!ENDIF!]
 
 
@@ -73,7 +73,7 @@ extern "C" {
 /*
  *Design: MCAL-28662,MCAL-28661
  */
-#define CDD_SENT_CFG_DEV_ERROR_DETECT             [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_SENT_CFG_DEV_ERROR_DETECT             [!IF "CddSentGeneral/CddSentDevErrorDetect = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 
 /** \brief Enable/Disable CddSent_GetVersionInfo().*/
@@ -81,17 +81,17 @@ extern "C" {
 /*
  *Design: MCAL-28663
  */
-#define CDD_SENT_CFG_GET_VERSION_INFO_API         [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_SENT_CFG_GET_VERSION_INFO_API         [!IF "CddSentGeneral/CddSentVersionInfoApi = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 /** \brief Enable/Disable Enable Pdu().*/
 
 /*
  *Design: MCAL-28717
  */
-#define CDD_SENT_INTEGRATION_WITH_ASR_COMSTACK_ENABLE      [!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
+#define CDD_SENT_INTEGRATION_WITH_ASR_COMSTACK_ENABLE      [!IF "CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!](STD_ON)[!ELSE!](STD_OFF)[!ENDIF!]
 
 [!VAR "Enable_MTP_Mode" = "0"!][!//
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*"!][!//
+[!LOOP "CddSentConfig/CddSentController/*"!][!//
 [!IF "CddSentMTP ='true'"!][!//
         [!VAR "Enable_MTP_Mode" = "1"!][!//
 [!ENDIF!]
@@ -104,30 +104,30 @@ extern "C" {
  *Design: MCAL-28685
  */
 /** \brief Defines for symbolic names for the CddSent HW uint ID's (CddSentHWUnitId) */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*"!][!//
+[!LOOP "CddSentConfig/CddSentController/*"!][!//
 #define Cdd_SentConf_CddSentController_[!"@name"!] ([!"CddSentHWUnitId"!]U) /*~ASR~*/
 [!ENDLOOP!][!//
 
 /*
  *Design: MCAL-28731
  */
-[!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
+[!IF "CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
 /** \brief Defines for symbolic names for the CddSentPduR Lower layer Rx PdU's */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerRxPdu/*"!][!//
+[!LOOP "CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerRxPdu/*"!][!//
 #define Cdd_SentConf_CddPduRLowerLayerRxPdu_[!"@name"!] [!"@index"!]U			/*~ASR~*/
 [!ENDLOOP!][!//
 [!ELSE!][!//
 /** \brief Defines for symbolic names for the channelobjectid's */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*/CddSentChannelObject/*"!][!//
+[!LOOP "CddSentConfig/CddSentController/*/CddSentChannelObject/*"!][!//
 #define Cdd_SentConf_CddSentChannelObject_[!"@name"!] [!"CddSentChannelObjectID"!]U			/*~ASR~*/
 [!ENDLOOP!][!//
 [!ENDIF!][!//
-[!IF "as:modconf('Cdd_Sent/Cdd')[1]/CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
+[!IF "CddSentGeneral/CddSentIntegrationWithAsrComStackEnable = 'true'"!]
 /*
  *Design: MCAL-28733,MCAL-28687, MCAL-28686
  */
 /** \brief Defines for symbolic names for the CddSentPduR Lower layer Tx PdU's */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerTxPdu/*"!][!//
+[!LOOP "CddComStackContribution/CddPduRLowerLayerContribution/CddPduRLowerLayerTxPdu/*"!][!//
 #define Cdd_SentConf_CddPduRLowerLayerTxPdu_[!"@name"!] [!"@index"!]U			/*~ASR~*/
 [!ENDLOOP!][!//
 [!ELSE!][!//
@@ -136,7 +136,7 @@ extern "C" {
 *Design: MCAL-28733,MCAL-28687, MCAL-28686
 */
 /** \brief Defines for symbolic names for the CddSentExternalDeviceID's */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*/CddSentExternalDeviceConfig/*"!][!//
+[!LOOP "CddSentConfig/CddSentController/*/CddSentExternalDeviceConfig/*"!][!//
 #define Cdd_SentConf_CddSentExternalDeviceConfig_[!"@name"!] [!"@index"!]U			/*~ASR~*/
 [!ENDLOOP!][!//
 [!ENDIF!][!//
@@ -146,14 +146,14 @@ extern "C" {
  *Design: MCAL-28671
  */
 /** \brief CddSent Controller Instance interrupt definition */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*"!][!//
-#define CDD_[!"CddSentInstance"!]_ENABLE
-[!IF "CddSentInteruptType = 'CDD_SENT_ISR_CAT1_RTINT'"!][!//
-#define CDD_[!"CddSentInstance"!]_ISR_CAT1_RTINT
-[!ELSEIF "CddSentInteruptType = 'CDD_SENT_ISR_CAT1_INT'"!][!//
-#define CDD_[!"CddSentInstance"!]_ISR_CAT1_INT
+[!LOOP "CddSentConfig/CddSentController/*"!][!//
+#define CDD_[!"node:value(node:ref(CddSentInstanceRef)/InstanceName)"!]_ENABLE
+[!IF "CddSentInterruptType = 'CDD_SENT_ISR_CAT1_RTINT'"!][!//
+#define CDD_[!"node:value(node:ref(CddSentInstanceRef)/InstanceName)"!]_ISR_CAT1_RTINT
+[!ELSEIF "CddSentInterruptType = 'CDD_SENT_ISR_CAT1_INT'"!][!//
+#define CDD_[!"node:value(node:ref(CddSentInstanceRef)/InstanceName)"!]_ISR_CAT1_INT
 [!ELSE!][!//
-#define CDD_[!"CddSentInstance"!]_ISR_CAT2
+#define CDD_[!"node:value(node:ref(CddSentInstanceRef)/InstanceName)"!]_ISR_CAT2
 [!ENDIF!][!//
 [!ENDLOOP!][!//
 
@@ -167,7 +167,7 @@ extern "C" {
  *Design: MCAL-28669
  */ 
 /** \brief No. of HW units defined in CddSent Driver */
-#define SENT_CFG_NO_OF_HW_UNITS            ([!"num:i(count(as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*))"!]U)
+#define SENT_CFG_NO_OF_HW_UNITS            ([!"num:i(count(CddSentConfig/CddSentController/*))"!]U)
 
 /** \brief Type for Hardware trigger Source */
 /*
@@ -309,7 +309,7 @@ typedef enum
 /*
  *Design: MCAL-28670
  */
-[!LOOP "as:modconf('Cdd_Sent/Cdd')[1]/CddSentConfig/CddSentController/*"!][!//
+[!LOOP "CddSentConfig/CddSentController/*"!][!//
 #define SENT_ENABLE_INTERRUPT_SOURCES    (uint32)((0x00000000U)\
                                     |(0UL<<1U)\
                                     |(0UL<<2U)\
@@ -367,7 +367,7 @@ typedef enum
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros
  *********************************************************************************************************************/
- 
+ [!ENDSELECT!]
 #ifdef __cplusplus
 }
 #endif

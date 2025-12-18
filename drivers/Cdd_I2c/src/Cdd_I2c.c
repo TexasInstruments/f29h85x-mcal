@@ -137,6 +137,9 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_Init(const Cdd_I2c_ConfigType *configPtr)
     {
         /* Only pre-compile variant supported */
         const Cdd_I2c_ConfigType *localConfigPtr = &CDD_I2C_CONFIG_PC;
+
+        /* Suppress unused parameter MISRAC warning */
+        (void)configPtr;
 #if (STD_ON == CDD_I2C_DEV_ERROR_DETECT)
         retVal = Cdd_I2c_CheckConfig(localConfigPtr);
         if (E_OK == retVal)

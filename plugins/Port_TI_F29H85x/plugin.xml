@@ -21,7 +21,7 @@
                 allowMultiple="false"
                 description="Port Module Plugin"
                 copyright="(c) 2024 Texas Instruments Incorporated"
-                swVersionMajor="2"
+                swVersionMajor="3"
                 swVersionMinor="0"
                 swVersionPatch="0"
                 specVersionMajor="1"
@@ -204,83 +204,4 @@
        </generator>
    </extension>
 
-   <!-- definition of ecu resource properties files -->
-   <extension
-         point="dreisoft.tresos.autosar2.api.plugin.ecuresource">
-      <!-- Defines properties file E under folder resources relative to the
-        plugin's root folder. The special parameter "subderivate" is considered by a
-        DefaultEcuResourceFinder. -->
-      <ecuresource
-            target="C2000"
-            derivate="F29H85x"
-            moduleId="Port_F29H85x"
-            file="resources/F29H85x_100PZS.properties">
-         <parameter
-               name="subderivate"
-               value="F29H85x_100PZS">
-         </parameter>
-      </ecuresource>
-	  
-	  <!-- Defines another properties file for the same target and derivate but for another
-        subderivate. -->
-      <ecuresource
-            target="C2000"
-            derivate="F29H85x"
-            moduleId="Port_F29H85x"
-            file="resources/F29H85x_144RFS.properties">
-         <parameter
-               name="subderivate"
-               value="F29H85x_144RFS">
-         </parameter>
-      </ecuresource>
-	  
-	  <!-- Defines another properties file for the same target and derivate but for another
-        subderivate. -->
-	  <ecuresource
-            target="C2000"
-            derivate="F29H85x"
-            moduleId="Port_F29H85x"
-            file="resources/F29H85x_176PTS.properties">
-         <parameter
-               name="subderivate"
-               value="F29H85x_176PTS">
-         </parameter>
-      </ecuresource>
-	  
-	  <!-- Defines another properties file for the same target and derivate but for another
-        subderivate. -->
-	  <ecuresource
-            target="C2000"
-            derivate="F29H85x"
-            moduleId="Port_F29H85x"
-            file="resources/F29H85x_256ZEX.properties">
-         <parameter
-               name="subderivate"
-               value="F29H85x_256ZEX">
-         </parameter>
-      </ecuresource>
-   </extension>
-
-   <!-- Defines a new DefaultEcuResourceFinder. The predefined parameters "name" and "path"
-     are registered with this finder. Therefore the given schema path (from parameter "path")
-     is evaluated and the resulting value is checked against the values of parameter
-     "subderivate" of any ecu resource properties with the relevant target and derivate.
-     -->
-   <extension
-         point="dreisoft.tresos.autosar2.api.plugin.ecuresourcefinder">
-      <ecuresourcefinder>
-         <finder
-               class="dreisoft.tresos.autosar2.api.ecuresource.DefaultEcuResourceFinder">
-            <parameter
-                  name="name"
-                  value="subderivate">
-            </parameter>
-            <!-- parameter "path" must contain a schema path! -->
-            <parameter
-                  name="path"
-                  value="/AUTOSAR/TOP-LEVEL-PACKAGES/TI_F29H85x/ELEMENTS/Port/PortGeneral/PortDeviceVariant">
-            </parameter>
-         </finder>
-      </ecuresourcefinder>
-   </extension>
 </plugin>

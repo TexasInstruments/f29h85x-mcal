@@ -91,7 +91,7 @@ Dio_IsChannelGroupValid(P2CONST(Dio_ChannelGroupType, AUTOMATIC, DIO_APPL_DATA) 
     VAR(Std_ReturnType, AUTOMATIC) status = (Std_ReturnType)E_NOT_OK;
 
     /*  Check if the channel group configuration is valid else return E_NOT_OK. */
-    for (uint32 i = 0; i < (uint32)DIO_MAX_NO_OF_CHANNEL_GROUPS; i++)
+    for (uint32 i = 0U; i < (uint32)DIO_MAX_NO_OF_CHANNEL_GROUPS; i++)
     {
         if (Dio_ChannelGroupRef[i] == ChannelGroupIdPtr)
         {

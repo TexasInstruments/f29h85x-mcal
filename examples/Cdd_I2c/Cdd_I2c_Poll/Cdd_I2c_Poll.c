@@ -575,29 +575,17 @@ void I2c_appSeqFail(uint8 errorCode)
 
 static void I2c_appSequenceErrorReport(uint8 errorCode)
 {
-    if (CDD_I2C_E_HW_UNIT_BUSY == errorCode)
-    {
-        AppUtils_Printf("Err: Hardware unit busy!!\n\r");
-    }
-    else if (CDD_I2C_E_CHANNEL_BUSY == errorCode)
-    {
-        AppUtils_Printf("Err: Channels busy!!\n\r");
-    }
-    else if (CDD_I2C_E_ARBITRATION_LOSS == errorCode)
+    if (CDD_I2C_E_ARBITRATION_FAILURE == errorCode)
     {
         AppUtils_Printf("Err: Arbitration lost!!\n\r");
     }
-    else if (CDD_I2C_E_NACK == errorCode)
+    else if (CDD_I2C_E_NACK_RECEIVED == errorCode)
     {
         AppUtils_Printf("Err: No Acknowledgement!!\n\r");
     }
-    else if (CDD_I2C_E_RECEIVE_SHIFT_REGISTER_FULL == errorCode)
+    else if (CDD_I2C_E_BUS_FAILURE == errorCode)
     {
-        AppUtils_Printf("Err: Receive shift register full!!\n\r");
-    }
-    else if (CDD_I2C_E_PARAM_QUEUE_FULL == errorCode)
-    {
-        AppUtils_Printf("Err: Queue full!!\n\r");
+        AppUtils_Printf("Err: Bus failure!!\n\r");
     }
     else
     {

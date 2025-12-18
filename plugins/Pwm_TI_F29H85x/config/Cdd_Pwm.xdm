@@ -70,7 +70,7 @@
                     </v:var>
                     <v:lst name="CddPwmHwUnitConfig" type="MAP">
                       <a:da name="MIN" value="1"/>
-                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_Pwm_InstanceCount')&quot;,num:i(1))"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_InstanceCount'))&quot;,num:i(1))"/>
                       <v:ctr name="CddPwmHwUnitConfig" type="IDENTIFIABLE">
                         <a:a name="DESC" 
                             value="EN: Configuration of an individual PWM instance."/>
@@ -79,24 +79,61 @@
                             type="IMPLEMENTATIONCONFIGCLASS">
                           <icc:v class="PreCompile">VariantPreCompile</icc:v>
                         </a:a>
-                        <v:var name="CddPwmInstanceId" type="INTEGER">
-                          <a:a name="DESC" 
-                              value="EN: Pwm hardware instance."/>
-                          <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                        <v:ref name="CddPwmInstanceRef" type="REFERENCE">
+                         <a:a name="DESC"
+                              value="EN: Reference to the PWM instance."/>
+                         <a:a name="IMPLEMENTATIONCONFIGCLASS"
                               type="IMPLEMENTATIONCONFIGCLASS">
-                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                          </a:a>
+                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                         </a:a>
+                         <a:a name="ORIGIN" value="Texas Instruments"/>
+                         <a:a name="UUID"
+                              value="a7e44bd9-5ef3-497d-a7e7-2785682765c8"/>
+                         <a:da name="REF"
+                              value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Pwm/Cdd_PwmAllocatedInstance"/>
+                         <a:da name="RANGE" type="XPath">
+                         <a:tst expr="node:paths(//Cdd_PwmAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                         </a:da>
+                         <a:da name="INVALID" type="XPath">
+                              <a:tst expr="text:uniq((../../..//*[@name='CddPwmInstanceRef']),node:value(.))" false="CddPwmInstanceRef selection has to be unique across all containers."/>
+                         </a:da>
+                        </v:ref>
+                        <v:var name="CddPwmInstance" type="STRING">
+                          <a:da name="EDITABLE" value="FALSE"/>
+                            <a:a name="DESC"
+                                value="EN: Pwm hardware instance."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
-                          <a:da name="UUID" value="db6ea029-2a48-4f74-b1b6-2d587b721787"/>
-                          <a:da name="INVALID" type="Multi">
-                            <mt:range>
-                              <mt:tst expr="&lt;=node:fallback(&quot;->ecu:get('Cdd_Pwm_InstanceCount')&quot;,num:i(1))"/>
-                              <mt:tst expr="&gt;=1"/>
-                            </mt:range> 
-                            <mt:xpath expr="text:uniq(../.././/*[@name='CddPwmInstanceId'],node:value(.))" false="Pwm instance ID should be unique."/>
+                          <a:a name="UUID"
+                               value="db6ea029-2a48-4f74-b1b6-2d587b721787"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(number(substring-after(node:value(node:ref(../CddPwmInstanceRef)/InstanceName), 'EPWM')))&quot;,'1')"/>
+                          <a:da name="INVALID" type="Range">
+                            <a:tst expr="&lt;=node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_InstanceCount'))&quot;,num:i(1))"/>
+                            <a:tst expr="&gt;=1"/>
                           </a:da>
-                          <a:da name="DEFAULT" value="1"/>
+                        </v:var>
+                        <v:var name="CddPwmHwId" type="STRING">
+                          <a:da name="EDITABLE" value="FALSE"/>
+                            <a:a name="DESC"
+                                value="EN: Symbolic ID of the PWM instance."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="true"/>
+                          <a:a name="UUID"
+                               value="db6ea029-2a48-4c74-b1b6-2c587b721787"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,'0')"/>
+                          <a:da name="INVALID" type="Range">
+                            <a:tst expr="&lt;node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_InstanceCount'))&quot;,num:i(1))"/>
+                            <a:tst expr="&gt;=0"/>
+                          </a:da>
                         </v:var>
                         <v:var name="CddPwmEmulationMode" type="ENUMERATION">
                           <a:a name="DESC"
@@ -122,30 +159,28 @@
                               value="EN:Time base clock pre-scale value."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                               type="IMPLEMENTATIONCONFIGCLASS">
-                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                             <icc:v class="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:da name="UUID" value="f35fc151-9482-446b-9476-117fbc058f06"/>
-                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Pwm_ClockDivider')&quot;,'CDD_PWM_CLOCK_DIVIDER_1')"/> 
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_Pwm_ClockDivider')&quot;,'CDD_PWM_CLOCK_DIVIDER_1')"/> 
                           <a:da name="DEFAULT" value="CDD_PWM_CLOCK_DIVIDER_1"/>
-                          <a:da name="ENABLE" type="XPath" expr="(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode = 'false')"/>
+                          <a:da name="VISIBLE" type="XPath" expr="(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode = 'false')"/>
                         </v:var>
                         <v:var name="CddPwmHighSpeedClockDivider" type="ENUMERATION">
                           <a:a name="DESC"
                               value="EN:High speed clock divider for the PWM instance."/>
                           <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                               type="IMPLEMENTATIONCONFIGCLASS">
-                            <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                            <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                            <icc:v class="PreCompile">VariantPreCompile</icc:v>
                           </a:a>
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:da name="UUID" value="3e8cd56c-e3ce-4cc8-93b1-7c3bf313f872"/>
-                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_Pwm_HighSpeedClockDivider')&quot;,'CDD_PWM_HSCLOCK_DIVIDER_1')"/> 
+                          <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('ResourceAllocator_F29H85x.Cdd_Pwm_HighSpeedClockDivider')&quot;,'CDD_PWM_HSCLOCK_DIVIDER_1')"/> 
                           <a:da name="DEFAULT" value="CDD_PWM_HSCLOCK_DIVIDER_1"/>
-                          <a:da name="ENABLE" type="XPath" expr="(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode = 'false')"/>
+                          <a:da name="VISIBLE" type="XPath" expr="(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode = 'false')"/>
                         </v:var>
                         <v:ref name="CddPwmMcuClockReferencePoint" type="REFERENCE">
                           <a:a name="DESC" 
@@ -225,6 +260,8 @@
                               false="The parameter should be modified only if the interrupt is enabled for the PWM hardware unit."/>
                             <a:tst expr="not(. = 'NULL_PTR')" false="Notification should not be NULL_PTR"/>
                           </a:da>
+                          <a:da name="WARNING" type="XPath" expr="not((node:exists(.) = 'true') and (node:empty(.) = 'true'))" 
+                                  false="No notification function is provided."/>
                         </v:var>
                         <v:var name="CddPwmTripZoneInterruptEnable" type="BOOLEAN">
                           <a:a name="DESC" 
@@ -278,6 +315,8 @@
                               false="The parameter should be modified only if the interrupt is enabled for the PWM hardware unit."/>
                             <a:tst expr="not(. = 'NULL_PTR')" false="Notification should not be NULL_PTR"/>
                           </a:da>
+                          <a:da name="WARNING" type="XPath" expr="not((node:exists(.) = 'true') and (node:empty(.) = 'true'))" 
+                                  false="No notification function is provided."/>
                         </v:var>
                         <v:var name="CddPwmOutputClass" type="ENUMERATION">
                           <a:a name="DESC" value="EN: Class of PWM Channel."/>
@@ -334,7 +373,7 @@
                         </v:var>
                         <v:lst name="CddPwmOutputChannel" type="MAP">
                           <a:da name="MIN" value="1"/> 
-                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_Pwm_InstanceOutputCount')&quot;,num:i(2))"/>
+                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_InstanceOutputCount'))&quot;,num:i(2))"/>
                           <a:da name="ENABLE" type="XPath" expr="(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode = 'false')"/>
                           <v:ctr name="CddPwmOutputChannel" type="IDENTIFIABLE">
                             <a:a name="DESC" 
@@ -344,6 +383,8 @@
                                 type="IMPLEMENTATIONCONFIGCLASS">
                               <icc:v class="PreCompile">VariantPreCompile</icc:v>
                             </a:a>
+                            <a:da name="INVALID" type="XPath" expr="text:uniq((../../../*/CddPwmOutputChannel/*/@name), @name)" 
+                              false="Pwm channel name has to be unique across all the hardware containers"/>
                             <v:var name="CddPwmChannel" type="ENUMERATION">
                               <a:a name="DESC" 
                                   value="EN: Defines the output channel for the PWM instance."/>
@@ -439,7 +480,7 @@
                     </v:lst>
                     <v:lst name="CddPwmXlinkConfig" type="MAP">
                       <a:da name="MIN" value="0"/>
-                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_Pwm_FrameCount')&quot;,num:i(1))"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_FrameCount'))&quot;,num:i(1))"/>
                       <a:da name="ENABLE" type="XPath" expr="(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode = 'true')"/>
                       <v:ctr name="CddPwmXlinkConfig" type="IDENTIFIABLE">
                         <a:a name="DESC" 
@@ -449,9 +490,47 @@
                             type="IMPLEMENTATIONCONFIGCLASS">
                           <icc:v class="PreCompile">VariantPreCompile</icc:v>
                         </a:a>
+                        <v:ref name="CddPwmXlinkInstanceRef" type="REFERENCE">
+                          <a:a name="DESC"
+                                value="EN: Reference to the xlink instance."/>
+                          <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                          </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="UUID"
+                                value="a7e44bd9-5ef3-497d-ace7-2785682765c8"/>
+                          <a:da name="REF"
+                                value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Pwm/Cdd_PwmAllocatedInstance"/>
+                          <a:da name="RANGE" type="XPath">
+                            <a:tst expr="node:paths(//Cdd_PwmAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                          </a:da>
+                          <a:da name="INVALID" type="XPath">
+                                <a:tst expr="text:uniq((../../..//*[@name='CddPwmXlinkInstanceRef']),node:value(.))" false="CddPwmXlinkInstanceRef selection has to be unique across all containers."/>
+                          </a:da>
+                        </v:ref>
+                        <v:var name="CddPwmXlinkId" type="STRING">
+                            <a:a name="DESC"
+                                value="EN: Xlink symbolic ID."/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                          <a:a name="ORIGIN" value="Texas Instruments"/>
+                          <a:a name="SCOPE" value="LOCAL"/>
+                          <a:a name="SYMBOLICNAMEVALUE" value="true"/>
+                          <a:a name="UUID"
+                              value="db6ea029-2a48-4c74-b1b6-2d587b721787"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,'0')"/>
+                          <a:da name="EDITABLE" value="FALSE"/>
+                          <a:da name="INVALID" type="Range">
+                            <a:tst expr="&lt;node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_FrameCount'))&quot;,num:i(4))"/>
+                            <a:tst expr="&gt;=0"/>
+                          </a:da>
+                        </v:var>
                         <v:lst name="CddPwmLinkHwUnit" type="MAP">
                           <a:da name="MIN" value="1"/>
-                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_Pwm_InstanceCount')&quot;,num:i(1))"/>
+                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_InstanceCount'))&quot;,num:i(1))"/>
                           <v:ctr name="CddPwmLinkHwUnit" type="IDENTIFIABLE">
                             <a:a name="DESC" 
                                 value="EN: Xlink configuration for a frame."/>
@@ -471,10 +550,76 @@
                                 <a:a name="SCOPE" value="LOCAL"/>
                                 <a:da name="UUID" value="db6ea029-2a48-4fk4-b1b6-2d587b721787"/> 
                                 <a:da name="REF" value="ASPathDataOfSchema:/TI_F29H85x/Cdd_Pwm/Cdd/CddPwmConfigSet/CddPwmHwUnitConfig"/>
-                                <a:da name="INVALID" type="XPath" 
-                                  expr="num:i(count(util:distinct(node:foreach(../../../.././/*[@name='CddPwmHwUnit'],'val','$val')))) = num:i(count(../../../.././/*[@name='CddPwmHwUnit']))" 
+                                <a:da name="INVALID" type="XPath">
+                                  <a:tst expr="num:i(count(util:distinct(node:foreach(../../../.././/*[@name='CddPwmHwUnit'],'val','$val')))) = num:i(count(../../../.././/*[@name='CddPwmHwUnit']))" 
                                   false="Linked hardware instances should be different"/>
+                                </a:da> 
                             </v:ref>
+                          </v:ctr>
+                        </v:lst>
+                      </v:ctr>
+                    </v:lst>
+                    <v:lst name="CddPwmHrpwmCalibrationConfig" type="MAP">
+                      <a:da name="MIN" value="0"/>
+                      <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_HrpwmCalCount'))&quot;,num:i(1))"/>
+                      <a:da name="ENABLE" type="XPath" expr="(as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode = 'true')"/>
+                      <v:ctr name="CddPwmHrpwmCalibrationConfig" type="IDENTIFIABLE">
+                        <a:a name="DESC" 
+                            value="EN: Hrpwm calibration instance configuration for a frame."/>
+                        <a:da name="UUID" value="8f791ee3-1b62-4cbd-9299-kcf605920a01"/>
+                        <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                            type="IMPLEMENTATIONCONFIGCLASS">
+                          <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                        </a:a>
+                        <v:lst name="CddPwmHrpwmCalConfig" type="MAP">
+                          <a:da name="MIN" value="1"/>
+                          <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_HrpwmCalCount'))&quot;,num:i(1))"/>
+                          <v:ctr name="CddPwmHrpwmCalConfig" type="IDENTIFIABLE">
+                            <a:a name="DESC" 
+                                value="EN: Hrpwm calibration instance configuration for a frame."/>
+                            <a:da name="UUID" value="8f791ce3-1b62-4ebd-9299-kcf6059k0a01"/>
+                            <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v class="PreCompile">VariantPreCompile</icc:v>
+                            </a:a>
+                            <v:ref name="CddPwmHrpwmCalInstanceRef" type="REFERENCE">
+                              <a:a name="DESC"
+                                    value="EN: Reference to the hrpwm calibration instance."/>
+                              <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                    type="IMPLEMENTATIONCONFIGCLASS">
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="UUID"
+                                    value="a7c44bd9-5ef3-497d-ace7-2785682765c8"/>
+                              <a:da name="REF"
+                                    value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Pwm/CddPwmHrpwmCalInstance"/>
+                              <a:da name="RANGE" type="XPath">
+                                <a:tst expr="node:paths(//CddPwmHrpwmCalInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                              </a:da>
+                              <a:da name="INVALID" type="XPath">
+                                    <a:tst expr="text:uniq((../../..//*[@name='CddPwmHrpwmCalInstanceRef']),node:value(.))" false="CddPwmHrpwmCalInstanceRef selection has to be unique across all containers."/>
+                              </a:da>
+                            </v:ref>
+                            <v:var name="CddPwmHrpwmCalInstanceId" type="STRING">
+                                <a:a name="DESC"
+                                    value="EN: Hrpwm Calibration symbolic ID."/>
+                                <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                    type="IMPLEMENTATIONCONFIGCLASS">
+                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                </a:a>
+                              <a:a name="ORIGIN" value="Texas Instruments"/>
+                              <a:a name="SCOPE" value="LOCAL"/>
+                              <a:a name="SYMBOLICNAMEVALUE" value="true"/>
+                              <a:a name="UUID"
+                                  value="dc6ea029-2a48-4c74-b1b6-2d587b721787"/>
+                              <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:i(node:pos(../.))&quot;,'0')"/>
+                              <a:da name="EDITABLE" value="FALSE"/>
+                              <a:da name="INVALID" type="Range">
+                                <a:tst expr="&lt;node:fallback(&quot;->num:i(ecu:get('ResourceAllocator_F29H85x.Cdd_Pwm_HrpwmCalCount'))&quot;,num:i(3))"/>
+                                <a:tst expr="&gt;=0"/>
+                              </a:da>
+                            </v:var>
                           </v:ctr>
                         </v:lst>
                       </v:ctr>

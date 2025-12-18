@@ -87,7 +87,6 @@ typedef enum
 /*********************************************************************************************************************
  *  Exported Function Prototypes
  *********************************************************************************************************************/
-#if (STD_ON == CDD_XBAR_API_ENABLE)
 #if (0U < CDD_XBAR_INPUT_XBAR_CONFIGURATIONS)
 /* Design: MCAL-25761 */
 /** \brief Selects input crossbar input
@@ -273,6 +272,7 @@ Cdd_Xbar_OutputLatchSelectSts(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
 /* Design: MCAL-28156 */
 /** \brief Returns the status of output latch of the given output of Output Crossbar.
  * \param[in] OutputLine is the pointer to the OUTPUT XBAR output line.
+ * \param[in] OutputXbarFlagBaseAddress is the pointer to the OUTPUT XBAR flag base address.
  * \pre None
  * \post None
  * \return Output latch status.
@@ -281,29 +281,34 @@ Cdd_Xbar_OutputLatchSelectSts(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
  *
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE)
-Cdd_Xbar_OutputLatchFlagStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+Cdd_Xbar_OutputLatchFlagStatus(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                               P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress);
 
 /* Design: MCAL-28157 */
 /** \brief Forces the output latch of the given output of Output Crossbar.
  * \param[in] OutputLine is the pointer to the OUTPUT XBAR output line.
+ * \param[in] OutputXbarFlagBaseAddress is the pointer to the OUTPUT XBAR flag base address.
  * \pre None
  * \post None
  * \return None
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_XBAR_CODE)
-Cdd_Xbar_OutputLatchFlagForce(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+Cdd_Xbar_OutputLatchFlagForce(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                              P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress);
 
 /* Design: MCAL-28158 */
 /** \brief Clears the output latch of the given output of Output Crossbar.
  * \param[in] OutputLine is the pointer to the OUTPUT XBAR output line.
+ * \param[in] OutputXbarFlagBaseAddress is the pointer to the OUTPUT XBAR flag base address.
  * \pre None
  * \post None
  * \return None
  *
  *********************************************************************************************************************/
 FUNC(void, CDD_XBAR_CODE)
-Cdd_Xbar_OutputLatchFlagClear(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+Cdd_Xbar_OutputLatchFlagClear(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                              P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress);
 
 /* Design: MCAL-28155 */
 /** \brief Inverts and restores output inversion before latch for a chosen output XBAR output.
@@ -368,6 +373,7 @@ Cdd_Xbar_OutputStretchGet(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
  * an output of the Output Crossbar.
  *
  * \param[in] OutputLine is the pointer to the OUTPUT XBAR output line.
+ * \param[in] OutputXbarFlagBaseAddress is the pointer to the OUTPUT XBAR flag base address.
  * \pre None
  * \post None
  * \return Output polarity.
@@ -376,7 +382,8 @@ Cdd_Xbar_OutputStretchGet(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
  *
  *********************************************************************************************************************/
 FUNC(Cdd_Xbar_OutputlevelType, CDD_XBAR_CODE)
-Cdd_Xbar_OutOutputState(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine);
+Cdd_Xbar_OutOutputState(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLine,
+                        P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) OutputXbarFlagBaseAddress);
 #endif /* 0U < CDD_XBAR_OUTPUT_XBAR_CONFIGURATIONS*/
 
 /* Design: MCAL-25784 */
@@ -698,15 +705,19 @@ Cdd_Xbar_IclOutputInvertCheck(P2CONST(uint8, AUTOMATIC, CDD_XBAR_CONST) OutputLi
 /* Design: MCAL-28160 */
 /** \brief Clears a crossbar input flag.
  * \param[in] InputFlag is a crossbar input flag.
+ * \param[in] InputFlagBaseAddress is the pointer to the XBAR input flag base address.
  * \pre none
  * \post None
  * \return None
  *********************************************************************************************************************/
-FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag);
+FUNC(void, CDD_XBAR_CODE)
+Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag,
+                     P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) InputFlagBaseAddress);
 
 /* Design: MCAL-28159 */
 /** \brief Returns the status of a crossbar input flag.
  * \param[in] InputFlag is a crossbar input flag.
+ * \param[in] InputFlagBaseAddress is the pointer to the XBAR input flag base address.
  * \pre None
  * \post None
  * \return Status of the crossbar input flag.
@@ -715,9 +726,9 @@ FUNC(void, CDD_XBAR_CODE) Cdd_Xbar_InFlagClear(VAR(Cdd_Xbar_InputFlagType, AUTOM
  *
  *********************************************************************************************************************/
 FUNC(boolean, CDD_XBAR_CODE)
-Cdd_Xbar_InFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag);
+Cdd_Xbar_InFlagStatus(VAR(Cdd_Xbar_InputFlagType, AUTOMATIC) InputFlag,
+                      P2CONST(uint32, AUTOMATIC, CDD_XBAR_CONST) InputFlagBaseAddress);
 #endif /* STD_ON == CDD_XBAR_INPUT_FLAG_API */
-#endif /* STD_ON == CDD_XBAR_API_ENABLE */
 
 /*********************************************************************************************************************
  *  Exported Inline Function Definitions and Function-Like Macros

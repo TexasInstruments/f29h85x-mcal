@@ -49,7 +49,7 @@ extern "C" {
  * \brief Defines for FLS Driver version used for compatibility checks.
  */
 /** \brief Driver Implementation Major Version */
-#define FLS_SW_MAJOR_VERSION (2U)
+#define FLS_SW_MAJOR_VERSION (3U)
 /** \brief Driver Implementation Minor Version */
 #define FLS_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
@@ -221,6 +221,9 @@ typedef struct
     /** \brief Start address of first sector of the Flash Device */
 } Fls_SectorType;
 
+/*
+ *  Design: MCAL-31038
+ */
 typedef struct Fls_ConfigType_s
 {
     Fls_JobEndNotifyType   Fls_JobEndNotification;

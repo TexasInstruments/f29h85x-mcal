@@ -20,7 +20,7 @@
  *  Description:  This file contains Cdd_Uart Loopback example to read and write the data through
  *  internal loopback .
  *
- * This program conducts a thorough loopback test on a selected UART instance D.
+ * This program conducts a thorough loopback test on a selected UART instance.
  * It transmits sample string data of varying lengths through the WRITE module and reads the data
  * back through the READ module of the same instance. The received data is then meticulously
  * verified against the original transmit data to ensure accuracy and correctness. This process

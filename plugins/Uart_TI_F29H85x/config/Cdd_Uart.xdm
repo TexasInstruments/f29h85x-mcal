@@ -55,37 +55,36 @@
                                                   value="fde7d92e-c198-494c-8aa3-5dfd966471ca"/>
                                              <v:lst name="CddUartConfig" type="MAP">
                                              <a:da name="MIN" value="0"/>
-                                             <a:da name="MAX" value="6"/>
+                                             <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_UartInstanceName')))&quot;,'6')"/>
                                              <v:ctr name="CddUartConfig" type="IDENTIFIABLE">
                                              <a:a name="DESC" value="EN: This container contains the configuration parameters of the CddUart HW units."/>
                                              <a:a name="UUID" 
                                                    value="da22966f-5c42-4a37-9434-7e1bbdc02447"/>
-                                             <v:var name="CddUartInstance" type="ENUMERATION">
+                                             <a:a name="IMPLEMENTATIONCONFIGCLASS" 
+                                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                                  <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                                             </a:a>
+                                             <v:ref name="CddUartInstance" type="REFERENCE">
                                                   <a:a name="DESC"
-                                                       value="EN: Selects CddUart HW unit Instance."/>
-                                                  <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                                       value="EN: Reference to the Cdd_Uart Instance."/>
+                                                  <a:a name="ORIGIN" value="Texas Instruments"/>
+                                                  <a:a name="SCOPE" value="LOCAL"/>
+                                                  <a:a name="UUID" 
+                                                       value="a171b726-5ef4-4522-b230-a70056ed9368"/>
+                                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                                                        type="IMPLEMENTATIONCONFIGCLASS">
                                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                                                   </a:a>
-                                                  <a:a name="ORIGIN" value="Texas Instruments"/>
-                                                  <a:a name="SCOPE" value="LOCAL"/>
-                                                  <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                                                  <a:a name="UUID" 
-                                                       value="a171b726-5ef4-4522-b230-a70056ed9368"/>
-                                                  <a:da name="RANGE">
-                                                  <a:v>UARTA</a:v>
-                                                  <a:v>UARTB</a:v>
-                                                  <a:v>UARTC</a:v>
-                                                  <a:v>UARTD</a:v>
-                                                  <a:v>UARTE</a:v>
-                                                  <a:v>UARTF</a:v>
+                                                  <a:da name="REF"
+                                                       value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Uart/Cdd_UartAllocatedInstance"/>
+                                                  <a:da name="RANGE" type="XPath">
+                                                       <a:tst expr="node:paths(//Cdd_UartAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
                                                   </a:da>
-                                                  <a:da name="DEFAULT" value="UARTA"/>
-                                                  <a:da name="INVALID" type="XPath">
-                                                  <a:tst expr="text:uniq((../../..//*[@name='CddUartInstance']),node:value(.))" false="CddUartInstance selection has to be unique across all containers"/>
-                                                  </a:da>
-                                             </v:var>
-                                             <v:var name="CddUartBaseAddress" type="INTEGER">
+						                    <a:da name="INVALID" type="XPath">
+						                         <a:tst expr="text:uniq((../../..//*[@name='CddUartInstance']),node:value(.))" false="CddUartInstance selection has to be unique across all containers."/>
+						                    </a:da>
+                                             </v:ref>
+                                             <v:var name="CddUartBaseAddress" type="STRING">
                                                   <a:a name="DESC" 
                                                        value="EN: Specifies the CddUart HW unit base address."/>
                                                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
@@ -97,13 +96,11 @@
                                                   <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                                   <a:a name="UUID" 
                                                        value="fb39e447-8096-4265-8cf3-a24900b8116c"/>
-                                                  <a:da name="INVALID" type="Range">
-                                                  <a:tst expr="&lt;=4294967295"/>
-                                                  <a:tst expr="&gt;=0"/>
-                                                  </a:da>
-                                                  <a:a name="DEFAULT_RADIX" value="HEX"/>
                                                   <a:da name="DEFAULT" type="XPath">
-                                                       <a:tst expr="node:fallback(&quot;->ecu:get(concat('Cdd_Uart_F29H85x_',node:value(../CddUartInstance)))&quot;,num:i(0))"/>
+                                                       <a:tst expr="node:fallback(&quot;->node:value(node:ref(../CddUartInstance)/BaseAddr)&quot;,'UARTA_BASE_FRAME(0)')"/>
+                                                  </a:da>
+                                                  <a:da name="INVALID" type="XPath">
+                                                       <a:tst expr="text:uniq((../../..//*[@name='CddUartBaseAddress']),node:value(.))" false="CddUartBaseAddress selection has to be unique across all containers. Each base address can only be used once."/>
                                                   </a:da>
                                                   <a:da name="EDITABLE" value="false"/>
                                              </v:var>
@@ -231,6 +228,7 @@
                                                   <a:a name="IMPLEMENTATIONCONFIGCLASS"
                                                        type="IMPLEMENTATIONCONFIGCLASS">
                                                   <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                                  <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                                                   </a:a>
                                                   <a:a name="ORIGIN" value="Texas Instruments"/>
                                                   <a:a name="SCOPE" value="LOCAL"/>
@@ -327,8 +325,10 @@
                                                   <a:a name="DESC" value="EN: This container contains the configuration parameters of the CddUart Write"/>
                                                   <a:a name="UUID" 
                                                        value="75561b88-3194-474e-a9dd-d6680ddb2bf8"/>
+                                                  <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                                       <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                                                  </a:a>
                                                   <a:da name="ENABLE" type="XPath" expr="(../CddUartEnableWrite='true')"/>
-                                                  <a:a name="OPTIONAL" value="true"/>
                                                   <v:var name="CddUartWriteNotificationHandler" type="FUNCTION-NAME">
                                                             <a:a name="DESC" value="EN: This parameter is a write notification handler function."/>
                                                             <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
@@ -347,6 +347,7 @@
                                                        <a:a name="DESC" value="EN: set interrupt trigger level of Write FIFO"/>
                                                        <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                                                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                                       <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                                                        </a:a>
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="LOCAL"/>
@@ -368,8 +369,10 @@
                                                   <a:a name="DESC" value="EN: This container contains the configuration parameters of the CddUart Read"/>
                                                      <a:a name="UUID" 
                                                           value="17698c30-4088-412b-a301-028042db916a"/>
+                                                     <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                                                       <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                                                     </a:a>
                                                      <a:da name="ENABLE" type="XPath" expr="(../CddUartEnableRead='true')"/>
-                                                     <a:a name="OPTIONAL" value="true"/>
                                                      <v:var name="CddUartReadNotificationHandler" type="FUNCTION-NAME">
                                                        <a:a name="DESC" value="EN: This parameter is a read notification handler function."/>
                                                        <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
@@ -381,7 +384,6 @@
                                                        <a:a name="UUID" 
                                                             value="478f4e32-0604-45f1-965c-b9e1acda24a4"/>
                                                        <a:da name="DEFAULT" value="NULL_PTR"/>
-                                                       <a:a name="OPTIONAL" value="true"/>
                                                      </v:var>
 
                                                      <v:var name="CddUartErrorNotificationHandler" type="FUNCTION-NAME">
@@ -404,6 +406,7 @@
                                                        <a:a name="IMPLEMENTATIONCONFIGCLASS"
                                                             type="IMPLEMENTATIONCONFIGCLASS">
                                                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                                       <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                                                        </a:a>
                                                        <a:a name="ORIGIN" value="Texas Instruments"/>
                                                        <a:a name="SCOPE" value="LOCAL"/>
@@ -432,17 +435,15 @@
                                              <v:var name="CddUartMainFunctionWritePeriod" type="FLOAT">
                                              <a:a name="DESC" 
                                                   value="EN: This parameter describes the period for cyclic call to Cdd_Uart_MainFunction_Write. Unit is seconds."/>
-                                             <a:a name="IMPLEMENTATIONCONFIGCLASS" 
-                                                  type="IMPLEMENTATIONCONFIGCLASS">
-                                                  <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
-                                                  <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                                             </a:a>
                                              <a:a name="ORIGIN" value="Texas Instruments"/>
                                              <a:a name="SCOPE" value="LOCAL"/>
-                                             <a:a name="SYMBOLICNAMEVALUE" value="false"/>
                                              <a:a name="UUID" 
                                                   value="84058c13-8b8a-483b-b82d-4a9d340ccec7"/>
-                                                       <a:da name="DEFAULT" value="0.01"/>
+                                             <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                                                  type="IMPLEMENTATIONCONFIGCLASS">
+                                             <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                                             </a:a>
+                                             <a:da name="DEFAULT" value="0.01"/>
                                              <a:da name="INVALID" type="Range">
                                              <a:tst expr="&lt;Infinity"/>
                                              <a:tst expr="&gt;=1.0E-6"/>

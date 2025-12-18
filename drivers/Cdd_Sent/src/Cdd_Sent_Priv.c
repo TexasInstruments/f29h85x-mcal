@@ -108,7 +108,6 @@ static FUNC(void, CDD_SENT_CODE)
  *Cdd_Sent_ProcessISR is called.
  *
  * \param[in] Sent_Instance_Object Configuration pointer to Sent HW Unit.
- * \param[in] SentInstance Numeric identifier of the Sent channel.
  * \pre None
  * \post None
  * \return None
@@ -116,8 +115,7 @@ static FUNC(void, CDD_SENT_CODE)
  *
  *********************************************************************************************************************/
 static FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_ProcessIsrSlowInterrupts(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object,
-                                      Cdd_SentInstance SentInstance);
+    Cdd_Sent_ProcessIsrSlowInterrupts(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object);
 
 /** \brief Cdd_Sent_ProcessIsrCallCddSentUserErrorCallbackFunction : Calls
  *CddSentUserErrorCallbackFunction.
@@ -501,19 +499,19 @@ void Cdd_Sent_ProcessISR(Cdd_SentInstance SentInstance)
         if ((Enable_Fast_Interrupts & Interrupt_Status_Register) != 0x0U)
         {
             Cdd_Sent_ProcessIsrFastInterrupts(Sent_Instance_Object, instance_index, Interrupt_Status_Register);
-#ifdef CDD_E_HARDWARE_ERROR
-            (void)Dem_SetEventStatus(CDD_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PASSED);
+#ifdef CDD_SENT_E_HARDWARE_ERROR
+            (void)Dem_SetEventStatus(CDD_SENT_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PASSED);
 #endif
         }
 
         else if ((Enable_Slow_Interrupts & Interrupt_Status_Register) != 0x0U)
         {
-            Cdd_Sent_ProcessIsrSlowInterrupts(Sent_Instance_Object, SentInstance);
+            Cdd_Sent_ProcessIsrSlowInterrupts(Sent_Instance_Object);
         }
         else
         {
-#ifdef CDD_E_HARDWARE_ERROR
-            (void)Dem_SetEventStatus(CDD_E_HARDWARE_ERROR, DEM_EVENT_STATUS_FAILED);
+#ifdef CDD_SENT_E_HARDWARE_ERROR
+            (void)Dem_SetEventStatus(CDD_SENT_E_HARDWARE_ERROR, DEM_EVENT_STATUS_FAILED);
 #endif
             Cdd_Sent_ProcessIsrCallCddSentUserErrorCallbackFunction(Sent_Instance_Object);
         }
@@ -524,23 +522,22 @@ void Cdd_Sent_ProcessISR(Cdd_SentInstance SentInstance)
 /*
  *Design: MCAL-28752
  */
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) Cdd_Sent_getMessageID(Cdd_SentInstance SentInstance)
+LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
+    Cdd_Sent_getMessageID(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object)
 {
-    VAR(uint32, AUTOMATIC)
-    Sent_Base                             = ((uint32)SENT1_BASE) + (((uint32)SentInstance) * 0x1000U);
+    VAR(uint32, AUTOMATIC) Sent_Base      = Sent_Instance_Object->CddSentBaseAddress;
     VAR(uint32, AUTOMATIC) Slow_Data_Base = HWREG(Sent_Base + SENT_O_RSDATA);
-    VAR(uint32, AUTOMATIC)
-    MessageID = (Slow_Data_Base & SENT_RSDATA_MESSAGEID_M) >> SENT_RSDATA_MESSAGEID_S;
+    VAR(uint32, AUTOMATIC) MessageID      = (Slow_Data_Base & SENT_RSDATA_MESSAGEID_M) >> SENT_RSDATA_MESSAGEID_S;
     return MessageID;
 }
 
 /*
  *Design: MCAL-28753
  */
-LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE) Cdd_Sent_getSlowData(Cdd_SentInstance SentInstance)
+LOCAL_INLINE FUNC(uint32, CDD_SENT_CODE)
+    Cdd_Sent_getSlowData(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object)
 {
-    VAR(uint32, AUTOMATIC)
-    Sent_Base                             = ((uint32)SENT1_BASE) + (((uint32)SentInstance) * 0x1000U);
+    VAR(uint32, AUTOMATIC) Sent_Base      = Sent_Instance_Object->CddSentBaseAddress;
     VAR(uint32, AUTOMATIC) Slow_Data_Base = HWREG(Sent_Base + SENT_O_RSDATA);
     VAR(uint32, AUTOMATIC) Slow_Data      = (Slow_Data_Base & SENT_RSDATA_DATA_M) >> SENT_RSDATA_DATA_S;
     return Slow_Data;
@@ -999,7 +996,7 @@ static FUNC(void, CDD_SENT_CODE)
         {
             /* Do Nothing*/
         }
-        Offset_MTP     = SENT_O_MDATA(0);
+        Offset_MTP     = SENT_O_MDATA(0U);
         Info.SduLength = 8U;
         if (Sent_Instance_Object->CddSentEnableTimeStamp == TRUE)
         {
@@ -1078,8 +1075,7 @@ static FUNC(void, CDD_SENT_CODE)
  *Design: MCAL-28833
  */
 static FUNC(void, CDD_SENT_CODE)
-    Cdd_Sent_ProcessIsrSlowInterrupts(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object,
-                                      Cdd_SentInstance SentInstance)
+    Cdd_Sent_ProcessIsrSlowInterrupts(P2VAR(Cdd_Sent_HWUnitType, AUTOMATIC, CDD_SENT_APPL_DATA) Sent_Instance_Object)
 {
     VAR(PduInfoType, AUTOMATIC) Info;
     VAR(PduIdType, AUTOMATIC) id = 0;
@@ -1089,9 +1085,9 @@ static FUNC(void, CDD_SENT_CODE)
         Cdd_Sent_Data_Buffer Slow_Buffer_Object = Sent_Instance_Object->CddSent_Buffer_Data;
 
         if (((uint32)Sent_Instance_Object->CddSentChannelConfigList[Channel_count]->CddSentMessageID) ==
-            ((uint32)Cdd_Sent_getMessageID(SentInstance)))
+            ((uint32)Cdd_Sent_getMessageID(Sent_Instance_Object)))
         {
-            Slow_Buffer_Object.Data_Buffer[0] = Cdd_Sent_getSlowData(SentInstance);
+            Slow_Buffer_Object.Data_Buffer[0] = Cdd_Sent_getSlowData(Sent_Instance_Object);
             Info.SduDataPtr                   = (uint8 *)&Slow_Buffer_Object.Data_Buffer;
             Info.MetaDataPtr                  = NULL_PTR;
             Info.SduLength                    = 2;
@@ -1115,8 +1111,8 @@ static FUNC(void, CDD_SENT_CODE)
                 Sent_Instance_Object->CddSentUserCallbackFunction(id, &Info);
             }
 
-#ifdef CDD_E_HARDWARE_ERROR
-            (void)Dem_SetEventStatus(CDD_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PASSED);
+#ifdef CDD_SENT_E_HARDWARE_ERROR
+            (void)Dem_SetEventStatus(CDD_SENT_E_HARDWARE_ERROR, DEM_EVENT_STATUS_PASSED);
 #endif
 
             break;

@@ -48,52 +48,15 @@
                       </DESC>
                       <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
                       <UPPER-MULTIPLICITY>6</UPPER-MULTIPLICITY>
+                      <MULTIPLICITY-CONFIG-CLASSES>
+                        <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                          <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                        </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                      </MULTIPLICITY-CONFIG-CLASSES>
                       <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                       <PARAMETERS>
-                        <ECUC-ENUMERATION-PARAM-DEF UUID="a171b726-5ef4-4522-b230-a70056ed9368">
-                          <SHORT-NAME>CddUartInstance</SHORT-NAME>
-                          <DESC>
-                            <L-2 L="EN">Selects CddUart HW unit Instance.</L-2>
-                          </DESC>
-                          <SCOPE>LOCAL</SCOPE>
-                          <ORIGIN>Texas Instruments</ORIGIN>
-                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
-                          <VALUE-CONFIG-CLASSES>
-                            <ECUC-VALUE-CONFIGURATION-CLASS>
-                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                            </ECUC-VALUE-CONFIGURATION-CLASS>
-                          </VALUE-CONFIG-CLASSES>
-                          <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <DEFAULT-VALUE>UARTA</DEFAULT-VALUE>
-                          <LITERALS>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>UARTA</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>UARTB</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>UARTC</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>UARTD</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>UARTE</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                            <ECUC-ENUMERATION-LITERAL-DEF>
-                              <SHORT-NAME>UARTF</SHORT-NAME>
-                              <ORIGIN>Texas Instruments</ORIGIN>
-                            </ECUC-ENUMERATION-LITERAL-DEF>
-                          </LITERALS>
-                        </ECUC-ENUMERATION-PARAM-DEF>
-                        <ECUC-INTEGER-PARAM-DEF UUID="fb39e447-8096-4265-8cf3-a24900b8116c">
+                        <ECUC-STRING-PARAM-DEF UUID="fb39e447-8096-4265-8cf3-a24900b8116c">
                           <SHORT-NAME>CddUartBaseAddress</SHORT-NAME>
                           <DESC>
                             <L-2 L="EN">Specifies the CddUart HW unit base address.</L-2>
@@ -108,10 +71,12 @@
                             </ECUC-VALUE-CONFIGURATION-CLASS>
                           </VALUE-CONFIG-CLASSES>
                           <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
-                          <DEFAULT-VALUE>0</DEFAULT-VALUE>
-                          <MAX>4294967295</MAX>
-                          <MIN>0</MIN>
-                        </ECUC-INTEGER-PARAM-DEF>
+                          <ECUC-STRING-PARAM-DEF-VARIANTS>
+                            <ECUC-STRING-PARAM-DEF-CONDITIONAL>
+                              <DEFAULT-VALUE>UARTA_BASE_FRAME(0)</DEFAULT-VALUE>
+                            </ECUC-STRING-PARAM-DEF-CONDITIONAL>
+                          </ECUC-STRING-PARAM-DEF-VARIANTS>
+                        </ECUC-STRING-PARAM-DEF>
                         <ECUC-INTEGER-PARAM-DEF UUID="8b505b79-895a-4690-ba59-841d00a621e2">
                           <SHORT-NAME>CddUartHWUnitId</SHORT-NAME>
                           <DESC>
@@ -263,6 +228,12 @@
                           <!-- @CalculatedEnd -->
                           <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                           <SCOPE>LOCAL</SCOPE>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
                           <ORIGIN>Texas Instruments</ORIGIN>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -400,6 +371,22 @@
                         </ECUC-BOOLEAN-PARAM-DEF>
                       </PARAMETERS>
                       <REFERENCES>
+                        <ECUC-REFERENCE-DEF UUID="a171b726-5ef4-4522-b230-a70056ed9368">
+                          <SHORT-NAME>CddUartInstance</SHORT-NAME>
+                          <DESC>
+                            <L-2 L="EN">Reference to the Cdd_Uart Instance.</L-2>
+                          </DESC>
+                          <SCOPE>LOCAL</SCOPE>
+                          <ORIGIN>Texas Instruments</ORIGIN>
+                          <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
+                          <VALUE-CONFIG-CLASSES>
+                            <ECUC-VALUE-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-VALUE-CONFIGURATION-CLASS>
+                          </VALUE-CONFIG-CLASSES>
+                          <DESTINATION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_Uart/Cdd_UartAllocatedInstance</DESTINATION-REF>
+                        </ECUC-REFERENCE-DEF>
                         <ECUC-REFERENCE-DEF UUID="de96aac9-db5b-4c0b-a141-0679b80c3afe">
                           <SHORT-NAME>CddUartClockFreq</SHORT-NAME>
                           <DESC>
@@ -423,8 +410,16 @@
                           <DESC>
                             <L-2 L="EN">This container contains the configuration parameters of the CddUart Write</L-2>
                           </DESC>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Uart/Cdd/CddUartConfigSet/CddUartConfig/CddUartWriteConfig: ENABLE(XPath: (../CddUartEnableWrite=&apos;true&apos;))-->
                           <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                          <!-- @CalculatedEnd -->
                           <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <PARAMETERS>
                             <ECUC-FUNCTION-NAME-DEF UUID="d9e4dcea-374c-4672-ac6b-e2005a44442c">
@@ -467,6 +462,12 @@
                               <!-- @CalculatedEnd -->
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>Texas Instruments</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -508,8 +509,16 @@
                           <DESC>
                             <L-2 L="EN">This container contains the configuration parameters of the CddUart Read</L-2>
                           </DESC>
+                          <!-- @Calculated /TI_F29H85x/Cdd_Uart/Cdd/CddUartConfigSet/CddUartConfig/CddUartReadConfig: ENABLE(XPath: (../CddUartEnableRead=&apos;true&apos;))-->
                           <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                          <!-- @CalculatedEnd -->
                           <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                          <MULTIPLICITY-CONFIG-CLASSES>
+                            <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                              <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                            </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                          </MULTIPLICITY-CONFIG-CLASSES>
                           <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                           <PARAMETERS>
                             <ECUC-FUNCTION-NAME-DEF UUID="478f4e32-0604-45f1-965c-b9e1acda24a4">
@@ -517,17 +526,8 @@
                               <DESC>
                                 <L-2 L="EN">This parameter is a read notification handler function.</L-2>
                               </DESC>
-                              <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
-                              <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
-                              <MULTIPLICITY-CONFIG-CLASSES>
-                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
-                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
-                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
-                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
-                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>Texas Instruments</ORIGIN>
-                              <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
                               <VALUE-CONFIG-CLASSES>
                                 <ECUC-VALUE-CONFIGURATION-CLASS>
@@ -582,6 +582,12 @@
                               <!-- @CalculatedEnd -->
                               <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
                               <SCOPE>LOCAL</SCOPE>
+                              <MULTIPLICITY-CONFIG-CLASSES>
+                                <ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                                  <CONFIG-CLASS>PRE-COMPILE</CONFIG-CLASS>
+                                  <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
+                                </ECUC-MULTIPLICITY-CONFIGURATION-CLASS>
+                              </MULTIPLICITY-CONFIG-CLASSES>
                               <ORIGIN>Texas Instruments</ORIGIN>
                               <POST-BUILD-VARIANT-MULTIPLICITY>false</POST-BUILD-VARIANT-MULTIPLICITY>
                               <POST-BUILD-VARIANT-VALUE>false</POST-BUILD-VARIANT-VALUE>
@@ -642,7 +648,6 @@
                           <CONFIG-VARIANT>VARIANT-PRE-COMPILE</CONFIG-VARIANT>
                         </ECUC-VALUE-CONFIGURATION-CLASS>
                       </VALUE-CONFIG-CLASSES>
-                      <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
                       <DEFAULT-VALUE>0.01</DEFAULT-VALUE>
                       <MAX>INF</MAX>
                       <MIN>1.0E-6</MIN>

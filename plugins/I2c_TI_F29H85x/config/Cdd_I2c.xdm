@@ -113,10 +113,27 @@
                       <a:a name="UUID" value="a8698380-0a3a-4330-ab47-f71a741033c2"/>
                       <a:da name="DEFAULT" value="false"/>
                     </v:var>
+                    <v:var name="CddI2cMainFunctionPeriod" type="FLOAT">
+                      <a:a name="DESC"
+                           value="EN: This parameter describes the period for cyclic call to Cdd_I2c_MainFunction. Unit is seconds."/>
+                      <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
+                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                        <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                      </a:a>
+                      <a:a name="ORIGIN" value="Texas Instruments"/>
+                      <a:a name="SYMBOLICNAMEVALUE" value="false"/>
+                      <a:a name="UUID" value="e36d9b26-757d-4f5c-be99-14de29754fad"/>
+                      <a:a name="OPTIONAL" value="true"/>
+                      <a:da name="DEFAULT" value="0.01"/>
+                      <a:da name="INVALID" type="Range">
+                        <a:tst expr="&lt;Infinity"/>
+                        <a:tst expr="&gt;0.0"/>
+                      </a:da>
+                    </v:var>
                   </v:ctr>
                   <v:lst name="CddI2cHwConfig" type="MAP">
                     <a:da name="MIN" value="1"/>
-                    <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->ecu:get('Cdd_I2c_F29H85x_HwInstances')&quot;,num:i(2))"/>
+                    <a:da name="MAX" type="XPath" expr="node:fallback(&quot;->num:i(count(ecu:list('ResourceAllocator_F29H85x.Cdd_I2cInstanceName')))&quot;,'2')"/>
                     <v:ctr name="CddI2cHwConfig" type="IDENTIFIABLE">
                       <a:a name="DESC"
                            value="EN: This container contains the HW unit initialization parameters"/>
@@ -124,22 +141,25 @@
                       <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
                         <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
-                      <v:var name="CddI2cHwUnitType" type="ENUMERATION">
-                        <a:a name="DESC" value="EN: I2c HW unit to use."/>
-                        <a:a name="IMPLEMENTATIONCONFIGCLASS" type="IMPLEMENTATIONCONFIGCLASS">
-                          <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
-                        </a:a>
-                        <a:a name="ORIGIN" value="Texas Instruments"/>
-                        <a:a name="SCOPE" value="LOCAL"/>
-                        <a:a name="SYMBOLICNAMEVALUE" value="false"/>
-                        <a:a name="UUID" value="ECUC:3265cb4d-db11-4c59-b3ad-fd0d5aa0040a"/>
-                        <a:da name="RANGE" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_I2c_F29H85x_HwUnitType')&quot;,'I2CA')"/>
-                        <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->ecu:list('Cdd_I2c_F29H85x_HwUnitType')[1]&quot;,'I2CA')"/>
-                        <a:da name="INVALID" type="XPath">
-                          <a:tst expr="text:uniq((../../../..//*[@name='CddI2cHwUnitType']),node:value(.))"
-                                  false="Every hardware instance must have different hardware unit IDs."/>
-                        </a:da>
-                      </v:var>
+                      <v:ref name="CddI2cHwUnitRef" type="REFERENCE">
+                         <a:a name="DESC"
+                              value="EN: Reference to I2c HW unit to use."/>
+                         <a:a name="IMPLEMENTATIONCONFIGCLASS"
+                              type="IMPLEMENTATIONCONFIGCLASS">
+                         <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                         </a:a>
+                         <a:a name="ORIGIN" value="Texas Instruments"/>
+                         <a:a name="UUID"
+                              value="93856cd9-cadb-4e40-8c44-544c95d3d628"/>
+                         <a:da name="REF"
+                              value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/ResourceAllocator/ResourceAllocatorGeneral/Context/Cdd_I2c/Cdd_I2cAllocatedInstance"/>
+                         <a:da name="RANGE" type="XPath">
+                         <a:tst expr="node:paths(//Cdd_I2cAllocatedInstance/*[contains(node:path(.), node:path(node:value(node:ref('ASPathDataOfSchema:/TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/CurrentContext'))))])"/>
+                         </a:da>
+                         <a:da name="INVALID" type="XPath">
+                              <a:tst expr="text:uniq((../../..//*[@name='CddI2cHwUnitRef']),node:value(.))" false="CddI2cHwUnitRef selection has to be unique across all containers."/>
+                         </a:da>
+                        </v:ref>
                       <v:var name="CddI2cHwBaudrate" type="INTEGER">
                         <a:a name="DESC"
                              value="EN: Channel Bit Rate (Range = 10kbps - 400kbps). Value needs to be provided in bits per second."/>

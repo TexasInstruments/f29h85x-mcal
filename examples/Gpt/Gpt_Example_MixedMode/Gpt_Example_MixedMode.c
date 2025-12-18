@@ -17,9 +17,13 @@
  *  File:         Gpt_Example_MixedMode.c
  *  Generator:    None
  *
- *  Description:  This file contains Gpt examples with Init & DeInit sequence, timers in one shot
- *and continuous mode, start & stop timers, enable & disable interrupts and time remaining & time
- *elapsed features.
+ *  Description:  This file contains the configuration and usage of Gpt module operating in continuous and one shot
+ *  mode. This example demonstrates:
+ *  - Gpt initialization and de-initialization
+ *  - Starting and stopping of timer channel 1 and 2 for 1s
+ *  - Reading time elapsed and time remaining values for running timer
+ *  - Enabling interrupt for Notification function and verifying if interrupt occurred in the expected time
+ *
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************

@@ -8,6 +8,7 @@ MEMORY
     SRAM_LDAx           : o=0x200E0000, l=0x20000
     SRAM_LPAx           : o=0x20100000, l=0x10000
     SRAM_CPA0           : o=0x20110000, l=0x8000
+    SRAM_CPA1           : o=0x20118000, l=0x8000
 
     CERT                : o=0x10000000, l=0x001000
     FLASH_RP0           : o=0x10001000, l=0x0FF000

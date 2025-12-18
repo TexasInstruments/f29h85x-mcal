@@ -168,7 +168,7 @@ int main(void)
     while (loop_cnt < 30U)
     {
         AppUtils_Printf("Waiting for user to probe the clock on the configured GPIO pin ...  %d\r\n", loop_cnt);
-        McalLib_DelayMsec(1000U, DEVICE_SYSCLK_FREQ);
+        McalLib_DelayMsec(1000U);
         loop_cnt++;
     }
 

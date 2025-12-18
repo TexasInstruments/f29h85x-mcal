@@ -78,13 +78,13 @@ extern "C" {
 
 
 /** \brief Macro to define the number of core */
-#define CDD_IPC_CORE_COUNT                        [!"ecu:get('No_of_cores')"!]U
+#define CDD_IPC_CORE_COUNT                        [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Ipc_No_of_cores')"!]U
 
 /** \brief Macro to define the number of remote cores configured */
 #define CDD_IPC_REMOTE_CORE_COUNT                 [!"num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*))"!]U
 
 /** \brief Macro to define the max no of bytes that can be transmitted or received */
-#define CDD_IPC_MAX_SIZE                          [!"ecu:get('No_of_bytes_Tx_Rx')"!]U
+#define CDD_IPC_MAX_SIZE                          [!"ecu:get('ResourceAllocator_F29H85x.Cdd_Ipc_No_of_bytes_Tx_Rx')"!]U
 
 /** \brief Macro to define the number of Tx instances configured */
 #define CDD_IPC_TX_INSTANCE_COUNT                   ([!"num:i(count(CddIpcConfig/CddIpcRemoteCoreConfig/*/CddIpcTxInstanceConfig/*))"!]U)

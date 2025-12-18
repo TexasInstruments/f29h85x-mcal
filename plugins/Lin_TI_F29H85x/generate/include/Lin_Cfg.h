@@ -102,7 +102,7 @@ extern "C" {
  *   To mitigate this limitation, a header frame is utilized as the wakeup signal, which conforms to the LIN2.1 specification*/
 #define LIN_WAKEUP_ID            0x[!"text:toupper(substring-after(num:inttohex(LinGeneral/LinWakeupId),'0x'))"!]U
 
-[!VAR "SysClock"="num:i(node:ref(LinGeneral/SysClockRef)/McuClockReferencePointFrequency)"!][!//
+[!VAR "SysClock"="num:i(node:ref(LinGeneral/LinSysClockRef)/McuClockReferencePointFrequency)"!][!//
 [!VAR "SysClock"="num:i(num:div((num:div(1,65535)), num:div(15,$SysClock)))"!][!//
 /** \brief LIN Delay to Mcal Lib */
 #define LIN_MCAL_LIB_DELAY              [!"num:i($SysClock)"!]U

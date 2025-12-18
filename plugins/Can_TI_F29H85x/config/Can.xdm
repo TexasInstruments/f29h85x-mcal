@@ -291,7 +291,7 @@
                     </v:ref>
                     <v:ref name="CanCpuClockRef" type="REFERENCE">
                       <a:a name="DESC" 
-                           value="EN: Reference to the CPU clock configuration, which is set in the MCU driver configuration"/>
+                           value="EN: Reference to the CPU clock configuration, which is set in the MCU driver configuration. This parameter refers to MCAN Bit Clock.[MCAN_FCLK]"/>
                       <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                            type="IMPLEMENTATIONCONFIGCLASS">
                         <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
@@ -1183,6 +1183,7 @@
                       <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                       <a:a name="SCOPE" value="ECU"/>
                       <a:a name="SYMBOLICNAMEVALUE" value="true"/>
+                      <a:a name="REQUIRES-INDEX" value="true"/>
                       <a:a name="UUID" 
                            value="b0ae3dfd-aa7d-4473-9c84-39b80a3e5c69"/>
 					  <a:da name="DEFAULT" value="0"/>
@@ -1254,14 +1255,19 @@
                            value="EN: Reference to CanMainFunctionPeriod"/>
                       <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                            type="IMPLEMENTATIONCONFIGCLASS">
-                        <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
-                        <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v mclass="PostBuild">VariantPostBuild</icc:v>
+                              <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
+                              <icc:v vclass="PostBuild">VariantPostBuild</icc:v>
+                              <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                       </a:a>
                       <a:a name="ORIGIN" value="AUTOSAR_ECUC"/>
                       <a:a name="SCOPE" value="LOCAL"/>
+                      a:a name="POSTBUILDVARIANTMULTIPLICITY" 
+                                 value="true"/>
                       <a:a name="POSTBUILDVARIANTVALUE" value="true"/>
                       <a:a name="UUID" 
                            value="8ddc0eb0-d780-45f6-94be-d87cdb76d7d8"/>
+                      <a:a name="OPTIONAL" value="true"/>
                       <a:da name="ENABLE" value="true"/>
                       <a:da name="REF" 
                             value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Can/CanGeneral/CanMainFunctionRWPeriods"/>
@@ -1996,6 +2002,8 @@
                        Note: The CAN driver does not currently utilize this parameter"/>
                   <a:a name="IMPLEMENTATIONCONFIGCLASS" 
                        type="IMPLEMENTATIONCONFIGCLASS">
+                    <icc:v mclass="PreCompile">VariantPostBuild</icc:v>
+                    <icc:v mclass="PreCompile">VariantPreCompile</icc:v>
                     <icc:v vclass="PreCompile">VariantPostBuild</icc:v>
                     <icc:v vclass="PreCompile">VariantPreCompile</icc:v>
                   </a:a>
@@ -2004,6 +2012,7 @@
                   <a:da name="EDITABLE" value="false"/>
                   <a:da name="VISIBLE"  value="false"/>
                   <a:a name="UUID" value="7186c35e-9215-4442-9cac-d1f52b64ea84"/>
+                  <a:a name="OPTIONAL" value="true"/>                  
                   <a:da name="REF" 
                         value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Os/OsCounter"/>
                 </v:ref>

@@ -192,7 +192,7 @@ int main(void)
     while (loop_cnt < 30U)
     {
         AppUtils_Printf("Halt and check the RAM init status from memory browser ...  %d\r\n", loop_cnt);
-        McalLib_DelayMsec(1000U, DEVICE_SYSCLK_FREQ);
+        McalLib_DelayMsec(1000U);
         loop_cnt++;
     }
 

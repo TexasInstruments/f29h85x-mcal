@@ -49,11 +49,11 @@
 #endif
 
 /* vendor specific version information is BCD coded */
-#if ((PORT_SW_MAJOR_VERSION != (2U)) || (PORT_SW_MINOR_VERSION != (0U)))
+#if ((PORT_SW_MAJOR_VERSION != (3U)) || (PORT_SW_MINOR_VERSION != (0U)))
 #error "Version numbers of Port.c and Port.h are inconsistent!"
 #endif
 
-#if ((PORT_CFG_MAJOR_VERSION != (2U)) || (PORT_CFG_MINOR_VERSION != (0U)))
+#if ((PORT_CFG_MAJOR_VERSION != (3U)) || (PORT_CFG_MINOR_VERSION != (0U)))
 #error "Version numbers of Port.c and Port_Cfg.h are inconsistent!"
 #endif
 

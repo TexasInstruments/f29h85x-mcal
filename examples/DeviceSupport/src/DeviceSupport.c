@@ -32,6 +32,13 @@
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
+#ifdef MULTICORE_ENABLE_CPU3
+#ifdef _FLASH
+#define CPU3_RESET_VECTOR 0x10401000U
+#else
+#define CPU3_RESET_VECTOR 0x20118000U
+#endif
+#endif
 
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
@@ -250,7 +257,7 @@ void DeviceSupport_Init()
     //
     // Boot CPU3
     //
-    DeviceSupport_ConfigBootAddress(SSU_CPU3, (uint32)&CPU3_RESET_VECTOR, SSU_LINK2);
+    DeviceSupport_ConfigBootAddress(SSU_CPU3, (uint32)CPU3_RESET_VECTOR, SSU_LINK2);
     //
     // Bring CPU3 out of reset. Wait for CPU3 to go out of reset.
     //

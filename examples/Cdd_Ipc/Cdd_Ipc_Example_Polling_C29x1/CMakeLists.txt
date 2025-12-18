@@ -47,7 +47,7 @@ endif()
 
 if(NOT TARGET Cdd_Ipc_Example_Polling_C29x1_Config)
     add_subdirectory(
-        ${CMAKE_CURRENT_SOURCE_DIR}/Cdd_Ipc_Example_Polling_C29x1_Config/
+        ${CMAKE_CURRENT_SOURCE_DIR}/${BUILD_DEVICE}/Cdd_Ipc_Example_Polling_C29x1_Config/
         ${CMAKE_BINARY_DIR}/Cdd_Ipc_Example_Polling_C29x1/Cdd_Ipc_Example_Polling_C29x1_Config
     )
 endif()
@@ -72,6 +72,11 @@ endif()
 if(NOT TARGET Mcu)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcu
                      ${CMAKE_BINARY_DIR}/Mcu)
+endif()
+
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
 endif()
 
 if(NOT TARGET AppUtils)
@@ -124,6 +129,7 @@ target_link_libraries(
             Dem
             Port
             SchM_Port
+            SchM_Mcu
             AppUtils
             DeviceSupport
             SchM_Cdd_Ipc)

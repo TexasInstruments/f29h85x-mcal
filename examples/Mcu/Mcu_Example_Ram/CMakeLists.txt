@@ -10,6 +10,11 @@ if(NOT TARGET Mcu)
                      ${CMAKE_BINARY_DIR}/Mcu)
 endif()
 
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
+endif()
+
 if(NOT TARGET Mcal_Lib)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Mcal_Lib/
                      ${CMAKE_BINARY_DIR}/Mcal_Lib)
@@ -101,6 +106,7 @@ target_link_libraries(
             Det
             Dem
             Mcal_Lib
+            SchM_Mcu
             MemMap
             EcuM
             Os

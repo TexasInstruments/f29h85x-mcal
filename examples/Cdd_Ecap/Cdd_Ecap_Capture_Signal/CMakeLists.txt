@@ -25,6 +25,11 @@ if(NOT TARGET Mcu)
                      ${CMAKE_BINARY_DIR}/Mcu)
 endif()
 
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
+endif()
+
 if(NOT TARGET Port)
     add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/Port
                      ${CMAKE_BINARY_DIR}/Port)
@@ -127,6 +132,7 @@ target_link_libraries(
             Port
             SchM_Port
             SchM_Cdd_Pwm
+            SchM_Mcu
             Cdd_Ecap
             hw_include
             AUTOSAR_Types

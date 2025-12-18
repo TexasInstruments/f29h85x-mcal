@@ -435,19 +435,6 @@ FUNC(void, SPI_CODE)
 Spi_ConfigGpioChipSelect(P2CONST(Spi_JobObjType, AUTOMATIC, SPI_CODE) jobObj, VAR(boolean, AUTOMATIC) enable);
 #endif
 
-/** \brief function to get HW unit base address
- *
- *  function to get HW unit base address
- *
- * \param[in] HwUnitId: HWUnit Id
- * \pre None
- * \post None
- * \return uint32
- * \retval base address of the hardware unit
- *
- ********************************************************************************************************************/
-FUNC(uint32, SPI_CODE) Spi_GetHwUnitBaseAddr(VAR(Spi_HWUnitType, AUTOMATIC) HwUnitId);
-
 /** \brief function to cancel ongoing sequence
  *
  *  function to cancel ongoing sequence

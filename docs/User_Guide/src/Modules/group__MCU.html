@@ -110,11 +110,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#function-mcu-initramsection">5.6.4.3. function Mcu_InitRamSection</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-mcu-initclock">5.6.4.4. function Mcu_InitClock</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-mcu-getpllstatus">5.6.4.5. function Mcu_GetPllStatus</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetreason">5.6.4.6. function Mcu_GetResetReason</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetrawvalue">5.6.4.7. function Mcu_GetResetRawValue</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-performreset">5.6.4.8. function Mcu_PerformReset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-setmode">5.6.4.9. function Mcu_SetMode</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getramstate">5.6.4.10. function Mcu_GetRamState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getsystemclock">5.6.4.6. function Mcu_GetSystemClock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetreason">5.6.4.7. function Mcu_GetResetReason</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getresetrawvalue">5.6.4.8. function Mcu_GetResetRawValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-performreset">5.6.4.9. function Mcu_PerformReset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-setmode">5.6.4.10. function Mcu_SetMode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-mcu-getramstate">5.6.4.11. function Mcu_GetRamState</a></li>
 </ul>
 </li>
 </ul>
@@ -124,11 +125,12 @@
 <li class="toctree-l2"><a class="reference internal" href="group__WDG.html">5.9. WDG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="group__CDD__ADC.html">5.10. CDD_ADC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="group__CDD__ECAP.html">5.11. CDD_ECAP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__IPC.html">5.12. CDD_IPC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__PWM.html">5.13. CDD_PWM</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__UART.html">5.14. CDD_UART</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__SENT.html">5.15. CDD_SENT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="group__CDD__XBAR.html">5.16. CDD_XBAR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__I2C.html">5.12. CDD_I2C</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__IPC.html">5.13. CDD_IPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__PWM.html">5.14. CDD_PWM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__UART.html">5.15. CDD_UART</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__SENT.html">5.16. CDD_SENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="group__CDD__XBAR.html">5.17. CDD_XBAR</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
@@ -1107,29 +1109,35 @@ This type specifies the identification (ID) for a RAM section used in Mcu_InitRa
 <tr class="row-odd"><td><p>MCU_SID_GET_RAM_STATE</p></td>
 <td><p>Service ID for Mcu_GetRamState.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCU_E_PARAM_CONFIG</p></td>
+<tr class="row-even"><td><p>MCU_SID_GET_SYS_CLOCK</p></td>
+<td><p>Service ID for Mcu_GetSystemClock.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCU_E_PARAM_CONFIG</p></td>
 <td><p>Mcu_Init config param invalid.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCU_E_PARAM_CLOCK</p></td>
+<tr class="row-even"><td><p>MCU_E_PARAM_CLOCK</p></td>
 <td><p>Mcu_InitClock clockid param invalid.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCU_E_PARAM_MODE</p></td>
+<tr class="row-odd"><td><p>MCU_E_PARAM_MODE</p></td>
 <td><p>Mcu_SetMode modeid param invalid.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCU_E_PARAM_RAMSECTION</p></td>
+<tr class="row-even"><td><p>MCU_E_PARAM_RAMSECTION</p></td>
 <td><p>Mcu_InitRamSection ramSect param invalid.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCU_E_PLL_NOT_LOCKED</p></td>
+<tr class="row-odd"><td><p>MCU_E_PLL_NOT_LOCKED</p></td>
 <td><p>PLL not locked.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCU_E_UNINIT</p></td>
+<tr class="row-even"><td><p>MCU_E_UNINIT</p></td>
 <td><p>API invoked without performing Mcu_Init.</p></td>
 </tr>
-<tr class="row-even"><td><p>MCU_E_PARAM_POINTER</p></td>
+<tr class="row-odd"><td><p>MCU_E_PARAM_POINTER</p></td>
 <td><p>NULL_PTR passed to MCU driver APIs.</p></td>
 </tr>
-<tr class="row-odd"><td><p>MCU_E_INIT_FAILED</p></td>
+<tr class="row-even"><td><p>MCU_E_INIT_FAILED</p></td>
 <td><p>Mcu Initialization failed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCU_E_UNINIT_CLOCK</p></td>
+<td><p>API invoked without performing Mcu_InitClock.</p></td>
 </tr>
 <tr class="row-even"><td><p>MCU_ERRORRST_MASK</p></td>
 <td><p>Define indicating invalid raw reset value.</p></td>
@@ -1167,23 +1175,27 @@ This type specifies the identification (ID) for a RAM section used in Mcu_InitRa
 <td><p><strong><a class="reference internal" href="#function-mcu-getpllstatus"><span class="std std-ref">Mcu_GetPllStatus</span></a></strong>(void )</p></td>
 <td><p>This service provides the lock status of the PLL.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#enum-mcu-resettype"><span class="std std-ref">Mcu_ResetType</span></a></p></td>
+<tr class="row-odd"><td><p>uint32</p></td>
+<td><p><strong><a class="reference internal" href="#function-mcu-getsystemclock"><span class="std std-ref">Mcu_GetSystemClock</span></a></strong>(void )</p></td>
+<td><p>This service provides the system clock.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#enum-mcu-resettype"><span class="std std-ref">Mcu_ResetType</span></a></p></td>
 <td><p><strong><a class="reference internal" href="#function-mcu-getresetreason"><span class="std std-ref">Mcu_GetResetReason</span></a></strong>(void )</p></td>
 <td><p>The service reads the reset reason from the hardware.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#typedef-mcu-rawresettype"><span class="std std-ref">Mcu_RawResetType</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#typedef-mcu-rawresettype"><span class="std std-ref">Mcu_RawResetType</span></a></p></td>
 <td><p><strong><a class="reference internal" href="#function-mcu-getresetrawvalue"><span class="std std-ref">Mcu_GetResetRawValue</span></a></strong>(void )</p></td>
 <td><p>The service reads the raw reset value from the hardware register.</p></td>
 </tr>
-<tr class="row-odd"><td><p>void</p></td>
+<tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-mcu-performreset"><span class="std std-ref">Mcu_PerformReset</span></a></strong>(void )</p></td>
 <td><p>The service performs a microcontroller reset.</p></td>
 </tr>
-<tr class="row-even"><td><p>void</p></td>
+<tr class="row-odd"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-mcu-setmode"><span class="std std-ref">Mcu_SetMode</span></a></strong>(<a class="reference internal" href="#typedef-mcu-modetype"><span class="std std-ref">Mcu_ModeType</span></a> McuMode)</p></td>
 <td><p>The service activates low power modes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#enum-mcu-ramstatetype"><span class="std std-ref">Mcu_RamStateType</span></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#enum-mcu-ramstatetype"><span class="std std-ref">Mcu_RamStateType</span></a></p></td>
 <td><p><strong><a class="reference internal" href="#function-mcu-getramstate"><span class="std std-ref">Mcu_GetRamState</span></a></strong>(void )</p></td>
 <td><p>This service provides the actual status of the microcontroller Ram.</p></td>
 </tr>
@@ -1302,8 +1314,26 @@ This service provides the lock status of the PLL.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
+<section id="function-mcu-getsystemclock">
+<h3><span class="section-number">5.6.4.6. </span>function Mcu_GetSystemClock<a class="headerlink" href="#function-mcu-getsystemclock" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">uint32</span><span class="w"> </span><span class="n">Mcu_GetSystemClock</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This service provides the system clock.</p>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>PllSysclk</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: Mcu_SysClk - System clock</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
 <section id="function-mcu-getresetreason">
-<h3><span class="section-number">5.6.4.6. </span>function Mcu_GetResetReason<a class="headerlink" href="#function-mcu-getresetreason" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.7. </span>function Mcu_GetResetReason<a class="headerlink" href="#function-mcu-getresetreason" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Mcu_ResetType</span><span class="w"> </span><span class="n">Mcu_GetResetReason</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1334,7 +1364,7 @@ The service reads the reset reason from the hardware.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-getresetrawvalue">
-<h3><span class="section-number">5.6.4.7. </span>function Mcu_GetResetRawValue<a class="headerlink" href="#function-mcu-getresetrawvalue" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.8. </span>function Mcu_GetResetRawValue<a class="headerlink" href="#function-mcu-getresetrawvalue" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Mcu_RawResetType</span><span class="w"> </span><span class="n">Mcu_GetResetRawValue</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1353,7 +1383,7 @@ The service reads the raw reset value from the hardware register.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-performreset">
-<h3><span class="section-number">5.6.4.8. </span>function Mcu_PerformReset<a class="headerlink" href="#function-mcu-performreset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.9. </span>function Mcu_PerformReset<a class="headerlink" href="#function-mcu-performreset" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_PerformReset</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1372,7 +1402,7 @@ The service performs a microcontroller reset.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-setmode">
-<h3><span class="section-number">5.6.4.9. </span>function Mcu_SetMode<a class="headerlink" href="#function-mcu-setmode" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.10. </span>function Mcu_SetMode<a class="headerlink" href="#function-mcu-setmode" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Mcu_SetMode</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Mcu_ModeType</span><span class="w"> </span><span class="n">McuMode</span>
 <span class="p">)</span>
@@ -1395,7 +1425,7 @@ The service activates low power modes.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-mcu-getramstate">
-<h3><span class="section-number">5.6.4.10. </span>function Mcu_GetRamState<a class="headerlink" href="#function-mcu-getramstate" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.6.4.11. </span>function Mcu_GetRamState<a class="headerlink" href="#function-mcu-getramstate" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Mcu_RamStateType</span><span class="w"> </span><span class="n">Mcu_GetRamState</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -1430,7 +1460,7 @@ This service provides the actual status of the microcontroller Ram.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Nov 21, 2025.
+          <span class="lastupdated" >Last updated on Dec 18, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

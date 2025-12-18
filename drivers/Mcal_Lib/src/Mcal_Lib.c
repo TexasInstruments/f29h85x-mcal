@@ -24,6 +24,7 @@
  * Header Files
  *********************************************************************************************************************/
 #include "Mcal_Lib.h"
+#include "Mcu.h"
 
 /*********************************************************************************************************************
  * Version Check (if required)
@@ -72,11 +73,23 @@ __asm(
     "    DECB A0, #1, loop            \n"
     "    RET                          \n");
 
-void McalLib_DelayUsec(McalLib_TickType delayUsec, uint32 sysclkHz)
+#define MCAL_LIB_START_SEC_CODE
+#include "Mcal_Lib_MemMap.h"
+
+FUNC(void, MCAL_LIB_CODE) McalLib_DelayUsec(McalLib_TickType delayUsec)
 {
     McalLib_TickType cycles, loopcnt;
+    uint32           sysClkHz;
 
-    cycles = (delayUsec * sysclkHz) / 1000000UL;
+    sysClkHz = Mcu_GetSystemClock();
+    if (sysClkHz == 0)
+    {
+        /* use a higher default sysclk so that the delays computed before Mcu initialization are safe.
+         * Mcu_GetSystemClock return 0 if Mcu is not initialized */
+        sysClkHz = MCAL_LIB_DEFAULT_SYSCLK_HZ;
+    }
+
+    cycles = (delayUsec * sysClkHz) / 1000000UL;
     if (cycles > 11U)
     {
         cycles -= 11U; /* each API call has 11 cycles of overhead*/
@@ -85,9 +98,9 @@ void McalLib_DelayUsec(McalLib_TickType delayUsec, uint32 sysclkHz)
     McalLib_Delay(loopcnt);
 }
 
-void McalLib_DelayMsec(McalLib_TickType delayMsec, uint32 sysclkHz)
+FUNC(void, MCAL_LIB_CODE) McalLib_DelayMsec(McalLib_TickType delayMsec)
 {
-    McalLib_DelayUsec(delayMsec * 1000U, sysclkHz);
+    McalLib_DelayUsec(delayMsec * 1000U);
 }
 
 void McalLib_GetCounterValue(P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) startTime)
@@ -100,8 +113,9 @@ void McalLib_GetCounterValue(P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) s
     return;
 }
 
-void McalLib_GetElapsedValue(CONSTP2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) startTime,
-                             P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) elapsedTime)
+FUNC(void, MCAL_LIB_CODE)
+McalLib_GetElapsedValue(CONSTP2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) startTime,
+                        P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) elapsedTime)
 {
     McalLib_TickType cur_val;
     uint32           regValL;
@@ -113,28 +127,42 @@ void McalLib_GetElapsedValue(CONSTP2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DA
     return;
 }
 
-Std_ReturnType McalLib_GetTimerTickFromUs(McalLib_TickType timeOutInUs,
-                                          P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) tickCounter)
+FUNC(Std_ReturnType, MCAL_LIB_CODE)
+McalLib_GetTimerTickFromUs(McalLib_TickType timeOutInUs, P2VAR(McalLib_TickType, AUTOMATIC, MCAL_LIB_DATA) tickCounter)
 {
-    Std_ReturnType return_value = E_OK;
+    Std_ReturnType   return_value = E_OK;
+    uint32           sysClkHz;
+    McalLib_TickType tickCounterValue;
     if (tickCounter == NULL_PTR)
     {
         return_value = E_NOT_OK;
     }
     else
     {
-        if (timeOutInUs >= MCAL_LIB_MAX_TICK_VALUE)
+        sysClkHz = Mcu_GetSystemClock();
+        if (sysClkHz == 0)
+        {
+            /* use a higher default sysclk so that the delays computed before Mcu initialization are safe.
+             * Mcu_GetSystemClock return 0 if Mcu is not initialized */
+            sysClkHz = MCAL_LIB_DEFAULT_SYSCLK_HZ;
+        }
+        /* Convert time in us to ticks : (tick = timeout in sec * freq in Hz)*/
+        tickCounterValue = ((uint64)timeOutInUs * sysClkHz) / 1000000U;
+        if (tickCounterValue >= MCAL_LIB_MAX_TICK_VALUE)
         {
             return_value = E_NOT_OK;
-            ;
         }
         else
         {
-            *tickCounter = (timeOutInUs * (uint64)1000) / (uint64)MCAL_LIB_TICK_VALUE;
+            *tickCounter = (uint64)tickCounterValue;
         }
     }
     return return_value;
 }
+
+#define MCAL_LIB_STOP_SEC_CODE
+#include "Mcal_Lib_MemMap.h"
+
 /*********************************************************************************************************************
  *  Local Functions Definition
  *********************************************************************************************************************/

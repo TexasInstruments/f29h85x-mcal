@@ -76,6 +76,11 @@ if(NOT TARGET Mcu)
                      ${CMAKE_BINARY_DIR}/Mcu)
 endif()
 
+if(NOT TARGET SchM_Mcu)
+    add_subdirectory(${PROJECT_ROOT_DIRECTORY}/drivers/BSW_Stubs/SchM/Mcu/
+                     ${CMAKE_BINARY_DIR}/SchM_Mcu)
+endif()
+
 if(NOT TARGET AppUtils)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../AppUtils
                      ${CMAKE_BINARY_DIR}/AppUtils)
@@ -116,6 +121,7 @@ target_link_libraries(
             EcuM
             Port
             Mcu
+            SchM_Mcu
             Dem
             AppUtils
             DeviceSupport)

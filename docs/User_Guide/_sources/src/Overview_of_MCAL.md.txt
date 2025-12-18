@@ -64,9 +64,18 @@ Drivers implement the HW safety mechanisms listed for the specific peripherals i
 
 ### CSP
 
-The **Software Compliance Support Package** (CSP) is the set of evidence that TI provides and is intended to assist the customer in their certification efforts for the integrated system.
-The provided CSP assists customers to qualify MCAL in their system context. This will be needed if customers modify the SW or change the tooling that will make TI's functional safety assessment of MCAL void.
-Each HW IP Module MCAL driver will have its individual CSP provided to customers.
+**Safety Certification for MCAL and Compiler**
+
+* The Safety certification process of TI MCAL is compiler options agnostic and is certified in a systematic approach, i.e. the Safety certification of MCAL will not be violated if the compiler options are changed to a different options other than the ones mentioned in the MCAL user guide.
+* The safety qualification of TI ARM Compiler is done using compiler qualification kit with set of recommended options and flags. The safety qualification can be done again if compiler options are changed.  Refer to this page on our approach of QKIT [How to apply the TI Compiler Qualification Kit for functional safety development](https://software-dl.ti.com/ccs/esd/documents/application_notes/appnote-codegen_qualificationkit.html)
+
+Steps to follow if compiler options are changed:
+
+* Review the content of the Compiler qualification kit.
+* Revalidate the compiler based on the new options selected.
+* Ensure that compiler qualification test reports are consistent with the reports provided by TI compiler.
+* If any discrepancies are found, reported them to TI compiler team.
+* Validate the use case at the system level with new compiler options and ensure that MCAL functionality is as expected.
 
 ## Software Offering
 
