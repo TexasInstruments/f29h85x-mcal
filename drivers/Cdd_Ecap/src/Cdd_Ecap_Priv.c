@@ -384,10 +384,10 @@ void Cdd_Ecap_captureEvtCntrRstConfig(uint32 baseAddr, uint32 counterRst1, uint3
                                       uint32 counterRst4)
 {
     uint32 temp_addr = baseAddr + ECAP_O_ECCTL1;
-    uint32 shiftCap1 = (uint32)(2U * CDD_ECAP_EVENT_1 + 1U);
-    uint32 shiftCap2 = (uint32)(2U * CDD_ECAP_EVENT_2 + 1U);
-    uint32 shiftCap3 = (uint32)(2U * CDD_ECAP_EVENT_3 + 1U);
-    uint32 shiftCap4 = (uint32)(2U * CDD_ECAP_EVENT_4 + 1U);
+    uint32 shiftCap1 = (uint32)((2U * CDD_ECAP_EVENT_1) + 1U);
+    uint32 shiftCap2 = (uint32)((2U * CDD_ECAP_EVENT_2) + 1U);
+    uint32 shiftCap3 = (uint32)((2U * CDD_ECAP_EVENT_3) + 1U);
+    uint32 shiftCap4 = (uint32)((2U * CDD_ECAP_EVENT_4) + 1U);
 
     uint32 mask  = (~((uint32)1U << shiftCap1) & ~((uint32)1U << shiftCap2) & ~((uint32)1U << shiftCap3) &
                    ~((uint32)1U << shiftCap4));
@@ -573,10 +573,8 @@ float32 Cdd_Ecap_HRCAP_getScaleFactor(uint32 baseAddr, Cdd_Ecap_ChannelType Chan
         return ((float32)Cdd_Ecap_HRCAP_getCalibrationClockPeriod(baseAddr, CDD_ECAP_HRCAP_CALIBRATION_CLOCK_SYSCLK) /
                 (float32)Cdd_Ecap_HRCAP_getCalibrationClockPeriod(baseAddr, CDD_ECAP_HRCAP_CALIBRATION_CLOCK_HRCLK));
     }
-    else
-    {
-        return CDD_ECAP_SF_NOTREADY;
-    }
+
+    return CDD_ECAP_SF_NOTREADY;
 }
 
 float32 Cdd_Ecap_HRCAP_convertEventTimeStamp(uint32 baseAddr, uint32 timeStamp, float32 scaleFactor)
@@ -592,6 +590,7 @@ void Cdd_Ecap_ResetChObj(void)
     {
         /* Set the index of the ECAP channel, for accessing the index from channelId */
         Cdd_Ecap_ObjPtr->channelIdx[Cdd_Ecap_CfgPtr->chCfg[chNum].channelId] = chNum;
+        Cdd_Ecap_ObjPtr->chObj[chNum].activation_edge = Cdd_Ecap_CfgPtr->chCfg[chNum].defaultStartEdge;
 
 #if (CDD_ECAP_TIMESTAMP_API == STD_ON)
         Cdd_Ecap_ObjPtr->chObj[chNum].NextTimeStampIndexPtr = (Cdd_Ecap_ValueType *)NULL_PTR;
@@ -747,7 +746,7 @@ void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cd
         }
     }
 
-    if (cntRst == CDD_ECAP_ABSOLUTE_MODE || Cdd_Ecap_CfgPtr->chCfg[Channel].hr_enable == TRUE)
+    if ((cntRst == CDD_ECAP_ABSOLUTE_MODE) || (Cdd_Ecap_CfgPtr->chCfg[Channel].hr_enable == TRUE))
     {
         Cdd_Ecap_captureEvtCntrRstConfig(baseAddr, 0, 0, 0, 0); /* using absolute mode */
     }
@@ -979,8 +978,8 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ChannelISR(Cdd_Ecap_ChannelType Channel)
     }
 #endif
 #if (STD_ON == CDD_ECAP_SIGNAL_MEASUREMENT_API)
-    if (Cdd_Ecap_CfgPtr->chCfg[chNum].measurementMode == CDD_ECAP_MODE_SIGNAL_MEASUREMENT &&
-        Cdd_Ecap_CfgPtr->chCfg[chNum].hr_enable == FALSE)
+    if ((Cdd_Ecap_CfgPtr->chCfg[chNum].measurementMode == CDD_ECAP_MODE_SIGNAL_MEASUREMENT) &&
+        (Cdd_Ecap_CfgPtr->chCfg[chNum].hr_enable == FALSE))
     {
         uint32             baseAddr;
         Cdd_Ecap_ValueType highTime, lowTime, period;
@@ -1131,8 +1130,8 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ChannelISR(Cdd_Ecap_ChannelType Channel)
         Cdd_Ecap_globalIntrClear(baseAddr);
     }
 #if (STD_ON == CDD_ECAP_HR_API)
-    if (Cdd_Ecap_CfgPtr->chCfg[chNum].measurementMode == CDD_ECAP_MODE_SIGNAL_MEASUREMENT &&
-        Cdd_Ecap_CfgPtr->chCfg[chNum].hr_enable == TRUE)
+    if ((Cdd_Ecap_CfgPtr->chCfg[chNum].measurementMode == CDD_ECAP_MODE_SIGNAL_MEASUREMENT) &&
+        (Cdd_Ecap_CfgPtr->chCfg[chNum].hr_enable == TRUE))
     {
         uint32             baseAddr = Cdd_Ecap_CfgPtr->chCfg[chNum].base_addr;
         Cdd_Ecap_ValueType highTime, lowTime, period;
@@ -1356,6 +1355,24 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HR_ISR(Cdd_Ecap_ChannelType Channel)
     Cdd_Ecap_HRCAP_clearCalibrationFlags(hr_baseAddr, calstatus);
 }
 #endif
+
+/* API to periodic readback of registers for CDD ECAP*/
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_PeriodicReadbackPrv(Cdd_Ecap_ChannelType Channel, P2VAR(Cdd_Ecap_PeriodicReadBackDataType, AUTOMATIC,
+                                                                 CDD_ECAP_APPL_DATA) ReadBackRegisterdata)
+{
+    VAR(uint32, AUTOMATIC) baseAddr;
+    baseAddr                            = Cdd_Ecap_CfgPtr->chCfg[Channel].base_addr;
+    ReadBackRegisterdata->CddEcapcap1   = HWREG(baseAddr + ECAP_O_CAP1);
+    ReadBackRegisterdata->CddEcapcap2   = HWREG(baseAddr + ECAP_O_CAP2);
+    ReadBackRegisterdata->CddEcapcap3   = HWREG(baseAddr + ECAP_O_CAP3);
+    ReadBackRegisterdata->CddEcapcap4   = HWREG(baseAddr + ECAP_O_CAP4);
+    ReadBackRegisterdata->CddEcapEcctl0 = HWREG(baseAddr + ECAP_O_ECCTL0);
+    ReadBackRegisterdata->CddEcapEcctl1 = HWREGH(baseAddr + ECAP_O_ECCTL1);
+    ReadBackRegisterdata->CddEcapEcctl2 = HWREGH(baseAddr + ECAP_O_ECCTL2);
+    ReadBackRegisterdata->CddEcapEceint = HWREGH(baseAddr + ECAP_O_ECEINT);
+}
+
 #define CDD_ECAP_STOP_SEC_ISR_CODE
 #include "Cdd_Ecap_MemMap.h"
 

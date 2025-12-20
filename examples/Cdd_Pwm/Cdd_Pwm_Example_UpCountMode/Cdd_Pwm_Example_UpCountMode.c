@@ -34,12 +34,14 @@
  * - Initialize clock to 100 MHz using Mcu_Init()
  * - Initialize pins in EPWM mode with Port_Init()
  * - Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
+ * - In simple mode, on calling Cdd_Pwm_Init API all the PWM channels will be started with the
+ *   configured default values.
  * Enable channel A rising edge notifications for both the PWM instances
  * Set the all the outputs to IDLE with Cdd_Pwm_SetOutputToIdle API
  * Activate the channels and change the duty cycle of the waveform with Cdd_Pwm_SetDutyCycle() API
- * and observe the change in the generated PWM output waveform Set PWM1 outputs to IDLE with
- * Cdd_Pwm_SetOutputToIdle API Activate the channels & period of the channels  associated to PWM1
- * instance with Cdd_Pwm_SetPeriod() API and observe the change in the frequency of the generated
+ * and observe the change in the generated PWM output waveform.
+ * Set PWM1 outputs to IDLE with Cdd_Pwm_SetOutputToIdle API Activate the channels & period of the channels
+ * associated to EPWM1 instance with Cdd_Pwm_SetPeriod() API and observe the change in the frequency of the generated
  * output waveforms
  *
  * EPWM waveform can be observed on the respective pins configured in EPWM mode

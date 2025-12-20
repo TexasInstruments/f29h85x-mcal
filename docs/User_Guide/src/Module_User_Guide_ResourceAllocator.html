@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.1. Resource Allocator Module &mdash; Documentation for F29H85x</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=4a3566fb"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+
+    <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.2. CAN Module" href="Module_User_Guide_Can.html" />
+    <link rel="prev" title="4. Module User Guide" href="ModuleUserGuide_list.html" /> 
+</head>
+
+<body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
+<div class="DocSite-globalNav tiNav">
+    <ul>
+    </ul>
+</div>
+
+<a class="DocSite-nav" href="https://www.ti.com" style="padding-bottom: 85px;">
+  <img class="DocSiteNav-logo"
+    src="../_static/img/ti_logo.png"
+    alt="TI Logo">
+  <div class="DocSiteNav-title"></div>
+</a>
+  
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> F29H85x MCAL User Guide
+          </a>
+              <div class="version">
+                01.04.00
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Overview_of_MCAL.html">1. Overview of MCAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. Resource Allocator Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.1.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.1.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.1.3. Functional Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#purpose">4.1.3.1. Purpose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-with-mcal-modules">4.1.3.2. Integration with MCAL Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.1.4. Source Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recommended-configuration">4.1.5. Recommended Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#selecting-a-recommended-configuration">4.1.5.1. Selecting a Recommended Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.1.6. Integration Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.1.6.1. Dependent Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules-that-reference-resource-allocator">4.1.6.2. Modules that Reference Resource Allocator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.1.7. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.1.7.1. Migration Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.1.7.2. Configuration Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-procedures">4.1.8. Usage Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-workflow">4.1.8.1. Configuration Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.1.9. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-configuring-for-f29h85x-device">4.1.9.1. Example: Configuring for F29H85x Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-configuring-for-f29p58x-device">4.1.9.2. Example: Configuring for F29P58x Device</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.2. CAN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.3. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Fls.html">4.4. FLS Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.5. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.6. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.7. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.8. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.9. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.10. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.11. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.12. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">4.13. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.14. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.15. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.16. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.17. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.18. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">F29H85x MCAL User Guide</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
+      <li><span class="section-number">4.1. </span>Resource Allocator Module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="resource-allocator-module">
+<h1><span class="section-number">4.1. </span>Resource Allocator Module<a class="headerlink" href="#resource-allocator-module" title="Link to this heading"></a></h1>
+<section id="acronyms-and-definitions">
+<h2><span class="section-number">4.1.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AUTOSAR</p></td>
+<td><p>Automotive Open System Architecture</p></td>
+</tr>
+<tr class="row-odd"><td><p>API</p></td>
+<td><p>Application Programming Interface</p></td>
+</tr>
+<tr class="row-even"><td><p>BSW</p></td>
+<td><p>Basic Software</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCAL</p></td>
+<td><p>Micro Controller Abstraction Layer</p></td>
+</tr>
+<tr class="row-even"><td><p>MCU</p></td>
+<td><p>Micro Controller Unit</p></td>
+</tr>
+<tr class="row-odd"><td><p>SoC</p></td>
+<td><p>System on Chip</p></td>
+</tr>
+<tr class="row-even"><td><p>RA</p></td>
+<td><p>Resource Allocator</p></td>
+</tr>
+<tr class="row-odd"><td><p>EB Tresos</p></td>
+<td><p>Elektrobit Tresos Studio - AUTOSAR Configuration Tool</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="introduction">
+<h2><span class="section-number">4.1.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The Resource Allocator is a system-level configuration module that provides centralized management of device, package, and variant selection for F29x devices. It is a <strong>configuration-only module</strong> that:</p>
+<ul class="simple">
+<li><p>Defines the target device family (F29H85x, F29P32x, F29P58x)</p></li>
+<li><p>Specifies the device variant within the selected family</p></li>
+<li><p>Configures the package type for the selected variant</p></li>
+<li><p>Provides device-specific configuration to other MCAL modules</p></li>
+</ul>
+</section>
+<section id="functional-overview">
+<h2><span class="section-number">4.1.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<p>The Resource Allocator provides a centralized location for device configuration that is shared across all MCAL modules. This ensures consistency in device-specific settings throughout the MCAL configuration.</p>
+<section id="purpose">
+<h3><span class="section-number">4.1.3.1. </span>Purpose<a class="headerlink" href="#purpose" title="Link to this heading"></a></h3>
+<p>The Resource Allocator serves as the single source of truth for:</p>
+<ul class="simple">
+<li><p>Device family selection</p></li>
+<li><p>Device variant identification</p></li>
+<li><p>Package type configuration</p></li>
+</ul>
+<p>This centralized approach ensures that all MCAL modules reference the same device configuration, preventing inconsistencies that could arise from configuring device parameters in multiple locations.</p>
+</section>
+<section id="integration-with-mcal-modules">
+<h3><span class="section-number">4.1.3.2. </span>Integration with MCAL Modules<a class="headerlink" href="#integration-with-mcal-modules" title="Link to this heading"></a></h3>
+<p>Other MCAL modules reference the Resource Allocator configuration to:</p>
+<ul class="simple">
+<li><p>Determine available peripheral instances for the selected device</p></li>
+<li><p>Apply device-specific constraints and validation rules</p></li>
+<li><p>Generate appropriate configuration for the target hardware</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The available variants and packages may be updated as new devices are released. Refer to the device-specific datasheet for the most current information.</p>
+</div>
+</section>
+</section>
+<section id="source-files">
+<h2><span class="section-number">4.1.4. </span>Source Files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<p>The Resource Allocator is implemented as an EB Tresos plugin:</p>
+<p>📦<strong>plugins</strong><br />
+┗ 📂<strong>ResourceAllocator_TI_F29H85x</strong><br />
+┃ ┣ 📂<strong>config</strong><br />
+┃ ┃ ┣ 📜<strong>ResourceAllocator.arxml</strong> : <em>ECU Configuration and Parameter definitions</em><br />
+┃ ┃ ┗ 📜<strong>ResourceAllocator.xdm</strong> : <em>ECU Parameter definition for EB Tresos</em><br />
+┃ ┣ 📂<strong>config_ext</strong><br />
+┃ ┃ ┣ 📜<strong>ResourceAllocator_F29H859DU6_Q_256ZEX_Rec.xdm</strong> : <em>Recommended configuration for F29H859DU6_Q_256ZEX</em><br />
+┃ ┃ ┣ 📜<strong>ResourceAllocator_F29H859TM8_Q_144RFS_Rec.xdm</strong> : <em>Recommended configuration for F29H859TM8_Q_144RFS</em><br />
+┃ ┃ ┣ 📜<strong>ResourceAllocator_F29H859TU8_Q_256ZEX_Rec.xdm</strong> : <em>Recommended configuration for F29H859TU8_Q_256ZEX</em><br />
+┃ ┃ ┣ 📜<strong>ResourceAllocator_F29P329SJ1_Q_144RFS_Rec.xdm</strong> : <em>Recommended configuration for F29P329SJ1_Q_144RFS</em><br />
+┃ ┃ ┣ 📜<strong>ResourceAllocator_F29P329SM1_Q_144RFS_Rec.xdm</strong> : <em>Recommended configuration for F29P329SM1_Q_144RFS</em><br />
+┃ ┃ ┣ 📜<strong>ResourceAllocator_F29P329SM2_Q_144RFS_Rec.xdm</strong> : <em>Recommended configuration for F29P329SM2_Q_144RFS</em><br />
+┃ ┃ ┣ 📜<strong>ResourceAllocator_F29P589DM5_Q_256ZEX_Rec.xdm</strong> : <em>Recommended configuration for F29P589DM5_Q_256ZEX</em><br />
+┃ ┃ ┗ 📜<strong>ResourceAllocator_F29P589DU5_Q_256ZEX_Rec.xdm</strong> : <em>Recommended configuration for F29P589DU5_Q_256ZEX</em><br />
+┃ ┣ 📂<strong>META-INF</strong><br />
+┃ ┃ ┗ 📜<strong>MANIFEST.MF</strong> : <em>Plugin manifest and licensing information</em><br />
+┃ ┣ 📂<strong>resources</strong> : <em>Properties for all devices, variants, packages etc.</em><br />
+┃ ┗ 📜<strong>plugin.xml</strong> : <em>XML file to register plugin with EB Tresos Studio</em></p>
+</section>
+<section id="recommended-configuration">
+<h2><span class="section-number">4.1.5. </span>Recommended Configuration<a class="headerlink" href="#recommended-configuration" title="Link to this heading"></a></h2>
+<p>When adding the Resource Allocator plugin to an EB Tresos project, users can select a <strong>Recommended Configuration</strong> as a starting point. This feature provides pre-configured settings for various F29x device variants, simplifying the initial setup process.</p>
+<section id="selecting-a-recommended-configuration">
+<h3><span class="section-number">4.1.5.1. </span>Selecting a Recommended Configuration<a class="headerlink" href="#selecting-a-recommended-configuration" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>In EB Tresos, navigate to <strong>Module Configurations</strong></p></li>
+<li><p>Add the <strong>ResourceAllocator</strong> module to your project</p></li>
+<li><p>In the <strong>Details of “ResourceAllocator”</strong> panel, locate the <strong>Recommended Configuration</strong> dropdown</p></li>
+<li><p>Select the appropriate configuration for your target device</p></li>
+</ol>
+<figure class="align-center" id="id1">
+<img alt="Resource Allocator Recommended Configuration" src="../_images/RA_RecommendedConfig.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 4.1 </span><span class="caption-text">Selecting Recommended Configuration in EB Tresos</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="integration-description">
+<h2><span class="section-number">4.1.6. </span>Integration Description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<section id="dependent-modules">
+<h3><span class="section-number">4.1.6.1. </span>Dependent Modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<p>The Resource Allocator is a <strong>foundational module</strong> with no dependencies on other MCAL modules. It should be configured before other peripheral modules to ensure device-specific settings are available.</p>
+</section>
+<section id="modules-that-reference-resource-allocator">
+<h3><span class="section-number">4.1.6.2. </span>Modules that Reference Resource Allocator<a class="headerlink" href="#modules-that-reference-resource-allocator" title="Link to this heading"></a></h3>
+<p>The following MCAL modules reference the Resource Allocator for device configuration:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Module</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CAN</p></td>
+<td><p>Device-specific CAN instance availability</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPI</p></td>
+<td><p>Device-specific SPI instance availability</p></td>
+</tr>
+<tr class="row-even"><td><p>LIN</p></td>
+<td><p>Device-specific LIN instance availability</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Uart</p></td>
+<td><p>Device-specific UART instance availability</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_I2c</p></td>
+<td><p>Device-specific I2C instance availability</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Sent</p></td>
+<td><p>Device-specific SENT instance availability</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_Adc</p></td>
+<td><p>Device-specific ADC instance availability</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Pwm</p></td>
+<td><p>Device-specific PWM instance availability</p></td>
+</tr>
+<tr class="row-even"><td><p>Cdd_Ecap</p></td>
+<td><p>Device-specific ECAP instance availability</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cdd_Xbar</p></td>
+<td><p>Device-specific XBAR configuration</p></td>
+</tr>
+<tr class="row-even"><td><p>Mcu</p></td>
+<td><p>Device-specific clock and system configuration</p></td>
+</tr>
+<tr class="row-odd"><td><p>Port</p></td>
+<td><p>Device-specific pin availability</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="configuration">
+<h2><span class="section-number">4.1.7. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The Resource Allocator configuration defines the target device for the MCAL configuration.</p>
+<section id="migration-guide">
+<h3><span class="section-number">4.1.7.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
+<p>No migration required.</p>
+</section>
+<section id="configuration-parameters">
+<h3><span class="section-number">4.1.7.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<section id="resourceallocatorgeneral">
+<h4><span class="section-number">4.1.7.2.1. </span>4.1. ResourceAllocatorGeneral<a class="headerlink" href="#resourceallocatorgeneral" title="Link to this heading"></a></h4>
+<p>General configuration (parameters) of the Resource Allocator module.</p>
+</section>
+<section id="mode">
+<h4><span class="section-number">4.1.7.2.2. </span>4.1.1. Mode<a class="headerlink" href="#mode" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Mode</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects Mode being used: SETUP mode: Board designers define system-level settings and allocate resources to cores. CONFIGURE mode: Application developers use only resources allocated to their core.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>CONFIGURE</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>CONFIGURE, SETUP</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="device">
+<h4><span class="section-number">4.1.7.2.3. </span>4.1.2. Device<a class="headerlink" href="#device" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Device</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects Device being used.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>F29H859DU_Q1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>F29H859DU_Q1, F29H859TM_Q1, F29H859TU_Q1, F29P329SJ_Q1, F29P329SM_Q1, F29P589DM_Q1, F29P589DU_Q1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="variant">
+<h4><span class="section-number">4.1.7.2.4. </span>4.1.3. Variant<a class="headerlink" href="#variant" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Variant</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects Variant being used.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>F29H859TU8_Q</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>F29H859TU8_Q</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="package">
+<h4><span class="section-number">4.1.7.2.5. </span>4.1.4. Package<a class="headerlink" href="#package" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Package</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects Package being used.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>F29H859TU_Q_256ZEX</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>F29H859TU_Q_256ZEX</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cpu1-lockstep">
+<h4><span class="section-number">4.1.7.2.6. </span>4.1.5. CPU1_Lockstep<a class="headerlink" href="#cpu1-lockstep" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>CPU1_Lockstep</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects whether lockstep mode is enabled or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>true, false</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="currentcontext">
+<h4><span class="section-number">4.1.7.2.7. </span>4.1.6. CurrentContext<a class="headerlink" href="#currentcontext" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>CurrentContext</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects Current Context to be used for this MCAL instance.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>Reference to /TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/Context</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="context">
+<h4><span class="section-number">4.1.7.2.8. </span>4.2. Context<a class="headerlink" href="#context" title="Link to this heading"></a></h4>
+<p>This container contains the driver configuration (parameters) for the Context.</p>
+</section>
+<section id="core">
+<h4><span class="section-number">4.1.7.2.9. </span>4.2.1. Core<a class="headerlink" href="#core" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Core</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects Core for which this Context is configured.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>CPU1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>CPU1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="can">
+<h4><span class="section-number">4.1.7.2.10. </span>4.2.2. Can<a class="headerlink" href="#can" title="Link to this heading"></a></h4>
+<p>Configuration container for Context specific settings for the Can module.</p>
+<section id="canallocatedinstance">
+<h5><span class="section-number">4.1.7.2.10.1. </span>4.2.2.1. CanAllocatedInstance<a class="headerlink" href="#canallocatedinstance" title="Link to this heading"></a></h5>
+<p>Configuration of a Can instance allocated to this context.</p>
+<p><strong>4.2.2.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Can instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>MCANA</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>MCANA, MCANB, MCANC, MCAND, MCANE, MCANF</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.2.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.2.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Can instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>MCANA_DRIVER_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="spi">
+<h4><span class="section-number">4.1.7.2.11. </span>4.2.3. Spi<a class="headerlink" href="#spi" title="Link to this heading"></a></h4>
+<p>Configuration container for Context specific settings for the Spi module.</p>
+<section id="spiallocatedinstance">
+<h5><span class="section-number">4.1.7.2.11.1. </span>4.2.3.1. SpiAllocatedInstance<a class="headerlink" href="#spiallocatedinstance" title="Link to this heading"></a></h5>
+<p>Configuration for Spi Instance.</p>
+<p><strong>4.2.3.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Spi instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>SPIA</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>SPIA, SPIB, SPIC, SPID, SPIE</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.3.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.3.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Spi instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>SPIA_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="lin">
+<h4><span class="section-number">4.1.7.2.12. </span>4.2.4. Lin<a class="headerlink" href="#lin" title="Link to this heading"></a></h4>
+<p>Configuration container for Context specific settings for the Lin module.</p>
+<section id="linallocatedinstance">
+<h5><span class="section-number">4.1.7.2.12.1. </span>4.2.4.1. LinAllocatedInstance<a class="headerlink" href="#linallocatedinstance" title="Link to this heading"></a></h5>
+<p>Configuration for Lin Instance.</p>
+<p><strong>4.2.4.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Lin instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>LINA</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>LINA, LINB</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.4.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.4.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Lin instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>LINA_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cdd-adc">
+<h4><span class="section-number">4.1.7.2.13. </span>4.2.5. Cdd_Adc<a class="headerlink" href="#cdd-adc" title="Link to this heading"></a></h4>
+<p>Configuration container for Context specific settings for the Cdd_Adc module.</p>
+<section id="cdd-adcallocatedinstance">
+<h5><span class="section-number">4.1.7.2.13.1. </span>4.2.5.1. Cdd_AdcAllocatedInstance<a class="headerlink" href="#cdd-adcallocatedinstance" title="Link to this heading"></a></h5>
+<p>Configuration for Cdd_Adc Instance.</p>
+<p><strong>4.2.5.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Adc instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>CDD_ADCA</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>CDD_ADCA, CDD_ADCB, CDD_ADCC, CDD_ADCD, CDD_ADCE</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.5.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.5.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Adc instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>ADCA_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddadcsafetycheckerinstance">
+<h5><span class="section-number">4.1.7.2.13.2. </span>4.2.5.2. CddAdcSafetyCheckerInstance<a class="headerlink" href="#cddadcsafetycheckerinstance" title="Link to this heading"></a></h5>
+<p>Configuration of ADC safety checker instances.</p>
+<p><strong>4.2.5.2.1. SafetyCheckerInstance</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>SafetyCheckerInstance</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the adc safety checker instances to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>ADCSAFETYCHECK1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>ADCSAFETYCHECK1, ADCSAFETYCHECK2, ADCSAFETYCHECK3, ADCSAFETYCHECK4, ADCSAFETYCHECK5, ADCSAFETYCHECK6, ADCSAFETYCHECK7, ADCSAFETYCHECK8, ADCSAFETYCHECK9, ADCSAFETYCHECK10</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.5.2.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.5.2.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Adc safety checker instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>ADCSAFETYCHECK1_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddadccheckerinterruptevtinstance">
+<h5><span class="section-number">4.1.7.2.13.3. </span>4.2.5.3. CddAdcCheckerInterruptEvtInstance<a class="headerlink" href="#cddadccheckerinterruptevtinstance" title="Link to this heading"></a></h5>
+<p>Configuration of ADC safety checker interrupt event instances.</p>
+<p><strong>4.2.5.3.1. SafetyCheckerIntEvtInstance</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>SafetyCheckerIntEvtInstance</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the safety checker interrupt event instances to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>ADCSAFETYCHECKINTEVT1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>ADCSAFETYCHECKINTEVT1, ADCSAFETYCHECKINTEVT2, ADCSAFETYCHECKINTEVT3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.5.3.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.5.3.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Adc safety checker instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>ADCSAFETYCHECKINTEVT1_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddadcglobalsoftwareforce">
+<h5><span class="section-number">4.1.7.2.13.4. </span>4.2.5.4. CddAdcGlobalSoftwareForce<a class="headerlink" href="#cddadcglobalsoftwareforce" title="Link to this heading"></a></h5>
+<p>Configuration of global software force. This is linked to global software trigger feature in ADC. This should be added only once.</p>
+<p><strong>4.2.5.4.1. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects frame for global software force registers. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.5.4.2. GlbSwFrcBaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>GlbSwFrcBaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Adc global software force registers. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>ADCGLOBAL_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cdd-ecap">
+<h4><span class="section-number">4.1.7.2.14. </span>4.2.6. Cdd_Ecap<a class="headerlink" href="#cdd-ecap" title="Link to this heading"></a></h4>
+<p>Configuration container for Context specific settings for the Cdd_Ecap module.</p>
+<section id="cdd-ecapallocatedinstance">
+<h5><span class="section-number">4.1.7.2.14.1. </span>4.2.6.1. Cdd_EcapAllocatedInstance<a class="headerlink" href="#cdd-ecapallocatedinstance" title="Link to this heading"></a></h5>
+<p>Configuration for Cdd_Ecap Instance.</p>
+<p><strong>4.2.6.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Cdd_Ecap instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>ECAP1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>ECAP1, ECAP2, ECAP3, ECAP4, ECAP5, ECAP6</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.6.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.6.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Ecap instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>ECAP1_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cdd-i2c">
+<h4><span class="section-number">4.1.7.2.15. </span>4.2.7. Cdd_I2c<a class="headerlink" href="#cdd-i2c" title="Link to this heading"></a></h4>
+<p>Configuration container for Context specific settings for the Cdd_I2c module.</p>
+<section id="cdd-i2callocatedinstance">
+<h5><span class="section-number">4.1.7.2.15.1. </span>4.2.7.1. Cdd_I2cAllocatedInstance<a class="headerlink" href="#cdd-i2callocatedinstance" title="Link to this heading"></a></h5>
+<p>Configuration for Cdd_I2c Instance.</p>
+<p><strong>4.2.7.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Cdd_I2c instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>I2CA</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>I2CA, I2CB</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.7.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.7.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_I2c instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>I2CA_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cdd-pwm">
+<h4><span class="section-number">4.1.7.2.16. </span>4.2.8. Cdd_Pwm<a class="headerlink" href="#cdd-pwm" title="Link to this heading"></a></h4>
+<p>Configuration container for Context specific settings for the Cdd_Pwm module.</p>
+<section id="cdd-pwmallocatedinstance">
+<h5><span class="section-number">4.1.7.2.16.1. </span>4.2.8.1. Cdd_PwmAllocatedInstance<a class="headerlink" href="#cdd-pwmallocatedinstance" title="Link to this heading"></a></h5>
+<p>Configuration for Cdd_Pwm Instance.</p>
+<p><strong>4.2.8.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Pwm instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>EPWM1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>EPWM1, EPWM2, EPWM3, EPWM4, EPWM5, EPWM6, EPWM7, EPWM8, EPWM9, EPWM10, EPWM11, EPWM12, EPWM13, EPWM14, EPWM15, EPWM16, EPWM17, EPWM18</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.8.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.8.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Pwm instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>EPWM1_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.8.1.4. XlinkBaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>XlinkBaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Pwm instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>EPWM1XLINK_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddpwmhrpwmcalinstance">
+<h5><span class="section-number">4.1.7.2.16.2. </span>4.2.8.2. CddPwmHrpwmCalInstance<a class="headerlink" href="#cddpwmhrpwmcalinstance" title="Link to this heading"></a></h5>
+<p>Configuration of Hrpwm calibration instances.</p>
+<p><strong>4.2.8.2.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Hrpwm calibration instance instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>HRPWMCAL1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>HRPWMCAL1, HRPWMCAL2, HRPWMCAL3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.8.2.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.8.2.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Pwm instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>HRPWMCAL1_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cdd-sent">
+<h4><span class="section-number">4.1.7.2.17. </span>4.2.9. Cdd_Sent<a class="headerlink" href="#cdd-sent" title="Link to this heading"></a></h4>
+<p>Configuration container for Context specific settings for the Cdd_Sent module.</p>
+<section id="cdd-sentallocatedinstance">
+<h5><span class="section-number">4.1.7.2.17.1. </span>4.2.9.1. Cdd_SentAllocatedInstance<a class="headerlink" href="#cdd-sentallocatedinstance" title="Link to this heading"></a></h5>
+<p>Configuration of a Cdd_Sent instance allocated to this context.</p>
+<p><strong>4.2.9.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Cdd_Sent instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>SENT1</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>SENT1, SENT2, SENT3, SENT4, SENT5, SENT6</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.9.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.9.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Sent instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>SENT1_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cdd-uart">
+<h4><span class="section-number">4.1.7.2.18. </span>4.2.10. Cdd_Uart<a class="headerlink" href="#cdd-uart" title="Link to this heading"></a></h4>
+<p>Configuration container for Context specific settings for the Cdd_Uart module.</p>
+<section id="cdd-uartallocatedinstance">
+<h5><span class="section-number">4.1.7.2.18.1. </span>4.2.10.1. Cdd_UartAllocatedInstance<a class="headerlink" href="#cdd-uartallocatedinstance" title="Link to this heading"></a></h5>
+<p>Configuration of a Cdd_Uart instance allocated to this context.</p>
+<p><strong>4.2.10.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the Cdd_Uart instance to be allocated.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>UARTA</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>UARTA, UARTB, UARTC, UARTD, UARTE, UARTF</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.10.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2.10.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Uart instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>UARTA_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cdd-xbar">
+<h4><span class="section-number">4.1.7.2.19. </span>4.3. Cdd_Xbar<a class="headerlink" href="#cdd-xbar" title="Link to this heading"></a></h4>
+<p>Configuration container for Cdd_Xbar module.</p>
+<section id="cddxbaroutputxbarflag">
+<h5><span class="section-number">4.1.7.2.19.1. </span>4.3.1. CddXbarOutputXbarFlag<a class="headerlink" href="#cddxbaroutputxbarflag" title="Link to this heading"></a></h5>
+<p>Configuration of a Cdd Xbar Output Xbar flag.</p>
+<p><strong>4.3.1.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Cdd Xbar Output Xbar flag.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>OUTPUTXBARFlags</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.3.1.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.3.1.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Xbar instance. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>OUTPUTXBAR1_FLAGS_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cddxbarinputflag">
+<h5><span class="section-number">4.1.7.2.19.2. </span>4.3.2. CddXbarInputFlag<a class="headerlink" href="#cddxbarinputflag" title="Link to this heading"></a></h5>
+<p>Configuration of a Cdd_Xbar Input flags.</p>
+<p><strong>4.3.2.1. InstanceName</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>InstanceName</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Cdd Xbar Input flag.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>INPUTXBARFlags</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.3.2.2. Frame</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>Frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address.</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>FRAME0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>FRAME0, FRAME1, FRAME2, FRAME3</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.3.2.3. BaseAddr</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Name</p></td>
+<td><p>BaseAddr</p></td>
+</tr>
+<tr class="row-odd"><td><p>Description</p></td>
+<td><p>Base address of the Cdd_Xbar input flag. This field represents the macro as defined in hw_memmap.h</p></td>
+</tr>
+<tr class="row-even"><td><p>Origin</p></td>
+<td><p>Texas Instruments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-Build-Variant-Value</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>Value-Configuration-Class</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pre-Compile-Time</p></td>
+<td><p>VARIANT-PRE-COMPILE</p></td>
+</tr>
+<tr class="row-even"><td><p>Default-value</p></td>
+<td><p>XBAR_BASE_FRAME(0U)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Range</p></td>
+<td><p>String</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+</section>
+<section id="usage-procedures">
+<h2><span class="section-number">4.1.8. </span>Usage Procedures<a class="headerlink" href="#usage-procedures" title="Link to this heading"></a></h2>
+<section id="configuration-workflow">
+<h3><span class="section-number">4.1.8.1. </span>Configuration Workflow<a class="headerlink" href="#configuration-workflow" title="Link to this heading"></a></h3>
+<p><strong>Step 1: Create EB Tresos Project</strong></p>
+<ol class="arabic simple">
+<li><p>Launch EB Tresos Studio</p></li>
+<li><p>Create a new configuration project</p></li>
+<li><p>Select the target device C2000/F29H85x</p></li>
+<li><p>Load the ResourceAllocator plugin</p></li>
+</ol>
+<p><strong>Step 2: Configure Device Settings</strong></p>
+<ol class="arabic simple">
+<li><p>Open the ResourceAllocator module configuration</p></li>
+<li><p>Navigate to the <code class="docutils literal notranslate"><span class="pre">ResourceAllocatorGeneral</span></code> container</p></li>
+<li><p>Select the appropriate:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ResourceAllocatorDevice</span></code> (e.g., F29H85x)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ResourceAllocatorVariant</span></code> (e.g., F29H859TU_Q1)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ResourceAllocatorPackage</span></code> (e.g., F29H859TU8_Q_256ZEX)</p></li>
+</ul>
+</li>
+<li><p>Run <strong>Auto-Calc</strong> wizard in EB Tresos to calculated required values.</p></li>
+</ol>
+<p><strong>Step 3: Configure Other MCAL Modules</strong></p>
+<ol class="arabic simple">
+<li><p>Add required MCAL modules (CAN, SPI, ADC, etc.)</p></li>
+<li><p>The modules will reference the device configuration from Resource Allocator</p></li>
+<li><p>Configure each module according to application requirements</p></li>
+<li><p>Run <strong>Auto-Calc</strong> wizard in EB Tresos to calculated required values.</p></li>
+</ol>
+<p><strong>Step 4: Generate Configuration</strong></p>
+<ol class="arabic simple">
+<li><p>Validate all module configurations</p></li>
+<li><p>Generate the configuration files</p></li>
+<li><p>The generated code will include device-specific settings</p></li>
+</ol>
+</section>
+</section>
+<section id="examples">
+<h2><span class="section-number">4.1.9. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<section id="example-configuring-for-f29h85x-device">
+<h3><span class="section-number">4.1.9.1. </span>Example: Configuring for F29H85x Device<a class="headerlink" href="#example-configuring-for-f29h85x-device" title="Link to this heading"></a></h3>
+<p>This example demonstrates configuring the Resource Allocator for an F29H85x device:</p>
+<p><strong>Configuration:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ResourceAllocatorGeneral
+├── Device: F29H85x
+├── Variant: F29H859TU_Q1
+└── Package: F29H859TU8_Q_256ZEX
+</pre></div>
+</div>
+<p><strong>Result:</strong></p>
+<ul class="simple">
+<li><p>All MCAL modules will be configured for F29H85x device family</p></li>
+<li><p>Device-specific peripheral instances will be available</p></li>
+<li><p>Appropriate constraints will be applied based on the selected variant</p></li>
+</ul>
+</section>
+<section id="example-configuring-for-f29p58x-device">
+<h3><span class="section-number">4.1.9.2. </span>Example: Configuring for F29P58x Device<a class="headerlink" href="#example-configuring-for-f29p58x-device" title="Link to this heading"></a></h3>
+<p>This example demonstrates configuring the Resource Allocator for an F29P58x device:</p>
+<p><strong>Configuration:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ResourceAllocatorGeneral
+├── Device: F29P58x
+├── Variant: F29P589DU_Q1
+└── Package: F29P589DU5_Q_256ZEX
+</pre></div>
+</div>
+<p><strong>Result:</strong></p>
+<ul class="simple">
+<li><p>All MCAL modules will be configured for F29P58x device family</p></li>
+<li><p>Device-specific peripheral instances will be available</p></li>
+<li><p>Appropriate constraints will be applied based on the selected variant</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Resource Allocator should be configured before other MCAL modules to ensure device-specific settings are available for all module configurations.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ModuleUserGuide_list.html" class="btn btn-neutral float-left" title="4. Module User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Can.html" class="btn btn-neutral float-right" title="4.2. CAN Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
+          <span class="lastupdated" >Last updated on Dec 19, 2025.
+      </span><br>
+        <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
+
+    </p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"></span>
+       Current Version: 01.04.00
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="version-list">
+        <dt>Versions</dt>
+        <!-- Dynamic content will be inserted here -->
+      </dl>
+    </div>
+  </div>
+  
+  <style>
+    #version-list dd {
+        display: block; 
+    }
+  </style>
+  
+  <script>
+    // Function to fetch the JSON file from GitHub and populate the version links
+    async function loadVersions() {
+      try {
+    const versionsUrl = 'https://software-dl.ti.com/C2000/docs/mcal/F29H85x/F29H85x_versions.json';
+        const response = await fetch(versionsUrl); // Replace with your raw URL
+        const versions = await response.json();
+        const versionList = document.getElementById('version-list');
+  
+        // Iterate over the versions and create list items
+        for (const [version, url] of Object.entries(versions)) {
+          const listItem = document.createElement('dd');
+          const link = document.createElement('a');
+          link.href = url;
+          link.textContent = version;
+          listItem.appendChild(link);
+          versionList.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error('Error loading versions:', error);
+      }
+    }
+    loadVersions();
+  </script><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -114,15 +114,14 @@ typedef enum
 //*****************************************************************************
 typedef enum
 {
-    DEVICE_F29H859TU8,
-    DEVICE_F29H859TM8,
-    DEVICE_F29H859DM6,
-    DEVICE_F29H859DU6,
-    DEVICE_F29P589DM5,
-    DEVICE_F29P589DU5,
-    DEVICE_F29P329SM2,
-    DEVICE_F29P329SM1,
-    DEVICE_F29P329SJ1
+    DEVICE_F29H859TU8Q,
+    DEVICE_F29H859TM8Q,
+    DEVICE_F29H859DU6Q,
+    DEVICE_F29P589DU5Q,
+    DEVICE_F29P589DM5Q,
+    DEVICE_F29P329SJ1Q,
+    DEVICE_F29P329SM1Q,
+    DEVICE_F29P329SM2Q
 } Device_PartNumber;
 
 /*********************************************************************************************************************

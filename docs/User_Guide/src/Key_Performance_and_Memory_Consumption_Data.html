@@ -22,6 +22,7 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. AUTOSAR Integration Guide" href="AUTOSAR_Integration.html" />
     <link rel="prev" title="5.17. CDD_XBAR" href="Modules/group__CDD__XBAR.html" /> 
 </head>
 
@@ -71,7 +72,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#spi-driver">6.1.4. SPI Driver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fls-driver">6.1.5. FLS Driver</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cdd-ipc-driver">6.1.6. CDD IPC Driver</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cdd-adc-driver">6.1.7. CDD ADC Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdd-adc-driver">6.1.7. CDD ADC Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-without-dma-integration">6.1.7.1. CDD ADC without DMA integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cdd-adc-with-dma-integration">6.1.7.2. CDD ADC with DMA integration</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#memory-footprints">6.2. Memory Footprints</a><ul>
@@ -86,8 +91,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#wdg">6.2.9. WDG</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cdd-adc">6.2.10. CDD ADC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cdd-ecap">6.2.11. CDD ECAP</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cdd-ipc">6.2.12. CDD IPC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">6.2.13. CDD IPC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdd-i2c">6.2.12. CDD I2C</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cdd-ipc">6.2.13. CDD IPC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cdd-pwm">6.2.14. CDD PWM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cdd-sent">6.2.15. CDD SENT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cdd-uart">6.2.16. CDD UART</a></li>
@@ -96,6 +101,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -221,12 +227,12 @@
 <tbody>
 <tr class="row-even"><td><p>Lin Master Response Performance</p></td>
 <td><p>845312 us</p></td>
-<td><p>867612 us</p></td>
-<td><p>Total time taken to send 8 Bytes of data 128 times ~ 1MB</p></td>
+<td><p>867680 us</p></td>
+<td><p>Total time taken to send 8 Bytes of data 128 times ~ 1KB</p></td>
 </tr>
 <tr class="row-odd"><td><p>Lin Slave Response Performance</p></td>
 <td><p>6874 us</p></td>
-<td><p>7269 us</p></td>
+<td><p>7291 us</p></td>
 <td><p>Total time taken to receive 8 Bytes of data</p></td>
 </tr>
 </tbody>
@@ -250,7 +256,7 @@
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 8 bit data width</p></td>
 <td><p>179200</p></td>
-<td><p>179209</p></td>
+<td><p>179208</p></td>
 <td><p>BaudRate 5MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 112000 words with 16 bit data width</p></td>
@@ -265,7 +271,7 @@
 </tr>
 <tr class="row-even"><td><p>Transmit 112000 words with 8 bit data width</p></td>
 <td><p>89600</p></td>
-<td><p>89607</p></td>
+<td><p>89608</p></td>
 <td><p>BaudRate 10MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 8 bit data width</p></td>
@@ -285,17 +291,17 @@
 </tr>
 <tr class="row-even"><td><p>Transmit 112000 words with 8 bit data width</p></td>
 <td><p>17920</p></td>
-<td><p>23916</p></td>
+<td><p>24013</p></td>
 <td><p>BaudRate 50MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 8 bit data width</p></td>
 <td><p>17920</p></td>
-<td><p>29686</p></td>
+<td><p>29611</p></td>
 <td><p>BaudRate 50MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 112000 words with 16 bit data width</p></td>
-<td><p>35840</p></td>
-<td><p>35848</p></td>
+<td><p>35880</p></td>
+<td><p>36530</p></td>
 <td><p>BaudRate 50MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 112000 words with 16 bit data width</p></td>
@@ -310,12 +316,12 @@
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 8 bit data width</p></td>
 <td><p>89600</p></td>
-<td><p>89606</p></td>
+<td><p>89605</p></td>
 <td><p>BaudRate 5MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 56000 words with 16 bit data width</p></td>
 <td><p>179200</p></td>
-<td><p>179205</p></td>
+<td><p>179204</p></td>
 <td><p>BaudRate 5MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 16 bit data width</p></td>
@@ -325,7 +331,7 @@
 </tr>
 <tr class="row-even"><td><p>Transmit 56000 words with 8 bit data width</p></td>
 <td><p>44800</p></td>
-<td><p>44805</p></td>
+<td><p>44804</p></td>
 <td><p>BaudRate 10MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 8 bit data width</p></td>
@@ -345,22 +351,22 @@
 </tr>
 <tr class="row-even"><td><p>Transmit 56000 words with 8 bit data width</p></td>
 <td><p>8960</p></td>
-<td><p>11959</p></td>
+<td><p>12007</p></td>
 <td><p>BaudRate 50MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 8 bit data width</p></td>
 <td><p>8960</p></td>
-<td><p>14863</p></td>
+<td><p>14788</p></td>
 <td><p>BaudRate 50MHz, Async Transmit</p></td>
 </tr>
 <tr class="row-even"><td><p>Transmit 56000 words with 16 bit data width</p></td>
 <td><p>17920</p></td>
-<td><p>17925</p></td>
+<td><p>17941</p></td>
 <td><p>BaudRate 50MHz, Sync Transmit</p></td>
 </tr>
 <tr class="row-odd"><td><p>Transmit 56000 words with 16 bit data width</p></td>
 <td><p>17920</p></td>
-<td><p>17926</p></td>
+<td><p>19928</p></td>
 <td><p>BaudRate 50MHz, Async Transmit</p></td>
 </tr>
 </tbody>
@@ -425,6 +431,8 @@
 </section>
 <section id="cdd-adc-driver">
 <h3><span class="section-number">6.1.7. </span>CDD ADC Driver<a class="headerlink" href="#cdd-adc-driver" title="Link to this heading"></a></h3>
+<section id="cdd-adc-without-dma-integration">
+<h4><span class="section-number">6.1.7.1. </span>CDD ADC without DMA integration<a class="headerlink" href="#cdd-adc-without-dma-integration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Performance Test</p></th>
@@ -436,21 +444,61 @@
 <tbody>
 <tr class="row-even"><td><p>12-bit ADC with SW triggers</p></td>
 <td><p>3.84 Msps at 57MHz</p></td>
-<td><p>3.846 Msps (99.909760%) With 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p>3.836 Msps (99.909760%) With 3.5 ADC Clock Divider : 57.14MHz</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p>12-bit ADC with HW triggers</p></td>
 <td><p>3.84 Msps at 57MHz</p></td>
-<td><p>3.836 Msps (99.636093%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p>3.829 Msps (99.735458%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p>16-bit ADC with SW triggers</p></td>
 <td><p>1.19 Msps at 57MHz</p></td>
-<td><p>1.183 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p>1.180 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>16-bit ADC with HW triggers</p></td>
+<td><p>1.19 Msps at 57MHz</p></td>
+<td><p>1.180 Msps (99.145332%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="cdd-adc-with-dma-integration">
+<h4><span class="section-number">6.1.7.2. </span>CDD ADC with DMA integration<a class="headerlink" href="#cdd-adc-with-dma-integration" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Performance Test</p></th>
+<th class="head"><p>Theoretical value (max)</p></th>
+<th class="head"><p>Measured value</p></th>
+<th class="head"><p>Remarks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>12-bit ADC with SW triggers</p></td>
+<td><p>3.84 Msps at 57MHz</p></td>
+<td><p>3.836 Msps (99.910042%) With 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>12-bit ADC with HW triggers</p></td>
+<td><p>3.84 Msps at 57MHz</p></td>
+<td><p>3.829 Msps (99.735458%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>16-bit ADC with SW triggers</p></td>
+<td><p>1.19 Msps at 57MHz</p></td>
+<td><p>1.180 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>16-bit ADC with HW triggers</p></td>
+<td><p>1.19 Msps at 57MHz</p></td>
+<td><p>1.180 Msps (99.146255%) ith 3.5 ADC Clock Divider : 57.14MHz</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 </section>
 <section id="memory-footprints">
@@ -467,22 +515,22 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Can_Example_Classic_FD</p></td>
-<td><p>58540</p></td>
+<td><p>58556</p></td>
 <td><p>0</p></td>
 <td><p>8560</p></td>
 </tr>
 <tr class="row-odd"><td><p>Can_Example_Icom</p></td>
-<td><p>59188</p></td>
+<td><p>59172</p></td>
 <td><p>0</p></td>
 <td><p>8832</p></td>
 </tr>
 <tr class="row-even"><td><p>Can_Example_loopback</p></td>
-<td><p>56932</p></td>
+<td><p>56916</p></td>
 <td><p>0</p></td>
 <td><p>8496</p></td>
 </tr>
 <tr class="row-odd"><td><p>Can_Example_Wakeup</p></td>
-<td><p>57684</p></td>
+<td><p>57668</p></td>
 <td><p>0</p></td>
 <td><p>8580</p></td>
 </tr>
@@ -501,7 +549,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Dio_Example_Read_Write_All</p></td>
-<td><p>41836</p></td>
+<td><p>41820</p></td>
 <td><p>0</p></td>
 <td><p>4680</p></td>
 </tr>
@@ -520,7 +568,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Fls_App_Example</p></td>
-<td><p>53236</p></td>
+<td><p>53156</p></td>
 <td><p>0</p></td>
 <td><p>13046</p></td>
 </tr>
@@ -539,17 +587,17 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Gpt_Example_Timers</p></td>
-<td><p>45108</p></td>
+<td><p>45124</p></td>
 <td><p>0</p></td>
 <td><p>4756</p></td>
 </tr>
 <tr class="row-odd"><td><p>Gpt_Example_OneShotMode</p></td>
-<td><p>46380</p></td>
+<td><p>46364</p></td>
 <td><p>0</p></td>
 <td><p>4744</p></td>
 </tr>
 <tr class="row-even"><td><p>Gpt_Example_MixedMode</p></td>
-<td><p>44332</p></td>
+<td><p>44316</p></td>
 <td><p>0</p></td>
 <td><p>4728</p></td>
 </tr>
@@ -559,7 +607,7 @@
 <td><p>4732</p></td>
 </tr>
 <tr class="row-even"><td><p>Gpt_Example_ContinuousMode</p></td>
-<td><p>46268</p></td>
+<td><p>46236</p></td>
 <td><p>0</p></td>
 <td><p>4744</p></td>
 </tr>
@@ -583,12 +631,12 @@
 <td><p>4713</p></td>
 </tr>
 <tr class="row-odd"><td><p>Lin_Example_SendData</p></td>
-<td><p>45316</p></td>
+<td><p>45300</p></td>
 <td><p>0</p></td>
 <td><p>4728</p></td>
 </tr>
 <tr class="row-even"><td><p>Lin_Example_Sleep_Wakeup_Interrupt</p></td>
-<td><p>44148</p></td>
+<td><p>44116</p></td>
 <td><p>0</p></td>
 <td><p>4716</p></td>
 </tr>
@@ -607,7 +655,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Mcu_Example_Clock</p></td>
-<td><p>39268</p></td>
+<td><p>39284</p></td>
 <td><p>0</p></td>
 <td><p>4660</p></td>
 </tr>
@@ -660,7 +708,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Spi_Example_Sync_AsyncTransfer</p></td>
-<td><p>54444</p></td>
+<td><p>54428</p></td>
 <td><p>0</p></td>
 <td><p>5712</p></td>
 </tr>
@@ -670,12 +718,12 @@
 <td><p>5600</p></td>
 </tr>
 <tr class="row-even"><td><p>Spi_Example_SyncTransfer</p></td>
-<td><p>53596</p></td>
+<td><p>53580</p></td>
 <td><p>0</p></td>
 <td><p>5440</p></td>
 </tr>
 <tr class="row-odd"><td><p>Spi_Example_External_Loopback</p></td>
-<td><p>67740</p></td>
+<td><p>67724</p></td>
 <td><p>0</p></td>
 <td><p>5348</p></td>
 </tr>
@@ -699,7 +747,7 @@
 <td><p>4720</p></td>
 </tr>
 <tr class="row-odd"><td><p>Wdg_Example_Service</p></td>
-<td><p>41572</p></td>
+<td><p>41588</p></td>
 <td><p>0</p></td>
 <td><p>4720</p></td>
 </tr>
@@ -718,22 +766,22 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Adc_Example_Differential</p></td>
-<td><p>56084</p></td>
+<td><p>56036</p></td>
 <td><p>0</p></td>
 <td><p>5072</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Adc_Example_GlbSwTrig</p></td>
-<td><p>57452</p></td>
+<td><p>57468</p></td>
 <td><p>0</p></td>
 <td><p>5628</p></td>
 </tr>
 <tr class="row-even"><td><p>Cdd_Adc_Example_Ppb_TrigRepeater</p></td>
-<td><p>57836</p></td>
+<td><p>57804</p></td>
 <td><p>0</p></td>
 <td><p>7352</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Adc_Example_TempSensor</p></td>
-<td><p>48980</p></td>
+<td><p>48964</p></td>
 <td><p>0</p></td>
 <td><p>4856</p></td>
 </tr>
@@ -752,20 +800,20 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Ecap_Capture_Signal</p></td>
-<td><p>53412</p></td>
+<td><p>53684</p></td>
 <td><p>0</p></td>
 <td><p>5184</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Ecap_HrMode</p></td>
-<td><p>51324</p></td>
+<td><p>51516</p></td>
 <td><p>0</p></td>
 <td><p>4859</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="cdd-ipc">
-<h3><span class="section-number">6.2.12. </span>CDD IPC<a class="headerlink" href="#cdd-ipc" title="Link to this heading"></a></h3>
+<section id="cdd-i2c">
+<h3><span class="section-number">6.2.12. </span>CDD I2C<a class="headerlink" href="#cdd-i2c" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Examples</p></th>
@@ -781,15 +829,15 @@
 <td><p>5820</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_I2c_Poll</p></td>
-<td><p>49228</p></td>
+<td><p>49212</p></td>
 <td><p>0</p></td>
 <td><p>5820</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="id1">
-<h3><span class="section-number">6.2.13. </span>CDD IPC<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<section id="cdd-ipc">
+<h3><span class="section-number">6.2.13. </span>CDD IPC<a class="headerlink" href="#cdd-ipc" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Examples</p></th>
@@ -800,7 +848,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Ipc_Example_Polling_C29x1</p></td>
-<td><p>54948</p></td>
+<td><p>54932</p></td>
 <td><p>0</p></td>
 <td><p>4684</p></td>
 </tr>
@@ -834,7 +882,7 @@
 <td><p>66169</p></td>
 </tr>
 <tr class="row-even"><td><p>Cdd_Pwm_Example_Deadband</p></td>
-<td><p>80380</p></td>
+<td><p>80412</p></td>
 <td><p>0</p></td>
 <td><p>66161</p></td>
 </tr>
@@ -844,12 +892,12 @@
 <td><p>66185</p></td>
 </tr>
 <tr class="row-even"><td><p>Cdd_Pwm_Example_GlobalLoad_And_Link</p></td>
-<td><p>78340</p></td>
+<td><p>78484</p></td>
 <td><p>0</p></td>
 <td><p>66159</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Pwm_Example_Hrpwm</p></td>
-<td><p>77892</p></td>
+<td><p>77908</p></td>
 <td><p>0</p></td>
 <td><p>66147</p></td>
 </tr>
@@ -859,7 +907,7 @@
 <td><p>4733</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Pwm_Example_UpCountMode</p></td>
-<td><p>46860</p></td>
+<td><p>46844</p></td>
 <td><p>0</p></td>
 <td><p>66288</p></td>
 </tr>
@@ -888,7 +936,7 @@
 <td><p>4764</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Sent_MtpMode</p></td>
-<td><p>44900</p></td>
+<td><p>44916</p></td>
 <td><p>0</p></td>
 <td><p>4768</p></td>
 </tr>
@@ -907,17 +955,17 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Cdd_Uart_Example_Loopback</p></td>
-<td><p>45436</p></td>
+<td><p>45452</p></td>
 <td><p>0</p></td>
 <td><p>4732</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cdd_Uart_Example_Read_Interrupt</p></td>
-<td><p>44716</p></td>
+<td><p>44732</p></td>
 <td><p>0</p></td>
 <td><p>4732</p></td>
 </tr>
 <tr class="row-even"><td><p>Cdd_Uart_Example_Write_Interrupt</p></td>
-<td><p>45324</p></td>
+<td><p>45308</p></td>
 <td><p>0</p></td>
 <td><p>4724</p></td>
 </tr>
@@ -960,13 +1008,14 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Modules/group__CDD__XBAR.html" class="btn btn-neutral float-left" title="5.17. CDD_XBAR" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="AUTOSAR_Integration.html" class="btn btn-neutral float-right" title="7. AUTOSAR Integration Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Dec 18, 2025.
+          <span class="lastupdated" >Last updated on Dec 19, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

@@ -54,6 +54,9 @@
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ecap_TI_F29H85x/Cdd_Ecap_ModuleEntry/Cdd_Ecap_IntISR_Fun</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
+              <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ecap_TI_F29H85x/Cdd_Ecap_ModuleEntry/Cdd_Ecap_PeriodicReadback</BSW-MODULE-ENTRY-REF>
+            </BSW-MODULE-ENTRY-REF-CONDITIONAL>  
+            <BSW-MODULE-ENTRY-REF-CONDITIONAL>
               <BSW-MODULE-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ecap_TI_F29H85x/Cdd_Ecap_ModuleEntry/Cdd_Ecap_ResetEdgeCount</BSW-MODULE-ENTRY-REF>
             </BSW-MODULE-ENTRY-REF-CONDITIONAL>  
             <BSW-MODULE-ENTRY-REF-CONDITIONAL>
@@ -305,7 +308,7 @@
                   <INTERRUPT-CATEGORY>CAT-1</INTERRUPT-CATEGORY>
                 </BSW-INTERRUPT-ENTITY>
                 <BSW-CALLED-ENTITY UUID="7093e647-5bee-43ae-942f-7700c7d34aaf">
-                  <SHORT-NAME>Cdd_Ecap_RegisterReadback</SHORT-NAME>    
+                  <SHORT-NAME>Cdd_Ecap_PeriodicReadback</SHORT-NAME>    
                   <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
                   <CALL-POINTS>
                     <BSW-DIRECT-CALL-POINT>
@@ -313,18 +316,7 @@
                       <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
                     </BSW-DIRECT-CALL-POINT>
                   </CALL-POINTS>
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ecap_TI_F29H85x/Cdd_Ecap_ModuleEntry/Cdd_Ecap_GetHrScaleFactor</IMPLEMENTED-ENTRY-REF>
-                </BSW-CALLED-ENTITY>
-                <BSW-CALLED-ENTITY UUID="7093e647-5bee-43ae-942f-7700c7d34aaf">
-                  <SHORT-NAME>Cdd_Ecap_RegisterReadback</SHORT-NAME>    
-                  <REENTRANCY-LEVEL>SINGLE-CORE-REENTRANT</REENTRANCY-LEVEL>
-                  <CALL-POINTS>
-                    <BSW-DIRECT-CALL-POINT>
-                      <SHORT-NAME>Det_ReportError</SHORT-NAME>
-                      <CALLED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/AUTOSAR_Det/BSWModuleEntry/Det_ReportError</CALLED-ENTRY-REF>
-                    </BSW-DIRECT-CALL-POINT>
-                  </CALL-POINTS>
-                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ecap_TI_F29H85x/Cdd_Ecap_ModuleEntry/Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp</IMPLEMENTED-ENTRY-REF>
+                  <IMPLEMENTED-ENTRY-REF DEST="BSW-MODULE-ENTRY">/Cdd_Ecap_TI_F29H85x/Cdd_Ecap_ModuleEntry/Cdd_Ecap_PeriodicReadback</IMPLEMENTED-ENTRY-REF>
                 </BSW-CALLED-ENTITY>
                 <BSW-CALLED-ENTITY UUID="40f41045-5dd6-4c59-9f3e-c513f68a1f82">
                   <SHORT-NAME>Cdd_Ecap_ResetEdgeCount</SHORT-NAME>    
@@ -693,6 +685,16 @@
               <SHORT-NAME>Cdd_Ecap_Init</SHORT-NAME>
               <SERVICE-ID>0</SERVICE-ID>
               <IS-REENTRANT>false</IS-REENTRANT>
+              <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
+              <CALL-TYPE>REGULAR</CALL-TYPE>
+              <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>
+              <SW-SERVICE-IMPL-POLICY>STANDARD</SW-SERVICE-IMPL-POLICY>
+              <BSW-ENTRY-KIND>CONCRETE</BSW-ENTRY-KIND>
+            </BSW-MODULE-ENTRY>
+			      <BSW-MODULE-ENTRY UUID="260f096f-a668-466b-a668-4eb7cca131b4">
+              <SHORT-NAME>Cdd_Ecap_PeriodicReadback</SHORT-NAME>
+              <SERVICE-ID>34</SERVICE-ID>
+              <IS-REENTRANT>true</IS-REENTRANT>
               <IS-SYNCHRONOUS>true</IS-SYNCHRONOUS>
               <CALL-TYPE>REGULAR</CALL-TYPE>
               <EXECUTION-CONTEXT>UNSPECIFIED</EXECUTION-CONTEXT>

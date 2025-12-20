@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.3. FLS Module &mdash; Documentation for F29H85x</title>
+  <title>4.4. FLS Module &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.4. GPT Module" href="Module_User_Guide_Gpt.html" />
-    <link rel="prev" title="4.2. DIO Module" href="Module_User_Guide_Dio.html" /> 
+    <link rel="next" title="4.5. GPT Module" href="Module_User_Guide_Gpt.html" />
+    <link rel="prev" title="4.3. DIO Module" href="Module_User_Guide_Dio.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -63,71 +63,74 @@
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.1. CAN Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.2. DIO Module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.3. FLS Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.3.1. Acronyms and Definitions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">4.3.2. Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.3.3. Functional Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.3.4. Hardware Features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.3.4.1. Hardware Features Supported</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.3.4.2. Non compliance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_ResourceAllocator.html">4.1. Resource Allocator Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Can.html">4.2. CAN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.3. DIO Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.4. FLS Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.4.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.4.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.4.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.4.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.4.4.1. Hardware Features Supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.4.4.2. Non compliance</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#source-files">4.3.5. Source files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.3.6. Module requirements</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.3.6.1. Memory Mapping</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.3.6.2. Scheduling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.3.6.3. Error handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-code">4.3.6.4. Error Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.4.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.4.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.4.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.4.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.4.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-code">4.4.6.4. Error Code</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.3.7. Used resources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.3.7.1. Interrupt Handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.3.7.2. Instance support</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.3.7.3. Hardware-Software Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.4.7. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.4.7.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.4.7.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.4.7.3. Hardware-Software Mapping</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.3.8. Integration description</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.3.8.1. Dependent modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.4.8. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.4.8.1. Dependent modules</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">4.3.9. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide-to-v02-00-00-from-v01-01-00-or-any-older-versions">4.3.9.1. Migration Guide to v02.00.00 from v01.01.00 or any older versions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#flsconfigset">4.3.9.2. FlsConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#flsgeneral">4.3.9.3. FlsGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-fls-module">4.3.9.4. Steps To Configure Fls Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.4.9. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.4.9.1. Migration Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.4.9.2. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flsconfigset">4.4.9.3. FlsConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flsgeneral">4.4.9.4. FlsGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-fls-module">4.4.9.5. Steps To Configure Fls Module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">4.3.10. Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#overview-of-fls-app-example">4.3.10.1. Overview of Fls_App_Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-fls-app-example">4.3.10.2. Setup required to run Fls_App_Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-run-fls-app-example">4.3.10.3. How to run Fls_App_Example</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.3.10.4. File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.4.10. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview-of-fls-app-example">4.4.10.1. Overview of Fls_App_Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-required-to-run-fls-app-example">4.4.10.2. Setup required to run Fls_App_Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-run-fls-app-example">4.4.10.3. How to run Fls_App_Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.4.10.4. File Structure</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#references">4.3.11. References</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">4.4.11. References</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.4. GPT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.5. LIN Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.6. MCU Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.7. PORT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.8. SPI Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.9. WDG Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.10. CDD ADC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.11. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">4.12. CDD I2C Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.13. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.14. CDD PWM Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.15. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.16. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.17. CDD UART Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.18. RTDMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.5. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.6. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.7. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.8. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.9. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.10. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.11. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.12. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">4.13. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.14. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.15. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.16. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.17. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.18. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -145,7 +148,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
-      <li><span class="section-number">4.3. </span>FLS Module</li>
+      <li><span class="section-number">4.4. </span>FLS Module</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -155,9 +158,9 @@
            <div itemprop="articleBody">
              
   <section id="fls-module">
-<h1><span class="section-number">4.3. </span>FLS Module<a class="headerlink" href="#fls-module" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.4. </span>FLS Module<a class="headerlink" href="#fls-module" title="Link to this heading"></a></h1>
 <section id="acronyms-and-definitions">
-<h2><span class="section-number">4.3.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
@@ -205,7 +208,7 @@
 </table>
 </section>
 <section id="introduction">
-<h2><span class="section-number">4.3.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>This document describes MCAL <strong>FLS Driver</strong> functionality and configuration details as per AUTOSAR version <strong>4.3.1</strong> .</p>
 <table class="docutils align-default">
 <thead>
@@ -239,20 +242,20 @@
 <figure class="align-center" id="id1">
 <img alt="FLS in AUTOSAR architecture" src="../_images/Fls_Autosar_MCAL.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.8 </span><span class="caption-text">FLS in AUTOSAR architecture</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.9 </span><span class="caption-text">FLS in AUTOSAR architecture</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="functional-overview">
-<h2><span class="section-number">4.3.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
 <p>The Flash Driver provides services for reading, writing, erasing the internal data flash memory on F29x device.</p>
 <p>The Flash driver updates the wait states based on the MCU system cycle, and enable the sector protection. Before each flash write and erase, the driver grabs the flash semaphore, and release it after the job is done or failed.</p>
 <p>The Fls_Erase, FLs_Write, Fls_Read, FLs_Compare, and Fls_BlankCheck are performed asynchronously within the FLS module’s main function. All others (Fls_Cancel, Fls_GetStatus, Fls_GetJobResult) are the synchronous functions of this module.</p>
 </section>
 <section id="hardware-features">
-<h2><span class="section-number">4.3.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
 <section id="hardware-features-supported">
-<h3><span class="section-number">4.3.4.1. </span>Hardware Features Supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.4.1. </span>Hardware Features Supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
 <p>The features of data flash include:</p>
 <ol class="arabic simple">
 <li><p><strong>One dedicated data Flash bank housed in Flash Controller 1 (FLC1), optimized for data bus read accesses</strong></p></li>
@@ -277,12 +280,12 @@
 <li><p><strong>Automatic arbitration of data accesses between multiple initiators (CPUs, HSM, RTDMA and debugger accesses)</strong></p></li>
 </ol>
 <section id="hardware-features-not-supported">
-<h4><span class="section-number">4.3.4.1.1. </span>Hardware Features Not Supported<a class="headerlink" href="#hardware-features-not-supported" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.4.1.1. </span>Hardware Features Not Supported<a class="headerlink" href="#hardware-features-not-supported" title="Link to this heading"></a></h4>
 <p>None</p>
 </section>
 </section>
 <section id="non-compliance">
-<h3><span class="section-number">4.3.4.2. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.4.2. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
 <p>Below AUTOSAR requirements are not supported for Mcu Driver :<br />
 <strong>SWS_Fls_00155</strong> : <em>The function Fls_SetMode shall set the FLS module’s operation mode to the given “Mode” parameter.</em></p>
 <blockquote>
@@ -299,7 +302,7 @@
 </section>
 </section>
 <section id="source-files">
-<h2><span class="section-number">4.3.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
 <p>Static source C Files are defined below</p>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
@@ -355,14 +358,14 @@
 <figure class="align-center" id="id2">
 <img alt="FLS header file include structure" src="../_images/Fls_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.9 </span><span class="caption-text">FLS header file include structure</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.10 </span><span class="caption-text">FLS header file include structure</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="module-requirements">
-<h2><span class="section-number">4.3.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
 <section id="memory-mapping">
-<h3><span class="section-number">4.3.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Memory Mapping Sections</p></th>
@@ -411,7 +414,7 @@
 </table>
 </section>
 <section id="scheduling">
-<h3><span class="section-number">4.3.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Schedule Function API</p></th>
@@ -426,9 +429,9 @@
 </table>
 </section>
 <section id="error-handling">
-<h3><span class="section-number">4.3.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
 <section id="development-error-reporting">
-<h4><span class="section-number">4.3.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
 <p>The Fls Driver will report development errors on enabling FLS_DEV_ERROR_DETECT == STD_ON in Fls_Cfg.h.</p>
 <p>The errors reported to DET module are described in the following table:</p>
 <table class="docutils align-default">
@@ -506,7 +509,7 @@ services:</p>
 </section>
 </section>
 <section id="error-code">
-<h3><span class="section-number">4.3.6.4. </span>Error Code<a class="headerlink" href="#error-code" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.6.4. </span>Error Code<a class="headerlink" href="#error-code" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Check Services</p></th>
@@ -615,13 +618,13 @@ services:</p>
 </section>
 </section>
 <section id="used-resources">
-<h2><span class="section-number">4.3.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.7. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
 <section id="interrupt-handling">
-<h3><span class="section-number">4.3.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.7.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
 <p>There is no hardware interrupt in Fls.</p>
 </section>
 <section id="instance-support">
-<h3><span class="section-number">4.3.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.7.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>CPU instances</p></th>
@@ -642,37 +645,37 @@ services:</p>
 </table>
 </section>
 <section id="hardware-software-mapping">
-<h3><span class="section-number">4.3.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.7.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
 <p>Below image shows Fls driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29 Reference Manual.</p>
 <figure class="align-center" id="id3">
 <img alt="Fls HW/SW Mapping" src="../_images/Fls_Hw_Sw_Mapping.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.10 </span><span class="caption-text">Fls HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.11 </span><span class="caption-text">Fls HW/SW Mapping</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="integration-description">
-<h2><span class="section-number">4.3.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.8. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
 <section id="dependent-modules">
-<h3><span class="section-number">4.3.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.8.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
 <section id="dem">
-<h4><span class="section-number">4.3.8.1.1. </span>DEM<a class="headerlink" href="#dem" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.1. </span>DEM<a class="headerlink" href="#dem" title="Link to this heading"></a></h4>
 <p>FLS Production errors are reported to DEM ( Diagnostic Event Manager ) Module.
 The Fls module reports production errors to the Diagnostic Event Manager.</p>
 </section>
 <section id="mcu">
-<h4><span class="section-number">4.3.8.1.2. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.2. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
 <p>The hardware of the internal Fls hardware unit depends on the system clock, pre-scaler(s) and PLL. The FLS driver module
 will not take care of setting the registers that configure the clock, pre-scaler(s) and PLL (e.g. switching on/off
 the PLL) in its init functions. The MCU module must do this.</p>
 </section>
 <section id="os">
-<h4><span class="section-number">4.3.8.1.3. </span>OS<a class="headerlink" href="#os" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.3. </span>OS<a class="headerlink" href="#os" title="Link to this heading"></a></h4>
 <p>The FLS driver uses timer and therefore there is a dependency on the OS, which configures the timer.</p>
 </section>
 <section id="schm">
-<h4><span class="section-number">4.3.8.1.4. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.4. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
 <p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that FLS module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.</p>
 <p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter <strong>RteExclusiveAreaImplMechanism</strong>. This parameter is an input for RTE generator.
 For FLS Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:</p>
@@ -694,18 +697,18 @@ For FLS Module, data consistency and exclusive access to critical sections are r
 </table>
 </section>
 <section id="memif">
-<h4><span class="section-number">4.3.8.1.5. </span>MemIf<a class="headerlink" href="#memif" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.5. </span>MemIf<a class="headerlink" href="#memif" title="Link to this heading"></a></h4>
 <p>This implementation depends on MemIf module and uses its imported
 types such as MemIf_JobResultType, MemIf_ModeType and
 MemIf_StatusType.</p>
 </section>
 <section id="fee">
-<h4><span class="section-number">4.3.8.1.6. </span>Fee<a class="headerlink" href="#fee" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.6. </span>Fee<a class="headerlink" href="#fee" title="Link to this heading"></a></h4>
 <p>This implementation depends on Fee module for callback notification
 to notify the module environment about job end and job error.</p>
 </section>
 <section id="det">
-<h4><span class="section-number">4.3.8.1.7. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.8.1.7. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
 <p>The module FLS depends on the DET (by default) in order to report development errors. Detection
 and reporting of development errors can be enabled or disabled by the switch
 FLS_DEV_ERROR_DETECT = STD_ON in the Fls_Cfg.h</p>
@@ -770,7 +773,7 @@ module DET.</p>
 </section>
 </section>
 <section id="configuration">
-<h2><span class="section-number">4.3.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.9. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The Fls can be configured as <strong>Post-Build</strong> or <strong>Pre-Compile</strong> variant, using EB tresos tool.</p>
 <table class="docutils align-default">
 <thead>
@@ -788,8 +791,60 @@ module DET.</p>
 </tbody>
 </table>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
-<section id="migration-guide-to-v02-00-00-from-v01-01-00-or-any-older-versions">
-<h3><span class="section-number">4.3.9.1. </span>Migration Guide to v02.00.00 from v01.01.00 or any older versions<a class="headerlink" href="#migration-guide-to-v02-00-00-from-v01-01-00-or-any-older-versions" title="Link to this heading"></a></h3>
+<section id="migration-guide">
+<h3><span class="section-number">4.4.9.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
+<p>Migration guides between module versions are detailed below.</p>
+<section id="v03-00-00-from-v02-00-00">
+<h4><span class="section-number">4.4.9.1.1. </span>v03.00.00 from v02.00.00<a class="headerlink" href="#v03-00-00-from-v02-00-00" title="Link to this heading"></a></h4>
+<section id="key-changes">
+<h5><span class="section-number">4.4.9.1.1.1. </span>Key Changes<a class="headerlink" href="#key-changes" title="Link to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p><strong>Resource Allocator Based Approach</strong></p>
+<ul class="simple">
+<li><p>The FLS module now integrates with the Resource Allocator module for centralized device, package, and variant configuration</p></li>
+<li><p>Flash memory parameters such as total size are now derived from the Resource Allocator configuration instead of being directly configured in the FLS module</p></li>
+</ul>
+</li>
+<li><p><strong>FlsDeviceVariant Selection Moved to Resource Allocator</strong></p>
+<ul class="simple">
+<li><p>The device variant selection (which determines flash memory size and characteristics) has been moved from the FLS module configuration to the Resource Allocator module</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">FlsTotalSize</span></code> parameter now automatically retrieves its value from the Resource Allocator configuration</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="migration-steps">
+<h5><span class="section-number">4.4.9.1.1.2. </span>Migration Steps<a class="headerlink" href="#migration-steps" title="Link to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p><strong>Add Resource Allocator Module</strong></p>
+<ul class="simple">
+<li><p>If not already present, add the Resource Allocator module to your EB Tresos project configuration</p></li>
+</ul>
+</li>
+<li><p><strong>Configure Device Variant in Resource Allocator</strong></p>
+<ul class="simple">
+<li><p>Configure the device variant and package selection in the Resource Allocator module</p></li>
+<li><p>This will automatically determine the flash memory size and other device-specific parameters</p></li>
+</ul>
+</li>
+<li><p><strong>Update FLS Configuration</strong></p>
+<ul class="simple">
+<li><p>Open the FLS module configuration in EB Tresos</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">FlsTotalSize</span></code> parameter will now be automatically populated based on the Resource Allocator configuration</p></li>
+<li><p>Verify that the flash parameters are correctly derived</p></li>
+</ul>
+</li>
+<li><p><strong>Rebuild Application</strong></p>
+<ul class="simple">
+<li><p>Rebuild your application with the updated configuration files</p></li>
+</ul>
+</li>
+</ol>
+<p>For more details on Resource Allocator configuration, refer to the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a>.</p>
+</section>
+</section>
+<section id="v02-00-00-from-v01-01-00-or-any-older-versions">
+<h4><span class="section-number">4.4.9.1.2. </span>v02.00.00 from v01.01.00 or any older versions<a class="headerlink" href="#v02-00-00-from-v01-01-00-or-any-older-versions" title="Link to this heading"></a></h4>
 <p>In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
 In case of Post build variant, upper modules that call the Fls_Init function will need to use the new configuration structure name. For example:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Old code (v01.01.00 or any older versions) */</span>
@@ -802,11 +857,15 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 <p>This change ensures compliance with AUTOSAR naming conventions.</p>
 <p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
 </section>
+</section>
+<section id="configuration-parameters">
+<h3><span class="section-number">4.4.9.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+</section>
 <section id="flsconfigset">
-<h3><span class="section-number">4.3.9.2. </span>FlsConfigSet<a class="headerlink" href="#flsconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.3. </span>FlsConfigSet<a class="headerlink" href="#flsconfigset" title="Link to this heading"></a></h3>
 <p>Container for runtime configuration parameters of the flash driver.</p>
 <section id="flsacerase">
-<h4><span class="section-number">4.3.9.2.1. </span>FlsAcErase<a class="headerlink" href="#flsacerase" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.1. </span>FlsAcErase<a class="headerlink" href="#flsacerase" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -848,7 +907,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsacwrite">
-<h4><span class="section-number">4.3.9.2.2. </span>FlsAcWrite<a class="headerlink" href="#flsacwrite" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.2. </span>FlsAcWrite<a class="headerlink" href="#flsacwrite" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -890,7 +949,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flscallcycle">
-<h4><span class="section-number">4.3.9.2.3. </span>FlsCallCycle<a class="headerlink" href="#flscallcycle" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.3. </span>FlsCallCycle<a class="headerlink" href="#flscallcycle" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -932,7 +991,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsdefaultmode">
-<h4><span class="section-number">4.3.9.2.4. </span>FlsDefaultMode<a class="headerlink" href="#flsdefaultmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.4. </span>FlsDefaultMode<a class="headerlink" href="#flsdefaultmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -971,7 +1030,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsjobendnotification">
-<h4><span class="section-number">4.3.9.2.5. </span>FlsJobEndNotification<a class="headerlink" href="#flsjobendnotification" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.5. </span>FlsJobEndNotification<a class="headerlink" href="#flsjobendnotification" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1019,7 +1078,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsjoberrornotification">
-<h4><span class="section-number">4.3.9.2.6. </span>FlsJobErrorNotification<a class="headerlink" href="#flsjoberrornotification" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.6. </span>FlsJobErrorNotification<a class="headerlink" href="#flsjoberrornotification" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1067,7 +1126,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsmaxreadfastmode">
-<h4><span class="section-number">4.3.9.2.7. </span>FlsMaxReadFastMode<a class="headerlink" href="#flsmaxreadfastmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.7. </span>FlsMaxReadFastMode<a class="headerlink" href="#flsmaxreadfastmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1109,7 +1168,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsmaxwritefastmode">
-<h4><span class="section-number">4.3.9.2.8. </span>FlsMaxWriteFastMode<a class="headerlink" href="#flsmaxwritefastmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.8. </span>FlsMaxWriteFastMode<a class="headerlink" href="#flsmaxwritefastmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1151,7 +1210,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsmaxreadnormalmode">
-<h4><span class="section-number">4.3.9.2.9. </span>FlsMaxReadNormalMode<a class="headerlink" href="#flsmaxreadnormalmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.9. </span>FlsMaxReadNormalMode<a class="headerlink" href="#flsmaxreadnormalmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1193,7 +1252,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsmaxwritenormalmode">
-<h4><span class="section-number">4.3.9.2.10. </span>FlsMaxWriteNormalMode<a class="headerlink" href="#flsmaxwritenormalmode" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.10. </span>FlsMaxWriteNormalMode<a class="headerlink" href="#flsmaxwritenormalmode" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1235,7 +1294,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsprotection">
-<h4><span class="section-number">4.3.9.2.11. </span>FlsProtection<a class="headerlink" href="#flsprotection" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.11. </span>FlsProtection<a class="headerlink" href="#flsprotection" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1277,7 +1336,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="fls-cmdweprota">
-<h4><span class="section-number">4.3.9.2.12. </span>Fls_CMDWEPROTA<a class="headerlink" href="#fls-cmdweprota" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.12. </span>Fls_CMDWEPROTA<a class="headerlink" href="#fls-cmdweprota" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1319,7 +1378,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="fls-cmdweprotb">
-<h4><span class="section-number">4.3.9.2.13. </span>Fls_CMDWEPROTB<a class="headerlink" href="#fls-cmdweprotb" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.13. </span>Fls_CMDWEPROTB<a class="headerlink" href="#fls-cmdweprotb" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1361,10 +1420,10 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsexternaldriver">
-<h4><span class="section-number">4.3.9.2.14. </span>FlsExternalDriver<a class="headerlink" href="#flsexternaldriver" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.14. </span>FlsExternalDriver<a class="headerlink" href="#flsexternaldriver" title="Link to this heading"></a></h4>
 <p>This container is present for external Flash drivers only. Internal Flash drivers do not use the parameter listed in this container, hence its multiplicity is 0 for internal drivers. Currently, not supported as only internal flash is present.</p>
 <section id="flsspireference">
-<h5><span class="section-number">4.3.9.2.14.1. </span>FlsSpiReference<a class="headerlink" href="#flsspireference" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.3.14.1. </span>FlsSpiReference<a class="headerlink" href="#flsspireference" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1410,14 +1469,14 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </section>
 </section>
 <section id="flssectorlist">
-<h4><span class="section-number">4.3.9.2.15. </span>FlsSectorList<a class="headerlink" href="#flssectorlist" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.15. </span>FlsSectorList<a class="headerlink" href="#flssectorlist" title="Link to this heading"></a></h4>
 <p>List of flashable sectors and pages.</p>
 </section>
 <section id="flssector">
-<h4><span class="section-number">4.3.9.2.16. </span>FlsSector<a class="headerlink" href="#flssector" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.3.16. </span>FlsSector<a class="headerlink" href="#flssector" title="Link to this heading"></a></h4>
 <p>Configuration description of a flashable sector</p>
 <section id="flsnumberofsectors">
-<h5><span class="section-number">4.3.9.2.16.1. </span>FlsNumberOfSectors<a class="headerlink" href="#flsnumberofsectors" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.3.16.1. </span>FlsNumberOfSectors<a class="headerlink" href="#flsnumberofsectors" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1459,7 +1518,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flspagesize">
-<h5><span class="section-number">4.3.9.2.16.2. </span>FlsPageSize<a class="headerlink" href="#flspagesize" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.3.16.2. </span>FlsPageSize<a class="headerlink" href="#flspagesize" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1501,7 +1560,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flssectorsize">
-<h5><span class="section-number">4.3.9.2.16.3. </span>FlsSectorSize<a class="headerlink" href="#flssectorsize" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.3.16.3. </span>FlsSectorSize<a class="headerlink" href="#flssectorsize" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1543,7 +1602,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flssectorstartaddress">
-<h5><span class="section-number">4.3.9.2.16.4. </span>FlsSectorStartaddress<a class="headerlink" href="#flssectorstartaddress" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.4.9.3.16.4. </span>FlsSectorStartaddress<a class="headerlink" href="#flssectorstartaddress" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1587,10 +1646,10 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </section>
 </section>
 <section id="flsgeneral">
-<h3><span class="section-number">4.3.9.3. </span>FlsGeneral<a class="headerlink" href="#flsgeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.4. </span>FlsGeneral<a class="headerlink" href="#flsgeneral" title="Link to this heading"></a></h3>
 <p>Container for general parameters of the flash driver. These parameters are always pre-compile.</p>
 <section id="flsacloadonjobstart">
-<h4><span class="section-number">4.3.9.3.1. </span>FlsAcLoadOnJobStart<a class="headerlink" href="#flsacloadonjobstart" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.1. </span>FlsAcLoadOnJobStart<a class="headerlink" href="#flsacloadonjobstart" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1626,7 +1685,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsbaseaddress">
-<h4><span class="section-number">4.3.9.3.2. </span>FlsBaseAddress<a class="headerlink" href="#flsbaseaddress" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.2. </span>FlsBaseAddress<a class="headerlink" href="#flsbaseaddress" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1668,7 +1727,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flstotalsize">
-<h4><span class="section-number">4.3.9.3.3. </span>FlsTotalSize<a class="headerlink" href="#flstotalsize" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.3. </span>FlsTotalSize<a class="headerlink" href="#flstotalsize" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1710,7 +1769,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsnumbanks">
-<h4><span class="section-number">4.3.9.3.4. </span>FlsNumBanks<a class="headerlink" href="#flsnumbanks" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.4. </span>FlsNumBanks<a class="headerlink" href="#flsnumbanks" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1752,7 +1811,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flssectorsizeinbytes">
-<h4><span class="section-number">4.3.9.3.5. </span>FlsSectorSizeInBytes<a class="headerlink" href="#flssectorsizeinbytes" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.5. </span>FlsSectorSizeInBytes<a class="headerlink" href="#flssectorsizeinbytes" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1794,7 +1853,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsblankcheckapi">
-<h4><span class="section-number">4.3.9.3.6. </span>FlsBlankCheckApi<a class="headerlink" href="#flsblankcheckapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.6. </span>FlsBlankCheckApi<a class="headerlink" href="#flsblankcheckapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1830,7 +1889,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flscancelapi">
-<h4><span class="section-number">4.3.9.3.7. </span>FlsCancelApi<a class="headerlink" href="#flscancelapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.7. </span>FlsCancelApi<a class="headerlink" href="#flscancelapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1866,7 +1925,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flscompareapi">
-<h4><span class="section-number">4.3.9.3.8. </span>FlsCompareApi<a class="headerlink" href="#flscompareapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.8. </span>FlsCompareApi<a class="headerlink" href="#flscompareapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1902,7 +1961,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsdeverrordetect">
-<h4><span class="section-number">4.3.9.3.9. </span>FlsDevErrorDetect<a class="headerlink" href="#flsdeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.9. </span>FlsDevErrorDetect<a class="headerlink" href="#flsdeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1938,7 +1997,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsdriverindex">
-<h4><span class="section-number">4.3.9.3.10. </span>FlsDriverIndex<a class="headerlink" href="#flsdriverindex" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.10. </span>FlsDriverIndex<a class="headerlink" href="#flsdriverindex" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1980,7 +2039,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flseraseverificationenabled">
-<h4><span class="section-number">4.3.9.3.11. </span>FlsEraseVerificationEnabled<a class="headerlink" href="#flseraseverificationenabled" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.11. </span>FlsEraseVerificationEnabled<a class="headerlink" href="#flseraseverificationenabled" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2016,7 +2075,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsgetjobresultapi">
-<h4><span class="section-number">4.3.9.3.12. </span>FlsGetJobResultApi<a class="headerlink" href="#flsgetjobresultapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.12. </span>FlsGetJobResultApi<a class="headerlink" href="#flsgetjobresultapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2052,7 +2111,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsgetstatusapi">
-<h4><span class="section-number">4.3.9.3.13. </span>FlsGetStatusApi<a class="headerlink" href="#flsgetstatusapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.13. </span>FlsGetStatusApi<a class="headerlink" href="#flsgetstatusapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2088,7 +2147,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flssetmodeapi">
-<h4><span class="section-number">4.3.9.3.14. </span>FlsSetModeApi<a class="headerlink" href="#flssetmodeapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.14. </span>FlsSetModeApi<a class="headerlink" href="#flssetmodeapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2124,7 +2183,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flstimeoutsupervisionenabled">
-<h4><span class="section-number">4.3.9.3.15. </span>FlsTimeoutSupervisionEnabled<a class="headerlink" href="#flstimeoutsupervisionenabled" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.15. </span>FlsTimeoutSupervisionEnabled<a class="headerlink" href="#flstimeoutsupervisionenabled" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2160,7 +2219,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flsversioninfoapi">
-<h4><span class="section-number">4.3.9.3.16. </span>FlsVersionInfoApi<a class="headerlink" href="#flsversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.16. </span>FlsVersionInfoApi<a class="headerlink" href="#flsversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2196,7 +2255,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flswriteverificationenabled">
-<h4><span class="section-number">4.3.9.3.17. </span>FlsWriteVerificationEnabled<a class="headerlink" href="#flswriteverificationenabled" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.17. </span>FlsWriteVerificationEnabled<a class="headerlink" href="#flswriteverificationenabled" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2232,7 +2291,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flswaitstates">
-<h4><span class="section-number">4.3.9.3.18. </span>FlsWaitStates<a class="headerlink" href="#flswaitstates" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.18. </span>FlsWaitStates<a class="headerlink" href="#flswaitstates" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2274,7 +2333,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </table>
 </section>
 <section id="flscpuclockref">
-<h4><span class="section-number">4.3.9.3.19. </span>FlsCpuClockRef<a class="headerlink" href="#flscpuclockref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.4.19. </span>FlsCpuClockRef<a class="headerlink" href="#flscpuclockref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2311,7 +2370,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 </section>
 </section>
 <section id="steps-to-configure-fls-module">
-<h3><span class="section-number">4.3.9.4. </span>Steps To Configure Fls Module<a class="headerlink" href="#steps-to-configure-fls-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.9.5. </span>Steps To Configure Fls Module<a class="headerlink" href="#steps-to-configure-fls-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Mcu, Os, Dem and Fls modules.</p></li>
 <li><p>Open Mcu and Dem Module to Configure Clock and Dem Error for Mcu and Fls.</p></li>
@@ -2320,7 +2379,7 @@ In case of Post build variant, upper modules that call the Fls_Init function wil
 <li><p>Save the configuration and generate the configuration.</p></li>
 </ol>
 <section id="standard-configuration">
-<h4><span class="section-number">4.3.9.4.1. </span>Standard Configuration<a class="headerlink" href="#standard-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.5.1. </span>Standard Configuration<a class="headerlink" href="#standard-configuration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Standard Parameters</strong></p></th>
@@ -2485,7 +2544,7 @@ of the flash driver’s job processing function in normal mode.</p></td>
 </table>
 </section>
 <section id="ip-specific-configuration">
-<h4><span class="section-number">4.3.9.4.2. </span>IP Specific Configuration<a class="headerlink" href="#ip-specific-configuration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.4.9.5.2. </span>IP Specific Configuration<a class="headerlink" href="#ip-specific-configuration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Standard Parameters</strong></p></th>
@@ -2592,9 +2651,9 @@ of the flash driver’s job processing function in normal mode.</p></td>
 </section>
 </section>
 <section id="examples">
-<h2><span class="section-number">4.3.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.10. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <section id="overview-of-fls-app-example">
-<h3><span class="section-number">4.3.10.1. </span>Overview of Fls_App_Example<a class="headerlink" href="#overview-of-fls-app-example" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.10.1. </span>Overview of Fls_App_Example<a class="headerlink" href="#overview-of-fls-app-example" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Fls_App_Example</p>
 <ul>
@@ -2614,7 +2673,7 @@ of the flash driver’s job processing function in normal mode.</p></td>
 </ul>
 </section>
 <section id="setup-required-to-run-fls-app-example">
-<h3><span class="section-number">4.3.10.2. </span>Setup required to run Fls_App_Example<a class="headerlink" href="#setup-required-to-run-fls-app-example" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.10.2. </span>Setup required to run Fls_App_Example<a class="headerlink" href="#setup-required-to-run-fls-app-example" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest c29 compiler</p></li>
@@ -2623,38 +2682,27 @@ of the flash driver’s job processing function in normal mode.</p></td>
 </ul>
 </section>
 <section id="how-to-run-fls-app-example">
-<h3><span class="section-number">4.3.10.3. </span>How to run Fls_App_Example<a class="headerlink" href="#how-to-run-fls-app-example" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.10.3. </span>How to run Fls_App_Example<a class="headerlink" href="#how-to-run-fls-app-example" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Open CCS and Import Fls_App_Example</p></li>
 <li><p>Build project then debug project</p></li>
 </ul>
-<section id="sample-log-of-fls-app-example">
-<h4><span class="section-number">4.3.10.3.1. </span>Sample Log of Fls_App_Example<a class="headerlink" href="#sample-log-of-fls-app-example" title="Link to this heading"></a></h4>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">FLS</span><span class="w"> </span><span class="n">Example</span><span class="o">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
-<span class="w">    </span><span class="nl">APP_NAME</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Variant</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Pre</span><span class="w"> </span><span class="n">Compile</span><span class="w"> </span><span class="n">being</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="o">!!!</span>
-<span class="w">    </span><span class="n">FLS</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="n">info</span><span class="o">:</span><span class="mf">1.0.0</span>
-<span class="w">    </span><span class="n">FLS</span><span class="w"> </span><span class="n">MCAL</span><span class="w"> </span><span class="n">Module</span><span class="o">/</span><span class="n">Driver</span><span class="o">:</span><span class="mf">92.44</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Configured</span><span class="w"> </span><span class="n">operation</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">flash</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="mh">0x0</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">offset</span><span class="w"> </span><span class="n">till</span><span class="w"> </span><span class="mi">4096</span><span class="w"> </span><span class="n">bytes</span><span class="o">!!</span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Perform</span><span class="w"> </span><span class="n">ERASE</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE</span><span class="p">,</span><span class="w"> </span><span class="n">READ</span><span class="p">,</span><span class="w"> </span><span class="n">BLANKCHECK</span><span class="p">,</span><span class="w"> </span><span class="n">CANCEL</span><span class="p">,</span><span class="w"> </span><span class="n">COMPARE</span><span class="p">,</span><span class="w"> </span><span class="n">etc</span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Sector</span><span class="w"> </span><span class="n">Erasing</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Processing</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Progress</span><span class="p">.</span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Get</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="n">Passed</span><span class="p">,</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">done</span><span class="w"> </span><span class="n">through</span><span class="w"> </span><span class="n">Fls_GetJobResult</span><span class="w"> </span><span class="n">API</span><span class="p">()</span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Blank</span><span class="w"> </span><span class="n">Checking</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Processing</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Progress</span><span class="p">.</span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Writing</span><span class="w"> </span><span class="mi">8</span><span class="o">-</span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="w"> </span><span class="n">bytes</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Processing</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Progress</span><span class="p">.</span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span>
-<span class="w">    </span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span><span class="w"> </span>
+<section id="sample-log-of-fls-example">
+<h4><span class="section-number">4.4.10.3.1. </span>Sample Log of Fls_Example<a class="headerlink" href="#sample-log-of-fls-example" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Processing</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Progress</span><span class="p">.</span>
+<span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span>
+<span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span>
+<span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Processing</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">Progress</span><span class="p">.</span>
+<span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span>
+<span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="n">Job</span><span class="w"> </span><span class="n">Ends</span><span class="o">:</span><span class="w"> </span><span class="n">SUCCESS</span>
+<span class="nl">FLS_APP</span><span class="p">:</span>
+<span class="nl">FLS_APP</span><span class="p">:</span><span class="w"> </span><span class="o">----------</span><span class="w"> </span><span class="n">FLS</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">application</span><span class="w"> </span><span class="n">Done</span><span class="w"> </span><span class="o">!!</span><span class="w"> </span><span class="o">----------</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="file-structure">
-<h3><span class="section-number">4.3.10.4. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.4.10.4. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -2704,7 +2752,7 @@ of the flash driver’s job processing function in normal mode.</p></td>
 </section>
 </section>
 <section id="references">
-<h2><span class="section-number">4.3.11. </span>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.4.11. </span>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
 <p><a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_FlashDriver.pdf">AUTOSAR_SWS_FlashDriver</a><br />
 <a class="reference external" href="https://www.ti.com/product/F29H850TU">Technical Reference Manual</a></p>
 </section>
@@ -2714,15 +2762,15 @@ of the flash driver’s job processing function in normal mode.</p></td>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Module_User_Guide_Dio.html" class="btn btn-neutral float-left" title="4.2. DIO Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Module_User_Guide_Gpt.html" class="btn btn-neutral float-right" title="4.4. GPT Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Module_User_Guide_Dio.html" class="btn btn-neutral float-left" title="4.3. DIO Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Gpt.html" class="btn btn-neutral float-right" title="4.5. GPT Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Dec 18, 2025.
+          <span class="lastupdated" >Last updated on Dec 19, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

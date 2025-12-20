@@ -617,9 +617,26 @@ For CDD_PWM Module, data consistency and exclusive access to critical sections a
 |-------|-------|-------|-------|
 |CDD_PWM_EXCLUSIVE_AREA_0|Cdd_Pwm_SetDutyCycle<br>Cdd_Pwm_SetPeriod<br>Cdd_Pwm_SetOutputToIdle<br>Cdd_Pwm_EnableNotification<br>Cdd_Pwm_DisableNotification| To protect against multiple access for shared resources |**ALL_INTERRUPT_BLOCKING** : All interrupts should be blocked as this API's can be called in the interrupts. |
 
-#### Multi-core and Resource allocator
+#### Resource Allocator
 
-Not Supported
+The PWM module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+To allocate EPWM1 to CPU1 using FRAME0:
+
+1. In the Resource Allocator configuration, create a new Pwm instance allocation
+2. Set **InstanceName** to `EPWM1`
+3. Set **Frame** to `FRAME0`
+4. The **BaseAddr** will be automatically calculated as `EPWM1_DRIVER_BASE_FRAME(0U)`
+
+```text
+Resource Allocator Configuration:
+├── PwmInstanceAllocation
+│   ├── InstanceName: EPWM1
+│   ├── Frame: FRAME0
+│   └── BaseAddr: EPWM1_DRIVER_BASE_FRAME(0U)
+```
 
 ### Configuration
 
@@ -627,6 +644,46 @@ The Cdd_Pwm Driver implementation supports one configuration variant Pre-Compile
 The associated Cdd_Pwm driver configuration generated source files are Cdd_Pwm_Cfg.c
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
+
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v03.00.00 from v02.00.00
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   * The CDD PWM module now uses the Resource Allocator for device, package, and variant configuration
+   * Users must configure PWM instances through the Resource Allocator module before configuring the CDD PWM driver
+   * See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details
+
+2. **PWM Channel Symbolic Name Generation Fix**
+   * Fixed the PWM channel's symbolic name generation logic in the Cfg.h template file
+   * This ensures correct symbolic names are generated for PWM channels in the configuration header file
+
+3. **HRPWM Calibration Instance Configuration Support**
+   * Added support for HRPWM (High-Resolution PWM) calibration instance configuration in the CDD PWM driver
+   * Users can now configure HRPWM calibration instances through the `CddPwmHrpwmCalibrationConfig` container in advanced mode
+
+###### Migration Steps
+
+1. **Add Resource Allocator Module**
+   * Add and configure the Resource Allocator module in your EB Tresos project
+
+2. **Allocate PWM Instances**
+   * Allocate the required PWM instances (EPWM1, EPWM2, etc.) to the appropriate context in the Resource Allocator
+
+3. **Configure HRPWM (If Applicable)**
+   * If using HRPWM features in advanced mode, configure the HRPWM calibration instances in the Resource Allocator and reference them in the CDD PWM configuration
+
+4. **Regenerate Configuration**
+   * Regenerate the configuration files to get the corrected symbolic names in Cfg.h
+
+5. **Rebuild Application**
+   * Rebuild your application with the updated configuration
+
+#### Configuration Parameters
 
 
 
@@ -1172,14 +1229,50 @@ The example applications demonstrate the use of Cdd_Pwm module. The following ex
 
 ##### Sample Log of Cdd_Pwm_Example_Chopper example
 
-```{code-block}
-Executing Cdd_Pwm_Example_Chopper example
-Number of levels detected for EPWM1 are 6280
-Number of levels detected for EPWM2 are 6304
-Number of levels detected for EPWM3 are 6330
-Number of levels detected for EPWM4 are 6354
-Generated waveforms can be observed on the configured EPWM pins
-Cdd_Pwm_Example_Chopper example executed successfully
+```{literalinclude} Assets/text/Cdd_Pwm_Example_Chopper.txt
+```
+
+#### Cdd_Pwm_Example_Cmpss_Trip
+
+##### Overview Of Cdd_Pwm_Example_Cmpss_Trip
+
+* Cdd_Pwm_Example_Cmpss_Trip (Advanced mode)
+  * This example enables the CMPSS1 COMPH comparator and feeds the asynchronous signal CTRIPH to GPIO1/CDD_PWM1B. CMPSS is configured to trip the PWM signals.
+  * The positive pin of the CMPSS is used to give positive input and internal DAC in CMPSS is configured to feed the negative pin. The DAC is configured to provide a signal at VDD/2.
+  * When a low signal (VSS) is provided to positive pin of CMPSS1, PWM signal comes out on GPIO1.
+  * When a high signal (greater than VDD/2) is provided to positive pin of CMPSS1, the PWM signal at GPIO1 trips and goes high.
+  * Example is configured such that PWM coming at GPIO0 will remain unaffected.
+  * DeviceSupport_Init()
+    * Initialize FLASH if the example is run in FLASH mode
+  * EcuM_Init()
+    * Initialize clock to 100 MHz using Mcu_Init()
+    * Initialize pins in CDD_PWM mode with Port_Init()
+    * Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
+  * Configure Cdd_Pwm hardware using Cdd_Pwm_ConfigureHw()
+  * Configure CMPSS module using Cmpss_Init()
+  * Feed pin B0 (pin 12 on HSEC) to VSS or to a signal greater than VDD/2 to observe the behaviour
+  * CDD_PWM waveform can be observed on the respective pins configured in CDD_PWM mode
+  * External Connections:
+    * GPIO0 CDD_PWM1A
+    * GPIO1 CDD_PWM1B
+    * Positive pin of CMPSS is at B0 pin (Pin 12 of HSEC board)
+
+##### Setup required to run Cdd_Pwm_Example_Cmpss_Trip example
+
+* Install Code Composer Studio(CCS) latest version
+* Install latest C29 compiler
+* Connect the pins configured for EPWM as per the example description to the LA to observe generated waveform.
+* Power the board and run the example
+* Open serial console to observe print statements of the example
+
+##### How to run Cdd_Pwm_Example_Cmpss_Trip example
+
+* Open CCS and import Cdd_Pwm_Example_Cmpss_Trip Example
+* Build project and start debug project
+
+##### Sample Log of Cdd_Pwm_Example_Cmpss_Trip example
+
+```{literalinclude} Assets/text/Cdd_Pwm_Example_Cmpss_Trip.txt
 ```
 
 #### Cdd_Pwm_Example_DC_EventFilter
@@ -1235,13 +1328,7 @@ Cdd_Pwm_Example_Chopper example executed successfully
 
 ##### Sample Log of Cdd_Pwm_Example_DC_EventFilter example
 
-```{code-block}
-Executing Cdd_Pwm_Example_DC_EventFilter example
-Notification count is 3
-Notification count after increasing the blanking window is 0
-Notification count after disabling the blanking window is 3
-Generated waveforms can be observed on the configured EPWM pins
-Cdd_Pwm_Example_DC_EventFilter example executed successfully
+```{literalinclude} Assets/text/Cdd_Pwm_Example_DC_EventFilter.txt
 ```
 
 #### Cdd_Pwm_Example_Deadband
@@ -1289,15 +1376,7 @@ Cdd_Pwm_Example_DC_EventFilter example executed successfully
 
 ##### Sample Log of Cdd_Pwm_Example_Deadband example
 
-```{code-block}
-Executing Cdd_Pwm_Example_Deadband example
-Number of interrupts detected for EPWM1 are 1000
-Number of interrupts detected for EPWM2 are 4000
-Number of interrupts detected for EPWM3 are 4000
-Number of interrupts detected for EPWM4 are 4000
-Number of interrupts detected for EPWM7 are 4000
-Generated waveforms can be observed on the configured EPWM pins
-Cdd_Pwm_Example_Deadband example executed successfully
+```{literalinclude} Assets/text/Cdd_Pwm_Example_Deadband.txt
 ```
 
 #### Cdd_Pwm_Example_DiodeEmulation
@@ -1358,21 +1437,7 @@ Cdd_Pwm_Example_Deadband example executed successfully
 
 ##### Sample Log of Cdd_Pwm_Example_DiodeEmulation example
 
-```{code-block}
-Executing Cdd_Pwm_Example_DiodeEmulation example
-Force diode emulation active flags for EPWM1 & EPWM2 instances
-EPWM1A output is HIGH
-EPWM2A output is LOW
-Cleared diode emulation active flags for EPWM1 & EPWM2 instances
-Force diode emulation active flags for EPWM1 instance
-EPWM1A output is HIGH
-EPWM2A output is HIGH
-Cleared diode emulation active flags for EPWM1 instance
-Force diode emulation active flags for EPWM3 instance
-EPWM3A output is HIGH
-Diode emulation active flag has been cleared by hardware
-Generated waveforms can be observed on the configured EPWM pins
-Cdd_Pwm_Example_DiodeEmulation example executed successfully
+```{literalinclude} Assets/text/Cdd_Pwm_Example_DiodeEmulation.txt
 ```
 
 #### Cdd_Pwm_Example_GlobalLoad_And_Link
@@ -1425,13 +1490,7 @@ Cdd_Pwm_Example_DiodeEmulation example executed successfully
 
 ##### Sample Log of Cdd_Pwm_Example_GlobalLoad_And_Link example
 
-```{code-block}
-ExExecuting Cdd_Pwm_Example_GlobalLoad_And_Link example
-Load period to the xlink region 
-Load new compare B value to the xlink region 
-Notification count for the EPWM1 instance is 100
-Generated waveforms can be observed on the configured EPWM pins
-Cdd_Pwm_Example_GlobalLoad_And_Link example executed successfully
+```{literalinclude} Assets/text/Cdd_Pwm_Example_GlobalLoad_And_Link.txt
 ```
 
 #### Cdd_Pwm_Example_Hrpwm
@@ -1440,20 +1499,20 @@ Cdd_Pwm_Example_GlobalLoad_And_Link example executed successfully
 
 * Cdd_Pwm_Example_Hrpwm (Advanced mode)
   * DeviceSupport_Init()
-    * -Initialize FLASH if the example is run in FLASH mode
+    * Initialize FLASH if the example is run in FLASH mode
   * EcuM_Init()
-    * -Initialize clock to 100 MHz using Mcu_Init()
-    * -Initialize pins with Port_Init()
-    * -Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
+    * Initialize clock to 100 MHz using Mcu_Init()
+    * Initialize pins with Port_Init()
+    * Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
   * Configure Cdd_Pwm hardware using Cdd_Pwm_ConfigureHw() as follows
-    * -EPWM1 with HRPWM disabled(for reference)
-    * -EPWM2 with HRPWM enabled (for both A & B channels MEP edge is configured as FALLING EDGE)
+    * EPWM1 with HRPWM disabled(for reference)
+    * EPWM2 with HRPWM enabled (for both A & B channels MEP edge is configured as FALLING EDGE)
   * Print the notification count of all EPWM instances.
   * EPWM waveform can be observed on the respective pins configured in EPWM mode
-    * -GPIO0 EPWM1A
-    * -GPIO1 EPWM1B
-    * -GPIO2 EPWM2A
-    * -GPIO3 EPWM2B
+    * GPIO0 EPWM1A
+    * GPIO1 EPWM1B
+    * GPIO2 EPWM2A
+    * GPIO3 EPWM2B
 
 ##### Setup required to run Cdd_Pwm_Example_Hrpwm example
 
@@ -1470,14 +1529,7 @@ Cdd_Pwm_Example_GlobalLoad_And_Link example executed successfully
 
 ##### Sample Log of Cdd_Pwm_Example_Hrpwm example
 
-```{code-block}
-Executing Cdd_Pwm_Example_Hrpwm example
-EPWM1 instance is operating in normal PWM mode
-EPWM2 instance is operating in high-resolution mode
-Increment the duty cycle by 0.01% percent for every iteration from 4% to 99.99%
-Number of rising edges detected for EPWM2 are 1107570
-Waveforms can be observed on the configured EPWM pins
-Cdd_Pwm_Example_Hrpwm example executed successfully
+```{literalinclude} Assets/text/Cdd_Pwm_Example_Hrpwm.txt
 ```
 
 #### Cdd_Pwm_Example_TripZone
@@ -1496,22 +1548,22 @@ Cdd_Pwm_Example_Hrpwm example executed successfully
     * -EPWM2 with trip zone enabled in one-shot mode
     * -EPWM3 with trip zone enabled in CBC(cycle-by-cycle) mode
   * Pull Dio channel(GPIO 12) to LOW to trip the EPWM2 & EPWM3 instances
-  * EPWM2 is configured in one-shot mode so the flags must be cleared manually but for EPWM3 which is in CBC 
-  * the flags are automatically cleared at the end of the cycle if the trip condition doesn't apply anymore.
+  * EPWM2 is configured in one-shot mode so the flags must be cleared manually but for EPWM3 which is in CBC the flags are automatically cleared at the end of the cycle if the trip condition doesn't apply anymore.
   * Pull back the Dio channel(GPIO 12) to HIGH to resume the normal operation
   * The change in the output waveforms can be tracked with a logic analyzer
     * -EPWM1A is on GPIO0
     * -EPWM2A is on GPIO2
     * -EPWM3B is on GPIO5
     * -TZ1 is on GPIO12 and is linked to Dio Channel 0
-  * This example also makes use of the Input X-BAR. GPIO12 (the external trigger) is routed to the input X-BAR,
-  * from which it is routed to TZ1.
-  * The TZ-Event is defined such that EPWM1 will undergo a One-Shot Trip
-  * and EPWM2 will undergo a Cycle-By-Cycle Trip.
-  *             _____________             __________________
-  *             |           |             |                |
-  * GPIO12 -----| I/P X-BAR |-----TZ1-----| EPWM TZ Module |-----TZ-Event
-  *             |___________|             |________________|
+  * This example also makes use of the Input X-BAR. GPIO12 (the external trigger) is routed to the input X-BAR, from which it is routed to TZ1.
+  * The TZ-Event is defined such that EPWM1 will undergo a One-Shot Trip and EPWM2 will undergo a Cycle-By-Cycle Trip.
+  
+  ``` text
+               _____________             __________________
+               |           |             |                |
+   GPIO12 -----| I/P X-BAR |-----TZ1-----| EPWM TZ Module |-----TZ-Event
+               |___________|             |________________|
+  ```
 
 ##### Setup required to run Cdd_Pwm_Example_TripZone example
 

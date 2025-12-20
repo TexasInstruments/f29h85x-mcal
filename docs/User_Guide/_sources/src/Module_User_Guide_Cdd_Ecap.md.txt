@@ -337,9 +337,26 @@ For Cdd_Ecap Module, data consistency and exclusive access to critical sections 
 |-----------------------------------------------|------------------------------------------|-------|-------|
 |CDD_ECAP_EXCLUSIVE_AREA_0  | Cdd_Ecap_DisableNotificationEcap<br>Cdd_Ecap_EnableNotificationEcap<br>Cdd_Ecap_SetActivationConditionEcap<br>Cdd_Ecap_GetInputStateEcap<br>Cdd_Ecap_EnableEdgeDetectionEcap<br>Cdd_Ecap_DisableEdgeDetectionEcap<br>Cdd_Ecap_StartTimestampEcap<br>Cdd_Ecap_StopTimestampEcap<br>Cdd_Ecap_GetTimestampIndexEcap<br>Cdd_Ecap_ResetEdgeCountEcap<br>Cdd_Ecap_EnableEdgeCountEcap<br>Cdd_Ecap_DisableEdgeCountEcap<br>Cdd_Ecap_GetEdgeNumbersEcap<br>Cdd_Ecap_StartSignalMeasurementEcap<br>Cdd_Ecap_StopSignalMeasurementEcap<br>Cdd_Ecap_GetTimeElapsedEcap<br>Cdd_Ecap_GetDutyCycleValues  | To protect against multiple access for shared resources | **ALL_INTERRUPT_BLOCKING** : All interrupts should be blocked as this API's can be called in the interrupts |
 
-#### Multi-core and Resource allocator
+#### Resource Allocator
 
-Not Supported
+The ECAP module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+To allocate ECAP1 to CPU1 using FRAME0:
+
+1. In the Resource Allocator configuration, create a new Ecap instance allocation
+2. Set **InstanceName** to `ECAP1`
+3. Set **Frame** to `FRAME0`
+4. The **BaseAddr** will be automatically calculated as `ECAP1_DRIVER_BASE_FRAME(0U)`
+
+```text
+Resource Allocator Configuration:
+├── EcapInstanceAllocation
+│   ├── InstanceName: ECAP1
+│   ├── Frame: FRAME0
+│   └── BaseAddr: ECAP1_DRIVER_BASE_FRAME(0U)
+```
 
 ### Configuration
 
@@ -351,6 +368,43 @@ The generated configuration files should not be modified manually. The config to
 ```{Note}
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
+
+#### Migration Guide
+
+##### v03.00.00 from v02.00.00
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   - The CDD ECAP module now integrates with the Resource Allocator module for centralized device, package, and variant configuration
+   - ECAP channel configurations (`CddEcapChannelRef`) now reference Resource Allocator's allocated ECAP instances
+   - Available ECAP instances are determined by the Resource Allocator's `Cdd_EcapAllocatedInstance` configuration for the current context
+   - The maximum number of ECAP channels is now dynamically determined from Resource Allocator
+
+###### Migration Steps
+
+1. **Add Resource Allocator Module**
+   - Add the Resource Allocator module to your EB Tresos project if not already present
+
+2. **Configure ECAP Instances in Resource Allocator**
+   - In Resource Allocator, configure the `Cdd_EcapAllocatedInstance` entries for each ECAP instance your application requires
+   - Set the appropriate `InstanceName` (e.g., ECAP1, ECAP2, etc.) 
+
+3. **Update CDD ECAP Configuration**
+   - Update `CddEcapChannelRef` in each `CddEcapChannel` to reference the corresponding Resource Allocator's `Cdd_EcapAllocatedInstance`
+   - The `CddEcapChannelId` will be automatically derived from the Resource Allocator's instance name
+
+4. **Verify Instance References**
+   - Ensure all ECAP channel references point to valid Resource Allocator allocated instances
+   - Verify that the allocated instances match your hardware requirements
+
+5. **Regenerate Configuration**
+   - Regenerate the configuration files using EB Tresos
+
+6. **Rebuild Application**
+   - Rebuild your application with the updated configuration
+
+#### Configuration Parameters
 
 
 
@@ -734,12 +788,9 @@ PWM signal (EPWM1_A) is generated on the GPIO0.
 - Open CCS and import Cdd Ecap Example
 - Build project and start debug project
 
-#### Sample Logs of Cdd_Ecap_Capture_Signal
+##### Sample Log of Cdd_Ecap_Capture_Signal
 
-```{code-block}
-Executing Cdd_Ecap_Capture_Signal example
-High time of the signal is: 251
-Period of the signal is: 1002
+```{literalinclude} Assets/text/Cdd_Ecap_Capture_Signal.logs
 ```
 
 #### Cdd_Ecap_HrMode
@@ -778,25 +829,9 @@ PWM signal (EPWM1_A) is generated on the GPIO0.
 - Open CCS and import Cdd Ecap Example
 - Build project and start debug project
 
-#### Sample Logs of Cdd_Ecap_HrMode
+##### Sample Log of Cdd_Ecap_HrMode
 
-```{code-block}
-Cdd_Ecap_HrMode Example Application - STARTS!
-
-Cdd Ecap MCAL Version Info
---------------------------
-Vendor ID : 44
-Module ID : 255
-SW Major Version : 2
-SW Minor Version : 0
-SW Patch Version : 0
-
-Signal Measurement Start on Channel 0 ...
-Example passed!!!
-High time of the signal in nano-secs is: 1251.290649
-Period of the signal in nano-secs is: 5010.710938
-
-Cdd_Ecap_HrMode Example Application - ENDS!
+```{literalinclude} Assets/text/Cdd_Ecap_HrMode.logs
 ```
 
 #### File Structure

@@ -248,7 +248,11 @@ The generated configuration files should not be modified manually. The config to
 If CPU Timer2 is used in OS, parameter 'GptUseTimer2InOS' should be checked in GPT configurator.
 ```
 
-#### Migration Guide to v02.00.00 from v01.00.02 or any older versions
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v02.00.00 from v01.00.02 or any older versions
 
 In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
 In case of Post build variant, upper modules that call the Gpt_Init function will need to use the new configuration structure name. For example:
@@ -264,6 +268,8 @@ Gpt_Init(&Gpt_Config);
 This change ensures compliance with AUTOSAR naming conventions.
 
 To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
+
+#### Configuration Parameters
 
 
 
@@ -616,65 +622,7 @@ Support both Post Build and Pre Compile Configuration Variants
 
 ##### Sample Log For Gpt_Example_Timers
 
-```{code-block}
-
-Sample Application - STARTS !!!
-Gpt MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 100
-SW Major Version    : 1
-SW Minor Version    : 0
-SW Patch Version    : 0
-
-Test 1: Initialize Gpt Driver
-Initializing Gpt Driver...
-API Gpt_Init executed successfully
----------------------------------------------------------------
-
-Test 2: Enable notifications for all Channels
-Notifications enabled for all channels
-API Gpt_EnableNotification executed successfully for all channels
----------------------------------------------------------------
-
-Test 3:  Start timer for all Channels
-Timer started for all channels
-API Gpt_StartTimer executed successfully for all channels
----------------------------------------------------------------
-
-Test 4:Wait until all the timers get notified at least 1 time.
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-1:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 362 Time_remaining = 199999502)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-2:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 5306230 Time_remaining = 194693634)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 279 Time_remaining = 19999585)
----------------------------------------------------------------
-
-Test 5: Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
----------------------------------------------------------------
-Test 6: De-initialize Gpt Driver
-DeInitializing Gpt Driver...
-API Gpt_DeInit executed successfully
-
-------------------------------------------
-Gpt_Example_Timers: Sample Application - Completes successfully !!!
-Result - PASS!!
+```{literalinclude} Assets/text/Gpt_Example_Timers.txt
 ```
 
 #### Gpt_Example_OneShotMode
@@ -717,101 +665,7 @@ Result - PASS!!
 
 ##### Sample Log For Gpt_Example_OneShotMode
 
-```{code-block}
-
-Initialize Gpt Driver
-Initializing Gpt Driver...
-API Gpt_Init executed successfully
-
----------------------------------------------------------------
-
-Enable notifications for all Channels
-Notifications enabled for all channels
-API Gpt_EnableNotification executed successfully for all channels
-
----------------------------------------------------------------
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In one shot mode for 10ms Timeout - Started !!!
----------------------------------------------------------------------------------------
-
-Start timer for all Channels with 10ms Timeout
-Timer started for all channels with 10ms Timeout
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified at least 1 time.
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In one shot mode for 10ms Timeout - Passed !!!
----------------------------------------------------------------------------------------
-
-Reset all counters.
-Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In one shot mode for 100msTimeout - Started !!!
----------------------------------------------------------------------------------------
-
-Start timer for all Channels with 100ms Timeout
-Timer started for all channels with 100ms Timeout
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified at least 1 time.
-
----------------------------------------------------------------------------------------
- Simultaneous Timers Test In one shot mode for 100ms Timeout - Passed !!!
----------------------------------------------------------------------------------------
-
-Reset all counters.
-Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In one shot mode for 1s Timeout - Started !!!
----------------------------------------------------------------------------------------
-
-Start timer for all Channels with 1s Timeout
-Timer started for all channels with 1s Timeout
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified at least 1 time.
-
----------------------------------------------------------------------------------------
- Simultaneous Timers Test In one shot mode for 1s Timeout - Passed !!!
----------------------------------------------------------------------------------------
-
-Reset all counters.
-Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In one shot mode for Max Tick Timeout - Started !!!
----------------------------------------------------------------------------------------
-
-Start timer for all Channels with Max Tick Timeout
-Timer started for all channels with Max Tick Timeout
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified at least 1 time.
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In one shot mode for Max tick Timeout - Passed !!!
----------------------------------------------------------------------------------------
-
-Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
-De-initialize Gpt Driver
-DeInitializing Gpt Driver...
-API Gpt_DeInit executed successfully
-
-------------------------------------------
-Result - PASS!!
+```{literalinclude} Assets/text/Gpt_Example_OneShotMode.txt
 ```
 
 #### Gpt_Example_MixedMode
@@ -845,45 +699,7 @@ Result - PASS!!
 
 ##### Sample Log For Gpt_Example_MixedMode
 
-```{code-block}
-
-Initialize Gpt Driver
-Initializing Gpt Driver...
-API Gpt_Init executed successfully
-
----------------------------------------------------------------
-
-Enable notifications for all Channels
-Notifications enabled for all channels
-API Gpt_EnableNotification executed successfully for all channels
-
----------------------------------------------------------------
-
----------------------------------------------------------------------------------------
-Mixed modes and Simultaneous Timers Test1for 1s timeout - Started !!!
----------------------------------------------------------------------------------------
-
- Start timer for all Channels with 1s Timeout
-Timer started for all channels with 1s Timeout
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified at least 1 time.
-
-CHANNEL-1:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 289 Time_remaining = 19999572)
-CHANNEL-2:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 197 Time_remaining = 19999664)
-Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
----------------------------------------------------------------------------------------
-De-initialize Gpt Driver
-DeInitializing Gpt Driver...
-API Gpt_DeInit executed successfully
----------------------------------------------------------------------------------------
-
-Mixed modes and Simultaneous Timers Test1for 1s timeout - Passed !!!
----------------------------------------------------------------------------------------
-Result - PASS!!
+```{literalinclude} Assets/text/Gpt_Example_MixedMode.txt
 ```
 
 #### Gpt_Example_InterruptTimeout
@@ -922,50 +738,7 @@ Result - PASS!!
 
 ##### Sample Log For Gpt_Example_InterruptTimeout
 
-```{code-block}
-
-Initialize Gpt Driver
-Initializing Gpt Driver...
-API Gpt_Init executed successfully
-
----------------------------------------------------------------
-
-Enable notifications for  Channel 0
-Notifications enabled for all channels
-API Gpt_EnableNotification executed successfully for all channels
-
----------------------------------------------------------------
-
----------------------------------------------------------------------------------------
-Positive test case to validate interrupt delay - Started !!!
----------------------------------------------------------------------------------------
-
-Start timer for two  Channels
-API Gpt_StartTimer executed successfully for all channels
-
----------------------------------------------------------------
-
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified 1 time.
-
-CHANNEL-0: Time_elapsed and Time_remaining values in one shot modeWhen the timer  is in Running state are(Time_elapsed = 199 Time_remaining = 19999662)
-CHANNEL-1:Time_elapsed and Time_remaining values in continuous modeWhen the timer is in Running state are(Time_elapsed = 274314 Time_remaining = 19725547)
----------------------------------------------------------------
-
-Stop timer for Channel 0 and 1
-Timer stopped for channel 0
-API Gpt_StopTimer executed successfully for all channels
-
----------------------------------------------------------------
-
-De-initialize Gpt Driver
-DeInitializing Gpt Driver...
-API Gpt_DeInit executed successfully
----------------------------------------------------------------------------------------
-Positive test case to validate interrupt delay - Passed !!!
----------------------------------------------------------------------------------------
-Result - PASS!!
+```{literalinclude} Assets/text/Gpt_Example_InterruptTimeout.txt
 ```
 
 #### Gpt_Example_ContinuousMode
@@ -1008,101 +781,7 @@ Result - PASS!!
 
 ##### Sample Log For Gpt_Example_ContinuousMode
 
-```{code-block}
-
-Initialize Gpt Driver
-Initializing Gpt Driver...
-API Gpt_Init executed successfully
-
----------------------------------------------------------------
-
-Enable notifications for all Channels
-Notifications enabled for all channels
-API Gpt_EnableNotification executed successfully for all channels
-
----------------------------------------------------------------
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In Continuous mode for 10ms Timeout - Started !!!
----------------------------------------------------------------------------------------
-
-Start timer for all Channels with 10ms Timeout
-Timer started for all channels with 10ms Timeout
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified at least 1 time.
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In Continuous mode for 10ms Timeout - Passed !!!
----------------------------------------------------------------------------------------
-
-Reset all counters.
-Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In Continuous mode for 100ms Timeout - Started !!!
----------------------------------------------------------------------------------------
-
-Start timer for all Channels with 100ms Timeout
-Timer started for all channels with 100ms Timeout
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified at least 1 time.
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In Continuous mode for 100ms Timeout - Passed !!!
----------------------------------------------------------------------------------------
-
-Reset all counters.
-Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In Continuous mode for 1s Timeout - Started !!!
----------------------------------------------------------------------------------------
-
-Start timer for all Channels with 1s Timeout
-Timer started for all channels with 1s Timeout
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified at least 1 time.
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In Continuous mode for 1s Timeout - Passed !!!
----------------------------------------------------------------------------------------
-
-Reset all counters.
-Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In Continuous mode for Max Tick Timeout - Started !!!
----------------------------------------------------------------------------------------
-
-Start timer for all Channels with Max Tick Timeout
-Timer started for all channels with Max Tick Timeout
-API Gpt_StartTimer executed successfully for all channels
-
-Wait until all the timers get notified at least 1 time.
-
----------------------------------------------------------------------------------------
-Simultaneous Timers Test In Continuous mode for Max tick Timeout - Passed !!!
----------------------------------------------------------------------------------------
-
-Stop timer for all Channels
-Timer stopped for all channels
-API Gpt_StopTimer executed successfully for all channels
-
-De-initialize Gpt Driver
-DeInitializing Gpt Driver...
-API Gpt_DeInit executed successfully
-
-------------------------------------------
-Result - PASS!!
+```{literalinclude} Assets/text/Gpt_Example_ContinuousMode.txt
 ```
 
 #### File Structure

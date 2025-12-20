@@ -92,11 +92,11 @@ CONST(struct Os_ConfigType_s, OS_CONFIG_DATA) Os_Config =
 
         [3] =
         {
-            .int_id = (Os_IntIdType)42U,
+            .int_id = (Os_IntIdType)48U,
             .int_priority = (Os_IntPriorityType)4U,
             .int_category = (Os_IntCategoryType)CATEGORY_1,
-            .int_funcptr = (Os_IsrFuncPtrType)Cdd_Pwm_Epwm4_IntIsr,
-            .isr_funcptr = (Os_IsrFuncPtrType)Cdd_Pwm_Epwm4_IntIsr,
+            .int_funcptr = (Os_IsrFuncPtrType)Cdd_Pwm_Epwm7_IntIsr,
+            .isr_funcptr = (Os_IsrFuncPtrType)Cdd_Pwm_Epwm7_IntIsr,
         }
     },
 

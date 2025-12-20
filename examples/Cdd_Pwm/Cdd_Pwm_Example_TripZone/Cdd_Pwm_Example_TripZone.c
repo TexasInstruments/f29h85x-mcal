@@ -34,10 +34,12 @@
  *  - EPWM1 with no trip zone configuration (reference)
  *  - EPWM2 with trip zone enabled in one-shot mode
  *  - EPWM3 with trip zone enabled in CBC(cycle-by-cycle) mode
- * Pull Dio channel(GPIO 12) to LOW to trip the EPWM2 & EPWM3 instances
- * EPWM2 is configured in one-shot mode so the flags must be cleared manually but for EPWM3 which is in CBC
- * the flags are automatically cleared at the end of the cycle if the trip condition doesn't apply anymore.
- * Pull back the Dio channel(GPIO 12) to HIGH to resume the normal operation
+ *  - EPWM2 is configured in one-shot mode so the flags must be cleared using APIs but for EPWM3 which is in CBC
+ *    the flags are automatically cleared at the end of the cycle if the trip condition doesn't apply anymore.
+ * Pull Dio channel(GPIO 12) to LOW to trip EPWM2 & EPWM3 channels
+ * EPWM2A & EPWM3B output's should be forced to HIGH when the trip is active.
+ * Disable trip interrupt & notification after the notification count reaches 3.
+ * Observe the trip for 1msec and pull back the Dio channel(GPIO 12) to HIGH to resume the normal operation
  * The change in the output waveforms can be tracked with a logic analyzer
  *
  *  \b External \b Connections \n
@@ -239,7 +241,7 @@ int main()
     }
 
     /* To check the output after trip is cleared */
-    McalLib_Delay(500000U); /* After 1millisec write LOW value to the PIN */
+    McalLib_Delay(500000U); /* After 10millisec write LOW value to the PIN */
 
     /* Pull the channel to HIGH */
     Dio_WriteChannel(DioConf_DioChannel_DioChannel_0, STD_HIGH);

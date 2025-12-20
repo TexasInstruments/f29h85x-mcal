@@ -133,6 +133,9 @@ The communication concept is single-commander/multiple-responder with a message 
 **SWS_BSW_00042** : Detection of Development Errors: The detection and reporting of Development errors shall be performed only if the configuration parameter for detection of Development errors is set
 >Partial Non Compliance Reason : Few Null pointer input parameter checks are needed irrespective of Development errors is set, to handle MISRA requirement.
 
+**SWS_Lin_00209** : Lin_Wakeup: During the state transition from LIN_CH_SLEEP to LIN_CH_OPERATIONAL the LIN Driver shall ensure that the rest of the cluster is awake. This is achieved by issuing a wake-up request, forcing the bus to the dominant state for 250 μs to 5 ms
+>Partial Non Compliance Reason : The LIN hardware IP used in F29x has a limitation when transmitting a standard wakeup signal, which can cause the hardware to enter an undefined state. To mitigate this issue, the driver implements a workaround by using a LIN header frame with a configurable ID (LinWakeupId) instead of the standard wakeup signal. This approach conforms to the LIN 2.1 specification while avoiding the hardware limitation. The LinWakeupId parameter can be configured in the EB Tresos configurator and should be set to an unused ID in the LIN network to prevent conflicts with actual communication frames.
+
 **Below AUTOSAR requirement is rejected for LIN driver:**
 
 **SWS_Lin_00074** : The function Lin_GoToSleep shall terminate ongoing frame transmission of prior transmission requests, even if the transmission is unsuccessfully completed.
@@ -299,6 +302,27 @@ For LIN Module, data consistency and exclusive access to critical sections are r
 |-------|-------|-------|-------|
 |LIN_EXCLUSIVE_AREA_0| Lin_SendFrame<br>Lin_GoToSleep<br>Lin_GoToSleepInternal<br>Lin_Wakeup<br>Lin_WakeupInternal<br>Lin_GetStatus | To protect against multiple access for shared resources |**ALL_INTERRUPT_BLOCKING** : All interrupts should be blocked to ensure consistent transmission of LIN master response frames. This is important to ensure the proper transmission of master response frames, where header and response are transmitted separately and any interrupt occurring between them can affect the master response in-frame response space. |
 
+#### Resource Allocator
+
+The LIN module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+To allocate LINA to CPU1 using FRAME0:
+
+1. In the Resource Allocator configuration, create a new Lin instance allocation
+2. Set **InstanceName** to `LINA`
+3. Set **Frame** to `FRAME0`
+4. The **BaseAddr** will be automatically calculated as `LINA_DRIVER_BASE_FRAME(0U)`
+
+```text
+Resource Allocator Configuration:
+├── LinInstanceAllocation
+│   ├── InstanceName: LINA
+│   ├── Frame: FRAME0
+│   └── BaseAddr: LINA_DRIVER_BASE_FRAME(0U)
+```
+
 ### Configuration
 
 The Lin Driver implementation supports multiple configuration variants, namely Lin Post-Build config and Pre-Compile config. The driver expects generated **Lin_Cfg.h** to be present as input file.
@@ -310,7 +334,62 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#### Migration Guide to v02.00.00 from v01.01.00 or any older versions
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v03.00.00 from v02.00.00
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   * The LIN module now integrates with the Resource Allocator module for device, package, and variant configuration
+   * LIN instance configuration parameters are now derived from the Resource Allocator
+   * Available LIN instances are dynamically determined based on the device configuration in the Resource Allocator
+
+2. **Instance Name Changes**
+   * LIN instance names have been updated for consistency
+   * `LIN_INSTANCE_A` is now `LIN_A`
+   * `LIN_INSTANCE_B` is now `LIN_B`
+
+3. **New Configuration Parameter: `LinWakeupId`**
+   * Added new parameter `LinWakeupId` in `LinGeneral` container
+   * Specifies the LIN ID used to transmit a header instead of a wakeup signal due to hardware constraints
+   * Default value is `63` (0x3F)
+   * Valid range: 0 to 63
+
+4. **Parameter Rename: `SysClockRef` to `LinSysClockRef`**
+   * The system clock reference parameter has been renamed from `SysClockRef` to `LinSysClockRef`
+   * This change improves naming consistency with other LIN parameters
+
+###### Migration Steps
+
+1. **Update Resource Allocator Configuration**
+   * Ensure the Resource Allocator module is configured with the appropriate device, package, and variant settings
+   * Configure LIN instance allocations in the Resource Allocator before configuring the LIN module
+   * Refer to the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for detailed configuration instructions
+
+2. **Update Instance Name References**
+   * Search for all occurrences of `LIN_INSTANCE_A` and replace with `LIN_A`
+   * Search for all occurrences of `LIN_INSTANCE_B` and replace with `LIN_B`
+   * Update any code or configuration files that reference the old instance names
+
+3. **Configure LinWakeupId Parameter**
+   * In EB Tresos, navigate to `LinGeneral` container
+   * Configure the `LinWakeupId` parameter with an unused LIN ID in your network
+   * This ID will be used for wakeup signal transmission instead of the standard wakeup signal
+
+4. **Update SysClockRef to LinSysClockRef**
+   * In EB Tresos, the parameter has been automatically renamed
+   * If you have any external scripts or tools referencing `SysClockRef`, update them to use `LinSysClockRef`
+
+5. **Regenerate Configuration**
+   * After making all configuration changes, regenerate the configuration files using EB Tresos
+
+6. **Rebuild Application**
+   * Rebuild your application with the updated configuration
+
+##### v02.00.00 from v01.01.00 or any older versions
 
 In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
 In case of Post build variant, upper modules that call the Lin_Init function will need to use the new configuration structure name. For example:
@@ -334,6 +413,8 @@ User should pass the configuration input only from EB Tresos tool. Manual change
 ```{NOTE}
 More details related to Configuration precautions can be found in Safety Manual.
 ```
+
+#### Configuration Parameters
 
 
 
@@ -650,49 +731,7 @@ LIN External Hardware Setup Required
 
 ##### Sample Log of Lin_Example_Init_Sleep_Wakeup
 
-```{code-block}
-LIN Driver Sample Application: Lin Init Sleep WakeUp - Starts!!!
-
----------------------------------------------------------------
-
-Test 1: Get Version info for Lin
-API Lin_GetVersionInfo executed successfully
- LIN MCAL Version Info
- ---------------------
- Vendor ID           : 44
- Module ID           : 82
- SW Major Version    : 2
- SW Minor Version    : 0
- SW Patch Version    : 0
- 
----------------------------------------------------------------
-
-Test 2: Initialization of Lin Module
-Initialization of LIN Module is Success !!!
----------------------------------------------------------------
-
-Test 3: Lin Module : Internal Sleep
-Lin going to internal Sleep is Success !!!
----------------------------------------------------------------
-
-Test 4: Lin Module : Wakeup from Internal Sleep - Wakeup Internal
-Lin Waking up from Internal Sleep by LinWakeupInternal API is Success !!!
----------------------------------------------------------------
-
-Test 5: Lin Module : Sleep
-Sending Go To Sleep Command on Lin Bus...
-Lin Go to Sleep Command is sent on Lin Bus !!!
-Lin going to Sleep is Success !!!
----------------------------------------------------------------
-
-Test 6: Lin Module : Wakeup from Sleep - Lin Wakeup
-Lin WakeUp Command is sent on Lin Bus !!!
-Lin Waking up from Sleep by LinWakeup API is Success !!!
----------------------------------------------------------------
-
----------------------------------------------------------------
-LIN Example Init Sleep WakeUp Run FINISHED 
----------------------------------------------------------------
+```{literalinclude} Assets/text/Lin_Example_Init_Sleep_Wakeup.txt
 ```
 
 #### Lin_Example_SendData
@@ -722,70 +761,7 @@ LIN Example Init Sleep WakeUp Run FINISHED
 
 ##### Sample Log of Lin_Example_SendData
 
-```{code-block}
-LIN Driver Sample Application: Lin Send Data - Starts!!!
-
----------------------------------------------------------------
-
-Initialization of LIN Module is Success !!!
-LIN Module Wake Up Internal. Ready to Send data on Lin Bus !!!
-
----------------------------------------------------------------
-
-Test 1: Lin Send data : LIN Master Response !!!
-
-Started Sending Data on Lin Bus For ID : 0x47
-Data Sent : 0x11
-Started Sending Data on Lin Bus For ID : 0x8
-Data Sent : 0x34
-Started Sending Data on Lin Bus For ID : 0x49
-Data Sent : 0x56
-Started Sending Data on Lin Bus For ID : 0xca
-Data Sent : 0x78
-Started Sending Data on Lin Bus For ID : 0x8b
-Data Sent : 0x9a
-Started Sending Data on Lin Bus For ID : 0x4c
-Data Sent : 0xab
-Started Sending Data on Lin Bus For ID : 0xd
-Data Sent : 0xcd
-Started Sending Data on Lin Bus For ID : 0x8e
-Data Sent : 0xef
-Finished Sending Data on Lin Bus
-Lin Send data : LIN Master Response PASSED!!
----------------------------------------------------------------
-
----------------------------------------------------------------
-
-Test 2: Lin Send data : LIN Slave Response !!!
-
-Started Sending Header on Lin Bus For ID : 0x20
-Waiting For Slave to send the data...
-Started receiving Data from Slave...
-Data Received : 0x11
-Data Received : 0x22
-Data Received : 0x11
-Data Received : 0x22
-Data Received : 0x11
-Data Received : 0x22
-Data Received : 0x11
-Data Received : 0x22
-Finished Receiving Data
-Lin Send data : LIN Slave Response PASSED!!
----------------------------------------------------------------
-
----------------------------------------------------------------
-
-Test 3: Lin Send data : LIN Slave To Slave !!!
-
-Started Sending Header on Lin Bus For ID : 0xf0
-Sent Header on Bus for Slave 1 to send data to Slave 2
-Lin Send data : LIN Slave To Slave PASSED!!
----------------------------------------------------------------
-
----------------------------------------------------------------
-LIN Send Data Application - Master_Response, Slave_Response, Slave_To_Slave PASSED
----------------------------------------------------------------
-
+```{literalinclude} Assets/text/Lin_Example_SendData.txt
 ```
 
 #### Lin_Example_Sleep_Wakeup_Interrupt
@@ -817,26 +793,7 @@ LIN Send Data Application - Master_Response, Slave_Response, Slave_To_Slave PASS
 
 ##### Sample Log of Lin_Example_Sleep_Wakeup_Interrupt
 
-```{code-block}
-LIN Driver Sample Application: Lin Sleep WakeUp Interrupt - Starts!!!
-
----------------------------------------------------------------
-
-Initialization of LIN Module is Success !!!
-
-LIN Module Going to Sleep. Sending Go to Sleep Command On Bus..
-LIN Module Successfully Went to Sleep Mode. 
-
----------------------------------------------------------------
-
-Trigger WakeUp Pulse on Lin Bus to Wakeup Lin Module
-Waiting for WAKE UP INTERRUPT on Bus...
-LinIf_CheckWakeup Detected WakeUp Pulse on Lin Bus !!!
-Lin Module Wake Up from Sleep by WakeUp Interrupt is Success !!!
-
----------------------------------------------------------------
-LIN Example Application - Wake Up Interrupt PASSED !!!
----------------------------------------------------------------
+```{literalinclude} Assets/text/Lin_Example_Sleep_Wakeup_Interrupt.txt
 ```
 
 #### File Structure

@@ -81,6 +81,27 @@ Cdd Ipc is a driver. This driver can directly act as a lower layer module for Pd
 Integration of Cdd Ipc driver with AUTOSAR com stack is optional and can be enabled by configuration parameter 'CddIpcIntegrationWithAsrComStackEnable'. When it is enabled, Cdd Ipc driver is responsible to call the receive indication to PduR and PduR is responsible to call transmit function to Cdd Ipc.
 In order to achieve this, correct handle Ids should be configured in both Cdd Ipc and PduR. Please refer to the explanation of "Cdd_Ipc_Transmit" in Cdd Ipc driver.
 
+#### Cdd Ipc Integration with SDK IPC HAL Driver
+
+The Cdd_Ipc module allows the core hosting MCAL/AUTOSAR to communicate with other cores hosting SDK-based applications. To enable this communication, the F29H85X-SDK implements an IPC HAL driver that can work on the other cores.
+
+The IPC HAL driver provides a hardware abstraction layer for the IPC hardware, enabling SDK-based applications to communicate with the AUTOSAR core through a standardized interface. This integration allows for seamless communication between different software environments running on different cores of the same SoC.
+
+**Key features of the IPC HAL integration:**
+
+* Synchronized communication: Both drivers implement synchronization mechanisms to ensure proper initialization and communication between cores.
+* Configurable channels: The IPC HAL driver supports the same channel-based communication model as the Cdd_Ipc module.
+* Support for both polling and interrupt-based communication: Similar to Cdd_Ipc, the IPC HAL driver supports both polling and interrupt-based reception of messages.
+
+```{figure} Assets/images/Cdd_Ipc_Hal.png
+:width: 75%
+:alt: CDD IPC HAL Dataflow
+:align: center
+
+CDD IPC HAL Dataflow
+
+```
+
 ### Hardware Features
 
 #### Hardware Features supported
@@ -268,6 +289,52 @@ The generated configuration files should not be modified manually. The config to
 ```{Note}
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
+
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v02.00.00 from v01.00.02
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   * The CDD IPC module now integrates with the Resource Allocator module for centralized device, package, and variant configuration
+   * IPC instance and remote core configurations are now derived from the Resource Allocator settings
+
+2. **LocalCore Selection Moved to Resource Allocator**
+   * The local core selection (which determines the current CPU context for IPC communication) has been moved from the CDD IPC module configuration to the Resource Allocator module
+   * The local core is now automatically determined based on the `CurrentContext` parameter configured in the Resource Allocator
+   * This affects:
+     * Remote core selection (`CddIpcRemoteCore`) - available remote cores are now filtered based on the current context
+     * TX/RX instance selection (`CddIpcTxInstance`, `CddIpcRxInstance`) - available instances are now determined by the local core context from Resource Allocator
+
+###### Migration Steps
+
+1. **Add Resource Allocator Module**
+   * If not already present, add the Resource Allocator module to your EB Tresos project configuration
+
+2. **Configure CurrentContext in Resource Allocator**
+   * Configure the `CurrentContext` parameter in the Resource Allocator module to specify which CPU core is hosting the MCAL/AUTOSAR stack
+   * This replaces the previous local core selection in CDD IPC
+
+3. **Update CDD IPC Configuration**
+   * Open the CDD IPC module configuration in EB Tresos
+   * The remote core options and IPC instance selections will now be automatically filtered based on the Resource Allocator's `CurrentContext` setting
+
+4. **Verify Remote Core Configuration**
+   * Ensure that the `CddIpcRemoteCore` selections are valid for the configured current context
+   * The available remote cores will be automatically determined based on the local core
+
+5. **Regenerate Configuration**
+   * Save the configuration and regenerate all configuration files
+
+6. **Rebuild Application**
+   * Rebuild your application with the updated configuration files
+
+For more details on Resource Allocator configuration, refer to the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md).
+
+#### Configuration Parameters
 
 
 
@@ -659,26 +726,9 @@ The example applications demonstrates usecases of the Cdd Ipc driver APIs. The e
 * Load the Cdd_Ipc_Example_Interrupt_C29x1_merged.out
 * After the program is loaded, run CPU1
 
-#### Sample Logs of Cdd_Ipc_Example_Interrupt_C29x1
+##### Sample Log of Cdd_Ipc_Example_Interrupt_C29x1
 
-```{code-block}
-Sample Application - STARTS !!!
-CDD IPC MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 255
-SW Major Version    : 1
-SW Minor Version    : 0
-SW Patch Version    : 1
-Synchronizing with remote core CPU3
-Synchronized with remote core CPU3
-Transmitting message to remote core CPU3
-Data transmitted to remote core CPU3:
-hello
-Data received from remote core CPU3:
-hello CPU1
-=================================================================================
-PASS: IPC example between CPU1 and CPU3 executed successfully
+```{literalinclude} Assets/text/Cdd_Ipc_Example_Interrupt_C29x1.txt
 ```
 
 #### Cdd_Ipc_Example_Polling_C29x1
@@ -709,26 +759,9 @@ PASS: IPC example between CPU1 and CPU3 executed successfully
 * Load the Cdd_Ipc_Example_Polling_C29x1_merged.out
 * After the program is loaded, run CPU1
 
-#### Sample Logs of Cdd_Ipc_Example_Polling_C29x1
+##### Sample Log of Cdd_Ipc_Example_Polling_C29x1
 
-```{code-block}
-Sample Application - STARTS !!!
-CDD IPC MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 255
-SW Major Version    : 1
-SW Minor Version    : 0
-SW Patch Version    : 1
-Synchronizing with remote core CPU3
-Synchronized with remote core CPU3
-Transmitting message to remote core CPU3
-Data transmitted to remote core CPU3:
-hello
-Data received from remote core CPU3:
-hello CPU1
-=================================================================================
-PASS: IPC example between CPU1 and CPU3 executed successfully
+```{literalinclude} Assets/text/Cdd_Ipc_Example_Polling_C29x1.txt
 ```
 
 #### File Structure

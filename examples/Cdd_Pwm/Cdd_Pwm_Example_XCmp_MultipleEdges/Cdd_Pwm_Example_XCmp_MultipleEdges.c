@@ -43,7 +43,7 @@
  *
  * EnableXLoad trigger the XCMP mode
  * Print the notification count for each EPWM instance
- * Track the changes in the waveforn with a logic analyzer
+ * Track the changes in the waveform with a logic analyzer
  *
  * EPWM waveform can be observed on the respective pins configured in EPWM mode
  * \b External \b Connections \n

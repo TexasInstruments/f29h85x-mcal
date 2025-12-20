@@ -269,9 +269,26 @@ Cdd_Sent driver functions will exhibit undefined behavior.
 
 The Cdd_Sent driver uses interrupts and therefore there is a dependency on the OS, which configures the interrupt sources.
 
-#### Multi-core and Resource allocator
+#### Resource Allocator
 
-Not Supported
+The SENT module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+To allocate SENT1 to CPU1 using FRAME0:
+
+1. In the Resource Allocator configuration, create a new Sent instance allocation
+2. Set **InstanceName** to `SENT1`
+3. Set **Frame** to `FRAME0`
+4. The **BaseAddr** will be automatically calculated as `SENT1_DRIVER_BASE_FRAME(0U)`
+
+```text
+Resource Allocator Configuration:
+├── SentInstanceAllocation
+│   ├── InstanceName: SENT1
+│   ├── Frame: FRAME0
+│   └── BaseAddr: SENT1_DRIVER_BASE_FRAME(0U)
+```
 
 ### Configuration
 
@@ -280,7 +297,50 @@ The associated Cdd_Sent driver configuration generated source files are Cdd_Sent
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
-#### Migration Guide to v2.0.0 from v1.0.0
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v3.0.0 from v2.0.0
+
+This section describes the changes required when migrating from CDD SENT driver version 2.0.0 to version 3.0.0.
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   * The CDD SENT module now uses the Resource Allocator for device, package, and variant configuration
+   * SENT instance selection is now done through `CddSentInstanceRef` which references the Resource Allocator's allocated instances
+   * Base address (`CddSentBaseAddress`) is automatically derived from the Resource Allocator configuration
+   * See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings
+
+2. **DEM Configuration Parameter Name Change**
+   * The DEM event parameter reference name has been changed for consistency with module naming conventions
+   * **Old name:** `CDD_E_HARDWARE_ERROR`
+   * **New name:** `CDD_SENT_E_HARDWARE_ERROR`
+
+###### Migration Steps
+
+1. **Update Resource Allocator Configuration**
+   * Configure the Resource Allocator module with the required SENT instances
+   * Allocate SENT instances to the appropriate CPU context
+
+2. **Update CDD SENT Configuration**
+   * Open the CDD SENT module configuration in EB Tresos
+   * For each `CddSentController`, set the `CddSentInstanceRef` to reference the appropriate allocated instance from Resource Allocator
+   * The `CddSentBaseAddress` will be automatically populated based on the Resource Allocator configuration
+
+3. **Update DEM Configuration References**
+   * If DEM error reporting is enabled, update the DEM event parameter reference
+   * Change references from `CDD_E_HARDWARE_ERROR` to `CDD_SENT_E_HARDWARE_ERROR`
+   * Update any application code that references this DEM event parameter name
+
+4. **Regenerate Configuration**
+   * Save the configuration and regenerate the configuration files
+
+5. **Rebuild Application**
+   * Rebuild your application with the updated configuration
+
+##### v2.0.0 from v1.0.0
 
 To align with AUTOSAR CDD naming convention, we have named Module Name as Cdd and apiServicePrefix as Cdd_Sent. This results in change in schema as described below.
 
@@ -307,6 +367,8 @@ Modified new schema:
 <d:ctr type="MODULE-CONFIGURATION">
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Sent/Cdd"/>
 ```
+
+#### Configuration Parameters
 
 
 
@@ -1186,27 +1248,7 @@ Cdd_Sent HW Setup
 
 ##### Sample Log of Cdd_Sent_standard
 
-```{code-block}
-Cdd_Sent Driver Sample Application - Starts!!!
-Cdd_Sent MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 255
-SW Major Version    : 1
-SW Minor Version    : 0
-SW Patch Version    : 0
-Timestamp received  from Fast channel : 21589807
-Data received  from Fast channel : 3427036
-Timestamp received  from Fast channel : 21602800
-Data received  from Fast channel : 3427196
-Timestamp received  from Fast channel : 21615830
-Data received  from Fast channel : 3423260
-Timestamp received  from Fast channel : 21628961
-Data received  from Fast channel : 3427516
-Timestamp received  from Fast channel : 21642046
-Data received  from Fast channel : 3423580
-Cdd_Sent_Standard: Sample Application - Completes successfully !!!
-
+```{literalinclude} Assets/text/Cdd_Sent_standard_Log.txt
 ```
 
 ##### How to run Cdd_Sent_MtpMode
@@ -1216,27 +1258,52 @@ Cdd_Sent_Standard: Sample Application - Completes successfully !!!
 
 ##### Sample Log of Cdd_Sent_MtpMode
 
-```{code-block}
-Cdd_Sent Driver Sample Application - Starts!!!
-Cdd_Sent MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 255
-SW Major Version    : 1
-SW Minor Version    : 0
-SW Patch Version    : 0
-Initializing Cdd_Sent Driver
-Cdd Sent Drive initialized
-Trigger sensor with Sent Handle ID
-Sensor Id received  from Fast channel : 0
-Data received  from Fast channel : 4238653
-trigger successfully
-Trigger sensor with Sent Handle ID
-Sensor trigger successfully
-Id received  from Fast channel : 0
-Data received  from Fast channel : 4492088
-Cdd_Sent_MtpMode: Sample Application - Completes successfully !!!
+```{literalinclude} Assets/text/Cdd_Sent_MTP_Log.txt
+```
 
+#### Cdd_Sent_Mtp_ExternalTrigger_Source
+
+##### Overview of Cdd_Sent_Mtp_ExternalTrigger_Source
+
+* Cdd_Sent_Mtp_ExternalTrigger_Source
+  * This example reads data from an MTP sensor with external trigger source using SENT communication protocol
+  * Sensor details:
+    * Product Type: TLE5014C16D
+    * Marking: 014CD
+    * Sensor Type: SPC Interface
+  * The sensor sends out a signal made up of a string of pulses with data encoded as falling to falling edge periods
+  * The modulated signal with constant amplitude voltage evaluates the time interval between two falling edges (a single edge) delivered in units of 4 bits (1 nibble), representing values from 0 to 15
+  * This example configures SENT module to receive 4 Data-nibble per frame for fast channel
+  * DeviceSupport_Init()
+  * EcuM_Init()
+    * Initialize clock using Mcu_Init()
+    * Initialize pins with Port_Init()
+    * Initialize Cdd_Sent driver using Cdd_Sent_Init()
+  * Trigger sensor with Sent Handle ID using Cdd_Sent_Transmit()
+  * Enable GPT notifications and start timer with 1s timeout
+  * Wait for data reception and verify external trigger behavior
+  * Stop timer and trigger sensor again
+  * Receive and display data from fast and slow channels via callback
+  * Deinitialize GPT and Cdd_Sent drivers
+  * External Connections:
+    * Connect GPIO18 to sensor's SENT channel 4 pin
+
+##### Setup required to run Cdd_Sent_Mtp_ExternalTrigger_Source
+
+* Install Code Composer Studio (CCS) latest version
+* Install latest C29 compiler
+* Connect the hardware and power up
+* Connect the UART setup to check the log on serial console
+* Connect GPIO18 to the sensor's SENT channel 4 pin
+
+##### How to run Cdd_Sent_Mtp_ExternalTrigger_Source
+
+* Open CCS and import Cdd_Sent_Mtp_ExternalTrigger_Source
+* Build project and start debug project
+
+##### Sample Log of Cdd_Sent_Mtp_ExternalTrigger_Source
+
+```{literalinclude} Assets/text/Cdd_Sent_Mtp_ExternalTrigger_Source_Log.txt
 ```
 
 #### File Structure

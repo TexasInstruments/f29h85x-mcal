@@ -280,7 +280,7 @@ void Cdd_Ecap_ConfigEcap(uint32 baseAddr, Cdd_Ecap_ActivationType activation, Cd
 /**
  * \brief   This is the Channel ISR
  *
- * \param[in]   Channel       Channel number
+ * \param[in]   Channel                  Channel number of CDD ECAP
  * \pre None
  * \post None
  * \return None
@@ -291,7 +291,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_ChannelISR(Cdd_Ecap_ChannelType Channel);
 /**
  * \brief   This is the Channel ISR for HR mode
  *
- * \param[in]   Channel     Channel number
+ * \param[in]   Channel                  Channel number of CDD ECAP
  * \pre None
  * \post None
  * \return None
@@ -302,7 +302,7 @@ FUNC(void, CDD_ECAP_CODE) Cdd_Ecap_HR_ISR(Cdd_Ecap_ChannelType Channel);
 /**
  * \brief   This will select ECAP Input.
  *
- * \param[in]        input               Cdd Ecap Input
+ * \param[in]       input               Cdd Ecap Input
  * \param[in]       base                Baseaddress of channel
  * \pre None
  * \post None
@@ -357,6 +357,21 @@ void Cdd_Ecap_intrStatusClear(uint32 baseAddr, uint16 flag);
  *
  **/
 void Cdd_Ecap_reArm(uint32 baseAddr);
+/**
+ * \brief   This function periodically readsback the registers of CDD ECAP.
+ *
+ * \param[in]   Channel                  Channel number of CDD ECAP
+ * \param[in]   ReadBackRegisterdata     pointer for the read back registers
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ **/
+
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_PeriodicReadbackPrv(Cdd_Ecap_ChannelType Channel, P2VAR(Cdd_Ecap_PeriodicReadBackDataType, AUTOMATIC,
+                                                                 CDD_ECAP_APPL_DATA) ReadBackRegisterdata);
 
 #if (STD_ON == CDD_ECAP_HR_API)
 /** \brief Service to enable high resolution capability for the given HRCAP channel.

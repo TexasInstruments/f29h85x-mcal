@@ -102,21 +102,11 @@ CONST(Cdd_Pwm_ConfigType, CDD_PWM_CONFIG_DATA) Cdd_Pwm_Config =
         },
         [3] =
         {
-            /* HwunitId: EPWM4 */
-            .instance_id = (uint8)(4U),
-            .base_addr = (uint32)(EPWM4_BASE_FRAME(0U)),
-            #if(STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
-            .notification = (Cdd_Pwm_NotificationType)(Cdd_Pwm_HwUnit3Notification),
-            .tripzone_notification = (Cdd_Pwm_TripZoneNotificationType)(NULL_PTR)
-            #endif
-        },
-        [4] =
-        {
             /* HwunitId: EPWM7 */
             .instance_id = (uint8)(7U),
             .base_addr = (uint32)(EPWM7_BASE_FRAME(0U)),
             #if(STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
-            .notification = (Cdd_Pwm_NotificationType)(Cdd_Pwm_HwUnit4Notification),
+            .notification = (Cdd_Pwm_NotificationType)(Cdd_Pwm_HwUnit3Notification),
             .tripzone_notification = (Cdd_Pwm_TripZoneNotificationType)(NULL_PTR)
             #endif
         },        

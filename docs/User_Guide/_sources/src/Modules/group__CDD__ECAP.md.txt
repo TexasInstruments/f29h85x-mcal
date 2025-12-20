@@ -537,6 +537,7 @@ Notification callback function pointer
 | **[Cdd_Ecap_DutyCycleType](../Classes/structCdd__Ecap__DutyCycleType.md)** | This type defines Duty Cycle struct.  |
 | **[Cdd_Ecap_ChannelConfigType](../Classes/structCdd__Ecap__ChannelConfigType.md)** | CDD_ECAP Channel Config Structure.  |
 | **[Cdd_Ecap_ConfigType](../Classes/structCdd__Ecap__ConfigType.md)** | CDD_ECAP Config Structure.  |
+| **[Cdd_Ecap_PeriodicReadBackDataType](../Classes/structCdd__Ecap__PeriodicReadBackDataType.md)** | CDD_ECAP periodic readback register definition.  |
 
 
 
@@ -569,6 +570,7 @@ Notification callback function pointer
 | CDD_ECAP_SETSTARTLEVELCONDITION_ID   | Cdd_Ecap_SetStartLevelCondition() API Service ID.  |
 | CDD_ECAP_HRSCALEFACTOR_ID   | Cdd_Ecap_GetHrScaleFactor API Service ID.  |
 | CDD_ECAP_HRTIMESTAMP_ID   | Cdd_Ecap_GetHrScaleFactor API Service ID.  |
+| CDD_ECAP_READBACK_ID   | Cdd_Ecap_PeriodicReadback() API Service ID.  |
 | CDD_ECAP_E_PARAM_POINTER   | API service called with invalid pointer.  |
 | CDD_ECAP_E_PARAM_CHANNEL   | API service called with invalid channel identifier or channel not configured.  |
 | CDD_ECAP_E_PARAM_ACTIVATION   | API service called with an invalid or not feasible activation.  |
@@ -663,6 +665,7 @@ Notification callback function pointer
 | [Cdd_Ecap_ValueType](../Modules/group__CDD__ECAP.md#typedef-cdd_ecap_valuetype) | **[Cdd_Ecap_GetTimeElapsed](../Modules/group__CDD__ECAP.md#function-cdd_ecap_gettimeelapsed)**([Cdd_Ecap_ChannelType](../Modules/group__CDD__ECAP.md#typedef-cdd_ecap_channeltype) Channel)| Service for reading the time elapsed between the edges of a channel.  |
 | void | **[Cdd_Ecap_GetDutyCycleValues](../Modules/group__CDD__ECAP.md#function-cdd_ecap_getdutycyclevalues)**([Cdd_Ecap_ChannelType](../Modules/group__CDD__ECAP.md#typedef-cdd_ecap_channeltype) Channel, [Cdd_Ecap_DutyCycleType](../Classes/structCdd__Ecap__DutyCycleType.md) * DutyCycleValues)| Service for reading the active time and period.  |
 | void | **[Cdd_Ecap_GetVersionInfo](../Modules/group__CDD__ECAP.md#function-cdd_ecap_getversioninfo)**(Std_VersionInfoType * VersionInfoPtr)| service that returns the version information of the module.  |
+| void | **[Cdd_Ecap_PeriodicReadback](../Modules/group__CDD__ECAP.md#function-cdd_ecap_periodicreadback)**([Cdd_Ecap_ChannelType](../Modules/group__CDD__ECAP.md#typedef-cdd_ecap_channeltype) Channel, [Cdd_Ecap_PeriodicReadBackDataType](../Classes/structCdd__Ecap__PeriodicReadBackDataType.md) * ReadBackRegisterdata)| This service shall read all the statically configured registers.  |
 | [Cdd_Ecap_ChannelHrScaleType](../Modules/group__CDD__ECAP.md#typedef-cdd_ecap_channelhrscaletype) | **[Cdd_Ecap_GetHrScaleFactor](../Modules/group__CDD__ECAP.md#function-cdd_ecap_gethrscalefactor)**([Cdd_Ecap_ChannelType](../Modules/group__CDD__ECAP.md#typedef-cdd_ecap_channeltype) Channel)| Service to retrieve the scale factor for high resolution capability.  |
 | [Cdd_Ecap_ChannelHrScaleType](../Modules/group__CDD__ECAP.md#typedef-cdd_ecap_channelhrscaletype) | **[Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp](../Modules/group__CDD__ECAP.md#function-cdd_ecap_converthrtimestamptoecaptimestamp)**([Cdd_Ecap_ChannelType](../Modules/group__CDD__ECAP.md#typedef-cdd_ecap_channeltype) Channel, uint32 timeStamp)| Service to convert the event timestamp to nanoseconds for high resolution capability.  |
 | void | **[Cdd_Ecap_TimeStampNotify](../Modules/group__CDD__ECAP.md#function-cdd_ecap_timestampnotify)**(void )|  |
@@ -1382,6 +1385,40 @@ This service returns the version information of the Cdd Ecap module.
 
   
 * **VersionInfoPtr** Pointer to where to store the version information of this module 
+
+
+**Returns**: 
+
+  
+* **None** 
+<br> 
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_Ecap_PeriodicReadback
+
+```
+void Cdd_Ecap_PeriodicReadback(
+    Cdd_Ecap_ChannelType Channel,
+    Cdd_Ecap_PeriodicReadBackDataType * ReadBackRegisterdata
+)
+```
+
+
+**Brief**: 
+This service shall read all the statically configured registers. 
+
+**Parameters**: 
+
+  
+* **Channel** CDD_ECAP Channel in use 
+  
+* **ReadBackRegisterdata** pointer for the read back registers 
 
 
 **Returns**: 

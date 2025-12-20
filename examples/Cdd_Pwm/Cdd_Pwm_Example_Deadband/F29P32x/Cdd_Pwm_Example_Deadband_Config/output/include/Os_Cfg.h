@@ -48,7 +48,7 @@ extern "C" {
 
 #define OS_POST_BUILD_VARIANT    (STD_OFF)
 
-#define OS_CFG_MAX_ISR          (5U)
+#define OS_CFG_MAX_ISR          (4U)
 
 #define OS_CFG_MAX_COUNTER      (1U)
 
@@ -81,9 +81,6 @@ MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm2_IntIsr);
 
 /* Category 1 INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm3_IntIsr);
-
-/* Category 1 INT ISR function prototype. */
-MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm4_IntIsr);
 
 /* Category 1 INT ISR function prototype. */
 MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm7_IntIsr);

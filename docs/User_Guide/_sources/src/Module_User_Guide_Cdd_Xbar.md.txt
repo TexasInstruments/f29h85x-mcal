@@ -305,9 +305,25 @@ PORT Module is required to initialize Pin configurations for Input Xbar inputs(G
 
 MCU Module is required to initialize all the clock to be used by different peripherals
 
-#### Multi-core and Resource allocator
+#### Resource Allocator
 
-Not Supported
+The XBAR module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+XBAR is a global configuration module and does not require instance-based allocation. The XBAR resources are shared across the system and configured globally.
+
+To configure the Resource Allocator for the XBAR module:
+
+1. In the Resource Allocator configuration, ensure the device settings are configured
+2. XBAR configuration is applied globally to all crossbar resources
+3. No instance-specific allocation is required
+
+```text
+Resource Allocator Configuration:
+├── XbarConfiguration
+│   └── Note: XBAR is a global resource, configured system-wide
+```
 
 ### Configuration
 
@@ -320,7 +336,50 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#### Migration Guide to v2.0.0 from v1.0.0
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v3.0.0 from v2.0.0
+
+This section describes the changes required when migrating from CDD XBAR driver version 2.0.0 to version 3.0.0.
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   * The CDD XBAR module now uses the Resource Allocator for device, package, and variant configuration
+   * XBAR configuration parameters (input sources, input lines, output lines, etc.) are now derived from the Resource Allocator
+   * Available crossbar inputs and outputs are dynamically determined based on the device configuration in Resource Allocator
+   * See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings
+
+2. **Removed Configuration Parameter: `CDD_XBAR_API_ENABLE`**
+   * The `CDD_XBAR_API_ENABLE` configuration parameter has been removed
+   * API availability is now controlled through individual API enable parameters:
+     * `CddXbarVersionInfoApi` - Controls `Cdd_Xbar_GetVersionInfo()` API
+     * `CddXbarInputFlagApi` - Controls `Cdd_Xbar_InputFlagStatus()` and `Cdd_Xbar_InputFlagClear()` APIs
+
+###### Migration Steps
+
+1. **Update Resource Allocator Configuration**
+   * Configure the Resource Allocator module with the device-specific settings
+   * Ensure XBAR-related parameters are properly configured in the Resource Allocator
+
+2. **Update CDD XBAR Configuration**
+   * Open the CDD XBAR module configuration in EB Tresos
+   * The available input sources, input lines, and output lines will now be populated from the Resource Allocator
+   * Verify that your existing crossbar configurations are still valid with the new parameter ranges
+
+3. **Remove `CDD_XBAR_API_ENABLE` References**
+   * If your configuration or code references `CDD_XBAR_API_ENABLE`, remove these references
+   * Use the individual API enable parameters (`CddXbarVersionInfoApi`, `CddXbarInputFlagApi`) to control API availability
+
+4. **Regenerate Configuration**
+   * Save the configuration and regenerate the configuration files
+
+5. **Rebuild Application**
+   * Rebuild your application with the updated configuration
+
+##### v2.0.0 from v1.0.0
 
 To align with AUTOSAR CDD naming convention, we have named Module Name as Cdd and apiServicePrefix as Cdd_Xbar. This results in change in schema as described below.
 
@@ -347,6 +406,8 @@ Modified new schema:
 <d:ctr type="MODULE-CONFIGURATION">
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Xbar/Cdd"/>
 ```
+
+#### Configuration Parameters
 
 
 
@@ -931,31 +992,9 @@ The example application demonstrates use of Cdd Xbar module, the list below iden
 * Open CCS and import Cdd Xbar Example
 * Build project and start debug project
 
-#### Sample Log
+##### Sample Log of Cdd_Xbar_GpioToGpio
 
-```{code-block}
-Sample Application - STARTS !!!
-CDD XBAR MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 255
-SW Major Version    : 2
-SW Minor Version    : 0
-SW Patch Version    : 1
--------------------------------------------- 
-Checking lock status of INPUT XBAR1 
-INPUT XBAR1 is locked 
--------------------------------------------- 
-Checking lock status of INPUT XBAR2 
-INPUT XBAR2 is not locked 
-Selecting GPIO4 as input to INPUT XBAR2 
-GPIO4 is selected as input to INPUT XBAR2 
--------------------------------------------- 
-Checking lock status of OUTPUT XBAR 
-Selecting INPUT XBAR2 as input to OUTPUT XBAR2 
-INPUT XBAR2 is selected as input to OUTPUT XBAR2 
-=================================================================================
-PASS: GPIO0(INPUT XBAR1) and GPIO4(INPUT XBAR2) are routed to GPIO2(OUTPUT XBAR1) 
+```{literalinclude} Assets/text/Cdd_Xbar_GpioToGpio.txt
 ```
 
 #### File Structure

@@ -121,6 +121,8 @@ extern "C" {
 #define CDD_ECAP_HRSCALEFACTOR_ID ((uint8)0x19U)
 /** \brief Cdd_Ecap_GetHrScaleFactor API Service ID */
 #define CDD_ECAP_HRTIMESTAMP_ID ((uint8)0x20U)
+/** \brief Cdd_Ecap_PeriodicReadback() API Service ID */
+#define CDD_ECAP_READBACK_ID ((uint8)0x22U)
 /** @} */
 
 /**
@@ -464,6 +466,27 @@ typedef struct Cdd_Ecap_ConfigTag
     Cdd_Ecap_ChannelConfigType chCfg[CDD_ECAP_HW_CNT];
 } Cdd_Ecap_ConfigType;
 
+/** \brief  CDD_ECAP periodic readback register definition */
+typedef struct Cdd_Ecap_PeriodicReadBackDataType_s
+{
+    /** \brief Register data for ECAP_CAP1 register */
+    uint32 CddEcapcap1;
+    /** \brief Register data for ECAP_CAP2 register */
+    uint32 CddEcapcap2;
+    /** \brief Register data for ECAP_CAP3 register */
+    uint32 CddEcapcap3;
+    /** \brief Register data for ECAP_CAP4 register */
+    uint32 CddEcapcap4;
+    /** \brief Register data for ECAP_ECCTL0 register */
+    uint32 CddEcapEcctl0;
+    /** \brief Register data for ECAP_ECCTL1 register */
+    uint32 CddEcapEcctl1;
+    /** \brief Register data for ECAP_ECCTL2 register */
+    uint32 CddEcapEcctl2;
+    /** \brief Register data for ECAP_ECEINT register */
+    uint32 CddEcapEceint;
+} Cdd_Ecap_PeriodicReadBackDataType;
+
 /*********************************************************************************************************************
  * Exported Object Declarations
  *********************************************************************************************************************/
@@ -776,6 +799,20 @@ Cdd_Ecap_GetDutyCycleValues(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_DutyCycleType
 FUNC(void, CDD_ECAP_CODE)
 Cdd_Ecap_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ECAP_APPL_DATA) VersionInfoPtr);
 #endif
+
+/** \brief This service shall read all the statically configured registers
+ *
+ * \param[in] Channel CDD_ECAP Channel in use
+ * \param[out] ReadBackRegisterdata pointer for the read back registers
+ * \pre None
+ * \post None
+ * \return None
+ * \retval None
+ *
+ *****************************************************************************/
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_PeriodicReadback(Cdd_Ecap_ChannelType Channel,
+                          P2VAR(Cdd_Ecap_PeriodicReadBackDataType, AUTOMATIC, CDD_ECAP_APPL_DATA) ReadBackRegisterdata);
 
 #if (STD_ON == CDD_ECAP_HR_API)
 

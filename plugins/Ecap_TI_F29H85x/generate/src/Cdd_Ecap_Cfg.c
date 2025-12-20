@@ -47,8 +47,8 @@ extern "C" {
 /*********************************************************************************************************************
  * Local Preprocessor #define Constants
  *********************************************************************************************************************/
-#define CDD_ECAP_BASEADDR_STEP             (ECAP2_BASE - ECAP1_BASE)
-#define CDD_ECAP_HR_BASEADDR_STEP          (HRCAP6_BASE - HRCAP5_BASE)
+#define CDD_ECAP_BASEADDR_STEP             (uint32)(ECAP2_BASE - ECAP1_BASE)
+#define CDD_ECAP_HR_BASEADDR_STEP          (uint32)(HRCAP6_BASE - HRCAP5_BASE)
 /*********************************************************************************************************************
  * Local Preprocessor #define Macros
  *********************************************************************************************************************/

@@ -1,0 +1,31 @@
+# AUTOSAR Integration Guide
+
+## Introduction
+
+TI provides MCAL (Microcontroller Abstraction Layer) and CDD (Complex Device Driver) modules that are fully compatible with AUTOSAR Basic Software (BSW) stacks from various vendors. These drivers abstract the underlying MCU hardware, enabling the rest of the BSW to remain hardware-independent.
+
+This guide explains how to integrate TI MCAL and CDD modules with third-party AUTOSAR BSW stacks, ensuring seamless interoperability.
+
+## Importing TI MCAL Modules into Third-Party AUTOSAR Toolchains
+
+### Overview
+
+TI MCAL modules are configured using the EB Tresos tool. When using a different AUTOSAR vendor's configuration tool for the BSW stack, you may need to import the TI MCAL modules into that toolchain. This allows other BSW modules to reference TI MCAL configurations—for example, enabling other modules to derive their clock settings from the MCU module's clock references.
+
+### Required Files for Import
+
+The following files are required to import TI MCAL modules into third-party toolchains:
+
+1. **MCAL Export from EB Tresos (ARXML)**: Export the MCAL module configuration from EB Tresos as an ARXML file. See [Run Export](./MCAL_Configuration_and_EB_Tresos.md#run-export) for instructions. This file contains the ECU configuration for the MCAL modules.
+
+2. **Vendor-Specific Module Definition (ARXML)**: TI provides a Vendor-Specific Module Definition file for each MCAL module, based on the AUTOSAR Standard Module Definition. This file is required by tools to interpret the MCAL module parameters. See [Module Plugin Directory Structure](./MCAL_Configuration_and_EB_Tresos.md#module-plugin-directory-structure) for the file location.
+
+3. **BSW Module Description File (ARXML)**: The BSWMD file provides a formal description of all information related to a BSW module, supplementing the implementation artifact. Each MCAL module generates its own BSWMD file. See [Generate BSWMD](./MCAL_Configuration_and_EB_Tresos.md#generate-bswmd) for details.
+
+### Importing ARXML Files
+
+Refer to your AUTOSAR toolchain's User Guide for specific instructions on how to import these ARXML files into your configuration environment.
+
+```{note}
+Importing MCAL modules into third-party AUTOSAR configurator is typically for reference purposes only. The MCAL modules should be configured and generated using EB Tresos, not from within the third-party toolchain.
+```

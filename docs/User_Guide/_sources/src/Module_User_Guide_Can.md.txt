@@ -254,9 +254,26 @@ MCU Module is required to initialize all the clock to be used by different perip
 
 PORT Module is required to initialize Pin configurations and MUX mode for CAN Instances
 
-#### Multi-core and Resource allocator
+#### Resource Allocator
 
-Not Supported
+The CAN module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+To allocate MCANA to CPU1 using FRAME0:
+
+1. In the Resource Allocator configuration, create a new Can instance allocation
+2. Set **InstanceName** to `MCANA`
+3. Set **Frame** to `FRAME0`
+4. The **BaseAddr** will be automatically calculated as `MCANA_DRIVER_BASE_FRAME(0U)`
+
+```text
+Resource Allocator Configuration:
+├── CanInstanceAllocation
+│   ├── InstanceName: MCANA
+│   ├── Frame: FRAME0
+│   └── BaseAddr: MCANA_DRIVER_BASE_FRAME(0U)
+```
 
 #### General Guidelines
 
@@ -272,7 +289,49 @@ The associated Can driver configuration generated source files are **Can_Cfg.c**
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
-#### Migration Guide to v02.00.00 from v01.02.00
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v03.00.00 from v02.00.00
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   * The CAN module now uses the Resource Allocator for device, package, and variant configuration
+   * Users must configure CAN instances through the Resource Allocator module before configuring the CAN driver
+   * See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details
+
+2. **Controller Name Changes**
+   * The CAN controller names have been updated to align with the Resource Allocator naming convention
+   * For example: `MCAN1` → `MCANA`, `MCAN2` → `MCANB`, `MCAN3` → `MCANC`
+
+3. **ISR Name Changes**
+   * As the controller names have changed, the corresponding ISR (Interrupt Service Routine) names have also been updated
+   * Users must update the ISR names in the Os module configuration
+   * For example: `Can_1_Int1ISR` → `Can_A_Int1ISR`, `Can_1_WakeUpISR` → `Can_A_WakeUpISR`
+
+###### Migration Steps
+
+1. **Add Resource Allocator Module**
+   * Add and configure the Resource Allocator module in your EB Tresos project
+
+2. **Allocate CAN Instances**
+   * Allocate the required CAN instances (MCANA, MCANB, etc.) to the appropriate context in the Resource Allocator
+
+3. **Update Controller Name References**
+   * Update any references to the old controller names in your application code
+
+4. **Update ISR Names**
+   * Update the ISR names in the Os module configuration to use the new naming convention
+
+5. **Regenerate Configuration**
+   * Regenerate the configuration files using EB Tresos
+
+6. **Rebuild Application**
+   * Rebuild your application with the updated configuration
+
+##### v02.00.00 from v01.02.00
 
 v02.00.00 CAN driver is designed to fit MCAN hardware with AUTOSAR concepts. Following are some generic recommendations for v02.00.00 CAN driver configuration.
 
@@ -297,6 +356,8 @@ Can_Init(&Can_Config);
 This change ensures compliance with AUTOSAR naming conventions.
 
 To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
+
+#### Configuration Parameters
 
 
 
@@ -1826,12 +1887,7 @@ The example application demonstrates use of Can module, the list below identifie
 
 ##### Sample Log of Can_Example_loopback
 
-```{code-block}
-    Can_Example_loopback : Sample Application - STARTS !!!
-    Can_Example_loopback : Can Controller: MCAN A
-    Can_Example_loopback : Can Transmission Started 
-    Can_Example_loopback : Transmitted and Received Message Id is 0x64
-    Can_Example_loopback : Sample Application success
+```{literalinclude} Assets/text/Can_Example_Loopback_Example_Log.txt
 ```
 
 #### Can_Example_Classic_FD
@@ -1866,14 +1922,7 @@ The example application demonstrates use of Can module, the list below identifie
 
 ##### Sample Log of Can_Example_Classic_FD
 
-```{code-block}
-    Can_Example_Classic_FD : Sample Application - STARTS !!!
-    Can_Example_Classic_FD : Can Controller: MCAN A
-    Can_Example_Classic_FD : Transmitted ID value: 0x64 and length : 8 
-    Can_Example_Classic_FD : Transmission data: 0xa1 0x1a 0xff 0xff 0xc1 0x1c 0xb1 0x1b 
-    Can_Example_Classic_FD : Can Transmission Started 
-    Can_Example_Classic_FD : Received Message Id is 0x101
-    Can_Example_Classic_FD : Sample Application success
+```{literalinclude} Assets/text/Can_Example_Classic_FD_Example_Log.txt
 ```
 
 #### Can_Example_Icom
@@ -1910,14 +1959,53 @@ The example application demonstrates use of Can module, the list below identifie
 
 ##### Sample Log of Can_Example_Icom
 
-```{code-block}
-    Can_Example_Icom : Sample Application - STARTS !!!
-    ICOM ConfigurationCan_Example_Icom : Can Controller: MCAN A
-    Can_Example_Icom : Transmitted ID value: 0x64 and length : 8 
-    Can_Example_Icom : Transmission data: 0xa1 0x1a 0xff 0xff 0xc1 0x1c 0xb1 0x1b 
-    Can_Example_Icom : Can Transmission Started 
-    Can_Example_Icom : Enabling pretended networking.
-    Can_Example_Icom : Sample Application for pretended networking was success
+```{literalinclude} Assets/text/Can_Example_Icom_Example_Log.txt
+```
+
+#### Can_Example_Wakeup
+
+##### Overview of Can_Example_Wakeup
+
+* Can_Example_Wakeup
+  * This example demonstrates CAN wakeup functionality with CAN Classic and FD modes
+  * Enables one controller with 2 hardware objects for Tx and 2 hardware objects for Rx
+  * Validates received data against transmitted data
+  * DeviceSupport_Init()
+  * EcuM_Init()
+    * Initialize clock using Mcu_Init()
+    * Initialize pins with Port_Init()
+    * Initialize CAN driver using Can_Init()
+  * Set controller state to STARTED
+  * Configure PCAN with matching settings:
+    * Mode: CAN, Clock Freq: 80 MHz
+    * BitRate: 1000 kbit/s, Sample Point: 60%
+    * Pre-scaler: 8, TSEG1: 5, TSEG2: 4
+  * Send predefined data from PCAN (CAN-ID: 101h, Length: 8)
+  * Send data using Can_Write() with predefined data
+  * Read Tx confirmation and Rx indication
+  * Validate received data with predefined receive data
+  * Set controller state to SLEEP
+  * Send predefined data from PCAN to trigger wakeup
+  * Check for wakeup event detection
+  * If wakeup event is detected, verify Rx indication is zero (message not received in sleep mode)
+
+##### Setup required to run Can_Example_Wakeup
+
+* Install Code Composer Studio (CCS) latest version
+* Install latest C29 compiler
+* Connect the hardware and power up
+* Connect PCAN tool to the CAN bus
+* Connect the UART setup to check the log on serial console
+
+##### How to run Can_Example_Wakeup
+
+* Open CCS and import Can_Example_Wakeup
+* Build project and start debug project
+* Follow the prompts to send data from PCAN when requested
+
+##### Sample Log of Can_Example_Wakeup
+
+```{literalinclude} Assets/text/Can_Example_Wakeup_Log.txt
 ```
 
 #### File Structure

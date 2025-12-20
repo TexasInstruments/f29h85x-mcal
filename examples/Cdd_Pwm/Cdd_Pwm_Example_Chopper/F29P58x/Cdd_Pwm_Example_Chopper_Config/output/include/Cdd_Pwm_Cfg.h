@@ -103,7 +103,7 @@ extern "C" {
 /* Symbolic name for the PWM instance EPWM3 */
 #define CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2   ((Cdd_Pwm_InstanceType)2U)  /*~ASR~*/
 
-/* Symbolic name for the PWM instance EPWM4 */
+/* Symbolic name for the PWM instance EPWM7 */
 #define CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3   ((Cdd_Pwm_InstanceType)3U)  /*~ASR~*/
 
 
@@ -121,8 +121,8 @@ extern "C" {
 #define CDD_PWM3_INT_ENABLE
 #define CDD_PWM3_ISR_CAT1_RTINT
 
-#define CDD_PWM4_INT_ENABLE
-#define CDD_PWM4_ISR_CAT1_RTINT
+#define CDD_PWM7_INT_ENABLE
+#define CDD_PWM7_ISR_CAT1_RTINT
 
 
 /*********************************************************************************************************************

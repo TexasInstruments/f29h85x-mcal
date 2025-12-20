@@ -1,0 +1,986 @@
+## Resource Allocator Module
+
+### Acronyms and Definitions
+
+|Abbreviation/Term|Explanation|
+|------|------|
+|AUTOSAR|Automotive Open System Architecture|
+|API|Application Programming Interface|
+|BSW|Basic Software|
+|MCAL|Micro Controller Abstraction Layer|
+|MCU|Micro Controller Unit|
+|SoC|System on Chip|
+|RA|Resource Allocator|
+|EB Tresos|Elektrobit Tresos Studio - AUTOSAR Configuration Tool|
+
+### Introduction
+
+The Resource Allocator is a system-level configuration module that provides centralized management of device, package, and variant selection for F29x devices. It is a **configuration-only module** that:
+
+- Defines the target device family (F29H85x, F29P32x, F29P58x)
+- Specifies the device variant within the selected family
+- Configures the package type for the selected variant
+- Provides device-specific configuration to other MCAL modules
+
+### Functional Overview
+
+The Resource Allocator provides a centralized location for device configuration that is shared across all MCAL modules. This ensures consistency in device-specific settings throughout the MCAL configuration.
+
+#### Purpose
+
+The Resource Allocator serves as the single source of truth for:
+
+- Device family selection
+- Device variant identification
+- Package type configuration
+
+This centralized approach ensures that all MCAL modules reference the same device configuration, preventing inconsistencies that could arise from configuring device parameters in multiple locations.
+
+#### Integration with MCAL Modules
+
+Other MCAL modules reference the Resource Allocator configuration to:
+
+- Determine available peripheral instances for the selected device
+- Apply device-specific constraints and validation rules
+- Generate appropriate configuration for the target hardware
+
+```{Note}
+The available variants and packages may be updated as new devices are released. Refer to the device-specific datasheet for the most current information.
+```
+
+### Source Files
+
+The Resource Allocator is implemented as an EB Tresos plugin:
+
+📦**plugins**\
+ ┗ 📂**ResourceAllocator_TI_F29H85x**\
+ ┃ ┣ 📂**config**\
+ ┃ ┃ ┣ 📜**ResourceAllocator.arxml** : *ECU Configuration and Parameter definitions*\
+ ┃ ┃ ┗ 📜**ResourceAllocator.xdm** : *ECU Parameter definition for EB Tresos*\
+ ┃ ┣ 📂**config_ext**\
+ ┃ ┃ ┣ 📜**ResourceAllocator_F29H859DU6_Q_256ZEX_Rec.xdm** : *Recommended configuration for F29H859DU6_Q_256ZEX*\
+ ┃ ┃ ┣ 📜**ResourceAllocator_F29H859TM8_Q_144RFS_Rec.xdm** : *Recommended configuration for F29H859TM8_Q_144RFS*\
+ ┃ ┃ ┣ 📜**ResourceAllocator_F29H859TU8_Q_256ZEX_Rec.xdm** : *Recommended configuration for F29H859TU8_Q_256ZEX*\
+ ┃ ┃ ┣ 📜**ResourceAllocator_F29P329SJ1_Q_144RFS_Rec.xdm** : *Recommended configuration for F29P329SJ1_Q_144RFS*\
+ ┃ ┃ ┣ 📜**ResourceAllocator_F29P329SM1_Q_144RFS_Rec.xdm** : *Recommended configuration for F29P329SM1_Q_144RFS*\
+ ┃ ┃ ┣ 📜**ResourceAllocator_F29P329SM2_Q_144RFS_Rec.xdm** : *Recommended configuration for F29P329SM2_Q_144RFS*\
+ ┃ ┃ ┣ 📜**ResourceAllocator_F29P589DM5_Q_256ZEX_Rec.xdm** : *Recommended configuration for F29P589DM5_Q_256ZEX*\
+ ┃ ┃ ┗ 📜**ResourceAllocator_F29P589DU5_Q_256ZEX_Rec.xdm** : *Recommended configuration for F29P589DU5_Q_256ZEX*\
+ ┃ ┣ 📂**META-INF**\
+ ┃ ┃ ┗ 📜**MANIFEST.MF** : *Plugin manifest and licensing information*\
+ ┃ ┣ 📂**resources** : *Properties for all devices, variants, packages etc.*\
+ ┃ ┗ 📜**plugin.xml** : *XML file to register plugin with EB Tresos Studio*
+
+### Recommended Configuration
+
+When adding the Resource Allocator plugin to an EB Tresos project, users can select a **Recommended Configuration** as a starting point. This feature provides pre-configured settings for various F29x device variants, simplifying the initial setup process.
+
+#### Selecting a Recommended Configuration
+
+1. In EB Tresos, navigate to **Module Configurations**
+2. Add the **ResourceAllocator** module to your project
+3. In the **Details of "ResourceAllocator"** panel, locate the **Recommended Configuration** dropdown
+4. Select the appropriate configuration for your target device
+
+```{figure} Assets/images/RA_RecommendedConfig.png
+:alt: Resource Allocator Recommended Configuration
+:align: center
+
+Selecting Recommended Configuration in EB Tresos
+```
+
+### Integration Description
+
+#### Dependent Modules
+
+The Resource Allocator is a **foundational module** with no dependencies on other MCAL modules. It should be configured before other peripheral modules to ensure device-specific settings are available.
+
+#### Modules that Reference Resource Allocator
+
+The following MCAL modules reference the Resource Allocator for device configuration:
+
+| Module | Purpose |
+|--------|---------|
+| CAN | Device-specific CAN instance availability |
+| SPI | Device-specific SPI instance availability |
+| LIN | Device-specific LIN instance availability |
+| Cdd_Uart | Device-specific UART instance availability |
+| Cdd_I2c | Device-specific I2C instance availability |
+| Cdd_Sent | Device-specific SENT instance availability |
+| Cdd_Adc | Device-specific ADC instance availability |
+| Cdd_Pwm | Device-specific PWM instance availability |
+| Cdd_Ecap | Device-specific ECAP instance availability |
+| Cdd_Xbar | Device-specific XBAR configuration |
+| Mcu | Device-specific clock and system configuration |
+| Port | Device-specific pin availability |
+
+### Configuration
+
+The Resource Allocator configuration defines the target device for the MCAL configuration.
+
+#### Migration Guide
+
+No migration required.
+
+#### Configuration Parameters
+
+##### 4.1. ResourceAllocatorGeneral
+
+General configuration (parameters) of the Resource Allocator module.
+
+##### 4.1.1. Mode
+
+| Item | Value |
+|------|-------|
+| Name | Mode |
+| Description | Selects Mode being used: SETUP mode: Board designers define system-level settings and allocate resources to cores. CONFIGURE mode: Application developers use only resources allocated to their core. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | CONFIGURE |
+| Range | CONFIGURE, SETUP |
+
+##### 4.1.2. Device
+
+| Item | Value |
+|------|-------|
+| Name | Device |
+| Description | Selects Device being used. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | F29H859DU_Q1 |
+| Range | F29H859DU_Q1, F29H859TM_Q1, F29H859TU_Q1, F29P329SJ_Q1, F29P329SM_Q1, F29P589DM_Q1, F29P589DU_Q1 |
+
+##### 4.1.3. Variant
+
+| Item | Value |
+|------|-------|
+| Name | Variant |
+| Description | Selects Variant being used. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | F29H859TU8_Q |
+| Range | F29H859TU8_Q |
+
+##### 4.1.4. Package
+
+| Item | Value |
+|------|-------|
+| Name | Package |
+| Description | Selects Package being used. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | F29H859TU_Q_256ZEX |
+| Range | F29H859TU_Q_256ZEX |
+
+##### 4.1.5. CPU1_Lockstep
+
+| Item | Value |
+|------|-------|
+| Name | CPU1_Lockstep |
+| Description | Selects whether lockstep mode is enabled or not. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | false |
+| Range | true, false |
+
+##### 4.1.6. CurrentContext
+
+| Item | Value |
+|------|-------|
+| Name | CurrentContext |
+| Description | Selects Current Context to be used for this MCAL instance. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | - |
+| Range | Reference to /TI_F29H85x/ResourceAllocator/ResourceAllocatorGeneral/Context |
+
+##### 4.2. Context
+
+This container contains the driver configuration (parameters) for the Context.
+
+##### 4.2.1. Core
+
+| Item | Value |
+|------|-------|
+| Name | Core |
+| Description | Selects Core for which this Context is configured. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | CPU1 |
+| Range | CPU1 |
+
+##### 4.2.2. Can
+
+Configuration container for Context specific settings for the Can module.
+
+###### 4.2.2.1. CanAllocatedInstance
+
+Configuration of a Can instance allocated to this context.
+
+**4.2.2.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Can instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | MCANA |
+| Range | MCANA, MCANB, MCANC, MCAND, MCANE, MCANF |
+
+**4.2.2.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.2.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Can instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | MCANA_DRIVER_BASE_FRAME(0U) |
+| Range | String |
+
+##### 4.2.3. Spi
+
+Configuration container for Context specific settings for the Spi module.
+
+###### 4.2.3.1. SpiAllocatedInstance
+
+Configuration for Spi Instance.
+
+**4.2.3.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Spi instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | SPIA |
+| Range | SPIA, SPIB, SPIC, SPID, SPIE |
+
+**4.2.3.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.3.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Spi instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | SPIA_BASE_FRAME(0U) |
+| Range | String |
+
+##### 4.2.4. Lin
+
+Configuration container for Context specific settings for the Lin module.
+
+###### 4.2.4.1. LinAllocatedInstance
+
+Configuration for Lin Instance.
+
+**4.2.4.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Lin instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | LINA |
+| Range | LINA, LINB |
+
+**4.2.4.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.4.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Lin instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | LINA_BASE_FRAME(0U) |
+| Range | String |
+
+##### 4.2.5. Cdd_Adc
+
+Configuration container for Context specific settings for the Cdd_Adc module.
+
+###### 4.2.5.1. Cdd_AdcAllocatedInstance
+
+Configuration for Cdd_Adc Instance.
+
+**4.2.5.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Adc instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | CDD_ADCA |
+| Range | CDD_ADCA, CDD_ADCB, CDD_ADCC, CDD_ADCD, CDD_ADCE |
+
+**4.2.5.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.5.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Adc instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | ADCA_BASE_FRAME(0U) |
+| Range | String |
+
+###### 4.2.5.2. CddAdcSafetyCheckerInstance
+
+Configuration of ADC safety checker instances.
+
+**4.2.5.2.1. SafetyCheckerInstance**
+
+| Item | Value |
+|------|-------|
+| Name | SafetyCheckerInstance |
+| Description | Selects the adc safety checker instances to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | ADCSAFETYCHECK1 |
+| Range | ADCSAFETYCHECK1, ADCSAFETYCHECK2, ADCSAFETYCHECK3, ADCSAFETYCHECK4, ADCSAFETYCHECK5, ADCSAFETYCHECK6, ADCSAFETYCHECK7, ADCSAFETYCHECK8, ADCSAFETYCHECK9, ADCSAFETYCHECK10 |
+
+**4.2.5.2.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.5.2.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Adc safety checker instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | ADCSAFETYCHECK1_BASE_FRAME(0U) |
+| Range | String |
+
+###### 4.2.5.3. CddAdcCheckerInterruptEvtInstance
+
+Configuration of ADC safety checker interrupt event instances.
+
+**4.2.5.3.1. SafetyCheckerIntEvtInstance**
+
+| Item | Value |
+|------|-------|
+| Name | SafetyCheckerIntEvtInstance |
+| Description | Selects the safety checker interrupt event instances to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | ADCSAFETYCHECKINTEVT1 |
+| Range | ADCSAFETYCHECKINTEVT1, ADCSAFETYCHECKINTEVT2, ADCSAFETYCHECKINTEVT3 |
+
+**4.2.5.3.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.5.3.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Adc safety checker instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | ADCSAFETYCHECKINTEVT1_BASE_FRAME(0U) |
+| Range | String |
+
+###### 4.2.5.4. CddAdcGlobalSoftwareForce
+
+Configuration of global software force. This is linked to global software trigger feature in ADC. This should be added only once.
+
+**4.2.5.4.1. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects frame for global software force registers. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.5.4.2. GlbSwFrcBaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | GlbSwFrcBaseAddr |
+| Description | Base address of the Cdd_Adc global software force registers. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | ADCGLOBAL_BASE_FRAME(0U) |
+| Range | String |
+
+##### 4.2.6. Cdd_Ecap
+
+Configuration container for Context specific settings for the Cdd_Ecap module.
+
+###### 4.2.6.1. Cdd_EcapAllocatedInstance
+
+Configuration for Cdd_Ecap Instance.
+
+**4.2.6.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Cdd_Ecap instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | ECAP1 |
+| Range | ECAP1, ECAP2, ECAP3, ECAP4, ECAP5, ECAP6 |
+
+**4.2.6.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.6.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Ecap instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | ECAP1_BASE_FRAME(0U) |
+| Range | String |
+
+##### 4.2.7. Cdd_I2c
+
+Configuration container for Context specific settings for the Cdd_I2c module.
+
+###### 4.2.7.1. Cdd_I2cAllocatedInstance
+
+Configuration for Cdd_I2c Instance.
+
+**4.2.7.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Cdd_I2c instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | I2CA |
+| Range | I2CA, I2CB |
+
+**4.2.7.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.7.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_I2c instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | I2CA_BASE_FRAME(0U) |
+| Range | String |
+
+##### 4.2.8. Cdd_Pwm
+
+Configuration container for Context specific settings for the Cdd_Pwm module.
+
+###### 4.2.8.1. Cdd_PwmAllocatedInstance
+
+Configuration for Cdd_Pwm Instance.
+
+**4.2.8.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Pwm instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | EPWM1 |
+| Range | EPWM1, EPWM2, EPWM3, EPWM4, EPWM5, EPWM6, EPWM7, EPWM8, EPWM9, EPWM10, EPWM11, EPWM12, EPWM13, EPWM14, EPWM15, EPWM16, EPWM17, EPWM18 |
+
+**4.2.8.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.8.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Pwm instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | EPWM1_BASE_FRAME(0U) |
+| Range | String |
+
+**4.2.8.1.4. XlinkBaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | XlinkBaseAddr |
+| Description | Base address of the Cdd_Pwm instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | EPWM1XLINK_BASE_FRAME(0U) |
+| Range | String |
+
+###### 4.2.8.2. CddPwmHrpwmCalInstance
+
+Configuration of Hrpwm calibration instances.
+
+**4.2.8.2.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Hrpwm calibration instance instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | HRPWMCAL1 |
+| Range | HRPWMCAL1, HRPWMCAL2, HRPWMCAL3 |
+
+**4.2.8.2.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.8.2.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Pwm instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | HRPWMCAL1_BASE_FRAME(0U) |
+| Range | String |
+
+##### 4.2.9. Cdd_Sent
+
+Configuration container for Context specific settings for the Cdd_Sent module.
+
+###### 4.2.9.1. Cdd_SentAllocatedInstance
+
+Configuration of a Cdd_Sent instance allocated to this context.
+
+**4.2.9.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Cdd_Sent instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | SENT1 |
+| Range | SENT1, SENT2, SENT3, SENT4, SENT5, SENT6 |
+
+**4.2.9.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.9.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Sent instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | SENT1_BASE_FRAME(0U) |
+| Range | String |
+
+##### 4.2.10. Cdd_Uart
+
+Configuration container for Context specific settings for the Cdd_Uart module.
+
+###### 4.2.10.1. Cdd_UartAllocatedInstance
+
+Configuration of a Cdd_Uart instance allocated to this context.
+
+**4.2.10.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Selects the Cdd_Uart instance to be allocated. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | UARTA |
+| Range | UARTA, UARTB, UARTC, UARTD, UARTE, UARTF |
+
+**4.2.10.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.2.10.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Uart instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | UARTA_BASE_FRAME(0U) |
+| Range | String |
+
+##### 4.3. Cdd_Xbar
+
+Configuration container for Cdd_Xbar module.
+
+###### 4.3.1. CddXbarOutputXbarFlag
+
+Configuration of a Cdd Xbar Output Xbar flag.
+
+**4.3.1.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Cdd Xbar Output Xbar flag. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | OUTPUTXBARFlags |
+| Range | String |
+
+**4.3.1.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.3.1.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Xbar instance. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | OUTPUTXBAR1_FLAGS_BASE_FRAME(0U) |
+| Range | String |
+
+###### 4.3.2. CddXbarInputFlag
+
+Configuration of a Cdd_Xbar Input flags.
+
+**4.3.2.1. InstanceName**
+
+| Item | Value |
+|------|-------|
+| Name | InstanceName |
+| Description | Cdd Xbar Input flag. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | INPUTXBARFlags |
+| Range | String |
+
+**4.3.2.2. Frame**
+
+| Item | Value |
+|------|-------|
+| Name | Frame |
+| Description | Selects the peripheral frame. Frames enable simultaneous access from different initiators to peripherals without arbitration stalls, each with its own base address. |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | FRAME0 |
+| Range | FRAME0, FRAME1, FRAME2, FRAME3 |
+
+**4.3.2.3. BaseAddr**
+
+| Item | Value |
+|------|-------|
+| Name | BaseAddr |
+| Description | Base address of the Cdd_Xbar input flag. This field represents the macro as defined in hw_memmap.h |
+| Origin | Texas Instruments |
+| Post-Build-Variant-Value | false |
+| Value-Configuration-Class | - |
+| Pre-Compile-Time | VARIANT-PRE-COMPILE |
+| Default-value | XBAR_BASE_FRAME(0U) |
+| Range | String |
+
+### Usage Procedures
+
+#### Configuration Workflow
+
+**Step 1: Create EB Tresos Project**
+
+1. Launch EB Tresos Studio
+2. Create a new configuration project
+3. Select the target device C2000/F29H85x
+4. Load the ResourceAllocator plugin
+
+**Step 2: Configure Device Settings**
+
+1. Open the ResourceAllocator module configuration
+2. Navigate to the `ResourceAllocatorGeneral` container
+3. Select the appropriate:
+   - `ResourceAllocatorDevice` (e.g., F29H85x)
+   - `ResourceAllocatorVariant` (e.g., F29H859TU_Q1)
+   - `ResourceAllocatorPackage` (e.g., F29H859TU8_Q_256ZEX)
+4. Run **Auto-Calc** wizard in EB Tresos to calculated required values.
+
+**Step 3: Configure Other MCAL Modules**
+
+1. Add required MCAL modules (CAN, SPI, ADC, etc.)
+2. The modules will reference the device configuration from Resource Allocator
+3. Configure each module according to application requirements
+4. Run **Auto-Calc** wizard in EB Tresos to calculated required values.
+
+**Step 4: Generate Configuration**
+
+1. Validate all module configurations
+2. Generate the configuration files
+3. The generated code will include device-specific settings
+
+### Examples
+
+#### Example: Configuring for F29H85x Device
+
+This example demonstrates configuring the Resource Allocator for an F29H85x device:
+
+**Configuration:**
+
+```text
+ResourceAllocatorGeneral
+├── Device: F29H85x
+├── Variant: F29H859TU_Q1
+└── Package: F29H859TU8_Q_256ZEX
+```
+
+**Result:**
+
+- All MCAL modules will be configured for F29H85x device family
+- Device-specific peripheral instances will be available
+- Appropriate constraints will be applied based on the selected variant
+
+#### Example: Configuring for F29P58x Device
+
+This example demonstrates configuring the Resource Allocator for an F29P58x device:
+
+**Configuration:**
+
+```text
+ResourceAllocatorGeneral
+├── Device: F29P58x
+├── Variant: F29P589DU_Q1
+└── Package: F29P589DU5_Q_256ZEX
+```
+
+**Result:**
+
+- All MCAL modules will be configured for F29P58x device family
+- Device-specific peripheral instances will be available
+- Appropriate constraints will be applied based on the selected variant
+
+```{Note}
+The Resource Allocator should be configured before other MCAL modules to ensure device-specific settings are available for all module configurations.

@@ -125,19 +125,15 @@ extern "C" {
 
 #define PortConf_PortPin_PortPin_4      4U			/*~ASR~*/
 
-#define PortConf_PortPin_PortPin_5      5U			/*~ASR~*/
+#define PortConf_PortPin_PortPin_6      5U			/*~ASR~*/
 
-#define PortConf_PortPin_PortPin_6      6U			/*~ASR~*/
+#define PortConf_PortPin_PortPin_7      6U			/*~ASR~*/
 
-#define PortConf_PortPin_PortPin_7      7U			/*~ASR~*/
+#define PortConf_PortPin_PortPin_8      7U			/*~ASR~*/
 
-#define PortConf_PortPin_PortPin_8      8U			/*~ASR~*/
+#define PortConf_PortPin_PortPin_10      8U			/*~ASR~*/
 
-#define PortConf_PortPin_PortPin_9      9U			/*~ASR~*/
-
-#define PortConf_PortPin_PortPin_10      10U			/*~ASR~*/
-
-#define PortConf_PortPin_PortPin_11      11U			/*~ASR~*/
+#define PortConf_PortPin_PortPin_11      9U			/*~ASR~*/
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros

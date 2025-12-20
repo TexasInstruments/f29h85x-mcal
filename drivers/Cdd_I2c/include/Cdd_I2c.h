@@ -22,6 +22,11 @@
 #ifndef CDD_I2C_H_
 #define CDD_I2C_H_
 
+/**
+ * \defgroup CDD_I2C Cdd I2c
+ * @{
+ */
+
 /*********************************************************************************************************************
  * Header Files
  *********************************************************************************************************************/
@@ -41,53 +46,32 @@ extern "C" {
  * Exported Preprocessor #define Constants
  *********************************************************************************************************************/
 
-/**
- * \name CDD_I2C Driver Module SW Version Info
- *
- *  Defines for CDD_I2C Driver version used for compatibility checks
- *  @{
- */
+/* Defines for CDD_I2C Driver version used for compatibility checks. */
 /** \brief Driver Implementation Major Version */
 #define CDD_I2C_SW_MAJOR_VERSION (1U)
 /** \brief Driver Implementation Minor Version */
 #define CDD_I2C_SW_MINOR_VERSION (0U)
 /** \brief Driver Implementation Patch Version */
 #define CDD_I2C_SW_PATCH_VERSION (0U)
-/** @} */
 
-/**
- * \name CDD_I2C Driver Module AUTOSAR Version Info
- *
- *  Defines for CDD_I2C Driver AUTOSAR version used for compatibility checks
- *  @{
- */
+/* Defines for CDD_I2C Driver AUTOSAR version used for compatibility checks. */
 /** \brief AUTOSAR Major version specification implemented by CDD_I2C Driver*/
 #define CDD_I2C_AR_RELEASE_MAJOR_VERSION (4U)
 /** \brief AUTOSAR Minor version specification implemented by CDD_I2C Driver*/
 #define CDD_I2C_AR_RELEASE_MINOR_VERSION (3U)
 /** \brief AUTOSAR Patch version specification implemented by CDD_I2C Driver*/
 #define CDD_I2C_AR_RELEASE_REVISION_VERSION (1U)
-/** @} */
 
-/**
- * \name CDD_I2C Driver ID Info
- *  @{
- */
+/* CDD_I2C Driver ID Info. */
 /** \brief Texas Instruments Vendor ID */
 #define CDD_I2C_VENDOR_ID ((uint16)44U)
 /** \brief CDD_I2C Driver Module ID */
 #define CDD_I2C_MODULE_ID ((uint16)255U)
 /** \brief CDD_I2C Instance ID */
 #define CDD_I2C_INSTANCE_ID ((uint8)0U)
-/** @} */
 
-/**
- * \name CDD_I2C Service Id
- *
- *  The Service Id is one of the argument to Det_ReportError function and is
- *  used to identify the source of the error
- *  @{
- */
+/* The Service Id is one of the argument to Det_ReportError function and is
+ * used to identify the source of the error. */
 /** \brief Service ID Cdd_I2c_Init() */
 #define CDD_I2C_SID_INIT (0x00U)
 /** \brief  Service ID Cdd_I2c_DeInit() */
@@ -112,14 +96,8 @@ extern "C" {
 #define CDD_I2C_SID_POLLING_MODE_PROCESSING (0x0AU)
 /** \brief Service ID Cdd_I2c_GetStatus() */
 #define CDD_I2C_SID_GET_STATUS (0x0BU)
-/** @} */
 
-/**
- * \name CDD_I2C Error Codes
- *
- *  Error codes returned by CDD_I2C functions
- *  @{
- */
+/* Error codes returned by CDD_I2C functions. */
 /** \brief No errors */
 #define CDD_I2C_E_NO_ERROR (0x00U)
 /** \brief Error code for not initialized module */
@@ -146,15 +124,9 @@ extern "C" {
 #define CDD_I2C_E_PARAM_HWUNIT (0x16U)
 /** \brief API service called with sequence is busy */
 #define CDD_I2C_E_SEQ_BUSY (0x17U)
-/** @} */
 
-/**
- * \name CDD_I2C Runtime Error Codes
- *
- *  Error codes returned by CDD_I2C functions at runtime via error callback
- *  Cdd_I2c_SequenceErrorNotification
- *  @{
- */
+/* Error codes returned by CDD_I2C functions at runtime via error callback
+ * Cdd_I2c_SequenceErrorNotification. */
 /** \brief Error is reported if NACK was received */
 #define CDD_I2C_E_NACK_RECEIVED ((uint8)0x01U)
 /** \brief Error is reported if the master loses arbitration.
@@ -163,29 +135,18 @@ extern "C" {
 #define CDD_I2C_E_ARBITRATION_FAILURE ((uint8)0x02U)
 /** \brief Error is reported if the SCL line is stuck low */
 #define CDD_I2C_E_BUS_FAILURE ((uint8)0x03U)
-/** @} */
 
-/**
- *  \name CDD_I2C direction macros
- *
- *  @{
- */
+/* CDD_I2C direction macros. */
 /** \brief CDD_I2C direction - write */
 #define CDD_I2C_WRITE ((Cdd_I2c_DirectionType)0U)
 /** \brief CDD_I2C direction - read */
 #define CDD_I2C_READ ((Cdd_I2c_DirectionType)1U)
-/** @} */
 
-/**
- *  \name I2C Address scheme macros
- *
- *  @{
- */
+/* I2C Address scheme macros. */
 /** \brief 7 bit address */
 #define CDD_I2C_ADDRESS_7_BIT (0x00U)
 /** \brief 10 bit address */
 #define CDD_I2C_ADDRESS_10_BIT (0x01U)
-/** @} */
 
 /*********************************************************************************************************************
  * Exported Preprocessor #define Macros
@@ -282,9 +243,7 @@ typedef enum
 } Cdd_I2c_ChannelResultType;
 
 /**
- * \name I2C Sequence Status
- *
- *  This type defines a range of specific sequences status for the I2C Driver
+ * \brief This type defines a range of specific sequences status for the I2C Driver
  */
 typedef enum
 {
@@ -409,8 +368,7 @@ typedef struct Cdd_I2c_ConfigTag
  *  Exported Function Prototypes
  *********************************************************************************************************************/
 
-/**
- * \brief Service for CDD_I2C initialization.
+/** \brief Service for CDD_I2C initialization.
  *
  * Initialize the CDD_I2C hardware for each Cdd_I2cChannel using the Cdd_I2cHwUnitBaseAddress
  * and configure the Cdd_I2cBaudRate accordingly.
@@ -420,11 +378,13 @@ typedef struct Cdd_I2c_ConfigTag
  * Reentrancy - Non Reentrant
  *
  * \param[in] configPtr Pointer to CDD_I2C Driver configuration set
- */
+ * \pre Preconditions - Driver not already initialized
+ * \post Postconditions - Driver in initialized state
+ * \return None
+ *********************************************************************************************************************/
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_Init(const Cdd_I2c_ConfigType* configPtr);
 
-/**
- * \brief Service for CDD_I2C driver de-initialization.
+/** \brief Service for CDD_I2C driver de-initialization.
  *
  * CDD_I2C_DeInit de-initializes the CDD_I2C peripheral(s) into a Power On Reset state.
  *
@@ -432,25 +392,30 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_Init(const Cdd_I2c_ConfigType* configPtr);
  * Sync/Async - Synchronous
  * Reentrancy - Non Reentrant
  *
- * \return Std_ReturnType - E_OK: Success, E_NOT_OK: Request rejected
- */
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: Success
+ * \retval E_NOT_OK: Request rejected
+ *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_DeInit(void);
 
 #if (STD_ON == CDD_I2C_VERSION_INFO_API)
-/**
- * \brief Service that returns the version information of the module.
+/** \brief Service that returns the version information of the module.
  *
  * Service ID[hex] - CDD_I2C_SID_GET_VERSION_INFO
  * Sync/Async - Synchronous
  * Reentrancy - Reentrant
  *
  * \param[in] versionInfo Pointer to where to store the version information of this module
- */
+ * \pre This API is available only if CDD_I2C_VERSION_INFO_API is STD_ON
+ * \post None
+ * \return None
+ *********************************************************************************************************************/
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_GetVersionInfo(Std_VersionInfoType* versionInfo);
 #endif
 
-/**
- * \brief Service to setup the buffers and the length of data for the Ch specified.
+/** \brief Service to setup the buffers and the length of data for the Ch specified.
  *
  * Service ID[hex] - CDD_I2C_SID_SETUP_EB
  * Sync/Async - Synchronous
@@ -461,15 +426,17 @@ FUNC(void, CDD_I2C_CODE) Cdd_I2c_GetVersionInfo(Std_VersionInfoType* versionInfo
  * \param[in] rxDataBufferPtr Pointer to the RX transmission data location
  * \param[in] length Length (number of data elements) of the data to be transmitted
  *                   from TxDataBufferPtr and/or received from RxDataBufferPtr.
- *
- * \return Std_ReturnType - E_OK: Success, E_NOT_OK: Request rejected
- */
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: Success
+ * \retval E_NOT_OK: Request rejected
+ *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_SetupEB(Cdd_I2c_ChannelType chId, Cdd_I2c_DataConstPtrType txDataBufferPtr, Cdd_I2c_DataPtrType rxDataBufferPtr,
                 Cdd_I2c_DataLengthType length);
 
-/**
- * \brief Service to setup the buffers and the length of data for the Ch specified.
+/** \brief Service to setup the buffers and the length of data for the Ch specified.
  *
  * Service ID[hex] - CDD_I2C_SID_SETUP_EB_DYNAMIC
  * Sync/Async - Synchronous
@@ -482,16 +449,18 @@ Cdd_I2c_SetupEB(Cdd_I2c_ChannelType chId, Cdd_I2c_DataConstPtrType txDataBufferP
  * \param[in] rxDataBufferPtr Pointer to the RX transmission data location
  * \param[in] length Length (number of data elements) of the data to be transmitted
  *                   from TxDataBufferPtr and/or received from RxDataBufferPtr.
- *
- * \return Std_ReturnType - E_OK: Success, E_NOT_OK: Request rejected
- */
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: Success
+ * \retval E_NOT_OK: Request rejected
+ *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_I2C_CODE)
 Cdd_I2c_SetupEBDynamic(Cdd_I2c_ChannelType chId, Cdd_I2c_AddressType deviceAddress,
                        Cdd_I2c_DataConstPtrType txDataBufferPtr, Cdd_I2c_DataPtrType rxDataBufferPtr,
                        Cdd_I2c_DataLengthType length);
 
-/**
- * \brief The service conducts an asynchronous data transmission according to the parameters
+/** \brief The service conducts an asynchronous data transmission according to the parameters
  * provided to the Cdd_I2c_SetupEB() service. The callback Cdd_I2c_SequenceErrorNotification()
  * is called, when the asynchronous operation has finished.
  *
@@ -500,14 +469,16 @@ Cdd_I2c_SetupEBDynamic(Cdd_I2c_ChannelType chId, Cdd_I2c_AddressType deviceAddre
  * Reentrancy - Non Reentrant
  *
  * \param[in] sequenceId Sequence used for data exchange
- *
- * \return Std_ReturnType - E_OK: Success, E_NOT_OK: Request rejected
- */
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: Success
+ * \retval E_NOT_OK: Request rejected
+ *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_AsyncTransmit(Cdd_I2c_SequenceType sequenceId);
 
 #if (STD_ON == CDD_I2C_CANCEL_API)
-/**
- * \brief Cancel a transmission
+/** \brief Cancel a transmission
  *
  * A request that is already in transmission progress, is cancelled
  * by finishing the current sequence. This is done to achieve a stable
@@ -519,71 +490,81 @@ FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_AsyncTransmit(Cdd_I2c_SequenceType se
  * Reentrancy - Non Reentrant
  *
  * \param[in] sequenceId Sequence to cancel
- *
- * \return Std_ReturnType - E_OK: Success, E_NOT_OK: Request rejected
- */
+ * \pre None
+ * \post None
+ * \return Std_ReturnType
+ * \retval E_OK: Success
+ * \retval E_NOT_OK: Request rejected
+ *********************************************************************************************************************/
 FUNC(Std_ReturnType, CDD_I2C_CODE) Cdd_I2c_Cancel(Cdd_I2c_SequenceType sequenceId);
 #endif
 
-/**
- * \brief Makes a target channel available for processing requests (addressing).
+/** \brief Makes a target channel available for processing requests (addressing).
  * When called, the target channel becomes available for starting incoming or
  * outgoing transfers.
  *
  * Service ID[hex] - CDD_I2C_SID_MAIN_FUNCTION
  * Sync/Async - Asynchronous
  * Reentrancy - Reentrant
- */
+ *
+ * \pre None
+ * \post None
+ * \return None
+ *********************************************************************************************************************/
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_MainFunction(void);
 
-/**
- * \brief Ensures proper processing of I2c communication in the case of
+#if (STD_ON == CDD_I2C_POLLING_MODE)
+/** \brief Ensures proper processing of I2c communication in the case of
  * disabled interrupts.
  *
  * Service ID[hex] - CDD_I2C_SID_POLLING_MODE_PROCESSING
  * Sync/Async - Asynchronous
  * Reentrancy - Reentrant
- */
-#if (STD_ON == CDD_I2C_POLLING_MODE)
+ *
+ * \pre None
+ * \post None
+ * \return None
+ *********************************************************************************************************************/
 FUNC(void, CDD_I2C_CODE) Cdd_I2c_PollingModeProcessing(void);
 #endif
 
-/**
- * \brief This service returns the current status of the given SequenceId.
+/** \brief This service returns the current status of the given SequenceId.
  *
  * Service ID[hex] - CDD_I2C_SID_GET_SEQUENCE_RESULT
  * Sync/Async - Synchronous
  * Reentrancy - Reentrant
  *
  * \param[in] sequenceId Sequence to query
- *
+ * \pre None
+ * \post None
  * \return CDD_I2C_SequenceResultType - Return the current status
- */
+ *********************************************************************************************************************/
 FUNC(Cdd_I2c_SequenceResultType, CDD_I2C_CODE) Cdd_I2c_GetSequenceResult(Cdd_I2c_SequenceType sequenceId);
 
-/**
- * \brief This service returns the current status of the given channel.
+/** \brief This service returns the current status of the given channel.
  *
  * Service ID[hex] - CDD_I2C_SID_GET_RESULT
  * Sync/Async - Synchronous
  * Reentrancy - Reentrant
  *
  * \param[in] chId Channel to query
- *
+ * \pre None
+ * \post None
  * \return Cdd_I2c_ChannelResultType - Return the current status
- */
+ *********************************************************************************************************************/
 FUNC(Cdd_I2c_ChannelResultType, CDD_I2C_CODE) Cdd_I2c_GetResult(Cdd_I2c_ChannelType chId);
 
 #if (STD_ON == CDD_I2C_GET_STATUS_API)
-/**
- * \brief This service returns the module's status
+/** \brief This service returns the module's status
  *
  * Service ID[hex] - CDD_I2C_SID_GET_STATUS
  * Sync/Async - Synchronous
  * Reentrancy - Reentrant
  *
+ * \pre None
+ * \post None
  * \return Cdd_I2c_ComponentStatusType - Return the current status
- */
+ *********************************************************************************************************************/
 FUNC(Cdd_I2c_ComponentStatusType, CDD_I2C_CODE) Cdd_I2c_GetStatus(void);
 #endif
 
@@ -594,7 +575,9 @@ FUNC(Cdd_I2c_ComponentStatusType, CDD_I2C_CODE) Cdd_I2c_GetStatus(void);
 #ifdef __cplusplus
 }
 #endif
-
+/**
+ * @}
+ */
 #endif /* CDD_I2C_H_ */
 /*********************************************************************************************************************
  *  End of File: Cdd_I2c.h

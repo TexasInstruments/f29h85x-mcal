@@ -34,7 +34,7 @@
  *  - EPWM1 with Chopper disabled (Reference)
  *  - EPWM2 with chopper enabled at 1/8 duty cycle and 3.12 MHz frequency at 100MHz TBCLK (divide by 4)
  *  - EPWM3 with chopper enabled at 6/8 duty cycle and 3.12 MHz frequency at 100MHz TBCLK (divide by 4)
- *  - EPWM4 with chopper enabled at 6/8 duty cycle, 3.12 MHz frequency at 100MHz TBCLK (divide by 4) with
+ *  - EPWM7 with chopper enabled at 6/8 duty cycle, 3.12 MHz frequency at 100MHz TBCLK (divide by 4) with
  *    one-Shot Pulse enabled. Oneshot pulse width is 400 ns at 100MHz EPWMCLK.
  *
  *  EPWM waveform can be observed on the respective pins configured in EPWM mode
@@ -45,8 +45,8 @@
  * - GPIO3 EPWM2B
  * - GPIO4 EPWM3A
  * - GPIO5 EPWM3B
- * - GPIO27 EPWM4A
- * - GPIO28 EPWM4B
+ * - GPIO12 EPWM7A
+ * - GPIO12 EPWM7B
  *
  *********************************************************************************************************************/
 
@@ -147,9 +147,9 @@ void Cdd_Pwm_ConfigureHw()
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_A,
                                      CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA);
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B,
-                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);
+                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB);
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_OUTPUT_B,
-                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA);
+                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB);
 
     Cdd_Pwm_SetInterruptEventCount(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_EVENT_COUNT);
     Cdd_Pwm_SetInterruptSource(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_INT_TBCTR_U_CMPA);
@@ -173,9 +173,9 @@ void Cdd_Pwm_ConfigureHw()
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_A,
                                      CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA);
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_B,
-                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);
+                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB);
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_OUTPUT_B,
-                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA);
+                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB);
     Cdd_Pwm_ConfigureChopper(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, TRUE);
     Cdd_Pwm_SetChopperDutyCycle(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, 0U);
     Cdd_Pwm_SetChopperFreq(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, 3U);
@@ -202,9 +202,9 @@ void Cdd_Pwm_ConfigureHw()
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_A,
                                      CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA);
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_B,
-                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);
+                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB);
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, CDD_PWM_OUTPUT_B,
-                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA);
+                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB);
     Cdd_Pwm_ConfigureChopper(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, TRUE);
     Cdd_Pwm_SetChopperDutyCycle(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, 5U);
     Cdd_Pwm_SetChopperFreq(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, 3U);
@@ -214,7 +214,7 @@ void Cdd_Pwm_ConfigureHw()
     Cdd_Pwm_ConfigureInterrupt(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2, TRUE);
     Cdd_Pwm_EnableNotification(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2);
 
-    /* Configure EPWM4 instance with FIrst pulse width */
+    /* Configure EPWM7 instance with First pulse width */
     Cdd_Pwm_SetClockPrescaler(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3, CDD_PWM_CLOCK_DIVIDER_4,
                               CDD_PWM_HSCLOCK_DIVIDER_4);
     Cdd_Pwm_SetTimeBaseCounterMode(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3, CDD_PWM_COUNTER_MODE_UP_DOWN);
@@ -232,9 +232,9 @@ void Cdd_Pwm_ConfigureHw()
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3, CDD_PWM_OUTPUT_A,
                                      CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA);
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3, CDD_PWM_OUTPUT_B,
-                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);
+                                     CDD_PWM_AQ_OUTPUT_HIGH, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPB);
     Cdd_Pwm_SetActionQualifierAction(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3, CDD_PWM_OUTPUT_B,
-                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPA);
+                                     CDD_PWM_AQ_OUTPUT_LOW, CDD_PWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB);
     Cdd_Pwm_ConfigureChopper(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3, TRUE);
     Cdd_Pwm_SetChopperDutyCycle(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3, 5U);
     Cdd_Pwm_SetChopperFreq(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3, 3U);
@@ -261,16 +261,16 @@ int main()
     McalLib_Delay(50000000); /* Approx. 1second */
 
     AppUtils_Printf(
-        "Number of levels detected for EPWM1 are %d\r\n",
+        "Notification count for EPWM1 is %d\r\n",
         (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0] * CDD_PWM_EVENT_COUNT));
     AppUtils_Printf(
-        "Number of levels detected for EPWM2 are %d\r\n",
+        "Notification count for EPWM2 is %d\r\n",
         (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1] * CDD_PWM_EVENT_COUNT));
     AppUtils_Printf(
-        "Number of levels detected for EPWM3 are %d\r\n",
+        "Notification count for EPWM3 is %d\r\n",
         (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2] * CDD_PWM_EVENT_COUNT));
     AppUtils_Printf(
-        "Number of levels detected for EPWM4 are %d\r\n",
+        "Notification count for EPWM7 is %d\r\n",
         (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3] * CDD_PWM_EVENT_COUNT));
 
     AppUtils_Printf("Generated waveforms can be observed on the configured EPWM pins\r\n");

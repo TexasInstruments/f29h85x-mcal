@@ -45,6 +45,7 @@ The MCU driver provides services for basic micro-controller initialization, redu
 * Activation of a MCU reset.
 * Provides a service to get the reset reason from hardware.
 * Support of External clock output (XCLKOUT) feature to observe a clock directly for debug and testing purposes
+* Provides a service to get the system clock used by the hardware.
 
 ### Hardware Features
 
@@ -252,6 +253,7 @@ when enabled. The driver interface contains the MACRO declaration of the error c
 |Mcu_DistributePllClock service checks PLL lock status|MCU_E_PLL_NOT_LOCKED|0x0E|
 |API invoked without performing Mcu_init|MCU_E_UNINIT|0x0F|
 |API called with a NULL_PTR|MCU_E_PARAM_POINTER|0x10|
+|API called without performing Mcu_InitClock|MCU_E_UNINIT_CLOCK|0x12|
 
 ### Safety Mechanism
 
@@ -328,7 +330,11 @@ The associated Mcu driver configuration generated source files are **Mcu_Cfg.c**
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
-#### Migration Guide to v02.00.00 from v01.01.00 or any older versions
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v02.00.00 from v01.01.00 or any older versions
 
 In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
 In case of Post build variant, upper modules that call the Mcu_Init function will need to use the new configuration structure name. For example:
@@ -348,6 +354,8 @@ The name of the configuration structures depends on the clock source being used.
 This change ensures compliance with AUTOSAR naming conventions.
 
 To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
+
+#### Configuration Parameters
 
 
 
@@ -1382,17 +1390,7 @@ Mcu XCLK Output
 
 ##### Sample Log of MCU_Example_Clock
 
-```{code-block}
-    Sample Application - STARTS !!!
-    MCU MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 101
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    Generated System clock value : 200000000 
-    Mcu_Example_Clock: Sample Application - Completes successfully !!!
+```{literalinclude} Assets/text/Mcu_Example_Clock.txt
 ```
 
 #### Mcu_Example_PowerMode
@@ -1420,17 +1418,7 @@ Mcu XCLK Output
 
 ##### Sample Log of Mcu_Example_PowerMode
 
-```{code-block}
-    Sample Application - STARTS !!!
-    MCU MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 101
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    Woken up from stand by mode using GPIO wakeup pins 
-    Mcu_Example_PowerMode: Sample Application - Completes successfully !!!
+```{literalinclude} Assets/text/Mcu_Example_PowerMode.txt
 ```
 
 #### Mcu_Example_Ram
@@ -1458,18 +1446,7 @@ Mcu XCLK Output
 
 ##### Sample Log of Mcu_Example_Ram
 
-```{code-block}
-    Sample Application - STARTS !!!
-    MCU MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 101
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    RAM section verified
-    RAM state verified
-    Mcu_Example_Ram: Sample Application - Completes successfully !!!
+```{literalinclude} Assets/text/Mcu_Example_Ram.txt
 ```
 
 #### Mcu_Example_Reset
@@ -1497,17 +1474,7 @@ Mcu XCLK Output
 
 ##### Sample Log of Mcu_Example_Reset
 
-```{code-block}
-    Sample Application - STARTS !!!
-    MCU MCAL Version Info
-    ---------------------
-    Vendor ID           : 44
-    Module ID           : 101
-    SW Major Version    : 1
-    SW Minor Version    : 0
-    SW Patch Version    : 0
-    Reset reason verified
-    Mcu_Example_Reset: Sample Application - Completes successfully !!!
+```{literalinclude} Assets/text/Mcu_Example_Reset.txt
 ```
 
 #### File Structure

@@ -193,7 +193,7 @@
                           <a:a name="SCOPE" value="ECU"/>
                           <a:da name="UUID" value="8308f627-b0d6-4dd2-99c8-c06b770a5109"/>
                           <a:da name="REF" 
-                                value="ASPathDataOfSchema:/TI_F29H85x/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
+                                value="ASPathDataOfSchema:/AUTOSAR/EcucDefs/Mcu/McuModuleConfiguration/McuClockSettingConfig/McuClockReferencePoint"/>
                         </v:ref>
                         <v:var name="CddPwmFrequency" type="FLOAT">
                           <a:a name="DESC"
@@ -205,7 +205,7 @@
                           <a:a name="ORIGIN" value="Texas Instruments"/>
                           <a:a name="SCOPE" value="LOCAL"/>
                           <a:da name="UUID" value="c6a90458-2588-4267-a720-46e49336ab9a"/>
-                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:f(node:value(concat(node:path(node:ref(../CddPwmMcuClockReferencePoint)),'/McuClockReferencePointFrequency')))div(num:i(substring-after(node:value(../CddPwmClockDivider),'CDD_PWM_CLOCK_DIVIDER_'))*num:i(substring-after(node:value(../CddPwmHighSpeedClockDivider),'CDD_PWM_HSCLOCK_DIVIDER_')))&quot;,num:f('1.0E8'))"/>
+                          <a:da name="DEFAULT" type="XPath" expr="node:fallback(&quot;->num:f(node:value(concat(node:path(node:ref(../CddPwmMcuClockReferencePoint)),'/McuClockReferencePointFrequency'))) div num:i(node:when((as:modconf('Cdd_Pwm/Cdd')[as:path(node:dtos(.))='/TI_F29H85x/Cdd_Pwm/Cdd']/CddPwmConfigSet/CddPwmAdvancedMode = 'true'),num:i(1),num:i(substring-after(node:value(../CddPwmClockDivider),'CDD_PWM_CLOCK_DIVIDER_'))*num:i(substring-after(node:value(../CddPwmHighSpeedClockDivider),'CDD_PWM_HSCLOCK_DIVIDER_'))))&quot;,num:f('1.0E8'))"/>
                           <a:da name="EDITABLE" value="false"/>
                           <a:da name="INVALID" type="Range">
                             <a:tst expr="&lt;=num:f('2.0E8')"/>

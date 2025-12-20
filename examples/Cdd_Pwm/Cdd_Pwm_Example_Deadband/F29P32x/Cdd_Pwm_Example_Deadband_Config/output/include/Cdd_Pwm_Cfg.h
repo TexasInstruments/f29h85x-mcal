@@ -64,7 +64,7 @@ extern "C" {
 #define CDD_PWM_INSTANCE_COUNT    ((Cdd_Pwm_InstanceType)8U)
 
 /* Macro to define the number of Pwm instances configured */
-#define CDD_PWM_COUNT       ((Cdd_Pwm_InstanceType)5U)
+#define CDD_PWM_COUNT       ((Cdd_Pwm_InstanceType)4U)
 
 /* Macro to define the maximum number of events supported for an interrupt */
 #define CDD_PWM_INTEVT_COUNT        ((uint8)15U)
@@ -73,7 +73,7 @@ extern "C" {
 #define CDD_PWM_DEV_ERROR_DETECT            (STD_ON)
 
 /* Macro to define the number of instance id symbolic names */
-#define CDD_PWM_HW_AND_XLINK_COUNT       ((Cdd_Pwm_InstanceType)5U)
+#define CDD_PWM_HW_AND_XLINK_COUNT       ((Cdd_Pwm_InstanceType)4U)
 
 /* Macro to define the number of Xlink groups configured */
 #define CDD_PWM_XLINK_GRP_COUNT     (uint8)(0U)
@@ -103,11 +103,8 @@ extern "C" {
 /* Symbolic name for the PWM instance EPWM3 */
 #define CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_2   ((Cdd_Pwm_InstanceType)2U)  /*~ASR~*/
 
-/* Symbolic name for the PWM instance EPWM4 */
-#define CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3   ((Cdd_Pwm_InstanceType)3U)  /*~ASR~*/
-
 /* Symbolic name for the PWM instance EPWM7 */
-#define CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_4   ((Cdd_Pwm_InstanceType)4U)  /*~ASR~*/
+#define CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_3   ((Cdd_Pwm_InstanceType)3U)  /*~ASR~*/
 
 
 
@@ -123,9 +120,6 @@ extern "C" {
 
 #define CDD_PWM3_INT_ENABLE
 #define CDD_PWM3_ISR_CAT1_RTINT
-
-#define CDD_PWM4_INT_ENABLE
-#define CDD_PWM4_ISR_CAT1_RTINT
 
 #define CDD_PWM7_INT_ENABLE
 #define CDD_PWM7_ISR_CAT1_RTINT
@@ -515,8 +509,6 @@ extern void Cdd_Pwm_HwUnit1Notification(void);
 extern void Cdd_Pwm_HwUnit2Notification(void);
 
 extern void Cdd_Pwm_HwUnit3Notification(void);
-
-extern void Cdd_Pwm_HwUnit4Notification(void);
 
 
 #define CDD_PWM_STOP_SEC_CODE

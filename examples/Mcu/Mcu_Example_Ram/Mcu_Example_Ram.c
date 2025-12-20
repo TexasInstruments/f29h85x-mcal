@@ -20,7 +20,10 @@
  *  Description:  This file contains example application for Mcu Driver module
  *
  *  This example demonstrates how to do ram initialization of provided ram section and also to check
- *ram status
+ *  ram status.
+ *
+ *  Verify that RAM is initialized with Mcu_RamSectionCfgSet0 (16 consecutive bytes starting from
+ *  address 0x200e0000 are set to 0xCD)
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************

@@ -111,7 +111,7 @@ Description of generated files is provided below:
 
 The below diagram shows the files structure for the I2C driver.
 
-```{figure} Assets/images/i2c/i2c_filestructure.png
+```{figure} Assets/images/Cdd_I2c_Header_File_Structure.png
 :alt: I2C File Structure
 :align: center
 
@@ -254,11 +254,35 @@ For the Following API’s it is possible to be called from the sequence notifica
    5. Cdd_I2c_GetSequenceResult
    6. Cdd_I2c_GetStatus
 
-#### Multi-core Support
+#### Multi-core and Resource Allocator
 
-Not Supported
+
+
+
+The I2C module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+To allocate I2CA to CPU1 using FRAME0:
+
+1. In the Resource Allocator configuration, create a new I2c instance allocation
+2. Set **InstanceName** to `I2CA`
+3. Set **Frame** to `FRAME0`
+4. The **BaseAddr** will be automatically calculated as `I2CA_DRIVER_BASE_FRAME(0U)`
+
+```text
+Resource Allocator Configuration:
+├── I2cInstanceAllocation
+│   ├── InstanceName: I2CA
+│   ├── Frame: FRAME0
+│   └── BaseAddr: I2CA_DRIVER_BASE_FRAME(0U)
+```
 
 ### Configuration
+
+#### Migration Guide
+
+#### Configuration Parameters
 
 
 
@@ -557,21 +581,13 @@ The example applications demonstrates use of I2C module, the list below identifi
 
 
 
-```{code-block}
-Cdd_I2c_Interrupt: Example Application - STARTS ...
+##### Sample Log of Cdd_I2c_Interrupt
 
- Cdd I2c MCAL Version Info
- -------------------------
- Vendor ID           : 44
- Module ID           : 255
- SW Major Version    : 1
- SW Minor Version    : 0
- SW Patch Version    : 0
-
-PMIC (0x60) offset 0x01: 0xAE!!
-PMIC (0x60) offset 0x02: 0x04!!
-PMIC (0x60) offset 0x03: 0x01!!
-PMIC (0x60) offset 0x04: 0x00!!
-Cdd_I2c_Interrupt: Example Application - ENDS (Passed)!!!
-Cdd_I2c_Interrupt: All tests have passed
+```{literalinclude} Assets/text/Cdd_I2c_Interrupt.txt
 ```
+
+##### Sample Log of Cdd_I2c_Poll
+
+```{literalinclude} Assets/text/Cdd_I2c_Poll.txt
+```
+

@@ -253,8 +253,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
    },
  
    {
-    /* .Port_PhysicalPinId = 134U,    Physical Pin Number*/
-	.Port_PinId = (Port_PinType)6U,
+    /* .Port_PhysicalPinId = 142U,    Physical Pin Number*/
+	.Port_PinId = (Port_PinType)12U,
     .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_NA,
     .Port_DirectionChangeable = (boolean) FALSE,
     .Port_ModeChangeable = (boolean) FALSE,
@@ -262,7 +262,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     .Port_ControllerSpecific =
     {
         .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
-        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_6_EPWM4_A,
+        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_12_EPWM7_A,
         .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD,
         .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_SYNC,
         .Port_PinQualificationPeriod = (uint32)1U,
@@ -281,7 +281,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         
         [0] = 
         {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_6_EPWM4_A
+        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_12_EPWM7_A
         },
     }
 
@@ -393,8 +393,8 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
    },
  
    {
-    /* .Port_PhysicalPinId = 135U,    Physical Pin Number*/
-	.Port_PinId = (Port_PinType)7U,
+    /* .Port_PhysicalPinId = 143U,    Physical Pin Number*/
+	.Port_PinId = (Port_PinType)13U,
     .Port_PinDirection = (Port_PinDirectionType)PORT_PIN_NA,
     .Port_DirectionChangeable = (boolean) FALSE,
     .Port_ModeChangeable = (boolean) FALSE,
@@ -402,7 +402,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
     .Port_ControllerSpecific =
     {
         .Port_AnalogMode = (Port_AnalogModeType)PORT_ANALOG_DISABLED,
-        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_7_EPWM4_B,
+        .Port_InitialMuxMode = (Port_PinType)PORT_PIN_13_EPWM7_B,
         .Port_PinPadConfig = (Port_PinPadConfigType)PORT_PIN_TYPE_STD,
         .Port_PinQualification = (Port_PinQualificationMode)PORT_QUAL_SYNC,
         .Port_PinQualificationPeriod = (uint32)1U,
@@ -421,7 +421,7 @@ static CONST( Port_PinConfigType, PORT_CONFIG_DATA) Port_PortConfigSet_PinConfig
         
         [0] = 
         {
-        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_7_EPWM4_B
+        .Port_PinMuxMode = (Port_PinModeType)PORT_PIN_13_EPWM7_B
         },
     }
 

@@ -253,9 +253,26 @@ PORT Module is required to initialize Pin configurations and MUX mode for SPI In
 
 Dio Module is required to handle SPI chip select when GPIO is configured to use as chip select.
 
-#### Multi-core and Resource allocator
+#### Resource Allocator
 
-Not Supported
+The SPI module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+To allocate SPIA to CPU1 using FRAME0:
+
+1. In the Resource Allocator configuration, create a new Spi instance allocation
+2. Set **InstanceName** to `SPIA`
+3. Set **Frame** to `FRAME0`
+4. The **BaseAddr** will be automatically calculated as `SPIA_DRIVER_BASE_FRAME(0U)`
+
+```text
+Resource Allocator Configuration:
+├── SpiInstanceAllocation
+│   ├── InstanceName: SPIA
+│   ├── Frame: FRAME0
+│   └── BaseAddr: SPIA_DRIVER_BASE_FRAME(0U)
+```
 
 ### Configuration
 
@@ -265,7 +282,55 @@ The associated Spi driver configuration generated source files are **Spi_LCfg.c*
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files.
 
-#### Migration Guide to v02.00.00 from v01.01.01 or any older versions
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v03.00.00 from v02.00.00
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   * The SPI module now integrates with the Resource Allocator module for centralized device, package, and variant configuration
+   * SPI hardware unit configurations (`SpiHwUnit`, `SpiHwUnitConfig`) now reference Resource Allocator's allocated SPI instances
+   * Available SPI instances are determined by the Resource Allocator's `SpiAllocatedInstance` configuration for the current context
+
+2. **Instance Name Changes**
+   * The SPI instance naming convention has been updated in the configuration
+   * Instance names have changed from `SPI_UNIT_SPIA` format to `SPIA` format (e.g., `SPI_UNIT_SPIA` → `SPIA`, `SPI_UNIT_SPIB` → `SPIB`, etc.)
+   * The `SpiHwUnitType` parameter now references the Resource Allocator's `SpiAllocatedInstance` instead of using direct instance names
+   * ISR names are unaffected by this change
+
+###### Migration Steps
+
+1. **Add Resource Allocator Module**
+   * Add the Resource Allocator module to your EB Tresos project if not already present
+
+2. **Configure SPI Instances in Resource Allocator**
+   * Open the Resource Allocator module configuration
+   * Navigate to the Context container for your target CPU
+   * Add `SpiAllocatedInstance` entries for each SPI instance your application requires
+   * Configure the `InstanceName`, `Frame`, and `BaseAddr` for each allocated instance
+
+3. **Update SPI Configuration**
+   * Open the SPI module configuration
+   * Update `SpiHwUnitConfig` to reference the Resource Allocator's allocated instances via `SpiHwUnitType`
+   * The `SpiHwUnit` parameter in `SpiExternalDevice` will now show only instances allocated in Resource Allocator
+
+4. **Verify Instance References**
+    * Ensure all SPI external device configurations reference valid allocated instances
+
+5. **Regenerate Configuration**
+    * Generate the configuration files after updating both modules
+
+6. **Rebuild Application**
+    * Rebuild the application with the updated configuration
+
+```{NOTE}
+The Resource Allocator module must be configured before the SPI module to ensure correct instance availability. Refer to the [Resource Allocator Module User Guide](./Module_User_Guide_ResourceAllocator.md) for detailed configuration instructions.
+```
+
+##### v02.00.00 from v01.01.01 or any older versions
 
 In version v02.00.00, the name of the generated configuration structure used to initialize the module has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
 In case of Post build variant, upper modules that call the Spi_Init function will need to use the new configuration structure name. For example:
@@ -281,6 +346,8 @@ Spi_Init(&Spi_Config);
 This change ensures compliance with AUTOSAR naming conventions.
 
 To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.
+
+#### Configuration Parameters
 
 
 
@@ -1186,30 +1253,7 @@ The example application demonstrates use of Spi module, the list below identifie
 
 ##### Sample Log of Spi_Example_Sync_AsyncTransfer
 
-```{code-block}
-Sample Application - STARTS !!!
-SPI MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 83
-SW Major Version    : 2
-SW Minor Version    : 0
-SW Patch Version    : 0
-Writing to internal buffer channel0.
-Writing to internal buffer channel1.
-Writing to external buffer channel2.
-Transmitting data in asynchronous mode.
-AsyncTransmit status is 0
-Transmitting data in synchronous mode.
-SyncTransmit status is 0
-Getting hardware unit status.
-Getting job status.
-Called Sequence end notification function
-Called Sequence end notification function
-Getting sequence status.
-Result of sequence_1 is SPI_SEQ_OK.
-De-initializing SPI.
-Spi_Example_Sync_AsyncTransfer : Sample Application success
+```{literalinclude} Assets/text/Spi_Example_Sync_AsyncTransfer.txt
 ```
 
 #### Spi_Example_AsyncTransfer_Interrupt
@@ -1241,29 +1285,7 @@ Spi_Example_Sync_AsyncTransfer : Sample Application success
 
 ##### Sample Log of Spi_Example_AsyncTransfer_Interrupt
 
-```{code-block}
-Sample Application - STARTS !!!
-SPI MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 83
-SW Major Version    : 2
-SW Minor Version    : 0
-SW Patch Version    : 0
-Writing to internal buffer channel0.
-Writing to internal buffer channel1.
-Writing to external buffer channel2.
-Transmitting data in asynchronous mode.
-Called Sequence end notification function
-Called Sequence end notification function
-AsyncTransmit status is 0
-Getting hardware unit status.
-Result of Hardware unit is not SPI_BUSY.
-Getting job status.
-Getting sequence status.
-Result of sequence_1 is SPI_SEQ_OK.
-De-initializing SPI.
-Spi_Example_AsyncTransfer_Interrupt : Sample Application success
+```{literalinclude} Assets/text/Spi_Example_AsyncTransfer_Interrupt.txt
 ```
 
 #### Spi_Example_SyncTransfer
@@ -1295,24 +1317,7 @@ Spi_Example_AsyncTransfer_Interrupt : Sample Application success
 
 ##### Sample Log of Spi_Example_SyncTransfer
 
-```{code-block}
-Sample Application - STARTS !!!
-SPI MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 83
-SW Major Version    : 2
-SW Minor Version    : 0
-SW Patch Version    : 0
-Writing to internal buffer channel0.
-Writing to internal buffer channel1.
-Writing to external buffer channel2.
-Getting hardware unit status.
-Transmitting data in synchronous mode.
-SyncTransmit status is 0
-Getting sequence status.
-Deinitializing SPI.
-Spi_Example_SyncTransfer : Sample Application success
+```{literalinclude} Assets/text/Spi_Example_SyncTransfer.txt
 ```
 
 #### Spi_Example_External_Loopback
@@ -1372,22 +1377,7 @@ Note: To visualize the CPU3 source file (in debug mode), load the CPU3.out by cl
 
 ##### Sample Log of Spi_Example_External_Loopback
 
-```{code-block}
-Sample Application - STARTS !!!
-SPI MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 83
-SW Major Version    : 2
-SW Minor Version    : 0
-SW Patch Version    : 0
-Writing to internal buffer channel0.
-Getting hardware unit status.
-Transmitting data in synchronous mode.
-SyncTransmit status is 0
-Getting sequence status.
-Deinitializing SPI.
-Spi_Example_External_Loopback : Sample Application success
+```{literalinclude} Assets/text/Spi_Example_External_Loopback.txt
 ```
 
 #### File Structure

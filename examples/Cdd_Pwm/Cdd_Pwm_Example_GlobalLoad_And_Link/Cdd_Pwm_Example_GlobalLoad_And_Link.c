@@ -44,22 +44,23 @@
  *      - For EPWM7 enable linking
  *      - Configure prescaler, compare values and action qualifier actions using linking
  *
- * Laod a period value to all EPWM instances using XLINK. This period value results in 50% duty cycle for all the
+ * Load a period value to all EPWM instances using XLINK. This period value results in 50% duty cycle for all the
  * EPWM OUTPUT A channels.
  *
- * Counter compare values are updated at 3rd period event for EPWM 1 & 2 instances. The configured
- * global load event prescale is 7. So, the update in the compare compare values(shadow to active at 3rd period event)
- * can be observed in only EPWM1 instances.
- * Update in the compare compare values(shadow to active at 7rd period event) can be observed in both
- * EPWM1 & EPWM2 instances.
+ * Counter compare A values are updated at 3rd period event for EPWM1 & EPWM2A channels. The configured
+ * global load event prescale is 7 which is enabled only for EPWM2 instance. So, the update in the
+ * compare compare values(shadow to active at 3rd period event) can be observed in only EPWM1A's output.
  *
- * As a result, the duty cycle of the EPWM1 instance will jump from 50% to 25% and then to 25%.
- * But EPWM2 instance will jump from 50% to 20% while EPWM3 & EPWM7 instances maintain their duty cycles at 50%.
+ * Update in the compare compare B value(shadow to active at 7rd period event) can be observed in both
+ * EPWM1A & EPWM2A channels.
+ *
+ * As a result, the duty cycle of the EPWM1A will jump from 50% to 25% and then to 20%.
+ * But EPWM2A's duty cycle will jump from 50% to 20% while EPWM3 & EPWM7 instances maintain their duty cycles at 50%.
  *
  * Wait for 1 second and update the compare B value for all the EPWM instances using linking.
  *
  * With the latest compare B value, the duty cycle of EPWM3 & EPWM7's OUTPUT A will jump to 75%.
- * Duty cycle of EPWM1 & EPWM2's channel A will jump to 75%.
+ * Duty cycle of EPWM1 & EPWM2's channel A will jump to 50%.
  *
  * Print the notification count to of all EPWM instances.
  *
@@ -142,6 +143,7 @@ void Cdd_Pwm_HwUnit0Notification()
                                        15825U);
         Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_COMPARE_A,
                                        15825U);
+        AppUtils_Printf("Load new compare A value to the both EPWM1 & EPWM2 instances \r\n");
     }
 
     if (Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0] == 7U)
@@ -151,6 +153,7 @@ void Cdd_Pwm_HwUnit0Notification()
                                        28325U);
         Cdd_Pwm_SetCounterCompareValue(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_1, CDD_PWM_COUNTER_COMPARE_B,
                                        28325U);
+        AppUtils_Printf("Load new compare B value to the both EPWM1 & EPWM2 instances \r\n");
     }
 }
 

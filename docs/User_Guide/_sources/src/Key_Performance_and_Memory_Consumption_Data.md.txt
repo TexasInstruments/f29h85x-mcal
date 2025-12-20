@@ -27,37 +27,37 @@
 
 |Performance Test|Theoretical value|Measured value|Remarks|
 |------|------|------|-------|
-|Lin Master Response Performance |845312 us|867612 us|Total time taken to send 8 Bytes of data 128 times ~ 1MB |
-|Lin Slave Response Performance |6874 us|7269 us|Total time taken to receive 8 Bytes of data|
+|Lin Master Response Performance |845312 us|867680 us|Total time taken to send 8 Bytes of data 128 times ~ 1KB |
+|Lin Slave Response Performance |6874 us|7291 us|Total time taken to receive 8 Bytes of data|
 
 ### SPI Driver
 
 |Performance Test|Theoretical value in micro seconds|Measured value in micro seconds|Remarks|
 |------|------|------|-------|
 | Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width | 179200 |179209|BaudRate 5MHz, Async Transmit|
+| Transmit 112000 words with 8 bit data width | 179200 |179208|BaudRate 5MHz, Async Transmit|
 | Transmit 112000 words with 16 bit data width| 358400 |358407|BaudRate 5MHz, Sync Transmit|
 | Transmit 112000 words with 16 bit data width| 358400 |358408|BaudRate 5MHz, Async Transmit|
-| Transmit 112000 words with 8 bit data width | 89600 |89607|BaudRate 10MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width | 89600 |89608|BaudRate 10MHz, Sync Transmit|
 | Transmit 112000 words with 8 bit data width | 89600 |89608|BaudRate 10MHz, Async Transmit|
 | Transmit 112000 words with 16 bit data width| 179200 |179207|BaudRate 10MHz, Sync Transmit|
 | Transmit 112000 words with 16 bit data width| 179200 |179208|BaudRate 10MHz, Async Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |23916|BaudRate 50MHz, Sync Transmit|
-| Transmit 112000 words with 8 bit data width| 17920 |29686|BaudRate 50MHz, Async Transmit|
-| Transmit 112000 words with 16 bit data width| 35840 |35848|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |24013|BaudRate 50MHz, Sync Transmit|
+| Transmit 112000 words with 8 bit data width| 17920 |29611|BaudRate 50MHz, Async Transmit|
+| Transmit 112000 words with 16 bit data width| 35880 |36530|BaudRate 50MHz, Sync Transmit|
 | Transmit 112000 words with 16 bit data width| 35840 |36113|BaudRate 50MHz, Async Transmit|
 | Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width | 89600 |89606|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width | 89600 |89605|BaudRate 5MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 179200 |179204|BaudRate 5MHz, Sync Transmit|
 | Transmit 56000 words with 16 bit data width| 179200 |179205|BaudRate 5MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 44800 |44804|BaudRate 10MHz, Sync Transmit|
 | Transmit 56000 words with 8 bit data width| 44800 |44805|BaudRate 10MHz, Async Transmit|
 | Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Sync Transmit|
 | Transmit 56000 words with 16 bit data width| 89600 |89605|BaudRate 10MHz, Async Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |11959|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 8 bit data width| 8960 |14863|BaudRate 50MHz, Async Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |17925|BaudRate 50MHz, Sync Transmit|
-| Transmit 56000 words with 16 bit data width| 17920 |17926|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |12007|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 8 bit data width| 8960 |14788|BaudRate 50MHz, Async Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |17941|BaudRate 50MHz, Sync Transmit|
+| Transmit 56000 words with 16 bit data width| 17920 |19928|BaudRate 50MHz, Async Transmit|
 
 ### FLS Driver
 
@@ -85,11 +85,23 @@ Please note that this performance result depends on, when the remote core acknow
 
 ### CDD ADC Driver
 
+#### CDD ADC without DMA integration
+
 |Performance Test| Theoretical value (max)|Measured value|Remarks|
 |------|------|------|-------|
-|12-bit ADC with SW triggers | 3.84 Msps at 57MHz | 3.846 Msps (99.909760%) With 3.5 ADC Clock Divider : 57.14MHz| |
-|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.836 Msps (99.636093%) ith 3.5 ADC Clock Divider : 57.14MHz | |
-|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.183 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+|12-bit ADC with SW triggers | 3.84 Msps at 57MHz | 3.836 Msps (99.909760%) With 3.5 ADC Clock Divider : 57.14MHz| |
+|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.145332%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+
+#### CDD ADC with DMA integration
+
+|Performance Test| Theoretical value (max)|Measured value|Remarks|
+|------|------|------|-------|
+|12-bit ADC with SW triggers | 3.84 Msps at 57MHz | 3.836 Msps (99.910042%) With 3.5 ADC Clock Divider : 57.14MHz| |
+|12-bit ADC with HW triggers | 3.84 Msps at 57MHz | 3.829 Msps (99.735458%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with SW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.198814%) ith 3.5 ADC Clock Divider : 57.14MHz | |
+|16-bit ADC with HW triggers | 1.19 Msps at 57MHz | 1.180 Msps (99.146255%) ith 3.5 ADC Clock Divider : 57.14MHz | |
 
 ## Memory Footprints
 
@@ -97,46 +109,46 @@ Please note that this performance result depends on, when the remote core acknow
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Can_Example_Classic_FD   | 58540    | 0    | 8560    |
- | Can_Example_Icom   | 59188    | 0    | 8832    |
- | Can_Example_loopback   | 56932    | 0    | 8496    |
- | Can_Example_Wakeup   | 57684    | 0    | 8580    |
+| Can_Example_Classic_FD   | 58556    | 0    | 8560    |
+ | Can_Example_Icom   | 59172    | 0    | 8832    |
+ | Can_Example_loopback   | 56916    | 0    | 8496    |
+ | Can_Example_Wakeup   | 57668    | 0    | 8580    |
  
 ### DIO
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Dio_Example_Read_Write_All   | 41836    | 0    | 4680    |
+| Dio_Example_Read_Write_All   | 41820    | 0    | 4680    |
  
 ### FLS
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Fls_App_Example   | 53236    | 0    | 13046    |
+| Fls_App_Example   | 53156    | 0    | 13046    |
  
 ### GPT
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Gpt_Example_Timers   | 45108    | 0    | 4756    |
- | Gpt_Example_OneShotMode   | 46380    | 0    | 4744    |
- | Gpt_Example_MixedMode   | 44332    | 0    | 4728    |
+| Gpt_Example_Timers   | 45124    | 0    | 4756    |
+ | Gpt_Example_OneShotMode   | 46364    | 0    | 4744    |
+ | Gpt_Example_MixedMode   | 44316    | 0    | 4728    |
  | Gpt_Example_InterruptTimeout   | 45732    | 0    | 4732    |
- | Gpt_Example_ContinuousMode   | 46268    | 0    | 4744    |
+ | Gpt_Example_ContinuousMode   | 46236    | 0    | 4744    |
  
 ### LIN
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
 | Lin_Example_Init_Sleep_Wakeup   | 45060    | 0    | 4713    |
- | Lin_Example_SendData   | 45316    | 0    | 4728    |
- | Lin_Example_Sleep_Wakeup_Interrupt   | 44148    | 0    | 4716    |
+ | Lin_Example_SendData   | 45300    | 0    | 4728    |
+ | Lin_Example_Sleep_Wakeup_Interrupt   | 44116    | 0    | 4716    |
  
 ### MCU
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Mcu_Example_Clock   | 39268    | 0    | 4660    |
+| Mcu_Example_Clock   | 39284    | 0    | 4660    |
  | Mcu_Example_PowerMode   | 39276    | 0    | 4661    |
  | Mcu_Example_Ram   | 39860    | 0    | 4669    |
  | Mcu_Example_Reset   | 38940    | 0    | 4665    |
@@ -151,46 +163,46 @@ Please note that this performance result depends on, when the remote core acknow
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Spi_Example_Sync_AsyncTransfer   | 54444    | 0    | 5712    |
+| Spi_Example_Sync_AsyncTransfer   | 54428    | 0    | 5712    |
  | Spi_Example_AsyncTransfer_Interrupt   | 54652    | 0    | 5600    |
- | Spi_Example_SyncTransfer   | 53596    | 0    | 5440    |
- | Spi_Example_External_Loopback   | 67740    | 0    | 5348    |
+ | Spi_Example_SyncTransfer   | 53580    | 0    | 5440    |
+ | Spi_Example_External_Loopback   | 67724    | 0    | 5348    |
  
 ### WDG
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
 | Wdg_Example_Interrupt   | 41356    | 0    | 4720    |
- | Wdg_Example_Service   | 41572    | 0    | 4720    |
+ | Wdg_Example_Service   | 41588    | 0    | 4720    |
  
 ### CDD ADC
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Cdd_Adc_Example_Differential   | 56084    | 0    | 5072    |
- | Cdd_Adc_Example_GlbSwTrig   | 57452    | 0    | 5628    |
- | Cdd_Adc_Example_Ppb_TrigRepeater   | 57836    | 0    | 7352    |
- | Cdd_Adc_Example_TempSensor   | 48980    | 0    | 4856    |
+| Cdd_Adc_Example_Differential   | 56036    | 0    | 5072    |
+ | Cdd_Adc_Example_GlbSwTrig   | 57468    | 0    | 5628    |
+ | Cdd_Adc_Example_Ppb_TrigRepeater   | 57804    | 0    | 7352    |
+ | Cdd_Adc_Example_TempSensor   | 48964    | 0    | 4856    |
  
 ### CDD ECAP
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Cdd_Ecap_Capture_Signal   | 53412    | 0    | 5184    |
- | Cdd_Ecap_HrMode   | 51324    | 0    | 4859    |
+| Cdd_Ecap_Capture_Signal   | 53684    | 0    | 5184    |
+ | Cdd_Ecap_HrMode   | 51516    | 0    | 4859    |
  
-### CDD IPC
+### CDD I2C
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
 | Cdd_I2c_Interrupt   | 49612    | 0    | 5820    |
- | Cdd_I2c_Poll   | 49228    | 0    | 5820    |
+ | Cdd_I2c_Poll   | 49212    | 0    | 5820    |
  
 ### CDD IPC
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Cdd_Ipc_Example_Polling_C29x1   | 54948    | 0    | 4684    |
+| Cdd_Ipc_Example_Polling_C29x1   | 54932    | 0    | 4684    |
  | Cdd_Ipc_Example_Interrupt_C29x1   | 55252    | 0    | 4684    |
  
 ### CDD PWM
@@ -199,12 +211,12 @@ Please note that this performance result depends on, when the remote core acknow
 | ------------ | ----------| -------- | ---------- |
 | Cdd_Pwm_Example_Chopper   | 78996    | 0    | 66159    |
  | Cdd_Pwm_Example_DC_EventFilter   | 79612    | 0    | 66169    |
- | Cdd_Pwm_Example_Deadband   | 80380    | 0    | 66161    |
+ | Cdd_Pwm_Example_Deadband   | 80412    | 0    | 66161    |
  | Cdd_Pwm_Example_DiodeEmulation   | 80948    | 0    | 66185    |
- | Cdd_Pwm_Example_GlobalLoad_And_Link   | 78340    | 0    | 66159    |
- | Cdd_Pwm_Example_Hrpwm   | 77892    | 0    | 66147    |
+ | Cdd_Pwm_Example_GlobalLoad_And_Link   | 78484    | 0    | 66159    |
+ | Cdd_Pwm_Example_Hrpwm   | 77908    | 0    | 66147    |
  | Cdd_Pwm_Example_TripZone   | 80324    | 0    | 4733    |
- | Cdd_Pwm_Example_UpCountMode   | 46860    | 0    | 66288    |
+ | Cdd_Pwm_Example_UpCountMode   | 46844    | 0    | 66288    |
  | Cdd_Pwm_Example_XCmp_MultipleEdges   | 81652    | 0    | 4709    |
  
 ### CDD SENT
@@ -212,15 +224,15 @@ Please note that this performance result depends on, when the remote core acknow
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
 | Cdd_Sent_Standard   | 44700    | 0    | 4764    |
- | Cdd_Sent_MtpMode   | 44900    | 0    | 4768    |
+ | Cdd_Sent_MtpMode   | 44916    | 0    | 4768    |
  
 ### CDD UART
 
 | Examples   | .text  |  .data  |  .bss  |
 | ------------ | ----------| -------- | ---------- |
-| Cdd_Uart_Example_Loopback   | 45436    | 0    | 4732    |
- | Cdd_Uart_Example_Read_Interrupt   | 44716    | 0    | 4732    |
- | Cdd_Uart_Example_Write_Interrupt   | 45324    | 0    | 4724    |
+| Cdd_Uart_Example_Loopback   | 45452    | 0    | 4732    |
+ | Cdd_Uart_Example_Read_Interrupt   | 44732    | 0    | 4732    |
+ | Cdd_Uart_Example_Write_Interrupt   | 45308    | 0    | 4724    |
  | Cdd_Uart_Example_Write_Polling   | 44980    | 0    | 4724    |
  
 ### CDD XBAR

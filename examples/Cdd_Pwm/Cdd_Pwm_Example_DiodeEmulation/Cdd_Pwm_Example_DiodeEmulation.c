@@ -35,38 +35,29 @@
  * - Configure Cdd_Pwm hardware using Cdd_Pwm_ConfigureHw() to configure EPWM instances as follows
  *
  * Diode Emulation configuration:
- *  - For EPWM1 A & B outputs the AQ actions are configured to HIGH & LOW respectively.
- *      And the diode emulation trip signals are set to opposite of the configured polarities respectively,
- *      EPWM1A is set to HIGH and EPWM1B set to LOW during DE
+ *  - For EPWM1 A & B outputs the AQ actions are configured to LOW & HIGH respectively.
+ *      During DE(diode emulation) mode, EPWM outputs are set to opposite of the configured polarities.
+ *      EPWM1A's output is set to HIGH and EPWM1B's set to LOW during DE mode
  *
- *  - For EPWM2 A & B outputs the AQ actions are configured to LOW & HIGH respectively.
- *      And the diode emulation trip signals are set to opposite of the configured polarities respectively,
- *      EPWM2A is set to LOW and EPWM2B set to HIGH during DE
+ *  - For EPWM2 A & B outputs the AQ actions are configured to HIGH & LOW respectively.
+ *      During DE(diode emulation) mode, EPWM outputs are set to opposite of the configured polarities.
+ *      EPWM2A's output is set to LOW and EPWM2B's set to HIGH during DE mode
  *
- *  - EPWM1 & EPWM2 are configured in one-shot diode emulation mode,
- *    Force diode emulation active flag to enter diode emulation mode
- *
+ *  - EPWM1 & EPWM2 are configured in one-shot diode emulation mode.
  *  - EPWM3 is configured same as EPWM1 but in CBC(cycle-by-cycle) DE mode
- *    Force diode emulation active flag to enter diode emulation mode
- *      In the Cycle-by-cycle clear mode, trip condition is evaluated on every EPWMxSYNCPER and if the trip
- *      condition is not present, then DEACTIVE flag is cleared (exiting of DE mode).
+ *     In the Cycle-by-cycle clear mode, trip condition is evaluated on every EPWMxSYNCPER and if the trip
+ *     condition is not present, then DEACTIVE flag is cleared (exiting of DE mode).
  *
  * Force diode emulation active flag for both EPWM1 & EPWM2 and wait until EPWM1 & EPWM2 outputs are changed to the
  * configured state (EPWM1A to HIGH, EPWM1B to LOW, EPWM2A to LOW & EPWM2B to HIGH).
- *
+ * Wait until the configured output states are achieved.
  * Clear active diode emulation flags for both EPWM1 & EPWM2 instances to exit DE mode.
- *
  * Force diode emulation active flag for EPWM1
- *
- * Wait until EPWM1 enters the DE mode and check if the EPWM2 has entered the DE mode.
- * The execution will stay in the loop if the expected condition is not achieved.
- *
- * Clear active diode emulation flags for both EPWM1 to exit DE mode.
- *
+ * Wait until EPWM1 enters the DE mode.
+ * The execution will stay in the loop if the expected condition is not achieved(Only EPWM1 should enter DE mode).
+ * Clear active diode emulation flags for EPWM1 to exit DE mode.
  * Force diode emulation active flag for EPWM3
- *
  * Wait until EPWM3 outputs are changed to the configured state (EPWM3A to HIGH & EPWM3B to LOW).
- *
  * Wait until the CBC clear the active flag and the EPWM instance exits the DE mode.
  *
  *  EPWM waveform and DE intput trip signals can be monitored on the respective pins configured

@@ -237,9 +237,26 @@ The Port module configures the analog port pins used for the UART driver. Hence,
 
 The Cdd_Uart driver uses interrupts and therefore depends on OS, which configures the interrupts.
 
-#### Multi-core and Resource allocator
+#### Resource Allocator
 
-Not Supported
+The UART module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+To allocate UARTA to CPU1 using FRAME0:
+
+1. In the Resource Allocator configuration, create a new Uart instance allocation
+2. Set **InstanceName** to `UARTA`
+3. Set **Frame** to `FRAME0`
+4. The **BaseAddr** will be automatically calculated as `UARTA_DRIVER_BASE_FRAME(0U)`
+
+```text
+Resource Allocator Configuration:
+├── UartInstanceAllocation
+│   ├── InstanceName: UARTA
+│   ├── Frame: FRAME0
+│   └── BaseAddr: UARTA_DRIVER_BASE_FRAME(0U)
+```
 
 ### Configuration
 
@@ -252,26 +269,44 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#### Migration Guide to v02.00.00 from v01.00.00 or any older versions
+#### Migration Guide
 
-In version v02.00.00, there are two major changes that require attention when migrating from v01.00.00 or any older versions:
+Migration guides between module versions are detailed below.
 
-##### UART INSTANCE Name Changes
+##### v02.00.00 from v01.00.00
 
-In this version, the names of the UART instance got updated, which impacts the values of other configuration parameters as well, because the range of values of other parameters are computed using these parameters. Due to these naming changes, UART configurations created with v01.00.00 or older versions are not directly compatible with v02.00.00.
+###### Key Changes
 
-When migrating existing configurations:
+1. **UART Instance Name Changes**
+   * The names of the UART instance got updated, which impacts the values of other configuration parameters as well
+   * The range of values of other parameters are computed using these parameters
+   * Due to these naming changes, UART configurations created with v01.00.00 or older versions are not directly compatible with v02.00.00
 
-* Open your existing configuration in the latest plugin version
-* The plugin will automatically flag incompatible UART instance configurations
-* Configure the corresponding UART with the instance name by choosing values from the plugin
-* Run the auto-calculate wizard to update the UART base address
-* Verify and update all affected configurations
-* In order to migrate to the latest version, the values of UART instance need to be chosen from the plugin
+2. **UART Clock Frequency Selection**
+   * The UART Clock frequency must be referenced to the Mcu system clock
+   * In older releases, the clock frequency was hardcoded
 
-##### UART Clock Frequency Selection
+###### Migration Steps
 
-The UART Clock frequency must be referenced to the Mcu system clock. In older releases, the clock frequency was hardcoded.
+1. **Open Existing Configuration**
+   * Open your existing configuration in the latest plugin version
+   * The plugin will automatically flag incompatible UART instance configurations
+
+2. **Update UART Instance Names**
+   * Configure the corresponding UART with the instance name by choosing values from the plugin
+   * In order to migrate to the latest version, the values of UART instance need to be chosen from the plugin
+
+3. **Update UART Base Address**
+   * Run the auto-calculate wizard to update the UART base address
+   * Verify and update all affected configurations
+
+4. **Regenerate Configuration**
+   * Save the configuration and regenerate the configuration files
+
+5. **Rebuild Application**
+   * Rebuild your application with the updated configuration
+
+#### Configuration Parameters
 
 
 
@@ -715,26 +750,7 @@ Cdd_Uart_Example_Read_Interrupt: Sample Application - Completes successfully !!!
 
 ##### Sample Log of Cdd_Uart_Example_Write_Interrupt
 
-```{code-block}
-Cdd_Uart_Example_Write_Interrupt: Sample Application - Starts!!!
-Cdd_Uart MCAL Version Info
----------------------
-Vendor ID           : 44
-Module ID           : 255
-SW Major Version    : 2
-SW Minor Version    : 0
-SW Patch Version    : 0
-Cdd_Uart_Example_Write_Interrupt: Sample Application - Completes successfully !!!
-```
-
-```{code-block}
-HHeHelHellHelloWHelloWorHelloWorld Texas Instruments
-                                                     HelloWorld Texas InsHelloWo                                                                                                                                                             rld Texas Instruments
-                      HelloWorld Texas Instruments
-                                                   HelloWorld Texas Instruments
-                                                                               H                                                                                                                                                             elloWorldHelloWorld Texas Instruments
-                                      HelloWorld Texas Instruments
-                                                                   HelloWorld Te                                                                                                                                                             xas Instruments
+```{literalinclude} Assets/text/Cdd_Uart_Example_Write_Interrupt.txt
 ```
 
 #### Cdd_Uart_Example_Write_Polling

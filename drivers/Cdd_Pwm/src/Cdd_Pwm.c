@@ -98,7 +98,7 @@ P2CONST(Cdd_Pwm_ConfigType, AUTOMATIC, CDD_PWM_CONST) Cdd_Pwm_CfgPtr = NULL_PTR;
 
 #if (STD_OFF == CDD_PWM_ADVANCED_MODE_API) && (STD_ON == CDD_PWM_NOTIFICATION_SUPPORTED)
 
-/** \brief This API performs DET error checking for setting interrupt event count
+/** \brief This API performs DET error check for setting interrupt event count
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
  * \param[in] EventCount     Event count for interrupt scale.
@@ -114,7 +114,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                            VAR(uint16, AUTOMATIC) EventCount);
 
 /** \brief Cdd_Pwm_EnableNotification_DetChecks - This API will report DET error for the
- *notification related APIs
+ * notification related APIs
  *
  * \param[in] ChannelId  PWM channel identifier
  * \param[in] EdgeNotification Edge Notification type of the channel
@@ -131,7 +131,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
 
 #elif (STD_ON == CDD_PWM_ADVANCED_MODE_API)
 
-/** \brief This API performs DET error checking for setting interrupt event count
+/** \brief This API performs DET error check for setting interrupt event count
  *
  * \param[in] InstanceId     Numeric ID of the requested PWM instance.
  * \param[in] EventCount     Event count for interrupt scale.
@@ -146,7 +146,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Cdd_Pwm_SetInterruptEventCountDetCheck(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                            VAR(uint16, AUTOMATIC) EventCount);
 
-/** \brief This API performs DET error checking for setting counter compare shadow load mode
+/** \brief This API performs DET error check for setting counter compare shadow load mode
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] CompModule Counter compare module type
@@ -163,7 +163,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                                     VAR(Cdd_Pwm_CounterCompareModuleType, AUTOMATIC) CompModule,
                                                     VAR(Cdd_Pwm_CounterCompareLoadModeType, AUTOMATIC) LoadMode);
 
-/** \brief This API performs DET error checking for setting action qualifier actions
+/** \brief This API performs DET error check for setting action qualifier actions
  *
  * \param[in] EpwmOutput PWM output channel
  * \param[in] Output Action qualifier output type
@@ -180,7 +180,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                              VAR(Cdd_Pwm_ActionQualifierOutputType, AUTOMATIC) Output,
                                              VAR(Cdd_Pwm_ActionQualifierOutputEventType, AUTOMATIC) Event);
 
-/** \brief This API performs DET error checking for setting dead band delay polarity
+/** \brief This API performs DET error check for setting dead band delay polarity
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] DelayMode Dead band delay mode type
@@ -197,7 +197,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                              VAR(Cdd_Pwm_DeadBandDelayModeType, AUTOMATIC) DelayMode,
                                              VAR(Cdd_Pwm_DeadBandPolarityType, AUTOMATIC) Polarity);
 
-/** \brief This API performs DET error checking for setting trip zone digital compare event conditions
+/** \brief This API performs DET error check for setting trip zone digital compare event conditions
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] DcType Trip zone digital compare output type
@@ -213,7 +213,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE) Cdd_Pwm_SetTripZoneDigitalCompareEvent
     VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId, VAR(Cdd_Pwm_TripZoneDigitalCompareOutputType, AUTOMATIC) DcType,
     VAR(Cdd_Pwm_TripZoneDigitalCompareOutputEventType, AUTOMATIC) DcEvent);
 
-/** \brief This API performs DET error checking for setting trip zone actions
+/** \brief This API performs DET error check for setting trip zone actions
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] TzEvent Trip zone action event type
@@ -230,7 +230,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                       VAR(Cdd_Pwm_TripZoneActionEventType, AUTOMATIC) TzEvent,
                                       VAR(Cdd_Pwm_TripZoneActionType, AUTOMATIC) TzAction);
 
-/** \brief This API performs DET error checking for setting advanced trip zone actions
+/** \brief This API performs DET error check for setting advanced trip zone actions
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] TzAdvEvent Trip zone advanced event type
@@ -247,7 +247,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                          VAR(Cdd_Pwm_TripZoneAdvancedEventType, AUTOMATIC) TzAdvEvent,
                                          VAR(Cdd_Pwm_TripZoneAdvancedActionType, AUTOMATIC) TzAdvAction);
 
-/** \brief This API performs DET error checking for setting advanced trip zone digital compare actions
+/** \brief This API performs DET error check for setting advanced trip zone digital compare actions
  *
  * \param[in] TzAdvDCEvent Trip zone advanced digital compare event type
  * \param[in] TzAdvDCAction Trip zone advanced action type
@@ -264,7 +264,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                                        VAR(Cdd_Pwm_TripZoneAdvancedActionType, AUTOMATIC)
                                                            TzAdvDCAction);
 
-/** \brief This API performs DET error checking for setting ADC trigger source
+/** \brief This API performs DET error check for setting ADC trigger source
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] AdcSocType ADC start of conversion type
@@ -281,7 +281,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                         VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType,
                                         VAR(Cdd_Pwm_AdcStartOfConversionSourceType, AUTOMATIC) SocSource);
 
-/** \brief This API performs DET error checking for setting ADC trigger event prescale
+/** \brief This API performs DET error check for setting ADC trigger event prescale
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] AdcSocType ADC start of conversion type
@@ -298,7 +298,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                                VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType,
                                                VAR(uint16, AUTOMATIC) PreScaleCount);
 
-/** \brief This API performs DET error checking for selecting digital compare trip input
+/** \brief This API performs DET error check for selecting digital compare trip input
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] TripInput Digital compare trip input type
@@ -315,7 +315,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                             VAR(Cdd_Pwm_DigitalCompareTripInputType, AUTOMATIC) TripInput,
                                             VAR(uint8, AUTOMATIC) ApiId);
 
-/** \brief This API performs DET error checking for setting digital compare event sync mode
+/** \brief This API performs DET error check for setting digital compare event sync mode
  *
  * \param[in] ApiId Api ID of the API which calls this Det check function
  * \param[in] InstanceId Numeric ID of the PWM instance
@@ -334,7 +334,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                                    VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel,
                                                    VAR(Cdd_Pwm_DigitalCompareEventType, AUTOMATIC) DcEvent);
 
-/** \brief This API performs DET error checking for setting valley trigger edge counts
+/** \brief This API performs DET error check for setting valley trigger edge counts
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] StartCount Start count value for valley triggering
@@ -350,7 +350,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Cdd_Pwm_SetValleyTriggerEdgeCountsDetCheck(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                                                VAR(uint16, AUTOMATIC) StartCount, VAR(uint16, AUTOMATIC) StopCount);
 
-/** \brief This API performs DET error checking for setting XCMP action qualifier actions
+/** \brief This API performs DET error check for setting XCMP action qualifier actions
  *
  * \param[in] ShadowSet XCMP shadow set type
  * \param[in] Output Action qualifier output type
@@ -367,7 +367,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                                  VAR(Cdd_Pwm_ActionQualifierOutputType, AUTOMATIC) Output,
                                                  VAR(Cdd_Pwm_XCmpAqOutputEventType, AUTOMATIC) Event);
 
-/** \brief This API performs DET error checking for setting XCMP shadow repeat buffer count
+/** \brief This API performs DET error check for setting XCMP shadow repeat buffer count
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] Bufferset XCMP shadow set type
@@ -384,7 +384,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                                  VAR(Cdd_Pwm_XCmpShadowSetType, AUTOMATIC) Bufferset,
                                                  VAR(uint32, AUTOMATIC) Count);
 
-/** \brief This API performs DET error checking for setting HRPWM counter compare value
+/** \brief This API performs DET error to check driver init status, instane id and output channel
  *
  * \param[in] InstanceId Numeric ID of the PWM instance
  * \param[in] OutputChannel Output channel
@@ -400,7 +400,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
     Cdd_Pwm_ChannelDetCheck(VAR(Cdd_Pwm_InstanceType, AUTOMATIC) InstanceId,
                             VAR(Cdd_Pwm_OutputChannelType, AUTOMATIC) OutputChannel, VAR(uint8, AUTOMATIC) ApiId);
 
-/** \brief This API performs DET error checking for setting HRPWM counter compare value
+/** \brief This API performs DET error check to set ADC trigger event count
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] AdcSocType    The Adc SOC type
@@ -419,7 +419,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                                      VAR(Cdd_Pwm_AdcStartOfConversionType, AUTOMATIC) AdcSocType,
                                                      VAR(uint16, AUTOMATIC) EventCount);
 
-/** \brief This API performs DET error checking for setting HRPWM counter compare value
+/** \brief This API performs DET error check for trip input type
  *
  * \param[in] InstanceId    Numeric ID of the requested PWM instance
  * \param[in] TripInput     Trip number
@@ -436,7 +436,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                          VAR(Cdd_Pwm_DcTripInputType, AUTOMATIC) TripInput,
                                          VAR(uint8, AUTOMATIC) ApiId);
 
-/** \brief This API performs DET error checking for setting mixed event trigger source
+/** \brief This API performs DET error check for setting mixed event trigger source
  *
  * \param[in] InstanceId          Numeric ID of the requested PWM instance
  * \param[in] EtMixSignal       The module for which trigger needs to be enabled
@@ -453,7 +453,7 @@ static FUNC(Std_ReturnType, CDD_PWM_CODE)
                                            VAR(Cdd_Pwm_EtMixSignalSelectType, AUTOMATIC) EtMixSignal,
                                            VAR(Cdd_Pwm_EvtMixTriggerSourceType, AUTOMATIC) InterruptSource);
 
-/** \brief This API performs DET error checking for setting prescaler for the PWM instance
+/** \brief This API performs DET error check for setting prescaler for the PWM instance
  *
  * \param[in] InstanceId          Numeric ID of the requested PWM instance
  * \param[in] Prescaler           Time base count pre scale value.

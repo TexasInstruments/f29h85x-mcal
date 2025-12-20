@@ -83,7 +83,7 @@ MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm2_IntIsr);
 MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm3_IntIsr);
 
 /* Category 1 INT ISR function prototype. */
-MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm4_IntIsr);
+MCAL_LIB_RTINT_ISR(Cdd_Pwm_Epwm7_IntIsr);
 
 
 /*********************************************************************************************************************

@@ -32,25 +32,33 @@
  *  - Initialize pins in EPWM mode with Port_Init()
  *  - Initialize Cdd_Pwm driver using Cdd_Pwm_Init()
  * Configure Cdd_Pwm hardware using Cdd_Pwm_ConfigureHw() to configure EPWM1 as follows
- *  - EPWM1 with DCAEVT1 forcing the EPWM output LOW
+ *  - EPWM1 has DCAEVT1 as digital compare event and it forces the EPWM output to LOW
  *  - GPIO12 is used as the input to the INPUT XBAR INPUT2
  *  - INPUT2 (from INPUT XBAR) is used as the source for DCAEVT1
- *  - GPIO12's PULL-UP resistor is enabled, in order to test the trip, PULL this pin to GND using Dio_WriteChanel API
- *  - DCAEVT1 uses the filtered version of DCAEVT1
- *  - The DCFILT signal uses the blanking window to ignore the DCAEVT1 for the duration of DC Blanking window
+ *  - GPIO12's PULL-UP resistor is enabled. In order to test the trip, PULL this pin to GND using Dio_WriteChanel API
+ *  - Because DCAEVT1 is filtered version of DCAEVT1, DCFILT signal uses the blanking window to ignore
+ *    DCAEVT1 for the duration of DC Blanking window
  *
- *  - EPWM1 with DCBEVT1 forcing the EPWM output LOW
+ *  - EPWM1 has DCBEVT1 as digital compare event and it forces the EPWM output to LOW
  *  - GPIO12 is used as the input to the INPUT XBAR INPUT2
  *  - INPUT2 (from INPUT XBAR) is used as the source for DCBEVT1
- *  - GPIO12's PULL-UP resistor is enabled, in order to test the trip, PULL this pin to GND using Dio_WriteChanel API
+ *  - GPIO12's PULL-UP resistor is enabled. in order to test the trip, PULL this pin to GND using Dio_WriteChanel API
  *
- * DCAEVT1 & DCBEVT1 events are configured to force to LOW when the trip occurs on the TRIP2 input.
+ * DCAEVT1 & DCBEVT1 events are configured to force the outputs to LOW when the trip occurs on the TRIP2 input.
+ * DCAEVT1 event is configured to trigger trip-zone interrupt and the notification count is incremented
+ * inside the notification function.
+ *
  * Trip input is pulled LOW which triggers LOW state on both the EPWM outputs and notifications are expected.
- * Blanking window is increased to test event filtering.
- * Trip input is pulled to LOW during the blanking window. Only EPWMB waveform should be affected by this and
+ * Disable trip-zone interrupts and notifications when the notification count reaches 3.
+ * Set the trip input to HIGH
+ * Clear all flags and disable DCBEVT1 as a trip source to test the blanking window functionality.
+ * Blanking window is increased to test event filtering on output A.
+ * Set DCAEVT1 as trip interrupt source and enable notification. Set the notification count to zero.
+ * Trip input is pulled to LOW during the blanking window. Only EPWMB's waveform should be affected by this and
  * 0 notifications are expected.
  * Disable blanking window.
- * Trip input is pulled to LOW, both output waveforms should be affected by this and notifications are expected.
+ * Trip input is again pulled to LOW, now both output waveforms should be affected by this and
+ * notifications are expected.
  * Print notification counts in sequence to track the events.
  *
  *  EPWM waveform can be observed on the respective pins configured in EPWM mode
@@ -230,14 +238,14 @@ int main()
     AppUtils_Printf("Notification count is %d\r\n",
                     Cdd_Pwm_NotificationCount[CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0]);
 
-    /* Pull back the  */
+    /* Set the channel state to HIGH */
     Dio_WriteChannel(DioConf_DioChannel_DioChannel_0, STD_HIGH);
 
     Cdd_Pwm_ClearTripZoneFlag(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_TZ_FLAG_DCAEVT1);
     Cdd_Pwm_ClearTripZoneFlag(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_TZ_FLAG_DCBEVT1);
     Cdd_Pwm_ClearTripZoneFlag(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_TZ_FLAG_OST);
 
-    /* Disable DCBEVT1 signl as the trip signal source */
+    /* Disable DCBEVT1 signal as the trip signal source */
     Cdd_Pwm_ConfigureTripZoneSignals(CddPwmConf_CddPwmHwUnitConfig_CddPwmHwUnitConfig_0, CDD_PWM_TZ_SIGNAL_DCBEVT1,
                                      FALSE);
 

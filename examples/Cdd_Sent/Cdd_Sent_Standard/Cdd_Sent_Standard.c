@@ -32,7 +32,7 @@
  * This example configures SENT module to receive 6 Data-nibble per frame for fast channel.
  *
  * \b External \b Connections \n
- *    - Connect GPIO15 to sensor's SENT channel 1 pin
+ *    - Connect GPIO18 to sensor's SENT channel 4 pin
  *********************************************************************************************************************/
 
 /*********************************************************************************************************************

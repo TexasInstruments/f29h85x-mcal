@@ -262,8 +262,8 @@ Cdd_Ecap_SetActivationCondition(Cdd_Ecap_ChannelType Channel, Cdd_Ecap_Activatio
         SchM_Enter_Cdd_Ecap_CDD_ECAP_EXCLUSIVE_AREA_0();
         Cdd_Ecap_ChObj.chObj[Channel].activation_edge = Activation;
 #if ((STD_ON == CDD_ECAP_GET_INPUT_STATE_API))
-        if (Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode == CDD_ECAP_MODE_SIGNAL_MEASUREMENT ||
-            Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode == CDD_ECAP_MODE_SIGNAL_EDGE_DETECT)
+        if ((Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode == CDD_ECAP_MODE_SIGNAL_MEASUREMENT) ||
+            (Cdd_Ecap_ConfigPtr->chCfg[Channel].measurementMode == CDD_ECAP_MODE_SIGNAL_EDGE_DETECT))
         {
             Cdd_Ecap_ChObj.chObj[Channel].InputState = CDD_ECAP_IDLE;
         }
@@ -849,6 +849,29 @@ Cdd_Ecap_GetVersionInfo(P2VAR(Std_VersionInfoType, AUTOMATIC, CDD_ECAP_APPL_DATA
 }
 #endif /* CDD_ECAP_GET_VERSION_INFO_API*/
 
+/*Periodic register readback API for CDD ECAP*/
+FUNC(void, CDD_ECAP_CODE)
+Cdd_Ecap_PeriodicReadback(Cdd_Ecap_ChannelType Channel,
+                          P2VAR(Cdd_Ecap_PeriodicReadBackDataType, AUTOMATIC, CDD_ECAP_APPL_DATA) ReadBackRegisterdata)
+{
+#if (STD_ON == CDD_ECAP_DEV_ERROR_DETECT)
+
+    /* Check if the CDD ECAP driver is not initialized and report a DET error. */
+    if (CDD_ECAP_STATUS_UNINIT == Cdd_Ecap_DrvStatus)
+    {
+        (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_READBACK_ID, CDD_ECAP_E_UNINIT);
+    }
+    if ((CDD_ECAP_HW_CNT <= Channel))
+    {
+        (void)Det_ReportError(CDD_ECAP_MODULE_ID, CDD_ECAP_INSTANCE_ID, CDD_ECAP_READBACK_ID, CDD_ECAP_E_PARAM_CHANNEL);
+    }
+    else
+#endif
+    {
+        Cdd_Ecap_PeriodicReadbackPrv(Channel, ReadBackRegisterdata);
+    }
+}
+
 #if (STD_ON == CDD_ECAP_HR_API)
 FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE) Cdd_Ecap_GetHrScaleFactor(Cdd_Ecap_ChannelType Channel)
 {
@@ -862,10 +885,8 @@ FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE) Cdd_Ecap_GetHrScaleFactor(Cdd_E
         baseAddr = Cdd_Ecap_ConfigPtr->chCfg[Channel].hr_base_addr;
         return Cdd_Ecap_HRCAP_getScaleFactor(baseAddr, Channel);
     }
-    else
-    {
-        return 0;
-    }
+
+    return 0;
 }
 FUNC(Cdd_Ecap_ChannelHrScaleType, CDD_ECAP_CODE)
 Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp(Cdd_Ecap_ChannelType Channel, uint32 timeStamp)

@@ -259,9 +259,34 @@ For Port Module, data consistency and exclusive access to critical sections are 
 
 MCU Module is required to initialize all the clock to be used by different peripherals
 
-#### Multi-core and Resource allocator
+#### Resource Allocator Integration
 
-Not Supported
+The Port module integrates with the Resource Allocator plugin to determine available pin configurations based on the selected device, package, and variant.
+
+**How Port Uses Resource Allocator:**
+
+1. **Device Selection**: The Resource Allocator configuration specifies the target device family (F29H85x, F29P32x, or F29P58x)
+2. **Package Selection**: The selected pin package (e.g., 256-pin, 176-pin, 144-pin) determines which GPIO pins are physically available
+3. **Variant Selection**: The device variant may affect available pin functionalities
+
+**Configuration Dependency:**
+
+When configuring the Port module in EB Tresos:
+
+* The Resource Allocator plugin must be added and configured first
+* The Port plugin reads the device and package information from Resource Allocator
+* Available pin options in PortPinName and PortPinPeripheralSignal are filtered based on the selected package
+* Only pins that exist on the selected package variant are shown as configurable options
+
+**Benefits:**
+
+* Prevents configuration of pins that don't exist on the target package
+* Automatically filters peripheral mux options based on device capabilities
+* Ensures generated configuration matches the physical device
+
+```{NOTE}
+The Resource Allocator plugin must be configured before the Port plugin to ensure correct pin availability filtering. Refer to the [Resource Allocator Module User Guide](./Module_User_Guide_ResourceAllocator.md) for configuration details.
+```
 
 ### Configuration
 
@@ -275,11 +300,54 @@ The generated configuration files should not be modified manually. The config to
 Refer section [Getting Started with EB Tresos](./MCAL_Configuration_and_EB_Tresos.md#getting-started-with-eb-tresos) of Chapter **MCAL Configuration and EB Tresos** for more information on how to load plugin and generate the configuration files.
 ```
 
-#### Migration Guide to v02.00.00 from v01.01.01 or any older versions
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v03.00.00 from v02.00.00
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   * The Port module now integrates with the Resource Allocator module for centralized device, package, and variant configuration
+   * Device-specific pin configurations, mux modes, and package information are now derived from the Resource Allocator settings
+   * All pin-related parameters (PortPinName, PortPinPeripheral, PortPinPeripheralInstance, PortPinPeripheralSignal, PortPhysicalPinId, etc.) now reference Resource Allocator data
+
+2. **PortDeviceVariant Moved to Resource Allocator**
+   * The device variant selection has been moved from the Port module to the Resource Allocator module
+   * Users must now configure the device variant in the Resource Allocator's `ResourceAllocatorGeneral` container using the `Device`, `Variant`, and `Package` parameters
+   * The Port module automatically reads the device variant information from Resource Allocator to determine available pins and mux options
+
+###### Migration Steps
+
+1. **Add Resource Allocator Module**
+   * Add the Resource Allocator module to your EB Tresos project if not already present
+
+2. **Configure Device Settings in Resource Allocator**
+   * Open the Resource Allocator module configuration
+   * Configure `Device`, `Variant`, and `Package` parameters in `ResourceAllocatorGeneral` container
+   * This replaces the previous PortDeviceVariant configuration
+
+3. **Update Port Configuration**
+   * Open the Port module configuration
+   * The available pin options will now be filtered based on Resource Allocator settings
+   * Verify that all pin configurations are valid for the selected device/package
+
+4. **Regenerate Configuration**
+   * Generate the configuration files after updating both modules
+   
+5. **Rebuild Application**
+   * Rebuild the application with the updated configuration
+
+```{NOTE}
+The Resource Allocator module must be configured before the Port module to ensure correct pin availability filtering. Refer to the [Resource Allocator Module User Guide](./Module_User_Guide_ResourceAllocator.md) for detailed configuration instructions.
+```
+
+##### v02.00.00 from v01.01.01 or any older versions
 
 In version v02.00.00, there are two major changes that require attention when migrating from v01.01.01 or any older versions:
 
-##### Port Pin Name Changes
+**Port Pin Name Changes**
 
 In this version, the names of the range of values of the PortPinName and PortPinPeripheralSignal got updated, which impacts the values of other configuration parameters as well, because the range of values of other parameters are computed using these parameters. This is the most visible change and affects a large number of port pin configurations. Due to these naming changes, Port configurations created with v01.01.01 or older versions are not directly compatible with v02.00.00.
 
@@ -291,7 +359,7 @@ When migrating existing configurations:
 * Verify and update all affected pin configurations
 * In order to migrate to the latest version, the values of PortPinName and PortPinPeripheralSignal need to be chosen from the plugin
 
-##### Configuration Structure Name Change
+**Configuration Structure Name Change**
 
 The name of the generated configuration structure has been changed to comply with AUTOSAR requirement TPS_ECUC_08011.
 In case of Post build variant, upper modules that call the Port_Init function will need to use the new configuration structure name. For example:
@@ -306,7 +374,7 @@ Port_Init(&Port_Config);
 
 This change ensures compliance with AUTOSAR naming conventions.
 
-##### Required Actions for Migration
+**Required Actions for Migration**
 
 To successfully migrate to v02.00.00:
 
@@ -317,7 +385,7 @@ To successfully migrate to v02.00.00:
 
 ```{NOTE}
 It is recommended to completely reconfigure your Port settings using the v02.00.00 plugin rather than attempting to manually update existing configurations, as both the pin naming changes and configuration structure changes are extensive.
-```
+    ```
 
 #### Configuration Precautions
 
@@ -327,6 +395,8 @@ It is recommended to completely reconfigure your Port settings using the v02.00.
 ```{NOTE}
 More details related to Configuration precautions can be found in Safety Manual.
 ```
+
+#### Configuration Parameters
 
 
 
@@ -683,15 +753,16 @@ The analog signals on this device are multiplexed with digital inputs and output
 
 #### Steps To Configure Port Module
 
-1. Open EB Tresos configurator tool and Select the Config Variant ( Precompile/Post-Build) and Device Variant ( Pin Package ) parameters
+1. Open EB Tresos configurator tool and Select the Config Variant ( Precompile/Post-Build)
 2. Go to Port Container tab and create a new container
 3. Open the created container and go to PortPin container to create a portPin configuration. ( Multiple PortPin configurations can be created )
 4. Open the created Port pin, and configure the pin parameters
 5. Select the Port pin peripheral instance ( Mode ) which needs to be configured and accordingly select the Peripheral Signal. As per selected Signal, physical pin ID needs to be selected from the list
-6. Configure the other parameters as per pin usage.
-7. Open Port pin Mode tab and add the default port pin mode ( at least one mode is required for this field ). Other supported modes for that pin can also be configured if user needs to change the mode for the pin afterwards.
-8. Configure the number of port pins in port container general tab
-9. Save the configuration and generate the configuration.
+6. Once the above options are configured, run the auto-calculate wizard before proceeding to the next step.
+7. Configure the other parameters as per pin usage.
+8. Open Port pin Mode tab and add the default port pin mode ( at least one mode is required for this field ). Other supported modes for that pin can also be configured if user needs to change the mode for the pin afterwards.
+9. Configure the number of port pins in port container general tab
+10. Save the configuration and generate the configuration.
 
 ### Examples
 
@@ -718,50 +789,9 @@ The example application demonstrates use of Port module, the list below identifi
 * Open CCS and import Port Example
 * Build project and start debug project
 
-#### Sample Log
+##### Sample Log of Port_Example_Init
 
-```{code-block}
-PORT Driver Sample Application - Starts!!!
----------------------------------------------------------------
-
-Test 1: Initialize Port Driver
-Initializing Port Driver...
-API Port_Init executed successfully
-
----------------------------------------------------------------
-
-Test 2: Change direction for PortPin_0
-Direction changed to INPUT for PortPin_0
-API Port_SetPinDirection executed successfully
-
----------------------------------------------------------------
-
-Test 3: Change Mode for PortPin_0
-Mode changed to MCAND_TX for PortPin_0
-API Port_SetPinMode executed successfully
-
----------------------------------------------------------------
-
-Test 4: Refresh Pin direction for direction unchangeable pins
-API Port_RefreshPortDirection executed successfully
-
----------------------------------------------------------------
-
-Test 5: Get Version info for Port
- 
-API Port_GetVersionInfo executed successfully
- PORT MCAL Version Info
- ---------------------
- Vendor ID           : 44
- Module ID           : 124
- SW Major Version    : 2
- SW Minor Version    : 0
- SW Patch Version    : 0
- 
----------------------------------------------------------------
-
-Port Example App run is Completed
-Result - PASS!!
+```{literalinclude} Assets/text/Port_Example_Init_Log.txt
 ```
 
 #### File Structure

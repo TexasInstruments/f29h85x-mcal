@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4.1. CAN Module &mdash; Documentation for F29H85x</title>
+  <title>4.2. CAN Module &mdash; Documentation for F29H85x</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
@@ -22,8 +22,8 @@
     <script src="https://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.2. DIO Module" href="Module_User_Guide_Dio.html" />
-    <link rel="prev" title="4. Module User Guide" href="ModuleUserGuide_list.html" /> 
+    <link rel="next" title="4.3. DIO Module" href="Module_User_Guide_Dio.html" />
+    <link rel="prev" title="4.1. Resource Allocator Module" href="Module_User_Guide_ResourceAllocator.html" /> 
 </head>
 
 <body class="wy-body-for-nav"><!---- extra body elements for TI beyond RTD Sphinx Theme --->
@@ -63,74 +63,78 @@
 <li class="toctree-l1"><a class="reference internal" href="MCAL_Configuration_and_EB_Tresos.html">2. MCAL Configurator And EB Tresos User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Getting_Started.html">3. Getting Started With F29x MCAL</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="ModuleUserGuide_list.html">4. Module User Guide</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. CAN Module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.1.1. Acronyms and Definitions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#introduction">4.1.2. Introduction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.1.3. Functional Overview</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.1.4. Hardware Features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.1.4.1. Hardware Features supported</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.1.4.2. Not supported Features</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.1.4.3. Non compliance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_ResourceAllocator.html">4.1. Resource Allocator Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. CAN Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-definitions">4.2.1. Acronyms and Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">4.2.2. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-overview">4.2.3. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-features">4.2.4. Hardware Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-features-supported">4.2.4.1. Hardware Features supported</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#not-supported-features">4.2.4.2. Not supported Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-compliance">4.2.4.3. Non compliance</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#source-files">4.1.5. Source files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.1.6. Module requirements</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.1.6.1. Memory Mapping</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.1.6.2. Scheduling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.1.6.3. Error handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.1.6.4. Error codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source-files">4.2.5. Source files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-requirements">4.2.6. Module requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping">4.2.6.1. Memory Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling">4.2.6.2. Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">4.2.6.3. Error handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes">4.2.6.4. Error codes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#safety-mechanism">4.1.7. Safety Mechanism</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.1.8. Used resources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.1.8.1. Interrupt Handling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.1.8.2. Instance support</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.1.8.3. Hardware-Software Mapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#safety-mechanism">4.2.7. Safety Mechanism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#used-resources">4.2.8. Used resources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-handling">4.2.8.1. Interrupt Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#instance-support">4.2.8.2. Instance support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-software-mapping">4.2.8.3. Hardware-Software Mapping</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.1.9. Integration description</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.1.9.1. Dependent modules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#multi-core-and-resource-allocator">4.1.9.2. Multi-core and Resource allocator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#general-guidelines">4.1.9.3. General Guidelines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-description">4.2.9. Integration description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependent-modules">4.2.9.1. Dependent modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resource-allocator">4.2.9.2. Resource Allocator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-guidelines">4.2.9.3. General Guidelines</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">4.1.10. Configuration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#migration-guide-to-v02-00-00-from-v01-02-00">4.1.10.1. Migration Guide to v02.00.00 from v01.02.00</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#canconfigset">4.1.10.2. CanConfigSet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cangeneral">4.1.10.3. CanGeneral</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-can-module">4.1.10.4. Steps To Configure Can Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">4.2.10. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#migration-guide">4.2.10.1. Migration Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-parameters">4.2.10.2. Configuration Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#canconfigset">4.2.10.3. CanConfigSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cangeneral">4.2.10.4. CanGeneral</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#steps-to-configure-can-module">4.2.10.5. Steps To Configure Can Module</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#examples">4.1.11. Examples</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#can-example-loopback">4.1.11.1. Can_Example_loopback</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#can-example-classic-fd">4.1.11.2. Can_Example_Classic_FD</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#can-example-icom">4.1.11.3. Can_Example_Icom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.1.11.4. File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">4.2.11. Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#can-example-loopback">4.2.11.1. Can_Example_loopback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#can-example-classic-fd">4.2.11.2. Can_Example_Classic_FD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#can-example-icom">4.2.11.3. Can_Example_Icom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#can-example-wakeup">4.2.11.4. Can_Example_Wakeup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">4.2.11.5. File Structure</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.2. DIO Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Fls.html">4.3. FLS Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.4. GPT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.5. LIN Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.6. MCU Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.7. PORT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.8. SPI Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.9. WDG Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.10. CDD ADC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.11. CDD ECAP Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">4.12. CDD I2C Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.13. CDD IPC Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.14. CDD PWM Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.15. CDD SENT Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.16. CDD XBAR Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.17. CDD UART Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.18. RTDMA Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Dio.html">4.3. DIO Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Fls.html">4.4. FLS Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Gpt.html">4.5. GPT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Lin.html">4.6. LIN Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Mcu.html">4.7. MCU Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Port.html">4.8. PORT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Spi.html">4.9. SPI Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Wdg.html">4.10. WDG Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Adc.html">4.11. CDD ADC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ecap.html">4.12. CDD ECAP Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_I2c.html">4.13. CDD I2C Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Ipc.html">4.14. CDD IPC Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Pwm.html">4.15. CDD PWM Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Sent.html">4.16. CDD SENT Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Xbar.html">4.17. CDD XBAR Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Cdd_Uart.html">4.18. CDD UART Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Module_User_Guide_Rtdma.html">4.19. RTDMA Module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_guide.html">5. API guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -148,7 +152,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="ModuleUserGuide_list.html"><span class="section-number">4. </span>Module User Guide</a> &raquo;</li>
-      <li><span class="section-number">4.1. </span>CAN Module</li>
+      <li><span class="section-number">4.2. </span>CAN Module</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -158,9 +162,9 @@
            <div itemprop="articleBody">
              
   <section id="can-module">
-<h1><span class="section-number">4.1. </span>CAN Module<a class="headerlink" href="#can-module" title="Link to this heading"></a></h1>
+<h1><span class="section-number">4.2. </span>CAN Module<a class="headerlink" href="#can-module" title="Link to this heading"></a></h1>
 <section id="acronyms-and-definitions">
-<h2><span class="section-number">4.1.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.1. </span>Acronyms and Definitions<a class="headerlink" href="#acronyms-and-definitions" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Abbreviation/Term</p></th>
@@ -214,7 +218,7 @@
 </table>
 </section>
 <section id="introduction">
-<h2><span class="section-number">4.1.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.2. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
 <p>This document details AUTOSAR BSW CAN module implementation</p>
 <table class="docutils align-default">
 <thead>
@@ -239,12 +243,12 @@ These components can be used by an application.</p>
 <figure class="align-center" id="id5">
 <img alt="CAN MCAL AUTOSAR" src="../_images/Can_Autosar_MCAL.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.1 </span><span class="caption-text">Can MCAL AUTOSAR</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.2 </span><span class="caption-text">Can MCAL AUTOSAR</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="functional-overview">
-<h2><span class="section-number">4.1.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.3. </span>Functional Overview<a class="headerlink" href="#functional-overview" title="Link to this heading"></a></h2>
 <p>The CAN module initializes and controls the internal CAN Controllers of the microcontroller.
 It provides services to write, read, and configure mailboxes of the Can controllers</p>
 <p>Programming of clock source for the can, is beyond the scope of this document.
@@ -258,9 +262,9 @@ The driver expects user of this module has programmed required clock source.</p>
 </ul>
 </section>
 <section id="hardware-features">
-<h2><span class="section-number">4.1.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.4. </span>Hardware Features<a class="headerlink" href="#hardware-features" title="Link to this heading"></a></h2>
 <section id="hardware-features-supported">
-<h3><span class="section-number">4.1.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.4.1. </span>Hardware Features supported<a class="headerlink" href="#hardware-features-supported" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Conforms with CAN Protocol 2.0 A, B and ISO 11898-1:2015</p></li>
 <li><p>Full CAN FD support (up to 64 data bytes)</p></li>
@@ -280,11 +284,11 @@ The driver expects user of this module has programmed required clock source.</p>
 </ul>
 </section>
 <section id="not-supported-features">
-<h3><span class="section-number">4.1.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.4.2. </span>Not supported Features<a class="headerlink" href="#not-supported-features" title="Link to this heading"></a></h3>
 <p>None</p>
 </section>
 <section id="non-compliance">
-<h3><span class="section-number">4.1.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.4.3. </span>Non compliance<a class="headerlink" href="#non-compliance" title="Link to this heading"></a></h3>
 <p>Below AUTOSAR requirement are not supported for Can Driver :</p>
 <p>[<strong>SWS_Can_00447</strong> ,<strong>SWS_Can_00446</strong>, <strong>SWS_Can_00445</strong>, <strong>SWS_Can_00391</strong>, <strong>SWS_Can_00244</strong>, <strong>SWS_Can_00242</strong>]</p>
 <blockquote>
@@ -302,7 +306,7 @@ The driver expects user of this module has programmed required clock source.</p>
 </section>
 </section>
 <section id="source-files">
-<h2><span class="section-number">4.1.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.5. </span>Source files<a class="headerlink" href="#source-files" title="Link to this heading"></a></h2>
 <p>📦f29h85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -331,18 +335,18 @@ The driver expects user of this module has programmed required clock source.</p>
 <figure class="align-center" id="id6">
 <img alt="CAN Header File Structure" src="../_images/Can_Header_File_Structure.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.2 </span><span class="caption-text">Can Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.3 </span><span class="caption-text">Can Header File Structure</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="module-requirements">
-<h2><span class="section-number">4.1.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.6. </span>Module requirements<a class="headerlink" href="#module-requirements" title="Link to this heading"></a></h2>
 <section id="memory-mapping">
-<h3><span class="section-number">4.1.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.6.1. </span>Memory Mapping<a class="headerlink" href="#memory-mapping" title="Link to this heading"></a></h3>
 <p>Will be added in later release</p>
 </section>
 <section id="scheduling">
-<h3><span class="section-number">4.1.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.6.2. </span>Scheduling<a class="headerlink" href="#scheduling" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Schedule Function API</p></th>
@@ -369,14 +373,14 @@ The driver expects user of this module has programmed required clock source.</p>
 </table>
 </section>
 <section id="error-handling">
-<h3><span class="section-number">4.1.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.6.3. </span>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
 <section id="development-error-reporting">
-<h4><span class="section-number">4.1.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.6.3.1. </span>Development Error Reporting<a class="headerlink" href="#development-error-reporting" title="Link to this heading"></a></h4>
 <p>Development errors are reported to the DET using the service Det_ReportError(),when enabled. The driver interface contains the MACRO declaration of the error codes to be returned.</p>
 </section>
 </section>
 <section id="error-codes">
-<h3><span class="section-number">4.1.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.6.4. </span>Error codes<a class="headerlink" href="#error-codes" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Type of Error</p></th>
@@ -426,7 +430,7 @@ The driver expects user of this module has programmed required clock source.</p>
 </section>
 </section>
 <section id="safety-mechanism">
-<h2><span class="section-number">4.1.7. </span>Safety Mechanism<a class="headerlink" href="#safety-mechanism" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.7. </span>Safety Mechanism<a class="headerlink" href="#safety-mechanism" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>TI Diagnostic Unique Identifier</p></th>
@@ -483,9 +487,9 @@ The driver expects user of this module has programmed required clock source.</p>
 </div>
 </section>
 <section id="used-resources">
-<h2><span class="section-number">4.1.8. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.8. </span>Used resources<a class="headerlink" href="#used-resources" title="Link to this heading"></a></h2>
 <section id="interrupt-handling">
-<h3><span class="section-number">4.1.8.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.8.1. </span>Interrupt Handling<a class="headerlink" href="#interrupt-handling" title="Link to this heading"></a></h3>
 <p><a class="reference external" href="https://www.autosar.org/fileadmin/standards/R4.3.1/CP/AUTOSAR_SWS_CANDriver.pdf">AUTOSAR_SWS_CANDriver section: 10 Configuration specification</a>, details the expected behavior and control flow for ISR implementation, please refer the same.</p>
 <p>The Driver doesn’t register any interrupts handler (ISR), it’s expected that consumer of this driver registers the required interrupt handler.</p>
 <p>For every CAN Instance, an ISR requires to be registered. The Interrupt number associated with instance of the CAN is detailed in TRM (also, please refer the Example application).
@@ -523,7 +527,7 @@ Interrupt type should be selected in CAN plugin.</p>
 </div>
 </section>
 <section id="instance-support">
-<h3><span class="section-number">4.1.8.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.8.2. </span>Instance support<a class="headerlink" href="#instance-support" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>CPU instances</p></th>
@@ -544,27 +548,27 @@ Interrupt type should be selected in CAN plugin.</p>
 </table>
 </section>
 <section id="hardware-software-mapping">
-<h3><span class="section-number">4.1.8.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.8.3. </span>Hardware-Software Mapping<a class="headerlink" href="#hardware-software-mapping" title="Link to this heading"></a></h3>
 <p>Below image shows CAN driver Hardware-Software mapping. For more information related to HW/SW mapping, refer the F29x Reference Manual.</p>
 <figure class="align-center" id="id7">
 <img alt="CAN HW/SW Mapping" src="../_images/Can_Hw_Sw_Mapping.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 4.3 </span><span class="caption-text">Can HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-number">Fig. 4.4 </span><span class="caption-text">Can HW/SW Mapping</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="integration-description">
-<h2><span class="section-number">4.1.9. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.9. </span>Integration description<a class="headerlink" href="#integration-description" title="Link to this heading"></a></h2>
 <section id="dependent-modules">
-<h3><span class="section-number">4.1.9.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.9.1. </span>Dependent modules<a class="headerlink" href="#dependent-modules" title="Link to this heading"></a></h3>
 <section id="det">
-<h4><span class="section-number">4.1.9.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.9.1.1. </span>DET<a class="headerlink" href="#det" title="Link to this heading"></a></h4>
 <p>This implementation depends on the DET in order to report development errors
 The detection of development errors is configurable (ON / OFF), The switch CAN_CFG_DEV_ERROR_DETECT will activate or deactivate the detection of all development errors..</p>
 </section>
 <section id="schm">
-<h4><span class="section-number">4.1.9.1.2. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.9.1.2. </span>SchM<a class="headerlink" href="#schm" title="Link to this heading"></a></h4>
 <p>If multiple AUTOSAR runnables have access to the same Data Store Memory block, the exported AUTOSAR specification enforces data consistency by using an AUTOSAR exclusive area. With this specification, the runnables have mutually exclusive access to the per-instance memory global data, which prevents data corruption. Beside the OS, the BSW Scheduler provides functions that CAN module calls at begin and end of critical sections. This implementation requires 1 level of exclusive access to guard critical sections.</p>
 <p>The data consistency mechanism that has to be applied to an ExclusiveArea might be domain, ECU or even project specific. The decision which mechanism has to be applied by RTE / Basic Software Scheduler is taken during ECU integration by setting the Exclusive Area configuration parameter RteExclusiveAreaImplMechanism. This parameter is an input for RTE generator.
 For CAN Module, data consistency and exclusive access to critical sections are required for the following sections as shown in the table below:</p>
@@ -591,34 +595,117 @@ For CAN Module, data consistency and exclusive access to critical sections are r
 </table>
 </section>
 <section id="mcu">
-<h4><span class="section-number">4.1.9.1.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.9.1.3. </span>MCU<a class="headerlink" href="#mcu" title="Link to this heading"></a></h4>
 <p>MCU Module is required to initialize all the clock to be used by different peripherals</p>
 </section>
 <section id="port">
-<h4><span class="section-number">4.1.9.1.4. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.9.1.4. </span>PORT<a class="headerlink" href="#port" title="Link to this heading"></a></h4>
 <p>PORT Module is required to initialize Pin configurations and MUX mode for CAN Instances</p>
 </section>
 </section>
-<section id="multi-core-and-resource-allocator">
-<h3><span class="section-number">4.1.9.2. </span>Multi-core and Resource allocator<a class="headerlink" href="#multi-core-and-resource-allocator" title="Link to this heading"></a></h3>
-<p>Not Supported</p>
+<section id="resource-allocator">
+<h3><span class="section-number">4.2.9.2. </span>Resource Allocator<a class="headerlink" href="#resource-allocator" title="Link to this heading"></a></h3>
+<p>The CAN module references the Resource Allocator for device, package, and variant configuration. See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details on configuring device-specific settings.</p>
+<section id="resource-allocator-usage-example">
+<h4><span class="section-number">4.2.9.2.1. </span>Resource Allocator Usage Example<a class="headerlink" href="#resource-allocator-usage-example" title="Link to this heading"></a></h4>
+<p>To allocate MCANA to CPU1 using FRAME0:</p>
+<ol class="arabic simple">
+<li><p>In the Resource Allocator configuration, create a new Can instance allocation</p></li>
+<li><p>Set <strong>InstanceName</strong> to <code class="docutils literal notranslate"><span class="pre">MCANA</span></code></p></li>
+<li><p>Set <strong>Frame</strong> to <code class="docutils literal notranslate"><span class="pre">FRAME0</span></code></p></li>
+<li><p>The <strong>BaseAddr</strong> will be automatically calculated as <code class="docutils literal notranslate"><span class="pre">MCANA_DRIVER_BASE_FRAME(0U)</span></code></p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Resource Allocator Configuration:
+├── CanInstanceAllocation
+│   ├── InstanceName: MCANA
+│   ├── Frame: FRAME0
+│   └── BaseAddr: MCANA_DRIVER_BASE_FRAME(0U)
+</pre></div>
+</div>
+</section>
 </section>
 <section id="general-guidelines">
-<h3><span class="section-number">4.1.9.3. </span>General Guidelines<a class="headerlink" href="#general-guidelines" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.9.3. </span>General Guidelines<a class="headerlink" href="#general-guidelines" title="Link to this heading"></a></h3>
 <section id="imported-types-can-hwhandletype">
-<h4><span class="section-number">4.1.9.3.1. </span>Imported Types: Can_HwHandleType<a class="headerlink" href="#imported-types-can-hwhandletype" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.9.3.1. </span>Imported Types: Can_HwHandleType<a class="headerlink" href="#imported-types-can-hwhandletype" title="Link to this heading"></a></h4>
 <p>Can_HwHandleType represents the hardware object handles of a CAN hardware unit. MCAN supports configuration of more than 256 hardware object handles. Hence extended range (i.e. uint16 type) must be used. For details of Can_HwHandleType refer AUTOSAR requirement SWS_Can_00429.</p>
 </section>
 </section>
 </section>
 <section id="configuration">
-<h2><span class="section-number">4.1.10. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.10. </span>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>The Can Driver implementation supports multiple configuration variants
 The driver expects generated <strong>Can_Cfg.h</strong> to be present as input file.
 The associated Can driver configuration generated source files are <strong>Can_Cfg.c</strong> and <strong>Can_PBcfg.c</strong> if Post-Build config variant is selected, only <strong>Can_Cfg.c</strong> if Pre-Compile variant is selected</p>
 <p>The generated configuration files should not be modified manually. The config tool <a class="reference external" href="https://www.elektrobit.com/products/ecu/eb-tresos/studio/">Elektrobit Tresos</a> should be used to modify the configuration files.</p>
-<section id="migration-guide-to-v02-00-00-from-v01-02-00">
-<h3><span class="section-number">4.1.10.1. </span>Migration Guide to v02.00.00 from v01.02.00<a class="headerlink" href="#migration-guide-to-v02-00-00-from-v01-02-00" title="Link to this heading"></a></h3>
+<section id="migration-guide">
+<h3><span class="section-number">4.2.10.1. </span>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h3>
+<p>Migration guides between module versions are detailed below.</p>
+<section id="v03-00-00-from-v02-00-00">
+<h4><span class="section-number">4.2.10.1.1. </span>v03.00.00 from v02.00.00<a class="headerlink" href="#v03-00-00-from-v02-00-00" title="Link to this heading"></a></h4>
+<section id="key-changes">
+<h5><span class="section-number">4.2.10.1.1.1. </span>Key Changes<a class="headerlink" href="#key-changes" title="Link to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p><strong>Resource Allocator Based Approach</strong></p>
+<ul class="simple">
+<li><p>The CAN module now uses the Resource Allocator for device, package, and variant configuration</p></li>
+<li><p>Users must configure CAN instances through the Resource Allocator module before configuring the CAN driver</p></li>
+<li><p>See the <a class="reference internal" href="Module_User_Guide_ResourceAllocator.html"><span class="std std-doc">Resource Allocator Module User Guide</span></a> for details</p></li>
+</ul>
+</li>
+<li><p><strong>Controller Name Changes</strong></p>
+<ul class="simple">
+<li><p>The CAN controller names have been updated to align with the Resource Allocator naming convention</p></li>
+<li><p>For example: <code class="docutils literal notranslate"><span class="pre">MCAN1</span></code> → <code class="docutils literal notranslate"><span class="pre">MCANA</span></code>, <code class="docutils literal notranslate"><span class="pre">MCAN2</span></code> → <code class="docutils literal notranslate"><span class="pre">MCANB</span></code>, <code class="docutils literal notranslate"><span class="pre">MCAN3</span></code> → <code class="docutils literal notranslate"><span class="pre">MCANC</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>ISR Name Changes</strong></p>
+<ul class="simple">
+<li><p>As the controller names have changed, the corresponding ISR (Interrupt Service Routine) names have also been updated</p></li>
+<li><p>Users must update the ISR names in the Os module configuration</p></li>
+<li><p>For example: <code class="docutils literal notranslate"><span class="pre">Can_1_Int1ISR</span></code> → <code class="docutils literal notranslate"><span class="pre">Can_A_Int1ISR</span></code>, <code class="docutils literal notranslate"><span class="pre">Can_1_WakeUpISR</span></code> → <code class="docutils literal notranslate"><span class="pre">Can_A_WakeUpISR</span></code></p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="migration-steps">
+<h5><span class="section-number">4.2.10.1.1.2. </span>Migration Steps<a class="headerlink" href="#migration-steps" title="Link to this heading"></a></h5>
+<ol class="arabic simple">
+<li><p><strong>Add Resource Allocator Module</strong></p>
+<ul class="simple">
+<li><p>Add and configure the Resource Allocator module in your EB Tresos project</p></li>
+</ul>
+</li>
+<li><p><strong>Allocate CAN Instances</strong></p>
+<ul class="simple">
+<li><p>Allocate the required CAN instances (MCANA, MCANB, etc.) to the appropriate context in the Resource Allocator</p></li>
+</ul>
+</li>
+<li><p><strong>Update Controller Name References</strong></p>
+<ul class="simple">
+<li><p>Update any references to the old controller names in your application code</p></li>
+</ul>
+</li>
+<li><p><strong>Update ISR Names</strong></p>
+<ul class="simple">
+<li><p>Update the ISR names in the Os module configuration to use the new naming convention</p></li>
+</ul>
+</li>
+<li><p><strong>Regenerate Configuration</strong></p>
+<ul class="simple">
+<li><p>Regenerate the configuration files using EB Tresos</p></li>
+</ul>
+</li>
+<li><p><strong>Rebuild Application</strong></p>
+<ul class="simple">
+<li><p>Rebuild your application with the updated configuration</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="v02-00-00-from-v01-02-00">
+<h4><span class="section-number">4.2.10.1.2. </span>v02.00.00 from v01.02.00<a class="headerlink" href="#v02-00-00-from-v01-02-00" title="Link to this heading"></a></h4>
 <p>v02.00.00 CAN driver is designed to fit MCAN hardware with AUTOSAR concepts. Following are some generic recommendations for v02.00.00 CAN driver configuration.</p>
 <ol class="arabic simple">
 <li><p>When hardware object handle is configured as BASIC, it uses FIFO in hardware which can store multiple messages as per configured depth. Hardware supports maximum 1 Tx FIFO and 2 Rx FIFOs per controller, hence maximum 1 BASIC transmit hardware object handle and maximum 2 BASIC receive hardware object handles can be configured.</p></li>
@@ -640,14 +727,18 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 <p>This change ensures compliance with AUTOSAR naming conventions.</p>
 <p>To successfully migrate to v02.00.00, update any upper module that references the configuration structures to use the new structure name.</p>
 </section>
+</section>
+<section id="configuration-parameters">
+<h3><span class="section-number">4.2.10.2. </span>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+</section>
 <section id="canconfigset">
-<h3><span class="section-number">4.1.10.2. </span>CanConfigSet<a class="headerlink" href="#canconfigset" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.10.3. </span>CanConfigSet<a class="headerlink" href="#canconfigset" title="Link to this heading"></a></h3>
 <p>This container contains the configuration parameters and sub containers of the AUTOSAR Can module.</p>
 <section id="cancontroller">
-<h4><span class="section-number">4.1.10.2.1. </span>CanController<a class="headerlink" href="#cancontroller" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.1. </span>CanController<a class="headerlink" href="#cancontroller" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the CAN controller(s).</p>
 <section id="canbusoffprocessing">
-<h5><span class="section-number">4.1.10.2.1.1. </span>CanBusoffProcessing<a class="headerlink" href="#canbusoffprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.1. </span>CanBusoffProcessing<a class="headerlink" href="#canbusoffprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -686,7 +777,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrolleractivation">
-<h5><span class="section-number">4.1.10.2.1.2. </span>CanControllerActivation<a class="headerlink" href="#cancontrolleractivation" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.2. </span>CanControllerActivation<a class="headerlink" href="#cancontrolleractivation" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -722,7 +813,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollerbaseaddress">
-<h5><span class="section-number">4.1.10.2.1.3. </span>CanControllerBaseAddress<a class="headerlink" href="#cancontrollerbaseaddress" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.3. </span>CanControllerBaseAddress<a class="headerlink" href="#cancontrollerbaseaddress" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -758,7 +849,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollerid">
-<h5><span class="section-number">4.1.10.2.1.4. </span>CanControllerId<a class="headerlink" href="#cancontrollerid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.4. </span>CanControllerId<a class="headerlink" href="#cancontrollerid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -800,7 +891,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canrxprocessing">
-<h5><span class="section-number">4.1.10.2.1.5. </span>CanRxProcessing<a class="headerlink" href="#canrxprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.5. </span>CanRxProcessing<a class="headerlink" href="#canrxprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -839,7 +930,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cantxprocessing">
-<h5><span class="section-number">4.1.10.2.1.6. </span>CanTxProcessing<a class="headerlink" href="#cantxprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.6. </span>CanTxProcessing<a class="headerlink" href="#cantxprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -878,7 +969,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canwakeupfunctionalityapi">
-<h5><span class="section-number">4.1.10.2.1.7. </span>CanWakeupFunctionalityAPI<a class="headerlink" href="#canwakeupfunctionalityapi" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.7. </span>CanWakeupFunctionalityAPI<a class="headerlink" href="#canwakeupfunctionalityapi" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -914,7 +1005,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canwakeupprocessing">
-<h5><span class="section-number">4.1.10.2.1.8. </span>CanWakeupProcessing<a class="headerlink" href="#canwakeupprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.8. </span>CanWakeupProcessing<a class="headerlink" href="#canwakeupprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -953,7 +1044,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canwakeupsupport">
-<h5><span class="section-number">4.1.10.2.1.9. </span>CanWakeupSupport<a class="headerlink" href="#canwakeupsupport" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.9. </span>CanWakeupSupport<a class="headerlink" href="#canwakeupsupport" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -989,7 +1080,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="caninterupttype">
-<h5><span class="section-number">4.1.10.2.1.10. </span>CanInteruptType<a class="headerlink" href="#caninterupttype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.10. </span>CanInteruptType<a class="headerlink" href="#caninterupttype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1028,7 +1119,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollerinstance">
-<h5><span class="section-number">4.1.10.2.1.11. </span>CanControllerInstance<a class="headerlink" href="#cancontrollerinstance" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.11. </span>CanControllerInstance<a class="headerlink" href="#cancontrollerinstance" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1061,7 +1152,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollerdefaultbaudrate">
-<h5><span class="section-number">4.1.10.2.1.12. </span>CanControllerDefaultBaudrate<a class="headerlink" href="#cancontrollerdefaultbaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.12. </span>CanControllerDefaultBaudrate<a class="headerlink" href="#cancontrollerdefaultbaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1094,7 +1185,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancpuclockref">
-<h5><span class="section-number">4.1.10.2.1.13. </span>CanCpuClockRef<a class="headerlink" href="#cancpuclockref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.13. </span>CanCpuClockRef<a class="headerlink" href="#cancpuclockref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1127,7 +1218,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canwakeupsourceref">
-<h5><span class="section-number">4.1.10.2.1.14. </span>CanWakeupSourceRef<a class="headerlink" href="#canwakeupsourceref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.1.14. </span>CanWakeupSourceRef<a class="headerlink" href="#canwakeupsourceref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1173,10 +1264,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="cancontrollerconfig">
-<h4><span class="section-number">4.1.10.2.2. </span>CanControllerConfig<a class="headerlink" href="#cancontrollerconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.2. </span>CanControllerConfig<a class="headerlink" href="#cancontrollerconfig" title="Link to this heading"></a></h4>
 <p>This container contains CAN Controller specific configuration parameters.</p>
 <section id="canfdmode">
-<h5><span class="section-number">4.1.10.2.2.1. </span>CanFDMode<a class="headerlink" href="#canfdmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.2.1. </span>CanFDMode<a class="headerlink" href="#canfdmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1212,7 +1303,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canloopbackmode">
-<h5><span class="section-number">4.1.10.2.2.2. </span>CanLoopbackMode<a class="headerlink" href="#canloopbackmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.2.2. </span>CanLoopbackMode<a class="headerlink" href="#canloopbackmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1248,7 +1339,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cantransmitpause">
-<h5><span class="section-number">4.1.10.2.2.3. </span>CanTransmitPause<a class="headerlink" href="#cantransmitpause" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.2.3. </span>CanTransmitPause<a class="headerlink" href="#cantransmitpause" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1284,7 +1375,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="candisableautomaticretransmission">
-<h5><span class="section-number">4.1.10.2.2.4. </span>CanDisableAutomaticRetransmission<a class="headerlink" href="#candisableautomaticretransmission" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.2.4. </span>CanDisableAutomaticRetransmission<a class="headerlink" href="#candisableautomaticretransmission" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1321,10 +1412,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="cancontrollerbaudrateconfig">
-<h4><span class="section-number">4.1.10.2.3. </span>CanControllerBaudrateConfig<a class="headerlink" href="#cancontrollerbaudrateconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.3. </span>CanControllerBaudrateConfig<a class="headerlink" href="#cancontrollerbaudrateconfig" title="Link to this heading"></a></h4>
 <p>This container contains bit timing related configuration parameters of the CAN controller(s).</p>
 <section id="cancontrollerbaudrate">
-<h5><span class="section-number">4.1.10.2.3.1. </span>CanControllerBaudRate<a class="headerlink" href="#cancontrollerbaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.3.1. </span>CanControllerBaudRate<a class="headerlink" href="#cancontrollerbaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1366,7 +1457,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollerbaudrateconfigid">
-<h5><span class="section-number">4.1.10.2.3.2. </span>CanControllerBaudRateConfigID<a class="headerlink" href="#cancontrollerbaudrateconfigid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.3.2. </span>CanControllerBaudRateConfigID<a class="headerlink" href="#cancontrollerbaudrateconfigid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1408,7 +1499,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollerpropseg">
-<h5><span class="section-number">4.1.10.2.3.3. </span>CanControllerPropSeg<a class="headerlink" href="#cancontrollerpropseg" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.3.3. </span>CanControllerPropSeg<a class="headerlink" href="#cancontrollerpropseg" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1450,7 +1541,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollerseg1">
-<h5><span class="section-number">4.1.10.2.3.4. </span>CanControllerSeg1<a class="headerlink" href="#cancontrollerseg1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.3.4. </span>CanControllerSeg1<a class="headerlink" href="#cancontrollerseg1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1492,7 +1583,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollerseg2">
-<h5><span class="section-number">4.1.10.2.3.5. </span>CanControllerSeg2<a class="headerlink" href="#cancontrollerseg2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.3.5. </span>CanControllerSeg2<a class="headerlink" href="#cancontrollerseg2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1534,7 +1625,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollersyncjumpwidth">
-<h5><span class="section-number">4.1.10.2.3.6. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#cancontrollersyncjumpwidth" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.3.6. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#cancontrollersyncjumpwidth" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1577,10 +1668,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="cancontrollerfdbaudrateconfig">
-<h4><span class="section-number">4.1.10.2.4. </span>CanControllerFdBaudrateConfig<a class="headerlink" href="#cancontrollerfdbaudrateconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.4. </span>CanControllerFdBaudrateConfig<a class="headerlink" href="#cancontrollerfdbaudrateconfig" title="Link to this heading"></a></h4>
 <p>This optional container contains bit timing related configuration parameters of the CAN controller(s) for payload and CRC of a CAN FD frame. If this container exists the controller supports CAN FD frames.</p>
 <section id="cancontrollerfdbaudrate">
-<h5><span class="section-number">4.1.10.2.4.1. </span>CanControllerFdBaudRate<a class="headerlink" href="#cancontrollerfdbaudrate" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.4.1. </span>CanControllerFdBaudRate<a class="headerlink" href="#cancontrollerfdbaudrate" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1622,7 +1713,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="id1">
-<h5><span class="section-number">4.1.10.2.4.2. </span>CanControllerPropSeg<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.4.2. </span>CanControllerPropSeg<a class="headerlink" href="#id1" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1664,7 +1755,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="id2">
-<h5><span class="section-number">4.1.10.2.4.3. </span>CanControllerSeg1<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.4.3. </span>CanControllerSeg1<a class="headerlink" href="#id2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1706,7 +1797,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="id3">
-<h5><span class="section-number">4.1.10.2.4.4. </span>CanControllerSeg2<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.4.4. </span>CanControllerSeg2<a class="headerlink" href="#id3" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1748,7 +1839,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="id4">
-<h5><span class="section-number">4.1.10.2.4.5. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.4.5. </span>CanControllerSyncJumpWidth<a class="headerlink" href="#id4" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1790,7 +1881,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollertrcvdelaycompensationoffset">
-<h5><span class="section-number">4.1.10.2.4.6. </span>CanControllerTrcvDelayCompensationOffset<a class="headerlink" href="#cancontrollertrcvdelaycompensationoffset" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.4.6. </span>CanControllerTrcvDelayCompensationOffset<a class="headerlink" href="#cancontrollertrcvdelaycompensationoffset" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1844,7 +1935,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollertrcvdelaycompensationfilter">
-<h5><span class="section-number">4.1.10.2.4.7. </span>CanControllerTrcvDelayCompensationFilter<a class="headerlink" href="#cancontrollertrcvdelaycompensationfilter" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.4.7. </span>CanControllerTrcvDelayCompensationFilter<a class="headerlink" href="#cancontrollertrcvdelaycompensationfilter" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1886,7 +1977,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollertxbitrateswitch">
-<h5><span class="section-number">4.1.10.2.4.8. </span>CanControllerTxBitRateSwitch<a class="headerlink" href="#cancontrollertxbitrateswitch" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.4.8. </span>CanControllerTxBitRateSwitch<a class="headerlink" href="#cancontrollertxbitrateswitch" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1923,10 +2014,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="canttcontroller">
-<h4><span class="section-number">4.1.10.2.5. </span>CanTTController<a class="headerlink" href="#canttcontroller" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.5. </span>CanTTController<a class="headerlink" href="#canttcontroller" title="Link to this heading"></a></h4>
 <p>CanTTController is specified in the SWS TTCAN and contains the configuration parameters of the TTCAN controller(s) (which are needed in addition to the configuration parameters of the CAN controller(s)).</p>
 <section id="canttcontrollerapplwatchdoglimit">
-<h5><span class="section-number">4.1.10.2.5.1. </span>CanTTControllerApplWatchdogLimit<a class="headerlink" href="#canttcontrollerapplwatchdoglimit" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.1. </span>CanTTControllerApplWatchdogLimit<a class="headerlink" href="#canttcontrollerapplwatchdoglimit" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -1968,7 +2059,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollercyclecountmax">
-<h5><span class="section-number">4.1.10.2.5.2. </span>CanTTControllerCycleCountMax<a class="headerlink" href="#canttcontrollercyclecountmax" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.2. </span>CanTTControllerCycleCountMax<a class="headerlink" href="#canttcontrollercyclecountmax" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2010,7 +2101,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerexpectedtxtrigger">
-<h5><span class="section-number">4.1.10.2.5.3. </span>CanTTControllerExpectedTxTrigger<a class="headerlink" href="#canttcontrollerexpectedtxtrigger" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.3. </span>CanTTControllerExpectedTxTrigger<a class="headerlink" href="#canttcontrollerexpectedtxtrigger" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2052,7 +2143,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerexternalclocksynchronisation">
-<h5><span class="section-number">4.1.10.2.5.4. </span>CanTTControllerExternalClockSynchronisation<a class="headerlink" href="#canttcontrollerexternalclocksynchronisation" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.4. </span>CanTTControllerExternalClockSynchronisation<a class="headerlink" href="#canttcontrollerexternalclocksynchronisation" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2088,7 +2179,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerglobaltimefiltering">
-<h5><span class="section-number">4.1.10.2.5.5. </span>CanTTControllerGlobalTimeFiltering<a class="headerlink" href="#canttcontrollerglobaltimefiltering" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.5. </span>CanTTControllerGlobalTimeFiltering<a class="headerlink" href="#canttcontrollerglobaltimefiltering" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2124,7 +2215,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerinitialrefoffset">
-<h5><span class="section-number">4.1.10.2.5.6. </span>CanTTControllerInitialRefOffset<a class="headerlink" href="#canttcontrollerinitialrefoffset" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.6. </span>CanTTControllerInitialRefOffset<a class="headerlink" href="#canttcontrollerinitialrefoffset" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2166,7 +2257,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerinterruptenable">
-<h5><span class="section-number">4.1.10.2.5.7. </span>CanTTControllerInterruptEnable<a class="headerlink" href="#canttcontrollerinterruptenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.7. </span>CanTTControllerInterruptEnable<a class="headerlink" href="#canttcontrollerinterruptenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2208,7 +2299,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerlevel2">
-<h5><span class="section-number">4.1.10.2.5.8. </span>CanTTControllerLevel2<a class="headerlink" href="#canttcontrollerlevel2" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.8. </span>CanTTControllerLevel2<a class="headerlink" href="#canttcontrollerlevel2" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2244,7 +2335,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerntuconfig">
-<h5><span class="section-number">4.1.10.2.5.9. </span>CanTTControllerNTUConfig<a class="headerlink" href="#canttcontrollerntuconfig" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.9. </span>CanTTControllerNTUConfig<a class="headerlink" href="#canttcontrollerntuconfig" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2286,7 +2377,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrolleroperationmode">
-<h5><span class="section-number">4.1.10.2.5.10. </span>CanTTControllerOperationMode<a class="headerlink" href="#canttcontrolleroperationmode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.10. </span>CanTTControllerOperationMode<a class="headerlink" href="#canttcontrolleroperationmode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2325,7 +2416,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollersyncdeviation">
-<h5><span class="section-number">4.1.10.2.5.11. </span>CanTTControllerSyncDeviation<a class="headerlink" href="#canttcontrollersyncdeviation" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.11. </span>CanTTControllerSyncDeviation<a class="headerlink" href="#canttcontrollersyncdeviation" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2367,7 +2458,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollertimemaster">
-<h5><span class="section-number">4.1.10.2.5.12. </span>CanTTControllerTimeMaster<a class="headerlink" href="#canttcontrollertimemaster" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.12. </span>CanTTControllerTimeMaster<a class="headerlink" href="#canttcontrollertimemaster" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2403,7 +2494,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollertimemasterpriority">
-<h5><span class="section-number">4.1.10.2.5.13. </span>CanTTControllerTimeMasterPriority<a class="headerlink" href="#canttcontrollertimemasterpriority" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.13. </span>CanTTControllerTimeMasterPriority<a class="headerlink" href="#canttcontrollertimemasterpriority" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2445,7 +2536,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerturrestore">
-<h5><span class="section-number">4.1.10.2.5.14. </span>CanTTControllerTURRestore<a class="headerlink" href="#canttcontrollerturrestore" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.14. </span>CanTTControllerTURRestore<a class="headerlink" href="#canttcontrollerturrestore" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2481,7 +2572,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollertxenablewindowlength">
-<h5><span class="section-number">4.1.10.2.5.15. </span>CanTTControllerTxEnableWindowLength<a class="headerlink" href="#canttcontrollertxenablewindowlength" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.15. </span>CanTTControllerTxEnableWindowLength<a class="headerlink" href="#canttcontrollertxenablewindowlength" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2523,7 +2614,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerwatchtriggergaptimemark">
-<h5><span class="section-number">4.1.10.2.5.16. </span>CanTTControllerWatchTriggerGapTimeMark<a class="headerlink" href="#canttcontrollerwatchtriggergaptimemark" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.16. </span>CanTTControllerWatchTriggerGapTimeMark<a class="headerlink" href="#canttcontrollerwatchtriggergaptimemark" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2565,7 +2656,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttcontrollerwatchtriggertimemark">
-<h5><span class="section-number">4.1.10.2.5.17. </span>CanTTControllerWatchTriggerTimeMark<a class="headerlink" href="#canttcontrollerwatchtriggertimemark" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.17. </span>CanTTControllerWatchTriggerTimeMark<a class="headerlink" href="#canttcontrollerwatchtriggertimemark" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2607,7 +2698,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canttirqprocessing">
-<h5><span class="section-number">4.1.10.2.5.18. </span>CanTTIRQProcessing<a class="headerlink" href="#canttirqprocessing" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.5.18. </span>CanTTIRQProcessing<a class="headerlink" href="#canttirqprocessing" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2647,10 +2738,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="canhardwareobject">
-<h4><span class="section-number">4.1.10.2.6. </span>CanHardwareObject<a class="headerlink" href="#canhardwareobject" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.6. </span>CanHardwareObject<a class="headerlink" href="#canhardwareobject" title="Link to this heading"></a></h4>
 <p>This container contains the configuration (parameters) of CAN Hardware Objects.</p>
 <section id="canfdpaddingvalue">
-<h5><span class="section-number">4.1.10.2.6.1. </span>CanFdPaddingValue<a class="headerlink" href="#canfdpaddingvalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.1. </span>CanFdPaddingValue<a class="headerlink" href="#canfdpaddingvalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2692,7 +2783,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canhandletype">
-<h5><span class="section-number">4.1.10.2.6.2. </span>CanHandleType<a class="headerlink" href="#canhandletype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.2. </span>CanHandleType<a class="headerlink" href="#canhandletype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2731,7 +2822,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canhardwareobjectusespolling">
-<h5><span class="section-number">4.1.10.2.6.3. </span>CanHardwareObjectUsesPolling<a class="headerlink" href="#canhardwareobjectusespolling" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.3. </span>CanHardwareObjectUsesPolling<a class="headerlink" href="#canhardwareobjectusespolling" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2779,7 +2870,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canhwobjectcount">
-<h5><span class="section-number">4.1.10.2.6.4. </span>CanHwObjectCount<a class="headerlink" href="#canhwobjectcount" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.4. </span>CanHwObjectCount<a class="headerlink" href="#canhwobjectcount" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2821,7 +2912,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canidtype">
-<h5><span class="section-number">4.1.10.2.6.5. </span>CanIdType<a class="headerlink" href="#canidtype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.5. </span>CanIdType<a class="headerlink" href="#canidtype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2860,7 +2951,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canobjectid">
-<h5><span class="section-number">4.1.10.2.6.6. </span>CanObjectId<a class="headerlink" href="#canobjectid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.6. </span>CanObjectId<a class="headerlink" href="#canobjectid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2902,7 +2993,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canobjecttype">
-<h5><span class="section-number">4.1.10.2.6.7. </span>CanObjectType<a class="headerlink" href="#canobjecttype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.7. </span>CanObjectType<a class="headerlink" href="#canobjecttype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2941,7 +3032,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cantriggertransmitenable">
-<h5><span class="section-number">4.1.10.2.6.8. </span>CanTriggerTransmitEnable<a class="headerlink" href="#cantriggertransmitenable" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.8. </span>CanTriggerTransmitEnable<a class="headerlink" href="#cantriggertransmitenable" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -2989,7 +3080,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cancontrollerref">
-<h5><span class="section-number">4.1.10.2.6.9. </span>CanControllerRef<a class="headerlink" href="#cancontrollerref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.9. </span>CanControllerRef<a class="headerlink" href="#cancontrollerref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3022,7 +3113,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canmainfunctionrwperiodref">
-<h5><span class="section-number">4.1.10.2.6.10. </span>CanMainFunctionRWPeriodRef<a class="headerlink" href="#canmainfunctionrwperiodref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.6.10. </span>CanMainFunctionRWPeriodRef<a class="headerlink" href="#canmainfunctionrwperiodref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3068,10 +3159,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="canhwfilter">
-<h4><span class="section-number">4.1.10.2.7. </span>CanHwFilter<a class="headerlink" href="#canhwfilter" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.7. </span>CanHwFilter<a class="headerlink" href="#canhwfilter" title="Link to this heading"></a></h4>
 <p>This container is only valid for HRHs and contains the configuration (parameters) of one hardware filter.</p>
 <section id="canhwfiltercode">
-<h5><span class="section-number">4.1.10.2.7.1. </span>CanHwFilterCode<a class="headerlink" href="#canhwfiltercode" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.7.1. </span>CanHwFilterCode<a class="headerlink" href="#canhwfiltercode" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3113,7 +3204,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canhwfiltermask">
-<h5><span class="section-number">4.1.10.2.7.2. </span>CanHwFilterMask<a class="headerlink" href="#canhwfiltermask" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.7.2. </span>CanHwFilterMask<a class="headerlink" href="#canhwfiltermask" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3155,7 +3246,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canstandardfiltertype">
-<h5><span class="section-number">4.1.10.2.7.3. </span>CanStandardFilterType<a class="headerlink" href="#canstandardfiltertype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.7.3. </span>CanStandardFilterType<a class="headerlink" href="#canstandardfiltertype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3194,7 +3285,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="caneventpin">
-<h5><span class="section-number">4.1.10.2.7.4. </span>CanEventPin<a class="headerlink" href="#caneventpin" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.7.4. </span>CanEventPin<a class="headerlink" href="#caneventpin" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3234,10 +3325,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="cantthardwareobjecttrigger">
-<h4><span class="section-number">4.1.10.2.8. </span>CanTTHardwareObjectTrigger<a class="headerlink" href="#cantthardwareobjecttrigger" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.8. </span>CanTTHardwareObjectTrigger<a class="headerlink" href="#cantthardwareobjecttrigger" title="Link to this heading"></a></h4>
 <p>CanTTHardwareObjectTrigger is specified in the SWS TTCAN and contains the configuration (parameters) of TTCAN triggers for Hardware Objects, which are additional to the configuration (parameters) of CAN Hardware Objects.</p>
 <section id="cantthardwareobjectbasecycle">
-<h5><span class="section-number">4.1.10.2.8.1. </span>CanTTHardwareObjectBaseCycle<a class="headerlink" href="#cantthardwareobjectbasecycle" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.8.1. </span>CanTTHardwareObjectBaseCycle<a class="headerlink" href="#cantthardwareobjectbasecycle" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3279,7 +3370,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cantthardwareobjectcyclerepetition">
-<h5><span class="section-number">4.1.10.2.8.2. </span>CanTTHardwareObjectCycleRepetition<a class="headerlink" href="#cantthardwareobjectcyclerepetition" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.8.2. </span>CanTTHardwareObjectCycleRepetition<a class="headerlink" href="#cantthardwareobjectcyclerepetition" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3321,7 +3412,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cantthardwareobjecttimemark">
-<h5><span class="section-number">4.1.10.2.8.3. </span>CanTTHardwareObjectTimeMark<a class="headerlink" href="#cantthardwareobjecttimemark" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.8.3. </span>CanTTHardwareObjectTimeMark<a class="headerlink" href="#cantthardwareobjecttimemark" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3363,7 +3454,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cantthardwareobjecttriggerid">
-<h5><span class="section-number">4.1.10.2.8.4. </span>CanTTHardwareObjectTriggerId<a class="headerlink" href="#cantthardwareobjecttriggerid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.8.4. </span>CanTTHardwareObjectTriggerId<a class="headerlink" href="#cantthardwareobjecttriggerid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3405,7 +3496,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cantthardwareobjecttriggertype">
-<h5><span class="section-number">4.1.10.2.8.5. </span>CanTTHardwareObjectTriggerType<a class="headerlink" href="#cantthardwareobjecttriggertype" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.8.5. </span>CanTTHardwareObjectTriggerType<a class="headerlink" href="#cantthardwareobjecttriggertype" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3445,14 +3536,14 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="canicom">
-<h4><span class="section-number">4.1.10.2.9. </span>CanIcom<a class="headerlink" href="#canicom" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.9. </span>CanIcom<a class="headerlink" href="#canicom" title="Link to this heading"></a></h4>
 <p>This container contains the parameters for configuring pretended networking</p>
 </section>
 <section id="canicomconfig">
-<h4><span class="section-number">4.1.10.2.10. </span>CanIcomConfig<a class="headerlink" href="#canicomconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.10. </span>CanIcomConfig<a class="headerlink" href="#canicomconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the ICOM Configuration.</p>
 <section id="canicomconfigid">
-<h5><span class="section-number">4.1.10.2.10.1. </span>CanIcomConfigId<a class="headerlink" href="#canicomconfigid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.10.1. </span>CanIcomConfigId<a class="headerlink" href="#canicomconfigid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3494,7 +3585,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicomwakeonbusoff">
-<h5><span class="section-number">4.1.10.2.10.2. </span>CanIcomWakeOnBusOff<a class="headerlink" href="#canicomwakeonbusoff" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.10.2. </span>CanIcomWakeOnBusOff<a class="headerlink" href="#canicomwakeonbusoff" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3531,14 +3622,14 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="canicomwakeupcauses">
-<h4><span class="section-number">4.1.10.2.11. </span>CanIcomWakeupCauses<a class="headerlink" href="#canicomwakeupcauses" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.11. </span>CanIcomWakeupCauses<a class="headerlink" href="#canicomwakeupcauses" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters of the wakeup causes to leave the power saving mode.</p>
 </section>
 <section id="canicomrxmessage">
-<h4><span class="section-number">4.1.10.2.12. </span>CanIcomRxMessage<a class="headerlink" href="#canicomrxmessage" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.12. </span>CanIcomRxMessage<a class="headerlink" href="#canicomrxmessage" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters for the wakeup causes for matching received messages. It has to be configured as often as received messages are defined as wakeup cause.</p>
 <section id="canicomcountervalue">
-<h5><span class="section-number">4.1.10.2.12.1. </span>CanIcomCounterValue<a class="headerlink" href="#canicomcountervalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.12.1. </span>CanIcomCounterValue<a class="headerlink" href="#canicomcountervalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3592,7 +3683,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicommessageid">
-<h5><span class="section-number">4.1.10.2.12.2. </span>CanIcomMessageId<a class="headerlink" href="#canicommessageid" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.12.2. </span>CanIcomMessageId<a class="headerlink" href="#canicommessageid" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3634,7 +3725,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicommessageidmask">
-<h5><span class="section-number">4.1.10.2.12.3. </span>CanIcomMessageIdMask<a class="headerlink" href="#canicommessageidmask" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.12.3. </span>CanIcomMessageIdMask<a class="headerlink" href="#canicommessageidmask" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3688,7 +3779,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicommissingmessagetimervalue">
-<h5><span class="section-number">4.1.10.2.12.4. </span>CanIcomMissingMessageTimerValue<a class="headerlink" href="#canicommissingmessagetimervalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.12.4. </span>CanIcomMissingMessageTimerValue<a class="headerlink" href="#canicommissingmessagetimervalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3742,7 +3833,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicompayloadlengtherror">
-<h5><span class="section-number">4.1.10.2.12.5. </span>CanIcomPayloadLengthError<a class="headerlink" href="#canicompayloadlengtherror" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.12.5. </span>CanIcomPayloadLengthError<a class="headerlink" href="#canicompayloadlengtherror" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3779,10 +3870,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="canicomrxmessagesignalconfig">
-<h4><span class="section-number">4.1.10.2.13. </span>CanIcomRxMessageSignalConfig<a class="headerlink" href="#canicomrxmessagesignalconfig" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.3.13. </span>CanIcomRxMessageSignalConfig<a class="headerlink" href="#canicomrxmessagesignalconfig" title="Link to this heading"></a></h4>
 <p>This container contains the configuration parameters for the wakeup causes for matching signals.</p>
 <section id="canicomsignalmask">
-<h5><span class="section-number">4.1.10.2.13.1. </span>CanIcomSignalMask<a class="headerlink" href="#canicomsignalmask" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.13.1. </span>CanIcomSignalMask<a class="headerlink" href="#canicomsignalmask" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3824,7 +3915,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicomsignaloperation">
-<h5><span class="section-number">4.1.10.2.13.2. </span>CanIcomSignalOperation<a class="headerlink" href="#canicomsignaloperation" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.13.2. </span>CanIcomSignalOperation<a class="headerlink" href="#canicomsignaloperation" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3863,7 +3954,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicomsignalvalue">
-<h5><span class="section-number">4.1.10.2.13.3. </span>CanIcomSignalValue<a class="headerlink" href="#canicomsignalvalue" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.13.3. </span>CanIcomSignalValue<a class="headerlink" href="#canicomsignalvalue" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3905,7 +3996,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicomsignalref">
-<h5><span class="section-number">4.1.10.2.13.4. </span>CanIcomSignalRef<a class="headerlink" href="#canicomsignalref" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.3.13.4. </span>CanIcomSignalRef<a class="headerlink" href="#canicomsignalref" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3952,10 +4043,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="cangeneral">
-<h3><span class="section-number">4.1.10.3. </span>CanGeneral<a class="headerlink" href="#cangeneral" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.10.4. </span>CanGeneral<a class="headerlink" href="#cangeneral" title="Link to this heading"></a></h3>
 <p>This container contains the parameters related each CAN Driver Unit.</p>
 <section id="candeverrordetect">
-<h4><span class="section-number">4.1.10.3.1. </span>CanDevErrorDetect<a class="headerlink" href="#candeverrordetect" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.1. </span>CanDevErrorDetect<a class="headerlink" href="#candeverrordetect" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -3991,7 +4082,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canindex">
-<h4><span class="section-number">4.1.10.3.2. </span>CanIndex<a class="headerlink" href="#canindex" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.2. </span>CanIndex<a class="headerlink" href="#canindex" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4033,7 +4124,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canlpdureceivecalloutfunction">
-<h4><span class="section-number">4.1.10.3.3. </span>CanLPduReceiveCalloutFunction<a class="headerlink" href="#canlpdureceivecalloutfunction" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.3. </span>CanLPduReceiveCalloutFunction<a class="headerlink" href="#canlpdureceivecalloutfunction" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4081,7 +4172,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canmainfunctionbusoffperiod">
-<h4><span class="section-number">4.1.10.3.4. </span>CanMainFunctionBusoffPeriod<a class="headerlink" href="#canmainfunctionbusoffperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.4. </span>CanMainFunctionBusoffPeriod<a class="headerlink" href="#canmainfunctionbusoffperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4135,7 +4226,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canmainfunctionmodeperiod">
-<h4><span class="section-number">4.1.10.3.5. </span>CanMainFunctionModePeriod<a class="headerlink" href="#canmainfunctionmodeperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.5. </span>CanMainFunctionModePeriod<a class="headerlink" href="#canmainfunctionmodeperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4177,7 +4268,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canmainfunctionwakeupperiod">
-<h4><span class="section-number">4.1.10.3.6. </span>CanMainFunctionWakeupPeriod<a class="headerlink" href="#canmainfunctionwakeupperiod" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.6. </span>CanMainFunctionWakeupPeriod<a class="headerlink" href="#canmainfunctionwakeupperiod" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4231,7 +4322,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canmultiplexedtransmission">
-<h4><span class="section-number">4.1.10.3.7. </span>CanMultiplexedTransmission<a class="headerlink" href="#canmultiplexedtransmission" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.7. </span>CanMultiplexedTransmission<a class="headerlink" href="#canmultiplexedtransmission" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4267,7 +4358,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canpublicicomsupport">
-<h4><span class="section-number">4.1.10.3.8. </span>CanPublicIcomSupport<a class="headerlink" href="#canpublicicomsupport" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.8. </span>CanPublicIcomSupport<a class="headerlink" href="#canpublicicomsupport" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4303,7 +4394,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="caneccsupport">
-<h4><span class="section-number">4.1.10.3.9. </span>CanECCSupport<a class="headerlink" href="#caneccsupport" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.9. </span>CanECCSupport<a class="headerlink" href="#caneccsupport" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4339,7 +4430,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cansetbaudrateapi">
-<h4><span class="section-number">4.1.10.3.10. </span>CanSetBaudrateApi<a class="headerlink" href="#cansetbaudrateapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.10. </span>CanSetBaudrateApi<a class="headerlink" href="#cansetbaudrateapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4387,7 +4478,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cantimeoutduration">
-<h4><span class="section-number">4.1.10.3.11. </span>CanTimeoutDuration<a class="headerlink" href="#cantimeoutduration" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.11. </span>CanTimeoutDuration<a class="headerlink" href="#cantimeoutduration" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4429,7 +4520,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canversioninfoapi">
-<h4><span class="section-number">4.1.10.3.12. </span>CanVersionInfoApi<a class="headerlink" href="#canversioninfoapi" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.12. </span>CanVersionInfoApi<a class="headerlink" href="#canversioninfoapi" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4465,7 +4556,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canoscounterref">
-<h4><span class="section-number">4.1.10.3.13. </span>CanOsCounterRef<a class="headerlink" href="#canoscounterref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.13. </span>CanOsCounterRef<a class="headerlink" href="#canoscounterref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4510,7 +4601,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cansysclockref">
-<h4><span class="section-number">4.1.10.3.14. </span>CanSysClockRef<a class="headerlink" href="#cansysclockref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.14. </span>CanSysClockRef<a class="headerlink" href="#cansysclockref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4543,7 +4634,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="cansupportttcanref">
-<h4><span class="section-number">4.1.10.3.15. </span>CanSupportTTCANRef<a class="headerlink" href="#cansupportttcanref" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.15. </span>CanSupportTTCANRef<a class="headerlink" href="#cansupportttcanref" title="Link to this heading"></a></h4>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4576,10 +4667,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicomgeneral">
-<h4><span class="section-number">4.1.10.3.16. </span>CanIcomGeneral<a class="headerlink" href="#canicomgeneral" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.16. </span>CanIcomGeneral<a class="headerlink" href="#canicomgeneral" title="Link to this heading"></a></h4>
 <p>This container contains the general configuration parameters of the ICOM Configuration.</p>
 <section id="canicomlevel">
-<h5><span class="section-number">4.1.10.3.16.1. </span>CanIcomLevel<a class="headerlink" href="#canicomlevel" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.4.16.1. </span>CanIcomLevel<a class="headerlink" href="#canicomlevel" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4630,7 +4721,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </table>
 </section>
 <section id="canicomvariant">
-<h5><span class="section-number">4.1.10.3.16.2. </span>CanIcomVariant<a class="headerlink" href="#canicomvariant" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.4.16.2. </span>CanIcomVariant<a class="headerlink" href="#canicomvariant" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4670,10 +4761,10 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="canmainfunctionrwperiods">
-<h4><span class="section-number">4.1.10.3.17. </span>CanMainFunctionRWPeriods<a class="headerlink" href="#canmainfunctionrwperiods" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.10.4.17. </span>CanMainFunctionRWPeriods<a class="headerlink" href="#canmainfunctionrwperiods" title="Link to this heading"></a></h4>
 <p>This container contains the parameter for configuring the period for cyclic call to Can_MainFunction_Read or Can_MainFunction_Write depending on the referring item.</p>
 <section id="canmainfunctionperiod">
-<h5><span class="section-number">4.1.10.3.17.1. </span>CanMainFunctionPeriod<a class="headerlink" href="#canmainfunctionperiod" title="Link to this heading"></a></h5>
+<h5><span class="section-number">4.2.10.4.17.1. </span>CanMainFunctionPeriod<a class="headerlink" href="#canmainfunctionperiod" title="Link to this heading"></a></h5>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Item</p></th>
@@ -4720,7 +4811,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="steps-to-configure-can-module">
-<h3><span class="section-number">4.1.10.4. </span>Steps To Configure Can Module<a class="headerlink" href="#steps-to-configure-can-module" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.10.5. </span>Steps To Configure Can Module<a class="headerlink" href="#steps-to-configure-can-module" title="Link to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Open EB Tresos configurator tool and load Port, Mcu and Can modules</p></li>
 <li><p>Open PORT module plugin and configure required pins as CAN-TX, CAN-RX</p></li>
@@ -4731,12 +4822,12 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </section>
 </section>
 <section id="examples">
-<h2><span class="section-number">4.1.11. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<h2><span class="section-number">4.2.11. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>The example application demonstrates use of Can module, the list below identifies key steps performed the example.</p>
 <section id="can-example-loopback">
-<h3><span class="section-number">4.1.11.1. </span>Can_Example_loopback<a class="headerlink" href="#can-example-loopback" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.11.1. </span>Can_Example_loopback<a class="headerlink" href="#can-example-loopback" title="Link to this heading"></a></h3>
 <section id="overview-of-can-example-loopback">
-<h4><span class="section-number">4.1.11.1.1. </span>Overview of Can_Example_loopback<a class="headerlink" href="#overview-of-can-example-loopback" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.11.1.1. </span>Overview of Can_Example_loopback<a class="headerlink" href="#overview-of-can-example-loopback" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Can_Example_loopback</p>
 <ul>
@@ -4756,7 +4847,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </ul>
 </section>
 <section id="setup-required-to-run-can-example-loopback">
-<h4><span class="section-number">4.1.11.1.2. </span>Setup required to run Can_Example_loopback<a class="headerlink" href="#setup-required-to-run-can-example-loopback" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.11.1.2. </span>Setup required to run Can_Example_loopback<a class="headerlink" href="#setup-required-to-run-can-example-loopback" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest c29 compiler</p></li>
@@ -4765,27 +4856,27 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </ul>
 </section>
 <section id="how-to-run-can-example-loopback">
-<h4><span class="section-number">4.1.11.1.3. </span>How to run Can_Example_loopback<a class="headerlink" href="#how-to-run-can-example-loopback" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.11.1.3. </span>How to run Can_Example_loopback<a class="headerlink" href="#how-to-run-can-example-loopback" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and Import Can_Example_loopback example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-can-example-loopback">
-<h4><span class="section-number">4.1.11.1.4. </span>Sample Log of Can_Example_loopback<a class="headerlink" href="#sample-log-of-can-example-loopback" title="Link to this heading"></a></h4>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
-<span class="w">    </span><span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Controller</span><span class="o">:</span><span class="w"> </span><span class="n">MCAN</span><span class="w"> </span><span class="n">A</span>
-<span class="w">    </span><span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">Started</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmitted</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="n">Message</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mh">0x64</span>
-<span class="w">    </span><span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="n">success</span>
+<h4><span class="section-number">4.2.11.1.4. </span>Sample Log of Can_Example_loopback<a class="headerlink" href="#sample-log-of-can-example-loopback" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Controller</span><span class="o">:</span><span class="w"> </span><span class="n">MCAN</span><span class="w"> </span><span class="n">A</span>
+<span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">Started</span><span class="w"> </span>
+<span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmitted</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="n">Message</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mh">0x64</span>
+<span class="nl">Can_Example_loopback</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="n">success</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="can-example-classic-fd">
-<h3><span class="section-number">4.1.11.2. </span>Can_Example_Classic_FD<a class="headerlink" href="#can-example-classic-fd" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.11.2. </span>Can_Example_Classic_FD<a class="headerlink" href="#can-example-classic-fd" title="Link to this heading"></a></h3>
 <section id="overview-of-can-example-classic-fd">
-<h4><span class="section-number">4.1.11.2.1. </span>Overview of Can_Example_Classic_FD<a class="headerlink" href="#overview-of-can-example-classic-fd" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.11.2.1. </span>Overview of Can_Example_Classic_FD<a class="headerlink" href="#overview-of-can-example-classic-fd" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Can_Example_Classic_FD</p>
 <ul>
@@ -4807,7 +4898,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </ul>
 </section>
 <section id="setup-required-to-run-can-example-classic-fd">
-<h4><span class="section-number">4.1.11.2.2. </span>Setup required to run Can_Example_Classic_FD<a class="headerlink" href="#setup-required-to-run-can-example-classic-fd" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.11.2.2. </span>Setup required to run Can_Example_Classic_FD<a class="headerlink" href="#setup-required-to-run-can-example-classic-fd" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest c29 compiler</p></li>
@@ -4818,29 +4909,43 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </ul>
 </section>
 <section id="how-to-run-can-example-classic-fd">
-<h4><span class="section-number">4.1.11.2.3. </span>How to run Can_Example_Classic_FD<a class="headerlink" href="#how-to-run-can-example-classic-fd" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.11.2.3. </span>How to run Can_Example_Classic_FD<a class="headerlink" href="#how-to-run-can-example-classic-fd" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and Import Can_Example_Classic_FD example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-can-example-classic-fd">
-<h4><span class="section-number">4.1.11.2.4. </span>Sample Log of Can_Example_Classic_FD<a class="headerlink" href="#sample-log-of-can-example-classic-fd" title="Link to this heading"></a></h4>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
-<span class="w">    </span><span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Controller</span><span class="o">:</span><span class="w"> </span><span class="n">MCAN</span><span class="w"> </span><span class="n">A</span>
-<span class="w">    </span><span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmitted</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="mh">0x64</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">data</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa1</span><span class="w"> </span><span class="mh">0x1a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc1</span><span class="w"> </span><span class="mh">0x1c</span><span class="w"> </span><span class="mh">0xb1</span><span class="w"> </span><span class="mh">0x1b</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">Started</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="n">Message</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mh">0x101</span>
-<span class="w">    </span><span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="n">success</span>
+<h4><span class="section-number">4.2.11.2.4. </span>Sample Log of Can_Example_Classic_FD<a class="headerlink" href="#sample-log-of-can-example-classic-fd" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Controller</span><span class="o">:</span><span class="w"> </span><span class="n">MCAN</span><span class="w"> </span><span class="n">A</span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Mode</span><span class="o">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">classic</span><span class="p">,</span><span class="w"> </span><span class="n">Transmitted</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="mh">0x64</span><span class="p">,</span><span class="w">     </span><span class="n">and</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">data</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa1</span><span class="w"> </span><span class="mh">0x1a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc1</span><span class="w"> </span><span class="mh">0x1c</span><span class="w"> </span><span class="mh">0xb1</span><span class="w"> </span><span class="mh">0x1b</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">Started</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="n">press</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">transmitted</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">matched</span><span class="w"> </span>
+<span class="mi">1</span><span class="n">Can_Example_Classic_FD</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Send</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">PCAN</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">below</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Mode</span><span class="o">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Classic</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="mh">0x64</span><span class="p">,</span><span class="w">         </span><span class="n">and</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="o">:</span><span class="w"> </span><span class="mh">0xd1</span><span class="w"> </span><span class="mh">0x1d</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xf1</span><span class="w"> </span><span class="mh">0x1f</span><span class="w"> </span><span class="mh">0xe1</span><span class="w"> </span><span class="mh">0x1e</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="n">press</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">transmitted</span><span class="w"> </span><span class="n">data</span><span class="w"> </span>
+<span class="nl">wCan_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="n">Message</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mh">0x64</span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Mode</span><span class="o">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">FD</span><span class="p">,</span><span class="w"> </span><span class="n">Transmitted</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="mh">0x40000101</span><span class="p">,</span><span class="w">         </span><span class="n">and</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">64</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">data</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa1</span><span class="w"> </span><span class="mh">0x1a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc1</span><span class="w"> </span><span class="mh">0x1c</span><span class="w"> </span><span class="mh">0xb1</span><span class="w"> </span><span class="mh">0x1b</span><span class="w"> </span><span class="mh">0xa2</span><span class="w"> </span><span class="mh">0x2a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc2</span><span class="w"> </span><span class="mh">0x2c</span><span class="w"> </span><span class="mh">0xb2</span><span class="w"> </span><span class="mh">0x2b</span><span class="w"> </span><span class="mh">0xa3</span><span class="w"> </span><span class="mh">0x3a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc3</span><span class="w"> </span><span class="mh">0x3c</span><span class="w"> </span><span class="mh">0xb3</span><span class="w"> </span><span class="mh">0x3b</span><span class="w"> </span><span class="mh">0xa4</span><span class="w"> </span><span class="mh">0x4a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc4</span><span class="w"> </span><span class="mh">0x4c</span><span class="w"> </span><span class="mh">0xb4</span><span class="w"> </span><span class="mh">0x4b</span><span class="w"> </span><span class="mh">0xa5</span><span class="w"> </span><span class="mh">0x5a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc5</span><span class="w"> </span><span class="mh">0x5c</span><span class="w"> </span><span class="mh">0xb5</span><span class="w"> </span><span class="mh">0x5b</span><span class="w"> </span><span class="mh">0xa6</span><span class="w"> </span><span class="mh">0x6a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc6</span><span class="w"> </span><span class="mh">0x6c</span><span class="w"> </span><span class="mh">0xb6</span><span class="w"> </span><span class="mh">0x6b</span><span class="w"> </span><span class="mh">0xa7</span><span class="w"> </span><span class="mh">0x7a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc7</span><span class="w"> </span><span class="mh">0x7c</span><span class="w"> </span><span class="mh">0xb7</span><span class="w"> </span><span class="mh">0x7b</span><span class="w"> </span><span class="mh">0xa8</span><span class="w"> </span><span class="mh">0x8a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc8</span><span class="w"> </span><span class="mh">0x8c</span><span class="w"> </span><span class="mh">0xb8</span><span class="w"> </span><span class="mh">0x8b</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">Started</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="n">press</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">transmitted</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">matched</span><span class="w"> </span>
+<span class="mi">1</span><span class="n">Can_Example_Classic_FD</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Send</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">PCAN</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">below</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Mode</span><span class="o">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">FD</span><span class="p">,</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">value</span><span class="o">:</span><span class="w">             </span><span class="mh">0x40000101</span><span class="p">,</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">64</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">data</span><span class="o">:</span><span class="w"> </span><span class="mh">0xd1</span><span class="w"> </span><span class="mh">0x1d</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xf1</span><span class="w"> </span><span class="mh">0x1f</span><span class="w"> </span><span class="mh">0xe1</span><span class="w"> </span><span class="mh">0x1e</span><span class="w"> </span><span class="mh">0xd2</span><span class="w"> </span><span class="mh">0x2d</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xf2</span><span class="w"> </span><span class="mh">0x2f</span><span class="w"> </span><span class="mh">0xe2</span><span class="w"> </span><span class="mh">0x2e</span><span class="w"> </span><span class="mh">0xd3</span><span class="w"> </span><span class="mh">0x3d</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xf3</span><span class="w"> </span><span class="mh">0x3f</span><span class="w"> </span><span class="mh">0xe3</span><span class="w"> </span><span class="mh">0x3e</span><span class="w"> </span><span class="mh">0xd4</span><span class="w"> </span><span class="mh">0x4d</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xf4</span><span class="w"> </span><span class="mh">0x4f</span><span class="w"> </span><span class="mh">0xe4</span><span class="w"> </span><span class="mh">0x4e</span><span class="w"> </span><span class="mh">0xd5</span><span class="w"> </span><span class="mh">0x5d</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xf5</span><span class="w"> </span><span class="mh">0x5f</span><span class="w"> </span><span class="mh">0xe5</span><span class="w"> </span><span class="mh">0x5e</span><span class="w"> </span><span class="mh">0xd6</span><span class="w"> </span><span class="mh">0x6d</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xf6</span><span class="w"> </span><span class="mh">0x6f</span><span class="w"> </span><span class="mh">0xe6</span><span class="w"> </span><span class="mh">0x6e</span><span class="w"> </span><span class="mh">0xd7</span><span class="w"> </span><span class="mh">0x7d</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xf7</span><span class="w"> </span><span class="mh">0x7f</span><span class="w"> </span><span class="mh">0xe7</span><span class="w"> </span><span class="mh">0x7e</span><span class="w"> </span><span class="mh">0xd8</span><span class="w"> </span><span class="mh">0x8d</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xf8</span><span class="w"> </span><span class="mh">0x8f</span><span class="w"> </span><span class="mh">0xe8</span><span class="w"> </span><span class="mh">0x8e</span><span class="w"> </span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">please</span><span class="w"> </span><span class="n">press</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">transmitted</span><span class="w"> </span><span class="n">data</span><span class="w"> </span>
+<span class="nl">wCan_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Received</span><span class="w"> </span><span class="n">Message</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="mh">0x40000101</span>
+<span class="nl">Can_Example_Classic_FD</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="n">success</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="can-example-icom">
-<h3><span class="section-number">4.1.11.3. </span>Can_Example_Icom<a class="headerlink" href="#can-example-icom" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.11.3. </span>Can_Example_Icom<a class="headerlink" href="#can-example-icom" title="Link to this heading"></a></h3>
 <section id="overview-of-can-example-icom">
-<h4><span class="section-number">4.1.11.3.1. </span>Overview of Can_Example_Icom<a class="headerlink" href="#overview-of-can-example-icom" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.11.3.1. </span>Overview of Can_Example_Icom<a class="headerlink" href="#overview-of-can-example-icom" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Can_Example_Icom</p>
 <ul>
@@ -4864,7 +4969,7 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </ul>
 </section>
 <section id="setup-required-to-run-can-example-icom">
-<h4><span class="section-number">4.1.11.3.2. </span>Setup required to run Can_Example_Icom<a class="headerlink" href="#setup-required-to-run-can-example-icom" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.11.3.2. </span>Setup required to run Can_Example_Icom<a class="headerlink" href="#setup-required-to-run-can-example-icom" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Install Code Composer Studio(CCS) latest version</p></li>
 <li><p>Install latest c29 compiler</p></li>
@@ -4875,27 +4980,100 @@ In case of Post build variant, upper modules that call the Can_Init function wil
 </ul>
 </section>
 <section id="how-to-run-can-example-icom">
-<h4><span class="section-number">4.1.11.3.3. </span>How to run Can_Example_Icom<a class="headerlink" href="#how-to-run-can-example-icom" title="Link to this heading"></a></h4>
+<h4><span class="section-number">4.2.11.3.3. </span>How to run Can_Example_Icom<a class="headerlink" href="#how-to-run-can-example-icom" title="Link to this heading"></a></h4>
 <ul class="simple">
 <li><p>Open CCS and Import Can_Example_Icom example</p></li>
 <li><p>Build project and start debug project</p></li>
 </ul>
 </section>
 <section id="sample-log-of-can-example-icom">
-<h4><span class="section-number">4.1.11.3.4. </span>Sample Log of Can_Example_Icom<a class="headerlink" href="#sample-log-of-can-example-icom" title="Link to this heading"></a></h4>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
-<span class="w">    </span><span class="n">ICOM</span><span class="w"> </span><span class="n">ConfigurationCan_Example_Icom</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Controller</span><span class="o">:</span><span class="w"> </span><span class="n">MCAN</span><span class="w"> </span><span class="n">A</span>
-<span class="w">    </span><span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmitted</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="mh">0x64</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">data</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa1</span><span class="w"> </span><span class="mh">0x1a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc1</span><span class="w"> </span><span class="mh">0x1c</span><span class="w"> </span><span class="mh">0xb1</span><span class="w"> </span><span class="mh">0x1b</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">Started</span><span class="w"> </span>
-<span class="w">    </span><span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Enabling</span><span class="w"> </span><span class="n">pretended</span><span class="w"> </span><span class="n">networking</span><span class="p">.</span>
-<span class="w">    </span><span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">pretended</span><span class="w"> </span><span class="n">networking</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="n">success</span>
+<h4><span class="section-number">4.2.11.3.4. </span>Sample Log of Can_Example_Icom<a class="headerlink" href="#sample-log-of-can-example-icom" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="n">ICOM</span><span class="w"> </span><span class="n">ConfigurationCan_Example_Icom</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Controller</span><span class="o">:</span><span class="w"> </span><span class="n">MCAN</span><span class="w"> </span><span class="n">A</span>
+<span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmitted</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="mh">0x64</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span>
+<span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">data</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa1</span><span class="w"> </span><span class="mh">0x1a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc1</span><span class="w"> </span><span class="mh">0x1c</span><span class="w"> </span><span class="mh">0xb1</span><span class="w"> </span><span class="mh">0x1b</span><span class="w"> </span>
+<span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">Started</span><span class="w"> </span>
+<span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Enabling</span><span class="w"> </span><span class="n">pretended</span><span class="w"> </span><span class="n">networking</span><span class="p">.</span>
+<span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Enabling</span><span class="w"> </span><span class="n">pretended</span><span class="w"> </span><span class="n">networking</span><span class="p">.</span>
+<span class="nl">Can_Example_Icom</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">pretended</span><span class="w"> </span><span class="n">networking</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="n">success</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="can-example-wakeup">
+<h3><span class="section-number">4.2.11.4. </span>Can_Example_Wakeup<a class="headerlink" href="#can-example-wakeup" title="Link to this heading"></a></h3>
+<section id="overview-of-can-example-wakeup">
+<h4><span class="section-number">4.2.11.4.1. </span>Overview of Can_Example_Wakeup<a class="headerlink" href="#overview-of-can-example-wakeup" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Can_Example_Wakeup</p>
+<ul>
+<li><p>This example demonstrates CAN wakeup functionality with CAN Classic and FD modes</p></li>
+<li><p>Enables one controller with 2 hardware objects for Tx and 2 hardware objects for Rx</p></li>
+<li><p>Validates received data against transmitted data</p></li>
+<li><p>DeviceSupport_Init()</p></li>
+<li><p>EcuM_Init()</p>
+<ul>
+<li><p>Initialize clock using Mcu_Init()</p></li>
+<li><p>Initialize pins with Port_Init()</p></li>
+<li><p>Initialize CAN driver using Can_Init()</p></li>
+</ul>
+</li>
+<li><p>Set controller state to STARTED</p></li>
+<li><p>Configure PCAN with matching settings:</p>
+<ul>
+<li><p>Mode: CAN, Clock Freq: 80 MHz</p></li>
+<li><p>BitRate: 1000 kbit/s, Sample Point: 60%</p></li>
+<li><p>Pre-scaler: 8, TSEG1: 5, TSEG2: 4</p></li>
+</ul>
+</li>
+<li><p>Send predefined data from PCAN (CAN-ID: 101h, Length: 8)</p></li>
+<li><p>Send data using Can_Write() with predefined data</p></li>
+<li><p>Read Tx confirmation and Rx indication</p></li>
+<li><p>Validate received data with predefined receive data</p></li>
+<li><p>Set controller state to SLEEP</p></li>
+<li><p>Send predefined data from PCAN to trigger wakeup</p></li>
+<li><p>Check for wakeup event detection</p></li>
+<li><p>If wakeup event is detected, verify Rx indication is zero (message not received in sleep mode)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="setup-required-to-run-can-example-wakeup">
+<h4><span class="section-number">4.2.11.4.2. </span>Setup required to run Can_Example_Wakeup<a class="headerlink" href="#setup-required-to-run-can-example-wakeup" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Install Code Composer Studio (CCS) latest version</p></li>
+<li><p>Install latest C29 compiler</p></li>
+<li><p>Connect the hardware and power up</p></li>
+<li><p>Connect PCAN tool to the CAN bus</p></li>
+<li><p>Connect the UART setup to check the log on serial console</p></li>
+</ul>
+</section>
+<section id="how-to-run-can-example-wakeup">
+<h4><span class="section-number">4.2.11.4.3. </span>How to run Can_Example_Wakeup<a class="headerlink" href="#how-to-run-can-example-wakeup" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open CCS and import Can_Example_Wakeup</p></li>
+<li><p>Build project and start debug project</p></li>
+<li><p>Follow the prompts to send data from PCAN when requested</p></li>
+</ul>
+</section>
+<section id="sample-log-of-can-example-wakeup">
+<h4><span class="section-number">4.2.11.4.4. </span>Sample Log of Can_Example_Wakeup<a class="headerlink" href="#sample-log-of-can-example-wakeup" title="Link to this heading"></a></h4>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="nl">Can_Example_Wakeup</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">STARTS</span><span class="w"> </span><span class="o">!!!</span>
+<span class="nl">Can_Example_Wakeup</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Controller</span><span class="o">:</span><span class="w"> </span><span class="n">MCAN</span><span class="w"> </span><span class="n">A</span>
+<span class="nl">Can_Example_Wakeup</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmitted</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="mh">0x64</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span>
+<span class="nl">Can_Example_Wakeup</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">data</span><span class="o">:</span><span class="w"> </span><span class="mh">0xa1</span><span class="w"> </span><span class="mh">0x1a</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xff</span><span class="w"> </span><span class="mh">0xc1</span><span class="w"> </span><span class="mh">0x1c</span><span class="w"> </span><span class="mh">0xb1</span><span class="w"> </span><span class="mh">0x1b</span><span class="w"> </span>
+<span class="nl">Can_Example_Wakeup</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">Transmission</span><span class="w"> </span><span class="n">Started</span><span class="w"> </span>
+<span class="nl">Can_Example_Wakeup</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Changing</span><span class="w"> </span><span class="n">MCAN</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">SLEEP</span>
+<span class="nl">Can_Example_Wakeup</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Send</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">PCAN</span><span class="p">.</span>
+<span class="n">Please</span><span class="w"> </span><span class="n">press</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">sending</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">PCAN</span>
+<span class="nl">Can_Example_Wakeup</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Can</span><span class="w"> </span><span class="n">wakeup</span><span class="w"> </span><span class="n">event</span><span class="w"> </span><span class="n">occured</span>
+<span class="nl">Can_Example_Wakeup</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Sample</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="n">success</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="file-structure">
-<h3><span class="section-number">4.1.11.4. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
+<h3><span class="section-number">4.2.11.5. </span>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h3>
 <p>📦f29H85x_mcal<br />
 ┣ 📂build<br />
 ┣ 📂docs<br />
@@ -4955,15 +5133,15 @@ In case of Post build variant, upper modules that call the Can_Init function wil
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="ModuleUserGuide_list.html" class="btn btn-neutral float-left" title="4. Module User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Module_User_Guide_Dio.html" class="btn btn-neutral float-right" title="4.2. DIO Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Module_User_Guide_ResourceAllocator.html" class="btn btn-neutral float-left" title="4.1. Resource Allocator Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Module_User_Guide_Dio.html" class="btn btn-neutral float-right" title="4.3. DIO Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Dec 18, 2025.
+          <span class="lastupdated" >Last updated on Dec 19, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

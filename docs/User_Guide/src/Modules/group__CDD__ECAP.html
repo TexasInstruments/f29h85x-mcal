@@ -123,10 +123,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-gettimeelapsed">5.11.4.19. function Cdd_Ecap_GetTimeElapsed</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-getdutycyclevalues">5.11.4.20. function Cdd_Ecap_GetDutyCycleValues</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-getversioninfo">5.11.4.21. function Cdd_Ecap_GetVersionInfo</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-gethrscalefactor">5.11.4.22. function Cdd_Ecap_GetHrScaleFactor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-converthrtimestamptoecaptimestamp">5.11.4.23. function Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-timestampnotify">5.11.4.24. function Cdd_Ecap_TimeStampNotify</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-signalnotify">5.11.4.25. function Cdd_Ecap_SignalNotify</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-periodicreadback">5.11.4.22. function Cdd_Ecap_PeriodicReadback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-gethrscalefactor">5.11.4.23. function Cdd_Ecap_GetHrScaleFactor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-converthrtimestamptoecaptimestamp">5.11.4.24. function Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-timestampnotify">5.11.4.25. function Cdd_Ecap_TimeStampNotify</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#function-cdd-ecap-signalnotify">5.11.4.26. function Cdd_Ecap_SignalNotify</a></li>
 </ul>
 </li>
 </ul>
@@ -140,6 +141,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Key_Performance_and_Memory_Consumption_Data.html">6. Key Performance and Memory Consumption Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AUTOSAR_Integration.html">7. AUTOSAR Integration Guide</a></li>
 </ul>
 
         </div>
@@ -1530,6 +1532,9 @@ Notification callback function pointer</p>
 <tr class="row-even"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Ecap__ConfigType.html"><span class="std std-doc">Cdd_Ecap_ConfigType</span></a></strong></p></td>
 <td><p>CDD_ECAP Config Structure.</p></td>
 </tr>
+<tr class="row-odd"><td><p><strong><a class="reference internal" href="../Classes/structCdd__Ecap__PeriodicReadBackDataType.html"><span class="std std-doc">Cdd_Ecap_PeriodicReadBackDataType</span></a></strong></p></td>
+<td><p>CDD_ECAP periodic readback register definition.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -1614,208 +1619,211 @@ Notification callback function pointer</p>
 <tr class="row-odd"><td><p>CDD_ECAP_HRTIMESTAMP_ID</p></td>
 <td><p>Cdd_Ecap_GetHrScaleFactor API Service ID.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_E_PARAM_POINTER</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_READBACK_ID</p></td>
+<td><p>Cdd_Ecap_PeriodicReadback() API Service ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CDD_ECAP_E_PARAM_POINTER</p></td>
 <td><p>API service called with invalid pointer.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_E_PARAM_CHANNEL</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_E_PARAM_CHANNEL</p></td>
 <td><p>API service called with invalid channel identifier or channel not configured.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_E_PARAM_ACTIVATION</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_E_PARAM_ACTIVATION</p></td>
 <td><p>API service called with an invalid or not feasible activation.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_E_INIT_FAILED</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_E_INIT_FAILED</p></td>
 <td><p>Init Function Failed.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_E_PARAM_BUFFER_SIZE</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_E_PARAM_BUFFER_SIZE</p></td>
 <td><p>API service used with invalid Buffer size.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_E_PARAM_MODE</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_E_PARAM_MODE</p></td>
 <td><p>API service called with invalid mode.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_E_UNINIT</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_E_UNINIT</p></td>
 <td><p>API service called without module initialisation.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_E_NOT_STARTED</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_E_NOT_STARTED</p></td>
 <td><p>Cdd_Ecap_StopTimestamp called on channel not started or already stopped.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_E_BUSY_OPERATION</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_E_BUSY_OPERATION</p></td>
 <td><p>API service called while a running operation.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_E_ALREADY_INITIALIZED</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_E_ALREADY_INITIALIZED</p></td>
 <td><p>API service Cdd_Ecap_Init called when module already initialized.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_E_PARAM_NOTIFY_INTERVAL</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_E_PARAM_NOTIFY_INTERVAL</p></td>
 <td><p>API service called when notify interval is invalid.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_E_PARAM_VINFO</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_E_PARAM_VINFO</p></td>
 <td><p>API service Cdd_Ecap_GetVersionInfo called and parameter is invalid.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_E_PARAM_START_LEVEL</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_E_PARAM_START_LEVEL</p></td>
 <td><p>API service called with an invalid or not feasible start level.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_E_HR_CHANNEL</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_E_HR_CHANNEL</p></td>
 <td><p>API service called with an invalid channel in the HR mode.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_STATUS_UNINIT</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_STATUS_UNINIT</p></td>
 <td><p>CDD_ECAP driver Status uninitialized.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_STATUS_INIT</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_STATUS_INIT</p></td>
 <td><p>CDD_ECAP driver Status Initialized.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_SF_NOTREADY</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_SF_NOTREADY</p></td>
 <td><p>CDD_ECAP Scalefactor is not ready.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_ECEINT_CEVT1</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_ECEINT_CEVT1</p></td>
 <td><p>Capture Event 1 Interrupt Enable.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_ECEINT_CEVT2</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_ECEINT_CEVT2</p></td>
 <td><p>Capture Event 2 Interrupt Enable.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_ECEINT_CEVT3</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_ECEINT_CEVT3</p></td>
 <td><p>Capture Event 3 Interrupt Enable.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_ECEINT_CEVT4</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_ECEINT_CEVT4</p></td>
 <td><p>Capture Event 4 Interrupt Enable.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_HRCAP_GLOBAL_CALIBRATION_INTERRUPT</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_HRCAP_GLOBAL_CALIBRATION_INTERRUPT</p></td>
 <td><p>Global calibration interrupt flag.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_HRCAP_CALIBRATION_DONE</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_HRCAP_CALIBRATION_DONE</p></td>
 <td><p>Calibration done flag.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_HRCAP_CALIBRATION_PERIOD_OVERFLOW</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_HRCAP_CALIBRATION_PERIOD_OVERFLOW</p></td>
 <td><p>Calibration period overflow flag.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_VENDOR_ID</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_VENDOR_ID</p></td>
 <td><p>Texas Instruments Vendor ID.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_MODULE_ID</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_MODULE_ID</p></td>
 <td><p>CDD ECAP Driver Module ID.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_INSTANCE_ID</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_INSTANCE_ID</p></td>
 <td><p>CDD ECAP Driver Instance ID.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_SW_MAJOR_VERSION</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_SW_MAJOR_VERSION</p></td>
 <td><p>Driver Implementation Major Version.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_SW_MINOR_VERSION</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_SW_MINOR_VERSION</p></td>
 <td><p>Driver Implementation Minor Version.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_SW_PATCH_VERSION</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_SW_PATCH_VERSION</p></td>
 <td><p>Driver Implementation Patch Version.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_AR_RELEASE_MAJOR_VERSION</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_AR_RELEASE_MAJOR_VERSION</p></td>
 <td><p>AUTOSAR Major version specification implemented by CDD_ECAP Driver.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_AR_RELEASE_MINOR_VERSION</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_AR_RELEASE_MINOR_VERSION</p></td>
 <td><p>AUTOSAR Minor version specification implemented by CDD_ECAP Driver.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_AR_RELEASE_REVISION_VERSION</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_AR_RELEASE_REVISION_VERSION</p></td>
 <td><p>AUTOSAR Patch version specification implemented by CDD_ECAP Driver.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_HRCAP_HRCAPCAL_OVERFLOW</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_HRCAP_HRCAPCAL_OVERFLOW</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_HRCAP_HRCAPCAL_INV_OVERFLOW</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_HRCAP_HRCAPCAL_INV_OVERFLOW</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_CFG_MAJOR_VERSION</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_CFG_MAJOR_VERSION</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_CFG_MINOR_VERSION</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_CFG_MINOR_VERSION</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_CFG_PATCH_VERSION</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_CFG_PATCH_VERSION</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_HW_CNT</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_HW_CNT</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_DE_INIT_API</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_DE_INIT_API</p></td>
 <td><p>Enable/Disable Cdd_Ecap DeInit API.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_EDGE_COUNT_API</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_EDGE_COUNT_API</p></td>
 <td><p>Enable/Disable Edge Count API.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_EDGE_DETECT_API</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_EDGE_DETECT_API</p></td>
 <td><p>Enable/Disable Edge Detect API.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_GET_DUTY_CYCLE_VALUES_API</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_GET_DUTY_CYCLE_VALUES_API</p></td>
 <td><p>Enable/Disable Get Duty Cycle Values API.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_GET_INPUT_STATE_API</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_GET_INPUT_STATE_API</p></td>
 <td><p>Enable/Disable Get Input State API.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_GET_TIME_ELAPSED_API</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_GET_TIME_ELAPSED_API</p></td>
 <td><p>Enable/Disable Get Time Elapsed API.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_GET_VERSION_INFO_API</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_GET_VERSION_INFO_API</p></td>
 <td><p>Enable/Disable Get Version Info API.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_SIGNAL_MEASUREMENT_API</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_SIGNAL_MEASUREMENT_API</p></td>
 <td><p>Enable/Disable Signal Measurement API.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_TIMESTAMP_API</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_TIMESTAMP_API</p></td>
 <td><p>Enable/Disable Timestamp API.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_HR_API</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_HR_API</p></td>
 <td><p>Enable/Disable High Resolution API.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_DEV_ERROR_DETECT</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_DEV_ERROR_DETECT</p></td>
 <td><p>Enable/Disable Development error detet.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_MAX_NUM_CHANNELS</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_MAX_NUM_CHANNELS</p></td>
 <td><p>Maximum number of Cdd_Ecap channels.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_INIT_CONFIG_PC</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_INIT_CONFIG_PC</p></td>
 <td><p>Pre Compile config macro name.</p></td>
 </tr>
-<tr class="row-even"><td><p>CddEcapConf_CddEcapChannel_CddEcapChannel_0</p></td>
+<tr class="row-odd"><td><p>CddEcapConf_CddEcapChannel_CddEcapChannel_0</p></td>
 <td><p>Channel ID Symbolic Names Configured channel ID(s)</p></td>
 </tr>
-<tr class="row-odd"><td><p>CddEcapConf_CddEcapChannel_CddEcapChannel_1</p></td>
+<tr class="row-even"><td><p>CddEcapConf_CddEcapChannel_CddEcapChannel_1</p></td>
 <td><p>Channel identifiers.</p></td>
 </tr>
-<tr class="row-even"><td><p>CddEcapConf_CddEcapChannel_CddEcapChannel_2</p></td>
+<tr class="row-odd"><td><p>CddEcapConf_CddEcapChannel_CddEcapChannel_2</p></td>
 <td><p>Channel identifiers.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CddEcapConf_CddEcapChannel_CddEcapChannel_3</p></td>
+<tr class="row-even"><td><p>CddEcapConf_CddEcapChannel_CddEcapChannel_3</p></td>
 <td><p>Channel identifiers.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_CHANNEL0</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL0</p></td>
 <td><p>Channel identifiers.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL1</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_CHANNEL1</p></td>
 <td><p>ECAP Channel 1, in MAIN DOMAIN.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_CHANNEL2</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL2</p></td>
 <td><p>ECAP Channel 2, in MAIN DOMAIN.</p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL3</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_CHANNEL3</p></td>
 <td><p>ECAP Channel 3, in MAIN DOMAIN.</p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_CHANNEL0_INT_ENABLE</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL0_INT_ENABLE</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL0_INT_ISR_CAT1_INT</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_CHANNEL0_INT_ISR_CAT1_INT</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_CHANNEL1_INT_ENABLE</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL1_INT_ENABLE</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL1_INT_ISR_CAT1_INT</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_CHANNEL1_INT_ISR_CAT1_INT</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_CHANNEL2_INT_ENABLE</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL2_INT_ENABLE</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL2_INT_ISR_CAT1_INT</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_CHANNEL2_INT_ISR_CAT1_INT</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>CDD_ECAP_CHANNEL3_INT_ENABLE</p></td>
+<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL3_INT_ENABLE</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p>CDD_ECAP_CHANNEL3_INT_ISR_CAT1_INT</p></td>
+<tr class="row-even"><td><p>CDD_ECAP_CHANNEL3_INT_ISR_CAT1_INT</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -1915,19 +1923,23 @@ Notification callback function pointer</p>
 <td><p><strong><a class="reference internal" href="#function-cdd-ecap-getversioninfo"><span class="std std-ref">Cdd_Ecap_GetVersionInfo</span></a></strong>(Std_VersionInfoType * VersionInfoPtr)</p></td>
 <td><p>service that returns the version information of the module.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#typedef-cdd-ecap-channelhrscaletype"><span class="std std-ref">Cdd_Ecap_ChannelHrScaleType</span></a></p></td>
+<tr class="row-odd"><td><p>void</p></td>
+<td><p><strong><a class="reference internal" href="#function-cdd-ecap-periodicreadback"><span class="std std-ref">Cdd_Ecap_PeriodicReadback</span></a></strong>(<a class="reference internal" href="#typedef-cdd-ecap-channeltype"><span class="std std-ref">Cdd_Ecap_ChannelType</span></a> Channel, <a class="reference internal" href="../Classes/structCdd__Ecap__PeriodicReadBackDataType.html"><span class="std std-doc">Cdd_Ecap_PeriodicReadBackDataType</span></a> * ReadBackRegisterdata)</p></td>
+<td><p>This service shall read all the statically configured registers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#typedef-cdd-ecap-channelhrscaletype"><span class="std std-ref">Cdd_Ecap_ChannelHrScaleType</span></a></p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-ecap-gethrscalefactor"><span class="std std-ref">Cdd_Ecap_GetHrScaleFactor</span></a></strong>(<a class="reference internal" href="#typedef-cdd-ecap-channeltype"><span class="std std-ref">Cdd_Ecap_ChannelType</span></a> Channel)</p></td>
 <td><p>Service to retrieve the scale factor for high resolution capability.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#typedef-cdd-ecap-channelhrscaletype"><span class="std std-ref">Cdd_Ecap_ChannelHrScaleType</span></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#typedef-cdd-ecap-channelhrscaletype"><span class="std std-ref">Cdd_Ecap_ChannelHrScaleType</span></a></p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-ecap-converthrtimestamptoecaptimestamp"><span class="std std-ref">Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp</span></a></strong>(<a class="reference internal" href="#typedef-cdd-ecap-channeltype"><span class="std std-ref">Cdd_Ecap_ChannelType</span></a> Channel, uint32 timeStamp)</p></td>
 <td><p>Service to convert the event timestamp to nanoseconds for high resolution capability.</p></td>
 </tr>
-<tr class="row-odd"><td><p>void</p></td>
+<tr class="row-even"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-ecap-timestampnotify"><span class="std std-ref">Cdd_Ecap_TimeStampNotify</span></a></strong>(void )</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p>void</p></td>
+<tr class="row-odd"><td><p>void</p></td>
 <td><p><strong><a class="reference internal" href="#function-cdd-ecap-signalnotify"><span class="std std-ref">Cdd_Ecap_SignalNotify</span></a></strong>(void )</p></td>
 <td><p></p></td>
 </tr>
@@ -2425,8 +2437,32 @@ service that returns the version information of the module.</p>
 <p><strong>Precondition</strong>: None</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
+<section id="function-cdd-ecap-periodicreadback">
+<h3><span class="section-number">5.11.4.22. </span>function Cdd_Ecap_PeriodicReadback<a class="headerlink" href="#function-cdd-ecap-periodicreadback" title="Link to this heading"></a></h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Ecap_PeriodicReadback</span><span class="p">(</span>
+<span class="w">    </span><span class="n">Cdd_Ecap_ChannelType</span><span class="w"> </span><span class="n">Channel</span><span class="p">,</span>
+<span class="w">    </span><span class="n">Cdd_Ecap_PeriodicReadBackDataType</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ReadBackRegisterdata</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Brief</strong>:
+This service shall read all the statically configured registers.</p>
+<p><strong>Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Channel</strong> CDD_ECAP Channel in use</p></li>
+<li><p><strong>ReadBackRegisterdata</strong> pointer for the read back registers</p></li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<ul class="simple">
+<li><p><strong>None</strong>
+<br></p></li>
+</ul>
+<p><strong>Return</strong>: None</p>
+<p><strong>Precondition</strong>: None</p>
+<p><strong>Postcondition</strong>: None</p>
+</section>
 <section id="function-cdd-ecap-gethrscalefactor">
-<h3><span class="section-number">5.11.4.22. </span>function Cdd_Ecap_GetHrScaleFactor<a class="headerlink" href="#function-cdd-ecap-gethrscalefactor" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.4.23. </span>function Cdd_Ecap_GetHrScaleFactor<a class="headerlink" href="#function-cdd-ecap-gethrscalefactor" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_Ecap_ChannelHrScaleType</span><span class="w"> </span><span class="n">Cdd_Ecap_GetHrScaleFactor</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_Ecap_ChannelType</span><span class="w"> </span><span class="n">Channel</span>
 <span class="p">)</span>
@@ -2449,7 +2485,7 @@ Service to retrieve the scale factor for high resolution capability.</p>
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-ecap-converthrtimestamptoecaptimestamp">
-<h3><span class="section-number">5.11.4.23. </span>function Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp<a class="headerlink" href="#function-cdd-ecap-converthrtimestamptoecaptimestamp" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.4.24. </span>function Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp<a class="headerlink" href="#function-cdd-ecap-converthrtimestamptoecaptimestamp" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Cdd_Ecap_ChannelHrScaleType</span><span class="w"> </span><span class="n">Cdd_Ecap_ConvertHrTimeStampToEcapTimeStamp</span><span class="p">(</span>
 <span class="w">    </span><span class="n">Cdd_Ecap_ChannelType</span><span class="w"> </span><span class="n">Channel</span><span class="p">,</span>
 <span class="w">    </span><span class="n">uint32</span><span class="w"> </span><span class="n">timeStamp</span>
@@ -2474,7 +2510,7 @@ Service to convert the event timestamp to nanoseconds for high resolution capabi
 <p><strong>Postcondition</strong>: None</p>
 </section>
 <section id="function-cdd-ecap-timestampnotify">
-<h3><span class="section-number">5.11.4.24. </span>function Cdd_Ecap_TimeStampNotify<a class="headerlink" href="#function-cdd-ecap-timestampnotify" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.4.25. </span>function Cdd_Ecap_TimeStampNotify<a class="headerlink" href="#function-cdd-ecap-timestampnotify" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Ecap_TimeStampNotify</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -2482,7 +2518,7 @@ Service to convert the event timestamp to nanoseconds for high resolution capabi
 </div>
 </section>
 <section id="function-cdd-ecap-signalnotify">
-<h3><span class="section-number">5.11.4.25. </span>function Cdd_Ecap_SignalNotify<a class="headerlink" href="#function-cdd-ecap-signalnotify" title="Link to this heading"></a></h3>
+<h3><span class="section-number">5.11.4.26. </span>function Cdd_Ecap_SignalNotify<a class="headerlink" href="#function-cdd-ecap-signalnotify" title="Link to this heading"></a></h3>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">Cdd_Ecap_SignalNotify</span><span class="p">(</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span>
 <span class="p">)</span>
@@ -2504,7 +2540,7 @@ Service to convert the event timestamp to nanoseconds for high resolution capabi
 
   <div role="contentinfo">
     <p>&#169; <a href="https://www.ti.com/corp/docs/legal/copyright.shtml">Copyright</a>  2025, Texas Instruments Incorporated.
-          <span class="lastupdated" >Last updated on Dec 18, 2025.
+          <span class="lastupdated" >Last updated on Dec 19, 2025.
       </span><br>
         <a href="https://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="https://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="https://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="https://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a> <br>
 

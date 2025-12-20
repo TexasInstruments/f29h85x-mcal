@@ -101,7 +101,7 @@ select_linker_file("DEFAULT" "cpu1")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
     ${PROJECT_ROOT_DIRECTORY}/build/assets/examples/${PROJECT_NAME}/)
 
-add_executable(${PROJECT_NAME} Cdd_Pwm_Example_Deadband.c)
+add_executable(${PROJECT_NAME} ${BUILD_DEVICE}/Cdd_Pwm_Example_Deadband.c)
 
 target_link_libraries(
     ${PROJECT_NAME}

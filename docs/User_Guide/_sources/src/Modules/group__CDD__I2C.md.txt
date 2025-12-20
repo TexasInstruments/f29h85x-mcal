@@ -1,5 +1,5 @@
 ---
-title: CDD_I2C
+title: Cdd I2c
 
 ---
 
@@ -7,7 +7,260 @@ title: CDD_I2C
 
  [More...](#detailed-description)
 
+## Types
 
+|  Base type   | Type Name  | Brief |
+| -------------| -----------| ----- |
+|enum| **[Cdd_I2c_HwUnitStatusType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_hwunitstatustype)** | This is an enum containing the possible HW unit states states. The default HW unit state is CDD_I2C_HW_UNIT_FREE.  | 
+|enum| **[Cdd_I2c_ComponentStatusType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_componentstatustype)** | This is an enum containing the possible driver states. The default driver state is CDD_I2C_UNINIT.  | 
+|enum| **[Cdd_I2c_HandlingType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_handlingtype)** | This is an enum containing the possible variants of arbitration loss timeout handling.  | 
+|enum| **[Cdd_I2c_ChannelResultType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_channelresulttype)** | This is an enum containing all the possible channel results The default channel state is CDD_I2C_CH_RESULT_OK.  | 
+|enum| **[Cdd_I2c_SequenceResultType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_sequenceresulttype)** | This type defines a range of specific sequences status for the I2C Driver.  | 
+|enum| **[Cdd_I2c_RestartModeType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_restartmodetype)** | This is an enum containing the possible restart modes. The default mode is CDD_I2C_RESTART_MODE_NOSTOP.  | 
+|typedef uint16  | **[Cdd_I2c_AddressType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_addresstype)** | This type defines the addresss size.  | 
+|typedef uint8  | **[Cdd_I2c_DirectionType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_directiontype)** | This type defines the direction of operation - write or read.  | 
+|typedef uint8  | **[Cdd_I2c_DataType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_datatype)** | This type defines the data to be transmitted using the CDD_I2C Driver.  | 
+|typedef uint8 *  | **[Cdd_I2c_DataPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataptrtype)** | Definition for the pointer type for general buffer handling.  | 
+|typedef const uint8 *  | **[Cdd_I2c_DataConstPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataconstptrtype)** | Definition for the pointer type for TX buffer handling.  | 
+|typedef uint8  | **[Cdd_I2c_HwUnitType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_hwunittype)** | Specifies the identification (ID) for a CDD_I2C Hardware unit.  | 
+|typedef uint8  | **[Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype)** | This is the type for a sequence identifier.  | 
+|typedef uint8  | **[Cdd_I2c_ChannelType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_channeltype)** | This is the type for a Ch identifier.  | 
+|typedef uint16  | **[Cdd_I2c_DataLengthType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_datalengthtype)** | Type to define the number of data elements to be sent and/or received during a transmission.  | 
+|typedef void(*)(void)  | **[Cdd_I2c_SequenceEndNotification](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequenceendnotification)** | Callback routine provided by the user for each Sequence to notify the caller that a Sequence has been finished.  | 
+|typedef void(*)(uint8 errorCode)  | **[Cdd_I2c_SequenceErrorNotification](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequenceerrornotification)** | Callback routine provided by the user for each Sequence to notify the caller that a Sequence has been finished with an error.  | 
+
+
+
+### enum Cdd_I2c_HwUnitStatusType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_I2C_HW_UNIT_FREE | | CDD_I2C Hardware unit not in use by a sequence.   |
+| CDD_I2C_HW_UNIT_BUSY | | CDD_I2C Hardware unit in use by a sequence.   |
+
+
+
+
+**Brief**: 
+This is an enum containing the possible HW unit states states. The default HW unit state is CDD_I2C_HW_UNIT_FREE. 
+
+
+
+### enum Cdd_I2c_ComponentStatusType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_I2C_UNINIT | | I2C driver is uninitialized.   |
+| CDD_I2C_IDLE | | I2C driver is idle.   |
+| CDD_I2C_BUSY | | I2C driver is busy.   |
+
+
+
+
+**Brief**: 
+This is an enum containing the possible driver states. The default driver state is CDD_I2C_UNINIT. 
+
+
+
+### enum Cdd_I2c_HandlingType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_I2C_BURST_MODE | | In case bus is busy detach from I2C bus.   |
+| CDD_I2C_RECURRENT_MODE | | In case bus is busy try to recover I2C bus.   |
+
+
+
+
+**Brief**: 
+This is an enum containing the possible variants of arbitration loss timeout handling. 
+
+
+
+### enum Cdd_I2c_ChannelResultType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_I2C_CH_RESULT_OK | | I2C channel transmission not in progress.   |
+| CDD_I2C_CH_RESULT_NOT_OK | | I2C channel transmission is not OK.   |
+| CDD_I2C_CH_RESULT_PENDING | | I2C channel transmission is in progress.   |
+| CDD_I2C_CH_RESULT_BUSFAIL | | I2C channel transmission failed due to bus unavailability.   |
+| CDD_I2C_CH_RESULT_ARBFAIL | | I2C channel transmission failed due to arbitration loss.   |
+| CDD_I2C_CH_RESULT_NACKFAIL | | I2C channel transmission failed due to bus NACK.   |
+
+
+
+
+**Brief**: 
+This is an enum containing all the possible channel results The default channel state is CDD_I2C_CH_RESULT_OK. 
+
+
+
+### enum Cdd_I2c_SequenceResultType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_I2C_SEQ_OK | 0x00U| The last transmission of the Sequence has been finished successfully.   |
+| CDD_I2C_SEQ_PENDING | 0x01U| The I2C Driver is performing an I2C Sequence. The meaning of this status is equal to I2C_BUSY.   |
+| CDD_I2C_SEQ_QUEUED | 0x02U| An I2C Sequence is queued and waiting to be transmitted.   |
+| CDD_I2C_SEQ_NACK | 0x03U| An I2C Sequence encountered a NACK signal.   |
+| CDD_I2C_SEQ_FAILED | 0x04U| The last transmission of the Sequence has failed.   |
+| CDD_I2C_SEQ_CANCELLED | 0x05U| I2C sequence transmission cancelled from queue.   |
+| CDD_I2C_SEQ_NOT_OK | 0x06U| I2C sequence transmission is not OK.   |
+| CDD_I2C_SEQ_ARB | 0x07U| An I2C Sequence encountered a arbitration loss.   |
+
+
+
+
+**Brief**: 
+This type defines a range of specific sequences status for the I2C Driver. 
+
+
+
+### enum Cdd_I2c_RestartModeType
+| Enumerator | Value | Description |
+| ---------- | ----- | ----------- |
+| CDD_I2C_RESTART_MODE_STOP | | CDD_I2C restart mode with stop at end of each transaction/channel write/read.   |
+| CDD_I2C_RESTART_MODE_NOSTOP | | CDD_I2C restart mode with no stop at end of each transaction/channel write/read, by default there is start at begining of each transaction.   |
+
+
+
+
+**Brief**: 
+This is an enum containing the possible restart modes. The default mode is CDD_I2C_RESTART_MODE_NOSTOP. 
+
+
+
+### typedef Cdd_I2c_AddressType
+```
+typedef uint16 Cdd_I2c_AddressType;
+```
+
+
+**Brief**: 
+This type defines the addresss size. 
+
+
+
+### typedef Cdd_I2c_DirectionType
+```
+typedef uint8 Cdd_I2c_DirectionType;
+```
+
+
+**Brief**: 
+This type defines the direction of operation - write or read. 
+
+
+
+### typedef Cdd_I2c_DataType
+```
+typedef uint8 Cdd_I2c_DataType;
+```
+
+
+**Brief**: 
+This type defines the data to be transmitted using the CDD_I2C Driver. 
+
+
+
+### typedef Cdd_I2c_DataPtrType
+```
+typedef uint8* Cdd_I2c_DataPtrType;
+```
+
+
+**Brief**: 
+Definition for the pointer type for general buffer handling. 
+
+
+
+### typedef Cdd_I2c_DataConstPtrType
+```
+typedef const uint8* Cdd_I2c_DataConstPtrType;
+```
+
+
+**Brief**: 
+Definition for the pointer type for TX buffer handling. 
+
+
+
+### typedef Cdd_I2c_HwUnitType
+```
+typedef uint8 Cdd_I2c_HwUnitType;
+```
+
+
+**Brief**: 
+Specifies the identification (ID) for a CDD_I2C Hardware unit. 
+
+
+
+### typedef Cdd_I2c_SequenceType
+```
+typedef uint8 Cdd_I2c_SequenceType;
+```
+
+
+**Brief**: 
+This is the type for a sequence identifier. 
+
+
+
+### typedef Cdd_I2c_ChannelType
+```
+typedef uint8 Cdd_I2c_ChannelType;
+```
+
+
+**Brief**: 
+This is the type for a Ch identifier. 
+
+
+
+### typedef Cdd_I2c_DataLengthType
+```
+typedef uint16 Cdd_I2c_DataLengthType;
+```
+
+
+**Brief**: 
+Type to define the number of data elements to be sent and/or received during a transmission. 
+
+
+
+### typedef Cdd_I2c_SequenceEndNotification
+```
+typedef void(* Cdd_I2c_SequenceEndNotification) (void);
+```
+
+
+**Brief**: 
+Callback routine provided by the user for each Sequence to notify the caller that a Sequence has been finished. 
+
+
+
+### typedef Cdd_I2c_SequenceErrorNotification
+```
+typedef void(* Cdd_I2c_SequenceErrorNotification) (uint8 errorCode);
+```
+
+
+**Brief**: 
+Callback routine provided by the user for each Sequence to notify the caller that a Sequence has been finished with an error. 
+
+**Parameters**: 
+
+  
+* **errorCode** Sequence error code 
+
+
+
+
+
+## Structures
+|   Name         | Brief          |
+| -------------- | -------------- |
+| **[Cdd_I2c_HwUnitConfigType](../Classes/structCdd__I2c__HwUnitConfigType.md)** | CDD_I2C Hardware unit configuration structure.  |
+| **[Cdd_I2c_ChConfigType](../Classes/structCdd__I2c__ChConfigType.md)** | CDD_I2C Channel configuration structure.  |
+| **[Cdd_I2c_SequenceConfigType](../Classes/structCdd__I2c__SequenceConfigType.md)** | CDD_I2C Sequence configuration structure.  |
+| **[Cdd_I2c_ConfigType](../Classes/structCdd__I2c__ConfigType.md)** | CDD_I2C config structure.  |
 
 
 
@@ -21,6 +274,47 @@ title: CDD_I2C
 | CDD_I2C_CFG_PATCH_VERSION   | I2C configuration Patch Version.  |
 | CDD_I2C_HW_UNIT_I2CA   | HW unit 0.  |
 | CDD_I2C_HW_UNIT_I2CB   | HW unit 1.  |
+| CDD_I2C_SW_MAJOR_VERSION   | Driver Implementation Major Version.  |
+| CDD_I2C_SW_MINOR_VERSION   | Driver Implementation Minor Version.  |
+| CDD_I2C_SW_PATCH_VERSION   | Driver Implementation Patch Version.  |
+| CDD_I2C_AR_RELEASE_MAJOR_VERSION   | AUTOSAR Major version specification implemented by CDD_I2C Driver.  |
+| CDD_I2C_AR_RELEASE_MINOR_VERSION   | AUTOSAR Minor version specification implemented by CDD_I2C Driver.  |
+| CDD_I2C_AR_RELEASE_REVISION_VERSION   | AUTOSAR Patch version specification implemented by CDD_I2C Driver.  |
+| CDD_I2C_VENDOR_ID   | Texas Instruments Vendor ID.  |
+| CDD_I2C_MODULE_ID   | CDD_I2C Driver Module ID.  |
+| CDD_I2C_INSTANCE_ID   | CDD_I2C Instance ID.  |
+| CDD_I2C_SID_INIT   | Service ID Cdd_I2c_Init()  |
+| CDD_I2C_SID_DEINIT   | Service ID Cdd_I2c_DeInit()  |
+| CDD_I2C_SID_GET_VERSION_INFO   | Service ID Cdd_I2c_GetVersionInfo()  |
+| CDD_I2C_SID_SETUP_EB   | Service ID Cdd_I2c_SetupEB()  |
+| CDD_I2C_SID_SETUP_EB_DYNAMIC   | Service ID Cdd_I2c_SetupDynamicEB()  |
+| CDD_I2C_SID_ASYNC_TRANSMIT   | Service ID Cdd_I2c_AsyncTransmit()  |
+| CDD_I2C_SID_CANCEL   | Service ID Cdd_I2c_Cancel()  |
+| CDD_I2C_SID_GET_RESULT   | Service ID Cdd_I2c_GetResult()  |
+| CDD_I2C_SID_GET_SEQUENCE_RESULT   | Service ID Cdd_I2c_GetSequenceResult()  |
+| CDD_I2C_SID_MAIN_FUNCTION   | Service ID Cdd_I2c_MainFunction()  |
+| CDD_I2C_SID_POLLING_MODE_PROCESSING   | Service ID Cdd_I2c_PollingModeProcessing()  |
+| CDD_I2C_SID_GET_STATUS   | Service ID Cdd_I2c_GetStatus()  |
+| CDD_I2C_E_NO_ERROR   | No errors.  |
+| CDD_I2C_E_UNINIT   | Error code for not initialized module.  |
+| CDD_I2C_E_ALREADY_INITIALIZED   | Init service called twice without deinit.  |
+| CDD_I2C_E_PARAM_CHANNEL   | Channel out of bounds, exceeds the maximum number of configured channels.  |
+| CDD_I2C_E_PARAM_SEQUENCE   | Sequence out of bounds, exceeds the maximum number of configured sequences.  |
+| CDD_I2C_E_PARAM_LENGTH   | Length out of bounds – a zero length is not accepted.  |
+| CDD_I2C_E_PARAM_VINFO_PTR   | An invalid version info pointer has been passed (a NULL_PTR)  |
+| CDD_I2C_E_PARAM_CONFIG   | An invalid configuration has been passed (a non NULL_PTR)  |
+| CDD_I2C_E_PARAM_TRANS_BUFFER   | Two in-valid transmission buffers have been passed (no NULL_PTR/ or both NULL_PTR)  |
+| CDD_I2C_E_PARAM_ADDRESS   | Address out of bounds, exceeds the limit of the configured address range.  |
+| CDD_I2C_E_PARAM_DIRECTION   | Buffer direction conflicts with channel direction set via EB.  |
+| CDD_I2C_E_PARAM_HWUNIT   | API service called with invalid HW unit ID.  |
+| CDD_I2C_E_SEQ_BUSY   | API service called with sequence is busy.  |
+| CDD_I2C_E_NACK_RECEIVED   | Error is reported if NACK was received.  |
+| CDD_I2C_E_ARBITRATION_FAILURE   | Error is reported if the master loses arbitration. This usually happens if the SDA is stuck low or another master has won the arbitration procedure.  |
+| CDD_I2C_E_BUS_FAILURE   | Error is reported if the SCL line is stuck low.  |
+| CDD_I2C_WRITE   | CDD_I2C direction - write.  |
+| CDD_I2C_READ   | CDD_I2C direction - read.  |
+| CDD_I2C_ADDRESS_7_BIT   | 7 bit address  |
+| CDD_I2C_ADDRESS_10_BIT   | 10 bit address  |
 | CDD_I2C_PRE_COMPILE_VARIANT   | I2C Build Variant. Build variants.(i.e Pre Compile and Post Build)  |
 | CDD_I2C_CONFIG_PC   | Precompile variant macro.  |
 | CDD_I2C_POLLING_MODE   | Enable/disable Interrupts.  |
@@ -62,10 +356,377 @@ title: CDD_I2C
 
 | Return type    | Function Name           |      Brief        |
 | -------------- | ----------------------- | ----------------- |
+| void | **[Cdd_I2c_Init](../Modules/group__CDD__I2C.md#function-cdd_i2c_init)**(const [Cdd_I2c_ConfigType](../Classes/structCdd__I2c__ConfigType.md) * configPtr)| Service for CDD_I2C initialization.  |
+| Std_ReturnType | **[Cdd_I2c_DeInit](../Modules/group__CDD__I2C.md#function-cdd_i2c_deinit)**(void )| Service for CDD_I2C driver de-initialization.  |
+| void | **[Cdd_I2c_GetVersionInfo](../Modules/group__CDD__I2C.md#function-cdd_i2c_getversioninfo)**(Std_VersionInfoType * versionInfo)| Service that returns the version information of the module.  |
+| Std_ReturnType | **[Cdd_I2c_SetupEB](../Modules/group__CDD__I2C.md#function-cdd_i2c_setupeb)**([Cdd_I2c_ChannelType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_channeltype) chId, [Cdd_I2c_DataConstPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataconstptrtype) txDataBufferPtr, [Cdd_I2c_DataPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataptrtype) rxDataBufferPtr, [Cdd_I2c_DataLengthType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_datalengthtype) length)| Service to setup the buffers and the length of data for the Ch specified.  |
+| Std_ReturnType | **[Cdd_I2c_SetupEBDynamic](../Modules/group__CDD__I2C.md#function-cdd_i2c_setupebdynamic)**([Cdd_I2c_ChannelType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_channeltype) chId, [Cdd_I2c_AddressType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_addresstype) deviceAddress, [Cdd_I2c_DataConstPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataconstptrtype) txDataBufferPtr, [Cdd_I2c_DataPtrType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_dataptrtype) rxDataBufferPtr, [Cdd_I2c_DataLengthType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_datalengthtype) length)| Service to setup the buffers and the length of data for the Ch specified.  |
+| Std_ReturnType | **[Cdd_I2c_AsyncTransmit](../Modules/group__CDD__I2C.md#function-cdd_i2c_asynctransmit)**([Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype) sequenceId)| The service conducts an asynchronous data transmission according to the parameters provided to the Cdd_I2c_SetupEB() service. The callback Cdd_I2c_SequenceErrorNotification() is called, when the asynchronous operation has finished.  |
+| Std_ReturnType | **[Cdd_I2c_Cancel](../Modules/group__CDD__I2C.md#function-cdd_i2c_cancel)**([Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype) sequenceId)| Cancel a transmission.  |
+| void | **[Cdd_I2c_MainFunction](../Modules/group__CDD__I2C.md#function-cdd_i2c_mainfunction)**(void )| Makes a target channel available for processing requests (addressing). When called, the target channel becomes available for starting incoming or outgoing transfers.  |
+| [Cdd_I2c_SequenceResultType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_sequenceresulttype) | **[Cdd_I2c_GetSequenceResult](../Modules/group__CDD__I2C.md#function-cdd_i2c_getsequenceresult)**([Cdd_I2c_SequenceType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_sequencetype) sequenceId)| This service returns the current status of the given SequenceId.  |
+| [Cdd_I2c_ChannelResultType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_channelresulttype) | **[Cdd_I2c_GetResult](../Modules/group__CDD__I2C.md#function-cdd_i2c_getresult)**([Cdd_I2c_ChannelType](../Modules/group__CDD__I2C.md#typedef-cdd_i2c_channeltype) chId)| This service returns the current status of the given channel.  |
+| [Cdd_I2c_ComponentStatusType](../Modules/group__CDD__I2C.md#enum-cdd_i2c_componentstatustype) | **[Cdd_I2c_GetStatus](../Modules/group__CDD__I2C.md#function-cdd_i2c_getstatus)**(void )| This service returns the module's status.  |
 | void | **[I2c_appSeqComplete](../Modules/group__CDD__I2C.md#function-i2c_appseqcomplete)**(void )|  |
 | void | **[I2c_appSeqFail](../Modules/group__CDD__I2C.md#function-i2c_appseqfail)**(uint8 errorCode)|  |
 
 
+
+### function Cdd_I2c_Init
+
+```
+void Cdd_I2c_Init(
+    const Cdd_I2c_ConfigType * configPtr
+)
+```
+
+
+**Brief**: 
+Service for CDD_I2C initialization. 
+
+Initialize the CDD_I2C hardware for each Cdd_I2cChannel using the Cdd_I2cHwUnitBaseAddress and configure the Cdd_I2cBaudRate accordingly.
+
+Service ID[hex] - CDD_I2C_SID_INIT Sync/Async - Synchronous Reentrancy - Non Reentrant
+
+
+**Parameters**: 
+
+  
+* **configPtr** Pointer to CDD_I2C Driver configuration set 
+
+
+**Return**: None 
+
+**Precondition**: Preconditions - Driver not already initialized 
+
+**Postcondition**: Postconditions - Driver in initialized state 
+
+### function Cdd_I2c_DeInit
+
+```
+Std_ReturnType Cdd_I2c_DeInit(
+    void 
+)
+```
+
+
+**Brief**: 
+Service for CDD_I2C driver de-initialization. 
+
+CDD_I2C_DeInit de-initializes the CDD_I2C peripheral(s) into a Power On Reset state.
+
+Service ID[hex] - CDD_I2C_SID_DEINIT Sync/Async - Synchronous Reentrancy - Non Reentrant
+
+
+**Returns**: 
+
+  
+* **E_OK** Success 
+<br> 
+  
+* **E_NOT_OK** Request rejected 
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_GetVersionInfo
+
+```
+void Cdd_I2c_GetVersionInfo(
+    Std_VersionInfoType * versionInfo
+)
+```
+
+
+**Brief**: 
+Service that returns the version information of the module. 
+
+Service ID[hex] - CDD_I2C_SID_GET_VERSION_INFO Sync/Async - Synchronous Reentrancy - Reentrant
+
+
+**Parameters**: 
+
+  
+* **versionInfo** Pointer to where to store the version information of this module 
+
+
+**Return**: None 
+
+**Precondition**: This API is available only if CDD_I2C_VERSION_INFO_API is STD_ON 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_SetupEB
+
+```
+Std_ReturnType Cdd_I2c_SetupEB(
+    Cdd_I2c_ChannelType chId,
+    Cdd_I2c_DataConstPtrType txDataBufferPtr,
+    Cdd_I2c_DataPtrType rxDataBufferPtr,
+    Cdd_I2c_DataLengthType length
+)
+```
+
+
+**Brief**: 
+Service to setup the buffers and the length of data for the Ch specified. 
+
+Service ID[hex] - CDD_I2C_SID_SETUP_EB Sync/Async - Synchronous Reentrancy - Non Reentrant
+
+
+**Parameters**: 
+
+  
+* **chId** Channel to be used in the transmission 
+  
+* **txDataBufferPtr** Pointer to the TX transmission data location 
+  
+* **rxDataBufferPtr** Pointer to the RX transmission data location 
+  
+* **length** Length (number of data elements) of the data to be transmitted from TxDataBufferPtr and/or received from RxDataBufferPtr. 
+
+
+**Returns**: 
+
+  
+* **E_OK** Success 
+<br> 
+  
+* **E_NOT_OK** Request rejected 
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_SetupEBDynamic
+
+```
+Std_ReturnType Cdd_I2c_SetupEBDynamic(
+    Cdd_I2c_ChannelType chId,
+    Cdd_I2c_AddressType deviceAddress,
+    Cdd_I2c_DataConstPtrType txDataBufferPtr,
+    Cdd_I2c_DataPtrType rxDataBufferPtr,
+    Cdd_I2c_DataLengthType length
+)
+```
+
+
+**Brief**: 
+Service to setup the buffers and the length of data for the Ch specified. 
+
+Service ID[hex] - CDD_I2C_SID_SETUP_EB_DYNAMIC Sync/Async - Synchronous Reentrancy - Non Reentrant
+
+
+**Parameters**: 
+
+  
+* **chId** Channel to be used in the transmission 
+  
+* **deviceAddress** Any other value then zero will override the statically configured device address. 
+  
+* **txDataBufferPtr** Pointer to the TX transmission data location 
+  
+* **rxDataBufferPtr** Pointer to the RX transmission data location 
+  
+* **length** Length (number of data elements) of the data to be transmitted from TxDataBufferPtr and/or received from RxDataBufferPtr. 
+
+
+**Returns**: 
+
+  
+* **E_OK** Success 
+<br> 
+  
+* **E_NOT_OK** Request rejected 
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_AsyncTransmit
+
+```
+Std_ReturnType Cdd_I2c_AsyncTransmit(
+    Cdd_I2c_SequenceType sequenceId
+)
+```
+
+
+**Brief**: 
+The service conducts an asynchronous data transmission according to the parameters provided to the Cdd_I2c_SetupEB() service. The callback Cdd_I2c_SequenceErrorNotification() is called, when the asynchronous operation has finished. 
+
+Service ID[hex] - CDD_I2C_SID_ASYNC_TRANSMIT Sync/Async - Synchronous Reentrancy - Non Reentrant
+
+
+**Parameters**: 
+
+  
+* **sequenceId** Sequence used for data exchange 
+
+
+**Returns**: 
+
+  
+* **E_OK** Success 
+<br> 
+  
+* **E_NOT_OK** Request rejected 
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_Cancel
+
+```
+Std_ReturnType Cdd_I2c_Cancel(
+    Cdd_I2c_SequenceType sequenceId
+)
+```
+
+
+**Brief**: 
+Cancel a transmission. 
+
+A request that is already in transmission progress, is cancelled by finishing the current sequence. This is done to achieve a stable state with no undefined data. A queued transmission request is cancelled at once.
+
+Service ID[hex] - CDD_I2C_SID_CANCEL Sync/Async - Synchronous Reentrancy - Non Reentrant
+
+
+**Parameters**: 
+
+  
+* **sequenceId** Sequence to cancel 
+
+
+**Returns**: 
+
+  
+* **E_OK** Success 
+<br> 
+  
+* **E_NOT_OK** Request rejected 
+<br> 
+
+
+**Return**: Std_ReturnType 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_MainFunction
+
+```
+void Cdd_I2c_MainFunction(
+    void 
+)
+```
+
+
+**Brief**: 
+Makes a target channel available for processing requests (addressing). When called, the target channel becomes available for starting incoming or outgoing transfers. 
+
+Service ID[hex] - CDD_I2C_SID_MAIN_FUNCTION Sync/Async - Asynchronous Reentrancy - Reentrant
+
+
+**Return**: None 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_GetSequenceResult
+
+```
+Cdd_I2c_SequenceResultType Cdd_I2c_GetSequenceResult(
+    Cdd_I2c_SequenceType sequenceId
+)
+```
+
+
+**Brief**: 
+This service returns the current status of the given SequenceId. 
+
+Service ID[hex] - CDD_I2C_SID_GET_SEQUENCE_RESULT Sync/Async - Synchronous Reentrancy - Reentrant
+
+
+**Parameters**: 
+
+  
+* **sequenceId** Sequence to query 
+
+
+**Return**: CDD_I2C_SequenceResultType - Return the current status 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_GetResult
+
+```
+Cdd_I2c_ChannelResultType Cdd_I2c_GetResult(
+    Cdd_I2c_ChannelType chId
+)
+```
+
+
+**Brief**: 
+This service returns the current status of the given channel. 
+
+Service ID[hex] - CDD_I2C_SID_GET_RESULT Sync/Async - Synchronous Reentrancy - Reentrant
+
+
+**Parameters**: 
+
+  
+* **chId** Channel to query 
+
+
+**Return**: Cdd_I2c_ChannelResultType - Return the current status 
+
+**Precondition**: None 
+
+**Postcondition**: None 
+
+### function Cdd_I2c_GetStatus
+
+```
+Cdd_I2c_ComponentStatusType Cdd_I2c_GetStatus(
+    void 
+)
+```
+
+
+**Brief**: 
+This service returns the module's status. 
+
+Service ID[hex] - CDD_I2C_SID_GET_STATUS Sync/Async - Synchronous Reentrancy - Reentrant
+
+
+**Return**: Cdd_I2c_ComponentStatusType - Return the current status 
+
+**Precondition**: None 
+
+**Postcondition**: None 
 
 ### function I2c_appSeqComplete
 

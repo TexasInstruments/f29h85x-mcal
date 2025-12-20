@@ -43,7 +43,7 @@ between two falling edges
 * This example configures SENT module to receive 4 Data-nibble per frame for fast channel.
 *
 * \b External \b Connections \n
-*    - Connect GPIO58 to sensor's SENT channel 1 pin
+*    - Connect GPIO18 to sensor's SENT channel 4 pin
 
 * \b Watch \b Variables \n
 * - \b SENT_Frame[] - Frame received from the Sensor

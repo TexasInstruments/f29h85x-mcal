@@ -203,6 +203,27 @@ EB Unattended Wizard Config Dialog
 Unattended wizard configuration settings need to be configured once during project configuration where the AutoCalc (Calculate Derivable Values) checkbox needs to be set. Once the settings are done, just clicking on the settings icon->AutoCalc will auto-calculate all the values and any other configuration updates in the project.
 ```
 
+#### Calculator Icon Behavior
+
+```{figure} Assets/images/EB_Tresos_CalculateButton.png
+:alt: EB Tresos Calculate Button Values
+:align: center
+
+EB Tresos Calculate Button Values
+```
+
+The Calculate button next to configuration parameters initiates specified parameter calculations. The appearance of the icon depends on the current state of the parameter:
+
+| Icon | State | Behavior |
+|------|-------|----------|
+| Pencil icon | The current value is not edited manually but comes from another source (e.g., default value or imported). | Clicking this button marks the element as manually edited. With this operation you accept the value. Operations such as running unattended wizards or importers that would normally overwrite the default, calculated or imported values do not change the element any more. |
+| Pencil with calculator icon | The value was manually edited but can be recalculated. | Clicking this button recalculates the element value and marks it as a calculated default value. |
+| Calculator icon | The value depends on other elements and can be calculated by EB Tresos Studio. | Clicking this button triggers the calculation based on dependencies. |
+
+```{Note}
+For more details on parameter icons and their behavior, refer to **Section 5.4.1.1 Sections and parameters** in *{EB_INSTALLATION_PATH}/tresos/doc/2.0_EB_tresos_Studio/2.1_Studio_documentation_users_guide.pdf*
+```
+
 - Right-click on the project in the Project explorer and choose *Verify Project* to see any errors or warnings in the configuration.
 
 ```{figure} Assets/images/EB_Generate_Configuration.png

@@ -62,7 +62,6 @@
 #define UART_O_MIS           0x40U    // UART Masked Interrupt Status
 #define UART_O_ICR           0x44U    // UART Interrupt Clear
 #define UART_O_DMACTL        0x48U    // UART DMA Control
-#define UART_O_GLB_INT_EN    0x80U    // UART Global Interrupt Flag Register
 #define UART_O_GLB_INT_FLG   0x84U    // UART Global Interrupt Flag Register
 #define UART_O_GLB_INT_CLR   0x88U    // UART Global Interrupt Clear Register
 #define UART_O_9BITADDR      0xA4U    // UART 9-Bit Self Address

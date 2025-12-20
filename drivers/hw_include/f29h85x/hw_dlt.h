@@ -147,11 +147,11 @@
 // The following are defines for the bit fields in the FIFO_CONTROL register
 //
 //*************************************************************************************************
-#define DLT_FIFO_CONTROL_DMA_EN                0x1U       // Trigger DMA on FIFO level
-#define DLT_FIFO_CONTROL_FIFO_RST              0x2U       // Initialize pointers of FIFO to 0
+#define DLT_FIFO_CONTROL_DMA_EN                0x1U      // Trigger DMA on FIFO level
+#define DLT_FIFO_CONTROL_FIFO_RST              0x2U      // Initialize pointers of FIFO to 0
 #define DLT_FIFO_CONTROL_WR_CTR_TRIG_LEVEL_S   8U
-#define DLT_FIFO_CONTROL_WR_CTR_TRIG_LEVEL_M   0x3FF00U   // Level of FIFO writes required to
-                                                          // trigger INT/DMA
+#define DLT_FIFO_CONTROL_WR_CTR_TRIG_LEVEL_M   0xFF00U   // Level of FIFO writes required to
+                                                         // trigger INT/DMA
 
 //*************************************************************************************************
 //
@@ -166,9 +166,9 @@
 //
 //*************************************************************************************************
 #define DLT_FIFO_STS_WORD_CTR_S   0U
-#define DLT_FIFO_STS_WORD_CTR_M   0x3FFU       // Number of 64-bit words to be read in the FIFO
+#define DLT_FIFO_STS_WORD_CTR_M   0xFFU       // Number of 64-bit words to be read in the FIFO
 #define DLT_FIFO_STS_WR_CTR_S     16U
-#define DLT_FIFO_STS_WR_CTR_M     0x3FF0000U   // Write counter of FIFO after last trigger
+#define DLT_FIFO_STS_WR_CTR_M     0xFF0000U   // Write counter of FIFO after last trigger
 
 //*************************************************************************************************
 //
@@ -176,9 +176,9 @@
 //
 //*************************************************************************************************
 #define DLT_FIFO_PTR_RD_PTR_S   0U
-#define DLT_FIFO_PTR_RD_PTR_M   0x3FFU       // Read pointer location of FIFO
+#define DLT_FIFO_PTR_RD_PTR_M   0xFFU       // Read pointer location of FIFO
 #define DLT_FIFO_PTR_WR_PTR_S   16U
-#define DLT_FIFO_PTR_WR_PTR_M   0x3FF0000U   // Write pointer location of FIFO
+#define DLT_FIFO_PTR_WR_PTR_M   0xFF0000U   // Write pointer location of FIFO
 
 //*************************************************************************************************
 //

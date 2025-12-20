@@ -79,6 +79,10 @@ The ADC module includes the following features:
   * ADCINT1/2
   * ECAP events in capture mode (CEVT1, CEVT2, CEVT3, and CEVT4) and APWM mode (period match,
 compare match, or both)
+
+```{note}
+**Trigger Source Availability:** The trigger source list in the configuration tool contains a superset of all triggers available across all device variants. Before configuring a trigger source, verify its availability for your specific device variant by consulting the device datasheet.
+```
 * Four flexible PIPE interrupts
 * Configurable interrupt placement
 * Four post-processing blocks(PPB), each with:
@@ -93,6 +97,7 @@ compare match, or both)
   * Two's complement function
   * Cycle by cycle enable function
 * Result safety checkers to compare SOC results on same ADC or multiple ADC instances
+
 
 ```{figure} Assets/images/Cdd_Adc_Block_Diagram.png
 :alt: Cdd_Adc Block diagram
@@ -183,28 +188,33 @@ Development errors are reported to the DET using the service Det_ReportError(), 
 
 |Type of Error|Related Error code|Value (Hex)|
 |----|-----|-------|
-|Init API called when the driver is already initialized|CDD_ADC_E_ALREADY_INITIALIZED|0x0DU|
-|Init API called with non NULL_PTR <br> API called with NULL_PTR (except Init API)|CDD_ADC_E_PARAM_POINTER|0x14U|  
 |API called when driver is not initialized|CDD_ADC_E_UNINIT|0x0AU|
+|Init API called when the driver is already initialized|CDD_ADC_E_ALREADY_INITIALIZED|0x0DU|
+|API called with incorrect configuration parameter|CDD_ADC_E_PARAM_EVENT|0x0EU|
+|Init API called with non NULL_PTR <br> API called with NULL_PTR (except Init API)|CDD_ADC_E_PARAM_POINTER|0x14U|
 |API called with invalid group ID|CDD_ADC_E_PARAM_GROUP|0x15U|
-|API called with invalid parameter ID|CDD_ADC_E_INVALID_ID|0x22U|
-|API called for group conversion before setting up the result buffer|CDD_ADC_E_BUFFER_UNINIT|0x1DU|  
-|Cdd_Adc_EnableGroupNotification or Cdd_Adc_DisableGroupNotification API called for a group whose configuration set has no notification available|CDD_ADC_E_NOTIF_CAPABILITY|0x1CU|
-|Incorrect API call for group conversion |CDD_ADC_E_WRONG_TRIGG_SRC|0x1BU|
-|Cdd_Adc_EnableHardwareTrigger or Cdd_Adc_DisableHardwareTrigger API called on a group with conversion mode configured as continuous |CDD_ADC_E_WRONG_CONV_MODE|0x1AU|
 |Cdd_Adc_SetResolution API is called when the hardware is in Internal 3.3V reference mode or called on 12-bit ADC hardware units(ADCC,ADCD & ADCE) and 16bit resolution is requested|CDD_ADC_E_WRONG_RESOLUTION_MODE|0x18U|
-|API called for invalid configuration parameter|CDD_ADC_E_PARAM_CONFIG|0x0EU|
+|Cdd_Adc_EnableHardwareTrigger or Cdd_Adc_DisableHardwareTrigger API called on a group with conversion mode configured as continuous|CDD_ADC_E_WRONG_CONV_MODE|0x1AU|
+|Incorrect API call for group conversion|CDD_ADC_E_WRONG_TRIGG_SRC|0x1BU|
+|Cdd_Adc_EnableGroupNotification or Cdd_Adc_DisableGroupNotification API called for a group whose configuration set has no notification available|CDD_ADC_E_NOTIF_CAPABILITY|0x1CU|
+|API called for group conversion before setting up the result buffer|CDD_ADC_E_BUFFER_UNINIT|0x1DU|
+|API called with invalid hardware unit ID|CDD_ADC_E_INVALID_ID|0x22U|
+|API called with invalid resolution|CDD_ADC_E_INVALID_RESOLUTION|0x23U|
+|API called with invalid interrupt ID|CDD_ADC_E_INVALID_INTERRUPT_ID|0x24U|
+|API called with wrong processing mode (e.g., DMA mode API called on non-DMA group)|CDD_ADC_E_WRONG_PROCESSING_MODE|0x25U|
+|API called for group with wrong trigger source type|CDD_ADC_E_WRONG_TRIGG_TYPE|0x26U|
 
 ##### Runtime Errors
 
 |Type of Error|Related Error code|Value (Hex)|
 |----|-----|-------|
-|Cdd_Adc_SetResolution API called on a hardware unit whose resolution is same as the requested resolution|CDD_ADC_E_ALREADY_SET|0x21U|
-|API called when group conversion is not on-going|CDD_ADC_E_IDLE|0x0CU|
 |API called during ongoing group conversion|CDD_ADC_E_BUSY|0x0BU|
+|API called when group conversion is not on-going|CDD_ADC_E_IDLE|0x0CU|
+|Cdd_Adc_GetDelayStamp API called for software triggered PPB|CDD_ADC_E_WRONG_TRIGG_SRC|0x1BU|
 |API called when safety checker is IDLE|CDD_ADC_E_CHECKER_IDLE|0x1FU|
 |API called when safety checker is BUSY|CDD_ADC_E_CHECKER_BUSY|0x20U|
-|Cdd_Adc_GetDelayStamp API called for software triggered PPB|CDD_ADC_E_WRONG_TRIGG_SRC|0x1BU|
+|Cdd_Adc_SetResolution API called on a hardware unit whose resolution is same as the requested resolution|CDD_ADC_E_ALREADY_SET|0x21U|
+|API called with wrong processing mode (e.g., DMA mode API called on non-DMA group)|CDD_ADC_E_WRONG_PROCESSING_MODE|0x25U|
 
 ### Used resources
 
@@ -267,6 +277,47 @@ Cdd_Adc HW/SW Mapping
 
 ### Integration description
 
+#### ADC + DMA Integration Guide
+
+##### Overview
+
+The F29x MCAL ADC driver supports integration with the Real-Time Direct Memory Access (RTDMA) controller. This integration enables automatic transfer of ADC conversion results to memory without CPU intervention, allowing higher sampling rates and freeing the CPU for other tasks.
+
+##### Enabling DMA Mode
+
+DMA mode is enabled at the group level using the boolean parameter `CddAdcEnableDma` in EB Tresos configuration tool. Since no MCAL RTDMA driver is available, the application must use the SDK's RTDMA driver for integration.
+
+##### API Behavior in DMA Mode
+
+When DMA is enabled for a group:
+
+* **Group Status Updates**: The ADC ISR does not execute in DMA mode. Therefore, group status updates (e.g., BUSY to COMPLETED), result pointer updates, and re-triggering of software-triggered group conversions do not occur automatically.
+
+* **Status Update API**: Use `Cdd_Adc_UpdateStatusThroughDma` API to manually update group status. This API behaves like the ADC ISR but does not copy conversion results. Call this API from the DMA completion interrupt handler. Calling this API on groups not configured for DMA mode results in a `CDD_ADC_E_WRONG_PROCESSING_MODE` runtime error.
+
+* **Unsupported APIs**: The `Cdd_Adc_SetupResultBuffer`, `Cdd_Adc_ReadGroup` and `Cdd_Adc_GetStreamLastPointer` APIs are not supported for DMA-enabled groups since group status updates are not guaranteed .
+
+* **Result Buffer Setup**: Do not call `Cdd_Adc_SetupResultBuffer` API. The DMA driver is responsible for providing the destination address for ADC conversion results.
+
+* **Buffer Size**: The application must ensure the destination buffer has sufficient space for all channel conversions in the group.
+
+```{note}
+The ADC interrupt (End-Of-Conversion) triggers the DMA transfer. This same interrupt line is also routed to the CPU. To prevent ISR execution when using DMA mode, do not configure the corresponding interrupt in the OS plugin.
+```
+
+##### Integration Steps
+
+To integrate ADC with DMA:
+
+1. Enable DMA mode for the ADC group in EB Tresos configuration
+2. Set the source address to the ADC result register
+3. Set the destination address to the application's result buffer in memory
+4. Configure the ADC End-Of-Conversion interrupt as the DMA trigger source
+
+```{note}
+Early ADC interrupt trigger to DMA is not supported by the ADC driver.
+```
+
 #### Dependent modules
 
 ##### DET
@@ -298,9 +349,26 @@ The Port module configures the analog port pins used for the ADC driver. Hence, 
 
 The Cdd_Adc driver uses interrupts and therefore depends on OS, which configures the interrupts.
 
-#### Multi-core and Resource allocator
+#### Resource Allocator
 
-Not Supported
+The ADC module references the Resource Allocator for device, package, and variant configuration. See the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md) for details on configuring device-specific settings.
+
+##### Resource Allocator Usage Example
+
+To allocate ADCA to CPU1 using FRAME0:
+
+1. In the Resource Allocator configuration, create a new Adc instance allocation
+2. Set **InstanceName** to `ADCA`
+3. Set **Frame** to `FRAME0`
+4. The **BaseAddr** will be automatically calculated as `ADCA_DRIVER_BASE_FRAME(0U)`
+
+```text
+Resource Allocator Configuration:
+├── AdcInstanceAllocation
+│   ├── InstanceName: ADCA
+│   ├── Frame: FRAME0
+│   └── BaseAddr: ADCA_DRIVER_BASE_FRAME(0U)
+```
 
 ### Configuration
 
@@ -309,7 +377,50 @@ The generated configuration source file Cdd_Adc_Cfg.c is also necessary for the 
 
 The generated configuration files should not be modified manually. The config tool [Elektrobit Tresos](https://www.elektrobit.com/products/ecu/eb-tresos/studio/) should be used to modify the configuration files. If edited manually the driver may behavior might deviate from the expected behavior.
 
-#### Migration Guide to v2.0.0 from v1.0.0
+#### Migration Guide
+
+Migration guides between module versions are detailed below.
+
+##### v03.00.00 from v02.01.00
+
+###### Key Changes
+
+1. **Resource Allocator Based Approach**
+   * The CDD ADC module now integrates with the Resource Allocator module for centralized device, package, and variant configuration
+   * ADC hardware instance allocation is now managed through the Resource Allocator instead of direct configuration
+
+2. **SDK Based DMA Integration**
+   * Added SDK-based DMA integration for ADC result transfers
+   * The `CddAdcEnableDma` parameter enables DMA-based result transfer for ADC groups, providing efficient data movement without CPU intervention
+
+###### Migration Steps
+
+1. **Update Resource Allocator Configuration**
+   * Open the Resource Allocator module in EB Tresos
+   * Configure ADC instance allocations under the appropriate CPU context
+   * For each ADC hardware unit, create a `Cdd_AdcAllocatedInstance` entry
+   * Set the `InstanceName` (e.g., `CDD_ADCA`, `CDD_ADCB`, etc.)
+
+2. **Update CDD ADC Hardware Unit References**
+   * In the CDD ADC configuration, each `CddAdcHwUnit` now requires a reference to the Resource Allocator
+   * Set `CddAdcHwInstanceRef` to point to the corresponding `Cdd_AdcAllocatedInstance` in Resource Allocator
+   * The `CddAdcHwInstance` parameter is now automatically derived from the Resource Allocator reference
+
+3. **Configure DMA (Optional)**
+   * If using DMA for ADC result transfers, enable `CddAdcEnableDma` in the group configuration
+   * Configure the DMA channel in the SDK/system configuration
+   * Ensure proper memory alignment for DMA buffers
+
+4. **Regenerate Configuration**
+   * Save the configuration in EB Tresos
+   * Regenerate the configuration files
+
+5. **Rebuild Application**
+   * Rebuild your application with the updated configuration
+
+For more details on Resource Allocator configuration, see the [Resource Allocator Module User Guide](Module_User_Guide_ResourceAllocator.md).
+
+##### v2.0.0 from v1.0.0
 
 To make v1.0.0 Adc schema(generated .xdm file) compatible with v2.0.0 below changes are required:
 
@@ -337,6 +448,8 @@ Modified new schema:
 <d:ctr type="MODULE-CONFIGURATION">
 <a:a name="DEF" value="ASPath:/TI_F29H85x/Cdd_Adc/Cdd"/>
 ```
+
+#### Configuration Parameters
 
 
 
@@ -522,7 +635,7 @@ This container contains the driver configuration (parameters) for the ADC Hardwa
 | **Post-Build-Variant-Value** | false |
 | **Value-Configuration-Class** | -- |
 | Pre-Compile-Time | VARIANT-PRE-COMPILE |
-| **Default-value** | 5.0E7 |
+| **Default-value** | 5.714285714285714E7 |
 | **Max-value** | 6.0E7 |
 | **Min-value** | 5000000.0 |
 
@@ -1938,19 +2051,7 @@ The example applications demonstrates usecases of the Cdd_Adc driver APIs. The e
 
 ##### Sample Log of Cdd_Adc_Example_GlbSwTrig
 
-```{code-block}
-Executing Cdd_Adc_Example_GlbSwTrig example
-Started globalswtrigger 0 conversion
-Completed globalswtrigger 0 conversion
-Re-triggers globalswtrigger 0 conversion
-Completed second round of globalswtrigger 0 conversion
-Started globalswtrigger 1 conversion
-Completed globalswtrigger 1 conversion
-Started globalswtrigger 2 conversion
-Completed globalswtrigger 2 conversion
-Started software triggered group 1 conversion
-Completed software triggered group 1 conversion
-Example executed successfully
+```{literalinclude} Assets/text/Cdd_Adc_Example_GlbSwTrig.txt
 ```
 
 #### Cdd_Adc_Example_Ppb_TrigRepeater
@@ -1980,11 +2081,7 @@ Example executed successfully
 
 ##### Sample Log of Cdd_Adc_Example_Ppb_TrigRepeater
 
-```{code-block}
-Executing Cdd_Adc_Example_Ppb_TrigRepeater example
-Gpt Interrupt Count in undersampling mode is 5
-Gpt Interrupt Count in oversampling mode is 1
-Cdd_Adc_Example_Ppb_TrigRepeater executed successfully
+```{literalinclude} Assets/text/Cdd_Adc_Example_Ppb_TrigRepeater.txt
 ```
 
 #### Cdd_Adc_Example_TempSensor
@@ -2013,13 +2110,7 @@ Cdd_Adc_Example_Ppb_TrigRepeater executed successfully
 
 ##### Sample Log of Cdd_Adc_Example_TempSensor
 
-```{code-block}
-Executing Cdd_Adc_Example_TempSensor example
-Temperature in Celsius converted by ADCA is 6
-Temperature in Kelvin converted by ADCA is 279
-Temperature in Celsius converted by ADCC is -9
-Temperature in Kelvin converted by ADCC is 264
-Cdd_Adc_Example_TempSensor Example executed successfully
+```{literalinclude} Assets/text/Cdd_Adc_Example_TempSensor.txt
 ```
 
 #### Cdd_Adc_Example_Differential
@@ -2051,17 +2142,46 @@ Cdd_Adc_Example_TempSensor Example executed successfully
 
 ##### Sample Log of Cdd_Adc_Example_Differential
 
-```{code-block}
-Executing Cdd_Adc_Example_Differential example
-Delay stamp for PPB 2 is 2
-Delay stamp for PPB 2 is 2
-Delay stamp for PPB 2 is 2
-Change the ADCA resolution to 12-bit
-Change the ADCB resolution to 12-bit
-Delay stamp for PPB 2 is 2
-Delay stamp for PPB 2 is 2
-Delay stamp for PPB 2 is 2
-Cdd_Adc_Example_Differential executed successfully
+```{literalinclude} Assets/text/Cdd_Adc_Example_Differential.txt
+```
+
+#### Cdd_Adc_Example_DmaTransfer
+
+##### Overview of Cdd_Adc_Example_DmaTransfer
+
+* Cdd_Adc_Example_DmaTransfer
+  * EcuM_Init()
+    * Initialize clock to 200 MHz using Mcu_Init()
+    * Initialize pins with Port_Init()
+    * Initialize Cdd_Adc driver using Cdd_Adc_Init()
+    * Initialize Cdd_Pwm driver using Cdd_Pwm_Init() to trigger ADC group conversion
+  * Connect voltage to configured channels to observe data transfer from source to destination
+  * Configure RTDMA to transfer ADC conversion results to a buffer after ADC results are latched into the registers
+  * Configure PWM to a specific frequency waveform and enable events to ADC to trigger group conversion
+  * Start DMA channel
+  * Call EnableHardwareTrigger API to start the group conversion
+  * Events from PWM trigger group conversion periodically and after every round of group conversion the generated ADC interrupt triggers DMA transfer
+  * Continue this for some time and observe the results getting transferred to the destination buffer by DMA
+  * Call DisableHardwareTrigger to stop further triggers from PWM to ADC
+  * Stop DMA channel
+  * Print DMA notification count and a set of group conversion results. Finally, print the success statement
+
+##### Setup required to run Cdd_Adc_Example_DmaTransfer
+
+* Install Code Composer Studio (CCS) latest version
+* Install latest C29 compiler
+* Connect the hardware and power up
+* Connect the UART setup to check the log on serial console
+* Provide voltage to configured pins to observe channel conversion results at the destination
+
+##### How to run Cdd_Adc_Example_DmaTransfer
+
+* Open CCS and import Cdd_Adc_Example_DmaTransfer
+* Build project and start debug project
+
+##### Sample Log of Cdd_Adc_Example_DmaTransfer
+
+```{literalinclude} Assets/text/Cdd_Adc_Example_DmaTransfer.txt
 ```
 
 #### Example File Structure

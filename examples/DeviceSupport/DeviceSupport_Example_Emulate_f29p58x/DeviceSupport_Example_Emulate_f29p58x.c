@@ -73,7 +73,7 @@
 int main(void)
 {
     uint32 regval = 0;
-    DeviceSupport_EmulateDevice(DEVICE_F29P589DU5);
+    DeviceSupport_EmulateDevice(DEVICE_F29P589DU5Q);
     DeviceSupport_Init();
     EcuM_Init();
     AppUtils_Init(200000000U);  // Init App utils to enable prints

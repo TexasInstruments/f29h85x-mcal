@@ -605,8 +605,10 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29Read(uint32 actualChunkSize)
 
     while (length > 0U)
     {
-        *dest++ = *src++; /* read by byte*/
-        length  = length - 1U;
+        *dest = *src; /* read by byte*/
+        src++;
+        dest++;
+        length = length - 1U;
     }
     retVal = (Std_ReturnType)u32DummyRead;
     return (retVal);
@@ -880,10 +882,10 @@ static FUNC(Std_ReturnType, FLS_CODE) Fls_F29AsyncSectorErase_sub(uint32 actualS
     VAR(Fls_FapiFlashStatus, AUTOMATIC) oFlashStatus;
     VAR(Std_ReturnType, AUTOMATIC) oReturnCheck;
     VAR(Std_ReturnType, AUTOMATIC) oReturnCheck_AsyncCMD;
-    VAR(Std_ReturnType, AUTOMATIC) oReturnCheck_EraseCMD;
-    VAR(uint32, AUTOMATIC) u32StartAddress   = Fls_DrvObj.flashAddr;
-    VAR(uint32, AUTOMATIC) length            = Fls_DrvObj.length;
-    Fls_SectorBankErase_PostFapiFsmReadyDone = 0U;
+    VAR(volatile Std_ReturnType, AUTOMATIC) oReturnCheck_EraseCMD = E_OK;
+    VAR(uint32, AUTOMATIC) u32StartAddress                        = Fls_DrvObj.flashAddr;
+    VAR(uint32, AUTOMATIC) length                                 = Fls_DrvObj.length;
+    Fls_SectorBankErase_PostFapiFsmReadyDone                      = 0U;
 
     static uint16 pre_check_sub_function  = FLS_ERASE_FSM_READY_CHECK;
     static uint16 post_check_sub_function = FLS_ERASE_FSM_READY_CHECK;
